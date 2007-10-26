@@ -7,17 +7,13 @@ package at.rc.tacos.client.model;
 
 public class MobilePhoneDetail 
 {
-
 	private String mobilePhoneId;//Muss von Art: z.B. 'Bm01' sein (Zweistelliges Ortsstellen-Kennzeichen, zweistellige Nummer)- zwecks Vergleich mit zugehörigem Fahrzeug
 	private String mobilePhoneNumber;
 	
 	/**
 	 * Constructors
 	 */
-	public MobilePhoneDetail()
-	{
-		
-	}
+	public MobilePhoneDetail(){}
 
 	/**
 	 * @param mobilePhoneId
@@ -33,7 +29,6 @@ public class MobilePhoneDetail
 	/**
 	 * Setter&Getter
 	 */
-	
 	
 	/**
 	 * @return the mobilePhoneId
@@ -61,11 +56,6 @@ public class MobilePhoneDetail
 	 */
 	public void setMobilePhoneNumber(String mobilePhoneNumber) {
 		this.mobilePhoneNumber = mobilePhoneNumber;
-	}
-	
-	
-	
-	
-	
+	}	
 }
 
