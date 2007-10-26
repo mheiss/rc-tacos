@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="at.rc.tacos.client.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="ClientPerspective"
+            class="at.rc.tacos.client.Perspective"
+            id="at.rc.tacos.client.perspective">
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="at.rc.tacos.client.application"
+            name="TACOS-Client">
+         <property
+               name="aboutText"
+               value="Austrian Red Cros
+Time and Configuration Management">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/alt_window_16.gif,icons/alt_window_32.gif,icons/alt_window_48.gif,icons/alt_window_64.gif,icons/alt_window_128.gif">
+         </property>
+         <property
+               name="aboutImage"
+               value="platform:/plugin/rc_client/icons/alt_about.gif">
+         </property>
+         <property
+               name="appName"
+               value="TACOS-Client">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="28,246,300,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="75,275,300,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="ItemView"
+            allowMultiple="true"
+            class="at.rc.tacos.client.view.View"
+            id="at.rc.tacos.client.view.item_view">
+      </view>
+      <view
+            name="FormView"
+            allowMultiple="true"
+            class="at.rc.tacos.client.view.FormView"
+            id="at.rc.tacos.client.view.item_form">
+      </view>
+   </extension>
+
+</plugin>
