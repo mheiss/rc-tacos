@@ -175,7 +175,7 @@ public class RosterEntry
 
 	/**
 	 * @return the station
-	 * Possible stations: 'Bruck-Kapfenberg', 'Bruck an der Mur', 'Kapfenberg', 'Breitenau', 'Thörl', 'Turnau', 'NEF'
+	 * Possible stations: 'Bruck-Kapfenberg', 'Bruck an der Mur', 'Kapfenberg', 'St. Marein', 'Breitenau', 'Thörl', 'Turnau', 'NEF'
 	 */
 	public String getStation() {
 		return station;
