@@ -1,10 +1,9 @@
-/**
- * 
- * @author b.thek
- */
-
 package at.rc.tacos.client.model;
 
+/**
+ * Spezifies the details of the mobilephone
+ * @author b.thek
+ */
 
 public class MobilePhoneDetail 
 {
