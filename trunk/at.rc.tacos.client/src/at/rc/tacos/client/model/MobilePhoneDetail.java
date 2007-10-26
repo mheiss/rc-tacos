@@ -1,13 +1,13 @@
 package at.rc.tacos.client.model;
 
 /**
- * Spezifies the details of the mobilephone
+ * Specifies the details of the mobile phone
  * @author b.thek
  */
 
 public class MobilePhoneDetail 
 {
-	private String mobilePhoneId;//Muss von Art: z.B. 'Bm01' sein (Zweistelliges Ortsstellen-Kennzeichen, zweistellige Nummer)- zwecks Vergleich mit zugehörigem Fahrzeug
+	private String mobilePhoneId;
 	private String mobilePhoneNumber;
 	
 	/**
@@ -38,6 +38,8 @@ public class MobilePhoneDetail
 	}
 
 	/**
+	 * kind of the id: e.g. 'Bm01'  (two chars to specify the station plus a double digit distinct number )- 
+	 * - because of the comparison with the primary vehicle
 	 * @param mobilePhoneId the mobilePhoneId to set
 	 */
 	public void setMobilePhoneId(String mobilePhoneId) {
