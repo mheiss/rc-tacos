@@ -20,9 +20,8 @@ Time and Configuration Management
    <windowImages i16="/at.rc.tacos.client/icons/alt_window_16.gif" i32="/at.rc.tacos.client/icons/alt_window_32.gif" i48="/at.rc.tacos.client/icons/alt_window_48.gif" i64="/at.rc.tacos.client/icons/alt_window_64.gif" i128="/at.rc.tacos.client/icons/alt_window_128.gif"/>
 
    <splash
-      startupProgressRect="75,275,300,15"
-      startupMessageRect="28,246,300,20"
-      startupForegroundColor="000000" />
+      location="at.rc.tacos.client"
+      handlerType="interactive" />
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -30,14 +29,13 @@ Time and Configuration Management
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
    <plugins>
       <plugin id="at.rc.tacos.client"/>
       <plugin id="com.ibm.icu"/>
-      <plugin id="com.ibm.icu36.data.update" fragment="true"/>
+      <plugin id="com.ibm.icu36.data.update"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
