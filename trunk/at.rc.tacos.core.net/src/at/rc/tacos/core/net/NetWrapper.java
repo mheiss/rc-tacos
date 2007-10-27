@@ -26,6 +26,9 @@ public class NetWrapper extends Plugin implements INetListener
 
     // The UI listeners to inform about new data
     private Vector<IClientNetEventListener> uiEventListeners;
+    
+    // The listener interface for the login
+    private IClientLoginListener loginListener;
 
     // The handler for the connections
     private ConnectionHandler connectionHandler;
@@ -87,8 +90,8 @@ public class NetWrapper extends Plugin implements INetListener
     @Override
     public void dataReceived(NetEvent ne)
     {
-
-
+        System.out.println("test");
+        loginListener.loginSuccessfully();
     }
 
     /**
@@ -177,6 +180,15 @@ public class NetWrapper extends Plugin implements INetListener
     {
         uiEventListeners.removeElement(listener);
     }
+    
+    /**
+     * Registers a listener to receive login events.
+     * @param listener the listener to register
+     */
+    public void registerLoginListener(IClientLoginListener listener)
+    {
+        loginListener = listener;
+    }
 
     /**
      * Loads the configuration and sets up the primary and the failback connection.
@@ -190,17 +202,19 @@ public class NetWrapper extends Plugin implements INetListener
         //failback
         String failbackHost = "localhost";
         int failbackPort = 4712;
-        
 
         //add both to the connection handler
-        connectionHandler.addServer(
+        ConnectionInfo primary = connectionHandler.addServer(
                 ConnectionHandler.PRIMARY_SERVER_ID,
                 primaryHost,
                 primaryPort);
-        connectionHandler.addServer(
+        ConnectionInfo failback = connectionHandler.addServer(
                 ConnectionHandler.FAILBACK_SERVER_ID,
                 failbackHost,
                 failbackPort);
+        //register the listeners
+        primary.getConnection().addNetListener(this);
+        failback.getConnection().addNetListener(this);
     }
     
     /**
