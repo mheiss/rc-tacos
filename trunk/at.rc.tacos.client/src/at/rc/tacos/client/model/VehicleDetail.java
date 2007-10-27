@@ -1,5 +1,6 @@
 package at.rc.tacos.client.model;
 
+
 /**
  * Specifies the crew and phone of an ambulance
  * @author b.thek

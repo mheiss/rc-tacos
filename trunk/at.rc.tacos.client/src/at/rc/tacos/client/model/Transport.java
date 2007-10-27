@@ -3,6 +3,7 @@ package at.rc.tacos.client.model;
 import java.util.Date;
 
 
+
 /**
  * Specifies the transport details
  * @author b.thek

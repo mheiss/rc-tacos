@@ -39,7 +39,7 @@ public class View extends ViewPart implements PropertyChangeListener
 
 		public Object[] getElements(Object parent) 
 		{
-			return Activator.getDefault().getObjectList().toArray();
+			return Activator.getDefault().getItemList().toArray();
 		}
 	}
 
@@ -63,9 +63,9 @@ public class View extends ViewPart implements PropertyChangeListener
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setInput(Activator.getDefault().getObjectList());
+		viewer.setInput(Activator.getDefault().getItemList());
         // add listener to model to keep on track. 
-        Activator.getDefault().getObjectList().addPropertyChangeListener(this);
+        Activator.getDefault().getItemList().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class View extends ViewPart implements PropertyChangeListener
     public void dispose() 
     {
         // deregister listener
-        Activator.getDefault().getObjectList().removePropertyChangeListener(this);
+        Activator.getDefault().getItemList().removePropertyChangeListener(this);
         super.dispose();
     }
 
