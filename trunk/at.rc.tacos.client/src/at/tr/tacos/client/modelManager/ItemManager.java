@@ -1,4 +1,4 @@
-package at.rc.tacos.client.model;
+package at.tr.tacos.client.modelManager;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -7,11 +7,14 @@ import java.util.List;
 
 import org.eclipse.core.runtime.PlatformObject;
 
+import at.rc.tacos.client.model.Item;
+
+
 /**
  * All created items.
  * @author Michael
  */
-public class ObjectList extends PlatformObject 
+public class ItemManager extends PlatformObject 
 {
     //the item list
     private List<Item> objectList = new ArrayList<Item>();

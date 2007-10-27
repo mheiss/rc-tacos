@@ -5,7 +5,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 //client
-import at.rc.tacos.client.model.*;
+import at.tr.tacos.client.modelManager.*;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -19,7 +19,7 @@ public class Activator extends AbstractUIPlugin
 	private static Activator plugin;
 	
 	//the object data   
-    private ObjectList objectList = new ObjectList();
+    private ItemManager itemList = new ItemManager();
 	
 	/**
 	 * The constructor
@@ -68,8 +68,8 @@ public class Activator extends AbstractUIPlugin
      * Returns the object list containing the items
      * @return the objectList
      */
-    public ObjectList getObjectList() 
+    public ItemManager getItemList() 
     {
-        return objectList;
+        return itemList;
     }
 }
