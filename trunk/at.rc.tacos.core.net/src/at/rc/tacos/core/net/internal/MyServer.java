@@ -1,4 +1,4 @@
-package at.rc.tacos.core.net;
+package at.rc.tacos.core.net.internal;
 
 import java.io.*;
 import java.util.Vector;
@@ -58,7 +58,7 @@ public class MyServer implements Runnable,IConnectionStates
             {
                 //wait for and accept incoming connections, notify the listeners
                 socket = server.accept();
-                fireSocketStatusChanged(socket, IConnectionStates.STATE_CONNECTED);
+                fireSocketStatusChanged(new MyClient(socket), IConnectionStates.STATE_CONNECTED);
             }
             catch(java.net.SocketTimeoutException stoe)
             {
@@ -101,13 +101,13 @@ public class MyServer implements Runnable,IConnectionStates
     
     /**
      * This method informs all interested classes that the status has changed
-     * @param socket the socket that has changed the status
+     * @param client the client that has changed the status
      * @param status the new status
      */
-    protected void fireSocketStatusChanged(MySocket socket,int status)
+    protected void fireSocketStatusChanged(MyClient client,int status)
     {
         //process the list and notify those that are interested in the event
         for (int i = 0;i<listenerList.size();i++)
-            listenerList.get(i).socketStatusChanged(socket,status);
+            listenerList.get(i).socketStatusChanged(client,status);
     }
 }

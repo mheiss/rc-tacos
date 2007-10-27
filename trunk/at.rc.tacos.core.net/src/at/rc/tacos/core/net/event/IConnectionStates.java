@@ -10,8 +10,5 @@ public interface IConnectionStates
     public static final int STATE_CONNECTED = 1;
     
     /** disconnected from the netork */
-    public static final int STATE_DISCONNECTED_NETWORK = 2;
-    
-    /** disconnected from the primary server  */
-    public static final int STATE_DISCONNECTED_PRIMARY_SERVER = 3;
+    public static final int STATE_DISCONNECTED = 2;
 }

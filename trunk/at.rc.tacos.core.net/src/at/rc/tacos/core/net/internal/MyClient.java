@@ -1,4 +1,4 @@
-package at.rc.tacos.core.net;
+package at.rc.tacos.core.net.internal;
 
 import java.io.*;
 import java.net.*;
@@ -42,10 +42,9 @@ public class MyClient implements Runnable,IConnectionStates
 
     /**
      * Connects the socket to the given server.
-     * The listeners will be notifyed uppon the status of the socket.
-     * @return true if a connection has been established otherwise false
+     * @return Returns true if the connection is established, otherwise false
      */
-    public void connect()
+    public boolean connect()
     {
         try
         {
@@ -53,18 +52,18 @@ public class MyClient implements Runnable,IConnectionStates
                 socket = new MySocket(serverAddress,serverPort);
             socket.createInputStream();
             socket.createOutputStream(); 
-            fireSocketStatusChanged(socket, IConnectionStates.STATE_CONNECTED);
             start();
+            return true;
         }
         catch(UnknownHostException uhe)
         {
             System.out.println("Cannot resole the host name "+serverAddress);
-            fireSocketStatusChanged(socket, IConnectionStates.STATE_DISCONNECTED_NETWORK);
+            return false;
         }
         catch (IOException ioe)
         {
             System.out.println("Error cannot connect to the server");
-            fireSocketStatusChanged(socket, IConnectionStates.STATE_DISCONNECTED_NETWORK);
+            return false;
         }
     }
 
@@ -108,13 +107,13 @@ public class MyClient implements Runnable,IConnectionStates
                 System.out.println("Failed to read data from client");
                 System.out.println("Force exit of this client.");
                 running = false;
-                fireSocketStatusChanged(getSocket(),IConnectionStates.STATE_DISCONNECTED_NETWORK);
+                fireSocketStatusChanged(this,IConnectionStates.STATE_DISCONNECTED);
             }
             catch(NullPointerException npe)
             {
                 System.out.println("No stream object to read from.");   
                 running = false;
-                fireSocketStatusChanged(getSocket(),IConnectionStates.STATE_DISCONNECTED_NETWORK);
+                fireSocketStatusChanged(this,IConnectionStates.STATE_DISCONNECTED);
             }
         };
     }
@@ -169,14 +168,14 @@ public class MyClient implements Runnable,IConnectionStates
 
     /**
      * This method informs all interested classes that the status has changed
-     * @param socket the socket that has changed the status
+     * @param client the client that has changed the status
      * @param status the new status
      */
-    protected void fireSocketStatusChanged(MySocket socket,int status)
+    protected void fireSocketStatusChanged(MyClient client,int status)
     {
         //process the list and notify those that are interested in the event
         for (int i = 0;i<listenerList.size();i++)
-            listenerList.get(i).socketStatusChanged(socket,status); 
+            listenerList.get(i).socketStatusChanged(client,status); 
     }
 
     //  GETTERS AND SETTERS

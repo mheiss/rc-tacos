@@ -1,4 +1,4 @@
-package at.rc.tacos.core.net;
+package at.rc.tacos.core.net.internal;
 
 import java.io.*;
 import java.net.*;

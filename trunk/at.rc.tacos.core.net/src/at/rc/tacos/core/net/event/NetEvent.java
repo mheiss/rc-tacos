@@ -1,6 +1,6 @@
 package at.rc.tacos.core.net.event;
 
-import at.rc.tacos.core.net.MySocket;
+import at.rc.tacos.core.net.internal.MySocket;
 
 /**
  * Simple net event to get a socket and the received message.

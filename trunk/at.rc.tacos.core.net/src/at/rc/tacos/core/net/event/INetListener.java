@@ -1,6 +1,6 @@
 package at.rc.tacos.core.net.event;
 
-import at.rc.tacos.core.net.MySocket;
+import at.rc.tacos.core.net.internal.*;
 
 /**
  * The net listener interface for the message driven
@@ -16,7 +16,12 @@ public interface INetListener
     public void dataReceived(NetEvent ne);
     
     /**
+     * Invoked when the data could not be send
+     */
+    public void dataTransferFailed(NetEvent ne);
+    
+    /**
      * Invoked when a socket changed the status
      */
-    public void socketStatusChanged(MySocket s,int status);  
+    public void socketStatusChanged(MyClient client,int status);  
 }
