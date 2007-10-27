@@ -27,8 +27,7 @@
             name="TACOS-Client">
          <property
                name="aboutText"
-               value="Austrian Red Cros
-Time and Configuration Management">
+               value="Austrian Red Cros&#x0A;Time and Configuration Management">
          </property>
          <property
                name="windowImages"
@@ -36,7 +35,7 @@ Time and Configuration Management">
          </property>
          <property
                name="aboutImage"
-               value="platform:/plugin/rc_client/icons/alt_about.gif">
+               value="/rc-client/icons/alt_about.gif">
          </property>
          <property
                name="appName"
