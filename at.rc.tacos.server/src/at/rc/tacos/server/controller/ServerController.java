@@ -1,8 +1,7 @@
-package controller;
+package at.rc.tacos.server.controller;
 
 //java
 import java.util.*;
-
 //net
 import at.rc.tacos.core.net.internal.*;
 import at.rc.tacos.core.net.event.*;
@@ -74,6 +73,7 @@ public class ServerController implements INetListener
 //      //parse the action and go on :)
 //      }
         //test
+        System.out.println(ne.getMessage());
         brodcastMessage(ne.getMessage());
     }
 
@@ -85,16 +85,25 @@ public class ServerController implements INetListener
     @Override
     public void socketStatusChanged(MyClient client, int status)
     {
-        // TODO Auto-generated method stub
-        
+        //check the status
+        if (status == IConnectionStates.STATE_CONNECTED)
+        {
+            System.out.println("New client connected");
+            //create the streams and start the receive thread
+            client.connect();
+            //set the listener for netEvents
+            client.addNetListener(this); 
+            //add the client to the list
+            connectedClients.addElement(client);
+        }
+        if (status == IConnectionStates.STATE_DISCONNECTED)
+        {
+            System.out.println("Client quit");
+        }
     }
     
     @Override
-    public void dataTransferFailed(NetEvent ne)
-    {
-        
-        
-    }
+    public void dataTransferFailed(NetEvent ne) {  }
 
     /**
      * Sends the given message to all authenticated clients
