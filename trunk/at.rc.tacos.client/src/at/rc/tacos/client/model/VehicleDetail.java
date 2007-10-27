@@ -13,26 +13,38 @@ public class VehicleDetail
 	private StaffMember paramedicIIName;
 	private MobilePhoneDetail mobilePhone;
 	private String vehicleNotes;
-	
+	private String basicStation;
+	private String currentStation;
 	
 	
 	/**
 	 * Constructors
 	 */
-	public VehicleDetail(){}
-
-
-	public VehicleDetail(int vehicleId, StaffMember driverName, StaffMember paramedicIName,
-			StaffMember paramedicIIName, MobilePhoneDetail mobilePhone, String vehicleNotes) 
-	{
+	
+	/**
+	 * @param vehicleId
+	 * @param driverName
+	 * @param paramedicIName
+	 * @param paramedicIIName
+	 * @param mobilePhone
+	 * @param vehicleNotes
+	 * @param basicStation
+	 * @param currentStation
+	 */
+	public VehicleDetail(int vehicleId, StaffMember driverName,
+			StaffMember paramedicIName, StaffMember paramedicIIName,
+			MobilePhoneDetail mobilePhone, String vehicleNotes,
+			String basicStation, String currentStation) {
+		super();
 		this.vehicleId = vehicleId;
 		this.driverName = driverName;
 		this.paramedicIName = paramedicIName;
 		this.paramedicIIName = paramedicIIName;
 		this.mobilePhone = mobilePhone;
 		this.vehicleNotes = vehicleNotes;
+		this.basicStation = basicStation;
+		this.currentStation = currentStation;
 	}
-
 
 	/**
 	 * Setter&Getter
@@ -131,5 +143,33 @@ public class VehicleDetail
 	 */
 	public void setVehicleNotes(String vehicleNotes) {
 		this.vehicleNotes = vehicleNotes;
+	}
+
+	/**
+	 * @return the basicStation
+	 */
+	public String getBasicStation() {
+		return basicStation;
+	}
+
+	/**
+	 * @param basicStation the basicStation to set
+	 */
+	public void setBasicStation(String basicStation) {
+		this.basicStation = basicStation;
+	}
+
+	/**
+	 * @return the currentStation
+	 */
+	public String getCurrentStation() {
+		return currentStation;
+	}
+
+	/**
+	 * @param currentStation the currentStation to set
+	 */
+	public void setCurrentStation(String currentStation) {
+		this.currentStation = currentStation;
 	}
 }
