@@ -6,45 +6,45 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class DbWrapper extends Plugin {
+public class DbWrapper extends Plugin implements DatabaseLayer 
+{
+    // The plug-in ID
+    public static final String PLUGIN_ID = "at.rc.tacos.core.db";
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "at.rc.tacos.core.db";
+    // The shared instance
+    private static DbWrapper plugin;
 
-	// The shared instance
-	private static DbWrapper plugin;
-	
-	/**
-	 * The constructor
-	 */
-	public DbWrapper() 
-	{
-	}
+    /**
+     * The constructor
+     */
+    public DbWrapper() 
+    {
+    }
 
-	/**
+    /**
      * Called when the plugin is started
      */
-	public void start(BundleContext context) throws Exception 
-	{
-		super.start(context);
-		plugin = this;
-	}
+    public void start(BundleContext context) throws Exception 
+    {
+        super.start(context);
+        plugin = this;
+    }
 
-	/**
+    /**
      * Called when the plugin is stopped
      */
-	public void stop(BundleContext context) throws Exception 
-	{
-		plugin = null;
-		super.stop(context);
-	}
+    public void stop(BundleContext context) throws Exception 
+    {
+        plugin = null;
+        super.stop(context);
+    }
 
-	/**
-	 * Returns the shared instance
-	 * @return the shared instance
-	 */
-	public static DbWrapper getDefault() 
-	{
-		return plugin;
-	}
+    /**
+     * Returns the shared instance
+     * @return the shared instance
+     */
+    public static DbWrapper getDefault() 
+    {
+        return plugin;
+    }
 }
