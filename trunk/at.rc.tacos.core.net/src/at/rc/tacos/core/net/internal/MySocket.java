@@ -1,4 +1,4 @@
-package at.rc.tacos.core.net;
+package at.rc.tacos.core.net.internal;
 
 import java.net.*;
 import java.io.*;
@@ -39,7 +39,7 @@ public class MySocket extends Socket
     /**
      * Initalize the socke, this will set an timeout of 100 mili seconds
      */
-    public void init()
+    private void init()
     {
         try
         {
@@ -59,12 +59,15 @@ public class MySocket extends Socket
     {
         try
         {
+            //assert we have a input stream
+            if (in != null)
+                return;
+            //establish a reader
             in = new BufferedReader(new InputStreamReader(getInputStream()));    
         }
         catch(IOException ioe)
         {
             System.out.println("Failed to create a valid input stream");
-            in = null;
         }   
     }
     
@@ -76,6 +79,10 @@ public class MySocket extends Socket
     {
         try
         {
+            //assert we have a input stream
+            if (out != null)
+                return;
+            //establish a writer
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(getOutputStream())),true);
         }
         catch(IOException ioe)
@@ -89,7 +96,7 @@ public class MySocket extends Socket
      * Method to send data throught the socket
      * @param message the message to send 
      */
-    public void sendMessage(String message) 
+    public boolean sendMessage(String message) 
     {
         //assert we have a valid output stream
         if (out != null)
@@ -98,10 +105,18 @@ public class MySocket extends Socket
             out.flush();
             //check errors
             if (out.checkError())
+            {
                 System.out.println("Error while sending the message");
+                return false;
+            }
+            //successfull
+            return true;
         }
         else
+        {
             System.out.println("<Socket> No socket to send with");
+            return false;
+        }
     }
 
     /**
