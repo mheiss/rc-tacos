@@ -1,10 +1,13 @@
 package at.rc.tacos.client;
 
+//rcp
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+//net-plugin
+import at.rc.tacos.core.net.*;
 
 /**
  * This class controls all aspects of the application's execution
@@ -19,6 +22,9 @@ public class Application implements IApplication {
 		Display display = PlatformUI.createDisplay();
 		try 
 		{
+	        //start the network connection
+            NetWrapper.getDefault().initAndStartup();
+            //create the workbench
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART) 
 				return IApplication.EXIT_RESTART;

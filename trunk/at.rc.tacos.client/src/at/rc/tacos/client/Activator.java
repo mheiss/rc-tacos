@@ -6,8 +6,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 //client
 import at.rc.tacos.client.model.*;
-//net-plugin
-import at.rc.tacos.core.net.*;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -22,9 +20,6 @@ public class Activator extends AbstractUIPlugin
 	
 	//the object data   
     private ObjectList objectList = new ObjectList();
-    
-    //the network communication
-    private NetWrapper netWrapper;
 	
 	/**
 	 * The constructor

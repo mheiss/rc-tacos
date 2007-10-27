@@ -8,3 +8,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  at.rc.tacos.core.net;visibility:=reexport
 Eclipse-LazyStart: true
+Export-Package: at.rc.tacos.client.model;uses:="org.eclipse.core.runtime"
