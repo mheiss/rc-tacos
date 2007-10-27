@@ -24,6 +24,6 @@ public class CreateItemAction extends Action
     {
         Item newItem = new Item();
         newItem.setId(this.newItemId);
-        NetWrapper.getDefault().sendMessage(newItemId);
+        NetWrapper.getDefault().sendMessage(newItem.toXML());
     }
 }
