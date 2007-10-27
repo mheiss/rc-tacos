@@ -44,9 +44,13 @@ public class MyServer implements Runnable,IConnectionStates
         try
         {
             server = new MyServerSocket(port);
+            System.out.println("successfully!");
+            System.out.println("Listening to port: "+server.getLocalPort());
+            System.out.println("Waiting for new Clients . . .\n");
         }
         catch(IOException ioe)
         {
+            System.out.println("failed!");
             System.out.println("Port "+port+" in use or unusable.\n");
             running = false;
         }

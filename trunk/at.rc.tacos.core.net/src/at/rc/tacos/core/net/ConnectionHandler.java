@@ -29,8 +29,9 @@ public class ConnectionHandler
      * @param id the identification of the server (primary or failback)
      * @param serverHost the network address or name of the server
      * @param serverPort the port number of the server
+     * @return the created client connection
      */
-    public void addServer(String id,String serverHost,int serverPort)
+    public ConnectionInfo addServer(String id,String serverHost,int serverPort)
     {
         //create the server object
         MyClient server = new MyClient();
@@ -38,9 +39,17 @@ public class ConnectionHandler
         server.setServerPort(serverPort);
         //add as primary or failback
         if (id.equalsIgnoreCase(PRIMARY_SERVER_ID))
+        {
             primaryServer = new ConnectionInfo(id,server);
+            return primaryServer;
+        }
         if (id.equalsIgnoreCase(FAILBACK_SERVER_ID))
+        {
             failbackServer = new ConnectionInfo(id,server);
+            return failbackServer;
+        }
+        //not successfully
+        return null;
     }    
 
     /**
