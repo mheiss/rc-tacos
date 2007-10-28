@@ -10,5 +10,5 @@ public interface IClientLoginListener
     public void loginSuccessfully();
     
     /** Login failed */
-    public void loginFailed();
+    public void loginFailed(String errorMessage);
 }
