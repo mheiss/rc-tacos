@@ -1,29 +1,17 @@
 package at.rc.tacos.client.view;
 
-import org.eclipse.jface.viewers.ComboViewer;
+//rcp
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.*;
+//client
+import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 /**
  * GUI to manage the details of a transport
  * @author b.thek
  */
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tree;
-import at.rc.tacos.swtdesigner.*;
-
-
-public class TransportView {
-
+public class TransportView 
+{
 	private Button gehendButton;
 	protected Shell shell;
 

@@ -30,6 +30,10 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
     private boolean fAuthenticated;
     private Composite fCompositeLogin;
 
+    //position of the composite
+    private final static int MARING_LEFT = 180;
+    private final static int MARGIN_TOP = 40;
+    
     //the layout
     private final static int F_BUTTON_WIDTH_HINT = 80;
     private final static int F_TEXT_WIDTH_HINT = 175;
@@ -123,6 +127,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
     {
         final String username = fTextUsername.getText();
         final String password = fTextPassword.getText();
+        
         //hide the controls, show the progress
         toggelCheckProgress(true);
         
@@ -181,8 +186,8 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
         // Create the composite
         fCompositeLogin = new Composite(getSplash(), SWT.BORDER);
         GridLayout layout = new GridLayout(3, false);
-        layout.marginLeft = 180;
-        layout.marginTop = 40;
+        layout.marginLeft = MARING_LEFT;
+        layout.marginTop = MARGIN_TOP;
         fCompositeLogin.setLayout(layout);
         
         // the label for the username
