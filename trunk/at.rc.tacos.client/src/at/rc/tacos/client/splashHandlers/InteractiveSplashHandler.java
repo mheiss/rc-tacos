@@ -30,9 +30,6 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
     private boolean fAuthenticated;
     private Composite fCompositeLogin;
 
-    //the login status
-    private volatile int loginStatus = -1;
-
     //the layout
     private final static int F_BUTTON_WIDTH_HINT = 80;
     private final static int F_TEXT_WIDTH_HINT = 175;
@@ -138,15 +135,17 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
      * The login process failed
      */
     @Override
-    public void loginFailed()
+    public void loginFailed(String errorMessage)
     {
         toggelCheckProgress(false);
-        loginStatus = -1;
-        MessageDialog.openError(
-                getSplash(),
-                "Anmeldung fehlgeschlagen", 
-        "Benutzer und/oder Passwort falsch"); 
-        
+        //show the confirm dialog
+        boolean open = MessageDialog.openConfirm(getSplash(),
+                "Login failed", 
+                errorMessage + ".\n" +
+                "Do you want to open the application anyway?");     
+        //open?
+        if (open)
+            loginSuccessfully();
     }
 
     /**
@@ -155,10 +154,10 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
     @Override
     public void loginSuccessfully()
     {
+        System.out.println("Successfully");
         toggelCheckProgress(false);
         fCompositeLogin.setVisible(false);
         fAuthenticated = true;
-        loginStatus = -1; 
     }
     
     /**

@@ -63,9 +63,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         else
         {
             //nothing is ok, no connection 
-            MessageDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+            MessageDialog.openWarning(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
                     "Error: No network connection", 
-                    "Cannot establish a network connection, shuting down");
+                    "Not connection to a server, application my be limited useable");
         } 
     }
 }
