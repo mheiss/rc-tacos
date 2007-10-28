@@ -52,19 +52,7 @@ public class ConnectionHandler
         return null;
     }    
 
-    /**
-     * Removes the server from the server list.
-     * When the id is not found nothing will happen
-     * @param id the identification of the server
-     */
-    public void removeServer(String id)
-    {
-        //add as primary or failback
-        if (id.equalsIgnoreCase(PRIMARY_SERVER_ID))
-            primaryServer = null;
-        if (id.equalsIgnoreCase(FAILBACK_SERVER_ID))
-            failbackServer = null;
-    }
+   
     
     /**
      *  Changes the status of the given connection.

@@ -1,34 +1,35 @@
 package at.rc.tacos.core.net.event;
 
-import at.rc.tacos.core.net.internal.MySocket;
+import at.rc.tacos.core.net.internal.MyClient;;
 
 /**
- * Simple net event to get a socket and the received message.
+ * Simple class for network events.
  * @author Michael
  */
 public class NetEvent 
 {    
     //properties
     private String message;   
-    private MySocket socket;
+    private MyClient client;
 
     /**
-     * default Constructor for an empty NetEvent
+     * Default class constructor
      */
     public NetEvent() { }
     
     /**
      * Create a NetEvent
-     * @param socket the socket that is the source for the event
+     * @param client the socket that is the source for the event
      * @param message the data that is reveived
      */
-    public NetEvent(MySocket socket,String message)
+    public NetEvent(MyClient client,String message)
     {
-        this.socket = socket;
+        this.client = client;
         this.message = message;
     }
+    
     /**
-     * This method returns the message that was reveived with the socket
+     * This method returns the message that was reveived with the client
      * @return the message itself
      */
     public String getMessage()
@@ -46,20 +47,20 @@ public class NetEvent
     }
     
     /**
-     * Method to get the source (= socket) that is responsible for this netEvent
-     * @return the socket that has reveived the Message
+     * Returns the client object that is the source for this event
+     * @return the client object
      */
-    public MySocket getSocket()
+    public MyClient getClient()
     {
-        return socket;
+        return client;
     }
     
     /**
-     * Method to set the socket that received the message
-     * @param socket the socket 
+     * Method to set the client for that event
+     * @param client the client 
      */
-    public void setSocket(MySocket socket)
+    public void setSocket(MyClient client)
     {
-        this.socket = socket;
+        this.client = client;
     }
 }
