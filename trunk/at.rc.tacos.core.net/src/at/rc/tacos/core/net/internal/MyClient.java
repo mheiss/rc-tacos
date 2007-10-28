@@ -92,9 +92,8 @@ public class MyClient implements Runnable,IConnectionStates
             try
             {
                 message = socket.receiveMessage();
-                //Create a new NetEvent and fire it
-                NetEvent ne = new NetEvent(socket,message);
-                fireDataReceived(ne);  
+                //Create and fire the event
+                fireDataReceived(new NetEvent(this,message));  
             }
             catch(java.net.SocketTimeoutException stoe)
             {
@@ -129,18 +128,29 @@ public class MyClient implements Runnable,IConnectionStates
         //assert we have a socket
         if (socket == null)
         {
-            fireTransferFailed(new NetEvent(socket,message));
+            fireTransferFailed(new NetEvent(this,message));
             return;
         }
         //try to send
-        if (!socket.sendMessage(message))
-            fireTransferFailed(new NetEvent(socket,message));
+        if(!socket.sendMessage(message))
+            fireTransferFailed(new NetEvent(this,message));
+    }
+    
+    /**
+     * Returns whether or not the client has a valid network
+     * connection.
+     * @return true if a connection is established
+     */
+    public boolean isConnected()
+    {
+        return socket.isConnected();
     }
 
     /**
-     * Method to start the main thread of the client
+     * Creates and starts a thread to receive messages
+     * with this client
      */
-    public void start()
+    private void start()
     {
         Thread t = new Thread(this);
         t.setDaemon(true);
@@ -157,7 +167,7 @@ public class MyClient implements Runnable,IConnectionStates
     }
 
     /**
-     * This method sets the listener class for the NetEvents
+     * This method add listeners for the NetEvents
      * @param nl the target class that should reveice NetEvents
      */
     public void addNetListener(INetListener nl)
