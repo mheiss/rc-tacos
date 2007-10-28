@@ -117,6 +117,25 @@ public class MyClient implements Runnable,IConnectionStates
             }
         };
     }
+    
+    /**
+     * Sends the given message to the server.
+     * A transferFailed notification will be fired
+     * when the transfer failed.
+     * @param message the message to send
+     */
+    public void sendMessage(String message)
+    {
+        //assert we have a socket
+        if (socket == null)
+        {
+            fireTransferFailed(new NetEvent(socket,message));
+            return;
+        }
+        //try to send
+        if (!socket.sendMessage(message))
+            fireTransferFailed(new NetEvent(socket,message));
+    }
 
     /**
      * Method to start the main thread of the client
@@ -164,6 +183,18 @@ public class MyClient implements Runnable,IConnectionStates
         //process the list and notify those that are interested in the event
         for (int i = 0;i<listenerList.size();i++)
             listenerList.get(i).dataReceived(ne);
+    }
+    
+    /**
+     *  Informs all listeners that the message could not be send
+     *  @param ne the NetEvent holding the message that could 
+     *         not be transfered
+     */
+    protected void fireTransferFailed(NetEvent ne)
+    {
+      //process the list and notify those that are interested in the event
+        for (int i = 0;i<listenerList.size();i++)
+            listenerList.get(i).dataTransferFailed(ne);
     }
 
     /**

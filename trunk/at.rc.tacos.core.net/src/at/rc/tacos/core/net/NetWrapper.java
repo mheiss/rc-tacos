@@ -90,7 +90,7 @@ public class NetWrapper extends Plugin implements INetListener
     @Override
     public void dataReceived(NetEvent ne)
     {
-        System.out.println("test");
+        System.out.println("login successfully");
         loginListener.loginSuccessfully();
     }
 
@@ -123,7 +123,10 @@ public class NetWrapper extends Plugin implements INetListener
     @Override
     public void dataTransferFailed(NetEvent ne)
     {
-
+        System.out.println("Failed");
+        //do we have a login listener?
+        if (loginListener != null)
+            loginListener.loginFailed("Failed to send the login request to the server");
     }
     
 
@@ -135,11 +138,14 @@ public class NetWrapper extends Plugin implements INetListener
     {
         //get the connection
         MyClient activeConnection = connectionHandler.getActiveServer();
-        //assert we have a valid object
-        if(activeConnection != null)
+        //assert we have a connection
+        if (activeConnection != null)
+            activeConnection.sendMessage(message);
+        else
         {
-            activeConnection.getSocket().sendMessage(message);                      
-        }
+            //notify that the transfer failed
+            dataTransferFailed(new NetEvent(null,message));
+        }    
     }
 
     /**
