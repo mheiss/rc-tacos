@@ -17,8 +17,6 @@ import at.rc.tacos.swtdesigner.*;
  * GUI to manage dialysis patient details
  * @author b.thek
  */
-
-
 public class DialysisView {
 
 	private Button gehendButton;
@@ -30,7 +28,7 @@ public class DialysisView {
 	 */
 	public static void main(String[] args) {
 		try {
-			TransportView window = new TransportView();
+			DialysisView window = new DialysisView();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
