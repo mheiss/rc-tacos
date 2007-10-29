@@ -6,4 +6,4 @@ Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.core.db.DbWrapper
 Require-Bundle: org.eclipse.core.runtime
 Eclipse-LazyStart: true
-Bundle-ClassPath: mysql-connector-java-5.1.5-bin.jar
+Bundle-ClassPath: lib/mysql-connector-java-5.1.5-bin.jar
