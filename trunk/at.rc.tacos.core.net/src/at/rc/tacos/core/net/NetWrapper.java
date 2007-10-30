@@ -16,30 +16,20 @@ public class NetWrapper extends Plugin implements INetListener
 {
     // The plug-in ID
     public static final String PLUGIN_ID = "at.rc.tacos.core.net";
-
-    //The configuration files
-    public static final String CLIENT_SETTINGS_PATH = "at/rc/tacos/core/net/properties/client.properties";
-    public static final String SERVER_SETTINGS_PATH = "at.rc.tacos.core.net.properties.server";
-
     // The shared instance
     private static NetWrapper plugin;
 
     // The UI listeners to inform about new data
     private Vector<IClientNetEventListener> uiEventListeners;
-    
+
     // The listener interface for the login
     private IClientLoginListener loginListener;
-
-    // The handler for the connections
-    private ConnectionHandler connectionHandler;
 
     /**
      * The constructor
      */
     public NetWrapper() 
     {
-        //set up the connection handler
-        connectionHandler = new ConnectionHandler();
         //init the listeners list
         uiEventListeners = new Vector<IClientNetEventListener>();
     }
@@ -53,7 +43,7 @@ public class NetWrapper extends Plugin implements INetListener
         plugin = this;
 
     }
-    
+
     /**
      * Initialize and start the network connection
      */
@@ -101,19 +91,7 @@ public class NetWrapper extends Plugin implements INetListener
     @Override
     public void socketStatusChanged(MyClient client, int status)
     {
-        //get the connection
-        ConnectionInfo connectionInfo = connectionHandler.getConnectionByClient(client);
-        //assert valid
-        if(connectionInfo == null)
-            return;
 
-        //update the status
-        connectionInfo.updateStatus(status);
-
-        if(connectionInfo.getId() == ConnectionHandler.PRIMARY_SERVER_ID)
-            firePrimaryServerConnectionEvent(status);
-        if(connectionInfo.getId() == ConnectionHandler.FAILBACK_SERVER_ID)
-            fireFailbackServerConnectionEvent(status);
     }
 
     /**
@@ -128,7 +106,7 @@ public class NetWrapper extends Plugin implements INetListener
         if (loginListener != null)
             loginListener.loginFailed("Failed to send the login request to the server");
     }
-    
+
 
     /**
      * Sends the given message to the connected server
@@ -137,7 +115,7 @@ public class NetWrapper extends Plugin implements INetListener
     public void sendMessage(String message)
     {
         //get the connection
-        MyClient activeConnection = connectionHandler.getActiveServer();
+        MyClient activeConnection = NetSource.getInstance().getConnection();
         //assert we have a connection
         if (activeConnection != null)
             activeConnection.sendMessage(message);
@@ -186,7 +164,7 @@ public class NetWrapper extends Plugin implements INetListener
     {
         uiEventListeners.removeElement(listener);
     }
-    
+
     /**
      * Registers a listener to receive login events.
      * @param listener the listener to register
@@ -204,47 +182,42 @@ public class NetWrapper extends Plugin implements INetListener
         //primary connection
         String primaryHost = "localhost";
         int primaryPort = 4711;
-        
+
         //failback
         String failbackHost = "localhost";
         int failbackPort = 4712;
 
-        //add both to the connection handler
-        ConnectionInfo primary = connectionHandler.addServer(
-                ConnectionHandler.PRIMARY_SERVER_ID,
-                primaryHost,
-                primaryPort);
-        ConnectionInfo failback = connectionHandler.addServer(
-                ConnectionHandler.FAILBACK_SERVER_ID,
-                failbackHost,
-                failbackPort);
-        //register the listeners
-        primary.getConnection().addNetListener(this);
-        failback.getConnection().addNetListener(this);
+        //set the listener
+        NetSource.getInstance().addNetEventListener(this);
+        //add primary server
+        NetSource.getInstance().addServer("Server.primary", true, primaryHost, primaryPort);
+        //add failback
+        NetSource.getInstance().addServer("Server.failback", false, failbackHost, failbackPort);
     }
-    
+
     /**
-     *  Opens the connection to the primary and the failback server.
+     *  Opens a connection to the primary server
      */
     private void connectNetwork()
     {
-        //get the primary server
-        ConnectionInfo primaryConnection = connectionHandler.getConnectionById(ConnectionHandler.PRIMARY_SERVER_ID);
-        if(primaryConnection.getConnection().connect())
-            primaryConnection.updateStatus(IConnectionStates.STATE_CONNECTED);
+        //open a connection to the primary server
+        if(NetSource.getInstance().connect())
+        {
+            firePrimaryServerConnectionEvent(IConnectionStates.STATE_CONNECTED);
+            return;
+        }
 
-        //get the failback server
-        ConnectionInfo failbackConnection = connectionHandler.getConnectionById(ConnectionHandler.FAILBACK_SERVER_ID);
-        if(failbackConnection.getConnection().connect())
-            failbackConnection.updateStatus(IConnectionStates.STATE_CONNECTED);
-    }
+        //inform that the primary is not available
+        firePrimaryServerConnectionEvent(IConnectionStates.STATE_DISCONNECTED);
 
-    /**
-     * Returns the handler for the primary and failback server
-     * @return the connection handler
-     */
-    public ConnectionHandler getConnectionHandler()
-    {
-        return connectionHandler;
+        //try the other server
+        if(NetSource.getInstance().failover())
+        {
+            firePrimaryServerConnectionEvent(IConnectionStates.STATE_CONNECTED);
+            return;
+        }
+        
+        //inform that the failback is not available
+        fireFailbackServerConnectionEvent(IConnectionStates.STATE_DISCONNECTED);
     }
 }

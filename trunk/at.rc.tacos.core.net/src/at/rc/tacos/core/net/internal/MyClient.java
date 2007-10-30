@@ -62,7 +62,7 @@ public class MyClient implements Runnable,IConnectionStates
         }
         catch (IOException ioe)
         {
-            System.out.println("Error cannot connect to the server");
+            System.out.println("Error cannot connect to the server "+serverAddress+":"+serverPort);
             return false;
         }
     }
@@ -182,6 +182,14 @@ public class MyClient implements Runnable,IConnectionStates
     public void removeNetListener(INetListener nl)
     {
         listenerList.remove(nl);   
+    }
+    
+    /**
+     * Removes all registered listeners from the listener list
+     */
+    public void removeAllNetListeners()
+    {
+        listenerList.removeAllElements();
     }
 
     /**

@@ -114,7 +114,7 @@ public class MySocket extends Socket
         }
         else
         {
-            System.out.println("<Socket> No socket to send with");
+            System.out.println("No socket to send with");
             return false;
         }
     }
