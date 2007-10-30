@@ -34,10 +34,6 @@
                value="icons/alt_window_16.gif,icons/alt_window_32.gif,icons/alt_window_48.gif,icons/alt_window_64.gif,icons/alt_window_128.gif">
          </property>
          <property
-               name="aboutImage"
-               value="/rc-client/icons/alt_about.gif">
-         </property>
-         <property
                name="appName"
                value="TACOS-Client">
          </property>

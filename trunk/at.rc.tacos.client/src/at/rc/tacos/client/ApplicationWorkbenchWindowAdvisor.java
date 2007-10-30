@@ -10,6 +10,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 //net
 import at.rc.tacos.core.net.*;
+import at.rc.tacos.core.net.internal.MyClient;
 
 /**
  * This class is used to control the status line, toolbar, title, 
@@ -45,27 +46,24 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         configurer.setShowCoolBar(true);    //ToolBar
         configurer.setShowStatusLine(true);
         configurer.setShowProgressIndicator(true);
+        
         //check the network connection
-        String activeServer = NetWrapper.getDefault().getConnectionHandler().getActiveServerId();
+        MyClient client = NetSource.getInstance().getConnection();
         
         //the primary server
-        if(ConnectionHandler.PRIMARY_SERVER_ID.equalsIgnoreCase(activeServer))
+        if(client == null)
         {
-            // everything is ok :)
+            //nothing is ok, no connection 
+            MessageDialog.openWarning(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+                    "Error: No network connection", 
+                    "Not connection to a server, application my be limited useable");
         }
-        else if (ConnectionHandler.FAILBACK_SERVER_ID.equalsIgnoreCase(activeServer))
+        else if (!NetSource.getInstance().isPrimaryServerConnected())
         {
             //show a warning, but go on
             MessageDialog.openWarning(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
                     "Warning: Using failback server", 
                     "The failback server is in use, make sure to get the primary server back up.");
         }
-        else
-        {
-            //nothing is ok, no connection 
-            MessageDialog.openWarning(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-                    "Error: No network connection", 
-                    "Not connection to a server, application my be limited useable");
-        } 
     }
 }
