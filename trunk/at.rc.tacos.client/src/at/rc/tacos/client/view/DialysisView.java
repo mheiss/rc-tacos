@@ -14,6 +14,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
 
+/**
+ * GUI (form) to manage the details of a dialysis patient
+ * @author b.thek
+ *
+ */
 
 public class DialysisView {
 
