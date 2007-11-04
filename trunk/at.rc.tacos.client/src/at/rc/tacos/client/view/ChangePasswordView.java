@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Text;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 /**
- * GUI to change the password if desired
+ * GUI (form) to change the password if desired
  * @author b.thek
  */
 
