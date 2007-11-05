@@ -1,10 +1,10 @@
 package at.rc.tacos.core.service;
 
 /**
- * Defines the needed database methods
+ * Interface definition for the servie layer
  * @author Michael
  */
 public interface IDatabaseLayer
 {
-
+	public void queryItem();
 }
