@@ -36,15 +36,15 @@ public abstract class AbstractMessageDecoder
                     
                     //get the type of the element and set the corresponding value
                     if("userId".equalsIgnoreCase(startName))
-                        header.setUserId(r.getElementText());
+//                        header.setUserId(r.getElementText());
                     if("timestamp".equalsIgnoreCase(startName))
-                        header.setTimestamp(r.getElementText());
+//                        header.setTimestamp(r.getElementText());
                     if("action".equalsIgnoreCase(startName))
                     {              
-                        header.setAction(r.getElementText());
+//                        header.setAction(r.getElementText());
                         //get the attribute
                         Attribute targetAttr = start.getAttributeByName(new QName("target"));
-                        header.setActionTarget(targetAttr.getValue());
+//                        header.setActionTarget(targetAttr.getValue());
                     }
                 }
             }
@@ -58,7 +58,7 @@ public abstract class AbstractMessageDecoder
         }
         //cleanup
         input.close();
-        return header;
+        return null;
 	}
 	
 	/**
@@ -67,5 +67,5 @@ public abstract class AbstractMessageDecoder
 	 * @param message the message to decode
 	 * @return the decoed object
 	 */
-	protected abstract AbstractMessage decodeBody(MessageSession session,String message);
+	protected abstract AbstractMessage decodeBody(String session,String message);
 }

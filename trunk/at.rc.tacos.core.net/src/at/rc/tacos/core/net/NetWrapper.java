@@ -13,7 +13,7 @@ import at.rc.tacos.core.net.internal.*;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class NetWrapper extends Plugin implements INetListener
+public class NetWrapper extends Plugin implements NetLayer,INetListener
 {
     // The plug-in ID
     public static final String PLUGIN_ID = "at.rc.tacos.core.net";
@@ -221,4 +221,10 @@ public class NetWrapper extends Plugin implements INetListener
         //inform that the failback is not available
         fireFailbackServerConnectionEvent(IConnectionStates.STATE_DISCONNECTED);
     }
+
+	@Override
+	public void login(String username, String password) 
+	{
+		NetSource.getInstance().getConnection().sendMessage("login: "+username);
+	}
 }
