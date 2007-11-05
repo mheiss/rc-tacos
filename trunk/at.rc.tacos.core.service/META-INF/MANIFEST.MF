@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Service Plug-in
+Bundle-SymbolicName: at.rc.tacos.core.service
+Bundle-Version: 1.0.0
+Bundle-Activator: at.rc.tacos.core.service.ServiceWrapper
+Require-Bundle: org.eclipse.core.runtime,
+ at.rc.tacos.core.db,
+ at.rc.tacos.core.net
+Eclipse-LazyStart: true
+Export-Package: at.rc.tacos.core.model,
+ at.rc.tacos.core.service
