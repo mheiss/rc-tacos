@@ -1,28 +1,12 @@
 package at.rc.tacos.core.service;
 
+import at.rc.tacos.core.net.NetWrapper;
+
 public class NetServiceImpl implements INetLayer
 {
 	@Override
-	public void itemChanged(String eventId, String oldItem, String newItem) 
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void login(String username, String password) 
 	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void logout() 
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void setSession(String sessionName) 
-	{
-		// TODO Auto-generated method stub
+		NetWrapper.getDefault().login(username, password);
 	}
 }
