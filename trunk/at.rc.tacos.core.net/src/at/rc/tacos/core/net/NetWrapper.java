@@ -9,6 +9,7 @@ import org.osgi.framework.BundleContext;
 import at.rc.tacos.core.net.event.*;
 import at.rc.tacos.core.net.internal.*;
 
+
 /**
  * The activator class controls the plug-in life cycle
  */
