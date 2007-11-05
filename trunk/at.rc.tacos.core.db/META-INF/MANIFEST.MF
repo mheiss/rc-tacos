@@ -7,3 +7,4 @@ Bundle-Activator: at.rc.tacos.core.db.DbWrapper
 Require-Bundle: org.eclipse.core.runtime
 Eclipse-LazyStart: true
 Bundle-ClassPath: lib/mysql-connector-java-5.1.5-bin.jar
+Export-Package: at.rc.tacos.core.db
