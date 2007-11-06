@@ -1,38 +1,34 @@
 package at.rc.tacos.core.net;
 
-//java
-import java.util.Vector;
 //rcp
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 //net
+import at.rc.tacos.common.INetClientLayer;
+import at.rc.tacos.common.INetServerLayer;
+import at.rc.tacos.common.NetManager;
 import at.rc.tacos.core.net.event.*;
 import at.rc.tacos.core.net.internal.*;
-
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class NetWrapper extends Plugin implements NetLayer,INetListener
+public class NetWrapper extends Plugin implements INetServerLayer,INetListener
 {
     // The plug-in ID
     public static final String PLUGIN_ID = "at.rc.tacos.core.net";
     // The shared instance
     private static NetWrapper plugin;
-
-    // The UI listeners to inform about new data
-    private Vector<IClientNetEventListener> uiEventListeners;
-
-    // The listener interface for the login
-    private IClientLoginListener loginListener;
+    
+    // The service layer to inform about new data
+    private NetManager netChangeSupport;
 
     /**
      * The constructor
      */
     public NetWrapper() 
-    {
-        //init the listeners list
-        uiEventListeners = new Vector<IClientNetEventListener>();
+    { 
+        netChangeSupport = new NetManager();
     }
 
     /**
@@ -42,7 +38,26 @@ public class NetWrapper extends Plugin implements NetLayer,INetListener
     {
         super.start(context);
         plugin = this;
-
+    }
+    
+    /**
+     *  Add a NetChangeListener to the listener list.
+     *  The listeners will be informed uppon new received objects.
+     *  @param listener the listener to add
+     */
+    public void addNetChangeListener(INetClientLayer listener)
+    {
+        netChangeSupport.addNetChangeListener(listener);
+    }
+    
+    /**
+     * Remove a NetChangeListener from the listener list. 
+     * This removes a listener that was registered for all properties.
+     * @param listener The NetChangeListener to be removed
+     */
+    public void removeNetChangeListener(INetClientLayer listener)
+    {
+        netChangeSupport.removeNetChangeListener(listener);
     }
 
     /**
@@ -73,108 +88,7 @@ public class NetWrapper extends Plugin implements NetLayer,INetListener
     {
         return plugin;
     }
-
-    /**
-     * Notification that new data is available.<br>
-     * @param ne the triggered net event
-     */
-    @Override
-    public void dataReceived(NetEvent ne)
-    {
-        System.out.println("login successfully");
-        loginListener.loginSuccessfully();
-    }
-
-    /**
-     * Notification that the status of the socket changed.<br>
-     * @param status the new status.
-     **/
-    @Override
-    public void socketStatusChanged(MyClient client, int status)
-    {
-
-    }
-
-    /**
-     * Norification that the transfer of the data failed.
-     * @param ne the triggered net event
-     */
-    @Override
-    public void dataTransferFailed(NetEvent ne)
-    {
-        System.out.println("Failed");
-        //do we have a login listener?
-        if (loginListener != null)
-            loginListener.loginFailed("Failed to send the login request to the server");
-    }
-
-
-    /**
-     * Sends the given message to the connected server
-     * @param message the string to send
-     */
-    public void sendMessage(String message)
-    {
-        //get the connection
-        MyClient activeConnection = NetSource.getInstance().getConnection();
-        //assert we have a connection
-        if (activeConnection != null)
-            activeConnection.sendMessage(message);
-        else
-        {
-            //notify that the transfer failed
-            dataTransferFailed(new NetEvent(null,message));
-        }    
-    }
-
-    /**
-     * Inform the listeners that the primary server status has changed
-     * @param newStatus the new status of the server
-     */
-    protected void firePrimaryServerConnectionEvent(int newStatus)
-    {
-        for(IClientNetEventListener listeners:uiEventListeners)
-            listeners.updatePrimaryServerConnection(newStatus);
-    }
-
-    /**
-     * Inform the listeners that the failback server status has changed
-     * @param newStatus the new status of the server
-     */
-    protected void fireFailbackServerConnectionEvent(int newStatus)
-    {
-        for(IClientNetEventListener listeners:uiEventListeners)
-            listeners.updatePrimaryServerConnection(newStatus);
-    }
-
-    /**
-     * Registers a listener to receive ui update events.
-     * @param listener the listener to register
-     */
-    public void registerUIListener(IClientNetEventListener listener)
-    {
-        uiEventListeners.addElement(listener); 
-    }
-
-    /**
-     * Removes the listener from the list so that no events
-     * will be forwareded to this ui object.
-     * @param listener the listener to unregister
-     */
-    public void unregisterUIListener(IClientNetEventListener listener)
-    {
-        uiEventListeners.removeElement(listener);
-    }
-
-    /**
-     * Registers a listener to receive login events.
-     * @param listener the listener to register
-     */
-    public void registerLoginListener(IClientLoginListener listener)
-    {
-        loginListener = listener;
-    }
-
+    
     /**
      * Loads the configuration and sets up the primary and the failback connection.
      */
@@ -201,30 +115,45 @@ public class NetWrapper extends Plugin implements NetLayer,INetListener
      */
     private void connectNetwork()
     {
-        //open a connection to the primary server
-        if(NetSource.getInstance().connect())
-        {
-            firePrimaryServerConnectionEvent(IConnectionStates.STATE_CONNECTED);
-            return;
-        }
-
-        //inform that the primary is not available
-        firePrimaryServerConnectionEvent(IConnectionStates.STATE_DISCONNECTED);
-
-        //try the other server
-        if(NetSource.getInstance().failover())
-        {
-            firePrimaryServerConnectionEvent(IConnectionStates.STATE_CONNECTED);
-            return;
-        }
-        
-        //inform that the failback is not available
-        fireFailbackServerConnectionEvent(IConnectionStates.STATE_DISCONNECTED);
+        NetSource.getInstance().connect();
+    }
+    
+    //NET LISTENER METHODS
+    /**
+     * Notification that new data is available.<br>
+     * @param ne the triggered net event
+     */
+    @Override
+    public void dataReceived(NetEvent ne)
+    {
+        System.out.println("received data: "+ne.getMessage());
+        netChangeSupport.fireItemAdded(ne.getMessage());
     }
 
-	@Override
-	public void login(String username, String password) 
-	{
-		NetSource.getInstance().getConnection().sendMessage("login: "+username);
-	}
+    /**
+     * Notification that the status of the socket changed.<br>
+     * @param status the new status.
+     **/
+    @Override
+    public void socketStatusChanged(MyClient client, int status)
+    {
+
+    }
+
+    /**
+     * Norification that the transfer of the data failed.
+     * @param ne the triggered net event
+     */
+    @Override
+    public void dataTransferFailed(NetEvent ne)
+    {
+            
+    }
+
+    //METHODS TO UPDATE THE SERVER
+    @Override
+    public void requestAddItem(String item)
+    {
+        NetSource.getInstance().getConnection().sendMessage(item); 
+    }
 }

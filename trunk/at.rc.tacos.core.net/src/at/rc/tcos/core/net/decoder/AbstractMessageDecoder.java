@@ -2,11 +2,9 @@ package at.rc.tcos.core.net.decoder;
 
 import java.io.StringReader;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -43,7 +41,7 @@ public abstract class AbstractMessageDecoder
                     {              
 //                        header.setAction(r.getElementText());
                         //get the attribute
-                        Attribute targetAttr = start.getAttributeByName(new QName("target"));
+                        //Attribute targetAttr = start.getAttributeByName(new QName("target"));
 //                        header.setActionTarget(targetAttr.getValue());
                     }
                 }
