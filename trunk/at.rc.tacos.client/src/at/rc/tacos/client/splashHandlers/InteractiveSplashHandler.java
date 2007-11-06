@@ -7,16 +7,13 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.splash.*;
-//net
-import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.core.net.event.IClientLoginListener;
 
 /**
  * Interactive splash screen handler to login during the
  * splash screen is shown.
  * @since 3.3
  */
-public class InteractiveSplashHandler extends AbstractSplashHandler implements IClientLoginListener
+public class InteractiveSplashHandler extends AbstractSplashHandler
 {
     //the components
     private Text fTextUsername;
@@ -33,7 +30,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
     //position of the composite
     private final static int MARING_LEFT = 180;
     private final static int MARGIN_TOP = 40;
-    
+
     //the layout
     private final static int F_BUTTON_WIDTH_HINT = 80;
     private final static int F_TEXT_WIDTH_HINT = 175;
@@ -85,7 +82,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
             }
         }
     }
-    
+
     /**
      *  Create the listeners for the controls
      */
@@ -125,29 +122,28 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
      */
     private void handleButtonOKWidgetSelected() 
     {
-        final String username = fTextUsername.getText();
-        final String password = fTextPassword.getText();
-        
+        //final String username = fTextUsername.getText();
+        //final String password = fTextPassword.getText();
+
         //hide the controls, show the progress
         toggelCheckProgress(true);
-        
-        //send the login request
-        NetWrapper.getDefault().registerLoginListener(this);
-        NetWrapper.getDefault().sendMessage(username +" + "+ password);
+
+        //TODO: send the login request
+        loginSuccessfully();
+
     }
-    
+
     /**
      * The login process failed
      */
-    @Override
-    public void loginFailed(String errorMessage)
+    private void loginFailed(String errorMessage)
     {
         toggelCheckProgress(false);
         //show the confirm dialog
         boolean open = MessageDialog.openConfirm(getSplash(),
-                "Login failed", 
+                "Login failed",
                 errorMessage + ".\n" +
-                "Do you want to open the application anyway?");     
+        "Do you want to open the application anyway?");
         //open?
         if (open)
             loginSuccessfully();
@@ -156,15 +152,14 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
     /**
      *  The login process was successfully
      */
-    @Override
-    public void loginSuccessfully()
+    private void loginSuccessfully()
     {
         System.out.println("Successfully");
         toggelCheckProgress(false);
         fCompositeLogin.setVisible(false);
         fAuthenticated = true;
     }
-    
+
     /**
      * Set the splash screen image
      */
@@ -176,7 +171,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
         // Force shell to inherit the splash background
         getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
     }
-    
+
     /**
      * Creates the ui controlls
      */
@@ -189,11 +184,11 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
         layout.marginLeft = MARING_LEFT;
         layout.marginTop = MARGIN_TOP;
         fCompositeLogin.setLayout(layout);
-        
+
         // the label for the username
         fLabelUsername = new Label(fCompositeLogin, SWT.NONE);
         fLabelUsername.setText("&User Name:"); 
-        
+
         // the text widget for the username
         fTextUsername = new Text(fCompositeLogin, SWT.BORDER);
         // configure layout data
@@ -201,11 +196,11 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
         data.widthHint = F_TEXT_WIDTH_HINT;
         data.horizontalSpan = 2;
         fTextUsername.setLayoutData(data);  
-        
+
         // the label for the password
         fLabelPassword = new Label(fCompositeLogin, SWT.NONE);
         fLabelPassword.setText("&Password:"); //NON-NLS-1
-     
+
         // the text widget for the password
         fTextPassword = new Text(fCompositeLogin, SWT.PASSWORD | SWT.BORDER);
         // Configure layout data
@@ -213,11 +208,11 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
         data.widthHint = F_TEXT_WIDTH_HINT;
         data.horizontalSpan = 2;
         fTextPassword.setLayoutData(data); 
-        
+
         //empty label
         Label empty = new Label(fCompositeLogin,SWT.NONE);
         empty.setText("");
-        
+
         // Create the button
         fButtonOK = new Button(fCompositeLogin, SWT.PUSH);
         fButtonOK.setText("OK"); 
@@ -226,7 +221,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
         data.widthHint = F_BUTTON_WIDTH_HINT;
         data.verticalIndent = 10;
         fButtonOK.setLayoutData(data);  
-        
+
         // Create the button
         fButtonCancel = new Button(fCompositeLogin, SWT.PUSH);
         fButtonCancel.setText("Cancel"); 
@@ -236,7 +231,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements I
         data.verticalIndent = 10;
         fButtonCancel.setLayoutData(data);
     }
-    
+
     /**
      * Creates the ui controlls
      */

@@ -3,9 +3,8 @@ package at.rc.tacos.client.controller;
 //rcp
 import org.eclipse.jface.action.Action;
 //client
-import at.rc.tacos.client.model.*;
-//net
-import at.rc.tacos.core.net.*;
+import at.rc.tacos.core.model.*;
+import at.rc.tacos.core.service.ServiceWrapper;
 
 /**
  * The action that is triggered by creating a new item
@@ -13,17 +12,17 @@ import at.rc.tacos.core.net.*;
  */
 public class CreateItemAction extends Action 
 {
-    private String newItemId;
+    private String id;
 
     public CreateItemAction(String id) 
     {
-        this.newItemId = id;
+        this.id = id;
     }
     
     public void run() 
     {
-        Item newItem = new Item();
-        newItem.setId(this.newItemId);
-        NetWrapper.getDefault().sendMessage(newItem.toXML());
+        Item newItem = new Item(id);
+        System.out.println("Create item action");
+        ServiceWrapper.getDefault().getNetService().requestAddItem(newItem.getId());
     }
 }

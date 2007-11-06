@@ -9,7 +9,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -66,7 +65,7 @@ public class TransportsMainView {
 	{
 		shell = new Shell();
 		shell.setImage(SWTResourceManager.getImage(TransportsMainView.class, "/image/Tacos_LOGO.jpg"));
-		shell.setLayout(new swing2swt.layout.GridLayout());
+		//shell.setLayout(new swing2swt.layout.GridLayout());
 		shell.setText("Transporte");
 
 		final TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
@@ -404,7 +403,7 @@ public class TransportsMainView {
 		final Label datumLabel = new Label(filterGroup, SWT.NONE);
 		datumLabel.setText("Datum:");
 
-		final DateTime comboDate = new DateTime(filterGroup, SWT.NONE);
+		//final DateTime comboDate = new DateTime(filterGroup, SWT.NONE);
 
 		final Label sucheLabel_1 = new Label(filterGroup, SWT.NONE);
 		sucheLabel_1.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
@@ -934,7 +933,7 @@ public class TransportsMainView {
 		final Label datumLabel_1 = new Label(filterGroup_1, SWT.NONE);
 		datumLabel_1.setText("Datum:");
 
-		final DateTime comboDatumJournal = new DateTime(filterGroup_1, SWT.NONE);
+		//final DateTime comboDatumJournal = new DateTime(filterGroup_1, SWT.NONE);
 
 		final Label sucheLabel = new Label(filterGroup_1, SWT.NONE);
 		sucheLabel.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));

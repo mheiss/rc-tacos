@@ -6,13 +6,14 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-//net-plugin
-import at.rc.tacos.core.net.*;
+
+import at.rc.tacos.core.net.NetWrapper;
 
 /**
  * This class controls all aspects of the application's execution
  */
-public class Application implements IApplication {
+public class Application implements IApplication 
+{
 
     /**
      * Start the application and create the main workbench
@@ -23,7 +24,7 @@ public class Application implements IApplication {
 		try 
 		{
 	        //start the network connection
-            NetWrapper.getDefault().initAndStartup();
+		    NetWrapper.getDefault().initAndStartup();
             //create the workbench
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART) 

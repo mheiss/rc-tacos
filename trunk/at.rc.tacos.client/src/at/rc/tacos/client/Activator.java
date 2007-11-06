@@ -5,7 +5,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 //client
-import at.tr.tacos.client.modelManager.*;
+import at.rc.tacos.client.controller.NetController;
+import at.rc.tacos.client.modelManager.*;
+import at.rc.tacos.core.service.ServiceWrapper;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -17,6 +19,9 @@ public class Activator extends AbstractUIPlugin
 
 	// The shared instance
 	private static Activator plugin;
+	
+	//the listener for net events
+	private NetController netController;
 	
 	//the object data   
     private ItemManager itemList = new ItemManager();
@@ -33,6 +38,9 @@ public class Activator extends AbstractUIPlugin
 	{
 		super.start(context);
 		plugin = this;
+		//the listener for net changes
+		netController = new NetController();
+		ServiceWrapper.getDefault().addNetChangeListener(netController);
 	}
 
 	/**

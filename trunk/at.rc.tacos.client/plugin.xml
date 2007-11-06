@@ -27,7 +27,7 @@
             name="TACOS-Client">
          <property
                name="aboutText"
-               value="Austrian Red Cros&#x0A;Time and Configuration Management">
+               value="Austrian Red Cross.&#x0A;Time and Configuration Management">
          </property>
          <property
                name="windowImages"
