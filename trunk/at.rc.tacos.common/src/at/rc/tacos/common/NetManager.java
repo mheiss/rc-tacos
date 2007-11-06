@@ -2,22 +2,21 @@ package at.rc.tacos.common;
 
 import java.util.Vector;
 
-
 /**
  * This is a util class that informs the listeners about changes.
  * @author Michael
  */
-public class NetManager implements INetEvents
+public class NetManager implements INetClientEvents
 {
     //the listeners
-    Vector<INetLayer> listeners;
+    Vector<INetClientLayer> listeners;
     
     /**
      * Default class constructor
      */
     public NetManager()
     {
-        listeners = new Vector<INetLayer>();
+        listeners = new Vector<INetClientLayer>();
     }
     
     //METHODS
@@ -26,7 +25,7 @@ public class NetManager implements INetEvents
      * The listener is registered for all properties.
      * @param listener The NetChangeListener to be added
      */
-    public void addNetChangeListener(INetLayer listener)
+    public void addNetChangeListener(INetClientLayer listener)
     {
         listeners.addElement(listener);
     }
@@ -36,7 +35,7 @@ public class NetManager implements INetEvents
      * This removes a listener that was registered for all properties.
      * @param listener The NetChangeListener to be removed
      */
-    public void removeNetChangeListener(INetLayer listener)
+    public void removeNetChangeListener(INetClientLayer listener)
     {
         listeners.removeElement(listener);
     }
@@ -47,10 +46,10 @@ public class NetManager implements INetEvents
      * @param newItem the new item
      */
     @Override
-    public void fireItemChanged(String newItem)
+    public void fireItemAdded(String item)
     {
         //loop and iform the listeners
-        for(INetLayer listener:listeners)
-            listener.itemChanged(newItem);
+        for(INetClientLayer listener:listeners)
+            listener.itemAdded(item);
     }
 }
