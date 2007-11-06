@@ -3,6 +3,7 @@ package at.rc.tacos.core.net.internal;
 import java.io.*;
 import java.util.Vector;
 
+import at.rc.tacos.common.IConnectionStates;
 import at.rc.tacos.core.net.event.*;
 
 /**

@@ -4,7 +4,8 @@ Bundle-Name: Network Plug-in
 Bundle-SymbolicName: at.rc.tacos.core.net
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.core.net.NetWrapper
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ at.rc.tacos.common;visibility:=reexport
 Eclipse-LazyStart: true
 Export-Package: at.rc.tacos.core.net,
  at.rc.tacos.core.net.event,
