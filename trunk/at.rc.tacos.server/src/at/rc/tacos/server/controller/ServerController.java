@@ -4,117 +4,81 @@ package at.rc.tacos.server.controller;
 import java.util.*;
 //net
 import at.rc.tacos.core.net.internal.*;
-import at.rc.tacos.core.net.event.*;
 
-public class ServerController implements INetListener
+public class ServerController 
 {
+    //the shared instance
+    private static ServerController serverController;
+    
     //manage the clients
     private Vector<MyClient> connectedClients;   
 
     //the server object
     private MyServer myServer = null;
 
-    //the port for the Server
-    private int port;
-
     /**
      * Default class constructor, using the specified port
      * @param port the port number to listen to client requests
      */
-    public ServerController(int port)
+    private ServerController()
     {
-        //the port that the server should listen to
-        this.port = port;
         //init the list
         connectedClients = new Vector<MyClient>();
+    }
+    
+    /**
+     * Returns the shared instance
+     * @return the shared instance
+     */
+    public static ServerController getDefault()
+    {
+        //create a new instance or reuse
+        if (serverController == null)
+            serverController = new ServerController();
+        return serverController;
     }
 
     /**
      * Creates a new server in a own thread to handle 
      * incomming client connections.
      */
-    public void startServer()
+    public void startServer(int port)
     {
         //construct a Server object using the given port and this class as controller
         myServer = new MyServer(port);
-        myServer.addNetListener(this);
+        myServer.addNetListener(new ClientHandler());
         //start the server thread to listen to client connections
         Thread t = new Thread(myServer);
         t.start();
     }
-
+    
     /**
-     * Notifcation that new data has arrived
+     * Adds the client to the list of connected clients
+     * @param client the client to add
      */
-    @Override
-    public synchronized void dataReceived(NetEvent ne)
+    public void clientConnected(MyClient client)
     {
-//        MyClient client = getClientBySocket(ne.getSocket());
-//        //parse the message
-//        XMLParser xml = XMLParser.getInstance();
-//        RCNet net = xml.parseHeader(ne.getMessage());
-
-//      //get the request
-//      if (net.getAction() == RCNet.ACTION_LOGIN)
-//      {
-//      //parse the login data
-//      //send response
-//      client.setAuthenticated(true);
-//      }
-//      else
-//      {
-//      //check if the client is authenticated
-//      if (!client.isAuthenticated())
-//      {
-//      //TODO: send info to client -> login required
-//      return;
-//      }
-
-//      //parse the action and go on :)
-//      }
-        //test
-        System.out.println(ne.getMessage());
-        brodcastMessage(ne.getMessage());
-    }
-
-    /**
-     * Notification that the status of the socket changed.<br>
-     * <p>A new <code>MyClient</code> object with the connected socket will be created.<br>
-     * @param status the new status of the socket.
-     **/
-    @Override
-    public void socketStatusChanged(MyClient client, int status)
-    {
-        //check the status
-        if (status == IConnectionStates.STATE_CONNECTED)
-        {
-            System.out.println("New client connected");
-            //create the streams and start the receive thread
-            client.connect();
-            //set the listener for netEvents
-            client.addNetListener(this); 
-            //add the client to the list
-            connectedClients.addElement(client);
-        }
-        if (status == IConnectionStates.STATE_DISCONNECTED)
-        {
-            System.out.println("Client quit");
-        }
+        connectedClients.addElement(client);
     }
     
-    @Override
-    public void dataTransferFailed(NetEvent ne) {  }
+    /**
+     * Removes the client from the list.
+     * @param client the client to remove
+     */
+    public void clientDisconnected(MyClient client)
+    {
+        connectedClients.removeElement(client);
+    }
 
     /**
      * Sends the given message to all authenticated clients
      * @param message the message to send
      */
-    public void brodcastMessage(String message)
+    public synchronized void brodcastMessage(String message)
     {
         //loop over the clients
         for (MyClient client:connectedClients)
         {
-            //if (client.isAuthenticated())
             client.getSocket().sendMessage(message);
         }
     }

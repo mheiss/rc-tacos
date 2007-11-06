@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Server Plug-in
 Bundle-SymbolicName: at.rc.tacos.server
 Bundle-Version: 1.0.0
-Require-Bundle: at.rc.tacos.core.net,
- at.rc.tacos.core.xml
+Require-Bundle: at.rc.tacos.common,
+ at.rc.tacos.core.service
