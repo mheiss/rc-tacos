@@ -1,14 +1,14 @@
 package at.rc.tacos.core.db;
 
 import java.sql.SQLException;
-
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+import at.rc.tacos.common.*;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class DbWrapper extends Plugin implements DatabaseLayer
+public class DbWrapper extends Plugin implements IDatabaseLayer
 {
     // The plug-in ID
     public static final String PLUGIN_ID = "at.rc.tacos.core.db";
@@ -19,9 +19,7 @@ public class DbWrapper extends Plugin implements DatabaseLayer
     /**
      * The constructor
      */
-    public DbWrapper() 
-    {
-    }
+    public DbWrapper() { }
 
     /**
      * Called when the plugin is started
@@ -51,7 +49,6 @@ public class DbWrapper extends Plugin implements DatabaseLayer
     }
 
     //OVERRIDEN METHODS FROM THE INTERFACE
-    
 	@Override
 	public void queryItem() 
 	{
