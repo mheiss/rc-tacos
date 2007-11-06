@@ -5,8 +5,13 @@ Bundle-SymbolicName: at.rc.tacos.core.service
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.core.service.ServiceWrapper
 Require-Bundle: org.eclipse.core.runtime,
- at.rc.tacos.core.db,
- at.rc.tacos.core.net
+ at.rc.tacos.core.db;visibility:=reexport,
+ at.rc.tacos.core.net;visibility:=reexport,
+ at.rc.tacos.common;visibility:=reexport
 Eclipse-LazyStart: true
 Export-Package: at.rc.tacos.core.model,
- at.rc.tacos.core.service
+ at.rc.tacos.core.service;
+  uses:="org.eclipse.core.runtime,
+   at.rc.tacos.core.service.net,
+   org.osgi.framework,
+   at.rc.tacos.core.service.db"
