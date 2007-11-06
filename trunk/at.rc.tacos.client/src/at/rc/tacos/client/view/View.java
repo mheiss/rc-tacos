@@ -14,8 +14,9 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 //client
-import at.rc.tacos.client.model.*;
 import at.rc.tacos.client.*;
+//service
+import at.rc.tacos.core.model.*;
 
 public class View extends ViewPart implements PropertyChangeListener 
 {
