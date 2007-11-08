@@ -7,7 +7,7 @@ import javax.xml.stream.XMLEventReader;
 
 import at.rc.tacos.core.model.*;
 //xml
-import at.rc.tacos.core.net.codec.*;
+import at.rc.tacos.core.xml.*;
 
 
 /**
