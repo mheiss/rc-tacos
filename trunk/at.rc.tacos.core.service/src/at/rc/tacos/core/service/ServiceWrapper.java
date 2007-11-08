@@ -35,7 +35,7 @@ public class ServiceWrapper extends Plugin
 	    netLayerImpl = new NetLayerImpl();
 	    databaseLayerImpl = new DatabaseLayerImpl();
 		netManager = new NetManager();
-		//register the handler
+		//register the handler to listen to net events
 		NetWrapper.getDefault().addNetChangeListener(netLayerImpl);
 	}
 
