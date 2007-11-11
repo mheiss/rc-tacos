@@ -154,7 +154,27 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnFzgBezirkImDienst.setToolTipText("Fahrzeug, dem der Mitarbeiter zugewiesen ist");
 		newColumnTableColumnFzgBezirkImDienst.setWidth(36);
 		newColumnTableColumnFzgBezirkImDienst.setText("Fzg");
+		
+		
+		//TODO
+		final TableItem ItemTableItem = new TableItem(table, SWT.BORDER);
+		ItemTableItem.setText(0, "B");
+		ItemTableItem.setText(1, "A");
+		ItemTableItem.setText(2, "Musterfrau Martina");
+		ItemTableItem.setText(3, "06:00 - 15:00");
+		ItemTableItem.setText(4, "05:55");
+		ItemTableItem.setText(5, "");
+		ItemTableItem.setText(6, "HA");
+		ItemTableItem.setText(7, "F");
+		ItemTableItem.setText(8, "BM");
+		ItemTableItem.setText(9, "Bm03");
+		
+		//oder:
+		//newItemTableItem_1.setData(data); data = widget?
+		//newItemTableItem_1.setData(key, value);
 	
+		
+		
 		
 		//context menu
 		final TableItem newTabItem = new TableItem(table, SWT.BORDER);
