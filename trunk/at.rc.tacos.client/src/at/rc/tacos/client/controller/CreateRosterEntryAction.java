@@ -69,6 +69,7 @@ public class CreateRosterEntryAction extends Action
     			realStartOfWork, realEndOfWork, station,
     			competence, servicetype, rosterNotes,
     			standby);
+    	//TODO
     	//ServiceWrapper.getDefault().getNetService().requestAddRosterEntry(newRosterEntry.get???(item)-------?
 
     }
