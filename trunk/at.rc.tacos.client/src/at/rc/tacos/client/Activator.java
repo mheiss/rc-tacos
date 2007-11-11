@@ -7,6 +7,7 @@ import org.osgi.framework.BundleContext;
 //client
 import at.rc.tacos.client.controller.NetController;
 import at.rc.tacos.client.modelManager.*;
+import at.rc.tacos.core.model.RosterEntry;
 import at.rc.tacos.core.service.ServiceWrapper;
 
 /**
@@ -25,6 +26,7 @@ public class Activator extends AbstractUIPlugin
 	
 	//the object data   
     private ItemManager itemList = new ItemManager();
+    private RosterEntryManager rosterEntryList = new RosterEntryManager();
 	
 	/**
 	 * The constructor
@@ -79,5 +81,10 @@ public class Activator extends AbstractUIPlugin
     public ItemManager getItemList() 
     {
         return itemList;
+    }
+    
+    public RosterEntryManager getRosterEntryList()
+    {
+    	return rosterEntryList;
     }
 }
