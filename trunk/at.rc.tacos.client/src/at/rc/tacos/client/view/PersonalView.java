@@ -2,6 +2,7 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Date;
 
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -43,6 +44,8 @@ import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.DeleteItemAction;
 import at.rc.tacos.core.model.Item;
+import at.rc.tacos.core.model.RosterEntry;
+import at.rc.tacos.core.model.StaffMember;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
@@ -156,7 +159,16 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnFzgBezirkImDienst.setText("Fzg");
 		
 		
-		//TODO
+		
+		//TODO: doesn't work
+		StaffMember newStaffMember = new StaffMember(15,"Michael","Heiﬂ","m.heiﬂ");
+		Date date = new Date();
+		RosterEntry newRosterEntry = new RosterEntry(1L,newStaffMember,date,2L,3L,4L,5L,"BM","S","HA","mit Haberl",true);
+		final TableItem ItemTableItemT = new TableItem(table, SWT.BORDER);
+		ItemTableItemT.setData(newRosterEntry);
+		
+		
+		//TODO: work, but...
 		final TableItem ItemTableItem = new TableItem(table, SWT.BORDER);
 		ItemTableItem.setText(0, "B");
 		ItemTableItem.setText(1, "A");
@@ -172,6 +184,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		//oder:
 		//newItemTableItem_1.setData(data); data = widget?
 		//newItemTableItem_1.setData(key, value);
+		
+		
 	
 		
 		
