@@ -425,7 +425,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		tagesinformationTabItem_1.setText("Info");
 		
 		//table viewer
-		this.viewer = new TableViewer(table, SWT.MULTI | SWT.H_SCROLL
+		this.viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL // ------------- not parent but table!!! ---------------------
 				| SWT.V_SCROLL);
 		this.viewer.setContentProvider(new ViewContentProvider());
 		this.viewer.setLabelProvider(new ViewLabelProvider());
