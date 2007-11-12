@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Model Plug-in
+Bundle-SymbolicName: at.rc.tacos.model
+Bundle-Version: 1.0.0
+Require-Bundle: at.rc.tacos.common
+Export-Package: at.rc.tacos.model
