@@ -28,7 +28,9 @@ Time and Configuration Management
       </win>
    </launcher>
 
+
    <vm>
+      <windows type="jre">jre1.6.0</windows>
    </vm>
 
    <plugins>
@@ -37,6 +39,7 @@ Time and Configuration Management
       <plugin id="at.rc.tacos.core.db"/>
       <plugin id="at.rc.tacos.core.net"/>
       <plugin id="at.rc.tacos.core.service"/>
+      <plugin id="at.rc.tacos.model"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="javax.servlet"/>
       <plugin id="org.eclipse.core.commands"/>

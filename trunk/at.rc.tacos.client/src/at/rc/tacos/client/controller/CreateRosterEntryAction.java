@@ -5,8 +5,7 @@ import java.util.Date;
 
 import org.eclipse.jface.action.Action;
 //client
-import at.rc.tacos.core.model.*;
-import at.rc.tacos.core.service.ServiceWrapper;
+import at.rc.tacos.model.*;
 
 /**
  * The action that is triggered by creating a new roster entry

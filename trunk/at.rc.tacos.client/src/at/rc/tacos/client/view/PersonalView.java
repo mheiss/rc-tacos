@@ -42,10 +42,10 @@ import org.eclipse.ui.part.ViewPart;
 //import de.spiritlink.mvc.view.TransportView.ViewLabelProvider;
 
 import at.rc.tacos.client.Activator;
-import at.rc.tacos.client.controller.DeleteItemAction;
-import at.rc.tacos.core.model.Item;
-import at.rc.tacos.core.model.RosterEntry;
-import at.rc.tacos.core.model.StaffMember;
+import at.rc.tacos.client.controller.*;
+import at.rc.tacos.model.Item;
+import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
@@ -474,7 +474,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         menuMgr.addMenuListener(new IMenuListener() {
             public void menuAboutToShow(IMenuManager manager) {
                 // Adding controller to context-menu
-                manager.add(new DeleteItemAction((Item) ((IStructuredSelection) PersonalView.this.viewer.getSelection()).getFirstElement()));
+                //manager.add(new DeleteItemAction((Item) ((IStructuredSelection) PersonalView.this.viewer.getSelection()).getFirstElement()));
             }
         });
         Menu menu = menuMgr.createContextMenu(this.viewer.getControl());

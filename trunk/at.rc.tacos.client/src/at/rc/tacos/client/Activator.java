@@ -7,7 +7,6 @@ import org.osgi.framework.BundleContext;
 //client
 import at.rc.tacos.client.controller.NetController;
 import at.rc.tacos.client.modelManager.*;
-import at.rc.tacos.core.model.RosterEntry;
 import at.rc.tacos.core.service.ServiceWrapper;
 
 /**
@@ -17,14 +16,10 @@ public class Activator extends AbstractUIPlugin
 {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "at.rc.tacos.client";
-
 	// The shared instance
 	private static Activator plugin;
 	
-	//the listener for net events
-	private NetController netController;
-	
-	//the object data   
+	//the object manager   
     private ItemManager itemList = new ItemManager();
     private RosterEntryManager rosterEntryList = new RosterEntryManager();
 	
@@ -40,9 +35,9 @@ public class Activator extends AbstractUIPlugin
 	{
 		super.start(context);
 		plugin = this;
-		//the listener for net changes
-		netController = new NetController();
-		ServiceWrapper.getDefault().addNetChangeListener(netController);
+		//register a listener to receive network updates
+		NetController netController = new NetController();
+		ServiceWrapper.getDefault().getServiceLayer().registerServiceListener(netController);
 	}
 
 	/**

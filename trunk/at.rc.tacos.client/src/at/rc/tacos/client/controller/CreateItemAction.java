@@ -3,7 +3,7 @@ package at.rc.tacos.client.controller;
 //rcp
 import org.eclipse.jface.action.Action;
 //client
-import at.rc.tacos.core.model.*;
+import at.rc.tacos.model.*;
 import at.rc.tacos.core.service.ServiceWrapper;
 
 /**
@@ -22,7 +22,8 @@ public class CreateItemAction extends Action
     public void run() 
     {
         Item newItem = new Item(id);
-        System.out.println("Create item action");
-        ServiceWrapper.getDefault().getNetService().requestAddItem(newItem.getId());
+        System.out.println("Created a new item: "+newItem);
+        //Send a request to the server layer to add the item
+        ServiceWrapper.getDefault().getServiceLayer().addItem(newItem);
     }
 }
