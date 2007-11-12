@@ -3,13 +3,12 @@ package at.rc.tacos.core.net.event;
 import at.rc.tacos.core.net.internal.*;
 
 /**
- * The net listener interface for the message driven
- * communication between the client/server sockets
- * with the registered listeners.
+ * This interface defines the methods that the network layer
+ * must provide to communicate with the service 
  * @author Michael
  */
 public interface INetListener 
-{
+{   
     /**
      * Invoked when new data received.
      */

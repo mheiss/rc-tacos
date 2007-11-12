@@ -2,6 +2,7 @@ package at.rc.tacos.core.xml;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -11,7 +12,8 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import at.rc.tacos.common.IXMLSerialize;
+import at.rc.tacos.common.IXMLObject;
+import at.rc.tacos.model.Item;
 
 /**
  * Provides methods to enocde and decode the net messages
@@ -35,6 +37,8 @@ public class XMLFactory
     public static final String HEADER_SEQUENCE_ELEMENT = "sequence";
     /** The body object */
     public static final String BODY_ELEMENT = "body";
+    /*& The data item */
+    public static final String BODY_DATA_ELEMENT = "data";
 
     //the xml input
     private String xmlSource;
@@ -47,9 +51,9 @@ public class XMLFactory
     private long sequence;
 
     /**
-     * Default constructor
+     * Default constructor specifying a user for the session
      */
-    public XMLFactory() {}
+    public XMLFactory() { }
 
     /**
      * Sets up the factory to encode a object
@@ -72,10 +76,10 @@ public class XMLFactory
     }
 
     /**
-     * Encode the object and return the result
-     * @return
+     * Encode the object and return the result.
+     * @param the serialized object list
      */
-    public String encode(IXMLSerialize xmlObject)
+    public String encode(ArrayList<IXMLObject> objectList)
     {
         try
         {
@@ -126,7 +130,13 @@ public class XMLFactory
 
             //write the body
             xmlw.writeStartElement(BODY_ELEMENT);
-            xmlObject.toXML(xmlw);
+            //loop and write the item
+            for(IXMLObject object:objectList)
+            {
+                //write the xml item
+                object.toXML(xmlw);
+            }
+            //end of the body
             xmlw.writeEndElement();
 
             // End of the root element
@@ -147,18 +157,22 @@ public class XMLFactory
     }
 
     /**
-     * Decodes the header of the message.
+     * Decodes the message and returns a string list with the 
+     * content items as String
      */
-    public XMLEventReader decodeHeader()
+    public ArrayList<IXMLObject> decode()
     {
+        ArrayList<IXMLObject> objects = new ArrayList<IXMLObject>();
         //create the input stream out of the input
         StringReader input = new StringReader(xmlSource);
+        XMLEventReader r = null;
         XMLInputFactory f = XMLInputFactory.newInstance();
         try 
         {
-            XMLEventReader r = f.createXMLEventReader(input);   
+            r = f.createXMLEventReader(input);   
             while (r.hasNext()) 
             {
+                //the element
                 XMLEvent event = r.nextEvent();
                 if (event.isStartElement()) 
                 {
@@ -167,7 +181,7 @@ public class XMLFactory
                     String startName = start.getName().getLocalPart();
 
                     //get the type of the element and set the corresponding value
-                    if(HEADER_ACTION_ELEMENT.equalsIgnoreCase(startName))
+                    if(HEADER_USERID_ELEMENT.equalsIgnoreCase(startName))
                         userId = r.getElementText();
                     if(HEADER_TIMESTAMP_ELEMENT.equalsIgnoreCase(startName))
                         timestamp = Long.parseLong(r.getElementText());
@@ -177,22 +191,88 @@ public class XMLFactory
                         action = r.getElementText();
                     if(HEADER_SEQUENCE_ELEMENT.equalsIgnoreCase(startName))
                         sequence = Long.parseLong(r.getElementText());
-                    //skip the body
-                    if(BODY_ELEMENT.equalsIgnoreCase(startName))
-                        break;
+                    //check if we have a data item
+                    if(BODY_DATA_ELEMENT.equalsIgnoreCase(startName))
+                    {
+                        //get the decoder
+                        if(type.equalsIgnoreCase("item"))
+                        {
+                            //create a new item by deserializing it
+                            Item item = new Item();
+                            item = (Item)item.toObject(r);
+                            objects.add(item);
+                        }
+                    }
                 }
-                // keep the reader open and return it
-                return r;
             }
-            //cleanup
-            r.close();
+            //return the parsed elements
+            return objects;
         } 
-        catch(XMLStreamException xmlSE)
+        catch(XMLStreamException xmlSe)
         {
             System.out.println("Error while parsing the given input stream");
-            System.out.println(xmlSE.getMessage());
+            System.out.println(xmlSe.getMessage());
+            xmlSe.printStackTrace();
+            //error occured
+            return null;
         }
-        //nothing to do
-        return null;
+        //cleanup
+        finally
+        {
+            try
+            {
+
+                if( r!= null)
+                    r.close();
+                if(input != null)
+                    input.close();
+            }
+            catch(XMLStreamException xmlSe)
+            {
+                System.out.println("Errow while closing the reader and input stream");
+                System.out.println(xmlSe.getMessage());
+            }
+        }
+    }
+
+//  GETTERS FOR THE DECODED VALUES
+    /**
+     * @return the userId
+     */
+    public String getUserId()
+    {
+        return userId;
+    }
+
+    /**
+     * @return the timestamp
+     */
+    public long getTimestamp()
+    {
+        return timestamp;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType()
+    {
+        return type;
+    }
+
+    /**
+     * @return the action
+     */
+    public String getAction()
+    {
+        return action;
+    }
+
+    /**
+     * @return the sequence
+     */
+    public long getSequence()
+    {
+        return sequence;
     }
 }
