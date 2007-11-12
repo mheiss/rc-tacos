@@ -3,9 +3,7 @@ package at.rc.tacos.core.service;
 //rcp
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
-//common
-import at.rc.tacos.common.INetClientLayer;
-import at.rc.tacos.common.NetManager;
+
 import at.rc.tacos.core.net.NetWrapper;
 
 /**
@@ -19,24 +17,21 @@ public class ServiceWrapper extends Plugin
 	// The shared instance
 	private static ServiceWrapper plugin;
 	
-	//the layers
-	private NetLayerImpl netLayerImpl;
-	private DatabaseLayerImpl databaseLayerImpl;
-	
-	//the client listeners
-	private NetManager netManager;
-	
+	//the network layer
+	private ServiceLayerImpl serviceImpl;
+	//the database layer
+	private DatabaseLayerImpl databaseImpl;
+		
 	/**
      * The constructor
      */
 	public ServiceWrapper() 
 	{ 
-	    //create the handlers
-	    netLayerImpl = new NetLayerImpl();
-	    databaseLayerImpl = new DatabaseLayerImpl();
-		netManager = new NetManager();
-		//register the handler to listen to net events
-		NetWrapper.getDefault().addNetChangeListener(netLayerImpl);
+	    //create the service implementations
+	    serviceImpl = new ServiceLayerImpl();
+	    databaseImpl = new DatabaseLayerImpl();
+	    //register the serviceImpl for net events
+	    NetWrapper.getDefault().registerNetworkListener(serviceImpl);
 	}
 
 	 /**
@@ -67,49 +62,22 @@ public class ServiceWrapper extends Plugin
 	}
 	
 	/**
-     *  Add a NetChangeListener to the listener list.
-     *  The listeners will be informed uppon new received objects.
-     *  @param listener the listener to add
-     */
-    public void addNetChangeListener(INetClientLayer listener)
-    {
-        netManager.addNetChangeListener(listener);
-    }
-    
-    /**
-     * Remove a NetChangeListener from the listener list. 
-     * This removes a listener that was registered for all properties.
-     * @param listener The NetChangeListener to be removed
-     */
-    public void removeNetChangeListener(INetClientLayer listener)
-    {
-        netManager.removeNetChangeListener(listener);
-    }
-	
-	/**
-	 * Returns the nework service layer.<br>
-	 * The network service layer provides the access to the network.
+	 * Returns the network service implementation
+	 * to access the network layer and register listeners.
+	 * @return the implementation of the network layer
 	 */
-	public NetLayerImpl getNetService()
+	public ServiceLayerImpl getServiceLayer()
 	{
-		return netLayerImpl;
+	    return serviceImpl;
 	}
 	
 	/**
-	 * Returns the database service layer.<br>
-	 * The database service layer provides the access to the database
+	 * Returns the database service implementation
+	 * to access the database.
+	 * @return the implementation of the database layer
 	 */
-	public DatabaseLayerImpl getDatabaseService()
+	public DatabaseLayerImpl getDatabaseLayer()
 	{
-		return databaseLayerImpl;
-	}
-	
-	/**
-	 * Returns the listeners to inform about net events.
-	 * @return the registered listeners
-	 */
-	public NetManager getNetManager()
-	{
-	    return netManager;
+	    return databaseImpl;
 	}
 }
