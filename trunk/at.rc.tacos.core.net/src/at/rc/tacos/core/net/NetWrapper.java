@@ -1,35 +1,36 @@
 package at.rc.tacos.core.net;
 
-//rcp
+import java.util.ArrayList;
+import java.util.Date;
+
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
-//net
-import at.rc.tacos.common.INetClientLayer;
-import at.rc.tacos.common.INetServerLayer;
-import at.rc.tacos.common.NetManager;
+import at.rc.tacos.common.INetworkLayer;
+import at.rc.tacos.common.INetworkListener;
+import at.rc.tacos.common.IXMLObject;
 import at.rc.tacos.core.net.event.*;
 import at.rc.tacos.core.net.internal.*;
+import at.rc.tacos.core.xml.XMLFactory;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class NetWrapper extends Plugin implements INetServerLayer,INetListener
+public class NetWrapper extends Plugin implements INetListener,INetworkLayer
 {
     // The plug-in ID
     public static final String PLUGIN_ID = "at.rc.tacos.core.net";
     // The shared instance
     private static NetWrapper plugin;
-    
-    // The service layer to inform about new data
-    private NetManager netChangeSupport;
+
+    // Session information
+    private String sessionUserId;
+    // Service listener
+    private INetworkListener listener;
 
     /**
      * The constructor
      */
-    public NetWrapper() 
-    { 
-        netChangeSupport = new NetManager();
-    }
+    public NetWrapper() { }
 
     /**
      * Called when the plugin is started
@@ -39,27 +40,6 @@ public class NetWrapper extends Plugin implements INetServerLayer,INetListener
         super.start(context);
         plugin = this;
     }
-    
-    /**
-     *  Add a NetChangeListener to the listener list.
-     *  The listeners will be informed uppon new received objects.
-     *  @param listener the listener to add
-     */
-    public void addNetChangeListener(INetClientLayer listener)
-    {
-        netChangeSupport.addNetChangeListener(listener);
-    }
-    
-    /**
-     * Remove a NetChangeListener from the listener list. 
-     * This removes a listener that was registered for all properties.
-     * @param listener The NetChangeListener to be removed
-     */
-    public void removeNetChangeListener(INetClientLayer listener)
-    {
-        netChangeSupport.removeNetChangeListener(listener);
-    }
-
     /**
      * Initialize and start the network connection
      */
@@ -88,7 +68,7 @@ public class NetWrapper extends Plugin implements INetServerLayer,INetListener
     {
         return plugin;
     }
-    
+
     /**
      * Loads the configuration and sets up the primary and the failback connection.
      */
@@ -117,7 +97,7 @@ public class NetWrapper extends Plugin implements INetServerLayer,INetListener
     {
         NetSource.getInstance().connect();
     }
-    
+
     //NET LISTENER METHODS
     /**
      * Notification that new data is available.<br>
@@ -127,7 +107,16 @@ public class NetWrapper extends Plugin implements INetServerLayer,INetListener
     public void dataReceived(NetEvent ne)
     {
         System.out.println("received data: "+ne.getMessage());
-        netChangeSupport.fireItemAdded(ne.getMessage());
+        //set up the factory to decode
+        XMLFactory factory = new XMLFactory();
+        factory.setupDecodeFactory(ne.getMessage());
+        //decode the message
+        ArrayList<IXMLObject> objects = factory.decode();
+        //get the type of the item
+        String type = factory.getType(); 
+        String action = factory.getAction();
+        //pass the message
+        listener.fireNetMessage(type, action, objects);
     }
 
     /**
@@ -137,7 +126,7 @@ public class NetWrapper extends Plugin implements INetServerLayer,INetListener
     @Override
     public void socketStatusChanged(MyClient client, int status)
     {
-
+        System.out.println("socket status changed:"+status);
     }
 
     /**
@@ -146,14 +135,62 @@ public class NetWrapper extends Plugin implements INetServerLayer,INetListener
      */
     @Override
     public void dataTransferFailed(NetEvent ne)
-    {
-            
+    {    
+        System.out.println("failed to send the data:"+ne.getMessage());
     }
-
-    //METHODS TO UPDATE THE SERVER
+    
+    // LISTENER SUPPORT
+    /**
+     * Registers a listener to inform about network changes.
+     * @param listener the listener to inform
+     */
     @Override
-    public void requestAddItem(String item)
+    public void registerNetworkListener(INetworkListener listener)
     {
-        NetSource.getInstance().getConnection().sendMessage(item); 
+       this.listener = listener;
+        
+    }
+    
+    @Override
+    public void removeNetworkListener(INetworkListener listener)
+    {
+        this.listener = null;
+    }
+    
+    //METHODS FOR INTERACTION WITH THE SERVICE LAYER
+    @Override
+    public void fireNetworkMessage(String objectType,String action,ArrayList<IXMLObject> object)
+    {
+        XMLFactory factory = new XMLFactory();
+        factory.setupEncodeFactory(
+                sessionUserId,
+                new Date().getTime(),
+                objectType,
+                action,
+                0);
+        String message = factory.encode(object);
+        //send the message
+        NetSource.getInstance().getConnection().sendMessage(message);
+    }
+    
+    @Override
+    public void fireNetworkMessage(String objectType,String action,IXMLObject object)
+    {
+        //create a list 
+        ArrayList<IXMLObject> list = new ArrayList<IXMLObject>();
+        //add the object
+        list.add(object);
+        fireNetworkMessage(objectType,action, list);
+    }
+    
+    // SESSION PARAMETER
+    /**
+     * Sets the session parameters that should be used
+     * for the whole network communication session
+     */
+    @Override
+    public void setSessionParameter(String userId)
+    {
+        this.sessionUserId = userId;
     }
 }
