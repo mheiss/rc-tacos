@@ -112,6 +112,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler
      */
     private void handleButtonCancelWidgetSelected() 
     {
+        loginFailed("Error button pressed");
         // Abort the loading of the RCP application
         getSplash().getDisplay().close();
         System.exit(0);     

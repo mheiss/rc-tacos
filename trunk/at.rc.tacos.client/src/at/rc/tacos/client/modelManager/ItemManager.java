@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 //rcp
 import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.swt.widgets.Display;
 //model
-import at.rc.tacos.core.model.*;
+import at.rc.tacos.model.*;
 
 
 /**
@@ -22,7 +23,7 @@ public class ItemManager extends PlatformObject
 
     //the listeners to inform about data changes
     protected transient PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-    
+
     /**
      * Adds a property-change listener.
      * @param l the listener
@@ -33,12 +34,12 @@ public class ItemManager extends PlatformObject
             throw new IllegalArgumentException();
         listeners.addPropertyChangeListener(l);
     }
-    
+
     public void removePropertyChangeListener(PropertyChangeListener l)
     {
         listeners.removePropertyChangeListener(l);
     }
-    
+
     /**
      * Notificates all listeners to a model-change
      * @param prop the property-id
@@ -55,12 +56,18 @@ public class ItemManager extends PlatformObject
      * Adds a new item to the list
      * @param item the item to add
      */
-    public void add(Item item) 
+    public void add(final Item item) 
     {
-        //add the item
-        objectList.add(item);
-        //notify the view
-        firePropertyChange("ITEM_ADD", null, item);
+        Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {
+                //add the item
+                objectList.add(item);
+                //notify the view
+                firePropertyChange("ITEM_ADD", null, item);
+            }
+        }); 
     }    
 
     /**
@@ -72,7 +79,7 @@ public class ItemManager extends PlatformObject
         objectList.remove(item);
         firePropertyChange("ITEM_REMOVE", item, null); 
     }
-    
+
     /**
      * Converts the list to an array
      * @return the list as a array

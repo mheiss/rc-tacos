@@ -8,7 +8,7 @@ import java.util.List;
 //rcp
 import org.eclipse.core.runtime.PlatformObject;
 //model
-import at.rc.tacos.core.model.*;
+import at.rc.tacos.model.*;
 
 
 /**
