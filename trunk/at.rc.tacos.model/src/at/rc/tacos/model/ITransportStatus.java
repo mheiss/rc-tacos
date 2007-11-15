@@ -18,5 +18,12 @@ public interface ITransportStatus
 	public final static int TRANSPORT_STATUS_OUT_OF_OPERATION_AREA = 7;//Verlässt Einsatzgebiet
 	public final static int TRANSPORT_STATUS_BACK_IN_OPERATION_AREA = 8;//Wieder im Einsatzgebiet
 	public final static int TRANSPORT_STATUS_OTHER = 9;//Sonderstatus, Sonstiges (z.B. Ambulanz, Essen,...)
+	
+	/**
+	 * most important transport status (for Carcomposite)
+	 */
+	//green if 0,1,5,6
+	//yellow if 2,4,9
+	//red if 3,7 (without 8)
 }
 
