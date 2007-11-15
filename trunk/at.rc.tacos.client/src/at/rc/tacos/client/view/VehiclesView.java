@@ -1,2408 +1,302 @@
 package at.rc.tacos.client.view;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.swt.layout.grouplayout.LayoutStyle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
+
+
+import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
 
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.part.*;
 //client
-import at.rc.tacos.client.controller.CreateItemAction;
+import at.rc.tacos.client.modelManager.CarCompositeManager;
+import at.rc.tacos.client.view.composite.CarComposite;
 
 /**
- * GUI to get an overview about the resources (vehicles and staff)
+ * GUI to get an overview about the ambulances
+ * create CarComposite's using the CarCompositeManager
  * @author b.thek
  */
 
+//TODO: use staffMember instead of String for staff at the ambulance
 
 public class VehiclesView extends ViewPart
 {
 
 	public static final String ID = "at.rc.tacos.client.view.ressources_view";
-	//protected Shell shell;
 
-	/**
-	 * Launch the application
-	 * @param args
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			RessourcesView window = new RessourcesView();
-//			window.open();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-	/**
-	 * Open the window
-	 */
-//	public void open() {
-//		final Display display = Display.getDefault();
-//		createContents();
-//		shell.open();
-//		shell.layout();
-//		while (!shell.isDisposed()) {
-//			if (!display.readAndDispatch())
-//				display.sleep();
-//		}
-//	}
 
 	/**
 	 * Create contents of the window
 	 */
 	public void createPartControl(Composite parent) {
-		//shell = new Shell();
-		//shell.setRegion(null);
-		this.setTitle("der testtitel");//---------------------------------------------
+
+		System.out.println("in createPartcontrol(Composite parent) der VehiclesView!!!");
 		parent.setLayout(new FillLayout());
-		//parent.setImage(SWTResourceManager.getImage(RessourcesView.class, "/image/Tacos_LOGO.jpg"));
-		//shell.setSize(1500, 1000);
-		//shell.setText("Ressourcen");
+
 
 		//final SashForm sashForm = new SashForm(parent, SWT.NONE);
 
 		final Composite composite_1 = new Composite(parent, SWT.NONE);
 		composite_1.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		System.out.println("nach new Composite (parent,s....)");
 
-		Group group_1;
-		group_1 = new Group(composite_1, SWT.NONE);
-		group_1.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		
+		/**
+		 * groups
+		 */
+		
+		//group Bruck/Mur
+		Group groupBruckMur;
+		groupBruckMur = new Group(composite_1, SWT.NONE);
+		groupBruckMur.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		final RowLayout rowLayout_1 = new RowLayout();
 		rowLayout_1.marginRight = 5;
 		rowLayout_1.spacing = 10;
-		group_1.setLayout(rowLayout_1);
-		group_1.setText("Bruck an der Mur");
-
-		final Composite compositeACar_4_1_6 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_6 = new RowData();
-		rd_compositeACar_4_1_6.width = 136;
-		rd_compositeACar_4_1_6.height = 61;
-		compositeACar_4_1_6.setLayoutData(rd_compositeACar_4_1_6);
-		compositeACar_4_1_6.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_6 = new Composite(compositeACar_4_1_6, SWT.NONE);
-		composite_6_9_1_6.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_6 = new Label(composite_6_9_1_6, SWT.NONE);
-		bm02Label_3_1_6.setForeground(SWTResourceManager.getColor(207, 207, 230));
-		bm02Label_3_1_6.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bm02Label_3_1_6.setText("Bm02");
-
-		final Composite composite_9_4_1_6 = new Composite(composite_6_9_1_6, SWT.NONE);
-		composite_9_4_1_6.setLayout(new FormLayout());
-		composite_9_4_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bktwLabel_3_1_6 = new Label(composite_9_4_1_6, SWT.CENTER);
-		final FormData fd_label_3_4_1_6 = new FormData();
-		fd_label_3_4_1_6.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_6.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_6.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_6.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_6.setLayoutData(fd_label_3_4_1_6);
-		bktwLabel_3_1_6.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_6.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_6.setText("RTW");
-
-		final Composite composite_5_9_1_6 = new Composite(compositeACar_4_1_6, SWT.NONE);
-		composite_5_9_1_6.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_6 = new Composite(composite_5_9_1_6, SWT.NONE);
-		composite_8_4_1_6.setLayout(new FillLayout());
-
-		final Label label_5_4_1_6 = new Label(composite_8_4_1_6, SWT.NONE);
-		label_5_4_1_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK.gif"));
-		label_5_4_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_8_4_1_6 = new Label(composite_8_4_1_6, SWT.NONE);
-		label_8_4_1_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_9_4_1_6 = new Label(composite_8_4_1_6, SWT.NONE);
-		label_9_4_1_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_7_4_1_6 = new Label(composite_8_4_1_6, SWT.NONE);
-		label_7_4_1_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_6_4_1_6 = new Label(composite_8_4_1_6, SWT.NONE);
-		label_6_4_1_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_4_4_1_6 = new Label(composite_8_4_1_6, SWT.NONE);
-		label_4_4_1_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel.gif"));
-		label_4_4_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite composite_7_4_1_6 = new Composite(composite_5_9_1_6, SWT.NONE);
-		composite_7_4_1_6.setLayout(new FillLayout());
-
-		final Label label_11_4_1_6 = new Label(composite_7_4_1_6, SWT.NONE);
-		label_11_4_1_6.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_6.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label wlohmLabel_3_1_6 = new Label(composite_7_4_1_6, SWT.NONE);
-		wlohmLabel_3_1_6.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_6.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bthekLabel_3_1_6 = new Label(composite_7_4_1_6, SWT.NONE);
-		bthekLabel_3_1_6.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_6.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite compositeACar_4_1_7 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_7 = new RowData();
-		rd_compositeACar_4_1_7.width = 136;
-		rd_compositeACar_4_1_7.height = 61;
-		compositeACar_4_1_7.setLayoutData(rd_compositeACar_4_1_7);
-		compositeACar_4_1_7.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_7 = new Composite(compositeACar_4_1_7, SWT.NONE);
-		composite_6_9_1_7.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_7 = new Label(composite_6_9_1_7, SWT.NONE);
-		bm02Label_3_1_7.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_7.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_7.setText("Bm03");
-
-		final Composite composite_9_4_1_7 = new Composite(composite_6_9_1_7, SWT.NONE);
-		composite_9_4_1_7.setLayout(new FormLayout());
-		composite_9_4_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_7 = new Label(composite_9_4_1_7, SWT.CENTER);
-		final FormData fd_label_3_4_1_7 = new FormData();
-		fd_label_3_4_1_7.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_7.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_7.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_7.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_7.setLayoutData(fd_label_3_4_1_7);
-		bktwLabel_3_1_7.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_7.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_7.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_7.setText("RTW");
-
-		final Composite composite_5_9_1_7 = new Composite(compositeACar_4_1_7, SWT.NONE);
-		composite_5_9_1_7.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_7 = new Composite(composite_5_9_1_7, SWT.NONE);
-		composite_8_4_1_7.setLayout(new FillLayout());
-
-		final Label label_5_4_1_7 = new Label(composite_8_4_1_7, SWT.NONE);
-		label_5_4_1_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_7 = new Label(composite_8_4_1_7, SWT.NONE);
-		label_8_4_1_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_7 = new Label(composite_8_4_1_7, SWT.NONE);
-		label_9_4_1_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_7 = new Label(composite_8_4_1_7, SWT.NONE);
-		label_7_4_1_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_7 = new Label(composite_8_4_1_7, SWT.NONE);
-		label_6_4_1_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_7 = new Label(composite_8_4_1_7, SWT.NONE);
-		label_4_4_1_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_7 = new Composite(composite_5_9_1_7, SWT.NONE);
-		composite_7_4_1_7.setLayout(new FillLayout());
-
-		final Label label_11_4_1_7 = new Label(composite_7_4_1_7, SWT.NONE);
-		label_11_4_1_7.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_7.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_7.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_7 = new Label(composite_7_4_1_7, SWT.NONE);
-		wlohmLabel_3_1_7.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_7.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_7.setText("w.lohm");
-
-		final Label bthekLabel_3_1_7 = new Label(composite_7_4_1_7, SWT.NONE);
-		bthekLabel_3_1_7.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_7.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_7.setText("b.thek");
-
-		final Composite compositeACar_4_1_8 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_8 = new RowData();
-		rd_compositeACar_4_1_8.width = 136;
-		rd_compositeACar_4_1_8.height = 61;
-		compositeACar_4_1_8.setLayoutData(rd_compositeACar_4_1_8);
-		compositeACar_4_1_8.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_8 = new Composite(compositeACar_4_1_8, SWT.NONE);
-		composite_6_9_1_8.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_8 = new Label(composite_6_9_1_8, SWT.NONE);
-		bm02Label_3_1_8.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_8.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_8.setText("Bm04");
-
-		final Composite composite_9_4_1_8 = new Composite(composite_6_9_1_8, SWT.NONE);
-		composite_9_4_1_8.setLayout(new FormLayout());
-		composite_9_4_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_8 = new Label(composite_9_4_1_8, SWT.CENTER);
-		final FormData fd_label_3_4_1_8 = new FormData();
-		fd_label_3_4_1_8.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_8.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_8.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_8.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_8.setLayoutData(fd_label_3_4_1_8);
-		bktwLabel_3_1_8.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_8.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_8.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_8.setText("KTW");
-
-		final Composite composite_5_9_1_8 = new Composite(compositeACar_4_1_8, SWT.NONE);
-		composite_5_9_1_8.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_8 = new Composite(composite_5_9_1_8, SWT.NONE);
-		composite_8_4_1_8.setLayout(new FillLayout());
-
-		final Label label_5_4_1_8 = new Label(composite_8_4_1_8, SWT.NONE);
-		label_5_4_1_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_8 = new Label(composite_8_4_1_8, SWT.NONE);
-		label_8_4_1_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_8 = new Label(composite_8_4_1_8, SWT.NONE);
-		label_9_4_1_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_8 = new Label(composite_8_4_1_8, SWT.NONE);
-		label_7_4_1_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_8 = new Label(composite_8_4_1_8, SWT.NONE);
-		label_6_4_1_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_8 = new Label(composite_8_4_1_8, SWT.NONE);
-		label_4_4_1_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_rot.gif"));
-		label_4_4_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_8 = new Composite(composite_5_9_1_8, SWT.NONE);
-		composite_7_4_1_8.setLayout(new FillLayout());
-
-		final Label label_11_4_1_8 = new Label(composite_7_4_1_8, SWT.NONE);
-		label_11_4_1_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_8.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_8.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_8 = new Label(composite_7_4_1_8, SWT.NONE);
-		wlohmLabel_3_1_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_8.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_8.setText("w.lohm");
-
-		final Label bthekLabel_3_1_8 = new Label(composite_7_4_1_8, SWT.NONE);
-		bthekLabel_3_1_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_8.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_8.setText("b.thek");
-
-		final Composite compositeACar_4_1_9 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_9 = new RowData();
-		rd_compositeACar_4_1_9.width = 136;
-		rd_compositeACar_4_1_9.height = 61;
-		compositeACar_4_1_9.setLayoutData(rd_compositeACar_4_1_9);
-		compositeACar_4_1_9.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_9 = new Composite(compositeACar_4_1_9, SWT.NONE);
-		composite_6_9_1_9.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_9 = new Label(composite_6_9_1_9, SWT.NONE);
-		bm02Label_3_1_9.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_9.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_9.setText("Bm05");
-
-		final Composite composite_9_4_1_9 = new Composite(composite_6_9_1_9, SWT.NONE);
-		composite_9_4_1_9.setLayout(new FormLayout());
-		composite_9_4_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_9 = new Label(composite_9_4_1_9, SWT.CENTER);
-		final FormData fd_label_3_4_1_9 = new FormData();
-		fd_label_3_4_1_9.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_9.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_9.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_9.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_9.setLayoutData(fd_label_3_4_1_9);
-		bktwLabel_3_1_9.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_9.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_9.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_9.setText("RTW");
-
-		final Composite composite_5_9_1_9 = new Composite(compositeACar_4_1_9, SWT.NONE);
-		composite_5_9_1_9.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_9 = new Composite(composite_5_9_1_9, SWT.NONE);
-		composite_8_4_1_9.setLayout(new FillLayout());
-
-		final Label label_5_4_1_9 = new Label(composite_8_4_1_9, SWT.NONE);
-		label_5_4_1_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_9 = new Label(composite_8_4_1_9, SWT.NONE);
-		label_8_4_1_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_9 = new Label(composite_8_4_1_9, SWT.NONE);
-		label_9_4_1_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_9 = new Label(composite_8_4_1_9, SWT.NONE);
-		label_7_4_1_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_9 = new Label(composite_8_4_1_9, SWT.NONE);
-		label_6_4_1_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_9 = new Label(composite_8_4_1_9, SWT.NONE);
-		label_4_4_1_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_9 = new Composite(composite_5_9_1_9, SWT.NONE);
-		composite_7_4_1_9.setLayout(new FillLayout());
-
-		final Label label_11_4_1_9 = new Label(composite_7_4_1_9, SWT.NONE);
-		label_11_4_1_9.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_9.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_9.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_9 = new Label(composite_7_4_1_9, SWT.NONE);
-		wlohmLabel_3_1_9.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_9.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_9.setText("w.lohm");
-
-		final Label bthekLabel_3_1_9 = new Label(composite_7_4_1_9, SWT.NONE);
-		bthekLabel_3_1_9.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_9.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_9.setText("b.thek");
-
-		final Composite compositeACar_4_1_10 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_10 = new RowData();
-		rd_compositeACar_4_1_10.width = 136;
-		rd_compositeACar_4_1_10.height = 61;
-		compositeACar_4_1_10.setLayoutData(rd_compositeACar_4_1_10);
-		compositeACar_4_1_10.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_10 = new Composite(compositeACar_4_1_10, SWT.NONE);
-		composite_6_9_1_10.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_10 = new Label(composite_6_9_1_10, SWT.NONE);
-		bm02Label_3_1_10.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_10.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_10.setText("Bm06");
-
-		final Composite composite_9_4_1_10 = new Composite(composite_6_9_1_10, SWT.NONE);
-		composite_9_4_1_10.setLayout(new FormLayout());
-		composite_9_4_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_10 = new Label(composite_9_4_1_10, SWT.CENTER);
-		final FormData fd_label_3_4_1_10 = new FormData();
-		fd_label_3_4_1_10.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_10.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_10.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_10.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_10.setLayoutData(fd_label_3_4_1_10);
-		bktwLabel_3_1_10.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_10.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_10.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_10.setText("RTW");
-
-		final Composite composite_5_9_1_10 = new Composite(compositeACar_4_1_10, SWT.NONE);
-		composite_5_9_1_10.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_10 = new Composite(composite_5_9_1_10, SWT.NONE);
-		composite_8_4_1_10.setLayout(new FillLayout());
-
-		final Label label_5_4_1_10 = new Label(composite_8_4_1_10, SWT.NONE);
-		label_5_4_1_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_10 = new Label(composite_8_4_1_10, SWT.NONE);
-		label_8_4_1_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy2.gif"));
-		label_8_4_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_10 = new Label(composite_8_4_1_10, SWT.NONE);
-		label_9_4_1_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus2.gif"));
-		label_9_4_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_10 = new Label(composite_8_4_1_10, SWT.NONE);
-		label_7_4_1_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_10 = new Label(composite_8_4_1_10, SWT.NONE);
-		label_6_4_1_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_10 = new Label(composite_8_4_1_10, SWT.NONE);
-		label_4_4_1_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_rot.gif"));
-		label_4_4_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_10 = new Composite(composite_5_9_1_10, SWT.NONE);
-		composite_7_4_1_10.setLayout(new FillLayout());
-
-		final Label label_11_4_1_10 = new Label(composite_7_4_1_10, SWT.NONE);
-		label_11_4_1_10.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_10.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_10.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_10 = new Label(composite_7_4_1_10, SWT.NONE);
-		wlohmLabel_3_1_10.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_10.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_10.setText("w.lohm");
-
-		final Label bthekLabel_3_1_10 = new Label(composite_7_4_1_10, SWT.NONE);
-		bthekLabel_3_1_10.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_10.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_10.setText("b.thek");
-
-		final Composite compositeACar_4_1_11 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_11 = new RowData();
-		rd_compositeACar_4_1_11.width = 136;
-		rd_compositeACar_4_1_11.height = 61;
-		compositeACar_4_1_11.setLayoutData(rd_compositeACar_4_1_11);
-		compositeACar_4_1_11.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_11 = new Composite(compositeACar_4_1_11, SWT.NONE);
-		composite_6_9_1_11.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_11 = new Label(composite_6_9_1_11, SWT.NONE);
-		bm02Label_3_1_11.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_11.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_11.setText("Bm08");
-
-		final Composite composite_9_4_1_11 = new Composite(composite_6_9_1_11, SWT.NONE);
-		composite_9_4_1_11.setLayout(new FormLayout());
-		composite_9_4_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_11 = new Label(composite_9_4_1_11, SWT.CENTER);
-		final FormData fd_label_3_4_1_11 = new FormData();
-		fd_label_3_4_1_11.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_11.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_11.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_11.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_11.setLayoutData(fd_label_3_4_1_11);
-		bktwLabel_3_1_11.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_11.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_11.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_11.setText("BKTW");
-
-		final Composite composite_5_9_1_11 = new Composite(compositeACar_4_1_11, SWT.NONE);
-		composite_5_9_1_11.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_11 = new Composite(composite_5_9_1_11, SWT.NONE);
-		composite_8_4_1_11.setLayout(new FillLayout());
-
-		final Label label_5_4_1_11 = new Label(composite_8_4_1_11, SWT.NONE);
-		label_5_4_1_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_11 = new Label(composite_8_4_1_11, SWT.NONE);
-		label_8_4_1_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_11 = new Label(composite_8_4_1_11, SWT.NONE);
-		label_9_4_1_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_11 = new Label(composite_8_4_1_11, SWT.NONE);
-		label_7_4_1_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_11 = new Label(composite_8_4_1_11, SWT.NONE);
-		label_6_4_1_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_11 = new Label(composite_8_4_1_11, SWT.NONE);
-		label_4_4_1_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_gelb.gif"));
-		label_4_4_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_11 = new Composite(composite_5_9_1_11, SWT.NONE);
-		composite_7_4_1_11.setLayout(new FillLayout());
-
-		final Label label_11_4_1_11 = new Label(composite_7_4_1_11, SWT.NONE);
-		label_11_4_1_11.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_11.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_11.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_11 = new Label(composite_7_4_1_11, SWT.NONE);
-		wlohmLabel_3_1_11.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_11.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_11.setText("w.lohm");
-
-		final Label bthekLabel_3_1_11 = new Label(composite_7_4_1_11, SWT.NONE);
-		bthekLabel_3_1_11.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_11.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_11.setText("b.thek");
-
-		final Composite compositeACar_4_1_12 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_12 = new RowData();
-		rd_compositeACar_4_1_12.width = 136;
-		rd_compositeACar_4_1_12.height = 61;
-		compositeACar_4_1_12.setLayoutData(rd_compositeACar_4_1_12);
-		compositeACar_4_1_12.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_12 = new Composite(compositeACar_4_1_12, SWT.NONE);
-		composite_6_9_1_12.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_12 = new Label(composite_6_9_1_12, SWT.NONE);
-		bm02Label_3_1_12.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_12.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_12.setText("Bm09");
-
-		final Composite composite_9_4_1_12 = new Composite(composite_6_9_1_12, SWT.NONE);
-		composite_9_4_1_12.setLayout(new FormLayout());
-		composite_9_4_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_12 = new Label(composite_9_4_1_12, SWT.CENTER);
-		final FormData fd_label_3_4_1_12 = new FormData();
-		fd_label_3_4_1_12.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_12.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_12.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_12.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_12.setLayoutData(fd_label_3_4_1_12);
-		bktwLabel_3_1_12.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_12.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_12.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_12.setText("KTW");
-
-		final Composite composite_5_9_1_12 = new Composite(compositeACar_4_1_12, SWT.NONE);
-		composite_5_9_1_12.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_12 = new Composite(composite_5_9_1_12, SWT.NONE);
-		composite_8_4_1_12.setLayout(new FillLayout());
-
-		final Label label_5_4_1_12 = new Label(composite_8_4_1_12, SWT.NONE);
-		label_5_4_1_12.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_12 = new Label(composite_8_4_1_12, SWT.NONE);
-		label_8_4_1_12.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_12 = new Label(composite_8_4_1_12, SWT.NONE);
-		label_9_4_1_12.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_12 = new Label(composite_8_4_1_12, SWT.NONE);
-		label_7_4_1_12.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_12 = new Label(composite_8_4_1_12, SWT.NONE);
-		label_6_4_1_12.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_12 = new Label(composite_8_4_1_12, SWT.NONE);
-		label_4_4_1_12.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_12 = new Composite(composite_5_9_1_12, SWT.NONE);
-		composite_7_4_1_12.setLayout(new FillLayout());
-
-		final Label label_11_4_1_12 = new Label(composite_7_4_1_12, SWT.NONE);
-		label_11_4_1_12.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_12.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_12.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_12 = new Label(composite_7_4_1_12, SWT.NONE);
-		wlohmLabel_3_1_12.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_12.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_12.setText("w.lohm");
-
-		final Label bthekLabel_3_1_12 = new Label(composite_7_4_1_12, SWT.NONE);
-		bthekLabel_3_1_12.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_12.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_12.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_12.setText("b.thek");
-
-		final Composite compositeACar_4_1_13 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_13 = new RowData();
-		rd_compositeACar_4_1_13.width = 136;
-		rd_compositeACar_4_1_13.height = 61;
-		compositeACar_4_1_13.setLayoutData(rd_compositeACar_4_1_13);
-		compositeACar_4_1_13.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_13 = new Composite(compositeACar_4_1_13, SWT.NONE);
-		composite_6_9_1_13.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_13 = new Label(composite_6_9_1_13, SWT.NONE);
-		bm02Label_3_1_13.setForeground(SWTResourceManager.getColor(207, 207, 230));
-		bm02Label_3_1_13.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bm02Label_3_1_13.setText("Bm10");
-
-		final Composite composite_9_4_1_13 = new Composite(composite_6_9_1_13, SWT.NONE);
-		composite_9_4_1_13.setLayout(new FormLayout());
-		composite_9_4_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bktwLabel_3_1_13 = new Label(composite_9_4_1_13, SWT.CENTER);
-		final FormData fd_label_3_4_1_13 = new FormData();
-		fd_label_3_4_1_13.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_13.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_13.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_13.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_13.setLayoutData(fd_label_3_4_1_13);
-		bktwLabel_3_1_13.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_13.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_13.setText("BKTW");
-
-		final Composite composite_5_9_1_13 = new Composite(compositeACar_4_1_13, SWT.NONE);
-		composite_5_9_1_13.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_13 = new Composite(composite_5_9_1_13, SWT.NONE);
-		composite_8_4_1_13.setLayout(new FillLayout());
-
-		final Label label_5_4_1_13 = new Label(composite_8_4_1_13, SWT.NONE);
-		label_5_4_1_13.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK.gif"));
-		label_5_4_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_8_4_1_13 = new Label(composite_8_4_1_13, SWT.NONE);
-		label_8_4_1_13.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_9_4_1_13 = new Label(composite_8_4_1_13, SWT.NONE);
-		label_9_4_1_13.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_7_4_1_13 = new Label(composite_8_4_1_13, SWT.NONE);
-		label_7_4_1_13.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_6_4_1_13 = new Label(composite_8_4_1_13, SWT.NONE);
-		label_6_4_1_13.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_4_4_1_13 = new Label(composite_8_4_1_13, SWT.NONE);
-		label_4_4_1_13.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel.gif"));
-		label_4_4_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite composite_7_4_1_13 = new Composite(composite_5_9_1_13, SWT.NONE);
-		composite_7_4_1_13.setLayout(new FillLayout());
-
-		final Label label_11_4_1_13 = new Label(composite_7_4_1_13, SWT.NONE);
-		label_11_4_1_13.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_13.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label wlohmLabel_3_1_13 = new Label(composite_7_4_1_13, SWT.NONE);
-		wlohmLabel_3_1_13.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_13.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bthekLabel_3_1_13 = new Label(composite_7_4_1_13, SWT.NONE);
-		bthekLabel_3_1_13.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_13.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_13.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite compositeACar_4_1_14 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_14 = new RowData();
-		rd_compositeACar_4_1_14.width = 136;
-		rd_compositeACar_4_1_14.height = 61;
-		compositeACar_4_1_14.setLayoutData(rd_compositeACar_4_1_14);
-		compositeACar_4_1_14.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_14 = new Composite(compositeACar_4_1_14, SWT.NONE);
-		composite_6_9_1_14.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_14 = new Label(composite_6_9_1_14, SWT.NONE);
-		bm02Label_3_1_14.setForeground(SWTResourceManager.getColor(207, 207, 230));
-		bm02Label_3_1_14.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bm02Label_3_1_14.setText("Bm14");
-
-		final Composite composite_9_4_1_14 = new Composite(composite_6_9_1_14, SWT.NONE);
-		composite_9_4_1_14.setLayout(new FormLayout());
-		composite_9_4_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bktwLabel_3_1_14 = new Label(composite_9_4_1_14, SWT.CENTER);
-		final FormData fd_label_3_4_1_14 = new FormData();
-		fd_label_3_4_1_14.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_14.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_14.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_14.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_14.setLayoutData(fd_label_3_4_1_14);
-		bktwLabel_3_1_14.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_14.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_14.setText("LKW");
-
-		final Composite composite_5_9_1_14 = new Composite(compositeACar_4_1_14, SWT.NONE);
-		composite_5_9_1_14.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_14 = new Composite(composite_5_9_1_14, SWT.NONE);
-		composite_8_4_1_14.setLayout(new FillLayout());
-
-		final Label label_5_4_1_14 = new Label(composite_8_4_1_14, SWT.NONE);
-		label_5_4_1_14.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK.gif"));
-		label_5_4_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_8_4_1_14 = new Label(composite_8_4_1_14, SWT.NONE);
-		label_8_4_1_14.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_9_4_1_14 = new Label(composite_8_4_1_14, SWT.NONE);
-		label_9_4_1_14.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_7_4_1_14 = new Label(composite_8_4_1_14, SWT.NONE);
-		label_7_4_1_14.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_6_4_1_14 = new Label(composite_8_4_1_14, SWT.NONE);
-		label_6_4_1_14.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_4_4_1_14 = new Label(composite_8_4_1_14, SWT.NONE);
-		label_4_4_1_14.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel.gif"));
-		label_4_4_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite composite_7_4_1_14 = new Composite(composite_5_9_1_14, SWT.NONE);
-		composite_7_4_1_14.setLayout(new FillLayout());
-
-		final Label label_11_4_1_14 = new Label(composite_7_4_1_14, SWT.NONE);
-		label_11_4_1_14.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_14.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label wlohmLabel_3_1_14 = new Label(composite_7_4_1_14, SWT.NONE);
-		wlohmLabel_3_1_14.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_14.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bthekLabel_3_1_14 = new Label(composite_7_4_1_14, SWT.NONE);
-		bthekLabel_3_1_14.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_14.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_14.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite compositeACar_4_1_15 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_15 = new RowData();
-		rd_compositeACar_4_1_15.width = 136;
-		rd_compositeACar_4_1_15.height = 61;
-		compositeACar_4_1_15.setLayoutData(rd_compositeACar_4_1_15);
-		compositeACar_4_1_15.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_15 = new Composite(compositeACar_4_1_15, SWT.NONE);
-		composite_6_9_1_15.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_15 = new Label(composite_6_9_1_15, SWT.NONE);
-		bm02Label_3_1_15.setForeground(SWTResourceManager.getColor(207, 207, 230));
-		bm02Label_3_1_15.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bm02Label_3_1_15.setText("Bm15");
-
-		final Composite composite_9_4_1_15 = new Composite(composite_6_9_1_15, SWT.NONE);
-		composite_9_4_1_15.setLayout(new FormLayout());
-		composite_9_4_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bktwLabel_3_1_15 = new Label(composite_9_4_1_15, SWT.CENTER);
-		final FormData fd_label_3_4_1_15 = new FormData();
-		fd_label_3_4_1_15.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_15.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_15.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_15.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_15.setLayoutData(fd_label_3_4_1_15);
-		bktwLabel_3_1_15.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_15.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_15.setText("STW");
-
-		final Composite composite_5_9_1_15 = new Composite(compositeACar_4_1_15, SWT.NONE);
-		composite_5_9_1_15.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_15 = new Composite(composite_5_9_1_15, SWT.NONE);
-		composite_8_4_1_15.setLayout(new FillLayout());
-
-		final Label label_5_4_1_15 = new Label(composite_8_4_1_15, SWT.NONE);
-		label_5_4_1_15.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK.gif"));
-		label_5_4_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_8_4_1_15 = new Label(composite_8_4_1_15, SWT.NONE);
-		label_8_4_1_15.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_9_4_1_15 = new Label(composite_8_4_1_15, SWT.NONE);
-		label_9_4_1_15.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_7_4_1_15 = new Label(composite_8_4_1_15, SWT.NONE);
-		label_7_4_1_15.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_6_4_1_15 = new Label(composite_8_4_1_15, SWT.NONE);
-		label_6_4_1_15.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_4_4_1_15 = new Label(composite_8_4_1_15, SWT.NONE);
-		label_4_4_1_15.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel.gif"));
-		label_4_4_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite composite_7_4_1_15 = new Composite(composite_5_9_1_15, SWT.NONE);
-		composite_7_4_1_15.setLayout(new FillLayout());
-
-		final Label label_11_4_1_15 = new Label(composite_7_4_1_15, SWT.NONE);
-		label_11_4_1_15.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_15.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label wlohmLabel_3_1_15 = new Label(composite_7_4_1_15, SWT.NONE);
-		wlohmLabel_3_1_15.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_15.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bthekLabel_3_1_15 = new Label(composite_7_4_1_15, SWT.NONE);
-		bthekLabel_3_1_15.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_15.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_15.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite compositeACar_4_1_16 = new Composite(group_1, SWT.NONE);
-		final RowData rd_compositeACar_4_1_16 = new RowData();
-		rd_compositeACar_4_1_16.width = 136;
-		rd_compositeACar_4_1_16.height = 61;
-		compositeACar_4_1_16.setLayoutData(rd_compositeACar_4_1_16);
-		compositeACar_4_1_16.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_16 = new Composite(compositeACar_4_1_16, SWT.NONE);
-		composite_6_9_1_16.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_16 = new Label(composite_6_9_1_16, SWT.NONE);
-		bm02Label_3_1_16.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_16.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_16.setText("Bm16");
-
-		final Composite composite_9_4_1_16 = new Composite(composite_6_9_1_16, SWT.NONE);
-		composite_9_4_1_16.setLayout(new FormLayout());
-		composite_9_4_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_16 = new Label(composite_9_4_1_16, SWT.CENTER);
-		final FormData fd_label_3_4_1_16 = new FormData();
-		fd_label_3_4_1_16.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_16.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_16.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_16.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_16.setLayoutData(fd_label_3_4_1_16);
-		bktwLabel_3_1_16.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_16.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_16.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_16.setText("BKTW");
-
-		final Composite composite_5_9_1_16 = new Composite(compositeACar_4_1_16, SWT.NONE);
-		composite_5_9_1_16.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_16 = new Composite(composite_5_9_1_16, SWT.NONE);
-		composite_8_4_1_16.setLayout(new FillLayout());
-
-		final Label label_5_4_1_16 = new Label(composite_8_4_1_16, SWT.NONE);
-		label_5_4_1_16.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_16 = new Label(composite_8_4_1_16, SWT.NONE);
-		label_8_4_1_16.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_16 = new Label(composite_8_4_1_16, SWT.NONE);
-		label_9_4_1_16.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_16 = new Label(composite_8_4_1_16, SWT.NONE);
-		label_7_4_1_16.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_16 = new Label(composite_8_4_1_16, SWT.NONE);
-		label_6_4_1_16.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_16 = new Label(composite_8_4_1_16, SWT.NONE);
-		label_4_4_1_16.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_16 = new Composite(composite_5_9_1_16, SWT.NONE);
-		composite_7_4_1_16.setLayout(new FillLayout());
-
-		final Label label_11_4_1_16 = new Label(composite_7_4_1_16, SWT.NONE);
-		label_11_4_1_16.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_16.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_16.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_16 = new Label(composite_7_4_1_16, SWT.NONE);
-		wlohmLabel_3_1_16.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_16.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_16.setText("w.lohm");
-
-		final Label bthekLabel_3_1_16 = new Label(composite_7_4_1_16, SWT.NONE);
-		bthekLabel_3_1_16.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_16.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_16.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_16.setText("b.thek");
-
-		Group group_2;
-		group_2 = new Group(composite_1, SWT.NONE);
-		group_2.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		groupBruckMur.setLayout(rowLayout_1);
+		groupBruckMur.setText("Bruck an der Mur");
+
+		
+		//group Kapfenberg
+		Group groupKapfenberg;
+		groupKapfenberg = new Group(composite_1, SWT.NONE);
+		groupKapfenberg.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		final RowLayout rowLayout_2 = new RowLayout();
 		rowLayout_2.spacing = 10;
-		group_2.setLayout(rowLayout_2);
-		group_2.setText("Kapfenberg");
+		groupKapfenberg.setLayout(rowLayout_2);
+		groupKapfenberg.setText("Kapfenberg");
 
-		Group group_3;
-		group_3 = new Group(composite_1, SWT.NONE);
-		group_3.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		
+		//group St. Marein
+		Group groupMarein;
+		groupMarein = new Group(composite_1, SWT.NONE);
+		groupMarein.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		final RowLayout rowLayout_3 = new RowLayout();
 		rowLayout_3.spacing = 10;
-		group_3.setLayout(rowLayout_3);
-		group_3.setText("St. Marein");
+		groupMarein.setLayout(rowLayout_3);
+		groupMarein.setText("St. Marein");
 
-		final Composite compositeACar_4_4 = new Composite(group_3, SWT.NONE);
-		final RowData rd_compositeACar_4_4 = new RowData();
-		rd_compositeACar_4_4.width = 136;
-		rd_compositeACar_4_4.height = 61;
-		compositeACar_4_4.setLayoutData(rd_compositeACar_4_4);
-		compositeACar_4_4.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_4 = new Composite(compositeACar_4_4, SWT.NONE);
-		composite_6_9_4.setLayout(new FillLayout());
-
-		final Label bm02Label_3_4 = new Label(composite_6_9_4, SWT.NONE);
-		bm02Label_3_4.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_4.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_4.setText("Ma14");
-
-		final Composite composite_9_4_4 = new Composite(composite_6_9_4, SWT.NONE);
-		composite_9_4_4.setLayout(new FormLayout());
-		composite_9_4_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_4 = new Label(composite_9_4_4, SWT.CENTER);
-		final FormData fd_label_3_4_4 = new FormData();
-		fd_label_3_4_4.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_4.top = new FormAttachment(0, 0);
-		fd_label_3_4_4.right = new FormAttachment(0, 68);
-		fd_label_3_4_4.left = new FormAttachment(0, 15);
-		bktwLabel_3_4.setLayoutData(fd_label_3_4_4);
-		bktwLabel_3_4.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_4.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_4.setText("RTW");
-
-		final Composite composite_5_9_4 = new Composite(compositeACar_4_4, SWT.NONE);
-		composite_5_9_4.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_4 = new Composite(composite_5_9_4, SWT.NONE);
-		composite_8_4_4.setLayout(new FillLayout());
-
-		final Label label_5_4_4 = new Label(composite_8_4_4, SWT.NONE);
-		label_5_4_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_4 = new Label(composite_8_4_4, SWT.NONE);
-		label_8_4_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_4 = new Label(composite_8_4_4, SWT.NONE);
-		label_9_4_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_4 = new Label(composite_8_4_4, SWT.NONE);
-		label_7_4_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_4 = new Label(composite_8_4_4, SWT.NONE);
-		label_6_4_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_4 = new Label(composite_8_4_4, SWT.NONE);
-		label_4_4_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_4 = new Composite(composite_5_9_4, SWT.NONE);
-		composite_7_4_4.setLayout(new FillLayout());
-
-		final Label label_11_4_4 = new Label(composite_7_4_4, SWT.NONE);
-		label_11_4_4.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_4.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_4.setText("m.heiß");
-
-		final Label wlohmLabel_3_4 = new Label(composite_7_4_4, SWT.NONE);
-		wlohmLabel_3_4.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_4.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_4.setText("w.lohm");
-
-		final Label bthekLabel_3_4 = new Label(composite_7_4_4, SWT.NONE);
-		bthekLabel_3_4.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_4.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_4.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_4.setText("b.thek");
-
-		final Composite compositeACar_4_5 = new Composite(group_3, SWT.NONE);
-		final RowData rd_compositeACar_4_5 = new RowData();
-		rd_compositeACar_4_5.width = 136;
-		rd_compositeACar_4_5.height = 61;
-		compositeACar_4_5.setLayoutData(rd_compositeACar_4_5);
-		compositeACar_4_5.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_5 = new Composite(compositeACar_4_5, SWT.NONE);
-		composite_6_9_5.setLayout(new FillLayout());
-
-		final Label bm02Label_3_5 = new Label(composite_6_9_5, SWT.NONE);
-		bm02Label_3_5.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_5.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_5.setText("Ma15");
-
-		final Composite composite_9_4_5 = new Composite(composite_6_9_5, SWT.NONE);
-		composite_9_4_5.setLayout(new FormLayout());
-		composite_9_4_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_5 = new Label(composite_9_4_5, SWT.CENTER);
-		final FormData fd_label_3_4_5 = new FormData();
-		fd_label_3_4_5.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_5.top = new FormAttachment(0, 0);
-		fd_label_3_4_5.right = new FormAttachment(0, 68);
-		fd_label_3_4_5.left = new FormAttachment(0, 15);
-		bktwLabel_3_5.setLayoutData(fd_label_3_4_5);
-		bktwLabel_3_5.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_5.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_5.setText("RTW");
-
-		final Composite composite_5_9_5 = new Composite(compositeACar_4_5, SWT.NONE);
-		composite_5_9_5.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_5 = new Composite(composite_5_9_5, SWT.NONE);
-		composite_8_4_5.setLayout(new FillLayout());
-
-		final Label label_5_4_5 = new Label(composite_8_4_5, SWT.NONE);
-		label_5_4_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_5 = new Label(composite_8_4_5, SWT.NONE);
-		label_8_4_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_5 = new Label(composite_8_4_5, SWT.NONE);
-		label_9_4_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_5 = new Label(composite_8_4_5, SWT.NONE);
-		label_7_4_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_5 = new Label(composite_8_4_5, SWT.NONE);
-		label_6_4_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_5 = new Label(composite_8_4_5, SWT.NONE);
-		label_4_4_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_gelb.gif"));
-		label_4_4_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_5 = new Composite(composite_5_9_5, SWT.NONE);
-		composite_7_4_5.setLayout(new FillLayout());
-
-		final Label label_11_4_5 = new Label(composite_7_4_5, SWT.NONE);
-		label_11_4_5.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_5.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_5.setText("m.heiß");
-
-		final Label wlohmLabel_3_5 = new Label(composite_7_4_5, SWT.NONE);
-		wlohmLabel_3_5.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_5.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_5.setText("w.lohm");
-
-		final Label bthekLabel_3_5 = new Label(composite_7_4_5, SWT.NONE);
-		bthekLabel_3_5.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_5.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_5.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_5.setText("b.thek");
-
-		Group group_4;
-		group_4 = new Group(composite_1, SWT.NONE);
-		group_4.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		
+		//group Thörl
+		Group groupThörl;
+		groupThörl = new Group(composite_1, SWT.NONE);
+		groupThörl.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		final RowLayout rowLayout_4 = new RowLayout();
 		rowLayout_4.spacing = 10;
-		group_4.setLayout(rowLayout_4);
-		group_4.setText("Thörl");
+		groupThörl.setLayout(rowLayout_4);
+		groupThörl.setText("Thörl");
 
-		final Composite compositeACar_4_6 = new Composite(group_4, SWT.NONE);
-		final RowData rd_compositeACar_4_6 = new RowData();
-		rd_compositeACar_4_6.width = 136;
-		rd_compositeACar_4_6.height = 61;
-		compositeACar_4_6.setLayoutData(rd_compositeACar_4_6);
-		compositeACar_4_6.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_6 = new Composite(compositeACar_4_6, SWT.NONE);
-		composite_6_9_6.setLayout(new FillLayout());
-
-		final Label bm02Label_3_6 = new Label(composite_6_9_6, SWT.NONE);
-		bm02Label_3_6.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_6.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_6.setText("Th16");
-
-		final Composite composite_9_4_6 = new Composite(composite_6_9_6, SWT.NONE);
-		composite_9_4_6.setLayout(new FormLayout());
-		composite_9_4_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_6 = new Label(composite_9_4_6, SWT.CENTER);
-		final FormData fd_label_3_4_6 = new FormData();
-		fd_label_3_4_6.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_6.top = new FormAttachment(0, 0);
-		fd_label_3_4_6.right = new FormAttachment(0, 68);
-		fd_label_3_4_6.left = new FormAttachment(0, 15);
-		bktwLabel_3_6.setLayoutData(fd_label_3_4_6);
-		bktwLabel_3_6.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_6.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_6.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_6.setText("RTW");
-
-		final Composite composite_5_9_6 = new Composite(compositeACar_4_6, SWT.NONE);
-		composite_5_9_6.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_6 = new Composite(composite_5_9_6, SWT.NONE);
-		composite_8_4_6.setLayout(new FillLayout());
-
-		final Label label_5_4_6 = new Label(composite_8_4_6, SWT.NONE);
-		label_5_4_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_6 = new Label(composite_8_4_6, SWT.NONE);
-		label_8_4_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_6 = new Label(composite_8_4_6, SWT.NONE);
-		label_9_4_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_6 = new Label(composite_8_4_6, SWT.NONE);
-		label_7_4_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_6 = new Label(composite_8_4_6, SWT.NONE);
-		label_6_4_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_6 = new Label(composite_8_4_6, SWT.NONE);
-		label_4_4_6.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_6 = new Composite(composite_5_9_6, SWT.NONE);
-		composite_7_4_6.setLayout(new FillLayout());
-
-		final Label label_11_4_6 = new Label(composite_7_4_6, SWT.NONE);
-		label_11_4_6.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_6.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_6.setText("m.heiß");
-
-		final Label wlohmLabel_3_6 = new Label(composite_7_4_6, SWT.NONE);
-		wlohmLabel_3_6.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_6.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_6.setText("w.lohm");
-
-		final Label bthekLabel_3_6 = new Label(composite_7_4_6, SWT.NONE);
-		bthekLabel_3_6.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_6.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_6.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_6.setText("b.thek");
-
-		final Composite compositeACar_4_7 = new Composite(group_4, SWT.NONE);
-		final RowData rd_compositeACar_4_7 = new RowData();
-		rd_compositeACar_4_7.width = 136;
-		rd_compositeACar_4_7.height = 61;
-		compositeACar_4_7.setLayoutData(rd_compositeACar_4_7);
-		compositeACar_4_7.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_7 = new Composite(compositeACar_4_7, SWT.NONE);
-		composite_6_9_7.setLayout(new FillLayout());
-
-		final Label bm02Label_3_7 = new Label(composite_6_9_7, SWT.NONE);
-		bm02Label_3_7.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_7.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_7.setText("Th17");
-
-		final Composite composite_9_4_7 = new Composite(composite_6_9_7, SWT.NONE);
-		composite_9_4_7.setLayout(new FormLayout());
-		composite_9_4_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_7 = new Label(composite_9_4_7, SWT.CENTER);
-		final FormData fd_label_3_4_7 = new FormData();
-		fd_label_3_4_7.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_7.top = new FormAttachment(0, 0);
-		fd_label_3_4_7.right = new FormAttachment(0, 68);
-		fd_label_3_4_7.left = new FormAttachment(0, 15);
-		bktwLabel_3_7.setLayoutData(fd_label_3_4_7);
-		bktwLabel_3_7.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_7.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_7.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_7.setText("BKTW");
-
-		final Composite composite_5_9_7 = new Composite(compositeACar_4_7, SWT.NONE);
-		composite_5_9_7.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_7 = new Composite(composite_5_9_7, SWT.NONE);
-		composite_8_4_7.setLayout(new FillLayout());
-
-		final Label label_5_4_7 = new Label(composite_8_4_7, SWT.NONE);
-		label_5_4_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_7 = new Label(composite_8_4_7, SWT.NONE);
-		label_8_4_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_7 = new Label(composite_8_4_7, SWT.NONE);
-		label_9_4_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_7 = new Label(composite_8_4_7, SWT.NONE);
-		label_7_4_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_7 = new Label(composite_8_4_7, SWT.NONE);
-		label_6_4_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_7 = new Label(composite_8_4_7, SWT.NONE);
-		label_4_4_7.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_rot.gif"));
-		label_4_4_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_7 = new Composite(composite_5_9_7, SWT.NONE);
-		composite_7_4_7.setLayout(new FillLayout());
-
-		final Label label_11_4_7 = new Label(composite_7_4_7, SWT.NONE);
-		label_11_4_7.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_7.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_7.setText("m.heiß");
-
-		final Label wlohmLabel_3_7 = new Label(composite_7_4_7, SWT.NONE);
-		wlohmLabel_3_7.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_7.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_7.setText("w.lohm");
-
-		final Label bthekLabel_3_7 = new Label(composite_7_4_7, SWT.NONE);
-		bthekLabel_3_7.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_7.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_7.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_7.setText("b.thek");
-
-		Group group_5;
-		group_5 = new Group(composite_1, SWT.NONE);
-		group_5.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		
+		//group Turnau
+		Group groupTurnau;
+		groupTurnau = new Group(composite_1, SWT.NONE);
+		groupTurnau.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		final RowLayout rowLayout_5 = new RowLayout();
 		rowLayout_5.spacing = 10;
-		group_5.setLayout(rowLayout_5);
-		group_5.setText("Turnau");
+		groupTurnau.setLayout(rowLayout_5);
+		groupTurnau.setText("Turnau");
 
-		final Composite compositeACar_4_8 = new Composite(group_5, SWT.NONE);
-		final RowData rd_compositeACar_4_8 = new RowData();
-		rd_compositeACar_4_8.width = 136;
-		rd_compositeACar_4_8.height = 61;
-		compositeACar_4_8.setLayoutData(rd_compositeACar_4_8);
-		compositeACar_4_8.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_8 = new Composite(compositeACar_4_8, SWT.NONE);
-		composite_6_9_8.setLayout(new FillLayout());
-
-		final Label bm02Label_3_8 = new Label(composite_6_9_8, SWT.NONE);
-		bm02Label_3_8.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_8.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_8.setText("Tu18");
-
-		final Composite composite_9_4_8 = new Composite(composite_6_9_8, SWT.NONE);
-		composite_9_4_8.setLayout(new FormLayout());
-		composite_9_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_8 = new Label(composite_9_4_8, SWT.CENTER);
-		final FormData fd_label_3_4_8 = new FormData();
-		fd_label_3_4_8.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_8.top = new FormAttachment(0, 0);
-		fd_label_3_4_8.right = new FormAttachment(0, 68);
-		fd_label_3_4_8.left = new FormAttachment(0, 15);
-		bktwLabel_3_8.setLayoutData(fd_label_3_4_8);
-		bktwLabel_3_8.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_8.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_8.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_8.setText("RTW");
-
-		final Composite composite_5_9_8 = new Composite(compositeACar_4_8, SWT.NONE);
-		composite_5_9_8.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_8 = new Composite(composite_5_9_8, SWT.NONE);
-		composite_8_4_8.setLayout(new FillLayout());
-
-		final Label label_5_4_8 = new Label(composite_8_4_8, SWT.NONE);
-		label_5_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_8 = new Label(composite_8_4_8, SWT.NONE);
-		label_8_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_8 = new Label(composite_8_4_8, SWT.NONE);
-		label_9_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_8 = new Label(composite_8_4_8, SWT.NONE);
-		label_7_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_8 = new Label(composite_8_4_8, SWT.NONE);
-		label_6_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_8 = new Label(composite_8_4_8, SWT.NONE);
-		label_4_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_8 = new Composite(composite_5_9_8, SWT.NONE);
-		composite_7_4_8.setLayout(new FillLayout());
-
-		final Label label_11_4_8 = new Label(composite_7_4_8, SWT.NONE);
-		label_11_4_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_8.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_8.setText("m.heiß");
-
-		final Label wlohmLabel_3_8 = new Label(composite_7_4_8, SWT.NONE);
-		wlohmLabel_3_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_8.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_8.setText("w.lohm");
-
-		final Label bthekLabel_3_8 = new Label(composite_7_4_8, SWT.NONE);
-		bthekLabel_3_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_8.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_8.setText("b.thek");
-
-		Group group_6;
-		group_6 = new Group(composite_1, SWT.NONE);
-		group_6.setBackground(SWTResourceManager.getColor(255, 255, 255));
+	
+		//group Breitenau
+		Group groupBreitenau;
+		groupBreitenau = new Group(composite_1, SWT.NONE);
+		groupBreitenau.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		final RowLayout rowLayout_6 = new RowLayout();
 		rowLayout_6.spacing = 10;
-		group_6.setLayout(rowLayout_6);
-		group_6.setText("Breitenau");
+		groupBreitenau.setLayout(rowLayout_6);
+		groupBreitenau.setText("Breitenau");
 
-		final Composite compositeACar_4_9 = new Composite(group_6, SWT.NONE);
-		final RowData rd_compositeACar_4_9 = new RowData();
-		rd_compositeACar_4_9.width = 136;
-		rd_compositeACar_4_9.height = 61;
-		compositeACar_4_9.setLayoutData(rd_compositeACar_4_9);
-		compositeACar_4_9.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_9 = new Composite(compositeACar_4_9, SWT.NONE);
-		composite_6_9_9.setLayout(new FillLayout());
-
-		final Label bm02Label_3_9 = new Label(composite_6_9_9, SWT.NONE);
-		bm02Label_3_9.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_9.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_9.setText("Br07");
-
-		final Composite composite_9_4_9 = new Composite(composite_6_9_9, SWT.NONE);
-		composite_9_4_9.setLayout(new FormLayout());
-		composite_9_4_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_9 = new Label(composite_9_4_9, SWT.CENTER);
-		final FormData fd_label_3_4_9 = new FormData();
-		fd_label_3_4_9.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_9.top = new FormAttachment(0, 0);
-		fd_label_3_4_9.right = new FormAttachment(0, 68);
-		fd_label_3_4_9.left = new FormAttachment(0, 15);
-		bktwLabel_3_9.setLayoutData(fd_label_3_4_9);
-		bktwLabel_3_9.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_9.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_9.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_9.setText("RTW");
-
-		final Composite composite_5_9_9 = new Composite(compositeACar_4_9, SWT.NONE);
-		composite_5_9_9.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_9 = new Composite(composite_5_9_9, SWT.NONE);
-		composite_8_4_9.setLayout(new FillLayout());
-
-		final Label label_5_4_9 = new Label(composite_8_4_9, SWT.NONE);
-		label_5_4_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_9 = new Label(composite_8_4_9, SWT.NONE);
-		label_8_4_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_9 = new Label(composite_8_4_9, SWT.NONE);
-		label_9_4_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_9 = new Label(composite_8_4_9, SWT.NONE);
-		label_7_4_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_9 = new Label(composite_8_4_9, SWT.NONE);
-		label_6_4_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_9 = new Label(composite_8_4_9, SWT.NONE);
-		label_4_4_9.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_9 = new Composite(composite_5_9_9, SWT.NONE);
-		composite_7_4_9.setLayout(new FillLayout());
-
-		final Label label_11_4_9 = new Label(composite_7_4_9, SWT.NONE);
-		label_11_4_9.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_9.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_9.setText("m.heiß");
-
-		final Label wlohmLabel_3_9 = new Label(composite_7_4_9, SWT.NONE);
-		wlohmLabel_3_9.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_9.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_9.setText("w.lohm");
-
-		final Label bthekLabel_3_9 = new Label(composite_7_4_9, SWT.NONE);
-		bthekLabel_3_9.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_9.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_9.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_9.setText("b.thek");
-
-		Group group_7;
-		group_7 = new Group(composite_1, SWT.NONE);
-		group_7.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		
+		//group Bezirk
+		Group groupBezirk;
+		groupBezirk = new Group(composite_1, SWT.NONE);
+		groupBezirk.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		final RowLayout rowLayout_7 = new RowLayout();
 		rowLayout_7.spacing = 10;
-		group_7.setLayout(rowLayout_7);
-		group_7.setText("Bezirk");
-
-		final Composite compositeACar_4_10 = new Composite(group_7, SWT.NONE);
-		final RowData rd_compositeACar_4_10 = new RowData();
-		rd_compositeACar_4_10.width = 136;
-		rd_compositeACar_4_10.height = 61;
-		compositeACar_4_10.setLayoutData(rd_compositeACar_4_10);
-		compositeACar_4_10.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_10 = new Composite(compositeACar_4_10, SWT.NONE);
-		composite_6_9_10.setLayout(new FillLayout());
-
-		final Label bm02Label_3_10 = new Label(composite_6_9_10, SWT.NONE);
-		bm02Label_3_10.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_10.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_10.setText("NEF");
-
-		final Composite composite_9_4_10 = new Composite(composite_6_9_10, SWT.NONE);
-		composite_9_4_10.setLayout(new FormLayout());
-		composite_9_4_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_10 = new Label(composite_9_4_10, SWT.CENTER);
-		final FormData fd_label_3_4_10 = new FormData();
-		fd_label_3_4_10.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_10.top = new FormAttachment(0, 0);
-		fd_label_3_4_10.right = new FormAttachment(0, 68);
-		fd_label_3_4_10.left = new FormAttachment(0, 15);
-		bktwLabel_3_10.setLayoutData(fd_label_3_4_10);
-		bktwLabel_3_10.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_10.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_10.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_10.setText("NEF");
-
-		final Composite composite_5_9_10 = new Composite(compositeACar_4_10, SWT.NONE);
-		composite_5_9_10.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_10 = new Composite(composite_5_9_10, SWT.NONE);
-		composite_8_4_10.setLayout(new FillLayout());
-
-		final Label label_5_4_10 = new Label(composite_8_4_10, SWT.NONE);
-		label_5_4_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_10 = new Label(composite_8_4_10, SWT.NONE);
-		label_8_4_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_10 = new Label(composite_8_4_10, SWT.NONE);
-		label_9_4_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_10 = new Label(composite_8_4_10, SWT.NONE);
-		label_7_4_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_10 = new Label(composite_8_4_10, SWT.NONE);
-		label_6_4_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_10 = new Label(composite_8_4_10, SWT.NONE);
-		label_4_4_10.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_10 = new Composite(composite_5_9_10, SWT.NONE);
-		composite_7_4_10.setLayout(new FillLayout());
-
-		final Label label_11_4_10 = new Label(composite_7_4_10, SWT.NONE);
-		label_11_4_10.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_10.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_10.setText("m.heiß");
-
-		final Label wlohmLabel_3_10 = new Label(composite_7_4_10, SWT.NONE);
-		wlohmLabel_3_10.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_10.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_10.setText("w.lohm");
-
-		final Label bthekLabel_3_10 = new Label(composite_7_4_10, SWT.NONE);
-		bthekLabel_3_10.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_10.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_10.setText("b.thek");
-
-		final Composite compositeACar_4_11 = new Composite(group_7, SWT.NONE);
-		final RowData rd_compositeACar_4_11 = new RowData();
-		rd_compositeACar_4_11.width = 136;
-		rd_compositeACar_4_11.height = 61;
-		compositeACar_4_11.setLayoutData(rd_compositeACar_4_11);
-		compositeACar_4_11.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_11 = new Composite(compositeACar_4_11, SWT.NONE);
-		composite_6_9_11.setLayout(new FillLayout());
-
-		final Label bm02Label_3_11 = new Label(composite_6_9_11, SWT.NONE);
-		bm02Label_3_11.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_11.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_11.setText("KDO");
-
-		final Composite composite_9_4_11 = new Composite(composite_6_9_11, SWT.NONE);
-		composite_9_4_11.setLayout(new FormLayout());
-		composite_9_4_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_11 = new Label(composite_9_4_11, SWT.CENTER);
-		final FormData fd_label_3_4_11 = new FormData();
-		fd_label_3_4_11.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_11.top = new FormAttachment(0, 0);
-		fd_label_3_4_11.right = new FormAttachment(0, 68);
-		fd_label_3_4_11.left = new FormAttachment(0, 15);
-		bktwLabel_3_11.setLayoutData(fd_label_3_4_11);
-		bktwLabel_3_11.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_11.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_11.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_11.setText("KDO");
-
-		final Composite composite_5_9_11 = new Composite(compositeACar_4_11, SWT.NONE);
-		composite_5_9_11.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_11 = new Composite(composite_5_9_11, SWT.NONE);
-		composite_8_4_11.setLayout(new FillLayout());
-
-		final Label label_5_4_11 = new Label(composite_8_4_11, SWT.NONE);
-		label_5_4_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_11 = new Label(composite_8_4_11, SWT.NONE);
-		label_8_4_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_11 = new Label(composite_8_4_11, SWT.NONE);
-		label_9_4_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_11 = new Label(composite_8_4_11, SWT.NONE);
-		label_7_4_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_11 = new Label(composite_8_4_11, SWT.NONE);
-		label_6_4_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_11 = new Label(composite_8_4_11, SWT.NONE);
-		label_4_4_11.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_11 = new Composite(composite_5_9_11, SWT.NONE);
-		composite_7_4_11.setLayout(new FillLayout());
-
-		final Label label_11_4_11 = new Label(composite_7_4_11, SWT.NONE);
-		label_11_4_11.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_11.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_11.setText("m.heiß");
-
-		final Label wlohmLabel_3_11 = new Label(composite_7_4_11, SWT.NONE);
-		wlohmLabel_3_11.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_11.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_11.setText("w.lohm");
-
-		final Label bthekLabel_3_11 = new Label(composite_7_4_11, SWT.NONE);
-		bthekLabel_3_11.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_11.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_11.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_11.setText("b.thek");
-
-		final Composite compositeACar_4_1_1 = new Composite(group_2, SWT.NONE);
-		final RowData rd_compositeACar_4_1_1 = new RowData();
-		rd_compositeACar_4_1_1.width = 136;
-		rd_compositeACar_4_1_1.height = 61;
-		compositeACar_4_1_1.setLayoutData(rd_compositeACar_4_1_1);
-		compositeACar_4_1_1.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_1 = new Composite(compositeACar_4_1_1, SWT.NONE);
-		composite_6_9_1_1.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_1 = new Label(composite_6_9_1_1, SWT.NONE);
-		bm02Label_3_1_1.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_1.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_1.setText("Ka02");
-
-		final Composite composite_9_4_1_1 = new Composite(composite_6_9_1_1, SWT.NONE);
-		composite_9_4_1_1.setLayout(new FormLayout());
-		composite_9_4_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_1 = new Label(composite_9_4_1_1, SWT.CENTER);
-		final FormData fd_label_3_4_1_1 = new FormData();
-		fd_label_3_4_1_1.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_1.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_1.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_1.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_1.setLayoutData(fd_label_3_4_1_1);
-		bktwLabel_3_1_1.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_1.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_1.setText("BKTW");
-
-		final Composite composite_5_9_1_1 = new Composite(compositeACar_4_1_1, SWT.NONE);
-		composite_5_9_1_1.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_1 = new Composite(composite_5_9_1_1, SWT.NONE);
-		composite_8_4_1_1.setLayout(new FillLayout());
-
-		final Label label_5_4_1_1 = new Label(composite_8_4_1_1, SWT.NONE);
-		label_5_4_1_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_1 = new Label(composite_8_4_1_1, SWT.NONE);
-		label_8_4_1_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_1 = new Label(composite_8_4_1_1, SWT.NONE);
-		label_9_4_1_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_1 = new Label(composite_8_4_1_1, SWT.NONE);
-		label_7_4_1_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_1 = new Label(composite_8_4_1_1, SWT.NONE);
-		label_6_4_1_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_1 = new Label(composite_8_4_1_1, SWT.NONE);
-		label_4_4_1_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_rot.gif"));
-		label_4_4_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_1 = new Composite(composite_5_9_1_1, SWT.NONE);
-		composite_7_4_1_1.setLayout(new FillLayout());
-
-		final Label label_11_4_1_1 = new Label(composite_7_4_1_1, SWT.NONE);
-		label_11_4_1_1.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_1.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_1.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_1 = new Label(composite_7_4_1_1, SWT.NONE);
-		wlohmLabel_3_1_1.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_1.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_1.setText("w.lohm");
-
-		final Label bthekLabel_3_1_1 = new Label(composite_7_4_1_1, SWT.NONE);
-		bthekLabel_3_1_1.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_1.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_1.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_1.setText("b.thek");
-
-		final Composite compositeACar_4_1 = new Composite(group_2, SWT.NONE);
-		final RowData rd_compositeACar_4_1 = new RowData();
-		rd_compositeACar_4_1.width = 136;
-		rd_compositeACar_4_1.height = 61;
-		compositeACar_4_1.setLayoutData(rd_compositeACar_4_1);
-		compositeACar_4_1.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1 = new Composite(compositeACar_4_1, SWT.NONE);
-		composite_6_9_1.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1 = new Label(composite_6_9_1, SWT.NONE);
-		bm02Label_3_1.setForeground(SWTResourceManager.getColor(207, 207, 230));
-		bm02Label_3_1.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bm02Label_3_1.setText("Ka03");
-
-		final Composite composite_9_4_1 = new Composite(composite_6_9_1, SWT.NONE);
-		composite_9_4_1.setLayout(new FormLayout());
-		composite_9_4_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bktwLabel_3_1 = new Label(composite_9_4_1, SWT.CENTER);
-		final FormData fd_label_3_4_1 = new FormData();
-		fd_label_3_4_1.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1.top = new FormAttachment(0, 0);
-		fd_label_3_4_1.right = new FormAttachment(0, 68);
-		fd_label_3_4_1.left = new FormAttachment(0, 15);
-		bktwLabel_3_1.setLayoutData(fd_label_3_4_1);
-		bktwLabel_3_1.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1.setText("BKTW");
-
-		final Composite composite_5_9_1 = new Composite(compositeACar_4_1, SWT.NONE);
-		composite_5_9_1.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1 = new Composite(composite_5_9_1, SWT.NONE);
-		composite_8_4_1.setLayout(new FillLayout());
-
-		final Label label_5_4_1 = new Label(composite_8_4_1, SWT.NONE);
-		label_5_4_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK.gif"));
-		label_5_4_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_8_4_1 = new Label(composite_8_4_1, SWT.NONE);
-		label_8_4_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_9_4_1 = new Label(composite_8_4_1, SWT.NONE);
-		label_9_4_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_7_4_1 = new Label(composite_8_4_1, SWT.NONE);
-		label_7_4_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur2.gif"));
-		label_7_4_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_6_4_1 = new Label(composite_8_4_1, SWT.NONE);
-		label_6_4_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT2.gif"));
-		label_6_4_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_4_4_1 = new Label(composite_8_4_1, SWT.NONE);
-		label_4_4_1.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel.gif"));
-		label_4_4_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite composite_7_4_1 = new Composite(composite_5_9_1, SWT.NONE);
-		composite_7_4_1.setLayout(new FillLayout());
-
-		final Label label_11_4_1 = new Label(composite_7_4_1, SWT.NONE);
-		label_11_4_1.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label wlohmLabel_3_1 = new Label(composite_7_4_1, SWT.NONE);
-		wlohmLabel_3_1.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bthekLabel_3_1 = new Label(composite_7_4_1, SWT.NONE);
-		bthekLabel_3_1.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite compositeACar_4_2 = new Composite(group_2, SWT.NONE);
-		final RowData rd_compositeACar_4_2 = new RowData();
-		rd_compositeACar_4_2.width = 136;
-		rd_compositeACar_4_2.height = 61;
-		compositeACar_4_2.setLayoutData(rd_compositeACar_4_2);
-		compositeACar_4_2.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_2 = new Composite(compositeACar_4_2, SWT.NONE);
-		composite_6_9_2.setLayout(new FillLayout());
-
-		final Label bm02Label_3_2 = new Label(composite_6_9_2, SWT.NONE);
-		bm02Label_3_2.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_2.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_2.setText("Ka04");
-
-		final Composite composite_9_4_2 = new Composite(composite_6_9_2, SWT.NONE);
-		composite_9_4_2.setLayout(new FormLayout());
-		composite_9_4_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_2 = new Label(composite_9_4_2, SWT.CENTER);
-		final FormData fd_label_3_4_2 = new FormData();
-		fd_label_3_4_2.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_2.top = new FormAttachment(0, 0);
-		fd_label_3_4_2.right = new FormAttachment(0, 68);
-		fd_label_3_4_2.left = new FormAttachment(0, 15);
-		bktwLabel_3_2.setLayoutData(fd_label_3_4_2);
-		bktwLabel_3_2.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_2.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_2.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_2.setText("RTW");
-
-		final Composite composite_5_9_2 = new Composite(compositeACar_4_2, SWT.NONE);
-		composite_5_9_2.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_2 = new Composite(composite_5_9_2, SWT.NONE);
-		composite_8_4_2.setLayout(new FillLayout());
-
-		final Label label_5_4_2 = new Label(composite_8_4_2, SWT.NONE);
-		label_5_4_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_2 = new Label(composite_8_4_2, SWT.NONE);
-		label_8_4_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_2 = new Label(composite_8_4_2, SWT.NONE);
-		label_9_4_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_2 = new Label(composite_8_4_2, SWT.NONE);
-		label_7_4_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_2 = new Label(composite_8_4_2, SWT.NONE);
-		label_6_4_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_2 = new Label(composite_8_4_2, SWT.NONE);
-		label_4_4_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_4_4_2.setText("Label");
-
-		final Composite composite_7_4_2 = new Composite(composite_5_9_2, SWT.NONE);
-		composite_7_4_2.setLayout(new FillLayout());
-
-		final Label label_11_4_2 = new Label(composite_7_4_2, SWT.NONE);
-		label_11_4_2.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_2.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_2.setText("m.heiß");
-
-		final Label wlohmLabel_3_2 = new Label(composite_7_4_2, SWT.NONE);
-		wlohmLabel_3_2.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_2.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_2.setText("w.lohm");
-
-		final Label bthekLabel_3_2 = new Label(composite_7_4_2, SWT.NONE);
-		bthekLabel_3_2.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_2.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_2.setText("b.thek");
-
-		final Composite compositeACar_4_3 = new Composite(group_2, SWT.NONE);
-		final RowData rd_compositeACar_4_3 = new RowData();
-		rd_compositeACar_4_3.width = 136;
-		rd_compositeACar_4_3.height = 61;
-		compositeACar_4_3.setLayoutData(rd_compositeACar_4_3);
-		compositeACar_4_3.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_3 = new Composite(compositeACar_4_3, SWT.NONE);
-		composite_6_9_3.setLayout(new FillLayout());
-
-		final Label bm02Label_3_3 = new Label(composite_6_9_3, SWT.NONE);
-		bm02Label_3_3.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_3.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_3.setText("Ka05");
-
-		final Composite composite_9_4_3 = new Composite(composite_6_9_3, SWT.NONE);
-		composite_9_4_3.setLayout(new FormLayout());
-		composite_9_4_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_3 = new Label(composite_9_4_3, SWT.CENTER);
-		final FormData fd_label_3_4_3 = new FormData();
-		fd_label_3_4_3.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_3.top = new FormAttachment(0, 0);
-		fd_label_3_4_3.right = new FormAttachment(0, 68);
-		fd_label_3_4_3.left = new FormAttachment(0, 15);
-		bktwLabel_3_3.setLayoutData(fd_label_3_4_3);
-		bktwLabel_3_3.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_3.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_3.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_3.setText("RTW");
-
-		final Composite composite_5_9_3 = new Composite(compositeACar_4_3, SWT.NONE);
-		composite_5_9_3.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_3 = new Composite(composite_5_9_3, SWT.NONE);
-		composite_8_4_3.setLayout(new FillLayout());
-
-		final Label label_5_4_3 = new Label(composite_8_4_3, SWT.NONE);
-		label_5_4_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_3 = new Label(composite_8_4_3, SWT.NONE);
-		label_8_4_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_3 = new Label(composite_8_4_3, SWT.NONE);
-		label_9_4_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_3 = new Label(composite_8_4_3, SWT.NONE);
-		label_7_4_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_3 = new Label(composite_8_4_3, SWT.NONE);
-		label_6_4_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_3 = new Label(composite_8_4_3, SWT.NONE);
-		label_4_4_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-		label_4_4_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_3 = new Composite(composite_5_9_3, SWT.NONE);
-		composite_7_4_3.setLayout(new FillLayout());
-
-		final Label label_11_4_3 = new Label(composite_7_4_3, SWT.NONE);
-		label_11_4_3.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_3.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_3.setText("m.heiß");
-
-		final Label wlohmLabel_3_3 = new Label(composite_7_4_3, SWT.NONE);
-		wlohmLabel_3_3.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_3.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_3.setText("w.lohm");
-
-		final Label bthekLabel_3_3 = new Label(composite_7_4_3, SWT.NONE);
-		bthekLabel_3_3.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_3.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_3.setText("b.thek");
-
-		final Composite compositeACar_4_1_2 = new Composite(group_2, SWT.NONE);
-		final RowData rd_compositeACar_4_1_2 = new RowData();
-		rd_compositeACar_4_1_2.width = 136;
-		rd_compositeACar_4_1_2.height = 61;
-		compositeACar_4_1_2.setLayoutData(rd_compositeACar_4_1_2);
-		compositeACar_4_1_2.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_2 = new Composite(compositeACar_4_1_2, SWT.NONE);
-		composite_6_9_1_2.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_2 = new Label(composite_6_9_1_2, SWT.NONE);
-		bm02Label_3_1_2.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_2.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_2.setText("Ka06");
-
-		final Composite composite_9_4_1_2 = new Composite(composite_6_9_1_2, SWT.NONE);
-		composite_9_4_1_2.setLayout(new FormLayout());
-		composite_9_4_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_2 = new Label(composite_9_4_1_2, SWT.CENTER);
-		final FormData fd_label_3_4_1_2 = new FormData();
-		fd_label_3_4_1_2.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_2.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_2.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_2.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_2.setLayoutData(fd_label_3_4_1_2);
-		bktwLabel_3_1_2.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_2.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_2.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_2.setText("KTW");
-
-		final Composite composite_5_9_1_2 = new Composite(compositeACar_4_1_2, SWT.NONE);
-		composite_5_9_1_2.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_2 = new Composite(composite_5_9_1_2, SWT.NONE);
-		composite_8_4_1_2.setLayout(new FillLayout());
-
-		final Label label_5_4_1_2 = new Label(composite_8_4_1_2, SWT.NONE);
-		label_5_4_1_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK.gif"));
-		label_5_4_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_2 = new Label(composite_8_4_1_2, SWT.NONE);
-		label_8_4_1_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_2 = new Label(composite_8_4_1_2, SWT.NONE);
-		label_9_4_1_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_2 = new Label(composite_8_4_1_2, SWT.NONE);
-		label_7_4_1_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_2 = new Label(composite_8_4_1_2, SWT.NONE);
-		label_6_4_1_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_2 = new Label(composite_8_4_1_2, SWT.NONE);
-		label_4_4_1_2.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_rot.gif"));
-		label_4_4_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_2 = new Composite(composite_5_9_1_2, SWT.NONE);
-		composite_7_4_1_2.setLayout(new FillLayout());
-
-		final Label label_11_4_1_2 = new Label(composite_7_4_1_2, SWT.NONE);
-		label_11_4_1_2.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_2.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_2.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_2 = new Label(composite_7_4_1_2, SWT.NONE);
-		wlohmLabel_3_1_2.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_2.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_2.setText("w.lohm");
-
-		final Label bthekLabel_3_1_2 = new Label(composite_7_4_1_2, SWT.NONE);
-		bthekLabel_3_1_2.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_2.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_2.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_2.setText("b.thek");
-
-		final Composite compositeACar_4_1_3 = new Composite(group_2, SWT.NONE);
-		final RowData rd_compositeACar_4_1_3 = new RowData();
-		rd_compositeACar_4_1_3.width = 136;
-		rd_compositeACar_4_1_3.height = 61;
-		compositeACar_4_1_3.setLayoutData(rd_compositeACar_4_1_3);
-		compositeACar_4_1_3.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_3 = new Composite(compositeACar_4_1_3, SWT.NONE);
-		composite_6_9_1_3.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_3 = new Label(composite_6_9_1_3, SWT.NONE);
-		bm02Label_3_1_3.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		bm02Label_3_1_3.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bm02Label_3_1_3.setText("Ka07");
-
-		final Composite composite_9_4_1_3 = new Composite(composite_6_9_1_3, SWT.NONE);
-		composite_9_4_1_3.setLayout(new FormLayout());
-		composite_9_4_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label bktwLabel_3_1_3 = new Label(composite_9_4_1_3, SWT.CENTER);
-		final FormData fd_label_3_4_1_3 = new FormData();
-		fd_label_3_4_1_3.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_3.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_3.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_3.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_3.setLayoutData(fd_label_3_4_1_3);
-		bktwLabel_3_1_3.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_3.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_3.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_3.setText("RTW");
-
-		final Composite composite_5_9_1_3 = new Composite(compositeACar_4_1_3, SWT.NONE);
-		composite_5_9_1_3.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_3 = new Composite(composite_5_9_1_3, SWT.NONE);
-		composite_8_4_1_3.setLayout(new FillLayout());
-
-		final Label label_5_4_1_3 = new Label(composite_8_4_1_3, SWT.NONE);
-		label_5_4_1_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-		label_5_4_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_8_4_1_3 = new Label(composite_8_4_1_3, SWT.NONE);
-		label_8_4_1_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_9_4_1_3 = new Label(composite_8_4_1_3, SWT.NONE);
-		label_9_4_1_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_7_4_1_3 = new Label(composite_8_4_1_3, SWT.NONE);
-		label_7_4_1_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_6_4_1_3 = new Label(composite_8_4_1_3, SWT.NONE);
-		label_6_4_1_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Label label_4_4_1_3 = new Label(composite_8_4_1_3, SWT.NONE);
-		label_4_4_1_3.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_gelb.gif"));
-		label_4_4_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-
-		final Composite composite_7_4_1_3 = new Composite(composite_5_9_1_3, SWT.NONE);
-		composite_7_4_1_3.setLayout(new FillLayout());
-
-		final Label label_11_4_1_3 = new Label(composite_7_4_1_3, SWT.NONE);
-		label_11_4_1_3.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_3.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		label_11_4_1_3.setText("m.heiß");
-
-		final Label wlohmLabel_3_1_3 = new Label(composite_7_4_1_3, SWT.NONE);
-		wlohmLabel_3_1_3.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_3.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		wlohmLabel_3_1_3.setText("w.lohm");
-
-		final Label bthekLabel_3_1_3 = new Label(composite_7_4_1_3, SWT.NONE);
-		bthekLabel_3_1_3.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_3.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_3.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		bthekLabel_3_1_3.setText("b.thek");
-
-		final Composite compositeACar_4_1_4 = new Composite(group_2, SWT.NONE);
-		final RowData rd_compositeACar_4_1_4 = new RowData();
-		rd_compositeACar_4_1_4.width = 136;
-		rd_compositeACar_4_1_4.height = 61;
-		compositeACar_4_1_4.setLayoutData(rd_compositeACar_4_1_4);
-		compositeACar_4_1_4.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_4 = new Composite(compositeACar_4_1_4, SWT.NONE);
-		composite_6_9_1_4.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_4 = new Label(composite_6_9_1_4, SWT.NONE);
-		bm02Label_3_1_4.setForeground(SWTResourceManager.getColor(207, 207, 230));
-		bm02Label_3_1_4.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bm02Label_3_1_4.setText("Ka08");
-
-		final Composite composite_9_4_1_4 = new Composite(composite_6_9_1_4, SWT.NONE);
-		composite_9_4_1_4.setLayout(new FormLayout());
-		composite_9_4_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bktwLabel_3_1_4 = new Label(composite_9_4_1_4, SWT.CENTER);
-		final FormData fd_label_3_4_1_4 = new FormData();
-		fd_label_3_4_1_4.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_4.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_4.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_4.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_4.setLayoutData(fd_label_3_4_1_4);
-		bktwLabel_3_1_4.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_4.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_4.setText("BKTW");
-
-		final Composite composite_5_9_1_4 = new Composite(compositeACar_4_1_4, SWT.NONE);
-		composite_5_9_1_4.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_4 = new Composite(composite_5_9_1_4, SWT.NONE);
-		composite_8_4_1_4.setLayout(new FillLayout());
-
-		final Label label_5_4_1_4 = new Label(composite_8_4_1_4, SWT.NONE);
-		label_5_4_1_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK.gif"));
-		label_5_4_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_8_4_1_4 = new Label(composite_8_4_1_4, SWT.NONE);
-		label_8_4_1_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_9_4_1_4 = new Label(composite_8_4_1_4, SWT.NONE);
-		label_9_4_1_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_7_4_1_4 = new Label(composite_8_4_1_4, SWT.NONE);
-		label_7_4_1_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_6_4_1_4 = new Label(composite_8_4_1_4, SWT.NONE);
-		label_6_4_1_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_4_4_1_4 = new Label(composite_8_4_1_4, SWT.NONE);
-		label_4_4_1_4.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel.gif"));
-		label_4_4_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite composite_7_4_1_4 = new Composite(composite_5_9_1_4, SWT.NONE);
-		composite_7_4_1_4.setLayout(new FillLayout());
-
-		final Label label_11_4_1_4 = new Label(composite_7_4_1_4, SWT.NONE);
-		label_11_4_1_4.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_4.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label wlohmLabel_3_1_4 = new Label(composite_7_4_1_4, SWT.NONE);
-		wlohmLabel_3_1_4.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_4.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bthekLabel_3_1_4 = new Label(composite_7_4_1_4, SWT.NONE);
-		bthekLabel_3_1_4.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_4.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_4.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite compositeACar_4_1_5 = new Composite(group_2, SWT.NONE);
-		final RowData rd_compositeACar_4_1_5 = new RowData();
-		rd_compositeACar_4_1_5.width = 136;
-		rd_compositeACar_4_1_5.height = 61;
-		compositeACar_4_1_5.setLayoutData(rd_compositeACar_4_1_5);
-		compositeACar_4_1_5.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_6_9_1_5 = new Composite(compositeACar_4_1_5, SWT.NONE);
-		composite_6_9_1_5.setLayout(new FillLayout());
-
-		final Label bm02Label_3_1_5 = new Label(composite_6_9_1_5, SWT.NONE);
-		bm02Label_3_1_5.setForeground(SWTResourceManager.getColor(207, 207, 230));
-		bm02Label_3_1_5.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		bm02Label_3_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bm02Label_3_1_5.setText("Ka19");
-
-		final Composite composite_9_4_1_5 = new Composite(composite_6_9_1_5, SWT.NONE);
-		composite_9_4_1_5.setLayout(new FormLayout());
-		composite_9_4_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bktwLabel_3_1_5 = new Label(composite_9_4_1_5, SWT.CENTER);
-		final FormData fd_label_3_4_1_5 = new FormData();
-		fd_label_3_4_1_5.bottom = new FormAttachment(0, 15);
-		fd_label_3_4_1_5.top = new FormAttachment(0, 0);
-		fd_label_3_4_1_5.right = new FormAttachment(0, 68);
-		fd_label_3_4_1_5.left = new FormAttachment(0, 15);
-		bktwLabel_3_1_5.setLayoutData(fd_label_3_4_1_5);
-		bktwLabel_3_1_5.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		bktwLabel_3_1_5.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		bktwLabel_3_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-		bktwLabel_3_1_5.setText("STW");
-
-		final Composite composite_5_9_1_5 = new Composite(compositeACar_4_1_5, SWT.NONE);
-		composite_5_9_1_5.setLayout(new FillLayout(SWT.VERTICAL));
-
-		final Composite composite_8_4_1_5 = new Composite(composite_5_9_1_5, SWT.NONE);
-		composite_8_4_1_5.setLayout(new FillLayout());
-
-		final Label label_5_4_1_5 = new Label(composite_8_4_1_5, SWT.NONE);
-		label_5_4_1_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK.gif"));
-		label_5_4_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_8_4_1_5 = new Label(composite_8_4_1_5, SWT.NONE);
-		label_8_4_1_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-		label_8_4_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_9_4_1_5 = new Label(composite_8_4_1_5, SWT.NONE);
-		label_9_4_1_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-		label_9_4_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_7_4_1_5 = new Label(composite_8_4_1_5, SWT.NONE);
-		label_7_4_1_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-		label_7_4_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_6_4_1_5 = new Label(composite_8_4_1_5, SWT.NONE);
-		label_6_4_1_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-		label_6_4_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label label_4_4_1_5 = new Label(composite_8_4_1_5, SWT.NONE);
-		label_4_4_1_5.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel.gif"));
-		label_4_4_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Composite composite_7_4_1_5 = new Composite(composite_5_9_1_5, SWT.NONE);
-		composite_7_4_1_5.setLayout(new FillLayout());
-
-		final Label label_11_4_1_5 = new Label(composite_7_4_1_5, SWT.NONE);
-		label_11_4_1_5.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		label_11_4_1_5.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		label_11_4_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label wlohmLabel_3_1_5 = new Label(composite_7_4_1_5, SWT.NONE);
-		wlohmLabel_3_1_5.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		wlohmLabel_3_1_5.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		wlohmLabel_3_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
-
-		final Label bthekLabel_3_1_5 = new Label(composite_7_4_1_5, SWT.NONE);
-		bthekLabel_3_1_5.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		bthekLabel_3_1_5.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-		bthekLabel_3_1_5.setBackground(SWTResourceManager.getColor(228, 236, 238));
+		groupBezirk.setLayout(rowLayout_7);
+		groupBezirk.setText("Bezirk");
+		
+		
+		/**
+		 * cars
+		 */
+		
+		//cars of Bruck
+		//TODO: get the ArrayList from the database
+		MobilePhoneDetail mp = new MobilePhoneDetail("Bm01","0664/1234567");
+		VehicleDetail v1 = new VehicleDetail(1,"Bm01","RTW","a.schw","p.anze","j.made",mp, "the notes 1", "BM", "BM", true,false,1);
+		VehicleDetail v2 = new VehicleDetail(1,"Bm02","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "KA", false,false,2);
+		VehicleDetail v3 = new VehicleDetail(1,"Bm03","BKTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,3);
+		VehicleDetail v4 = new VehicleDetail(1,"Bm04","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,3);
+		VehicleDetail v5 = new VehicleDetail(1,"Bm05","BKTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,2);
+		VehicleDetail v6 = new VehicleDetail(1,"Bm06","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,3);
+		VehicleDetail v7 = new VehicleDetail(1,"Bm07","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,1);
+		VehicleDetail v8 = new VehicleDetail(1,"Bm08","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,2);
+		VehicleDetail v9 = new VehicleDetail(1,"Bm09","KTW","r.hart","s.krau","p.stri",mp, null, "BM", "KA", true,false,3);
+		VehicleDetail v10 = new VehicleDetail(1,"Bm10","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "KA", false,false,2);
+		VehicleDetail v11 = new VehicleDetail(1,"Bm11","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", true,false,2);
+		VehicleDetail v12 = new VehicleDetail(1,"Bm12","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,3);
+		ArrayList<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2,v3,v4,v5,v6,v8,v9,v10,v11,v12));
+		
+		CarCompositeManager ccm = new CarCompositeManager();
+		for(VehicleDetail vehicle: vehicleList)
+		{
+			final CarComposite cc = ccm.getCarComposite(groupBruckMur, vehicle);
+			cc.setParent(groupBruckMur);
+		}
+		
+		
+
+		/**
+		 * Layout
+		 */
 		final GroupLayout groupLayout = new GroupLayout(composite_1);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(GroupLayout.TRAILING)
 				.add(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.add(groupLayout.createParallelGroup(GroupLayout.TRAILING)
-						.add(GroupLayout.LEADING, group_7, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, group_6, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, group_4, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, group_5, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, group_3, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, group_2, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, group_1, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE))
-					.addContainerGap())
+						.add(GroupLayout.LEADING, groupBezirk, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, groupBreitenau, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, groupThörl, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, groupTurnau, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, groupMarein, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, groupKapfenberg, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, groupBruckMur, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE))
+						.addContainerGap())
 		);
+		System.out.println("GroupLayout horizontal erledigt");
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(GroupLayout.LEADING)
 				.add(groupLayout.createSequentialGroup()
-					.add(group_1, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)
+					.add(groupBruckMur, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(group_2, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+					.add(groupKapfenberg, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(group_3, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+					.add(groupMarein, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.add(19, 19, 19)
-					.add(group_4, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+					.add(groupThörl, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.add(19, 19, 19)
-					.add(group_5, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+					.add(groupTurnau, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.add(19, 19, 19)
-					.add(group_6, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+					.add(groupBreitenau, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.add(19, 19, 19)
-					.add(group_7, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+					.add(groupBezirk, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(94, Short.MAX_VALUE))
 		);
+
 		composite_1.setLayout(groupLayout);
+
+		
+		
+		
+//regular car composite
+		
+//		//One car of Turnau
+//		final Composite compositeACar_4_8 = new Composite(groupTurnau, SWT.NONE);
+//		final RowData rd_compositeACar_4_8 = new RowData();
+//		rd_compositeACar_4_8.width = 136;
+//		rd_compositeACar_4_8.height = 61;
+//		compositeACar_4_8.setLayoutData(rd_compositeACar_4_8);
+//		compositeACar_4_8.setLayout(new FillLayout(SWT.VERTICAL));
+//
+//		final Composite composite_6_9_8 = new Composite(compositeACar_4_8, SWT.NONE);
+//		composite_6_9_8.setLayout(new FillLayout());
+//
+//		final Label bm02Label_3_8 = new Label(composite_6_9_8, SWT.NONE);
+//		bm02Label_3_8.setForeground(SWTResourceManager.getColor(0, 0, 128));
+//		bm02Label_3_8.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
+//		bm02Label_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//		bm02Label_3_8.setText("Tu18");
+//
+//		final Composite composite_9_4_8 = new Composite(composite_6_9_8, SWT.NONE);
+//		composite_9_4_8.setLayout(new FormLayout());
+//		composite_9_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//
+//		final Label bktwLabel_3_8 = new Label(composite_9_4_8, SWT.CENTER);
+//		final FormData fd_label_3_4_8 = new FormData();
+//		fd_label_3_4_8.bottom = new FormAttachment(0, 15);
+//		fd_label_3_4_8.top = new FormAttachment(0, 0);
+//		fd_label_3_4_8.right = new FormAttachment(0, 68);
+//		fd_label_3_4_8.left = new FormAttachment(0, 15);
+//		bktwLabel_3_8.setLayoutData(fd_label_3_4_8);
+//		bktwLabel_3_8.setForeground(SWTResourceManager.getColor(255, 255, 255));
+//		bktwLabel_3_8.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
+//		bktwLabel_3_8.setBackground(SWTResourceManager.getColor(228, 236, 238));
+//		bktwLabel_3_8.setText("RTW");
+//
+//		final Composite composite_5_9_8 = new Composite(compositeACar_4_8, SWT.NONE);
+//		composite_5_9_8.setLayout(new FillLayout(SWT.VERTICAL));
+//
+//		final Composite composite_8_4_8 = new Composite(composite_5_9_8, SWT.NONE);
+//		composite_8_4_8.setLayout(new FillLayout());
+//
+//		final Label label_5_4_8 = new Label(composite_8_4_8, SWT.NONE);
+//		label_5_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
+//		label_5_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//
+//		final Label label_8_4_8 = new Label(composite_8_4_8, SWT.NONE);
+//		label_8_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
+//		label_8_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//
+//		final Label label_9_4_8 = new Label(composite_8_4_8, SWT.NONE);
+//		label_9_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
+//		label_9_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//
+//		final Label label_7_4_8 = new Label(composite_8_4_8, SWT.NONE);
+//		label_7_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
+//		label_7_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//
+//		final Label label_6_4_8 = new Label(composite_8_4_8, SWT.NONE);
+//		label_6_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
+//		label_6_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//
+//		final Label label_4_4_8 = new Label(composite_8_4_8, SWT.NONE);
+//		label_4_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
+//		label_4_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//
+//		final Composite composite_7_4_8 = new Composite(composite_5_9_8, SWT.NONE);
+//		composite_7_4_8.setLayout(new FillLayout());
+//
+//		final Label label_11_4_8 = new Label(composite_7_4_8, SWT.NONE);
+//		label_11_4_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
+//		label_11_4_8.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
+//		label_11_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//		label_11_4_8.setText("m.heiß");
+//
+//		final Label wlohmLabel_3_8 = new Label(composite_7_4_8, SWT.NONE);
+//		wlohmLabel_3_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
+//		wlohmLabel_3_8.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
+//		wlohmLabel_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//		wlohmLabel_3_8.setText("w.lohm");
+//
+//		final Label bthekLabel_3_8 = new Label(composite_7_4_8, SWT.NONE);
+//		bthekLabel_3_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
+//		bthekLabel_3_8.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
+//		bthekLabel_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
+//		bthekLabel_3_8.setText("b.thek");
+//
+//	
+		
+		
+		
+		
+		
 
 		//gridLayout.makeColumnsEqualWidth = true;
 
-		
 		//---> PersonalView
 //		final Composite composite = new Composite(sashForm, SWT.NONE);
 //		composite.setLayout(new FillLayout());
@@ -2733,15 +627,15 @@ public class VehiclesView extends ViewPart
 //		final TabItem tagesinformationTabItem = new TabItem(tabFolder, SWT.NONE);
 //		tagesinformationTabItem.setText("Breitenau");
 //
-//		final Group bruckAnDerGroup_1 = new Group(tabFolder, SWT.NONE);
+//		final Group bruckAnDergroupBruckMur = new Group(tabFolder, SWT.NONE);
 //		final RowLayout rowLayout = new RowLayout();
 //		rowLayout.spacing = 5;
 //		rowLayout.pack = false;
-//		bruckAnDerGroup_1.setLayout(rowLayout);
-//		bruckAnDerGroup_1.setText("Bruck an der Mur");
-//		tagesinformationTabItem.setControl(bruckAnDerGroup_1);
+//		bruckAnDergroupBruckMur.setLayout(rowLayout);
+//		bruckAnDergroupBruckMur.setText("Bruck an der Mur");
+//		tagesinformationTabItem.setControl(bruckAnDergroupBruckMur);
 //
-//		final Composite compositeACar_1 = new Composite(bruckAnDerGroup_1, SWT.NONE);
+//		final Composite compositeACar_1 = new Composite(bruckAnDergroupBruckMur, SWT.NONE);
 //		final RowData rd_compositeACar_1 = new RowData();
 //		rd_compositeACar_1.width = 136;
 //		rd_compositeACar_1.height = 61;
@@ -2826,7 +720,7 @@ public class VehiclesView extends ViewPart
 //		bthekLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
 //		bthekLabel.setText("b.thek");
 //
-//		final Group group = new Group(bruckAnDerGroup_1, SWT.NONE);
+//		final Group group = new Group(bruckAnDergroupBruckMur, SWT.NONE);
 //		group.setLayoutData(new RowData());
 //		group.setLayout(new RowLayout());
 //		group.setText("Thörl");
@@ -2914,7 +808,7 @@ public class VehiclesView extends ViewPart
 //		label_10.setBackground(SWTResourceManager.getColor(209, 229, 249));
 //		label_10.setText("b.thek");
 //
-//		final Composite compositeACar_2 = new Composite(bruckAnDerGroup_1, SWT.NONE);
+//		final Composite compositeACar_2 = new Composite(bruckAnDergroupBruckMur, SWT.NONE);
 //		final RowData rd_compositeACar_2 = new RowData();
 //		rd_compositeACar_2.width = 136;
 //		rd_compositeACar_2.height = 61;
@@ -2997,7 +891,7 @@ public class VehiclesView extends ViewPart
 //		bthekLabel_1.setBackground(SWTResourceManager.getColor(228, 236, 238));
 //		bthekLabel_1.setText("Label");
 //
-//		final Composite compositeACar_4 = new Composite(bruckAnDerGroup_1, SWT.NONE);
+//		final Composite compositeACar_4 = new Composite(bruckAnDergroupBruckMur, SWT.NONE);
 //		final RowData rd_compositeACar_4 = new RowData();
 //		rd_compositeACar_4.width = 136;
 //		rd_compositeACar_4.height = 61;
@@ -3226,8 +1120,7 @@ public class VehiclesView extends ViewPart
 		//
 	}
 	
-	
-	
+
 	/**
      * Passing the focus request to the viewer's control.
      */
@@ -3236,5 +1129,6 @@ public class VehiclesView extends ViewPart
         //this.idText.setFocus();
     }
 
+	
 }
 
