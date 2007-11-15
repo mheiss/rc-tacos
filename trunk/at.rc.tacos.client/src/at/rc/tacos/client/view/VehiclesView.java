@@ -43,7 +43,6 @@ public class VehiclesView extends ViewPart
 	 */
 	public void createPartControl(Composite parent) {
 
-		System.out.println("in createPartcontrol(Composite parent) der VehiclesView!!!");
 		parent.setLayout(new FillLayout());
 
 
@@ -51,7 +50,6 @@ public class VehiclesView extends ViewPart
 
 		final Composite composite_1 = new Composite(parent, SWT.NONE);
 		composite_1.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		System.out.println("nach new Composite (parent,s....)");
 
 		
 		/**
@@ -177,7 +175,7 @@ public class VehiclesView extends ViewPart
 						.add(GroupLayout.LEADING, groupBruckMur, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE))
 						.addContainerGap())
 		);
-		System.out.println("GroupLayout horizontal erledigt");
+
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(GroupLayout.LEADING)
 				.add(groupLayout.createSequentialGroup()
