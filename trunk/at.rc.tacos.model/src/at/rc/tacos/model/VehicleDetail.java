@@ -10,21 +10,43 @@ package at.rc.tacos.model;
 public class VehicleDetail 
 {
 	private int vehicleId;
-	private StaffMember driverName;
-	private StaffMember paramedicIName;
-	private StaffMember paramedicIIName;
+	private String vehicleName;
+	private String vehicleType;
+	private String driverName;
+	private String paramedicIName;
+	private String paramedicIIName;
 	private MobilePhoneDetail mobilePhone;
 	private String vehicleNotes;
 	private String basicStation;
 	private String currentStation;
+	private boolean readyForAction;
+	private boolean outOfOrder;
+	private int mostImportantTransportStatus;
 	
 	
 	/**
 	 * Constructors
 	 */
 	
+
+	
+
+
+
+
+	/**
+	 * Setter&Getter
+	 */
+	
+	
+
+	
+
+
 	/**
 	 * @param vehicleId
+	 * @param vehicleName
+	 * @param vehicleType
 	 * @param driverName
 	 * @param paramedicIName
 	 * @param paramedicIIName
@@ -32,13 +54,19 @@ public class VehicleDetail
 	 * @param vehicleNotes
 	 * @param basicStation
 	 * @param currentStation
+	 * @param readyForAction
+	 * @param outOfOrder
+	 * @param mostImportantTransportStatus
 	 */
-	public VehicleDetail(int vehicleId, StaffMember driverName,
-			StaffMember paramedicIName, StaffMember paramedicIIName,
+	public VehicleDetail(int vehicleId, String vehicleName, String vehicleType,
+			String driverName, String paramedicIName, String paramedicIIName,
 			MobilePhoneDetail mobilePhone, String vehicleNotes,
-			String basicStation, String currentStation) {
+			String basicStation, String currentStation, boolean readyForAction,
+			boolean outOfOrder, int mostImportantTransportStatus) {
 		super();
 		this.vehicleId = vehicleId;
+		this.vehicleName = vehicleName;
+		this.vehicleType = vehicleType;
 		this.driverName = driverName;
 		this.paramedicIName = paramedicIName;
 		this.paramedicIIName = paramedicIIName;
@@ -46,12 +74,85 @@ public class VehicleDetail
 		this.vehicleNotes = vehicleNotes;
 		this.basicStation = basicStation;
 		this.currentStation = currentStation;
+		this.readyForAction = readyForAction;
+		this.outOfOrder = outOfOrder;
+		this.mostImportantTransportStatus = mostImportantTransportStatus;
 	}
 
+
+
 	/**
-	 * Setter&Getter
+	 * @return the driverName
 	 */
-	
+	public String getDriverName() {
+		return driverName;
+	}
+
+
+
+	/**
+	 * @param driverName the driverName to set
+	 */
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+
+
+
+	/**
+	 * @return the paramedicIName
+	 */
+	public String getParamedicIName() {
+		return paramedicIName;
+	}
+
+
+
+	/**
+	 * @param paramedicIName the paramedicIName to set
+	 */
+	public void setParamedicIName(String paramedicIName) {
+		this.paramedicIName = paramedicIName;
+	}
+
+
+
+	/**
+	 * @return the paramedicIIName
+	 */
+	public String getParamedicIIName() {
+		return paramedicIIName;
+	}
+
+
+
+	/**
+	 * @param paramedicIIName the paramedicIIName to set
+	 */
+	public void setParamedicIIName(String paramedicIIName) {
+		this.paramedicIIName = paramedicIIName;
+	}
+
+
+
+	/**
+	 * @return the readyForAction
+	 */
+	public boolean isReadyForAction() {
+		return readyForAction;
+	}
+
+
+
+	/**
+	 * @param readyForAction the readyForAction to set
+	 */
+	public void setReadyForAction(boolean readyForAction) {
+		this.readyForAction = readyForAction;
+	}
+
+
+
 	/**
 	 * @return the vehicleId
 	 */
@@ -65,54 +166,6 @@ public class VehicleDetail
 	 */
 	public void setVehicleId(int vehicleId) {
 		this.vehicleId = vehicleId;
-	}
-
-
-	/**
-	 * @return the driverName
-	 */
-	public StaffMember getDriverName() {
-		return driverName;
-	}
-
-
-	/**
-	 * @param driverName the driverName to set
-	 */
-	public void setDriverName(StaffMember driverName) {
-		this.driverName = driverName;
-	}
-
-
-	/**
-	 * @return the paramedicIName
-	 */
-	public StaffMember getParameticIName() {
-		return paramedicIName;
-	}
-
-
-	/**
-	 * @param paramedicIName the paramedicIName to set
-	 */
-	public void setParameticIName(StaffMember paramedicIName) {
-		this.paramedicIName = paramedicIName;
-	}
-
-
-	/**
-	 * @return the paramedicIIName
-	 */
-	public StaffMember getParameticIIName() {
-		return paramedicIIName;
-	}
-
-
-	/**
-	 * @param paramedicIIName the paramedicIIName to set
-	 */
-	public void setParameticIIName(StaffMember paramedicIIName) {
-		this.paramedicIIName = paramedicIIName;
 	}
 
 
@@ -173,5 +226,79 @@ public class VehicleDetail
 	 */
 	public void setCurrentStation(String currentStation) {
 		this.currentStation = currentStation;
+	}
+
+
+	/**
+	 * @return the outOfOrder
+	 */
+	public boolean isOutOfOrder() {
+		return outOfOrder;
+	}
+
+
+	/**
+	 * @param outOfOrder the outOfOrder to set
+	 */
+	public void setOutOfOrder(boolean outOfOrder) {
+		this.outOfOrder = outOfOrder;
+	}
+
+
+
+	/**
+	 * @return the mostImportantTransportStatus
+	 */
+	public int getMostImportantTransportStatus() {
+		return mostImportantTransportStatus;
+	}
+
+
+
+	/**
+	 * @param mostImportantTransportStatus the mostImportantTransportStatus to set
+	 */
+	public void setMostImportantTransportStatus(int mostImportantTransportStatus) {
+		this.mostImportantTransportStatus = mostImportantTransportStatus;
+	}
+
+
+
+
+
+	/**
+	 * @return the vehicleName
+	 */
+	public String getVehicleName() {
+		return vehicleName;
+	}
+
+
+
+
+
+	/**
+	 * @param vehicleName the vehicleName to set
+	 */
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
+	}
+
+
+
+	/**
+	 * @return the vehicleType
+	 */
+	public String getVehicleType() {
+		return vehicleType;
+	}
+
+
+
+	/**
+	 * @param vehicleType the vehicleType to set
+	 */
+	public void setVehicleType(String vehicleType) {
+		this.vehicleType = vehicleType;
 	}
 }
