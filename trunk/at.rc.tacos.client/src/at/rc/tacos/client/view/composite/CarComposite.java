@@ -19,6 +19,8 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  */
 
 //TODO: set ToolTips for the Components
+//TODO: use Interface Transport Status for mostImportantTransportStatus - for details, please see ITransportStatus
+
 
 public class CarComposite extends Composite
 {
