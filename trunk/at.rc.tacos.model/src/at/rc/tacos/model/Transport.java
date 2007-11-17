@@ -1,16 +1,14 @@
 package at.rc.tacos.model;
 
-
 import java.util.Date;
 
-
+import at.rc.tacos.common.AbstractMessage;
 
 /**
  * Specifies the transport details
  * @author b.thek
  */
-
-public class Transport 
+public class Transport extends AbstractMessage
 {
 	private String fromStreet;
 	private String fromNumber;
@@ -53,218 +51,121 @@ public class Transport
 	private boolean towardsMariazell;
 	private boolean towardsDistrict;
 	private boolean longDistanceTrip;
-	
-	
-	
-	/**
-	 * Constructors
-	 */
-	public Transport(){}
-
 
 	/**
-	 * @param fromStreet
-	 * @param fromNumber
-	 * @param fromCity
-	 * @param patient
-	 * @param toStreet
-	 * @param toNumber
-	 * @param toCity
-	 * @param kindOfTransport
-	 * @param notifierDetail
-	 * @param backTransport
-	 * @param accompanyingPerson
-	 * @param emergencyPhone
-	 * @param kindOfIllness
-	 * @param transportNotes
-	 * @param responsibleStation
-	 * @param realStation
-	 * @param dateOfTransport
-	 * @param plannedStartOfTransportTime
-	 * @param plannedTimeAtPatient
-	 * @param appointmentTimeAtDestination
-	 * @param emergencyDoctoralarmingTime
-	 * @param helicopterAlarmingTime
-	 * @param blueLightToPatient
-	 * @param blueLightToGoal
-	 * @param dfAlarmingTime
-	 * @param brkdtAlarmingTime
-	 * @param firebrigadeAlarmingTime
-	 * @param mountainRescueServiceAlarmingTime
-	 * @param policeAlarmingTime
-	 * @param feedback
-	 * @param towardsGraz
-	 * @param towardsLeoben
-	 * @param towardsWien
-	 * @param towardsMariazell
-	 * @param towardsDistrict
-	 * @param longDistanceTrip
+	 * Default class constructors
 	 */
-	public Transport(String fromStreet, String fromNumber, String fromCity,
-			Patient patient, String toStreet, String toNumber, String toCity,
-			String kindOfTransport, NotifierDetail notifierDetail,
-			boolean backTransport, boolean accompanyingPerson,
-			boolean emergencyPhone, String kindOfIllness, String transportNotes,
-			String responsibleStation, String realStation, Date dateOfTransport,
-			long plannedStartOfTransportTime, long plannedTimeAtPatient,
-			long appointmentTimeAtDestination,
-			long emergencyDoctoralarmingTime, long helicopterAlarmingTime,
-			boolean blueLightToPatient, boolean blueLightToGoal,
-			long dfAlarmingTime, long brkdtAlarmingTime,
-			long firebrigadeAlarmingTime,
-			long mountainRescueServiceAlarmingTime, long policeAlarmingTime,
-			String feedback, boolean towardsGraz, boolean towardsLeoben,
-			boolean towardsWien, boolean towardsMariazell,
-			boolean towardsDistrict, boolean longDistanceTrip) 
+	public Transport()
 	{
-		this.fromStreet = fromStreet;
-		this.fromNumber = fromNumber;
-		this.fromCity = fromCity;
-		this.patient = patient;
-		this.toStreet = toStreet;
-		this.toNumber = toNumber;
-		this.toCity = toCity;
-		this.kindOfTransport = kindOfTransport;
-		this.notifierDetail = notifierDetail;
-		this.backTransport = backTransport;
-		this.accompanyingPerson = accompanyingPerson;
-		this.emergencyPhone = emergencyPhone;
-		this.kindOfIllness = kindOfIllness;
-		this.transportNotes = transportNotes;
-		this.responsibleStation = responsibleStation;
-		this.realStation = realStation;
-		this.dateOfTransport = dateOfTransport;
-		this.plannedStartOfTransportTime = plannedStartOfTransportTime;
-		this.plannedTimeAtPatient = plannedTimeAtPatient;
-		this.appointmentTimeAtDestination = appointmentTimeAtDestination;
-		this.emergencyDoctoralarmingTime = emergencyDoctoralarmingTime;
-		this.helicopterAlarmingTime = helicopterAlarmingTime;
-		this.blueLightToPatient = blueLightToPatient;
-		this.blueLightToGoal = blueLightToGoal;
-		this.dfAlarmingTime = dfAlarmingTime;
-		this.brkdtAlarmingTime = brkdtAlarmingTime;
-		this.firebrigadeAlarmingTime = firebrigadeAlarmingTime;
-		this.mountainRescueServiceAlarmingTime = mountainRescueServiceAlarmingTime;
-		this.policeAlarmingTime = policeAlarmingTime;
-		this.feedback = feedback;
-		this.towardsGraz = towardsGraz;
-		this.towardsLeoben = towardsLeoben;
-		this.towardsWien = towardsWien;
-		this.towardsMariazell = towardsMariazell;
-		this.towardsDistrict = towardsDistrict;
-		this.longDistanceTrip = longDistanceTrip;
+	    super("transport");
 	}
 
-
-
-	/**
-	 * Getter&Setter
-	 */
+	//GETTERS AND SETTERS
 	
 	/**
 	 * @return the fromStreet
 	 */
-	public String getFromStreet() {
+	public String getFromStreet() 
+	{
 		return fromStreet;
 	}
-
 
 	/**
 	 * @param fromStreet the fromStreet to set
 	 */
-	public void setFromStreet(String fromStreet) {
+	public void setFromStreet(String fromStreet) 
+	{
 		this.fromStreet = fromStreet;
 	}
 
-
 	/**
+	 * Returns the street number, floor, number of the flat if available
 	 * @return the fromNumber
-	 * Contains: street number, floor, number of the flat if available
 	 */
-	public String getFromNumber() {
+	public String getFromNumber() 
+	{
 		return fromNumber;
 	}
-
 
 	/**
 	 * @param fromNumber the fromNumber to set
 	 */
-	public void setFromNumber(String fromNumber) {
+	public void setFromNumber(String fromNumber) 
+	{
 		this.fromNumber = fromNumber;
 	}
-
 
 	/**
 	 * @return the fromCity
 	 */
-	public String getFromCity() {
+	public String getFromCity() 
+	{
 		return fromCity;
 	}
-
 
 	/**
 	 * @param fromCity the fromCity to set
 	 */
-	public void setFromCity(String fromCity) {
+	public void setFromCity(String fromCity) 
+	{
 		this.fromCity = fromCity;
 	}
-
 
 	/**
 	 * @return the patient
 	 */
-	public Patient getPatient() {
+	public Patient getPatient() 
+	{
 		return patient;
 	}
-
 
 	/**
 	 * @param patient the patient to set
 	 */
-	public void setPatient(Patient patient) {
+	public void setPatient(Patient patient)
+	{
 		this.patient = patient;
 	}
-
 
 	/**
 	 * @return the toStreet
 	 */
-	public String getToStreet() {
+	public String getToStreet() 
+	{
 		return toStreet;
 	}
-
 
 	/**
 	 * @param toStreet the toStreet to set
 	 */
-	public void setToStreet(String toStreet) {
+	public void setToStreet(String toStreet) 
+	{
 		this.toStreet = toStreet;
 	}
-
 
 	/**
 	 * @return the toNumber
 	 */
-	public String getToNumber() {
+	public String getToNumber() 
+	{
 		return toNumber;
 	}
-
 
 	/**
 	 * @param toNumber the toNumber to set
 	 */
-	public void setToNumber(String toNumber) {
+	public void setToNumber(String toNumber) 
+	{
 		this.toNumber = toNumber;
 	}
-
 
 	/**
 	 * @return the toCity
 	 */
-	public String getToCity() {
+	public String getToCity() 
+	{
 		return toCity;
 	}
-
 
 	/**
 	 * @param toCity the toCity to set
@@ -275,263 +176,265 @@ public class Transport
 
 
 	/**
-	 * @return the kindOfTransport
 	 * Possible: 'gehend', 'sitzend', 'liegend', Rollstuhl'
+	 * @return the kindOfTransport
 	 */
-	public String getKindOfTransport() {
+	public String getKindOfTransport() 
+	{
 		return kindOfTransport;
 	}
-
 
 	/**
 	 * @param kindOfTransport the kindOfTransport to set
 	 */
-	public void setKindOfTransport(String kindOfTransport) {
+	public void setKindOfTransport(String kindOfTransport) 
+	{
 		this.kindOfTransport = kindOfTransport;
 	}
-
 
 	/**
 	 * @return the notifierDetail
 	 */
-	public NotifierDetail getNotifierDetail() {
+	public NotifierDetail getNotifierDetail() 
+	{
 		return notifierDetail;
 	}
-
 
 	/**
 	 * @param notifierDetail the notifierDetail to set
 	 */
-	public void setNotifierDetail(NotifierDetail notifierDetail) {
+	public void setNotifierDetail(NotifierDetail notifierDetail) 
+	{
 		this.notifierDetail = notifierDetail;
 	}
-
 
 	/**
 	 * @return the backTransport
 	 */
-	public boolean isBackTransport() {
+	public boolean isBackTransport() 
+	{
 		return backTransport;
 	}
-
 
 	/**
 	 * @param backTransport the backTransport to set
 	 */
-	public void setBackTransport(boolean backTransport) {
+	public void setBackTransport(boolean backTransport) 
+	{
 		this.backTransport = backTransport;
 	}
-
 
 	/**
 	 * @return the accompanyingPerson
 	 */
-	public boolean isAccompanyingPerson() {
+	public boolean isAccompanyingPerson() 
+	{
 		return accompanyingPerson;
 	}
-
 
 	/**
 	 * @param accompanyingPerson the accompanyingPerson to set
 	 */
-	public void setAccompanyingPerson(boolean accompanyingPerson) {
+	public void setAccompanyingPerson(boolean accompanyingPerson) 
+	{
 		this.accompanyingPerson = accompanyingPerson;
 	}
 
-
 	/**
+	 * the patient wear a chip on the body which is connected to a special phone to alert the red cross
+     * sometimes a key for the door is deposited at the red cross station or the police station
 	 * @return the emergencyPhone
-	 * explanation emergency phone: the patient wear a chip on the body which is connected to a special phone to alert the red cross
-	 * sometimes a key for the door is deposited at the red cross station or the police station
 	 */
-	public boolean isEmergencyPhone() {
+	public boolean isEmergencyPhone() 
+	{
 		return emergencyPhone;
 	}
-
 
 	/**
 	 * @param emergencyPhone the emergencyPhone to set
 	 */
-	public void setEmergencyPhone(boolean emergencyPhone) {
+	public void setEmergencyPhone(boolean emergencyPhone) 
+	{
 		this.emergencyPhone = emergencyPhone;
 	}
-
 
 	/**
 	 * @return the kindOfIllness
 	 */
-	public String getKindOfIllness() {
+	public String getKindOfIllness() 
+	{
 		return kindOfIllness;
 	}
-
 
 	/**
 	 * @param kindOfIllness the kindOfIllness to set
 	 */
-	public void setKindOfIllness(String kindOfIllness) {
+	public void setKindOfIllness(String kindOfIllness) 
+	{
 		this.kindOfIllness = kindOfIllness;
 	}
-
 
 	/**
 	 * @return the transportNotes
 	 */
-	public String getTransportNotes() {
+	public String getTransportNotes() 
+	{
 		return transportNotes;
 	}
-
 
 	/**
 	 * @param transportNotes the transportNotes to set
 	 */
-	public void setTransportNotes(String transportNotes) {
+	public void setTransportNotes(String transportNotes) 
+	{
 		this.transportNotes = transportNotes;
 	}
 
-
 	/**
+	 * The hole operational area is divided into six stations.
+     * Primary for each location within the operational area one defined station is responsible
 	 * @return the responsibleStation
-	 * The hole operational area is divided into six stations (see RosterEntry.java)
-	 * Primary for each location within the operational area one defined station is responsible
+	 * @see RosterEntry
 	 */
-	public String getResponsibleStation() {
+	public String getResponsibleStation() 
+	{
 		return responsibleStation;
 	}
-
 
 	/**
 	 * @param responsibleStation the responsibleStation to set
 	 */
-	public void setResponsibleStation(String responsibleStation) {
+	public void setResponsibleStation(String responsibleStation)
+	{
 		this.responsibleStation = responsibleStation;
 	}
 	
 	/**
-	 * @return the realStation
 	 * The primary responsible station is not all the time the station which execute the transport
+	 * @return the realStation
 	 */
-	public String getRealStation() {
+	public String getRealStation() 
+	{
 		return realStation;
 	}
-
 
 	/**
 	 * @param realStation the realStation to set
 	 */
-	public void setRealStation(String realStation) {
+	public void setRealStation(String realStation) 
+	{
 		this.realStation = realStation;
 	}
-
 
 	/**
 	 * @return the dateOfTransport
 	 */
-	public Date getDateOfTransport() {
+	public Date getDateOfTransport() 
+	{
 		return dateOfTransport;
 	}
-
 
 	/**
 	 * @param dateOfTransport the dateOfTransport to set
 	 */
-	public void setDateOfTransport(Date dateOfTransport) {
+	public void setDateOfTransport(Date dateOfTransport) 
+	{
 		this.dateOfTransport = dateOfTransport;
 	}
-
 
 	/**
 	 * @return the plannedStartOfTransportTime
 	 */
-	public long getPlannedStartOfTransportTime() {
+	public long getPlannedStartOfTransportTime() 
+	{
 		return plannedStartOfTransportTime;
 	}
-
 
 	/**
 	 * @param plannedStartOfTransportTime the plannedStartOfTransportTime to set
 	 */
-	public void setPlannedStartOfTransportTime(long plannedStartOfTransportTime) {
+	public void setPlannedStartOfTransportTime(long plannedStartOfTransportTime) 
+	{
 		this.plannedStartOfTransportTime = plannedStartOfTransportTime;
 	}
-
 
 	/**
 	 * @return the plannedTimeAtPatient
 	 */
-	public long getPlannedAtPatientTime() {
+	public long getPlannedAtPatientTime() 
+	{
 		return plannedTimeAtPatient;
 	}
-
 
 	/**
 	 * @param plannedTimeAtPatient the plannedTimeAtPatient to set
 	 */
-	public void setPlannedAtPatientTime(long plannedTimeAtPatient) {
+	public void setPlannedAtPatientTime(long plannedTimeAtPatient) 
+	{
 		this.plannedTimeAtPatient = plannedTimeAtPatient;
 	}
-
 
 	/**
 	 * @return the appointmentTimeAtDestination
 	 */
-	public long getAppointmentTimeAtDestination() {
+	public long getAppointmentTimeAtDestination() 
+	{
 		return appointmentTimeAtDestination;
 	}
-
 
 	/**
 	 * @param appointmentTimeAtDestination the appointmentTimeAtDestination to set
 	 */
-	public void setAppointmentTimeAtDestination(long appointmentTimeAtDestination) {
+	public void setAppointmentTimeAtDestination(long appointmentTimeAtDestination) 
+	{
 		this.appointmentTimeAtDestination = appointmentTimeAtDestination;
 	}
-
 
 	/**
 	 * @return the emergencyDoctoralarmingTime
 	 */
-	public long getEmergencyDoctorAlarmingTime() {
+	public long getEmergencyDoctorAlarmingTime() 
+	{
 		return emergencyDoctoralarmingTime;
 	}
-
 
 	/**
 	 * @param emergencyDoctoralarmingTime the emergencyDoctoralarmingTime to set
 	 */
-	public void setEmergencyDoctorAlarmingTime(long emergencyDoctoralarmingTime) {
+	public void setEmergencyDoctorAlarmingTime(long emergencyDoctoralarmingTime) 
+	{
 		this.emergencyDoctoralarmingTime = emergencyDoctoralarmingTime;
 	}
-
 
 	/**
 	 * @return the helicopterAlarmingTime
 	 */
-	public long getHelicopterAlarmingTime() {
+	public long getHelicopterAlarmingTime() 
+	{
 		return helicopterAlarmingTime;
 	}
-
 
 	/**
 	 * @param helicopterAlarmingTime the helicopterAlarmingTime to set
 	 */
-	public void setHelicopterAlarmingTime(long helicopterAlarmingTime) {
+	public void setHelicopterAlarmingTime(long helicopterAlarmingTime) 
+	{
 		this.helicopterAlarmingTime = helicopterAlarmingTime;
 	}
 
-
 	/**
-	 * @return the blueLightToPatient
 	 * Named: 'BD1'
+	 * @return the blueLightToPatient
 	 */
 	public boolean isBluelightToPatient() {
 		return blueLightToPatient;
 	}
 
-
 	/**
 	 * @param blueLightToPatient the blueLightToPatient to set
 	 */
-	public void setBluelightToPatient(boolean blueLightToPatient) {
+	public void setBluelightToPatient(boolean blueLightToPatient) 
+	{
 		this.blueLightToPatient = blueLightToPatient;
 	}
 

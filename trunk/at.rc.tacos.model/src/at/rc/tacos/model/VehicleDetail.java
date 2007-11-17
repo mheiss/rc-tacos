@@ -1,5 +1,7 @@
 package at.rc.tacos.model;
 
+import at.rc.tacos.common.AbstractMessage;
+
 
 
 /**
@@ -7,7 +9,7 @@ package at.rc.tacos.model;
  * @author b.thek
  */
 
-public class VehicleDetail 
+public class VehicleDetail extends AbstractMessage
 {
 	private int vehicleId;
 	private String vehicleName;
@@ -23,27 +25,16 @@ public class VehicleDetail
 	private boolean outOfOrder;
 	private int mostImportantTransportStatus;
 	
-	
 	/**
-	 * Constructors
+	 * Default class constructor
 	 */
-	
-
-	
-
-
-
+	public VehicleDetail()
+	{
+	    super("vechicleDetail");
+	}
 
 	/**
-	 * Setter&Getter
-	 */
-	
-	
-
-	
-
-
-	/**
+	 * Class constructor for a complete vechicel detail object
 	 * @param vehicleId
 	 * @param vehicleName
 	 * @param vehicleType
@@ -63,7 +54,7 @@ public class VehicleDetail
 			MobilePhoneDetail mobilePhone, String vehicleNotes,
 			String basicStation, String currentStation, boolean readyForAction,
 			boolean outOfOrder, int mostImportantTransportStatus) {
-		super();
+		this();
 		this.vehicleId = vehicleId;
 		this.vehicleName = vehicleName;
 		this.vehicleType = vehicleType;
@@ -79,79 +70,69 @@ public class VehicleDetail
 		this.mostImportantTransportStatus = mostImportantTransportStatus;
 	}
 
-
-
 	/**
 	 * @return the driverName
 	 */
-	public String getDriverName() {
+	public String getDriverName() 
+	{
 		return driverName;
 	}
-
-
 
 	/**
 	 * @param driverName the driverName to set
 	 */
-	public void setDriverName(String driverName) {
+	public void setDriverName(String driverName) 
+	{
 		this.driverName = driverName;
 	}
-
-
 
 	/**
 	 * @return the paramedicIName
 	 */
-	public String getParamedicIName() {
+	public String getParamedicIName() 
+	{
 		return paramedicIName;
 	}
-
-
 
 	/**
 	 * @param paramedicIName the paramedicIName to set
 	 */
-	public void setParamedicIName(String paramedicIName) {
+	public void setParamedicIName(String paramedicIName) 
+	{
 		this.paramedicIName = paramedicIName;
 	}
-
-
 
 	/**
 	 * @return the paramedicIIName
 	 */
-	public String getParamedicIIName() {
+	public String getParamedicIIName() 
+	{
 		return paramedicIIName;
 	}
-
-
 
 	/**
 	 * @param paramedicIIName the paramedicIIName to set
 	 */
-	public void setParamedicIIName(String paramedicIIName) {
+	public void setParamedicIIName(String paramedicIIName) 
+	{
 		this.paramedicIIName = paramedicIIName;
 	}
-
-
 
 	/**
 	 * @return the readyForAction
 	 */
-	public boolean isReadyForAction() {
+	public boolean isReadyForAction() 
+	{
 		return readyForAction;
 	}
-
-
 
 	/**
 	 * @param readyForAction the readyForAction to set
 	 */
-	public void setReadyForAction(boolean readyForAction) {
+	public void setReadyForAction(boolean readyForAction) 
+	{
 		this.readyForAction = readyForAction;
 	}
-
-
 
 	/**
 	 * @return the vehicleId
@@ -160,43 +141,43 @@ public class VehicleDetail
 		return vehicleId;
 	}
 
-
 	/**
 	 * @param vehicleId the vehicleId to set
 	 */
-	public void setVehicleId(int vehicleId) {
+	public void setVehicleId(int vehicleId) 
+	{
 		this.vehicleId = vehicleId;
 	}
-
 
 	/**
 	 * @return the mobilePhone
 	 */
-	public MobilePhoneDetail getMobilePhone() {
+	public MobilePhoneDetail getMobilePhone() 
+	{
 		return mobilePhone;
 	}
-
 
 	/**
 	 * @param mobilPhone the mobilePhone to set
 	 */
-	public void setMobilPhone(MobilePhoneDetail mobilePhone) {
+	public void setMobilPhone(MobilePhoneDetail mobilePhone) 
+	{
 		this.mobilePhone = mobilePhone;
 	}
-
 
 	/**
 	 * @return the vehicleNotes
 	 */
-	public String getVehicleNotes() {
+	public String getVehicleNotes() 
+	{
 		return vehicleNotes;
 	}
-
 
 	/**
 	 * @param vehicleNotes the vehicleNotes to set
 	 */
-	public void setVehicleNotes(String vehicleNotes) {
+	public void setVehicleNotes(String vehicleNotes) 
+	{
 		this.vehicleNotes = vehicleNotes;
 	}
 
@@ -210,24 +191,26 @@ public class VehicleDetail
 	/**
 	 * @param basicStation the basicStation to set
 	 */
-	public void setBasicStation(String basicStation) {
+	public void setBasicStation(String basicStation) 
+	{
 		this.basicStation = basicStation;
 	}
 
 	/**
 	 * @return the currentStation
 	 */
-	public String getCurrentStation() {
+	public String getCurrentStation() 
+	{
 		return currentStation;
 	}
 
 	/**
 	 * @param currentStation the currentStation to set
 	 */
-	public void setCurrentStation(String currentStation) {
+	public void setCurrentStation(String currentStation) 
+	{
 		this.currentStation = currentStation;
 	}
-
 
 	/**
 	 * @return the outOfOrder
@@ -240,65 +223,55 @@ public class VehicleDetail
 	/**
 	 * @param outOfOrder the outOfOrder to set
 	 */
-	public void setOutOfOrder(boolean outOfOrder) {
+	public void setOutOfOrder(boolean outOfOrder) 
+	{
 		this.outOfOrder = outOfOrder;
 	}
-
-
 
 	/**
 	 * @return the mostImportantTransportStatus
 	 */
-	public int getMostImportantTransportStatus() {
+	public int getMostImportantTransportStatus()
+	{
 		return mostImportantTransportStatus;
 	}
-
-
 
 	/**
 	 * @param mostImportantTransportStatus the mostImportantTransportStatus to set
 	 */
-	public void setMostImportantTransportStatus(int mostImportantTransportStatus) {
+	public void setMostImportantTransportStatus(int mostImportantTransportStatus)
+	{
 		this.mostImportantTransportStatus = mostImportantTransportStatus;
 	}
-
-
-
-
 
 	/**
 	 * @return the vehicleName
 	 */
-	public String getVehicleName() {
+	public String getVehicleName() 
+	{
 		return vehicleName;
 	}
-
-
-
-
-
 	/**
 	 * @param vehicleName the vehicleName to set
 	 */
-	public void setVehicleName(String vehicleName) {
+	public void setVehicleName(String vehicleName) 
+	{
 		this.vehicleName = vehicleName;
 	}
-
-
 
 	/**
 	 * @return the vehicleType
 	 */
-	public String getVehicleType() {
+	public String getVehicleType() 
+	{
 		return vehicleType;
 	}
-
-
 
 	/**
 	 * @param vehicleType the vehicleType to set
 	 */
-	public void setVehicleType(String vehicleType) {
+	public void setVehicleType(String vehicleType) 
+	{
 		this.vehicleType = vehicleType;
 	}
 }
