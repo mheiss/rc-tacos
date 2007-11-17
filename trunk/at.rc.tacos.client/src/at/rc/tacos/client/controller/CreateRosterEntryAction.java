@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.eclipse.jface.action.Action;
 //client
+import at.rc.tacos.core.service.ServiceWrapper;
 import at.rc.tacos.model.*;
 
 /**
@@ -68,8 +69,6 @@ public class CreateRosterEntryAction extends Action
     			realStartOfWork, realEndOfWork, station,
     			competence, servicetype, rosterNotes,
     			standby);
-    	//TODO
-    	//ServiceWrapper.getDefault().getNetService().requestAddRosterEntry(newRosterEntry.get???(item)-------?
-
+    	ServiceWrapper.getDefault().getServiceLayer().addRosterEntry(newRosterEntry);
     }
 }

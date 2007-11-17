@@ -135,17 +135,17 @@ public class VehiclesView extends ViewPart
 		//TODO: get the ArrayList from the database
 		MobilePhoneDetail mp = new MobilePhoneDetail("Bm01","0664/1234567");
 		VehicleDetail v1 = new VehicleDetail(1,"Bm01","RTW","a.schw","p.anze","j.made",mp, "the notes 1", "BM", "BM", true,false,1);
-		VehicleDetail v2 = new VehicleDetail(1,"Bm02","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "KA", false,false,2);
-		VehicleDetail v3 = new VehicleDetail(1,"Bm03","BKTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,3);
-		VehicleDetail v4 = new VehicleDetail(1,"Bm04","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,3);
-		VehicleDetail v5 = new VehicleDetail(1,"Bm05","BKTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,2);
-		VehicleDetail v6 = new VehicleDetail(1,"Bm06","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,3);
-		VehicleDetail v7 = new VehicleDetail(1,"Bm07","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,1);
-		VehicleDetail v8 = new VehicleDetail(1,"Bm08","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,2);
-		VehicleDetail v9 = new VehicleDetail(1,"Bm09","KTW","r.hart","s.krau","p.stri",mp, null, "BM", "KA", true,false,3);
-		VehicleDetail v10 = new VehicleDetail(1,"Bm10","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "KA", false,false,2);
-		VehicleDetail v11 = new VehicleDetail(1,"Bm11","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", true,false,2);
-		VehicleDetail v12 = new VehicleDetail(1,"Bm12","RTW","r.hart","s.krau","p.stri",mp, null, "BM", "BM", false,false,3);
+		VehicleDetail v2 = new VehicleDetail(1,"Bm02","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "KA", false,false,2);
+		VehicleDetail v3 = new VehicleDetail(1,"Bm03","BKTW","r.hart","s.krau","p.stri",mp, "     ", "BM", "BM", false,false,3);
+		VehicleDetail v4 = new VehicleDetail(1,"Bm04","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,3);
+		VehicleDetail v5 = new VehicleDetail(1,"Bm05","BKTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,2);
+		VehicleDetail v6 = new VehicleDetail(1,"Bm06","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,3);
+		VehicleDetail v7 = new VehicleDetail(1,"Bm07","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,1);
+		VehicleDetail v8 = new VehicleDetail(1,"Bm08","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,2);
+		VehicleDetail v9 = new VehicleDetail(1,"Bm09","KTW","r.hart","s.krau","p.stri",mp, "", "BM", "KA", true,false,3);
+		VehicleDetail v10 = new VehicleDetail(1,"Bm10","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "KA", false,false,2);
+		VehicleDetail v11 = new VehicleDetail(1,"Bm11","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", true,false,2);
+		VehicleDetail v12 = new VehicleDetail(1,"Bm12","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,3);
 		ArrayList<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2,v3,v4,v5,v6,v8,v9,v10,v11,v12));
 		
 		CarCompositeManager ccm = new CarCompositeManager();

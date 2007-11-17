@@ -49,7 +49,7 @@ public class CarCompositeManager
 			mobilePhoneStatus = true;//other mobile phone than default
 		}
 		
-		if (vehicle.getVehicleNotes() != null)//TODO: doesn't work
+		if (!vehicle.getVehicleNotes().isEmpty())
 		{
 			notesStatus = true;//show that there are notes
 		}
