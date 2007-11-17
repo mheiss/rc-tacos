@@ -9,7 +9,7 @@ import at.rc.tacos.core.net.NetWrapper;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class ServiceWrapper extends Plugin 
+public class ServiceWrapper extends Plugin
 {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "at.rc.tacos.core.service";
@@ -32,6 +32,8 @@ public class ServiceWrapper extends Plugin
 	    databaseImpl = new DatabaseLayerImpl();
 	    //register the serviceImpl for net events
 	    NetWrapper.getDefault().registerNetworkListener(serviceImpl);
+	    //register the needed model types
+	    
 	}
 
 	 /**
