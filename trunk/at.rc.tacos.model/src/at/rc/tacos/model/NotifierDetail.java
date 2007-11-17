@@ -1,48 +1,49 @@
 package at.rc.tacos.model;
 
+import at.rc.tacos.common.AbstractMessage;
 
 /**
- * Specifies the details of the notifier
+ * Specifies the details of the notifier.
  * The notifier is most of the time the telephoner, sometimes an employee
  * @author b.thek
  */
-
-public class NotifierDetail 
+public class NotifierDetail extends AbstractMessage
 {
 	private String notifierName;
 	private String notifierTelephoneNumber;
 	private String notifierNotes;
 	
-	
 	/**
-	 * Constructors
+	 * Default class construtor
 	 */
-	public NotifierDetail(){}
+	public NotifierDetail()
+	{
+	    super("notifier");
+	}
 
 
 	/**
-	 * @param notifierName
-	 * @param notifierTelephoneNumber
-	 * @param notifierNotes
+	 * Default class construcotor for a complete notifier object
+	 * @param notifierName the name of the notifier
+	 * @param notifierTelephoneNumber the telephone number
+	 * @param notifierNotes notes taken from the caller
 	 */
 	public NotifierDetail(String notifierName, String notifierTelephoneNumber,
-			String notifierNotes) {
-		super();
+			String notifierNotes) 
+	{
+		this();
 		this.notifierName = notifierName;
 		this.notifierTelephoneNumber = notifierTelephoneNumber;
 		this.notifierNotes = notifierNotes;
 	}
 
-
-	
-	/**
-	 * Getter&Setter
-	 */
+	//GETTERS AND SETTERS
 	
 	/**
 	 * @return the notifierName
 	 */
-	public String getNotifierName() {
+	public String getNotifierName() 
+	{
 		return notifierName;
 	}
 
@@ -50,15 +51,16 @@ public class NotifierDetail
 	/**
 	 * @param notifierName the notifierName to set
 	 */
-	public void setNotifierName(String notifierName) {
+	public void setNotifierName(String notifierName) 
+	{
 		this.notifierName = notifierName;
 	}
-
 
 	/**
 	 * @return the notifierTelephoneNumber
 	 */
-	public String getNotifierTelephoneNumber() {
+	public String getNotifierTelephoneNumber() 
+	{
 		return notifierTelephoneNumber;
 	}
 
@@ -66,7 +68,8 @@ public class NotifierDetail
 	/**
 	 * @param notifierTelephoneNumber the notifierTelephoneNumber to set
 	 */
-	public void setNotifierTelephoneNumber(String notifierTelephoneNumber) {
+	public void setNotifierTelephoneNumber(String notifierTelephoneNumber) 
+	{
 		this.notifierTelephoneNumber = notifierTelephoneNumber;
 	}
 
@@ -74,7 +77,8 @@ public class NotifierDetail
 	/**
 	 * @return the notifierNotes
 	 */
-	public String getNotifierNotes() {
+	public String getNotifierNotes() 
+	{
 		return notifierNotes;
 	}
 
@@ -82,7 +86,8 @@ public class NotifierDetail
 	/**
 	 * @param notifierNotes the notifierNotes to set
 	 */
-	public void setNotifierNotes(String notifierNotes) {
+	public void setNotifierNotes(String notifierNotes) 
+	{
 		this.notifierNotes = notifierNotes;
 	}
 }
