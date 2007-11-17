@@ -1,8 +1,6 @@
 package at.rc.tacos.client.controller;
 
 //rcp
-import java.util.Date;
-
 import org.eclipse.jface.action.Action;
 //client
 import at.rc.tacos.core.service.ServiceWrapper;
@@ -16,7 +14,7 @@ public class CreateRosterEntryAction extends Action
 {
 	private long rosterId;
 	private StaffMember staffMember;
-	private Date dateOfRosterEntry;
+	private long dateOfRosterEntry;
 	private long plannedStartofWork;
 	private long plannedEndOfWork;
 	private long realStartOfWork;
@@ -42,7 +40,7 @@ public class CreateRosterEntryAction extends Action
 	 * @param standby
 	 */
 	public CreateRosterEntryAction(long rosterId, StaffMember staffMember,
-			Date dateOfRosterEntry, long plannedStartofWork,
+			long dateOfRosterEntry, long plannedStartofWork,
 			long plannedEndOfWork, long realStartOfWork, long realEndOfWork,
 			String station, String competence, String servicetype,
 			String rosterNotes, boolean standby) 
