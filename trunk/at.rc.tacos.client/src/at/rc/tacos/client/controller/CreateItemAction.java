@@ -2,10 +2,8 @@ package at.rc.tacos.client.controller;
 
 //rcp
 import java.util.Date;
-
 import org.eclipse.jface.action.Action;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.TableItem;
+
 //client
 import at.rc.tacos.model.*;
 import at.rc.tacos.client.Activator;
@@ -35,7 +33,7 @@ public class CreateItemAction extends Action
     	member.setUserName(id);
     	
     	entry.setCompetence("Fahrer");
-    	entry.setDateOfRosterEntry(new Date());
+    	entry.setDateOfRosterEntry(new Date().getTime());
     	entry.setPlannedEndOfWork(new Date().getTime());
     	entry.setPlannedStartofWork(new Date().getTime());
     	entry.setRealEndOfWork(new Date().getTime());
