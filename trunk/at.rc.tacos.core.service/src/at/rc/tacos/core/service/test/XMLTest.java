@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import at.rc.tacos.model.*;
-import at.rc.tacos.common.IXMLObject;
+import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.xml.*;
+import at.rc.tacos.core.xml.codec.*;
 
 /**
  * Test class for xml serialization and deserialization
@@ -16,6 +17,11 @@ public class XMLTest
 {
     public static void main(String[] args)
     {
+        //Set up the protocol codec facotry
+        ProtocolCodecFactory protFactory = ProtocolCodecFactory.getDefault();
+        protFactory.registerDecoder(Item.ID, new ItemDecoder());
+        protFactory.registerEncoder(Item.ID, new ItemEncoder());
+        
         //get the current time
         long start = new Date().getTime();
         //factory to de and encode
@@ -24,14 +30,14 @@ public class XMLTest
         factory.setupEncodeFactory(
                 "heissm", 
                 new Date().getTime(),
-                "item",
+                Item.ID,
                 "insert",
                 0L);
         //te resulting list
-        ArrayList<IXMLObject> resultObjects = new ArrayList<IXMLObject>();
-        ArrayList<IXMLObject> inputObjects = new ArrayList<IXMLObject>();
+        ArrayList<AbstractMessage> resultObjects = new ArrayList<AbstractMessage>();
+        ArrayList<AbstractMessage> inputObjects = new ArrayList<AbstractMessage>();
         //start looping
-        for (int i = 0; i<1000;i++)
+        for (int i = 0; i<10;i++)
         {
             //The item to encode and decode
             Item item = new Item("test item ");   
@@ -39,7 +45,6 @@ public class XMLTest
         }
         //enocde
         String xml = factory.encode(inputObjects);
-        System.out.println(xml);
         //decode
         factory.setupDecodeFactory(xml);
         //get the reader to process the body
@@ -50,10 +55,10 @@ public class XMLTest
         //print out the imte
         System.out.println("Time: "+(end-start) +"ms");
         //print out the items
-        for(IXMLObject object:resultObjects)
+        for(Object object:resultObjects)
         {
             Item item = (Item)object;
-            System.out.println(item);
+            System.out.println(item.getName());
         }
     }
 }

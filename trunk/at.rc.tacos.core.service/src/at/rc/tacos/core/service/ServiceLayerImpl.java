@@ -5,9 +5,8 @@ import java.util.ArrayList;
 //model
 import at.rc.tacos.model.*;
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.INetworkListener;
-import at.rc.tacos.common.IXMLObject;
-
 /**
  * Implementation of the service layer.
  * @author Michael
@@ -45,10 +44,10 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
     
     // NETOWRK UPDATES
     @Override
-    public void fireNetMessage(String type,String action, ArrayList<IXMLObject> objects)
+    public void fireNetMessage(String type,String action, ArrayList<AbstractMessage> objects)
     {
         //The type of the content
-        if(type.equalsIgnoreCase(Item.ITEM_ID))
+        if(type.equalsIgnoreCase(Item.ID))
         {    
             //the action to do
             if(action.equalsIgnoreCase("add"))
@@ -61,7 +60,7 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
             {
                 //create a new item list and add all items
                 ArrayList<Item> itemList = new ArrayList<Item>();
-                for(IXMLObject objectItem:objects)
+                for(Object objectItem:objects)
                     itemList.add((Item)objectItem);
                 //notify
                 listener.itemListing(itemList);
@@ -73,25 +72,25 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
     @Override
     public void addItem(Item newItem)
     {  
-        NetWrapper.getDefault().fireNetworkMessage(Item.ITEM_ID,"add", newItem);
+        NetWrapper.getDefault().fireNetworkMessage(Item.ID,"add", newItem);
     }
 
     @Override
     public void listItems()
     {   
-        NetWrapper.getDefault().fireNetworkMessage(Item.ITEM_ID,"list", new ArrayList<IXMLObject>());
+        NetWrapper.getDefault().fireNetworkMessage(Item.ID,"list", new ArrayList<AbstractMessage>());
     }
 
     @Override
     public void removeItem(Item item)
     {
-        NetWrapper.getDefault().fireNetworkMessage(Item.ITEM_ID,"remove", item);
+        NetWrapper.getDefault().fireNetworkMessage(Item.ID,"remove", item);
         
     }
 
     @Override
     public void updateItem(Item newItem)
     {
-        NetWrapper.getDefault().fireNetworkMessage(Item.ITEM_ID,"update", newItem);      
+        NetWrapper.getDefault().fireNetworkMessage(Item.ID,"update", newItem);      
     }
 }
