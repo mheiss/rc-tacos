@@ -52,7 +52,7 @@ public class View extends ViewPart implements PropertyChangeListener
 		}
         public String getText(Object element) 
         {
-            return ((Item)element).getId();
+            return ((Item)element).getName();
         }
 	}
 

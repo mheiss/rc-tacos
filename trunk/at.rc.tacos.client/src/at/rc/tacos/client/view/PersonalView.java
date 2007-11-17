@@ -8,7 +8,6 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -31,18 +30,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-//import de.spiritlink.mvc.controller.DeleteItemAction;
-//import de.spiritlink.mvc.view.TransportView;
-
-//import de.spiritlink.mvc.Activator;
-//import de.spiritlink.mvc.model.Item;
-
-//import de.spiritlink.mvc.Activator;
-//import de.spiritlink.mvc.view.TransportView.ViewContentProvider;
-//import de.spiritlink.mvc.view.TransportView.ViewLabelProvider;
-
 import at.rc.tacos.client.Activator;
-import at.rc.tacos.client.controller.*;
 import at.rc.tacos.model.Item;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
@@ -74,7 +62,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 					ISharedImages.IMG_OBJ_ELEMENT);
 		}
         public String getText(Object element) {
-            return ((Item) element).getId();
+            return ((Item) element).getName();
         }
 	}
 	
