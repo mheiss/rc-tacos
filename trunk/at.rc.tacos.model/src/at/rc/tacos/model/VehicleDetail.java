@@ -11,6 +11,9 @@ import at.rc.tacos.common.AbstractMessage;
 
 public class VehicleDetail extends AbstractMessage
 {
+    //unique identification string
+    public final static String ID = "vehicleDetail";
+    
 	private int vehicleId;
 	private String vehicleName;
 	private String vehicleType;
@@ -30,7 +33,7 @@ public class VehicleDetail extends AbstractMessage
 	 */
 	public VehicleDetail()
 	{
-	    super("vechicleDetail");
+	    super(ID);
 	}
 
 	/**
@@ -69,7 +72,19 @@ public class VehicleDetail extends AbstractMessage
 		this.outOfOrder = outOfOrder;
 		this.mostImportantTransportStatus = mostImportantTransportStatus;
 	}
+	
+	//METHODS
+    /**
+     * Returns a string based description of the object
+     * @return the description of the object
+     */
+    @Override
+    public String toString()
+    {
+        return ID;
+    }
 
+	//GETTERS AND SETTERS
 	/**
 	 * @return the driverName
 	 */

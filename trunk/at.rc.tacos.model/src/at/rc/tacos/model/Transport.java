@@ -10,6 +10,9 @@ import at.rc.tacos.common.AbstractMessage;
  */
 public class Transport extends AbstractMessage
 {
+    //unique identification string
+    public final static String ID = "transport";
+    
 	private String fromStreet;
 	private String fromNumber;
 	private String fromCity;
@@ -57,11 +60,21 @@ public class Transport extends AbstractMessage
 	 */
 	public Transport()
 	{
-	    super("transport");
+	    super(ID);
 	}
+	
+	//METHODS
+    /**
+     * Returns a string based description of the object
+     * @return the description of the object
+     */
+    @Override
+    public String toString()
+    {
+        return ID;
+    }
 
 	//GETTERS AND SETTERS
-	
 	/**
 	 * @return the fromStreet
 	 */
