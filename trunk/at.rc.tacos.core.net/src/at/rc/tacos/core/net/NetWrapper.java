@@ -5,9 +5,10 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+
+import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.INetworkLayer;
 import at.rc.tacos.common.INetworkListener;
-import at.rc.tacos.common.IXMLObject;
 import at.rc.tacos.core.net.event.*;
 import at.rc.tacos.core.net.internal.*;
 import at.rc.tacos.core.xml.XMLFactory;
@@ -106,12 +107,11 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
     @Override
     public void dataReceived(NetEvent ne)
     {
-        System.out.println("received data: "+ne.getMessage());
         //set up the factory to decode
         XMLFactory factory = new XMLFactory();
         factory.setupDecodeFactory(ne.getMessage());
         //decode the message
-        ArrayList<IXMLObject> objects = factory.decode();
+        ArrayList<AbstractMessage> objects = factory.decode();
         //get the type of the item
         String type = factory.getType(); 
         String action = factory.getAction();
@@ -159,7 +159,7 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
     
     //METHODS FOR INTERACTION WITH THE SERVICE LAYER
     @Override
-    public void fireNetworkMessage(String objectType,String action,ArrayList<IXMLObject> object)
+    public void fireNetworkMessage(String objectType,String action,ArrayList<AbstractMessage> object)
     {
         XMLFactory factory = new XMLFactory();
         factory.setupEncodeFactory(
@@ -174,12 +174,12 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
     }
     
     @Override
-    public void fireNetworkMessage(String objectType,String action,IXMLObject object)
+    public void fireNetworkMessage(String objectType,String action,AbstractMessage message)
     {
         //create a list 
-        ArrayList<IXMLObject> list = new ArrayList<IXMLObject>();
+        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         //add the object
-        list.add(object);
+        list.add(message);
         fireNetworkMessage(objectType,action, list);
     }
     
