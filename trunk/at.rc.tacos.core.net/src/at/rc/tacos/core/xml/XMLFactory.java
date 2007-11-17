@@ -137,8 +137,9 @@ public class XMLFactory
             for(AbstractMessage message:messageList)
             {
                 xmlw.writeStartElement(AbstractMessage.ID);
+                System.out.println(ProtocolCodecFactory.getDefault().getEncoder(type));
                 //encode the object
-                ProtocolCodecFactory.getDefault().getEncoder(type).doEncode(message, xmlw);
+                ProtocolCodecFactory.getDefault().getEncoder(AbstractMessage.ID).doEncode(message, xmlw);
                 //end
                 xmlw.writeEndElement();
             }
@@ -166,13 +167,6 @@ public class XMLFactory
             {
                 if( xmlw!= null)
                     xmlw.close();
-                if(output != null)
-                    output.close();
-            }
-            catch (IOException ioe) 
-            {
-                System.out.println("Errow while closing output stream");
-                System.out.println(ioe.getMessage());
             }
             catch(XMLStreamException xmlSe)
             {

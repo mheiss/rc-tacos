@@ -12,6 +12,8 @@ import at.rc.tacos.common.INetworkListener;
 import at.rc.tacos.core.net.event.*;
 import at.rc.tacos.core.net.internal.*;
 import at.rc.tacos.core.xml.XMLFactory;
+import at.rc.tacos.core.xml.codec.ProtocolCodecFactory;
+import at.rc.tacos.model.Item;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -168,7 +170,11 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
                 objectType,
                 action,
                 0);
+        System.out.println("Counter: "+ProtocolCodecFactory.getDefault().encoderCount());
+        System.out.println("Encoder: ");
+        ProtocolCodecFactory.getDefault().printEncoder();
         String message = factory.encode(object);
+        System.out.println("Encoded: "+ message);
         //send the message
         NetSource.getInstance().getConnection().sendMessage(message);
     }
