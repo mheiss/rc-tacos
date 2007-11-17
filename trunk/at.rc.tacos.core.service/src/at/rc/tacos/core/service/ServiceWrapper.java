@@ -5,6 +5,10 @@ import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.core.xml.codec.ItemDecoder;
+import at.rc.tacos.core.xml.codec.ItemEncoder;
+import at.rc.tacos.core.xml.codec.ProtocolCodecFactory;
+import at.rc.tacos.model.Item;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -33,7 +37,8 @@ public class ServiceWrapper extends Plugin
 	    //register the serviceImpl for net events
 	    NetWrapper.getDefault().registerNetworkListener(serviceImpl);
 	    //register the needed model types
-	    
+	    ProtocolCodecFactory.getDefault().registerEncoder("item", new ItemEncoder());
+	    ProtocolCodecFactory.getDefault().registerDecoder("item", new ItemDecoder());
 	}
 
 	 /**
