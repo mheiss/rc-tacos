@@ -1,6 +1,8 @@
 package at.rc.tacos.core.xml.codec;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * This class manages the decoders and the encoders to
@@ -75,5 +77,18 @@ public class ProtocolCodecFactory
     public MessageEncoder getEncoder(String id)
     {
         return encoders.get(id);
+    }
+    
+    public int encoderCount()
+    {
+    	return encoders.size();
+    }
+    
+    public void printEncoder()
+    {
+    	ArrayList<String> list = new ArrayList<String>();
+    	Iterator<String> iter = encoders.keySet().iterator();
+    	while(iter.hasNext())
+    		System.out.println(iter.next());
     }
 }
