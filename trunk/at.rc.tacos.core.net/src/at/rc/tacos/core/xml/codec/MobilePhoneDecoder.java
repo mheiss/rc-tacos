@@ -5,15 +5,15 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.model.Item;
+import at.rc.tacos.model.MobilePhoneDetail;
 
-public class ItemDecoder implements MessageDecoder
-{   
+public class MobilePhoneDecoder implements MessageDecoder
+{
     @Override
     public AbstractMessage doDecode(XMLEventReader reader) throws XMLStreamException
-    {       
-        //The item to decode
-        Item item = new Item();
+    {
+        //The mobile phone to decode
+        MobilePhoneDetail mobilePhone = new MobilePhoneDetail();
             
         //parse and set up the object
         while(reader.hasNext())
@@ -24,12 +24,14 @@ public class ItemDecoder implements MessageDecoder
             {
                 String startName = event.asStartElement().getName().getLocalPart();
                 //create a new item 
-                if(Item.ID.equalsIgnoreCase(startName))
-                    item = new Item();
+                if(MobilePhoneDetail.ID.equalsIgnoreCase(startName))
+                    mobilePhone = new MobilePhoneDetail();
                 
                 //get the type of the element and set the corresponding value
-                if("name".equalsIgnoreCase(startName))
-                    item.setName(reader.getElementText());
+                if("mobilePhoneId".equalsIgnoreCase(startName))
+                    mobilePhone.setMobilePhoneId(reader.getElementText());
+                if("mobilePhoneNumer".equalsIgnoreCase(startName))
+                    mobilePhone.setMobilePhoneNumber(reader.getElementText());
             }
             //check for the end element, and return the object
             if(event.isEndElement())
@@ -37,8 +39,8 @@ public class ItemDecoder implements MessageDecoder
                 //get the name
                 String endElement = event.asEndElement().getName().getLocalPart();
                 //check if we have reached the end
-                if (Item.ID.equalsIgnoreCase(endElement))
-                    return item;
+                if (MobilePhoneDetail.ID.equalsIgnoreCase(endElement))
+                    return mobilePhone;
             }
         }
         return null;

@@ -79,14 +79,11 @@ public class ProtocolCodecFactory
         return encoders.get(id);
     }
     
-    public int encoderCount()
-    {
-    	return encoders.size();
-    }
-    
+    /**
+     * Prints out the available encoders to the console
+     */
     public void printEncoder()
     {
-    	ArrayList<String> list = new ArrayList<String>();
     	Iterator<String> iter = encoders.keySet().iterator();
     	while(iter.hasNext())
     		System.out.println(iter.next());

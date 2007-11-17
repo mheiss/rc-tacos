@@ -17,10 +17,16 @@ public class ItemEncoder implements MessageEncoder
     {
         //Cast the object to a item
         Item item = (Item)message;
+        
+        //write the start element
+        writer.writeStartElement(Item.ID);
        
         //write the elements and attributes
         writer.writeStartElement("name");
         writer.writeCharacters(item.getName());
+        writer.writeEndElement();
+        
+        //end of the item
         writer.writeEndElement();
     }
 }
