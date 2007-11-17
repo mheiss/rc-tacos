@@ -10,6 +10,9 @@ import at.rc.tacos.common.AbstractMessage;
  */
 public class StaffMember extends AbstractMessage
 {
+    //unique identification string
+    public final static String ID = "staffMember";
+    
 	private int personId;
 	private String lastName;
 	private String firstName;
@@ -20,7 +23,7 @@ public class StaffMember extends AbstractMessage
 	 */
 	public StaffMember()
 	{
-	    super("staffMember");
+	    super(ID);
 	}
 	
 	/**
@@ -38,9 +41,19 @@ public class StaffMember extends AbstractMessage
 		this.lastName = lastName;
 		this.userName = userName;
 	}
+	
+	//METHODS
+    /**
+     * Returns a string based description of the object
+     * @return the description of the object
+     */
+    @Override
+    public String toString()
+    {
+        return ID;
+    }
 
 	//SETTERS AND GETTERS
-	
 	/**
 	 * Returns the personal identification number
 	 * @return the personId

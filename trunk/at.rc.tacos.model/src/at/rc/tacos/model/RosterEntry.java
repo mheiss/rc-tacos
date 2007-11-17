@@ -1,7 +1,5 @@
 package at.rc.tacos.model;
 
-import java.util.Date;
-
 import at.rc.tacos.common.AbstractMessage;
 
 //TODO mark roster entries which hold on for more than one day
@@ -12,9 +10,12 @@ import at.rc.tacos.common.AbstractMessage;
  */
 public class RosterEntry extends AbstractMessage
 {
+    //unique identification string
+    public final static String ID = "rosterEntry";
+    
 	private long rosterId;
 	private StaffMember staffMember;
-	private Date dateOfRosterEntry;
+	private long dateOfRosterEntry;
 	private long plannedStartofWork;
 	private long plannedEndOfWork;
 	private long realStartOfWork;
@@ -30,7 +31,7 @@ public class RosterEntry extends AbstractMessage
 	 */
 	public RosterEntry()
 	{
-	    super("roosterEntry");
+	    super(ID);
 	}
 	
 	/**
@@ -48,7 +49,7 @@ public class RosterEntry extends AbstractMessage
 	 * @param rosterNotes notes for this entry
 	 * @param standby is this member currently in standby
 	 */
-	public RosterEntry(long rosterId, StaffMember staffMember, Date dateOfRosterEntry,
+	public RosterEntry(long rosterId, StaffMember staffMember, long dateOfRosterEntry,
 			long plannedStartofWork, long plannedEndOfWork,
 			long realStartOfWork, long realEndOfWork, String station,
 			String competence, String servicetype, String rosterNotes,
@@ -67,6 +68,17 @@ public class RosterEntry extends AbstractMessage
 		this.servicetype = servicetype;
 		this.rosterNotes = rosterNotes;
 		this.standby = standby;
+	}
+	
+	//METHODS
+	/**
+	 * Returns a string based description of the object
+	 * @return the description of the object
+	 */
+	@Override
+	public String toString()
+	{
+	    return ID;
 	}
 
 	//GETTERS AND SETTERS
@@ -111,7 +123,7 @@ public class RosterEntry extends AbstractMessage
 	 * Returns the date of this entry
 	 * @return the dateOfRosterEntry
 	 */
-	public Date getDateOfRosterEntry() 
+	public long getDateOfRosterEntry() 
 	{
 		return dateOfRosterEntry;
 	}
@@ -120,7 +132,7 @@ public class RosterEntry extends AbstractMessage
 	 * Sets the date when this entry is sheduled
 	 * @param dateOfRosterEntry the dateOfRosterEntry to set
 	 */
-	public void setDateOfRosterEntry(Date dateOfRosterEntry) 
+	public void setDateOfRosterEntry(long dateOfRosterEntry) 
 	{
 		this.dateOfRosterEntry = dateOfRosterEntry;
 	}
