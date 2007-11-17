@@ -133,16 +133,9 @@ public class XMLFactory
 
             //write the body
             xmlw.writeStartElement(BODY_ELEMENT);
-            //loop and write the item
+            //loop and encode the object
             for(AbstractMessage message:messageList)
-            {
-                xmlw.writeStartElement(AbstractMessage.ID);
-                System.out.println(ProtocolCodecFactory.getDefault().getEncoder(type));
-                //encode the object
                 ProtocolCodecFactory.getDefault().getEncoder(AbstractMessage.ID).doEncode(message, xmlw);
-                //end
-                xmlw.writeEndElement();
-            }
             //end of the body
             xmlw.writeEndElement();
 
@@ -167,6 +160,13 @@ public class XMLFactory
             {
                 if( xmlw!= null)
                     xmlw.close();
+                if(output != null)
+                    output.close();
+            }
+            catch (IOException ioe) 
+            {
+                System.out.println("Errow while closing the output stream");
+                System.out.println(ioe.getMessage());
             }
             catch(XMLStreamException xmlSe)
             {
@@ -187,6 +187,9 @@ public class XMLFactory
         StringReader input = new StringReader(xmlSource);
         XMLEventReader r = null;
         XMLInputFactory f = XMLInputFactory.newInstance();
+        //body element
+        boolean isBodyElement = false;
+        //do
         try 
         {
             r = f.createXMLEventReader(input);   
@@ -213,11 +216,16 @@ public class XMLFactory
                         sequence = Long.parseLong(r.getElementText());
                     //check if we have a body item
                     if(BODY_ELEMENT.equalsIgnoreCase(startName))
+                            isBodyElement = true;
+                    //body of the message
+                    if(isBodyElement)
                     {
                         //get a decoder
                         MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(type);
                         //decode the message
-                        objects.add(decoder.doDecode(r));
+                        AbstractMessage message = decoder.doDecode(r);
+                        //
+                        objects.add(message);
                     }
                 }
             }

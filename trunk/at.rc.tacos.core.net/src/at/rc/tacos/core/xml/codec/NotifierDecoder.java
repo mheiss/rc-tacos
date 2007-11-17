@@ -5,15 +5,15 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.model.Item;
+import at.rc.tacos.model.NotifierDetail;
 
-public class ItemDecoder implements MessageDecoder
-{   
+public class NotifierDecoder implements MessageDecoder
+{
     @Override
     public AbstractMessage doDecode(XMLEventReader reader) throws XMLStreamException
-    {       
-        //The item to decode
-        Item item = new Item();
+    {
+        //Create a new notifier
+        NotifierDetail notifier = new NotifierDetail();
             
         //parse and set up the object
         while(reader.hasNext())
@@ -24,12 +24,16 @@ public class ItemDecoder implements MessageDecoder
             {
                 String startName = event.asStartElement().getName().getLocalPart();
                 //create a new item 
-                if(Item.ID.equalsIgnoreCase(startName))
-                    item = new Item();
+                if(NotifierDetail.ID.equalsIgnoreCase(startName))
+                    notifier = new NotifierDetail();
                 
                 //get the type of the element and set the corresponding value
                 if("name".equalsIgnoreCase(startName))
-                    item.setName(reader.getElementText());
+                    notifier.setNotifierName(reader.getElementText());
+                if("telephoneNumer".equalsIgnoreCase(startName))
+                    notifier.setNotifierTelephoneNumber(reader.getElementText());
+                if("notifierNotes".equalsIgnoreCase(startName))
+                    notifier.setNotifierNotes(reader.getElementText());
             }
             //check for the end element, and return the object
             if(event.isEndElement())
@@ -37,8 +41,8 @@ public class ItemDecoder implements MessageDecoder
                 //get the name
                 String endElement = event.asEndElement().getName().getLocalPart();
                 //check if we have reached the end
-                if (Item.ID.equalsIgnoreCase(endElement))
-                    return item;
+                if (NotifierDetail.ID.equalsIgnoreCase(endElement))
+                    return notifier;
             }
         }
         return null;
