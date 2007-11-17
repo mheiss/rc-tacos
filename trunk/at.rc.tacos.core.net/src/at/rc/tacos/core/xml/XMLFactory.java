@@ -1,5 +1,6 @@
 package at.rc.tacos.core.xml;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -12,8 +13,9 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import at.rc.tacos.common.IXMLObject;
-import at.rc.tacos.model.Item;
+import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.core.xml.codec.MessageDecoder;
+import at.rc.tacos.core.xml.codec.ProtocolCodecFactory;
 
 /**
  * Provides methods to enocde and decode the net messages
@@ -37,7 +39,7 @@ public class XMLFactory
     public static final String HEADER_SEQUENCE_ELEMENT = "sequence";
     /** The body object */
     public static final String BODY_ELEMENT = "body";
-    /*& The data item */
+    /** The data item */
     public static final String BODY_DATA_ELEMENT = "data";
 
     //the xml input
@@ -77,20 +79,21 @@ public class XMLFactory
 
     /**
      * Encode the object and return the result.
-     * @param the serialized object list
+     * @return the serialized object list
      */
-    public String encode(ArrayList<IXMLObject> objectList)
+    public String encode(ArrayList<AbstractMessage> messageList)
     {
+        // Create an output factory
+        XMLOutputFactory xmlof = XMLOutputFactory.newInstance();
+        XMLStreamWriter xmlw = null;
+
+        StringWriter output = null;
         try
         {
-            // Create an output factory
-            XMLOutputFactory xmlof = XMLOutputFactory.newInstance();
-
             //the writer for the xml result
-            StringWriter output = new StringWriter();
-
+            output = new StringWriter();
             // Create an XML stream writer
-            XMLStreamWriter xmlw = xmlof.createXMLStreamWriter(output);
+            xmlw = xmlof.createXMLStreamWriter(output);
 
             // Write XML prologue
             xmlw.writeStartDocument();
@@ -98,7 +101,7 @@ public class XMLFactory
             xmlw.writeStartElement(ROOT_ELEMENT);
 
             //write the header element
-            xmlw.writeStartElement("header");
+            xmlw.writeStartElement(HEADER_ELEMENT);
 
             //write the user id
             xmlw.writeStartElement(HEADER_USERID_ELEMENT);
@@ -131,10 +134,13 @@ public class XMLFactory
             //write the body
             xmlw.writeStartElement(BODY_ELEMENT);
             //loop and write the item
-            for(IXMLObject object:objectList)
+            for(AbstractMessage message:messageList)
             {
-                //write the xml item
-                object.toXML(xmlw);
+                xmlw.writeStartElement(AbstractMessage.ID);
+                //encode the object
+                ProtocolCodecFactory.getDefault().getEncoder(type).doEncode(message, xmlw);
+                //end
+                xmlw.writeEndElement();
             }
             //end of the body
             xmlw.writeEndElement();
@@ -154,15 +160,35 @@ public class XMLFactory
             System.out.println(xmlse.getMessage());
             return null;
         }
+        finally
+        {
+            try
+            {
+                if( xmlw!= null)
+                    xmlw.close();
+                if(output != null)
+                    output.close();
+            }
+            catch (IOException ioe) 
+            {
+                System.out.println("Errow while closing output stream");
+                System.out.println(ioe.getMessage());
+            }
+            catch(XMLStreamException xmlSe)
+            {
+                System.out.println("Errow while closing the xml writers");
+                System.out.println(xmlSe.getMessage());
+            }
+        }
     }
 
     /**
      * Decodes the message and returns a string list with the 
      * content items as String
      */
-    public ArrayList<IXMLObject> decode()
+    public ArrayList<AbstractMessage> decode()
     {
-        ArrayList<IXMLObject> objects = new ArrayList<IXMLObject>();
+        ArrayList<AbstractMessage> objects = new ArrayList<AbstractMessage>();
         //create the input stream out of the input
         StringReader input = new StringReader(xmlSource);
         XMLEventReader r = null;
@@ -191,17 +217,13 @@ public class XMLFactory
                         action = r.getElementText();
                     if(HEADER_SEQUENCE_ELEMENT.equalsIgnoreCase(startName))
                         sequence = Long.parseLong(r.getElementText());
-                    //check if we have a data item
-                    if(BODY_DATA_ELEMENT.equalsIgnoreCase(startName))
+                    //check if we have a body item
+                    if(BODY_ELEMENT.equalsIgnoreCase(startName))
                     {
-                        //get the decoder
-                        if(type.equalsIgnoreCase("item"))
-                        {
-                            //create a new item by deserializing it
-                            Item item = new Item();
-                            item = (Item)item.toObject(r);
-                            objects.add(item);
-                        }
+                        //get a decoder
+                        MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(type);
+                        //decode the message
+                        objects.add(decoder.doDecode(r));
                     }
                 }
             }
@@ -221,7 +243,6 @@ public class XMLFactory
         {
             try
             {
-
                 if( r!= null)
                     r.close();
                 if(input != null)
