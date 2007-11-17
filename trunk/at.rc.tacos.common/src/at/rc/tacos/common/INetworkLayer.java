@@ -37,7 +37,7 @@ public interface INetworkLayer
      * @param action the action that that is done
      * @param object a list of object that should be transmitted
      */
-    public void fireNetworkMessage(String objectType,String action,ArrayList<IXMLObject> object); 
+    public void fireNetworkMessage(String objectType,String action,ArrayList<AbstractMessage> object); 
     
     /**
      * Fired when the client wants to send one object to the server.
@@ -47,5 +47,5 @@ public interface INetworkLayer
      * @param action the action that is done
      * @param object the object to transmitt
      */
-    public void fireNetworkMessage(String objectType,String action,IXMLObject object); 
+    public void fireNetworkMessage(String objectType,String action,AbstractMessage object); 
 }

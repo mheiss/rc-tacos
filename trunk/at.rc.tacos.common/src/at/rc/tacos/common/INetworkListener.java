@@ -10,5 +10,5 @@ import java.util.ArrayList;
 public interface INetworkListener
 {
     /** Fired when new data arrived */
-    public void fireNetMessage(String type,String action,ArrayList<IXMLObject> objects);
+    public void fireNetMessage(String type,String action,ArrayList<AbstractMessage> objects);
 }
