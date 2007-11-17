@@ -17,4 +17,14 @@ public abstract class AbstractMessage
     {
         AbstractMessage.ID = id;
     }
+    
+    /**
+     * Returns the string based description.
+     * @param the id of the message
+     */
+    @Override
+    public String toString()
+    {
+        return ID;
+    }
 }
