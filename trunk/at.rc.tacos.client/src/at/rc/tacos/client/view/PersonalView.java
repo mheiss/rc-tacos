@@ -2,12 +2,15 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -15,6 +18,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -37,12 +41,23 @@ import at.rc.tacos.model.StaffMember;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
-	
 	public static final String ID = "at.rc.tacos.client.view.personal_view";
 	
-	TableViewer viewer;
+	private TableViewer viewer;
+	//define the columns
+	public static final int COLUMN_STANDBY = 0;
+	public static final int COLUMN_NOTES = 1;
+	public static final int COLUMN_NAME = 2;
+	public static final int COLUMN_PLANED_WORK_TIME = 3;
+	public static final int COLUMN_CHECK_IN = 4;
+	public static final int COLUMN_CHECK_OUT = 5;
+	public static final int COLUMN_SERVICE_TYPE = 6;
+	public static final int COLUMN_COMPETENCE = 7;
+	public static final int COLUMN_STATION = 8;
+	public static final int COLUMN_VEHICLE = 9;
 	
-	class ViewContentProvider implements IStructuredContentProvider {
+	
+	class PersonalContentProvider implements IStructuredContentProvider {
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
             // do nothing
 		}
@@ -52,48 +67,99 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		}
 
 		public Object[] getElements(Object parent) {
-			return Activator.getDefault().getItemList().toArray();
+			return Activator.getDefault().getRosterEntryList().toArray();
 		}
 	}
 
-	class ViewLabelProvider extends LabelProvider {
-		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().getSharedImages().getImage(
-					ISharedImages.IMG_OBJ_ELEMENT);
+	class PersonalLabelProvider implements ITableLabelProvider 
+	{
+		@Override
+		public Image getColumnImage(Object element, int columnIndex) {
+			return null;
 		}
-        public String getText(Object element) {
-            return ((Item) element).getName();
-        }
+
+		@Override
+		public String getColumnText(Object element, int columnIndex) 
+		{
+			RosterEntry entry = (RosterEntry)element;
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+			
+			switch(columnIndex)
+			{
+			case COLUMN_STANDBY: return String.valueOf(entry.getStandby()); 
+			case COLUMN_NOTES: return String.valueOf(entry.getRosterNotes().isEmpty()); 
+			case COLUMN_NAME: return entry.getStaffMember().getLastname()+ " " + entry.getStaffMember().getFirstName();
+			case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartofWork()) + " - " + sdf.format(entry.getPlannedEndOfWork());
+			case COLUMN_CHECK_IN: return sdf.format(entry.getRealStartOfWork());
+			case COLUMN_CHECK_OUT: return sdf.format(entry.getRealEndOfWork());
+			case COLUMN_SERVICE_TYPE: return entry.getServicetype();
+			case COLUMN_COMPETENCE: return entry.getCompetence();
+			case COLUMN_STATION: return entry.getStation();
+			case COLUMN_VEHICLE: return "Auto";
+			default: return null;
+			}
+		}
+
+		/**
+		   * Adds a listener
+		   * @param listener the listener
+		   */
+		@Override
+		public void addListener(ILabelProviderListener listener) {
+			//ignore
+			
+		}
+
+		/**
+		* Disposes any created resources
+		*/
+		@Override
+		public void dispose() {
+			//nothing to dispose
+		}
+
+		/**
+		   * Returns whether altering this property on this element will affect the
+		   * label
+		   * @param element the element
+		   * @param property the property
+		   * @return boolean
+		*/
+		@Override
+		public boolean isLabelProperty(Object element, String property) {
+			return false;
+		}
+
+		/**
+		 * Removes a listener.
+		 * @param listener the listener to remove
+		 */
+		@Override
+		public void removeListener(ILabelProviderListener listener) {
+			//ignore it
+		}
 	}
 	
 	public void createPartControl(Composite parent) 
 	{
-		
-        
         // add listener to model to keep on track. 
-        Activator.getDefault().getItemList().addPropertyChangeListener(this);
+        Activator.getDefault().getRosterEntryList().addPropertyChangeListener(this);
 
 		final Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new FillLayout());
-	
+		composite.setLayout(new FillLayout());	
 		
 		//tab folder "Bezirk"
 		final TabFolder tabFolder = new TabFolder(composite, SWT.NONE);
-	
-		final TabItem bezirkTabItem = new TabItem(tabFolder, SWT.NONE);
-		bezirkTabItem.setText("Bezirk");
-	
-		final SashForm sashForm_1 = new SashForm(tabFolder, SWT.VERTICAL);
-	
 		
-		//personal checked in
-		final Group personalImDienstGroup = new Group(sashForm_1, SWT.NONE);
-		personalImDienstGroup.setLayout(new FillLayout());
-		personalImDienstGroup.setText("Personal im Dienst");
-		
-	
+		//table viewer
+		this.viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		this.viewer.setContentProvider(new PersonalContentProvider());
+		this.viewer.setLabelProvider(new PersonalLabelProvider());
+		this.viewer.setInput(Activator.getDefault().getRosterEntryList());
+        hookContextMenu();
+        
 		//table
-		final Table table = new Table(personalImDienstGroup, SWT.BORDER);
+		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 	
@@ -145,70 +211,40 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnFzgBezirkImDienst.setToolTipText("Fahrzeug, dem der Mitarbeiter zugewiesen ist");
 		newColumnTableColumnFzgBezirkImDienst.setWidth(36);
 		newColumnTableColumnFzgBezirkImDienst.setText("Fzg");
-		
-		
-		
-		//TODO: doesn't work
-		StaffMember newStaffMember = new StaffMember(15,"Michael","Heiß","m.heiß");
-		Date date = new Date();
-		RosterEntry newRosterEntry = new RosterEntry(1L,newStaffMember,date,2L,3L,4L,5L,"BM","S","HA","mit Haberl",true);
-		final TableItem ItemTableItemT = new TableItem(table, SWT.BORDER);
-		ItemTableItemT.setData(newRosterEntry);
-		
-		
-		//TODO: work, but...
-		final TableItem ItemTableItem = new TableItem(table, SWT.BORDER);
-		ItemTableItem.setText(0, "B");
-		ItemTableItem.setText(1, "A");
-		ItemTableItem.setText(2, "Musterfrau Martina");
-		ItemTableItem.setText(3, "06:00 - 15:00");
-		ItemTableItem.setText(4, "05:55");
-		ItemTableItem.setText(5, "");
-		ItemTableItem.setText(6, "HA");
-		ItemTableItem.setText(7, "F");
-		ItemTableItem.setText(8, "BM");
-		ItemTableItem.setText(9, "Bm03");
-		
-		//oder:
-		//newItemTableItem_1.setData(data); data = widget?
-		//newItemTableItem_1.setData(key, value);
-		
-		
 	
+		//create the tab items for the table
+		final TabItem bezirkTabItem = new TabItem(tabFolder, SWT.NONE);
+		bezirkTabItem.setText("Bezirk");
+		bezirkTabItem.setControl(table);
 		
-		
-		
+		final TabItem bruckmurTabItem = new TabItem(tabFolder, SWT.NONE);
+		bruckmurTabItem.setText("Bruck/Mur");
+		bruckmurTabItem.setControl(table);
+	
+		final TabItem kapfenbergTabItem = new TabItem(tabFolder, SWT.NONE);
+		kapfenbergTabItem.setText("Kapfenberg");
+		kapfenbergTabItem.setControl(table);
+	
+		final TabItem stMareinTabItem = new TabItem(tabFolder, SWT.NONE);
+		stMareinTabItem.setText("St. Marein");
+		stMareinTabItem.setControl(table);
+	
+		final TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabItem.setText("Thörl");
+		tabItem.setControl(table);
+	
+		final TabItem turnauTabItem = new TabItem(tabFolder, SWT.NONE);
+		turnauTabItem.setText("Turnau");
+		turnauTabItem.setControl(table);
+	
+		final TabItem breitenauTabItem = new TabItem(tabFolder, SWT.NONE);
+		breitenauTabItem.setText("Breitenau");
+		breitenauTabItem.setControl(table);
+	
+		final TabItem tagesinformationTabItem_1 = new TabItem(tabFolder, SWT.NONE);
+		tagesinformationTabItem_1.setText("Info");	
+	
 		//context menu
-		final TableItem newTabItem = new TableItem(table, SWT.BORDER);
-		newTabItem.setText("New item");
-	
-		final TableItem newItemTableItem_1 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_1.setText("New item");
-	
-		final TableItem newItemTableItem_2 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_2.setText("New item");
-	
-		final TableItem newItemTableItem_3 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_3.setText("New item");
-	
-		final TableItem newItemTableItem_4 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_4.setText("New item");
-	
-		final TableItem newItemTableItem_8 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_8.setText("New item");
-	
-		final TableItem newItemTableItem_5 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_5.setText("New item");
-	
-		final TableItem newItemTableItem_9 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_9.setText("New item");
-	
-		final TableItem newItemTableItem_6 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_6.setText("New item");
-	
-		final TableItem newItemTableItem_7 = new TableItem(table, SWT.BORDER);
-		newItemTableItem_7.setText("New item");
-	
 		final Menu menu_10 = new Menu(table);
 		table.setMenu(menu_10);
 	
@@ -333,126 +369,97 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	
 		final MenuItem menuItem_53 = new MenuItem(menu_17, SWT.NONE);
 		menuItem_53.setText("Sanitäter II");
-		bezirkTabItem.setControl(sashForm_1);
-	
-		
-		//personal at roster sash part
-		final Group personalLtDienstplanGroup = new Group(sashForm_1, SWT.NONE);
-		personalLtDienstplanGroup.setLayout(new FillLayout());
-		personalLtDienstplanGroup.setText("Personal laut Dienstplan");
-	
-		final Table table_1 = new Table(personalLtDienstplanGroup, SWT.BORDER);
-		table_1.setLinesVisible(true);
-		table_1.setHeaderVisible(true);
-	
-		final TableColumn newColumnTableColumnBereitschaftBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnBereitschaftBezirkLautDienstplan.setToolTipText("Mitarbeiter auf Bereitschaft (Symbol, wenn der Fall)");
-		newColumnTableColumnBereitschaftBezirkLautDienstplan.setWidth(23);
-		newColumnTableColumnBereitschaftBezirkLautDienstplan.setText("B");
-	
-		final TableColumn newColumnTableColumnAnmerkungBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnAnmerkungBezirkLautDienstplan.setToolTipText("Anmerkung (Symbol, wenn Anmerkung vorhanden)");
-		newColumnTableColumnAnmerkungBezirkLautDienstplan.setWidth(26);
-		newColumnTableColumnAnmerkungBezirkLautDienstplan.setText("A");
-	
-		final TableColumn newColumnTableColumnNameBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnNameBezirkLautDienstplan.setWidth(98);
-		newColumnTableColumnNameBezirkLautDienstplan.setText("Name");
-	
-		final TableColumn newColumnTableColumnDienstBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnDienstBezirkLautDienstplan.setToolTipText("Dienst lt. Dienstplan");
-		newColumnTableColumnDienstBezirkLautDienstplan.setWidth(73);
-		newColumnTableColumnDienstBezirkLautDienstplan.setText("Dienst");
-	
-		final TableColumn newColumnTableColumnAnmBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnAnmBezirkLautDienstplan.setToolTipText("Zeit der tatsächlichen Anmeldung");
-		newColumnTableColumnAnmBezirkLautDienstplan.setWidth(41);
-		newColumnTableColumnAnmBezirkLautDienstplan.setText("Anm");
-	
-		final TableColumn newColumnTableColumnAbmBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnAbmBezirkLautDienstplan.setToolTipText("Zeit der tatsächlichen Abmeldung");
-		newColumnTableColumnAbmBezirkLautDienstplan.setWidth(41);
-		newColumnTableColumnAbmBezirkLautDienstplan.setText("Abm");
-	
-		final TableColumn newColumnTableColumnDVBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnDVBezirkLautDienstplan.setToolTipText("Dienstverhältnis");
-		newColumnTableColumnDVBezirkLautDienstplan.setWidth(31);
-		newColumnTableColumnDVBezirkLautDienstplan.setText("DV");
-	
-		final TableColumn newColumnTableColumnVBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnVBezirkLautDienstplan.setToolTipText("Verwendung");
-		newColumnTableColumnVBezirkLautDienstplan.setWidth(30);
-		newColumnTableColumnVBezirkLautDienstplan.setText("V");
-	
-		final TableColumn newColumnTableColumnOSBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnOSBezirkLautDienstplan.setToolTipText("Ortsstelle, an der der Mitarbeiter Dienst macht");
-		newColumnTableColumnOSBezirkLautDienstplan.setWidth(22);
-		newColumnTableColumnOSBezirkLautDienstplan.setText("OS");
-	
-		final TableColumn newColumnTableColumnFzgBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
-		newColumnTableColumnFzgBezirkLautDienstplan.setToolTipText("Fahrzeug, dem der Mitarbeiter zugewiesen ist");
-		newColumnTableColumnFzgBezirkLautDienstplan.setWidth(36);
-		newColumnTableColumnFzgBezirkLautDienstplan.setText("Fzg");
-	
-		final TableItem newTabItem_1 = new TableItem(table_1, SWT.BORDER);
-		newTabItem_1.setText("New item");
-	
-		final TableItem newItemTableItem_1_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_1_1.setText("New item");
-	
-		final TableItem newItemTableItem_2_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_2_1.setText("New item");
-	
-		final TableItem newItemTableItem_3_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_3_1.setText("New item");
-	
-		final TableItem newItemTableItem_4_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_4_1.setText("New item");
-	
-		final TableItem newItemTableItem_8_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_8_1.setText("New item");
-	
-		final TableItem newItemTableItem_5_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_5_1.setText("New item");
-	
-		final TableItem newItemTableItem_9_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_9_1.setText("New item");
-	
-		final TableItem newItemTableItem_6_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_6_1.setText("New item");
-	
-		final TableItem newItemTableItem_7_1 = new TableItem(table_1, SWT.BORDER);
-		newItemTableItem_7_1.setText("New item");
-		sashForm_1.setWeights(new int[] {1, 1 });
-	
-		final TabItem bruckmurTabItem = new TabItem(tabFolder, SWT.NONE);
-		bruckmurTabItem.setText("Bruck/Mur");
-	
-		final TabItem kapfenbergTabItem = new TabItem(tabFolder, SWT.NONE);
-		kapfenbergTabItem.setText("Kapfenberg");
-	
-		final TabItem stMareinTabItem = new TabItem(tabFolder, SWT.NONE);
-		stMareinTabItem.setText("St. Marein");
-	
-		final TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText("Thörl");
-	
-		final TabItem turnauTabItem = new TabItem(tabFolder, SWT.NONE);
-		turnauTabItem.setText("Turnau");
-	
-		final TabItem tagesinformationTabItem = new TabItem(tabFolder, SWT.NONE);
-		tagesinformationTabItem.setText("Breitenau");
-	
-		final TabItem tagesinformationTabItem_1 = new TabItem(tabFolder, SWT.NONE);
-		tagesinformationTabItem_1.setText("Info");
-		
-		//table viewer
-		this.viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL // ------------- not parent but table!!! ---------------------
-				| SWT.V_SCROLL);
-		this.viewer.setContentProvider(new ViewContentProvider());
-		this.viewer.setLabelProvider(new ViewLabelProvider());
-		this.viewer.setInput(Activator.getDefault().getItemList());
-        hookContextMenu();
+//	
+//		
+//		//personal at roster sash part
+//		final Group personalLtDienstplanGroup = new Group(sashForm_1, SWT.NONE);
+//		personalLtDienstplanGroup.setLayout(new FillLayout());
+//		personalLtDienstplanGroup.setText("Personal laut Dienstplan");
+//	
+//		final Table table_1 = new Table(personalLtDienstplanGroup, SWT.BORDER);
+//		table_1.setLinesVisible(true);
+//		table_1.setHeaderVisible(true);
+//	
+//		final TableColumn newColumnTableColumnBereitschaftBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnBereitschaftBezirkLautDienstplan.setToolTipText("Mitarbeiter auf Bereitschaft (Symbol, wenn der Fall)");
+//		newColumnTableColumnBereitschaftBezirkLautDienstplan.setWidth(23);
+//		newColumnTableColumnBereitschaftBezirkLautDienstplan.setText("B");
+//	
+//		final TableColumn newColumnTableColumnAnmerkungBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnAnmerkungBezirkLautDienstplan.setToolTipText("Anmerkung (Symbol, wenn Anmerkung vorhanden)");
+//		newColumnTableColumnAnmerkungBezirkLautDienstplan.setWidth(26);
+//		newColumnTableColumnAnmerkungBezirkLautDienstplan.setText("A");
+//	
+//		final TableColumn newColumnTableColumnNameBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnNameBezirkLautDienstplan.setWidth(98);
+//		newColumnTableColumnNameBezirkLautDienstplan.setText("Name");
+//	
+//		final TableColumn newColumnTableColumnDienstBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnDienstBezirkLautDienstplan.setToolTipText("Dienst lt. Dienstplan");
+//		newColumnTableColumnDienstBezirkLautDienstplan.setWidth(73);
+//		newColumnTableColumnDienstBezirkLautDienstplan.setText("Dienst");
+//	
+//		final TableColumn newColumnTableColumnAnmBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnAnmBezirkLautDienstplan.setToolTipText("Zeit der tatsächlichen Anmeldung");
+//		newColumnTableColumnAnmBezirkLautDienstplan.setWidth(41);
+//		newColumnTableColumnAnmBezirkLautDienstplan.setText("Anm");
+//	
+//		final TableColumn newColumnTableColumnAbmBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnAbmBezirkLautDienstplan.setToolTipText("Zeit der tatsächlichen Abmeldung");
+//		newColumnTableColumnAbmBezirkLautDienstplan.setWidth(41);
+//		newColumnTableColumnAbmBezirkLautDienstplan.setText("Abm");
+//	
+//		final TableColumn newColumnTableColumnDVBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnDVBezirkLautDienstplan.setToolTipText("Dienstverhältnis");
+//		newColumnTableColumnDVBezirkLautDienstplan.setWidth(31);
+//		newColumnTableColumnDVBezirkLautDienstplan.setText("DV");
+//	
+//		final TableColumn newColumnTableColumnVBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnVBezirkLautDienstplan.setToolTipText("Verwendung");
+//		newColumnTableColumnVBezirkLautDienstplan.setWidth(30);
+//		newColumnTableColumnVBezirkLautDienstplan.setText("V");
+//	
+//		final TableColumn newColumnTableColumnOSBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnOSBezirkLautDienstplan.setToolTipText("Ortsstelle, an der der Mitarbeiter Dienst macht");
+//		newColumnTableColumnOSBezirkLautDienstplan.setWidth(22);
+//		newColumnTableColumnOSBezirkLautDienstplan.setText("OS");
+//	
+//		final TableColumn newColumnTableColumnFzgBezirkLautDienstplan = new TableColumn(table_1, SWT.NONE);
+//		newColumnTableColumnFzgBezirkLautDienstplan.setToolTipText("Fahrzeug, dem der Mitarbeiter zugewiesen ist");
+//		newColumnTableColumnFzgBezirkLautDienstplan.setWidth(36);
+//		newColumnTableColumnFzgBezirkLautDienstplan.setText("Fzg");
+//	
+//		final TableItem newTabItem_1 = new TableItem(table_1, SWT.BORDER);
+//		newTabItem_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_1_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_1_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_2_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_2_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_3_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_3_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_4_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_4_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_8_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_8_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_5_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_5_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_9_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_9_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_6_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_6_1.setText("New item");
+//	
+//		final TableItem newItemTableItem_7_1 = new TableItem(table_1, SWT.BORDER);
+//		newItemTableItem_7_1.setText("New item");
+//		sashForm_1.setWeights(new int[] {1, 1 });
+//	
 	}
 	
 	//context menu
@@ -480,14 +487,15 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     
     public void propertyChange(PropertyChangeEvent evt) 
     {
+    	System.out.println("change");
         // the viewer represents simple model. refresh should be enough.
-        if ("ITEM_ADD".equals(evt.getPropertyName())) 
-        { //$NON-NLS-1$
+        if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())) 
+        { 
             this.viewer.refresh();
         }
         // event on deletion --> also just refresh
-        if ("ITEM_REMOVE".equals(evt.getPropertyName())) 
-        { //$NON-NLS-1$
+        if ("ROSTERENTRY_REMOVE".equals(evt.getPropertyName())) 
+        { 
             this.viewer.refresh();
         }
     }

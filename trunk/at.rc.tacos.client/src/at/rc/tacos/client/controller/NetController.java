@@ -47,4 +47,10 @@ public class NetController implements IServiceListener
         // TODO Auto-generated method stub
 
     }
+
+	@Override
+	public void rosterEntryAdded(RosterEntry entry) 
+	{
+		Activator.getDefault().getRosterEntryList().add(entry);
+	}
 }

@@ -61,7 +61,7 @@
       <view
             name="RessourcesView"
             allowMultiple="true"
-            class="at.rc.tacos.client.view.RessourcesView"
+            class="at.rc.tacos.client.view.VehiclesView"
             id="at.rc.tacos.client.view.ressources_view">
       </view>
       
