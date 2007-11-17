@@ -50,13 +50,13 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
         if(type.equalsIgnoreCase(Item.ID))
         {    
             //the action to do
-            if(action.equalsIgnoreCase("add"))
+            if("add".equalsIgnoreCase(action))
                 listener.itemAdded((Item)objects.get(0));
-            if(action.equalsIgnoreCase("update"))
+            if("update".equalsIgnoreCase(action))
                 listener.itemUpdated((Item)objects.get(0));
-            if(action.equalsIgnoreCase("remove"))
+            if("remove".equalsIgnoreCase(action))
                 listener.itemRemoved((Item)objects.get(0));
-            if(action.equalsIgnoreCase("list"))
+            if("list".equalsIgnoreCase(action))
             {
                 //create a new item list and add all items
                 ArrayList<Item> itemList = new ArrayList<Item>();
@@ -65,7 +65,14 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
                 //notify
                 listener.itemListing(itemList);
             }
-        }    
+        }  
+        //roster entry
+        if(type.equalsIgnoreCase(RosterEntry.ID))
+        {
+        	RosterEntry rosterEntry = (RosterEntry)objects.get(0);
+        	if("add".equalsIgnoreCase(action))
+        		listener.rosterEntryAdded(rosterEntry);
+        }
     }
     
     // NETWORK METHODS
@@ -85,7 +92,6 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
     public void removeItem(Item item)
     {
         NetWrapper.getDefault().fireNetworkMessage(Item.ID,"remove", item);
-        
     }
 
     @Override
@@ -93,4 +99,10 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
     {
         NetWrapper.getDefault().fireNetworkMessage(Item.ID,"update", newItem);      
     }
+
+	@Override
+	public void addRosterEntry(RosterEntry entry) 
+	{
+		NetWrapper.getDefault().fireNetworkMessage(RosterEntry.ID, "add", entry);
+	}
 }

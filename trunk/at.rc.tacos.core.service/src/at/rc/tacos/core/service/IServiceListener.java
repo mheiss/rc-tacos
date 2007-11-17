@@ -34,4 +34,7 @@ public interface IServiceListener
      * @param list the list to show
      */
     public void itemListing(ArrayList<Item> list);
+    
+    /** Noifictation about a new roster entry */
+    public void rosterEntryAdded(RosterEntry entry);
 }

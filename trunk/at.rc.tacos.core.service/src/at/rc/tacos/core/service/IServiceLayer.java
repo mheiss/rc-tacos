@@ -23,7 +23,7 @@ public interface IServiceLayer
      */
     public void removeServiceListener(IServiceListener listener);
     
-    // SERVICE METHODS
+    // METHODS FOR AN ITEM
     /** Add a item to the itemTable **/
     public void addItem(Item newItem);
     /** Update an existing item */
@@ -32,4 +32,8 @@ public interface IServiceLayer
     public void removeItem(Item item);
     /** List the available items */
     public void listItems();
+    
+    //METHODS FOR A ROSTER ENTRY
+    /** Add roster entry */
+    public void addRosterEntry(RosterEntry entry);
 }
