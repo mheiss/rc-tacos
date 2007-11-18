@@ -31,7 +31,6 @@ public class NetController implements IServiceListener
     public void itemListing(ArrayList<Item> list)
     {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -62,13 +61,13 @@ public class NetController implements IServiceListener
 
 	@Override
 	public void rosterEntryRemoved(RosterEntry rosterEntry) {
-		// TODO Auto-generated method stub
+		Activator.getDefault().getRosterEntryList().remove(rosterEntry);
 		
 	}
 
 	@Override
 	public void rosterEntryUpdated(RosterEntry newRosterEntry) {
-		// TODO Auto-generated method stub
+		Activator.getDefault().getRosterEntryList().update(newRosterEntry);
 		
 	}
 }
