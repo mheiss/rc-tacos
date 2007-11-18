@@ -17,9 +17,9 @@ public class VehicleDetail extends AbstractMessage
 	private int vehicleId;
 	private String vehicleName;
 	private String vehicleType;
-	private String driverName;
-	private String paramedicIName;
-	private String paramedicIIName;
+	private StaffMember driverName;
+	private StaffMember paramedicIName;
+	private StaffMember paramedicIIName;
 	private MobilePhoneDetail mobilePhone;
 	private String vehicleNotes;
 	private String basicStation;
@@ -53,7 +53,7 @@ public class VehicleDetail extends AbstractMessage
 	 * @param mostImportantTransportStatus
 	 */
 	public VehicleDetail(int vehicleId, String vehicleName, String vehicleType,
-			String driverName, String paramedicIName, String paramedicIIName,
+			StaffMember driverName, StaffMember paramedicIName, StaffMember paramedicIIName,
 			MobilePhoneDetail mobilePhone, String vehicleNotes,
 			String basicStation, String currentStation, boolean readyForAction,
 			boolean outOfOrder, int mostImportantTransportStatus) {
@@ -85,54 +85,7 @@ public class VehicleDetail extends AbstractMessage
     }
 
 	//GETTERS AND SETTERS
-	/**
-	 * @return the driverName
-	 */
-	public String getDriverName() 
-	{
-		return driverName;
-	}
-
-	/**
-	 * @param driverName the driverName to set
-	 */
-	public void setDriverName(String driverName) 
-	{
-		this.driverName = driverName;
-	}
-
-	/**
-	 * @return the paramedicIName
-	 */
-	public String getParamedicIName() 
-	{
-		return paramedicIName;
-	}
-
-	/**
-	 * @param paramedicIName the paramedicIName to set
-	 */
-	public void setParamedicIName(String paramedicIName) 
-	{
-		this.paramedicIName = paramedicIName;
-	}
-
-	/**
-	 * @return the paramedicIIName
-	 */
-	public String getParamedicIIName() 
-	{
-		return paramedicIIName;
-	}
-
-	/**
-	 * @param paramedicIIName the paramedicIIName to set
-	 */
-	public void setParamedicIIName(String paramedicIIName) 
-	{
-		this.paramedicIIName = paramedicIIName;
-	}
-
+	
 	/**
 	 * @return the readyForAction
 	 */
@@ -288,5 +241,47 @@ public class VehicleDetail extends AbstractMessage
 	public void setVehicleType(String vehicleType) 
 	{
 		this.vehicleType = vehicleType;
+	}
+
+	/**
+	 * @return the driverName
+	 */
+	public StaffMember getDriverName() {
+		return driverName;
+	}
+
+	/**
+	 * @param driverName the driverName to set
+	 */
+	public void setDriverName(StaffMember driverName) {
+		this.driverName = driverName;
+	}
+
+	/**
+	 * @return the paramedicIName
+	 */
+	public StaffMember getParamedicIName() {
+		return paramedicIName;
+	}
+
+	/**
+	 * @param paramedicIName the paramedicIName to set
+	 */
+	public void setParamedicIName(StaffMember paramedicIName) {
+		this.paramedicIName = paramedicIName;
+	}
+
+	/**
+	 * @return the paramedicIIName
+	 */
+	public StaffMember getParamedicIIName() {
+		return paramedicIIName;
+	}
+
+	/**
+	 * @param paramedicIIName the paramedicIIName to set
+	 */
+	public void setParamedicIIName(StaffMember paramedicIIName) {
+		this.paramedicIIName = paramedicIIName;
 	}
 }
