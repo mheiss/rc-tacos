@@ -35,5 +35,16 @@ public interface IServiceLayer
     
     //METHODS FOR A ROSTER ENTRY
     /** Add roster entry */
-    public void addRosterEntry(RosterEntry entry);
+    public void addRosterEntry(RosterEntry rosterEntry);
+    /** Update a roster entry */
+    public void updateRosterEntry(RosterEntry rosterEntry);
+    /** Remove a roster  entry */
+    public void removeRosterEntry(RosterEntry rosterEntry);
+    /** List the available roster entries*/
+    public void listRosterEntries();
+    
+    //METHODS FOR A TRANSPORT
+    
+    
+    
 }
