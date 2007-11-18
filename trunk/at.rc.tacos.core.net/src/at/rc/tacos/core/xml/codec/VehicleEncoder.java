@@ -5,6 +5,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
 
 public class VehicleEncoder  implements MessageEncoder
@@ -30,20 +31,20 @@ public class VehicleEncoder  implements MessageEncoder
         writer.writeStartElement("vehicleType");
         writer.writeCharacters(vehicle.getVehicleType());
         writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("driverName");
-        writer.writeCharacters(vehicle.getDriverName());
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("paramedicIName");
-        writer.writeCharacters(vehicle.getParamedicIName());
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("paramedicIIName");
-        writer.writeCharacters(vehicle.getParamedicIIName());
-        writer.writeEndElement();
         //get the encoder for the staff member
-        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
+        vehicle.getDriverName().setFunction("driver");
+        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
+        encoder.doEncode(vehicle.getDriverName(), writer);
+        //write the elements and attributes
+        vehicle.getParamedicIName().setFunction("medic1");
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
+        encoder.doEncode(vehicle.getParamedicIName(), writer);
+        //write the elements and attributes
+        vehicle.getParamedicIIName().setFunction("medic2");
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
+        encoder.doEncode(vehicle.getParamedicIIName(), writer);
+        //get the encoder for the mobile phone
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
         encoder.doEncode(vehicle.getMobilePhone(), writer);
         //write the elements and attributes
         writer.writeStartElement("vehicleNotes");

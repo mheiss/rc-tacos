@@ -16,6 +16,9 @@ public class StaffMemberEncoder  implements MessageEncoder
        
         //start
         writer.writeStartElement(StaffMember.ID);
+        //do we have a funtion
+        if(member.getFunction() != null)
+            writer.writeAttribute("function", member.getFunction());
         
         //write the elements and attributes
         writer.writeStartElement("personId");

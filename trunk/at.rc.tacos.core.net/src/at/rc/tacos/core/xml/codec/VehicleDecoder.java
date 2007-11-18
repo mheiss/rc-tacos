@@ -1,11 +1,15 @@
 package at.rc.tacos.core.xml.codec;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
 
 public class VehicleDecoder  implements MessageDecoder
@@ -23,7 +27,8 @@ public class VehicleDecoder  implements MessageDecoder
             XMLEvent event = reader.nextEvent();
             if (event.isStartElement()) 
             {
-                String startName = event.asStartElement().getName().getLocalPart();
+                StartElement start = event.asStartElement();
+                String startName = start.getName().getLocalPart();
                 //create a new item 
                 if(VehicleDetail.ID.equalsIgnoreCase(startName))
                     vehicle = new VehicleDetail();
@@ -34,7 +39,24 @@ public class VehicleDecoder  implements MessageDecoder
                     MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(MobilePhoneDetail.ID);
                     vehicle.setMobilPhone((MobilePhoneDetail)decoder.doDecode(reader));
                 }
-                
+                //get the driver
+                if(StaffMember.ID.equalsIgnoreCase(startName))
+                {
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(StaffMember.ID);
+                    //get the first attribute
+                    Attribute functionAttr = start.getAttributeByName(new QName("function"));
+                    //assert valid
+                    if(functionAttr != null)
+                    {
+                        //set the value
+                        if("driver".equalsIgnoreCase(functionAttr.getValue()))
+                            vehicle.setDriverName((StaffMember)decoder.doDecode(reader));
+                        if("medic1".equalsIgnoreCase(functionAttr.getValue()))
+                            vehicle.setParamedicIName((StaffMember)decoder.doDecode(reader));
+                        if("medic2".equalsIgnoreCase(functionAttr.getValue()))
+                            vehicle.setParamedicIIName((StaffMember)decoder.doDecode(reader));
+                    }
+                }
                 //get the type of the element and set the corresponding value
                 if("vehicleId".equalsIgnoreCase(startName))
                     vehicle.setVehicleId(Integer.valueOf(reader.getElementText()));
@@ -42,12 +64,6 @@ public class VehicleDecoder  implements MessageDecoder
                     vehicle.setVehicleName(reader.getElementText());
                 if("vehicleType".equalsIgnoreCase(startName))
                     vehicle.setVehicleType(reader.getElementText());
-                if("driverName".equalsIgnoreCase(startName))
-                    vehicle.setDriverName(reader.getElementText());
-                if("paramedicIName".equalsIgnoreCase(startName))
-                    vehicle.setParamedicIName(reader.getElementText());
-                if("paramedicIIName".equalsIgnoreCase(startName))
-                    vehicle.setParamedicIIName(reader.getElementText());
                 if("vehicleNotes".equalsIgnoreCase(startName))
                     vehicle.setVehicleNotes(reader.getElementText());
                 if("basicStation".equalsIgnoreCase(startName))
