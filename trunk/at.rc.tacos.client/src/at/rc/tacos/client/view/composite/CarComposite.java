@@ -74,9 +74,10 @@ public class CarComposite extends Composite
 		
 		this.vehicleName = vehicle.getVehicleName();
 		this.vehicleType = vehicle.getVehicleType();
-		this.driverName = vehicle.getDriverName();
-		this.paramedicIName = vehicle.getParamedicIName();
-		this.paramedicIIName = vehicle.getParamedicIIName();
+		this.driverName = vehicle.getDriverName().getUserName();
+		this.paramedicIName = vehicle.getParamedicIName().getUserName();
+		this.paramedicIIName = vehicle.getParamedicIIName().getUserName();
+		System.out.println("Paramedic I Name: " +paramedicIName);
 		
 		//assign the right picture
 		if (!vehicle.getMobilePhone().getMobilePhoneId().equalsIgnoreCase(vehicle.getVehicleName()))
