@@ -80,6 +80,10 @@ public class Activator extends AbstractUIPlugin
         return itemList;
     }
     
+    /**
+     * Returns the object list containing the roster entries
+     * @return the objectList
+     */
     public RosterEntryManager getRosterEntryList()
     {
     	return rosterEntryList;
