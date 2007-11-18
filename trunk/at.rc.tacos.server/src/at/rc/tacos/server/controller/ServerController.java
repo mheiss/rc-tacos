@@ -4,6 +4,7 @@ package at.rc.tacos.server.controller;
 import java.util.*;
 //net
 import at.rc.tacos.core.net.internal.*;
+import at.rc.tacos.core.service.ServiceWrapper;
 
 public class ServerController 
 {
@@ -24,6 +25,8 @@ public class ServerController
     {
         //init the list
         connectedClients = new Vector<MyClient>();
+        //Register the decoders and encoders
+        ServiceWrapper.getDefault().registerEncoderAndDecoder();
     }
     
     /**
