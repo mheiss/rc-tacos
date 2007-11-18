@@ -21,8 +21,13 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TabFolder;
@@ -30,6 +35,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -38,6 +44,7 @@ import at.rc.tacos.client.Activator;
 import at.rc.tacos.model.Item;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
@@ -148,8 +155,64 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());	
 		
+		//group filter
+		final Composite composite_1 = new Composite(composite, SWT.NONE);
+		final GridLayout gridLayout_2 = new GridLayout();
+		composite_1.setLayout(gridLayout_2);
+		
+		
+		final Group filterGroup = new Group(composite_1, SWT.NONE);
+		filterGroup.setText("Filter");
+		final GridData gd_filterGroup = new GridData(SWT.FILL, SWT.TOP, true, false);
+		gd_filterGroup.heightHint = 150;//for normal date field: "30"
+		gd_filterGroup.widthHint = 993;
+		filterGroup.setLayoutData(gd_filterGroup);
+		final GridLayout gridLayout_3 = new GridLayout();
+		gridLayout_3.numColumns = 9;
+		filterGroup.setLayout(gridLayout_3);
+
+		//final Label ortsstelleLabel_1 = new Label(filterGroup, SWT.NONE);
+		//ortsstelleLabel_1.setText("Ortsstelle:");
+
+		//final Combo comboOrtsstelle = new Combo(filterGroup, SWT.NONE);
+		//final GridData gd_comboOrtsstelle = new GridData();
+		//comboOrtsstelle.setLayoutData(gd_comboOrtsstelle);
+
+		
+		//use if a normal date field is used
+//		final Label datumLabel = new Label(filterGroup, SWT.NONE);
+//		datumLabel.setText("Datum:"); 
+
+		final DateTime comboDate = new DateTime(filterGroup, SWT.CALENDAR);
+
+//		final Label sucheLabel_1 = new Label(filterGroup, SWT.NONE);
+//		sucheLabel_1.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+//		sucheLabel_1.setText("Suche:");
+//
+//		final Label nachSpalteLabel_1 = new Label(filterGroup, SWT.NONE);
+//		nachSpalteLabel_1.setText("nach Spalte:");
+//
+//		final Combo comboNachSpalte = new Combo(filterGroup, SWT.NONE);
+//		final GridData gd_comboNachSpalte = new GridData(115, SWT.DEFAULT);
+//		comboNachSpalte.setLayoutData(gd_comboNachSpalte);
+//
+//		final Label begriffLabel_1 = new Label(filterGroup, SWT.NONE);
+//		begriffLabel_1.setText("Begriff:");
+//
+//		final Text textBegriff = new Text(filterGroup, SWT.BORDER);
+//		final GridData gd_textBegriff = new GridData(189, SWT.DEFAULT);
+//		textBegriff.setLayoutData(gd_textBegriff);
+		
+		
+		
+		final Group group = new Group(composite_1, SWT.NONE);
+		group.setLayout(new FillLayout());
+		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		group.setText("Dienstplan");
+		
+		
 		//tab folder "Bezirk"
-		final TabFolder tabFolder = new TabFolder(composite, SWT.NONE);
+		final TabFolder tabFolder = new TabFolder(group, SWT.NONE);
 		
 		//table viewer
 		this.viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
