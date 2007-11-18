@@ -171,39 +171,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		gridLayout_3.numColumns = 9;
 		filterGroup.setLayout(gridLayout_3);
 
-		//final Label ortsstelleLabel_1 = new Label(filterGroup, SWT.NONE);
-		//ortsstelleLabel_1.setText("Ortsstelle:");
-
-		//final Combo comboOrtsstelle = new Combo(filterGroup, SWT.NONE);
-		//final GridData gd_comboOrtsstelle = new GridData();
-		//comboOrtsstelle.setLayoutData(gd_comboOrtsstelle);
-
-		
-		//use if a normal date field is used
-//		final Label datumLabel = new Label(filterGroup, SWT.NONE);
-//		datumLabel.setText("Datum:"); 
-
 		final DateTime comboDate = new DateTime(filterGroup, SWT.CALENDAR);
-
-//		final Label sucheLabel_1 = new Label(filterGroup, SWT.NONE);
-//		sucheLabel_1.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
-//		sucheLabel_1.setText("Suche:");
-//
-//		final Label nachSpalteLabel_1 = new Label(filterGroup, SWT.NONE);
-//		nachSpalteLabel_1.setText("nach Spalte:");
-//
-//		final Combo comboNachSpalte = new Combo(filterGroup, SWT.NONE);
-//		final GridData gd_comboNachSpalte = new GridData(115, SWT.DEFAULT);
-//		comboNachSpalte.setLayoutData(gd_comboNachSpalte);
-//
-//		final Label begriffLabel_1 = new Label(filterGroup, SWT.NONE);
-//		begriffLabel_1.setText("Begriff:");
-//
-//		final Text textBegriff = new Text(filterGroup, SWT.BORDER);
-//		final GridData gd_textBegriff = new GridData(189, SWT.DEFAULT);
-//		textBegriff.setLayoutData(gd_textBegriff);
-		
-		
 		
 		final Group group = new Group(composite_1, SWT.NONE);
 		group.setLayout(new FillLayout());
@@ -561,5 +529,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         { 
             this.viewer.refresh();
         }
+        
+        // 
     }
 }
