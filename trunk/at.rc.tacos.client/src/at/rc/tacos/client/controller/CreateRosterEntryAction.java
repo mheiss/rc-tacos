@@ -12,61 +12,19 @@ import at.rc.tacos.model.*;
  */
 public class CreateRosterEntryAction extends Action 
 {
-	private long rosterId;
-	private StaffMember staffMember;
-	private long dateOfRosterEntry;
-	private long plannedStartofWork;
-	private long plannedEndOfWork;
-	private long realStartOfWork;
-	private long realEndOfWork;
-	private String station;
-	private String competence;
-	private String servicetype;
-	private String rosterNotes;
-	private boolean standby;
+    private RosterEntry entry;
 
     /**
-	 * @param rosterId
-	 * @param staffMember
-	 * @param dateOfRosterEntry
-	 * @param plannedStartofWork
-	 * @param plannedEndOfWork
-	 * @param realStartOfWork
-	 * @param realEndOfWork
-	 * @param station
-	 * @param competence
-	 * @param servicetype
-	 * @param rosterNotes
-	 * @param standby
-	 */
-	public CreateRosterEntryAction(long rosterId, StaffMember staffMember,
-			long dateOfRosterEntry, long plannedStartofWork,
-			long plannedEndOfWork, long realStartOfWork, long realEndOfWork,
-			String station, String competence, String servicetype,
-			String rosterNotes, boolean standby) 
-	{
-		
-		this.rosterId = rosterId;
-		this.staffMember = staffMember;
-		this.dateOfRosterEntry = dateOfRosterEntry;
-		this.plannedStartofWork = plannedStartofWork;
-		this.plannedEndOfWork = plannedEndOfWork;
-		this.realStartOfWork = realStartOfWork;
-		this.realEndOfWork = realEndOfWork;
-		this.station = station;
-		this.competence = competence;
-		this.servicetype = servicetype;
-		this.rosterNotes = rosterNotes;
-		this.standby = standby;
-	}
-    
+     * Creates a new RosterEntryAction.
+     * @param the new roster entry
+     */
+    public CreateRosterEntryAction(RosterEntry entry) 
+    {
+        this.entry = entry;
+    }
+
     public void run() 
     {
-    	RosterEntry newRosterEntry = new RosterEntry(rosterId,staffMember,dateOfRosterEntry,
-    			plannedStartofWork, plannedEndOfWork,
-    			realStartOfWork, realEndOfWork, station,
-    			competence, servicetype, rosterNotes,
-    			standby);
-    	ServiceWrapper.getDefault().getServiceLayer().addRosterEntry(newRosterEntry);
+        ServiceWrapper.getDefault().getServiceLayer().addRosterEntry(entry);
     }
 }
