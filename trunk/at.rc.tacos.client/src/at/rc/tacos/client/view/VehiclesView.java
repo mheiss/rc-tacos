@@ -21,7 +21,6 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 import org.eclipse.ui.part.*;
 //client
-import at.rc.tacos.client.modelManager.CarCompositeManager;
 import at.rc.tacos.client.view.composite.CarComposite;
 
 /**
@@ -88,13 +87,13 @@ public class VehiclesView extends ViewPart
 
 		
 		//group Thörl
-		Group groupThörl;
-		groupThörl = new Group(composite_1, SWT.NONE);
-		groupThörl.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		Group groupThoerl;
+		groupThoerl = new Group(composite_1, SWT.NONE);
+		groupThoerl.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		final RowLayout rowLayout_4 = new RowLayout();
 		rowLayout_4.spacing = 10;
-		groupThörl.setLayout(rowLayout_4);
-		groupThörl.setText("Thörl");
+		groupThoerl.setLayout(rowLayout_4);
+		groupThoerl.setText("Thörl");
 
 		
 		//group Turnau
@@ -133,27 +132,74 @@ public class VehiclesView extends ViewPart
 		
 		//cars of Bruck
 		//TODO: get the ArrayList from the database
-		MobilePhoneDetail mp = new MobilePhoneDetail("Bm01","0664/1234567");
-		VehicleDetail v1 = new VehicleDetail(1,"Bm01","RTW","a.schw","p.anze","j.made",mp, "the notes 1", "BM", "BM", true,false,1);
-		VehicleDetail v2 = new VehicleDetail(1,"Bm02","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "KA", false,false,2);
-		VehicleDetail v3 = new VehicleDetail(1,"Bm03","BKTW","r.hart","s.krau","p.stri",mp, "     ", "BM", "BM", false,false,3);
-		VehicleDetail v4 = new VehicleDetail(1,"Bm04","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,3);
-		VehicleDetail v5 = new VehicleDetail(1,"Bm05","BKTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,2);
-		VehicleDetail v6 = new VehicleDetail(1,"Bm06","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,3);
-		VehicleDetail v7 = new VehicleDetail(1,"Bm07","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,1);
-		VehicleDetail v8 = new VehicleDetail(1,"Bm08","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,2);
-		VehicleDetail v9 = new VehicleDetail(1,"Bm09","KTW","r.hart","s.krau","p.stri",mp, "", "BM", "KA", true,false,3);
-		VehicleDetail v10 = new VehicleDetail(1,"Bm10","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "KA", false,false,2);
-		VehicleDetail v11 = new VehicleDetail(1,"Bm11","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", true,false,2);
-		VehicleDetail v12 = new VehicleDetail(1,"Bm12","RTW","r.hart","s.krau","p.stri",mp, "", "BM", "BM", false,false,3);
-		ArrayList<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2,v3,v4,v5,v6,v8,v9,v10,v11,v12));
 		
-		CarCompositeManager ccm = new CarCompositeManager();
-		for(VehicleDetail vehicle: vehicleList)
+		StaffMember sm1 = new StaffMember(0,"Alfred","Schwarzenegger","a.schw");
+		StaffMember sm2 = new StaffMember(1,"Rene","Hartenfelser","r.hart");
+		StaffMember sm3 = new StaffMember(2,"Simone", "Kraus", "s.krau");
+		
+		MobilePhoneDetail mp = new MobilePhoneDetail("Bm01","0664/1234567");
+		VehicleDetail v1 = new VehicleDetail(1,"Bm01","RTW",sm1,sm2,sm3,mp, "the notes 1", "BM", "BM", true,false,1);
+		VehicleDetail v2 = new VehicleDetail(1,"Bm02","RTW",sm1,sm2,sm3,mp, "", "BM", "KA", false,false,2);
+		VehicleDetail v3 = new VehicleDetail(1,"Bm03","BKTW",sm1,sm2,sm3,mp, "     ", "BM", "BM", false,false,3);
+		VehicleDetail v4 = new VehicleDetail(1,"Bm04","RTW",sm1,sm2,sm3,mp, "", "BM", "BM", false,false,3);
+		VehicleDetail v5 = new VehicleDetail(1,"Bm05","BKTW",sm1,sm2,sm3,mp, "", "BM", "BM", false,false,2);
+		VehicleDetail v6 = new VehicleDetail(1,"Bm06","RTW",sm1,sm2,sm3,mp, "", "BM", "BM", false,false,3);
+		VehicleDetail v7 = new VehicleDetail(1,"Bm07","RTW",sm1,sm2,sm3,mp, "", "BM", "BM", false,false,1);
+		VehicleDetail v8 = new VehicleDetail(1,"Bm08","RTW",sm1,sm2,sm3,mp, "", "BM", "BM", false,false,2);
+		VehicleDetail v9 = new VehicleDetail(1,"Bm09","KTW",sm1,sm2,sm3,mp, "", "BM", "KA", true,false,3);
+		VehicleDetail v10 = new VehicleDetail(1,"Bm10","RTW",sm1,sm2,sm3,mp, "", "BM", "KA", false,false,2);
+		VehicleDetail v11 = new VehicleDetail(1,"Bm11","RTW",sm1,sm2,sm3,mp, "", "BM", "BM", true,false,2);
+		VehicleDetail v12 = new VehicleDetail(1,"Bm12","RTW",sm1,sm2,sm3,mp, "", "BM", "BM", false,false,3);
+		
+		ArrayList<VehicleDetail> vehicleListBruck = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11));
+		ArrayList<VehicleDetail> vehicleListMarein = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2));
+		ArrayList<VehicleDetail> vehicleListThoerl = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2));
+		ArrayList<VehicleDetail> vehicleListTurnau = new ArrayList<VehicleDetail>(Arrays.asList(v1));
+		ArrayList<VehicleDetail> vehicleListBreitenau = new ArrayList<VehicleDetail>(Arrays.asList(v12));
+		ArrayList<VehicleDetail> vehicleListBezirk = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2));
+		ArrayList<VehicleDetail> vehicleListKapfenberg = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2,v3,v4,v5,v6,v7,v8));
+		
+		for(VehicleDetail vehicle : vehicleListBruck)
 		{
-			final CarComposite cc = ccm.getCarComposite(groupBruckMur, vehicle);
-			cc.setParent(groupBruckMur);
+			new CarComposite(groupBruckMur, vehicle);
 		}
+		
+		//cars of Kapfenberg
+		for(VehicleDetail vehicle : vehicleListKapfenberg)
+		{
+			new CarComposite(groupKapfenberg, vehicle);
+		}
+		
+		//cars of St. Marein
+		for(VehicleDetail vehicle : vehicleListMarein)
+		{
+			new CarComposite(groupMarein, vehicle);
+		}
+		
+		//cars of Thörl
+		for(VehicleDetail vehicle : vehicleListThoerl)
+		{
+			new CarComposite(groupThoerl, vehicle);
+		}
+		
+		//cars of Turnau
+		for(VehicleDetail vehicle : vehicleListTurnau)
+		{
+			new CarComposite(groupTurnau, vehicle);
+		}
+		
+		//cars of Breitenau
+		for(VehicleDetail vehicle : vehicleListBreitenau)
+		{
+			new CarComposite(groupBreitenau, vehicle);
+		}
+		
+		//cars of Bezirk
+		for(VehicleDetail vehicle : vehicleListBezirk)
+		{
+			new CarComposite(groupBezirk, vehicle);
+		}
+		
 		
 		
 
@@ -168,7 +214,7 @@ public class VehiclesView extends ViewPart
 					.add(groupLayout.createParallelGroup(GroupLayout.TRAILING)
 						.add(GroupLayout.LEADING, groupBezirk, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
 						.add(GroupLayout.LEADING, groupBreitenau, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, groupThörl, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, groupThoerl, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
 						.add(GroupLayout.LEADING, groupTurnau, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
 						.add(GroupLayout.LEADING, groupMarein, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
 						.add(GroupLayout.LEADING, groupKapfenberg, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE)
@@ -185,7 +231,7 @@ public class VehiclesView extends ViewPart
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(groupMarein, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(groupThörl, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+					.add(groupThoerl, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(groupTurnau, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
@@ -197,101 +243,6 @@ public class VehiclesView extends ViewPart
 
 		composite_1.setLayout(groupLayout);
 
-		
-		
-		
-//regular car composite
-		
-//		//One car of Turnau
-//		final Composite compositeACar_4_8 = new Composite(groupTurnau, SWT.NONE);
-//		final RowData rd_compositeACar_4_8 = new RowData();
-//		rd_compositeACar_4_8.width = 136;
-//		rd_compositeACar_4_8.height = 61;
-//		compositeACar_4_8.setLayoutData(rd_compositeACar_4_8);
-//		compositeACar_4_8.setLayout(new FillLayout(SWT.VERTICAL));
-//
-//		final Composite composite_6_9_8 = new Composite(compositeACar_4_8, SWT.NONE);
-//		composite_6_9_8.setLayout(new FillLayout());
-//
-//		final Label bm02Label_3_8 = new Label(composite_6_9_8, SWT.NONE);
-//		bm02Label_3_8.setForeground(SWTResourceManager.getColor(0, 0, 128));
-//		bm02Label_3_8.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-//		bm02Label_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//		bm02Label_3_8.setText("Tu18");
-//
-//		final Composite composite_9_4_8 = new Composite(composite_6_9_8, SWT.NONE);
-//		composite_9_4_8.setLayout(new FormLayout());
-//		composite_9_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//
-//		final Label bktwLabel_3_8 = new Label(composite_9_4_8, SWT.CENTER);
-//		final FormData fd_label_3_4_8 = new FormData();
-//		fd_label_3_4_8.bottom = new FormAttachment(0, 15);
-//		fd_label_3_4_8.top = new FormAttachment(0, 0);
-//		fd_label_3_4_8.right = new FormAttachment(0, 68);
-//		fd_label_3_4_8.left = new FormAttachment(0, 15);
-//		bktwLabel_3_8.setLayoutData(fd_label_3_4_8);
-//		bktwLabel_3_8.setForeground(SWTResourceManager.getColor(255, 255, 255));
-//		bktwLabel_3_8.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-//		bktwLabel_3_8.setBackground(SWTResourceManager.getColor(228, 236, 238));
-//		bktwLabel_3_8.setText("RTW");
-//
-//		final Composite composite_5_9_8 = new Composite(compositeACar_4_8, SWT.NONE);
-//		composite_5_9_8.setLayout(new FillLayout(SWT.VERTICAL));
-//
-//		final Composite composite_8_4_8 = new Composite(composite_5_9_8, SWT.NONE);
-//		composite_8_4_8.setLayout(new FillLayout());
-//
-//		final Label label_5_4_8 = new Label(composite_8_4_8, SWT.NONE);
-//		label_5_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/OK2.gif"));
-//		label_5_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//
-//		final Label label_8_4_8 = new Label(composite_8_4_8, SWT.NONE);
-//		label_8_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Handy.gif"));
-//		label_8_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//
-//		final Label label_9_4_8 = new Label(composite_8_4_8, SWT.NONE);
-//		label_9_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Haus.gif"));
-//		label_9_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//
-//		final Label label_7_4_8 = new Label(composite_8_4_8, SWT.NONE);
-//		label_7_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Reparatur.gif"));
-//		label_7_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//
-//		final Label label_6_4_8 = new Label(composite_8_4_8, SWT.NONE);
-//		label_6_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/TXT.gif"));
-//		label_6_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//
-//		final Label label_4_4_8 = new Label(composite_8_4_8, SWT.NONE);
-//		label_4_4_8.setImage(SWTResourceManager.getImage(VehiclesView.class, "/image/Ampel_grün.gif"));
-//		label_4_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//
-//		final Composite composite_7_4_8 = new Composite(composite_5_9_8, SWT.NONE);
-//		composite_7_4_8.setLayout(new FillLayout());
-//
-//		final Label label_11_4_8 = new Label(composite_7_4_8, SWT.NONE);
-//		label_11_4_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-//		label_11_4_8.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-//		label_11_4_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//		label_11_4_8.setText("m.heiß");
-//
-//		final Label wlohmLabel_3_8 = new Label(composite_7_4_8, SWT.NONE);
-//		wlohmLabel_3_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-//		wlohmLabel_3_8.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-//		wlohmLabel_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//		wlohmLabel_3_8.setText("w.lohm");
-//
-//		final Label bthekLabel_3_8 = new Label(composite_7_4_8, SWT.NONE);
-//		bthekLabel_3_8.setForeground(SWTResourceManager.getColor(0, 0, 102));
-//		bthekLabel_3_8.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-//		bthekLabel_3_8.setBackground(SWTResourceManager.getColor(209, 229, 249));
-//		bthekLabel_3_8.setText("b.thek");
-//
-//	
-		
-		
-		
-		
-		
 
 		//gridLayout.makeColumnsEqualWidth = true;
 
