@@ -97,6 +97,7 @@ public class RosterEntryManager extends PlatformObject
         {
             public void run ()       
             {
+            	//TODO ????????????????????????????????
                 objectList.remove(rosterEntry);
                 objectList.add(rosterEntry);
                 firePropertyChange("ROSTERENTRY_UPDATE", rosterEntry, null); 
