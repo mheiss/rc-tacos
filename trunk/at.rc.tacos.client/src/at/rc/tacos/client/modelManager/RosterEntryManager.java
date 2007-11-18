@@ -85,6 +85,26 @@ public class RosterEntryManager extends PlatformObject
             }
         }); 
     }
+    
+    
+    /**
+     * Updates the roster entry at the list
+     * @param roster entry the roster entry to update
+     */
+    public void update(final RosterEntry rosterEntry) 
+    {
+        Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {
+                objectList.remove(rosterEntry);
+                objectList.add(rosterEntry);
+                firePropertyChange("ROSTERENTRY_UPDATE", rosterEntry, null); 
+            }
+        }); 
+    }
+    
+    
 
     /**
      * Converts the list to an array
