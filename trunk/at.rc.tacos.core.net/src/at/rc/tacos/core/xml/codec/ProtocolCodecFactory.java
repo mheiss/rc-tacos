@@ -1,6 +1,5 @@
 package at.rc.tacos.core.xml.codec;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 

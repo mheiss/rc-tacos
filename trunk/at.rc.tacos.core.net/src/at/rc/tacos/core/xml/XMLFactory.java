@@ -14,8 +14,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.core.xml.codec.MessageDecoder;
-import at.rc.tacos.core.xml.codec.ProtocolCodecFactory;
+import at.rc.tacos.core.xml.codec.*;
 
 /**
  * Provides methods to enocde and decode the net messages
@@ -133,9 +132,10 @@ public class XMLFactory
 
             //write the body
             xmlw.writeStartElement(BODY_ELEMENT);
+            System.out.println("Using codec: "+ProtocolCodecFactory.getDefault().getEncoder(type));
             //loop and encode the object
             for(AbstractMessage message:messageList)
-                ProtocolCodecFactory.getDefault().getEncoder(AbstractMessage.ID).doEncode(message, xmlw);
+                ProtocolCodecFactory.getDefault().getEncoder(type).doEncode(message, xmlw);
             //end of the body
             xmlw.writeEndElement();
 
@@ -145,6 +145,8 @@ public class XMLFactory
             xmlw.writeEndDocument();
             // Close the writer to flush the output
             xmlw.close();
+            
+            System.out.println("End of encoding:"+output.toString());
 
             return output.toString();
         }
