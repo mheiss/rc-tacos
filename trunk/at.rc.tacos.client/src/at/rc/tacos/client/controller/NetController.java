@@ -53,4 +53,22 @@ public class NetController implements IServiceListener
 	{
 		Activator.getDefault().getRosterEntryList().add(entry);
 	}
+
+	@Override
+	public void rosterEntryListing(ArrayList<RosterEntry> list) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rosterEntryRemoved(RosterEntry rosterEntry) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rosterEntryUpdated(RosterEntry newRosterEntry) {
+		// TODO Auto-generated method stub
+		
+	}
 }
