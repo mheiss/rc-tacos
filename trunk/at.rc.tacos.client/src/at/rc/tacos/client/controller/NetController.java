@@ -1,8 +1,7 @@
 package at.rc.tacos.client.controller;
 
 import java.util.ArrayList;
-
-import org.eclipse.swt.widgets.Display;
+import java.util.Date;
 
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.model.*;
@@ -25,6 +24,7 @@ public class NetController implements IServiceListener
     {
         //add the item
         Activator.getDefault().getItemList().add(newItem);
+        System.out.println("Item added: "+new Date().getTime());
     }
 
     @Override

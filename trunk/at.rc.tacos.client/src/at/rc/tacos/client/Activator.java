@@ -35,9 +35,11 @@ public class Activator extends AbstractUIPlugin
 	{
 		super.start(context);
 		plugin = this;
+		//register the encoders and decoders
+		ServiceWrapper.getDefault().registerEncoderAndDecoder();
+		ServiceWrapper.getDefault().registerNetworkListener();
 		//register a listener to receive network updates
-		NetController netController = new NetController();
-		ServiceWrapper.getDefault().getServiceLayer().registerServiceListener(netController);
+		ServiceWrapper.getDefault().getServiceLayer().registerServiceListener(new NetController());
 	}
 
 	/**

@@ -6,7 +6,6 @@ import org.eclipse.jface.action.Action;
 
 //client
 import at.rc.tacos.model.*;
-import at.rc.tacos.client.Activator;
 import at.rc.tacos.core.service.ServiceWrapper;
 
 /**
@@ -24,6 +23,7 @@ public class CreateItemAction extends Action
     
     public void run() 
     {
+        //Roster entry
     	RosterEntry entry = new RosterEntry();
     	StaffMember member = new StaffMember();
     	
@@ -44,11 +44,14 @@ public class CreateItemAction extends Action
     	entry.setStaffMember(member);
     	entry.setStandby(false);
     	entry.setStation("Bruck");
-    	
-    	Activator.getDefault().getRosterEntryList().add(entry);
+    	//send
+    	System.out.println("RosterEntry added: "+new Date().getTime());
+    	ServiceWrapper.getDefault().getServiceLayer().addRosterEntry(entry);
+
+    	//Item
         Item newItem = new Item(id);
-        System.out.println("Created a new item: "+newItem);
-        //Send a request to the server layer to add the item
+        //send
         ServiceWrapper.getDefault().getServiceLayer().addItem(newItem);
+        System.out.println("Item request send: "+new Date().getTime());
     }
 }
