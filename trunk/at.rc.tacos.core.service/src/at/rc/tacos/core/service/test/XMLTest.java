@@ -44,22 +44,24 @@ public class XMLTest
         factory.setupEncodeFactory(
                 "heissm", 
                 new Date().getTime(),
-                RosterEntry.ID,
+                VehicleDetail.ID,
                 "insert",
                 0L);
         //the resulting list
         ArrayList<AbstractMessage> resultObjects = new ArrayList<AbstractMessage>();
         ArrayList<AbstractMessage> inputObjects = new ArrayList<AbstractMessage>();
         //start looping
-        for (int i = 0; i<10000;i++)
+        for (int i = 0; i<10;i++)
         {
-            StaffMember member = new StaffMember(0,"Michael","Heiss","Ich");
-            RosterEntry newRosterEntry = new RosterEntry(
-                    i,member,new Date().getTime(),
-                    new Date().getTime(), new Date().getTime(),
-                    new Date().getTime(), new Date().getTime(), "Kapfenberg",
-                    "Fahrer", "Zivi", "nix",false);
-            inputObjects.add(newRosterEntry);
+            StaffMember driver = new StaffMember(0,"Michael","Heiss","Driver");
+            StaffMember medic1 = new StaffMember(1,"Michael","Heiss","Medic1");
+            StaffMember medic2 = new StaffMember(2,"Michael","Heiss","Medic2");
+            MobilePhoneDetail phone = new MobilePhoneDetail("PHONE_1","0699-123456789");
+            
+            VehicleDetail vehicle = new VehicleDetail(0, "Auto", "großes Auto",
+                    driver, medic1, medic2,phone,"keine notes",
+                    "daheim", "daheim", true,false, 0 );
+            inputObjects.add(vehicle);
         }
         //enocde
         String xml = factory.encode(inputObjects);
@@ -76,8 +78,8 @@ public class XMLTest
         //print out the items
         for(Object object:resultObjects)
         {
-            RosterEntry entry = (RosterEntry)object;
-            System.out.println(entry);
+            VehicleDetail detail = (VehicleDetail)object;
+            System.out.println(detail);
         }
     }
 }
