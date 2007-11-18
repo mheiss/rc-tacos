@@ -17,6 +17,7 @@ public class StaffMember extends AbstractMessage
 	private String lastName;
 	private String firstName;
 	private String userName;
+	private String function;
 	
 	/**
 	 * Class constructor for a staff member
@@ -123,5 +124,25 @@ public class StaffMember extends AbstractMessage
 	public void setUserName(String userName) 
 	{
 		this.userName = userName;
+	}
+	
+	/**
+	 * Sets the function of this staff member.<br>
+	 * Note: This is only used during the enocde to xml.
+	 * @param function the function of this member
+	 */
+	public void setFunction(String function)
+	{
+	    this.function = function;
+	}
+	
+	/**
+	 * Returns the function of this staff member<br>
+	 * Note: This is only used during the enocde to xml.
+	 * @return the funtion
+	 */
+	public String getFunction()
+	{
+	    return function;
 	}
 }
