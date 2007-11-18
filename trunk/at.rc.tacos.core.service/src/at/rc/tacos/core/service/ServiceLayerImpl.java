@@ -72,6 +72,19 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
         	RosterEntry rosterEntry = (RosterEntry)objects.get(0);
         	if("add".equalsIgnoreCase(action))
         		listener.rosterEntryAdded(rosterEntry);
+        	if("update".equalsIgnoreCase(action))
+        		listener.rosterEntryUpdated(rosterEntry);
+        	if("remove".equalsIgnoreCase(action))
+        		listener.rosterEntryRemoved(rosterEntry);
+        	if("list".equalsIgnoreCase(action))
+        	{
+        		//create a new roster entry list and add all roster entries
+        		ArrayList<RosterEntry> rosterEntryList = new ArrayList<RosterEntry>();
+        		for (Object objectEntry: objects)
+        			rosterEntryList.add((RosterEntry)objectEntry);
+        		//notify
+        		listener.rosterEntryListing(rosterEntryList);
+        	}
         }
     }
     
@@ -101,8 +114,26 @@ public class ServiceLayerImpl implements IServiceLayer,INetworkListener
     }
 
 	@Override
-	public void addRosterEntry(RosterEntry entry) 
+	public void addRosterEntry(RosterEntry rosterEntry) 
 	{
-		NetWrapper.getDefault().fireNetworkMessage(RosterEntry.ID, "add", entry);
+		NetWrapper.getDefault().fireNetworkMessage(RosterEntry.ID, "add", rosterEntry);
+	}
+
+	@Override
+	public void listRosterEntries() {
+		NetWrapper.getDefault().fireNetworkMessage(RosterEntry.ID,"list", new ArrayList<AbstractMessage>());
+		
+	}
+
+	@Override
+	public void removeRosterEntry(RosterEntry rosterEntry) {
+		NetWrapper.getDefault().fireNetworkMessage(RosterEntry.ID,"remove",rosterEntry);
+		
+	}
+
+	@Override
+	public void updateRosterEntry(RosterEntry rosterEntry) {
+		NetWrapper.getDefault().fireNetworkMessage(RosterEntry.ID,"update", rosterEntry);
+		
 	}
 }
