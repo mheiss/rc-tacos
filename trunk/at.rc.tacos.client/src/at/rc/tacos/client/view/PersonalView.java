@@ -96,7 +96,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 			case COLUMN_STANDBY: return String.valueOf(entry.getStandby()); 
 			case COLUMN_NOTES: return String.valueOf(entry.getRosterNotes().isEmpty()); 
 			case COLUMN_NAME: return entry.getStaffMember().getLastname()+ " " + entry.getStaffMember().getFirstName();
-			case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartofWork()) + " - " + sdf.format(entry.getPlannedEndOfWork());
+			case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getTimePlannedStartOfWork() + " - " + sdf.format(entry.getTimePlannedEndOfWork()));
 			case COLUMN_CHECK_IN: return sdf.format(entry.getRealStartOfWork());
 			case COLUMN_CHECK_OUT: return sdf.format(entry.getRealEndOfWork());
 			case COLUMN_SERVICE_TYPE: return entry.getServicetype();
