@@ -51,7 +51,7 @@ public class StaffMember extends AbstractMessage
     @Override
     public String toString()
     {
-        return ID;
+        return lastName + " " + firstName;
     }
 
 	//SETTERS AND GETTERS
