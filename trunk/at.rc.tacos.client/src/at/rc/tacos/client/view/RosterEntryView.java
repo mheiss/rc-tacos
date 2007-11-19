@@ -3,9 +3,12 @@ package at.rc.tacos.client.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
@@ -15,6 +18,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -49,6 +53,8 @@ public class RosterEntryView {
 	private Group dienstplanGroup;
 	private DateTime dateTime;
 	protected Shell shell;
+	
+	Listener exitListener;
 
 	/**
 	 * Launch the application
@@ -83,14 +89,25 @@ public class RosterEntryView {
 	protected void createContents() 
 	{
 		//TODO: get a list of StaffMembers form the database
-		
+		//get data
 		StaffMember sm1 = new StaffMember(0,"Helmut", "Maier", "h.maie");
 		StaffMember sm2 = new StaffMember(1,"Daniel", "Haberl", "d.habe");
 		
 		ArrayList<StaffMember> staffMemberList = new ArrayList<StaffMember>(Arrays.asList(sm1,sm2));
 
+		//listener
+		exitListener = new Listener() {
+			public void handleEvent(Event e) {
+				MessageBox dialog = new MessageBox(shell, SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION);
+				dialog.setText("Abbrechen");
+				dialog.setMessage("Wollen Sie wirklich abbrechen?");
+				if (e.type == SWT.Close) e.doit = false;
+				if (dialog.open() != SWT.OK) return;
+				shell.dispose();
+			}
+		};
 		
-		
+		//GUI
 		shell = new Shell();
 		shell.setImage(SWTResourceManager.getImage(RosterEntryView.class, "/image/Tacos_LOGO.jpg"));
 		shell.setSize(591, 512);
@@ -108,6 +125,11 @@ public class RosterEntryView {
 		dateTime.setToolTipText("Zeigt das Datum des Dienstbeginns an");
 		dateTime.setBounds(10, 43,180, 171);
 		dateTime.setData("newKey", null);
+		dateTime.addSelectionListener (new SelectionAdapter () {
+			public void widgetSelected (SelectionEvent e) {
+				System.out.println ("calendar date changed - at the calendar");
+			}
+		});
 
 		final Label mitarbeiterLabel = new Label(dienstplanGroup, SWT.NONE);
 		mitarbeiterLabel.setBounds(213, 48,55, 13);
@@ -115,12 +137,13 @@ public class RosterEntryView {
 
 		setEmployeenameCombo = new Combo(dienstplanGroup, SWT.READ_ONLY);
 		final ComboViewer comboViewer = new ComboViewer(setEmployeenameCombo);
+		
+		//fill combo employee name with data
 		for(StaffMember staffMember: staffMemberList)
 		{
 			comboViewer.add(staffMember);
 		}
 		
-		//setEmployeenameCombo.setItems(new String[] {"Muster Max", "Musterfrau Maximchen", "Schwarzenegger Alexandra"});
 		setEmployeenameCombo.setBounds(306, 43,226, 24);
 		setEmployeenameCombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
 		setEmployeenameCombo.setText("set employeename ");
@@ -138,12 +161,12 @@ public class RosterEntryView {
 		bereitschaftButton.setText("Bereitschaft");
 
 		timeDienstVon = new DateTime (dienstplanGroup, SWT.TIME | SWT.SHORT);
-		//comboDienstVon = new Combo(dienstplanGroup, SWT.NONE);
-		//comboDienstVon.select(1);
-		//comboDienstVon.setBounds(10, 250,62, 21);
 		timeDienstVon.setBounds(10,250,62,21);
-		//comboDienstVon.setItems(new String[] {"06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30"});
-
+		//default values
+		timeDienstVon.setHours(0);
+		timeDienstVon.setMinutes(0);
+	
+		
 		final Label vonLabel = new Label(dienstplanGroup, SWT.NONE);
 		vonLabel.setBounds(10, 231,62, 13);
 		vonLabel.setText("Dienst von:");
@@ -158,7 +181,10 @@ public class RosterEntryView {
 //		comboDienstBis.setData("newKey", null);
 		timeDienstBis = new DateTime (dienstplanGroup, SWT.TIME | SWT.SHORT);
 		timeDienstBis.setBounds(128,250,62,21);
-
+		//default values
+		timeDienstBis.setHours(0);
+		timeDienstBis.setMinutes(0);
+		
 		final Label ortsstelleLabel_1 = new Label(dienstplanGroup, SWT.NONE);
 		ortsstelleLabel_1.setBounds(213, 129, 77, 13);
 		ortsstelleLabel_1.setText("Verwendung:");
@@ -187,12 +213,24 @@ public class RosterEntryView {
 
 		dateDienstVon = new DateTime(dienstplanGroup, SWT.NONE);
 		dateDienstVon.setBounds(10, 277, 92, 21);
+		dateDienstVon.addSelectionListener (new SelectionAdapter () {
+			public void widgetSelected (SelectionEvent e) {
+				System.out.println ("calendar date changed - at the normal field");
+			}
+		});
 		dienstplanGroup.setTabList(new Control[] {dateTime, setEmployeenameCombo, bereitschaftButton, comboOrtsstelle, comboVerwendung, comboDienstverhaeltnis, textAnmerkungen, timeDienstVon, timeDienstBis, dateDienstVon, dateDienstBis});
 
 		group = new Group(shell, SWT.NONE);
 		group.setText("Tatsächliche Dienstzeiten");
 		group.setBounds(10, 328, 559, 90);
 
+		
+		//TODO
+//		dateTimeAnmeldung = new Combo(group, SWT.NONE);
+//		dateTimeAnmeldung.setBounds(10, 47,92, 21);
+//
+//		dateTimeAbmeldung = new Combo(group, SWT.NONE);
+//		dateTimeAbmeldung.setBounds(133, 47,92, 21);
 		dateTimeAnmeldung = new DateTime(group, SWT.TIME);
 		dateTimeAnmeldung.setBounds(10, 47,92, 21);
 
@@ -212,6 +250,7 @@ public class RosterEntryView {
 		abbrechenButton.setImage(SWTResourceManager.getImage(RosterEntryView.class, "/image/LAN Warning.ico"));
 		abbrechenButton.setBounds(473, 445, 96, 23);
 		abbrechenButton.setText("Abbrechen");
+		abbrechenButton.addListener(SWT.Selection, exitListener);
 
 		okButton = new Button(shell, SWT.NONE);
 		okButton.setBounds(371, 445, 96, 23);
@@ -222,34 +261,24 @@ public class RosterEntryView {
         {
             public void handleEvent(Event event) 
             {
- 
-//            	private Text textAnmerkungen;
-//            	private Combo comboDienstverhaeltnis;
-//            	private Combo comboVerwendung;
-//            	private Combo comboOrtsstelle;
-//            	private Button bereitschaftButton;
-//            	private Combo setEmployeenameCombo;
-
-//            	private DateTime dateTime;
-
-            	this.createRosterEntryObject();
-            	//RosterEntry newRosterEntry = this.createRosterEntryObject();
-               // new CreateItemAction(RosterEntryView.this.textAnmerkungen.getText()).run();
-              // new CreateRosterEntryAction(newRosterEntry).run();
+            	RosterEntry newRosterEntry = this.createRosterEntryObject();
+                new CreateRosterEntryAction(newRosterEntry).run();
             }
 
-			private void createRosterEntryObject() 
+			private RosterEntry createRosterEntryObject() 
 			{
-				//final int dateTimeAbmeldung = 
-				//final RosterEntry rosterEntry = null;
-				System.out.println("in der createRosterEntryObject");
 				Calendar cal = Calendar.getInstance();
-				System.out.println("gleich nach erstem calendar");
 				cal.set(dateTimeAnmeldung.getYear(), dateTimeAnmeldung.getMonth(), dateTimeAnmeldung.getDay());
 				long timestampCheckIn = cal.getTimeInMillis();
 				
 				cal.set(dateTimeAbmeldung.getYear(), dateTimeAbmeldung.getMonth(), dateTimeAbmeldung.getDay());
 				long timestampCheckOut = cal.getTimeInMillis();
+				
+//				int index1 = dateTimeAnmeldung.getSelectionIndex();
+//				String timeCheckIn = dateTimeAnmeldung.getItem(index1);
+//				
+//				int index2 = dateTimeAbmeldung.getSelectionIndex();
+//				String timeCheckOut = dateTimeAbmeldung.getItem(index2);
 				
 				cal.set(dateDienstBis.getYear(), dateDienstBis.getMonth(), dateDienstBis.getDay());
 				long timestampPlanedDateEndOfWork = cal.getTimeInMillis();
@@ -263,19 +292,24 @@ public class RosterEntryView {
 				cal.set(timeDienstVon.getYear(), timeDienstVon.getMonth(), timeDienstVon.getDay());
 				long timestampPlanedTimeStartOfWork = cal.getTimeInMillis();
 				
-				System.out.println("nach letztem long");
-				
 				//StaffMember staffMember = setEmployeenameCombo.
-				int index = comboViewer.getCombo().getSelectionIndex();
+				int index = (comboViewer.getCombo().getSelectionIndex());
 				StaffMember staffMember = (StaffMember)comboViewer.getElementAt(index);
-			
-				System.out.println("selected staffMember: " +staffMember.getLastname());
-				//RosterEntry rosterEntry = new RosterEntry(0,sm,timestampPlanedDateStartOfWork, timestampPlanedTimeStartOfWork,timestampPlanedTimeEndOfWork,timestampCheckIn, timestampCheckOut, station, competence, servicetype, rosterNotes, standbyState);
+				
+				String station = comboOrtsstelle.getText();
+				String servicetype = comboDienstverhaeltnis.getText();
+				String competence = comboVerwendung.getText();
+				String rosterNotes = textAnmerkungen.getText();
+				boolean standbyState = bereitschaftButton.getSelection();
+
+				RosterEntry re = new RosterEntry("die id", 0,staffMember,timestampPlanedDateStartOfWork, timestampPlanedDateEndOfWork, timestampPlanedTimeStartOfWork,timestampPlanedTimeEndOfWork,timestampCheckIn, timestampCheckOut, station, competence, servicetype, rosterNotes, standbyState);
+				
+				System.out.println("the roster entry: " +re.getCompetence().toString() +' ' +re.getDateOfPlannedStartOfWork() +' ' +re.getDateOfPlannedEndOfWork() +' ' +re.getTimePlannedStartOfWork()
+						+' ' +re.getRealEndOfWork() +' ' +re.getRealStartOfWork() +' ' +re.getRosterId() +' ' +re.getRosterNotes() +' ' +re.getServicetype() +' ' +re.getStation()
+						+' ' +re.getTimePlannedEndOfWork()+' ' +re.getStaffMember().getUserName());
 				
 				
-				
-				
-				//return rosterEntry;
+				return re;
 				
 			}
         });
