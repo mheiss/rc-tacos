@@ -15,9 +15,10 @@ public class RosterEntry extends AbstractMessage
     
 	private long rosterId;
 	private StaffMember staffMember;
-	private long dateOfRosterEntry;
-	private long plannedStartofWork;
-	private long plannedEndOfWork;
+	private long dateOfPlannedEndOfWork;
+	private long dateOfPlannedStartOfWork;
+	private long timePlannedStartOfWork;
+	private long timePlannedEndOfWork;
 	private long realStartOfWork;
 	private long realEndOfWork;
 	private String station;
@@ -34,33 +35,37 @@ public class RosterEntry extends AbstractMessage
 	    super(ID);
 	}
 	
+
+	
 	/**
-	 * Class constructor for a complete roster entry
-	 * @param rosterId the identification number of the entry
-	 * @param staffMember the staff member
-	 * @param dateOfRosterEntry the date of the entry
-	 * @param plannedStartofWork the planned start of the work
-	 * @param plannedEndOfWork the planned end of the work
-	 * @param realStartOfWork the real start time of the work
-	 * @param realEndOfWork the real end time of the work
-	 * @param station the station in which the member is working
-	 * @param competence the competence of the member
-	 * @param servicetype the serive type of the member
-	 * @param rosterNotes notes for this entry
-	 * @param standby is this member currently in standby
+	 * @param id
+	 * @param rosterId
+	 * @param staffMember
+	 * @param dateOfPlannedEndOfWork
+	 * @param dateOfPlannedStartOfWork
+	 * @param timePlannedStartOfWork
+	 * @param timePlannedEndOfWork
+	 * @param realStartOfWork
+	 * @param realEndOfWork
+	 * @param station
+	 * @param competence
+	 * @param servicetype
+	 * @param rosterNotes
+	 * @param standby
 	 */
-	public RosterEntry(long rosterId, StaffMember staffMember, long dateOfRosterEntry,
-			long plannedStartofWork, long plannedEndOfWork,
+	public RosterEntry(String id, long rosterId, StaffMember staffMember,
+			long dateOfPlannedStartOfWork,long dateOfPlannedEndOfWork, 
+			long timePlannedStartOfWork, long timePlannedEndOfWork,
 			long realStartOfWork, long realEndOfWork, String station,
 			String competence, String servicetype, String rosterNotes,
-			boolean standby) 
-	{
-		this();
+			boolean standby) {
+		super(id);
 		this.rosterId = rosterId;
 		this.staffMember = staffMember;
-		this.dateOfRosterEntry = dateOfRosterEntry;
-		this.plannedStartofWork = plannedStartofWork;
-		this.plannedEndOfWork = plannedEndOfWork;
+		this.dateOfPlannedEndOfWork = dateOfPlannedEndOfWork;
+		this.dateOfPlannedStartOfWork = dateOfPlannedStartOfWork;
+		this.timePlannedStartOfWork = timePlannedStartOfWork;
+		this.timePlannedEndOfWork = timePlannedEndOfWork;
 		this.realStartOfWork = realStartOfWork;
 		this.realEndOfWork = realEndOfWork;
 		this.station = station;
@@ -69,7 +74,9 @@ public class RosterEntry extends AbstractMessage
 		this.rosterNotes = rosterNotes;
 		this.standby = standby;
 	}
-	
+
+
+
 	//METHODS
 	/**
 	 * Returns a string based description of the object
@@ -119,59 +126,78 @@ public class RosterEntry extends AbstractMessage
 		this.staffMember = staffMember;
 	}
 
+	
 	/**
-	 * Returns the date of this entry
-	 * @return the dateOfRosterEntry
+	 * @return the dateOfPlannedEndOfWork
 	 */
-	public long getDateOfRosterEntry() 
-	{
-		return dateOfRosterEntry;
+	public long getDateOfPlannedEndOfWork() {
+		return dateOfPlannedEndOfWork;
 	}
 
-	/**
-	 * Sets the date when this entry is sheduled
-	 * @param dateOfRosterEntry the dateOfRosterEntry to set
-	 */
-	public void setDateOfRosterEntry(long dateOfRosterEntry) 
-	{
-		this.dateOfRosterEntry = dateOfRosterEntry;
-	}
+
 
 	/**
-	 * Returns the planned time when this member should be start working
-	 * @return the plannedStartofWork
+	 * @param dateOfPlannedEndOfWork the dateOfPlannedEndOfWork to set
 	 */
-	public long getPlannedStartofWork() 
-	{
-		return plannedStartofWork;
+	public void setDateOfPlannedEndOfWork(long dateOfPlannedEndOfWork) {
+		this.dateOfPlannedEndOfWork = dateOfPlannedEndOfWork;
 	}
 
-	/**
-	 * Sets the planned time when this member should be start working
-	 * @param plannedStartofWork the plannedStartofWork to set
-	 */
-	public void setPlannedStartofWork(long plannedStartofWork) 
-	{
-		this.plannedStartofWork = plannedStartofWork;
-	}
+
 
 	/**
-	 * Returns the planned end time of the working
-	 * @return the plannedEndOfWork
+	 * @return the dateOfPlannedStartOfWork
 	 */
-	public long getPlannedEndOfWork() 
-	{
-		return plannedEndOfWork;
+	public long getDateOfPlannedStartOfWork() {
+		return dateOfPlannedStartOfWork;
 	}
 
+
+
 	/**
-	 * Sets the planned end time of this working
-	 * @param plannedEndOfWork the plannedEndOfWork to set
+	 * @param dateOfPlannedStartOfWork the dateOfPlannedStartOfWork to set
 	 */
-	public void setPlannedEndOfWork(long plannedEndOfWork) 
-	{
-		this.plannedEndOfWork = plannedEndOfWork;
+	public void setDateOfPlannedStartOfWork(long dateOfPlannedStartOfWork) {
+		this.dateOfPlannedStartOfWork = dateOfPlannedStartOfWork;
 	}
+
+
+
+	/**
+	 * @return the timePlannedStartOfWork
+	 */
+	public long getTimePlannedStartOfWork() {
+		return timePlannedStartOfWork;
+	}
+
+
+
+	/**
+	 * @param timePlannedStartOfWork the timePlannedStartOfWork to set
+	 */
+	public void setTimePlannedStartOfWork(long timePlannedStartOfWork) {
+		this.timePlannedStartOfWork = timePlannedStartOfWork;
+	}
+
+
+
+	/**
+	 * @return the timePlannedEndOfWork
+	 */
+	public long getTimePlannedEndOfWork() {
+		return timePlannedEndOfWork;
+	}
+
+
+
+	/**
+	 * @param timePlannedEndOfWork the timePlannedEndOfWork to set
+	 */
+	public void setTimePlannedEndOfWork(long timePlannedEndOfWork) {
+		this.timePlannedEndOfWork = timePlannedEndOfWork;
+	}
+
+
 
 	/**
 	 * Returns the check in time of this member.
