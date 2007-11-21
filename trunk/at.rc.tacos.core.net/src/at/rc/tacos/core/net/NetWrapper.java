@@ -1,22 +1,22 @@
 package at.rc.tacos.core.net;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.common.INetworkLayer;
-import at.rc.tacos.common.INetworkListener;
 import at.rc.tacos.core.net.event.*;
 import at.rc.tacos.core.net.internal.*;
-import at.rc.tacos.core.xml.XMLFactory;
+
+import at.rc.tacos.model.*;
+import at.rc.tacos.common.*;
+import at.rc.tacos.codec.*;
+import at.rc.tacos.factory.*;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class NetWrapper extends Plugin implements INetListener,INetworkLayer
+public class NetWrapper extends Plugin implements INetListener
 {
     // The plug-in ID
     public static final String PLUGIN_ID = "at.rc.tacos.core.net";
@@ -24,9 +24,10 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
     private static NetWrapper plugin;
 
     // Session information
-    private String sessionUserId;
-    // Service listener
-    private INetworkListener listener;
+    private String session;
+
+    //flag to show the network status
+    private boolean connected;
 
     /**
      * The constructor
@@ -40,16 +41,6 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
     {
         super.start(context);
         plugin = this;
-    }
-    /**
-     * Initialize and start the network connection
-     */
-    public void initAndStartup()
-    {
-        // initialize the connections
-        initNetwork();
-        // open the connections
-        connectNetwork();
     }
 
     /**
@@ -67,39 +58,131 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
      */
     public static NetWrapper getDefault() 
     {
+        if (plugin == null)
+            plugin = new NetWrapper();
         return plugin;
     }
 
     /**
-     * Loads the configuration and sets up the primary and the failback connection.
+     * Sets the username for this network session.
+     * @param username the username to set
      */
-    private void initNetwork()
-    {        
-        //primary connection
-        String primaryHost = "localhost";
-        int primaryPort = 4711;
-
-        //failback
-        String failbackHost = "localhost";
-        int failbackPort = 4712;
-
-        //set the listener
-        NetSource.getInstance().addNetEventListener(this);
-        //add primary server
-        NetSource.getInstance().addServer("Server.primary", true, primaryHost, primaryPort);
-        //add failback
-        NetSource.getInstance().addServer("Server.failback", false, failbackHost, failbackPort);
+    public void setSessionUsername(String username)
+    {
+        this.session = username;
     }
 
     /**
      *  Opens a connection to the primary server
      */
-    private void connectNetwork()
+    public void connectNetwork()
     {
-        NetSource.getInstance().connect();
+        //set the listener
+        NetSource.getInstance().addNetEventListener(this);
+        if(NetSource.getInstance().initNetwork())
+            connected = NetSource.getInstance().connect();
     }
 
-    //NET LISTENER METHODS
+    /**
+     * Convenience method to registers the encoders and decoders.
+     */
+    public void registerEncoderAndDecoder()
+    {
+        //register the needed model types with the decoders and encoders
+        ProtocolCodecFactory protFactory = ProtocolCodecFactory.getDefault();
+        protFactory.registerDecoder(Item.ID, new ItemDecoder());
+        protFactory.registerEncoder(Item.ID, new ItemEncoder());
+        protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
+        protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
+        protFactory.registerDecoder(NotifierDetail.ID, new NotifierDecoder());
+        protFactory.registerEncoder(NotifierDetail.ID, new NotifierEncoder());
+        protFactory.registerDecoder(Patient.ID, new PatientDecoder());
+        protFactory.registerEncoder(Patient.ID, new PatientEncoder());
+        protFactory.registerDecoder(RosterEntry.ID, new RosterEntryDecoder());
+        protFactory.registerEncoder(RosterEntry.ID, new RosterEntryEncoder());
+        protFactory.registerDecoder(StaffMember.ID, new StaffMemberDecoder());
+        protFactory.registerEncoder(StaffMember.ID, new StaffMemberEncoder());
+        protFactory.registerDecoder(Transport.ID, new TransportDecoder());
+        protFactory.registerEncoder(Transport.ID, new TransportEncoder());
+        protFactory.registerDecoder(VehicleDetail.ID, new VehicleDecoder());
+        protFactory.registerEncoder(VehicleDetail.ID, new VehicleEncoder()); 
+    }
+
+    /**
+     * Returns the current status of the network connection
+     * @return true if the network connection is established
+     */
+    public boolean getNetworkConnectionStatus()
+    {
+        return connected;
+    }
+
+    // METHODS TO SEND MESSAGES
+    /**
+     * Sends a request to the server to add 
+     * the message to the database.
+     * @param addMessage the object to add
+     */
+    public void sendAddMessage(AbstractMessage addMessage)
+    {
+        sendMessage(addMessage, IModelListener.ADD);
+    }
+
+    /**
+     * Sends a request to the server to remove
+     * the message from the database.
+     * @param removeMessage the object to remove
+     */
+    public void sendRemoveMessage(AbstractMessage removeMessage)
+    {
+        sendMessage(removeMessage, IModelListener.REMOVE);
+    }
+
+    /**
+     * Sends a request to the server to update
+     * the message in the database.
+     * @param updateMessage the object to update
+     */
+    public void sendUpdateMessage(AbstractMessage updateMessage)
+    {
+        sendMessage(updateMessage,IModelListener.UPDATE);
+    }
+
+    /**
+     * Sends a listing request for the given message to the server.<br>
+     * Example:<br>
+     * To get a listing of all <b>roster entries</b> set the id to <code>RosterEntry.ID</code>
+     * @param id the type of the listing request
+     */
+    public void requestListing(String id)
+    {
+        sendMessage(null,IModelListener.LIST);
+    }
+
+    /**
+     * Convenience method to send the message to the server.
+     * @param message the message to send
+     * @param type the type of the message
+     */
+    private void sendMessage(AbstractMessage message,String type)
+    {
+        long now = new Date().getTime();
+        //set up the factory
+        XMLFactory factory = new XMLFactory();
+        factory.setupEncodeFactory(
+                session, 
+                now, 
+                AbstractMessage.ID, 
+                type);
+        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
+        list.add(message);
+        //encode the message
+        String xmlMessage = factory.encode(list);
+        //send the message
+        NetSource.getInstance().sendMessage(xmlMessage);    
+    }
+
+    // LISTENER METHODS
     /**
      * Notification that new data is available.<br>
      * @param ne the triggered net event
@@ -108,15 +191,29 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
     public void dataReceived(NetEvent ne)
     {
         //set up the factory to decode
-        XMLFactory factory = new XMLFactory();
-        factory.setupDecodeFactory(ne.getMessage());
+        XMLFactory xmlFactory = new XMLFactory();
+        xmlFactory.setupDecodeFactory(ne.getMessage());
         //decode the message
-        ArrayList<AbstractMessage> objects = factory.decode();
+        ArrayList<AbstractMessage> objects = xmlFactory.decode();
         //get the type of the item
-        String type = factory.getType(); 
-        String action = factory.getAction();
-        //pass the message
-        listener.fireNetMessage(type, action, objects);
+        final String type = xmlFactory.getType(); 
+        final String action = xmlFactory.getAction();
+
+        //try to get a listener for this message
+        ListenerFactory listenerFactory = ListenerFactory.getDefault();
+        if(listenerFactory.hasListeners(type))
+        {
+            IModelListener listener = listenerFactory.getListener(type);
+            //now pass the message to the listener
+            if(IModelListener.ADD.equalsIgnoreCase(action))
+                listener.add(objects.get(0));
+            if(IModelListener.REMOVE.equalsIgnoreCase(action))
+                listener.remove(objects.get(0));
+            if(IModelListener.UPDATE.equalsIgnoreCase(action))
+                listener.update(objects.get(0));
+            if(IModelListener.LIST.equalsIgnoreCase(action))
+                listener.list(objects);
+        }
     }
 
     /**
@@ -126,7 +223,8 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
     @Override
     public void socketStatusChanged(MyClient client, int status)
     {
-        System.out.println("socket status changed:"+status);
+        System.out.println("Connection to the server lost: "+status);
+        connected = false;
     }
 
     /**
@@ -137,59 +235,5 @@ public class NetWrapper extends Plugin implements INetListener,INetworkLayer
     public void dataTransferFailed(NetEvent ne)
     {    
         System.out.println("failed to send the data:"+ne.getMessage());
-    }
-    
-    // LISTENER SUPPORT
-    /**
-     * Registers a listener to inform about network changes.
-     * @param listener the listener to inform
-     */
-    @Override
-    public void registerNetworkListener(INetworkListener listener)
-    {
-       this.listener = listener;
-        
-    }
-    
-    @Override
-    public void removeNetworkListener(INetworkListener listener)
-    {
-        this.listener = null;
-    }
-    
-    //METHODS FOR INTERACTION WITH THE SERVICE LAYER
-    @Override
-    public void fireNetworkMessage(String objectType,String action,ArrayList<AbstractMessage> object)
-    {
-        XMLFactory factory = new XMLFactory();
-        factory.setupEncodeFactory(
-                sessionUserId,
-                new Date().getTime(),
-                objectType,
-                action,
-                0);
-        //send the message
-        NetSource.getInstance().getConnection().sendMessage(factory.encode(object));
-    }
-    
-    @Override
-    public void fireNetworkMessage(String objectType,String action,AbstractMessage message)
-    {
-        //create a list 
-        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        //add the object
-        list.add(message);
-        fireNetworkMessage(objectType,action, list);
-    }
-    
-    // SESSION PARAMETER
-    /**
-     * Sets the session parameters that should be used
-     * for the whole network communication session
-     */
-    @Override
-    public void setSessionParameter(String userId)
-    {
-        this.sessionUserId = userId;
     }
 }

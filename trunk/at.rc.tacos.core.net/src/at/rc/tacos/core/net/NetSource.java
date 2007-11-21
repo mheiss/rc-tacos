@@ -3,10 +3,12 @@ package at.rc.tacos.core.net;
 //java
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 //net
 import at.rc.tacos.core.net.event.INetListener;
+import at.rc.tacos.core.net.event.NetEvent;
 import at.rc.tacos.core.net.internal.MyClient;
 
 /**
@@ -17,17 +19,20 @@ import at.rc.tacos.core.net.internal.MyClient;
  */
 public class NetSource
 {    
+    //config file
+    public static final String NET_SETTINGS_BUNDLE_PATH = "at.rc.tacos.core.net.config.server";
+
     //the instance
-    private static NetSource instance;
+    private static NetSource instance;   
 
     //the server pool
     private HashMap<String,MyClient> serverPool;
-    //the listeners
-    private Vector<INetListener> listeners;
+    //the listener
+    private INetListener listener;
 
     //identification string of the active connection
     private String activeConnection;
-    
+
     //the identification of the primary server
     private String primaryConnection;
 
@@ -37,9 +42,49 @@ public class NetSource
     private NetSource() 
     { 
         serverPool = new HashMap<String, MyClient>();
-        listeners = new Vector<INetListener>();
         activeConnection = "";
         primaryConnection = "";
+    }
+
+    /**
+     * Loads the configuration and sets up the primary and the failback connection.
+     */
+    public boolean initNetwork()
+    {    
+        try
+        {
+            //load the settings from the file
+            String primaryHost = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH).getString("server.primary.host");
+            String strPrimaryPort = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH).getString("server.primary.port");
+            String failbackHost = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH).getString("server.failback.host");
+            String strFailbackPort = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH).getString("server.failback.port");
+            int primaryPort = -1;
+            int failbackPort = -1;
+            //parse
+            primaryPort = Integer.parseInt(strPrimaryPort);
+            failbackPort = Integer.parseInt(strFailbackPort);
+            //add servers
+            addServer("Server.primary", true, primaryHost, primaryPort);
+            addServer("Server.failback", false, failbackHost, failbackPort);
+            //seccessfully
+            return true;
+        }
+        catch(MissingResourceException mre)
+        {
+            System.out.println("Missing resource, cannot init network");
+            System.out.println(mre.getMessage());
+        }
+        catch(NumberFormatException nfe)
+        {
+            System.out.println("Port number must be a integer");
+            System.out.println(nfe.getMessage());
+        }
+        catch(NullPointerException npe)
+        {
+            System.out.println("Configuration file for the server is missing");
+            System.out.println(npe.getMessage());
+        }
+        return false;
     }
 
     /**
@@ -76,17 +121,7 @@ public class NetSource
         //add to the pool
         serverPool.put(id, newServer);
     }   
-
-    /**
-     * Add a NetEvent listener to the listener list.
-     * The listener is registered for all properties.
-     * @param The NetEvent listener to add
-     */
-    public void addNetEventListener(INetListener listener)
-    {
-        listeners.addElement(listener);
-    }
-
+    
     /**
      * Removes the server from the server list.
      * When the id is not found nothing will happen.
@@ -99,12 +134,22 @@ public class NetSource
     }
 
     /**
+     * Add a NetEvent listener to the listener list.
+     * The listener is registered for all properties.
+     * @param The NetEvent listener to add
+     */
+    public void addNetEventListener(INetListener listener)
+    {
+        this.listener = listener;
+    }
+
+    /**
      * Removes the listener from the listener list.
      * This removes a INetEvent listener that was registered for all properties.
      */
     public void removeNetEventListner(INetListener listener)
     {
-        listeners.removeElement(listener);
+        listener = null;
     }
 
     /**
@@ -161,7 +206,7 @@ public class NetSource
         // failed to open another connection
         return false;
     }
-    
+
     /**
      * Returns wheter the primary server is currently 
      * active and connected.
@@ -195,8 +240,7 @@ public class NetSource
                 //set as active
                 activeConnection = id;
                 //add listeners
-                for (INetListener listener:listeners)
-                    client.addNetListener(listener);
+                client.addNetListener(listener);
                 //ready to work
                 return true;
             }
@@ -212,7 +256,7 @@ public class NetSource
      * When no connection is available the Method will return null.
      * @return a valid server connection or null
      */
-    public MyClient getConnection()
+    private MyClient getConnection()
     {
         //assert valid
         if (serverPool.containsKey(activeConnection))
@@ -225,5 +269,24 @@ public class NetSource
         }
         //no active connection found
         return null;
+    }
+    
+    /**
+     * Sends the given string to the remove host.
+     * @param message the message to send
+     */
+    public void sendMessage(String message)
+    {
+        //get the connection
+        MyClient client = getConnection();
+        //assert valid
+        if(client == null)
+        {
+            //create a new net event
+            NetEvent ne = new NetEvent(client,"Faild to send the message");
+            listener.dataTransferFailed(ne);
+        }
+        else
+            client.sendMessage(message);
     }
 }
