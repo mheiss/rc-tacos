@@ -3,8 +3,32 @@ package at.rc.tacos.server.controller;
 //java
 import java.util.*;
 //net
+import at.rc.tacos.codec.ItemDecoder;
+import at.rc.tacos.codec.ItemEncoder;
+import at.rc.tacos.codec.MobilePhoneDecoder;
+import at.rc.tacos.codec.MobilePhoneEncoder;
+import at.rc.tacos.codec.NotifierDecoder;
+import at.rc.tacos.codec.NotifierEncoder;
+import at.rc.tacos.codec.PatientDecoder;
+import at.rc.tacos.codec.PatientEncoder;
+import at.rc.tacos.codec.RosterEntryDecoder;
+import at.rc.tacos.codec.RosterEntryEncoder;
+import at.rc.tacos.codec.StaffMemberDecoder;
+import at.rc.tacos.codec.StaffMemberEncoder;
+import at.rc.tacos.codec.TransportDecoder;
+import at.rc.tacos.codec.TransportEncoder;
+import at.rc.tacos.codec.VehicleDecoder;
+import at.rc.tacos.codec.VehicleEncoder;
 import at.rc.tacos.core.net.internal.*;
-import at.rc.tacos.core.service.ServiceWrapper;
+import at.rc.tacos.factory.ProtocolCodecFactory;
+import at.rc.tacos.model.Item;
+import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 
 public class ServerController 
 {
@@ -25,8 +49,8 @@ public class ServerController
     {
         //init the list
         connectedClients = new Vector<MyClient>();
-        //Register the decoders and encoders
-        ServiceWrapper.getDefault().registerEncoderAndDecoder();
+        //register the encoders and decoders
+        registerEncoderAndDecoder();
     }
     
     /**
@@ -81,8 +105,31 @@ public class ServerController
     {
         //loop over the clients
         for (MyClient client:connectedClients)
-        {
             client.getSocket().sendMessage(message);
-        }
+    }
+    
+    /**
+     * Convenience method to registers the encoders and decoders.
+     */
+    private void registerEncoderAndDecoder()
+    {
+        //register the needed model types with the decoders and encoders
+        ProtocolCodecFactory protFactory = ProtocolCodecFactory.getDefault();
+        protFactory.registerDecoder(Item.ID, new ItemDecoder());
+        protFactory.registerEncoder(Item.ID, new ItemEncoder());
+        protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
+        protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
+        protFactory.registerDecoder(NotifierDetail.ID, new NotifierDecoder());
+        protFactory.registerEncoder(NotifierDetail.ID, new NotifierEncoder());
+        protFactory.registerDecoder(Patient.ID, new PatientDecoder());
+        protFactory.registerEncoder(Patient.ID, new PatientEncoder());
+        protFactory.registerDecoder(RosterEntry.ID, new RosterEntryDecoder());
+        protFactory.registerEncoder(RosterEntry.ID, new RosterEntryEncoder());
+        protFactory.registerDecoder(StaffMember.ID, new StaffMemberDecoder());
+        protFactory.registerEncoder(StaffMember.ID, new StaffMemberEncoder());
+        protFactory.registerDecoder(Transport.ID, new TransportDecoder());
+        protFactory.registerEncoder(Transport.ID, new TransportEncoder());
+        protFactory.registerDecoder(VehicleDetail.ID, new VehicleDecoder());
+        protFactory.registerEncoder(VehicleDetail.ID, new VehicleEncoder()); 
     }
 }
