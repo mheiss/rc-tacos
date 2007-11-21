@@ -81,6 +81,23 @@ public class RosterEntry extends AbstractMessage
 	{
 	    return ID;
 	}
+	
+	/**
+	 * Returns wheter or not the given roster entries are equal.<br>
+	 * Two <code>RosterEntry</code> objects are equal if the have the 
+	 * same roster entry id.
+	 * @param true if the roster entries are equal.
+	 */
+	@Override
+	public boolean equals(Object object)
+	{
+	    //object to compare
+	    RosterEntry compareRosterEntry = (RosterEntry)object;
+	    //check
+	    if(compareRosterEntry.getRosterId() == rosterId)
+	        return true;
+	    return false;
+	}
 
 	//GETTERS AND SETTERS
 	/**
