@@ -96,16 +96,13 @@ public class RosterEntryManager extends PlatformObject
         Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
-            {
-            	//TODO ????????????????????????????????
+            {  
                 objectList.remove(rosterEntry);
                 objectList.add(rosterEntry);
                 firePropertyChange("ROSTERENTRY_UPDATE", rosterEntry, null); 
             }
         }); 
     }
-    
-    
 
     /**
      * Converts the list to an array
