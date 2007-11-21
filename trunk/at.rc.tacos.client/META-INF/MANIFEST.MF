@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.client.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- at.rc.tacos.core.service;visibility:=reexport
+ at.rc.tacos.model,
+ at.rc.tacos.core.net
 Eclipse-LazyStart: true
 Bundle-ClassPath: lib/baseline.jar,
  lib/swt-grouplayout.jar,

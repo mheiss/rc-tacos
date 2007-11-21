@@ -5,9 +5,11 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 //client
-import at.rc.tacos.client.controller.NetController;
+import at.rc.tacos.client.listeners.*;
 import at.rc.tacos.client.modelManager.*;
-import at.rc.tacos.core.service.ServiceWrapper;
+import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.factory.ListenerFactory;
+import at.rc.tacos.model.*;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -36,10 +38,11 @@ public class Activator extends AbstractUIPlugin
 		super.start(context);
 		plugin = this;
 		//register the encoders and decoders
-		ServiceWrapper.getDefault().registerEncoderAndDecoder();
-		ServiceWrapper.getDefault().registerNetworkListener();
-		//register a listener to receive network updates
-		ServiceWrapper.getDefault().getServiceLayer().registerServiceListener(new NetController());
+		NetWrapper.getDefault().registerEncoderAndDecoder();
+		//register model listeners
+		registerModelListeners();
+		//set the session
+	    NetWrapper.getDefault().setSessionUsername("Client user");
 	}
 
 	/**
@@ -69,6 +72,24 @@ public class Activator extends AbstractUIPlugin
 	public static ImageDescriptor getImageDescriptor(String path) 
 	{
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+	
+	/**
+     * Convenience method to registers the listeners
+     * for the network updates.
+     */
+	public void registerModelListeners()
+	{
+	    ListenerFactory factory = ListenerFactory.getDefault();
+	    //register the listeners
+	    factory.registerModelListener(Item.ID, new ItemListener());
+	    factory.registerModelListener(MobilePhoneDetail.ID, new MobilePhoneListener());
+	    factory.registerModelListener(NotifierDetail.ID, new NotifyDetailListener());
+	    factory.registerModelListener(Patient.ID, new PatientListener());
+	    factory.registerModelListener(RosterEntry.ID, new RosterEntryListener());
+	    factory.registerModelListener(StaffMember.ID, new StaffMemberListener());
+	    factory.registerModelListener(Transport.ID, new TransportListener());
+	    factory.registerModelListener(VehicleDetail.ID, new VehicleDetailListener());
 	}
 	
     /**

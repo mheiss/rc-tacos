@@ -1,9 +1,10 @@
 package at.rc.tacos.client.controller;
 
-//rcp
+import java.util.Date;
+
 import org.eclipse.jface.action.Action;
-//client
-import at.rc.tacos.core.service.ServiceWrapper;
+
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.*;
 
 /**
@@ -25,6 +26,28 @@ public class CreateRosterEntryAction extends Action
 
     public void run() 
     {
-        ServiceWrapper.getDefault().getServiceLayer().addRosterEntry(entry);
+        //Roster entry
+        RosterEntry entry = new RosterEntry();
+        StaffMember member = new StaffMember();
+        
+        member.setFirstName("test");
+        member.setLastName("last test");
+        member.setPersonId(0);
+        member.setUserName("user");
+        
+        entry.setCompetence("Fahrer");
+        entry.setPlannedStartOfWork(new Date().getTime());
+        entry.setPlannedEndOfWork(new Date().getTime());
+        entry.setRealEndOfWork(new Date().getTime());
+        entry.setRealStartOfWork(new Date().getTime());
+        entry.setRosterId(0);
+        entry.setRosterNotes("mix");
+        entry.setServicetype("Zivi");
+        entry.setStaffMember(member);
+        entry.setStandby(false);
+        entry.setStation("Bruck");
+        
+        //send the entry
+        NetWrapper.getDefault().sendAddMessage(entry);
     }
 }

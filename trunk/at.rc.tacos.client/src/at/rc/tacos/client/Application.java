@@ -24,7 +24,7 @@ public class Application implements IApplication
 		try 
 		{
 	        //start the network connection
-		    NetWrapper.getDefault().initAndStartup();
+		    NetWrapper.getDefault().connectNetwork();
             //create the workbench
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART) 
