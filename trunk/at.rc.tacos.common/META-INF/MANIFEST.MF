@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Common Plug-in
-Bundle-SymbolicName: at.rc.tacos.common
-Bundle-Version: 1.0.0
-Export-Package: at.rc.tacos.common
