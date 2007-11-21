@@ -40,9 +40,9 @@ public class CarCompositeManager
 		this.composite = composite;
 		this.vehicleName = vehicle.getVehicleName();
 		this.vehicleType = vehicle.getVehicleType();
-		this.driverName = vehicle.getDriverName();
-		this.paramedicIName = vehicle.getParamedicIName();
-		this.paramedicIIName = vehicle.getParamedicIIName();
+		this.driverName = vehicle.getDriverName().toString();
+		this.paramedicIName = vehicle.getParamedicIName().toString();
+		this.paramedicIIName = vehicle.getParamedicIIName().toString();
 		
 		if (!vehicle.getMobilePhone().getMobilePhoneId().equalsIgnoreCase(vehicle.getVehicleName()))
 		{
