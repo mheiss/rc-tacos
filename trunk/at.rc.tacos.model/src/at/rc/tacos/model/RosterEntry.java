@@ -15,10 +15,8 @@ public class RosterEntry extends AbstractMessage
     
 	private long rosterId;
 	private StaffMember staffMember;
-	private long dateOfPlannedEndOfWork;
-	private long dateOfPlannedStartOfWork;
-	private long timePlannedStartOfWork;
-	private long timePlannedEndOfWork;
+	private long plannedEndOfWork;
+	private long plannedStartOfWork;
 	private long realStartOfWork;
 	private long realEndOfWork;
 	private String station;
@@ -36,15 +34,12 @@ public class RosterEntry extends AbstractMessage
 	}
 	
 
-	
 	/**
 	 * @param id
 	 * @param rosterId
 	 * @param staffMember
-	 * @param dateOfPlannedEndOfWork
-	 * @param dateOfPlannedStartOfWork
-	 * @param timePlannedStartOfWork
-	 * @param timePlannedEndOfWork
+	 * @param plannedEndOfWork
+	 * @param plannedStartOfWork
 	 * @param realStartOfWork
 	 * @param realEndOfWork
 	 * @param station
@@ -54,18 +49,15 @@ public class RosterEntry extends AbstractMessage
 	 * @param standby
 	 */
 	public RosterEntry(String id, long rosterId, StaffMember staffMember,
-			long dateOfPlannedStartOfWork,long dateOfPlannedEndOfWork, 
-			long timePlannedStartOfWork, long timePlannedEndOfWork,
+			long plannedStartOfWork, long plannedEndOfWork,
 			long realStartOfWork, long realEndOfWork, String station,
 			String competence, String servicetype, String rosterNotes,
 			boolean standby) {
 		super(id);
 		this.rosterId = rosterId;
 		this.staffMember = staffMember;
-		this.dateOfPlannedEndOfWork = dateOfPlannedEndOfWork;
-		this.dateOfPlannedStartOfWork = dateOfPlannedStartOfWork;
-		this.timePlannedStartOfWork = timePlannedStartOfWork;
-		this.timePlannedEndOfWork = timePlannedEndOfWork;
+		this.plannedEndOfWork = plannedEndOfWork;
+		this.plannedStartOfWork = plannedStartOfWork;
 		this.realStartOfWork = realStartOfWork;
 		this.realEndOfWork = realEndOfWork;
 		this.station = station;
@@ -74,6 +66,8 @@ public class RosterEntry extends AbstractMessage
 		this.rosterNotes = rosterNotes;
 		this.standby = standby;
 	}
+
+
 
 
 
@@ -127,75 +121,48 @@ public class RosterEntry extends AbstractMessage
 	}
 
 	
+
 	/**
-	 * @return the dateOfPlannedEndOfWork
+	 * @return the plannedEndOfWork
 	 */
-	public long getDateOfPlannedEndOfWork() {
-		return dateOfPlannedEndOfWork;
+	public long getPlannedEndOfWork() {
+		return plannedEndOfWork;
 	}
 
 
 
+
+
 	/**
-	 * @param dateOfPlannedEndOfWork the dateOfPlannedEndOfWork to set
+	 * @param plannedEndOfWork the plannedEndOfWork to set
 	 */
-	public void setDateOfPlannedEndOfWork(long dateOfPlannedEndOfWork) {
-		this.dateOfPlannedEndOfWork = dateOfPlannedEndOfWork;
+	public void setPlannedEndOfWork(long plannedEndOfWork) {
+		this.plannedEndOfWork = plannedEndOfWork;
 	}
 
 
 
+
+
 	/**
-	 * @return the dateOfPlannedStartOfWork
+	 * @return the plannedStartOfWork
 	 */
-	public long getDateOfPlannedStartOfWork() {
-		return dateOfPlannedStartOfWork;
+	public long getPlannedStartOfWork() {
+		return plannedStartOfWork;
 	}
 
 
 
-	/**
-	 * @param dateOfPlannedStartOfWork the dateOfPlannedStartOfWork to set
-	 */
-	public void setDateOfPlannedStartOfWork(long dateOfPlannedStartOfWork) {
-		this.dateOfPlannedStartOfWork = dateOfPlannedStartOfWork;
-	}
-
 
 
 	/**
-	 * @return the timePlannedStartOfWork
+	 * @param plannedStartOfWork the plannedStartOfWork to set
 	 */
-	public long getTimePlannedStartOfWork() {
-		return timePlannedStartOfWork;
+	public void setPlannedStartOfWork(long plannedStartOfWork) {
+		this.plannedStartOfWork = plannedStartOfWork;
 	}
 
 
-
-	/**
-	 * @param timePlannedStartOfWork the timePlannedStartOfWork to set
-	 */
-	public void setTimePlannedStartOfWork(long timePlannedStartOfWork) {
-		this.timePlannedStartOfWork = timePlannedStartOfWork;
-	}
-
-
-
-	/**
-	 * @return the timePlannedEndOfWork
-	 */
-	public long getTimePlannedEndOfWork() {
-		return timePlannedEndOfWork;
-	}
-
-
-
-	/**
-	 * @param timePlannedEndOfWork the timePlannedEndOfWork to set
-	 */
-	public void setTimePlannedEndOfWork(long timePlannedEndOfWork) {
-		this.timePlannedEndOfWork = timePlannedEndOfWork;
-	}
 
 
 
