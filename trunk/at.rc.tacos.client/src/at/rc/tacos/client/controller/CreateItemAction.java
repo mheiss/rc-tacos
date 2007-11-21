@@ -33,10 +33,8 @@ public class CreateItemAction extends Action
     	member.setUserName(id);
     	
     	entry.setCompetence("Fahrer");
-    	entry.setTimePlannedStartOfWork(new Date().getTime());
-    	entry.setTimePlannedEndOfWork(new Date().getTime());
-    	entry.setDateOfPlannedStartOfWork(new Date().getDate());
-    	entry.setDateOfPlannedEndOfWork(new Date().getDate());
+    	entry.setPlannedStartOfWork(new Date().getTime());
+    	entry.setPlannedEndOfWork(new Date().getTime());
     	entry.setRealEndOfWork(new Date().getTime());
     	entry.setRealStartOfWork(new Date().getTime());
     	entry.setRosterId(0);
