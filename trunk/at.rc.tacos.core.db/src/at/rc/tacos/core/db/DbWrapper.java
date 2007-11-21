@@ -1,14 +1,12 @@
 package at.rc.tacos.core.db;
 
-import java.sql.SQLException;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
-import at.rc.tacos.common.*;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class DbWrapper extends Plugin implements IDatabaseLayer
+public class DbWrapper extends Plugin 
 {
     // The plug-in ID
     public static final String PLUGIN_ID = "at.rc.tacos.core.db";
@@ -47,19 +45,4 @@ public class DbWrapper extends Plugin implements IDatabaseLayer
     {
         return plugin;
     }
-
-    //OVERRIDEN METHODS FROM THE INTERFACE
-	@Override
-	public void queryItem() 
-	{
-		try
-		{
-			DataSource.getInstance().getConnection().prepareStatement("selet * from test");
-		}
-		catch(SQLException sqle)
-		{
-			System.out.println("Failed to query the item");
-			System.out.println("SQL-Error: "+sqle.getMessage()+ " - Code: "+sqle.getErrorCode());
-		}
-	}
 }

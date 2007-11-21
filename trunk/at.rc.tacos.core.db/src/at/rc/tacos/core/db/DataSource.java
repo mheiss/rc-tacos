@@ -3,6 +3,7 @@ package at.rc.tacos.core.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 /**
  * The database source to connect to a mysql database
@@ -10,11 +11,7 @@ import java.sql.SQLException;
  */
 public class DataSource
 {
-    //OWNED, you got my password, but its only for testing
-    //send a mail to m-heiss@aon.at to show me how to make it better 
-    private static final String dbHost = "jdbc:mysql://projekt-itm.fh-joanneum.at/heissm";
-    private static final String dbUser = "heissm";
-    private static final String dbPwd = "P@ssw0rd";
+    public static final String DB_SETTINGS_BUNDLE_PATH = "at.rc.tacos.core.db.config.db";
     
     private static DataSource instance;
     
@@ -36,9 +33,15 @@ public class DataSource
      */
     public Connection getConnection()
     {
+        //load the settings from the file
+        String dbDriver = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.driver");
+        String dbHost = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.url");
+        String dbUser = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.user");
+        String dbPwd = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.pw");
+        
         try
         {
-            Class.forName("org.hsqldb.jdbcDriver").newInstance();
+            Class.forName(dbDriver).newInstance();
             return DriverManager.getConnection(dbHost,dbUser,dbPwd);
         } 
         catch (SQLException e)
