@@ -42,8 +42,8 @@ public class RosterEntryForm {
 
 	private Combo dateAbmeldung;
 	private Combo dateAnmeldung;
-	private Combo timeAnmeldung;
-	private Combo timeAbmeldung;
+	private Text timeAnmeldung;
+	private Text timeAbmeldung;
 	private Combo dateDienstBis;
 	private DateTime dateDienstVon;
 	private Combo timeDienstBis;
@@ -255,21 +255,15 @@ public class RosterEntryForm {
 
 
 		//TODO
-		timeAnmeldung = new Combo(group, SWT.NONE);
+		timeAnmeldung = new Text(group, SWT.NONE);
 		timeAnmeldung.setBounds(10, 47,62, 21);
-		timeAnmeldung.setItems(timeArray);
 
-
-		timeAbmeldung = new Combo(group, SWT.NONE);
+		timeAbmeldung = new Text(group, SWT.NONE);
 		timeAbmeldung.setBounds(133, 47,62, 21);
-		timeAbmeldung.setItems(timeArray);
-
-
 
 		dateAnmeldung = new Combo(group, SWT.NONE);
 		dateAnmeldung.setBounds(10, 74,92, 21);		
 		dateAnmeldung.setItems(arrayOfDates);
-
 
 		dateAbmeldung = new Combo(group, SWT.NONE);
 		dateAbmeldung.setBounds(133, 74,92, 21);		
