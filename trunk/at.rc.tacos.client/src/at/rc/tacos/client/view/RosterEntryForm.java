@@ -331,7 +331,7 @@ public class RosterEntryForm {
 					{
 						//dialog invalid format
 						System.out.println("ungültiges format: " +formatOfRealTime);
-						this.displayMessageBox(event,formatOfRealTime, "Abmeldung (Zeit)");
+						this.displayMessageBox(event,formatOfRealTime, "Format von tatsächlicher Dienstzeit falsch: ");
 						formatOfRealTime = "";	
 					}
 					else
@@ -419,22 +419,35 @@ public class RosterEntryForm {
 				{
 					Matcher m41= p4.matcher(timeRealStartOfWork);
 					Matcher m51= p5.matcher(timeRealStartOfWork);
-					if(m41.matches())
-					{
-						hourCheckIn = Integer.parseInt(m41.group(1));
-						minutesCheckIn = Integer.parseInt(m41.group(2));
-						timeRealStartOfWork = hourCheckIn + ":" +minutesCheckIn;//for the splitter
-					}
-					else if(m51.matches())
-					{
-						hourCheckIn = Integer.parseInt(m51.group(1));
-						minutesCheckIn = Integer.parseInt(m51.group(2));
-					}
-					
-					else
-					{
-						formatOfRealTime = "Anmeldung (Zeit)";
-					}
+						if(m41.matches())
+						{
+							hourCheckIn = Integer.parseInt(m41.group(1));
+							minutesCheckIn = Integer.parseInt(m41.group(2));
+							
+							if(hourCheckIn >= 0 && hourCheckIn <=23 && minutesCheckIn >= 0 && minutesCheckIn <=59)
+							{
+								timeRealStartOfWork = hourCheckIn + ":" +minutesCheckIn;//for the splitter
+							}
+							else
+							{
+								formatOfRealTime = " - Anmeldung (Zeit)";
+							}
+						}
+						else if(m51.matches())
+						{
+							
+								hourCheckIn = Integer.parseInt(m51.group(1));
+								minutesCheckIn = Integer.parseInt(m51.group(2));
+							
+							if(!(hourCheckIn >= 0 && hourCheckIn <=23 && minutesCheckIn >= 0 && minutesCheckIn <=59))
+							{
+								formatOfRealTime = " - Anmeldung (Zeit)";
+							}
+						}
+						else
+						{
+							formatOfRealTime = " - Anmeldung (Zeit)";
+						}
 				}
 				
 				//check out
@@ -446,12 +459,25 @@ public class RosterEntryForm {
 					{
 						hourCheckOut = Integer.parseInt(m42.group(1));
 						minutesCheckOut = Integer.parseInt(m42.group(2));
-						timeRealEndOfWork = hourCheckOut +":" +minutesCheckOut;
+						
+						if(hourCheckOut >= 0 && hourCheckOut <=23 && minutesCheckOut >= 0 && minutesCheckOut <=59)
+						{
+							timeRealEndOfWork = hourCheckOut +":" +minutesCheckOut;
+						}
+						else
+						{
+							formatOfRealTime = formatOfRealTime +"Abmeldung (Zeit)";
+						}
 					}
 					else if(m52.matches())
 					{
 						hourCheckOut = Integer.parseInt(m52.group(1));
 						minutesCheckOut = Integer.parseInt(m52.group(2));
+						
+						if(!(hourCheckOut >= 0 && hourCheckOut <=23 && minutesCheckOut >= 0 && minutesCheckOut <=59))
+						{
+							formatOfRealTime = formatOfRealTime +"Abmeldung (Zeit)";
+						}
 					}
 					else
 					{
