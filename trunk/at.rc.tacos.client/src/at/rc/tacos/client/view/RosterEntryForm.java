@@ -34,7 +34,6 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  * GUI (form) to manage a roster entry
  * @author b.thek
  */
-//TODO Validating: Abmeldung nicht vor Anmeldung; bei An- und Abmeldung keine unsinnigen Zeiten erlauben
 public class RosterEntryForm {
 
 	private Combo dateAbmeldung;
@@ -315,8 +314,6 @@ public class RosterEntryForm {
 				
 				//get content of all fields
 				this.getContentOfAllFields();
-			
-				System.out.println("Date planned end of work (String): " +datePlannedEndOfWork);
 				
 				//check required Fields
 				if (!this.checkRequiredFields().equalsIgnoreCase(""))
@@ -358,7 +355,6 @@ public class RosterEntryForm {
 									this.setRealWorkTime();
 									if(realEndOfWork<realStartOfWork)
 									{
-										System.out.println("realEndOfWork-----------: " +realEndOfWork +"aus");
 										this.displayMessageBox(event, "Abmeldung vor Anmeldung","Fehler");
 									}
 									else
@@ -390,7 +386,6 @@ public class RosterEntryForm {
 				timePlannedEndOfWork = timeDienstBis.getText();
 				datePlannedEndOfWork = dateDienstBis.getText();
 				timeRealStartOfWork = timeAnmeldung.getText();
-				System.out.println("timeRealStartOfWork: " +timeRealStartOfWork);
 				dateRealStartOfWork = dateAnmeldung.getText();
 				timeRealEndOfWork = timeAbmeldung.getText();
 				dateRealEndOfWork = dateAbmeldung.getText();
@@ -519,7 +514,6 @@ public class RosterEntryForm {
 				//planned start of work
 				//time
 				String[] plannedStartTime = timePlannedStartOfWork.split(":");
-				System.out.println("planned start time: " +plannedStartTime[0]);
 				int hoursPlannedStart = Integer.valueOf(plannedStartTime[0]).intValue();
 				int minutesPlannedStart = Integer.valueOf(plannedStartTime[1]).intValue();
 				
@@ -568,8 +562,6 @@ public class RosterEntryForm {
 				if(!timeRealStartOfWork.equalsIgnoreCase(""))
 				{
 					String[] realStartTime = timeRealStartOfWork.split(":");
-					System.out.println("realStartTime 0: " +realStartTime[0] +"aus");
-					System.out.println("realStartTime 1: " +realStartTime[1] +"aus");
 					hoursRealStart = Integer.valueOf(realStartTime[0]).intValue();
 					minutesRealStart = Integer.valueOf(realStartTime[1]).intValue();
 				}
@@ -581,12 +573,11 @@ public class RosterEntryForm {
 				{
 					String[] realStartDate = dateRealStartOfWork.split("\\.");
 					yearRealStart = Integer.valueOf(realStartDate[2]).intValue();
-					monthRealStart = Integer.valueOf(realStartDate[1]).intValue();
+					monthRealStart = Integer.valueOf(realStartDate[1]).intValue()-1;
 					dayRealStart = Integer.valueOf(realStartDate[0]).intValue();
 				}
 				cal.set(yearRealStart, monthRealStart, dayRealStart, hoursRealStart, minutesRealStart, 0);
 				realStartOfWork = cal.getTimeInMillis();
-				System.out.println("realStartOfWork as date time: " +cal.getTime());
 				
 				//real end of work
 				int hoursRealEnd = 0;
@@ -605,15 +596,12 @@ public class RosterEntryForm {
 				{
 					String[] realEndDate = dateRealEndOfWork.split("\\.");
 					yearRealEnd = Integer.valueOf(realEndDate[2]).intValue();
-					monthRealEnd = Integer.valueOf(realEndDate[1]).intValue();
+					monthRealEnd = Integer.valueOf(realEndDate[1]).intValue()-1;
 					dayRealEnd = Integer.valueOf(realEndDate[0]).intValue();
 					
 					cal.set(yearRealEnd, monthRealEnd, dayRealEnd, hoursRealEnd, minutesRealEnd, 0);
 					realEndOfWork = cal.getTimeInMillis();
 				}
-
-				
-				System.out.println("realEndOfWork as date time: " +cal.getTime());
 			}
 			
 			private void displayMessageBox(Event event, String fields, String message)
