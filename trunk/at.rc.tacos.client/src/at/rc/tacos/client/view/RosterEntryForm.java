@@ -329,10 +329,8 @@ public class RosterEntryForm {
 					//validating
 					if(!this.checkFormatOfRealWorkTimeFields().equalsIgnoreCase(""))
 					{
-						//dialog invalid format
-						System.out.println("ungültiges format: " +formatOfRealTime);
 						this.displayMessageBox(event,formatOfRealTime, "Format von tatsächlicher Dienstzeit falsch: ");
-						formatOfRealTime = "";	
+						//formatOfRealTime = "";	
 					}
 					else
 					{
@@ -346,7 +344,7 @@ public class RosterEntryForm {
 							//validate start before end
 							if(plannedEndOfWork<plannedStartOfWork)
 							{
-								this.displayMessageBox(event, "Geplantes Dienstende liegt vor Dienstbeginn!", "Fehler");
+								this.displayMessageBox(event, "Dienstende vor Dienstbeginn!", "Fehler");
 							}
 							else
 							{
@@ -358,12 +356,19 @@ public class RosterEntryForm {
 								else
 								{
 									this.setRealWorkTime();
-
+									if(realEndOfWork<realStartOfWork)
+									{
+										System.out.println("realEndOfWork-----------: " +realEndOfWork +"aus");
+										this.displayMessageBox(event, "Abmeldung vor Anmeldung","Fehler");
+									}
+									else
+									{
+										RosterEntry rosterEntry = new RosterEntry(-1,staffMember,plannedStartOfWork, plannedEndOfWork, realStartOfWork, realEndOfWork, station, competence, servicetype, rosterNotes, standbyState);
+					
+										//send the roster entry
+										new CreateRosterEntryAction(rosterEntry).run();
+									}
 									
-									RosterEntry rosterEntry = new RosterEntry(-1,staffMember,plannedStartOfWork, plannedEndOfWork, realStartOfWork, realEndOfWork, station, competence, servicetype, rosterNotes, standbyState);
-				
-									//send the roster entry
-									new CreateRosterEntryAction(rosterEntry).run();
 								}
 							}
 						}
@@ -581,6 +586,7 @@ public class RosterEntryForm {
 				}
 				cal.set(yearRealStart, monthRealStart, dayRealStart, hoursRealStart, minutesRealStart, 0);
 				realStartOfWork = cal.getTimeInMillis();
+				System.out.println("realStartOfWork as date time: " +cal.getTime());
 				
 				//real end of work
 				int hoursRealEnd = 0;
@@ -601,10 +607,13 @@ public class RosterEntryForm {
 					yearRealEnd = Integer.valueOf(realEndDate[2]).intValue();
 					monthRealEnd = Integer.valueOf(realEndDate[1]).intValue();
 					dayRealEnd = Integer.valueOf(realEndDate[0]).intValue();
+					
+					cal.set(yearRealEnd, monthRealEnd, dayRealEnd, hoursRealEnd, minutesRealEnd, 0);
+					realEndOfWork = cal.getTimeInMillis();
 				}
 
-				cal.set(yearRealEnd, monthRealEnd, dayRealEnd, hoursRealEnd, minutesRealEnd, 0);
-				realEndOfWork = cal.getTimeInMillis();
+				
+				System.out.println("realEndOfWork as date time: " +cal.getTime());
 			}
 			
 			private void displayMessageBox(Event event, String fields, String message)
