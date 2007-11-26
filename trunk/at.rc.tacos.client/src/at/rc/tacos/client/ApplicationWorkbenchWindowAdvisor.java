@@ -37,7 +37,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
     {
         //get access to the configuration interface
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-        configurer.setInitialSize(new Point(800, 600));
+        configurer.setInitialSize(new Point(1024, 768));
         configurer.setShowCoolBar(true);    //ToolBar
         configurer.setShowStatusLine(true);
         configurer.setShowProgressIndicator(true);   

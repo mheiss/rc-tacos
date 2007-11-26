@@ -14,6 +14,11 @@ import at.rc.tacos.model.*;
 public class CreateItemAction extends Action 
 {
     private String id;
+    
+    public CreateItemAction()
+    {
+        this.id = "item";
+    }
 
     public CreateItemAction(String id) 
     {
