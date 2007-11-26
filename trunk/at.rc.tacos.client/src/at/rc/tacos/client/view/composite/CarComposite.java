@@ -1,132 +1,100 @@
 package at.rc.tacos.client.view.composite;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import at.rc.tacos.client.view.VehiclesView;
+import at.rc.tacos.client.util.Util;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
-
-/**
- * Creates CarComposite for the class VehiclesView, called from the CarCompositeManager
- * @author b.thek
- *
- */
 
 //TODO: set ToolTips for the Components
 //TODO: use Interface Transport Status for mostImportantTransportStatus - for details, please see ITransportStatus
 
-
+/**
+ * Creates CarComposite for the class VehiclesView, called from the CarCompositeManager
+ * @author b.thek
+ */
 public class CarComposite extends Composite
 {
-	private int mostImportantTransportStatus;
 	private String vehicleName;
 	private String driverName;
 	private String vehicleType;
 	private String paramedicIName;
 	private String paramedicIIName;
-
 	
-	//paths to the grey pictures that means there is no information available
-	final String PICTURE_MOBILE_PHONE_PATH_GREY = "/image/Handy.gif";
-	final String PICTURE_VEHICLE_NOTES_PATH_GREY = "/image/TXT.gif";
-	final String PICTURE_CURRENT_STATION_PATH_GREY = "/image/Haus.gif";
-	final String PICTURE_READY_FOR_ACTION_PATH_GREY = "/image/OK.gif";
-	final String PICTURE_OUT_OF_ORDER_PATH_GREY = "/image/Reparatur.gif";
-	
-	//paths to the black pictures that means there is some information available
-	final String PICTURE_MOBILE_PHONE_PATH_BLACK = "/image/Handy2.gif";
-	final String PICTURE_VEHICLE_NOTES_PATH_BLACK = "/image/TXT2.gif";
-	final String PICTURE_CURRENT_STATION_PATH_BLACK = "/image/Haus2.gif";
-	final String PICTURE_READY_FOR_ACTION_PATH_BLACK = "/image/OK2.gif";
-	final String PICTURE_OUT_OF_ORDER_PATH_BLACK = "/image/Reparatur2.gif";
-	
-	//paths to the light status
-	final String PICTURE_MOST_IMPORTANT_TRANSPORT_STATUS_PATH_RED = "/image/Ampel_rot.gif";
-	final String PICTURE_MOST_IMPORTANT_TRANSPORT_STATUS_PATH_YELLOW = "/image/Ampel_gelb.gif";
-	final String PICTURE_MOST_IMPORTANT_TRANSPORT_STATUS_PATH_GREEN = "/image/Ampel_grün.gif";
-	final String PICTURE_MOST_IMPORTANT_TRANSPORT_STATUS_PATH_GREY = "/image/Ampel.gif";
-	
-	//default paths (no information available)
-	private String picture_mobile_phone_path = PICTURE_MOBILE_PHONE_PATH_GREY;
-	private String picture_vehicle_notes_path = PICTURE_VEHICLE_NOTES_PATH_GREY;
-	private String picture_current_station_path = PICTURE_CURRENT_STATION_PATH_GREY;
-	private String picture_ready_for_action_path = PICTURE_READY_FOR_ACTION_PATH_GREY;
-	private String picture_out_of_order_path = PICTURE_OUT_OF_ORDER_PATH_GREY;
-	private String picture_most_importang_transport_status_path =PICTURE_MOST_IMPORTANT_TRANSPORT_STATUS_PATH_GREY;
-	
+	//the image files to use
+	private Image imageMobilePhone;
+	private Image imageVehicleNotes;
+	private Image imageCurrentStation;
+	private Image imageReady;
+	private Image imageOutOfOrder;
+	private Image imageTransportStatus;
 	
 	
 	/**
-	 * Constructor
-	 * @param composite
-	 * @param vehicle
+	 * Default constructor creating a new car composite
+	 * @param parent the parent control 
+	 * @param vehicle the vehicle data to use
 	 */
-	public CarComposite(Composite composite, VehicleDetail vehicle)
+	public CarComposite(Composite parent, VehicleDetail vehicle)
 	{
-		super(composite,SWT.NONE);
+	    //create the composite
+		super(parent,SWT.NONE);
+		setLayout(new FillLayout(SWT.VERTICAL));
 		
-		this.vehicleName = vehicle.getVehicleName();
-		this.vehicleType = vehicle.getVehicleType();
-		this.driverName = vehicle.getDriverName().getUserName();
-		this.paramedicIName = vehicle.getParamedicIName().getUserName();
-		this.paramedicIIName = vehicle.getParamedicIIName().getUserName();
+		vehicleName = vehicle.getVehicleName();
+		vehicleType = vehicle.getVehicleType();
+		driverName = vehicle.getDriverName().getUserName();
+		paramedicIName = vehicle.getParamedicIName().getUserName();
+		paramedicIIName = vehicle.getParamedicIIName().getUserName();
 		System.out.println("Paramedic I Name: " +paramedicIName);
 		
-		//assign the right picture
+		//other mobile phone than default
 		if (!vehicle.getMobilePhone().getMobilePhoneId().equalsIgnoreCase(vehicle.getVehicleName()))
-		{
-			picture_mobile_phone_path = PICTURE_MOBILE_PHONE_PATH_BLACK;//other mobile phone than default
-		}
+			imageMobilePhone = Util.getImagePath(Util.IMAGE_MOBILE_PHONE_PATH_BLACK);
+		else
+		    imageMobilePhone = Util.getImagePath(Util.IMAGE_MOBILE_PHONE_PATH_GREY);
 		
-		if (!vehicle.getVehicleNotes().isEmpty())
-		{
-			picture_vehicle_notes_path = PICTURE_VEHICLE_NOTES_PATH_BLACK;//show that there are notes
-		}
+		//show that there are notes
+		if (!vehicle.getVehicleNotes().isEmpty())   
+			imageVehicleNotes = Util.getImagePath(Util.IMAGE_VEHICLE_NOTES_PATH_BLACK);
+		else
+		    imageVehicleNotes = Util.getImagePath(Util.IMAGE_VEHICLE_NOTES_PATH_GREY);
 		
+		//if the basis station is different to the current station
 		if (!vehicle.getBasicStation().equalsIgnoreCase(vehicle.getCurrentStation()))
-		{
-			picture_current_station_path = PICTURE_CURRENT_STATION_PATH_BLACK;//if the basis station is different to the current station
-		}
+			imageCurrentStation = Util.getImagePath(Util.IMAGE_CURRENT_STATION_PATH_BLACK);
+		else
+		    imageCurrentStation = Util.getImagePath(Util.IMAGE_CURRENT_STATION_PATH_GREY);
 				
+		//vehicle is ready for action
 		if (vehicle.isReadyForAction())
-		{
-			picture_ready_for_action_path = PICTURE_READY_FOR_ACTION_PATH_BLACK;
-		}
+			imageReady = Util.getImagePath(Util.IMAGE_READY_FOR_ACTION_PATH_BLACK);
+		else
+		    imageReady = Util.getImagePath(Util.IMAGE_READY_FOR_ACTION_PATH_GREY);
 		
+		//vehicle is out of order
 		if (vehicle.isOutOfOrder())
-		{
-			picture_out_of_order_path = PICTURE_OUT_OF_ORDER_PATH_BLACK;
-		}
+			imageOutOfOrder = Util.getImagePath(Util.IMAGE_OUT_OF_ORDER_PATH_BLACK);
+		else
+		    imageOutOfOrder = Util.getImagePath(Util.IMAGE_OUT_OF_ORDER_PATH_GREY);
 		
-		this.mostImportantTransportStatus=vehicle.getMostImportantTransportStatus();
-		if (mostImportantTransportStatus == 1)
+		//transport status
+		switch(vehicle.getMostImportantTransportStatus())
 		{
-			picture_most_importang_transport_status_path = PICTURE_MOST_IMPORTANT_TRANSPORT_STATUS_PATH_RED;
-		}
-		else if (mostImportantTransportStatus == 2)
-		{
-			picture_most_importang_transport_status_path = PICTURE_MOST_IMPORTANT_TRANSPORT_STATUS_PATH_YELLOW;
-		}
-		else if (mostImportantTransportStatus == 3)
-		{
-			picture_most_importang_transport_status_path = PICTURE_MOST_IMPORTANT_TRANSPORT_STATUS_PATH_GREEN;
-		}
-		
-		
-		//create the car composite
-		final RowData rd_compositeACar = new RowData();
-		rd_compositeACar.width = 136;
-		rd_compositeACar.height = 61;
-		
-		this.setLayoutData(rd_compositeACar);
-		this.setLayout(new FillLayout(SWT.VERTICAL));
+    		case 1: imageTransportStatus = Util.getImagePath(Util.IMAGE_TRANSPORT_STATUS_PATH_RED); break;
+    		case 2: imageTransportStatus = Util.getImagePath(Util.IMAGE_TRANSPORT_STATUS_PATH_YELLOW); break;
+    		case 3: imageTransportStatus = Util.getImagePath(Util.IMAGE_TRANSPORT_STATUS_PATH_GREEN); break;
+    		default: imageTransportStatus = Util.getImagePath(Util.IMAGE_TRANSPORT_STATUS_PATH_RED); break;
+		}		
 		
 		//top composite (name of the ambulance, type of the ambulance)
 		final Composite compositeCarTop = new Composite(this, SWT.NONE);
@@ -166,27 +134,27 @@ public class CarComposite extends Composite
 	
 		// .. icons
 		final Label labelReadyForAction = new Label(compositeCarIcons, SWT.NONE);
-		labelReadyForAction.setImage(SWTResourceManager.getImage(VehiclesView.class, picture_ready_for_action_path));
+		labelReadyForAction.setImage(imageReady);
 		labelReadyForAction.setBackground(SWTResourceManager.getColor(209, 229, 249));
 	
 		final Label labelKindOfMobilePhone = new Label(compositeCarIcons, SWT.NONE);
-		labelKindOfMobilePhone.setImage(SWTResourceManager.getImage(VehiclesView.class, picture_mobile_phone_path));
+		labelKindOfMobilePhone.setImage(imageMobilePhone);
 		labelKindOfMobilePhone.setBackground(SWTResourceManager.getColor(209, 229, 249));
 	
 		final Label labelCurrentStation = new Label(compositeCarIcons, SWT.NONE);
-		labelCurrentStation.setImage(SWTResourceManager.getImage(VehiclesView.class, picture_current_station_path));
+		labelCurrentStation.setImage(imageCurrentStation);
 		labelCurrentStation.setBackground(SWTResourceManager.getColor(209, 229, 249));
 	
 		final Label labelOutOfOrder = new Label(compositeCarIcons, SWT.NONE);
-		labelOutOfOrder.setImage(SWTResourceManager.getImage(VehiclesView.class, picture_out_of_order_path));
+		labelOutOfOrder.setImage(imageOutOfOrder);
 		labelOutOfOrder.setBackground(SWTResourceManager.getColor(209, 229, 249));
 	
 		final Label labelVehicleNotes = new Label(compositeCarIcons, SWT.NONE);
-		labelVehicleNotes.setImage(SWTResourceManager.getImage(VehiclesView.class, picture_vehicle_notes_path));
+		labelVehicleNotes.setImage(imageVehicleNotes);
 		labelVehicleNotes.setBackground(SWTResourceManager.getColor(209, 229, 249));
 	
 		final Label labelMostImportantTransportStatus = new Label(compositeCarIcons, SWT.NONE);
-		labelMostImportantTransportStatus.setImage(SWTResourceManager.getImage(VehiclesView.class, picture_most_importang_transport_status_path));
+		labelMostImportantTransportStatus.setImage(imageTransportStatus);
 		labelMostImportantTransportStatus.setBackground(SWTResourceManager.getColor(209, 229, 249));
 	
 		// .. staff

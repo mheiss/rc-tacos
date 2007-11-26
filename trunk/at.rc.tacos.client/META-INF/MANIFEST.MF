@@ -5,6 +5,7 @@ Bundle-SymbolicName: at.rc.tacos.client; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.client.Activator
 Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.forms,
  org.eclipse.core.runtime,
  at.rc.tacos.model,
  at.rc.tacos.core.net

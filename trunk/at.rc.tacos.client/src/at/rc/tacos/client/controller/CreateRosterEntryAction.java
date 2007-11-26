@@ -14,17 +14,12 @@ import at.rc.tacos.model.*;
 public class CreateRosterEntryAction extends Action 
 {
     private RosterEntry entry;
-
+    
     /**
      * Creates a new RosterEntryAction.
      * @param the new roster entry
      */
-    public CreateRosterEntryAction(RosterEntry entry) 
-    {
-        this.entry = entry;
-    }
-
-    public void run() 
+    public CreateRosterEntryAction() 
     {
         //Roster entry
         RosterEntry entry = new RosterEntry();
@@ -46,7 +41,19 @@ public class CreateRosterEntryAction extends Action
         entry.setStaffMember(member);
         entry.setStandby(false);
         entry.setStation("Bruck");
-        
+    }
+
+    /**
+     * Creates a new RosterEntryAction.
+     * @param the new roster entry
+     */
+    public CreateRosterEntryAction(RosterEntry entry) 
+    {
+        this.entry = entry;
+    }
+
+    public void run() 
+    {
         //send the entry
         NetWrapper.getDefault().sendAddMessage(entry);
     }

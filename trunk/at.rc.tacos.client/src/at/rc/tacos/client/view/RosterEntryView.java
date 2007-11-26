@@ -388,7 +388,7 @@ public class RosterEntryView {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy HH:mm");
 				System.out.println("real start of work: " +sdf.format(realStartOfWork));
 
-				RosterEntry re = new RosterEntry("die id", 0,staffMember,plannedStartOfWork, plannedEndOfWork, realStartOfWork, realEndOfWork, station, competence, servicetype, rosterNotes, standbyState);
+				RosterEntry re = new RosterEntry(0,staffMember,plannedStartOfWork, plannedEndOfWork, realStartOfWork, realEndOfWork, station, competence, servicetype, rosterNotes, standbyState);
 				
 				System.out.println("the roster entry: " +re.getCompetence().toString() +' ' +re.getRealEndOfWork() +' ' +re.getRealStartOfWork() +' ' +re.getRosterId() +' ' +re.getRosterNotes() +' ' +re.getServicetype() +' ' +re.getStation()
 						+re.getStaffMember().getUserName());
