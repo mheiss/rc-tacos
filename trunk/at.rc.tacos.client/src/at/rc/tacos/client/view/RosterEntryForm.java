@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,16 +87,19 @@ public class RosterEntryForm
 	
 	public RosterEntryForm(RosterEntry rosterEntry)
 	{
+		this.createContents();
+		
 		GregorianCalendar gcal = new GregorianCalendar();
+		gcal.setTimeZone(TimeZone.getDefault());
 		
 		//check out
 		gcal.setTimeInMillis(rosterEntry.getRealEndOfWork());
-		String abmeldungDate = gcal.get(gcal.DATE)+ "." +(gcal.get(gcal.MONTH)+1) +"." +gcal.get(gcal.YEAR);
+		String abmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
 		System.out.println("abmeldungDate: " +abmeldungDate);
 		this.dateAbmeldung.setText(abmeldungDate);
 		
 		
-		String abmeldungTime = gcal.get(gcal.HOUR)+":" +(gcal.get(gcal.MINUTE));
+		String abmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 		this.timeAbmeldung.setText(abmeldungTime);
 		System.out.println("abmeldungTime: " +abmeldungTime);
 		
@@ -119,7 +123,7 @@ public class RosterEntryForm
 	
 	public RosterEntryForm()
 	{
-		
+		this.createContents();
 	}
 
 	/**
@@ -127,7 +131,7 @@ public class RosterEntryForm
 	 */
 	public void open() {
 		final Display display = Display.getDefault();
-		createContents();
+//		createContents();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
