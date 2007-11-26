@@ -3,8 +3,10 @@ package at.rc.tacos.client.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,8 +36,8 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  * GUI (form) to manage a roster entry
  * @author b.thek
  */
-public class RosterEntryForm {
-
+public class RosterEntryForm 
+{
 	private Combo dateAbmeldung;
 	private Combo dateAnmeldung;
 	private Text timeAnmeldung;
@@ -69,11 +71,55 @@ public class RosterEntryForm {
 	 */
 	public static void main(String[] args) {
 		try {
-			RosterEntryForm window = new RosterEntryForm();
+			StaffMember sm = new StaffMember();
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			long time = c.getTimeInMillis();
+			new RosterEntry();
+			RosterEntry rosterEntry = new RosterEntry(1,sm,time,time,time, time,"Kapfenberg", "Fahrer", "Hauptamtlich", "the notes", true);
+			RosterEntryForm window = new RosterEntryForm(rosterEntry);
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public RosterEntryForm(RosterEntry rosterEntry)
+	{
+		GregorianCalendar gcal = new GregorianCalendar();
+		
+		//check out
+		gcal.setTimeInMillis(rosterEntry.getRealEndOfWork());
+		String abmeldungDate = gcal.get(gcal.DATE)+ "." +(gcal.get(gcal.MONTH)+1) +"." +gcal.get(gcal.YEAR);
+		System.out.println("abmeldungDate: " +abmeldungDate);
+		this.dateAbmeldung.setText(abmeldungDate);
+		
+		
+		String abmeldungTime = gcal.get(gcal.HOUR)+":" +(gcal.get(gcal.MINUTE));
+		this.timeAbmeldung.setText(abmeldungTime);
+		System.out.println("abmeldungTime: " +abmeldungTime);
+		
+		
+//		this.dateAnmeldung.;
+//		this.timeAnmeldung.;
+//		
+//		this.dateDienstBis.;
+//		this.dateDienstVon.;
+//		
+//		this.timeDienstBis.;
+//		this.timeDienstVon.;
+		
+		this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
+		this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
+		this.comboVerwendung.setText(rosterEntry.getCompetence());
+		this.comboOrtsstelle.setText(rosterEntry.getStation());
+		this.bereitschaftButton.setSelection(rosterEntry.getStandby());
+		this.setEmployeenameCombo.setText(rosterEntry.getStaffMember().toString());
+	}
+	
+	public RosterEntryForm()
+	{
+		
 	}
 
 	/**
