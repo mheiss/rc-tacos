@@ -16,7 +16,7 @@ Time and Configuration Management
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="/at.rc.tacos.client/icons/alt_window_16.gif" i32="/at.rc.tacos.client/icons/alt_window_32.gif" i48="/at.rc.tacos.client/icons/alt_window_48.gif" i64="/at.rc.tacos.client/icons/alt_window_64.gif" i128="/at.rc.tacos.client/icons/alt_window_128.gif"/>
+   <windowImages i16="/at.rc.tacos.client/icons/application/alt_window_16.gif" i32="/at.rc.tacos.client/icons/application/alt_window_32.gif" i48="/at.rc.tacos.client/icons/application/alt_window_48.gif" i64="/at.rc.tacos.client/icons/application/alt_window_64.gif" i128="/at.rc.tacos.client/icons/application/alt_window_128.gif"/>
 
    <splash
       location="at.rc.tacos.client" />
@@ -26,6 +26,7 @@ Time and Configuration Management
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
       <windows type="jre">jre1.6.0</windows>
@@ -40,6 +41,7 @@ Time and Configuration Management
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
+      <plugin id="org.eclipse.core.databinding.beans"/>
       <plugin id="org.eclipse.core.expressions"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.runtime"/>

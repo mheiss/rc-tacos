@@ -7,6 +7,9 @@ Bundle-Activator: at.rc.tacos.client.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.forms,
  org.eclipse.core.runtime,
+ org.eclipse.core.databinding,
+ org.eclipse.jface.databinding,
+ org.eclipse.core.databinding.beans,
  at.rc.tacos.model,
  at.rc.tacos.core.net
 Eclipse-LazyStart: true

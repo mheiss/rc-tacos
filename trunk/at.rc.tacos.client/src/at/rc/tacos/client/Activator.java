@@ -1,13 +1,17 @@
 package at.rc.tacos.client;
 
 //rcp
+import java.util.ResourceBundle;
+
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 //client
 import at.rc.tacos.client.listeners.*;
 import at.rc.tacos.client.modelManager.*;
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.factory.ListenerFactory;
 import at.rc.tacos.model.*;
 
@@ -18,12 +22,16 @@ public class Activator extends AbstractUIPlugin
 {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "at.rc.tacos.client";
+	// Configuration file for the images
+	public static final String IMAGE_CLIENT_CONFIG_PATH = "at.rc.tacos.client.config.images";
+	
 	// The shared instance
 	private static Activator plugin;
 	
 	//the object manager   
     private ItemManager itemList = new ItemManager();
     private RosterEntryManager rosterEntryList = new RosterEntryManager();
+    private VehicleManager vehicleManager = new VehicleManager();
 	
 	/**
 	 * The constructor
@@ -37,12 +45,19 @@ public class Activator extends AbstractUIPlugin
 	{
 		super.start(context);
 		plugin = this;
+		
 		//register the encoders and decoders
 		NetWrapper.getDefault().registerEncoderAndDecoder();
 		//register model listeners
 		registerModelListeners();
 		//set the session
 	    NetWrapper.getDefault().setSessionUsername("Client user");
+	    
+	    //load all needed images and register them
+	    loadAndRegisterImages();
+	    
+	    //load default data
+	    vehicleManager.init();
 	}
 
 	/**
@@ -75,8 +90,8 @@ public class Activator extends AbstractUIPlugin
 	}
 	
 	/**
-     * Convenience method to registers the listeners
-     * for the network updates.
+     * Convinience method to registers the ui listeners 
+     * to get updates from the network layer.
      */
 	public void registerModelListeners()
 	{
@@ -90,6 +105,37 @@ public class Activator extends AbstractUIPlugin
 	    factory.registerModelListener(StaffMember.ID, new StaffMemberListener());
 	    factory.registerModelListener(Transport.ID, new TransportListener());
 	    factory.registerModelListener(VehicleDetail.ID, new VehicleDetailListener());
+	}
+	
+	/**
+	 * Loads all image files from the image.properties 
+	 * and registers them in the application.<br>
+	 * The images can be accessed through the key value of the
+	 * properties file.
+	 */
+	public void loadAndRegisterImages()
+	{
+	    try
+        {
+    	    //the factory to register the images
+    	    ImageFactory f = ImageFactory.getInstance();
+    	    
+    	    //open the properties file
+    	    ResourceBundle imageBundle = ResourceBundle.getBundle(Activator.IMAGE_CLIENT_CONFIG_PATH);
+    	    //loop and register all images
+    	    for(String imageKey:imageBundle.keySet())
+    	    {
+    	        //Create the image file with the given path
+    	        String imagePath = imageBundle.getString(imageKey);
+    	        Image image = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, imagePath).createImage();
+    	        f.registerImage(imageKey, image);
+    	    }
+        }
+	    catch(NullPointerException npe)
+	    {
+	        System.out.println("Faild to load the images files");
+	        System.out.println("Please check the images and the properties file");
+	    }
 	}
 	
     /**
@@ -108,5 +154,14 @@ public class Activator extends AbstractUIPlugin
     public RosterEntryManager getRosterEntryList()
     {
     	return rosterEntryList;
+    }
+    
+    /**
+     * Returns the vehicle manager containing all vehicle entries
+     * @return the vehicle manager
+     */
+    public VehicleManager getVehicleManager()
+    {
+        return vehicleManager;
     }
 }

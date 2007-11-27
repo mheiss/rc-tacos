@@ -1,17 +1,19 @@
 package at.rc.tacos.client.view.composite;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
-import at.rc.tacos.client.util.Util;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
 
@@ -25,7 +27,6 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
 public class CarComposite extends Composite
 {
 	private String vehicleName;
-	private String driverName;
 	private String vehicleType;
 	private String paramedicIName;
 	private String paramedicIIName;
@@ -37,8 +38,7 @@ public class CarComposite extends Composite
 	private Image imageReady;
 	private Image imageOutOfOrder;
 	private Image imageTransportStatus;
-	
-	
+		
 	/**
 	 * Default constructor creating a new car composite
 	 * @param parent the parent control 
@@ -52,48 +52,47 @@ public class CarComposite extends Composite
 		
 		vehicleName = vehicle.getVehicleName();
 		vehicleType = vehicle.getVehicleType();
-		driverName = vehicle.getDriverName().getUserName();
 		paramedicIName = vehicle.getParamedicIName().getUserName();
 		paramedicIIName = vehicle.getParamedicIIName().getUserName();
 		System.out.println("Paramedic I Name: " +paramedicIName);
 		
 		//other mobile phone than default
 		if (!vehicle.getMobilePhone().getMobilePhoneId().equalsIgnoreCase(vehicle.getVehicleName()))
-			imageMobilePhone = Util.getImagePath(Util.IMAGE_MOBILE_PHONE_PATH_BLACK);
+			imageMobilePhone = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone");
 		else
-		    imageMobilePhone = Util.getImagePath(Util.IMAGE_MOBILE_PHONE_PATH_GREY);
+		    imageMobilePhone = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone.na");
 		
 		//show that there are notes
 		if (!vehicle.getVehicleNotes().isEmpty())   
-			imageVehicleNotes = Util.getImagePath(Util.IMAGE_VEHICLE_NOTES_PATH_BLACK);
+			imageVehicleNotes = ImageFactory.getInstance().getRegisteredImage("image.vehicle.notes");
 		else
-		    imageVehicleNotes = Util.getImagePath(Util.IMAGE_VEHICLE_NOTES_PATH_GREY);
+		    imageVehicleNotes = ImageFactory.getInstance().getRegisteredImage("image.vehicle.notes.na");
 		
 		//if the basis station is different to the current station
 		if (!vehicle.getBasicStation().equalsIgnoreCase(vehicle.getCurrentStation()))
-			imageCurrentStation = Util.getImagePath(Util.IMAGE_CURRENT_STATION_PATH_BLACK);
+			imageCurrentStation = ImageFactory.getInstance().getRegisteredImage("image.vehicle.house");
 		else
-		    imageCurrentStation = Util.getImagePath(Util.IMAGE_CURRENT_STATION_PATH_GREY);
+		    imageCurrentStation = ImageFactory.getInstance().getRegisteredImage("image.vehicle.house.na");
 				
 		//vehicle is ready for action
 		if (vehicle.isReadyForAction())
-			imageReady = Util.getImagePath(Util.IMAGE_READY_FOR_ACTION_PATH_BLACK);
+			imageReady = ImageFactory.getInstance().getRegisteredImage("image.vehicle.ready");
 		else
-		    imageReady = Util.getImagePath(Util.IMAGE_READY_FOR_ACTION_PATH_GREY);
+		    imageReady = ImageFactory.getInstance().getRegisteredImage("image.vehicle.ready.na");
 		
 		//vehicle is out of order
 		if (vehicle.isOutOfOrder())
-			imageOutOfOrder = Util.getImagePath(Util.IMAGE_OUT_OF_ORDER_PATH_BLACK);
+			imageOutOfOrder = ImageFactory.getInstance().getRegisteredImage("image.vehicle.repair");
 		else
-		    imageOutOfOrder = Util.getImagePath(Util.IMAGE_OUT_OF_ORDER_PATH_GREY);
+		    imageOutOfOrder = ImageFactory.getInstance().getRegisteredImage("image.vehicle.repair.na");
 		
 		//transport status
 		switch(vehicle.getMostImportantTransportStatus())
 		{
-    		case 1: imageTransportStatus = Util.getImagePath(Util.IMAGE_TRANSPORT_STATUS_PATH_RED); break;
-    		case 2: imageTransportStatus = Util.getImagePath(Util.IMAGE_TRANSPORT_STATUS_PATH_YELLOW); break;
-    		case 3: imageTransportStatus = Util.getImagePath(Util.IMAGE_TRANSPORT_STATUS_PATH_GREEN); break;
-    		default: imageTransportStatus = Util.getImagePath(Util.IMAGE_TRANSPORT_STATUS_PATH_RED); break;
+    		case 1: imageTransportStatus = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.red"); break;
+    		case 2: imageTransportStatus = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.yellow"); break;
+    		case 3: imageTransportStatus = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.green"); break;
+    		default: imageTransportStatus = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.na"); break;
 		}		
 		
 		//top composite (name of the ambulance, type of the ambulance)
@@ -161,11 +160,10 @@ public class CarComposite extends Composite
 		final Composite compositeCarStaff = new Composite(compositeCarBottom, SWT.NONE);
 		compositeCarStaff.setLayout(new FillLayout());
 	
-		final Label labelDriverName = new Label(compositeCarStaff, SWT.NONE);
+		final Text labelDriverName = new Text(compositeCarStaff, SWT.NONE);
 		labelDriverName.setForeground(SWTResourceManager.getColor(0, 0, 102));
 		labelDriverName.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
 		labelDriverName.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		labelDriverName.setText(this.driverName);
 	
 		final Label labelParamedicIName = new Label(compositeCarStaff, SWT.NONE);
 		labelParamedicIName.setForeground(SWTResourceManager.getColor(0, 0, 102));
@@ -177,7 +175,13 @@ public class CarComposite extends Composite
 		labelParamedicIIName.setForeground(SWTResourceManager.getColor(0, 0, 102));
 		labelParamedicIIName.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
 		labelParamedicIIName.setBackground(SWTResourceManager.getColor(209, 229, 249));
-		labelParamedicIIName.setText(this.paramedicIIName);		
+		labelParamedicIIName.setText(this.paramedicIIName);	
+		
+		// Bind it
+        DataBindingContext bindingContext = new DataBindingContext();
+        bindingContext.bindValue(
+                SWTObservables.observeText(labelDriverName,SWT.None), 
+                BeansObservables.observeValue(vehicle.getDriverName(), "userName"),
+                null, null);
 	}
-	
 }
