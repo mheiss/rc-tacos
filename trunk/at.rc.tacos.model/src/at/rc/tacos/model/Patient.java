@@ -33,21 +33,54 @@ public class Patient extends AbstractMessage
      */
     public Patient(long patientId, String firstname, String lastname) 
     {
-        this();
-        this.patientId = patientId;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        super(ID);
+        setPatientId(patientId);
+        setFirstname(firstname);
+        setLastname(lastname);
     }
 
     //METHODS
     /**
-     * Returns a string based description of the object
+     * Returns a string based description of the object.<br>
+     * The returned values are patientId,firstname,lastname.
      * @return the description of the object
      */
     @Override
     public String toString()
     {
-        return ID;
+        return patientId+","+firstname+","+lastname;
+    }
+    
+    /**
+     * Returns the calculated hash code based on the patient id.<br>
+     * Two patients have the same hash code if the id is the same.
+     * @return the calculated hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        return prime  + (int) (patientId ^ (patientId >>> 32));
+    }   
+    
+    /**
+     * Returns whether the objects are equal or not.<br>
+     * Two patients are equal if, and only if, the patient id is the same.
+     * @return true if the id is the same otherwise false.
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Patient other = (Patient) obj;
+        if (patientId != other.patientId)
+            return false;
+        return true;
     }
 
     //GETTERS AND SETTERS
@@ -61,16 +94,19 @@ public class Patient extends AbstractMessage
     }
 
     /**
-     * Sets the identification number
+     * Sets the identification number of the patient.
      * @param patientId the patientId to set
+     * @throws IllegalArgumentException when the patient id is lesser than 0
      */
     public void setPatientId(long patientId) 
     {
+        if(patientId < 0)
+            throw new IllegalArgumentException("The id cannot be negative");
         this.patientId = patientId;
     }
 
     /**
-     * Returns the firstname of the patient
+     * Returns the firstname of the patient.
      * @return the firstname
      */
     public String getFirstname() 
@@ -79,16 +115,19 @@ public class Patient extends AbstractMessage
     }
 
     /**
-     * Sets the last name for the patient
+     * Sets the last name for the patient.
      * @param firstname the firstname to set
+     * @throws IllegalArgumentException if the first name is null or empty
      */
     public void setFirstname(String firstname) 
     {
-        this.firstname = firstname;
+        if(firstname == null || firstname.trim().isEmpty())
+            throw new IllegalArgumentException("Invalid firstname");
+        this.firstname = firstname.trim();
     }
 
     /**
-     * Returns the last name of the patient
+     * Returns the last name of the patient.
      * @return the lastname
      */
     public String getLastname() 
@@ -97,11 +136,14 @@ public class Patient extends AbstractMessage
     }
 
     /**
-     * Sets the last name for the patient
+     * Sets the last name for the patient.
      * @param lastname the lastname to set
+     * @throws IllegalArgumentException if the lastname is null or empty
      */
     public void setLastname(String lastname)
     {
+        if(lastname == null || lastname.trim().isEmpty())
+            throw new IllegalArgumentException("Invalid lastname");
         this.lastname = lastname;
-    }	
+    }
 }
