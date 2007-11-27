@@ -196,7 +196,7 @@ public class RosterEntryForm
 
 		//GUI
 		shell = new Shell();
-		shell.setImage(SWTResourceManager.getImage(RosterEntryForm.class, "/image/Tacos_LOGO.jpg"));
+		shell.setImage(SWTResourceManager.getImage(RosterEntryForm.class, "icons/Tacos_LOGO.jpg"));
 		shell.setSize(591, 512);
 		shell.setText("Dienstplaneintrag");
 
@@ -332,7 +332,7 @@ public class RosterEntryForm
 		group.setTabList(new Control[] {timeAnmeldung, dateAnmeldung, timeAbmeldung, dateAbmeldung});
 
 		abbrechenButton = new Button(shell, SWT.NONE);
-		abbrechenButton.setImage(SWTResourceManager.getImage(RosterEntryForm.class, "/image/LAN Warning.ico"));
+		abbrechenButton.setImage(SWTResourceManager.getImage(RosterEntryForm.class, "/icons/logo_small.jpg"));
 		abbrechenButton.setBounds(473, 445, 96, 23);
 		abbrechenButton.setText("Abbrechen");
 		abbrechenButton.addListener(SWT.Selection, exitListener);
