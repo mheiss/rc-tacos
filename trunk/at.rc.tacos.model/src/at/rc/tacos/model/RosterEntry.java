@@ -48,12 +48,12 @@ public class RosterEntry extends AbstractMessage
 	 * @param rosterNotes
 	 * @param standby
 	 */
-	public RosterEntry(String id, long rosterId, StaffMember staffMember,
+	public RosterEntry(long rosterId, StaffMember staffMember,
 			long plannedStartOfWork, long plannedEndOfWork,
 			long realStartOfWork, long realEndOfWork, String station,
 			String competence, String servicetype, String rosterNotes,
 			boolean standby) {
-		super(id);
+		super(ID);
 		this.rosterId = rosterId;
 		this.staffMember = staffMember;
 		this.plannedEndOfWork = plannedEndOfWork;
