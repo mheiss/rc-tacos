@@ -1,9 +1,8 @@
 package at.rc.tacos.client.controller;
 
-//rcp
 import org.eclipse.jface.action.Action;
 
-//client
+import at.rc.tacos.client.Activator;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.*;
 
@@ -27,9 +26,15 @@ public class CreateItemAction extends Action
     
     public void run() 
     {
-    	//Item
-        Item newItem = new Item(id);
-        //send
-        NetWrapper.getDefault().sendAddMessage(newItem);
+//    	//Item
+//        Item newItem = new Item(id);
+//        //send
+//        NetWrapper.getDefault().sendAddMessage(newItem); 
+        VehicleDetail vehicle = Activator.getDefault().getVehicleManager().getVehicleList().get(0);
+        System.out.println(vehicle.getDriverName());
+        vehicle.getDriverName().setUserName("SISSI");
+        vehicle.getDriverName().setFirstName("SISSI");
+        vehicle.getDriverName().setLastName("SISSI");
+        
     }
 }
