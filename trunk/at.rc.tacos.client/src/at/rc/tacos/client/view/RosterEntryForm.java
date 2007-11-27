@@ -76,7 +76,7 @@ public class RosterEntryForm
 			Calendar c = Calendar.getInstance();
 			c.setTime(new Date());
 			long time = c.getTimeInMillis();
-			new RosterEntry();
+			//new RosterEntry();
 			RosterEntry rosterEntry = new RosterEntry(1,sm,time,time,time, time,"Kapfenberg", "Fahrer", "Hauptamtlich", "the notes", true);
 			RosterEntryForm window = new RosterEntryForm(rosterEntry);
 			window.open();
@@ -85,34 +85,59 @@ public class RosterEntryForm
 		}
 	}
 	
+	/**
+	 * used to edit an roster entry
+	 * @param rosterEntry the roster entry to edit
+	 */
 	public RosterEntryForm(RosterEntry rosterEntry)
 	{
 		this.createContents();
 		
+		//set field contents
 		GregorianCalendar gcal = new GregorianCalendar();
 		gcal.setTimeZone(TimeZone.getDefault());
+		
+		//check in
+		gcal.setTimeInMillis(rosterEntry.getRealStartOfWork());
+		String anmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
+		this.dateAnmeldung.setText(anmeldungDate);
+		String anmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+		this.timeAnmeldung.setText(anmeldungTime);
+		
 		
 		//check out
 		gcal.setTimeInMillis(rosterEntry.getRealEndOfWork());
 		String abmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
-		System.out.println("abmeldungDate: " +abmeldungDate);
 		this.dateAbmeldung.setText(abmeldungDate);
-		
-		
 		String abmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 		this.timeAbmeldung.setText(abmeldungTime);
-		System.out.println("abmeldungTime: " +abmeldungTime);
+
+		
+		//planned start of work
+		gcal.setTimeInMillis(rosterEntry.getPlannedStartOfWork());
+		System.out.println("date calendar: " +gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR));
+		//calendar field
+		this.dateDienstVon.setDay(gcal.get(GregorianCalendar.DATE));
+		this.dateDienstVon.setMonth(gcal.get(GregorianCalendar.MONTH));
+		this.dateDienstVon.setYear(gcal.get(GregorianCalendar.YEAR));
+		//drop downn field
+		this.dateTime.setDay(gcal.get(GregorianCalendar.DATE));
+		this.dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
+		this.dateTime.setYear(gcal.get(GregorianCalendar.YEAR));
+		
+		String realStartTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+		this.timeDienstVon.setText(realStartTime);
 		
 		
-//		this.dateAnmeldung.;
-//		this.timeAnmeldung.;
-//		
-//		this.dateDienstBis.;
-//		this.dateDienstVon.;
-//		
-//		this.timeDienstBis.;
-//		this.timeDienstVon.;
+		//planned end of work
+		gcal.setTimeInMillis(rosterEntry.getPlannedEndOfWork());
+		String plannedEndDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
+		this.dateDienstBis.setText(plannedEndDate);
+		String plannedEndTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+		this.timeDienstBis.setText(plannedEndTime);
 		
+		
+		//other fields
 		this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
 		this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
 		this.comboVerwendung.setText(rosterEntry.getCompetence());
