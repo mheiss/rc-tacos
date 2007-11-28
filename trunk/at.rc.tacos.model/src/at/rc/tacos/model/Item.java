@@ -3,7 +3,8 @@ package at.rc.tacos.model;
 import at.rc.tacos.common.AbstractMessage;
 
 /**
- * A simple itemen that has a name
+ * A simple item that has a name<br>
+ * This object is only for testing purpose.
  * @author Michael
  */
 public class Item extends AbstractMessage
@@ -29,7 +30,7 @@ public class Item extends AbstractMessage
     public Item(String name)
     {
         this();
-        this.name = name;
+        setName(name);
     }
 
     //METHODS
@@ -40,7 +41,7 @@ public class Item extends AbstractMessage
     @Override
     public String toString()
     {
-        return ID;
+        return name;
     }
 
     //GETTERS AND SETTERS   
@@ -56,9 +57,12 @@ public class Item extends AbstractMessage
     /**
      * Sets the name of the item.
      * @param id the id to set
+     * @throws IllegalArgumentException if the name is null or empty
      */
     public void setName(String name) 
     {
+        if(name == null || name.trim().isEmpty())
+            throw new IllegalArgumentException("The name cannot be null or empty");
         this.name = name;
     }
 }
