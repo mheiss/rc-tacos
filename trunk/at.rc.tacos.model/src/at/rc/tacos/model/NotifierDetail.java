@@ -142,12 +142,12 @@ public class NotifierDetail extends AbstractMessage
     /**
      * Sets the notes that have been given by the caller.
      * @param notifierNotes the notes from the caller
-     * @throws IllegalArgumentException if the notes are null or empty
+     * @throws IllegalArgumentException if the notes are null
      */
     public void setNotifierNotes(String notifierNotes) 
     {
-        if(notifierNotes == null || notifierNotes.trim().isEmpty())
-            throw new IllegalArgumentException("Notes cannot be null or empty");
+        if(notifierNotes == null)
+            throw new IllegalArgumentException("Notes cannot be null");
         this.notifierNotes = notifierNotes;
     }
 }
