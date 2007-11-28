@@ -48,18 +48,7 @@ public class NotifierDetail extends AbstractMessage
     {
         return notifierName+","+notifierTelephoneNumber+","+notifierNotes;
     }
-
-    //GETTERS AND SETTERS
-    /**
-     * Returns the name of the notifier.
-     * @return the notifierName
-     */
-    public String getNotifierName() 
-    {
-        return notifierName;
-    }
-
-
+    
     /**
      * Returns the calculated hash code based on the notifier name and the telephone number.<br>
      * Two notifiers have the same hash code if the name and 
@@ -69,8 +58,7 @@ public class NotifierDetail extends AbstractMessage
     @Override
     public int hashCode()
     {
-        final int prime = 31;
-        return prime + notifierName.hashCode() + notifierTelephoneNumber.hashCode();
+        return 31 + notifierName.hashCode() + notifierTelephoneNumber.hashCode();
     }
 
     /**
@@ -94,6 +82,16 @@ public class NotifierDetail extends AbstractMessage
         if (!notifierTelephoneNumber.equals(other.notifierTelephoneNumber))
             return false;
         return true;
+    }
+
+    //GETTERS AND SETTERS
+    /**
+     * Returns the name of the notifier.
+     * @return the notifierName
+     */
+    public String getNotifierName() 
+    {
+        return notifierName;
     }
 
     /**

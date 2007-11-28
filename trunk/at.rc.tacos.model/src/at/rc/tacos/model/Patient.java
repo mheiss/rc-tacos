@@ -59,8 +59,7 @@ public class Patient extends AbstractMessage
     @Override
     public int hashCode()
     {
-        final int prime = 31;
-        return prime  + (int) (patientId ^ (patientId >>> 32));
+        return 31  + (int) (patientId ^ (patientId >>> 32));
     }   
     
     /**
