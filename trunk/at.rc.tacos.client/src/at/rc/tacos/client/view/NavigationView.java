@@ -11,9 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.part.ViewPart;
-
 import at.rc.tacos.client.controller.OpenAboutAction;
 import at.rc.tacos.client.controller.OpenRosterEntryAction;
 import at.rc.tacos.factory.ImageFactory;
