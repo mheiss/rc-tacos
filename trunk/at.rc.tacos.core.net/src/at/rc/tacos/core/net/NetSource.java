@@ -53,11 +53,12 @@ public class NetSource
     {    
         try
         {
+            ResourceBundle bundle = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH);
             //load the settings from the file
-            String primaryHost = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH).getString("server.primary.host");
-            String strPrimaryPort = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH).getString("server.primary.port");
-            String failbackHost = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH).getString("server.failback.host");
-            String strFailbackPort = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH).getString("server.failback.port");
+            String primaryHost = bundle.getString("server.primary.host");
+            String strPrimaryPort = bundle.getString("server.primary.port");
+            String failbackHost = bundle.getString("server.failback.host");
+            String strFailbackPort = bundle.getString("server.failback.port");
             int primaryPort = -1;
             int failbackPort = -1;
             //parse
