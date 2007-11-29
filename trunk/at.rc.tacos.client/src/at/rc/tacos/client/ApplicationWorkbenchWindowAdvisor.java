@@ -1,11 +1,7 @@
 package at.rc.tacos.client;
 
-//rcp
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.ui.application.ActionBarAdvisor;
-import org.eclipse.ui.application.IActionBarConfigurer;
-import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
-import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.eclipse.ui.application.*;
 
 /**
  * This class is used to control the status line, toolbar, title, 
@@ -13,7 +9,7 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  * @author Michael
  */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor 
-{
+{   
     /**
      * Default class constructor
      */
@@ -34,13 +30,13 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
      * Called in the constructor of the workbench window
      */
     public void preWindowOpen() 
-    {
+    {        
         //get access to the configuration interface
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
         configurer.setInitialSize(new Point(1024, 768));
-        configurer.setShowCoolBar(true);    //ToolBar
+        configurer.setTitle("Time and Coordination System");
+        configurer.setShowCoolBar(false);    //ToolBar
         configurer.setShowStatusLine(true);
         configurer.setShowProgressIndicator(true);   
-        //TODO: Check the network connection
     }
 }

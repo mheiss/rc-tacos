@@ -53,23 +53,29 @@
       </view>
       <view
             name="FormView"
-            allowMultiple="true"
+            allowMultiple="false"
             class="at.rc.tacos.client.view.FormView"
             id="at.rc.tacos.client.view.item_form">
       </view>
       
       <view
             name="RessourcesView"
-            allowMultiple="true"
+            allowMultiple="false"
             class="at.rc.tacos.client.view.VehiclesView"
             id="at.rc.tacos.client.view.ressources_view">
       </view>
       
       <view
             name="PersonalView"
-            allowMultiple="true"
+            allowMultiple="false"
             class="at.rc.tacos.client.view.PersonalView"
             id="at.rc.tacos.client.view.personal_view">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.NavigationView"
+            id="at.rc.tacos.client.view.navigation"
+            name="NavigationView">
       </view>
       
       
