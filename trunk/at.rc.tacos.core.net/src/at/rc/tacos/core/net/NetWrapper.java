@@ -106,6 +106,13 @@ public class NetWrapper extends Plugin implements INetListener
         protFactory.registerEncoder(Transport.ID, new TransportEncoder());
         protFactory.registerDecoder(VehicleDetail.ID, new VehicleDecoder());
         protFactory.registerEncoder(VehicleDetail.ID, new VehicleEncoder()); 
+        //system events
+        protFactory.registerDecoder(Login.ID, new LoginDecoder());
+        protFactory.registerEncoder(Login.ID, new LoginEncoder());
+        protFactory.registerDecoder(Logout.ID, new LogoutDecoder());
+        protFactory.registerEncoder(Logout.ID, new LogoutEncoder());
+        protFactory.registerDecoder(SystemMessage.ID, new SystemMessageDecoder());
+        protFactory.registerEncoder(SystemMessage.ID, new SystemMessageEncoder());
     }
 
     /**
@@ -201,9 +208,9 @@ public class NetWrapper extends Plugin implements INetListener
 
         //try to get a listener for this message
         ListenerFactory listenerFactory = ListenerFactory.getDefault();
-        if(listenerFactory.hasListeners(type))
+        if(listenerFactory.hasModelListeners(type))
         {
-            IModelListener listener = listenerFactory.getListener(type);
+            IModelListener listener = listenerFactory.getModelListener(type);
             //now pass the message to the listener
             if(IModelListener.ADD.equalsIgnoreCase(action))
                 listener.add(objects.get(0));
@@ -213,6 +220,16 @@ public class NetWrapper extends Plugin implements INetListener
                 listener.update(objects.get(0));
             if(IModelListener.LIST.equalsIgnoreCase(action))
                 listener.list(objects);
+        }
+        if(listenerFactory.hasEventListeners(type))
+        {
+            IEventListener listener = listenerFactory.getEventListener(type);
+            if(IEventListener.LOGIN.equalsIgnoreCase(action))
+                listener.loginMessage(objects.get(0));
+            if(IEventListener.LOGOUT.equalsIgnoreCase(action))
+                listener.logoutMessage(objects.get(0));
+            if(IEventListener.NOTIFY.equalsIgnoreCase(action))
+                listener.statusMessage(objects.get(0));
         }
     }
 
