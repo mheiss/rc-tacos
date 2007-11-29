@@ -9,7 +9,7 @@ import at.rc.tacos.common.AbstractMessage;
  * Specifies the transport details
  * @author b.thek
  */
-public class Transport extends AbstractMessage
+public class Transport extends AbstractMessage implements ITransportPriority
 {
     //unique identification string
     public final static String ID = "transport";
