@@ -38,27 +38,27 @@ public class VehicleDetail extends AbstractMessage
     }
 
     /**
-     * Class constructor for a complete vechicel detail object
-     * @param vehicleId
-     * @param vehicleName
-     * @param vehicleType
-     * @param driverName
-     * @param paramedicIName
-     * @param paramedicIIName
-     * @param mobilePhone
-     * @param vehicleNotes
-     * @param basicStation
-     * @param currentStation
-     * @param readyForAction
-     * @param outOfOrder
-     * @param mostImportantTransportStatus
+     * Class constructor for a complete vehicle detail object
+     * @param vehicleId the id of the vehicle 
+     * @param vehicleName the name of the vehicle 
+     * @param vehicleType the type of the vehicle
+     * @param driverName the driver details
+     * @param paramedicIName the medic details
+     * @param paramedicIIName the medic details
+     * @param mobilePhone the mobile phone details
+     * @param vehicleNotes notes for the vehicle
+     * @param basicStation the home station
+     * @param currentStation the current location
+     * @param readyForAction the status
+     * @param outOfOrder the repair status
+     * @param mostImportantTransportStatus the transport status 
      */
     public VehicleDetail(int vehicleId, String vehicleName, String vehicleType,
             StaffMember driverName, StaffMember paramedicIName, StaffMember paramedicIIName,
             MobilePhoneDetail mobilePhone, String vehicleNotes,
             String basicStation, String currentStation, boolean readyForAction,
             boolean outOfOrder, int mostImportantTransportStatus) {
-        this();
+        super(ID);
         this.vehicleId = vehicleId;
         this.vehicleName = vehicleName;
         this.vehicleType = vehicleType;

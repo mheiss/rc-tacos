@@ -2,6 +2,7 @@ package at.rc.tacos.factory;
 
 import java.util.HashMap;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * The image facotry manages all available images
@@ -13,14 +14,14 @@ public class ImageFactory
     private static ImageFactory instance;
     
     /** List of all images */
-    private HashMap<String, Image> images;
+    private HashMap<String, ImageDescriptor> images;
     
     /**
      * Default private constructor
      */
     private ImageFactory() 
     {
-        images = new HashMap<String, Image>();
+        images = new HashMap<String, ImageDescriptor>();
     }
     
     /**
@@ -39,11 +40,11 @@ public class ImageFactory
      * When two images are registered with the same id
      * the older one will be replaced.
      * @param imageID the id for the image to register
-     * @param image the image itself
+     * @param imageDescriptor the image descriptor
      */
-    public void registerImage(String imageID,Image image)
+    public void registerImage(String imageID,ImageDescriptor imageDescriptor)
     {
-        images.put(imageID,image);
+        images.put(imageID,imageDescriptor);
     }
     
     /**
@@ -53,6 +54,17 @@ public class ImageFactory
      * @return the registered image or null if no image was found
      */
     public Image getRegisteredImage(String imageId)
+    {
+        return images.get(imageId).createImage();
+    }
+    
+    /**
+     * Returns the imagedescriptor registered with the given
+     * identification string.
+     * @param the identification string of the image
+     * @return the registered imageDescriptor or null if no image was found
+     */
+    public ImageDescriptor getRegisteredImageDescriptor(String imageId)
     {
         return images.get(imageId);
     }
