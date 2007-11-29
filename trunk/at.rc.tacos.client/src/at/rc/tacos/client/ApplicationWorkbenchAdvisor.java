@@ -1,5 +1,6 @@
 package at.rc.tacos.client;
 
+import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
@@ -27,5 +28,17 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
 	public String getInitialWindowPerspectiveId() 
 	{
 		return PERSPECTIVE_ID;
-	} 
+	}
+
+    /**
+     * Initializes the application.<br>
+     * The loading of the needed data before the startup is done here
+     */
+    @Override
+    public void initialize(IWorkbenchConfigurer configurer)
+    {
+        // TODO connect to the server here
+        // TODO Load the model data here
+        super.initialize(configurer);
+    } 
 }

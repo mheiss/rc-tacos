@@ -1,13 +1,9 @@
 package at.rc.tacos.client;
 
-//rcp
 import java.util.ResourceBundle;
-
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-//client
 import at.rc.tacos.client.listeners.*;
 import at.rc.tacos.client.modelManager.*;
 import at.rc.tacos.core.net.NetWrapper;
@@ -127,8 +123,8 @@ public class Activator extends AbstractUIPlugin
     	    {
     	        //Create the image file with the given path
     	        String imagePath = imageBundle.getString(imageKey);
-    	        Image image = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, imagePath).createImage();
-    	        f.registerImage(imageKey, image);
+    	        ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, imagePath);
+    	        f.registerImage(imageKey, imageDescriptor);
     	    }
         }
 	    catch(NullPointerException npe)
