@@ -86,7 +86,7 @@ public class Activator extends AbstractUIPlugin
 	}
 	
 	/**
-     * Convinience method to registers the ui listeners 
+     * Convinience method to registers the ui model listeners 
      * to get updates from the network layer.
      */
 	public void registerModelListeners()
@@ -101,6 +101,19 @@ public class Activator extends AbstractUIPlugin
 	    factory.registerModelListener(StaffMember.ID, new StaffMemberListener());
 	    factory.registerModelListener(Transport.ID, new TransportListener());
 	    factory.registerModelListener(VehicleDetail.ID, new VehicleDetailListener());
+	}
+	
+	/**
+    * Convinience method to registers the ui event listeners 
+    * to get updates from the network layer.
+	*/
+	public void registerEventListener()
+	{
+	    ListenerFactory factory = ListenerFactory.getDefault();
+	    //register the listeners
+	    factory.registerEventListener(Login.ID, new AuthenticationListener());
+	    factory.registerEventListener(Logout.ID, new AuthenticationListener());
+	    factory.registerEventListener(SystemMessage.ID, new SystemMessageListener());
 	}
 	
 	/**
