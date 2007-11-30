@@ -6,18 +6,7 @@ package at.rc.tacos.common;
  * @author Michael
  */
 public interface IEventListener
-{
-    //IDENTIFICATION STRINGS FOR THE ACTIONS
-    /** Login message */
-    public final static String LOGIN = "MESSAGE.LOGIN";
-    
-    /** Logout message */
-    public final static String LOGOUT = "MESSAGE.LOGIN";
-    
-    /** General system messages */
-    public final static String NOTIFY = "MESSAGE.NOTIFY";
-    
-    // METHODS
+{   
     /**
      * Notification about a login message.<br> 
      */

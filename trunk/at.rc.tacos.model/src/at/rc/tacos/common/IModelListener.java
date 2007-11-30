@@ -9,17 +9,6 @@ import java.util.ArrayList;
  */
 public interface IModelListener
 {
-    // IDENTIFICATION STRINGS FOR THE ACTIONS
-    /** Add message */
-    public final static String ADD = "MESSAGE.ADD";
-    /** Remove message */
-    public final static String REMOVE = "MESSAGE.REMOVE";
-    /** List message */
-    public final static String LIST = "MESSAGE.LIST";
-    /** Update message */
-    public final static String UPDATE = "MESSAGE.UPDATE";
-        
-    // METHODS
     /**
      *  Notification about a new message to add.
      *  @param addMessage the object to add
