@@ -1,13 +1,11 @@
 package at.rc.tacos.server.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import at.rc.tacos.core.net.event.INetListener;
 import at.rc.tacos.core.net.event.NetEvent;
 import at.rc.tacos.core.net.internal.MyClient;
-
 import at.rc.tacos.factory.*;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.common.*;
 
 /**
@@ -20,19 +18,39 @@ public class ClientHandler implements INetListener
     public synchronized void dataReceived(NetEvent ne)
     {
         //set up the factory to decode
-        XMLFactory factory = new XMLFactory();
-        System.out.println("Server - data received");
-        factory.setupDecodeFactory(ne.getMessage());
+        XMLFactory xmlFactory = new XMLFactory();
+        xmlFactory.setupDecodeFactory(ne.getMessage());
         //decode the message
-        ArrayList<AbstractMessage> objects = factory.decode();
-        System.out.println("Server - after decode");
+        ArrayList<AbstractMessage> objects = xmlFactory.decode();
         //get the type of the item
-        String type = factory.getType(); 
-        String action = factory.getAction();
-        String user = factory.getUserId();
-        long timestamp = factory.getTimestamp();
-        //pass the message
-        handleNetMessage(user,timestamp, type, action, objects);
+        final String type = xmlFactory.getType(); 
+        final String action = xmlFactory.getAction();
+        
+        //check if the client is authenticated or not
+        final boolean isAuthenticated = ServerController.getDefault().isAuthenticated(ne.getClient());
+                
+        //the listener class to handle the request
+        ServerListenerFactory factory = ServerListenerFactory.getInstance();
+        IServerListener listener = null;
+        String clientId = null;
+        
+        //the client is not authenticated
+        if(!isAuthenticated)
+        {
+            //login request are permitted
+            if(Login.ID.equalsIgnoreCase(type))
+                listener = factory.getListener(Login.ID);
+        }
+        //the client is authenticated
+        else
+        {
+            //the identification of the client
+            clientId = ServerController.getDefault().getAuthenticationString(ne.getClient());
+            listener = factory.getListener(type);                
+        }
+        //now handle the request
+        if(listener != null)
+            listener.handleRequest(clientId, action, objects);
     }
 
     @Override
@@ -62,35 +80,5 @@ public class ClientHandler implements INetListener
             System.out.println("Client quit");
             ServerController.getDefault().clientDisconnected(client);
         }
-    }
-    
-    /**
-     *  Manages the received objects and sets the needed actions
-     */
-    private void handleNetMessage(String user,long timestamp,String type,String action,ArrayList<AbstractMessage> objects)
-    {
-        //write the action in the log table
-        System.out.println("handle net message");
-        //do variouse thinks like querying the database . . . .       
-        
-        //encode the message in xml again and brodcast ist
-        sendMessage(user,type,action,objects);
-    }
-    
-    /**
-     * Encode the message and send it to the clients
-     */
-    private void sendMessage(String user,String type,String action,ArrayList<AbstractMessage> objects)
-    {
-        System.out.println("in sending");
-        long now = new Date().getTime();
-        //set up the factory
-        XMLFactory factory = new XMLFactory();
-        factory.setupEncodeFactory(user,now,type,action);
-        //encode the message
-        String xmlMessage = factory.encode(objects);
-        System.out.println("Server sending message: " +xmlMessage);
-        //send the message
-        ServerController.getDefault().brodcastMessage(factory.encode(objects));
     }
 }

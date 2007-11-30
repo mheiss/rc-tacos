@@ -2,7 +2,8 @@ package at.rc.tacos.server.run;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import at.rc.tacos.server.controller.ServerController;
+import at.rc.tacos.core.net.internal.MyServer;
+import at.rc.tacos.server.controller.ClientHandler;
 
 /**
  * Tacos server
@@ -13,6 +14,29 @@ public class TacosServer
     //path for the properties file
     public final static String SERVER_CONFIG = "at.rc.tacos.server.config.server";
 
+    //the server object
+    private MyServer myServer = null;
+
+    public TacosServer(int port)
+    {
+        //listen for client request
+        myServer = new MyServer(port);
+        myServer.addNetListener(new ClientHandler());
+    }
+    
+    /**
+     * Starts the server thread to listen for client requests.
+     */
+    private void startServer()
+    {
+        //start the server thread to listen to client connections
+        Thread t = new Thread(myServer);
+        t.start();
+    }
+
+    /**
+     * The main method to read the configuration and start the server
+     */
     public static void main(String[] args)  
     {  
         try
@@ -24,7 +48,8 @@ public class TacosServer
             port = Integer.parseInt(strPort);
             //start the server
             System.out.print("Startup server. . . ");
-            ServerController.getDefault().startServer(port);
+            TacosServer server = new TacosServer(port);
+            server.startServer();
         }
         catch(MissingResourceException mre)
         {
