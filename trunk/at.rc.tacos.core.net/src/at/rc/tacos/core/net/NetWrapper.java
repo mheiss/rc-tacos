@@ -132,7 +132,7 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void sendAddMessage(AbstractMessage addMessage)
     {
-        sendMessage(addMessage, IModelListener.ADD);
+        sendMessage(addMessage, IModelActions.ADD);
     }
 
     /**
@@ -142,7 +142,7 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void sendRemoveMessage(AbstractMessage removeMessage)
     {
-        sendMessage(removeMessage, IModelListener.REMOVE);
+        sendMessage(removeMessage, IModelActions.REMOVE);
     }
 
     /**
@@ -152,7 +152,7 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void sendUpdateMessage(AbstractMessage updateMessage)
     {
-        sendMessage(updateMessage,IModelListener.UPDATE);
+        sendMessage(updateMessage,IModelActions.UPDATE);
     }
 
     /**
@@ -163,7 +163,7 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void requestListing(String id)
     {
-        sendMessage(null,IModelListener.LIST);
+        sendMessage(null,IModelActions.LIST);
     }
 
     /**
@@ -212,23 +212,23 @@ public class NetWrapper extends Plugin implements INetListener
         {
             IModelListener listener = listenerFactory.getModelListener(type);
             //now pass the message to the listener
-            if(IModelListener.ADD.equalsIgnoreCase(action))
+            if(IModelActions.ADD.equalsIgnoreCase(action))
                 listener.add(objects.get(0));
-            if(IModelListener.REMOVE.equalsIgnoreCase(action))
+            if(IModelActions.REMOVE.equalsIgnoreCase(action))
                 listener.remove(objects.get(0));
-            if(IModelListener.UPDATE.equalsIgnoreCase(action))
+            if(IModelActions.UPDATE.equalsIgnoreCase(action))
                 listener.update(objects.get(0));
-            if(IModelListener.LIST.equalsIgnoreCase(action))
+            if(IModelActions.LIST.equalsIgnoreCase(action))
                 listener.list(objects);
         }
         if(listenerFactory.hasEventListeners(type))
         {
             IEventListener listener = listenerFactory.getEventListener(type);
-            if(IEventListener.LOGIN.equalsIgnoreCase(action))
+            if(IModelActions.LOGIN.equalsIgnoreCase(action))
                 listener.loginMessage(objects.get(0));
-            if(IEventListener.LOGOUT.equalsIgnoreCase(action))
+            if(IModelActions.LOGOUT.equalsIgnoreCase(action))
                 listener.logoutMessage(objects.get(0));
-            if(IEventListener.NOTIFY.equalsIgnoreCase(action))
+            if(IModelActions.NOTIFY.equalsIgnoreCase(action))
                 listener.statusMessage(objects.get(0));
         }
     }
