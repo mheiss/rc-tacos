@@ -4,6 +4,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
+
+import at.rc.tacos.client.view.RosterEntryForm;
 import at.rc.tacos.factory.ImageFactory;
 
 public class OpenRosterEntryAction extends Action
@@ -34,7 +36,9 @@ public class OpenRosterEntryAction extends Action
     @Override
     public void run()
     {
-        MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Dummy", "This is a dummy implementation");
+//        MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Dummy", "This is a dummy implementation");
+        RosterEntryForm window = new RosterEntryForm();
+		window.open();
     }
 
 }
