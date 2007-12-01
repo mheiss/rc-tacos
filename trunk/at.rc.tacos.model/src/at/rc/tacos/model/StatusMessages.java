@@ -1,5 +1,6 @@
 package at.rc.tacos.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -10,10 +11,11 @@ import java.util.Calendar;
 
 public class StatusMessages implements ITransportStatus
 {
-	private String status;
+	private int status;
 	private long timestamp;
+	private ArrayList<StatusMessages> statusMessageArray;
 	
-	public StatusMessages(String status, long timestamp)
+	public StatusMessages(int status, long timestamp)
 	{
 		this.status = status;
 		this.timestamp = timestamp;
@@ -37,10 +39,17 @@ public class StatusMessages implements ITransportStatus
 	    //date out of range
 	    return false;
 	}
+	
+	public void addStatus(int statusId, long timestamp)
+	{
+		statusMessageArray.add(new StatusMessages(statusId,timestamp));
+	}
+	
+	//SETTER & GETTER
 	/**
 	 * @return the status
 	 */
-	public String getStatus() 
+	public int getStatus() 
 	{
 		return status;
 	}
@@ -48,10 +57,10 @@ public class StatusMessages implements ITransportStatus
 	/**
 	 * @param status the status to set
 	 */
-	public void setStatus(String status) 
+	public void setStatus(int status) 
 	{
-		if(status == null || status.trim().isEmpty())
-	        throw new IllegalArgumentException("The status cannot be null or empty");
+		if(status < 0 || status > 9)
+	        throw new IllegalArgumentException("Invalid status value. Possible values: 1,2,3,4,5,6,7,8,9");
 		this.status = status;
 	}
 
