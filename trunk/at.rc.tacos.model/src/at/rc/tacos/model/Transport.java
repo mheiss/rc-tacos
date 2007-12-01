@@ -9,7 +9,7 @@ import at.rc.tacos.common.AbstractMessage;
  * Specifies the transport details
  * @author b.thek
  */
-public class Transport extends AbstractMessage implements ITransportPriority
+public class Transport extends AbstractMessage implements ITransportPriority,IDirectness
 {
     //unique identification string
     public final static String ID = "transport";
@@ -51,13 +51,8 @@ public class Transport extends AbstractMessage implements ITransportPriority
 	
 	private String feedback;
 	
-	//direction
-	private boolean towardsGraz;
-	private boolean towardsLeoben;
-	private boolean towardsWien;
-	private boolean towardsMariazell;
-	private boolean towardsDistrict;
-	private boolean longDistanceTrip;
+	//directness
+	private int directness;
 	
 	//vehicle and staff assigned to the transport
 	private VehicleDetail vehicleDetail;
@@ -133,9 +128,7 @@ public class Transport extends AbstractMessage implements ITransportPriority
 			boolean blueLightToPatient, boolean blueLightToGoal,
 			boolean dfAlarming, boolean brkdtAlarming,
 			boolean firebrigadeAlarming, boolean mountainRescueServiceAlarming,
-			boolean policeAlarming, String feedback, boolean towardsGraz,
-			boolean towardsLeoben, boolean towardsWien,
-			boolean towardsMariazell, boolean towardsDistrict,
+			boolean policeAlarming, String feedback, int directness,
 			boolean longDistanceTrip, VehicleDetail vehicleDetail,
 			ArrayList<StatusMessages> statusMessagesArray) {
 		super(id);
@@ -171,15 +164,12 @@ public class Transport extends AbstractMessage implements ITransportPriority
 		this.mountainRescueServiceAlarming = mountainRescueServiceAlarming;
 		this.policeAlarming = policeAlarming;
 		this.feedback = feedback;
-		this.towardsGraz = towardsGraz;
-		this.towardsLeoben = towardsLeoben;
-		this.towardsWien = towardsWien;
-		this.towardsMariazell = towardsMariazell;
-		this.towardsDistrict = towardsDistrict;
-		this.longDistanceTrip = longDistanceTrip;
+		this.directness = directness;
 		this.vehicleDetail = vehicleDetail;
 		this.statusMessagesArray = statusMessagesArray;
 	}
+	
+	
 
 
 	//METHODS
@@ -697,113 +687,27 @@ public class Transport extends AbstractMessage implements ITransportPriority
 	}
 
 
+	
+	
+	
 	/**
-	 * @return the towardsGraz
+	 * @return the directness
 	 */
-	public boolean isTowardsGraz() 
+	public int getDirectness() 
 	{
-		return towardsGraz;
+		return directness;
 	}
 
 
 	/**
-	 * @param towardsGraz the towardsGraz to set
+	 * @param directness the directness to set
 	 */
-	public void setTowardsGraz(boolean towardsGraz) 
+	public void setDirectness(int directness) 
 	{
-		this.towardsGraz = towardsGraz;
+		if(directness < 1 || directness > 5)
+	        throw new IllegalArgumentException("Invalid value for directness. Vaild values: 1,2,3,4,5");
+		this.directness = directness;
 	}
-
-
-	/**
-	 * @return the towardsLeoben
-	 */
-	public boolean isTowardsLeoben() 
-	{
-		return towardsLeoben;
-	}
-
-
-	/**
-	 * @param towardsLeoben the towardsLeoben to set
-	 */
-	public void setTowardsLeoben(boolean towardsLeoben) 
-	{
-		this.towardsLeoben = towardsLeoben;
-	}
-
-
-	/**
-	 * @return the towardsWien
-	 */
-	public boolean isTowardsWien() 
-	{
-		return towardsWien;
-	}
-
-
-	/**
-	 * @param towardsWien the towardsWien to set
-	 */
-	public void setTowardsWien(boolean towardsWien) 
-	{
-		this.towardsWien = towardsWien;
-	}
-
-
-	/**
-	 * @return the towardsMariazell
-	 */
-	public boolean isTowardsMariazell() 
-	{
-		return towardsMariazell;
-	}
-
-
-	/**
-	 * @param towardsMariazell the towardsMariazell to set
-	 */
-	public void setTowardsMariazell(boolean towardsMariazell) 
-	{
-		this.towardsMariazell = towardsMariazell;
-	}
-
-
-	/**
-	 * @return the towardsDistrict
-	 */
-	public boolean isTowardsDistrict() 
-	{
-		return towardsDistrict;
-	}
-
-
-	/**
-	 * @param towardsDistrict the towardsDistrict to set
-	 */
-	public void setTowardsDistrict(boolean towardsDistrict) 
-	{
-		this.towardsDistrict = towardsDistrict;
-	}
-
-
-	/**
-	 * @return the longDistanceTrip
-	 */
-	public boolean isLongDistanceTrip() 
-	{
-		return longDistanceTrip;
-	}
-
-
-	/**
-	 * @param longDistanceTrip the longDistanceTrip to set
-	 */
-	public void setLongDistanceTrip(boolean longDistanceTrip) 
-	{
-		this.longDistanceTrip = longDistanceTrip;
-	}
-
 
 
 	/**
@@ -1007,6 +911,8 @@ public class Transport extends AbstractMessage implements ITransportPriority
 	 */
 	public void setStatusMessagesArray(ArrayList<StatusMessages> statusMessagesArray) 
 	{
+		if(statusMessagesArray == null)
+	        throw new IllegalArgumentException("The status messages array cannot be null");
 		this.statusMessagesArray = statusMessagesArray;
 	}
 
