@@ -4,6 +4,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import at.rc.tacos.core.net.internal.MyServer;
 import at.rc.tacos.server.controller.ClientHandler;
+import at.rc.tacos.server.controller.ServerController;
 
 /**
  * Tacos server
@@ -19,6 +20,7 @@ public class TacosServer
 
     public TacosServer(int port)
     {
+        ServerController.getDefault();
         //listen for client request
         myServer = new MyServer(port);
         myServer.addNetListener(new ClientHandler());
@@ -47,9 +49,11 @@ public class TacosServer
             //parse
             port = Integer.parseInt(strPort);
             //start the server
-            System.out.print("Startup server. . . ");
+            System.out.println("TACOS-Server v0.2");
+            System.out.println("Listening for client request at port: "+port);
             TacosServer server = new TacosServer(port);
             server.startServer();
+            
         }
         catch(MissingResourceException mre)
         {

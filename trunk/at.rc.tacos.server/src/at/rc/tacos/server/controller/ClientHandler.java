@@ -40,17 +40,42 @@ public class ClientHandler implements INetListener
             //login request are permitted
             if(Login.ID.equalsIgnoreCase(type))
                 listener = factory.getListener(Login.ID);
+            else
+                System.out.println("Client not authenticated, login first");
         }
         //the client is authenticated
         else
         {
             //the identification of the client
             clientId = ServerController.getDefault().getAuthenticationString(ne.getClient());
+            System.out.println(type + "->"+action + " request from user "+clientId);
             listener = factory.getListener(type);                
         }
         //now handle the request
         if(listener != null)
-            listener.handleRequest(clientId, action, objects);
+        {
+            //login request
+            if(IModelActions.LOGIN.equalsIgnoreCase(action))
+                listener.handleLogin(objects.get(0));
+            //logout request
+            else if(IModelActions.LOGOUT.equalsIgnoreCase(action))
+                listener.handleLogout(objects.get(0));
+            //add request
+            else if(IModelActions.ADD.equalsIgnoreCase(action))
+                listener.handleAddRequest(objects.get(0));
+            //remove request
+            else if(IModelActions.REMOVE.equalsIgnoreCase(action))
+                listener.handleRemoveRequest(objects.get(0));
+            //update request
+            else if(IModelActions.UPDATE.equalsIgnoreCase(action))
+                listener.handleUpdateRequest(objects.get(0));
+            else if(IModelActions.LIST.equalsIgnoreCase(action))
+                listener.handleListingRequest();
+            else
+                System.out.println("No action handler found for action type: "+action);
+        }
+        else
+            System.out.println("No listener found for the message type: "+type);
     }
 
     @Override
