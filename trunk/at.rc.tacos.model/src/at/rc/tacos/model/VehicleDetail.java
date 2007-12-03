@@ -74,7 +74,21 @@ public class VehicleDetail extends AbstractMessage
         this.mostImportantTransportStatus = mostImportantTransportStatus;
     }
     
-    //METHODS
+    
+    
+    
+    /**
+	 * @param id
+	 * @param vehicleId
+	 * @param vehicleName
+	 */
+	public VehicleDetail(String id, int vehicleId, String vehicleName) {
+		super(id);
+		this.vehicleId = vehicleId;
+		this.vehicleName = vehicleName;
+	}
+
+	//METHODS
     public void addPropertyChangeListener(String propertyName,PropertyChangeListener listener) 
     {
         propertyChangeSupport.addPropertyChangeListener(propertyName,listener);
