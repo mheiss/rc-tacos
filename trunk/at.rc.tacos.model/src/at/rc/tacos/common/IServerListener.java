@@ -1,7 +1,5 @@
 package at.rc.tacos.common;
 
-import java.util.ArrayList;
-
 /**
  * This interface describes the methods that the server must
  * provide to handle client requests.
@@ -10,12 +8,27 @@ import java.util.ArrayList;
 public interface IServerListener
 {
     /**
-     * Request from the client to handle.
-     * @param id the identification of the model object
-     * @param action the type of the action
-     * @see IModelActions for details about the actions
+     * Add request from the client to handle.
+     * @param addObject the object to add
      */    
-    public void handleRequest(String id,String action,ArrayList<AbstractMessage> requestList);
+    public void handleAddRequest(AbstractMessage addObject);
+    
+    /**
+     * Remove request from the client to handle
+     * @param removeObject the object to remove
+     */
+    public void handleRemoveRequest(AbstractMessage removeObject);
+    
+    /**
+     * Update request from the client to handle
+     * @param updateObject the object to update
+     */
+    public void handleUpdateRequest(AbstractMessage updateObject);
+    
+    /**
+     * Listing request from the client to handle
+     */
+    public void handleListingRequest();
     
     /**
      *  Request from the client to login
