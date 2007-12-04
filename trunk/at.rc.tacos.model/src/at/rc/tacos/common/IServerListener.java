@@ -1,5 +1,7 @@
 package at.rc.tacos.common;
 
+import java.util.ArrayList;
+
 /**
  * This interface describes the methods that the server must
  * provide to handle client requests.
@@ -10,33 +12,41 @@ public interface IServerListener
     /**
      * Add request from the client to handle.
      * @param addObject the object to add
+     * @return the response from the server
      */    
-    public void handleAddRequest(AbstractMessage addObject);
+    public AbstractMessage handleAddRequest(AbstractMessage addObject);
     
     /**
      * Remove request from the client to handle
      * @param removeObject the object to remove
+     * @return the response from the server
      */
-    public void handleRemoveRequest(AbstractMessage removeObject);
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject);
     
     /**
      * Update request from the client to handle
      * @param updateObject the object to update
+     * @return the response from the server
      */
-    public void handleUpdateRequest(AbstractMessage updateObject);
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject);
     
     /**
      * Listing request from the client to handle
+     * @return the response from the server
      */
-    public void handleListingRequest();
+    public ArrayList<AbstractMessage> handleListingRequest();
     
     /**
      *  Request from the client to login
+     *  @param message the login message to authenticate the user
+     *  @return the result of the login process  
      */
-    public void handleLogin(AbstractMessage message);
+    public AbstractMessage handleLoginRequest(AbstractMessage message);
     
     /**
      * Request from the client to logout
+     * @param message the logout message to logout the user
+     * @return the resolt of the logout process
      */
-    public void handleLogout(AbstractMessage message);
+    public AbstractMessage handleLogoutRequest(AbstractMessage message);
 }
