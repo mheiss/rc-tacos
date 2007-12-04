@@ -1,4 +1,4 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.Date;

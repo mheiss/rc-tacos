@@ -1,4 +1,4 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class PatientDAOTest implements PatientDAO
      */
     private PatientDAOTest()
     {
-        patientList = new TestDataSource().patientList;
+        patientList = new ArrayList<Patient>();
     }
     
     /**
@@ -34,6 +34,14 @@ public class PatientDAOTest implements PatientDAO
         if (instance == null)
             instance = new PatientDAOTest();
         return instance;
+    }
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        patientList = new ArrayList<Patient>();
     }
 
     @Override
@@ -61,6 +69,11 @@ public class PatientDAOTest implements PatientDAO
     @Override
     public Patient getPatientById(int patientId)
     {
+        for(Patient patient:patientList)
+        {
+            if(patient.getPatientId() == patientId)
+                return patient;
+        }
         return null;
     }
 

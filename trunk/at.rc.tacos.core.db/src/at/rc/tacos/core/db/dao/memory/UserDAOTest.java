@@ -1,5 +1,6 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
+import java.util.HashMap;
 import java.util.Map;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 
@@ -20,7 +21,7 @@ public class UserDAOTest implements UserLoginDAO
      */
     private UserDAOTest()
     {
-        userList = new TestDataSource().userLogin;
+        userList = new HashMap<String, String>();
     }
     
     /**
@@ -32,6 +33,14 @@ public class UserDAOTest implements UserLoginDAO
         if (instance == null)
             instance = new UserDAOTest();
         return instance;
+    }
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        userList = new HashMap<String, String>();
     }
     
     /**
@@ -49,5 +58,16 @@ public class UserDAOTest implements UserLoginDAO
         if(password.equalsIgnoreCase(pwd))
             return true;
         return false;
+    }
+
+    /**
+     * Adds a new login to the login list
+     * @param username the username to add
+     * @param password the password to authenticate the user
+     */
+    @Override
+    public void addUserLogin(String username, String password)
+    {
+        userList.put(username,password);
     }
 }

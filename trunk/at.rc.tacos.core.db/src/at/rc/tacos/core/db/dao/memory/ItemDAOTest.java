@@ -1,4 +1,4 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class ItemDAOTest implements ItemDAO
      */
     private ItemDAOTest()
     {
-        itemList = new TestDataSource().itemList;
+        itemList = new ArrayList<Item>();
     }
     
     /**
@@ -31,6 +31,14 @@ public class ItemDAOTest implements ItemDAO
         if (instance == null)
             instance = new ItemDAOTest();
         return instance;
+    }
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        itemList = new ArrayList<Item>();
     }
 
     @Override
@@ -52,6 +60,13 @@ public class ItemDAOTest implements ItemDAO
     public void removeItem(Item item)
     {
         itemList.remove(item);
+    }
+    
+    @Override
+    public Item getItem(Item item)
+    {
+        int index = itemList.indexOf(item);
+        return itemList.get(index); 
     }
 
     @Override

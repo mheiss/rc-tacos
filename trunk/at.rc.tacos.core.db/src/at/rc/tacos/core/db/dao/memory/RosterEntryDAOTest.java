@@ -1,4 +1,4 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class RosterEntryDAOTest implements RosterDAO
      */
     private RosterEntryDAOTest()
     {
-        rosterList = new TestDataSource().rosterList;
+        rosterList = new ArrayList<RosterEntry>();
     }
     
     /**
@@ -34,6 +34,14 @@ public class RosterEntryDAOTest implements RosterDAO
         if (instance == null)
             instance = new RosterEntryDAOTest();
         return instance;
+    }
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        rosterList = new ArrayList<RosterEntry>();
     }
 
     @Override
@@ -60,6 +68,11 @@ public class RosterEntryDAOTest implements RosterDAO
     @Override
     public RosterEntry getRosterEntryById(int rosterEntryId)
     {
+        for(RosterEntry entry:rosterList)
+        {
+            if(entry.getRosterId() == rosterEntryId)
+                return entry;
+        }
         return null;
     }
     

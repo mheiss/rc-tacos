@@ -1,4 +1,4 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class StaffMemberDAOTest implements EmployeeDAO
      */
     private StaffMemberDAOTest()
     {
-        staffList = new TestDataSource().staffList;
+        staffList = new ArrayList<StaffMember>();
     }
     
     /**
@@ -34,6 +34,14 @@ public class StaffMemberDAOTest implements EmployeeDAO
         if (instance == null)
             instance = new StaffMemberDAOTest();
         return instance;
+    }
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        staffList = new ArrayList<StaffMember>();
     }
 
     @Override
@@ -60,6 +68,11 @@ public class StaffMemberDAOTest implements EmployeeDAO
     @Override
     public StaffMember getEmployeeById(int employeeID)
     {
+        for(StaffMember member:staffList)
+        {
+            if(member.getPersonId() == employeeID)
+                return member;
+        }
         return null;
     }
 
