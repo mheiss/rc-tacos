@@ -1,4 +1,4 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class TransportDAOTest implements TransportDAO
      */
     private TransportDAOTest()
     {
-        transportList = new TestDataSource().transportList;
+        transportList = new ArrayList<Transport>();
     }
     
     /**
@@ -34,6 +34,14 @@ public class TransportDAOTest implements TransportDAO
         if (instance == null)
             instance = new TransportDAOTest();
         return instance;
+    }
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        transportList = new ArrayList<Transport>();
     }
 
     @Override
@@ -60,6 +68,11 @@ public class TransportDAOTest implements TransportDAO
     @Override
     public Transport getTransportById(int transportId)
     {
+        for(Transport transport:transportList)
+        {
+            if(transport.getTransportId() == transportId)
+                return transport;
+        }
         return null;
     }
 

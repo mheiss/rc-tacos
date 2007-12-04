@@ -1,4 +1,4 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class VehicleDetailDAOTest implements VehicleDAO
      */
     private VehicleDetailDAOTest()
     {
-        vehicleList = new TestDataSource().vehicleList;
+        vehicleList = new ArrayList<VehicleDetail>();
     }
     
     /**
@@ -35,7 +35,15 @@ public class VehicleDetailDAOTest implements VehicleDAO
             instance = new VehicleDetailDAOTest();
         return instance;
     }
-
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        vehicleList = new ArrayList<VehicleDetail>();
+    }
+    
     @Override
     public int addVehicle(VehicleDetail vehicle)
     {
@@ -60,6 +68,11 @@ public class VehicleDetailDAOTest implements VehicleDAO
     @Override
     public VehicleDetail getVehicleById(int vehicleId)
     {
+        for(VehicleDetail detail:vehicleList)
+        {
+            if(detail.getVehicleId() == vehicleId)
+                return detail;
+        }
         return null;
     }
 

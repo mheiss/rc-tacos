@@ -1,8 +1,7 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.model.NotifierDetail;
 
@@ -23,7 +22,7 @@ public class NotifierDAOTest implements CallerDAO
      */
     private NotifierDAOTest()
     {
-        notifierList = new TestDataSource().notifierList;
+        notifierList = new ArrayList<NotifierDetail>();
     }
     
     /**
@@ -35,6 +34,14 @@ public class NotifierDAOTest implements CallerDAO
         if (instance == null)
             instance = new NotifierDAOTest();
         return instance;
+    }
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        notifierList = new ArrayList<NotifierDetail>();
     }
 
     @Override
@@ -61,6 +68,9 @@ public class NotifierDAOTest implements CallerDAO
     @Override
     public NotifierDetail getCallerByID(String callerID)
     {
+        for(NotifierDetail detail:notifierList)
+            if(detail.getNotifierName().equalsIgnoreCase(callerID))
+                return detail;
         return null;
     }
 

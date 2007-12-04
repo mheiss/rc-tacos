@@ -1,4 +1,4 @@
-package at.rc.tacos.core.db.dao.test;
+package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class MobilePhoneDAOTest implements MobilePhoneDAO
      */
     private MobilePhoneDAOTest()
     {
-        phoneList = new TestDataSource().phoneList;
+        phoneList = new ArrayList<MobilePhoneDetail>();;
     }
     
     /**
@@ -34,6 +34,14 @@ public class MobilePhoneDAOTest implements MobilePhoneDAO
         if (instance == null)
             instance = new MobilePhoneDAOTest();
         return instance;
+    }
+    
+    /**
+     * Cleans up the data of the list
+     */
+    public void reset()
+    {
+        phoneList = new ArrayList<MobilePhoneDetail>();
     }
 
     @Override
