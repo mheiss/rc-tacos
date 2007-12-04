@@ -1,6 +1,6 @@
-package at.rc.tacos.core.db;
+package at.rc.tacos.core.db.dao;
 
-public interface LocationLayer 
+public interface LocationDAO 
 {
 	//locations
 //	List<Locations> listLocations() throws SQLException;

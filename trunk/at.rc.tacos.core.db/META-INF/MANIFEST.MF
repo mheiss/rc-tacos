@@ -8,4 +8,8 @@ Require-Bundle: org.eclipse.core.runtime,
  at.rc.tacos.model
 Eclipse-LazyStart: true
 Bundle-ClassPath: lib/mysql-connector-java-5.1.5-bin.jar
-Export-Package: at.rc.tacos.core.db
+Export-Package: at.rc.tacos.core.db,
+ at.rc.tacos.core.db.dao,
+ at.rc.tacos.core.db.dao.factory,
+ at.rc.tacos.core.db.dao.mysql,
+ at.rc.tacos.core.db.dao.test
