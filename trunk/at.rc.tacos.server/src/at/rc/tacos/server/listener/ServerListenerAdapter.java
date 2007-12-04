@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IServerListener;
 
@@ -15,35 +16,53 @@ public abstract class ServerListenerAdapter implements IServerListener
      * Handles login request
      */
     @Override
-    public void handleLogin(AbstractMessage message) { }
-
+    public AbstractMessage handleLoginRequest(AbstractMessage loginObject)
+    {
+        return null;
+    }
+    
     /**
      * Handles logout request
      */
     @Override
-    public void handleLogout(AbstractMessage message) { }
-
+    public AbstractMessage handleLogoutRequest(AbstractMessage logoutObject)
+    {
+        return null;
+    }
+    
    /**
     * Handles add requests
     */
     @Override
-    public void handleAddRequest(AbstractMessage addObject) { }
+    public AbstractMessage handleAddRequest(AbstractMessage addObject)
+    {
+        return null;
+    }
 
    /**
     * Handles listing requests
     */
     @Override
-    public void handleListingRequest() { }
+    public ArrayList<AbstractMessage> handleListingRequest()
+    {
+        return null;
+    }
 
    /**
     * Handles remove requests
     */
     @Override
-    public void handleRemoveRequest(AbstractMessage removeObject) { }
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
+    {
+        return null;
+    }
 
     /**
      * Handles update requests
      */
     @Override
-    public void handleUpdateRequest(AbstractMessage updateObject) { }
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
+    {
+        return null;
+    }
 }

@@ -61,21 +61,20 @@ public class ServerController
 
     /**
      * Invoked when a client was disconnected throught abnormal 
-     * programm termination or a netowrk fault.<br>
+     * programm termination or a network fault.<br>
      * If the client was authenticated the other authenticated clients
      * will be informed with a <code>SystemMessage</code>
      * @param client the disconnected client
      */
     public void clientDisconnected(MyClient client)
     {
-
         //check the connClientPool
         if(connClientPool.contains(client))
             connClientPool.remove(client);
         //check the authClientPool
         if(!authClientPool.containsValue(client))
             return;
-        
+
         String clientId = "";
         //loop and serarch for the id
         for(Entry<String,MyClient> entry:authClientPool.entrySet())
@@ -94,7 +93,6 @@ public class ServerController
                         SystemMessage.ID,
                         IModelActions.NOTIFY,
                         objectList);
-                //TODO: logout from the database
             }
         }
         //remove the client
@@ -113,6 +111,16 @@ public class ServerController
         connClientPool.remove(client);
         //add to the authenticated pool
         authClientPool.put(userId, client);
+    }
+
+    /**
+     * Logout of the client was successfully, the client will be removed
+     * from the authenticated pool.
+     * @param userId the identification of the user who logged out
+     */
+    public void setDeAuthenticated(String userId)
+    {
+        authClientPool.remove(userId);
     }
 
     /**
@@ -143,7 +151,7 @@ public class ServerController
     }
 
     /**
-     *  Encodes the message into xml and brodcasts the message all
+     *  Encodes the list of message into xml and brodcasts the message all
      *  authenticated clients.
      *  @param userId the identification of the user.
      *  @param type the content type
@@ -159,6 +167,23 @@ public class ServerController
         //loop over the client pool and send the message
         for(MyClient client:authClientPool.values())   
             client.sendMessage(message);
+    }
+
+    /**
+     *  Encodes the message into xml and brodcasts the message all
+     *  authenticated clients.
+     *  @param userId the identification of the user.
+     *  @param type the content type
+     *  @param action the action to invoke at the client
+     *  @param object the message to send
+     */
+    public synchronized void brodcastMessage(String userId,String type,String action, AbstractMessage object)
+    {
+        //create list
+        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
+        list.add(object);
+        //delegate
+        brodcastMessage(userId, type, action, list);
     }
 
     /**
@@ -180,6 +205,41 @@ public class ServerController
             //encode and send
             client.sendMessage(factory.encode(objectList));
         }       
+    }
+
+    /**
+     *  Encodes the message into xml and sends the message to the client.
+     *  @param userId the identification of the target client.
+     *  @param type the content type
+     *  @param action the action to invoke at the client
+     *  @param object the message to send
+     */
+    public synchronized void sendMessage(String userId,String type,String action, AbstractMessage object)
+    {
+        //create list
+        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
+        list.add(object);
+        //delegate
+        sendMessage(userId, type, action, list);
+    }
+    
+    /**
+     * Sends a message to the given client object.<br>
+     * This method should only be used to communicate with
+     * unregistered clients.
+     * @param client the client to send the message to
+     * @param message the message to send
+     */
+    public synchronized void sendSystemMessage(MyClient client,String message)
+    {
+        //create list
+        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
+        list.add(new SystemMessage(message));
+        //set up the factory
+        XMLFactory factory = new XMLFactory();
+        factory.setupEncodeFactory("server",new Date().getTime(),SystemMessage.ID,IModelActions.NOTIFY);
+        //send the message
+        client.sendMessage(factory.encode(list));
     }
 
     /**
