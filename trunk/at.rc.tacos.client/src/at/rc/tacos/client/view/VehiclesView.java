@@ -1,14 +1,19 @@
 package at.rc.tacos.client.view;
 
 import org.eclipse.ui.part.*;
+import org.eclipse.ui.forms.FormColors;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.*;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.composite.CarComposite;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
@@ -63,6 +68,9 @@ public class VehiclesView extends ViewPart
         
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(0));
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(1));
+        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
+        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(3));
+        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(4));
     }
 
     @Override
@@ -88,10 +96,44 @@ public class VehiclesView extends ViewPart
         section.setDescription(description);
         //the content of the section
         Composite client = toolkit.createComposite(section,SWT.WRAP);
-        client.setLayout(new ColumnLayout());
+        ColumnLayout layout = new ColumnLayout();
+        layout.maxNumColumns = 4;
+        layout.minNumColumns = 4;
+        client.setLayout(layout);
         //add the client to the section
         section.setClient(client);
         //return the client
         return client;
+    }
+    
+    /**
+     * Creates the custom vehicle.
+     * @return the created vehicle
+     */
+    public void createVehicle(Composite parent,VehicleDetail detail)
+    {
+        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
+        FormColors colors = toolkit.getColors();
+        Color top = colors.getColor(IFormColors.H_GRADIENT_END);
+        Color bot = colors.getColor(IFormColors.H_GRADIENT_START);
+
+        // create the base form
+        Form form = toolkit.createForm(parent);
+        form.setText(detail.getVehicleName()+ " - "+detail.getVehicleType());
+        form.setImage(ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.green"));
+        form.setTextBackground(new Color[] { top, bot }, new int[] { 100 }, true);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 3;
+        form.getBody().setLayout(layout);
+
+        // create the text for user information
+        FormText text = toolkit.createFormText(form.getBody(), true);
+        GridData td = new GridData();        
+        text.setLayoutData(td);
+        text.setText("<form>" +
+        		"<p>Driver:" + detail.getDriverName().getUserName() + "</p>" +
+        		"<p>Sani1:" + detail.getParamedicIName().getUserName() + "</p>" +
+                "<p>Sani2:" + detail.getParamedicIIName().getUserName() + "</p>" +
+        		"</form>", true, false);
     }
 }
