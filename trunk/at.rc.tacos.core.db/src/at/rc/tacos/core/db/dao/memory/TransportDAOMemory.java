@@ -9,10 +9,10 @@ import at.rc.tacos.model.Transport;;
  * Data source for transports
  * @author Michael
  */
-public class TransportDAOTest implements TransportDAO
+public class TransportDAOMemory implements TransportDAO
 {
     //the shared instance
-    private static TransportDAOTest instance;
+    private static TransportDAOMemory instance;
     
     //the data list
     private ArrayList<Transport> transportList; 
@@ -20,7 +20,7 @@ public class TransportDAOTest implements TransportDAO
     /**
      * Default class constructor
      */
-    private TransportDAOTest()
+    private TransportDAOMemory()
     {
         transportList = new ArrayList<Transport>();
     }
@@ -29,10 +29,10 @@ public class TransportDAOTest implements TransportDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static TransportDAOTest getInstance()
+    public static TransportDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new TransportDAOTest();
+            instance = new TransportDAOMemory();
         return instance;
     }
     

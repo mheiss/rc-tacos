@@ -9,10 +9,10 @@ import at.rc.tacos.model.Patient;
  * Data source for patients
  * @author Michael
  */
-public class PatientDAOTest implements PatientDAO
+public class PatientDAOMemory implements PatientDAO
 {
     //the shared instance
-    private static PatientDAOTest instance;
+    private static PatientDAOMemory instance;
     
     //the data list
     private ArrayList<Patient> patientList; 
@@ -20,7 +20,7 @@ public class PatientDAOTest implements PatientDAO
     /**
      * Default class constructor
      */
-    private PatientDAOTest()
+    private PatientDAOMemory()
     {
         patientList = new ArrayList<Patient>();
     }
@@ -29,10 +29,10 @@ public class PatientDAOTest implements PatientDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static PatientDAOTest getInstance()
+    public static PatientDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new PatientDAOTest();
+            instance = new PatientDAOMemory();
         return instance;
     }
     

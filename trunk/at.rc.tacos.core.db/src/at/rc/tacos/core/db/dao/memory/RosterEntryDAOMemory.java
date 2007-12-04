@@ -9,10 +9,10 @@ import at.rc.tacos.model.RosterEntry;
  * Data source for roster entries
  * @author Michael
  */
-public class RosterEntryDAOTest implements RosterDAO
+public class RosterEntryDAOMemory implements RosterDAO
 {
     //the shared instance
-    private static RosterEntryDAOTest instance;
+    private static RosterEntryDAOMemory instance;
     
     //the data list
     private ArrayList<RosterEntry> rosterList; 
@@ -20,7 +20,7 @@ public class RosterEntryDAOTest implements RosterDAO
     /**
      * Default class constructor
      */
-    private RosterEntryDAOTest()
+    private RosterEntryDAOMemory()
     {
         rosterList = new ArrayList<RosterEntry>();
     }
@@ -29,10 +29,10 @@ public class RosterEntryDAOTest implements RosterDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static RosterEntryDAOTest getInstance()
+    public static RosterEntryDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new RosterEntryDAOTest();
+            instance = new RosterEntryDAOMemory();
         return instance;
     }
     

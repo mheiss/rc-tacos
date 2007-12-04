@@ -8,10 +8,10 @@ import at.rc.tacos.core.db.dao.UserLoginDAO;
  * Data source for login/logout
  * @author Michael
  */
-public class UserDAOTest implements UserLoginDAO
+public class UserDAOMemory implements UserLoginDAO
 {
     //the shared instance
-    private static UserDAOTest instance;
+    private static UserDAOMemory instance;
     
     //the data list
     private Map<String, String> userList;
@@ -19,7 +19,7 @@ public class UserDAOTest implements UserLoginDAO
     /**
      * Default class constructor
      */
-    private UserDAOTest()
+    private UserDAOMemory()
     {
         userList = new HashMap<String, String>();
     }
@@ -28,10 +28,10 @@ public class UserDAOTest implements UserLoginDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static UserDAOTest getInstance()
+    public static UserDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new UserDAOTest();
+            instance = new UserDAOMemory();
         return instance;
     }
     

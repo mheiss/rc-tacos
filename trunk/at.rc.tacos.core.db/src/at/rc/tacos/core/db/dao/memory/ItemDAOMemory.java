@@ -6,10 +6,10 @@ import java.util.List;
 import at.rc.tacos.core.db.dao.ItemDAO;
 import at.rc.tacos.model.Item;
 
-public class ItemDAOTest implements ItemDAO
+public class ItemDAOMemory implements ItemDAO
 {
     //the shared instance
-    private static ItemDAOTest instance;
+    private static ItemDAOMemory instance;
     
     //the data list
     private ArrayList<Item> itemList;
@@ -17,7 +17,7 @@ public class ItemDAOTest implements ItemDAO
     /**
      * Default class constructor
      */
-    private ItemDAOTest()
+    private ItemDAOMemory()
     {
         itemList = new ArrayList<Item>();
     }
@@ -26,10 +26,10 @@ public class ItemDAOTest implements ItemDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static ItemDAOTest getInstance()
+    public static ItemDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new ItemDAOTest();
+            instance = new ItemDAOMemory();
         return instance;
     }
     
