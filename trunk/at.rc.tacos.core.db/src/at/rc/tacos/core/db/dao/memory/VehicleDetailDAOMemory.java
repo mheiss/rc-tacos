@@ -9,10 +9,10 @@ import at.rc.tacos.model.VehicleDetail;
  * Data source for vehicles
  * @author Michael
  */
-public class VehicleDetailDAOTest implements VehicleDAO
+public class VehicleDetailDAOMemory implements VehicleDAO
 {
     //the shared instance
-    private static VehicleDetailDAOTest instance;
+    private static VehicleDetailDAOMemory instance;
     
     //the data list
     private ArrayList<VehicleDetail> vehicleList; 
@@ -20,7 +20,7 @@ public class VehicleDetailDAOTest implements VehicleDAO
     /**
      * Default class constructor
      */
-    private VehicleDetailDAOTest()
+    private VehicleDetailDAOMemory()
     {
         vehicleList = new ArrayList<VehicleDetail>();
     }
@@ -29,10 +29,10 @@ public class VehicleDetailDAOTest implements VehicleDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static VehicleDetailDAOTest getInstance()
+    public static VehicleDetailDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new VehicleDetailDAOTest();
+            instance = new VehicleDetailDAOMemory();
         return instance;
     }
     

@@ -9,10 +9,10 @@ import at.rc.tacos.model.StaffMember;
  * Data source for staff members
  * @author Michael
  */
-public class StaffMemberDAOTest implements EmployeeDAO
+public class StaffMemberDAOMemory implements EmployeeDAO
 {
     //the shared instance
-    private static StaffMemberDAOTest instance;
+    private static StaffMemberDAOMemory instance;
     
     //the data list
     private ArrayList<StaffMember> staffList; 
@@ -20,7 +20,7 @@ public class StaffMemberDAOTest implements EmployeeDAO
     /**
      * Default class constructor
      */
-    private StaffMemberDAOTest()
+    private StaffMemberDAOMemory()
     {
         staffList = new ArrayList<StaffMember>();
     }
@@ -29,10 +29,10 @@ public class StaffMemberDAOTest implements EmployeeDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static StaffMemberDAOTest getInstance()
+    public static StaffMemberDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new StaffMemberDAOTest();
+            instance = new StaffMemberDAOMemory();
         return instance;
     }
     

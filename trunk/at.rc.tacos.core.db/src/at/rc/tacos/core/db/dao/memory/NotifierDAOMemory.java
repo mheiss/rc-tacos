@@ -9,10 +9,10 @@ import at.rc.tacos.model.NotifierDetail;
  * Data source for notifiers
  * @author Michael
  */
-public class NotifierDAOTest implements CallerDAO
+public class NotifierDAOMemory implements CallerDAO
 {    
     //the shared instance
-    private static NotifierDAOTest instance;
+    private static NotifierDAOMemory instance;
     
     //the data list
     private ArrayList<NotifierDetail> notifierList; 
@@ -20,7 +20,7 @@ public class NotifierDAOTest implements CallerDAO
     /**
      * Default class constructor
      */
-    private NotifierDAOTest()
+    private NotifierDAOMemory()
     {
         notifierList = new ArrayList<NotifierDetail>();
     }
@@ -29,10 +29,10 @@ public class NotifierDAOTest implements CallerDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static NotifierDAOTest getInstance()
+    public static NotifierDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new NotifierDAOTest();
+            instance = new NotifierDAOMemory();
         return instance;
     }
     

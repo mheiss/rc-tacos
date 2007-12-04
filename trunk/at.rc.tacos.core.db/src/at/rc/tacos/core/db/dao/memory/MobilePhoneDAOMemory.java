@@ -9,10 +9,10 @@ import at.rc.tacos.model.MobilePhoneDetail;
  * Data source for mobile phones
  * @author Michael
  */
-public class MobilePhoneDAOTest implements MobilePhoneDAO
+public class MobilePhoneDAOMemory implements MobilePhoneDAO
 {
     //the shared instance
-    private static MobilePhoneDAOTest instance;
+    private static MobilePhoneDAOMemory instance;
     
     //the data list
     private ArrayList<MobilePhoneDetail> phoneList; 
@@ -20,7 +20,7 @@ public class MobilePhoneDAOTest implements MobilePhoneDAO
     /**
      * Default class constructor
      */
-    private MobilePhoneDAOTest()
+    private MobilePhoneDAOMemory()
     {
         phoneList = new ArrayList<MobilePhoneDetail>();;
     }
@@ -29,10 +29,10 @@ public class MobilePhoneDAOTest implements MobilePhoneDAO
      * Returns the shared instance
      * @return the shared instance
      */
-    public static MobilePhoneDAOTest getInstance()
+    public static MobilePhoneDAOMemory getInstance()
     {
         if (instance == null)
-            instance = new MobilePhoneDAOTest();
+            instance = new MobilePhoneDAOMemory();
         return instance;
     }
     
