@@ -2,7 +2,9 @@ package at.rc.tacos.web.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +22,7 @@ import at.rc.tacos.model.RosterEntry;
 /**
  * Servlet implementation class for Servlet: LoginController
  */
-public class LoginController extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet 
+public class LoginController extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet, Controller 
 {
     static final long serialVersionUID = 1L;
 
@@ -73,5 +75,14 @@ public class LoginController extends javax.servlet.http.HttpServlet implements j
             request.setAttribute("result", result);
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
         }
-    }   	  	    
+    }
+
+	@Override
+	public Map<String, Object> handleRequest(HttpServletRequest request,
+			HttpServletResponse response, ServletContext context)
+			throws Exception
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}   	  	    
 }
