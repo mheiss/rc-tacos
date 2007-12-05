@@ -1,10 +1,7 @@
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Display;
-
 import at.rc.tacos.client.view.RosterEntryForm;
 import at.rc.tacos.factory.ImageFactory;
 

@@ -3,48 +3,32 @@ package at.rc.tacos.client.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-
 import at.rc.tacos.client.Activator;
-import at.rc.tacos.model.Item;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
@@ -170,9 +154,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.numColumns = 9;
 		filterGroup.setLayout(gridLayout_3);
-
-		final DateTime comboDate = new DateTime(filterGroup, SWT.CALENDAR);
-		
+	
 		final Group group = new Group(composite_1, SWT.NONE);
 		group.setLayout(new FillLayout());
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

@@ -3,14 +3,11 @@ package at.rc.tacos.client.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -173,8 +170,8 @@ public class RosterEntryForm
 	{
 		//TODO: get a list of StaffMembers from the database
 		//get data
-		StaffMember sm1 = new StaffMember(0,"Helmut", "Maier", "h.maie");
-		StaffMember sm2 = new StaffMember(1,"Daniel", "Haberl", "d.habe");
+		StaffMember sm1 = new StaffMember("Helmut", "Maier", "h.maie");
+		StaffMember sm2 = new StaffMember("Daniel", "Haberl", "d.habe");
 
 		ArrayList<StaffMember> staffMemberList = new ArrayList<StaffMember>(Arrays.asList(sm1,sm2));
 
@@ -435,7 +432,7 @@ public class RosterEntryForm
 									}
 									else
 									{
-										RosterEntry rosterEntry = new RosterEntry(-1,staffMember,plannedStartOfWork, plannedEndOfWork, realStartOfWork, realEndOfWork, station, competence, servicetype, rosterNotes, standbyState);
+										RosterEntry rosterEntry = new RosterEntry(staffMember,plannedStartOfWork, plannedEndOfWork, realStartOfWork, realEndOfWork, station, competence, servicetype, rosterNotes, standbyState);
 					
 										//send the roster entry
 										new CreateRosterEntryAction(rosterEntry).run();

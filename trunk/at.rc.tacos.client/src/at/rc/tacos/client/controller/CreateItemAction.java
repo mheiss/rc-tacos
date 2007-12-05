@@ -24,9 +24,7 @@ public class CreateItemAction extends Action
     
     public void run() 
     {
-    	//Item
-        Item newItem = new Item(id);
         //send
-        NetWrapper.getDefault().sendAddMessage(newItem);        
+        NetWrapper.getDefault().sendAddMessage(Item.ID,new Item(id));        
     }
 }

@@ -12,14 +12,10 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
-import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 //TODO: set ToolTips for the Components
-//TODO: use Interface Transport Status for mostImportantTransportStatus - for details, please see ITransportStatus
-
 /**
  * Creates CarComposite for the class VehiclesView, called from the CarCompositeManager
  * @author b.thek
@@ -50,50 +46,18 @@ public class CarComposite extends Composite
 		super(parent,SWT.NONE);
 		setLayout(new FillLayout(SWT.VERTICAL));
 		
+		//the values to show
 		vehicleName = vehicle.getVehicleName();
 		vehicleType = vehicle.getVehicleType();
 		paramedicIName = vehicle.getParamedicIName().getUserName();
 		paramedicIIName = vehicle.getParamedicIIName().getUserName();
-		System.out.println("Paramedic I Name: " +paramedicIName);
-		
-		//other mobile phone than default
-		if (!vehicle.getMobilePhone().getMobilePhoneId().equalsIgnoreCase(vehicle.getVehicleName()))
-			imageMobilePhone = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone");
-		else
-		    imageMobilePhone = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone.na");
-		
-		//show that there are notes
-		if (!vehicle.getVehicleNotes().isEmpty())   
-			imageVehicleNotes = ImageFactory.getInstance().getRegisteredImage("image.vehicle.notes");
-		else
-		    imageVehicleNotes = ImageFactory.getInstance().getRegisteredImage("image.vehicle.notes.na");
-		
-		//if the basis station is different to the current station
-		if (!vehicle.getBasicStation().equalsIgnoreCase(vehicle.getCurrentStation()))
-			imageCurrentStation = ImageFactory.getInstance().getRegisteredImage("image.vehicle.house");
-		else
-		    imageCurrentStation = ImageFactory.getInstance().getRegisteredImage("image.vehicle.house.na");
-				
-		//vehicle is ready for action
-		if (vehicle.isReadyForAction())
-			imageReady = ImageFactory.getInstance().getRegisteredImage("image.vehicle.ready");
-		else
-		    imageReady = ImageFactory.getInstance().getRegisteredImage("image.vehicle.ready.na");
-		
-		//vehicle is out of order
-		if (vehicle.isOutOfOrder())
-			imageOutOfOrder = ImageFactory.getInstance().getRegisteredImage("image.vehicle.repair");
-		else
-		    imageOutOfOrder = ImageFactory.getInstance().getRegisteredImage("image.vehicle.repair.na");
-		
-		//transport status
-		switch(vehicle.getMostImportantTransportStatus())
-		{
-    		case 1: imageTransportStatus = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.red"); break;
-    		case 2: imageTransportStatus = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.yellow"); break;
-    		case 3: imageTransportStatus = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.green"); break;
-    		default: imageTransportStatus = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.na"); break;
-		}		
+		//the images to visualize the status
+		imageMobilePhone = vehicle.getMobilePhoneImage();
+		imageVehicleNotes = vehicle.getVehicleNotesImage();
+		imageCurrentStation = vehicle.getStationImage();
+		imageReady = vehicle.getReadyForActionImage();
+		imageOutOfOrder = vehicle.getOutOfOrderImage();
+		imageTransportStatus = vehicle.getTransportStatusImage();
 		
 		//top composite (name of the ambulance, type of the ambulance)
 		final Composite compositeCarTop = new Composite(this, SWT.NONE);

@@ -1,18 +1,13 @@
 package at.rc.tacos.client.view;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -21,7 +16,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
@@ -33,7 +27,6 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  */
 public class VehicleForm  
 {
-	
 	private Text rosterTimeDriver;
 	private Text rosterTimeParamedicI;
 	private Text rosterTimeParamedicII;
@@ -102,8 +95,8 @@ public class VehicleForm
 	{
 		//TODO: get a list of StaffMembers from the database
 		//get data
-		StaffMember sm1 = new StaffMember(0,"Helmut", "Maier", "h.maie");
-		StaffMember sm2 = new StaffMember(1,"Daniel", "Haberl", "d.habe");
+		StaffMember sm1 = new StaffMember("Helmut", "Maier", "h.maie");
+		StaffMember sm2 = new StaffMember("Daniel", "Haberl", "d.habe");
 
 		//staff member list  with all staff members checked in as "Fahrer"
 		ArrayList<StaffMember> staffMemberListDriver = new ArrayList<StaffMember>(Arrays.asList(sm1,sm2));
@@ -112,8 +105,8 @@ public class VehicleForm
 		ArrayList<StaffMember> staffMemberListAllCheckedIn = new ArrayList<StaffMember>(Arrays.asList(sm1,sm2));
 		
 		//vehicleDetail list with all vehicles which are not out of order
-		VehicleDetail v1 = new VehicleDetail("bm",1,"Bm05");
-		VehicleDetail v2 = new VehicleDetail("ka",2,"Ka03");
+		VehicleDetail v1 = new VehicleDetail("Bm05");
+		VehicleDetail v2 = new VehicleDetail("Ka03");
 		ArrayList<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2));
 		
 		
@@ -293,16 +286,15 @@ public class VehicleForm
 			{
 
 			}
-
 			
-			private void displayMessageBox(Event event, String fields, String message)
-			{
-				 MessageBox mb = new MessageBox(shell, 0);
-			     mb.setText(message);
-			     mb.setMessage(fields);
-			     mb.open();
-			     if(event.type == SWT.Close) event.doit = false;
-			}
+//			public void displayMessageBox(Event event, String fields, String message)
+//			{
+//				 MessageBox mb = new MessageBox(shell, 0);
+//			     mb.setText(message);
+//			     mb.setMessage(fields);
+//			     mb.open();
+//			     if(event.type == SWT.Close) event.doit = false;
+//			}
 		});
 		shell.setTabList(new Control[] {groupCarDetails,staffGroup, okButton, abbrechenButton});
 	}
