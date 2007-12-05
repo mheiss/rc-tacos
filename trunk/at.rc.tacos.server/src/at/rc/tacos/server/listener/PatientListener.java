@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.PatientDAO;
-import at.rc.tacos.core.db.dao.test.PatientDAOTest;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.server.dao.DaoService;
 

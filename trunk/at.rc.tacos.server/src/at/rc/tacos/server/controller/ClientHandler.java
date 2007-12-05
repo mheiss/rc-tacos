@@ -24,8 +24,8 @@ public class ClientHandler implements INetListener
         //decode the message
         ArrayList<AbstractMessage> objects = xmlFactory.decode();
         //get the type of the item
-        final String type = xmlFactory.getType(); 
-        final String action = xmlFactory.getAction();
+        final String contentType = xmlFactory.getContentType();
+        final String queryString = xmlFactory.getQueryString();
         
         //check if the client is authenticated or not
         final boolean isAuthenticated = ServerController.getDefault().isAuthenticated(ne.getClient());
@@ -40,7 +40,7 @@ public class ClientHandler implements INetListener
         if(!isAuthenticated)
         {
             //login request are permitted
-            if(Login.ID.equalsIgnoreCase(type))
+            if(Login.ID.equalsIgnoreCase(contentType))
                 listener = factory.getListener(Login.ID);
             else
             {
@@ -54,14 +54,14 @@ public class ClientHandler implements INetListener
         {
             //the identification of the client
             userId = ServerController.getDefault().getAuthenticationString(ne.getClient());
-            System.out.println(type + "->"+action + " request from user "+userId);
-            listener = factory.getListener(type);                
+            System.out.println(contentType + "->"+queryString + " request from user "+userId);
+            listener = factory.getListener(contentType);                
         }
         //now handle the request
         if(listener != null)
         { 
             //login request
-            if(IModelActions.LOGIN.equalsIgnoreCase(action))
+            if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
             {
                 //get the result message
                 Login loginResult = (Login)listener.handleLoginRequest(objects.get(0));
@@ -71,10 +71,10 @@ public class ClientHandler implements INetListener
                             loginResult.getUsername(), 
                             ne.getClient());
                 //send the response message
-                server.sendMessage(userId, type, action, loginResult);
+                server.sendMessage(userId, contentType, queryString, loginResult);
             }
             //logout request
-            else if(IModelActions.LOGOUT.equalsIgnoreCase(action))
+            else if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
             {
                 Logout logoutResult = (Logout)listener.handleLogoutRequest(objects.get(0));
                 //remove the client form the list of authenticated clients
@@ -82,47 +82,47 @@ public class ClientHandler implements INetListener
                     ServerController.getDefault().setDeAuthenticated(
                             logoutResult.getUsername());
                 //send the response message
-                server.sendMessage(userId, type, action, logoutResult);
+                server.sendMessage(userId, contentType, queryString, logoutResult);
             }
             //add request
-            else if(IModelActions.ADD.equalsIgnoreCase(action))
+            else if(IModelActions.ADD.equalsIgnoreCase(queryString))
             {
                 AbstractMessage resultAddMessage = listener.handleAddRequest(objects.get(0));
                 //send the added item
-                server.brodcastMessage(userId, type, action, resultAddMessage);
+                server.brodcastMessage(userId, contentType, queryString, resultAddMessage);
             }
             //remove request
-            else if(IModelActions.REMOVE.equalsIgnoreCase(action))
+            else if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
             {
                 AbstractMessage resultRemoveMessage = listener.handleRemoveRequest(objects.get(0));
                 //send the removed item
-                server.brodcastMessage(userId, type, action, resultRemoveMessage);
+                server.brodcastMessage(userId, contentType, queryString, resultRemoveMessage);
             }
             //update request
-            else if(IModelActions.UPDATE.equalsIgnoreCase(action))
+            else if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
             {
                 AbstractMessage resultUpdateMessage = listener.handleUpdateRequest(objects.get(0));
                 //send the updated item
-                server.brodcastMessage(userId, type, action, resultUpdateMessage);
+                server.brodcastMessage(userId, contentType, queryString, resultUpdateMessage);
             }
-            else if(IModelActions.LIST.equalsIgnoreCase(action))
+            else if(IModelActions.LIST.equalsIgnoreCase(queryString))
             {
                 ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest();
                 //send the listing
-                server.brodcastMessage(userId, type, action, resultMessageList);
+                server.brodcastMessage(userId, contentType, queryString, resultMessageList);
             }
             else
             {   
-                System.out.println("No action handler found for action type: "+action);
+                System.out.println("No handler found for queryString: "+queryString);
                 //notify the sender
-                server.sendSystemMessage(ne.getClient(), "No action handler found for action type: "+action);
+                server.sendSystemMessage(ne.getClient(), "No handler found for queryString: "+queryString);
             }
         }
         else
         {
-            System.out.println("No listener found for the message type: "+type);
+            System.out.println("No listener found for the message type: "+contentType);
             //notify the sender
-            server.sendSystemMessage(ne.getClient(), "No listener found for the message type: "+type);
+            server.sendSystemMessage(ne.getClient(), "No listener found for the message type: "+contentType);
         }      
     }
 
