@@ -9,5 +9,6 @@ public interface ItemDAO
     public void updateItem(Item item);
     public void removeItem(Item item);
     
+    public Item getItem(Item item);
     public List<Item> listItems();
 }

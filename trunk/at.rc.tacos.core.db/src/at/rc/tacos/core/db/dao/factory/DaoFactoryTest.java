@@ -9,15 +9,15 @@ import at.rc.tacos.core.db.dao.RosterDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.VehicleDAO;
-import at.rc.tacos.core.db.dao.test.ItemDAOTest;
-import at.rc.tacos.core.db.dao.test.MobilePhoneDAOTest;
-import at.rc.tacos.core.db.dao.test.NotifierDAOTest;
-import at.rc.tacos.core.db.dao.test.PatientDAOTest;
-import at.rc.tacos.core.db.dao.test.RosterEntryDAOTest;
-import at.rc.tacos.core.db.dao.test.StaffMemberDAOTest;
-import at.rc.tacos.core.db.dao.test.TransportDAOTest;
-import at.rc.tacos.core.db.dao.test.UserDAOTest;
-import at.rc.tacos.core.db.dao.test.VehicleDetailDAOTest;
+import at.rc.tacos.core.db.dao.memory.ItemDAOMemory;
+import at.rc.tacos.core.db.dao.memory.MobilePhoneDAOMemory;
+import at.rc.tacos.core.db.dao.memory.NotifierDAOMemory;
+import at.rc.tacos.core.db.dao.memory.PatientDAOMemory;
+import at.rc.tacos.core.db.dao.memory.RosterEntryDAOMemory;
+import at.rc.tacos.core.db.dao.memory.StaffMemberDAOMemory;
+import at.rc.tacos.core.db.dao.memory.TransportDAOMemory;
+import at.rc.tacos.core.db.dao.memory.UserDAOMemory;
+import at.rc.tacos.core.db.dao.memory.VehicleDetailDAOMemory;
 
 /**
  * Creates the data access objects for testing.<br>
@@ -28,54 +28,54 @@ public class DaoFactoryTest implements DaoFactory
     @Override
     public ItemDAO createItemDAO()
     {
-        return ItemDAOTest.getInstance();
+        return ItemDAOMemory.getInstance();
     }
 
     @Override
     public MobilePhoneDAO createMobilePhoneDAO()
     {
-        return  MobilePhoneDAOTest.getInstance();
+        return  MobilePhoneDAOMemory.getInstance();
     }
 
     @Override
     public CallerDAO createNotifierDAO()
     {
-        return NotifierDAOTest.getInstance();
+        return NotifierDAOMemory.getInstance();
     }
 
     @Override
     public PatientDAO createPatientDAO()
     {
-        return PatientDAOTest.getInstance();
+        return PatientDAOMemory.getInstance();
     }
 
     @Override
     public RosterDAO createRosterEntryDAO()
     {
-        return RosterEntryDAOTest.getInstance();
+        return RosterEntryDAOMemory.getInstance();
     }
 
     @Override
     public EmployeeDAO createStaffMemberDAO()
     {
-        return StaffMemberDAOTest.getInstance();
+        return StaffMemberDAOMemory.getInstance();
     }
 
     @Override
     public TransportDAO createTransportDAO()
     {
-        return TransportDAOTest.getInstance();
+        return TransportDAOMemory.getInstance();
     }
 
     @Override
     public UserLoginDAO createUserDAO()
     {
-        return UserDAOTest.getInstance();
+        return UserDAOMemory.getInstance();
     }
 
     @Override
     public VehicleDAO createVehicleDetailDAO()
     {
-        return VehicleDetailDAOTest.getInstance();
+        return VehicleDetailDAOMemory.getInstance();
     }
 }
