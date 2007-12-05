@@ -126,61 +126,70 @@ public class NetWrapper extends Plugin implements INetListener
 
     // METHODS TO SEND MESSAGES
     /**
-     * Sends a request to the server to add 
-     * the message to the database.
+     * Sends a request to the server to add the object to the database.<br>
+     * To identify the type of the content a content type must be provided.<br>
+     * A example of a content type would be <code>RosterEntry.ID</cod> that would mean
+     * that the add message contains a <code>RosterEntry</code> object.
+     * @param contentType the type of the content
      * @param addMessage the object to add
      */
-    public void sendAddMessage(AbstractMessage addMessage)
+    public void sendAddMessage(String contentType,AbstractMessage addMessage)
     {
-        sendMessage(addMessage, IModelActions.ADD);
+        sendMessage(contentType,IModelActions.ADD,addMessage);
     }
 
     /**
-     * Sends a request to the server to remove
-     * the message from the database.
+     * Sends a request to the server to remove the object from the database.
+     * To identify the type of the content a content type must be provided.<br>
+     * A example of a content type would be <code>RosterEntry.ID</cod> that would mean
+     * that the remove request contains a <code>RosterEntry</code> object.
+     * @param contentType the type of the content
      * @param removeMessage the object to remove
      */
-    public void sendRemoveMessage(AbstractMessage removeMessage)
+    public void sendRemoveMessage(String contentType,AbstractMessage removeMessage)
     {
-        sendMessage(removeMessage, IModelActions.REMOVE);
+        sendMessage(contentType,IModelActions.REMOVE,removeMessage);
     }
 
     /**
-     * Sends a request to the server to update
-     * the message in the database.
+     * Sends a request to the server to update the object in the database.
+     * To identify the type of the content a content type must be provided.<br>
+     * A example of a content type would be <code>RosterEntry.ID</cod> that would mean
+     * that the update request contains a <code>RosterEntry</code> object.
+     * @param contentType the type of the content
      * @param updateMessage the object to update
      */
-    public void sendUpdateMessage(AbstractMessage updateMessage)
+    public void sendUpdateMessage(String contentType,AbstractMessage updateMessage)
     {
-        sendMessage(updateMessage,IModelActions.UPDATE);
+        sendMessage(contentType,IModelActions.UPDATE,updateMessage);
     }
 
     /**
-     * Sends a listing request for the given message to the server.<br>
-     * Example:<br>
-     * To get a listing of all <b>roster entries</b> set the id to <code>RosterEntry.ID</code>
-     * @param id the type of the listing request
+     * Sends a listing request for the given object to the server.<br>
+     * To identify the type of the listing request a content type must be provided.<br>
+     * A example of a content type would be <code>RosterEntry.ID</cod> that would mean
+     * that the lisitng request is for <code>RosterEntry</code> objects.
+     * @param contentType the type of the listing request
      */
-    public void requestListing(String id)
+    public void requestListing(String contentType)
     {
-        sendMessage(null,IModelActions.LIST);
+        sendMessage(contentType,IModelActions.LIST,null);
     }
 
     /**
      * Convenience method to send the message to the server.
+     * @param contentType the type of the content.
+     * @param queryString the type of the query
      * @param message the message to send
-     * @param type the type of the message
      */
-    private void sendMessage(AbstractMessage message,String type)
+    private void sendMessage(String contentType,String queryString,AbstractMessage message)
     {
-        long now = new Date().getTime();
         //set up the factory
         XMLFactory factory = new XMLFactory();
         factory.setupEncodeFactory(
                 session, 
-                now, 
-                AbstractMessage.ID, 
-                type);
+                contentType, 
+                queryString);
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         list.add(message);
         //encode the message
@@ -203,33 +212,29 @@ public class NetWrapper extends Plugin implements INetListener
         //decode the message
         ArrayList<AbstractMessage> objects = xmlFactory.decode();
         //get the type of the item
-        final String type = xmlFactory.getType(); 
-        final String action = xmlFactory.getAction();
+        final String contentType = xmlFactory.getContentType();
+        final String queryString = xmlFactory.getQueryString();
 
         //try to get a listener for this message
         ListenerFactory listenerFactory = ListenerFactory.getDefault();
-        if(listenerFactory.hasModelListeners(type))
+        if(listenerFactory.hasListeners(contentType))
         {
-            IModelListener listener = listenerFactory.getModelListener(type);
+            IModelListener listener = listenerFactory.getListener(contentType);
             //now pass the message to the listener
-            if(IModelActions.ADD.equalsIgnoreCase(action))
+            if(IModelActions.ADD.equalsIgnoreCase(queryString))
                 listener.add(objects.get(0));
-            if(IModelActions.REMOVE.equalsIgnoreCase(action))
+            if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
                 listener.remove(objects.get(0));
-            if(IModelActions.UPDATE.equalsIgnoreCase(action))
+            if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
                 listener.update(objects.get(0));
-            if(IModelActions.LIST.equalsIgnoreCase(action))
+            if(IModelActions.LIST.equalsIgnoreCase(queryString))
                 listener.list(objects);
-        }
-        if(listenerFactory.hasEventListeners(type))
-        {
-            IEventListener listener = listenerFactory.getEventListener(type);
-            if(IModelActions.LOGIN.equalsIgnoreCase(action))
+            if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
                 listener.loginMessage(objects.get(0));
-            if(IModelActions.LOGOUT.equalsIgnoreCase(action))
+            if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
                 listener.logoutMessage(objects.get(0));
-            if(IModelActions.NOTIFY.equalsIgnoreCase(action))
-                listener.statusMessage(objects.get(0));
+            if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
+                listener.systemMessage(objects.get(0));
         }
     }
 
