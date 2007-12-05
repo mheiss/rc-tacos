@@ -2,7 +2,11 @@ package at.rc.tacos.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+
+import org.eclipse.swt.graphics.Image;
+
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.factory.ImageFactory;
 
 /**
  * Specifies the crew and phone of an ambulance
@@ -14,7 +18,7 @@ public class VehicleDetail extends AbstractMessage
     public final static String ID = "vehicleDetail";
 
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);  
-    
+
     private int vehicleId;
     private String vehicleName;
     private String vehicleType;
@@ -38,57 +42,19 @@ public class VehicleDetail extends AbstractMessage
     }
 
     /**
-     * Class constructor for a complete vehicle detail object
-     * @param vehicleId the id of the vehicle 
-     * @param vehicleName the name of the vehicle 
-     * @param vehicleType the type of the vehicle
-     * @param driverName the driver details
-     * @param paramedicIName the medic details
-     * @param paramedicIIName the medic details
-     * @param mobilePhone the mobile phone details
-     * @param vehicleNotes notes for the vehicle
-     * @param basicStation the home station
-     * @param currentStation the current location
-     * @param readyForAction the status
-     * @param outOfOrder the repair status
-     * @param mostImportantTransportStatus the transport status 
+     * Class constructor to create a new vehicle with a specific name
+     * @param vehicleName
      */
-    public VehicleDetail(int vehicleId, String vehicleName, String vehicleType,
-            StaffMember driverName, StaffMember paramedicIName, StaffMember paramedicIIName,
-            MobilePhoneDetail mobilePhone, String vehicleNotes,
-            String basicStation, String currentStation, boolean readyForAction,
-            boolean outOfOrder, int mostImportantTransportStatus) {
+    public VehicleDetail(String vehicleName) 
+    {
         super(ID);
-        this.vehicleId = vehicleId;
-        this.vehicleName = vehicleName;
-        this.vehicleType = vehicleType;
-        this.driverName = driverName;
-        this.paramedicIName = paramedicIName;
-        this.paramedicIIName = paramedicIIName;
-        this.mobilePhone = mobilePhone;
-        this.vehicleNotes = vehicleNotes;
-        this.basicStation = basicStation;
-        this.currentStation = currentStation;
-        this.readyForAction = readyForAction;
-        this.outOfOrder = outOfOrder;
-        this.mostImportantTransportStatus = mostImportantTransportStatus;
+        setVehicleName(vehicleName);
     }
-    
-    
-    
-    
-    /**
-	 * @param id
-	 * @param vehicleId
-	 * @param vehicleName
-	 */
-	public VehicleDetail(String id, int vehicleId, String vehicleName) {
-		super(id);
-		this.vehicleId = vehicleId;
-		this.vehicleName = vehicleName;
-	}
 
-	//METHODS
+    //METHODS
+    /**
+     * Adds a property change listener to this class
+     */
     public void addPropertyChangeListener(String propertyName,PropertyChangeListener listener) 
     {
         propertyChangeSupport.addPropertyChangeListener(propertyName,listener);
@@ -101,11 +67,42 @@ public class VehicleDetail extends AbstractMessage
     @Override
     public String toString()
     {
-        return ID;
+        return vehicleId+","+vehicleName+","+vehicleType;
+    }
+
+
+    /**
+     * Returns the calculated hash code based on the vehicle id.<br>
+     * Two vehicles have the same hash code if the id is the same.
+     * @return the calculated hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return 31 + vehicleId;
+    }
+
+    /**
+     * Returns whether the objects are equal or not.<br>
+     * Two vehicles are equal if, and only if, the vehicleId is the same.
+     * @return true if the id is the same otherwise false.
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final VehicleDetail other = (VehicleDetail) obj;
+        if (vehicleId != other.vehicleId)
+            return false;
+        return true;
     }
 
     //GETTERS AND SETTERS
-
     /**
      * @return the readyForAction
      */
@@ -303,5 +300,92 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setParamedicIIName(StaffMember paramedicIIName) {
         this.paramedicIIName = paramedicIIName;
+    }
+
+    //GETTERS FOR THE STATUS IMAGE
+    /**
+     * Returns the status image for the mobile phone.
+     * @return the image for the phone
+     */
+    public Image getMobilePhoneImage()
+    {
+        if (!mobilePhone.getMobilePhoneId().equalsIgnoreCase(vehicleName))
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone");
+        else
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone.na");
+    }
+
+    /**
+     * Returns the image to visualise if there are notes
+     * @return the image for the notes
+     */
+    public Image getVehicleNotesImage()
+    {
+        if (vehicleNotes == null || vehicleNotes.isEmpty())   
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.notes.na");
+        else
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.notes"); 
+    }
+
+    /**
+     * Returns the image to visualize whether the vehicle basic station
+     * is the current station
+     * @return the image for the station
+     */
+    public Image getStationImage()
+    {
+        if (!basicStation.equalsIgnoreCase(currentStation))
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.house");
+        else
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.house.na");
+    }
+    
+    /**
+     * Returns the image to visualize whether the vehicle is ready for action
+     * @return the vehicle status image
+     */
+    public Image getReadyForActionImage()
+    {
+        if (readyForAction)
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.ready");
+        else
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.ready.na");
+    }
+    
+    /**
+     * Returns the image to visualize whether the vehicle is out of order
+     * @return the repair status image
+     */
+    public Image getOutOfOrderImage()
+    {
+        if (outOfOrder)
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.repair");
+        else
+            return ImageFactory.getInstance().getRegisteredImage("image.vehicle.repair.na");
+    }
+    
+    /**
+     * Returns the status transport status image
+     * @return the status image
+     */
+    public Image getTransportStatusImage()
+    {
+        switch(mostImportantTransportStatus)
+        {
+        //the green image
+        case 0: 
+        case 1:
+        case 5:
+        case 6: return ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.green"); 
+        //the yellow image
+        case 2:
+        case 4:
+        case 9: return ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.yellow");
+        //the read image 
+        case 3:
+        case 7: return ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.red"); 
+        //out of range
+        default: return ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.na"); 
+        }  
     }
 }

@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import at.rc.tacos.common.AbstractMessage;
 
-
 /**
  * Represents a staff member (there are several kinds: regular staff member, civil server, volunteer)
  * but there is no difference between them in this class.
@@ -33,18 +32,16 @@ public class StaffMember extends AbstractMessage
 
     /**
      * Class constructor for a complete staff member
-     * @param personId the personal identification number
      * @param firstName the first name
      * @param lastName the last name
      * @param userName the username of this member
      */
-    public StaffMember(int personId, String firstName, String lastName, String userName)
+    public StaffMember(String firstName, String lastName, String userName)
     {
-        this();
-        this.personId = personId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
+        super(ID);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setUserName(userName);
     }
 
     // METHODS
@@ -60,7 +57,38 @@ public class StaffMember extends AbstractMessage
     @Override
     public String toString()
     {
-        return lastName + " " + firstName;
+        return userName +","+lastName + " " + firstName;
+    }
+    
+    /**
+     * Returns the calculated hash code based on the staff member id.<br>
+     * Two staff members have the same hash code if the id is the same.
+     * @return the calculated hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return 31 + personId;
+    }
+
+    /**
+     * Returns whether the objects are equal or not.<br>
+     * Two staff members are equal if, and only if, the id is the same.
+     * @return true if the id is the same otherwise false.
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final StaffMember other = (StaffMember) obj;
+        if (personId != other.personId)
+            return false;
+        return true;
     }
 
     //SETTERS AND GETTERS
@@ -74,11 +102,14 @@ public class StaffMember extends AbstractMessage
     }
 
     /**
-     * Sets the personal identification number
+     * Sets the personal identification number.
      * @param personId the personId to set
+     * @throws IllegalArgumentException if the id is negative
      */
     public void setPersonId(int personId) 
     {
+        if(personId < 0)
+            throw new IllegalArgumentException("The id cannot be negative");
         this.personId = personId;
     }
 
@@ -94,9 +125,12 @@ public class StaffMember extends AbstractMessage
     /**
      * Sets the last name of this staff member
      * @param lastname the last name to set
+     * @throws IllegalArgumentException if the lastName is null or empty
      */
     public void setLastName(String lastName) 
     {
+        if(lastName == null || lastName.trim().isEmpty())
+            throw new IllegalArgumentException("The last name cannot be null or empty");
         this.lastName = lastName;
     }
 
@@ -104,16 +138,20 @@ public class StaffMember extends AbstractMessage
      * Returns the first name of this staff member
      * @return the first name
      */
-    public String getFirstName() {
+    public String getFirstName() 
+    {
         return firstName;
     }
 
     /**
      * Sets the first name of this staff member
      * @param firstname the first name to set
+     * @throws IllegalArgumentException if the first name is null or empty
      */
     public void setFirstName(String firstName) 
     {
+        if(firstName == null || firstName.trim().isEmpty())
+            throw new IllegalArgumentException("The first name cannot be null or empty");
         this.firstName = firstName;
     }
 
@@ -129,9 +167,12 @@ public class StaffMember extends AbstractMessage
     /**
      * Sets the username for this staff member
      * @param username the user name to set
+     * @throws IllegalArgumentException if the userName is null or empty
      */
     public void setUserName(String userName) 
     {
+        if(userName == null || userName.trim().isEmpty())
+            throw new IllegalArgumentException("The userName cannot be null or empty");
         this.userName = userName;
     }
 
@@ -139,9 +180,12 @@ public class StaffMember extends AbstractMessage
      * Sets the function of this staff member.<br>
      * Note: This is only used during the enocde to xml.
      * @param function the function of this member
+     * @throws IllegalArgumentException if the function is null or empty
      */
     public void setFunction(String function)
     {
+        if(function == null || function.trim().isEmpty())
+            throw new IllegalArgumentException("The function cannot be null or empty");  
         this.function = function;
     }
 

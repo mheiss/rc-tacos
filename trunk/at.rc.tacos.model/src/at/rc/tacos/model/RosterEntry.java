@@ -34,7 +34,6 @@ public class RosterEntry extends AbstractMessage
 	}
 
 	/**
-	 * Default constructor for a new roster entry
 	 * @param rosterId the identification of the entry
 	 * @param staffMember the staff member for this entry
 	 * @param plannedStartOfWork the planned star of work
@@ -47,13 +46,13 @@ public class RosterEntry extends AbstractMessage
 	 * @param rosterNotes the notes for this roster
 	 * @param standby flag to show that the staff member is at home
 	 */
-	public RosterEntry(long rosterId, StaffMember staffMember,
+	public RosterEntry(StaffMember staffMember,
 			long plannedStartOfWork, long plannedEndOfWork,
 			long realStartOfWork, long realEndOfWork, String station,
 			String competence, String servicetype, String rosterNotes,
-			boolean standby) {
+			boolean standby) 
+	{
 		super(ID);
-		setRosterId(rosterId);
 		setStaffMember(staffMember);
 		setPlannedEndOfWork(plannedEndOfWork);
 		setPlannedStartOfWork(plannedStartOfWork);

@@ -8,18 +8,18 @@ package at.rc.tacos.common;
 public interface IModelActions
 {
     /** Login message */
-    public final static String LOGIN = "MESSAGE.LOGIN";
+    public final static String LOGIN = "message.login";
     /** Logout message */
-    public final static String LOGOUT = "MESSAGE.LOGIN";
+    public final static String LOGOUT = "message.login";
     /** General system messages */
-    public final static String NOTIFY = "MESSAGE.NOTIFY";
+    public final static String SYSTEM = "message.system";
     
     /** Add message */
-    public final static String ADD = "MESSAGE.ADD";
+    public final static String ADD = "message.add";
     /** Remove message */
-    public final static String REMOVE = "MESSAGE.REMOVE";
+    public final static String REMOVE = "message.remove";
     /** List message */
-    public final static String LIST = "MESSAGE.LIST";
+    public final static String LIST = "message.list";
     /** Update message */
-    public final static String UPDATE = "MESSAGE.UPDATE";
+    public final static String UPDATE = "message.update";
 }

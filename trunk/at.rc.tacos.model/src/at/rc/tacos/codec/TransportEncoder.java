@@ -7,7 +7,9 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.NotifierDetail;
 import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.StatusMessages;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 
 public class TransportEncoder  implements MessageEncoder
 {
@@ -20,6 +22,11 @@ public class TransportEncoder  implements MessageEncoder
         //start
         writer.writeStartElement(Transport.ID);
 
+        //the transport id
+        writer.writeStartElement("transportId");
+        writer.writeCharacters(String.valueOf(transport.getTransportId()));
+        writer.writeEndElement();
+        
         //write the elements and attributes
         writer.writeStartElement("fromStreet");
         writer.writeCharacters(transport.getFromStreet());
@@ -84,27 +91,31 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("dateOfTransport");
-        writer.writeCharacters(Long.toString(transport.getDateOfTransport().getTime()));
+        writer.writeCharacters(Long.toString(transport.getDateOfTransport()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("plannedStartOfTransportTime");
-        writer.writeCharacters(Long.toString(transport.getPlannedStartOfTransportTime()));
+        writer.writeCharacters(Long.toString(transport.getPlannedStartOfTransport()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("plannedTimeAtPatient");
-        writer.writeCharacters(Long.toString(transport.getPlannedStartOfTransportTime()));
+        writer.writeCharacters(Long.toString(transport.getPlannedTimeAtPatient()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("appointmentTimeAtDestination");
         writer.writeCharacters(Long.toString(transport.getAppointmentTimeAtDestination()));
         writer.writeEndElement();
+        //write the element and attributes
+        writer.writeStartElement("transportPriority");
+        writer.writeCharacters(transport.getTransportPriority());
+        writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("emergencyDoctoralarmingTime");
-        writer.writeCharacters(Long.toString(transport.getEmergencyDoctorAlarmingTime()));
+        writer.writeStartElement("emergencyDoctoralarming");
+        writer.writeCharacters(Boolean.toString(transport.isEmergencyDoctorAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("helicopterAlarmingTime");
-        writer.writeCharacters(Long.toString(transport.getHelicopterAlarmingTime()));
+        writer.writeCharacters(Boolean.toString(transport.isHelicopterAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("blueLightToPatient");
@@ -115,56 +126,46 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeCharacters(Boolean.toString(transport.isBluelightToGoal()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("dfAlarmingTime");
-        writer.writeCharacters(Long.toString(transport.getDfAlarmingTime()));
+        writer.writeStartElement("dfAlarming");
+        writer.writeCharacters(Boolean.toString(transport.isDfAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("brkdtAlarmingTime");
-        writer.writeCharacters(Long.toString(transport.getBrkdtAlarmingTime()));
+        writer.writeStartElement("brkdtAlarming");
+        writer.writeCharacters(Boolean.toString(transport.isBrkdtAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("firebrigadeAlarmingTime");
-        writer.writeCharacters(Long.toString(transport.getFirebrigadeAlarmingTime()));
+        writer.writeStartElement("firebrigadeAlarming");
+        writer.writeCharacters(Boolean.toString(transport.isFirebrigadeAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("mountainRescueServiceAlarmingTime");
-        writer.writeCharacters(Long.toString(transport.getMountainRescueServiceAlarmingTime()));
+        writer.writeStartElement("mountainRescueServiceAlarming");
+        writer.writeCharacters(Boolean.toString(transport.isMountainRescueServiceAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("policeAlarmingTime");
-        writer.writeCharacters(Long.toString(transport.getPoliceAlarmingTime()));
+        writer.writeStartElement("policeAlarming");
+        writer.writeCharacters(Boolean.toString(transport.isPoliceAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("feedback");
         writer.writeCharacters(transport.getFeedback());
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("towardsGraz");
-        writer.writeCharacters(Boolean.toString(transport.isTowardsGraz()));
+        writer.writeStartElement("directness");
+        writer.writeCharacters(Integer.toString(transport.getDirectness()));
         writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("towardsLeoben");
-        writer.writeCharacters(Boolean.toString(transport.isTowardsLeoben()));
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("towardsWien");
-        writer.writeCharacters(Boolean.toString(transport.isTowardsWien()));
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("towardsMariazell");
-        writer.writeCharacters(Boolean.toString(transport.isTowardsMariazell()));
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("towardsDistrict");
-        writer.writeCharacters(Boolean.toString(transport.isTowardsDistrict()));
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("longDistanceTrip");
-        writer.writeCharacters(Boolean.toString(transport.isLongDistanceTrip()));
-        writer.writeEndElement();
-
+        //get the encoder for the vehicle
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(VehicleDetail.ID);
+        encoder.doEncode(transport.getVehicleDetail(), writer);
+        //encode the status messages
+        for(StatusMessages statusMessage:transport.getStatusMessages())
+        {
+            writer.writeStartElement("statusMessage");
+            writer.writeAttribute("status", Integer.toString(statusMessage.getStatus()));
+            writer.writeAttribute("time", Long.toString(statusMessage.getTimestamp()));
+            writer.writeEndElement();
+        }
+        
         //end
         writer.writeEndElement();
     }
-
 }
