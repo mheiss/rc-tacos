@@ -27,14 +27,12 @@ public class Patient extends AbstractMessage
 
     /**
      * Default class construtor for a complete patient detail object.
-     * @param patientId the identification number of the patient
      * @param firstname the firstname 
      * @param lastname the lastname
      */
-    public Patient(long patientId, String firstname, String lastname) 
+    public Patient(String firstname, String lastname) 
     {
         super(ID);
-        setPatientId(patientId);
         setFirstname(firstname);
         setLastname(lastname);
     }

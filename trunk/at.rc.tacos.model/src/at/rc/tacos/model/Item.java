@@ -43,6 +43,37 @@ public class Item extends AbstractMessage
     {
         return name;
     }
+    
+    /**
+     * Returns the calculated hash code based on the patient id.<br>
+     * Two patients have the same hash code if the id is the same.
+     * @return the calculated hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return 31 + name.hashCode();
+    }
+
+    /**
+     * Returns whether the objects are equal or not.<br>
+     * Two items are equal if, and only if, the name is the same.
+     * @return true if the name is the same otherwise false.
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Item other = (Item) obj;
+        if (!name.equals(other.name))
+            return false;
+        return true;
+    }
 
     //GETTERS AND SETTERS   
     /**

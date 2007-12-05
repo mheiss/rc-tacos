@@ -32,4 +32,19 @@ public interface IModelListener
      * @param updateMessage the object to update
      */
     public void update(AbstractMessage updateMessage);
+    
+    /**
+     * Notification about a login message.
+     */
+    public void loginMessage(AbstractMessage message);
+    
+    /**
+     * Notification about a logout message.
+     */
+    public void logoutMessage(AbstractMessage message);
+    
+    /**
+     * Notification about a system message.
+     */
+    public void systemMessage(AbstractMessage message);
 }

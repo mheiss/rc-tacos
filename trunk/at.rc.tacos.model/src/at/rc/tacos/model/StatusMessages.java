@@ -1,24 +1,26 @@
 package at.rc.tacos.model;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
-
 /**
- * Represents one StatusMessage
+ * Represents a StatusMessage
  * @author b.thek
  */
-
 public class StatusMessages implements ITransportStatus
 {
 	private int status;
 	private long timestamp;
-	private ArrayList<StatusMessages> statusMessageArray;
 	
+	/**
+	 * Default constructor for a status message
+	 * @param status the status message to set
+	 * @param timestamp the timestamp when the status was set
+	 * @see ITransportStatus
+	 */
 	public StatusMessages(int status, long timestamp)
 	{
-		this.status = status;
-		this.timestamp = timestamp;
+		setStatus(status);
+		setTimestamp(timestamp);
 	}
 
 	//METHODS
@@ -39,12 +41,7 @@ public class StatusMessages implements ITransportStatus
 	    //date out of range
 	    return false;
 	}
-	
-	public void addStatus(int statusId, long timestamp)
-	{
-		statusMessageArray.add(new StatusMessages(statusId,timestamp));
-	}
-	
+		
 	//SETTER & GETTER
 	/**
 	 * @return the status
@@ -83,5 +80,4 @@ public class StatusMessages implements ITransportStatus
 	        throw new IllegalArgumentException("Date is out of range");
 		this.timestamp = timestamp;
 	}
-	
 }
