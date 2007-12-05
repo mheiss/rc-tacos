@@ -8,6 +8,7 @@ import at.rc.tacos.core.net.internal.*;
 import at.rc.tacos.model.*;
 import at.rc.tacos.codec.*;
 import at.rc.tacos.factory.*;
+import at.rc.tacos.server.dao.DaoService;
 import at.rc.tacos.server.listener.*;
 
 public class ServerController 
@@ -33,6 +34,8 @@ public class ServerController
         //register the encoders and decoders
         registerEncoderAndDecoder();
         registerModelListeners();
+        //prepare and add the dummy data
+        DaoService.getInstance().initData();
     }
 
     /**
@@ -83,16 +86,12 @@ public class ServerController
             if(client == entry.getValue())
             {
                 clientId = entry.getKey();
-                //create a SystemMessage to inform the other clients
-                SystemMessage message = new SystemMessage("Client "+clientId +" disconnected");
-                ArrayList<AbstractMessage> objectList = new ArrayList<AbstractMessage>();
-                objectList.add(message);
                 //brodcast the message to all authenticated clients
                 brodcastMessage(
                         "systen",
                         SystemMessage.ID,
-                        IModelActions.NOTIFY,
-                        objectList);
+                        IModelActions.SYSTEM,
+                        new SystemMessage("Client "+clientId +" disconnected"));
             }
         }
         //remove the client
@@ -154,15 +153,15 @@ public class ServerController
      *  Encodes the list of message into xml and brodcasts the message all
      *  authenticated clients.
      *  @param userId the identification of the user.
-     *  @param type the content type
-     *  @param action the action to invoke at the client
+     *  @param contentType the type of the message content
+     *  @param queryString the type of the query
      *  @param objectList a list of objects to send
      */
-    public synchronized void brodcastMessage(String userId,String type,String action, ArrayList<AbstractMessage> objectList)
+    public synchronized void brodcastMessage(String userId,String contentType,String queryString, ArrayList<AbstractMessage> objectList)
     {
         //set up the factory
         XMLFactory factory = new XMLFactory();
-        factory.setupEncodeFactory(userId,new Date().getTime(),type,action);
+        factory.setupEncodeFactory(userId,contentType,queryString);
         String message = factory.encode(objectList);
         //loop over the client pool and send the message
         for(MyClient client:authClientPool.values())   
@@ -173,27 +172,27 @@ public class ServerController
      *  Encodes the message into xml and brodcasts the message all
      *  authenticated clients.
      *  @param userId the identification of the user.
-     *  @param type the content type
-     *  @param action the action to invoke at the client
+     *  @param contentType the type of the message content
+     *  @param queryString the type of the query
      *  @param object the message to send
      */
-    public synchronized void brodcastMessage(String userId,String type,String action, AbstractMessage object)
+    public synchronized void brodcastMessage(String userId,String contentType,String queryString, AbstractMessage object)
     {
         //create list
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         list.add(object);
         //delegate
-        brodcastMessage(userId, type, action, list);
+        brodcastMessage(userId, contentType, queryString, list);
     }
 
     /**
      *  Encodes the message into xml and sends the message to the client.
      *  @param userId the identification of the target client.
-     *  @param type the content type
-     *  @param action the action to invoke at the client
+     *  @param contentType the type of the message content
+     *  @param queryString the type of the query
      *  @param objectList a list of objects to send
      */
-    public synchronized void sendMessage(String userId,String type,String action, ArrayList<AbstractMessage> objectList)
+    public synchronized void sendMessage(String userId,String contentType,String queryString, ArrayList<AbstractMessage> objectList)
     {
         //get the client socket to send the message
         if(authClientPool.containsKey(userId))
@@ -201,7 +200,7 @@ public class ServerController
             MyClient client = authClientPool.get(userId);
             //set up the factory
             XMLFactory factory = new XMLFactory();
-            factory.setupEncodeFactory(userId,new Date().getTime(),type,action);
+            factory.setupEncodeFactory(userId,contentType,queryString);
             //encode and send
             client.sendMessage(factory.encode(objectList));
         }       
@@ -210,17 +209,17 @@ public class ServerController
     /**
      *  Encodes the message into xml and sends the message to the client.
      *  @param userId the identification of the target client.
-     *  @param type the content type
-     *  @param action the action to invoke at the client
+     *  @param contentType the type of the message content
+     *  @param queryString the type of the query
      *  @param object the message to send
      */
-    public synchronized void sendMessage(String userId,String type,String action, AbstractMessage object)
+    public synchronized void sendMessage(String userId,String contentType,String queryString, AbstractMessage object)
     {
         //create list
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         list.add(object);
         //delegate
-        sendMessage(userId, type, action, list);
+        sendMessage(userId, contentType, queryString, list);
     }
     
     /**
@@ -237,7 +236,7 @@ public class ServerController
         list.add(new SystemMessage(message));
         //set up the factory
         XMLFactory factory = new XMLFactory();
-        factory.setupEncodeFactory("server",new Date().getTime(),SystemMessage.ID,IModelActions.NOTIFY);
+        factory.setupEncodeFactory("server",SystemMessage.ID,IModelActions.SYSTEM);
         //send the message
         client.sendMessage(factory.encode(list));
     }

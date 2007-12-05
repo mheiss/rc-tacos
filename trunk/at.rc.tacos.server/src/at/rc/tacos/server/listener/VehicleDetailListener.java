@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.VehicleDAO;
-import at.rc.tacos.core.db.dao.test.VehicleDetailDAOTest;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.server.dao.DaoService;
 
