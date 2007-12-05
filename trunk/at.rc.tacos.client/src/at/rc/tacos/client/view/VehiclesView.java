@@ -50,9 +50,8 @@ public class VehiclesView extends ViewPart
         form = toolkit.createScrolledForm(parent);
         form.setText("Überblick über die Fahrzeuge des Bezirkes");
         toolkit.decorateFormHeading(form.getForm());
-        ColumnLayout layout = new ColumnLayout();
-        layout.maxNumColumns = 1;
-        layout.minNumColumns = 1;
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
         form.getBody().setLayout(layout);
         
         //get the values from the activator
@@ -69,8 +68,23 @@ public class VehiclesView extends ViewPart
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(0));
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(1));
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
-        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(3));
-        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(4));
+        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
+        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
+        
+        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(0));
+        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(1));
+        
+        new CarComposite(compositeStMarein,vehicleManager.getVehicleList().get(0));
+        new CarComposite(compositeStMarein,vehicleManager.getVehicleList().get(1));
+        
+        new CarComposite(compositeThoerl,vehicleManager.getVehicleList().get(0));
+        new CarComposite(compositeThoerl,vehicleManager.getVehicleList().get(1));
+        
+        new CarComposite(compositeThurnau,vehicleManager.getVehicleList().get(0));
+        new CarComposite(compositeThurnau,vehicleManager.getVehicleList().get(1));
+        
+        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(0));
+        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(1));
     }
 
     @Override
@@ -96,9 +110,8 @@ public class VehiclesView extends ViewPart
         section.setDescription(description);
         //the content of the section
         Composite client = toolkit.createComposite(section,SWT.WRAP);
-        ColumnLayout layout = new ColumnLayout();
-        layout.maxNumColumns = 4;
-        layout.minNumColumns = 4;
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 4;
         client.setLayout(layout);
         //add the client to the section
         section.setClient(client);

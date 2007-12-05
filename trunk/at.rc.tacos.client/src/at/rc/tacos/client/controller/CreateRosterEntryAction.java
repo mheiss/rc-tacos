@@ -55,6 +55,6 @@ public class CreateRosterEntryAction extends Action
     public void run() 
     {
         //send the entry
-        NetWrapper.getDefault().sendAddMessage(entry);
+        NetWrapper.getDefault().sendAddMessage(RosterEntry.ID,entry);
     }
 }

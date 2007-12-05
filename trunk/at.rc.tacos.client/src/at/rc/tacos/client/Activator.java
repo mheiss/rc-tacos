@@ -44,8 +44,7 @@ public class Activator extends AbstractUIPlugin
 		
 		//register the encoders and decoders
 		NetWrapper.getDefault().registerEncoderAndDecoder();
-		//register model listeners
-		registerModelListeners();
+
 		//set the session
 	    NetWrapper.getDefault().setSessionUsername("Client user");
 	    
@@ -86,34 +85,24 @@ public class Activator extends AbstractUIPlugin
 	}
 	
 	/**
-     * Convinience method to registers the ui model listeners 
+     * Convinience method to registers the ui listeners 
      * to get updates from the network layer.
      */
-	public void registerModelListeners()
+	public void registerListeners()
 	{
 	    ListenerFactory factory = ListenerFactory.getDefault();
 	    //register the listeners
-	    factory.registerModelListener(Item.ID, new ItemListener());
-	    factory.registerModelListener(MobilePhoneDetail.ID, new MobilePhoneListener());
-	    factory.registerModelListener(NotifierDetail.ID, new NotifyDetailListener());
-	    factory.registerModelListener(Patient.ID, new PatientListener());
-	    factory.registerModelListener(RosterEntry.ID, new RosterEntryListener());
-	    factory.registerModelListener(StaffMember.ID, new StaffMemberListener());
-	    factory.registerModelListener(Transport.ID, new TransportListener());
-	    factory.registerModelListener(VehicleDetail.ID, new VehicleDetailListener());
-	}
-	
-	/**
-    * Convinience method to registers the ui event listeners 
-    * to get updates from the network layer.
-	*/
-	public void registerEventListener()
-	{
-	    ListenerFactory factory = ListenerFactory.getDefault();
-	    //register the listeners
-	    factory.registerEventListener(Login.ID, new AuthenticationListener());
-	    factory.registerEventListener(Logout.ID, new AuthenticationListener());
-	    factory.registerEventListener(SystemMessage.ID, new SystemMessageListener());
+	    factory.registerListener(Item.ID, new ItemListener());
+	    factory.registerListener(MobilePhoneDetail.ID, new MobilePhoneListener());
+	    factory.registerListener(NotifierDetail.ID, new NotifyDetailListener());
+	    factory.registerListener(Patient.ID, new PatientListener());
+	    factory.registerListener(RosterEntry.ID, new RosterEntryListener());
+	    factory.registerListener(StaffMember.ID, new StaffMemberListener());
+	    factory.registerListener(Transport.ID, new TransportListener());
+	    factory.registerListener(VehicleDetail.ID, new VehicleDetailListener());
+	    factory.registerListener(Login.ID, new AuthenticationListener());
+	    factory.registerListener(Logout.ID, new AuthenticationListener());
+	    factory.registerListener(SystemMessage.ID, new SystemMessageListener());
 	}
 	
 	/**

@@ -1,25 +1,18 @@
 package at.rc.tacos.client.listeners;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.common.IEventListener;
 import at.rc.tacos.model.SystemMessage;
 
 /**
  * This class will handle the system event messages
  * @author Michael
  */
-public class SystemMessageListener implements IEventListener
+public class SystemMessageListener extends ClientListenerAdapter
 {
     @Override
-    public void statusMessage(AbstractMessage message)
+    public void systemMessage(AbstractMessage message)
     {
         SystemMessage sysMessage = (SystemMessage)message;
-        System.out.println(sysMessage);
+        System.out.println("System message: " + sysMessage);
     }
-    
-    //NOT HANDLED BY THIS LISTENER
-    @Override
-    public void loginMessage(AbstractMessage message) { }
-    @Override
-    public void logoutMessage(AbstractMessage message){ }
 }
