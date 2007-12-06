@@ -97,6 +97,7 @@ public class WebClient
             socket = new MySocket(serverAddress,serverPort);
             socket.createInputStream();
             socket.createOutputStream(); 
+            socket.setSoTimeout(5000);
             return true;
         }
         catch(UnknownHostException uhe)
