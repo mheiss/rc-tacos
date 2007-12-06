@@ -51,6 +51,7 @@ public class TacosServer
             //start the server
             System.out.println("TACOS-Server v0.2");
             System.out.println("Listening for client request at port: "+port);
+            System.out.println("-------------------------------------------");
             TacosServer server = new TacosServer(port);
             server.startServer();
             

@@ -20,17 +20,17 @@ public class AuthenticationListener extends ServerListenerAdapter
         //check the password and the user
         String username = login.getUsername();
         String password = login.getPassword();
-        //hide the password in the response
-        login.setPassword("");
         //check agains the database
         UserLoginDAO userDao = DaoService.getInstance().getFactory().createUserDAO();
         boolean loggedIn = userDao.checkLogin(username, password);
         if(loggedIn)
         {
+            login.setPassword("");
             login.setLoggedIn(true);
         }
         else
         {
+            login.setPassword("");
             login.setErrorMessage("Wrong username or password");
             login.setLoggedIn(false);
         }

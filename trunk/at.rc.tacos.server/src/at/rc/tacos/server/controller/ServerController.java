@@ -59,6 +59,7 @@ public class ServerController
      */
     public void clientConnected(MyClient client)
     {
+        System.out.println("Adding new client to pool");
         connClientPool.add(client);
     }
 
@@ -73,11 +74,14 @@ public class ServerController
     {
         //check the connClientPool
         if(connClientPool.contains(client))
+        {
+            System.out.println("Removing client from pool");
             connClientPool.remove(client);
+            return;
+        }
         //check the authClientPool
         if(!authClientPool.containsValue(client))
             return;
-
         String clientId = "";
         //loop and serarch for the id
         for(Entry<String,MyClient> entry:authClientPool.entrySet())
@@ -86,7 +90,9 @@ public class ServerController
             if(client == entry.getValue())
             {
                 clientId = entry.getKey();
-                //brodcast the message to all authenticated clients
+                //remove the client
+                authClientPool.remove(clientId);
+                //brodcast the message to all other authenticated clients
                 brodcastMessage(
                         "systen",
                         SystemMessage.ID,
@@ -94,8 +100,7 @@ public class ServerController
                         new SystemMessage("Client "+clientId +" disconnected"));
             }
         }
-        //remove the client
-        authClientPool.remove(clientId);
+
     }
 
     /**
@@ -106,6 +111,7 @@ public class ServerController
      */
     public void setAuthenticated(String userId,MyClient client)
     {
+        System.out.println("Adding "+ userId+" to the authenticated pool");
         //remove the client form the conClientPool
         connClientPool.remove(client);
         //add to the authenticated pool
@@ -164,8 +170,11 @@ public class ServerController
         factory.setupEncodeFactory(userId,contentType,queryString);
         String message = factory.encode(objectList);
         //loop over the client pool and send the message
-        for(MyClient client:authClientPool.values())   
+        for(MyClient client:authClientPool.values()) 
+        {
             client.sendMessage(message);
+            System.out.println("Sending brodcast reply for "+userId+" : "+contentType+"->"+queryString);
+        }
     }
 
     /**
@@ -203,7 +212,10 @@ public class ServerController
             factory.setupEncodeFactory(userId,contentType,queryString);
             //encode and send
             client.sendMessage(factory.encode(objectList));
-        }       
+            System.out.println("Sending reply for "+userId+" : "+contentType+"->"+queryString);
+        }   
+        else
+            System.out.println("Failed to get the client connection for: "+userId);
     }
 
     /**
@@ -227,16 +239,17 @@ public class ServerController
      * This method should only be used to communicate with
      * unregistered clients.
      * @param client the client to send the message to
+     * @param contentType the type of the content
      * @param message the message to send
      */
-    public synchronized void sendSystemMessage(MyClient client,String message)
+    public synchronized void sendMessage(MyClient client,String contentType,String queryString,AbstractMessage message)
     {
         //create list
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.add(new SystemMessage(message));
+        list.add(message);
         //set up the factory
         XMLFactory factory = new XMLFactory();
-        factory.setupEncodeFactory("server",SystemMessage.ID,IModelActions.SYSTEM);
+        factory.setupEncodeFactory("server",contentType,queryString);
         //send the message
         client.sendMessage(factory.encode(list));
     }
