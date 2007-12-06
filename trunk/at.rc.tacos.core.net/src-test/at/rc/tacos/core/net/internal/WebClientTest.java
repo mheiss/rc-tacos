@@ -34,7 +34,7 @@ public class WebClientTest
     public void setUp()
     {
         client = new WebClient();
-        client.connect("10.77.1.64", 4711);
+        client.connect("81.189.52.155", 4711);
         result = new ArrayList<AbstractMessage>();
     }
     
