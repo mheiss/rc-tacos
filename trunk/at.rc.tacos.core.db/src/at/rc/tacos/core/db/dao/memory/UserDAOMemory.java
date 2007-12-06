@@ -55,7 +55,7 @@ public class UserDAOMemory implements UserLoginDAO
         //get the password for this username
         String pwd = userList.get(username);
         //check it
-        if(password.equalsIgnoreCase(pwd))
+        if(password.equals(pwd))
             return true;
         return false;
     }
