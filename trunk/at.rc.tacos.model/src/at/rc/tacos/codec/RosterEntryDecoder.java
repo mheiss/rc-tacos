@@ -39,12 +39,9 @@ public class RosterEntryDecoder implements MessageDecoder
                 //get the type of the element and set the corresponding value
                 if("rosterId".equalsIgnoreCase(startName))
                     entry.setRosterId(Integer.valueOf(reader.getElementText()));
-//                //get the type of the element and set the corresponding value
-//                if("dateOfRosterEntry".equalsIgnoreCase(startName))
-//                    entry.setDateOfRosterEntry(Long.valueOf(reader.getElementText()));
-//                //get the type of the element and set the corresponding value
-//                if("plannedStartofWork".equalsIgnoreCase(startName))
-//                    entry.setPlannedStartofWork(Long.valueOf(reader.getElementText()));
+                //get the type of the element and set the corresponding value
+                if("plannedStartofWork".equalsIgnoreCase(startName))
+                    entry.setPlannedStartOfWork(Long.valueOf(reader.getElementText()));
                 //get the type of the element and set the corresponding value
                 if("plannedEndOfWork".equalsIgnoreCase(startName))
                     entry.setPlannedEndOfWork(Long.valueOf(reader.getElementText()));
@@ -69,6 +66,8 @@ public class RosterEntryDecoder implements MessageDecoder
                 //get the type of the element and set the corresponding value
                 if("standby".equalsIgnoreCase(startName))
                     entry.setStandby(Boolean.valueOf(reader.getElementText()));
+                if("splitEntry".equalsIgnoreCase(startName))
+                    entry.setSplitEntry(Boolean.valueOf(reader.getElementText()));
             }
             //check for the end element, and return the object
             if(event.isEndElement())

@@ -164,7 +164,6 @@ public class TransportEncoder  implements MessageEncoder
             writer.writeAttribute("time", Long.toString(statusMessage.getTimestamp()));
             writer.writeEndElement();
         }
-        
         //end
         writer.writeEndElement();
     }

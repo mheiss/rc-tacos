@@ -10,17 +10,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.NotifierDetail;
-import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.TestDataSource;
-import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
-
-public class TransportEncoderTest
+public class VehicleEncoderTest
 {
-    private TransportEncoder encoder;
+    private VehicleEncoder encoder;
     private static XMLStreamWriter writer;
     
     @BeforeClass
@@ -29,9 +25,6 @@ public class TransportEncoderTest
         XMLOutputFactory xmlof = XMLOutputFactory.newInstance();
         writer = xmlof.createXMLStreamWriter(new StringWriter());
         //register needed encoders
-        ProtocolCodecFactory.getDefault().registerEncoder(Patient.ID,new PatientEncoder());
-        ProtocolCodecFactory.getDefault().registerEncoder(NotifierDetail.ID,new NotifierEncoder());
-        ProtocolCodecFactory.getDefault().registerEncoder(VehicleDetail.ID,new VehicleEncoder());
         ProtocolCodecFactory.getDefault().registerEncoder(StaffMember.ID, new StaffMemberEncoder());
         ProtocolCodecFactory.getDefault().registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
     }
@@ -39,29 +32,28 @@ public class TransportEncoderTest
     @Before
     public void setUp()
     {
-        encoder = new TransportEncoder();
+        encoder = new VehicleEncoder();
     }
     
     @Test
     public void testTransportEncode1() throws XMLStreamException
     {
-        Transport transport = new TestDataSource().transportList.get(0);
-        transport.getVehicleDetail().getDriverName();
-        encoder.doEncode(transport, writer);
+        VehicleDetail detail = new TestDataSource().vehicleList.get(0);
+        encoder.doEncode(detail, writer);
     }
     
     @Test
     public void testTransportEncode2() throws XMLStreamException
     {
-        Transport transport = new TestDataSource().transportList.get(1);
-        encoder.doEncode(transport, writer);
+        VehicleDetail detail = new TestDataSource().vehicleList.get(1);
+        encoder.doEncode(detail, writer);
     }
     
     @Test
     public void testTransportEncode3() throws XMLStreamException
     {
-        Transport transport = new TestDataSource().transportList.get(2);
-        encoder.doEncode(transport, writer);
+        VehicleDetail detail = new TestDataSource().vehicleList.get(2);
+        encoder.doEncode(detail, writer);
     }
     
     
@@ -70,4 +62,5 @@ public class TransportEncoderTest
     {
         writer.close();
     }
+
 }

@@ -14,8 +14,8 @@ public class RosterEntry extends AbstractMessage
     
 	private long rosterId;
 	private StaffMember staffMember;
-	private long plannedEndOfWork;
 	private long plannedStartOfWork;
+	private long plannedEndOfWork;
 	private long realStartOfWork;
 	private long realEndOfWork;
 	private String station;
