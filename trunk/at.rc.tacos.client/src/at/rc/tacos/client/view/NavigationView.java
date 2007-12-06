@@ -36,6 +36,10 @@ public class NavigationView extends ViewPart
     {
         Color white = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
         GridLayout layout = new GridLayout(4,false);
+        layout.marginTop = 0;
+        layout.marginRight = 0;
+        layout.marginLeft = 10;
+        layout.marginHeight = 10;
         parent.setLayout(layout);
         parent.setBackground(white);
         
@@ -53,10 +57,7 @@ public class NavigationView extends ViewPart
         //create the second toolbar
         ToolBar toolbar2 = new ToolBar(parent,SWT.FLAT);
         toolbar2.setBackground(TB_BG);
-        gd = new GridData(SWT.BEGINNING,SWT.BEGINNING,false,false);
-        gd.horizontalIndent = 10;
-        gd.verticalIndent = 10;
-        toolbar2.setLayoutData(gd);
+        toolbar2.setLayoutData(new GridData(SWT.BEGINNING,SWT.BEGINNING,false,false));
         
         ToolBarManager manager2 = new ToolBarManager(toolbar2);
         Action action = new OpenRosterEntryAction();
