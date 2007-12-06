@@ -114,7 +114,7 @@ public class XMLFactory
             xmlw.writeEndElement();
 
             //check if we have a list of objects to encode
-            if(messageList != null)
+            if(messageList != null && messageList.size() > 0)
             {
                 //write the content
                 xmlw.writeStartElement(IXMLElements.CONTENT_ELEMENT);

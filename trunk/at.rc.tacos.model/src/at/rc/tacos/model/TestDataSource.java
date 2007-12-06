@@ -28,15 +28,15 @@ public class TestDataSource
      */
     public TestDataSource()
     {
+        initLogins();
         initItems();
         initPhones();
         initNotifiers();
         initPatients();
         initStaffMembers();
-        initTransports();
-        initRosters();
-        initLogins();
         initVehicles();
+        initRosters();
+        initTransports(); 
     }
     
     //LOAD THE DUMMY DATA
@@ -109,9 +109,13 @@ public class TestDataSource
         t1.setPatient(patientList.get(0));
         t1.addStatus(1, new Date().getTime());
         t1.addStatus(2, new Date().getTime());
+        t1.setNotifierDetail(notifierList.get(0));
+        t1.setVehicleDetail(vehicleList.get(0));
+        t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
+        t1.setDirectness(IDirectness.TOWARDS_DISTRICT);
         //second transport
         Transport t2 = new Transport();
-        t2.setTransportId(0);
+        t2.setTransportId(1);
         t2.setFromStreet("street_from_2");
         t2.setFromNumber("number_from 2");
         t2.setFromCity("city_from_2");
@@ -119,9 +123,13 @@ public class TestDataSource
         t2.setToNumber("number_to_2");
         t2.setToCity("city_to_2");
         t2.setPatient(patientList.get(1));
+        t2.setNotifierDetail(notifierList.get(1));
+        t2.setVehicleDetail(vehicleList.get(1));
+        t2.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
+        t2.setDirectness(IDirectness.TOWARDS_LEOBEN);
         //third transport
         Transport t3 = new Transport();
-        t3.setTransportId(0);
+        t3.setTransportId(2);
         t3.setFromStreet("street_from_3");
         t3.setFromNumber("number_from 3");
         t3.setFromCity("city_from_3");
@@ -129,6 +137,10 @@ public class TestDataSource
         t3.setToNumber("number_to_3");
         t3.setToCity("city_to_3");
         t3.setPatient(patientList.get(2));
+        t3.setNotifierDetail(notifierList.get(2));
+        t3.setVehicleDetail(vehicleList.get(2));
+        t3.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
+        t3.setDirectness(IDirectness.TOWARDS_GRAZ);
         //add the transports
         transportList.add(t1);
         transportList.add(t2);
@@ -146,7 +158,6 @@ public class TestDataSource
         e1.setRealEndOfWork(new Date().getTime());
         e1.setRealStartOfWork(new Date().getTime());
         e1.setRosterId(0);
-        e1.setRosterNotes("mix");
         e1.setServicetype("Zivi");
         e1.setStandby(false);
         e1.setStation("Bruck");

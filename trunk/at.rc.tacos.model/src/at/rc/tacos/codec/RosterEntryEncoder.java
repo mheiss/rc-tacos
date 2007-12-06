@@ -26,25 +26,21 @@ public class RosterEntryEncoder  implements MessageEncoder
         //get the encoder for the staff member
         MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
         encoder.doEncode(entry.getStaffMember(), writer);
-//        //write the elements and attributes
-//        writer.writeStartElement("dateOfRosterEntry");
-//        writer.writeCharacters(String.valueOf(entry.getDateOfRosterEntry()));
-//        writer.writeEndElement();
-//        //write the elements and attributes
-//        writer.writeStartElement("plannedStartofWork");
-//        writer.writeCharacters(String.valueOf(entry.getPlannedStartofWork()));
+        //write the elements and attributes
+        writer.writeStartElement("plannedStartOfWork");
+        writer.writeCharacters(Long.toString(entry.getPlannedStartOfWork()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("plannedEndOfWork");
-        writer.writeCharacters(String.valueOf(entry.getPlannedEndOfWork()));
+        writer.writeCharacters(Long.toString(entry.getPlannedEndOfWork()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("realStartOfWork");
-        writer.writeCharacters(String.valueOf(entry.getRealStartOfWork()));
+        writer.writeCharacters(Long.toString(entry.getRealStartOfWork()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("realEndOfWork");
-        writer.writeCharacters(String.valueOf(entry.getRealEndOfWork()));
+        writer.writeCharacters(Long.toString(entry.getRealEndOfWork()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("station");
@@ -64,7 +60,11 @@ public class RosterEntryEncoder  implements MessageEncoder
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("standby");
-        writer.writeCharacters(String.valueOf(entry.getStandby()));
+        writer.writeCharacters(Boolean.toString(entry.getStandby()));
+        writer.writeEndElement();
+        //write the elements and attributes
+        writer.writeStartElement("splitEntry");
+        writer.writeCharacters(Boolean.toString(entry.isSplitEntry()));
         writer.writeEndElement();
 
         //end

@@ -34,7 +34,7 @@ public class LoginEncoder implements MessageEncoder
         writer.writeEndElement();
         
         //write the elements and attributes
-        if(!login.getErrorMessage().isEmpty())
+        if(login.getErrorMessage() != null && !login.getErrorMessage().isEmpty())
         {
             writer.writeStartElement("errorMessage");
             writer.writeCharacters(login.getErrorMessage());
