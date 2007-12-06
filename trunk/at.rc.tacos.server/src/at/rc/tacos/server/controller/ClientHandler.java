@@ -7,6 +7,7 @@ import at.rc.tacos.core.net.internal.MyClient;
 import at.rc.tacos.factory.*;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
+import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.common.*;
 
 /**
@@ -26,104 +27,119 @@ public class ClientHandler implements INetListener
         //get the type of the item
         final String contentType = xmlFactory.getContentType();
         final String queryString = xmlFactory.getQueryString();
-        
+        final String userId = xmlFactory.getUserId();
+
         //check if the client is authenticated or not
         final boolean isAuthenticated = ServerController.getDefault().isAuthenticated(ne.getClient());
-                
+
         //the listener class to handle the request
         ServerController server = ServerController.getDefault();
         ServerListenerFactory factory = ServerListenerFactory.getInstance();
         IServerListener listener = null;
-        String userId = null;
-        
+        String username = null;
+
         //the client is not authenticated
         if(!isAuthenticated)
         {
+            System.out.println("Got a new request from an unauthenticated client to handle: "+contentType + "->"+queryString);
             //login request are permitted
             if(Login.ID.equalsIgnoreCase(contentType))
+            {
                 listener = factory.getListener(Login.ID);
+                System.out.println("Using login listener: "+listener);
+            }
             else
             {
                 System.out.println("Client not authenticated, login first");
                 //notify the sender
-                server.sendSystemMessage(ne.getClient(), "Client not authenticated, login first");
-            }
+                server.sendMessage(
+                        ne.getClient(), 
+                        SystemMessage.ID,IModelActions.SYSTEM,
+                        new SystemMessage("Client not authenticated, login first"));
+                return;
+            } 
         }
-        //the client is authenticated
-        else
-        {
-            //the identification of the client
-            userId = ServerController.getDefault().getAuthenticationString(ne.getClient());
-            System.out.println(contentType + "->"+queryString + " request from user "+userId);
-            listener = factory.getListener(contentType);                
-        }
+
+        //the identification of the client
+        username = ServerController.getDefault().getAuthenticationString(ne.getClient());
+        System.out.println("Got a new request from "+userId+" to handle: "+contentType + "->"+queryString);
+        listener = factory.getListener(contentType);   
+        System.out.println("Using listener: "+listener);
+
         //now handle the request
-        if(listener != null)
-        { 
-            //login request
-            if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
-            {
-                //get the result message
-                Login loginResult = (Login)listener.handleLoginRequest(objects.get(0));
-                //add the client to the authenticated list
-                if(loginResult.isLoggedIn())
-                    ServerController.getDefault().setAuthenticated(
-                            loginResult.getUsername(), 
-                            ne.getClient());
-                //send the response message
-                server.sendMessage(userId, contentType, queryString, loginResult);
-            }
-            //logout request
-            else if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
-            {
-                Logout logoutResult = (Logout)listener.handleLogoutRequest(objects.get(0));
-                //remove the client form the list of authenticated clients
-                if(logoutResult.isLoggedOut())
-                    ServerController.getDefault().setDeAuthenticated(
-                            logoutResult.getUsername());
-                //send the response message
-                server.sendMessage(userId, contentType, queryString, logoutResult);
-            }
-            //add request
-            else if(IModelActions.ADD.equalsIgnoreCase(queryString))
-            {
-                AbstractMessage resultAddMessage = listener.handleAddRequest(objects.get(0));
-                //send the added item
-                server.brodcastMessage(userId, contentType, queryString, resultAddMessage);
-            }
-            //remove request
-            else if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
-            {
-                AbstractMessage resultRemoveMessage = listener.handleRemoveRequest(objects.get(0));
-                //send the removed item
-                server.brodcastMessage(userId, contentType, queryString, resultRemoveMessage);
-            }
-            //update request
-            else if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
-            {
-                AbstractMessage resultUpdateMessage = listener.handleUpdateRequest(objects.get(0));
-                //send the updated item
-                server.brodcastMessage(userId, contentType, queryString, resultUpdateMessage);
-            }
-            else if(IModelActions.LIST.equalsIgnoreCase(queryString))
-            {
-                ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest();
-                //send the listing
-                server.brodcastMessage(userId, contentType, queryString, resultMessageList);
-            }
-            else
-            {   
-                System.out.println("No handler found for queryString: "+queryString);
-                //notify the sender
-                server.sendSystemMessage(ne.getClient(), "No handler found for queryString: "+queryString);
-            }
-        }
-        else
+        if(listener == null)
         {
             System.out.println("No listener found for the message type: "+contentType);
             //notify the sender
-            server.sendSystemMessage(ne.getClient(), "No listener found for the message type: "+contentType);
-        }      
+            SystemMessage sysMess = new SystemMessage("No listener found for the message type: "+contentType);
+            server.sendMessage(username,SystemMessage.ID,IModelActions.SYSTEM,sysMess);
+            return;
+        }
+
+        //login request
+        if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
+        {
+            //get the result message
+            Login loginResult = (Login)listener.handleLoginRequest(objects.get(0));
+            //add the client to the authenticated list
+            if(loginResult.isLoggedIn())
+            {
+                ServerController.getDefault().setAuthenticated(
+                        loginResult.getUsername(), 
+                        ne.getClient());
+                //notify the sender that the login was successfully
+                server.sendMessage(userId, contentType, queryString, loginResult);
+            }
+            else
+            {
+                //notify the sender that the login failed
+                server.sendMessage(ne.getClient(),contentType,queryString,loginResult);
+            }
+        }
+        //logout request
+        else if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
+        {
+            Logout logoutResult = (Logout)listener.handleLogoutRequest(objects.get(0));
+            //remove the client form the list of authenticated clients
+            if(logoutResult.isLoggedOut())
+                ServerController.getDefault().setDeAuthenticated(
+                        logoutResult.getUsername());
+            //send the response message
+            server.sendMessage(userId, contentType, queryString, logoutResult);
+        }
+        //add request
+        else if(IModelActions.ADD.equalsIgnoreCase(queryString))
+        {
+            AbstractMessage resultAddMessage = listener.handleAddRequest(objects.get(0));
+            //send the added item
+            server.brodcastMessage(userId, contentType, queryString, resultAddMessage);
+        }
+        //remove request
+        else if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
+        {
+            AbstractMessage resultRemoveMessage = listener.handleRemoveRequest(objects.get(0));
+            //send the removed item
+            server.brodcastMessage(userId, contentType, queryString, resultRemoveMessage);
+        }
+        //update request
+        else if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
+        {
+            AbstractMessage resultUpdateMessage = listener.handleUpdateRequest(objects.get(0));
+            //send the updated item
+            server.brodcastMessage(userId, contentType, queryString, resultUpdateMessage);
+        }
+        else if(IModelActions.LIST.equalsIgnoreCase(queryString))
+        {
+            ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest();
+            //send the listing
+            server.brodcastMessage(userId, contentType, queryString, resultMessageList);
+        }
+        else
+        {   
+            System.out.println("No handler found for queryString: "+queryString);
+            SystemMessage sysMes = new SystemMessage("No handler found for queryString: "+queryString);
+            server.sendMessage(username,SystemMessage.ID,IModelActions.SYSTEM,sysMes);
+        }   
     }
 
     @Override
@@ -140,7 +156,6 @@ public class ClientHandler implements INetListener
         //check the status
         if (status == IConnectionStates.STATE_CONNECTED)
         {
-            System.out.println("New client connected");
             //create the streams and start the receive thread
             client.connect();
             //set the listener for netEvents
@@ -150,7 +165,6 @@ public class ClientHandler implements INetListener
         }
         if (status == IConnectionStates.STATE_DISCONNECTED)
         {
-            System.out.println("Client quit");
             ServerController.getDefault().clientDisconnected(client);
         }
     }
