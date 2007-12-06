@@ -1,8 +1,12 @@
 package at.rc.tacos.client.view;
 
+import org.eclipse.swt.graphics.Color;
+
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -86,6 +90,8 @@ public class TransportForm {
 	private DateTime dateTime;
 	private Button gehendButton;
 	protected Shell shell;
+	
+	private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
 
 	/**
 	 * Launch the application
@@ -125,6 +131,8 @@ public class TransportForm {
 		shell.setSize(1075, 545);
 		shell.setText("Transport");
 
+		
+		//calendar
 		dateTime = new DateTime(shell, SWT.CALENDAR);
 		final FormData fd_dateTime = new FormData();
 		fd_dateTime.bottom = new FormAttachment(0, 160);
@@ -133,6 +141,7 @@ public class TransportForm {
 		fd_dateTime.left = new FormAttachment(0, 10);
 		dateTime.setLayoutData(fd_dateTime);
 
+		//group 'Transportdaten'
 		transportdatenGroup = new Group(shell, SWT.NONE);
 		transportdatenGroup.setLayout(new FormLayout());
 		final FormData fd_transportdatenGroup = new FormData();
@@ -151,6 +160,7 @@ public class TransportForm {
 		fd_vonLabel.top = new FormAttachment(0, 29);
 		fd_vonLabel.right = new FormAttachment(0, 32);
 		fd_vonLabel.left = new FormAttachment(0, 7);
+//		new FormAttachment()
 		vonLabel.setLayoutData(fd_vonLabel);
 		vonLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		vonLabel.setText("von:");
@@ -422,6 +432,7 @@ public class TransportForm {
 		planungGroup.setLayoutData(fd_planungGroup);
 		planungGroup.setText("Zeiten/Richtung");
 
+		//group 'Zeiten/Richtung' 
 		final Label abfLabel = new Label(planungGroup, SWT.NONE);
 		final FormData fd_abfLabel = new FormData();
 		fd_abfLabel.bottom = new FormAttachment(0, 37);
@@ -479,6 +490,7 @@ public class TransportForm {
 		textAbf.setLayoutData(fd_textAbf);
 		textAbf.setToolTipText("Abfahrt des Fahrzeuges von der Ortsstelle");
 
+		//'Richtung'
 		mariazellButton = new Button(planungGroup, SWT.RADIO);
 		final FormData fd_mariazellButton = new FormData();
 		fd_mariazellButton.bottom = new FormAttachment(0, 143);
@@ -543,12 +555,13 @@ public class TransportForm {
 		fernfahrtButton.setToolTipText("Fernfahrten sind lt. RKT deklariert");
 		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, fernfahrtButton, bezirkButton, grazButton, leobenButton, wienButton, mariazellButton});
 
+		//group 'Patientenzustand'
 		patientenzustandGroup = new Group(shell, SWT.NONE);
 		patientenzustandGroup.setLayout(new FormLayout());
 		final FormData fd_patientenzustandGroup = new FormData();
 		fd_patientenzustandGroup.bottom = new FormAttachment(0, 348);
 		fd_patientenzustandGroup.top = new FormAttachment(0, 166);
-		fd_patientenzustandGroup.right = new FormAttachment(0, 873);
+		fd_patientenzustandGroup.right = new FormAttachment(0, 920);//TODO
 		fd_patientenzustandGroup.left = new FormAttachment(0, 194);
 		patientenzustandGroup.setLayoutData(fd_patientenzustandGroup);
 		patientenzustandGroup.setText("Patientenzustand");
@@ -654,13 +667,14 @@ public class TransportForm {
 		label_4.setText("Priorität:");
 		patientenzustandGroup.setTabList(new Control[] {comboErkrankungVerletzung, comboPrioritaet, textAnmerkungen, bd1Button, textRueckmeldung, bd2Button});
 
+		//group 'Alarmierung'
 		planungGroup_1 = new Group(shell, SWT.NONE);
 		planungGroup_1.setLayout(new FormLayout());
 		final FormData fd_planungGroup_1 = new FormData();
 		fd_planungGroup_1.bottom = new FormAttachment(0, 348);
 		fd_planungGroup_1.top = new FormAttachment(0, 166);
 		fd_planungGroup_1.right = new FormAttachment(0, 1056);
-		fd_planungGroup_1.left = new FormAttachment(0, 879);
+		fd_planungGroup_1.left = new FormAttachment(0, 927);
 		planungGroup_1.setLayoutData(fd_planungGroup_1);
 		planungGroup_1.setText("Alarmierung");
 
@@ -742,68 +756,68 @@ public class TransportForm {
 			}
 		});
 
-		final DateTime dateTimePolizei = new DateTime(planungGroup_1, SWT.TIME);
-		final FormData fd_dateTimePolizei = new FormData();
-		fd_dateTimePolizei.bottom = new FormAttachment(0, 137);
-		fd_dateTimePolizei.top = new FormAttachment(0, 116);
-		fd_dateTimePolizei.right = new FormAttachment(0, 167);
-		fd_dateTimePolizei.left = new FormAttachment(0, 94);
-		dateTimePolizei.setLayoutData(fd_dateTimePolizei);
-		dateTimePolizei.setToolTipText("Zeit zu der die Polizei Box zum letzten Mal angehakt wurde");
+//		final DateTime dateTimePolizei = new DateTime(planungGroup_1, SWT.TIME);
+//		final FormData fd_dateTimePolizei = new FormData();
+//		fd_dateTimePolizei.bottom = new FormAttachment(0, 137);
+//		fd_dateTimePolizei.top = new FormAttachment(0, 116);
+//		fd_dateTimePolizei.right = new FormAttachment(0, 167);
+//		fd_dateTimePolizei.left = new FormAttachment(0, 94);
+//		dateTimePolizei.setLayoutData(fd_dateTimePolizei);
+//		dateTimePolizei.setToolTipText("Zeit zu der die Polizei Box zum letzten Mal angehakt wurde");
 
-		final DateTime dateTimeFW = new DateTime(planungGroup_1, SWT.TIME);
-		final FormData fd_dateTimeFW = new FormData();
-		fd_dateTimeFW.bottom = new FormAttachment(0, 115);
-		fd_dateTimeFW.top = new FormAttachment(0, 94);
-		fd_dateTimeFW.right = new FormAttachment(0, 167);
-		fd_dateTimeFW.left = new FormAttachment(0, 94);
-		dateTimeFW.setLayoutData(fd_dateTimeFW);
-		dateTimeFW.setToolTipText("Zeit zu der die Feuerwehr Box zum letzten Mal angehakt wurde");
+//		final DateTime dateTimeFW = new DateTime(planungGroup_1, SWT.TIME);
+//		final FormData fd_dateTimeFW = new FormData();
+//		fd_dateTimeFW.bottom = new FormAttachment(0, 115);
+//		fd_dateTimeFW.top = new FormAttachment(0, 94);
+//		fd_dateTimeFW.right = new FormAttachment(0, 167);
+//		fd_dateTimeFW.left = new FormAttachment(0, 94);
+//		dateTimeFW.setLayoutData(fd_dateTimeFW);
+//		dateTimeFW.setToolTipText("Zeit zu der die Feuerwehr Box zum letzten Mal angehakt wurde");
 
-		final DateTime dateTimeBRKDT = new DateTime(planungGroup_1, SWT.TIME);
-		final FormData fd_dateTimeBRKDT = new FormData();
-		fd_dateTimeBRKDT.bottom = new FormAttachment(0, 93);
-		fd_dateTimeBRKDT.top = new FormAttachment(0, 72);
-		fd_dateTimeBRKDT.right = new FormAttachment(0, 167);
-		fd_dateTimeBRKDT.left = new FormAttachment(0, 94);
-		dateTimeBRKDT.setLayoutData(fd_dateTimeBRKDT);
-		dateTimeBRKDT.setToolTipText("Zeit zu der die BRKDT Box zum letzten Mal angehakt wurde");
+//		final DateTime dateTimeBRKDT = new DateTime(planungGroup_1, SWT.TIME);
+//		final FormData fd_dateTimeBRKDT = new FormData();
+//		fd_dateTimeBRKDT.bottom = new FormAttachment(0, 93);
+//		fd_dateTimeBRKDT.top = new FormAttachment(0, 72);
+//		fd_dateTimeBRKDT.right = new FormAttachment(0, 167);
+//		fd_dateTimeBRKDT.left = new FormAttachment(0, 94);
+//		dateTimeBRKDT.setLayoutData(fd_dateTimeBRKDT);
+//		dateTimeBRKDT.setToolTipText("Zeit zu der die BRKDT Box zum letzten Mal angehakt wurde");
 
-		final DateTime dateTimeDF = new DateTime(planungGroup_1, SWT.TIME);
-		final FormData fd_dateTimeDF = new FormData();
-		fd_dateTimeDF.bottom = new FormAttachment(0, 71);
-		fd_dateTimeDF.top = new FormAttachment(0, 50);
-		fd_dateTimeDF.right = new FormAttachment(0, 167);
-		fd_dateTimeDF.left = new FormAttachment(0, 94);
-		dateTimeDF.setLayoutData(fd_dateTimeDF);
-		dateTimeDF.setToolTipText("Zeit zu der das DF/Insp. Feld zum letzten Mal angehakt wurde");
+//		final DateTime dateTimeDF = new DateTime(planungGroup_1, SWT.TIME);
+//		final FormData fd_dateTimeDF = new FormData();
+//		fd_dateTimeDF.bottom = new FormAttachment(0, 71);
+//		fd_dateTimeDF.top = new FormAttachment(0, 50);
+//		fd_dateTimeDF.right = new FormAttachment(0, 167);
+//		fd_dateTimeDF.left = new FormAttachment(0, 94);
+//		dateTimeDF.setLayoutData(fd_dateTimeDF);
+//		dateTimeDF.setToolTipText("Zeit zu der das DF/Insp. Feld zum letzten Mal angehakt wurde");
 
-		final DateTime dateTimeNotarzt = new DateTime(planungGroup_1, SWT.TIME);
-		final FormData fd_dateTimeNotarzt = new FormData();
-		fd_dateTimeNotarzt.bottom = new FormAttachment(0, 27);
-		fd_dateTimeNotarzt.top = new FormAttachment(0, 6);
-		fd_dateTimeNotarzt.right = new FormAttachment(0, 167);
-		fd_dateTimeNotarzt.left = new FormAttachment(0, 94);
-		dateTimeNotarzt.setLayoutData(fd_dateTimeNotarzt);
-		dateTimeNotarzt.setToolTipText("Zeit zu der die Notarzt Box zum letzten Mal angehakt wurde");
+//		final DateTime dateTimeNotarzt = new DateTime(planungGroup_1, SWT.TIME);
+//		final FormData fd_dateTimeNotarzt = new FormData();
+//		fd_dateTimeNotarzt.bottom = new FormAttachment(0, 27);
+//		fd_dateTimeNotarzt.top = new FormAttachment(0, 6);
+//		fd_dateTimeNotarzt.right = new FormAttachment(0, 167);
+//		fd_dateTimeNotarzt.left = new FormAttachment(0, 94);
+//		dateTimeNotarzt.setLayoutData(fd_dateTimeNotarzt);
+//		dateTimeNotarzt.setToolTipText("Zeit zu der die Notarzt Box zum letzten Mal angehakt wurde");
 
-		final DateTime dateTimeRTH = new DateTime(planungGroup_1, SWT.TIME);
-		final FormData fd_dateTimeRTH = new FormData();
-		fd_dateTimeRTH.bottom = new FormAttachment(0, 49);
-		fd_dateTimeRTH.top = new FormAttachment(0, 28);
-		fd_dateTimeRTH.right = new FormAttachment(0, 167);
-		fd_dateTimeRTH.left = new FormAttachment(0, 94);
-		dateTimeRTH.setLayoutData(fd_dateTimeRTH);
-		dateTimeRTH.setToolTipText("Zeit zu der die RTH Box zum letzten Mal angehakt wurde");
+//		final DateTime dateTimeRTH = new DateTime(planungGroup_1, SWT.TIME);
+//		final FormData fd_dateTimeRTH = new FormData();
+//		fd_dateTimeRTH.bottom = new FormAttachment(0, 49);
+//		fd_dateTimeRTH.top = new FormAttachment(0, 28);
+//		fd_dateTimeRTH.right = new FormAttachment(0, 167);
+//		fd_dateTimeRTH.left = new FormAttachment(0, 94);
+//		dateTimeRTH.setLayoutData(fd_dateTimeRTH);
+//		dateTimeRTH.setToolTipText("Zeit zu der die RTH Box zum letzten Mal angehakt wurde");
 
-		final DateTime dateTimeBergrettung = new DateTime(planungGroup_1, SWT.TIME);
-		final FormData fd_dateTimeBergrettung = new FormData();
-		fd_dateTimeBergrettung.bottom = new FormAttachment(0, 159);
-		fd_dateTimeBergrettung.top = new FormAttachment(0, 138);
-		fd_dateTimeBergrettung.right = new FormAttachment(0, 167);
-		fd_dateTimeBergrettung.left = new FormAttachment(0, 94);
-		dateTimeBergrettung.setLayoutData(fd_dateTimeBergrettung);
-		dateTimeBergrettung.setToolTipText("Zeit zu der die Bergrettung Box zum letzten Mal angehakt wurde");
+//		final DateTime dateTimeBergrettung = new DateTime(planungGroup_1, SWT.TIME);
+//		final FormData fd_dateTimeBergrettung = new FormData();
+//		fd_dateTimeBergrettung.bottom = new FormAttachment(0, 159);
+//		fd_dateTimeBergrettung.top = new FormAttachment(0, 138);
+//		fd_dateTimeBergrettung.right = new FormAttachment(0, 167);
+//		fd_dateTimeBergrettung.left = new FormAttachment(0, 94);
+//		dateTimeBergrettung.setLayoutData(fd_dateTimeBergrettung);
+//		dateTimeBergrettung.setToolTipText("Zeit zu der die Bergrettung Box zum letzten Mal angehakt wurde");
 		planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton});
 
 		final Label label_5 = new Label(shell, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -814,6 +828,7 @@ public class TransportForm {
 		fd_label_5.left = new FormAttachment(0, 10);
 		label_5.setLayoutData(fd_label_5);
 
+		//group 'Transportdetails'
 		transportdetailsGroup = new Group(shell, SWT.NONE);
 		transportdetailsGroup.setLayout(new FormLayout());
 		final FormData fd_transportdetailsGroup = new FormData();
@@ -842,15 +857,15 @@ public class TransportForm {
 		fd_textTransportNummer.left = new FormAttachment(0, 60);
 		textTransportNummer.setLayoutData(fd_textTransportNummer);
 
-		final Label transportnumemmerLabel_1 = new Label(transportdetailsGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_1 = new FormData();
-		fd_transportnumemmerLabel_1.bottom = new FormAttachment(0, 54);
-		fd_transportnumemmerLabel_1.top = new FormAttachment(0, 41);
-		fd_transportnumemmerLabel_1.right = new FormAttachment(0, 57);
-		fd_transportnumemmerLabel_1.left = new FormAttachment(0, 7);
-		transportnumemmerLabel_1.setLayoutData(fd_transportnumemmerLabel_1);
-		transportnumemmerLabel_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_1.setText("Ortsstelle:");
+		final Label ortsstelleLabel = new Label(transportdetailsGroup, SWT.NONE);
+		final FormData fd_ortsstelleLabel = new FormData();
+		fd_ortsstelleLabel.bottom = new FormAttachment(0, 54);
+		fd_ortsstelleLabel.top = new FormAttachment(0, 41);
+		fd_ortsstelleLabel.right = new FormAttachment(0, 57);
+		fd_ortsstelleLabel.left = new FormAttachment(0, 7);
+		ortsstelleLabel.setLayoutData(fd_ortsstelleLabel);
+		ortsstelleLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ortsstelleLabel.setText("Ortsstelle:");
 
 		textOrtsstelle = new Text(transportdetailsGroup, SWT.BORDER);
 		final FormData fd_textOrtsstelle = new FormData();
@@ -868,17 +883,19 @@ public class TransportForm {
 		fd_textFahrzeug.left = new FormAttachment(0, 60);
 		textFahrzeug.setLayoutData(fd_textFahrzeug);
 
-		final Label transportnumemmerLabel_1_1 = new Label(transportdetailsGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_1_1 = new FormData();
-		fd_transportnumemmerLabel_1_1.bottom = new FormAttachment(0, 81);
-		fd_transportnumemmerLabel_1_1.top = new FormAttachment(0, 68);
-		fd_transportnumemmerLabel_1_1.right = new FormAttachment(0, 57);
-		fd_transportnumemmerLabel_1_1.left = new FormAttachment(0, 7);
-		transportnumemmerLabel_1_1.setLayoutData(fd_transportnumemmerLabel_1_1);
-		transportnumemmerLabel_1_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_1_1.setText("Fahrzeug:");
+		final Label farzeugLabel = new Label(transportdetailsGroup, SWT.NONE);
+		final FormData fd_farzeugLabel = new FormData();
+		fd_farzeugLabel.bottom = new FormAttachment(0, 81);
+		fd_farzeugLabel.top = new FormAttachment(0, 68);
+		fd_farzeugLabel.right = new FormAttachment(0, 57);
+		fd_farzeugLabel.left = new FormAttachment(0, 7);
+		farzeugLabel.setLayoutData(fd_farzeugLabel);
+		farzeugLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		farzeugLabel.setText("Fahrzeug:");
 		transportdetailsGroup.setTabList(new Control[] {textTransportNummer, textOrtsstelle, textFahrzeug});
 
+		
+		//group 'Personal am Fahrzeug'
 		personalAmFahrzeugGroup = new Group(shell, SWT.NONE);
 		personalAmFahrzeugGroup.setLayout(new FormLayout());
 		final FormData fd_personalAmFahrzeugGroup = new FormData();
@@ -913,37 +930,39 @@ public class TransportForm {
 		fd_textSaniII.left = new FormAttachment(0, 73);
 		textSaniII.setLayoutData(fd_textSaniII);
 
-		final Label transportnumemmerLabel_2 = new Label(personalAmFahrzeugGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_2 = new FormData();
-		fd_transportnumemmerLabel_2.bottom = new FormAttachment(0, 27);
-		fd_transportnumemmerLabel_2.top = new FormAttachment(0, 14);
-		fd_transportnumemmerLabel_2.right = new FormAttachment(0, 54);
-		fd_transportnumemmerLabel_2.left = new FormAttachment(0, 7);
-		transportnumemmerLabel_2.setLayoutData(fd_transportnumemmerLabel_2);
-		transportnumemmerLabel_2.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_2.setText("Fahrer:");
+		final Label driverLabel = new Label(personalAmFahrzeugGroup, SWT.NONE);
+		final FormData fd_driverLabel = new FormData();
+		fd_driverLabel.bottom = new FormAttachment(0, 27);
+		fd_driverLabel.top = new FormAttachment(0, 14);
+		fd_driverLabel.right = new FormAttachment(0, 54);
+		fd_driverLabel.left = new FormAttachment(0, 7);
+		driverLabel.setLayoutData(fd_driverLabel);
+		driverLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		driverLabel.setText("Fahrer:");
 
-		final Label transportnumemmerLabel_3 = new Label(personalAmFahrzeugGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_3 = new FormData();
-		fd_transportnumemmerLabel_3.bottom = new FormAttachment(0, 54);
-		fd_transportnumemmerLabel_3.top = new FormAttachment(0, 41);
-		fd_transportnumemmerLabel_3.right = new FormAttachment(0, 68);
-		fd_transportnumemmerLabel_3.left = new FormAttachment(0, 7);
-		transportnumemmerLabel_3.setLayoutData(fd_transportnumemmerLabel_3);
-		transportnumemmerLabel_3.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_3.setText("Sanitäter I:");
+		final Label paramedicILabel = new Label(personalAmFahrzeugGroup, SWT.NONE);
+		final FormData fd_paramedicILabel = new FormData();
+		fd_paramedicILabel.bottom = new FormAttachment(0, 54);
+		fd_paramedicILabel.top = new FormAttachment(0, 41);
+		fd_paramedicILabel.right = new FormAttachment(0, 68);
+		fd_paramedicILabel.left = new FormAttachment(0, 7);
+		paramedicILabel.setLayoutData(fd_paramedicILabel);
+		paramedicILabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		paramedicILabel.setText("Sanitäter I:");
 
-		final Label transportnumemmerLabel_4 = new Label(personalAmFahrzeugGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_4 = new FormData();
-		fd_transportnumemmerLabel_4.bottom = new FormAttachment(0, 81);
-		fd_transportnumemmerLabel_4.top = new FormAttachment(0, 68);
-		fd_transportnumemmerLabel_4.right = new FormAttachment(0, 68);
-		fd_transportnumemmerLabel_4.left = new FormAttachment(0, 7);
-		transportnumemmerLabel_4.setLayoutData(fd_transportnumemmerLabel_4);
-		transportnumemmerLabel_4.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_4.setText("Sanitäter II:");
+		final Label paramedicIILabel = new Label(personalAmFahrzeugGroup, SWT.NONE);
+		final FormData fd_paramedicIILabel = new FormData();
+		fd_paramedicIILabel.bottom = new FormAttachment(0, 81);
+		fd_paramedicIILabel.top = new FormAttachment(0, 68);
+		fd_paramedicIILabel.right = new FormAttachment(0, 68);
+		fd_paramedicIILabel.left = new FormAttachment(0, 7);
+		paramedicIILabel.setLayoutData(fd_paramedicIILabel);
+		paramedicIILabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		paramedicIILabel.setText("Sanitäter II:");
 		personalAmFahrzeugGroup.setTabList(new Control[] {textFahrer, textSnaniI, textSaniII});
 
+		
+		//group 'Statusmeldungen'
 		statusmeldungenGroup = new Group(shell, SWT.NONE);
 		statusmeldungenGroup.setLayout(new FormLayout());
 		final FormData fd_statusmeldungenGroup = new FormData();
@@ -962,15 +981,15 @@ public class TransportForm {
 		fd_textAufgen.left = new FormAttachment(0, 44);
 		textAufgen.setLayoutData(fd_textAufgen);
 
-		final Label transportnumemmerLabel_5 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5 = new FormData();
-		fd_transportnumemmerLabel_5.bottom = new FormAttachment(0, 26);
-		fd_transportnumemmerLabel_5.top = new FormAttachment(0, 13);
-		fd_transportnumemmerLabel_5.right = new FormAttachment(0, 43);
-		fd_transportnumemmerLabel_5.left = new FormAttachment(0, 12);
-		transportnumemmerLabel_5.setLayoutData(fd_transportnumemmerLabel_5);
-		transportnumemmerLabel_5.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5.setText("Aufg.:");
+		final Label aufgLabel = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_aufgLabel = new FormData();
+		fd_aufgLabel.bottom = new FormAttachment(0, 26);
+		fd_aufgLabel.top = new FormAttachment(0, 13);
+		fd_aufgLabel.right = new FormAttachment(0, 43);
+		fd_aufgLabel.left = new FormAttachment(0, 12);
+		aufgLabel.setLayoutData(fd_aufgLabel);
+		aufgLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		aufgLabel.setText("Aufg.:");
 
 		final Text textAE = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textAE = new FormData();
@@ -980,15 +999,15 @@ public class TransportForm {
 		fd_textAE.left = new FormAttachment(0, 44);
 		textAE.setLayoutData(fd_textAE);
 
-		final Label transportnumemmerLabel_5_1 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_1 = new FormData();
-		fd_transportnumemmerLabel_5_1.bottom = new FormAttachment(0, 58);
-		fd_transportnumemmerLabel_5_1.top = new FormAttachment(0, 45);
-		fd_transportnumemmerLabel_5_1.right = new FormAttachment(0, 43);
-		fd_transportnumemmerLabel_5_1.left = new FormAttachment(0, 12);
-		transportnumemmerLabel_5_1.setLayoutData(fd_transportnumemmerLabel_5_1);
-		transportnumemmerLabel_5_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_1.setText("AE:");
+		final Label aeLabel = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_aeLabel = new FormData();
+		fd_aeLabel.bottom = new FormAttachment(0, 58);
+		fd_aeLabel.top = new FormAttachment(0, 45);
+		fd_aeLabel.right = new FormAttachment(0, 43);
+		fd_aeLabel.left = new FormAttachment(0, 12);
+		aeLabel.setLayoutData(fd_aeLabel);
+		aeLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		aeLabel.setText("AE:");
 
 		final Text textS1 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS1 = new FormData();
@@ -998,15 +1017,15 @@ public class TransportForm {
 		fd_textS1.left = new FormAttachment(0, 132);
 		textS1.setLayoutData(fd_textS1);
 
-		final Label transportnumemmerLabel_5_2 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2 = new FormData();
-		fd_transportnumemmerLabel_5_2.bottom = new FormAttachment(0, 26);
-		fd_transportnumemmerLabel_5_2.top = new FormAttachment(0, 13);
-		fd_transportnumemmerLabel_5_2.right = new FormAttachment(0, 141);
-		fd_transportnumemmerLabel_5_2.left = new FormAttachment(0, 110);
-		transportnumemmerLabel_5_2.setLayoutData(fd_transportnumemmerLabel_5_2);
-		transportnumemmerLabel_5_2.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2.setText("S1:");
+		final Label ts1Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts1Label = new FormData();
+		fd_ts1Label.bottom = new FormAttachment(0, 26);
+		fd_ts1Label.top = new FormAttachment(0, 13);
+		fd_ts1Label.right = new FormAttachment(0, 141);
+		fd_ts1Label.left = new FormAttachment(0, 110);
+		ts1Label.setLayoutData(fd_ts1Label);
+		ts1Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts1Label.setText("S1:");
 
 		final Text textS2 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS2 = new FormData();
@@ -1024,35 +1043,35 @@ public class TransportForm {
 		fd_textS3.left = new FormAttachment(0, 132);
 		textS3.setLayoutData(fd_textS3);
 
-		final Label transportnumemmerLabel_5_2_1 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2_1 = new FormData();
-		fd_transportnumemmerLabel_5_2_1.bottom = new FormAttachment(0, 59);
-		fd_transportnumemmerLabel_5_2_1.top = new FormAttachment(0, 46);
-		fd_transportnumemmerLabel_5_2_1.right = new FormAttachment(0, 141);
-		fd_transportnumemmerLabel_5_2_1.left = new FormAttachment(0, 110);
-		transportnumemmerLabel_5_2_1.setLayoutData(fd_transportnumemmerLabel_5_2_1);
-		transportnumemmerLabel_5_2_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2_1.setText("S2:");
+		final Label ts2Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts2Label = new FormData();
+		fd_ts2Label.bottom = new FormAttachment(0, 59);
+		fd_ts2Label.top = new FormAttachment(0, 46);
+		fd_ts2Label.right = new FormAttachment(0, 141);
+		fd_ts2Label.left = new FormAttachment(0, 110);
+		ts2Label.setLayoutData(fd_ts2Label);
+		ts2Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts2Label.setText("S2:");
 
-		final Label transportnumemmerLabel_5_2_2 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2_2 = new FormData();
-		fd_transportnumemmerLabel_5_2_2.bottom = new FormAttachment(0, 86);
-		fd_transportnumemmerLabel_5_2_2.top = new FormAttachment(0, 73);
-		fd_transportnumemmerLabel_5_2_2.right = new FormAttachment(0, 141);
-		fd_transportnumemmerLabel_5_2_2.left = new FormAttachment(0, 110);
-		transportnumemmerLabel_5_2_2.setLayoutData(fd_transportnumemmerLabel_5_2_2);
-		transportnumemmerLabel_5_2_2.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2_2.setText("S3:");
+		final Label ts3Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts3Label = new FormData();
+		fd_ts3Label.bottom = new FormAttachment(0, 86);
+		fd_ts3Label.top = new FormAttachment(0, 73);
+		fd_ts3Label.right = new FormAttachment(0, 141);
+		fd_ts3Label.left = new FormAttachment(0, 110);
+		ts3Label.setLayoutData(fd_ts3Label);
+		ts3Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts3Label.setText("S3:");
 
-		final Label transportnumemmerLabel_5_2_3 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2_3 = new FormData();
-		fd_transportnumemmerLabel_5_2_3.bottom = new FormAttachment(0, 27);
-		fd_transportnumemmerLabel_5_2_3.top = new FormAttachment(0, 14);
-		fd_transportnumemmerLabel_5_2_3.right = new FormAttachment(0, 213);
-		fd_transportnumemmerLabel_5_2_3.left = new FormAttachment(0, 195);
-		transportnumemmerLabel_5_2_3.setLayoutData(fd_transportnumemmerLabel_5_2_3);
-		transportnumemmerLabel_5_2_3.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2_3.setText("S4:");
+		final Label ts4Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts4Label = new FormData();
+		fd_ts4Label.bottom = new FormAttachment(0, 27);
+		fd_ts4Label.top = new FormAttachment(0, 14);
+		fd_ts4Label.right = new FormAttachment(0, 213);
+		fd_ts4Label.left = new FormAttachment(0, 195);
+		ts4Label.setLayoutData(fd_ts4Label);
+		ts4Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts4Label.setText("S4:");
 
 		final Text textS4 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS4 = new FormData();
@@ -1078,25 +1097,25 @@ public class TransportForm {
 		fd_textS6.left = new FormAttachment(0, 214);
 		textS6.setLayoutData(fd_textS6);
 
-		final Label transportnumemmerLabel_5_2_3_1 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2_3_1 = new FormData();
-		fd_transportnumemmerLabel_5_2_3_1.bottom = new FormAttachment(0, 54);
-		fd_transportnumemmerLabel_5_2_3_1.top = new FormAttachment(0, 41);
-		fd_transportnumemmerLabel_5_2_3_1.right = new FormAttachment(0, 213);
-		fd_transportnumemmerLabel_5_2_3_1.left = new FormAttachment(0, 195);
-		transportnumemmerLabel_5_2_3_1.setLayoutData(fd_transportnumemmerLabel_5_2_3_1);
-		transportnumemmerLabel_5_2_3_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2_3_1.setText("S5:");
+		final Label ts5Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts5Label = new FormData();
+		fd_ts5Label.bottom = new FormAttachment(0, 54);
+		fd_ts5Label.top = new FormAttachment(0, 41);
+		fd_ts5Label.right = new FormAttachment(0, 213);
+		fd_ts5Label.left = new FormAttachment(0, 195);
+		ts5Label.setLayoutData(fd_ts5Label);
+		ts5Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts5Label.setText("S5:");
 
-		final Label transportnumemmerLabel_5_2_3_2 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2_3_2 = new FormData();
-		fd_transportnumemmerLabel_5_2_3_2.bottom = new FormAttachment(0, 81);
-		fd_transportnumemmerLabel_5_2_3_2.top = new FormAttachment(0, 68);
-		fd_transportnumemmerLabel_5_2_3_2.right = new FormAttachment(0, 213);
-		fd_transportnumemmerLabel_5_2_3_2.left = new FormAttachment(0, 195);
-		transportnumemmerLabel_5_2_3_2.setLayoutData(fd_transportnumemmerLabel_5_2_3_2);
-		transportnumemmerLabel_5_2_3_2.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2_3_2.setText("S6:");
+		final Label ts6Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts6Label = new FormData();
+		fd_ts6Label.bottom = new FormAttachment(0, 81);
+		fd_ts6Label.top = new FormAttachment(0, 68);
+		fd_ts6Label.right = new FormAttachment(0, 213);
+		fd_ts6Label.left = new FormAttachment(0, 195);
+		ts6Label.setLayoutData(fd_ts6Label);
+		ts6Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts6Label.setText("S6:");
 
 		final Text textS7 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS7 = new FormData();
@@ -1122,35 +1141,35 @@ public class TransportForm {
 		fd_textS9.left = new FormAttachment(0, 298);
 		textS9.setLayoutData(fd_textS9);
 
-		final Label transportnumemmerLabel_5_2_3_3 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2_3_3 = new FormData();
-		fd_transportnumemmerLabel_5_2_3_3.bottom = new FormAttachment(0, 27);
-		fd_transportnumemmerLabel_5_2_3_3.top = new FormAttachment(0, 14);
-		fd_transportnumemmerLabel_5_2_3_3.right = new FormAttachment(0, 295);
-		fd_transportnumemmerLabel_5_2_3_3.left = new FormAttachment(0, 277);
-		transportnumemmerLabel_5_2_3_3.setLayoutData(fd_transportnumemmerLabel_5_2_3_3);
-		transportnumemmerLabel_5_2_3_3.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2_3_3.setText("S7:");
+		final Label ts7Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts7Label = new FormData();
+		fd_ts7Label.bottom = new FormAttachment(0, 27);
+		fd_ts7Label.top = new FormAttachment(0, 14);
+		fd_ts7Label.right = new FormAttachment(0, 295);
+		fd_ts7Label.left = new FormAttachment(0, 277);
+		ts7Label.setLayoutData(fd_ts7Label);
+		ts7Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts7Label.setText("S7:");
 
-		final Label transportnumemmerLabel_5_2_3_4 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2_3_4 = new FormData();
-		fd_transportnumemmerLabel_5_2_3_4.bottom = new FormAttachment(0, 54);
-		fd_transportnumemmerLabel_5_2_3_4.top = new FormAttachment(0, 41);
-		fd_transportnumemmerLabel_5_2_3_4.right = new FormAttachment(0, 295);
-		fd_transportnumemmerLabel_5_2_3_4.left = new FormAttachment(0, 277);
-		transportnumemmerLabel_5_2_3_4.setLayoutData(fd_transportnumemmerLabel_5_2_3_4);
-		transportnumemmerLabel_5_2_3_4.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2_3_4.setText("S8:");
+		final Label ts8Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts8Label = new FormData();
+		fd_ts8Label.bottom = new FormAttachment(0, 54);
+		fd_ts8Label.top = new FormAttachment(0, 41);
+		fd_ts8Label.right = new FormAttachment(0, 295);
+		fd_ts8Label.left = new FormAttachment(0, 277);
+		ts8Label.setLayoutData(fd_ts8Label);
+		ts8Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts8Label.setText("S8:");
 
-		final Label transportnumemmerLabel_5_2_3_5 = new Label(statusmeldungenGroup, SWT.NONE);
-		final FormData fd_transportnumemmerLabel_5_2_3_5 = new FormData();
-		fd_transportnumemmerLabel_5_2_3_5.bottom = new FormAttachment(0, 81);
-		fd_transportnumemmerLabel_5_2_3_5.top = new FormAttachment(0, 68);
-		fd_transportnumemmerLabel_5_2_3_5.right = new FormAttachment(0, 295);
-		fd_transportnumemmerLabel_5_2_3_5.left = new FormAttachment(0, 277);
-		transportnumemmerLabel_5_2_3_5.setLayoutData(fd_transportnumemmerLabel_5_2_3_5);
-		transportnumemmerLabel_5_2_3_5.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		transportnumemmerLabel_5_2_3_5.setText("S9:");
+		final Label ts9Label = new Label(statusmeldungenGroup, SWT.NONE);
+		final FormData fd_ts9Label = new FormData();
+		fd_ts9Label.bottom = new FormAttachment(0, 81);
+		fd_ts9Label.top = new FormAttachment(0, 68);
+		fd_ts9Label.right = new FormAttachment(0, 295);
+		fd_ts9Label.left = new FormAttachment(0, 277);
+		ts9Label.setLayoutData(fd_ts9Label);
+		ts9Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts9Label.setText("S9:");
 
 		abbrechenButton = new Button(shell, SWT.NONE);
 		final FormData fd_abbrechenButton = new FormData();
@@ -1171,6 +1190,8 @@ public class TransportForm {
 		okButton.setLayoutData(fd_okButton);
 		okButton.setText("OK");
 
+		
+		//transport type selction buttons //TODO
 		group = new Group(shell, SWT.NONE);
 		group.setLayout(new FormLayout());
 		final FormData fd_group = new FormData();
@@ -1189,12 +1210,29 @@ public class TransportForm {
 		fd_buttonNotfall.left = new FormAttachment(0, 94);
 		buttonNotfall.setLayoutData(fd_buttonNotfall);
 		buttonNotfall.setToolTipText("Blendet alle für einen Notfall nicht relevanten Felder aus");
-		buttonNotfall.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+		buttonNotfall.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				this.setPreBookingInactive();
+			}
+			
+			public void setPreBookingInactive()
+			{
+				planungGroup.setEnabled(false);
+				planungGroup.setBackground(inactiveBackgroundColor);
+//				group.setEnabled(false);
+//				timeAnmeldung.setBackground(inactiveBackgroundColor);
+//				timeAbmeldung.setBackground(inactiveBackgroundColor);
+//				group.setBackground(inactiveBackgroundColor);
+//				anmeldungLabel.setBackground(inactiveBackgroundColor);
+//				abmeldungLabel.setBackground(inactiveBackgroundColor);
 			}
 		});
 		buttonNotfall.setText("Nofall");
 
+		
+	
 		buttonVormerkung = new Button(group, SWT.TOGGLE);
 		final FormData fd_buttonVormerkung = new FormData();
 		fd_buttonVormerkung.bottom = new FormAttachment(0, 49);
@@ -1225,5 +1263,8 @@ public class TransportForm {
 		shell.setTabList(new Control[] {dateTime, transportdatenGroup, planungGroup, patientenzustandGroup, planungGroup_1, transportdetailsGroup, personalAmFahrzeugGroup, statusmeldungenGroup, okButton, abbrechenButton, group});
 		//
 	}
+	
+	//METHODS
+	
 
 }
