@@ -110,6 +110,14 @@ public class WebClient
             return false;
         }
     }
+    
+    /**
+     * Closes the socket and ends the communication
+     */
+    public void quit()
+    {
+        socket.cleanup();
+    }
 
     /**
      *  Encodes and sends the request to the server. 
@@ -152,13 +160,15 @@ public class WebClient
             factory.setupDecodeFactory(result);
             list = factory.decode();
             //get the information
-            userId = factory.getUserId();
-            contentType = factory.getContentType();
-            queryString = factory.getQueryString();
-            timestamp = factory.getTimestamp();
+            this.userId = factory.getUserId();
+            this.contentType = factory.getContentType();
+            this.queryString = factory.getQueryString();
+            this.timestamp = factory.getTimestamp();
+            System.out.println(userId+","+contentType+","+queryString+","+timestamp);
             //return the decoded objects
             return list;
         }
+        
         //failed to decode
         return null;
     }
@@ -174,7 +184,7 @@ public class WebClient
         try
         {
             //try to send
-            socket.sendMessage(message);
+            System.out.println("Sending: "+socket.sendMessage(message));
             return socket.receiveMessage();
         }
         catch(IOException ioe)
