@@ -29,7 +29,7 @@ public class LoginController implements Controller
             List<AbstractMessage> result;
             WebClient client = WebClient.getInstance();
             //open a connection to the server
-            client.connect("localhost", 4711);
+            client.connect("81.189.52.155", 4711);
             Login login = new Login("user1","P@ssw0rd");
             result = client.sendRequest("user1", Login.ID, IModelActions.LOGIN, login);
             //get the content
