@@ -67,7 +67,7 @@ public class WebClient
     /**
      * Default class constructr
      */
-    private WebClient() 
+    public WebClient() 
     { 
         //initialize the codec factory
         registerEncoderAndDecoder();
@@ -148,9 +148,10 @@ public class WebClient
         //set up the factory
         factory = new XMLFactory();
         factory.setupEncodeFactory(userId, contentType, queryString);
-        //wrapp into a list
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.add(messageObject);
+        //wrapp into a list
+        if(messageObject != null)
+            list.add(messageObject);
         //encode, send and get the result
         String result = queryServer(factory.encode(list));
         //assert valid
@@ -164,7 +165,7 @@ public class WebClient
             this.contentType = factory.getContentType();
             this.queryString = factory.getQueryString();
             this.timestamp = factory.getTimestamp();
-            System.out.println(userId+","+contentType+","+queryString+","+timestamp);
+            System.out.println("Received: "+ this.userId+","+this.contentType+","+this.queryString+","+this.timestamp);
             //return the decoded objects
             return list;
         }
