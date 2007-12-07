@@ -23,7 +23,18 @@
                                     </tr>
                                     <tr>
                                         <td id="BlockContent">
-                                            
+                                            <%  
+                                                 if(request.getParameter("emplyee")!=null){
+                                                                         
+                                                	   while(request.getParameter("emplyee")!=null){
+                                            %>
+                                                                                
+                                            <% 
+                                                                             
+                                                                         }
+                                                                     }
+                                             %>
+                                            <!--  
                                             <table width="100%" border='0' cellpadding='0' cellspacing='0'>
                                                 <tr>
                                                     <td id="weekdayZ">Zeit</td>
@@ -310,6 +321,7 @@
                                                     </td>
                                                 </tr>
                                             </table>
+                                            -->
                                         </td>
                                     </tr>
                                 </table>
