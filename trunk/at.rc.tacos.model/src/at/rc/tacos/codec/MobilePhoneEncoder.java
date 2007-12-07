@@ -13,18 +13,18 @@ public class MobilePhoneEncoder  implements MessageEncoder
     {
         //Cast the object to a item
         MobilePhoneDetail phone = (MobilePhoneDetail)message;
-        
         writer.writeStartElement(MobilePhoneDetail.ID);
-       
-        //write the elements and attributes
+        //write the id of the phone
         writer.writeStartElement("mobilePhoneId");
         writer.writeCharacters(phone.getMobilePhoneId());
         writer.writeEndElement();
-        
-        writer.writeStartElement("mobilePhoneNumer");
-        writer.writeCharacters(phone.getMobilePhoneNumber());
-        writer.writeEndElement();
-        
+        //the phone number is not a required field
+        if(phone.getMobilePhoneNumber() != null)
+        {
+            writer.writeStartElement("mobilePhoneNumer");
+            writer.writeCharacters(phone.getMobilePhoneNumber());
+            writer.writeEndElement();
+        }
         writer.writeEndElement();
     }
 }

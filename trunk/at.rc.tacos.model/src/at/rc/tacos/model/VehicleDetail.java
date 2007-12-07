@@ -40,15 +40,19 @@ public class VehicleDetail extends AbstractMessage
     {
         super(ID);
     }
-
+    
     /**
-     * Class constructor to create a new vehicle with a specific name
-     * @param vehicleName
+     * Class constructor to create a minimal vehicle object
+     * @param vehicleName the identification name of the vehicle 
+     * @param vehicleType the type of the vehicle
+     * @param basicStation the station where the vehicle is located
      */
-    public VehicleDetail(String vehicleName) 
+    public VehicleDetail(String vehicleName,String vehicleType,String basicStation) 
     {
         super(ID);
         setVehicleName(vehicleName);
+        setVehicleType(vehicleType);
+        setBasicStation(basicStation);
     }
 
     //METHODS

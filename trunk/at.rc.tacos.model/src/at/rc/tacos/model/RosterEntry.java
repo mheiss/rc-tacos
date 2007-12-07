@@ -32,6 +32,27 @@ public class RosterEntry extends AbstractMessage
 	{
 	    super(ID);
 	}
+	
+	/**
+	 * Constructor for a minimal roster entry object
+	 * @param staffMember the person for this service
+	 * @param servicetype the employee status
+	 * @param comptence the function of this person
+	 * @param station the place to work
+	 * @param plannedStartOfWork the planned time to start the service
+	 * @param plannedEndOfWork the planned end of the service
+	 */
+	public RosterEntry(StaffMember staffMember,String servicetype,String competence,
+	        String station,long plannedStartOfWork, long plannedEndOfWork)
+	{
+	    super(ID);
+        setStaffMember(staffMember);
+        setPlannedEndOfWork(plannedEndOfWork);
+        setPlannedStartOfWork(plannedStartOfWork);
+        setStation(station);
+        setCompetence(competence);
+        setServicetype(servicetype);
+	}
 
 	/**
 	 * @param rosterId the identification of the entry

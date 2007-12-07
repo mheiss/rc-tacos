@@ -15,18 +15,24 @@ public class NotifierEncoder  implements MessageEncoder
         NotifierDetail notifier = (NotifierDetail)message;
         
         writer.writeStartElement(NotifierDetail.ID);
-        //write the elements and attributes
+        //write the notifier name
         writer.writeStartElement("name");
         writer.writeCharacters(notifier.getNotifierName());
         writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("telephoneNumer");
-        writer.writeCharacters(notifier.getNotifierTelephoneNumber());
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("notifierNotes");
-        writer.writeCharacters(notifier.getNotifierNotes());
-        writer.writeEndElement();
+        //the number is not mandatory
+        if(notifier.getNotifierTelephoneNumber() != null)
+        {
+            writer.writeStartElement("telephoneNumer");
+            writer.writeCharacters(notifier.getNotifierTelephoneNumber());
+            writer.writeEndElement();
+        }
+        //the notes are not mandatory
+        if(notifier.getNotifierNotes() != null)
+        {
+            writer.writeStartElement("notifierNotes");
+            writer.writeCharacters(notifier.getNotifierNotes());
+            writer.writeEndElement();
+        }
         //end
         writer.writeEndElement();
     }

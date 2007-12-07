@@ -19,45 +19,54 @@ public class RosterEntryEncoder  implements MessageEncoder
         //start
         writer.writeStartElement(RosterEntry.ID);
 
-        //write the elements and attributes
+        //id for this entry
         writer.writeStartElement("rosterId");
         writer.writeCharacters(String.valueOf(entry.getRosterId()));
         writer.writeEndElement();
         //get the encoder for the staff member
         MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
         encoder.doEncode(entry.getStaffMember(), writer);
-        //write the elements and attributes
+        //planned start of work
         writer.writeStartElement("plannedStartOfWork");
         writer.writeCharacters(Long.toString(entry.getPlannedStartOfWork()));
         writer.writeEndElement();
-        //write the elements and attributes
+        //planned end of work
         writer.writeStartElement("plannedEndOfWork");
         writer.writeCharacters(Long.toString(entry.getPlannedEndOfWork()));
         writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("realStartOfWork");
-        writer.writeCharacters(Long.toString(entry.getRealStartOfWork()));
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("realEndOfWork");
-        writer.writeCharacters(Long.toString(entry.getRealEndOfWork()));
-        writer.writeEndElement();
-        //write the elements and attributes
+        //real time is mandatory
+        if(entry.getRealStartOfWork() > 0)
+        {
+            writer.writeStartElement("realStartOfWork");
+            writer.writeCharacters(Long.toString(entry.getRealStartOfWork()));
+            writer.writeEndElement();
+        }
+        //real time is mandatory
+        if(entry.getRealEndOfWork() > 0)
+        {
+            writer.writeStartElement("realEndOfWork");
+            writer.writeCharacters(Long.toString(entry.getRealEndOfWork()));
+            writer.writeEndElement();
+        }
+        //the station for the service
         writer.writeStartElement("station");
         writer.writeCharacters(entry.getStation());
         writer.writeEndElement();
-        //write the elements and attributes
+        //the competence for this service
         writer.writeStartElement("competence");
         writer.writeCharacters(entry.getCompetence());
         writer.writeEndElement();
-        //write the elements and attributes
+        //the type of the service
         writer.writeStartElement("servicetype");
         writer.writeCharacters(entry.getServicetype());
         writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("rosterNotes");
-        writer.writeCharacters(entry.getRosterNotes());
-        writer.writeEndElement();
+        //notes are mandatory
+        if(entry.getRosterNotes() != null)
+        {
+            writer.writeStartElement("rosterNotes");
+            writer.writeCharacters(entry.getRosterNotes());
+            writer.writeEndElement();
+        }
         //write the elements and attributes
         writer.writeStartElement("standby");
         writer.writeCharacters(Boolean.toString(entry.getStandby()));

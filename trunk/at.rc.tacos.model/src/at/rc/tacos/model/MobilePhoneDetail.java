@@ -21,9 +21,19 @@ public class MobilePhoneDetail extends AbstractMessage
     { 
         super(ID);
     }
+    
+    /**
+     * Constructor for a minimal mobile phone object
+     * @param mobilePhoneId the id of the details
+     */
+    public MobilePhoneDetail(String mobilePhoneId) 
+    {
+        super(ID);
+        setMobilePhoneId(mobilePhoneId);
+    }
 
     /**
-     * Constructor for a complete mobile pbone detail
+     * Constructor for a complete mobile phone detail
      * @param mobilePhoneId the id of the details
      * @param mobilphonenumer the mobile phone number
      */

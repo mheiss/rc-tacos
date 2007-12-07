@@ -68,6 +68,33 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         super(ID);
         statusMessages = new ArrayList<StatusMessages>();
     }
+    
+    /**
+     *  Constructor for a minimal Transport object.
+     *  @param fromStreet the street to get the transport
+     *  @param fromNumber the housenumber
+     *  @param fromCity the city to get the transport
+     *  @param responsibleStation the station that is responsible
+     *  @param dateOfTransport the date for the transport
+     *  @param plannedStartOfTransport the starting time of the transport
+     *  @param transportPriority the priority of the transport
+     *  @param directness the direction of the transport
+     */
+    public Transport(String fromStreet,String fromNumber,String fromCity,
+            String responsibleStation,long dateOfTransport, long plannedStartOfTransport,
+            String transportPriority,int directness)
+    {
+        super(ID);
+        statusMessages = new ArrayList<StatusMessages>();
+        setFromStreet(fromStreet);
+        setFromNumber(fromNumber);
+        setFromCity(fromCity);
+        setResponsibleStation(responsibleStation);
+        setDateOfTransport(dateOfTransport);
+        setPlannedStartOfTransport(plannedStartOfTransport);
+        setTransportPriority(transportPriority);
+        setDirectness(directness);
+    }
 
     //METHODS
     /**

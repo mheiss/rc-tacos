@@ -13,23 +13,26 @@ public class PatientEncoder implements MessageEncoder
     {
         //Cast the object to a item
         Patient patient = (Patient)message;
-        
         //write the start element
         writer.writeStartElement(Patient.ID);
-       
-        //write the elements and attributes
+        //write the patient id
         writer.writeStartElement("patientId");
         writer.writeCharacters(String.valueOf(patient.getPatientId()));
         writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("firstname");
-        writer.writeCharacters(patient.getFirstname());
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("lastname");
-        writer.writeCharacters(patient.getLastname());
-        writer.writeEndElement();
-        
+        //name is not mandatory -> could be that the name is just not  known
+        if(patient.getFirstname() != null)
+        {
+            writer.writeStartElement("firstname");
+            writer.writeCharacters(patient.getFirstname());
+            writer.writeEndElement();
+        }
+        //name is not mandatory -> could be that the name is just not  known
+        if(patient.getLastname() != null)
+        {
+            writer.writeStartElement("lastname");
+            writer.writeCharacters(patient.getLastname());
+            writer.writeEndElement();
+        } 
         //end of the item
         writer.writeEndElement();
     }
