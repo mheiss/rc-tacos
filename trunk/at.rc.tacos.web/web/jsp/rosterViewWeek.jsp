@@ -27,7 +27,7 @@
                                             <table width="100%" border='0' cellpadding='0' cellspacing='0'>
                                                 <tr>
                                                     <td id="weekdayZ">Zeit</td>
-                                                    <td id="weekday"><a href="<%=request.getContextPath()%>/Timetable?action=getTimetableDay">Montag</a><br>01.12.07</td>
+                                                    <td id="weekday">Montag<br>01.12.07</td>
                                                     <td id="weekday">Dienstag<br>01.12.07</td>
                                                     <td id="weekday">Mittwoch<br>02.12.07</td>
                                                     <td id="weekday">Donnerstag<br>03.12.07</td>
