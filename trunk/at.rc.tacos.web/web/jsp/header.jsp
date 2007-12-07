@@ -78,7 +78,7 @@
                                 <!-- 
                                 <form  method="post" action="login" border='0' cellpadding='0' cellspacing='0' width="200"><input type="submit" name="buttonLogout" value="" id="buttonLogout" /></form>
                                  -->
-                                    Willkommen : <%= session.getAttribute("username") %>
+                                    Willkommen : <%= request.getAttribute("username") %>
                                     &nbsp;&nbsp;( <a href="./login.jsp">logout</a> )
                                 </td>
                                 <td width="50%" align="right">
