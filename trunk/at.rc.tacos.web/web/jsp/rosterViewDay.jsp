@@ -1,4 +1,4 @@
- <link rel="stylesheet" type="text/css" href="jsp/css/stylesheet.css" />
+
 
  <jsp:include page="header.jsp" flush="true" />
 
@@ -123,7 +123,7 @@
                                                                 <td id="rosterViewDayName">&nbsp;Ambulanz (6-14)</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2" align="right" style="padding:10px;"><input type="image" src="../image/button_ok.jpg" id="senden" value="anmelden" id="buttonOk" /></td>
+                                                                <td colspan="2" align="right" style="padding:10px;"><input type="image" src="image/button_ok.jpg" id="senden" value="anmelden" id="buttonOk" /></td>
 
                                                             </tr>
                                                         </table>
