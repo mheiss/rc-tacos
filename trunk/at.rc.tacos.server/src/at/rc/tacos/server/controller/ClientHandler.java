@@ -100,12 +100,10 @@ public class ClientHandler implements INetListener
         else if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
         {
             Logout logoutResult = (Logout)listener.handleLogoutRequest(objects.get(0));
-            //remove the client form the list of authenticated clients
-            if(logoutResult.isLoggedOut())
-                ServerController.getDefault().setDeAuthenticated(
-                        logoutResult.getUsername());
-            //send the response message
             server.sendMessage(userId, contentType, queryString, logoutResult);
+            //remove the client form the list of authenticated clients if successfully
+            if(logoutResult.isLoggedOut())
+                ServerController.getDefault().setDeAuthenticated(logoutResult.getUsername());
         }
         //add request
         else if(IModelActions.ADD.equalsIgnoreCase(queryString))
@@ -132,7 +130,7 @@ public class ClientHandler implements INetListener
         {
             ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest();
             //send the listing
-            server.brodcastMessage(userId, contentType, queryString, resultMessageList);
+            server.sendMessage(userId, contentType, queryString, resultMessageList);
         }
         else
         {   
