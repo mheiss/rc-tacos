@@ -264,3 +264,12 @@ TESt
     float:left;
     vertical-align:top;
 }
+
+#rosterViewDayHeadSelbox {
+    width:300px;
+    padding:5px;
+}
+
+#rosterViewDayHeadline{
+    
+}
