@@ -105,8 +105,8 @@ public class VehicleForm
 		ArrayList<StaffMember> staffMemberListAllCheckedIn = new ArrayList<StaffMember>(Arrays.asList(sm1,sm2));
 		
 		//vehicleDetail list with all vehicles which are not out of order
-		VehicleDetail v1 = new VehicleDetail("Bm05");
-		VehicleDetail v2 = new VehicleDetail("Ka03");
+		VehicleDetail v1 = new VehicleDetail("Bm05","KTW","BM");
+		VehicleDetail v2 = new VehicleDetail("Ka03","RTW","KA");
 		ArrayList<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2));
 		
 		
