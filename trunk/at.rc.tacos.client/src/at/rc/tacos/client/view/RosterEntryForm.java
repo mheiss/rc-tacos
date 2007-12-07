@@ -227,7 +227,7 @@ public class RosterEntryForm
 		//fill combo employee name with data
 		for(StaffMember staffMember: staffMemberList)
 		{
-			comboViewer.add(staffMember);
+			comboViewer.add(staffMember.getLastname() +" " +staffMember.getFirstName());
 		}
 
 		setEmployeenameCombo.setBounds(306, 43,226, 24);
