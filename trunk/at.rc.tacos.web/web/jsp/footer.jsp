@@ -1,6 +1,4 @@
- <link href="../css/stylesheet.css" rel="stylesheet" /> 
-
-                        </tr>   
+                         </tr>   
                         </table>
                     </td>
                 </tr>
