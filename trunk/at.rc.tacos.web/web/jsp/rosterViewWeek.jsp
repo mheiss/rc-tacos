@@ -9,31 +9,58 @@
                                 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
                                     <tr>
                                         <td id="BlockHead" align="right" valign="center"><b>Ortsstelle:</b> 
-                                            <select name="ortsstelle">
-                                                 <option value="1">Bruck-Kapfenberg</option>
-                                                 <option value="2">Bruck an der Mur</option>
-                                                 <option value="3">Kapfenberg</option>
-                                                 <option value="4">St. Marein</option>
-                                                 <option value="5">Th&ouml;rl</option>
-                                                 <option value="6">Turnau</option>
-                                                 <option value="7">Breitenau</option>
-                                                 <option value="8">NEF</option>
-                                            </select>
+                                            <!--  Orstellenliste -->
+                                                                <select name="ortsstelle" id="rosterViewDayHeadSelbox">
+                                                                     <%  
+                                                                     if(request.getParameter("place")!=null){
+                                                                         int i;
+                                                                         for(i=0;i<=10;i++){
+                                                                             %>
+                                                                             <option value="id"><%=request.getParameter("place") %></option>
+                                                                             <% 
+                                                                             
+                                                                         }
+                                                                     }
+                                                                     %>
+                                                                </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td id="BlockContent">
+                                            <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+                                            <tr>
+                                            <%
+                                            if(request.getParameter("timetableEntryDate")!=null){
+                                                  int count=0;                
+                                                  while(request.getParameter("timetableEntryDate")!=null){
+                                                	  count++;
+	                                       %>
+	                                                        <td  id="weekday"></td>
+	                                                                           
+	                                       <% 
+	                                                                        
+	                                                  }
+	                                            }
+	                                        %>
+                                           
+                                            
+                                            </tr>
+                                            </table>
+                                            <table  id="weekdayTimetable" width="100%" border='0' cellpadding='0' cellspacing='0' style="margin:2px;">
+                                            <tr><td>Weekday</td></tr>
                                             <%  
-                                                 if(request.getParameter("emplyee")!=null){
-                                                                         
-                                                	   while(request.getParameter("emplyee")!=null){
+                                                 if(request.getParameter("timetableEntry")!=null){
+                                                                      
+                                                	   while(request.getParameter("timetableEntry")!=null){
                                             %>
+                                                             <tr><td><%=request.getParameter("timetableEntry") %></td></tr>
                                                                                 
                                             <% 
                                                                              
-                                                                         }
-                                                                     }
+                                                       }
+                                                 }
                                              %>
+                                             </table>
                                             <!--  
                                             <table width="100%" border='0' cellpadding='0' cellspacing='0'>
                                                 <tr>
