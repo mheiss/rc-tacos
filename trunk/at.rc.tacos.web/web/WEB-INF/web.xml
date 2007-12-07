@@ -19,4 +19,14 @@
     <servlet-name>LoginController</servlet-name>
     <url-pattern>/LoginController</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<description>handles timetable requests</description>
+  	<display-name>Timetable</display-name>
+  	<servlet-name>Timetable</servlet-name>
+  	<servlet-class>at.rc.tacos.web.web.Timetable</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>Timetable</servlet-name>
+  	<url-pattern>/Timetable</url-pattern>
+  </servlet-mapping>
 </web-app>
