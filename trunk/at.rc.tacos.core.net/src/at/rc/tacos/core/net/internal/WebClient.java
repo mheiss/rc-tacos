@@ -50,9 +50,6 @@ import at.rc.tacos.model.VehicleDetail;
  */
 public class WebClient
 {
-    //the shared instance
-    private static WebClient instance;
-
     //connection to the server
     private MySocket socket;
     //the factory
@@ -72,17 +69,6 @@ public class WebClient
         //initialize the codec factory
         registerEncoderAndDecoder();
         factory = new XMLFactory();
-    }
-
-    /**
-     * Returns the shared instance of the client
-     * @return the instance
-     */
-    public static WebClient getInstance()
-    {
-        if( instance == null)
-            instance = new WebClient();
-        return instance;
     }
 
     /**
