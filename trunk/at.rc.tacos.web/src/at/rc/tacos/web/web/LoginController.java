@@ -33,15 +33,12 @@ public class LoginController implements Controller
         {
         	String username = request.getParameter("username");
         	String password = request.getParameter("password");
-        	System.out.println(username);
-        	System.out.println(password);
             //the result
             List<AbstractMessage> result;
             WebClient client = new WebClient();
             //open a connection to the server
             client.connect("81.189.52.155", 4711);
             Login login = new Login(username,password);
-            login.setErrorMessage("nix");
             result = client.sendRequest(username, Login.ID, IModelActions.LOGIN, login);
             //get the content
             if(Login.ID.equalsIgnoreCase(client.getContentType()))
@@ -63,7 +60,6 @@ public class LoginController implements Controller
         {
         	session.invalidate();
 		    params.put("logout-success", "You have been logged out successfully!");
-		    System.out.println("logut");
         }
         return params;
     }   	  	    
