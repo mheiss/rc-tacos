@@ -4,8 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="css/stylesheet.css" rel="stylesheet" /> 
-<link  rel='icon' type="image/x-icon" href="favicon.ico">
+<link href="../css/stylesheet.css" rel="stylesheet" /> 
+<link rel='icon' type="image/x-icon" href="../favicon.ico" />
 
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 
@@ -61,10 +61,10 @@
                         <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="100%" height="100" id="tacos_logo" align="middle">
                         <param name="allowScriptAccess" value="sameDomain" />
                         <param name="allowFullScreen" value="false" />
-                        <param name="movie" value="image/tacos_logo.swf" />
+                        <param name="movie" value="../image/tacos_logo.swf" />
                         <param name="quality" value="high" />
                         <param name="salign" value="lt" /><param name="bgcolor" value="#ffffff" />  
-                            <embed src="image/tacos_logo.swf" quality="high" salign="lt" bgcolor="#ffffff" width="100%" height="100" name="tacos_logo" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" />
+                            <embed src="../image/tacos_logo.swf" quality="high" salign="lt" bgcolor="#ffffff" width="100%" height="100" name="tacos_logo" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" />
                         </object>
                     </td>
                 </tr>
