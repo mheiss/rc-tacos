@@ -27,6 +27,8 @@ public class MySocket extends Socket
      * Constructor to create a MyClient object with the given host and port values
      * @param host the host (name or address) to connect to
      * @param port the port number
+     * @throws IOException when a io error occured during the socket init
+     * @throws UnknownHostException when the host is unknown
      */
     public MySocket(String host,int port) throws IOException,UnknownHostException
     {
@@ -95,6 +97,7 @@ public class MySocket extends Socket
     /**
      * Method to send data throught the socket
      * @param message the message to send 
+     * @return true if the sending was successfully otherwise false
      */
     public boolean sendMessage(String message) 
     {

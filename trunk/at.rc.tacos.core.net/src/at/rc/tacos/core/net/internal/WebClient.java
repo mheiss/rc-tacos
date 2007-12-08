@@ -75,6 +75,7 @@ public class WebClient
      * Connects to a given server address.
      * @param serverAddress the host name or ip address of the remote host
      * @param serverPort the port number to connect to
+     * @return true if the connection was established successfully, otherwise false
      */
     public boolean connect(String serverAddress,int serverPort)
     {
@@ -126,6 +127,7 @@ public class WebClient
      *         Example <code>IModelActions.LIST</code> to get a listing.
      *  @param messageObject the object to send to the server. 
      *         This can be null if you want a listing only.
+     *  @return the result list from the server
      */
     public List<AbstractMessage> sendRequest(String userId,
             String contentType,
