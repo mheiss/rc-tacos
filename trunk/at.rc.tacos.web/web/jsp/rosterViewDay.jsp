@@ -1,6 +1,11 @@
-
-
- <jsp:include page="header.jsp" flush="true" />
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@page import="at.rc.tacos.model.StaffMember"%>
+<%
+	Map<String,Object> params = (Map)request.getAttribute("params");
+	List<StaffMember> list = (List)params.get("employeeList");
+%>
+<jsp:include page="header.jsp" flush="true" />
  <jsp:include page="navigation.jsp" flush="true" />
 
 
@@ -36,18 +41,9 @@
                                                                 <td>
                                                                 <!-- Mitarbeiterliste -->
                                                                 <select name="employee" id="rosterViewDayHeadSelbox">
-					                                                 <%  
-                                                                     if(request.getParameter("emplyee")!=null){
-                                                                         
-                                                                         while(request.getParameter("emplyee")!=null){
-                                                                             %>
-                                                                                <option value="id"><%=request.getParameter("emplyee") %></option>
-                                                                             <% 
-                                                                             
-                                                                         }
-                                                                     }
-                                                                     %>
-					                                             
+					                                                 <% for(StaffMember member:list) { %>
+                                                                          <option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
+                                                                     <% } %>
 					                                            </select>
 					                                            </td>
                                                             </tr>
@@ -123,7 +119,7 @@
                                                                 <td id="rosterViewDayName">&nbsp;Ambulanz (6-14)</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2" align="right" style="padding:10px;"><input type="image" src="image/button_ok.jpg" id="senden" value="anmelden" id="buttonOk" /></td>
+                                                                <td colspan="2" align="right" style="padding:10px;"><input type="image" src="../image/button_ok.jpg" id="senden" value="anmelden" id="buttonOk" /></td>
 
                                                             </tr>
                                                         </table>
