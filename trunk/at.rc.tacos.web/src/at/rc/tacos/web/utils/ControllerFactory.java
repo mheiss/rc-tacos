@@ -20,21 +20,25 @@ public class ControllerFactory {
 	 */
 	public static Controller getController(String url)
 	{
-		if (url.equals(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url._login")))
+		if (url.equals(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.login")))
 		{
 			return new LoginController();
-		} 
-		else if (url.equals(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url._logout")))
-		{
-			return new LogoutController();
 		} 
 		else if (url.equals(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.home")))
 		{
 			return new HomeController();	
 		} 
-		else if (url.equals(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url._notFound")))
+		else if (url.equals(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.notFound")))
 		{
 			return new NotFoundController();	
+		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterWeek")))
+		{
+			return new RosterWeekController();
+		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay")))
+		{
+			return new RosterDayController();
 		}
 		else
 		{
