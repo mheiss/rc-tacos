@@ -48,6 +48,7 @@ public class NetSource
 
     /**
      * Loads the configuration and sets up the primary and the failback connection.
+     * @return true if the initialisation was successfully
      */
     public boolean initNetwork()
     {    
@@ -137,7 +138,7 @@ public class NetSource
     /**
      * Add a NetEvent listener to the listener list.
      * The listener is registered for all properties.
-     * @param The NetEvent listener to add
+     * @param listener the NetEvent listener to add
      */
     public void addNetEventListener(INetListener listener)
     {
@@ -147,6 +148,7 @@ public class NetSource
     /**
      * Removes the listener from the listener list.
      * This removes a INetEvent listener that was registered for all properties.
+     * @param listener the listener to remove
      */
     public void removeNetEventListner(INetListener listener)
     {
@@ -172,8 +174,8 @@ public class NetSource
      * server and one failback server. <br>
      * If the connection to the failback server is successfully the currently
      * active connection will be closed and the listeners will be removed.
-     * @param true if the failover was successfully and another connection 
-     *        is established.
+     * @return true if the failover was successfully and another connection 
+     *        is established.    
      */
     public boolean failover()
     {
