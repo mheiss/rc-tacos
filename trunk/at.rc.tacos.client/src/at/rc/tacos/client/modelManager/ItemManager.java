@@ -1,56 +1,18 @@
 package at.rc.tacos.client.modelManager;
 
-//java
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
-//rcp
-import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.swt.widgets.Display;
-//model
 import at.rc.tacos.model.*;
-
 
 /**
  * All created items.
  * @author Michael
  */
-public class ItemManager extends PlatformObject 
+public class ItemManager extends DataManager 
 {
     //the item list
     private List<Item> objectList = new ArrayList<Item>();
-
-    //the listeners to inform about data changes
-    protected transient PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-
-    /**
-     * Adds a property-change listener.
-     * @param l the listener
-     */
-    public void addPropertyChangeListener(PropertyChangeListener l)
-    {
-        if (l == null) 
-            throw new IllegalArgumentException();
-        listeners.addPropertyChangeListener(l);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener l)
-    {
-        listeners.removePropertyChangeListener(l);
-    }
-
-    /**
-     * Notificates all listeners to a model-change
-     * @param prop the property-id
-     * @param old the old-value
-     * @param newValue the new value
-     */
-    protected void firePropertyChange(String prop, Object old, Object newValue)
-    {
-        if (listeners.hasListeners(prop)) 
-            listeners.firePropertyChange(prop, old, newValue);
-    }
 
     /**
      * Adds a new item to the list

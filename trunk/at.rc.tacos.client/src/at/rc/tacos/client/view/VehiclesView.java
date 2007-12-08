@@ -1,5 +1,8 @@
 package at.rc.tacos.client.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.ui.part.*;
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.IFormColors;
@@ -21,7 +24,7 @@ import at.rc.tacos.model.VehicleDetail;
  * create CarComposite's using the CarCompositeManager
  * @author b.thek
  */
-public class VehiclesView extends ViewPart
+public class VehiclesView extends ViewPart implements PropertyChangeListener 
 {
     public static final String ID = "at.rc.tacos.client.view.ressources_view";
 
@@ -30,6 +33,7 @@ public class VehiclesView extends ViewPart
     private ScrolledForm form;
 
     //the composites to group the vehicles
+    private Section kapfenberg;
     private Composite compositeKapfenberg;
     private Composite compositeBruck;
     private Composite compositeStMarein;
@@ -59,11 +63,11 @@ public class VehiclesView extends ViewPart
 
         // Create the sections for each station
         compositeKapfenberg = createSection(form,toolkit,"Kapfenberg","Fahzeuge von Kapfenberg");
-        compositeBruck = createSection(form,toolkit,"Bruck","Fahzeuge von Bruck/Mur");
-        compositeStMarein = createSection(form,toolkit,"St.Marein","Fahzeuge von St.Marein");
-        compositeThoerl = createSection(form,toolkit,"Thörl","Fahzeuge von Thörl");
-        compositeThurnau = createSection(form,toolkit,"Thurnau","Fahzeuge von Thurnau");
-        compositeBreitenau = createSection(form,toolkit,"Breitenau","Breitenau");
+//        compositeBruck = createSection(form,toolkit,"Bruck","Fahzeuge von Bruck/Mur");
+//        compositeStMarein = createSection(form,toolkit,"St.Marein","Fahzeuge von St.Marein");
+//        compositeThoerl = createSection(form,toolkit,"Thörl","Fahzeuge von Thörl");
+//        compositeThurnau = createSection(form,toolkit,"Thurnau","Fahzeuge von Thurnau");
+//        compositeBreitenau = createSection(form,toolkit,"Breitenau","Breitenau");
         
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(0));
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(1));
@@ -71,24 +75,50 @@ public class VehiclesView extends ViewPart
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
         new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
         
-        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(0));
-        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(1));
+//        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(0));
+//        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(1));
+//        
+//        new CarComposite(compositeStMarein,vehicleManager.getVehicleList().get(0));
+//        new CarComposite(compositeStMarein,vehicleManager.getVehicleList().get(1));
+//        
+//        new CarComposite(compositeThoerl,vehicleManager.getVehicleList().get(0));
+//        new CarComposite(compositeThoerl,vehicleManager.getVehicleList().get(1));
+//        
+//        new CarComposite(compositeThurnau,vehicleManager.getVehicleList().get(0));
+//        new CarComposite(compositeThurnau,vehicleManager.getVehicleList().get(1));
+//        
+//        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(0));
+//        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(1));
         
-        new CarComposite(compositeStMarein,vehicleManager.getVehicleList().get(0));
-        new CarComposite(compositeStMarein,vehicleManager.getVehicleList().get(1));
-        
-        new CarComposite(compositeThoerl,vehicleManager.getVehicleList().get(0));
-        new CarComposite(compositeThoerl,vehicleManager.getVehicleList().get(1));
-        
-        new CarComposite(compositeThurnau,vehicleManager.getVehicleList().get(0));
-        new CarComposite(compositeThurnau,vehicleManager.getVehicleList().get(1));
-        
-        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(0));
-        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(1));
+        // add listener to model to keep on track. 
+        Activator.getDefault().getVehicleManager().addPropertyChangeListener(this);
     }
 
     @Override
     public void setFocus() { }
+    
+    /**
+     * Notification that the data model has changed so the view
+     * must be updated.
+     * @param evt the fired property event
+     */
+     public void propertyChange(PropertyChangeEvent evt) 
+     {
+         // the viewer represents simple model. refresh should be enough.
+         if ("VEHICLE_ADD".equals(evt.getPropertyName())) 
+         { 
+             //the vehicle added
+             VehicleDetail detail = (VehicleDetail)evt.getNewValue();
+             System.out.println("new vehicle: "+detail);
+             createVehicle(compositeKapfenberg,detail);
+             new CarComposite(compositeKapfenberg,detail);
+             compositeKapfenberg.layout(true);
+             
+             kapfenberg.layout(true);
+             kapfenberg.update();
+             kapfenberg.getDisplay().update();
+         }
+     }
 
     /**
      * Creates the section and returns the client component to add 
@@ -115,6 +145,7 @@ public class VehiclesView extends ViewPart
         client.setLayout(layout);
         //add the client to the section
         section.setClient(client);
+        kapfenberg = section;
         //return the client
         return client;
     }

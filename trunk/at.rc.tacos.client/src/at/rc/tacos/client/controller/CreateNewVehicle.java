@@ -2,16 +2,11 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.actions.ActionFactory;
+import at.rc.tacos.client.Activator;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.VehicleDetail;
 
-/**
- * This action opens the about dialog of the application
- * @author Michael
- *
- */
-public class OpenAboutAction extends Action
+public class CreateNewVehicle extends Action
 {
     /**
      * Returns the tooltip text for the action
@@ -20,7 +15,7 @@ public class OpenAboutAction extends Action
     @Override
     public String getToolTipText() 
     {
-        return "Öffnet einen Informationsdialog";
+        return "Fügt ein neues Fahrzeug der Fahrzeugübersicht hinzu";
     }
     
     /**
@@ -30,7 +25,7 @@ public class OpenAboutAction extends Action
     @Override
     public String getText()
     {
-        return "Information";
+        return "Fahrzeug hinzufügen";
     }
 
     /**
@@ -40,7 +35,7 @@ public class OpenAboutAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.about");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.add");
     }
     
     /**
@@ -49,6 +44,8 @@ public class OpenAboutAction extends Action
     @Override
     public void run()
     {
-        ActionFactory.ABOUT.create(PlatformUI.getWorkbench().getActiveWorkbenchWindow()).run();
+        //create a new vehicle
+        VehicleDetail detail = new VehicleDetail("BM1","as","asfd");
+        Activator.getDefault().getVehicleManager().add(detail);
     }
 }
