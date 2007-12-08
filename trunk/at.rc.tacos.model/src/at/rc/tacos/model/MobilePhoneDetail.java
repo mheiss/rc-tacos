@@ -35,7 +35,7 @@ public class MobilePhoneDetail extends AbstractMessage
     /**
      * Constructor for a complete mobile phone detail
      * @param mobilePhoneId the id of the details
-     * @param mobilphonenumer the mobile phone number
+     * @param mobilePhoneNumber the mobile phone number
      */
     public MobilePhoneDetail(String mobilePhoneId, String mobilePhoneNumber) 
     {
@@ -122,7 +122,7 @@ public class MobilePhoneDetail extends AbstractMessage
 
     /**
      * Sets the mobile phone number.
-     * @param mobilphonenumer the mobilePhoneNumber to set
+     * @param mobilePhoneNumber the mobilePhoneNumber to set
      * @throws IllegalArgumentException if the mobilePhoneId is null or empty
      */
     public void setMobilePhoneNumber(String mobilePhoneNumber) 

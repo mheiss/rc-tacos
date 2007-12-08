@@ -34,7 +34,7 @@ public class Login extends AbstractMessage
     /**
      * Default constructor of a login message
      * @param username the username to login
-     * @param the encrypted password 
+     * @param password the encrypted password 
      */
     public Login(String username,String password)
     {

@@ -37,7 +37,7 @@ public class RosterEntry extends AbstractMessage
 	 * Constructor for a minimal roster entry object
 	 * @param staffMember the person for this service
 	 * @param servicetype the employee status
-	 * @param comptence the function of this person
+	 * @param competence the function of this person
 	 * @param station the place to work
 	 * @param plannedStartOfWork the planned time to start the service
 	 * @param plannedEndOfWork the planned end of the service
@@ -181,7 +181,7 @@ public class RosterEntry extends AbstractMessage
 
 	/**
 	 * Sets the member of this entry
-	 * @param staff member the staff member to set
+	 * @param staffMember the staff member to set
 	 * @throws IllegalArgumentException if the staff member is null
 	 */
 	public void setStaffMember(StaffMember staffMember) 

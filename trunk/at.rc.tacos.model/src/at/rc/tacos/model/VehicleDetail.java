@@ -58,6 +58,8 @@ public class VehicleDetail extends AbstractMessage
     //METHODS
     /**
      * Adds a property change listener to this class
+     * @param propertyName the property event to listen to
+     * @param listener the listener to inform about changes
      */
     public void addPropertyChangeListener(String propertyName,PropertyChangeListener listener) 
     {
@@ -147,7 +149,7 @@ public class VehicleDetail extends AbstractMessage
     }
 
     /**
-     * @param mobilPhone the mobilePhone to set
+     * @param mobilePhone the mobilePhone to set
      */
     public void setMobilPhone(MobilePhoneDetail mobilePhone) 
     {
