@@ -26,15 +26,22 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.client.Activator;
+import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.RosterEntry;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
 	public static final String ID = "at.rc.tacos.client.view.personal_view";
 	
+    //the toolkit to use
+    private FormToolkit toolkit;
+    private ScrolledForm form;
 	private TableViewer viewer;
+	
 	//define the columns
 	public static final int COLUMN_STANDBY = 0;
 	public static final int COLUMN_NOTES = 1;
@@ -135,9 +142,15 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	{
         // add listener to model to keep on track. 
         Activator.getDefault().getRosterEntryList().addPropertyChangeListener(this);
-
-		final Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new FillLayout());	
+        
+        // Create the scrolled parent component
+        toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+        form = toolkit.createScrolledForm(parent);
+        form.setText("Personalübersicht");
+        toolkit.decorateFormHeading(form.getForm());
+        form.getBody().setLayout(new FillLayout());
+        
+		final Composite composite = form.getBody();
 		
 		//group filter
 		final Composite composite_1 = new Composite(composite, SWT.NONE);

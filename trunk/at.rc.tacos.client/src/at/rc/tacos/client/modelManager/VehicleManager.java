@@ -2,7 +2,7 @@ package at.rc.tacos.client.modelManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.swt.widgets.Display;
 import at.rc.tacos.model.TestDataSource;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -10,17 +10,53 @@ import at.rc.tacos.model.VehicleDetail;
  * This class manages the vehicles.
  * @author Michael
  */
-public class VehicleManager extends PlatformObject 
+public class VehicleManager extends DataManager 
 {
     //the item list
     private List<VehicleDetail> objectList = new ArrayList<VehicleDetail>();
     
     /**
-     * Default class constructor, initialising the list of vehicles
+     * Default class constructor
      */
     public VehicleManager()
     {
         objectList = new ArrayList<VehicleDetail>();
+    }
+    
+    /**
+     * Create initialisation data
+     */
+    public void init()
+    {
+        objectList = new TestDataSource().vehicleList;
+    }
+    
+    /**
+     * Adds a new item to the list
+     * @param item the item to add
+     */
+    public void add(final VehicleDetail vehicle) 
+    {
+        Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {
+                //add the item
+                objectList.add(vehicle);
+                //notify the view
+                firePropertyChange("VEHICLE_ADD", null, vehicle);
+            }
+        }); 
+    }    
+
+    /**
+     * Removes the vehicle from the list
+     * @param vehicle the vehicle to remove
+     */
+    public void remove(VehicleDetail vehicle) 
+    {
+        objectList.remove(vehicle);
+        firePropertyChange("VEHICLE_REMOVE", vehicle, null); 
     }
     
     /**
@@ -30,13 +66,5 @@ public class VehicleManager extends PlatformObject
     public List<VehicleDetail> getVehicleList()
     {
         return objectList;
-    }
-    
-    /**
-     * Create initialisation data
-     */
-    public void init()
-    {
-        objectList = new TestDataSource().vehicleList;
     }
 }

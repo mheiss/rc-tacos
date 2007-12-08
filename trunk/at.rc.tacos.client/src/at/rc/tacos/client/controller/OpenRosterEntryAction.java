@@ -18,6 +18,16 @@ public class OpenRosterEntryAction extends Action
     }
     
     /**
+     * Retruns the text to show in the toolbar
+     * @return the text to render
+     */
+    @Override
+    public String getText()
+    {
+        return "Neuer Deinstplaneintrag";
+    }
+    
+    /**
      * Returns the image to use for this action.
      * @return the image to use
      */
