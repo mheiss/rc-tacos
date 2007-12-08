@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link href="../css/stylesheet.css" rel="stylesheet" /> 
+<link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <title>Insert title here</title>
 </head>
 <body>
