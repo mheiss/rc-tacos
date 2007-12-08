@@ -39,7 +39,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
     private static Image imageLeft = ImageFactory.getInstance().getRegisteredImage("toolbar.left");
 
     /**
-     * Default class constructor
+     * Creates the application workbench advisor.
+     * @param configurer the configuring workbench information
+     * @return the configuration information for a workbench window
      */
     public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) 
     {
@@ -48,6 +50,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 
     /**
      * Creates the action bar.
+     * @param configurer the configuration action bar information
+     * @return the configuration information for a action bar
      */
     public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) 
     {
@@ -68,6 +72,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         configurer.setShowProgressIndicator(true);   
     }
 
+    /**
+     * Creates the content of the window
+     * @param shell the shell to create the content
+     */
     @Override
     public void createWindowContents(final Shell shell) 
     {

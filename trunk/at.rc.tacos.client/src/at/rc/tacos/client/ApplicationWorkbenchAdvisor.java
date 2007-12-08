@@ -15,6 +15,8 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
 
 	/**
      * Creates the application workbench advisor.
+     * @param configurer the configuring workbench information
+     * @return the configuration information for a workbench window
      */
     public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) 
     {

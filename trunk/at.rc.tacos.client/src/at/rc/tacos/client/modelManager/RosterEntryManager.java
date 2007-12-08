@@ -16,7 +16,7 @@ public class RosterEntryManager extends DataManager
 
     /**
      * Adds a new roster entry to the list
-     * @param roster entry the roster entry to add
+     * @param rosterEntry the roster entry to add
      */
     public void add(final RosterEntry rosterEntry) 
     {
@@ -34,7 +34,7 @@ public class RosterEntryManager extends DataManager
 
     /**
      * Removes the roster entry from the list
-     * @param roster entry the roster entry to remove
+     * @param rosterEntry the roster entry to remove
      */
     public void remove(final RosterEntry rosterEntry) 
     {
@@ -51,7 +51,7 @@ public class RosterEntryManager extends DataManager
     
     /**
      * Updates the roster entry at the list
-     * @param roster entry the roster entry to update
+     * @param rosterEntry the roster entry to update
      */
     public void update(final RosterEntry rosterEntry) 
     {

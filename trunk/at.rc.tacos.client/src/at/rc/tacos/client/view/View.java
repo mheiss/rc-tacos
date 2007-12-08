@@ -58,6 +58,7 @@ public class View extends ViewPart implements PropertyChangeListener
 
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize it.
+	 * @param parent the parent frame to insert the new content
 	 */
 	public void createPartControl(Composite parent) 
 	{

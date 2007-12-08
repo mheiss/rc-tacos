@@ -49,8 +49,10 @@ public class InteractiveSplashHandler extends AbstractSplashHandler
 
     /**
      * Initialize the splash window and create the ui.
+     * @param splash the shell to creat the splash screen
      */
-    public void init(final Shell splash) {
+    public void init(final Shell splash) 
+    {
         // Store the shell
         super.init(splash);
         // Configure the shell layout

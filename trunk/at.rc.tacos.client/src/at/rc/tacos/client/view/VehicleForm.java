@@ -59,8 +59,8 @@ public class VehicleForm
 	}
 	
 	/**
-	 * used to edit an roster entry
-	 * @param rosterEntry the roster entry to edit
+	 * used to edit an vehicleDetail entry
+	 * @param vehicleDetail the roster entry to edit
 	 */
 	public VehicleForm(VehicleDetail vehicleDetail)
 	{

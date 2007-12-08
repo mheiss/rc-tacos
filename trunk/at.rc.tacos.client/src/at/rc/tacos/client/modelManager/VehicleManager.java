@@ -32,8 +32,10 @@ public class VehicleManager extends DataManager
     }
     
     /**
-     * Adds a new item to the list
-     * @param item the item to add
+     * Adds a new vehicle to the vehicle manager.
+     * This class is thread save, that means adding new vehicles,
+     * can be done from any thread.
+     * @param vehicle the vehicle to add
      */
     public void add(final VehicleDetail vehicle) 
     {

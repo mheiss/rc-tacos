@@ -45,7 +45,7 @@ public class CreateRosterEntryAction extends Action
 
     /**
      * Creates a new RosterEntryAction.
-     * @param the new roster entry
+     * @param entry the new roster entry
      */
     public CreateRosterEntryAction(RosterEntry entry) 
     {

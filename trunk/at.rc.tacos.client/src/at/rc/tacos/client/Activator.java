@@ -36,6 +36,8 @@ public class Activator extends AbstractUIPlugin
 
 	/**
 	 * Called when the plugin is started
+	 * @param context lifecyle informations
+	 * @throws Exception when a error occures during startup
 	 */
 	public void start(BundleContext context) throws Exception 
 	{
@@ -56,7 +58,9 @@ public class Activator extends AbstractUIPlugin
 	}
 
 	/**
-	 * Called when the plugin is stopped
+	 * Called when the plugin is stopped.
+	 * @param context lifecyle informations
+     * @throws Exception when a error occures during shutdown
 	 */
 	public void stop(BundleContext context) throws Exception 
 	{

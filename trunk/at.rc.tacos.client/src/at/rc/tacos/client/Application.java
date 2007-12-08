@@ -14,9 +14,10 @@ import at.rc.tacos.core.net.NetWrapper;
  */
 public class Application implements IApplication 
 {
-
     /**
      * Start the application and create the main workbench
+     * @param context the context used to init the application
+     * @return the exit code of the application
      */
 	public Object start(IApplicationContext context) 
 	{
