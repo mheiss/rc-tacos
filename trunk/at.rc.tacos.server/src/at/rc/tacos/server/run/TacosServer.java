@@ -38,6 +38,7 @@ public class TacosServer
 
     /**
      * The main method to read the configuration and start the server
+     * @param args - not used
      */
     public static void main(String[] args)  
     {  

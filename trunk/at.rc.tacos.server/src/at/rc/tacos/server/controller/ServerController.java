@@ -148,6 +148,7 @@ public class ServerController
 
     /**
      * Returns wheter or not the given client is authenticated or not
+     * @param client the client connection to check
      * @return true if the client is authenticated
      */
     public boolean isAuthenticated(MyClient client)
@@ -240,6 +241,7 @@ public class ServerController
      * unregistered clients.
      * @param client the client to send the message to
      * @param contentType the type of the content
+     * @param queryString the query string to send
      * @param message the message to send
      */
     public synchronized void sendMessage(MyClient client,String contentType,String queryString,AbstractMessage message)
