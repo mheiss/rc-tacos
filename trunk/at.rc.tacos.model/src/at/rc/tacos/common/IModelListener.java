@@ -35,16 +35,19 @@ public interface IModelListener
     
     /**
      * Notification about a login message.
+     * @param message the login message
      */
     public void loginMessage(AbstractMessage message);
     
     /**
      * Notification about a logout message.
+     * @param message the logout message
      */
     public void logoutMessage(AbstractMessage message);
     
     /**
      * Notification about a system message.
+     * @param message the system message
      */
     public void systemMessage(AbstractMessage message);
 }

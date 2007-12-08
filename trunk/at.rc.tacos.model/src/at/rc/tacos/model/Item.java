@@ -87,7 +87,7 @@ public class Item extends AbstractMessage
 
     /**
      * Sets the name of the item.
-     * @param id the id to set
+     * @param name the name to set
      * @throws IllegalArgumentException if the name is null or empty
      */
     public void setName(String name) 

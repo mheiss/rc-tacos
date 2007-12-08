@@ -69,6 +69,7 @@ public class XMLFactory
     /**
      * Encode the object into xml and returns the encoded message.<br>
      * The timestamp will be set to the actual time when the message was encoded<br>
+     * @param messageList the objects to encode into xml
      * @return the serialized object list
      */
     public String encode(ArrayList<AbstractMessage> messageList)
@@ -166,8 +167,8 @@ public class XMLFactory
     }
 
     /**
-     * Decodes the message and returns a string list with the 
-     * content items as String
+     * Decodes the message and returns a string list with the content items as String
+     * @return the decoded list of objects
      */
     public ArrayList<AbstractMessage> decode()
     {

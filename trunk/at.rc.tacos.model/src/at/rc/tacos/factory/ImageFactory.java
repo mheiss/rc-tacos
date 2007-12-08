@@ -25,8 +25,8 @@ public class ImageFactory
     }
     
     /**
-     * Returns a valid instance of this facotry
-     * to use.
+     * Returns a valid instance of this facotry to use.
+     * @return the shared instance
      */
     public static ImageFactory getInstance()
     {
@@ -61,7 +61,7 @@ public class ImageFactory
     /**
      * Returns the imagedescriptor registered with the given
      * identification string.
-     * @param the identification string of the image
+     * @param imageId the identification string of the image
      * @return the registered imageDescriptor or null if no image was found
      */
     public ImageDescriptor getRegisteredImageDescriptor(String imageId)

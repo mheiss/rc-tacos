@@ -124,7 +124,7 @@ public class StaffMember extends AbstractMessage
 
     /**
      * Sets the last name of this staff member
-     * @param lastname the last name to set
+     * @param lastName the last name to set
      * @throws IllegalArgumentException if the lastName is null or empty
      */
     public void setLastName(String lastName) 
@@ -145,7 +145,7 @@ public class StaffMember extends AbstractMessage
 
     /**
      * Sets the first name of this staff member
-     * @param firstname the first name to set
+     * @param firstName the first name to set
      * @throws IllegalArgumentException if the first name is null or empty
      */
     public void setFirstName(String firstName) 
@@ -166,7 +166,7 @@ public class StaffMember extends AbstractMessage
 
     /**
      * Sets the username for this staff member
-     * @param username the user name to set
+     * @param userName the user name to set
      * @throws IllegalArgumentException if the userName is null or empty
      */
     public void setUserName(String userName) 
