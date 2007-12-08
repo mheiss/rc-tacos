@@ -59,7 +59,7 @@
 	
 	<servlet>
 		<servlet-name>rosterDayView</servlet-name>
-		<jsp-file>/jsp/rosterViewDay.jsp</jsp-file>
+		<jsp-file>/jsp/rosterDay.jsp</jsp-file>
 	</servlet>
 	
 	<servlet-mapping>
@@ -69,7 +69,7 @@
 	
 	<servlet>
 		<servlet-name>rosterWeekView</servlet-name>
-		<jsp-file>/jsp/rosterViewWeek.jsp</jsp-file>
+		<jsp-file>/jsp/rosterWeek.jsp</jsp-file>
 	</servlet>
 	
 	<servlet-mapping>
