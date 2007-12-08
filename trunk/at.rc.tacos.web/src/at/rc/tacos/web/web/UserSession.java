@@ -1,14 +1,16 @@
 package at.rc.tacos.web.web;
 
-import tacosdp.domain.UserData;
+import at.rc.tacos.core.net.internal.WebClient;
 
 /**
- * @author PayerM
- * @version 1.0
+ * Session information
+ * @author Nechan
  */
-public class UserSession {
+public class UserSession 
+{
 	private Boolean loggedIn;
-	private UserData userData;
+	private String username;
+	private WebClient connection;
 
 	/**
 	 * Default constructor
@@ -33,23 +35,28 @@ public class UserSession {
 	 * @param loggedIn true if the login was successfully
 	 * @param userData the information about the user
 	 */
-	public void setLoggedIn(Boolean loggedIn,UserData userData)
+	public void setLoggedIn(Boolean loggedIn,String username,WebClient connection)
 	{
 		this.loggedIn = loggedIn;
-		this.userData = userData;
+		this.username = username;
+		this.connection = connection;
 	}
 	
 	/**
-	 * Returns login and personal information about
-	 * the authenticated user. <br>
-	 * Note: The password is not requested from the 
-	 * database and will not be available <br>
-	 * The method will return null if the user is
-	 * not logged in.
-	 * @return information about the user or null
+	 * Returns the username.
+	 * @return the username.
 	 */
-	public UserData getUserData()
+	public String getUsername()
 	{
-		return userData;
+		return username;
+	}
+	
+	/**
+	 * Returns the connection to the server
+	 * @return the connection
+	 */
+	public WebClient getConnection()
+	{
+		return connection;
 	}
 }
