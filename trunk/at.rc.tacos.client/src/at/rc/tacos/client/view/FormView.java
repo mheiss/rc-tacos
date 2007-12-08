@@ -19,7 +19,8 @@ public class FormView extends ViewPart
     public static final String ID = "at.rc.tacos.client.view.item_form"; 
 
     /**
-     * Creates the view
+     * Creates the view.
+     * @param parent the parent frame to insert the new content
      */
     public void createPartControl(Composite parent) 
     {

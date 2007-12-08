@@ -45,7 +45,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
     private VehicleManager vehicleManager;
 
     /**
-     * Create contents of the window
+     * Create contents of the window.
+     * @param parent the parent frame to insert the controlls
      */
     public void createPartControl(Composite parent) 
     {
@@ -152,6 +153,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
     
     /**
      * Creates the custom vehicle.
+     * @param parent the parent frame for this vehicle 
+     * @param detail the vehicle to show 
      * @return the created vehicle
      */
     public void createVehicle(Composite parent,VehicleDetail detail)

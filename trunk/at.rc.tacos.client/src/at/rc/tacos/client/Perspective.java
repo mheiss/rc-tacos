@@ -13,6 +13,7 @@ public class Perspective implements IPerspectiveFactory
 {
     /**
      * Set up the layout of the workbench
+     * @param layout the page layout to use
      */
 	public void createInitialLayout(IPageLayout layout) 
 	{
