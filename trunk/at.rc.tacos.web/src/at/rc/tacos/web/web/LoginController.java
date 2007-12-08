@@ -37,7 +37,7 @@ public class LoginController implements Controller
         	System.out.println(password);
             //the result
             List<AbstractMessage> result;
-            WebClient client = WebClient.getInstance();
+            WebClient client = new WebClient();
             //open a connection to the server
             client.connect("81.189.52.155", 4711);
             Login login = new Login(username,password);
