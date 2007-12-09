@@ -25,7 +25,7 @@
 		<td id="BlockHead"><b>Pers&ouml;nliche Daten</b></td>
 	</tr>
 	<tr>
-		<td id="BlockContent"><a href="#">Meine Daten</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/profile.do"%>">Meine Daten</a><br />
 		<a href="#">Notiz</a><br />
 		</td>
 	</tr>
