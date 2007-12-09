@@ -16,13 +16,11 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Locale"%>
 
-<% 
-
-
-        Date current = new Date();
-        DateFormat dateformat;
-        dateformat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMANY);
-
+<%
+	Date current = new Date();
+	DateFormat dateformat;
+	dateformat = DateFormat.getDateInstance(DateFormat.SHORT,
+			Locale.GERMANY);
 %>
 
 <form method="post" border='0' cellpadding='0' cellspacing='0'>
@@ -31,8 +29,13 @@
 	<thead>
 		<tr>
 			<td>
-			<table id="logo" width="100%" border='0' cellpadding='0' cellspacing='0'>
-			 <tr><td></td><td></td><td></td></tr>
+			<table id="logo" width="100%" border='0' cellpadding='0'
+				cellspacing='0'>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
 			</table>
 			</td>
 		</tr>
@@ -44,9 +47,8 @@
 				<tr>
 					<td width="50%" align="left"><!-- 
                                 <form  method="post" action="login" border='0' cellpadding='0' cellspacing='0' width="200"><input type="submit" name="buttonLogout" value="" id="buttonLogout" /></form>
-                                 --> Willkommen : <%= request.getAttribute("username") %>
-					&nbsp;&nbsp;( <a href="./login.jsp">logout</a> )</td>
-					<td width="50%" align="right">Heute ist der <%= dateformat.format(current) %>
+                                 --> Willkommen : <%=request.getAttribute("username")%>&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
+					<td width="50%" align="right">Heute ist der <%=dateformat.format(current)%>
 					</td>
 				</tr>
 			</table>
@@ -55,9 +57,8 @@
 
 
 					<!-- #### LEFT CONTAINER NAVIGATION-->
-					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  -->
-					<jsp:include page="navigation.jsp" flush="true" />
-					</td>
+					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --> <jsp:include
+						page="navigation.jsp" flush="true" /></td>
 
 					<!-- #### CONTENT -->
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
@@ -67,17 +68,16 @@
 							<td id="BlockHead" align="right" valign="center"><b>Ortsstelle:</b>
 							<!--  Orstellenliste --> <select name="ortsstelle"
 								id="rosterViewDayHeadSelbox">
-								<%  
-                                                                     if(request.getParameter("place")!=null){
-                                                                         int i;
-                                                                         for(i=0;i<=10;i++){
-                                                                             %>
-								<option value="id"><%=request.getParameter("place") %></option>
-								<% 
-                                                                             
-                                                                         }
-                                                                     }
-                                                                     %>
+								<%
+									if (request.getParameter("place") != null) {
+										int i;
+										for (i = 0; i <= 10; i++) {
+								%>
+								<option value="id"><%=request.getParameter("place")%></option>
+								<%
+									}
+									}
+								%>
 							</select></td>
 						</tr>
 						<tr>
@@ -85,18 +85,17 @@
 							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
 								<tr>
 									<%
-                                            if(request.getParameter("timetableEntryDate")!=null){
-                                                  int count=0;                
-                                                  while(request.getParameter("timetableEntryDate")!=null){
-                                                	  count++;
-	                                       %>
+										if (request.getParameter("timetableEntryDate") != null) {
+											int count = 0;
+											while (request.getParameter("timetableEntryDate") != null) {
+												count++;
+									%>
 									<td id="weekday"></td>
 
-									<% 
-	                                                                        
-	                                                  }
-	                                            }
-	                                        %>
+									<%
+										}
+										}
+									%>
 
 
 								</tr>
@@ -106,20 +105,19 @@
 								<tr>
 									<td>Weekday</td>
 								</tr>
-								<%  
-                                                 if(request.getParameter("timetableEntry")!=null){
-                                                                      
-                                                	   while(request.getParameter("timetableEntry")!=null){
-                                            %>
+								<%
+									if (request.getParameter("timetableEntry") != null) {
+
+										while (request.getParameter("timetableEntry") != null) {
+								%>
 								<tr>
-									<td><%=request.getParameter("timetableEntry") %></td>
+									<td><%=request.getParameter("timetableEntry")%></td>
 								</tr>
 
-								<% 
-                                                                             
-                                                       }
-                                                 }
-                                             %>
+								<%
+									}
+									}
+								%>
 							</table>
 							</td>
 						</tr>
