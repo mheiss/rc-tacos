@@ -65,18 +65,15 @@
 						cellspacing='0'>
 						<tr>
 							<td id="BlockHead" align="right" valign="center"><b>Ortsstelle:</b>
-							<!--  Orstellenliste --> <select name="ortsstelle"
-								id="rosterViewDayHeadSelbox">
-								<%
-									if (request.getParameter("place") != null) {
-										int i;
-										for (i = 0; i <= 10; i++) {
-								%>
-								<option value="id"><%=request.getParameter("place")%></option>
-								<%
-									}
-									}
-								%>
+							<!--  Orstellenliste --> 
+							<select name="ortsstelle" id="rosterViewDayHeadSelbox">
+								<option value="id">Kapfenberg</option>
+								<option value="id">Bruck a. d. Mur</option>
+								<option value="id">St. Marein</option>
+								<option value="id">Th&ouml;rl</option>
+								<option value="id">Turnau</option>
+								<option value="id">Breitenau</option>
+								<option value="id">NEF</option>
 							</select></td>
 						</tr>
 						<tr>
