@@ -73,8 +73,18 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>rosterWeekView</servlet-name>
-		<url-pattern>/rosterWeekView</url-pattern>
+		<servlet-name>profileView</servlet-name>
+		<url-pattern>/profileView</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>profileView</servlet-name>
+		<jsp-file>/jsp/profile.jsp</jsp-file>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>profileView</servlet-name>
+		<url-pattern>/profileView</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

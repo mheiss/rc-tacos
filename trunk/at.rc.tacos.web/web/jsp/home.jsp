@@ -71,7 +71,6 @@
 											<td>c</td>
 											<td><a href="#"><img src="../image/info.jpg" /></a><br />
 											Information &uuml;ber die Programmierer</td>
-
 										</tr>
 									</table>
 									</td>
