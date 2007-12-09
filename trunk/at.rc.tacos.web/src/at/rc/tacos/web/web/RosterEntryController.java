@@ -27,7 +27,7 @@ public class RosterEntryController implements Controller
 
 		HttpSession session = request.getSession();
 
-		if("entry".equalsIgnoreCase(action))
+		if("RosterEntry".equalsIgnoreCase(action))
 		{
 			StaffMember staffMember = request.getParameter("staffMember");
 			long plannedStartOfWork = request.getParameter("plannedStartOfWork");
