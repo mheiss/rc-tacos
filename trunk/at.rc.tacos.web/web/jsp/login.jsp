@@ -37,7 +37,7 @@
 					<form  method="post" action="<%=request.getContextPath()+"/Dispatcher/login.do?action=login"%>" > 
 						<table id="loginPanel">
 		  					<tr><td align='right'>Username:</td><td align='left'><input type="text" name="username" size="20" id="username"></td></tr>
-		  				 	<tr><td align='right'>Password:</td><td align='left'><input type="password" name="password" size="20" maxlength="12" id="password"></td></tr>
+		  				 	<tr><td align='right'>Passwort:</td><td align='left'><input type="password" name="password" size="20" maxlength="12" id="password"></td></tr>
 		  					<tr><td colspan='2' align='right'><input type="submit" value="Login" id="login"></td></tr>		
 		  				</table>
 					</form> 
