@@ -12,7 +12,7 @@
 		<td id="BlockContent"><a href="#">Dienstplan</a><br /></td>
 	</tr>
 	<tr>
-	<td id="BlockContent"><a href="#">Dienstplanverwaltung</a><br /></td>
+	<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/rosterWeek.do"%>">Dienstplanverwaltung</a><br /></td>
 	</tr>
 </table>
 <!-- NEXT BLOCK  -->
