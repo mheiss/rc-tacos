@@ -106,6 +106,11 @@
 												id="rosterViewDayHeadSelbox">
 												<option value="id">Kapfenberg</option>
 												<option value="id">Bruck a. d. Mur</option>
+												<option value="id">St. Marein</option>
+												<option value="id">Th&ouml;rl</option>
+												<option value="id">Turnau</option>
+												<option value="id">Breitenau</option>
+												<option value="id">NEF</option>
 											</select></td>
 
 										</tr>
