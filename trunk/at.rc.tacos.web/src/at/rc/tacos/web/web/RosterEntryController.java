@@ -41,7 +41,7 @@ public class RosterEntryController implements Controller
 			//open a connection to the server
 			client.connect("81.189.52.155", 4711);
 			RosterEntry entry = new RosterEntry(staffMember,plannedStartOfWork, plannedEndOfWork, station, competence, servicetype);
-			result = client.sendRequest(username, Login.ID, IModelActions.LOGIN, login);
+			result = client.sendRequest(username, Login.ID, IModelActions.ADD, entry);
 			//get the content
 			if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))
 			{
