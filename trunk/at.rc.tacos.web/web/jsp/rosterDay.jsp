@@ -59,11 +59,9 @@
 			</table>
 			<table width="100%">
 				<tr>
-					<!-- #### LEFT CONTAINER -->
-					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  -->
+					
 					<!-- #### LEFT CONTAINER NAVIGATION-->
-                    <td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  -->
-                    <jsp:include page="navigation.jsp" flush="true" />
+                    <td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --><%@ include file="navigation.jsp" %>
                     </td>
 					<!-- #### CONTENT -->
 
