@@ -63,7 +63,6 @@
                     <td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  -->
                     <jsp:include page="navigation.jsp" flush="true" />
                     </td>
-					</td>
 					<!-- #### CONTENT -->
 
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
