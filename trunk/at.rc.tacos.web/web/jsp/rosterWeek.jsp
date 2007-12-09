@@ -1,4 +1,14 @@
-
+<%@ page import="java.text.*"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Locale"%>
+<%@page import="at.rc.tacos.web.web.UserSession"%>
+<%
+	Date current = new Date();
+	DateFormat dateformat;
+	dateformat = DateFormat.getDateInstance(DateFormat.SHORT,
+			Locale.GERMANY);
+	UserSession userSession = (UserSession)session.getAttribute("userSession");
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,17 +21,6 @@
 
 </head>
 <body>
-
-<%@ page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Locale"%>
-
-<%
-	Date current = new Date();
-	DateFormat dateformat;
-	dateformat = DateFormat.getDateInstance(DateFormat.SHORT,
-			Locale.GERMANY);
-%>
 
 <form method="post" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
@@ -47,7 +46,7 @@
 				<tr>
 					<td width="50%" align="left"><!-- 
                                 <form  method="post" action="login" border='0' cellpadding='0' cellspacing='0' width="200"><input type="submit" name="buttonLogout" value="" id="buttonLogout" /></form>
-                                 --> Willkommen : <%=request.getAttribute("username")%>&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
+                                 --> Willkommen : <%= userSession.getUsername()  %>&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
 					<td width="50%" align="right">Heute ist der <%=dateformat.format(current)%>
 					</td>
 				</tr>
