@@ -1,9 +1,11 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
+<%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<StaffMember> list = (List)params.get("employeeList");
+	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 %>
 
 
@@ -49,7 +51,7 @@
 				<tr>
 					<td width="50%" align="left"><!-- 
                                 <form  method="post" action="login" border='0' cellpadding='0' cellspacing='0' width="200"><input type="submit" name="buttonLogout" value="" id="buttonLogout" /></form>
-                                 --> Willkommen : <%= request.getAttribute("username") %>
+                                 --> Willkommen : <%= userSession.getUsername()  %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
 					<td width="50%" align="right">Heute ist der <%= dateformat.format(current) %>
 					</td>
