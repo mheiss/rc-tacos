@@ -44,19 +44,19 @@ public class VehicleForm
 	private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
 	private Listener exitListener;
 	
-	/**
-	 * Launch the application
-	 * @param args
-	 */
-	public static void main(String[] args) 
-	{
-		try {
-				VehicleForm window = new VehicleForm();
-				window.open();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-	}
+//	/**
+//	 * Launch the application
+//	 * @param args
+//	 */
+//	public static void main(String[] args) 
+//	{
+//		try {
+//				VehicleForm window = new VehicleForm();
+//				window.open();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//	}
 	
 	/**
 	 * used to edit an vehicleDetail entry
@@ -157,7 +157,7 @@ public class VehicleForm
 		//fill combo employee name with data
 		for(StaffMember staffMember: staffMemberListDriver)
 		{
-			comboViewerDriver.add(staffMember);
+			comboViewerDriver.add(staffMember.getLastname() +" " +staffMember.getFirstName());
 		}
 
 		setDriverCombo.setBounds(100,15,226, 24);
@@ -179,7 +179,7 @@ public class VehicleForm
 
 		for(StaffMember staffMember: staffMemberListAllCheckedIn)
 		{
-			comboViewerParamedicI.add(staffMember);
+			comboViewerParamedicI.add(staffMember.getLastname() +" " +staffMember.getFirstName());
 		}
 
 		setParamedicICombo.setBounds(100,42,226,24);
@@ -203,7 +203,7 @@ public class VehicleForm
 
 		for(StaffMember staffMember: staffMemberListAllCheckedIn)
 		{
-			comboViewerParamedicII.add(staffMember);
+			comboViewerParamedicII.add(staffMember.getLastname() +" " +staffMember.getFirstName());
 		}
 
 		setParamedicIICombo.setBounds(100,69,226, 24);
@@ -237,7 +237,7 @@ public class VehicleForm
 
 		for(VehicleDetail vehicleDetail: vehicleList)
 		{
-			comboViewerVehicle.add(vehicleDetail);
+			comboViewerVehicle.add(vehicleDetail.getVehicleName());
 		}
 
 		setVehicleCombo.setBounds(100,15,100, 24);
@@ -255,7 +255,7 @@ public class VehicleForm
 
 		for(MobilePhoneDetail mobilePhone : mobphoneList)
 		{
-			comboViewerMobPhone.add(mobilePhone);
+			comboViewerMobPhone.add(mobilePhone.getMobilePhoneId());
 		}
 
 		setMobilePhoneCombo.setBounds(100,42,100, 24);
