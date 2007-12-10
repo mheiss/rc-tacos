@@ -292,4 +292,13 @@ public class NetSource
         else
             client.sendMessage(message);
     }
+    
+    /**
+     * Returns the ip address of the active server.
+     * @return the ip adress of the server
+     */
+    public String getServerIp()
+    {
+        return serverPool.get(primaryConnection).getServerAddress();
+    }
 }

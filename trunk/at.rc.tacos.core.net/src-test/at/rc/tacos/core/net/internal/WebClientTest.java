@@ -59,7 +59,7 @@ public class WebClientTest
     {
         //create a login object
         Login login = new Login("user1","wrongPwd");
-        result = client.sendRequest("user2", Login.ID, IModelActions.LOGIN, login);
+        result = client.sendRequest("user1", Login.ID, IModelActions.LOGIN, login);
         Login loginResponse = (Login)result.get(0);
         Assert.assertFalse(loginResponse.isLoggedIn());
     }
@@ -91,7 +91,7 @@ public class WebClientTest
         Login login = new Login("user2","P@ssw0rd");
         client.sendRequest("user2", Login.ID, IModelActions.LOGIN, login);
         //send the request for the listing
-        result = client.sendRequest("user1", RosterEntry.ID, IModelActions.LIST, null);
+        result = client.sendRequest("user2", RosterEntry.ID, IModelActions.LIST, null);
         Assert.assertEquals(RosterEntry.ID, client.getContentType());
         Assert.assertEquals(3, result.size());
     }
@@ -103,9 +103,9 @@ public class WebClientTest
         Login login = new Login("user3","P@ssw0rd");
         client.sendRequest("user3", Login.ID, IModelActions.LOGIN, login);
         //send the request for the listing
-        result = client.sendRequest("user1", StaffMember.ID, IModelActions.LIST, null);
+        result = client.sendRequest("user3", StaffMember.ID, IModelActions.LIST, null);
         Assert.assertEquals(StaffMember.ID, client.getContentType());
-        Assert.assertEquals(3, result.size());
+        Assert.assertEquals(5, result.size());
     }
     
     @Test
@@ -127,7 +127,7 @@ public class WebClientTest
         Login login = new Login("user2","P@ssw0rd");
         client.sendRequest("user2", Login.ID, IModelActions.LOGIN, login);
         //send the request for the listing
-        result = client.sendRequest("user1", MobilePhoneDetail.ID, IModelActions.LIST, null);
+        result = client.sendRequest("user2", MobilePhoneDetail.ID, IModelActions.LIST, null);
         Assert.assertEquals(MobilePhoneDetail.ID, client.getContentType());
         Assert.assertEquals(3, result.size()); 
     }
@@ -139,7 +139,7 @@ public class WebClientTest
         Login login = new Login("user3","P@ssw0rd");
         client.sendRequest("user3", Login.ID, IModelActions.LOGIN, login);
         //send the request for the listing
-        result = client.sendRequest("user1", NotifierDetail.ID, IModelActions.LIST, null);
+        result = client.sendRequest("user3", NotifierDetail.ID, IModelActions.LIST, null);
         Assert.assertEquals(NotifierDetail.ID, client.getContentType());
         Assert.assertEquals(3, result.size()); 
     }
@@ -163,8 +163,34 @@ public class WebClientTest
         Login login = new Login("user2","P@ssw0rd");
         client.sendRequest("user2", Login.ID, IModelActions.LOGIN, login);
         //send the request for the listing
-        result = client.sendRequest("user1", VehicleDetail.ID, IModelActions.LIST, null);
+        result = client.sendRequest("user2", VehicleDetail.ID, IModelActions.LIST, null);
         Assert.assertEquals(VehicleDetail.ID, client.getContentType());
         Assert.assertEquals(3, result.size()); 
     }
+    
+//    @Test
+//    public void testAddStaffMember()
+//    {
+//        //login
+//        Login login = new Login("user2","P@ssw0rd");
+//        client.sendRequest("user2", Login.ID, IModelActions.LOGIN, login);
+//        //send the add request
+//        StaffMember member = new StaffMember("Staff4","Staff4","nick.staff4");
+//        result = client.sendRequest("user2", StaffMember.ID, IModelActions.ADD, member);
+//        Assert.assertEquals(StaffMember.ID, client.getContentType());
+//    }
+    
+//    @Test
+//    public void testRemoveStaffMember()
+//    {
+//        //login
+//        Login login = new Login("user2","P@ssw0rd");
+//        client.sendRequest("user2", Login.ID, IModelActions.LOGIN, login);
+//        //send the add request
+//        StaffMember member = new StaffMember("Staff4","Staff4","nick.staff4");
+//        member.setPersonId(3);
+//        result = client.sendRequest("user2", StaffMember.ID, IModelActions.REMOVE, member);
+//        Assert.assertEquals(StaffMember.ID, client.getContentType());
+//        System.out.println(result.get(0));
+//    }
 }
