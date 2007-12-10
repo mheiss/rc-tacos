@@ -19,10 +19,9 @@ public class ClientHandler implements INetListener
     @Override
     public synchronized void dataReceived(NetEvent ne)
     {
-        //set up the factory to decode
+        //set up the factory and decode decode
         XMLFactory xmlFactory = new XMLFactory();
         xmlFactory.setupDecodeFactory(ne.getMessage());
-        //decode the message
         ArrayList<AbstractMessage> objects = xmlFactory.decode();
         //get the type of the item
         final String contentType = xmlFactory.getContentType();
