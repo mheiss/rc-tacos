@@ -1,6 +1,9 @@
 package at.rc.tacos.client.listeners;
 
-import at.rc.tacos.client.Activator;
+import java.util.ArrayList;
+
+import at.rc.tacos.client.modelManager.ItemManager;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.Item;
 
@@ -13,6 +16,17 @@ public class ItemListener extends ClientListenerAdapter
     @Override
     public void add(AbstractMessage addMessage)
     {
-        Activator.getDefault().getItemList().add((Item)addMessage);
+        ModelFactory.getInstance().getItemManager().add((Item)addMessage);
     }
+
+    @Override
+    public void list(ArrayList<AbstractMessage> listMessage)
+    {
+        ItemManager manager = ModelFactory.getInstance().getItemManager();
+        for(AbstractMessage msg:listMessage)
+        {
+            Item item = (Item)msg;
+            manager.add(item);
+        }
+    }    
 }

@@ -1,8 +1,7 @@
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
-
-import at.rc.tacos.client.Activator;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.*;
 
 /**
@@ -13,11 +12,6 @@ public class CreateItemAction extends Action
 {
     private String id;
     
-    public CreateItemAction()
-    {
-        this.id = "item";
-    }
-
     public CreateItemAction(String id) 
     {
         this.id = id;
@@ -25,8 +19,7 @@ public class CreateItemAction extends Action
     
     public void run() 
     {
-        //send
-        //NetWrapper.getDefault().sendAddMessage(Item.ID,new Item(id));     
-        Activator.getDefault().getItemList().add(new Item(id));
+        //send request to add the new item
+        NetWrapper.getDefault().sendAddMessage(Item.ID,new Item(id));     
     }
 }

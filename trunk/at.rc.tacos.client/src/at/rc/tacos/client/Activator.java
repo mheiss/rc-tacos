@@ -5,7 +5,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import at.rc.tacos.client.listeners.*;
-import at.rc.tacos.client.modelManager.*;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.factory.ListenerFactory;
@@ -24,11 +23,6 @@ public class Activator extends AbstractUIPlugin
 	// The shared instance
 	private static Activator plugin;
 	
-	//the object manager   
-    private ItemManager itemList = new ItemManager();
-    private RosterEntryManager rosterEntryList = new RosterEntryManager();
-    private VehicleManager vehicleManager = new VehicleManager();
-	
 	/**
 	 * The constructor
 	 */
@@ -43,18 +37,12 @@ public class Activator extends AbstractUIPlugin
 	{
 		super.start(context);
 		plugin = this;
-		
 		//register the encoders and decoders
 		NetWrapper.getDefault().registerEncoderAndDecoder();
-
-		//set the session
-	    NetWrapper.getDefault().setSessionUsername("Client user");
-	    
+	    NetWrapper.getDefault().setSessionUsername("user3");
 	    //load all needed images and register them
-	    loadAndRegisterImages();
-	    
-	    //load default data
-	    vehicleManager.init();
+	    loadAndRegisterImages();   
+	    registerListeners();
 	}
 
 	/**
@@ -92,7 +80,7 @@ public class Activator extends AbstractUIPlugin
      * Convinience method to registers the ui listeners 
      * to get updates from the network layer.
      */
-	public void registerListeners()
+	private void registerListeners()
 	{
 	    ListenerFactory factory = ListenerFactory.getDefault();
 	    //register the listeners
@@ -115,7 +103,7 @@ public class Activator extends AbstractUIPlugin
 	 * The images can be accessed through the key value of the
 	 * properties file.
 	 */
-	public void loadAndRegisterImages()
+	private void loadAndRegisterImages()
 	{
 	    try
         {
@@ -139,31 +127,4 @@ public class Activator extends AbstractUIPlugin
 	        System.out.println("Please check the images and the properties file");
 	    }
 	}
-	
-    /**
-     * Returns the object list containing the items
-     * @return the objectList
-     */
-    public ItemManager getItemList() 
-    {
-        return itemList;
-    }
-    
-    /**
-     * Returns the object list containing the roster entries
-     * @return the objectList
-     */
-    public RosterEntryManager getRosterEntryList()
-    {
-    	return rosterEntryList;
-    }
-    
-    /**
-     * Returns the vehicle manager containing all vehicle entries
-     * @return the vehicle manager
-     */
-    public VehicleManager getVehicleManager()
-    {
-        return vehicleManager;
-    }
 }

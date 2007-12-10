@@ -6,10 +6,13 @@ import java.text.SimpleDateFormat;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,7 +32,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
-import at.rc.tacos.client.Activator;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.RosterEntry;
 
@@ -65,7 +68,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		}
 
 		public Object[] getElements(Object parent) {
-			return Activator.getDefault().getRosterEntryList().toArray();
+			return ModelFactory.getInstance().getRosterManager().toArray();
 		}
 	}
 
@@ -87,7 +90,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 			case COLUMN_STANDBY: return String.valueOf(entry.getStandby()); 
 			case COLUMN_NOTES: return String.valueOf(entry.getRosterNotes().isEmpty()); 
 			case COLUMN_NAME: return entry.getStaffMember().getLastname()+ " " + entry.getStaffMember().getFirstName();
-			case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartOfWork() + " - " + sdf.format(entry.getPlannedEndOfWork()));
+			case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartOfWork()) + " - " + sdf.format(entry.getPlannedEndOfWork());
 			case COLUMN_CHECK_IN: return sdf.format(entry.getRealStartOfWork());
 			case COLUMN_CHECK_OUT: return sdf.format(entry.getRealEndOfWork());
 			case COLUMN_SERVICE_TYPE: return entry.getServicetype();
@@ -141,7 +144,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	public void createPartControl(Composite parent) 
 	{
         // add listener to model to keep on track. 
-        Activator.getDefault().getRosterEntryList().addPropertyChangeListener(this);
+	    ModelFactory.getInstance().getRosterManager().addPropertyChangeListener(this);
         
         // Create the scrolled parent component
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -181,7 +184,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		this.viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		this.viewer.setContentProvider(new PersonalContentProvider());
 		this.viewer.setLabelProvider(new PersonalLabelProvider());
-		this.viewer.setInput(Activator.getDefault().getRosterEntryList());
+		this.viewer.setCellEditors(getCellRenderer(viewer));
+		this.viewer.setInput(ModelFactory.getInstance().getRosterManager());
         hookContextMenu();
         
 		//table
@@ -485,7 +489,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 //		final TableItem newItemTableItem_7_1 = new TableItem(table_1, SWT.BORDER);
 //		newItemTableItem_7_1.setText("New item");
 //		sashForm_1.setWeights(new int[] {1, 1 });
-//	
+
+		tabFolder.layout(true);
 	}
 	
 	//context menu
@@ -506,14 +511,10 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	/**
      * Passing the focus request to the viewer's control.
      */
-    public void setFocus() 
-    {
-        //this.idText.setFocus();
-    }
+    public void setFocus()  { }
     
     public void propertyChange(PropertyChangeEvent evt) 
     {
-    	System.out.println("change");
         // the viewer represents simple model. refresh should be enough.
         if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())) 
         { 
@@ -524,7 +525,24 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         { 
             this.viewer.refresh();
         }
-        
-        // 
+        // event on deletion --> also just refresh
+        if ("ROSTERENTRY_UPDATE".equals(evt.getPropertyName())) 
+        { 
+            this.viewer.refresh();
+        }
+    }
+    
+    /**
+     * Returns the custom cell renderer
+     * @param viewer the table viewer to create the renderer
+     * @return the renderer array
+     */
+    public CellEditor[] getCellRenderer(TableViewer viewer)
+    {
+        // Create the cell editors
+        CellEditor[] editors = new CellEditor[8];
+        editors[COLUMN_STANDBY] = new CheckboxCellEditor(viewer.getTable());
+        editors[COLUMN_NOTES] = new TextCellEditor(viewer.getTable());
+        return editors;
     }
 }
