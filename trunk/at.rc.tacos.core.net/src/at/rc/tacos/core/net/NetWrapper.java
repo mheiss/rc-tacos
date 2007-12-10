@@ -81,10 +81,13 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void connectNetwork()
     {
-        //set the listener
-        NetSource.getInstance().addNetEventListener(this);
         if(NetSource.getInstance().initNetwork())
+        {
+            System.out.println("Connecting to server: "+NetSource.getInstance().getServerIp());
+            //set the listener
+            NetSource.getInstance().addNetEventListener(this);
             connected = NetSource.getInstance().connect();
+        }
     }
 
     /**
@@ -110,7 +113,6 @@ public class NetWrapper extends Plugin implements INetListener
         protFactory.registerEncoder(Transport.ID, new TransportEncoder());
         protFactory.registerDecoder(VehicleDetail.ID, new VehicleDecoder());
         protFactory.registerEncoder(VehicleDetail.ID, new VehicleEncoder()); 
-        //system events
         protFactory.registerDecoder(Login.ID, new LoginDecoder());
         protFactory.registerEncoder(Login.ID, new LoginEncoder());
         protFactory.registerDecoder(Logout.ID, new LogoutDecoder());
@@ -129,6 +131,16 @@ public class NetWrapper extends Plugin implements INetListener
     }
 
     // METHODS TO SEND MESSAGES
+    /**
+     * Sends a request to the server to login the user.
+     * @param login the authentication information to use
+     */
+    public void sendLoginMessage(Login login)
+    {
+        sendMessage(Login.ID, IModelActions.LOGIN, login);
+    }
+    
+    
     /**
      * Sends a request to the server to add the object to the database.<br>
      * To identify the type of the content a content type must be provided.<br>
@@ -194,8 +206,11 @@ public class NetWrapper extends Plugin implements INetListener
                 session, 
                 contentType, 
                 queryString);
+        System.out.println("Send: "+ session+","+contentType+","+queryString);
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.add(message);
+        //wrapp into a list
+        if(message != null)
+            list.add(message);
         //encode the message
         String xmlMessage = factory.encode(list);
         //send the message
@@ -218,6 +233,9 @@ public class NetWrapper extends Plugin implements INetListener
         //get the type of the item
         final String contentType = xmlFactory.getContentType();
         final String queryString = xmlFactory.getQueryString();
+        final String userId = xmlFactory.getUserId();
+        
+        System.out.println("Received: "+ userId+","+contentType+","+queryString);
 
         //try to get a listener for this message
         ListenerFactory listenerFactory = ListenerFactory.getDefault();
@@ -239,6 +257,10 @@ public class NetWrapper extends Plugin implements INetListener
                 listener.logoutMessage(objects.get(0));
             if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
                 listener.systemMessage(objects.get(0));
+        }
+        else
+        {
+            System.out.println("No listener found for the message type: "+contentType);
         }
     }
 
