@@ -3,6 +3,7 @@ package at.rc.tacos.client.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -82,7 +83,7 @@ public class RosterEntryForm
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * used to edit an roster entry
 	 * @param rosterEntry the roster entry to edit
@@ -90,19 +91,19 @@ public class RosterEntryForm
 	public RosterEntryForm(RosterEntry rosterEntry)
 	{
 		this.createContents();
-		
+
 		//set field contents
 		GregorianCalendar gcal = new GregorianCalendar();
 		gcal.setTimeZone(TimeZone.getDefault());
-		
+
 		//check in
 		gcal.setTimeInMillis(rosterEntry.getRealStartOfWork());
 		String anmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
 		this.dateAnmeldung.setText(anmeldungDate);
 		String anmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 		this.timeAnmeldung.setText(anmeldungTime);
-		
-		
+
+
 		//check out
 		gcal.setTimeInMillis(rosterEntry.getRealEndOfWork());
 		String abmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
@@ -110,7 +111,7 @@ public class RosterEntryForm
 		String abmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 		this.timeAbmeldung.setText(abmeldungTime);
 
-		
+
 		//planned start of work
 		gcal.setTimeInMillis(rosterEntry.getPlannedStartOfWork());
 		System.out.println("date calendar: " +gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR));
@@ -122,19 +123,19 @@ public class RosterEntryForm
 		this.dateTime.setDay(gcal.get(GregorianCalendar.DATE));
 		this.dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
 		this.dateTime.setYear(gcal.get(GregorianCalendar.YEAR));
-		
+
 		String realStartTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 		this.timeDienstVon.setText(realStartTime);
-		
-		
+
+
 		//planned end of work
 		gcal.setTimeInMillis(rosterEntry.getPlannedEndOfWork());
 		String plannedEndDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
 		this.dateDienstBis.setText(plannedEndDate);
 		String plannedEndTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 		this.timeDienstBis.setText(plannedEndTime);
-		
-		
+
+
 		//other fields
 		this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
 		this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
@@ -143,7 +144,7 @@ public class RosterEntryForm
 		this.bereitschaftButton.setSelection(rosterEntry.getStandby());
 		this.setEmployeenameCombo.setText(rosterEntry.getStaffMember().toString());
 	}
-	
+
 	public RosterEntryForm()
 	{
 		this.createContents();
@@ -304,7 +305,7 @@ public class RosterEntryForm
 		group = new Group(shell, SWT.NONE);
 		group.setText("Tatsächliche Dienstzeiten");
 		group.setBounds(10, 328, 559, 110);
-		
+
 
 		timeAnmeldung = new Text(group, SWT.NONE);
 		timeAnmeldung.setBounds(10, 47,62, 21);
@@ -360,7 +361,7 @@ public class RosterEntryForm
 			String dateRealEndOfWork;
 			StaffMember staffMember = new StaffMember();
 			String requiredFields;//the Name of the required fields that have no content
-			
+
 			int hourCheckIn;
 			int hourCheckOut;
 			int minutesCheckIn;
@@ -373,7 +374,7 @@ public class RosterEntryForm
 			long plannedEndOfWork;
 			long realStartOfWork;
 			long realEndOfWork;
-			
+
 			public void handleEvent(Event event) 
 			{
 				requiredFields = "";
@@ -384,79 +385,86 @@ public class RosterEntryForm
 				formatOfRealTime = "";
 				requiredRealDateFields = "";
 				realWorkTimeNoDateIfNoTime = "";
-				
+
 				//get content of all fields
 				this.getContentOfAllFields();
-				
+
 				//check required Fields
-				if (!this.checkRequiredFields().equalsIgnoreCase(""))
+				if(!this.checkRequiredFields().equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen");
+//					System.out.println("plannedEndOfWork: in checkRequiredFields- message dialog " +plannedEndOfWork);
+					return;
+				}
+
+				//validating
+				if(!this.checkFormatOfRealWorkTimeFields().equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event,formatOfRealTime, "Format von tatsächlicher Dienstzeit falsch: ");
+					//formatOfRealTime = "";	
+//					System.out.println("plannedEndOfWork: in checkRomatOfRealWorkTimeFields message dialog " +plannedEndOfWork);
+					return;
+				}
+
+				if(!this.checkDateIfTime().equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, requiredRealDateFields, "Bitte tragen Sie für unten angeführte Felder auch noch ein Datum ein.");
+//					System.out.println("plannedEndOfWork:  in checkDateIfTime  message dialog" +plannedEndOfWork);
+					return;
+				}
+
+				//TODO hier irgendwo passiert Fehler bei plannedEndOfWork
+				this.transformToLong();//set planned work time
+				System.out.println("plannedEndOfWork:  nach transformToLong" +plannedEndOfWork);
+
+				//validate start before end
+				if(plannedEndOfWork<plannedStartOfWork)
+				{
+					this.displayMessageBox(event, "Dienstende vor Dienstbeginn!", "Fehler");
+//					System.out.println("plannedEndOfWork: in plannedEndOfWork<plannedStartOfWork  message dialog " +plannedEndOfWork);
+					return;
+				}
+
+				this.noRealWDIfNoRealWT();
+				if(!realWorkTimeNoDateIfNoTime.equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, realWorkTimeNoDateIfNoTime, "Datum ohne Zeiteintrag");
+//					System.out.println("plannedEndOfWork:  in realWorkTimeNoDateIfNoTime  message dialog" +plannedEndOfWork);
+					return;
+				}
+
+//				System.out.println("plannedEndOfWork:  vor setRealWorkTime" +plannedEndOfWork);
+				this.setRealWorkTime();
+//				System.out.println("plannedEndOfWork:  nach setRealWorkTime " +plannedEndOfWork);
+				if(realEndOfWork<realStartOfWork && realEndOfWork > 0)
+				{
+					this.displayMessageBox(event, "Abmeldung vor Anmeldung","Fehler");
+					return;
 				}
 				
-				else
-				{
-					//validating
-					if(!this.checkFormatOfRealWorkTimeFields().equalsIgnoreCase(""))
-					{
-						this.displayMessageBox(event,formatOfRealTime, "Format von tatsächlicher Dienstzeit falsch: ");
-						//formatOfRealTime = "";	
-					}
-					else
-					{
-						if(!this.checkDateIfTime().equalsIgnoreCase(""))
-						{
-							this.displayMessageBox(event, requiredRealDateFields, "Bitte tragen Sie für unten angeführte Felder auch noch ein Datum ein.");
-						}
-						else
-						{
-							this.transformToLong();//set planned work time
-							//validate start before end
-							if(plannedEndOfWork<plannedStartOfWork)
-							{
-								this.displayMessageBox(event, "Dienstende vor Dienstbeginn!", "Fehler");
-							}
-							else
-							{
-								this.noRealWDIfNoRealWT();
-								if(!realWorkTimeNoDateIfNoTime.equalsIgnoreCase(""))
-								{
-									this.displayMessageBox(event, realWorkTimeNoDateIfNoTime, "Datum ohne Zeiteintrag");
-								}
-								else
-								{
-									this.setRealWorkTime();
-									if(realEndOfWork<realStartOfWork)
-									{
-										this.displayMessageBox(event, "Abmeldung vor Anmeldung","Fehler");
-									}
-									else
-									{
-										RosterEntry rosterEntry = new RosterEntry(staffMember,plannedStartOfWork, plannedEndOfWork, realStartOfWork, realEndOfWork, station, competence, servicetype, rosterNotes, standbyState);
-					
-										//send the roster entry
-										new CreateRosterEntryAction(rosterEntry).run();
-									}
-									
-								}
-							}
-						}
-					}					
-				}
+				//RosterEntry rosterEntry = new RosterEntry(, station, competence, servicetype, rosterNotes, standbyState);
+				RosterEntry rosterEntry = new RosterEntry(staffMember,servicetype,competence,station,plannedStartOfWork, plannedEndOfWork);
+				//send the roster entry
+//					new CreateRosterEntryAction(rosterEntry).run();
+				System.out.println("Dienstplaneintrag angelegt...");
+				
 			}
 
-			
+
 			private void getContentOfAllFields()
 			{
 				index = (comboViewer.getCombo().getSelectionIndex());
-				String fullName = (String)comboViewer.getElementAt(index);
-				String[] fullName2 = fullName.split(" ");//TODO not allow space within first and last name
-				String lastName = fullName2[0];
-				String firstName = fullName2[1];
-				System.out.println("lastname: " +lastName);
-//				staffMember = (StaffMember)comboViewer.getElementAt(index);//TODO doesn't longer work (toString -> staffMember.get...
-				staffMember.setFirstName(firstName);
-				staffMember.setLastName(lastName);
+				if (index != -1)
+				{
+					String fullName = (String)comboViewer.getElementAt(index);
+					String[] fullName2 = fullName.split(" ");//TODO not allow space within first and last name
+					String lastName = fullName2[0];
+					String firstName = fullName2[1];
+//					System.out.println("lastname: " +lastName);
+					//				staffMember = (StaffMember)comboViewer.getElementAt(index);//TODO doesn't longer work (toString -> staffMember.get...
+					staffMember.setFirstName(firstName);
+					staffMember.setLastName(lastName);
+				}
 				standbyState = bereitschaftButton.getSelection();
 				station = comboOrtsstelle.getText();
 				competence = comboVerwendung.getText();
@@ -470,7 +478,7 @@ public class RosterEntryForm
 				timeRealEndOfWork = timeAbmeldung.getText();
 				dateRealEndOfWork = dateAbmeldung.getText();
 			}
-			
+
 			private String checkRequiredFields()
 			{
 				if (index == -1)
@@ -485,50 +493,50 @@ public class RosterEntryForm
 					requiredFields = requiredFields +" - Dienst von";
 				if (timePlannedEndOfWork.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" - Dienst bis";
-				
+
 				return requiredFields;
 			}
-			
+
 			private String checkFormatOfRealWorkTimeFields()
 			{
 				Pattern p4 = Pattern.compile("(\\d{2})(\\d{2})");//if content is e.g. 1234
 				Pattern p5 = Pattern.compile("(\\d{2}):(\\d{2})");//if content is e.g. 12:34
-				
+
 				//check in
 				if(!timeRealStartOfWork.equalsIgnoreCase(""))
 				{
 					Matcher m41= p4.matcher(timeRealStartOfWork);
 					Matcher m51= p5.matcher(timeRealStartOfWork);
-						if(m41.matches())
+					if(m41.matches())
+					{
+						hourCheckIn = Integer.parseInt(m41.group(1));
+						minutesCheckIn = Integer.parseInt(m41.group(2));
+
+						if(hourCheckIn >= 0 && hourCheckIn <=23 && minutesCheckIn >= 0 && minutesCheckIn <=59)
 						{
-							hourCheckIn = Integer.parseInt(m41.group(1));
-							minutesCheckIn = Integer.parseInt(m41.group(2));
-							
-							if(hourCheckIn >= 0 && hourCheckIn <=23 && minutesCheckIn >= 0 && minutesCheckIn <=59)
-							{
-								timeRealStartOfWork = hourCheckIn + ":" +minutesCheckIn;//for the splitter
-							}
-							else
-							{
-								formatOfRealTime = " - Anmeldung (Zeit)";
-							}
-						}
-						else if(m51.matches())
-						{
-								hourCheckIn = Integer.parseInt(m51.group(1));
-								minutesCheckIn = Integer.parseInt(m51.group(2));
-							
-							if(!(hourCheckIn >= 0 && hourCheckIn <=23 && minutesCheckIn >= 0 && minutesCheckIn <=59))
-							{
-								formatOfRealTime = " - Anmeldung (Zeit)";
-							}
+							timeRealStartOfWork = hourCheckIn + ":" +minutesCheckIn;//for the splitter
 						}
 						else
 						{
 							formatOfRealTime = " - Anmeldung (Zeit)";
 						}
+					}
+					else if(m51.matches())
+					{
+						hourCheckIn = Integer.parseInt(m51.group(1));
+						minutesCheckIn = Integer.parseInt(m51.group(2));
+
+						if(!(hourCheckIn >= 0 && hourCheckIn <=23 && minutesCheckIn >= 0 && minutesCheckIn <=59))
+						{
+							formatOfRealTime = " - Anmeldung (Zeit)";
+						}
+					}
+					else
+					{
+						formatOfRealTime = " - Anmeldung (Zeit)";
+					}
 				}
-				
+
 				//check out
 				if (!timeRealEndOfWork.equalsIgnoreCase(""))
 				{
@@ -538,7 +546,7 @@ public class RosterEntryForm
 					{
 						hourCheckOut = Integer.parseInt(m42.group(1));
 						minutesCheckOut = Integer.parseInt(m42.group(2));
-						
+
 						if(hourCheckOut >= 0 && hourCheckOut <=23 && minutesCheckOut >= 0 && minutesCheckOut <=59)
 						{
 							timeRealEndOfWork = hourCheckOut +":" +minutesCheckOut;
@@ -552,7 +560,7 @@ public class RosterEntryForm
 					{
 						hourCheckOut = Integer.parseInt(m52.group(1));
 						minutesCheckOut = Integer.parseInt(m52.group(2));
-						
+
 						if(!(hourCheckOut >= 0 && hourCheckOut <=23 && minutesCheckOut >= 0 && minutesCheckOut <=59))
 						{
 							formatOfRealTime = formatOfRealTime +"Abmeldung (Zeit)";
@@ -565,7 +573,7 @@ public class RosterEntryForm
 				}
 				return formatOfRealTime;
 			}
-			
+
 			private String checkDateIfTime()
 			{
 				if (hourCheckIn != -1)
@@ -576,7 +584,7 @@ public class RosterEntryForm
 						requiredRealDateFields = "-Anmeldedatum";
 					}
 				}
-				
+
 				if (hourCheckOut != -1)
 				{
 					//a check out date must be available
@@ -585,42 +593,50 @@ public class RosterEntryForm
 						requiredRealDateFields = requiredRealDateFields + " -Abmeldedatum";
 					}
 				}
+				System.out.println("plannedEndOfWork:  am ende von checkDateIfTime()" +plannedEndOfWork);
 				return requiredRealDateFields;
 			}
-			
+
 			private void transformToLong()
 			{
+				//get a new instance of the calendar
+				cal = Calendar.getInstance();
 				//planned start of work
 				//time
 				String[] plannedStartTime = timePlannedStartOfWork.split(":");
 				int hoursPlannedStart = Integer.valueOf(plannedStartTime[0]).intValue();
 				int minutesPlannedStart = Integer.valueOf(plannedStartTime[1]).intValue();
-				
+
 				//date
 				int yearPlannedStart = dateDienstVon.getYear();
 				int monthPlannedStart = dateDienstVon.getMonth();
 				int dayPlannedStart = dateDienstVon.getDay();
-
 				cal.set(yearPlannedStart, monthPlannedStart, dayPlannedStart, hoursPlannedStart, minutesPlannedStart, 0);
 				plannedStartOfWork = cal.getTimeInMillis();
-				
-				
+
 				//planned end of work
 				//time
 				String[] plannedEndTime = timePlannedEndOfWork.split(":");
 				int hoursPlannedEnd = Integer.valueOf(plannedEndTime[0]).intValue();
 				int minutesPlannedEnd = Integer.valueOf(plannedEndTime[1]).intValue();
+				System.out.println("hoursPlannedEnd of work in transform to long:  " +hoursPlannedEnd);
+				System.out.println("minutesPlannedEnd of work in transform to long: " +minutesPlannedEnd);
 
 				//date
 				String[] plannedEndDate = datePlannedEndOfWork.split("\\.");
 				int yearPlannedEnd = Integer.valueOf(plannedEndDate[2]).intValue();
-				int monthPlannedEnd = (Integer.valueOf(plannedEndDate[1]).intValue())-1;
+				int monthPlannedEnd = (Integer.valueOf(plannedEndDate[1]).intValue());
 				int dayPlannedEnd = Integer.valueOf(plannedEndDate[0]).intValue();
-
+				System.out.println("yearPlannedEnd of work in transform to long:  " +yearPlannedEnd);
+				System.out.println("monthPlannedEnd of work in transform to long:  " +monthPlannedEnd);
+				System.out.println("dayPlannedEnd of work in transform to long:  " +dayPlannedEnd);
 				cal.set(yearPlannedEnd, monthPlannedEnd, dayPlannedEnd, hoursPlannedEnd, minutesPlannedEnd, 0);
 				plannedEndOfWork = cal.getTimeInMillis();
+				Date plannedEndOfWorkDateTime2 = cal.getTime();
+				System.out.println("plannedEndOfWork:  am ende der transformToLong " +plannedEndOfWork);
+				System.out.println("plannedEndOfWork als Date:  am ende der transformToLong " +plannedEndOfWorkDateTime2);
 			}
-			
+
 			private String noRealWDIfNoRealWT()
 			{
 				if (timeRealStartOfWork.equalsIgnoreCase("") & !dateRealStartOfWork.equalsIgnoreCase(""))
@@ -644,7 +660,7 @@ public class RosterEntryForm
 					hoursRealStart = Integer.valueOf(realStartTime[0]).intValue();
 					minutesRealStart = Integer.valueOf(realStartTime[1]).intValue();
 				}
-				
+
 				int yearRealStart = 0;
 				int monthRealStart = 0;
 				int dayRealStart = 0;
@@ -657,7 +673,7 @@ public class RosterEntryForm
 				}
 				cal.set(yearRealStart, monthRealStart, dayRealStart, hoursRealStart, minutesRealStart, 0);
 				realStartOfWork = cal.getTimeInMillis();
-				
+
 				//real end of work
 				int hoursRealEnd = 0;
 				int minutesRealEnd = 0;
@@ -667,7 +683,7 @@ public class RosterEntryForm
 					hoursRealEnd = Integer.valueOf(realEndTime[0]).intValue();
 					minutesRealEnd = Integer.valueOf(realEndTime[1]).intValue();
 				}
-				
+
 				int yearRealEnd = 0;
 				int monthRealEnd = 0;
 				int dayRealEnd = 0;
@@ -677,25 +693,25 @@ public class RosterEntryForm
 					yearRealEnd = Integer.valueOf(realEndDate[2]).intValue();
 					monthRealEnd = Integer.valueOf(realEndDate[1]).intValue()-1;
 					dayRealEnd = Integer.valueOf(realEndDate[0]).intValue();
-					
+
 					cal.set(yearRealEnd, monthRealEnd, dayRealEnd, hoursRealEnd, minutesRealEnd, 0);
 					realEndOfWork = cal.getTimeInMillis();
 				}
 			}
-			
+
 			private void displayMessageBox(Event event, String fields, String message)
 			{
-				 MessageBox mb = new MessageBox(shell, 0);
-			     mb.setText(message);
-			     mb.setMessage(fields);
-			     mb.open();
-			     if(event.type == SWT.Close) event.doit = false;
+				MessageBox mb = new MessageBox(shell, 0);
+				mb.setText(message);
+				mb.setMessage(fields);
+				mb.open();
+				if(event.type == SWT.Close) event.doit = false;
 			}
 		});
 		shell.setTabList(new Control[] {dienstplanGroup, group, okButton, abbrechenButton});
 	}
 
-	
+
 	//not used at the time
 	public void setRealWorktimesInactive()
 	{
@@ -711,10 +727,10 @@ public class RosterEntryForm
 	{
 		GregorianCalendar gcal = new GregorianCalendar();
 		List<String> content = new ArrayList<String>();
-		
+
 		//the previous 5 days
 		gcal.set(GregorianCalendar.DATE,(gcal.get(GregorianCalendar.DATE)-5));
-		
+
 		//up from tomorrow
 		for (int i=0;i<=100;i++) // the next 100 days
 		{
