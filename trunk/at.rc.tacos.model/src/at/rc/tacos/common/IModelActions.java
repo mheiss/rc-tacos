@@ -10,7 +10,7 @@ public interface IModelActions
     /** Login message */
     public final static String LOGIN = "message.login";
     /** Logout message */
-    public final static String LOGOUT = "message.login";
+    public final static String LOGOUT = "message.logout";
     /** General system messages */
     public final static String SYSTEM = "message.system";
     
