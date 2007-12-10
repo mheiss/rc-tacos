@@ -7,8 +7,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.core.net.NetWrapper;
-
 /**
  * This class controls all aspects of the application's execution
  */
@@ -24,8 +22,6 @@ public class Application implements IApplication
 		Display display = PlatformUI.createDisplay();
 		try 
 		{
-	        //start the network connection
-		    NetWrapper.getDefault().connectNetwork();
             //create the workbench
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART) 

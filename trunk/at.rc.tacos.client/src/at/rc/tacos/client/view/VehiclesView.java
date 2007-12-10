@@ -9,10 +9,9 @@ import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import at.rc.tacos.client.Activator;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.composite.CarComposite;
@@ -33,7 +32,6 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
     private ScrolledForm form;
 
     //the composites to group the vehicles
-    private Section kapfenberg;
     private Composite compositeKapfenberg;
     private Composite compositeBruck;
     private Composite compositeStMarein;
@@ -60,21 +58,21 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         form.getBody().setLayout(layout);
         
         //get the values from the activator
-        vehicleManager = Activator.getDefault().getVehicleManager();
+        vehicleManager = ModelFactory.getInstance().getVehicleManager();
 
         // Create the sections for each station
         compositeKapfenberg = createSection(form,toolkit,"Kapfenberg","Fahzeuge von Kapfenberg");
-//        compositeBruck = createSection(form,toolkit,"Bruck","Fahzeuge von Bruck/Mur");
-//        compositeStMarein = createSection(form,toolkit,"St.Marein","Fahzeuge von St.Marein");
-//        compositeThoerl = createSection(form,toolkit,"Thörl","Fahzeuge von Thörl");
-//        compositeThurnau = createSection(form,toolkit,"Thurnau","Fahzeuge von Thurnau");
-//        compositeBreitenau = createSection(form,toolkit,"Breitenau","Breitenau");
+        compositeBruck = createSection(form,toolkit,"Bruck","Fahzeuge von Bruck/Mur");
+        compositeStMarein = createSection(form,toolkit,"St.Marein","Fahzeuge von St.Marein");
+        compositeThoerl = createSection(form,toolkit,"Thörl","Fahzeuge von Thörl");
+        compositeThurnau = createSection(form,toolkit,"Thurnau","Fahzeuge von Thurnau");
+        compositeBreitenau = createSection(form,toolkit,"Breitenau","Breitenau");
         
-        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(0));
-        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(1));
-        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
-        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
-        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
+//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(0));
+//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(1));
+//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
+//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
+//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
         
 //        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(0));
 //        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(1));
@@ -92,7 +90,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 //        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(1));
         
         // add listener to model to keep on track. 
-        Activator.getDefault().getVehicleManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
     }
 
     @Override
@@ -103,21 +101,17 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
      * must be updated.
      * @param evt the fired property event
      */
-     public void propertyChange(PropertyChangeEvent evt) 
+     public void propertyChange(final PropertyChangeEvent evt) 
      {
-         // the viewer represents simple model. refresh should be enough.
+         // create the new composite
          if ("VEHICLE_ADD".equals(evt.getPropertyName())) 
          { 
              //the vehicle added
              VehicleDetail detail = (VehicleDetail)evt.getNewValue();
-             System.out.println("new vehicle: "+detail);
-             createVehicle(compositeKapfenberg,detail);
+             System.out.println("before creating");
+             //createVehicle(compositeKapfenberg,detail);  
              new CarComposite(compositeKapfenberg,detail);
-             compositeKapfenberg.layout(true);
-             
-             kapfenberg.layout(true);
-             kapfenberg.update();
-             kapfenberg.getDisplay().update();
+             System.out.println("after creating");
          }
      }
 
@@ -146,41 +140,29 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         client.setLayout(layout);
         //add the client to the section
         section.setClient(client);
-        kapfenberg = section;
         //return the client
         return client;
     }
     
     /**
-     * Creates the custom vehicle.
+     * Creates the custom vehicle composite
      * @param parent the parent frame for this vehicle 
      * @param detail the vehicle to show 
      * @return the created vehicle
      */
-    public void createVehicle(Composite parent,VehicleDetail detail)
+    public Control createVehicle(Composite parent,VehicleDetail detail)
     {
-        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
         FormColors colors = toolkit.getColors();
         Color top = colors.getColor(IFormColors.H_GRADIENT_END);
         Color bot = colors.getColor(IFormColors.H_GRADIENT_START);
-
         // create the base form
         Form form = toolkit.createForm(parent);
         form.setText(detail.getVehicleName()+ " - "+detail.getVehicleType());
         form.setImage(ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.green"));
         form.setTextBackground(new Color[] { top, bot }, new int[] { 100 }, true);
         GridLayout layout = new GridLayout();
-        layout.numColumns = 3;
+        layout.numColumns = 1;
         form.getBody().setLayout(layout);
-
-        // create the text for user information
-        FormText text = toolkit.createFormText(form.getBody(), true);
-        GridData td = new GridData();        
-        text.setLayoutData(td);
-        text.setText("<form>" +
-        		"<p>Driver:" + detail.getDriverName().getUserName() + "</p>" +
-        		"<p>Sani1:" + detail.getParamedicIName().getUserName() + "</p>" +
-                "<p>Sani2:" + detail.getParamedicIIName().getUserName() + "</p>" +
-        		"</form>", true, false);
+        return form;
     }
 }

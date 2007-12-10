@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelListener;
 
+/**
+ * An abstract adapter class for handling server responses.
+ * The methods in this class are empty. This class exists as
+ * convenience for creating listener objects.
+ * @author Michael
+ */
 public abstract class ClientListenerAdapter implements IModelListener
 {
     /**

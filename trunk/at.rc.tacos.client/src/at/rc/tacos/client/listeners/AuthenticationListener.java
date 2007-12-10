@@ -10,13 +10,13 @@ public class AuthenticationListener extends ClientListenerAdapter
     public void loginMessage(AbstractMessage message)
     {
         Login login = (Login)message;
-        System.out.println(login);
+        System.out.println("Login: "+login);
     }
 
     @Override
     public void logoutMessage(AbstractMessage message)
     {
         Logout logout = (Logout)message;
-        System.out.println(logout);
+        System.out.println("Logout: "+logout);
     }
 }

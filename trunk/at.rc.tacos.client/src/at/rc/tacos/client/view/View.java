@@ -13,9 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-//client
-import at.rc.tacos.client.*;
-//service
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.model.*;
 
 public class View extends ViewPart implements PropertyChangeListener 
@@ -40,7 +38,7 @@ public class View extends ViewPart implements PropertyChangeListener
 
 		public Object[] getElements(Object parent) 
 		{
-			return Activator.getDefault().getItemList().toArray();
+			return ModelFactory.getInstance().getItemManager().toArray();
 		}
 	}
 
@@ -65,9 +63,9 @@ public class View extends ViewPart implements PropertyChangeListener
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setInput(Activator.getDefault().getItemList());
+		viewer.setInput(ModelFactory.getInstance().getItemManager());
         // add listener to model to keep on track. 
-        Activator.getDefault().getItemList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getItemManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -84,7 +82,7 @@ public class View extends ViewPart implements PropertyChangeListener
     public void dispose() 
     {
         // deregister listener
-        Activator.getDefault().getItemList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getItemManager().removePropertyChangeListener(this);
         super.dispose();
     }
 
