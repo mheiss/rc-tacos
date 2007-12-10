@@ -72,11 +72,6 @@
 		<jsp-file>/jsp/rosterWeek.jsp</jsp-file>
 	</servlet>
 	
-	<servlet-mapping>
-		<servlet-name>profileView</servlet-name>
-		<url-pattern>/profileView</url-pattern>
-	</servlet-mapping>
-	
 	<servlet>
 		<servlet-name>profileView</servlet-name>
 		<jsp-file>/jsp/profile.jsp</jsp-file>

@@ -40,6 +40,10 @@ public class ControllerFactory {
 		{
 			return new RosterDayController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.profile")))
+		{
+			return new RosterDayController();
+		}
 		else
 		{
 			return null;
