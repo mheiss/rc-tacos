@@ -64,24 +64,24 @@ public class RosterEntryForm
 	private Listener exitListener;
 	private String[] timeArray = new String[]{"05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"};
 
-//	/**
-//	 * Launch the application
-//	 * @param args
-//	 */
-//	public static void main(String[] args) {
-//		try {
-//			StaffMember sm = new StaffMember();
-//			Calendar c = Calendar.getInstance();
-//			c.setTime(new Date());
-//			long time = c.getTimeInMillis();
-//			//new RosterEntry();
-//			RosterEntry rosterEntry = new RosterEntry(1,sm,time,time,time, time,"Kapfenberg", "Fahrer", "Hauptamtlich", "the notes", true);
+	/**
+	 * Launch the application
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		try {
+			StaffMember sm = new StaffMember();
+			Calendar c = Calendar.getInstance();
+			//c.setTime(new Date());
+			long time = c.getTimeInMillis();
+			RosterEntryForm window = new RosterEntryForm();
+			//RosterEntry rosterEntry = new RosterEntry(1,sm,time,time,time, time,"Kapfenberg", "Fahrer", "Hauptamtlich", "the notes", true);
 //			RosterEntryForm window = new RosterEntryForm(rosterEntry);
-//			window.open();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+			window.open();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * used to edit an roster entry
@@ -194,7 +194,7 @@ public class RosterEntryForm
 
 		//GUI
 		shell = new Shell();
-		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+//		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
 		shell.setSize(591, 512);
 		shell.setText("Dienstplaneintrag");
 
@@ -330,7 +330,7 @@ public class RosterEntryForm
 		group.setTabList(new Control[] {timeAnmeldung, dateAnmeldung, timeAbmeldung, dateAbmeldung});
 
 		abbrechenButton = new Button(shell, SWT.NONE);
-		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
+//		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
 		abbrechenButton.setBounds(473, 445, 96, 23);
 		abbrechenButton.setText("Abbrechen");
 		abbrechenButton.addListener(SWT.Selection, exitListener);
@@ -358,7 +358,7 @@ public class RosterEntryForm
 			String dateRealStartOfWork;
 			String timeRealEndOfWork;
 			String dateRealEndOfWork;
-			StaffMember staffMember;
+			StaffMember staffMember = new StaffMember();
 			String requiredFields;//the Name of the required fields that have no content
 			
 			int hourCheckIn;
@@ -449,7 +449,14 @@ public class RosterEntryForm
 			private void getContentOfAllFields()
 			{
 				index = (comboViewer.getCombo().getSelectionIndex());
-				staffMember = (StaffMember)comboViewer.getElementAt(index);
+				String fullName = (String)comboViewer.getElementAt(index);
+				String[] fullName2 = fullName.split(" ");//TODO not allow space within first and last name
+				String lastName = fullName2[0];
+				String firstName = fullName2[1];
+				System.out.println("lastname: " +lastName);
+//				staffMember = (StaffMember)comboViewer.getElementAt(index);//TODO doesn't longer work (toString -> staffMember.get...
+				staffMember.setFirstName(firstName);
+				staffMember.setLastName(lastName);
 				standbyState = bereitschaftButton.getSelection();
 				station = comboOrtsstelle.getText();
 				competence = comboVerwendung.getText();
