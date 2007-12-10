@@ -1,5 +1,12 @@
 package at.rc.tacos.client.view;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.swt.graphics.Color;
 
 
@@ -14,10 +21,18 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import at.rc.tacos.client.controller.CreateRosterEntryAction;
+import at.rc.tacos.model.IDirectness;
+import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 /**
@@ -26,7 +41,8 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  * @author b.thek
  *
  */
-public class TransportForm {
+public class TransportForm implements IDirectness
+{
 
 	private Group transportdetailsGroup;
 	private Text textSaniII;
@@ -57,9 +73,9 @@ public class TransportForm {
 	private Combo comboZustaendigeOrtsstelle;
 	private Text textTelefonAnrufer;
 	private Text textAnrufer;
-	private Button button_1;
+	private Button ruecktransportMoeglichButton;
 	private Button begleitpersonButton;
-	private Button rufhilfepatientButton;
+	//private Button rufhilfepatientButton;
 	private Button eigenerRollstuhlButton;
 	private Button krankentrageButton;
 	private Button tragsesselButton;
@@ -90,6 +106,7 @@ public class TransportForm {
 	private Button gehendButton;
 	protected Shell shell;
 	
+	private Listener exitListener;
 	private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
 
 	/**
@@ -131,6 +148,29 @@ public class TransportForm {
 		shell.setText("Transport");
 
 		
+		//TODO get lists from database
+		//ArrayList<String> streetList = new ArrayList<String>(Arrays.asList("Leobnerstraße", "Grazerstraße"));
+		
+		
+		
+		
+		
+		
+		//listener
+		exitListener = new Listener() {
+			public void handleEvent(Event e) {
+				MessageBox dialog = new MessageBox(shell, SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION);
+				dialog.setText("Abbrechen");
+				dialog.setMessage("Wollen Sie wirklich abbrechen?");
+				if (e.type == SWT.Close) e.doit = false;
+				if (dialog.open() != SWT.OK) return;
+				shell.dispose();
+			}
+		};
+		
+		
+		
+		
 		//calendar
 		dateTime = new DateTime(shell, SWT.CALENDAR);
 		final FormData fd_dateTime = new FormData();
@@ -171,6 +211,7 @@ public class TransportForm {
 		fd_comboNachStrasse.right = new FormAttachment(0, 232);
 		fd_comboNachStrasse.left = new FormAttachment(0, 38);
 		comboNachStrasse.setLayoutData(fd_comboNachStrasse);
+		comboNachStrasse.setItems(new String[] {"Leobnerstraße", "Mariazellerstraße", "Am Hang", "Wienerstraße"});//TODO get from db
 
 		comboVonStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonStrasse = new FormData();
@@ -179,6 +220,7 @@ public class TransportForm {
 		fd_comboVonStrasse.right = new FormAttachment(0, 232);
 		fd_comboVonStrasse.left = new FormAttachment(0, 38);
 		comboVonStrasse.setLayoutData(fd_comboVonStrasse);
+		comboVonStrasse.setItems(new String[] {"Leobnerstraße", "Mariazellerstraße", "Am Hang", "Wienerstraße"});//TODO get from db
 
 		final Label nachLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_nachLabel = new FormData();
@@ -207,6 +249,7 @@ public class TransportForm {
 		fd_comboVonNr.right = new FormAttachment(0, 313);
 		fd_comboVonNr.left = new FormAttachment(0, 238);
 		comboVonNr.setLayoutData(fd_comboVonNr);
+		comboVonNr.setItems(new String[] {"1", "2", "3", "4"});//TODO get from db
 
 		comboNachNr = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachNr = new FormData();
@@ -215,6 +258,7 @@ public class TransportForm {
 		fd_comboNachNr.right = new FormAttachment(0, 313);
 		fd_comboNachNr.left = new FormAttachment(0, 238);
 		comboNachNr.setLayoutData(fd_comboNachNr);
+		comboNachNr.setItems(new String[] {"1", "2", "3", "4"});//TODO get from db
 
 		final Label label_1 = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_label_1 = new FormData();
@@ -233,6 +277,7 @@ public class TransportForm {
 		fd_comboVonOrt.right = new FormAttachment(0, 430);
 		fd_comboVonOrt.left = new FormAttachment(0, 319);
 		comboVonOrt.setLayoutData(fd_comboVonOrt);
+		comboVonOrt.setItems(new String[] {"Bruck an der Mur", "Oberaich", "Pernegg", "Turnau", "Kapfenberg"});//TODO get form db
 
 		comboNachOrt = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachOrt = new FormData();
@@ -241,6 +286,7 @@ public class TransportForm {
 		fd_comboNachOrt.right = new FormAttachment(0, 430);
 		fd_comboNachOrt.left = new FormAttachment(0, 319);
 		comboNachOrt.setLayoutData(fd_comboNachOrt);
+		comboNachOrt.setItems(new String[] {"Bruck an der Mur", "Oberaich", "Pernegg", "Turnau", "Kapfenberg"});//TODO get form db
 
 		final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_ortLabel = new FormData();
@@ -347,23 +393,23 @@ public class TransportForm {
 		});
 		begleitpersonButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_BeglPerson.gif"));
 
-		button_1 = new Button(transportdatenGroup, SWT.CHECK);
+		ruecktransportMoeglichButton = new Button(transportdatenGroup, SWT.CHECK);
 		final FormData fd_button_1 = new FormData();
 		fd_button_1.bottom = new FormAttachment(0, 96);
 		fd_button_1.top = new FormAttachment(0, 80);
 		fd_button_1.right = new FormAttachment(0, 159);
 		fd_button_1.left = new FormAttachment(0, 38);
-		button_1.setLayoutData(fd_button_1);
-		button_1.setText("Rücktransport möglich");
+		ruecktransportMoeglichButton.setLayoutData(fd_button_1);
+		ruecktransportMoeglichButton.setText("Rücktransport möglich");
 
-		rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
-		final FormData fd_rufhilfepatientButton = new FormData();
-		fd_rufhilfepatientButton.bottom = new FormAttachment(0, 96);
-		fd_rufhilfepatientButton.top = new FormAttachment(0, 80);
-		fd_rufhilfepatientButton.right = new FormAttachment(0, 547);
-		fd_rufhilfepatientButton.left = new FormAttachment(0, 462);
-		rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
-		rufhilfepatientButton.setText("Rufhilfepatient");
+//		rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
+//		final FormData fd_rufhilfepatientButton = new FormData();
+//		fd_rufhilfepatientButton.bottom = new FormAttachment(0, 96);
+//		fd_rufhilfepatientButton.top = new FormAttachment(0, 80);
+//		fd_rufhilfepatientButton.right = new FormAttachment(0, 547);
+//		fd_rufhilfepatientButton.left = new FormAttachment(0, 462);
+//		rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
+//		rufhilfepatientButton.setText("Rufhilfepatient");
 
 		final Label anruferLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_anruferLabel = new FormData();
@@ -419,7 +465,7 @@ public class TransportForm {
 		fd_comboZustaendigeOrtsstelle.left = new FormAttachment(0, 319);
 		comboZustaendigeOrtsstelle.setLayoutData(fd_comboZustaendigeOrtsstelle);
 		comboZustaendigeOrtsstelle.setItems(new String[] {"Breitenau", "Bruck an der Mur", "Kapfenberg", "St. Marein", "Thörl", "Turnau"});
-		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonNr, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachNr, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, button_1, comboZustaendigeOrtsstelle, rufhilfepatientButton, begleitpersonButton, textAnrufer, textTelefonAnrufer});
+		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonNr, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachNr, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, ruecktransportMoeglichButton, comboZustaendigeOrtsstelle, begleitpersonButton, textAnrufer, textTelefonAnrufer});
 
 		planungGroup = new Group(shell, SWT.NONE);
 		planungGroup.setLayout(new FormLayout());
@@ -572,6 +618,8 @@ public class TransportForm {
 		fd_comboErkrankungVerletzung.right = new FormAttachment(0, 289);
 		fd_comboErkrankungVerletzung.left = new FormAttachment(0, 7);
 		comboErkrankungVerletzung.setLayoutData(fd_comboErkrankungVerletzung);
+		comboErkrankungVerletzung.setItems(new String[] {"Schlaganfall", "Herzinfarkt", "Atemnot", "Pseudokrupp"});//TODO get form db
+
 
 		textAnmerkungen = new Text(patientenzustandGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_textAnmerkungen = new FormData();
@@ -619,19 +667,19 @@ public class TransportForm {
 		label_3.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		label_3.setText("Rückmeldung");
 
-		bd1Button = new Button(patientenzustandGroup, SWT.CHECK);
-		final FormData fd_bd1Button = new FormData();
-		fd_bd1Button.bottom = new FormAttachment(0, 23);
-		fd_bd1Button.top = new FormAttachment(0, 7);
-		fd_bd1Button.right = new FormAttachment(0, 286);
-		fd_bd1Button.left = new FormAttachment(0, 243);
-		bd1Button.setLayoutData(fd_bd1Button);
-		bd1Button.setToolTipText("Sondersignal zum Einsatzort");
-		bd1Button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-			}
-		});
-		bd1Button.setText("BD 1");
+//		bd1Button = new Button(patientenzustandGroup, SWT.CHECK);
+//		final FormData fd_bd1Button = new FormData();
+//		fd_bd1Button.bottom = new FormAttachment(0, 23);
+//		fd_bd1Button.top = new FormAttachment(0, 7);
+//		fd_bd1Button.right = new FormAttachment(0, 286);
+//		fd_bd1Button.left = new FormAttachment(0, 243);
+//		bd1Button.setLayoutData(fd_bd1Button);
+//		bd1Button.setToolTipText("Sondersignal zum Einsatzort");
+//		bd1Button.addSelectionListener(new SelectionAdapter() {
+//			public void widgetSelected(final SelectionEvent e) {
+//			}
+//		});
+//		bd1Button.setText("BD 1");
 
 		bd2Button = new Button(patientenzustandGroup, SWT.CHECK);
 		final FormData fd_bd2Button = new FormData();
@@ -644,7 +692,7 @@ public class TransportForm {
 		bd2Button.setText("BD 2");
 
 		comboPrioritaet = new Combo(patientenzustandGroup, SWT.NONE);
-		comboPrioritaet.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
+		comboPrioritaet.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), G (NEF extern)");
 		comboPrioritaet.setItems(new String[] {"A", "B", "C", "D", "E", "F", "G"});
 		comboPrioritaet.setData("newKey", null);
 		final FormData fd_comboPrioritaet = new FormData();
@@ -664,7 +712,7 @@ public class TransportForm {
 		label_4.setLayoutData(fd_label_4);
 		label_4.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		label_4.setText("Priorität:");
-		patientenzustandGroup.setTabList(new Control[] {comboErkrankungVerletzung, comboPrioritaet, textAnmerkungen, bd1Button, textRueckmeldung, bd2Button});
+		patientenzustandGroup.setTabList(new Control[] {comboErkrankungVerletzung, comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
 
 		//group 'Alarmierung'
 		planungGroup_1 = new Group(shell, SWT.NONE);
@@ -990,6 +1038,7 @@ public class TransportForm {
 		aufgLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		aufgLabel.setText("Aufg.:");
 
+		
 		final Text textAE = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textAE = new FormData();
 		fd_textAE.bottom = new FormAttachment(0, 59);
@@ -1008,6 +1057,7 @@ public class TransportForm {
 		aeLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		aeLabel.setText("AE:");
 
+		
 		final Text textS1 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS1 = new FormData();
 		fd_textS1.bottom = new FormAttachment(0, 32);
@@ -1026,6 +1076,7 @@ public class TransportForm {
 		ts1Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts1Label.setText("S1:");
 
+		
 		final Text textS2 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS2 = new FormData();
 		fd_textS2.bottom = new FormAttachment(0, 59);
@@ -1033,15 +1084,7 @@ public class TransportForm {
 		fd_textS2.right = new FormAttachment(0, 173);
 		fd_textS2.left = new FormAttachment(0, 132);
 		textS2.setLayoutData(fd_textS2);
-
-		final Text textS3 = new Text(statusmeldungenGroup, SWT.BORDER);
-		final FormData fd_textS3 = new FormData();
-		fd_textS3.bottom = new FormAttachment(0, 86);
-		fd_textS3.top = new FormAttachment(0, 65);
-		fd_textS3.right = new FormAttachment(0, 173);
-		fd_textS3.left = new FormAttachment(0, 132);
-		textS3.setLayoutData(fd_textS3);
-
+		
 		final Label ts2Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts2Label = new FormData();
 		fd_ts2Label.bottom = new FormAttachment(0, 59);
@@ -1051,6 +1094,15 @@ public class TransportForm {
 		ts2Label.setLayoutData(fd_ts2Label);
 		ts2Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts2Label.setText("S2:");
+
+		
+		final Text textS3 = new Text(statusmeldungenGroup, SWT.BORDER);
+		final FormData fd_textS3 = new FormData();
+		fd_textS3.bottom = new FormAttachment(0, 86);
+		fd_textS3.top = new FormAttachment(0, 65);
+		fd_textS3.right = new FormAttachment(0, 173);
+		fd_textS3.left = new FormAttachment(0, 132);
+		textS3.setLayoutData(fd_textS3);
 
 		final Label ts3Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts3Label = new FormData();
@@ -1062,6 +1114,15 @@ public class TransportForm {
 		ts3Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts3Label.setText("S3:");
 
+		
+		final Text textS4 = new Text(statusmeldungenGroup, SWT.BORDER);
+		final FormData fd_textS4 = new FormData();
+		fd_textS4.bottom = new FormAttachment(0, 32);
+		fd_textS4.top = new FormAttachment(0, 11);
+		fd_textS4.right = new FormAttachment(0, 255);
+		fd_textS4.left = new FormAttachment(0, 214);
+		textS4.setLayoutData(fd_textS4);
+		
 		final Label ts4Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts4Label = new FormData();
 		fd_ts4Label.bottom = new FormAttachment(0, 27);
@@ -1072,14 +1133,7 @@ public class TransportForm {
 		ts4Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts4Label.setText("S4:");
 
-		final Text textS4 = new Text(statusmeldungenGroup, SWT.BORDER);
-		final FormData fd_textS4 = new FormData();
-		fd_textS4.bottom = new FormAttachment(0, 32);
-		fd_textS4.top = new FormAttachment(0, 11);
-		fd_textS4.right = new FormAttachment(0, 255);
-		fd_textS4.left = new FormAttachment(0, 214);
-		textS4.setLayoutData(fd_textS4);
-
+		
 		final Text textS5 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS5 = new FormData();
 		fd_textS5.bottom = new FormAttachment(0, 59);
@@ -1087,15 +1141,7 @@ public class TransportForm {
 		fd_textS5.right = new FormAttachment(0, 255);
 		fd_textS5.left = new FormAttachment(0, 214);
 		textS5.setLayoutData(fd_textS5);
-
-		final Text textS6 = new Text(statusmeldungenGroup, SWT.BORDER);
-		final FormData fd_textS6 = new FormData();
-		fd_textS6.bottom = new FormAttachment(0, 86);
-		fd_textS6.top = new FormAttachment(0, 65);
-		fd_textS6.right = new FormAttachment(0, 255);
-		fd_textS6.left = new FormAttachment(0, 214);
-		textS6.setLayoutData(fd_textS6);
-
+		
 		final Label ts5Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts5Label = new FormData();
 		fd_ts5Label.bottom = new FormAttachment(0, 54);
@@ -1105,6 +1151,15 @@ public class TransportForm {
 		ts5Label.setLayoutData(fd_ts5Label);
 		ts5Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts5Label.setText("S5:");
+
+		
+		final Text textS6 = new Text(statusmeldungenGroup, SWT.BORDER);
+		final FormData fd_textS6 = new FormData();
+		fd_textS6.bottom = new FormAttachment(0, 86);
+		fd_textS6.top = new FormAttachment(0, 65);
+		fd_textS6.right = new FormAttachment(0, 255);
+		fd_textS6.left = new FormAttachment(0, 214);
+		textS6.setLayoutData(fd_textS6);
 
 		final Label ts6Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts6Label = new FormData();
@@ -1116,6 +1171,7 @@ public class TransportForm {
 		ts6Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts6Label.setText("S6:");
 
+		
 		final Text textS7 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS7 = new FormData();
 		fd_textS7.bottom = new FormAttachment(0, 32);
@@ -1123,23 +1179,7 @@ public class TransportForm {
 		fd_textS7.right = new FormAttachment(0, 339);
 		fd_textS7.left = new FormAttachment(0, 298);
 		textS7.setLayoutData(fd_textS7);
-
-		final Text textS8 = new Text(statusmeldungenGroup, SWT.BORDER);
-		final FormData fd_textS8 = new FormData();
-		fd_textS8.bottom = new FormAttachment(0, 59);
-		fd_textS8.top = new FormAttachment(0, 38);
-		fd_textS8.right = new FormAttachment(0, 339);
-		fd_textS8.left = new FormAttachment(0, 298);
-		textS8.setLayoutData(fd_textS8);
-
-		final Text textS9 = new Text(statusmeldungenGroup, SWT.BORDER);
-		final FormData fd_textS9 = new FormData();
-		fd_textS9.bottom = new FormAttachment(0, 86);
-		fd_textS9.top = new FormAttachment(0, 65);
-		fd_textS9.right = new FormAttachment(0, 339);
-		fd_textS9.left = new FormAttachment(0, 298);
-		textS9.setLayoutData(fd_textS9);
-
+		
 		final Label ts7Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts7Label = new FormData();
 		fd_ts7Label.bottom = new FormAttachment(0, 27);
@@ -1149,7 +1189,16 @@ public class TransportForm {
 		ts7Label.setLayoutData(fd_ts7Label);
 		ts7Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts7Label.setText("S7:");
-
+		
+		
+		final Text textS8 = new Text(statusmeldungenGroup, SWT.BORDER);
+		final FormData fd_textS8 = new FormData();
+		fd_textS8.bottom = new FormAttachment(0, 59);
+		fd_textS8.top = new FormAttachment(0, 38);
+		fd_textS8.right = new FormAttachment(0, 339);
+		fd_textS8.left = new FormAttachment(0, 298);
+		textS8.setLayoutData(fd_textS8);
+		
 		final Label ts8Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts8Label = new FormData();
 		fd_ts8Label.bottom = new FormAttachment(0, 54);
@@ -1159,6 +1208,15 @@ public class TransportForm {
 		ts8Label.setLayoutData(fd_ts8Label);
 		ts8Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts8Label.setText("S8:");
+
+		
+		final Text textS9 = new Text(statusmeldungenGroup, SWT.BORDER);
+		final FormData fd_textS9 = new FormData();
+		fd_textS9.bottom = new FormAttachment(0, 86);
+		fd_textS9.top = new FormAttachment(0, 65);
+		fd_textS9.right = new FormAttachment(0, 339);
+		fd_textS9.left = new FormAttachment(0, 298);
+		textS9.setLayoutData(fd_textS9);
 
 		final Label ts9Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts9Label = new FormData();
@@ -1170,6 +1228,8 @@ public class TransportForm {
 		ts9Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		ts9Label.setText("S9:");
 
+		
+		//buttons
 		abbrechenButton = new Button(shell, SWT.NONE);
 		final FormData fd_abbrechenButton = new FormData();
 		fd_abbrechenButton.bottom = new FormAttachment(0, 501);
@@ -1179,7 +1239,9 @@ public class TransportForm {
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
 		abbrechenButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/LAN Warning.ico"));
 		abbrechenButton.setText("Abbrechen");
-
+		abbrechenButton.addListener(SWT.Selection, exitListener);
+		
+		
 		okButton = new Button(shell, SWT.NONE);
 		final FormData fd_okButton = new FormData();
 		fd_okButton.bottom = new FormAttachment(0, 501);
@@ -1188,7 +1250,482 @@ public class TransportForm {
 		fd_okButton.left = new FormAttachment(0, 858);
 		okButton.setLayoutData(fd_okButton);
 		okButton.setText("OK");
+		//TODO start
+		okButton.addListener(SWT.Selection, new Listener()
+		{
+//			int index;
+//			boolean standbyState;
+//			String station;
+//			String competence;
+//			String servicetype;
+//			String rosterNotes;
+//			String timePlannedStartOfWork;
+//			String timePlannedEndOfWork;
+//			String datePlannedEndOfWork;
+//			String timeRealStartOfWork;
+//			String dateRealStartOfWork;
+//			String timeRealEndOfWork;
+//			String dateRealEndOfWork;
+//			StaffMember staffMember;
+			String requiredFields;//contains the names of the required fields that have no content
+//			
+			int hourStart;
+			int hourAtPatient;
+			int hourTerm;
+			int minutesStart;
+			int minutesAtPatient;
+			int minutesTerm;
+			
+			//fields
+			String paramedicII;
+			String paramedicI;
+			String driver;
+			boolean mountainRescue;
+			boolean police;
+			boolean fireBrigade;
+			boolean brkdt;
+			boolean df;
+			boolean rth;
+			boolean emergencyDoctor;
+			boolean blueLight;
+			String feedback;
+			String notes;
+			String priority;
+			String kindOfIllness;
+			boolean longDistanceTrip;
+			boolean toMariazell;
+			boolean toVienna;
+			boolean toLeoben;
+			boolean toGraz;
+			boolean toDistrict;
+			String term;
+			String atPatient;
+			String start;
+			String station;
+			String numberNotifier;
+			String notifierName;
+			boolean backTransportPossible;
+			boolean accompanyingPerson;
+			//rufhilfepatientButton;
+			boolean wheelChairButton;
+			boolean gurney;
+			boolean chair;
+			boolean moving;
+			String toCommunity;
+			String toNumber;
+			String toStreet;
+			String firstName;
+			String lastName;
+			String fromCommunity;
+			String fromNumber;
+			String fromStreet;
+			
+			String vehicle;
+			String theStation;
+			String transportNumber;
+			long transportDate;
+			
+			long termLong;
+			long atPatientLong;
+			long startLong;
+			
+			int directness;
+			
+			String formatOfTime;
+			
+			Calendar cal = Calendar.getInstance();
+			
+			
+			public void handleEvent(Event event) 
+			{
+				requiredFields = "";
+				hourStart = -1;
+				hourAtPatient = -1;
+				minutesStart = -1;
+				minutesAtPatient = -1;
+				hourTerm = -1;
+				minutesTerm = -1;
+				
+				
+				formatOfTime = "";
+//				requiredRealDateFields = "";
+//				realWorkTimeNoDateIfNoTime = "";
+				
+				//get content of all fields
+				this.getContentOfAllFields();
+				this.setDirectness();
+				
+				//check required Fields
+				if (!this.checkRequiredFields().equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen:");
+				}
+				
+				else
+				{
+					//validating
+					if(!this.checkFormatOfTimeFields().equalsIgnoreCase(""))
+					{
+						this.displayMessageBox(event,formatOfTime, "Format von Transportzeiten falsch: ");	
+					}
+					else
+					{
+						this.transformToLong();//set planned work time
+						//validate start before end
+							if(termLong<atPatientLong || termLong<startLong || atPatientLong<startLong)
+							{
+								this.displayMessageBox(event, "Abfahrtszeit muss vor Ankunft und vor Termin sein", "Fehler (Zeit)");
+							}
+//									else
+//									{
+//										Transport transport = new Transport();
+//										transport.set...
+//										new CreateTransportEntryAction(transport).run();
+//									}
+					}					
+				}
+			}
 
+			
+			private void getContentOfAllFields()
+			{		
+				paramedicII = textSaniII.getText();
+				paramedicI = textSnaniI.getText();
+				driver = textFahrer.getText();
+				mountainRescue = bergrettungButton.getSelection();
+				police = polizeiButton.getSelection();
+				fireBrigade = feuerwehrButton.getSelection();
+				brkdt = brkdtButton.getSelection();
+				df = dfButton.getSelection();
+				rth = rthButton.getSelection();
+				emergencyDoctor = notarztButton.getSelection();
+				blueLight = bd2Button.getSelection();
+				feedback = textRueckmeldung.getText();
+				notes = textAnmerkungen.getText();
+				priority = comboPrioritaet.getText();
+				kindOfIllness = comboErkrankungVerletzung.getText();
+				longDistanceTrip = fernfahrtButton.getSelection();
+				toMariazell = mariazellButton.getSelection();
+				toVienna = wienButton.getSelection();
+				toLeoben = leobenButton.getSelection();
+				toGraz = grazButton.getSelection();
+				toDistrict = bezirkButton.getSelection();
+				
+				term = textTermin.getText();
+				atPatient = textBeiPat.getText();
+				start = textAbf.getText();
+				
+				theStation = comboZustaendigeOrtsstelle.getText();
+				numberNotifier = textTelefonAnrufer.getText();
+				notifierName = textAnrufer.getText();
+				backTransportPossible = ruecktransportMoeglichButton.getSelection();
+				accompanyingPerson = begleitpersonButton.getSelection();
+				//rufhilfepatientButton;
+				wheelChairButton = eigenerRollstuhlButton.getSelection();
+				gurney = krankentrageButton.getSelection();
+				chair = tragsesselButton.getSelection();
+				moving = gehendButton.getSelection();
+				
+				toCommunity = comboNachOrt.getText();
+				toNumber = comboNachNr.getText();
+				toStreet = comboNachStrasse.getText();
+				firstName = comboVorname.getText();
+				lastName = comboNachname.getText();
+				fromCommunity = comboVonOrt.getText();
+				fromNumber = comboVonNr.getText();
+				fromStreet = comboVonStrasse.getText();
+				
+				vehicle = textFahrzeug.getText();
+				station = textOrtsstelle.getText();
+				transportNumber = textTransportNummer.getText();
+				
+			}
+			
+			private void setDirectness()
+			{
+				if (toMariazell)
+					directness = TOWARDS_MARIAZELL;
+				else if (toVienna)
+					directness = TOWARDS_VIENNA;
+				else if (toLeoben)
+					directness = TOWARDS_LEOBEN;
+				else if (toGraz)
+					directness = TOWARDS_GRAZ;
+				else
+					directness = TOWARDS_DISTRICT;
+			}
+			private String checkRequiredFields()
+			{
+				//TODO
+				/*TRANSPORT - the required fields
+				- fromStreet ist muss. Wenn da nicht die Substrings "LKH" oder "PH" vorkommen, dann müssen zusätzlich auch die Felder
+				- fromNumber und
+				- from City ausgefüllt sein.
+				*/
+
+
+				if (fromStreet.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"von Straße";
+				if (fromNumber.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"von Nummer";
+				if (fromCommunity.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"von Ort";
+				if (theStation.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"zuständige Ortsstelle";
+				if (priority.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"Priorität";
+				if (start.equalsIgnoreCase(""))
+					this.setStartTimeDefault();
+				
+				return requiredFields;
+			}
+			
+			
+			private void setStartTimeDefault()
+			{
+				Date time = new Date();
+				startLong = time.getTime();
+				System.out.println("longStart:  " +startLong);
+			}
+			private String checkFormatOfTimeFields()
+			{
+				Pattern p4 = Pattern.compile("(\\d{2})(\\d{2})");//if content is e.g. 1234
+				Pattern p5 = Pattern.compile("(\\d{2}):(\\d{2})");//if content is e.g. 12:34
+				
+				//check in
+				if(!start.equalsIgnoreCase(""))
+				{
+					Matcher m41= p4.matcher(start);
+					Matcher m51= p5.matcher(start);
+						if(m41.matches())
+						{
+							hourStart = Integer.parseInt(m41.group(1));
+							minutesStart = Integer.parseInt(m41.group(2));
+							
+							if(hourStart >= 0 && hourStart <=23 && minutesStart >= 0 && minutesStart <=59)
+							{
+								start = hourStart + ":" +minutesStart;//for the splitter
+							}
+							else
+							{
+								formatOfTime = " - Abfahrtszeit";
+							}
+						}
+						else if(m51.matches())
+						{
+								hourStart = Integer.parseInt(m51.group(1));
+								minutesStart = Integer.parseInt(m51.group(2));
+							
+							if(!(hourStart >= 0 && hourStart <=23 && minutesStart >= 0 && minutesStart <=59))
+							{
+								formatOfTime = " - Abfahrtszeit";
+							}
+						}
+						else
+						{
+							formatOfTime = " - Abfahrtszeit";
+						}
+				}
+				
+				//at patient
+				if (!atPatient.equalsIgnoreCase(""))
+				{
+					Matcher m42= p4.matcher(atPatient);
+					Matcher m52= p5.matcher(atPatient);
+					if(m42.matches())
+					{
+						hourAtPatient = Integer.parseInt(m42.group(1));
+						minutesAtPatient = Integer.parseInt(m42.group(2));
+						
+						if(hourAtPatient >= 0 && hourAtPatient <=23 && minutesAtPatient >= 0 && minutesAtPatient <=59)
+						{
+							atPatient = hourAtPatient +":" +minutesAtPatient;
+						}
+						else
+						{
+							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+						}
+					}
+					else if(m52.matches())
+					{
+						hourAtPatient = Integer.parseInt(m52.group(1));
+						minutesAtPatient = Integer.parseInt(m52.group(2));
+						
+						if(!(hourAtPatient >= 0 && hourAtPatient <=23 && minutesAtPatient >= 0 && minutesAtPatient <=59))
+						{
+							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+						}
+					}
+					else
+					{
+						formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+					}
+				}
+				
+				//term
+				if (!term.equalsIgnoreCase(""))
+				{
+					Matcher m42= p4.matcher(atPatient);
+					Matcher m52= p5.matcher(atPatient);
+					if(m42.matches())
+					{
+						hourTerm = Integer.parseInt(m42.group(1));
+						minutesTerm = Integer.parseInt(m42.group(2));
+						
+						if(hourTerm >= 0 && hourTerm <=23 && minutesTerm >= 0 && minutesTerm <=59)
+						{
+							term = hourTerm +":" +minutesTerm;
+						}
+						else
+						{
+							formatOfTime = formatOfTime +"Terminzeit";
+						}
+					}
+					else if(m52.matches())
+					{
+						hourTerm = Integer.parseInt(m52.group(1));
+						minutesTerm = Integer.parseInt(m52.group(2));
+						
+						if(!(hourTerm >= 0 && hourTerm <=23 && minutesTerm >= 0 && minutesTerm <=59))
+						{
+							formatOfTime = formatOfTime +"Terminzeit";
+						}
+					}
+					else
+					{
+						formatOfTime = formatOfTime +"Terminzeit";
+					}
+				}
+				return formatOfTime;
+			}
+//			
+//			private String checkDateIfTime()
+//			{
+//				if (hourCheckIn != -1)
+//				{
+//					//a check in date must be available
+//					if(dateRealStartOfWork.equalsIgnoreCase(""))
+//					{
+//						requiredRealDateFields = "-Anmeldedatum";
+//					}
+//				}
+//				
+//				if (hourCheckOut != -1)
+//				{
+//					//a check out date must be available
+//					if(dateRealEndOfWork.equalsIgnoreCase(""))
+//					{
+//						requiredRealDateFields = requiredRealDateFields + " -Abmeldedatum";
+//					}
+//				}
+//				return requiredRealDateFields;
+//			}
+			
+			private void transformToLong()
+			{
+
+				//date of the transport
+				int yearTransportDate = dateTime.getYear();
+				int monthTransportDate = dateTime.getMonth();
+				int dayTransportDate = dateTime.getDay();
+				cal.set(yearTransportDate, monthTransportDate, dayTransportDate);
+				transportDate = cal.getTimeInMillis();
+				
+				
+				//
+				if (!term.equalsIgnoreCase(""))
+				{
+					String[] theTerm = term.split(":");
+					int hoursTerm = Integer.valueOf(theTerm[0]).intValue();
+					int minutesTerm = Integer.valueOf(theTerm[1]).intValue();
+					cal.set(yearTransportDate, monthTransportDate, dayTransportDate,hoursTerm,minutesTerm);
+					termLong = cal.getTimeInMillis();
+				}
+				
+				if (!atPatient.equalsIgnoreCase(""))
+				{
+					String[] theTimeAtPatient = atPatient.split(":");
+					int hourstheTimeAtPatient = Integer.valueOf(theTimeAtPatient[0]).intValue();
+					int minutestheTimeAtPatient = Integer.valueOf(theTimeAtPatient[1]).intValue();
+					cal.set(yearTransportDate, monthTransportDate, dayTransportDate,hourstheTimeAtPatient,minutestheTimeAtPatient);
+					atPatientLong = cal.getTimeInMillis();
+				}
+				
+				if (!start.equalsIgnoreCase(""))
+				{
+					String[] theStartTime = start.split(":");
+					int hourstheStartTime = Integer.valueOf(theStartTime[0]).intValue();
+					int minutestheStartTime = Integer.valueOf(theStartTime[1]).intValue();
+					cal.set(yearTransportDate, monthTransportDate, dayTransportDate,hourstheStartTime,minutestheStartTime);
+					startLong = cal.getTimeInMillis();
+				}
+				
+			}
+			
+			
+//			private void setRealWorkTime()
+//			{
+//				//start
+//				int hoursOfStart = 0;
+//				int minutesOfStart = 0;
+//				if(!start.equalsIgnoreCase(""))
+//				{
+//					String[] realStartTime = start.split(":");
+//					hoursOfStart = Integer.valueOf(realStartTime[0]).intValue();
+//					minutesOfStart = Integer.valueOf(realStartTime[1]).intValue();
+//				}
+//				
+//				int yearRealStart = 0;
+//				int monthRealStart = 0;
+//				int dayRealStart = 0;
+//				if (!dateRealStartOfWork.equalsIgnoreCase(""))
+//				{
+//					String[] realStartDate = dateRealStartOfWork.split("\\.");
+//					yearRealStart = Integer.valueOf(realStartDate[2]).intValue();
+//					monthRealStart = Integer.valueOf(realStartDate[1]).intValue()-1;
+//					dayRealStart = Integer.valueOf(realStartDate[0]).intValue();
+//				}
+//				cal.set(yearRealStart, monthRealStart, dayRealStart, hoursRealStart, minutesRealStart, 0);
+//				realStartOfWork = cal.getTimeInMillis();
+//				
+//				//real end of work
+//				int hoursRealEnd = 0;
+//				int minutesRealEnd = 0;
+//				if(!timeRealEndOfWork.equalsIgnoreCase(""))
+//				{
+//					String[] realEndTime = timeRealEndOfWork.split(":");
+//					hoursRealEnd = Integer.valueOf(realEndTime[0]).intValue();
+//					minutesRealEnd = Integer.valueOf(realEndTime[1]).intValue();
+//				}
+//				
+//				int yearRealEnd = 0;
+//				int monthRealEnd = 0;
+//				int dayRealEnd = 0;
+//				if(!dateRealEndOfWork.equalsIgnoreCase(""))
+//				{
+//					String[] realEndDate = dateRealEndOfWork.split("\\.");
+//					yearRealEnd = Integer.valueOf(realEndDate[2]).intValue();
+//					monthRealEnd = Integer.valueOf(realEndDate[1]).intValue()-1;
+//					dayRealEnd = Integer.valueOf(realEndDate[0]).intValue();
+//					
+//					cal.set(yearRealEnd, monthRealEnd, dayRealEnd, hoursRealEnd, minutesRealEnd, 0);
+//					realEndOfWork = cal.getTimeInMillis();
+//				}
+//			}
+			
+			private void displayMessageBox(Event event, String fields, String message)
+			{
+				 MessageBox mb = new MessageBox(shell, 0);
+			     mb.setText(message);
+			     mb.setMessage(fields);
+			     mb.open();
+			     if(event.type == SWT.Close) event.doit = false;
+			}
+		});
+		
+		
+		
+		//TODO - end
 		
 		//transport type selction buttons //TODO
 		group = new Group(shell, SWT.NONE);
