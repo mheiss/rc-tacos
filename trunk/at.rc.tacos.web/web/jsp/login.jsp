@@ -44,7 +44,7 @@
 				</td>
 			</tr>
 		</table>
-		<table cellpadding="0" border="0" cellspacing="0" width="800" align="center"><tr><td align="left" width="190"><img src="../image/tacos_logo_7.png" name="tacos" alt="tacos_logo" /></td><td align="left" valign="bottom" width="610"><img src="../image/tacos_logo_6.png" name="tacos" alt="tacos_logo" /></td></tr></table>
+		<table cellpadding="0" border="0" cellspacing="0" width="800" align="center"><tr><td align="left" width="190"><img src="../image/tacos_logo_7.jpg" name="tacos" alt="tacos_logo" /></td><td align="left" valign="bottom" width="610"><img src="../image/tacos_logo_6.jpg" name="tacos" alt="tacos_logo" /></td></tr></table>
 	</body>
 </html>	
 
