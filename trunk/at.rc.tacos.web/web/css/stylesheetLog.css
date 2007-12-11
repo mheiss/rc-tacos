@@ -47,7 +47,7 @@ a:active {
 	*/
 }
 #leftLogSite {
-	background-image:url(../image/tacos_logo_8.png);
+	background-image:url(../image/tacos_logo_8.jpg);
 	background-repeat:no-repeat;
 	background-position:bottom left;	
 	width:370px;
@@ -58,7 +58,7 @@ a:active {
 
 }
 #rightLogSite {
-	background-image:url(../image/right_login_bg.png);
+	background-image:url(../image/right_login_bg.jpg);
 	background-repeat:no-repeat;
 	background-position:bottom left;
 	padding-right:5px;
