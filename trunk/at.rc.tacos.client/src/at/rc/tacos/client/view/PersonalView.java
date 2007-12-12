@@ -15,21 +15,28 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
@@ -200,7 +207,9 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		final TabFolder tabFolder = new TabFolder(group, SWT.NONE);
 		
 		//table viewer
-		this.viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+//		shell, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
+//        | SWT.H_SCROLL
+		this.viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);//full selection: select a row
 		this.viewer.setContentProvider(new PersonalContentProvider());
 		this.viewer.setLabelProvider(new PersonalLabelProvider());
 		this.viewer.setCellEditors(getCellRenderer(viewer));
@@ -292,144 +301,291 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	
 		final TabItem tagesinformationTabItem_1 = new TabItem(tabFolder, SWT.NONE);
 		tagesinformationTabItem_1.setText("Info");	
-	
+		
+		
+		
+//		for (int i = 0; i < 12; i++) {
+//		      TableItem item = new TableItem(table, SWT.NONE);
+//		      item.setText("Item " + i);
+//		    }
+//		
+//		
+//		table.addListener(SWT.Selection, new Listener() {
+//		      public void handleEvent(Event event) {
+//		        String string = event.detail == SWT.CHECK ? "Checked"
+//		            : "Selected";
+//		        System.out.println(event.item + " " + string);
+//		      }
+//		    });
+		
+		
+		
+		/**
+		 * context menu
+		 */
 		//context menu
-		final Menu menu_10 = new Menu(table);
-		table.setMenu(menu_10);
+		final Menu contextMenu = new Menu(table);
+		table.setMenu(contextMenu);
 	
-		final MenuItem menuItem_28 = new MenuItem(menu_10, SWT.CASCADE);
-		menuItem_28.addSelectionListener(new SelectionAdapter() 
+		
+		//item check in
+		final MenuItem menuItemCheckIn = new MenuItem(contextMenu, SWT.CASCADE);
+		menuItemCheckIn.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				int index = table.getSelectionIndex();
+				System.out.println("selektierte zeile: " +index);
+				TableItem ti = table.getItem(index);
+				RosterEntry re = (RosterEntry)ti.getData();
+				System.out.println("the name of the selected roster entry: " +re.getStaffMember().getLastname());
+			}
+		});
+		menuItemCheckIn.setText("Anmelden");
+		
+		
+		//item check out
+		final MenuItem menuItemCheckOut = new MenuItem(contextMenu, SWT.CASCADE);
+		menuItemCheckOut.addSelectionListener(new SelectionAdapter() 
 		{
 			public void widgetSelected(final SelectionEvent e) 
 			{
 				
 			}
 		});
-		menuItem_28.setText("Menu Item");
-	
-		final Menu menu_11 = new Menu(menuItem_28);
-		menuItem_28.setMenu(menu_11);
-	
-		final MenuItem menuItem_29 = new MenuItem(menu_11, SWT.NONE);
-		menuItem_29.setText("Menu Item");
-	
-		final MenuItem menuItem_30 = new MenuItem(menu_11, SWT.NONE);
-		menuItem_30.setText("Menu Item");
-	
-		final MenuItem menuItem_31 = new MenuItem(menu_10, SWT.NONE);
-		menuItem_31.setText("Abmelden");
-	
-		final MenuItem menuItem_32 = new MenuItem(menu_10, SWT.NONE);
-		menuItem_32.setText("Anmeldung aufheben");
-	
-		final MenuItem menuItem_33 = new MenuItem(menu_10, SWT.NONE);
-		menuItem_33.setText("Fahrzeug zuweisen");
-	
-		final MenuItem menuItem_34 = new MenuItem(menu_10, SWT.CASCADE);
-		menuItem_34.setText("Fahrzeug zuweisen");
-	
-		final Menu menu_12 = new Menu(menuItem_34);
-		menuItem_34.setMenu(menu_12);
-	
-		final MenuItem menuItem_35 = new MenuItem(menu_12, SWT.CASCADE);
-		menuItem_35.setText("Bm02");
-	
-		final Menu menu_13 = new Menu(menuItem_35);
-		menuItem_35.setMenu(menu_13);
-	
-		final MenuItem menuItem_36 = new MenuItem(menu_13, SWT.NONE);
-		menuItem_36.setText("Fahrer");
-	
-		final MenuItem menuItem_38 = new MenuItem(menu_13, SWT.NONE);
-		menuItem_38.setText("Sanitäter I");
-	
-		final MenuItem menuItem_37 = new MenuItem(menu_13, SWT.NONE);
-		menuItem_37.setText("Sanitäter II");
-	
-		final MenuItem menuItem_39 = new MenuItem(menu_12, SWT.CASCADE);
-		menuItem_39.addSelectionListener(new SelectionAdapter() 
+		menuItemCheckOut.setText("Abmelden");
+		
+		
+		
+		new MenuItem(contextMenu, SWT.SEPARATOR);
+		
+		
+		
+		//item edit roster entry
+		final MenuItem menuItemEditEntry = new MenuItem(contextMenu, SWT.CASCADE);
+		menuItemEditEntry.addSelectionListener(new SelectionAdapter() 
 		{
 			public void widgetSelected(final SelectionEvent e) 
 			{
 				
 			}
 		});
-		menuItem_39.setText("Bm18");
-	
-		final Menu menu_14 = new Menu(menuItem_39);
-		menuItem_39.setMenu(menu_14);
-	
-		final MenuItem menuItem_43 = new MenuItem(menu_14, SWT.NONE);
-		menuItem_43.setText("Fahrer");
-	
-		final MenuItem menuItem_44 = new MenuItem(menu_14, SWT.NONE);
-		menuItem_44.setText("Sanitäter I");
-	
-		final MenuItem menuItem_45 = new MenuItem(menu_14, SWT.NONE);
-		menuItem_45.setText("Sanitäter II");
-	
-		new MenuItem(menu_12, SWT.SEPARATOR);
-	
-		final MenuItem menuItem_40 = new MenuItem(menu_12, SWT.CASCADE);
-		menuItem_40.setText("Ka04");
-	
-		final Menu menu_15 = new Menu(menuItem_40);
-		menuItem_40.setMenu(menu_15);
-	
-		final MenuItem menuItem_46 = new MenuItem(menu_15, SWT.NONE);
-		menuItem_46.setText("Fahrer");
-	
-		final MenuItem menuItem_47 = new MenuItem(menu_15, SWT.NONE);
-		menuItem_47.setText("Sanitäter I");
-	
-		final MenuItem menuItem_48 = new MenuItem(menu_15, SWT.NONE);
-		menuItem_48.setText("Sanitäter II");
-	
-		final MenuItem menuItem_41 = new MenuItem(menu_12, SWT.CASCADE);
-		menuItem_41.addSelectionListener(new SelectionAdapter() 
+		menuItemEditEntry.setText("Eintrag bearbeiten");
+		
+		
+		//item delete roster entry
+		final MenuItem menuItemDeleteEntry = new MenuItem(contextMenu, SWT.CASCADE);
+		menuItemDeleteEntry.addSelectionListener(new SelectionAdapter() 
 		{
 			public void widgetSelected(final SelectionEvent e) 
 			{
 				
 			}
 		});
-		menuItem_41.setText("Ka07");
-	
-		final Menu menu_16 = new Menu(menuItem_41);
-		menuItem_41.setMenu(menu_16);
-	
-		final MenuItem menuItem_49 = new MenuItem(menu_16, SWT.NONE);
-		menuItem_49.setText("Fahrer");
-	
-		final MenuItem menuItem_51 = new MenuItem(menu_16, SWT.NONE);
-		menuItem_51.setText("Sanitäter I");
-	
-		final MenuItem menuItem_50 = new MenuItem(menu_16, SWT.NONE);
-		menuItem_50.setText("Sanitäter II");
-	
-		new MenuItem(menu_12, SWT.SEPARATOR);
-	
-		final MenuItem menuItem_42 = new MenuItem(menu_12, SWT.CASCADE);
-		menuItem_42.setText("Th16");
-	
-		final Menu menu_17 = new Menu(menuItem_42);
-		menuItem_42.setMenu(menu_17);
-	
-		final MenuItem menuItem_52 = new MenuItem(menu_17, SWT.NONE);
-		menuItem_52.addSelectionListener(new SelectionAdapter() 
+		menuItemDeleteEntry.setText("Eintrag löschen");
+		
+		
+		
+		new MenuItem(contextMenu, SWT.SEPARATOR);
+		
+		
+		
+		//item annul check in
+		final MenuItem menuItemAnnulCheckIn = new MenuItem(contextMenu, SWT.CASCADE);
+		menuItemAnnulCheckIn.addSelectionListener(new SelectionAdapter() 
 		{
 			public void widgetSelected(final SelectionEvent e) 
 			{
 				
 			}
 		});
-		menuItem_52.setText("Fahrer");
+		menuItemAnnulCheckIn.setText("Anmeldung aufheben");
+		
 	
-		final MenuItem menuItem_54 = new MenuItem(menu_17, SWT.NONE);
-		menuItem_54.setText("Sanitäter I");
+		
+		//item annul check out
+		final MenuItem menuItemAnnulCheckOut = new MenuItem(contextMenu, SWT.CASCADE);
+		menuItemAnnulCheckOut.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				
+			}
+		});
+		menuItemAnnulCheckOut.setText("Abmeldung aufheben");
+		
+		
+		
+		//resize table with composite
+		tabFolder.addControlListener(new ControlAdapter() {
+		    public void controlResized(ControlEvent e) {
+		      Rectangle area = tabFolder.getClientArea();
+		      Point preferredSize = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		      int width = area.width - 2*table.getBorderWidth();
+		      if (preferredSize.y > area.height + table.getHeaderHeight()) {
+		        // Subtract the scrollbar width from the total column width
+		        // if a vertical scrollbar will be required
+		        Point vBarSize = table.getVerticalBar().getSize();
+		        width -= vBarSize.x;
+		      }
+		      Point oldSize = table.getSize();
+		      if (oldSize.x > area.width) {
+		        // table is getting smaller so make the columns 
+		        // smaller first and then resize the table to
+		        // match the client area width
+		    	  newColumnTableColumnBereitschaftBezirkImDienst.setWidth(width/28);
+		    	  newColumnTableColumAnmerkungBezirkImDienst.setWidth(width/28);
+		    	  newColumnTableColumnNameBezirkImDienst.setWidth(width/28*9);
+		    	  newColumnTableColumnDienstbezirkImDienst.setWidth(width/28*5);
+		    	  newColumnTableColumnAnmBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnAbmBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnDVBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnVBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnOSBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnFzgBezirkImDienst.setWidth(width/28*2);
+		        table.setSize(area.width, area.height);
+		      } else {
+		        // table is getting bigger so make the table 
+		        // bigger first and then make the columns wider
+		        // to match the client area width
+		        table.setSize(area.width, area.height);
+		        newColumnTableColumnBereitschaftBezirkImDienst.setWidth(width/28);
+		    	  newColumnTableColumAnmerkungBezirkImDienst.setWidth(width/28);
+		    	  newColumnTableColumnNameBezirkImDienst.setWidth(width/28*9);
+		    	  newColumnTableColumnDienstbezirkImDienst.setWidth(width/28*5);
+		    	  newColumnTableColumnAnmBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnAbmBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnDVBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnVBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnOSBezirkImDienst.setWidth(width/28*2);
+		    	  newColumnTableColumnFzgBezirkImDienst.setWidth(width/28*2);
+		      }
+		    }
+		  });
 	
-		final MenuItem menuItem_53 = new MenuItem(menu_17, SWT.NONE);
-		menuItem_53.setText("Sanitäter II");
+//		final Menu menu_11 = new Menu(menuItemCheckIn);
+//		menuItemCheckIn.setMenu(menu_11);
+//	
+//		final MenuItem menuItem_29 = new MenuItem(menu_11, SWT.NONE);
+//		menuItem_29.setText("Menu Item");
+//	
+//		final MenuItem menuItem_30 = new MenuItem(menu_11, SWT.NONE);
+//		menuItem_30.setText("Menu Item");
+//	
+//		final MenuItem menuItem_31 = new MenuItem(contextMenu, SWT.NONE);
+//		menuItem_31.setText("Abmelden");
+//	
+//		final MenuItem menuItem_32 = new MenuItem(contextMenu, SWT.NONE);
+//		menuItem_32.setText("Anmeldung aufheben");
+//	
+//		final MenuItem menuItem_33 = new MenuItem(contextMenu, SWT.NONE);
+//		menuItem_33.setText("Fahrzeug zuweisen");
+//	
+//		final MenuItem menuItem_34 = new MenuItem(contextMenu, SWT.CASCADE);
+//		menuItem_34.setText("Fahrzeug zuweisen");
+//	
+//		final Menu menu_12 = new Menu(menuItem_34);
+//		menuItem_34.setMenu(menu_12);
+//	
+//		final MenuItem menuItem_35 = new MenuItem(menu_12, SWT.CASCADE);
+//		menuItem_35.setText("Bm02");
+//	
+//		final Menu menu_13 = new Menu(menuItem_35);
+//		menuItem_35.setMenu(menu_13);
+//	
+//		final MenuItem menuItem_36 = new MenuItem(menu_13, SWT.NONE);
+//		menuItem_36.setText("Fahrer");
+//	
+//		final MenuItem menuItem_38 = new MenuItem(menu_13, SWT.NONE);
+//		menuItem_38.setText("Sanitäter I");
+//	
+//		final MenuItem menuItem_37 = new MenuItem(menu_13, SWT.NONE);
+//		menuItem_37.setText("Sanitäter II");
+//	
+//		final MenuItem menuItem_39 = new MenuItem(menu_12, SWT.CASCADE);
+//		menuItem_39.addSelectionListener(new SelectionAdapter() 
+//		{
+//			public void widgetSelected(final SelectionEvent e) 
+//			{
+//				
+//			}
+//		});
+//		menuItem_39.setText("Bm18");
+//	
+//		final Menu menu_14 = new Menu(menuItem_39);
+//		menuItem_39.setMenu(menu_14);
+//	
+//		final MenuItem menuItem_43 = new MenuItem(menu_14, SWT.NONE);
+//		menuItem_43.setText("Fahrer");
+//	
+//		final MenuItem menuItem_44 = new MenuItem(menu_14, SWT.NONE);
+//		menuItem_44.setText("Sanitäter I");
+//	
+//		final MenuItem menuItem_45 = new MenuItem(menu_14, SWT.NONE);
+//		menuItem_45.setText("Sanitäter II");
+//	
+//		new MenuItem(menu_12, SWT.SEPARATOR);
+//	
+//		final MenuItem menuItem_40 = new MenuItem(menu_12, SWT.CASCADE);
+//		menuItem_40.setText("Ka04");
+//	
+//		final Menu menu_15 = new Menu(menuItem_40);
+//		menuItem_40.setMenu(menu_15);
+//	
+//		final MenuItem menuItem_46 = new MenuItem(menu_15, SWT.NONE);
+//		menuItem_46.setText("Fahrer");
+//	
+//		final MenuItem menuItem_47 = new MenuItem(menu_15, SWT.NONE);
+//		menuItem_47.setText("Sanitäter I");
+//	
+//		final MenuItem menuItem_48 = new MenuItem(menu_15, SWT.NONE);
+//		menuItem_48.setText("Sanitäter II");
+//	
+//		final MenuItem menuItem_41 = new MenuItem(menu_12, SWT.CASCADE);
+//		menuItem_41.addSelectionListener(new SelectionAdapter() 
+//		{
+//			public void widgetSelected(final SelectionEvent e) 
+//			{
+//				
+//			}
+//		});
+//		menuItem_41.setText("Ka07");
+//	
+//		final Menu menu_16 = new Menu(menuItem_41);
+//		menuItem_41.setMenu(menu_16);
+//	
+//		final MenuItem menuItem_49 = new MenuItem(menu_16, SWT.NONE);
+//		menuItem_49.setText("Fahrer");
+//	
+//		final MenuItem menuItem_51 = new MenuItem(menu_16, SWT.NONE);
+//		menuItem_51.setText("Sanitäter I");
+//	
+//		final MenuItem menuItem_50 = new MenuItem(menu_16, SWT.NONE);
+//		menuItem_50.setText("Sanitäter II");
+//	
+//		new MenuItem(menu_12, SWT.SEPARATOR);
+//	
+//		final MenuItem menuItem_42 = new MenuItem(menu_12, SWT.CASCADE);
+//		menuItem_42.setText("Th16");
+//	
+//		final Menu menu_17 = new Menu(menuItem_42);
+//		menuItem_42.setMenu(menu_17);
+//	
+//		final MenuItem menuItem_52 = new MenuItem(menu_17, SWT.NONE);
+//		menuItem_52.addSelectionListener(new SelectionAdapter() 
+//		{
+//			public void widgetSelected(final SelectionEvent e) 
+//			{
+//				
+//			}
+//		});
+//		menuItem_52.setText("Fahrer");
+//	
+//		final MenuItem menuItem_54 = new MenuItem(menu_17, SWT.NONE);
+//		menuItem_54.setText("Sanitäter I");
+//	
+//		final MenuItem menuItem_53 = new MenuItem(menu_17, SWT.NONE);
+//		menuItem_53.setText("Sanitäter II");
 //	
 //		
 //		//personal at roster sash part
