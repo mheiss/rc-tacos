@@ -1360,32 +1360,44 @@ public class TransportForm implements IDirectness
 				{
 					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen:");
 				}
-				
-				else
+				//validating
+				if(!this.checkFormatOfTimeFields().equalsIgnoreCase(""))
 				{
-					//validating
-					if(!this.checkFormatOfTimeFields().equalsIgnoreCase(""))
-					{
-						this.displayMessageBox(event,formatOfTime, "Format von Transportzeiten falsch: ");	
-					}
-					else
-					{
-						this.transformToLong();//set planned work time
-						//validate start before end
-							if(termLong<atPatientLong || termLong<startLong || atPatientLong<startLong)
-							{
-								this.displayMessageBox(event, "Abfahrtszeit muss vor Ankunft und vor Termin sein", "Fehler (Zeit)");
-							}
-//									else
-//									{
-//										Transport transport = new Transport();
-//										transport.set...
-//										new CreateTransportEntryAction(transport).run();
-//									}
-					}					
+					this.displayMessageBox(event,formatOfTime, "Format von Transportzeiten falsch: ");	
+					return;
 				}
+				
+				this.transformToLong();//set planned work time
+				//validate: start before atPatient
+				System.out.println("++++++++++++++++++++ atPatient:" +atPatient +".");
+				System.out.println("++++++++++++++++++++ start:" +start +".");
+				if(atPatientLong<startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, "Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
+					return;
+				}	
+				
+				//validate: atPatient before term
+				if((termLong<atPatientLong && !term.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase("")))
+				{
+					this.displayMessageBox(event, "Termin kann nicht vor Ankunft bei Patient sein", "Fehler (Zeit)");
+					return;
+				}
+				
+				//validate: start before term
+				if(termLong<startLong && !term.equalsIgnoreCase("") && !start.equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
+					return;
+				}
+				
+				
+				
+				
+//					Transport transport = new Transport();
+//					transport.set...
+//					new CreateTransportEntryAction(transport).run();				
 			}
-
 			
 			private void getContentOfAllFields()
 			{		
@@ -1565,8 +1577,8 @@ public class TransportForm implements IDirectness
 				//term
 				if (!term.equalsIgnoreCase(""))
 				{
-					Matcher m42= p4.matcher(atPatient);
-					Matcher m52= p5.matcher(atPatient);
+					Matcher m42= p4.matcher(term);
+					Matcher m52= p5.matcher(term);
 					if(m42.matches())
 					{
 						hourTerm = Integer.parseInt(m42.group(1));
@@ -1623,7 +1635,9 @@ public class TransportForm implements IDirectness
 			
 			private void transformToLong()
 			{
-
+				//get a new instance of the calendar
+				cal = Calendar.getInstance();
+				
 				//date of the transport
 				int yearTransportDate = dateTime.getYear();
 				int monthTransportDate = dateTime.getMonth();
@@ -1636,6 +1650,7 @@ public class TransportForm implements IDirectness
 				if (!term.equalsIgnoreCase(""))
 				{
 					String[] theTerm = term.split(":");
+					
 					int hoursTerm = Integer.valueOf(theTerm[0]).intValue();
 					int minutesTerm = Integer.valueOf(theTerm[1]).intValue();
 					cal.set(yearTransportDate, monthTransportDate, dayTransportDate,hoursTerm,minutesTerm);
