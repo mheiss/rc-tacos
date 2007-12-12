@@ -1369,8 +1369,6 @@ public class TransportForm implements IDirectness
 				
 				this.transformToLong();//set planned work time
 				//validate: start before atPatient
-				System.out.println("++++++++++++++++++++ atPatient:" +atPatient +".");
-				System.out.println("++++++++++++++++++++ start:" +start +".");
 				if(atPatientLong<startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, "Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
@@ -1390,13 +1388,11 @@ public class TransportForm implements IDirectness
 					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
 				}
-				
-				
-				
-				
-//					Transport transport = new Transport();
-//					transport.set...
-//					new CreateTransportEntryAction(transport).run();				
+					
+				System.out.println("Transport angelegt!");
+//				Transport transport = new Transport();
+//				transport.set...
+//				new CreateTransportEntryAction(transport).run();				
 			}
 			
 			private void getContentOfAllFields()
@@ -1610,28 +1606,7 @@ public class TransportForm implements IDirectness
 				}
 				return formatOfTime;
 			}
-//			
-//			private String checkDateIfTime()
-//			{
-//				if (hourCheckIn != -1)
-//				{
-//					//a check in date must be available
-//					if(dateRealStartOfWork.equalsIgnoreCase(""))
-//					{
-//						requiredRealDateFields = "-Anmeldedatum";
-//					}
-//				}
-//				
-//				if (hourCheckOut != -1)
-//				{
-//					//a check out date must be available
-//					if(dateRealEndOfWork.equalsIgnoreCase(""))
-//					{
-//						requiredRealDateFields = requiredRealDateFields + " -Abmeldedatum";
-//					}
-//				}
-//				return requiredRealDateFields;
-//			}
+
 			
 			private void transformToLong()
 			{
@@ -1646,7 +1621,6 @@ public class TransportForm implements IDirectness
 				transportDate = cal.getTimeInMillis();
 				
 				
-				//
 				if (!term.equalsIgnoreCase(""))
 				{
 					String[] theTerm = term.split(":");
@@ -1677,56 +1651,6 @@ public class TransportForm implements IDirectness
 				
 			}
 			
-			
-//			private void setRealWorkTime()
-//			{
-//				//start
-//				int hoursOfStart = 0;
-//				int minutesOfStart = 0;
-//				if(!start.equalsIgnoreCase(""))
-//				{
-//					String[] realStartTime = start.split(":");
-//					hoursOfStart = Integer.valueOf(realStartTime[0]).intValue();
-//					minutesOfStart = Integer.valueOf(realStartTime[1]).intValue();
-//				}
-//				
-//				int yearRealStart = 0;
-//				int monthRealStart = 0;
-//				int dayRealStart = 0;
-//				if (!dateRealStartOfWork.equalsIgnoreCase(""))
-//				{
-//					String[] realStartDate = dateRealStartOfWork.split("\\.");
-//					yearRealStart = Integer.valueOf(realStartDate[2]).intValue();
-//					monthRealStart = Integer.valueOf(realStartDate[1]).intValue()-1;
-//					dayRealStart = Integer.valueOf(realStartDate[0]).intValue();
-//				}
-//				cal.set(yearRealStart, monthRealStart, dayRealStart, hoursRealStart, minutesRealStart, 0);
-//				realStartOfWork = cal.getTimeInMillis();
-//				
-//				//real end of work
-//				int hoursRealEnd = 0;
-//				int minutesRealEnd = 0;
-//				if(!timeRealEndOfWork.equalsIgnoreCase(""))
-//				{
-//					String[] realEndTime = timeRealEndOfWork.split(":");
-//					hoursRealEnd = Integer.valueOf(realEndTime[0]).intValue();
-//					minutesRealEnd = Integer.valueOf(realEndTime[1]).intValue();
-//				}
-//				
-//				int yearRealEnd = 0;
-//				int monthRealEnd = 0;
-//				int dayRealEnd = 0;
-//				if(!dateRealEndOfWork.equalsIgnoreCase(""))
-//				{
-//					String[] realEndDate = dateRealEndOfWork.split("\\.");
-//					yearRealEnd = Integer.valueOf(realEndDate[2]).intValue();
-//					monthRealEnd = Integer.valueOf(realEndDate[1]).intValue()-1;
-//					dayRealEnd = Integer.valueOf(realEndDate[0]).intValue();
-//					
-//					cal.set(yearRealEnd, monthRealEnd, dayRealEnd, hoursRealEnd, minutesRealEnd, 0);
-//					realEndOfWork = cal.getTimeInMillis();
-//				}
-//			}
 			
 			private void displayMessageBox(Event event, String fields, String message)
 			{
