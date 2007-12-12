@@ -22,6 +22,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -44,6 +45,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     private FormToolkit toolkit;
     private ScrolledForm form;
 	private TableViewer viewer;
+	
+	private DateTime dateTime;
 	
 	//define the columns
 	public static final int COLUMN_STANDBY = 0;
@@ -106,7 +109,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		   * @param listener the listener
 		   */
 		@Override
-		public void addListener(ILabelProviderListener listener) {
+		public void addListener(ILabelProviderListener listener) 
+		{
 			//ignore
 			
 		}
@@ -115,7 +119,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		* Disposes any created resources
 		*/
 		@Override
-		public void dispose() {
+		public void dispose() 
+		{
 			//nothing to dispose
 		}
 
@@ -136,7 +141,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		 * @param listener the listener to remove
 		 */
 		@Override
-		public void removeListener(ILabelProviderListener listener) {
+		public void removeListener(ILabelProviderListener listener) 
+		{
 			//ignore it
 		}
 	}
@@ -156,12 +162,12 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		final Composite composite = form.getBody();
 		
 		//group filter
-		final Composite composite_1 = new Composite(composite, SWT.NONE);
+		final Composite filterComposite = new Composite(composite, SWT.NONE);
 		final GridLayout gridLayout_2 = new GridLayout();
-		composite_1.setLayout(gridLayout_2);
+		filterComposite.setLayout(gridLayout_2);
 		
 		
-		final Group filterGroup = new Group(composite_1, SWT.NONE);
+		final Group filterGroup = new Group(filterComposite, SWT.NONE);
 		filterGroup.setText("Filter");
 		final GridData gd_filterGroup = new GridData(SWT.FILL, SWT.TOP, true, false);
 		gd_filterGroup.heightHint = 150;//for normal date field: "30"
@@ -171,7 +177,20 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		gridLayout_3.numColumns = 9;
 		filterGroup.setLayout(gridLayout_3);
 	
-		final Group group = new Group(composite_1, SWT.NONE);
+		
+		//Calendar field
+		dateTime = new DateTime(filterGroup, SWT.CALENDAR);
+		dateTime.setToolTipText("Zeigt das Datum des Dienstbeginns an");
+		dateTime.setBounds(10, 43,180, 171);
+		dateTime.setData("newKey", null);
+		dateTime.addSelectionListener (new SelectionAdapter () {
+			public void widgetSelected (SelectionEvent e) {
+				System.out.println ("calendar date changed - at the calendar");
+			}
+		});
+		
+		//'Dienstplan'
+		final Group group = new Group(filterComposite, SWT.NONE);
 		group.setLayout(new FillLayout());
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		group.setText("Dienstplan");
@@ -279,8 +298,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		table.setMenu(menu_10);
 	
 		final MenuItem menuItem_28 = new MenuItem(menu_10, SWT.CASCADE);
-		menuItem_28.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+		menuItem_28.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				
 			}
 		});
 		menuItem_28.setText("Menu Item");
@@ -325,8 +347,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		menuItem_37.setText("Sanitäter II");
 	
 		final MenuItem menuItem_39 = new MenuItem(menu_12, SWT.CASCADE);
-		menuItem_39.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+		menuItem_39.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				
 			}
 		});
 		menuItem_39.setText("Bm18");
@@ -361,8 +386,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		menuItem_48.setText("Sanitäter II");
 	
 		final MenuItem menuItem_41 = new MenuItem(menu_12, SWT.CASCADE);
-		menuItem_41.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+		menuItem_41.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				
 			}
 		});
 		menuItem_41.setText("Ka07");
@@ -388,8 +416,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		menuItem_42.setMenu(menu_17);
 	
 		final MenuItem menuItem_52 = new MenuItem(menu_17, SWT.NONE);
-		menuItem_52.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+		menuItem_52.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				
 			}
 		});
 		menuItem_52.setText("Fahrer");
