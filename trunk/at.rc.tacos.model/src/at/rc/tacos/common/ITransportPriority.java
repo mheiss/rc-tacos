@@ -1,4 +1,4 @@
-package at.rc.tacos.model;
+package at.rc.tacos.common;
 
 /**
  * The available priorities for a transport

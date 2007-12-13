@@ -5,17 +5,22 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Map.Entry;
+
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.codec.MessageDecoder;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IXMLElements;
+import at.rc.tacos.model.QueryFilter;
 
 /**
  * Provides methods to enocde and decode the messages.
@@ -32,6 +37,7 @@ public class XMLFactory
     private long timestamp;         //the timestamp of the message
     private String contentType;     //the type of the body content. e.g. RosterEntry.ID
     private String queryString;     //the type of the query. e.g message.add
+    private QueryFilter queryFilter;//the result should be filtered. e.g by id
 
     /**
      * Default constructor specifying a user for the session
@@ -64,6 +70,17 @@ public class XMLFactory
         if(!xmlSource.startsWith("<") &! xmlSource.endsWith(">"))
             throw new IllegalArgumentException("This source string must be encoded in xml");
         this.xmlSource = xmlSource;
+        //create a new filter
+        queryFilter = new QueryFilter();
+    }
+    
+    /**
+     * Sets a filter for the query string.
+     * @param queryFilter the filter to apply
+     */
+    public void setFilter(QueryFilter queryFilter)
+    {
+        this.queryFilter = queryFilter;
     }
 
     /**
@@ -110,6 +127,19 @@ public class XMLFactory
             xmlw.writeStartElement(IXMLElements.HEADER_QUERY_ELEMENT);
             xmlw.writeCharacters(queryString);
             xmlw.writeEndElement();
+            
+            //loop and write the query filters to apply
+            if(queryFilter != null)
+            {
+                //encode the status messages
+                for(Entry<String,String> entry:queryFilter.getFilterList().entrySet())
+                {
+                    xmlw.writeStartElement(IXMLElements.HEADER_FILTER_ELEMENT);
+                    xmlw.writeAttribute("type", entry.getKey());
+                    xmlw.writeAttribute("value", entry.getValue());
+                    xmlw.writeEndElement();
+                }
+            }
 
             //end of the header
             xmlw.writeEndElement();
@@ -173,6 +203,7 @@ public class XMLFactory
     public ArrayList<AbstractMessage> decode()
     {
         ArrayList<AbstractMessage> objects = new ArrayList<AbstractMessage>();
+        
         //create the input stream out of the input
         StringReader input = new StringReader(xmlSource);
         XMLEventReader r = null;
@@ -202,6 +233,12 @@ public class XMLFactory
                         contentType = r.getElementText();
                     if(IXMLElements.HEADER_QUERY_ELEMENT.equalsIgnoreCase(startName))
                         queryString = r.getElementText();
+                    if(IXMLElements.HEADER_FILTER_ELEMENT.equalsIgnoreCase(startName))
+                    {
+                        Attribute typeAttr = start.getAttributeByName(new QName("type"));
+                        Attribute valueAttr = start.getAttributeByName(new QName("value"));
+                        queryFilter.add(typeAttr.getValue(),valueAttr.getValue());
+                    }
                     //check if we have a body item
                     if(IXMLElements.CONTENT_ELEMENT.equalsIgnoreCase(startName))
                         isBodyElement = true;
@@ -288,5 +325,16 @@ public class XMLFactory
     public String getQueryString()
     {
         return queryString;
+    }
+    
+    /**
+     * Returns the applied query filter for the message.<br>
+     * The query filter is used to filter the result by specific values
+     * like the id, so that only results are listed with the id 1 for example.
+     * @return the applied filter
+     */
+    public QueryFilter getQueryFilter()
+    {
+        return queryFilter;
     }
 }

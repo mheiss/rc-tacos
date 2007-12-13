@@ -2,6 +2,8 @@ package at.rc.tacos.model;
 
 import java.util.Calendar;
 
+import at.rc.tacos.common.ITransportStatus;
+
 /**
  * Represents a StatusMessage
  * @author b.thek

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import at.rc.tacos.common.IDirectness;
+import at.rc.tacos.common.ITransportPriority;
+import at.rc.tacos.common.ITransportStatus;
+
 
 /**
  * This class provides testing data for
@@ -157,7 +161,6 @@ public class TestDataSource
         e1.setPlannedEndOfWork(new Date().getTime());
         e1.setRealEndOfWork(new Date().getTime());
         e1.setRealStartOfWork(new Date().getTime());
-        e1.setRosterId(0);
         e1.setServicetype("Zivi");
         e1.setStandby(false);
         e1.setStation("Bruck");
@@ -170,10 +173,9 @@ public class TestDataSource
         e2.setPlannedEndOfWork(new Date().getTime());
         e2.setRealEndOfWork(new Date().getTime());
         e2.setRealStartOfWork(new Date().getTime());
-        e2.setRosterId(0);
         e2.setRosterNotes("mix");
         e2.setServicetype("Zivi");
-        e2.setStandby(false);
+        e2.setStandby(true);
         e2.setStation("Bruck");
         e2.setStaffMember(staffList.get(1));
         //third entry
@@ -184,7 +186,6 @@ public class TestDataSource
         e3.setPlannedEndOfWork(new Date().getTime());
         e3.setRealEndOfWork(new Date().getTime());
         e3.setRealStartOfWork(new Date().getTime());
-        e3.setRosterId(0);
         e3.setRosterNotes("mix");
         e3.setServicetype("Zivi");
         e3.setStandby(false);
@@ -202,6 +203,7 @@ public class TestDataSource
         userLogin.put("user1", "P@ssw0rd");
         userLogin.put("user2", "P@ssw0rd");
         userLogin.put("user3", "P@ssw0rd");
+        userLogin.put("testUser", "P@ssw0rd");
     }
     
     private void initVehicles()
