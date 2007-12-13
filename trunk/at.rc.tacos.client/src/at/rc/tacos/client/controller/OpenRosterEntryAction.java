@@ -24,7 +24,7 @@ public class OpenRosterEntryAction extends Action
     @Override
     public String getText()
     {
-        return "Neuer Deinstplaneintrag";
+        return "Neuer Dienstplaneintrag";
     }
     
     /**
