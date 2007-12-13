@@ -145,6 +145,19 @@ public class ServerController
         //nothing found
         return null;
     }
+    
+    /**
+     * Returns wheter or not the given userid has already a open connection.
+     * @param userId the username of the connection to check
+     * @return true if a connection has been found
+     */
+    public boolean hasOpenConnections(String userId)
+    {
+        if(authClientPool.containsKey(userId))
+            return true;
+        else
+            return false;
+    }
 
     /**
      * Returns wheter or not the given client is authenticated or not

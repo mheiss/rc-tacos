@@ -28,7 +28,7 @@ import at.rc.tacos.model.VehicleDetail;
 public class DaoService
 {
     //the shared instance
-    public static DaoService instance;
+    private static DaoService instance;
     
     //the data source
     private DaoFactory factory;
