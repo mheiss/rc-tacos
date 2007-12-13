@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IDirectness;
+import at.rc.tacos.common.ITransportPriority;
 
 /**
  * Specifies the transport details

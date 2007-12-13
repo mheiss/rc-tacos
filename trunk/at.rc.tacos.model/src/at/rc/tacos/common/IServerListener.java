@@ -2,6 +2,8 @@ package at.rc.tacos.common;
 
 import java.util.ArrayList;
 
+import at.rc.tacos.model.QueryFilter;
+
 /**
  * This interface describes the methods that the server must
  * provide to handle client requests.
@@ -32,9 +34,10 @@ public interface IServerListener
     
     /**
      * Listing request from the client to handle
+     * @param queryFilter the filter to apply
      * @return the response from the server
      */
-    public ArrayList<AbstractMessage> handleListingRequest();
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter);
     
     /**
      *  Request from the client to login
