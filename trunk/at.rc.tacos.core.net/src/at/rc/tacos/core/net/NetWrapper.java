@@ -137,7 +137,7 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void sendLoginMessage(Login login)
     {
-        sendMessage(Login.ID, IModelActions.LOGIN, login);
+        sendMessage(Login.ID, IModelActions.LOGIN,null, login);
     }
     
     
@@ -151,7 +151,7 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void sendAddMessage(String contentType,AbstractMessage addMessage)
     {
-        sendMessage(contentType,IModelActions.ADD,addMessage);
+        sendMessage(contentType,IModelActions.ADD,null,addMessage);
     }
 
     /**
@@ -164,7 +164,7 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void sendRemoveMessage(String contentType,AbstractMessage removeMessage)
     {
-        sendMessage(contentType,IModelActions.REMOVE,removeMessage);
+        sendMessage(contentType,IModelActions.REMOVE,null,removeMessage);
     }
 
     /**
@@ -177,7 +177,7 @@ public class NetWrapper extends Plugin implements INetListener
      */
     public void sendUpdateMessage(String contentType,AbstractMessage updateMessage)
     {
-        sendMessage(contentType,IModelActions.UPDATE,updateMessage);
+        sendMessage(contentType,IModelActions.UPDATE,null,updateMessage);
     }
 
     /**
@@ -186,19 +186,21 @@ public class NetWrapper extends Plugin implements INetListener
      * A example of a content type would be <code>RosterEntry.ID</cod> that would mean
      * that the lisitng request is for <code>RosterEntry</code> objects.
      * @param contentType the type of the listing request
+     * @param filter the filter for the query
      */
-    public void requestListing(String contentType)
+    public void requestListing(String contentType,QueryFilter filter)
     {
-        sendMessage(contentType,IModelActions.LIST,null);
+        sendMessage(contentType,IModelActions.LIST,filter,null);
     }
 
     /**
      * Convenience method to send the message to the server.
      * @param contentType the type of the content.
      * @param queryString the type of the query
+     * @param queryFilter the filter to apply
      * @param message the message to send
      */
-    private void sendMessage(String contentType,String queryString,AbstractMessage message)
+    private void sendMessage(String contentType,String queryString,QueryFilter queryFilter,AbstractMessage message)
     {
         //set up the factory
         XMLFactory factory = new XMLFactory();
@@ -208,6 +210,9 @@ public class NetWrapper extends Plugin implements INetListener
                 queryString);
         System.out.println("Send: "+session+","+contentType+","+queryString);
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
+        //appply filter if we have one
+        if(queryFilter != null)
+            factory.setFilter(queryFilter);
         //wrapp into a list
         if(message != null)
             list.add(message);
