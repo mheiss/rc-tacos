@@ -94,11 +94,15 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		{
 			RosterEntry entry = (RosterEntry)element;
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-			
+
 			switch(columnIndex)
 			{
 			case COLUMN_STANDBY: return String.valueOf(entry.getStandby()); 
-			case COLUMN_NOTES: return String.valueOf(entry.getRosterNotes().isEmpty()); 
+			case COLUMN_NOTES: 
+			    if (entry.getRosterNotes() == null || entry.getRosterNotes().isEmpty())
+			        return "keine Notizen";
+			    else
+			        return entry.getRosterNotes();
 			case COLUMN_NAME: return entry.getStaffMember().getLastname()+ " " + entry.getStaffMember().getFirstName();
 			case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartOfWork()) + " - " + sdf.format(entry.getPlannedEndOfWork());
 			case COLUMN_CHECK_IN: return sdf.format(entry.getRealStartOfWork());

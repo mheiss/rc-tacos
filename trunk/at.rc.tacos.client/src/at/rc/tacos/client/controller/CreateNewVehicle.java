@@ -2,8 +2,11 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.view.VehicleForm;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.TestDataSource;
+import at.rc.tacos.model.VehicleDetail;
 
 public class CreateNewVehicle extends Action
 {
@@ -44,9 +47,9 @@ public class CreateNewVehicle extends Action
     public void run()
     {
         //create a new vehicle
-//        VehicleDetail detail = new VehicleDetail("BM1","as","asfd");
-//        Activator.getDefault().getVehicleManager().add(detail);
-        VehicleForm window = new VehicleForm();
-        window.open();
+        VehicleDetail detail = new TestDataSource().vehicleList.get(1);
+        ModelFactory.getInstance().getVehicleManager().add(detail);
+//        VehicleForm window = new VehicleForm();
+//        window.open();
     }
 }

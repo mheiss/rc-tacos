@@ -80,6 +80,10 @@
             class="at.rc.tacos.client.splashHandlers.InteractiveSplashHandler"
             id="at.rc.tacos.client.splashHandlers.interactive">
       </splashHandler>
+      <splashHandlerProductBinding
+            productId="at.rc.tacos.client.product"
+            splashId="at.rc.tacos.client.splashHandlers.interactive">
+      </splashHandlerProductBinding>
    </extension>
 
 </plugin>

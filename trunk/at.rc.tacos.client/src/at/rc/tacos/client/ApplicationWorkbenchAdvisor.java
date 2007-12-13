@@ -4,10 +4,7 @@ import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.model.Login;
 
 /**
  * This workbench advisor creates the window advisor, and specifies
@@ -44,10 +41,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
     public void initialize(IWorkbenchConfigurer configurer)
     {
         super.initialize(configurer);
-        //start the network connection
-        NetWrapper.getDefault().connectNetwork();
-        Login login = new Login("user3","P@ssw0rd");
-        NetWrapper.getDefault().sendLoginMessage(login);
         //load the model
         ModelFactory.getInstance().queryInitData();
     } 

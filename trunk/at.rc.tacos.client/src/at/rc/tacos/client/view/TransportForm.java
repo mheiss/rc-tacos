@@ -1,15 +1,10 @@
 package at.rc.tacos.client.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.eclipse.swt.graphics.Color;
-
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -29,10 +24,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import at.rc.tacos.client.controller.CreateRosterEntryAction;
-import at.rc.tacos.model.IDirectness;
-import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 /**
@@ -57,7 +49,6 @@ public class TransportForm implements IDirectness
 	private Button notarztButton;
 	private Button bd2Button;
 	private Text textRueckmeldung;
-	private Button bd1Button;
 	private Text textAnmerkungen;
 	private Combo comboPrioritaet;
 	private Combo comboErkrankungVerletzung;

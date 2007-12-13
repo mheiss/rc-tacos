@@ -39,7 +39,7 @@ public class Activator extends AbstractUIPlugin
 		plugin = this;
 		//register the encoders and decoders
 		NetWrapper.getDefault().registerEncoderAndDecoder();
-	    NetWrapper.getDefault().setSessionUsername("user3");
+        NetWrapper.getDefault().connectNetwork();
 	    //load all needed images and register them
 	    loadAndRegisterImages();   
 	    registerListeners();

@@ -2,20 +2,14 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import org.eclipse.ui.part.*;
-import org.eclipse.ui.forms.FormColors;
-import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.*;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.composite.CarComposite;
-import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
@@ -38,9 +32,6 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
     private Composite compositeThoerl;
     private Composite compositeThurnau;
     private Composite compositeBreitenau;
-    
-    //the manager holding the data to display
-    private VehicleManager vehicleManager;
 
     /**
      * Create contents of the window.
@@ -57,8 +48,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         layout.numColumns = 1;
         form.getBody().setLayout(layout);
         
-        //get the values from the activator
-        vehicleManager = ModelFactory.getInstance().getVehicleManager();
+        // add listener to model to keep on track. 
+        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 
         // Create the sections for each station
         compositeKapfenberg = createSection(form,toolkit,"Kapfenberg","Fahzeuge von Kapfenberg");
@@ -67,53 +58,65 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         compositeThoerl = createSection(form,toolkit,"Thörl","Fahzeuge von Thörl");
         compositeThurnau = createSection(form,toolkit,"Thurnau","Fahzeuge von Thurnau");
         compositeBreitenau = createSection(form,toolkit,"Breitenau","Breitenau");
-        
-//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(0));
-//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(1));
-//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
-//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
-//        new CarComposite(compositeKapfenberg,vehicleManager.getVehicleList().get(2));
-        
-//        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(0));
-//        new CarComposite(compositeBruck,vehicleManager.getVehicleList().get(1));
-//        
-//        new CarComposite(compositeStMarein,vehicleManager.getVehicleList().get(0));
-//        new CarComposite(compositeStMarein,vehicleManager.getVehicleList().get(1));
-//        
-//        new CarComposite(compositeThoerl,vehicleManager.getVehicleList().get(0));
-//        new CarComposite(compositeThoerl,vehicleManager.getVehicleList().get(1));
-//        
-//        new CarComposite(compositeThurnau,vehicleManager.getVehicleList().get(0));
-//        new CarComposite(compositeThurnau,vehicleManager.getVehicleList().get(1));
-//        
-//        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(0));
-//        new CarComposite(compositeBreitenau,vehicleManager.getVehicleList().get(1));
-        
-        // add listener to model to keep on track. 
-        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
     }
 
     @Override
     public void setFocus() { }
-    
+
     /**
      * Notification that the data model has changed so the view
      * must be updated.
      * @param evt the fired property event
      */
-     public void propertyChange(final PropertyChangeEvent evt) 
-     {
-         // create the new composite
-         if ("VEHICLE_ADD".equals(evt.getPropertyName())) 
-         { 
-             //the vehicle added
-             VehicleDetail detail = (VehicleDetail)evt.getNewValue();
-             System.out.println("before creating");
-             //createVehicle(compositeKapfenberg,detail);  
-             new CarComposite(compositeKapfenberg,detail);
-             System.out.println("after creating");
-         }
-     }
+    public void propertyChange(final PropertyChangeEvent evt) 
+    {
+        // create the new composite
+        if ("VEHICLE_ADD".equals(evt.getPropertyName())) 
+        { 
+            //the vehicle added
+            VehicleDetail detail = (VehicleDetail)evt.getNewValue();
+            //get the station to categorize the vehicle
+            final String basicStation = detail.getBasicStation();
+            //Add and update the section for Kapfenberg 
+            if("KA".equalsIgnoreCase(basicStation))
+            {
+                new CarComposite(compositeKapfenberg,detail);
+                compositeKapfenberg.layout(true);
+            }
+            //Add and update the section for Bruck 
+            else if("BM".equalsIgnoreCase(basicStation))
+            {
+                new CarComposite(compositeBruck,detail);
+                compositeBruck.layout(true);
+            }
+            //Add and update the section for St.Marein
+            else if("MA".equalsIgnoreCase(basicStation))
+            {
+                new CarComposite(compositeStMarein,detail);
+                compositeStMarein.layout(true);
+            }
+            //Add and update the section for Thoerl
+            else if("TH".equalsIgnoreCase(basicStation))
+            {
+                new CarComposite(compositeThoerl,detail);
+                compositeThoerl.layout(true);
+            }
+            // Add and update the section for Turnau
+            else if("TU".equalsIgnoreCase(basicStation))
+            {
+                new CarComposite(compositeThurnau,detail);
+            }
+            else if("BR".equalsIgnoreCase(basicStation))
+            {
+                new CarComposite(compositeBreitenau,detail);
+            }
+            else
+                System.out.println("Failed to add vehicle to non existing station: " + basicStation);
+        }
+        //force a redraw of the complete section so that the new composites are drwan
+        form.getDisplay().update();
+        form.getBody().layout(true);
+    }
 
     /**
      * Creates the section and returns the client component to add 
@@ -142,27 +145,5 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         section.setClient(client);
         //return the client
         return client;
-    }
-    
-    /**
-     * Creates the custom vehicle composite
-     * @param parent the parent frame for this vehicle 
-     * @param detail the vehicle to show 
-     * @return the created vehicle
-     */
-    public Control createVehicle(Composite parent,VehicleDetail detail)
-    {
-        FormColors colors = toolkit.getColors();
-        Color top = colors.getColor(IFormColors.H_GRADIENT_END);
-        Color bot = colors.getColor(IFormColors.H_GRADIENT_START);
-        // create the base form
-        Form form = toolkit.createForm(parent);
-        form.setText(detail.getVehicleName()+ " - "+detail.getVehicleType());
-        form.setImage(ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.green"));
-        form.setTextBackground(new Color[] { top, bot }, new int[] { 100 }, true);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 1;
-        form.getBody().setLayout(layout);
-        return form;
     }
 }
