@@ -73,7 +73,8 @@ public class RosterEntryForm implements PropertyChangeListener
 	 * Launch the application
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		try {
 			StaffMember sm = new StaffMember();
 			Calendar c = Calendar.getInstance();
@@ -213,7 +214,8 @@ public class RosterEntryForm implements PropertyChangeListener
 		dateTime.setToolTipText("Zeigt das Datum des Dienstbeginns an");
 		dateTime.setBounds(10, 43,180, 171);
 		dateTime.setData("newKey", null);
-		dateTime.addSelectionListener (new SelectionAdapter () {
+		dateTime.addSelectionListener (new SelectionAdapter () 
+		{
 			public void widgetSelected (SelectionEvent e) {
 				System.out.println ("calendar date changed - at the calendar");
 			}
