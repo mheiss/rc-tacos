@@ -66,6 +66,22 @@ public class RosterEntryManager extends DataManager
             }
         }); 
     }
+    
+    /**
+     * Removes all elements form the list
+     */
+    public void removeAllEntries()
+    {
+        Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {   
+                objectList.clear();
+                firePropertyChange("ROSTERENTRY_CLEARED",null,null);
+            }
+        }); 
+        
+    }
 
     /**
      * Converts the list to an array

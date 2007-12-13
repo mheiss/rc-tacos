@@ -2,7 +2,6 @@ package at.rc.tacos.client;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-
 import at.rc.tacos.client.view.*;
 
 /**
@@ -20,9 +19,9 @@ public class Perspective implements IPerspectiveFactory
         String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(false);
         layout.setFixed(false);
-        layout.addStandaloneView(VehiclesView.ID, false, IPageLayout.LEFT, 0.6f, editorArea);
-        layout.addStandaloneView(PersonalView.ID, false, IPageLayout.RIGHT,0.4f,editorArea);
-        layout.addStandaloneView(FormView.ID,  false, IPageLayout.BOTTOM, 0.6f, PersonalView.ID);
-        layout.addStandaloneView(View.ID,  false, IPageLayout.RIGHT, 0.4f, FormView.ID);
+        //the main components
+        layout.addStandaloneView(VehiclesView.ID,false, IPageLayout.LEFT, 0.45f, editorArea);
+        layout.addStandaloneView(PersonalView.ID,false, IPageLayout.RIGHT, 0.45f, editorArea);
+        layout.addStandaloneView(InfoView.ID, false, IPageLayout.TOP, 0.35f, PersonalView.ID);
 	}
 }
