@@ -39,6 +39,10 @@ public class InfoView extends ViewPart
         form.getBody().setLayout(new GridLayout());
                 
         final Group filterGroup = new Group(form.getBody(), SWT.NONE);
+
+        final Composite composite = new Composite(form, SWT.NONE);
+        composite.setSize(494, 349);
+        form.setContent(composite);
         filterGroup.setText("Filter");
         final GridData gd_filterGroup = new GridData(SWT.FILL, SWT.TOP, true, false);
         gd_filterGroup.heightHint = 150;//for normal date field: "30"
@@ -50,7 +54,7 @@ public class InfoView extends ViewPart
             
         //Calendar field
         dateTime = new DateTime(filterGroup, SWT.CALENDAR);
-        dateTime.setToolTipText("Zeigt das Datum des Dienstbeginns an");
+        dateTime.setToolTipText("Datum der anzuzeigenden Dienstplanübersicht auswählen");
         dateTime.setBounds(10, 43,180, 171);
         dateTime.setData("newKey", null);
         dateTime.addSelectionListener (new SelectionAdapter () 
@@ -65,6 +69,10 @@ public class InfoView extends ViewPart
                 selectAction.run();
             }
         });
+        
+		final Text informationOfTheDay = new Text(filterGroup, SWT.BORDER);
+		informationOfTheDay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        
     }
     
     /**
