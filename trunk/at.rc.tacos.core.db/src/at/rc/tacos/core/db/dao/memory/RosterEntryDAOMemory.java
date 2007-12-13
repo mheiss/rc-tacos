@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.memory;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.RosterDAO;
@@ -95,12 +96,20 @@ public class RosterEntryDAOMemory implements RosterDAO
     }
 
     @Override
-    public List<RosterEntry> listRosterEntryByTime(long startTime, long endTime)
+    public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime)
     {
         List<RosterEntry> resultList = new ArrayList<RosterEntry>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        
+        String filterStart = sdf.format(startTime);
+        String filterEnd = sdf.format(endTime);
+
         for(RosterEntry entry:rosterList)
         {
-            if(entry.getPlannedStartOfWork() >= startTime && entry.getPlannedEndOfWork() <= endTime)
+            String entryStart = sdf.format(entry.getPlannedStartOfWork());
+            String entryEnd = sdf.format(entry.getPlannedEndOfWork());
+
+            if(filterStart.equalsIgnoreCase(entryStart) && filterEnd.equalsIgnoreCase(entryEnd))
                 resultList.add(entry);
         }
         return resultList;

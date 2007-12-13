@@ -44,7 +44,7 @@ public class RosterDAOMySQL implements RosterDAO
     }
 
     @Override
-    public List<RosterEntry> listRosterEntryByTime(long startTime, long endTime)
+    public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime)
     {
         // TODO Auto-generated method stub
         return null;
