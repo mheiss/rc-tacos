@@ -58,9 +58,10 @@ public class RosterEntryManager extends DataManager
         Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
-            {  
-                objectList.remove(rosterEntry);
-                objectList.add(rosterEntry);
+            {  	
+            	//get the position of the entry
+            	int id = objectList.indexOf(rosterEntry);
+            	objectList.set(id, rosterEntry);
                 firePropertyChange("ROSTERENTRY_UPDATE", rosterEntry, null); 
             }
         }); 

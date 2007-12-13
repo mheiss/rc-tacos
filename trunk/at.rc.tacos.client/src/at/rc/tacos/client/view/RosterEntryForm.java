@@ -183,7 +183,8 @@ public class RosterEntryForm
 
 		//listener
 		exitListener = new Listener() {
-			public void handleEvent(Event e) {
+			public void handleEvent(Event e) 
+			{
 				MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 				dialog.setText("Abbrechen");
 				dialog.setMessage("Wollen Sie wirklich abbrechen?");
