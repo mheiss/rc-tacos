@@ -35,9 +35,9 @@ public class TimeForm
 
 	public TimeForm(RosterEntry re, String type)
 	{
-		this.createContents();
 		this.type = type;
 		this.re = re;
+		this.createContents();
 	}
 	/**
 	 * @return the text
@@ -97,6 +97,7 @@ public class TimeForm
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
 		shell.setSize(263, 200);
+		System.out.println("type: " +type);
 		shell.setText(type);
 
 		text = new Text(shell, SWT.BORDER);
