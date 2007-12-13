@@ -351,7 +351,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				int index = table.getSelectionIndex();
 				TableItem ti = table.getItem(index);
 				RosterEntry re = (RosterEntry)ti.getData();
-				
+				TimeForm tf = new TimeForm();
+				tf.open();
 				
 				UpdateRosterEntryAction action = new UpdateRosterEntryAction(re);
 				action.run();
