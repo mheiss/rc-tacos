@@ -2,6 +2,7 @@ package at.rc.tacos.server.listener;
 
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.EmployeeDAO;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
@@ -14,7 +15,7 @@ import at.rc.tacos.server.dao.DaoService;
 public class StaffMemberListener extends ServerListenerAdapter
 {
     private EmployeeDAO staffDao = DaoService.getInstance().getFactory().createStaffMemberDAO();
-    
+
     /**
      * Add a staff member
      */
@@ -34,7 +35,19 @@ public class StaffMemberListener extends ServerListenerAdapter
     public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.addAll(staffDao.listEmployees());
+        //if there is no filter -> request all
+        if(queryFilter == null || queryFilter.getFilterList().isEmpty())
+        {
+            list.addAll(staffDao.listEmployees());
+            System.out.println("returning "+list.size() +" members");
+        }
+        else if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER))
+        {
+            //get the query filter
+            final String filter = queryFilter.getFilterValue(IFilterTypes.ID_FILTER);
+            int id = Integer.valueOf(filter);
+            list.add(staffDao.getEmployeeById(id));
+        }
         return list;
     }
 

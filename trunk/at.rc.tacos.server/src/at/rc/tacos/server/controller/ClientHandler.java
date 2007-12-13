@@ -24,56 +24,38 @@ public class ClientHandler implements INetListener
         XMLFactory xmlFactory = new XMLFactory();
         xmlFactory.setupDecodeFactory(ne.getMessage());
         ArrayList<AbstractMessage> objects = xmlFactory.decode();
+
         //get the type of the item
         final String contentType = xmlFactory.getContentType();
         final String queryString = xmlFactory.getQueryString();
         final String userId = xmlFactory.getUserId();
         final QueryFilter queryFilter = xmlFactory.getQueryFilter();
-
         //check if the client is authenticated or not
         final boolean isAuthenticated = ServerController.getDefault().isAuthenticated(ne.getClient());
 
         //the listener class to handle the request
         ServerController server = ServerController.getDefault();
         ServerListenerFactory factory = ServerListenerFactory.getInstance();
-        IServerListener listener = null;
-        String username = null;
+        IServerListener listener = factory.getListener(contentType);
 
-        //the client is not authenticated
-        if(!isAuthenticated)
+        System.out.println("Got a new request from "+userId+" to handle: "+contentType + "->"+queryString);  
+        
+        //the client is not authenticated, no login request -> not accepted
+        if(!isAuthenticated &! Login.ID.equalsIgnoreCase(contentType))
         {
-            System.out.println("Got a new request from an unauthenticated client to handle: "+contentType + "->"+queryString);
-            //login request are permitted
-            if(Login.ID.equalsIgnoreCase(contentType))
-            {
-                listener = factory.getListener(Login.ID);
-                System.out.println("Using login listener: "+listener);
-            }
-            else
-            {
-                System.out.println("Client not authenticated, login first");
-                //notify the sender
-                server.sendMessage(
-                        ne.getClient(), 
-                        SystemMessage.ID,IModelActions.SYSTEM,
-                        new SystemMessage("Client not authenticated, login first"));
-                return;
-            } 
+            System.out.println("Client not authenticated, login first");
+            SystemMessage system = new SystemMessage("Client not authenticated, login first");
+            server.sendMessage(ne.getClient(),SystemMessage.ID,IModelActions.SYSTEM,system);
+            return;
         }
-
-        //the identification of the client
-        username = ServerController.getDefault().getAuthenticationString(ne.getClient());
-        System.out.println("Got a new request from "+userId+" to handle: "+contentType + "->"+queryString);
-        listener = factory.getListener(contentType);   
-        System.out.println("Using listener: "+listener);
-
-        //now handle the request
+        
+        //do we have a handler?
         if(listener == null)
         {
             System.out.println("No listener found for the message type: "+contentType);
             //notify the sender
             SystemMessage sysMess = new SystemMessage("No listener found for the message type: "+contentType);
-            server.sendMessage(username,SystemMessage.ID,IModelActions.SYSTEM,sysMess);
+            server.sendMessage(userId,SystemMessage.ID,IModelActions.SYSTEM,sysMess);
             return;
         }
 
@@ -86,12 +68,12 @@ public class ClientHandler implements INetListener
             if(loginResult.isLoggedIn())
             {
                 //check if the user is already logged in?
-                if(username != null)
+                if(server.hasOpenConnections(userId))
                 {
                     //send a logout message
-                    Logout logout = new Logout(username);
+                    Logout logout = new Logout(userId);
                     logout.setErrorMessage("Dieser Account wird auf einem anderen Computer benutzt.");
-                    server.sendMessage(username, Logout.ID, IModelActions.LOGOUT, logout);
+                    server.sendMessage(userId, Logout.ID, IModelActions.LOGOUT, logout);
                 }
                 //authenticate the user with the new socket
                 ServerController.getDefault().setAuthenticated(
@@ -138,16 +120,23 @@ public class ClientHandler implements INetListener
         }
         else if(IModelActions.LIST.equalsIgnoreCase(queryString))
         {
-            
-            ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest(queryFilter);
-            //send the listing
-            server.sendMessage(userId, contentType, queryString, resultMessageList);
+            try
+            {
+                ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest(queryFilter);
+                //send the listing
+                server.sendMessage(userId, contentType, queryString, resultMessageList);
+            }
+            catch(Exception e)
+            {
+                SystemMessage system = new SystemMessage("Error while listing of "+contentType+" entries: \n"+e.getMessage());
+                server.sendMessage(userId, contentType, queryString, system);  
+            }
         }
         else
         {   
             System.out.println("No handler found for queryString: "+queryString);
             SystemMessage sysMes = new SystemMessage("No handler found for queryString: "+queryString);
-            server.sendMessage(username,SystemMessage.ID,IModelActions.SYSTEM,sysMes);
+            server.sendMessage(userId,SystemMessage.ID,IModelActions.SYSTEM,sysMes);
         }   
     }
 

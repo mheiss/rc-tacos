@@ -1,6 +1,5 @@
 package at.rc.tacos.server.listener;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,11 +37,5 @@ public class AuthenticationListenerTest
     {
         Login login = listener.handleLoginRequest(new Login("user12","test"));
         Assert.assertFalse(login.isLoggedIn());
-    }
-    
-    @After
-    public void tearDown()
-    {
-        listener = null;
     }
 }
