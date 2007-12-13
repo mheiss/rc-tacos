@@ -40,6 +40,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
+
+import at.rc.tacos.client.controller.UpdateRosterEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.RosterEntry;
@@ -342,11 +344,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				System.out.println("selektierte zeile: " +index);
 				TableItem ti = table.getItem(index);
 				RosterEntry re = (RosterEntry)ti.getData();
-				System.out.println("the name of the selected roster entry: " +re.getStaffMember().getLastname());
+				UpdateRosterEntryAction action = new UpdateRosterEntryAction(re);
+				action.run();
 			}
 		});
 		menuItemCheckIn.setText("Anmelden");
-		
 		
 		//item check out
 		final MenuItem menuItemCheckOut = new MenuItem(contextMenu, SWT.CASCADE);
@@ -358,6 +360,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 			}
 		});
 		menuItemCheckOut.setText("Abmelden");
+		menuItemCheckOut.setEnabled(false);//TODO change-----------
 		
 		
 		

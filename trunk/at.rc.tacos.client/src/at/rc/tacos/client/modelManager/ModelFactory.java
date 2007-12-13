@@ -66,7 +66,7 @@ public class ModelFactory
         };
         job.setPriority(Job.SHORT);
         job.setUser(true);
-        job.schedule(1000); 
+        job.schedule(); 
     }
     
     

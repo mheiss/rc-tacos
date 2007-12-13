@@ -149,12 +149,15 @@ public class TransportForm implements IDirectness
 		
 		//listener
 		exitListener = new Listener() {
-			public void handleEvent(Event e) {
-				MessageBox dialog = new MessageBox(shell, SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION);
+			public void handleEvent(Event e) 
+			{
+				MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 				dialog.setText("Abbrechen");
 				dialog.setMessage("Wollen Sie wirklich abbrechen?");
-				if (e.type == SWT.Close) e.doit = false;
-				if (dialog.open() != SWT.OK) return;
+				if (e.type == SWT.Close) 
+					e.doit = false;
+				if (dialog.open() != SWT.YES) 
+					return;
 				shell.dispose();
 			}
 		};
