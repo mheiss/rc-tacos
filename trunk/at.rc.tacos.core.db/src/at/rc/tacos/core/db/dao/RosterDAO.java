@@ -12,5 +12,5 @@ public interface RosterDAO
     public RosterEntry getRosterEntryById(int rosterEntryId);    
 	public List<RosterEntry> listRosterEntrys();
 	public List<RosterEntry> listRosterEntryByEmployee(int emplyeeID);
-	public List<RosterEntry> listRosterEntryByTime(long startTime, long endTime);
+	public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime);
 }
