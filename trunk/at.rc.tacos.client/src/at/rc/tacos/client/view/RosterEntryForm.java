@@ -363,7 +363,7 @@ public class RosterEntryForm
 			String timeRealEndOfWork;
 			String dateRealEndOfWork;
 			StaffMember staffMember = new StaffMember();
-			String requiredFields;//the Name of the required fields that have no content
+			String requiredFields;//the names of the required fields that have no content
 
 			int hourCheckIn;
 			int hourCheckOut;
@@ -396,7 +396,6 @@ public class RosterEntryForm
 				if(!this.checkRequiredFields().equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen");
-//					System.out.println("plannedEndOfWork: in checkRequiredFields- message dialog " +plannedEndOfWork);
 					return;
 				}
 
@@ -404,19 +403,16 @@ public class RosterEntryForm
 				if(!this.checkFormatOfRealWorkTimeFields().equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event,formatOfRealTime, "Format von tatsächlicher Dienstzeit falsch: ");
-					//formatOfRealTime = "";	
-//					System.out.println("plannedEndOfWork: in checkRomatOfRealWorkTimeFields message dialog " +plannedEndOfWork);
 					return;
 				}
 
 				if(!this.checkDateIfTime().equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, requiredRealDateFields, "Bitte tragen Sie für unten angeführte Felder auch noch ein Datum ein.");
-//					System.out.println("plannedEndOfWork:  in checkDateIfTime  message dialog" +plannedEndOfWork);
 					return;
 				}
 
-				//TODO hier irgendwo passiert Fehler bei plannedEndOfWork
+
 				this.transformToLong();//set planned work time
 				System.out.println("plannedEndOfWork:  nach transformToLong" +plannedEndOfWork);
 
@@ -424,7 +420,6 @@ public class RosterEntryForm
 				if(plannedEndOfWork<plannedStartOfWork)
 				{
 					this.displayMessageBox(event, "Dienstende vor Dienstbeginn!", "Fehler");
-//					System.out.println("plannedEndOfWork: in plannedEndOfWork<plannedStartOfWork  message dialog " +plannedEndOfWork);
 					return;
 				}
 
@@ -432,13 +427,11 @@ public class RosterEntryForm
 				if(!realWorkTimeNoDateIfNoTime.equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, realWorkTimeNoDateIfNoTime, "Datum ohne Zeiteintrag");
-//					System.out.println("plannedEndOfWork:  in realWorkTimeNoDateIfNoTime  message dialog" +plannedEndOfWork);
 					return;
 				}
 
-//				System.out.println("plannedEndOfWork:  vor setRealWorkTime" +plannedEndOfWork);
+
 				this.setRealWorkTime();
-//				System.out.println("plannedEndOfWork:  nach setRealWorkTime " +plannedEndOfWork);
 				if(realEndOfWork<realStartOfWork && realEndOfWork > 0)
 				{
 					this.displayMessageBox(event, "Abmeldung vor Anmeldung","Fehler");
@@ -459,6 +452,7 @@ public class RosterEntryForm
 				index = (comboViewer.getCombo().getSelectionIndex());
 				if (index != -1)
 				{
+					//TODO I'm waiting for Michael.......
 					String fullName = (String)comboViewer.getElementAt(index);
 					String[] fullName2 = fullName.split(" ");//TODO not allow space within first and last name
 					String lastName = fullName2[0];
