@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -37,6 +38,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
@@ -181,13 +183,13 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		
 		
 		final Group filterGroup = new Group(filterComposite, SWT.NONE);
-		filterGroup.setText("Filter");
+		filterGroup.setText("Tagesübersicht");
 		final GridData gd_filterGroup = new GridData(SWT.FILL, SWT.TOP, true, false);
 		gd_filterGroup.heightHint = 150;//for normal date field: "30"
 		gd_filterGroup.widthHint = 993;
 		filterGroup.setLayoutData(gd_filterGroup);
 		final GridLayout gridLayout_3 = new GridLayout();
-		gridLayout_3.numColumns = 9;
+		gridLayout_3.numColumns = 2;
 		filterGroup.setLayout(gridLayout_3);
 	
 		
@@ -201,6 +203,12 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				System.out.println ("calendar date changed - at the calendar");
 			}
 		});
+
+		final Text text = new Text(filterGroup, SWT.V_SCROLL | SWT.BORDER);
+		text.setToolTipText("Information des Tages");
+		final GridData gd_text = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd_text.heightHint = 79;
+		text.setLayoutData(gd_text);
 		
 		//'Dienstplan'
 		final Group group = new Group(filterComposite, SWT.NONE);
@@ -343,6 +351,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				int index = table.getSelectionIndex();
 				TableItem ti = table.getItem(index);
 				RosterEntry re = (RosterEntry)ti.getData();
+				
+				
 				UpdateRosterEntryAction action = new UpdateRosterEntryAction(re);
 				action.run();
 			}
@@ -417,12 +427,15 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		
 		
 		//resize table with composite
-		tabFolder.addControlListener(new ControlAdapter() {
-		    public void controlResized(ControlEvent e) {
+		tabFolder.addControlListener(new ControlAdapter() 
+		{
+		    public void controlResized(ControlEvent e) 
+		    {
 		      Rectangle area = tabFolder.getClientArea();
 		      Point preferredSize = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		      int width = area.width - 2*table.getBorderWidth();
-		      if (preferredSize.y > area.height + table.getHeaderHeight()) {
+		      if (preferredSize.y > area.height + table.getHeaderHeight()) 
+		      {
 		        // Subtract the scrollbar width from the total column width
 		        // if a vertical scrollbar will be required
 		        Point vBarSize = table.getVerticalBar().getSize();
@@ -681,11 +694,14 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	}
 	
 	//context menu
-	private void hookContextMenu() {
+	private void hookContextMenu() 
+	{
         MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
         menuMgr.setRemoveAllWhenShown(true);
-        menuMgr.addMenuListener(new IMenuListener() {
-            public void menuAboutToShow(IMenuManager manager) {
+        menuMgr.addMenuListener(new IMenuListener() 
+        {
+            public void menuAboutToShow(IMenuManager manager) 
+            {
                 // Adding controller to context-menu
                 //manager.add(new DeleteItemAction((Item) ((IStructuredSelection) PersonalView.this.viewer.getSelection()).getFirstElement()));
             }
