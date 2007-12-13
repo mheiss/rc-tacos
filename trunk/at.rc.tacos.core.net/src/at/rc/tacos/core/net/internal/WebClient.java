@@ -27,6 +27,7 @@ import at.rc.tacos.codec.TransportEncoder;
 import at.rc.tacos.codec.VehicleDecoder;
 import at.rc.tacos.codec.VehicleEncoder;
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.Item;
@@ -35,6 +36,7 @@ import at.rc.tacos.model.Logout;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.NotifierDetail;
 import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.SystemMessage;
@@ -54,6 +56,9 @@ public class WebClient
     private MySocket socket;
     //the factory
     private XMLFactory factory;
+    
+    //the user to send the request
+    private String sessionUserId;
 
     //result of the decode
     private String userId;
@@ -106,12 +111,53 @@ public class WebClient
     {
         socket.cleanup();
     }
-
+    
     /**
-     *  Encodes and sends the request to the server. 
-     *  First the objects will be encoded into xml and then 
-     *  they will be send to the server.<br>
-     *  The response from the server will be decoded and returned.
+     *  Sets the username for the request.
+     *  @param sessionUserId the authenticated user
+     */
+    public void setSessionUser(String sessionUserId)
+    {
+        this.sessionUserId = sessionUserId;
+    }
+    
+    /**
+     * Sends a request to login to the server.
+     * @param username the username to authenticate
+     * @param password the password for the username
+     * @return the result of the login process or a system message in case of an error
+     */
+    public AbstractMessage sendLoginRequest(String username,String password)
+    {
+        //create a login object
+        Login login = new Login(username,password);
+        //store the username
+        sessionUserId = username;
+        //send the request
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.LOGIN,login,null);
+        return result.get(0);
+    }
+    
+    /**
+     * Sends a request to logout to the server.
+     * @return the result of the logout process or a system message in case of an error
+     */
+    public AbstractMessage sendLogoutRequest()
+    {
+        //create a login object
+        Logout logout = new Logout(sessionUserId);
+        //send the request
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.LOGOUT,logout,null);
+        return result.get(0);
+    }
+    
+    /**
+     * Sends a request to add the given object to the server.
+     * If the object was added successfully the server will send
+     * the object back.
+     * @param contentType the type of the <code>messageObject</code>. 
+     *        Example <code>RosterEntry.ID</code>
+     * @param addObject the object to be added to the server
      *  To get the more details about the response the following methods 
      *  can be used.
      *  <ul>
@@ -120,19 +166,94 @@ public class WebClient
      *  <li><code>getUserId</code> returns the user name who send the query </li>
      *  <li><code>getTimestamp</code> returns the timestamp of the query </li>
      *  </ul>
+     * @return the added object or a system message in the case of an error
+     */
+    public AbstractMessage sendAddRequest(String contentType,AbstractMessage addObject)
+    {
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.ADD,addObject,null);
+        return result.get(0);
+    }
+    
+    /**
+     * Sends a request to remove the given object from the server.
+     * If the object was removed successfully the server will send
+     * the old object back.
+     * @param contentType the type of the <code>messageObject</code>. 
+     *        Example <code>RosterEntry.ID</code>
+     * @param removeObject the object to be removed from the server
+     *  To get the more details about the response the following methods 
+     *  can be used.
+     *  <ul>
+     *  <li><code>getContentType</code> returns the type of the content </li>
+     *  <li><code>getQueryString</code> returns the queryString </li>
+     *  <li><code>getUserId</code> returns the user name who send the query </li>
+     *  <li><code>getTimestamp</code> returns the timestamp of the query </li>
+     *  </ul>
+     * @return the removed object or a system message in the case of an error
+     */
+    public AbstractMessage sendRemoveRequest(String contentType,AbstractMessage removeObject)
+    {
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.REMOVE,removeObject,null);
+        return result.get(0);
+    }
+    
+    /**
+     * Sends a request to update the given object to the server.
+     * If the object was added successfully the server will send
+     * the updated object back.
+     * @param contentType the type of the <code>messageObject</code>. 
+     *        Example <code>RosterEntry.ID</code>
+     * @param updateObject the object to be updated on to the server
+     *  To get the more details about the response the following methods 
+     *  can be used.
+     *  <ul>
+     *  <li><code>getContentType</code> returns the type of the content </li>
+     *  <li><code>getQueryString</code> returns the queryString </li>
+     *  <li><code>getUserId</code> returns the user name who send the query </li>
+     *  <li><code>getTimestamp</code> returns the timestamp of the query </li>
+     *  </ul>
+     * @return the updated object or a system message in the case of an error
+     */
+    public AbstractMessage sendUpdateRequest(String contentType,AbstractMessage updateObject)
+    {
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.UPDATE,updateObject,null);
+        return result.get(0);
+    }
+    
+    /**
+     * Sends a request to get a list of the given object from the server.
+     * @param contentType the type of the object to get a listing from
+     * @param queryFilter the filter to apply to this request.
+     *        Example: Request a listing of objects from a specifiy id
+     *  To get the more details about the response the following methods 
+     *  can be used.
+     *  <ul>
+     *  <li><code>getContentType</code> returns the type of the content </li>
+     *  <li><code>getQueryString</code> returns the queryString </li>
+     *  <li><code>getUserId</code> returns the user name who send the query </li>
+     *  <li><code>getTimestamp</code> returns the timestamp of the query </li>
+     *  </ul>
+     * @return the result of the listing request
+     */
+    public List<AbstractMessage> sendListingRequest(String contentType,QueryFilter queryFilter)
+    {
+        return sendRequest(sessionUserId,contentType,IModelActions.UPDATE,null,queryFilter);
+    }
+    
+    /**
+     *  Encodes and sends the request to the server. 
      *  @param userId the username of the authenticated user
      *  @param contentType the type of the <code>messageObject</code>. 
-     *         Example <code>RosterEntry.ID</code>
      *  @param queryString the query that should be done on the server.
-     *         Example <code>IModelActions.LIST</code> to get a listing.
      *  @param messageObject the object to send to the server. 
-     *         This can be null if you want a listing only.
      *  @return the result list from the server
      */
-    public List<AbstractMessage> sendRequest(String userId,
+    private List<AbstractMessage> sendRequest(
+            String userId,
             String contentType,
             String queryString,
-            AbstractMessage messageObject)
+            AbstractMessage messageObject,
+            QueryFilter queryFilter)
     {
         //set up the factory
         factory = new XMLFactory();

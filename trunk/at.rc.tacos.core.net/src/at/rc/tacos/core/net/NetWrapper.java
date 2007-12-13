@@ -206,7 +206,7 @@ public class NetWrapper extends Plugin implements INetListener
                 session, 
                 contentType, 
                 queryString);
-        System.out.println("Send: "+ session+","+contentType+","+queryString);
+        System.out.println("Send: "+session+","+contentType+","+queryString);
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         //wrapp into a list
         if(message != null)
