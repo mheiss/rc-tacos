@@ -134,7 +134,7 @@ public class WebClient
         //store the username
         sessionUserId = username;
         //send the request
-        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.LOGIN,login,null);
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.LOGIN,null,login);
         return result.get(0);
     }
     
@@ -147,7 +147,7 @@ public class WebClient
         //create a login object
         Logout logout = new Logout(sessionUserId);
         //send the request
-        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.LOGOUT,logout,null);
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.LOGOUT,null,logout);
         return result.get(0);
     }
     
@@ -170,7 +170,7 @@ public class WebClient
      */
     public AbstractMessage sendAddRequest(String contentType,AbstractMessage addObject)
     {
-        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.ADD,addObject,null);
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.ADD,null,addObject);
         return result.get(0);
     }
     
@@ -193,7 +193,7 @@ public class WebClient
      */
     public AbstractMessage sendRemoveRequest(String contentType,AbstractMessage removeObject)
     {
-        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.REMOVE,removeObject,null);
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.REMOVE,null,removeObject);
         return result.get(0);
     }
     
@@ -216,7 +216,7 @@ public class WebClient
      */
     public AbstractMessage sendUpdateRequest(String contentType,AbstractMessage updateObject)
     {
-        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.UPDATE,updateObject,null);
+        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.UPDATE,null,updateObject);
         return result.get(0);
     }
     
@@ -237,7 +237,7 @@ public class WebClient
      */
     public List<AbstractMessage> sendListingRequest(String contentType,QueryFilter queryFilter)
     {
-        return sendRequest(sessionUserId,contentType,IModelActions.UPDATE,null,queryFilter);
+        return sendRequest(sessionUserId,contentType,IModelActions.UPDATE,queryFilter,null);
     }
     
     /**
@@ -245,6 +245,7 @@ public class WebClient
      *  @param userId the username of the authenticated user
      *  @param contentType the type of the <code>messageObject</code>. 
      *  @param queryString the query that should be done on the server.
+     *  @param queryFilter the filter to apply
      *  @param messageObject the object to send to the server. 
      *  @return the result list from the server
      */
@@ -252,8 +253,8 @@ public class WebClient
             String userId,
             String contentType,
             String queryString,
-            AbstractMessage messageObject,
-            QueryFilter queryFilter)
+            QueryFilter queryFilter,
+            AbstractMessage messageObject)
     {
         //set up the factory
         factory = new XMLFactory();
@@ -262,6 +263,8 @@ public class WebClient
         //wrapp into a list
         if(messageObject != null)
             list.add(messageObject);
+        if(queryFilter != null)
+            factory.setFilter(queryFilter);
         //encode, send and get the result
         String result = queryServer(factory.encode(list));
         //assert valid
