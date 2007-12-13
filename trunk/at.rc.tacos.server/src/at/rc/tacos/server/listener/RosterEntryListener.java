@@ -3,6 +3,7 @@ package at.rc.tacos.server.listener;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.RosterDAO;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.server.dao.DaoService;
 
@@ -30,7 +31,7 @@ public class RosterEntryListener extends ServerListenerAdapter
      * Listing of all entries 
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest()
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         list.addAll(rosterDao.listRosterEntrys());

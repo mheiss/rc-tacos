@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.server.dao.DaoService;
 
 /**
@@ -29,7 +30,7 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Listing of all mobile phones
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest()
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         list.addAll(mobilePhoneDao.listMobilePhones());

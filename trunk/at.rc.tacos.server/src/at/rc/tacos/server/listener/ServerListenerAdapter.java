@@ -3,6 +3,7 @@ package at.rc.tacos.server.listener;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IServerListener;
+import at.rc.tacos.model.QueryFilter;
 
 /**
  * An abstract adapter class for receiving client requests.
@@ -43,7 +44,7 @@ public abstract class ServerListenerAdapter implements IServerListener
     * Handles listing requests
     */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest()
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
     {
         return null;
     }

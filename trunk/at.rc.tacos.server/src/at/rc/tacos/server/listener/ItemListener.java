@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.ItemDAO;
 import at.rc.tacos.model.Item;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.server.dao.DaoService;
 
 /**
@@ -30,7 +31,7 @@ public class ItemListener extends ServerListenerAdapter
      * Get a listing of items
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest()
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         list.addAll(itemDao.listItems());

@@ -7,6 +7,7 @@ import at.rc.tacos.core.net.internal.MyClient;
 import at.rc.tacos.factory.*;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.common.*;
 
@@ -27,6 +28,7 @@ public class ClientHandler implements INetListener
         final String contentType = xmlFactory.getContentType();
         final String queryString = xmlFactory.getQueryString();
         final String userId = xmlFactory.getUserId();
+        final QueryFilter queryFilter = xmlFactory.getQueryFilter();
 
         //check if the client is authenticated or not
         final boolean isAuthenticated = ServerController.getDefault().isAuthenticated(ne.getClient());
@@ -83,6 +85,15 @@ public class ClientHandler implements INetListener
             //add the client to the authenticated list
             if(loginResult.isLoggedIn())
             {
+                //check if the user is already logged in?
+                if(username != null)
+                {
+                    //send a logout message
+                    Logout logout = new Logout(username);
+                    logout.setErrorMessage("Dieser Account wird auf einem anderen Computer benutzt.");
+                    server.sendMessage(username, Logout.ID, IModelActions.LOGOUT, logout);
+                }
+                //authenticate the user with the new socket
                 ServerController.getDefault().setAuthenticated(
                         loginResult.getUsername(), 
                         ne.getClient());
@@ -127,7 +138,8 @@ public class ClientHandler implements INetListener
         }
         else if(IModelActions.LIST.equalsIgnoreCase(queryString))
         {
-            ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest();
+            
+            ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest(queryFilter);
             //send the listing
             server.sendMessage(userId, contentType, queryString, resultMessageList);
         }
