@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Item;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
@@ -25,6 +26,7 @@ public class ModelFactory
     private ItemManager itemList;
     private RosterEntryManager rosterEntryList;
     private VehicleManager vehicleList;
+    private StaffManager staffList;
     
     /**
      * Private class constructor.
@@ -34,6 +36,7 @@ public class ModelFactory
         itemList = new ItemManager();
         rosterEntryList = new RosterEntryManager();
         vehicleList = new VehicleManager();
+        staffList = new StaffManager();
     }
     
     /**
@@ -58,9 +61,10 @@ public class ModelFactory
             protected IStatus run(IProgressMonitor monitor) 
             {
                 NetWrapper net = NetWrapper.getDefault();
-                net.requestListing(Item.ID);
-                net.requestListing(VehicleDetail.ID);
-                net.requestListing(RosterEntry.ID);
+                net.requestListing(Item.ID, null);
+                net.requestListing(VehicleDetail.ID, null);
+                net.requestListing(RosterEntry.ID, null);
+                net.requestListing(StaffMember.ID, null);
                 return Status.OK_STATUS;
             }
         };
@@ -96,5 +100,14 @@ public class ModelFactory
     public VehicleManager getVehicleManager()
     {
         return vehicleList;
+    }
+    
+    /**
+     * Returns the manager respnosible for the staff
+     * @return the staff manager
+     */
+    public StaffManager getStaffManager()
+    {
+        return staffList;
     }
 }

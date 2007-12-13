@@ -2,35 +2,21 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.SimpleDateFormat;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TabFolder;
@@ -38,13 +24,14 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.UpdateRosterEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.providers.PersonalViewContentProvider;
+import at.rc.tacos.client.providers.PersonalViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.RosterEntry;
 
@@ -56,111 +43,6 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     private FormToolkit toolkit;
     private ScrolledForm form;
 	private TableViewer viewer;
-	
-	private DateTime dateTime;
-	
-	//define the columns
-	public static final int COLUMN_STANDBY = 0;
-	public static final int COLUMN_NOTES = 1;
-	public static final int COLUMN_NAME = 2;
-	public static final int COLUMN_PLANED_WORK_TIME = 3;
-	public static final int COLUMN_CHECK_IN = 4;
-	public static final int COLUMN_CHECK_OUT = 5;
-	public static final int COLUMN_SERVICE_TYPE = 6;
-	public static final int COLUMN_COMPETENCE = 7;
-	public static final int COLUMN_STATION = 8;
-	public static final int COLUMN_VEHICLE = 9;
-	
-	
-	class PersonalContentProvider implements IStructuredContentProvider {
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-            // do nothing
-		}
-
-		public void dispose() {
-            // do nothing
-		}
-
-		public Object[] getElements(Object parent) {
-			return ModelFactory.getInstance().getRosterManager().toArray();
-		}
-	}
-
-	class PersonalLabelProvider implements ITableLabelProvider 
-	{
-		@Override
-		public Image getColumnImage(Object element, int columnIndex) {
-			return null;
-		}
-
-		@Override
-		public String getColumnText(Object element, int columnIndex) 
-		{
-			RosterEntry entry = (RosterEntry)element;
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-
-			switch(columnIndex)
-			{
-			case COLUMN_STANDBY: return String.valueOf(entry.getStandby()); 
-			case COLUMN_NOTES: 
-			    if (entry.getRosterNotes() == null || entry.getRosterNotes().isEmpty())
-			        return "keine Notizen";
-			    else
-			        return entry.getRosterNotes();
-			case COLUMN_NAME: return entry.getStaffMember().getLastname()+ " " + entry.getStaffMember().getFirstName();
-			case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartOfWork()) + " - " + sdf.format(entry.getPlannedEndOfWork());
-			case COLUMN_CHECK_IN: return sdf.format(entry.getRealStartOfWork());
-			case COLUMN_CHECK_OUT: return sdf.format(entry.getRealEndOfWork());
-			case COLUMN_SERVICE_TYPE: return entry.getServicetype();
-			case COLUMN_COMPETENCE: return entry.getCompetence();
-			case COLUMN_STATION: return entry.getStation();
-			case COLUMN_VEHICLE: return "Auto";
-			default: return null;
-			}
-		}
-
-		/**
-		   * Adds a listener
-		   * @param listener the listener
-		   */
-		@Override
-		public void addListener(ILabelProviderListener listener) 
-		{
-			//ignore
-			
-		}
-
-		/**
-		* Disposes any created resources
-		*/
-		@Override
-		public void dispose() 
-		{
-			//nothing to dispose
-		}
-
-		/**
-		   * Returns whether altering this property on this element will affect the
-		   * label
-		   * @param element the element
-		   * @param property the property
-		   * @return boolean
-		*/
-		@Override
-		public boolean isLabelProperty(Object element, String property) {
-			return false;
-		}
-
-		/**
-		 * Removes a listener.
-		 * @param listener the listener to remove
-		 */
-		@Override
-		public void removeListener(ILabelProviderListener listener) 
-		{
-			//ignore it
-		}
-	}
 	
 	public void createPartControl(Composite parent) 
 	{
@@ -175,43 +57,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         form.getBody().setLayout(new FillLayout());
         
 		final Composite composite = form.getBody();
-		
-		//create composite and group named filter
-		final Composite filterComposite = new Composite(composite, SWT.NONE);
-		final GridLayout gridLayout_2 = new GridLayout();
-		filterComposite.setLayout(gridLayout_2);
-		
-		
-		final Group filterGroup = new Group(filterComposite, SWT.NONE);
-		filterGroup.setText("Tagesübersicht");
-		final GridData gd_filterGroup = new GridData(SWT.FILL, SWT.TOP, true, false);
-		gd_filterGroup.heightHint = 150;//for normal date field: "30"
-		gd_filterGroup.widthHint = 993;
-		filterGroup.setLayoutData(gd_filterGroup);
-		final GridLayout gridLayout_3 = new GridLayout();
-		gridLayout_3.numColumns = 2;
-		filterGroup.setLayout(gridLayout_3);
-	
-		
-		//create calendar field
-		dateTime = new DateTime(filterGroup, SWT.CALENDAR);
-		dateTime.setToolTipText("Zeigt das Datum des Dienstbeginns an");
-		dateTime.setBounds(10, 43,180, 171);
-		dateTime.setData("newKey", null);
-		dateTime.addSelectionListener (new SelectionAdapter () {
-			public void widgetSelected (SelectionEvent e) {
-				System.out.println ("calendar date changed - at the calendar");
-			}
-		});
-
-		final Text text = new Text(filterGroup, SWT.V_SCROLL | SWT.BORDER);
-		text.setToolTipText("Information des Tages");
-		final GridData gd_text = new GridData(SWT.FILL, SWT.FILL, true, false);
-		gd_text.heightHint = 79;
-		text.setLayoutData(gd_text);
-		
 		//'Dienstplan'
-		final Group group = new Group(filterComposite, SWT.NONE);
+		final Group group = new Group(composite, SWT.NONE);
 		group.setLayout(new FillLayout());
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		group.setText("Dienstplan");
@@ -219,15 +66,13 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		
 		//tab folder "Bezirk"
 		final TabFolder tabFolder = new TabFolder(group, SWT.NONE);
-		
-		//table viewer
-//		shell, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
-//        | SWT.H_SCROLL
-		this.viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);//full selection: select a whole row
-		this.viewer.setContentProvider(new PersonalContentProvider());
-		this.viewer.setLabelProvider(new PersonalLabelProvider());
-		this.viewer.setCellEditors(getCellRenderer(viewer));
-		this.viewer.setInput(ModelFactory.getInstance().getRosterManager());
+		//shell, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
+		//full selection: select a row
+		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		viewer.setContentProvider(new PersonalViewContentProvider());
+		viewer.setLabelProvider(new PersonalViewLabelProvider());
+		viewer.setInput(ModelFactory.getInstance().getRosterManager());
+		viewer.getTable().setLinesVisible(true);
         hookContextMenu();
         
 		//create the table for the roster entries 
@@ -312,13 +157,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		final TabItem breitenauTabItem = new TabItem(tabFolder, SWT.NONE);
 		breitenauTabItem.setText("Breitenau");
 		breitenauTabItem.setControl(table);
-	
-		//probably replaced by a text field beside the calendar
-//		final TabItem tagesinformationTabItem_1 = new TabItem(tabFolder, SWT.NONE);
-//		tagesinformationTabItem_1.setText("Info");	
-		
-		
-		
+
 		/**
 		 * context menu
 		 */
@@ -692,6 +531,10 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 //		sashForm_1.setWeights(new int[] {1, 1 });
 
 		tabFolder.layout(true);
+		form.layout(true);
+		form.getDisplay().update();
+		viewer.refresh();
+		
 	}
 	
 	//context menu
@@ -734,19 +577,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         { 
             this.viewer.refresh();
         }
-    }
-    
-    /**
-     * Returns the custom cell renderer
-     * @param viewer the table viewer to create the renderer
-     * @return the renderer array
-     */
-    public CellEditor[] getCellRenderer(TableViewer viewer)
-    {
-        // Create the cell editors
-        CellEditor[] editors = new CellEditor[8];
-        editors[COLUMN_STANDBY] = new CheckboxCellEditor(viewer.getTable());
-        editors[COLUMN_NOTES] = new TextCellEditor(viewer.getTable());
-        return editors;
+        // event on deletion --> also just refresh
+        if ("ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
+        { 
+            this.viewer.refresh();
+        }
+        
     }
 }

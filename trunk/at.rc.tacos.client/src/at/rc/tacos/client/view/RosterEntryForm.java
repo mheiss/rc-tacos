@@ -1,7 +1,8 @@
 package at.rc.tacos.client.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -27,7 +28,9 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import at.rc.tacos.client.controller.CreateRosterEntryAction;
-import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.providers.StaffComboContentProvider;
+import at.rc.tacos.client.providers.StaffComboLabelProvider;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
@@ -37,7 +40,7 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  * @author b.thek
  * WindowBuilderFree-CJ0SH-SN1HW-EXUSS
  */
-public class RosterEntryForm 
+public class RosterEntryForm implements PropertyChangeListener
 {
 	private Combo dateAbmeldung;
 	private Combo dateAnmeldung;
@@ -138,7 +141,8 @@ public class RosterEntryForm
 
 
 		//other fields
-		this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
+		if(rosterEntry.getRosterNotes() != null)
+		    this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
 		this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
 		this.comboVerwendung.setText(rosterEntry.getCompetence());
 		this.comboOrtsstelle.setText(rosterEntry.getStation());
@@ -170,13 +174,6 @@ public class RosterEntryForm
 	 */
 	protected void createContents() 
 	{
-		//TODO: get a list of StaffMembers from the database
-		//get data
-		StaffMember sm1 = new StaffMember("Helmut", "Maier", "h.maie");
-		StaffMember sm2 = new StaffMember("Daniel", "Haberl", "d.habe");
-
-		ArrayList<StaffMember> staffMemberList = new ArrayList<StaffMember>(Arrays.asList(sm1,sm2));
-
 		//content of date combo boxes
 		List<String> listOfDates = this.fillDateComboBox();
 		String[] arrayOfDates = (String[]) listOfDates.toArray(new String[]{});
@@ -228,13 +225,11 @@ public class RosterEntryForm
 
 		setEmployeenameCombo = new Combo(dienstplanGroup, SWT.READ_ONLY);
 		final ComboViewer comboViewer = new ComboViewer(setEmployeenameCombo);
-
-		//fill combo employee name with data
-		for(StaffMember staffMember: staffMemberList)
-		{
-			comboViewer.add(staffMember.getLastname() +" " +staffMember.getFirstName());
-		}
-
+		comboViewer.setContentProvider(new StaffComboContentProvider());
+		comboViewer.setLabelProvider(new StaffComboLabelProvider());
+		comboViewer.setInput(ModelFactory.getInstance().getStaffManager());
+		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+		
 		setEmployeenameCombo.setBounds(306, 43,226, 24);
 		setEmployeenameCombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
 
@@ -442,27 +437,16 @@ public class RosterEntryForm
 				//RosterEntry rosterEntry = new RosterEntry(, station, competence, servicetype, rosterNotes, standbyState);
 				RosterEntry rosterEntry = new RosterEntry(staffMember,servicetype,competence,station,plannedStartOfWork, plannedEndOfWork);
 				//send the roster entry
-//					new CreateRosterEntryAction(rosterEntry).run();
+				new CreateRosterEntryAction(rosterEntry).run();
 				System.out.println("Dienstplaneintrag angelegt...");
-				
+				shell.close();
 			}
 
 
 			private void getContentOfAllFields()
 			{
 				index = (comboViewer.getCombo().getSelectionIndex());
-				if (index != -1)
-				{
-					//TODO I'm waiting for Michael.......
-					String fullName = (String)comboViewer.getElementAt(index);
-					String[] fullName2 = fullName.split(" ");//TODO not allow space within first and last name
-					String lastName = fullName2[0];
-					String firstName = fullName2[1];
-//					System.out.println("lastname: " +lastName);
-					//				staffMember = (StaffMember)comboViewer.getElementAt(index);//TODO doesn't longer work (toString -> staffMember.get...
-					staffMember.setFirstName(firstName);
-					staffMember.setLastName(lastName);
-				}
+				staffMember = (StaffMember)comboViewer.getElementAt(index);
 				standbyState = bereitschaftButton.getSelection();
 				station = comboOrtsstelle.getText();
 				competence = comboVerwendung.getText();
@@ -745,4 +729,29 @@ public class RosterEntryForm
 		defaultDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
 		return defaultDate;
 	}
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        // the viewer represents simple model. refresh should be enough.
+        if ("STAFF_ADD".equals(evt.getPropertyName())) 
+        { 
+            setEmployeenameCombo.update();
+        }
+        // event on deletion --> also just refresh
+        if ("STAFF_REMOVE".equals(evt.getPropertyName())) 
+        { 
+            setEmployeenameCombo.update();
+        }
+        // event on deletion --> also just refresh
+        if ("STAFF_UPDATE".equals(evt.getPropertyName())) 
+        { 
+            setEmployeenameCombo.update();
+        }
+        // event on deletion --> also just refresh
+        if ("STAFF_CLEARED".equals(evt.getPropertyName())) 
+        { 
+            setEmployeenameCombo.update();
+        }
+    }
 }
