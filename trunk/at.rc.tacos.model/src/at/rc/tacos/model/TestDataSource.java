@@ -1,6 +1,7 @@
 package at.rc.tacos.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -154,13 +155,18 @@ public class TestDataSource
     private void initRosters()
     {
         rosterList = new ArrayList<RosterEntry>();
+        //date for the entries
+        Calendar cal = Calendar.getInstance();
         RosterEntry e1 = new RosterEntry();
         e1.setRosterId(0);
         e1.setCompetence("Fahrer");
-        e1.setPlannedStartOfWork(new Date().getTime());
-        e1.setPlannedEndOfWork(new Date().getTime());
-        e1.setRealEndOfWork(new Date().getTime());
-        e1.setRealStartOfWork(new Date().getTime());
+        //start -> now
+        e1.setPlannedStartOfWork(cal.getTimeInMillis());
+        e1.setRealEndOfWork(cal.getTimeInMillis());
+        //end -> 6h
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 6);
+        e1.setPlannedEndOfWork(cal.getTimeInMillis());
+        e1.setRealStartOfWork(cal.getTimeInMillis());
         e1.setServicetype("Zivi");
         e1.setStandby(false);
         e1.setStation("Bruck");
@@ -169,10 +175,14 @@ public class TestDataSource
         RosterEntry e2 = new RosterEntry();
         e2.setRosterId(1);
         e2.setCompetence("Fahrer");
-        e2.setPlannedStartOfWork(new Date().getTime());
-        e2.setPlannedEndOfWork(new Date().getTime());
-        e2.setRealEndOfWork(new Date().getTime());
-        e2.setRealStartOfWork(new Date().getTime());
+        //start -> tomorrow
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) +1);
+        e2.setPlannedStartOfWork(cal.getTimeInMillis());
+        e2.setRealEndOfWork(cal.getTimeInMillis());
+        //end -> 6h
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 6);
+        e2.setPlannedEndOfWork(cal.getTimeInMillis());
+        e2.setRealStartOfWork(cal.getTimeInMillis());
         e2.setRosterNotes("mix");
         e2.setServicetype("Zivi");
         e2.setStandby(true);
@@ -182,10 +192,14 @@ public class TestDataSource
         RosterEntry e3 = new RosterEntry();
         e3.setRosterId(2);
         e3.setCompetence("Fahrer");
-        e3.setPlannedStartOfWork(new Date().getTime());
-        e3.setPlannedEndOfWork(new Date().getTime());
-        e3.setRealEndOfWork(new Date().getTime());
-        e3.setRealStartOfWork(new Date().getTime());
+        //start -> one day after tomorrow
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+        e3.setPlannedStartOfWork(cal.getTimeInMillis());
+        e3.setRealEndOfWork(cal.getTimeInMillis());
+        //end -> 6h
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+6);
+        e3.setPlannedEndOfWork(cal.getTimeInMillis());
+        e3.setRealStartOfWork(cal.getTimeInMillis());
         e3.setRosterNotes("mix");
         e3.setServicetype("Zivi");
         e3.setStandby(false);
