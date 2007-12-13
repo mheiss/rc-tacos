@@ -1,5 +1,6 @@
 package at.rc.tacos.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import at.rc.tacos.common.AbstractMessage;
 
@@ -112,7 +113,8 @@ public class RosterEntry extends AbstractMessage
 	@Override
 	public String toString()
 	{
-	    return rosterId+","+staffMember+","+station;
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	    return rosterId+","+staffMember+","+station+","+sdf.format(plannedStartOfWork)+"-"+sdf.format(plannedEndOfWork);
 	}
 	
 	/**
