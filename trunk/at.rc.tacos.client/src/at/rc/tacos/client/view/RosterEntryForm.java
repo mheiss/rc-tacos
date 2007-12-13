@@ -35,6 +35,7 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
 /**
  * GUI (form) to manage a roster entry
  * @author b.thek
+ * WindowBuilderFree-CJ0SH-SN1HW-EXUSS
  */
 public class RosterEntryForm 
 {
