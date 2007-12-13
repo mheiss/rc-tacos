@@ -174,7 +174,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         
 		final Composite composite = form.getBody();
 		
-		//group filter
+		//create composite and group named filter
 		final Composite filterComposite = new Composite(composite, SWT.NONE);
 		final GridLayout gridLayout_2 = new GridLayout();
 		filterComposite.setLayout(gridLayout_2);
@@ -191,7 +191,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		filterGroup.setLayout(gridLayout_3);
 	
 		
-		//Calendar field
+		//create calendar field
 		dateTime = new DateTime(filterGroup, SWT.CALENDAR);
 		dateTime.setToolTipText("Zeigt das Datum des Dienstbeginns an");
 		dateTime.setBounds(10, 43,180, 171);
@@ -215,14 +215,14 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		//table viewer
 //		shell, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
 //        | SWT.H_SCROLL
-		this.viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);//full selection: select a row
+		this.viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);//full selection: select a whole row
 		this.viewer.setContentProvider(new PersonalContentProvider());
 		this.viewer.setLabelProvider(new PersonalLabelProvider());
 		this.viewer.setCellEditors(getCellRenderer(viewer));
 		this.viewer.setInput(ModelFactory.getInstance().getRosterManager());
         hookContextMenu();
         
-		//table
+		//create the table for the roster entries 
 		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -276,7 +276,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnFzgBezirkImDienst.setWidth(36);
 		newColumnTableColumnFzgBezirkImDienst.setText("Fzg");
 	
-		//create the tab items for the table
+		//create the tab items for the personal overview
 		final TabItem bezirkTabItem = new TabItem(tabFolder, SWT.NONE);
 		bezirkTabItem.setText("Bezirk");
 		bezirkTabItem.setControl(table);
@@ -305,31 +305,15 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		breitenauTabItem.setText("Breitenau");
 		breitenauTabItem.setControl(table);
 	
-		final TabItem tagesinformationTabItem_1 = new TabItem(tabFolder, SWT.NONE);
-		tagesinformationTabItem_1.setText("Info");	
-		
-		
-		
-//		for (int i = 0; i < 12; i++) {
-//		      TableItem item = new TableItem(table, SWT.NONE);
-//		      item.setText("Item " + i);
-//		    }
-//		
-//		
-//		table.addListener(SWT.Selection, new Listener() {
-//		      public void handleEvent(Event event) {
-//		        String string = event.detail == SWT.CHECK ? "Checked"
-//		            : "Selected";
-//		        System.out.println(event.item + " " + string);
-//		      }
-//		    });
+		//probably replaced by a text field beside the calendar
+//		final TabItem tagesinformationTabItem_1 = new TabItem(tabFolder, SWT.NONE);
+//		tagesinformationTabItem_1.setText("Info");	
 		
 		
 		
 		/**
 		 * context menu
 		 */
-		//context menu
 		final Menu contextMenu = new Menu(table);
 		table.setMenu(contextMenu);
 	
@@ -356,7 +340,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		{
 			public void widgetSelected(final SelectionEvent e) 
 			{
-				
+				int index = table.getSelectionIndex();
+				TableItem ti = table.getItem(index);
+				RosterEntry re = (RosterEntry)ti.getData();
+				UpdateRosterEntryAction action = new UpdateRosterEntryAction(re);
+				action.run();
 			}
 		});
 		menuItemCheckOut.setText("Abmelden");
@@ -374,6 +362,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		{
 			public void widgetSelected(final SelectionEvent e) 
 			{
+				int index = table.getSelectionIndex();
+				TableItem ti = table.getItem(index);
+				RosterEntry re = (RosterEntry)ti.getData();
+				RosterEntryForm window = new RosterEntryForm(re);
+				window.open();
 				
 			}
 		});
