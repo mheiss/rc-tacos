@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -27,6 +29,10 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  */
 public class VehicleForm  
 {
+	private Label aktuelleOrtsstelleLabel;
+	private Combo combo;
+	private Button einsatzbereitButton;
+	private Button button;
 	private Text rosterTimeDriver;
 	private Text rosterTimeParamedicI;
 	private Text rosterTimeParamedicII;
@@ -44,19 +50,19 @@ public class VehicleForm
 	private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
 	private Listener exitListener;
 	
-//	/**
-//	 * Launch the application
-//	 * @param args
-//	 */
-//	public static void main(String[] args) 
-//	{
-//		try {
-//				VehicleForm window = new VehicleForm();
-//				window.open();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//	}
+	/**
+	 * Launch the application
+	 * @param args
+	 */
+	public static void main(String[] args) 
+	{
+		try {
+				VehicleForm window = new VehicleForm();
+				window.open();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
 	
 	/**
 	 * used to edit an vehicleDetail entry
@@ -118,13 +124,17 @@ public class VehicleForm
 		
 
 		//listener
-		exitListener = new Listener() {
-			public void handleEvent(Event e) {
-				MessageBox dialog = new MessageBox(shell, SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION);
+		exitListener = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 				dialog.setText("Abbrechen");
 				dialog.setMessage("Wollen Sie wirklich abbrechen?");
-				if (e.type == SWT.Close) e.doit = false;
-				if (dialog.open() != SWT.OK) return;
+				if (e.type == SWT.Close) 
+					e.doit = false;
+				if (dialog.open() != SWT.YES) 
+					return;
 				shell.dispose();
 			}
 		};
@@ -260,9 +270,29 @@ public class VehicleForm
 
 		setMobilePhoneCombo.setBounds(100,42,100, 24);
 		setMobilePhoneCombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+
+		button = new Button(groupCarDetails, SWT.CHECK);
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+			}
+		});
+		button.setText("Auﬂer Dienst");
+		button.setBounds(235, 20, 85, 16);
+
+		einsatzbereitButton = new Button(groupCarDetails, SWT.CHECK);
+		einsatzbereitButton.setText("Einsatzbereit");
+		einsatzbereitButton.setBounds(235, 45, 85, 16);
+
+		combo = new Combo(groupCarDetails, SWT.NONE);
+		combo.setToolTipText("Ist das Fahrzeug einer anderen Dienststelle zugeordnet, kann dies hier ausgew‰hlt werden.");
+		combo.setBounds(333, 44, 126, 21);
+
+		aktuelleOrtsstelleLabel = new Label(groupCarDetails, SWT.NONE);
+		aktuelleOrtsstelleLabel.setText("Aktuelle Ortsstelle:");
+		aktuelleOrtsstelleLabel.setBounds(333, 20, 126, 13);
 				
 		
-		groupCarDetails.setTabList(new Control[] {setVehicleCombo, setMobilePhoneCombo});
+		groupCarDetails.setTabList(new Control[] {setVehicleCombo, setMobilePhoneCombo, button, einsatzbereitButton, combo, aktuelleOrtsstelleLabel});
 
 		
 		//Buttons
