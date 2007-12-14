@@ -4,9 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>tacos - page not found</title>
 </head>
 <body>
-<h1>Page not found 1</h1>
+<table align="center" width="350" height="350" style="border-width:1px; border-style:solid; border-color:#8F0022; margin-top:10%;">
+<tr><td><img src"../image/pageNotFound.jpg" alt="page not found" /></td></tr>
+<tr><td><b>The requested site was not found on the server! Please try it again or contact the Administrator.</b></td></tr>
+</table>
 </body>
 </html>
