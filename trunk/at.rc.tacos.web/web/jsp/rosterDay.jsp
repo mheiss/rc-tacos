@@ -40,7 +40,12 @@
 	<thead>
 		<tr>
 			<td>
-			
+			<table border='0' cellpadding='0' cellspacing='0' width="100%" id="Tablogo">
+			 <tr>
+			     <td align="left" ><img src="../image/tacos_logo_left.jpg" name="logoLeft" id="logoLeft" /></td>
+			     <td align="right" ><img src="../image/tacos_logo_right.jpg" name="logoRight" id="logoRight" /></td>
+			 </tr>
+			</table>
 			</td>
 		</tr>
 	</thead>
@@ -93,12 +98,11 @@
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">RK-Mitglied:&nbsp;</td>
-											<td><!-- Mitarbeiterliste --> <select name="employee"
-												id="rosterViewDayHeadSelbox">
-												<% for(StaffMember member:list) { %>
-												<option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
-												<% } %>
-											</select></td>
+											<td><!-- Mitarbeiterliste --> 
+											
+											
+											
+											</td>
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">Ortsstelle:&nbsp;</td>
