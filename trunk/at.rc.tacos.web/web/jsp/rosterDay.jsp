@@ -6,6 +6,7 @@
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<StaffMember> list = (List)params.get("employeeList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
+	
 %>
 
 
@@ -99,7 +100,12 @@
 										<tr>
 											<td id="rosterViewDayHeadline">RK-Mitglied:&nbsp;</td>
 											<td><!-- Mitarbeiterliste --> 
-											
+											<select name="employee"
+                                                id="rosterViewDayHeadSelbox">
+                                                <% for(StaffMember member:list) { %>
+                                                <option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
+                                                <% } %>
+                                            </select>
 											
 											
 											</td>
@@ -155,6 +161,48 @@
 												id="timeTo" /></td>
 											<td id="rosterViewDayName">&nbsp;Ambulanz (6-14)</td>
 										</tr>
+										<tr>
+										  <td id="rosterViewDayHeadline"><input type="checkbox"
+                                                id="timeTo" /></td>
+                                            <td id="rosterViewDayName">&nbsp;optionaler Dienst
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td id="rosterViewDayName">
+                                            <!-- VON -->&nbsp;von:&nbsp;
+                                            <!-- hour -->
+                                            <select name="optBeginHour" id="rosterViewDayHeadSelboxTime">
+                                                <option value="leer" selected >Std.</option>
+                                                <% int hb=0; while(hb<24) { hb+=1; %>
+                                                <option value="<%=hb%>"><%=hb%></option>
+                                                <% } %>
+                                            </select>
+                                            <!-- minute -->
+                                            <select name="optBeginMinute" id="rosterViewDayHeadSelboxTime">
+                                                <option value="leer" selected >Min.</option>
+                                                <% int mb=0; while(mb<55) { mb+=5; %>
+                                                <option value="<%=mb%>"><%=mb%></option>
+                                                <% } %>
+                                            </select>
+                                            
+                                            <!-- BIS -->&nbsp;bis:&nbsp;
+                                            <!-- hour -->
+                                            <select name="optEndHour" id="rosterViewDayHeadSelboxTime">
+                                                <option value="leer" selected >Std.</option>
+                                                <% int he=0; while(he<24) { he+=1; %>
+                                                <option value="<%=he%>"><%=he%></option>
+                                                <% } %>
+                                            </select>
+                                            <!-- minute -->
+                                            <select name="optEndMinute" id="rosterViewDayHeadSelboxTime">
+                                                <option value="leer" selected >Min.</option>
+                                                <% int me=0; while(me<55) { me+=5; %>
+                                                <option value="<%=me%>"><%=me%></option>
+                                                <% } %>
+                                            </select>
+                                            </td>
+                                        </tr>
 										<tr>
 											<td colspan="2" align="right" style="padding: 10px;"><input
 												type="image" src="../image/button_ok.jpg" id="senden"
