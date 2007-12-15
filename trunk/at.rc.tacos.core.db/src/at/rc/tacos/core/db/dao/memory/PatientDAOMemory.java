@@ -48,7 +48,7 @@ public class PatientDAOMemory implements PatientDAO
     public int addPatient(Patient patient)
     {
         patientList.add(patient);
-        return patientList.indexOf(patient);
+        return patientList.size();
     }
     
     @Override

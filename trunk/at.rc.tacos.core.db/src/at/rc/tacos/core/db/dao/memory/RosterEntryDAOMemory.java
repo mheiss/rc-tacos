@@ -2,6 +2,7 @@ package at.rc.tacos.core.db.dao.memory;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import at.rc.tacos.core.db.dao.RosterDAO;
 import at.rc.tacos.model.RosterEntry;
@@ -49,7 +50,7 @@ public class RosterEntryDAOMemory implements RosterDAO
     public int addRosterEntry(RosterEntry entry)
     {
         rosterList.add(entry);
-        return rosterList.indexOf(entry);
+        return rosterList.size();
     }
     
     @Override
@@ -99,19 +100,36 @@ public class RosterEntryDAOMemory implements RosterDAO
     public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime)
     {
         List<RosterEntry> resultList = new ArrayList<RosterEntry>();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        
-        String filterStart = sdf.format(startTime);
-        String filterEnd = sdf.format(endTime);
 
+        String filterStart = formatDate(startTime);
+                
+        //loop and compare
         for(RosterEntry entry:rosterList)
         {
-            String entryStart = sdf.format(entry.getPlannedStartOfWork());
-            String entryEnd = sdf.format(entry.getPlannedEndOfWork());
-
-            if(filterStart.equalsIgnoreCase(entryStart) && filterEnd.equalsIgnoreCase(entryEnd))
+            String entryStart = formatDate(entry.getPlannedStartOfWork());
+            String entryEnd = formatDate(entry.getPlannedEndOfWork());
+            //filter the entries at the date
+            if(entryStart.equalsIgnoreCase(filterStart))
                 resultList.add(entry);
+            if(!entryStart.equalsIgnoreCase(entryEnd))
+            {
+                if(filterStart.equalsIgnoreCase(entryEnd))
+                    resultList.add(entry);
+            }
         }
         return resultList;
+    }
+    
+    /** 
+     * Helper method to format the date and return a string 
+     * @param date the date to format
+     * @return the formatted string
+     */
+    private String formatDate(long date)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(date);
+        return sdf.format(cal.getTime());
     }
 }

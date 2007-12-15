@@ -45,7 +45,7 @@ public class ItemDAOMemory implements ItemDAO
     public int addItem(Item item)
     {
         itemList.add(item);
-        return itemList.indexOf(item);
+        return itemList.size();
     }
     
     @Override

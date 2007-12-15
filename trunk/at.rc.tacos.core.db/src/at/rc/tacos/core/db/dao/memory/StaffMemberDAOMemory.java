@@ -48,7 +48,7 @@ public class StaffMemberDAOMemory implements EmployeeDAO
     public int addEmployee(StaffMember member)
     {
         staffList.add(member);
-        return staffList.indexOf(member);
+        return staffList.size();
     }
     
     @Override
