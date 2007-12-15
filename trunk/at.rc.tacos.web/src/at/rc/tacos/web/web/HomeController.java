@@ -13,6 +13,5 @@ public class HomeController implements Controller {
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		return params;
-
 	}
 }
