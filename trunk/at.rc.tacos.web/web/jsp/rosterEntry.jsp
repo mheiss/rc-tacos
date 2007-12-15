@@ -6,9 +6,7 @@
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<StaffMember> list = (List)params.get("employeeList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
-	
 %>
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
@@ -68,12 +66,10 @@
 				<tr>
 
 					<!-- #### LEFT CONTAINER NAVIGATION-->
-					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --><%@ include
-						file="navigation.jsp"%></td>
+					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  -->
+					<%@ include file="navigation.jsp"%></td>
 					<!-- #### CONTENT -->
-
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
-
 					<table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
@@ -104,8 +100,7 @@
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">Ortsstelle:&nbsp;</td>
-											<td><select name="station"
-												id="rosterViewDayHeadSelbox">
+											<td><select name="station" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.STATION_BREITENAU%></option>
 												<option><%=Constants.STATION_BRUCK%></option>
 												<option><%=Constants.STATION_KAPFENBERG%></option>
@@ -113,7 +108,6 @@
 												<option><%=Constants.STATION_THOERL%></option>
 												<option><%=Constants.STATION_TURNAU%></option>
 											</select></td>
-
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">RK-Dienst:&nbsp;</td>
@@ -168,20 +162,28 @@
 													}
 												%>
 											</select> 
+											<!-- day --> <select name="startDay" id="rosterViewDayHeadSelboxTime">
+												<option value="leer" selected>Tag</option>
+												<%
+													int tb = 00;
+													while (tb < 31) {
+														tb += 1;
+												%>
+												<option value="<%=tb%>"><%=tb%></option>
+												<%
+													}
+												%>
+											</select> 
 											 <!-- month --> <select name="startMonth" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Monat</option>
-												<option>Januar</option>
-												<option>Februar</option>
-												<option>M&auml;rz</option>
-												<option>April</option>
-												<option>Mai</option>
-												<option>Juni</option>
-												<option>Juli</option>
-												<option>August</option>
-												<option>September</option>
-												<option>Oktober</option>
-												<option>November</option>
-												<option>Dezember</option>
+												<%
+													int mob = 0;
+													while (mob < 12) {
+														mob += 1;
+												%>
+												<option value="<%=mob%>"><%=mob%></option>
+												<%
+													}
+												%>
 											</select> 
 											 <!-- year --> <select name="startYear" id="rosterViewDayHeadSelboxTime">
 												<option value="leer" selected>Jahr</option>
@@ -221,20 +223,28 @@
 													}
 												%>
 											</select>
+											<!-- day --> <select name="endDay" id="rosterViewDayHeadSelboxTime">
+												<option value="leer" selected>Tag</option>
+												<%
+													int te = 00;
+													while (te < 31) {
+														te += 1;
+												%>
+												<option value="<%=te%>"><%=te%></option>
+												<%
+													}
+												%>
+											</select> 
 											 <!-- month --> <select name="endMonth" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Monat</option>
-												<option>Januar</option>
-												<option>Februar</option>
-												<option>M&auml;rz</option>
-												<option>April</option>
-												<option>Mai</option>
-												<option>Juni</option>
-												<option>Juli</option>
-												<option>August</option>
-												<option>September</option>
-												<option>Oktober</option>
-												<option>November</option>
-												<option>Dezember</option>
+												<%
+													int moe = 0;
+													while (moe < 12) {
+														moe += 1;
+												%>
+												<option value="<%=moe%>"><%=moe%></option>
+												<%
+													}
+												%>
 											</select>
 											<!-- year --> <select name="endYear" id="rosterViewDayHeadSelboxTime">
 												<option value="leer" selected>Jahr</option>
@@ -243,7 +253,7 @@
 													while (ye < 2012) {
 														ye += 1;
 												%>
-												<option value="<%=yb%>"><%=yb%></option>
+												<option value="<%=ye%>"><%=ye%></option>
 												<%
 													}
 												%>
