@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import at.rc.tacos.common.Constants;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.ITransportPriority;
 import at.rc.tacos.common.ITransportStatus;
@@ -159,51 +160,51 @@ public class TestDataSource
         Calendar cal = Calendar.getInstance();
         RosterEntry e1 = new RosterEntry();
         e1.setRosterId(0);
-        e1.setCompetence("Fahrer");
+        e1.setCompetence(Constants.COMPETENCE_DRIVER);
         //start -> now
         e1.setPlannedStartOfWork(cal.getTimeInMillis());
-        e1.setRealEndOfWork(cal.getTimeInMillis());
-        //end -> 6h
-        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 6);
-        e1.setPlannedEndOfWork(cal.getTimeInMillis());
         e1.setRealStartOfWork(cal.getTimeInMillis());
-        e1.setServicetype("Zivi");
+        //end -> 6h
+        cal.add(Calendar.HOUR_OF_DAY,6);
+        e1.setPlannedEndOfWork(cal.getTimeInMillis());
+        e1.setRealEndOfWork(cal.getTimeInMillis());
+        e1.setServicetype(Constants.SERVICE_ZIVI);
         e1.setStandby(false);
-        e1.setStation("Bruck");
+        e1.setStation(Constants.STATION_BRUCK);
         e1.setStaffMember(staffList.get(0));
         //second entry
         RosterEntry e2 = new RosterEntry();
         e2.setRosterId(1);
-        e2.setCompetence("Fahrer");
+        e2.setCompetence(Constants.COMPETENCE_DISPON);
         //start -> tomorrow
-        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) +1);
+        cal.add(Calendar.DAY_OF_MONTH, +1);
         e2.setPlannedStartOfWork(cal.getTimeInMillis());
-        e2.setRealEndOfWork(cal.getTimeInMillis());
-        //end -> 6h
-        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 6);
-        e2.setPlannedEndOfWork(cal.getTimeInMillis());
         e2.setRealStartOfWork(cal.getTimeInMillis());
+        //end -> 6h
+        cal.add(Calendar.HOUR_OF_DAY,6);
+        e2.setPlannedEndOfWork(cal.getTimeInMillis());
+        e2.setRealEndOfWork(cal.getTimeInMillis());
         e2.setRosterNotes("mix");
-        e2.setServicetype("Zivi");
+        e2.setServicetype(Constants.SERVICE_VOLUNT);
         e2.setStandby(true);
-        e2.setStation("Bruck");
+        e2.setStation(Constants.STATION_KAPFENBERG);
         e2.setStaffMember(staffList.get(1));
         //third entry
         RosterEntry e3 = new RosterEntry();
         e3.setRosterId(2);
-        e3.setCompetence("Fahrer");
+        e3.setCompetence(Constants.COMPETENCE_DOCTOR);
         //start -> one day after tomorrow
-        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+        cal.add(Calendar.DAY_OF_MONTH, +1);
         e3.setPlannedStartOfWork(cal.getTimeInMillis());
         e3.setRealEndOfWork(cal.getTimeInMillis());
         //end -> 6h
-        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+6);
+        cal.add(Calendar.HOUR_OF_DAY,6);
         e3.setPlannedEndOfWork(cal.getTimeInMillis());
         e3.setRealStartOfWork(cal.getTimeInMillis());
         e3.setRosterNotes("mix");
-        e3.setServicetype("Zivi");
+        e3.setServicetype(Constants.SERVICE_MAIN);
         e3.setStandby(false);
-        e3.setStation("Bruck");
+        e3.setStation(Constants.STATION_MAREIN);
         e3.setStaffMember(staffList.get(2));
         //add to list
         rosterList.add(e1);

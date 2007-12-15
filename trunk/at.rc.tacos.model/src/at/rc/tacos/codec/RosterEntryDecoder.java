@@ -66,8 +66,6 @@ public class RosterEntryDecoder implements MessageDecoder
                 //get the type of the element and set the corresponding value
                 if("standby".equalsIgnoreCase(startName))
                     entry.setStandby(Boolean.valueOf(reader.getElementText()));
-                if("splitEntry".equalsIgnoreCase(startName))
-                    entry.setSplitEntry(Boolean.valueOf(reader.getElementText()));
             }
             //check for the end element, and return the object
             if(event.isEndElement())
