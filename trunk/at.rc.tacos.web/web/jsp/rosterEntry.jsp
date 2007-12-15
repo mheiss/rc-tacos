@@ -175,6 +175,7 @@
 												%>
 											</select> 
 											 <!-- month --> <select name="startMonth" id="rosterViewDayHeadSelboxTime">
+												<option value="leer" selected>Monat</option>
 												<%
 													int mob = 0;
 													while (mob < 12) {
@@ -236,6 +237,7 @@
 												%>
 											</select> 
 											 <!-- month --> <select name="endMonth" id="rosterViewDayHeadSelboxTime">
+												<option value="leer" selected>Monat</option>
 												<%
 													int moe = 0;
 													while (moe < 12) {
