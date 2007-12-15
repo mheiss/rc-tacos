@@ -134,7 +134,7 @@ public class WebClient
         //store the username
         sessionUserId = username;
         //send the request
-        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.LOGIN,null,login);
+        List<AbstractMessage> result = sendRequest(sessionUserId,Login.ID,IModelActions.LOGIN,null,login);
         return result.get(0);
     }
     
@@ -147,7 +147,7 @@ public class WebClient
         //create a login object
         Logout logout = new Logout(sessionUserId);
         //send the request
-        List<AbstractMessage> result = sendRequest(sessionUserId,contentType,IModelActions.LOGOUT,null,logout);
+        List<AbstractMessage> result = sendRequest(sessionUserId,Logout.ID,IModelActions.LOGOUT,null,logout);
         return result.get(0);
     }
     
@@ -237,7 +237,7 @@ public class WebClient
      */
     public List<AbstractMessage> sendListingRequest(String contentType,QueryFilter queryFilter)
     {
-        return sendRequest(sessionUserId,contentType,IModelActions.UPDATE,queryFilter,null);
+        return sendRequest(sessionUserId,contentType,IModelActions.LIST,queryFilter,null);
     }
     
     /**

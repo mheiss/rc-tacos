@@ -286,7 +286,7 @@ public class NetSource
         if(client == null)
         {
             //create a new net event
-            NetEvent ne = new NetEvent(client,"Faild to send the message");
+            NetEvent ne = new NetEvent(client,"Failed to send the message");
             listener.dataTransferFailed(ne);
         }
         else

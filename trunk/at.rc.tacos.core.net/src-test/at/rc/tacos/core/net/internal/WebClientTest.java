@@ -7,11 +7,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.model.Item;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.NotifierDetail;
 import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.SystemMessage;
@@ -40,7 +42,6 @@ public class WebClientTest
     @After
     public void tearDown()
     {
-        client.sendLogoutRequest();
         client.quit();
     }
     
@@ -94,7 +95,7 @@ public class WebClientTest
         //send the request for the listing
         resultList = client.sendListingRequest(StaffMember.ID, null);
         Assert.assertEquals(StaffMember.ID, client.getContentType());
-        Assert.assertEquals(5, resultList.size());
+        Assert.assertEquals(3, resultList.size());
     }
     
     @Test
@@ -149,22 +150,33 @@ public class WebClientTest
     }
     
     @Test
-    public void testAddItem()
+    public void testGetStaffMemberById()
     {
         client.sendLoginRequest("testUser","P@ssw0rd");
-        Item item = new Item("JUNIT-Test");
         //send the request for the listing
-        result = client.sendAddRequest(Item.ID, item);
-        Assert.assertEquals(Item.ID, client.getContentType());
+        QueryFilter filter = new QueryFilter(IFilterTypes.ID_FILTER,"1");
+        resultList = client.sendListingRequest(StaffMember.ID, filter);
+        Assert.assertEquals(StaffMember.ID, client.getContentType());
+        Assert.assertEquals(1, resultList.size()); 
     }
     
-    @Test
-    public void testRemoveItem()
-    {
-        client.sendLoginRequest("testUser","P@ssw0rd");
-        Item item = new Item("JUNIT-Test");
-        //send the request for the listing
-        result = client.sendRemoveRequest(Item.ID, item);
-        Assert.assertEquals(Item.ID, client.getContentType());
-    }
+//    @Test
+//    public void testAddItem()
+//    {
+//        client.sendLoginRequest("testUser","P@ssw0rd");
+//        Item item = new Item("JUNIT-Test");
+//        //send the request for the listing
+//        result = client.sendAddRequest(Item.ID, item);
+//        Assert.assertEquals(Item.ID, client.getContentType());
+//    }
+//    
+//    @Test
+//    public void testRemoveItem()
+//    {
+//        client.sendLoginRequest("testUser","P@ssw0rd");
+//        Item item = new Item("JUNIT-Test");
+//        //send the request for the listing
+//        result = client.sendRemoveRequest(Item.ID, item);
+//        Assert.assertEquals(Item.ID, client.getContentType());
+//    }
 }
