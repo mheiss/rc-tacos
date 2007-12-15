@@ -44,7 +44,7 @@ public class StaffMemberListener extends ServerListenerAdapter
         {
             //get the query filter
             final String filter = queryFilter.getFilterValue(IFilterTypes.ID_FILTER);
-            int id = Integer.valueOf(filter);
+            int id = Integer.parseInt(filter);
             list.add(staffDao.getEmployeeById(id));
         }
         return list;

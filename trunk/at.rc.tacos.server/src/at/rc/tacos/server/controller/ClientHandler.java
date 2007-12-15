@@ -130,8 +130,9 @@ public class ClientHandler implements INetListener
             }
             catch(Exception e)
             {
-                SystemMessage system = new SystemMessage("Error while listing of "+contentType+" entries: \n"+e.getMessage());
-                server.sendMessage(userId, contentType, queryString, system);  
+                SystemMessage system = new SystemMessage("Error while listing of "+contentType+" entries: "+e.getMessage());
+                e.printStackTrace();
+                server.sendMessage(userId, SystemMessage.ID, IModelActions.SYSTEM, system);  
             }
         }
         else
