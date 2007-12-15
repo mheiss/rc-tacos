@@ -48,7 +48,7 @@ public class NotifierDAOMemory implements CallerDAO
     public int addCaller(NotifierDetail notifierDetail)
     {
         notifierList.add(notifierDetail);
-        return notifierList.indexOf(notifierDetail);
+        return notifierList.size();
     }
     
     @Override

@@ -48,7 +48,7 @@ public class MobilePhoneDAOMemory implements MobilePhoneDAO
     public int addMobilePhone(MobilePhoneDetail phone)
     {
         phoneList.add(phone);
-        return phoneList.indexOf(phone);
+        return phoneList.size();
     }
     
     @Override

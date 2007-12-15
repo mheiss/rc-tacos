@@ -48,7 +48,7 @@ public class TransportDAOMemory implements TransportDAO
     public int addTransport(Transport transport)
     {
         transportList.add(transport);
-        return transportList.indexOf(transport);
+        return transportList.size();
     }
     
     @Override

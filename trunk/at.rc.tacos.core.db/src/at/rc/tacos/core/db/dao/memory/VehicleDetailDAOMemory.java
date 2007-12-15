@@ -48,7 +48,7 @@ public class VehicleDetailDAOMemory implements VehicleDAO
     public int addVehicle(VehicleDetail vehicle)
     {
         vehicleList.add(vehicle);
-        return vehicleList.indexOf(vehicle);
+        return vehicleList.size();
     }
     
     @Override
