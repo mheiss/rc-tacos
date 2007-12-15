@@ -28,7 +28,7 @@ public class LoginDialog
 
     public void createContents() 
     {
-        final Shell shell = new Shell(display, SWT.ON_TOP);
+        final Shell shell = new Shell(display, SWT.ON_TOP | SWT.APPLICATION_MODAL);
         final FillLayout fillLayout = new FillLayout();
         fillLayout.marginHeight = 1;
         shell.setLayout(fillLayout);

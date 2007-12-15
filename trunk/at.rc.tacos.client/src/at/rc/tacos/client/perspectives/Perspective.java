@@ -1,15 +1,17 @@
-package at.rc.tacos.client;
+package at.rc.tacos.client.perspectives;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import at.rc.tacos.client.view.*;
 
 /**
- * This class defines the initial layout for the views.
+ * This is the standard perspective for the employees to work
  * @author Michael
  */
 public class Perspective implements IPerspectiveFactory 
 {
+    public static final String ID = "at.rc.tacos.client.perspectives.client";
+    
     /**
      * Set up the layout of the workbench
      * @param layout the page layout to use
