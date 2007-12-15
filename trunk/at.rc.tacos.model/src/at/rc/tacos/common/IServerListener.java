@@ -38,7 +38,7 @@ public interface IServerListener
      * @return the response from the server
      * @throws Exception when a error occured during the listing
      */
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws Exception;
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter);
     
     /**
      *  Request from the client to login

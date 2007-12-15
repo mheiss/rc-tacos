@@ -24,7 +24,6 @@ public class RosterEntry extends AbstractMessage
 	private String servicetype;
 	private String rosterNotes;
 	private boolean standby;	
-	private boolean splitEntry;
 	
 	/**
 	 * Default class construtor
@@ -148,6 +147,22 @@ public class RosterEntry extends AbstractMessage
     {
         return 31  + (int) (rosterId ^ (rosterId >>> 32));
     } 
+    
+    /**
+     * Returns wheter or not this entry has notes
+     * @return true if there are notes
+     */
+    public boolean hasNotes()
+    {
+        if (rosterNotes == null)
+            return false;
+        if (rosterNotes.trim().isEmpty())
+        {
+            return false;
+        }
+        //we have notes :)
+        return true;
+    }
 
 	//GETTERS AND SETTERS
 	/**
@@ -428,16 +443,16 @@ public class RosterEntry extends AbstractMessage
      */
     public boolean isSplitEntry()
     {
-        return splitEntry;
+        //start and end
+        Calendar start = Calendar.getInstance();
+        Calendar end = Calendar.getInstance();
+        //values
+        start.setTimeInMillis(plannedStartOfWork);
+        end.setTimeInMillis(plannedEndOfWork);
+        //compare the day
+        if(start.get(Calendar.DAY_OF_MONTH) != end.get(Calendar.DAY_OF_MONTH))
+            return true;
+        return false;
     }
-
-    /**
-     * Sets wheter this entry is split up over one or more days.
-     * @param splitEntry the splitEntry to set
-     */
-    public void setSplitEntry(boolean splitEntry)
-    {
-        this.splitEntry = splitEntry;
-    }	
 }
 

@@ -71,10 +71,6 @@ public class RosterEntryEncoder  implements MessageEncoder
         writer.writeStartElement("standby");
         writer.writeCharacters(Boolean.toString(entry.getStandby()));
         writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("splitEntry");
-        writer.writeCharacters(Boolean.toString(entry.isSplitEntry()));
-        writer.writeEndElement();
 
         //end
         writer.writeEndElement();
