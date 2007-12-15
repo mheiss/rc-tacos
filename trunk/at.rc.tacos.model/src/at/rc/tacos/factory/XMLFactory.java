@@ -143,8 +143,6 @@ public class XMLFactory
 
             //end of the header
             xmlw.writeEndElement();
-            
-            System.out.println(messageList.size());
 
             //check if we have a list of objects to encode
             if(messageList != null && messageList.size() > 0)
