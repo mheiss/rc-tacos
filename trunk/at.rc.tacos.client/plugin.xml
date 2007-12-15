@@ -15,8 +15,13 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="ClientPerspective"
-            class="at.rc.tacos.client.Perspective"
-            id="at.rc.tacos.client.perspective">
+            class="at.rc.tacos.client.perspectives.Perspective"
+            id="at.rc.tacos.client.perspectives.client">
+      </perspective>
+      <perspective
+            class="at.rc.tacos.client.perspectives.AdminPerspective"
+            id="at.rc.tacos.client.perspectives.admin"
+            name="AdministratorPerspective">
       </perspective>
    </extension>
    <extension

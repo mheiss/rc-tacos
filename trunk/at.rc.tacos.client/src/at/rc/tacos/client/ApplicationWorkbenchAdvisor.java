@@ -12,7 +12,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
  */
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor 
 {
-	private static final String PERSPECTIVE_ID = "at.rc.tacos.client.perspective";
+	private static final String PERSPECTIVE_ID = "at.rc.tacos.client.perspectives.client";
 
 	/**
      * Creates the application workbench advisor.
