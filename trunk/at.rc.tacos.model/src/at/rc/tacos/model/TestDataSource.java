@@ -94,8 +94,11 @@ public class TestDataSource
     {
         staffList = new ArrayList<StaffMember>();
         StaffMember s1 = new StaffMember("Staff1","Staff1","nick.staff1");
+        s1.setPersonId(0);
         StaffMember s2 = new StaffMember("Staff2","Staff2","nick.staff2");
+        s2.setPersonId(1);
         StaffMember s3 = new StaffMember("Staff3","Staff3","nick.staff3");
+        s3.setPersonId(2);
         staffList.add(s1);
         staffList.add(s2);
         staffList.add(s3);
