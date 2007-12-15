@@ -27,7 +27,7 @@ public class LogoutEncoder implements MessageEncoder
         writer.writeEndElement();
         
         //write the elements and attributes
-        if(!logout.getErrorMessage().isEmpty())
+        if(logout.getErrorMessage() != null)
         {
             writer.writeStartElement("errorMessage");
             writer.writeCharacters(logout.getErrorMessage());
