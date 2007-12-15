@@ -41,7 +41,7 @@ public class UserSession
 		this.username = username;
 		this.connection = connection;
 	}
-	
+
 	/**
 	 * Returns the username.
 	 * @return the username.
@@ -50,7 +50,7 @@ public class UserSession
 	{
 		return username;
 	}
-	
+
 	/**
 	 * Returns the connection to the server
 	 * @return the connection

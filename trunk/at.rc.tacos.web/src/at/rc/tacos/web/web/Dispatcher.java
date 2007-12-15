@@ -56,11 +56,11 @@ public class Dispatcher extends HttpServlet
 		// Get the relative Path from request URI.	
 		final String relativePath = request.getRequestURI().replaceAll(request.getContextPath(), "").replaceFirst("/Dispatcher/", "").replaceFirst("/Dispatcher", "");
 		System.out.println("relativePath: " + relativePath);
-		
+
 		ResourceBundle urls = ResourceBundle.getBundle(URLS_BUNDLE_PATH);
-		
+
 		final Controller controller = ControllerFactory.getController(relativePath);
-				
+
 		// If no URL is specified send redirect to home.do.
 		if (relativePath.equals("") || relativePath.equals("/"))
 			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" +  urls.getString("url.home"));
@@ -93,7 +93,7 @@ public class Dispatcher extends HttpServlet
 				response.sendRedirect(getServletContext().getContextPath() + "/Dispatcher/" + urls.getString("url.error"));
 			}
 		}
-		
+
 		//Do not forward if response is not committed
 		if (!response.isCommitted())			
 		{
