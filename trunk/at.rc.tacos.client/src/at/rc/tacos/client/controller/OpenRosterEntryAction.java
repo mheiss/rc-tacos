@@ -43,7 +43,6 @@ public class OpenRosterEntryAction extends Action
     @Override
     public void run()
     {
-//        MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Dummy", "This is a dummy implementation");
         RosterEntryForm window = new RosterEntryForm();
 		window.open();
     }

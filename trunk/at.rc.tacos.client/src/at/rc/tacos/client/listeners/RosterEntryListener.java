@@ -30,9 +30,7 @@ public class RosterEntryListener extends ClientListenerAdapter
     {
         RosterEntryManager manager = ModelFactory.getInstance().getRosterManager();
         manager.removeAllEntries();
-        
-        System.out.println("Received "+listMessage.size() + " entries");
-        
+       
         for(AbstractMessage msg:listMessage)
         {
             RosterEntry entry = (RosterEntry)msg;

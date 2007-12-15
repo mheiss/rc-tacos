@@ -1,4 +1,4 @@
-package at.rc.tacos.client.controller;
+package at.rc.tacos.client.modelManager;
 
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;

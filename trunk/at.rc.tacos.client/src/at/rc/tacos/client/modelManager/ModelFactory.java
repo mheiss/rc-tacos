@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Item;
 import at.rc.tacos.model.RosterEntry;
