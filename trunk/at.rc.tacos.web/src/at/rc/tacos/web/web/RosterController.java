@@ -40,17 +40,17 @@ public class RosterController implements Controller
 			resultList = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,staffId));	
 			StaffMember staffMember = (StaffMember)resultList.get(0); 
 			//planed start
-			String startDay = "15";
-			String startMonth = "12";
-			String startYear =  "2007";
-			String startHour = "15";
-			String startMinute = "30";
+			String startDay = request.getParameter("startDay");
+			String startMonth = request.getParameter("startMonth");
+			String startYear =  request.getParameter("startYear");
+			String startHour = request.getParameter("startHour");
+			String startMinute = request.getParameter("startMinute");
 			//planed end
-			String endDay = "15";
-			String endMonth = "12";
-			String endYear =  "2007";
-			String endHour = "18";
-			String endMinute = "30";
+			String endDay = request.getParameter("endDay");
+			String endMonth = request.getParameter("endMonth");
+			String endYear =  request.getParameter("endYear");
+			String endHour = request.getParameter("endHour");
+			String endMinute = request.getParameter("endMinute");
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));

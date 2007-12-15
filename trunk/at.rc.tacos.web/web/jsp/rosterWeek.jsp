@@ -2,6 +2,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Locale"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="at.rc.tacos.common.Constants"%>
 <%
 	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 	Date current = new Date();
@@ -23,18 +24,21 @@
 <form method="post" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
-    <thead>
-        <tr>
-            <td>
-            <table border='0' cellpadding='0' cellspacing='0' width="100%" id="Tablogo">
-             <tr>
-                 <td align="left" ><img src="../image/tacos_logo_left.jpg" name="logoLeft" id="logoLeft" /></td>
-                 <td align="right" ><img src="../image/tacos_logo_right.jpg" name="logoRight" id="logoRight" /></td>
-             </tr>
-            </table>
-            </td>
-        </tr>
-    </thead>
+	<thead>
+		<tr>
+			<td>
+			<table border='0' cellpadding='0' cellspacing='0' width="100%"
+				id="Tablogo">
+				<tr>
+					<td align="left"><img src="../image/tacos_logo_left.jpg"
+						name="logoLeft" id="logoLeft" /></td>
+					<td align="right"><img src="../image/tacos_logo_right.jpg"
+						name="logoRight" id="logoRight" /></td>
+				</tr>
+			</table>
+			</td>
+		</tr>
+	</thead>
 	<tbody>
 		<tr>
 			<td id="MainBodyContent">
@@ -42,7 +46,10 @@
 				<tr>
 					<td width="50%" align="left"><!-- 
                                 <form  method="post" action="login" border='0' cellpadding='0' cellspacing='0' width="200"><input type="submit" name="buttonLogout" value="" id="buttonLogout" /></form>
-                                 --> Willkommen : <%= userSession.getUsername()  %>&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
+                                 --> Willkommen : <%= userSession.getUsername()  %>&nbsp;&nbsp;(
+					<a
+						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
+					)</td>
 					<td width="50%" align="right">Heute ist der <%=format.format(current)%>
 					</td>
 				</tr>
@@ -52,8 +59,8 @@
 
 
 					<!-- #### LEFT CONTAINER NAVIGATION-->
-					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --> 
-					<%@ include file="navigation.jsp" %></td>
+					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --> <%@ include
+						file="navigation.jsp"%></td>
 
 					<!-- #### CONTENT -->
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
@@ -61,15 +68,14 @@
 						cellspacing='0'>
 						<tr>
 							<td id="BlockHead" align="right" valign="center"><b>Ortsstelle:</b>
-							<!--  Orstellenliste --> 
-							<select name="ortsstelle" id="rosterViewDayHeadSelbox">
-								<option value="id">Kapfenberg</option>
-								<option value="id">Bruck a. d. Mur</option>
-								<option value="id">St. Marein</option>
-								<option value="id">Th&ouml;rl</option>
-								<option value="id">Turnau</option>
-								<option value="id">Breitenau</option>
-								<option value="id">NEF</option>
+							<!--  Orstellenliste --> <select name="station"
+								id="rosterViewDayHeadSelbox">
+								<option><%=Constants.STATION_BREITENAU%></option>
+								<option><%=Constants.STATION_BRUCK%></option>
+								<option><%=Constants.STATION_KAPFENBERG%></option>
+								<option><%=Constants.STATION_MAREIN%></option>
+								<option><%=Constants.STATION_THOERL%></option>
+								<option><%=Constants.STATION_TURNAU%></option>
 							</select></td>
 						</tr>
 						<tr>
