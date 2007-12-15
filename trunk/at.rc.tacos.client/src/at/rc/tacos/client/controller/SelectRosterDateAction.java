@@ -1,5 +1,8 @@
 package at.rc.tacos.client.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.jface.action.Action;
 
 import at.rc.tacos.common.IFilterTypes;
@@ -14,22 +17,27 @@ import at.rc.tacos.model.RosterEntry;
  */
 public class SelectRosterDateAction extends Action
 {
-    private long date;
+    private Date date;
 
     /**
      * Default class constructor for an action.
      * @param date the dateime to switch to
      */
-    public SelectRosterDateAction(long date)
+    public SelectRosterDateAction(Date date)
     {
+        //mask the unused fields
         this.date = date;
     }
 
     @Override
     public void run()
     {
+        //format the date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String strDate = sdf.format(date);
+        
         //set up the filter and query the server
-        QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,Long.toString(date));
+        QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,strDate);
         NetWrapper.getDefault().requestListing(RosterEntry.ID,filter);
     }
 }

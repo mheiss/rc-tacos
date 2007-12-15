@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.application.*;
 
 import at.rc.tacos.client.controller.CreateNewVehicle;
-import at.rc.tacos.client.controller.MyToolbarManager;
 import at.rc.tacos.client.controller.OpenAboutAction;
 import at.rc.tacos.client.controller.OpenRosterEntryAction;
+import at.rc.tacos.client.modelManager.MyToolbarManager;
 import at.rc.tacos.factory.ImageFactory;
 
 /**

@@ -4,6 +4,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.RosterEntryManager;
 
 public class PersonalViewContentProvider implements IStructuredContentProvider 
 {
@@ -19,6 +20,11 @@ public class PersonalViewContentProvider implements IStructuredContentProvider
 
     public Object[] getElements(Object parent) 
     {
-        return ModelFactory.getInstance().getRosterManager().toArray();
+        RosterEntryManager manager = ModelFactory.getInstance().getRosterManager();
+        //do we have a active station
+        if(manager.getActiveStation() != null && manager.getActiveStation() != "")
+            return manager.toFilteredArray();
+        else
+            return manager.toArray();
     }
 }

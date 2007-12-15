@@ -65,7 +65,7 @@ public class InfoView extends ViewPart
                 cal.set(Calendar.YEAR, dateTime.getYear());
                 cal.set(Calendar.MONTH, dateTime.getMonth());
                 cal.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
-                SelectRosterDateAction selectAction = new SelectRosterDateAction(cal.getTimeInMillis());
+                SelectRosterDateAction selectAction = new SelectRosterDateAction(cal.getTime());
                 selectAction.run();
             }
         });
