@@ -18,15 +18,16 @@
 	<% ResourceBundle res = (ResourceBundle)session.getAttribute("curResBundle");%>
 	
 	<%-- format the date %--%>
-	<%Date current = new Date();
-		DateFormat dateformat;
-		dateformat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMANY);%>
+	<%
+	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+	Date current = new Date();
+%>
 		
 		<%! int cnt=0; %> <% cnt++;%>
 		<%! int s = -1; %>
 
 			
-		<table cellpadding="0" border="0" cellspacing="0" width="800" align="center" id="mainTabLogDate"><tr><td align="right">Heute ist der <%=dateformat.format(current) %></td></tr></table>
+		<table cellpadding="0" border="0" cellspacing="0" width="800" align="center" id="mainTabLogDate"><tr><td align="right">Heute ist der <%=format.format(current) %></td></tr></table>
 		<table cellpadding="0" border="0" cellspacing="0" width="800" align="center" id="mainTabLog">
 			<tr>
 				<td id="leftLogSite" align="left" valign="bottom"><a href="#">Rotes Kreuz Österreich</a><br/><a href="#">Impressum</a></td>

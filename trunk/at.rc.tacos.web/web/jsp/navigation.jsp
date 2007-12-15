@@ -9,12 +9,17 @@
 	</tr>
 	<tr>
 		<td id="BlockContent"><a
-			href="<%=request.getContextPath()+"/Dispatcher/rosterDay.do"%>">Dienst eintragen</a><br />
+			href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>">Dienst eintragen</a><br />
 		</td>
 	</tr>
 	<tr>
 		<td id="BlockContent"><a
-			href="<%=request.getContextPath()+"/Dispatcher/rosterWeek.do"%>">Wochen&uuml;bersicht</a><br />
+			href="<%=request.getContextPath()+"/Dispatcher/rosterDay.do?action=dayView"%>">Tages&uuml;bersicht</a><br />
+		</td>
+	</tr>
+	<tr>
+		<td id="BlockContent"><a
+			href="<%=request.getContextPath()+"/Dispatcher/rosterWeek.do?action=weekView"%>">Wochen&uuml;bersicht</a><br />
 		</td>
 	</tr>
 </table>
