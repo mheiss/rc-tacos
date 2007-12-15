@@ -70,8 +70,10 @@ public class ClientHandler implements INetListener
                 //check if the user is already logged in?
                 if(server.hasOpenConnections(userId))
                 {
+                    System.out.println("Multiple login detected");
                     //send a logout message
                     Logout logout = new Logout(userId);
+                    logout.setLoggedOut(true);
                     logout.setErrorMessage("Dieser Account wird auf einem anderen Computer benutzt.");
                     server.sendMessage(userId, Logout.ID, IModelActions.LOGOUT, logout);
                 }
