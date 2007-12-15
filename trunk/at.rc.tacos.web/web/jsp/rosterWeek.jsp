@@ -3,10 +3,8 @@
 <%@page import="java.util.Locale"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
+	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 	Date current = new Date();
-	DateFormat dateformat;
-	dateformat = DateFormat.getDateInstance(DateFormat.SHORT,
-			Locale.GERMANY);
 	UserSession userSession = (UserSession)session.getAttribute("userSession");
 %>
 
@@ -45,7 +43,7 @@
 					<td width="50%" align="left"><!-- 
                                 <form  method="post" action="login" border='0' cellpadding='0' cellspacing='0' width="200"><input type="submit" name="buttonLogout" value="" id="buttonLogout" /></form>
                                  --> Willkommen : <%= userSession.getUsername()  %>&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
-					<td width="50%" align="right">Heute ist der <%=dateformat.format(current)%>
+					<td width="50%" align="right">Heute ist der <%=format.format(current)%>
 					</td>
 				</tr>
 			</table>

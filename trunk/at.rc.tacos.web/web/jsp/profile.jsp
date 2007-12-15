@@ -18,10 +18,8 @@
 <%@page import="java.util.Locale"%>
 
 <%
+	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 	Date current = new Date();
-	DateFormat dateformat;
-	dateformat = DateFormat.getDateInstance(DateFormat.SHORT,
-			Locale.GERMANY);
 %>
 
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
@@ -49,7 +47,7 @@
 					&nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="50%" align="right">Heute ist der <%=dateformat.format(current)%>
+					<td width="50%" align="right">Heute ist der <%=format.format(current)%>
 					</td>
 				</tr>
 			</table>

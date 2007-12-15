@@ -1,7 +1,6 @@
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
-	UserSession userSession = (UserSession) session
-			.getAttribute("userSession");
+	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -18,10 +17,8 @@
 <%@page import="java.util.Locale"%>
 
 <%
+	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 	Date current = new Date();
-	DateFormat dateformat;
-	dateformat = DateFormat.getDateInstance(DateFormat.SHORT,
-			Locale.GERMANY);
 %>
 
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
@@ -49,7 +46,7 @@
 					&nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="50%" align="right">Heute ist der <%=dateformat.format(current)%>
+					<td width="50%" align="right">Heute ist der <%=format.format(current)%>
 					</td>
 				</tr>
 			</table>
@@ -73,14 +70,14 @@
 										<tr>
 											<td><br />
 										<tr>
-											<td><a href="<%=request.getContextPath()+"/Dispatcher/rosterDay.do"%>"><img src="../image/add.gif" /></a><br />
+											<td><a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>"><img src="../image/calendar.png" /></a><br />
 											Einen neuen Dienst hinzuf&uuml;gen </td>
 											<td><a href="#"><img src="../image/stats.jpg" /></a><br />
 											Dienststunden-Statistik </td>
 										</tr>
 										<tr>
 											<td>c</td>
-											<td><a href="#"><img src="../image/info.jpg" /></a><br />
+											<td><a href="#"><img src="../image/about.png" /></a><br />
 											Information &uuml;ber die Programmierer</td>
 										</tr>
 									</table>

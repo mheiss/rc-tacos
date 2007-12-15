@@ -4,13 +4,15 @@
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
-	List<StaffMember> list = (List)params.get("employeeList");
+	List<StaffMember> rosterList = (List)params.get("rosterList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 	
 %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="at.rc.tacos.common.AbstractMessage"%>
+<%@page import="at.rc.tacos.model.RosterEntry"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -27,25 +29,24 @@
 <%@page import="java.util.Locale"%>
 
 <% 
-
-
         Date current = new Date();
-        DateFormat dateformat;
-        dateformat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMANY);
-
+		SimpleDateFormat formath = new SimpleDateFormat("dd.MM.yyyy");
 %>
 
-<form method="post" border='0' cellpadding='0' cellspacing='0'>
+<form method="post" action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
 	<thead>
 		<tr>
 			<td>
-			<table border='0' cellpadding='0' cellspacing='0' width="100%" id="Tablogo">
-			 <tr>
-			     <td align="left" ><img src="../image/tacos_logo_left.jpg" name="logoLeft" id="logoLeft" /></td>
-			     <td align="right" ><img src="../image/tacos_logo_right.jpg" name="logoRight" id="logoRight" /></td>
-			 </tr>
+			<table border='0' cellpadding='0' cellspacing='0' width="100%"
+				id="Tablogo">
+				<tr>
+					<td align="left"><img src="../image/tacos_logo_left.jpg"
+						name="logoLeft" id="logoLeft" /></td>
+					<td align="right"><img src="../image/tacos_logo_right.jpg"
+						name="logoRight" id="logoRight" /></td>
+				</tr>
 			</table>
 			</td>
 		</tr>
@@ -55,20 +56,19 @@
 			<td id="MainBodyContent">
 			<table width="100%" id="userInfo">
 				<tr>
-					<td width="50%" align="left"><!-- 
-                                <form  method="post" action="login" border='0' cellpadding='0' cellspacing='0' width="200"><input type="submit" name="buttonLogout" value="" id="buttonLogout" /></form>
-                                 --> Willkommen : <%= userSession.getUsername() %>
-					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
-					<td width="50%" align="right">Heute ist der <%= dateformat.format(current) %>
+					<td width="50%" align="left"> Willkommen : <%= userSession.getUsername() %>
+					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
+					)</td>
+					<td width="50%" align="right">Heute ist der <%= formath.format(current) %>
 					</td>
 				</tr>
 			</table>
 			<table width="100%">
 				<tr>
-					
+
 					<!-- #### LEFT CONTAINER NAVIGATION-->
-                    <td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --><%@ include file="navigation.jsp" %>
-                    </td>
+					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --><%@ include
+						file="navigation.jsp"%></td>
 					<!-- #### CONTENT -->
 
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
@@ -86,128 +86,22 @@
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
-											<td>Tageseintrag</td>
-										</tr>
-									</table>
-									</td>
-									<td width="50%">
-									<table width="100%" border='0' cellpadding='0' cellspacing='0'
-										id="TabAnmeldung">
-										<tr>
-											<td id="rosterViewDayHeadline2" colpsan="2"><b>Dienstdaten:</b>
-											</td>
-										</tr>
-										<tr>
-											<td id="rosterViewDayHeadline">RK-Mitglied:&nbsp;</td>
-											<td><!-- Mitarbeiterliste --> 
-											<select name="employee"
-                                                id="rosterViewDayHeadSelbox">
-                                                <% for(StaffMember member:list) { %>
-                                                <option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
-                                                <% } %>
-                                            </select>
-											
-											
-											</td>
-										</tr>
-										<tr>
-											<td id="rosterViewDayHeadline">Ortsstelle:&nbsp;</td>
-											<td><select name="ortsstelle"
-												id="rosterViewDayHeadSelbox">
-												<option value="id">Kapfenberg</option>
-												<option value="id">Bruck a. d. Mur</option>
-												<option value="id">St. Marein</option>
-												<option value="id">Th&ouml;rl</option>
-												<option value="id">Turnau</option>
-												<option value="id">Breitenau</option>
-												<option value="id">NEF</option>
-											</select></td>
-
-										</tr>
-										<tr>
-											<td id="rosterViewDayHeadline">RK-Dienst:&nbsp;</td>
-											<td><select name="duty" id="rosterViewDayHeadSelbox">
-												<option value="id">RTW Fahrer</option>
-												<option value="id">NEF Fahrer</option>
-												<option value="id">Santit&auml;ter 1</option>
-												<option value="id">Santit&auml;ter 2</option>
-												<option value="id">Zivildiener</option>
-												<option value="id">Sonstige</option>
-											</select></td>
-										</tr>
-										<tr>
-											<td id="rosterViewDayHeadline2" colpsan="2"><b>Dienstzeit:</b>
-											</td>
-										</tr>
-										<tr>
-											<td id="rosterViewDayHeadline"><input type="checkbox"
-												id="timeTo" /></td>
-											<td id="rosterViewDayName">&nbsp;Fr&uuml;h (6-11)</td>
-
-
-										</tr>
-										<tr>
-											<td id="rosterViewDayHeadline"><input type="checkbox"
-												id="timeTo" /></td>
-											<td id="rosterViewDayName">&nbsp;Tag (7-18)</td>
-										</tr>
-										<tr>
-											<td id="rosterViewDayHeadline"><input type="checkbox"
-												id="timeTo" /></td>
-											<td id="rosterViewDayName">&nbsp;Nacht(18-7)</td>
-										</tr>
-										<tr>
-											<td id="rosterViewDayHeadline"><input type="checkbox"
-												id="timeTo" /></td>
-											<td id="rosterViewDayName">&nbsp;Ambulanz (6-14)</td>
-										</tr>
-										<tr>
-										  <td id="rosterViewDayHeadline"><input type="checkbox"
-                                                id="timeTo" /></td>
-                                            <td id="rosterViewDayName">&nbsp;optionaler Dienst
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>&nbsp;</td>
-                                            <td id="rosterViewDayName">
-                                            <!-- VON -->&nbsp;von:&nbsp;
-                                            <!-- hour -->
-                                            <select name="optBeginHour" id="rosterViewDayHeadSelboxTime">
-                                                <option value="leer" selected >Std.</option>
-                                                <% int hb=0; while(hb<24) { hb+=1; %>
-                                                <option value="<%=hb%>"><%=hb%></option>
-                                                <% } %>
-                                            </select>
-                                            <!-- minute -->
-                                            <select name="optBeginMinute" id="rosterViewDayHeadSelboxTime">
-                                                <option value="leer" selected >Min.</option>
-                                                <% int mb=0; while(mb<55) { mb+=5; %>
-                                                <option value="<%=mb%>"><%=mb%></option>
-                                                <% } %>
-                                            </select>
-                                            
-                                            <!-- BIS -->&nbsp;bis:&nbsp;
-                                            <!-- hour -->
-                                            <select name="optEndHour" id="rosterViewDayHeadSelboxTime">
-                                                <option value="leer" selected >Std.</option>
-                                                <% int he=0; while(he<24) { he+=1; %>
-                                                <option value="<%=he%>"><%=he%></option>
-                                                <% } %>
-                                            </select>
-                                            <!-- minute -->
-                                            <select name="optEndMinute" id="rosterViewDayHeadSelboxTime">
-                                                <option value="leer" selected >Min.</option>
-                                                <% int me=0; while(me<55) { me+=5; %>
-                                                <option value="<%=me%>"><%=me%></option>
-                                                <% } %>
-                                            </select>
-                                            </td>
-                                        </tr>
-										<tr>
-											<td colspan="2" align="right" style="padding: 10px;"><input
-												type="image" src="../image/button_ok.jpg" id="senden"
-												value="anmelden" id="buttonOk" /></td>
-
+											<%for(AbstractMessage message:rosterList)
+											{
+												SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+												SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
+												RosterEntry entry = (RosterEntry)message;
+												out.print(entry.getStaffMember().getUserName());
+												out.print(" ");
+												out.print(format.format(new Date(entry.getPlannedStartOfWork())));
+												out.print(" - ");
+												if(entry.isSplitEntry())
+													out.print(format.format(new Date(entry.getPlannedEndOfWork())));
+												else
+													out.print(formatHour.format(new Date(entry.getPlannedEndOfWork())));
+												out.println("<br />");
+											}											
+											%>
 										</tr>
 									</table>
 									</td>
@@ -217,10 +111,7 @@
 						</tr>
 					</table>
 					</td>
-
-
 				</tr>
-
 			</table>
 			</td>
 		</tr>
