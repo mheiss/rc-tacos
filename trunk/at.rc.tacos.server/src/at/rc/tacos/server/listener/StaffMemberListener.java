@@ -39,7 +39,6 @@ public class StaffMemberListener extends ServerListenerAdapter
         if(queryFilter == null || queryFilter.getFilterList().isEmpty())
         {
             list.addAll(staffDao.listEmployees());
-            System.out.println("returning "+list.size() +" members");
         }
         else if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER))
         {

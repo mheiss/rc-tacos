@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import junit.framework.Assert;
@@ -48,7 +49,7 @@ public class RosterEntryListenerTest
         Assert.assertEquals(1, result.size());
     }
     
-    @Test(expected = NumberFormatException.class)
+    @Test(expected = ParseException.class)
     public void listByInvalidDate()
     { 
         result = listener.handleListingRequest(new QueryFilter(IFilterTypes.DATE_FILTER,"hallo"));

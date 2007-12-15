@@ -44,7 +44,7 @@ public abstract class ServerListenerAdapter implements IServerListener
     * Handles listing requests
     */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws Exception
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
     {
         return null;
     }

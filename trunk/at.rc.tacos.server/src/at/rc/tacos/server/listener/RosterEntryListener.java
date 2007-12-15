@@ -1,6 +1,10 @@
 package at.rc.tacos.server.listener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.RosterDAO;
@@ -30,12 +34,15 @@ public class RosterEntryListener extends ServerListenerAdapter
 
     /**
      * Listing of all entries 
+     * @throws ParseException 
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws NumberFormatException
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 
+        System.out.println("New listing request");
+        
         //if there is no filter -> request all
         if(queryFilter == null || queryFilter.getFilterList().isEmpty())
         {
@@ -44,9 +51,26 @@ public class RosterEntryListener extends ServerListenerAdapter
         else if(queryFilter.containsFilterType(IFilterTypes.DATE_FILTER))
         {
             //get the query filter
-            final String filter = queryFilter.getFilterValue(IFilterTypes.DATE_FILTER);
-            long date = Long.valueOf(filter);
-            list.addAll(rosterDao.listRosterEntryByDate(date, date));
+            final String dateFilter = queryFilter.getFilterValue(IFilterTypes.DATE_FILTER);
+            //format the time
+            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            Calendar filterTime = Calendar.getInstance();
+            try
+            {
+                filterTime.setTime(df.parse(dateFilter));
+                
+                long dateStart = filterTime.getTimeInMillis();
+                //set the end to 23:59
+                filterTime.set(Calendar.HOUR, 23);
+                filterTime.set(Calendar.MINUTE,59);
+                long dateEnd = filterTime.getTimeInMillis();
+    
+                list.addAll(rosterDao.listRosterEntryByDate(dateStart, dateEnd));
+            }
+            catch(ParseException pe)
+            {
+                throw new IllegalArgumentException("cannot pars the date");
+            }
         }
         //return the list
         return list;
