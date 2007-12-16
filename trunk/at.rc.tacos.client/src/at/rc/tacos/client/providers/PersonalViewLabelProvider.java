@@ -21,7 +21,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider
     public static final int COLUMN_CHECK_IN = 5;
     public static final int COLUMN_CHECK_OUT = 6;
     public static final int COLUMN_SERVICE_TYPE = 7;
-    public static final int COLUMN_COMPETENCE = 8;
+    public static final int COLUMN_JOB = 8;
     public static final int COLUMN_STATION = 9;
     public static final int COLUMN_VEHICLE = 10;  
     
@@ -86,7 +86,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider
         case COLUMN_CHECK_IN: return sdf.format(entry.getRealStartOfWork());
         case COLUMN_CHECK_OUT: return sdf.format(entry.getRealEndOfWork());
         case COLUMN_SERVICE_TYPE: return entry.getServicetype();
-        case COLUMN_COMPETENCE: return entry.getCompetence();
+        case COLUMN_JOB: return entry.getJob();
         case COLUMN_STATION: return entry.getStation();
         case COLUMN_VEHICLE: return "Auto";
         default: return null;
