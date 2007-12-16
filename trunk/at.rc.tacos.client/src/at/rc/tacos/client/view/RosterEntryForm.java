@@ -155,7 +155,7 @@ public class RosterEntryForm implements PropertyChangeListener
         if(rosterEntry.getRosterNotes() != null)
             this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
         this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
-        this.comboVerwendung.setText(rosterEntry.getCompetence());
+        this.comboVerwendung.setText(rosterEntry.getJob());
         this.comboOrtsstelle.setText(rosterEntry.getStation());
         this.bereitschaftButton.setSelection(rosterEntry.getStandby());
         this.setEmployeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
@@ -271,7 +271,7 @@ public class RosterEntryForm implements PropertyChangeListener
         ortsstelleLabel_1.setText("Verwendung:");
 
         comboVerwendung = new Combo(dienstplanGroup, SWT.READ_ONLY);
-        comboVerwendung.setItems(Constants.competence);
+        comboVerwendung.setItems(Constants.job);
         comboVerwendung.setBounds(306, 126, 226, 21);
 
         final Label ortsstelleLabel_1_1 = new Label(dienstplanGroup, SWT.NONE);
@@ -350,7 +350,7 @@ public class RosterEntryForm implements PropertyChangeListener
             int index;
             boolean standbyState;
             String station;
-            String competence;
+            String job;
             String servicetype;
             String rosterNotes;
             String timePlannedStartOfWork;
@@ -439,7 +439,7 @@ public class RosterEntryForm implements PropertyChangeListener
                 //create a new entry
                 if(createNew)
                 {
-                    rosterEntry = new RosterEntry(staffMember,servicetype,competence,station,plannedStartOfWork, plannedEndOfWork);
+                    rosterEntry = new RosterEntry(staffMember,servicetype,job,station,plannedStartOfWork, plannedEndOfWork);
                     //create and run the add action
                     CreateRosterEntryAction newAction = new CreateRosterEntryAction(rosterEntry);
                     newAction.run();
@@ -452,7 +452,7 @@ public class RosterEntryForm implements PropertyChangeListener
                     // set the needed values
                     rosterEntry.setStaffMember(staffMember);
                     rosterEntry.setServicetype(servicetype);
-                    rosterEntry.setCompetence(competence);
+                    rosterEntry.setJob(job);
                     rosterEntry.setStation(station);
                     rosterEntry.setPlannedStartOfWork(plannedStartOfWork);
                     rosterEntry.setPlannedEndOfWork(plannedEndOfWork);
@@ -474,7 +474,7 @@ public class RosterEntryForm implements PropertyChangeListener
                 staffMember = (StaffMember)setEmployeenameCombo.getElementAt(index);
                 standbyState = bereitschaftButton.getSelection();
                 station = comboOrtsstelle.getText();
-                competence = comboVerwendung.getText();
+                job = comboVerwendung.getText();
                 servicetype = comboDienstverhaeltnis.getText();
                 rosterNotes = textAnmerkungen.getText();
                 timePlannedStartOfWork = timeDienstVon.getText();	
@@ -493,7 +493,7 @@ public class RosterEntryForm implements PropertyChangeListener
                     requiredFields = requiredFields +" - Mitarbeiter";
                 if (station.equalsIgnoreCase(""))
                     requiredFields = requiredFields +" - Ortsstelle";
-                if (competence.equalsIgnoreCase(""))
+                if (job.equalsIgnoreCase(""))
                     requiredFields = requiredFields +" - Verwendung";
                 if (servicetype.equalsIgnoreCase(""))
                     requiredFields = requiredFields +" - Dienstverhältnis";
