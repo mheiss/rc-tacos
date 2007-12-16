@@ -105,7 +105,7 @@
 												<option><%=Constants.STATION_BRUCK%></option>
 												<option><%=Constants.STATION_KAPFENBERG%></option>
 												<option><%=Constants.STATION_MAREIN%></option>
-												<option><%=Constants.STATION_THOERL%></option>
+												<option><%=Constants.STATION_THOERL.replaceAll("ö","&ouml;")%></option>
 												<option><%=Constants.STATION_TURNAU%></option>
 											</select></td>
 										</tr>
@@ -115,10 +115,10 @@
 												<option><%=Constants.COMPETENCE_DISPON%></option>
 												<option><%=Constants.COMPETENCE_DOCTOR%></option>
 												<option><%=Constants.COMPETENCE_DRIVER%></option>
-												<option><%=Constants.COMPETENCE_EMERGENCY%></option>
+												<option><%=Constants.COMPETENCE_EMERGENCY.replaceAll("ä","&auml;")%></option>
 												<option><%=Constants.COMPETENCE_HELPER%></option>
 												<option><%=Constants.COMPETENCE_OTHER%></option>
-												<option><%=Constants.COMPETENCE_SANI%></option>
+												<option><%=Constants.COMPETENCE_SANI.replaceAll("ä","&auml;")%></option>
 											</select></td>
 										</tr>
 										<tr>
