@@ -163,7 +163,7 @@ public class TestDataSource
         Calendar cal = Calendar.getInstance();
         RosterEntry e1 = new RosterEntry();
         e1.setRosterId(0);
-        e1.setCompetence(Constants.COMPETENCE_DRIVER);
+        e1.setJob(Constants.JOB_DRIVER);
         //start -> now
         e1.setPlannedStartOfWork(cal.getTimeInMillis());
         e1.setRealStartOfWork(cal.getTimeInMillis());
@@ -178,7 +178,7 @@ public class TestDataSource
         //second entry
         RosterEntry e2 = new RosterEntry();
         e2.setRosterId(1);
-        e2.setCompetence(Constants.COMPETENCE_DISPON);
+        e2.setJob(Constants.JOB_DISPON);
         //start -> tomorrow
         cal.add(Calendar.DAY_OF_MONTH, +1);
         e2.setPlannedStartOfWork(cal.getTimeInMillis());
@@ -195,7 +195,7 @@ public class TestDataSource
         //third entry
         RosterEntry e3 = new RosterEntry();
         e3.setRosterId(2);
-        e3.setCompetence(Constants.COMPETENCE_DOCTOR);
+        e3.setJob(Constants.JOB_DOCTOR);
         //start -> one day after tomorrow
         cal.add(Calendar.DAY_OF_MONTH, +1);
         e3.setPlannedStartOfWork(cal.getTimeInMillis());
