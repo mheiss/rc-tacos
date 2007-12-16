@@ -98,6 +98,9 @@ public class RosterEntryForm implements PropertyChangeListener
         //update an entry
         createNew = false;
         this.rosterEntry = rosterEntry;
+        
+        System.out.println("am beginn von RosterEntryForm(RosterEntry), realStartOfWork: " +rosterEntry.getRealStartOfWork());
+        System.out.println("am beginn von RosterEntryForm(RosterEntry), realEndOfWork: " +rosterEntry.getRealEndOfWork());
 
         //create the fields
         createContents();
@@ -107,18 +110,24 @@ public class RosterEntryForm implements PropertyChangeListener
         gcal.setTimeZone(TimeZone.getDefault());
 
         //check in
-        gcal.setTimeInMillis(rosterEntry.getRealStartOfWork());
-        String anmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
-        this.dateAnmeldung.setText(anmeldungDate);
-        String anmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-        this.timeAnmeldung.setText(anmeldungTime);
+        if(rosterEntry.getRealStartOfWork() != 0)
+        {
+	        gcal.setTimeInMillis(rosterEntry.getRealStartOfWork());
+	        String anmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
+	        this.dateAnmeldung.setText(anmeldungDate);
+	        String anmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        this.timeAnmeldung.setText(anmeldungTime);
+        }
 
         //check out
-        gcal.setTimeInMillis(rosterEntry.getRealEndOfWork());
-        String abmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
-        this.dateAbmeldung.setText(abmeldungDate);
-        String abmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-        this.timeAbmeldung.setText(abmeldungTime);
+        if(rosterEntry.getRealEndOfWork() != 0)
+        {
+	        gcal.setTimeInMillis(rosterEntry.getRealEndOfWork());
+	        String abmeldungDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
+	        this.dateAbmeldung.setText(abmeldungDate);
+	        String abmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        this.timeAbmeldung.setText(abmeldungTime);
+        }
 
         //planned start of work
         gcal.setTimeInMillis(rosterEntry.getPlannedStartOfWork());
@@ -434,6 +443,9 @@ public class RosterEntryForm implements PropertyChangeListener
                     //create and run the add action
                     CreateRosterEntryAction newAction = new CreateRosterEntryAction(rosterEntry);
                     newAction.run();
+                    System.out.println("timeAnmeldung (textfeld des formulars) in der create new---------------: " +timeRealStartOfWork);
+                    System.out.println("real start of work (long)in der create new---------------: " +realStartOfWork);//TODO
+                    System.out.println("real end of work (long)in der create new---------------: " +realEndOfWork);//TODO
                 }
                 else
                 {
@@ -469,6 +481,7 @@ public class RosterEntryForm implements PropertyChangeListener
                 timePlannedEndOfWork = timeDienstBis.getText();
                 datePlannedEndOfWork = dateDienstBis.getText();
                 timeRealStartOfWork = timeAnmeldung.getText();
+                System.out.println("timeAnmeldung in getContentOfAllFields: " +timeRealStartOfWork);
                 dateRealStartOfWork = dateAnmeldung.getText();
                 timeRealEndOfWork = timeAbmeldung.getText();
                 dateRealEndOfWork = dateAbmeldung.getText();
@@ -665,9 +678,11 @@ public class RosterEntryForm implements PropertyChangeListener
                     yearRealStart = Integer.valueOf(realStartDate[2]).intValue();
                     monthRealStart = Integer.valueOf(realStartDate[1]).intValue()-1;
                     dayRealStart = Integer.valueOf(realStartDate[0]).intValue();
+                    
+                    cal.set(yearRealStart, monthRealStart, dayRealStart, hoursRealStart, minutesRealStart);
+                    realStartOfWork = cal.getTimeInMillis();
                 }
-                cal.set(yearRealStart, monthRealStart, dayRealStart, hoursRealStart, minutesRealStart, 0);
-                realStartOfWork = cal.getTimeInMillis();
+                
 
                 //real end of work
                 int hoursRealEnd = 0;
