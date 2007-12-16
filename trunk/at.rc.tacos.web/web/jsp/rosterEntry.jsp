@@ -152,7 +152,7 @@
 											</select> 
 											<!-- minute --> <select name="startMinute" id="rosterViewDayHeadSelboxTime">
 												<option value="leer" selected>Min.</option>
-												<option value="0" selected>00</option>
+												<option value="0" selected>0</option>
 												<%
 													int mb = 0;
 													while (mb < 55) {
@@ -215,7 +215,7 @@
 											</select>
 											<!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
 												<option value="leer" selected>Min.</option>
-												<option value="0" selected>00</option>
+												<option value="0" selected>0</option>
 												<%
 													int me = 0;
 													while (me < 55) {
