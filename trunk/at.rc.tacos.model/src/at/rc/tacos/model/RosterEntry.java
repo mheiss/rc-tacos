@@ -20,7 +20,7 @@ public class RosterEntry extends AbstractMessage
 	private long realStartOfWork;
 	private long realEndOfWork;
 	private String station;
-	private String competence;
+	private String job;
 	private String servicetype;
 	private String rosterNotes;
 	private boolean standby;	
@@ -37,12 +37,12 @@ public class RosterEntry extends AbstractMessage
 	 * Constructor for a minimal roster entry object
 	 * @param staffMember the person for this service
 	 * @param servicetype the employee status
-	 * @param competence the function of this person
+	 * @param job of this person only for this roster entry
 	 * @param station the place to work
 	 * @param plannedStartOfWork the planned time to start the service
 	 * @param plannedEndOfWork the planned end of the service
 	 */
-	public RosterEntry(StaffMember staffMember,String servicetype,String competence,
+	public RosterEntry(StaffMember staffMember,String servicetype,String job,
 	        String station,long plannedStartOfWork, long plannedEndOfWork)
 	{
 	    super(ID);
@@ -50,7 +50,7 @@ public class RosterEntry extends AbstractMessage
         setPlannedEndOfWork(plannedEndOfWork);
         setPlannedStartOfWork(plannedStartOfWork);
         setStation(station);
-        setCompetence(competence);
+        setJob(job);
         setServicetype(servicetype);
 	}
 
@@ -62,7 +62,7 @@ public class RosterEntry extends AbstractMessage
 	 * @param realStartOfWork the real start of work
 	 * @param realEndOfWork the real end of work
 	 * @param station the roster station of
-	 * @param competence the competence of this entry
+	 * @param job of this entry
 	 * @param servicetype the service type of this entry
 	 * @param rosterNotes the notes for this roster
 	 * @param standby flag to show that the staff member is at home
@@ -70,7 +70,7 @@ public class RosterEntry extends AbstractMessage
 	public RosterEntry(StaffMember staffMember,
 			long plannedStartOfWork, long plannedEndOfWork,
 			long realStartOfWork, long realEndOfWork, String station,
-			String competence, String servicetype, String rosterNotes,
+			String job, String servicetype, String rosterNotes,
 			boolean standby) 
 	{
 		super(ID);
@@ -80,7 +80,7 @@ public class RosterEntry extends AbstractMessage
 		setRealStartOfWork(realStartOfWork);
 		setRealEndOfWork(realEndOfWork);
 		setStation(station);
-		setCompetence(competence);
+		setJob(job);
 		setServicetype(servicetype);
 		setRosterNotes(rosterNotes);
 		setStandby(standby);
@@ -335,35 +335,40 @@ public class RosterEntry extends AbstractMessage
 	}
 
 	/**
-	 * Returns the competence of this staff member.<br>
-	 * The possible competences are as follwed<br>
+	 * Returns the job of this staff member.<br>
+	 * The possible jobs are as follwed<br>
 	 * <ul>
 	 * <li>Fahrer</li>
 	 * <li>Sanitäter</li>
-	 * <li>Zweithelfer</li>
+	 * <li>Volontär</li>
 	 * <li>Notfallsanitäter</li>
 	 * <li>Leitstellendisponent</li>
 	 * <li>Dienstführender</li>
 	 * <li>Inspektionsdienst</li>
 	 * <li>Sonstiges</li>
+	 * <li>Notarzt</li>
+	 * <li>BRKDT</li>
+	 * <li>BKTW- Fahrer</li>
+	 * <li>Journaldienst</li>
+	 * 
 	 * </ul>
-	 * @return the competence
+	 * @return the job
 	 */
-	public String getCompetence() 
+	public String getJob() 
 	{
-		return competence;
+		return job;
 	}
 
 	/**
-	 * Sets the competences for this staff member.
-	 * @param competence the competence to set
-	 * @throws IllegalArgumentException if the competence is null or empty
+	 * Sets the job for this staff member.
+	 * @param job the job to set
+	 * @throws IllegalArgumentException if the job is null or empty
 	 */
-	public void setCompetence(String competence) 
+	public void setJob(String job) 
 	{
-	    if(competence == null || competence.trim().isEmpty())
-	        throw new IllegalArgumentException("The competence canno be null or empty");
-		this.competence = competence;
+	    if(job == null || job.trim().isEmpty())
+	        throw new IllegalArgumentException("The job canno be null or empty");
+		this.job = job;
 	}
 
 	/**
@@ -374,6 +379,7 @@ public class RosterEntry extends AbstractMessage
      * <li>Freiwillig</li>
      * <li>Zivildienstleistender</li>
      * <li>Sonstiges</li>
+     * <li>Ersatzeinstellung</li>
 	 * </ul>
 	 * @return the service type
 	 */
@@ -385,7 +391,7 @@ public class RosterEntry extends AbstractMessage
 	/**
 	 * Sets the service type for this staff member
 	 * @param servicetype the service type to set
-     * @throws IllegalArgumentException if the competence is null or empty
+     * @throws IllegalArgumentException if the service type is null or empty
 	 */
 	public void setServicetype(String servicetype) 
 	{
