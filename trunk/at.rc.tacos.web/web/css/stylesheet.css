@@ -186,6 +186,22 @@ weekdayZ {
 	color:#000000;
 }
 
+#senden {
+    background-image:url(../image/anmelden.jpg);
+    background-position:center;
+    background-repeat:no-repeat;
+
+    color:white	;
+    width:110px;
+    height:26px;
+
+    /*
+    border-width:2px;
+    border-color:#be0107;
+    border-style:solid;
+    */
+    margin:3px;
+}
 
 /*
 TESt
