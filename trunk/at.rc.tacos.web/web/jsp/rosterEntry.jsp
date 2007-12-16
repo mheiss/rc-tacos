@@ -265,8 +265,7 @@
 										</tr>
 										<tr>
 											<td colspan="2" align="right" style="padding: 10px;"><input
-												type="submit" src="../image/button_ok.jpg" id="senden"
-												value="anmelden" id="buttonOk" /></td>
+												type="submit" id="senden" value="" /></td>
 										</tr>
 									</table>
 									</td>
