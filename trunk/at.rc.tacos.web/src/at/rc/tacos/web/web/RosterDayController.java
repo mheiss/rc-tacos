@@ -1,8 +1,10 @@
 package at.rc.tacos.web.web;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +32,10 @@ public class RosterDayController  implements Controller
 
 		if("dayView".equalsIgnoreCase(action))
 		{
+			Date current = new Date();
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			//get roster entries
-			QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,"15-12-2007");
+			QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(current));
 			resultList = client.sendListingRequest(RosterEntry.ID, filter);
 			if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
 				params.put("rosterList", resultList); 
