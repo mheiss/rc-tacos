@@ -138,7 +138,7 @@
 											<td>&nbsp;</td>
 											<td id="rosterViewDayName">
 											<!-- VON -->&nbsp;von:&nbsp;
-											<!-- hour --> <select name="startHour" id="startHour">
+											<!-- hour --> <select name="startHour" id="rosterViewDayHeadSelboxTime">
 												<option value="leer" selected>Std.</option>
 												<%
 													int hb = 0;
