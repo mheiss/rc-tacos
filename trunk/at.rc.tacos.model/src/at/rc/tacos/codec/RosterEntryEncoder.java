@@ -53,8 +53,8 @@ public class RosterEntryEncoder  implements MessageEncoder
         writer.writeCharacters(entry.getStation());
         writer.writeEndElement();
         //the competence for this service
-        writer.writeStartElement("competence");
-        writer.writeCharacters(entry.getCompetence());
+        writer.writeStartElement("job");
+        writer.writeCharacters(entry.getJob());
         writer.writeEndElement();
         //the type of the service
         writer.writeStartElement("servicetype");
