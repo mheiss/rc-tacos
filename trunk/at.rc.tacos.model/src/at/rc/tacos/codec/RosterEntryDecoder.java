@@ -55,8 +55,8 @@ public class RosterEntryDecoder implements MessageDecoder
                 if("station".equalsIgnoreCase(startName))
                     entry.setStation(reader.getElementText());
                 //get the type of the element and set the corresponding value
-                if("competence".equalsIgnoreCase(startName))
-                    entry.setCompetence(reader.getElementText());
+                if("job".equalsIgnoreCase(startName))
+                    entry.setJob(reader.getElementText());
                 //get the type of the element and set the corresponding value
                 if("servicetype".equalsIgnoreCase(startName))
                     entry.setServicetype(reader.getElementText());
