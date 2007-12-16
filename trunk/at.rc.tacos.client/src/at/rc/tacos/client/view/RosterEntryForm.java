@@ -620,7 +620,7 @@ public class RosterEntryForm implements PropertyChangeListener
                 //date
                 String[] plannedEndDate = datePlannedEndOfWork.split("\\.");
                 int yearPlannedEnd = Integer.valueOf(plannedEndDate[2]).intValue();
-                int monthPlannedEnd = (Integer.valueOf(plannedEndDate[1]).intValue());
+                int monthPlannedEnd = (Integer.valueOf(plannedEndDate[1]).intValue()-1);
                 int dayPlannedEnd = Integer.valueOf(plannedEndDate[0]).intValue();
                 System.out.println("yearPlannedEnd of work in transform to long:  " +yearPlannedEnd);
                 System.out.println("monthPlannedEnd of work in transform to long:  " +monthPlannedEnd);
@@ -730,7 +730,7 @@ public class RosterEntryForm implements PropertyChangeListener
         for (int i=0;i<=100;i++) // the next 100 days
         {
             gcal.set(GregorianCalendar.DATE,(gcal.get(GregorianCalendar.DATE))+1);
-            content.add(gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR));
+            content.add((gcal.get(GregorianCalendar.DATE) <=9 ? "0" : "") +gcal.get(GregorianCalendar.DATE) +"." +((gcal.get(GregorianCalendar.MONTH)+1) <=9 ? "0" : "") +(gcal.get(GregorianCalendar.MONTH)+1) +"." +(gcal.get(GregorianCalendar.YEAR) <=9 ? "0" : "") +gcal.get(GregorianCalendar.YEAR));
         }
         return content;
     }
@@ -739,7 +739,7 @@ public class RosterEntryForm implements PropertyChangeListener
     {
         GregorianCalendar gcal = new GregorianCalendar();
         gcal.set(GregorianCalendar.DATE,(gcal.get(GregorianCalendar.DATE)));
-        defaultDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
+        defaultDate = ((gcal.get(GregorianCalendar.DATE) <=9 ? "0" : "") +gcal.get(GregorianCalendar.DATE) +"." +((gcal.get(GregorianCalendar.MONTH)+1) <=9 ? "0" : "") +(gcal.get(GregorianCalendar.MONTH)+1) +"." +(gcal.get(GregorianCalendar.YEAR) <=9 ? "0" : "") +gcal.get(GregorianCalendar.YEAR));
         return defaultDate;
     }
 
