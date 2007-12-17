@@ -3,7 +3,7 @@ package at.rc.tacos.core.db.dao.memory;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.CallerDAO;
-import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.CallerDetail;
 
 /**
  * Data source for notifiers
@@ -15,14 +15,14 @@ public class NotifierDAOMemory implements CallerDAO
     private static NotifierDAOMemory instance;
     
     //the data list
-    private ArrayList<NotifierDetail> notifierList; 
+    private ArrayList<CallerDetail> notifierList; 
 
     /**
      * Default class constructor
      */
     private NotifierDAOMemory()
     {
-        notifierList = new ArrayList<NotifierDetail>();
+        notifierList = new ArrayList<CallerDetail>();
     }
     
     /**
@@ -41,18 +41,18 @@ public class NotifierDAOMemory implements CallerDAO
      */
     public void reset()
     {
-        notifierList = new ArrayList<NotifierDetail>();
+        notifierList = new ArrayList<CallerDetail>();
     }
 
     @Override
-    public int addCaller(NotifierDetail notifierDetail)
+    public int addCaller(CallerDetail notifierDetail)
     {
         notifierList.add(notifierDetail);
         return notifierList.size();
     }
     
     @Override
-    public void updateCaller(NotifierDetail notifierDetail)
+    public void updateCaller(CallerDetail notifierDetail)
     {
         int index = notifierList.indexOf(notifierDetail);
         notifierList.remove(index);
@@ -60,22 +60,22 @@ public class NotifierDAOMemory implements CallerDAO
     }
     
     @Override
-    public void removeCaller(NotifierDetail notifierDetail)
+    public void removeCaller(CallerDetail notifierDetail)
     {
         notifierList.remove(notifierDetail);
     }
 
     @Override
-    public NotifierDetail getCallerByID(String callerID)
+    public CallerDetail getCallerByID(String callerID)
     {
-        for(NotifierDetail detail:notifierList)
-            if(detail.getNotifierName().equalsIgnoreCase(callerID))
+        for(CallerDetail detail:notifierList)
+            if(detail.getCallerName().equalsIgnoreCase(callerID))
                 return detail;
         return null;
     }
 
     @Override
-    public List<NotifierDetail> listCallers()
+    public List<CallerDetail> listCallers()
     {
         return notifierList;
     }
