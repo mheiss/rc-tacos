@@ -5,7 +5,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
-import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StatusMessages;
 import at.rc.tacos.model.Transport;
@@ -68,10 +68,10 @@ public class TransportEncoder  implements MessageEncoder
             writer.writeEndElement();
         }
         //write the notifier details
-        if(transport.getNotifierDetail() != null)
+        if(transport.getCallerDetail() != null)
         {
-            encoder = ProtocolCodecFactory.getDefault().getEncoder(NotifierDetail.ID);
-            encoder.doEncode(transport.getNotifierDetail(), writer);
+            encoder = ProtocolCodecFactory.getDefault().getEncoder(CallerDetail.ID);
+            encoder.doEncode(transport.getCallerDetail(), writer);
         }
         //write is the transport is a backtransport
         writer.writeStartElement("backTransport");
