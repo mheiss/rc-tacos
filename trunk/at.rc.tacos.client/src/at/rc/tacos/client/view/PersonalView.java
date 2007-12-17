@@ -65,7 +65,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         group.setText("Dienstplan");
 
 
-        //tab folder "Bezirk"
+        //tab folder "Bruck-Kapfenberg"
         final TabFolder tabFolder = new TabFolder(group, SWT.NONE);
         tabFolder.addSelectionListener(new SelectionListener() 
         {
