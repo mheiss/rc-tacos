@@ -1,14 +1,14 @@
 package at.rc.tacos.core.db.dao;
 
 import java.util.List;
-import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.CallerDetail;
 
 public interface CallerDAO 
 {
-	public int addCaller(NotifierDetail notifierDetail);
-	public void updateCaller(NotifierDetail notifierDetail);
-	public void removeCaller(NotifierDetail notifierDetail);
+	public int addCaller(CallerDetail notifierDetail);
+	public void updateCaller(CallerDetail notifierDetail);
+	public void removeCaller(CallerDetail notifierDetail);
 	
-	public NotifierDetail getCallerByID(String callerID);
-	public List<NotifierDetail> listCallers();
+	public CallerDetail getCallerByID(String callerID);
+	public List<CallerDetail> listCallers();
 }
