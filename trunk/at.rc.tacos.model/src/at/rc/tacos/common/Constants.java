@@ -67,7 +67,7 @@ public class Constants
         "22:30", "23:00", "23:30", "00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"};  
     
     /** Array of all jobs */
-    public static String[] job = {JOB_DRIVER, JOB_SANI, JOB_EMERGENCY, JOB_DOCTOR, JOB_DISPON, JOB_DF, JOB_BRKDT, JOB_INSP, JOB_BKTW_DRIVER, 
-    	JOB_JOURNAL, JOB_VOLON, JOB_OTHER};
+    public static String[] job = { JOB_DRIVER, JOB_SANI, JOB_EMERGENCY, JOB_DOCTOR, JOB_DISPON, JOB_DF, JOB_BRKDT, JOB_INSP, JOB_BKTW_DRIVER, 
+    	JOB_JOURNAL, JOB_VOLON, JOB_OTHER };
     
 }
