@@ -2,6 +2,8 @@ package at.rc.tacos.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+
 import at.rc.tacos.common.AbstractMessage;
 
 /**
@@ -13,15 +15,24 @@ public class RosterEntry extends AbstractMessage
     //unique identification string
     public final static String ID = "rosterEntry";
     
-	private long rosterId;
+    //Rückgabewerte:
+    //ro.roster_ID, lo.locationname, e.username, st.servicetype, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note
+	private int rosterId;
+	private String station;
+	private int stationId;
+	private int staffmemberId;
+	private String username;
 	private StaffMember staffMember;
 	private long plannedStartOfWork;
 	private long plannedEndOfWork;
 	private long realStartOfWork;
 	private long realEndOfWork;
-	private String station;
+
+	private int servicetypeId;
 	private String job;
+
 	private String servicetype;
+	private int jobId;
 	private String rosterNotes;
 	private boolean standby;	
 	
@@ -169,7 +180,7 @@ public class RosterEntry extends AbstractMessage
 	 * Returns the identification string of this member
 	 * @return the rosterId
 	 */
-	public long getRosterId() 
+	public int getRosterId() 
 	{
 		return rosterId;
 	}
@@ -179,7 +190,7 @@ public class RosterEntry extends AbstractMessage
 	 * @param rosterId the rosterId to set
 	 * @throws IllegalArgumentException if the id is negative
 	 */
-	public void setRosterId(long rosterId) 
+	public void setRosterId(int rosterId) 
 	{
 	    if(rosterId < 0)
 	        throw new IllegalArgumentException("The id cannot be negative");
@@ -335,6 +346,8 @@ public class RosterEntry extends AbstractMessage
 	}
 
 	/**
+<<<<<<< .mine
+=======
 	 * Returns the job of this staff member.<br>
 	 * The possible jobs are as follwed<br>
 	 * <ul>
@@ -371,6 +384,7 @@ public class RosterEntry extends AbstractMessage
 	}
 
 	/**
+>>>>>>> .r499
 	 * Returns the possible service type of this staff member.<br>
 	 * The possible service types are:
 	 * <ul>
@@ -459,5 +473,54 @@ public class RosterEntry extends AbstractMessage
             return true;
         return false;
     }
+
+    /**
+     * Sets wheter this entry is split up over one or more days.
+     * @param splitEntry the splitEntry to set
+     */
+//    public void setSplitEntry(boolean splitEntry)
+//    {
+//        this.splitEntry = splitEntry;
+//    }
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getStaffmemberId() {
+		return staffmemberId;
+	}
+
+	public void setstaffmemberId(int employeeId) {
+		this.staffmemberId = employeeId;
+	}
+
+	public int getServicetypeId() {
+		return servicetypeId;
+	}
+
+	public void setServicetypeId(int servicetypeId) {
+		this.servicetypeId = servicetypeId;
+	}
+
+	public int getJobId() {
+		return jobId;
+	}
+
+	public void setJobId(int jobId) {
+		this.jobId = jobId;
+	}
+
+	public int getStationId() {
+		return stationId;
+	}
+
+	public void setStationId(int stationId) {
+		this.stationId = stationId;
+	}
 }
 
