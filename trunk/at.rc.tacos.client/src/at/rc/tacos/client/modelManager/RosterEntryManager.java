@@ -130,9 +130,7 @@ public class RosterEntryManager extends DataManager
         List<RosterEntry> filteredList = new ArrayList<RosterEntry>();
         for(RosterEntry entry:objectList)
         {
-            if(Constants.STATION_BEZIRK.equalsIgnoreCase(station))//TODO
-                filteredList.add(entry);
-            else if (entry.getStation().equalsIgnoreCase(station))
+            if (entry.getStation().equalsIgnoreCase(station))
                 filteredList.add(entry);
         }
         return filteredList.toArray();
