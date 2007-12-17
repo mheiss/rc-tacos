@@ -21,7 +21,7 @@ public class TestDataSource
     //the test data
     public ArrayList<Item> itemList;
     public ArrayList<MobilePhoneDetail> phoneList;
-    public ArrayList<NotifierDetail> notifierList;
+    public ArrayList<CallerDetail> notifierList;
     public ArrayList<Patient> patientList;
     public ArrayList<RosterEntry> rosterList;
     public ArrayList<StaffMember> staffList;
@@ -70,10 +70,10 @@ public class TestDataSource
     
     private void initNotifiers()
     {
-        notifierList = new ArrayList<NotifierDetail>();
-        NotifierDetail n1 = new NotifierDetail("Notifer1","0664-123456789","Notes taken");
-        NotifierDetail n2 = new NotifierDetail("Notifer2","0784-1548154","Notes taken");
-        NotifierDetail n3 = new NotifierDetail("Notifer3","2147-123456789","Notes taken");
+        notifierList = new ArrayList<CallerDetail>();
+        CallerDetail n1 = new CallerDetail("Notifer1","0664-123456789","Notes taken");
+        CallerDetail n2 = new CallerDetail("Notifer2","0784-1548154","Notes taken");
+        CallerDetail n3 = new CallerDetail("Notifer3","2147-123456789","Notes taken");
         notifierList.add(n1);
         notifierList.add(n2);
         notifierList.add(n3);
@@ -118,7 +118,7 @@ public class TestDataSource
         t1.setPatient(patientList.get(0));
         t1.addStatus(1, new Date().getTime());
         t1.addStatus(2, new Date().getTime());
-        t1.setNotifierDetail(notifierList.get(0));
+        t1.setCallerDetail(notifierList.get(0));
         t1.setVehicleDetail(vehicleList.get(0));
         t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
         t1.setDirectness(IDirectness.TOWARDS_DISTRICT);
@@ -132,7 +132,7 @@ public class TestDataSource
         t2.setToNumber("number_to_2");
         t2.setToCity("city_to_2");
         t2.setPatient(patientList.get(1));
-        t2.setNotifierDetail(notifierList.get(1));
+        t2.setCallerDetail(notifierList.get(1));
         t2.setVehicleDetail(vehicleList.get(1));
         t2.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
         t2.setDirectness(IDirectness.TOWARDS_LEOBEN);
@@ -146,7 +146,7 @@ public class TestDataSource
         t3.setToNumber("number_to_3");
         t3.setToCity("city_to_3");
         t3.setPatient(patientList.get(2));
-        t3.setNotifierDetail(notifierList.get(2));
+        t3.setCallerDetail(notifierList.get(2));
         t3.setVehicleDetail(vehicleList.get(2));
         t3.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
         t3.setDirectness(IDirectness.TOWARDS_GRAZ);
