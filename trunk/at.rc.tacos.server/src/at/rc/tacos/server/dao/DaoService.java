@@ -13,7 +13,7 @@ import at.rc.tacos.core.db.dao.memory.UserDAOMemory;
 import at.rc.tacos.core.db.dao.memory.VehicleDetailDAOMemory;
 import at.rc.tacos.model.Item;
 import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
@@ -76,7 +76,7 @@ public class DaoService
         for(MobilePhoneDetail phone:source.phoneList)
             MobilePhoneDAOMemory.getInstance().addMobilePhone(phone);
         //add callers
-        for(NotifierDetail notifier:source.notifierList)
+        for(CallerDetail notifier:source.notifierList)
             NotifierDAOMemory.getInstance().addCaller(notifier);
         //add patients
         for(Patient patient:source.patientList)
