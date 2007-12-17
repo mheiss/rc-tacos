@@ -86,10 +86,18 @@ public class PersonalViewLabelProvider implements ITableLabelProvider
         case COLUMN_NOTES: return null;
         case COLUMN_NAME: return entry.getStaffMember().getLastname()+ " " + entry.getStaffMember().getFirstName();
         case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartOfWork()) + " - " + sdf.format(entry.getPlannedEndOfWork());
-        case COLUMN_CHECK_IN: return sdf.format(entry.getRealStartOfWork());
-        case COLUMN_CHECK_OUT: return sdf.format(entry.getRealEndOfWork());
+        case COLUMN_CHECK_IN: 
+        	if (entry.getRealStartOfWork()!= 0)
+        		return sdf.format(entry.getRealStartOfWork());
+        	else 
+        		return "";
+        case COLUMN_CHECK_OUT: 
+        	if (entry.getRealEndOfWork() != 0)
+        		return sdf.format(entry.getRealEndOfWork());
+        	else
+        		return "";
         case COLUMN_SERVICE_TYPE: return entry.getServicetype();
-        case COLUMN_JOB: return entry.getJob();//TODO ?
+        case COLUMN_JOB: return entry.getJob();
         case COLUMN_STATION: return entry.getStation();
         case COLUMN_VEHICLE: return "Auto";
         default: return null;
