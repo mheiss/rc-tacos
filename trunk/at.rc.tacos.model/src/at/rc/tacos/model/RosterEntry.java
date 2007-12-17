@@ -350,7 +350,6 @@ public class RosterEntry extends AbstractMessage
 	 * <li>BRKDT</li>
 	 * <li>BKTW- Fahrer</li>
 	 * <li>Journaldienst</li>
-	 * 
 	 * </ul>
 	 * @return the job
 	 */
@@ -367,7 +366,7 @@ public class RosterEntry extends AbstractMessage
 	public void setJob(String job) 
 	{
 	    if(job == null || job.trim().isEmpty())
-	        throw new IllegalArgumentException("The job canno be null or empty");
+	        throw new IllegalArgumentException("The job can not be null or empty");
 		this.job = job;
 	}
 
@@ -422,7 +421,7 @@ public class RosterEntry extends AbstractMessage
 	}
 
 	/**
-	 * Returns wheter or not the member is currently at home
+	 * Returns whether or not the member is currently at home
 	 * and in standby. <br>
 	 * The staff member is at home and must be called.
 	 * @return the status of the staff member
