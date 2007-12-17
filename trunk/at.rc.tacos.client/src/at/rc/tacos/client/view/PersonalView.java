@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -34,6 +35,7 @@ import at.rc.tacos.client.providers.PersonalViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.Constants;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
@@ -95,6 +97,13 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
         lockColumn.setWidth(30);
         lockColumn.setText("L");
+        
+//        //TableColumn[] lines = table.getColumns();
+//        for (int i = 0;i<=table.getColumnCount();i++)
+//        {
+//        	table.getItem(i).setForeground(SWTResourceManager.getColor(245, 245, 245));
+//        }
+//        
 
         final TableColumn newColumnTableColumnBereitschaftBezirkImDienst = new TableColumn(table, SWT.NONE);
         newColumnTableColumnBereitschaftBezirkImDienst.setToolTipText("Mitarbeiter auf Bereitschaft (Symbol, wenn der Fall)");
@@ -201,6 +210,14 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         {
             public void widgetSelected(final SelectionEvent e) 
             {
+            	
+            	//TableColumn[] lines = table.getColumns();
+                for (int i = 0;i<=table.getColumnCount();i++)
+                {
+                	if(table.getItem(i).getText(5).equalsIgnoreCase(""))
+                	table.getItem(i).setForeground(SWTResourceManager.getColor(185, 185, 185));
+                }
+                
                 int index = table.getSelectionIndex();
                 TableItem ti = table.getItem(index);
                 RosterEntry re = (RosterEntry)ti.getData();
@@ -209,7 +226,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
             }
         });
         menuItemCheckOut.setText("Abmelden");
-        menuItemCheckOut.setEnabled(false);//TODO change-----------
+//        menuItemCheckOut.setEnabled(false);//TODO change-----------
 
         new MenuItem(contextMenu, SWT.SEPARATOR);
 
