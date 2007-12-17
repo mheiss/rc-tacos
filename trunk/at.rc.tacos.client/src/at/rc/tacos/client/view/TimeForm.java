@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.controller.CreateRosterEntryAction;
 import at.rc.tacos.client.controller.UpdateRosterEntryAction;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 
@@ -99,6 +100,7 @@ public class TimeForm
 		shell.setSize(263, 200);
 		System.out.println("type: " +type);
 		shell.setText(type);
+		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
 
 		text = new Text(shell, SWT.BORDER);
 		final FormData fd_text = new FormData();
@@ -110,7 +112,7 @@ public class TimeForm
 		
 		//default time
 		GregorianCalendar gcal = new GregorianCalendar();
-		String time = gcal.get(GregorianCalendar.HOUR_OF_DAY)+ ":" +(gcal.get(GregorianCalendar.MINUTE));
+		String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 		text.setText(time);
 		text.selectAll();//mark the entry to overwrite easily
 
@@ -120,13 +122,13 @@ public class TimeForm
 		exitListener = new Listener() {
 			public void handleEvent(Event e) 
 			{
-				MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-				dialog.setText("Abbrechen");
-				dialog.setMessage("Wollen Sie wirklich abbrechen?");
-				if (e.type == SWT.Close) 
-					e.doit = false;
-				if (dialog.open() != SWT.YES) 
-					return;
+//				MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+//				dialog.setText("Abbrechen");
+//				dialog.setMessage("Wollen Sie wirklich abbrechen?");
+//				if (e.type == SWT.Close) 
+//					e.doit = false;
+//				if (dialog.open() != SWT.YES) 
+//					return;
 				shell.dispose();
 			}
 		};
@@ -292,6 +294,7 @@ public class TimeForm
 		fd_abbrechenButton.left = new FormAttachment(0, 144);
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
 		abbrechenButton.setText("Abbrechen");
+		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
 		abbrechenButton.addListener(SWT.Selection, exitListener);
 		//
 	}
