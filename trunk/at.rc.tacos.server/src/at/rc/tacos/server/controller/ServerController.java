@@ -280,8 +280,8 @@ public class ServerController
         protFactory.registerEncoder(Item.ID, new ItemEncoder());
         protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
         protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
-        protFactory.registerDecoder(NotifierDetail.ID, new NotifierDecoder());
-        protFactory.registerEncoder(NotifierDetail.ID, new NotifierEncoder());
+        protFactory.registerDecoder(CallerDetail.ID, new CallerDecoder());
+        protFactory.registerEncoder(CallerDetail.ID, new CallerEncoder());
         protFactory.registerDecoder(Patient.ID, new PatientDecoder());
         protFactory.registerEncoder(Patient.ID, new PatientEncoder());
         protFactory.registerDecoder(RosterEntry.ID, new RosterEntryDecoder());
@@ -311,7 +311,7 @@ public class ServerController
         //register the listeners
         factory.registerModelListener(Item.ID, new ItemListener());
         factory.registerModelListener(MobilePhoneDetail.ID, new MobilePhoneListener());
-        factory.registerModelListener(NotifierDetail.ID, new NotifyDetailListener());
+        factory.registerModelListener(CallerDetail.ID, new NotifyDetailListener());
         factory.registerModelListener(Patient.ID, new PatientListener());
         factory.registerModelListener(RosterEntry.ID, new RosterEntryListener());
         factory.registerModelListener(StaffMember.ID, new StaffMemberListener());
