@@ -156,8 +156,7 @@ public class RosterEntryForm implements PropertyChangeListener
         if(rosterEntry.getRosterNotes() != null)
             this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
         this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
-//        this.comboVerwendung.setText(rosterEntry.getJob());//TODO- doesn't work
-        this.comboVerwendung.setText("Sanitäter");
+        this.comboVerwendung.setText(rosterEntry.getJob());
         this.comboOrtsstelle.setText(rosterEntry.getStation());
         this.bereitschaftButton.setSelection(rosterEntry.getStandby());
         this.setEmployeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
