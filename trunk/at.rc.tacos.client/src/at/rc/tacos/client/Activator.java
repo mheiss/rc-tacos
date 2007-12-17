@@ -86,7 +86,7 @@ public class Activator extends AbstractUIPlugin
 	    //register the listeners
 	    factory.registerListener(Item.ID, new ItemListener());
 	    factory.registerListener(MobilePhoneDetail.ID, new MobilePhoneListener());
-	    factory.registerListener(NotifierDetail.ID, new NotifyDetailListener());
+	    factory.registerListener(CallerDetail.ID, new NotifyDetailListener());
 	    factory.registerListener(Patient.ID, new PatientListener());
 	    factory.registerListener(RosterEntry.ID, new RosterEntryListener());
 	    factory.registerListener(StaffMember.ID, new StaffMemberListener());
