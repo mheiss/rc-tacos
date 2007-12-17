@@ -101,8 +101,8 @@ public class NetWrapper extends Plugin implements INetListener
         protFactory.registerEncoder(Item.ID, new ItemEncoder());
         protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
         protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
-        protFactory.registerDecoder(NotifierDetail.ID, new NotifierDecoder());
-        protFactory.registerEncoder(NotifierDetail.ID, new NotifierEncoder());
+        protFactory.registerDecoder(CallerDetail.ID, new CallerDecoder());
+        protFactory.registerEncoder(CallerDetail.ID, new CallerEncoder());
         protFactory.registerDecoder(Patient.ID, new PatientDecoder());
         protFactory.registerEncoder(Patient.ID, new PatientEncoder());
         protFactory.registerDecoder(RosterEntry.ID, new RosterEntryDecoder());
