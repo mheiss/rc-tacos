@@ -75,10 +75,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider
     {
         RosterEntry entry = (RosterEntry)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        //TODO
-//        System.out.println("**********PersnalViewLabelProvider, simple date format, check in vor columns also long: " +entry.getRealStartOfWork());
-//        System.out.println("++++++++++PersonalViewlabelProvider, nach sdf: " +sdf.format(entry.getRealStartOfWork()));
-        
+    
         switch(columnIndex)
         {
         case COLUMN_LOCK: return null;
