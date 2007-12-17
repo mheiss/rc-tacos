@@ -11,7 +11,7 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.model.Item;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
@@ -124,8 +124,8 @@ public class WebClientTest
     {
         client.sendLoginRequest("testUser","P@ssw0rd");
         //send the request for the listing
-        resultList = client.sendListingRequest(NotifierDetail.ID, null);
-        Assert.assertEquals(NotifierDetail.ID, client.getContentType());
+        resultList = client.sendListingRequest(CallerDetail.ID, null);
+        Assert.assertEquals(CallerDetail.ID, client.getContentType());
         Assert.assertEquals(3, resultList.size()); 
     }
     
