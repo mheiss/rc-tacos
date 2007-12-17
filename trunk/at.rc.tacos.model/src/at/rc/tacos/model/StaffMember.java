@@ -2,6 +2,9 @@ package at.rc.tacos.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.sql.Date;
+import java.util.List;
+
 import at.rc.tacos.common.AbstractMessage;
 
 /**
@@ -17,9 +20,19 @@ public class StaffMember extends AbstractMessage
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);    
 
     private int personId;
+    private int primaryLocation;
     private String lastName;
     private String firstName;
+    private String streetname;
+    private String cityname;
+    private boolean sex;
+    private long birthday;
+    private List<String> phonenumber;
+    private String eMail;
+    private String authorization;
+    private Boolean islocked;
     private String userName;
+    
     private String function;
 
     /**
@@ -176,26 +189,95 @@ public class StaffMember extends AbstractMessage
         this.userName = userName;
     }
 
-    /**
-     * Sets the function of this staff member.<br>
-     * Note: This is only used during the enocde to xml.
-     * @param function the function of this member
-     * @throws IllegalArgumentException if the function is null or empty
-     */
-    public void setFunction(String function)
-    {
-        if(function == null || function.trim().isEmpty())
-            throw new IllegalArgumentException("The function cannot be null or empty");  
-        this.function = function;
-    }
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return propertyChangeSupport;
+	}
 
-    /**
-     * Returns the function of this staff member<br>
-     * Note: This is only used during the enocde to xml.
-     * @return the funtion
-     */
-    public String getFunction()
-    {
-        return function;
-    }
+	public void setPropertyChangeSupport(PropertyChangeSupport propertyChangeSupport) {
+		this.propertyChangeSupport = propertyChangeSupport;
+	}
+
+	public int getPrimaryLocation() {
+		return primaryLocation;
+	}
+
+	public void setPrimaryLocation(int primaryLocation) {
+		this.primaryLocation = primaryLocation;
+	}
+
+	public String getStreetname() {
+		return streetname;
+	}
+
+	public void setStreetname(String streetname) {
+		this.streetname = streetname;
+	}
+
+	public String getCityname() {
+		return cityname;
+	}
+
+	public void setCityname(String cityname) {
+		this.cityname = cityname;
+	}
+
+	public boolean isSex() {
+		return sex;
+	}
+
+	public void setSex(boolean sex) {
+		this.sex = sex;
+	}
+
+	public long getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(long birthday) {
+		this.birthday = birthday;
+	}
+
+	public List<String> getPhonenumber() {
+		return phonenumber;
+	}
+
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber.add(phonenumber);
+	}
+
+	public String getEMail() {
+		return eMail;
+	}
+
+	public void setEMail(String mail) {
+		eMail = mail;
+	}
+
+	public String getAuthorization() {
+		return authorization;
+	}
+
+	public void setAuthorization(String authorization) {
+		this.authorization = authorization;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public Boolean getIslocked() {
+		return islocked;
+	}
+
+	public void setIslocked(Boolean islocked) {
+		this.islocked = islocked;
+	}
+
+	public String getFunction() {
+		return function;
+	}
+
+	public void setFunction(String function) {
+		this.function = function;
+	}
 }

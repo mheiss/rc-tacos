@@ -1,5 +1,7 @@
 package at.rc.tacos.model;
 
+import java.util.List;
+
 import at.rc.tacos.common.AbstractMessage;
 
 
@@ -13,9 +15,18 @@ public class Patient extends AbstractMessage
     //unique identification string
     public final static String ID = "patient";
 
+    //Rückgabewerte:
+    //p.firstname, p.lastname, sex, birthday, t.transport_ID, s.streetname, sn.streetnumber, cy.cityname, cy.zipcode
     private long patientId;
     private String firstname;
     private String lastname;
+    private boolean sex;
+    private List<String> transportID;
+    private String streetname;
+    private String streetnumber;
+    private String cityname;
+    private int zipcode;
+    
 
     /**
      * Default class construtor
@@ -143,4 +154,52 @@ public class Patient extends AbstractMessage
             throw new IllegalArgumentException("Invalid lastname");
         this.lastname = lastname;
     }
+
+	public boolean isSex() {
+		return sex;
+	}
+
+	public void setSex(boolean sex) {
+		this.sex = sex;
+	}
+
+	public List<String> getTransportID() {
+		return transportID;
+	}
+
+	public void setTransportID(List<String> transportID) {
+		this.transportID = transportID;
+	}
+
+	public String getStreetname() {
+		return streetname;
+	}
+
+	public void setStreetname(String streetname) {
+		this.streetname = streetname;
+	}
+
+	public String getStreetnumber() {
+		return streetnumber;
+	}
+
+	public void setStreetnumber(String streetnumber) {
+		this.streetnumber = streetnumber;
+	}
+
+	public String getCityname() {
+		return cityname;
+	}
+
+	public void setCityname(String cityname) {
+		this.cityname = cityname;
+	}
+
+	public int getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(int zipcode) {
+		this.zipcode = zipcode;
+	}
 }

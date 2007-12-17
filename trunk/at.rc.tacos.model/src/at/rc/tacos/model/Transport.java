@@ -16,7 +16,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     //unique identification string
     public final static String ID = "transport";
 
+    //Rückgabewerte:
+    //t.transport_ID, d.direction, dis.disease, t.diseasenote, t.priority, t.feedback, t.creationDate, t.departure,
+    //t.appointment, t.appointmentPatient, t.ambulant_stationary, t.assistant, t.transportstate, tt.transporttype,
+    //ca.callername, ca.caller_phonenumber, ca.caller_note, no.name AS notyfied, tn.date AS notyficationDate,
     private long transportId;
+    private String direction;
     private String fromStreet;
     private String fromNumber;
     private String fromCity;
@@ -30,6 +35,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private boolean accompanyingPerson;
     private boolean emergencyPhone;
     private String kindOfIllness;
+    private String diseaseNotes;
     private String transportNotes;
     private String responsibleStation;
     private String realStation;
