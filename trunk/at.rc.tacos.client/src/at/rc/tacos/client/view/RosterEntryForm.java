@@ -33,6 +33,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StaffComboContentProvider;
 import at.rc.tacos.client.providers.StaffComboLabelProvider;
 import at.rc.tacos.common.Constants;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
@@ -98,11 +99,7 @@ public class RosterEntryForm implements PropertyChangeListener
         //update an entry
         createNew = false;
         this.rosterEntry = rosterEntry;
-        System.out.println("-------------------1");
-        
-        System.out.println("am beginn von RosterEntryForm(RosterEntry), realStartOfWork: " +rosterEntry.getRealStartOfWork());
-        System.out.println("am beginn von RosterEntryForm(RosterEntry), realEndOfWork: " +rosterEntry.getRealEndOfWork());
-
+       
         //create the fields
         createContents();
 
@@ -119,7 +116,7 @@ public class RosterEntryForm implements PropertyChangeListener
 	        String anmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 	        this.timeAnmeldung.setText(anmeldungTime);
         }
-        System.out.println("-------------------2");
+        
         //check out
         if(rosterEntry.getRealEndOfWork() != 0)
         {
@@ -144,14 +141,14 @@ public class RosterEntryForm implements PropertyChangeListener
 
         String realStartTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         this.timeDienstVon.setText(realStartTime);
-        System.out.println("-------------------3");
+        
         //planned end of work
         gcal.setTimeInMillis(rosterEntry.getPlannedEndOfWork());
         String plannedEndDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
         this.dateDienstBis.setText(plannedEndDate);
         String plannedEndTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         this.timeDienstBis.setText(plannedEndTime);
-        System.out.println("-------------------4");
+
         //other fields
         if(rosterEntry.getRosterNotes() != null)
             this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
@@ -160,7 +157,6 @@ public class RosterEntryForm implements PropertyChangeListener
         this.comboOrtsstelle.setText(rosterEntry.getStation());
         this.bereitschaftButton.setSelection(rosterEntry.getStandby());
         this.setEmployeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
-        System.out.println("-------------------5");
     }
 
 
@@ -170,7 +166,6 @@ public class RosterEntryForm implements PropertyChangeListener
      */
     public void open() 
     {
-    	 System.out.println("-------------------6 - im open");
         shell.open();
     }
 
@@ -204,7 +199,7 @@ public class RosterEntryForm implements PropertyChangeListener
 
         //GUI
         shell = new Shell();
-//      shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+        shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
         shell.setSize(591, 512);
         shell.setText("Dienstplaneintrag");
 
@@ -309,6 +304,12 @@ public class RosterEntryForm implements PropertyChangeListener
         group = new Group(shell, SWT.NONE);
         group.setText("Tatsächliche Dienstzeiten");
         group.setBounds(10, 328, 559, 110);
+        
+        if (createNew)
+        {
+        	group.setEnabled(false);
+        	group.setVisible(false);
+        }
 
 
         timeAnmeldung = new Text(group, SWT.NONE);
@@ -335,7 +336,7 @@ public class RosterEntryForm implements PropertyChangeListener
         group.setTabList(new Control[] {timeAnmeldung, dateAnmeldung, timeAbmeldung, dateAbmeldung});
 
         abbrechenButton = new Button(shell, SWT.NONE);
-//      abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
+        abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
         abbrechenButton.setBounds(473, 445, 96, 23);
         abbrechenButton.setText("Abbrechen");
         abbrechenButton.addListener(SWT.Selection, exitListener);
@@ -443,12 +444,11 @@ public class RosterEntryForm implements PropertyChangeListener
                 if(createNew)
                 {
                     rosterEntry = new RosterEntry(staffMember,servicetype,job,station,plannedStartOfWork, plannedEndOfWork);
+                    rosterEntry.setRosterNotes(rosterNotes);
+                    rosterEntry.setStandby(standbyState);
                     //create and run the add action
                     CreateRosterEntryAction newAction = new CreateRosterEntryAction(rosterEntry);
                     newAction.run();
-                    System.out.println("timeAnmeldung (textfeld des formulars) in der create new---------------: " +timeRealStartOfWork);
-                    System.out.println("real start of work (long)in der create new---------------: " +realStartOfWork);//TODO
-                    System.out.println("real end of work (long)in der create new---------------: " +realEndOfWork);//TODO
                 }
                 else
                 {
