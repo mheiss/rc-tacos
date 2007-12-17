@@ -98,6 +98,7 @@ public class RosterEntryForm implements PropertyChangeListener
         //update an entry
         createNew = false;
         this.rosterEntry = rosterEntry;
+        System.out.println("-------------------1");
         
         System.out.println("am beginn von RosterEntryForm(RosterEntry), realStartOfWork: " +rosterEntry.getRealStartOfWork());
         System.out.println("am beginn von RosterEntryForm(RosterEntry), realEndOfWork: " +rosterEntry.getRealEndOfWork());
@@ -118,7 +119,7 @@ public class RosterEntryForm implements PropertyChangeListener
 	        String anmeldungTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 	        this.timeAnmeldung.setText(anmeldungTime);
         }
-
+        System.out.println("-------------------2");
         //check out
         if(rosterEntry.getRealEndOfWork() != 0)
         {
@@ -143,22 +144,24 @@ public class RosterEntryForm implements PropertyChangeListener
 
         String realStartTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         this.timeDienstVon.setText(realStartTime);
-
+        System.out.println("-------------------3");
         //planned end of work
         gcal.setTimeInMillis(rosterEntry.getPlannedEndOfWork());
         String plannedEndDate = gcal.get(GregorianCalendar.DATE)+ "." +(gcal.get(GregorianCalendar.MONTH)+1) +"." +gcal.get(GregorianCalendar.YEAR);
         this.dateDienstBis.setText(plannedEndDate);
         String plannedEndTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         this.timeDienstBis.setText(plannedEndTime);
-
+        System.out.println("-------------------4");
         //other fields
         if(rosterEntry.getRosterNotes() != null)
             this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
         this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
-        this.comboVerwendung.setText(rosterEntry.getJob());
+//        this.comboVerwendung.setText(rosterEntry.getJob());//TODO- doesn't work
+        this.comboVerwendung.setText("Sanitäter");
         this.comboOrtsstelle.setText(rosterEntry.getStation());
         this.bereitschaftButton.setSelection(rosterEntry.getStandby());
         this.setEmployeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
+        System.out.println("-------------------5");
     }
 
 
@@ -168,6 +171,7 @@ public class RosterEntryForm implements PropertyChangeListener
      */
     public void open() 
     {
+    	 System.out.println("-------------------6 - im open");
         shell.open();
     }
 
