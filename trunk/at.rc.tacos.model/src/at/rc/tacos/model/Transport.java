@@ -25,7 +25,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private String toNumber;
     private String toCity;
     private String kindOfTransport;
-    private NotifierDetail notifierDetail;
+    private CallerDetail callerDetail;
     private boolean backTransport;
     private boolean accompanyingPerson;
     private boolean emergencyPhone;
@@ -337,21 +337,21 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @return the notifierDetail
+     * @return the callerDetail
      */
-    public NotifierDetail getNotifierDetail() 
+    public CallerDetail getCallerDetail() 
     {
-        return notifierDetail;
+        return callerDetail;
     }
 
     /**
-     * @param notifierDetail the notifierDetail to set
+     * @param callerDetail the callerDetail to set
      */
-    public void setNotifierDetail(NotifierDetail notifierDetail) 
+    public void setCallerDetail(CallerDetail callerDetail) 
     {
-        if(notifierDetail == null)
-            throw new IllegalArgumentException("The notifierDetail cannot be null");
-        this.notifierDetail = notifierDetail;
+        if(callerDetail == null)
+            throw new IllegalArgumentException("The callerDetail cannot be null");
+        this.callerDetail = callerDetail;
     }
 
     /**
