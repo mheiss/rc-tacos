@@ -3,7 +3,7 @@ package at.rc.tacos.server.listener;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.CallerDAO;
-import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.server.dao.DaoService;
 
@@ -21,7 +21,7 @@ public class NotifyDetailListener extends ServerListenerAdapter
     @Override
     public AbstractMessage handleAddRequest(AbstractMessage addObject)
     {
-        NotifierDetail detail = (NotifierDetail)addObject;
+        CallerDetail detail = (CallerDetail)addObject;
         callerDao.addCaller(detail);
         return detail;
     }
@@ -43,7 +43,7 @@ public class NotifyDetailListener extends ServerListenerAdapter
     @Override
     public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
     {
-        NotifierDetail detail = (NotifierDetail)removeObject;
+        CallerDetail detail = (CallerDetail)removeObject;
         callerDao.removeCaller(detail);
         return detail;
     }
@@ -54,7 +54,7 @@ public class NotifyDetailListener extends ServerListenerAdapter
     @Override
     public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
     {
-        NotifierDetail detail = (NotifierDetail)updateObject;
+        CallerDetail detail = (CallerDetail)updateObject;
         callerDao.updateCaller(detail);
         return detail;
     }
