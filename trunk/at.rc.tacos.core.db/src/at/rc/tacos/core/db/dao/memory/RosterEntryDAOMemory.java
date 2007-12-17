@@ -47,7 +47,7 @@ public class RosterEntryDAOMemory implements RosterDAO
     }
 
     @Override
-    public int addRosterEntry(RosterEntry entry)
+    public Integer addRosterEntry(RosterEntry entry)
     {
         rosterList.add(entry);
         return rosterList.size();
