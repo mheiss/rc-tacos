@@ -8,7 +8,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
-import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -34,11 +34,11 @@ public class TransportDecoder implements MessageDecoder
                 if(Transport.ID.equalsIgnoreCase(startName))
                     transport = new Transport();
                 //get the notifier details
-                if(NotifierDetail.ID.equalsIgnoreCase(startName))
+                if(CallerDetail.ID.equalsIgnoreCase(startName))
                 {
                     //get the decoder for the staff
-                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(NotifierDetail.ID);
-                    transport.setNotifierDetail((NotifierDetail)decoder.doDecode(reader));
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(CallerDetail.ID);
+                    transport.setCallerDetail((CallerDetail)decoder.doDecode(reader));
                 }
                 //get the patient details
                 if(Patient.ID.equalsIgnoreCase(startName))
