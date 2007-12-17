@@ -75,7 +75,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider
     {
         RosterEntry entry = (RosterEntry)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-    
+        
         switch(columnIndex)
         {
         case COLUMN_LOCK: return null;
