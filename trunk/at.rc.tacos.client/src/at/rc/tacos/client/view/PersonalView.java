@@ -67,7 +67,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         group.setText("Dienstplan");
 
 
-        //tab folder "Bruck-Kapfenberg"
+        //tab folder "Bruck - Kapfenberg"
         final TabFolder tabFolder = new TabFolder(group, SWT.NONE);
         tabFolder.addSelectionListener(new SelectionListener() 
         {
@@ -210,13 +210,13 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         {
             public void widgetSelected(final SelectionEvent e) 
             {
-            	
-            	//TableColumn[] lines = table.getColumns();
-                for (int i = 0;i<=table.getColumnCount();i++)
-                {
-                	if(table.getItem(i).getText(5).equalsIgnoreCase(""))
-                	table.getItem(i).setForeground(SWTResourceManager.getColor(185, 185, 185));
-                }
+            	//TODO move
+//                for (int i = 0;i<=table.getColumnCount();i++)
+//                {
+//                	if(table.getItem(i).getText(5).equalsIgnoreCase(""))
+//                	table.getItem(i).setForeground(SWTResourceManager.getColor(185, 185, 185));
+//                }
+                
                 
                 int index = table.getSelectionIndex();
                 TableItem ti = table.getItem(index);
