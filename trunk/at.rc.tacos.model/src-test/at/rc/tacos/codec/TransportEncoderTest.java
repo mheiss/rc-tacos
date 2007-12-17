@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.NotifierDetail;
+import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.TestDataSource;
@@ -30,7 +30,7 @@ public class TransportEncoderTest
         writer = xmlof.createXMLStreamWriter(new StringWriter());
         //register needed encoders
         ProtocolCodecFactory.getDefault().registerEncoder(Patient.ID,new PatientEncoder());
-        ProtocolCodecFactory.getDefault().registerEncoder(NotifierDetail.ID,new NotifierEncoder());
+        ProtocolCodecFactory.getDefault().registerEncoder(CallerDetail.ID,new CallerEncoder());
         ProtocolCodecFactory.getDefault().registerEncoder(VehicleDetail.ID,new VehicleEncoder());
         ProtocolCodecFactory.getDefault().registerEncoder(StaffMember.ID, new StaffMemberEncoder());
         ProtocolCodecFactory.getDefault().registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
