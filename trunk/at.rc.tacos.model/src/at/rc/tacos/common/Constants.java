@@ -51,7 +51,7 @@ public class Constants
     
     /** Array of all available stations */
     public static String [] stations = { STATION_BEZIRK , STATION_KAPFENBERG , STATION_BRUCK ,
-        STATION_MAREIN, STATION_THOERL , STATION_THOERL ,STATION_BREITENAU };
+        STATION_MAREIN, STATION_THOERL , STATION_TURNAU ,STATION_BREITENAU };
     
     /** Array of all competence types */
     public static String [] competence = { COMPETENCE_DRIVER, COMPETENCE_SANI, COMPETENCE_EXECUTIVE_1, COMPETENCE_EXECUTIVE_2, COMPETENCE_EXECUTIVE_3,
