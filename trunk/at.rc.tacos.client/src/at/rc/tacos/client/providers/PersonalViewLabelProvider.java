@@ -76,8 +76,8 @@ public class PersonalViewLabelProvider implements ITableLabelProvider
         RosterEntry entry = (RosterEntry)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         //TODO
-        System.out.println("**********PersnalViewLabelProvider, simple date format, check in vor columns also long: " +entry.getRealStartOfWork());
-        System.out.println("++++++++++PersonalViewlabelProvider, nach sdf: " +sdf.format(entry.getRealStartOfWork()));
+//        System.out.println("**********PersnalViewLabelProvider, simple date format, check in vor columns also long: " +entry.getRealStartOfWork());
+//        System.out.println("++++++++++PersonalViewlabelProvider, nach sdf: " +sdf.format(entry.getRealStartOfWork()));
         
         switch(columnIndex)
         {
@@ -89,7 +89,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider
         case COLUMN_CHECK_IN: return sdf.format(entry.getRealStartOfWork());
         case COLUMN_CHECK_OUT: return sdf.format(entry.getRealEndOfWork());
         case COLUMN_SERVICE_TYPE: return entry.getServicetype();
-        case COLUMN_JOB: return entry.getJob();
+        case COLUMN_JOB: return entry.getJob();//TODO ?
         case COLUMN_STATION: return entry.getStation();
         case COLUMN_VEHICLE: return "Auto";
         default: return null;
