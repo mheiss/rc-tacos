@@ -26,26 +26,26 @@ public class ClientHandler implements INetListener
         ArrayList<AbstractMessage> objects = xmlFactory.decode();
 
         //get the type of the item
+        final String userId = xmlFactory.getUserId();
         final String contentType = xmlFactory.getContentType();
         final String queryString = xmlFactory.getQueryString();
-        final String userId = xmlFactory.getUserId();
         final QueryFilter queryFilter = xmlFactory.getQueryFilter();
-        //check if the client is authenticated or not
-        final boolean isAuthenticated = ServerController.getDefault().isAuthenticated(ne.getClient());
-
-        //the listener class to handle the request
-        ServerController server = ServerController.getDefault();
-        ServerListenerFactory factory = ServerListenerFactory.getInstance();
-        IServerListener listener = factory.getListener(contentType);
-
+        
+        //the server controller,
+        final ServerController server = ServerController.getDefault();
+        final ServerListenerFactory factory = ServerListenerFactory.getInstance();
+        final IServerListener listener = factory.getListener(contentType);
+        
+        //the client connection
+        final ClientSession session = server.getSession(ne.getClient());
         System.out.println("Got a new request from "+userId+" to handle: "+contentType + "->"+queryString);  
         
         //the client is not authenticated, no login request -> not accepted
-        if(!isAuthenticated &! Login.ID.equalsIgnoreCase(contentType))
+        if(!session.isAuthenticated() &! Login.ID.equalsIgnoreCase(contentType))
         {
             System.out.println("Client not authenticated, login first");
             SystemMessage system = new SystemMessage("Client not authenticated, login first");
-            server.sendMessage(ne.getClient(),SystemMessage.ID,IModelActions.SYSTEM,system);
+            server.sendMessage(session,SystemMessage.ID,IModelActions.SYSTEM,system);
             return;
         }
         
@@ -55,7 +55,7 @@ public class ClientHandler implements INetListener
             System.out.println("No listener found for the message type: "+contentType);
             //notify the sender
             SystemMessage sysMess = new SystemMessage("No listener found for the message type: "+contentType);
-            server.sendMessage(userId,SystemMessage.ID,IModelActions.SYSTEM,sysMess);
+            server.sendMessage(session,SystemMessage.ID,IModelActions.SYSTEM,sysMess);
             return;
         }
 
@@ -66,38 +66,19 @@ public class ClientHandler implements INetListener
             Login loginResult = (Login)listener.handleLoginRequest(objects.get(0));
             //add the client to the authenticated list
             if(loginResult.isLoggedIn())
-            {
-                //check if the user is already logged in?
-                if(server.hasOpenConnections(userId))
-                {
-                    System.out.println("Multiple login detected");
-                    //send a logout message
-                    Logout logout = new Logout(userId);
-                    logout.setLoggedOut(true);
-                    logout.setErrorMessage("Dieser Account wird auf einem anderen Computer benutzt.");
-                    server.sendMessage(userId, Logout.ID, IModelActions.LOGOUT, logout);
-                }
-                //authenticate the user with the new socket
-                ServerController.getDefault().setAuthenticated(
-                        loginResult.getUsername(), 
-                        ne.getClient());
-                //notify the sender that the login was successfully
-                server.sendMessage(userId, contentType, queryString, loginResult);
-            }
-            else
-            {
-                //notify the sender that the login failed
-                server.sendMessage(ne.getClient(),contentType,queryString,loginResult);
-            }
+                session.setAuthenticated(loginResult.getUsername(),loginResult.isWebClient());
+            System.out.println("Web client? --> "+loginResult.isWebClient());
+            //notify the sender about the result
+            server.sendMessage(session,contentType,queryString,loginResult);
         }
         //logout request
         else if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
         {
             Logout logoutResult = (Logout)listener.handleLogoutRequest(objects.get(0));
-            server.sendMessage(userId, contentType, queryString, logoutResult);
             //remove the client form the list of authenticated clients if successfully
             if(logoutResult.isLoggedOut())
-                ServerController.getDefault().setDeAuthenticated(logoutResult.getUsername());
+                session.setDeAuthenticated();
+            server.sendMessage(session, contentType, queryString, logoutResult);
         }
         //add request
         else if(IModelActions.ADD.equalsIgnoreCase(queryString))
@@ -126,20 +107,20 @@ public class ClientHandler implements INetListener
             {
                 ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest(queryFilter);
                 //send the listing
-                server.sendMessage(userId, contentType, queryString, resultMessageList);
+                server.sendMessage(session, contentType, queryString, resultMessageList);
             }
             catch(Exception e)
             {
                 SystemMessage system = new SystemMessage("Error while listing of "+contentType+" entries: "+e.getMessage());
                 e.printStackTrace();
-                server.sendMessage(userId, SystemMessage.ID, IModelActions.SYSTEM, system);  
+                server.sendMessage(session, SystemMessage.ID, IModelActions.SYSTEM, system);  
             }
         }
         else
         {   
             System.out.println("No handler found for queryString: "+queryString);
             SystemMessage sysMes = new SystemMessage("No handler found for queryString: "+queryString);
-            server.sendMessage(userId,SystemMessage.ID,IModelActions.SYSTEM,sysMes);
+            server.sendMessage(session,SystemMessage.ID,IModelActions.SYSTEM,sysMes);
         }   
     }
 
