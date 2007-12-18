@@ -130,7 +130,7 @@ public class WebClient
     public AbstractMessage sendLoginRequest(String username,String password)
     {
         //create a login object
-        Login login = new Login(username,password);
+        Login login = new Login(username,password,true);
         //store the username
         sessionUserId = username;
         //send the request
@@ -307,6 +307,10 @@ public class WebClient
             return null;
         }
     }
+    
+    /**
+     * 
+     */
 
     /**
      * Convenience method to registers the encoders and decoders.
