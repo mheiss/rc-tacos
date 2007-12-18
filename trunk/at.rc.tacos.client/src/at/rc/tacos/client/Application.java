@@ -25,7 +25,7 @@ public class Application implements IApplication
         //TODO: insert login dialog and authenticate the user
         //TODO: check for ServerConnection and shutdown if not
         NetWrapper.getDefault().setSessionUsername("user3");
-        NetWrapper.getDefault().sendLoginMessage(new Login("user3","P@ssw0rd"));
+        NetWrapper.getDefault().sendLoginMessage(new Login("user3","P@ssw0rd",false));
         //try to load workbench
         try 
         {
