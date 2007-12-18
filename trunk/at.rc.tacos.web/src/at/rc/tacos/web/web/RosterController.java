@@ -35,7 +35,7 @@ public class RosterController implements Controller
 
 		if("doRosterEntry".equalsIgnoreCase(action))
 		{
-			String staffId = request.getParameter("employee");
+			String staffId = request.getParameter("job");
 			//request the staff member
 			resultList = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,staffId));	
 			StaffMember staffMember = (StaffMember)resultList.get(0); 
@@ -69,10 +69,10 @@ public class RosterController implements Controller
 			long plannedStartOfWork = startEntry.getTimeInMillis();
 			long plannedEndOfWork = endEntry.getTimeInMillis();
 			String station = request.getParameter("station");
-			String competence = request.getParameter("competence");
+			String job = request.getParameter("job");
 			String servicetype = request.getParameter("service");
 
-			RosterEntry entry = new RosterEntry(staffMember,servicetype,competence,station,plannedStartOfWork,plannedEndOfWork);
+			RosterEntry entry = new RosterEntry(staffMember,servicetype,job,station,plannedStartOfWork,plannedEndOfWork);
 			client.sendAddRequest(RosterEntry.ID, entry);
 			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
 			{
