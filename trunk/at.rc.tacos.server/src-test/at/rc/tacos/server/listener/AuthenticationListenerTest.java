@@ -28,14 +28,14 @@ public class AuthenticationListenerTest
     @Test
     public void testLoginSuccessfully()
     {
-        Login login = listener.handleLoginRequest(new Login("user1","P@ssw0rd"));
+        Login login = listener.handleLoginRequest(new Login("user1","P@ssw0rd",false));
         Assert.assertTrue(login.isLoggedIn());
     }
     
     @Test
     public void testLoginFailed()
     {
-        Login login = listener.handleLoginRequest(new Login("user12","test"));
+        Login login = listener.handleLoginRequest(new Login("user12","test",false));
         Assert.assertFalse(login.isLoggedIn());
     }
 }

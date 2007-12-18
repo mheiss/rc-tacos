@@ -1,7 +1,6 @@
 package at.rc.tacos.server.controller;
 
 import java.util.*;
-import java.util.Map.Entry;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.core.net.internal.*;
@@ -16,10 +15,8 @@ public class ServerController
     //the shared instance
     private static ServerController serverController;
 
-    //this pool contains all connections that are not authenticated
-    private List<MyClient> connClientPool;  
-    //authenticated clients (loged in clients)
-    private Map<String,MyClient> authClientPool;
+    //this pool contains all client connections form the application
+    private List<ClientSession> connClientPool;
 
     /**
      * Default private class constructor.<br>
@@ -29,8 +26,7 @@ public class ServerController
     private ServerController()
     {
         //init the pools
-        connClientPool = new ArrayList<MyClient>();
-        authClientPool = new HashMap<String, MyClient>();
+        connClientPool = new ArrayList<ClientSession>();
         //register the encoders and decoders
         registerEncoderAndDecoder();
         registerModelListeners();
@@ -52,15 +48,15 @@ public class ServerController
 
     /**
      * Invoked when a new client is connected to the server.<br>
-     * The client will be put into the connected client pool 
-     * and cannot interact with other clients until the authentication
-     * is successfully.
-     * @param client the connected client
+     * A new session will be created, the connection must first be
+     * authenticated to interact with the server.
+     * @param client the new conneted client
      */
     public void clientConnected(MyClient client)
     {
-        System.out.println("Adding new client to pool");
-        connClientPool.add(client);
+        System.out.println("Creating new session");
+        ClientSession session = new ClientSession(client);
+        connClientPool.add(session);
     }
 
     /**
@@ -71,102 +67,33 @@ public class ServerController
      * @param client the disconnected client
      */
     public void clientDisconnected(MyClient client)
-    {
-        //check the connClientPool
-        if(connClientPool.contains(client))
-        {
-            System.out.println("Removing client from pool");
-            connClientPool.remove(client);
-            return;
-        }
-        //check the authClientPool
-        if(!authClientPool.containsValue(client))
-            return;
-        String clientId = "";
-        //loop and serarch for the id
-        for(Entry<String,MyClient> entry:authClientPool.entrySet())
-        {
-            //check the client
-            if(client == entry.getValue())
-            {
-                clientId = entry.getKey();
-                //remove the client
-                authClientPool.remove(clientId);
-                //brodcast the message to all other authenticated clients
-                brodcastMessage(
-                        "systen",
-                        SystemMessage.ID,
-                        IModelActions.SYSTEM,
-                        new SystemMessage("Client "+clientId +" disconnected"));
-            }
-        }
+    { 
+        //get the user session
+        ClientSession session = getSession(client);
 
+        //check the pool
+        if(connClientPool.contains(session))
+        {
+            connClientPool.remove(session);
+            //brodcast the message to all other authenticated clients
+            brodcastMessage("system",SystemMessage.ID, IModelActions.SYSTEM,
+                    new SystemMessage("Client "+session.getUsername() +" disconnected"));
+        }
     }
 
     /**
-     *  Authentication of the client was successfully, the client
-     *  will be moved to the authenticated client pool.
-     *  @param userId the identification of the authenticated user
-     *  @param client the client connection
+     * Returns the session object for this client connection
+     * @param connection the connection to get the session from
+     * @return the session object or null if no session is available
      */
-    public void setAuthenticated(String userId,MyClient client)
+    public ClientSession getSession(MyClient connection)
     {
-        System.out.println("Adding "+ userId+" to the authenticated pool");
-        //remove the client form the conClientPool
-        connClientPool.remove(client);
-        //add to the authenticated pool
-        authClientPool.put(userId, client);
-    }
-
-    /**
-     * Logout of the client was successfully, the client will be removed
-     * from the authenticated pool.
-     * @param userId the identification of the user who logged out
-     */
-    public void setDeAuthenticated(String userId)
-    {
-        authClientPool.remove(userId);
-    }
-
-    /**
-     * Returns the authentication id of the client object
-     * @param client the client connection
-     * @return the identification string
-     */
-    public String getAuthenticationString(MyClient client)
-    {
-        //loop and serarch for the id
-        for(Entry<String,MyClient> entry:authClientPool.entrySet())
+        for(ClientSession session:connClientPool)
         {
-            //check the client
-            if(client == entry.getValue())
-                return entry.getKey();
+            if(session.getConnection() == connection)
+                return session;
         }
-        //nothing found
         return null;
-    }
-    
-    /**
-     * Returns wheter or not the given userid has already a open connection.
-     * @param userId the username of the connection to check
-     * @return true if a connection has been found
-     */
-    public boolean hasOpenConnections(String userId)
-    {
-        if(authClientPool.containsKey(userId))
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * Returns wheter or not the given client is authenticated or not
-     * @param client the client connection to check
-     * @return true if the client is authenticated
-     */
-    public boolean isAuthenticated(MyClient client)
-    {
-        return authClientPool.containsValue(client);
     }
 
     /**
@@ -184,10 +111,15 @@ public class ServerController
         factory.setupEncodeFactory(userId,contentType,queryString);
         String message = factory.encode(objectList);
         //loop over the client pool and send the message
-        for(MyClient client:authClientPool.values()) 
+        for(ClientSession session:connClientPool)
         {
-            client.sendMessage(message);
-            System.out.println("Sending brodcast reply for "+userId+" : "+contentType+"->"+queryString);
+            //Send the message to all authenticated clients, except the web clients
+            if(session.isAuthenticated() &! session.isWebClient())
+            {
+                MyClient client = session.getConnection();
+                client.sendMessage(message);
+                System.out.println("Sending reply to "+session.getUsername()+" -> "+userId+" : "+contentType+"->"+queryString);
+            }
         }
     }
 
@@ -210,63 +142,40 @@ public class ServerController
 
     /**
      *  Encodes the message into xml and sends the message to the client.
-     *  @param userId the identification of the target client.
+     *  @param session the session to send the message to
      *  @param contentType the type of the message content
      *  @param queryString the type of the query
      *  @param objectList a list of objects to send
      */
-    public synchronized void sendMessage(String userId,String contentType,String queryString, ArrayList<AbstractMessage> objectList)
+    public synchronized void sendMessage(ClientSession session,String contentType,String queryString, ArrayList<AbstractMessage> objectList)
     {
-        //get the client socket to send the message
-        if(authClientPool.containsKey(userId))
-        {
-            MyClient client = authClientPool.get(userId);
-            //set up the factory
-            XMLFactory factory = new XMLFactory();
-            factory.setupEncodeFactory(userId,contentType,queryString);
-            //encode and send
-            client.sendMessage(factory.encode(objectList));
-            System.out.println("Sending reply for "+userId+" : "+contentType+"->"+queryString);
-        }   
-        else
-            System.out.println("Failed to get the client connection for: "+userId);
+        MyClient connection = session.getConnection();
+        String userId = session.getUsername();
+        //When we have no user id then set it to system
+        if(userId == null)
+            userId = "system";
+        //set up the factory
+        XMLFactory factory = new XMLFactory();
+        factory.setupEncodeFactory(userId,contentType,queryString);
+        //encode and send
+        connection.sendMessage(factory.encode(objectList));
+        System.out.println("Sending reply "+userId+" : "+contentType+"->"+queryString);
     }
 
     /**
      *  Encodes the message into xml and sends the message to the client.
-     *  @param userId the identification of the target client.
+     *  @param session the session to send the message to
      *  @param contentType the type of the message content
      *  @param queryString the type of the query
      *  @param object the message to send
      */
-    public synchronized void sendMessage(String userId,String contentType,String queryString, AbstractMessage object)
+    public synchronized void sendMessage(ClientSession session,String contentType,String queryString, AbstractMessage object)
     {
         //create list
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         list.add(object);
         //delegate
-        sendMessage(userId, contentType, queryString, list);
-    }
-    
-    /**
-     * Sends a message to the given client object.<br>
-     * This method should only be used to communicate with
-     * unregistered clients.
-     * @param client the client to send the message to
-     * @param contentType the type of the content
-     * @param queryString the query string to send
-     * @param message the message to send
-     */
-    public synchronized void sendMessage(MyClient client,String contentType,String queryString,AbstractMessage message)
-    {
-        //create list
-        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.add(message);
-        //set up the factory
-        XMLFactory factory = new XMLFactory();
-        factory.setupEncodeFactory("server",contentType,queryString);
-        //send the message
-        client.sendMessage(factory.encode(list));
+        sendMessage(session, contentType, queryString, list);
     }
 
     /**
