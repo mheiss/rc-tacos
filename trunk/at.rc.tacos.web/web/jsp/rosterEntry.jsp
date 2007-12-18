@@ -111,12 +111,11 @@
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">RK-Dienst:&nbsp;</td>
-											<td><select name="competence" id="rosterViewDayHeadSelbox">
+											<td><select name="job" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.COMPETENCE_DISPON%></option>
 												<option><%=Constants.COMPETENCE_DOCTOR%></option>
 												<option><%=Constants.COMPETENCE_DRIVER%></option>
 												<option><%=Constants.COMPETENCE_EMERGENCY.replaceAll("ä","&auml;")%></option>
-												<option><%=Constants.COMPETENCE_HELPER%></option>
 												<option><%=Constants.COMPETENCE_OTHER%></option>
 												<option><%=Constants.COMPETENCE_SANI.replaceAll("ä","&auml;")%></option>
 											</select></td>
