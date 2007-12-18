@@ -33,6 +33,11 @@ public class LoginEncoder implements MessageEncoder
         writer.writeCharacters(String.valueOf(login.isLoggedIn()));
         writer.writeEndElement();
         
+        //write the element
+        writer.writeStartElement("webClient");
+        writer.writeCharacters(String.valueOf(login.isWebClient()));
+        writer.writeEndElement();
+        
         //write the elements and attributes
         if(login.getErrorMessage() != null && !login.getErrorMessage().isEmpty())
         {

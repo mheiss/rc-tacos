@@ -33,6 +33,8 @@ public class LoginDecoder implements MessageDecoder
                     login.setPassword(reader.getElementText());
                 if("loggedIn".equalsIgnoreCase(startName))
                     login.setLoggedIn(Boolean.valueOf(reader.getElementText()));
+                if("webClient".equalsIgnoreCase(startName))
+                    login.setWebClient(Boolean.valueOf(reader.getElementText()));
                 if("errorMessage".equalsIgnoreCase(startName))
                     login.setErrorMessage(reader.getElementText());
             }
