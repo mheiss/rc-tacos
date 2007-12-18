@@ -20,6 +20,7 @@ public class Login extends AbstractMessage
     private String username;
     private String password;
     private boolean loggedIn;
+    private boolean webClient;
     private String errorMessage;
     
     
@@ -35,12 +36,14 @@ public class Login extends AbstractMessage
      * Default constructor of a login message
      * @param username the username to login
      * @param password the encrypted password 
+     * @param webClient flag to determine whether this is a web client
      */
-    public Login(String username,String password)
+    public Login(String username,String password,boolean webClient)
     {
         super(ID);
         setUsername(username);
         setPassword(password);
+        setWebClient(webClient);
     }
     
     /**
@@ -84,6 +87,15 @@ public class Login extends AbstractMessage
     public boolean isLoggedIn()
     {
         return loggedIn;
+    }
+    
+    /**
+     * Returns wheterh of not this login request is form a web client.
+     * @return true if the request if from a web client
+     */
+    public boolean isWebClient()
+    {
+        return webClient;
     }
 
     /**
@@ -129,6 +141,15 @@ public class Login extends AbstractMessage
     public void setLoggedIn(boolean loggedIn)
     {
         this.loggedIn = loggedIn;
+    }
+    
+    /**
+     * Treats the given login request as a request from a web client.
+     * @param webClient true if the request is from a webClient
+     */
+    public void setWebClient(boolean webClient)
+    {
+        this.webClient = webClient;
     }
 
     /**

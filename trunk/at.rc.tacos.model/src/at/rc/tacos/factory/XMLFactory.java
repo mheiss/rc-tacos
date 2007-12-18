@@ -1,6 +1,7 @@
 package at.rc.tacos.factory;
 
 import java.io.IOException;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
@@ -112,7 +113,7 @@ public class XMLFactory
             xmlw.writeStartElement(IXMLElements.HEADER_USERID_ELEMENT);
             xmlw.writeCharacters(userId);
             xmlw.writeEndElement();
-
+            
             //write the timestamp
             xmlw.writeStartElement(IXMLElements.HEADER_TIMESTAMP_ELEMENT);
             xmlw.writeCharacters(String.valueOf(timestamp));

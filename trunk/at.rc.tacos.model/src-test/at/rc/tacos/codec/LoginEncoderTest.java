@@ -33,14 +33,14 @@ public class LoginEncoderTest
     @Test
     public void testLoginRequest() throws XMLStreamException
     {
-        Login login = new Login("testuser","pwd");
+        Login login = new Login("testuser","pwd",true);
         encoder.doEncode(login, writer);
     }
     
     @Test
     public void testLoginResponseSuccessfully() throws XMLStreamException
     {
-        Login login = new Login("testuser","15");
+        Login login = new Login("testuser","15",true);
         login.setPassword("");
         login.setLoggedIn(true);
         encoder.doEncode(login, writer);
@@ -49,7 +49,7 @@ public class LoginEncoderTest
     @Test
     public void testLoginResponseFailed() throws XMLStreamException
     {
-        Login login = new Login("testuser","pwd");
+        Login login = new Login("testuser","pwd",true);
         login.setPassword("");
         login.setLoggedIn(false);
         login.setErrorMessage("test");
