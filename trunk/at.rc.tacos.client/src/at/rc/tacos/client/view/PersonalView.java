@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
@@ -28,6 +29,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.controller.RemoveRosterEntryAction;
 import at.rc.tacos.client.controller.UpdateRosterEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.PersonalViewContentProvider;
@@ -47,7 +49,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     private TableViewer viewer;
     private Listener listener;
 
-    public void createPartControl(Composite parent) 
+    public void createPartControl(final Composite parent) 
     {
         // add listener to model to keep on track. 
         ModelFactory.getInstance().getRosterManager().addPropertyChangeListener(this);
@@ -226,7 +228,9 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
             }
         });
         menuItemCheckOut.setText("Abmelden");
-//        menuItemCheckOut.setEnabled(false);//TODO change-----------
+        
+        
+        menuItemCheckOut.setEnabled(false);//TODO change-----------
 
         new MenuItem(contextMenu, SWT.SEPARATOR);
 
@@ -253,20 +257,20 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         {
             public void widgetSelected(final SelectionEvent e) 
             {
-                //TODO				
-//              MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL | SWT.ICON_WARNING);
-//              messageBox.setText("Dienstplaneintrag löschen");
-//              messageBox.setMessage("Möchten Sie den Dienstplaneintrag wirlich löschen?");
-//              if (messageBox.open() == SWT.OK)
-//              {
-//              int index = table.getSelectionIndex();
-//              TableItem ti = table.getItem(index);
-//              RosterEntry re = (RosterEntry)ti.getData();
-//              RemoveRosterEntryAction action = new RemoveRosterEntryAction(re);
-//              action.run();
-//              }
-//              else
-//              return;
+            	  int index = table.getSelectionIndex();
+           				
+	              MessageBox messageBox = new MessageBox(parent.getShell(), SWT.YES | SWT.NO | SWT.CANCEL | SWT.ICON_WARNING);
+	              messageBox.setText("Dienstplaneintrag löschen");
+	              messageBox.setMessage("Möchten Sie den Dienstplaneintrag wirlich löschen?");
+	              if (messageBox.open() == SWT.YES)
+	              {
+		              TableItem ti = table.getItem(index);
+		              RosterEntry re = (RosterEntry)ti.getData();
+		              RemoveRosterEntryAction action = new RemoveRosterEntryAction(re);
+		              action.run();
+	              }
+	              else
+	              return;
             }
         });
         menuItemDeleteEntry.setText("Eintrag löschen");
@@ -276,13 +280,23 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         final MenuItem menuItemAnnulCheckIn = new MenuItem(contextMenu, SWT.CASCADE);
         menuItemAnnulCheckIn.addSelectionListener(new SelectionAdapter() 
         {
+        	
             public void widgetSelected(final SelectionEvent e) 
             {
-                int index = table.getSelectionIndex();
-                TableItem ti = table.getItem(index);
-                RosterEntry re = (RosterEntry)ti.getData();
-                UpdateRosterEntryAction action = new UpdateRosterEntryAction(re);
-                action.run();
+            	int index = table.getSelectionIndex();
+            	
+            	 MessageBox messageBox = new MessageBox(parent.getShell(), SWT.YES | SWT.NO | SWT.CANCEL | SWT.ICON_WARNING);
+	             messageBox.setText("Anmeldung aufheben");
+	             messageBox.setMessage("Möchten Sie die Anmeldung wirklich aufheben?");
+	             
+	             if (messageBox.open() == SWT.YES)
+	             {
+		                TableItem ti = table.getItem(index);
+		                RosterEntry re = (RosterEntry)ti.getData();
+		                re.setRealStartOfWork(0);
+		                UpdateRosterEntryAction action = new UpdateRosterEntryAction(re);
+		                action.run();
+	             }
             }
         });
         menuItemAnnulCheckIn.setText("Anmeldung aufheben");
@@ -293,11 +307,20 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         {
             public void widgetSelected(final SelectionEvent e) 
             {
-                int index = table.getSelectionIndex();
-                TableItem ti = table.getItem(index);
-                RosterEntry re = (RosterEntry)ti.getData();
-                UpdateRosterEntryAction action = new UpdateRosterEntryAction(re);
-                action.run();
+            	int index = table.getSelectionIndex();
+            	
+           	 MessageBox messageBox = new MessageBox(parent.getShell(), SWT.YES | SWT.NO | SWT.CANCEL | SWT.ICON_WARNING);
+	             messageBox.setText("Abmeldung aufheben");
+	             messageBox.setMessage("Möchten Sie die Abmeldung wirklich aufheben?");
+	             
+	             if (messageBox.open() == SWT.YES)
+	             {
+		                TableItem ti = table.getItem(index);
+		                RosterEntry re = (RosterEntry)ti.getData();
+		                re.setRealEndOfWork(0);
+		                UpdateRosterEntryAction action = new UpdateRosterEntryAction(re);
+		                action.run();
+	             }
             }
         });
         menuItemAnnulCheckOut.setText("Abmeldung aufheben");
