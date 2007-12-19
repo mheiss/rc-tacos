@@ -102,22 +102,6 @@
 											</select></td>
 										</tr>
 										<tr>
-											<td id="rosterViewDayHeadline">Ausbildung:&nbsp;</td>
-											<td><select name="competence" id="rosterViewDayHeadSelbox">
-												<option><%=Constants.COMPETENCE_DRIVER%></option>
-												<option><%=Constants.COMPETENCE_SANI%></option>
-												<option><%=Constants.COMPETENCE_EXECUTIVE_1%></option>
-												<option><%=Constants.COMPETENCE_EXECUTIVE_2%></option>
-												<option><%=Constants.COMPETENCE_EXECUTIVE_3%></option>
-												<option><%=Constants.COMPETENCE_DISPON%></option>												
-												<option><%=Constants.COMPETENCE_EMERGENCY.replaceAll("ä","&auml;")%></option>
-												<option><%=Constants.COMPETENCE_DOCTOR%></option>
-												<option><%=Constants.COMPETENCE_OTHER%></option>
-												<option><%=Constants.COMPETENCE_INTERVENTION%></option>
-												<option><%=Constants.COMPETENCE_PSYCH%></option>
-											</select></td>
-										</tr>
-										<tr>
 											<td id="rosterViewDayHeadline">T&auml;tigkeit:&nbsp;</td>
 											<td><select name="job" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.JOB_DRIVER%></option>
