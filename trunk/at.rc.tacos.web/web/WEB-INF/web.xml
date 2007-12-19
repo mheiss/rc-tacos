@@ -88,14 +88,64 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>profileView</servlet-name>
-		<jsp-file>/jsp/profile.jsp</jsp-file>
+		<servlet-name>stationBadMView</servlet-name>
+		<jsp-file>/jsp/stationBadM.jsp</jsp-file>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>profileView</servlet-name>
-		<url-pattern>/profileView</url-pattern>
+		<servlet-name>stationBadMView</servlet-name>
+		<url-pattern>/stationBadMView</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>stationBreitenauView</servlet-name>
+		<jsp-file>/jsp/stationBreitenau.jsp</jsp-file>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>stationBreitenauView</servlet-name>
+		<url-pattern>/stationBreitenauView</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>stationKapfenbergView</servlet-name>
+		<jsp-file>/jsp/stationKapfenberg.jsp</jsp-file>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>stationKapfenbergView</servlet-name>
+		<url-pattern>/stationKapfenbergView</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>stationStMareinView</servlet-name>
+		<jsp-file>/jsp/stationStMarein.jsp</jsp-file>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>stationStMareinView</servlet-name>
+		<url-pattern>/stationStMareinView</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>stationThoerlView</servlet-name>
+		<jsp-file>/jsp/stationThoerl.jsp</jsp-file>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>stationThoerlView</servlet-name>
+		<url-pattern>/stationThoerlView</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>stationTurnauView</servlet-name>
+		<jsp-file>/jsp/stationTurnau.jsp</jsp-file>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>stationTurnauView</servlet-name>
+		<url-pattern>/stationTurnauView</url-pattern>
+	</servlet-mapping>			
 	
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>

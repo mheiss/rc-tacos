@@ -43,9 +43,9 @@ public class ControllerFactory {
 		{
 			return new RosterController();
 		}
-		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.profile")))
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.station")))
 		{
-			return new ProfileController();
+			return new StationController();
 		}
 		else
 		{

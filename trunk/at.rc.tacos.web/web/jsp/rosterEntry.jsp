@@ -110,23 +110,46 @@
 											</select></td>
 										</tr>
 										<tr>
-											<td id="rosterViewDayHeadline">RK-Dienst:&nbsp;</td>
-											<td><select name="job" id="rosterViewDayHeadSelbox">
-												<option><%=Constants.COMPETENCE_DISPON%></option>
-												<option><%=Constants.COMPETENCE_DOCTOR%></option>
+											<td id="rosterViewDayHeadline">RK-Ausbildung:&nbsp;</td>
+											<td><select name="competence" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.COMPETENCE_DRIVER%></option>
+												<option><%=Constants.COMPETENCE_SANI%></option>
+												<option><%=Constants.COMPETENCE_EXECUTIVE_1%></option>
+												<option><%=Constants.COMPETENCE_EXECUTIVE_2%></option>
+												<option><%=Constants.COMPETENCE_EXECUTIVE_3%></option>
+												<option><%=Constants.COMPETENCE_DISPON%></option>												
 												<option><%=Constants.COMPETENCE_EMERGENCY.replaceAll("ä","&auml;")%></option>
+												<option><%=Constants.COMPETENCE_DOCTOR%></option>
 												<option><%=Constants.COMPETENCE_OTHER%></option>
-												<option><%=Constants.COMPETENCE_SANI.replaceAll("ä","&auml;")%></option>
+												<option><%=Constants.COMPETENCE_INTERVENTION%></option>
+												<option><%=Constants.COMPETENCE_PSYCH%></option>
+											</select></td>
+										</tr>
+										<tr>
+											<td id="rosterViewDayHeadline">RK-T&auml;tigkeit:&nbsp;</td>
+											<td><select name="job" id="rosterViewDayHeadSelbox">
+												<option><%=Constants.JOB_DRIVER%></option>
+												<option><%=Constants.JOB_SANI%></option>
+												<option><%=Constants.JOB_EMERGENCY%></option>
+												<option><%=Constants.JOB_DOCTOR%></option>
+												<option><%=Constants.JOB_DISPON%></option>
+												<option><%=Constants.JOB_DF%></option>
+												<option><%=Constants.JOB_BRKDT%></option>												
+												<option><%=Constants.JOB_INSP%></option>
+												<option><%=Constants.JOB_BKTW_DRIVER%></option>
+												<option><%=Constants.JOB_JOURNAL%></option>
+												<option><%=Constants.JOB_VOLON%></option>
+												<option><%=Constants.JOB_OTHER%></option>
 											</select></td>
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">RK-Dienstverh&auml;ltniss:&nbsp;</td>
 											<td><select name="service" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.SERVICE_MAIN%></option>
-												<option><%=Constants.SERVICE_OTHER%></option>
 												<option><%=Constants.SERVICE_VOLUNT%></option>
 												<option><%=Constants.SERVICE_ZIVI%></option>
+												<option><%=Constants.SERVICE_OTHER%></option>
+												<option><%=Constants.SERVICE_TEMP%></option>
 											</select></td>
 										</tr>
 										<tr>

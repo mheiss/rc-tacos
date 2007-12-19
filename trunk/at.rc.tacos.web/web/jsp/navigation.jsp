@@ -1,3 +1,4 @@
+<%@page import="at.rc.tacos.common.Constants"%>
 <table id="Block" width="100%" border='0' cellpadding='0'
 	cellspacing='0'>
 	<tr>
@@ -27,11 +28,16 @@
 <table id="Block" width="100%" border='0' cellpadding='0'
 	cellspacing='0'>
 	<tr>
-		<td id="BlockHead"><b>Pers&ouml;nliche Daten</b></td>
+		<td id="BlockHead"><b>Ortsstellen</b></td>
 	</tr>
 	<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/profile.do"%>">Meine Daten</a><br />
-		<a href="#">Notiz</a><br />
+		<td id="BlockContent">
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Breitenau"%>"><%=Constants.STATION_BREITENAU%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Bruck"%>"><%=Constants.STATION_BRUCK%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Kapfenberg"%>"><%=Constants.STATION_KAPFENBERG%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=StMarein"%>"><%=Constants.STATION_MAREIN%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Thoerl"%>"><%=Constants.STATION_THOERL.replaceAll("ö","&ouml;")%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Turnau"%>"><%=Constants.STATION_TURNAU%></a><br />
 		</td>
 	</tr>
 </table>

@@ -69,6 +69,7 @@ public class RosterController implements Controller
 			long plannedStartOfWork = startEntry.getTimeInMillis();
 			long plannedEndOfWork = endEntry.getTimeInMillis();
 			String station = request.getParameter("station");
+			String competence = request.getParameter("competence");
 			String job = request.getParameter("job");
 			String servicetype = request.getParameter("service");
 
