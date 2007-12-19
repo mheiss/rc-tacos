@@ -5,12 +5,15 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -25,6 +28,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
@@ -37,7 +41,6 @@ import at.rc.tacos.client.providers.PersonalViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.Constants;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
@@ -48,6 +51,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     private ScrolledForm form;
     private TableViewer viewer;
     private Listener listener;
+    private MyPersonalTooltip tooltip;
 
     public void createPartControl(final Composite parent) 
     {
@@ -83,11 +87,26 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
             }
         });
         viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-
         viewer.setContentProvider(new PersonalViewContentProvider());
         viewer.setLabelProvider(new PersonalViewLabelProvider());
         viewer.setInput(ModelFactory.getInstance().getRosterManager());
         viewer.getTable().setLinesVisible(true);
+        //set the tooltip
+        tooltip = new MyPersonalTooltip(viewer.getControl());
+        
+        viewer.addSelectionChangedListener(new ISelectionChangedListener() 
+        {
+			public void selectionChanged(SelectionChangedEvent event) 
+			{
+		        TableItem[] selection = viewer.getTable().getSelection();
+				if (selection != null && selection.length > 0) 
+				{
+					Rectangle bounds = selection[0].getBounds();
+					tooltip.show(new Point(bounds.x, bounds.y));
+				}
+			}
+		});
+
         hookContextMenu();
 
         //create the table for the roster entries 

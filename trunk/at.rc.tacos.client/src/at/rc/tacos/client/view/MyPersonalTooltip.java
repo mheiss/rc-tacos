@@ -1,19 +1,19 @@
 package at.rc.tacos.client.view;
 
-import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.jface.window.ToolTip;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.ui.forms.FormColors;
-import org.eclipse.ui.forms.IFormColors;
-import org.eclipse.ui.forms.widgets.Form;
-import org.eclipse.ui.forms.widgets.FormText;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Widget;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
 
@@ -21,65 +21,154 @@ import at.rc.tacos.model.RosterEntry;
  * This shows the tooltip for a roster entry.
  * @author Michael
  */
-public class MyPersonalTooltip extends ColumnViewerToolTipSupport  
+public class MyPersonalTooltip extends ToolTip 
 {
-    /**
-     * Default class constructor for a new tooltip
-     * @param viewer the viewer to enable the tooltip support
-     * @param style the style of the ttoltip
-     * @param manualActivation if the activation is done manually
-     */
-    public MyPersonalTooltip(ColumnViewer viewer, int style,boolean manualActivation) 
-    {
-        super(viewer, style, manualActivation);
-    }
+	//properties
+	private Control control;
+	
+	/**
+	 * Creates a new tooltip for the personal view
+	 * @param control the control for the tooltip to show
+	 */
+	public MyPersonalTooltip(Control control) 
+	{
+		super(control);
+		this.control = control;
+		setShift(new Point(1, 1));
+	}
+	
+	/**
+	 * Returns whether or not the tooltip should be created.
+	 * @param event the triggered event
+	 * @return true if the tooltip should be created
+	 */
+	@Override
+	protected boolean shouldCreateToolTip(Event event) 
+	{
+		return true;
+	}
 
-    /**
-     * Create the content of the window
-     * @param event the triggered event
-     * @param parent the parent frame
-     * @return the create tooltip window
-     */
-    protected Composite createToolTipContentArea(Event event, Composite parent) 
-    {
-        FormToolkit toolkit = new FormToolkit(parent.getDisplay());
-        FormColors colors = toolkit.getColors();
-        Color top = colors.getColor(IFormColors.H_GRADIENT_END);
-        Color bot = colors.getColor(IFormColors.H_GRADIENT_START);
-        //get the entry
-        RosterEntry entry = (RosterEntry)getToolTipArea(event);
+	@Override
+	protected Composite createToolTipContentArea(Event event, Composite parent) 
+	{
+		Composite composite = createToolTipContentAreaComposite(parent);
+		
+		Widget hoverWidget = getTipWidget(event);
+		
+		RosterEntry entry = getTaskListElement(hoverWidget);
+		
+		Image image = ImageFactory.getInstance().getRegisteredImage("image.personal.user");
+		String title = entry.toString();
+		
+		addIconAndLabel(composite, image, title);
 
-        // create the base form
-        Form form = toolkit.createForm(parent);
-        form.setText(entry.getStaffMember().getFirstName() + " " +entry.getStaffMember().getLastname());
-        form.setTextBackground(new Color[] { top, bot }, new int[] { 100 }, true);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 3;
-        form.getBody().setLayout(layout);
+		return composite;
+	}  
+	
+	protected void addIconAndLabel(Composite parent, Image image, String text) 
+	{
+		Label imageLabel = new Label(parent, SWT.NONE);
+		imageLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+		imageLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		imageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
+		imageLabel.setImage(image);
 
-        // create the text for user information
-        FormText text = toolkit.createFormText(form.getBody(), true);
-        GridData td = new GridData();
-        td.horizontalSpan = 2;
-        td.heightHint = 100;
-        td.widthHint = 200;
-        text.setLayoutData(td);
+		Label textLabel = new Label(parent, SWT.NONE);
+		textLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+		textLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
+		textLabel.setText(text);
+	}
+	
+	/**
+	 * Creates the tooltip content area for the tooltip
+	 * @param parent the parent window
+	 * @return the created composite
+	 */
+	protected Composite createToolTipContentAreaComposite(Composite parent) 
+	{
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		gridLayout.marginWidth = 5;
+		gridLayout.marginHeight = 2;
+		composite.setLayout(gridLayout);
+		composite.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		return composite;
+	}
+	
+	@Override
+	public Point getLocation(Point tipSize, Event event) 
+	{
+		Widget widget = getTipWidget(event);
+		if (widget != null) 
+		{
+			Rectangle bounds = getBounds(widget);
+			if (bounds != null) 
+			{
+				return control.toDisplay(bounds.x -30, bounds.y + bounds.height + 1);
+			}
+		}
+		return super.getLocation(tipSize, event);
+	}
+	
+	/**
+	 * Returns the widget source for this tooltip
+	 * @param event the event triggered
+	 * @return the source widget
+	 */
+	protected Widget getTipWidget(Event event) 
+	{
+		Point widgetPosition = new Point(event.x, event.y);
+		Widget widget = event.widget;
+		
+		if (widget instanceof Table) 
+		{
+			Table w = (Table) widget;
+			return w.getItem(widgetPosition);
+		}
 
-        text.setText(
-                "<form><p>snippet8</p><p>snippet8</p></form>", 
-                true, 
-                false);
-
-        // create the picture representing the user
-        td = new GridData();
-        td.horizontalSpan = 1;
-        td.heightHint = 100;
-        td.widthHint = 64;
-        FormText formImage = toolkit.createFormText(form.getBody(), false);
-        formImage.setText("<form><p><img href=\"image\"/></p></form>", true, false);
-        formImage.setLayoutData(td);
-        Image image = ImageFactory.getInstance().getRegisteredImage("image.personal.user");
-        formImage.setImage("image", image);
-        return parent;
-    }
+		return widget;
+	}
+	
+	/**
+	 * Returns the element for this tooltip
+	 * @param hoverObject the object under hover
+	 * @return the element under the hover
+	 */
+	private RosterEntry getTaskListElement(Object hoverObject) 
+	{
+		if (hoverObject instanceof Widget) 
+		{
+			Object data = ((Widget) hoverObject).getData();
+			if (data != null) 
+			{
+				return (RosterEntry)data;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns the bounds for the tooltip
+	 * @param widget the widget 
+	 * @return the bounds
+	 */
+	private Rectangle getBounds(Widget widget) 
+	{
+		if (widget instanceof TableItem) 
+		{
+			TableItem w = (TableItem) widget;
+			return w.getBounds();
+		}
+		return null;
+	}
+	
+	/**
+	 * Hides the tooltip window
+	 */
+	public void dispose() 
+	{
+		hide();
+	}
 }
