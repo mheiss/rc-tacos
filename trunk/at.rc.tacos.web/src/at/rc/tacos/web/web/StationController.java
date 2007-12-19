@@ -26,11 +26,26 @@ public class StationController implements Controller {
 		Map<String, Object> params = new HashMap<String, Object>();
 		//the action to do
 		String action = request.getParameter("action");
-		
+
+		if("Breitenau".equalsIgnoreCase(action)) {
+
+		}
 		if("Bruck".equalsIgnoreCase(action)) {
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.stationBadM"));
+
+		}
+		if("Kapfenberg".equalsIgnoreCase(action)) {
+
+		}
+		if("StMarein".equalsIgnoreCase(action)) {
+
+		}
+		if("Thoerl".equalsIgnoreCase(action)) {
+
+		}
+		if("Turnau".equalsIgnoreCase(action)) {
+
 		}
 		return params;
 	}
-	
+
 }
