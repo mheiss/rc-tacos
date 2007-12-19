@@ -28,7 +28,6 @@ public class RosterDayController  implements Controller
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
-		AbstractMessage result;
 
 		if("dayView".equalsIgnoreCase(action))
 		{
