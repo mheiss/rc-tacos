@@ -28,7 +28,7 @@ public class StationController implements Controller {
 		String action = request.getParameter("action");
 		
 		if("Bruck".equalsIgnoreCase(action)) {
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.station"));
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.stationBadM"));
 		}
 		return params;
 	}

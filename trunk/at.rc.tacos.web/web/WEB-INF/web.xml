@@ -92,75 +92,13 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>stationBadMView</servlet-name>
-		<jsp-file>/jsp/stationBadM.jsp</jsp-file>
+		<servlet-name>stationView</servlet-name>
+		<jsp-file>/jsp/station.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>stationBadMView</servlet-name>
-		<url-pattern>/stationBadMView</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>stationBreitenauView</servlet-name>
-		<jsp-file>/jsp/stationBreitenau.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>stationBreitenauView</servlet-name>
-		<url-pattern>/stationBreitenauView</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>stationKapfenbergView</servlet-name>
-		<jsp-file>/jsp/stationKapfenberg.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>stationKapfenbergView</servlet-name>
-		<url-pattern>/stationKapfenbergView</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>stationStMareinView</servlet-name>
-		<jsp-file>/jsp/stationStMarein.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>stationStMareinView</servlet-name>
-		<url-pattern>/stationStMareinView</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>stationThoerlView</servlet-name>
-		<jsp-file>/jsp/stationThoerl.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>stationThoerlView</servlet-name>
-		<url-pattern>/stationThoerlView</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>stationTurnauView</servlet-name>
-		<jsp-file>/jsp/stationTurnau.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>stationTurnauView</servlet-name>
-		<url-pattern>/stationTurnauView</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<description></description>
-		<display-name>StationController</display-name>
-		<servlet-name>StationController</servlet-name>
-		<servlet-class>at.rc.tacos.web.web.StationController</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>StationController</servlet-name>
-		<url-pattern>/StationController</url-pattern>
+		<servlet-name>stationView</servlet-name>
+		<url-pattern>/stationView</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
