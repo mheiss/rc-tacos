@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>at.rc.tacos.web</display-name>
-  
-  <servlet>
-	<description></description>
-	<display-name>Dispatcher</display-name>
-	<servlet-name>Dispatcher</servlet-name>
-	<servlet-class>at.rc.tacos.web.web.Dispatcher</servlet-class>
-   </servlet>
-   
-   	<servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>at.rc.tacos.web</display-name>
+
+	<servlet>
+		<description></description>
+		<display-name>Dispatcher</display-name>
+		<servlet-name>Dispatcher</servlet-name>
+		<servlet-class>at.rc.tacos.web.web.Dispatcher</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
 		<servlet-name>Dispatcher</servlet-name>
 		<url-pattern>/Dispatcher/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<session-config>
-    	<session-timeout>15</session-timeout>
-    </session-config>
-  	<!-- Register your Views here. Ending must be View. Example: loginView -->
+		<session-timeout>15</session-timeout>
+	</session-config>
+	<!-- Register your Views here. Ending must be View. Example: loginView -->
 	<servlet>
 		<servlet-name>homeView</servlet-name>
 		<jsp-file>/jsp/home.jsp</jsp-file>
@@ -26,127 +30,139 @@
 		<servlet-name>homeView</servlet-name>
 		<url-pattern>/homeView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>loginView</servlet-name>
 		<jsp-file>/jsp/login.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>loginView</servlet-name>
 		<url-pattern>/loginView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>notFoundView</servlet-name>
 		<jsp-file>/jsp/notFound.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>notFoundView</servlet-name>
 		<url-pattern>/notFoundView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>errorView</servlet-name>
 		<jsp-file>/jsp/error.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>errorView</servlet-name>
 		<url-pattern>/errorView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>rosterDayView</servlet-name>
 		<jsp-file>/jsp/rosterDay.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>rosterDayView</servlet-name>
 		<url-pattern>/rosterDayView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>rosterWeekView</servlet-name>
 		<jsp-file>/jsp/rosterWeek.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>rosterWeekView</servlet-name>
 		<url-pattern>/rosterWeekView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>rosterEntryView</servlet-name>
 		<jsp-file>/jsp/rosterEntry.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>rosterEntryView</servlet-name>
 		<url-pattern>/rosterEntryView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>stationBadMView</servlet-name>
 		<jsp-file>/jsp/stationBadM.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>stationBadMView</servlet-name>
 		<url-pattern>/stationBadMView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>stationBreitenauView</servlet-name>
 		<jsp-file>/jsp/stationBreitenau.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>stationBreitenauView</servlet-name>
 		<url-pattern>/stationBreitenauView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>stationKapfenbergView</servlet-name>
 		<jsp-file>/jsp/stationKapfenberg.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>stationKapfenbergView</servlet-name>
 		<url-pattern>/stationKapfenbergView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>stationStMareinView</servlet-name>
 		<jsp-file>/jsp/stationStMarein.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>stationStMareinView</servlet-name>
 		<url-pattern>/stationStMareinView</url-pattern>
-	</servlet-mapping>	
-	
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>stationThoerlView</servlet-name>
 		<jsp-file>/jsp/stationThoerl.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>stationThoerlView</servlet-name>
 		<url-pattern>/stationThoerlView</url-pattern>
-	</servlet-mapping>	
-	
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>stationTurnauView</servlet-name>
 		<jsp-file>/jsp/stationTurnau.jsp</jsp-file>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>stationTurnauView</servlet-name>
 		<url-pattern>/stationTurnauView</url-pattern>
-	</servlet-mapping>			
-	
+	</servlet-mapping>
+
+	<servlet>
+		<description></description>
+		<display-name>StationController</display-name>
+		<servlet-name>StationController</servlet-name>
+		<servlet-class>at.rc.tacos.web.web.StationController</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>StationController</servlet-name>
+		<url-pattern>/StationController</url-pattern>
+	</servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
 	</welcome-file-list>
