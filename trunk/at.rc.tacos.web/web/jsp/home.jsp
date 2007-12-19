@@ -58,17 +58,14 @@
 					<table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
-							<td id="BlockHead" align="right" valign="center">&nbsp;</td>
+							<td id="BlockHead" align="right" valign="middle">&nbsp;</td>
 						</tr>
 						<tr>
 							<td id="BlockContent">
 							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
 								<tr>
 									<td width="50%"><!-- Timetablebox Day -->
-									<table width="100%" height="100%" border='0' cellpadding='0'
-										cellspacing='0'>
-										<tr>
-											<td><br />
+									<table width="100%" height="100%" border='0' cellpadding='0' cellspacing='0'>
 										<tr>
 											<td><a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>"><img src="../image/calendar.png" /></a><br />
 											Einen neuen Dienst hinzuf&uuml;gen </td>
