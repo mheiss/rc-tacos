@@ -17,13 +17,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../css/stylesheet.css" rel="stylesheet" />
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
-
 <title>TACOS :: RK Bruck-Kapfenberg</title>
-
 </head>
 <body>
 
-<%@ page import="java.text.*"%>
+<%@page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Locale"%>
 
@@ -38,13 +36,10 @@
 	<thead>
 		<tr>
 			<td>
-			<table border='0' cellpadding='0' cellspacing='0' width="100%"
-				id="Tablogo">
+			<table border='0' cellpadding='0' cellspacing='0' width="100%" id="Tablogo">
 				<tr>
-					<td align="left"><img src="../image/tacos_logo_left.jpg"
-						name="logoLeft" id="logoLeft" /></td>
-					<td align="right"><img src="../image/tacos_logo_right.jpg"
-						name="logoRight" id="logoRight" /></td>
+					<td align="left"><img src="../image/tacos_logo_left.jpg" name="logoLeft" id="logoLeft" /></td>
+					<td align="right"><img src="../image/tacos_logo_right.jpg" name="logoRight" id="logoRight" /></td>
 				</tr>
 			</table>
 			</td>
@@ -64,14 +59,12 @@
 			</table>
 			<table width="100%">
 				<tr>
-
 					<!-- #### LEFT CONTAINER NAVIGATION-->
 					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  -->
 					<%@ include file="navigation.jsp"%></td>
 					<!-- #### CONTENT -->
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
-					<table id="Block" width="100%" border='0' cellpadding='0'
-						cellspacing='0'>
+					<table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
 						<tr>
 							<td id="BlockHead" align="right" valign="center">&nbsp;</td>
 						</tr>
@@ -80,14 +73,13 @@
 							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
 								<tr>
 									<td width="50%">
-									<table width="100%" border='0' cellpadding='0' cellspacing='0'
-										id="TabAnmeldung">
+									<table width="100%" border='0' cellpadding='0' cellspacing='0' id="TabAnmeldung">
 										<tr>
 											<td id="rosterViewDayHeadline2" colpsan="2"><b>Dienstdaten:</b>
 											</td>
 										</tr>
 										<tr>
-											<td id="rosterViewDayHeadline">RK-Mitglied:&nbsp;</td>
+											<td id="rosterViewDayHeadline">Mitglied:&nbsp;</td>
 											<td><!-- Mitarbeiterliste --> <select name="employee" id="rosterViewDayHeadSelbox">
 												<%
 													for (StaffMember member : list) {
@@ -110,7 +102,7 @@
 											</select></td>
 										</tr>
 										<tr>
-											<td id="rosterViewDayHeadline">RK-Ausbildung:&nbsp;</td>
+											<td id="rosterViewDayHeadline">Ausbildung:&nbsp;</td>
 											<td><select name="competence" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.COMPETENCE_DRIVER%></option>
 												<option><%=Constants.COMPETENCE_SANI%></option>
@@ -126,7 +118,7 @@
 											</select></td>
 										</tr>
 										<tr>
-											<td id="rosterViewDayHeadline">RK-T&auml;tigkeit:&nbsp;</td>
+											<td id="rosterViewDayHeadline">T&auml;tigkeit:&nbsp;</td>
 											<td><select name="job" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.JOB_DRIVER%></option>
 												<option><%=Constants.JOB_SANI%></option>
@@ -143,7 +135,7 @@
 											</select></td>
 										</tr>
 										<tr>
-											<td id="rosterViewDayHeadline">RK-Dienstverh&auml;ltniss:&nbsp;</td>
+											<td id="rosterViewDayHeadline">Dienstverh&auml;ltniss:&nbsp;</td>
 											<td><select name="service" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.SERVICE_MAIN%></option>
 												<option><%=Constants.SERVICE_VOLUNT%></option>
