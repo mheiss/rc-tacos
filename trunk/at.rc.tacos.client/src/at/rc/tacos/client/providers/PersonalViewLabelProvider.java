@@ -4,13 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.client.util.CustomColors;
 
-public class PersonalViewLabelProvider implements ITableLabelProvider 
+public class PersonalViewLabelProvider implements ITableLabelProvider, ITableColorProvider
 {
     //define the columns
     public static final int COLUMN_LOCK = 0;
@@ -117,4 +120,41 @@ public class PersonalViewLabelProvider implements ITableLabelProvider
 
     @Override
     public void removeListener(ILabelProviderListener arg0)  { }
+
+	@Override
+	public Color getBackground(Object element, int columnIndex) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getForeground(Object element, int columnIndex) 
+	{
+		boolean checkedIn = false;
+		boolean stillComming = false;
+		
+		RosterEntry entry = (RosterEntry)element;
+        
+		if (entry.getRealStartOfWork() != 0 && entry.getRealEndOfWork() == 0)
+			checkedIn = true;
+		if (entry.getRealStartOfWork() == 0 && entry.getRealEndOfWork() == 0)
+			stillComming = true;
+        
+        switch(columnIndex)
+        {
+	        case COLUMN_CHECK_IN: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_STANDBY: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_NOTES: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_NAME: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_PLANED_WORK_TIME: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_CHECK_OUT: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_SERVICE_TYPE: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_JOB: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_STATION: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        case COLUMN_VEHICLE: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
+	        default: return CustomColors.GREY_COLOR;
+        }
+        
+        
+	}
 }
