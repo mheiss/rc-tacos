@@ -20,6 +20,7 @@ public final class CustomColors
     public static final Color GREY_COLOR = new Color(null,236,233,226);
     public static final Color HEADING_COLOR = new Color(null,255,255,255);
     public static final Color SECTION_BACKGROUND = new Color(null,255,255,255);
+    public static final Color DARK_GREY_COLOR = new Color(null, 60,179,113);
     
     private static FormColors formColors;
     
