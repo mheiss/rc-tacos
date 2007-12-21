@@ -121,7 +121,7 @@ public class TestDataSource
         t1.setCallerDetail(notifierList.get(0));
         t1.setVehicleDetail(vehicleList.get(0));
         t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
-        t1.setDirectness(IDirectness.TOWARDS_DISTRICT);
+        t1.setDirection(IDirectness.TOWARDS_DISTRICT);
         //second transport
         Transport t2 = new Transport();
         t2.setTransportId(1);
@@ -135,7 +135,7 @@ public class TestDataSource
         t2.setCallerDetail(notifierList.get(1));
         t2.setVehicleDetail(vehicleList.get(1));
         t2.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
-        t2.setDirectness(IDirectness.TOWARDS_LEOBEN);
+        t2.setDirection(IDirectness.TOWARDS_LEOBEN);
         //third transport
         Transport t3 = new Transport();
         t3.setTransportId(2);
@@ -149,7 +149,7 @@ public class TestDataSource
         t3.setCallerDetail(notifierList.get(2));
         t3.setVehicleDetail(vehicleList.get(2));
         t3.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
-        t3.setDirectness(IDirectness.TOWARDS_GRAZ);
+        t3.setDirection(IDirectness.TOWARDS_GRAZ);
         //add the transports
         transportList.add(t1);
         transportList.add(t2);
