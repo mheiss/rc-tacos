@@ -26,13 +26,7 @@ public class CallerEncoder  implements MessageEncoder
             writer.writeCharacters(notifier.getCallerTelephoneNumber());
             writer.writeEndElement();
         }
-        //the notes are not mandatory
-        if(notifier.getCallerNotes() != null)
-        {
-            writer.writeStartElement("notifierNotes");
-            writer.writeCharacters(notifier.getCallerNotes());
-            writer.writeEndElement();
-        }
+
         //end
         writer.writeEndElement();
     }
