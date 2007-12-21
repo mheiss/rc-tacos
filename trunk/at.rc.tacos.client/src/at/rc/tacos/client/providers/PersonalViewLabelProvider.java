@@ -84,7 +84,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         case COLUMN_LOCK: return null;
         case COLUMN_STANDBY: return null;
         case COLUMN_NOTES: return null;
-        case COLUMN_NAME: return entry.getStaffMember().getLastname()+ " " + entry.getStaffMember().getFirstName();
+        case COLUMN_NAME: return entry.getStaffMember().getLastName()+ " " + entry.getStaffMember().getFirstName();
         case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartOfWork()) + " - " + sdf.format(entry.getPlannedEndOfWork());
         case COLUMN_CHECK_IN: 
         	if (entry.getRealStartOfWork()!= 0)
