@@ -21,6 +21,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     //t.appointment, t.appointmentPatient, t.ambulant_stationary, t.assistant, t.transportstate, tt.transporttype,
     //ca.callername, ca.caller_phonenumber, ca.caller_note, no.name AS notyfied, tn.date AS notyficationDate,
     private long transportId;
+    private String transportNumber;
     private String fromStreet;
     private String fromNumber;
     private String fromCity;
@@ -840,6 +841,20 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	 */
 	public void setLongDistanceTrip(boolean longDistanceTrip) {
 		this.longDistanceTrip = longDistanceTrip;
+	}
+
+	/**
+	 * @return the transportNumber
+	 */
+	public String getTransportNumber() {
+		return transportNumber;
+	}
+
+	/**
+	 * @param transportNumber the transportNumber to set
+	 */
+	public void setTransportNumber(String transportNumber) {
+		this.transportNumber = transportNumber;
 	}	
 }
 
