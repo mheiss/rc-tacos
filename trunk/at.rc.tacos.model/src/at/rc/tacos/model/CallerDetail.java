@@ -14,7 +14,7 @@ public class CallerDetail extends AbstractMessage
 
     private String callerName;
     private String callerTelephoneNumber;
-    private String callerNotes;
+
 
     /**
      * Default class constructor
@@ -35,7 +35,6 @@ public class CallerDetail extends AbstractMessage
         super(ID);
         setCallerName(callerName);
         setCallerTelephoneNumber(callerTelephoneNumber);
-        setCallerNotes(callerNotes);
     }
 
     //METHODS
@@ -46,7 +45,7 @@ public class CallerDetail extends AbstractMessage
     @Override
     public String toString()
     {
-        return callerName+","+callerTelephoneNumber+","+callerNotes;
+        return callerName+","+callerTelephoneNumber;
     }
     
     /**
@@ -126,28 +125,5 @@ public class CallerDetail extends AbstractMessage
         if(callerTelephoneNumber == null || callerTelephoneNumber.trim().isEmpty())
             throw new IllegalArgumentException("Telephone number cannot be null or emtpy");
         this.callerTelephoneNumber = callerTelephoneNumber.trim();
-    }
-
-
-    /**
-     * Returns the notes that have been given by the caller.
-     * @return the given notes
-     */
-    public String getCallerNotes() 
-    {
-        return callerNotes;
-    }
-
-
-    /**
-     * Sets the notes that have been given by the caller.
-     * @param callerNotes the notes from the caller
-     * @throws IllegalArgumentException if the notes are null
-     */
-    public void setCallerNotes(String callerNotes) 
-    {
-        if(callerNotes == null)
-            throw new IllegalArgumentException("Notes cannot be null");
-        this.callerNotes = callerNotes;
     }
 }
