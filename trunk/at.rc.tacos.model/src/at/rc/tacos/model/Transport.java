@@ -21,7 +21,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     //t.appointment, t.appointmentPatient, t.ambulant_stationary, t.assistant, t.transportstate, tt.transporttype,
     //ca.callername, ca.caller_phonenumber, ca.caller_note, no.name AS notyfied, tn.date AS notyficationDate,
     private long transportId;
-    private String direction;
     private String fromStreet;
     private String fromNumber;
     private String fromCity;
@@ -36,7 +35,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private boolean emergencyPhone;
     private String kindOfIllness;
     private String diseaseNotes;
-    private String transportNotes;
     private String responsibleStation;
     private String realStation;
     private long dateOfTransport;
@@ -55,11 +53,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private boolean firebrigadeAlarming;
     private boolean mountainRescueServiceAlarming;
     private boolean policeAlarming;
+    private boolean longDistanceTrip;
 
     private String feedback;
 
     //directness
-    private int directness;
+    private int direction;
 
     //vehicle and staff assigned to the transport
     private VehicleDetail vehicleDetail;
@@ -90,7 +89,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      */
     public Transport(String fromStreet,String fromNumber,String fromCity,
             String responsibleStation,long dateOfTransport, long plannedStartOfTransport,
-            String transportPriority,int directness)
+            String transportPriority,int direction)
     {
         super(ID);
         statusMessages = new ArrayList<StatusMessages>();
@@ -101,7 +100,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         setDateOfTransport(dateOfTransport);
         setPlannedStartOfTransport(plannedStartOfTransport);
         setTransportPriority(transportPriority);
-        setDirectness(directness);
+        setDirection(direction);
     }
 
     //METHODS
@@ -429,21 +428,21 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @return the transportNotes
+     * @return the diseaseNotes
      */
-    public String getTransportNotes() 
+    public String getDiseaseNotes() 
     {
-        return transportNotes;
+        return diseaseNotes;
     }
 
     /**
-     * @param transportNotes the transportNotes to set
+     * @param diseaseNotes the diseaseNotes to set
      */
-    public void setTransportNotes(String transportNotes) 
+    public void setDiseaseNotes(String diseaseNotes) 
     {
-        if(transportNotes == null)
-            throw new IllegalArgumentException("The transport notes cannot be null");
-        this.transportNotes = transportNotes;
+        if(diseaseNotes == null)
+            throw new IllegalArgumentException("The disease notes cannot be null");
+        this.diseaseNotes = diseaseNotes;
     }
 
     /**
@@ -620,20 +619,20 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     /**
      * @return the directness
      */
-    public int getDirectness() 
+    public int getDirection() 
     {
-        return directness;
+        return direction;
     }
 
     /**
-     * @param directness the directness to set
-     * @see IDirectness
+     * @param direction the directness to set
+     * @see IDirection
      */
-    public void setDirectness(int directness) 
+    public void setDirection(int direction) 
     {
-        if(directness < 1 || directness > 5)
-            throw new IllegalArgumentException("Invalid value for directness. Vaild values: 1,2,3,4,5");
-        this.directness = directness;
+        if(direction < 1 || direction > 5)
+            throw new IllegalArgumentException("Invalid value for direction. Vaild values: 1,2,3,4,5");
+        this.direction = direction;
     }
 
     /**
@@ -827,6 +826,20 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         if(transportPriority == null || transportPriority.trim().isEmpty())
             throw new IllegalArgumentException("The transport priority cannot be null");
         this.transportPriority = transportPriority;
-    }	
+    }
+
+	/**
+	 * @return the longDistanceTrip
+	 */
+	public boolean isLongDistanceTrip() {
+		return longDistanceTrip;
+	}
+
+	/**
+	 * @param longDistanceTrip the longDistanceTrip to set
+	 */
+	public void setLongDistanceTrip(boolean longDistanceTrip) {
+		this.longDistanceTrip = longDistanceTrip;
+	}	
 }
 
