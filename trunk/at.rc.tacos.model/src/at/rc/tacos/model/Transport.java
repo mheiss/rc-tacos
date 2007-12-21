@@ -323,7 +323,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * Possible: 'gehend', 'sitzend', 'liegend', Rollstuhl'
+     * Possible: 'gehend', 'Tragsessel', 'Krankentrage', Eigener Rollstuhl'
      * @return the kindOfTransport
      */
     public String getKindOfTransport() 
