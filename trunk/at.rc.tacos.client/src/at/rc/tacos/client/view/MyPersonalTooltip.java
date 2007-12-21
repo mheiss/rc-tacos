@@ -4,7 +4,6 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -12,7 +11,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
@@ -22,10 +20,7 @@ import at.rc.tacos.model.RosterEntry;
  * @author Michael
  */
 public class MyPersonalTooltip extends ToolTip 
-{
-	//properties
-	private Control control;
-	
+{	
 	/**
 	 * Creates a new tooltip for the personal view
 	 * @param control the control for the tooltip to show
@@ -33,7 +28,6 @@ public class MyPersonalTooltip extends ToolTip
 	public MyPersonalTooltip(Control control) 
 	{
 		super(control);
-		this.control = control;
 		setShift(new Point(1, 1));
 	}
 	
@@ -50,17 +44,23 @@ public class MyPersonalTooltip extends ToolTip
 
 	@Override
 	protected Composite createToolTipContentArea(Event event, Composite parent) 
-	{
-		Composite composite = createToolTipContentAreaComposite(parent);
-		
+	{		
+		//get the selected roster entry
+		Composite composite = createToolTipContentAreaComposite(parent);	
 		Widget hoverWidget = getTipWidget(event);
-		
 		RosterEntry entry = getTaskListElement(hoverWidget);
 		
+		//the name of the staff member
 		Image image = ImageFactory.getInstance().getRegisteredImage("image.personal.user");
-		String title = entry.toString();
-		
+		String title = entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastname();
 		addIconAndLabel(composite, image, title);
+		//the notes
+		if(entry.hasNotes())
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
+			title = entry.getRosterNotes();
+			addIconAndLabel(composite,image,title);
+		}
 
 		return composite;
 	}  
@@ -97,21 +97,6 @@ public class MyPersonalTooltip extends ToolTip
 		return composite;
 	}
 	
-	@Override
-	public Point getLocation(Point tipSize, Event event) 
-	{
-		Widget widget = getTipWidget(event);
-		if (widget != null) 
-		{
-			Rectangle bounds = getBounds(widget);
-			if (bounds != null) 
-			{
-				return control.toDisplay(bounds.x -30, bounds.y + bounds.height + 1);
-			}
-		}
-		return super.getLocation(tipSize, event);
-	}
-	
 	/**
 	 * Returns the widget source for this tooltip
 	 * @param event the event triggered
@@ -145,21 +130,6 @@ public class MyPersonalTooltip extends ToolTip
 			{
 				return (RosterEntry)data;
 			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Returns the bounds for the tooltip
-	 * @param widget the widget 
-	 * @return the bounds
-	 */
-	private Rectangle getBounds(Widget widget) 
-	{
-		if (widget instanceof TableItem) 
-		{
-			TableItem w = (TableItem) widget;
-			return w.getBounds();
 		}
 		return null;
 	}
