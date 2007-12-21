@@ -23,6 +23,22 @@ public class RosterEntryEncoder  implements MessageEncoder
         writer.writeStartElement("rosterId");
         writer.writeCharacters(String.valueOf(entry.getRosterId()));
         writer.writeEndElement();
+        //station id
+        writer.writeStartElement("stationId");
+        writer.writeCharacters(String.valueOf(entry.getStationId()));
+        writer.writeEndElement();
+        //staff member id
+        writer.writeStartElement("stationId");
+        writer.writeCharacters(String.valueOf(entry.getStationId()));
+        writer.writeEndElement();
+        //servicetypeId
+        writer.writeStartElement("servicetypeId");
+        writer.writeCharacters(String.valueOf(entry.getServicetypeId()));
+        writer.writeEndElement();
+        //jobId
+        writer.writeStartElement("jobId");
+        writer.writeCharacters(String.valueOf(entry.getJobId()));
+        writer.writeEndElement();
         //get the encoder for the staff member
         MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
         encoder.doEncode(entry.getStaffMember(), writer);
@@ -52,6 +68,8 @@ public class RosterEntryEncoder  implements MessageEncoder
         writer.writeStartElement("station");
         writer.writeCharacters(entry.getStation());
         writer.writeEndElement();
+        
+        
         //the competence for this service
         writer.writeStartElement("job");
         writer.writeCharacters(entry.getJob());
@@ -71,6 +89,7 @@ public class RosterEntryEncoder  implements MessageEncoder
         writer.writeStartElement("standby");
         writer.writeCharacters(Boolean.toString(entry.getStandby()));
         writer.writeEndElement();
+        
 
         //end
         writer.writeEndElement();
