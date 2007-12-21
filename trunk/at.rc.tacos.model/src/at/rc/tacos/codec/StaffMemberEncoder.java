@@ -26,7 +26,7 @@ public class StaffMemberEncoder  implements MessageEncoder
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("lastName");
-        writer.writeCharacters(member.getLastname());
+        writer.writeCharacters(member.getLastName());
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("firstName");
