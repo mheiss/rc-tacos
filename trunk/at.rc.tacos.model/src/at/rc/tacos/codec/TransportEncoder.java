@@ -93,10 +93,10 @@ public class TransportEncoder  implements MessageEncoder
             writer.writeEndElement();
         }
         //notes are not mandatory
-        if(transport.getTransportNotes() != null)
+        if(transport.getDiseaseNotes() != null)
         {
             writer.writeStartElement("transportNotes");
-            writer.writeCharacters(transport.getTransportNotes());
+            writer.writeCharacters(transport.getDiseaseNotes());
             writer.writeEndElement();
         }
         //the station responsible
@@ -181,7 +181,7 @@ public class TransportEncoder  implements MessageEncoder
         }
         //write the elements and attributes
         writer.writeStartElement("directness");
-        writer.writeCharacters(Integer.toString(transport.getDirectness()));
+        writer.writeCharacters(Integer.toString(transport.getDirection()));
         writer.writeEndElement();
         //get the encoder for the vehicle
         encoder = ProtocolCodecFactory.getDefault().getEncoder(VehicleDetail.ID);
