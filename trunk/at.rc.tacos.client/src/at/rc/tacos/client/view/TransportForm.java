@@ -99,6 +99,9 @@ public class TransportForm implements IDirectness
 	
 	private Listener exitListener;
 	private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
+	
+	//determine whether to update or to create a new entry
+    private boolean createNew;
 
 	/**
 	 * Launch the application
@@ -396,15 +399,6 @@ public class TransportForm implements IDirectness
 		ruecktransportMoeglichButton.setLayoutData(fd_button_1);
 		ruecktransportMoeglichButton.setText("Rücktransport möglich");
 
-//		rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
-//		final FormData fd_rufhilfepatientButton = new FormData();
-//		fd_rufhilfepatientButton.bottom = new FormAttachment(0, 96);
-//		fd_rufhilfepatientButton.top = new FormAttachment(0, 80);
-//		fd_rufhilfepatientButton.right = new FormAttachment(0, 547);
-//		fd_rufhilfepatientButton.left = new FormAttachment(0, 462);
-//		rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
-//		rufhilfepatientButton.setText("Rufhilfepatient");
-
 		final Label anruferLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_anruferLabel = new FormData();
 		fd_anruferLabel.bottom = new FormAttachment(0, 95);
@@ -661,19 +655,6 @@ public class TransportForm implements IDirectness
 		label_3.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		label_3.setText("Rückmeldung");
 
-//		bd1Button = new Button(patientenzustandGroup, SWT.CHECK);
-//		final FormData fd_bd1Button = new FormData();
-//		fd_bd1Button.bottom = new FormAttachment(0, 23);
-//		fd_bd1Button.top = new FormAttachment(0, 7);
-//		fd_bd1Button.right = new FormAttachment(0, 286);
-//		fd_bd1Button.left = new FormAttachment(0, 243);
-//		bd1Button.setLayoutData(fd_bd1Button);
-//		bd1Button.setToolTipText("Sondersignal zum Einsatzort");
-//		bd1Button.addSelectionListener(new SelectionAdapter() {
-//			public void widgetSelected(final SelectionEvent e) {
-//			}
-//		});
-//		bd1Button.setText("BD 1");
 
 		bd2Button = new Button(patientenzustandGroup, SWT.CHECK);
 		final FormData fd_bd2Button = new FormData();
@@ -797,68 +778,6 @@ public class TransportForm implements IDirectness
 			}
 		});
 
-//		final DateTime dateTimePolizei = new DateTime(planungGroup_1, SWT.TIME);
-//		final FormData fd_dateTimePolizei = new FormData();
-//		fd_dateTimePolizei.bottom = new FormAttachment(0, 137);
-//		fd_dateTimePolizei.top = new FormAttachment(0, 116);
-//		fd_dateTimePolizei.right = new FormAttachment(0, 167);
-//		fd_dateTimePolizei.left = new FormAttachment(0, 94);
-//		dateTimePolizei.setLayoutData(fd_dateTimePolizei);
-//		dateTimePolizei.setToolTipText("Zeit zu der die Polizei Box zum letzten Mal angehakt wurde");
-
-//		final DateTime dateTimeFW = new DateTime(planungGroup_1, SWT.TIME);
-//		final FormData fd_dateTimeFW = new FormData();
-//		fd_dateTimeFW.bottom = new FormAttachment(0, 115);
-//		fd_dateTimeFW.top = new FormAttachment(0, 94);
-//		fd_dateTimeFW.right = new FormAttachment(0, 167);
-//		fd_dateTimeFW.left = new FormAttachment(0, 94);
-//		dateTimeFW.setLayoutData(fd_dateTimeFW);
-//		dateTimeFW.setToolTipText("Zeit zu der die Feuerwehr Box zum letzten Mal angehakt wurde");
-
-//		final DateTime dateTimeBRKDT = new DateTime(planungGroup_1, SWT.TIME);
-//		final FormData fd_dateTimeBRKDT = new FormData();
-//		fd_dateTimeBRKDT.bottom = new FormAttachment(0, 93);
-//		fd_dateTimeBRKDT.top = new FormAttachment(0, 72);
-//		fd_dateTimeBRKDT.right = new FormAttachment(0, 167);
-//		fd_dateTimeBRKDT.left = new FormAttachment(0, 94);
-//		dateTimeBRKDT.setLayoutData(fd_dateTimeBRKDT);
-//		dateTimeBRKDT.setToolTipText("Zeit zu der die BRKDT Box zum letzten Mal angehakt wurde");
-
-//		final DateTime dateTimeDF = new DateTime(planungGroup_1, SWT.TIME);
-//		final FormData fd_dateTimeDF = new FormData();
-//		fd_dateTimeDF.bottom = new FormAttachment(0, 71);
-//		fd_dateTimeDF.top = new FormAttachment(0, 50);
-//		fd_dateTimeDF.right = new FormAttachment(0, 167);
-//		fd_dateTimeDF.left = new FormAttachment(0, 94);
-//		dateTimeDF.setLayoutData(fd_dateTimeDF);
-//		dateTimeDF.setToolTipText("Zeit zu der das DF/Insp. Feld zum letzten Mal angehakt wurde");
-
-//		final DateTime dateTimeNotarzt = new DateTime(planungGroup_1, SWT.TIME);
-//		final FormData fd_dateTimeNotarzt = new FormData();
-//		fd_dateTimeNotarzt.bottom = new FormAttachment(0, 27);
-//		fd_dateTimeNotarzt.top = new FormAttachment(0, 6);
-//		fd_dateTimeNotarzt.right = new FormAttachment(0, 167);
-//		fd_dateTimeNotarzt.left = new FormAttachment(0, 94);
-//		dateTimeNotarzt.setLayoutData(fd_dateTimeNotarzt);
-//		dateTimeNotarzt.setToolTipText("Zeit zu der die Notarzt Box zum letzten Mal angehakt wurde");
-
-//		final DateTime dateTimeRTH = new DateTime(planungGroup_1, SWT.TIME);
-//		final FormData fd_dateTimeRTH = new FormData();
-//		fd_dateTimeRTH.bottom = new FormAttachment(0, 49);
-//		fd_dateTimeRTH.top = new FormAttachment(0, 28);
-//		fd_dateTimeRTH.right = new FormAttachment(0, 167);
-//		fd_dateTimeRTH.left = new FormAttachment(0, 94);
-//		dateTimeRTH.setLayoutData(fd_dateTimeRTH);
-//		dateTimeRTH.setToolTipText("Zeit zu der die RTH Box zum letzten Mal angehakt wurde");
-
-//		final DateTime dateTimeBergrettung = new DateTime(planungGroup_1, SWT.TIME);
-//		final FormData fd_dateTimeBergrettung = new FormData();
-//		fd_dateTimeBergrettung.bottom = new FormAttachment(0, 159);
-//		fd_dateTimeBergrettung.top = new FormAttachment(0, 138);
-//		fd_dateTimeBergrettung.right = new FormAttachment(0, 167);
-//		fd_dateTimeBergrettung.left = new FormAttachment(0, 94);
-//		dateTimeBergrettung.setLayoutData(fd_dateTimeBergrettung);
-//		dateTimeBergrettung.setToolTipText("Zeit zu der die Bergrettung Box zum letzten Mal angehakt wurde");
 		planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton});
 
 		final Label label_5 = new Label(shell, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -1247,20 +1166,6 @@ public class TransportForm implements IDirectness
 		//TODO start
 		okButton.addListener(SWT.Selection, new Listener()
 		{
-//			int index;
-//			boolean standbyState;
-//			String station;
-//			String competence;
-//			String servicetype;
-//			String rosterNotes;
-//			String timePlannedStartOfWork;
-//			String timePlannedEndOfWork;
-//			String datePlannedEndOfWork;
-//			String timeRealStartOfWork;
-//			String dateRealStartOfWork;
-//			String timeRealEndOfWork;
-//			String dateRealEndOfWork;
-//			StaffMember staffMember;
 			String requiredFields;//contains the names of the required fields that have no content
 //			
 			int hourStart;
@@ -1342,8 +1247,6 @@ public class TransportForm implements IDirectness
 				
 				
 				formatOfTime = "";
-//				requiredRealDateFields = "";
-//				realWorkTimeNoDateIfNoTime = "";
 				
 				//get content of all fields
 				this.getContentOfAllFields();
@@ -1732,6 +1635,9 @@ public class TransportForm implements IDirectness
 		shell.setTabList(new Control[] {dateTime, transportdatenGroup, planungGroup, patientenzustandGroup, planungGroup_1, transportdetailsGroup, personalAmFahrzeugGroup, statusmeldungenGroup, okButton, abbrechenButton, group});
 		//
 	}
+	
+
+    
 	
 	//METHODS
 	
