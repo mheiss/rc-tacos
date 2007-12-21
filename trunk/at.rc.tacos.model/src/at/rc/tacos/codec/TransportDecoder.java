@@ -81,7 +81,7 @@ public class TransportDecoder implements MessageDecoder
                 if("kindOfIllness".equalsIgnoreCase(startName))
                     transport.setKindOfIllness(reader.getElementText());
                 if("transportNotes".equalsIgnoreCase(startName))
-                    transport.setTransportNotes(reader.getElementText());
+                    transport.setDiseaseNotes(reader.getElementText());
                 if("responsibleStation".equalsIgnoreCase(startName))
                     transport.setResponsibleStation(reader.getElementText());
                 if("realStation".equalsIgnoreCase(startName))
@@ -117,7 +117,7 @@ public class TransportDecoder implements MessageDecoder
                 if("feedback".equalsIgnoreCase(startName))
                     transport.setFeedback(reader.getElementText());
                 if("directness".equalsIgnoreCase(startName))
-                    transport.setDirectness(Integer.valueOf(reader.getElementText()));
+                    transport.setDirection(Integer.valueOf(reader.getElementText()));
                 if("statusMessage".equalsIgnoreCase(startName))
                 {
                     Attribute statusAttr = start.getAttributeByName(new QName("status"));
