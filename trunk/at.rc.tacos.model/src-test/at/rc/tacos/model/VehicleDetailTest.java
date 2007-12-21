@@ -37,7 +37,7 @@ public class VehicleDetailTest
         VehicleDetail v1 = new VehicleDetail("BM1","RTW","Bruck");
         v1.setDriverName(sm);
         Assert.assertEquals("fn", v1.getDriverName().getFirstName());
-        Assert.assertEquals("ln", v1.getDriverName().getLastname());
+        Assert.assertEquals("ln", v1.getDriverName().getLastName());
         Assert.assertEquals("username", v1.getDriverName().getUserName());
     }
     
@@ -48,7 +48,7 @@ public class VehicleDetailTest
         VehicleDetail v1 = new VehicleDetail("BM1","RTW","Bruck");
         v1.setParamedicIName(sm);
         Assert.assertEquals("fn", v1.getParamedicIName().getFirstName());
-        Assert.assertEquals("ln", v1.getParamedicIName().getLastname());
+        Assert.assertEquals("ln", v1.getParamedicIName().getLastName());
         Assert.assertEquals("username", v1.getParamedicIName().getUserName());
     }
     
@@ -59,7 +59,7 @@ public class VehicleDetailTest
         VehicleDetail v1 = new VehicleDetail("BM1","RTW","Bruck");
         v1.setParamedicIIName(sm);
         Assert.assertEquals("fn", v1.getParamedicIIName().getFirstName());
-        Assert.assertEquals("ln", v1.getParamedicIIName().getLastname());
+        Assert.assertEquals("ln", v1.getParamedicIIName().getLastName());
         Assert.assertEquals("username", v1.getParamedicIIName().getUserName());
     }
     
@@ -68,7 +68,7 @@ public class VehicleDetailTest
     {
         VehicleDetail v1 = new TestDataSource().vehicleList.get(0);
         Assert.assertEquals("Staff1", v1.getDriverName().getFirstName());
-        Assert.assertEquals("Staff1", v1.getDriverName().getLastname());
+        Assert.assertEquals("Staff1", v1.getDriverName().getLastName());
         Assert.assertEquals("nick.staff1", v1.getDriverName().getUserName());
     }
 }
