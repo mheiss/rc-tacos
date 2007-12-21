@@ -126,14 +126,20 @@ public class StaffMember extends AbstractMessage
         this.personId = personId;
     }
 
+    
     /**
-     * Returns the last name of this staff member
-     * @return the last name
+     * Returns the last name
+     * @return the lastName
      */
-    public String getLastname() 
+    public String getLastName() 
     {
-        return lastName;
-    }
+		return lastName;
+	}
+    
+    
+    
+    
+    
 
     /**
      * Sets the last name of this staff member
@@ -261,9 +267,7 @@ public class StaffMember extends AbstractMessage
 		this.authorization = authorization;
 	}
 
-	public String getLastName() {
-		return lastName;
-	}
+	
 
 	public Boolean getIslocked() {
 		return islocked;
