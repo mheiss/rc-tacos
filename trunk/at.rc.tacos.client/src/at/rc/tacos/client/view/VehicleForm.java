@@ -167,7 +167,7 @@ public class VehicleForm
 		//fill combo employee name with data
 		for(StaffMember staffMember: staffMemberListDriver)
 		{
-			comboViewerDriver.add(staffMember.getLastname() +" " +staffMember.getFirstName());
+			comboViewerDriver.add(staffMember.getLastName() +" " +staffMember.getFirstName());
 		}
 
 		setDriverCombo.setBounds(100,15,226, 24);
@@ -189,7 +189,7 @@ public class VehicleForm
 
 		for(StaffMember staffMember: staffMemberListAllCheckedIn)
 		{
-			comboViewerParamedicI.add(staffMember.getLastname() +" " +staffMember.getFirstName());
+			comboViewerParamedicI.add(staffMember.getLastName() +" " +staffMember.getFirstName());
 		}
 
 		setParamedicICombo.setBounds(100,42,226,24);
@@ -213,7 +213,7 @@ public class VehicleForm
 
 		for(StaffMember staffMember: staffMemberListAllCheckedIn)
 		{
-			comboViewerParamedicII.add(staffMember.getLastname() +" " +staffMember.getFirstName());
+			comboViewerParamedicII.add(staffMember.getLastName() +" " +staffMember.getFirstName());
 		}
 
 		setParamedicIICombo.setBounds(100,69,226, 24);
