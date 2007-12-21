@@ -19,7 +19,7 @@ public class StaffComboLabelProvider implements ILabelProvider
     public String getText(Object object)
     {
         StaffMember member = (StaffMember)object;
-        return member.getFirstName() + " " + member.getLastname();
+        return member.getFirstName() + " " + member.getLastName();
     }
 
     @Override
