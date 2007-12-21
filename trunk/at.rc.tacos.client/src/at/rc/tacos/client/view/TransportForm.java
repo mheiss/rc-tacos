@@ -1,9 +1,15 @@
 package at.rc.tacos.client.view;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,7 +31,20 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.common.IDirectness;
+import at.rc.tacos.common.IKindOfTransport;
+import at.rc.tacos.common.ITransportPriority;
+import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.model.CallerDetail;
+import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.TestDataSource;
+import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
+
+import at.rc.tacos.common.Constants;
 
 /**
  * GUI (form) to manage the transport details
@@ -33,12 +52,12 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  * @author b.thek
  *
  */
-public class TransportForm implements IDirectness
+public class TransportForm implements IDirectness, IKindOfTransport
 {
 
 	private Group transportdetailsGroup;
 	private Text textSaniII;
-	private Text textSnaniI;
+	private Text textSaniI;
 	private Text textFahrer;
 	private Button bergrettungButton;
 	private Button polizeiButton;
@@ -71,12 +90,10 @@ public class TransportForm implements IDirectness
 	private Button krankentrageButton;
 	private Button tragsesselButton;
 	private Combo comboNachOrt;
-	private Combo comboNachNr;
 	private Combo comboNachStrasse;
 	private Combo comboVorname;
 	private Combo comboNachname;
 	private Combo comboVonOrt;
-	private Combo comboVonNr;
 	private Combo comboVonStrasse;
 	private Text textFahrzeug;
 	private Text textOrtsstelle;
@@ -100,6 +117,8 @@ public class TransportForm implements IDirectness
 	private Listener exitListener;
 	private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
 	
+	private Transport transport;
+	
 	//determine whether to update or to create a new entry
     private boolean createNew;
 
@@ -107,9 +126,122 @@ public class TransportForm implements IDirectness
 	 * Launch the application
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		try {
-			TransportForm window = new TransportForm();
+	public static void main(String[] args) 
+	{
+		try 
+		{
+			
+			ArrayList<Patient> patientList = new ArrayList<Patient>();
+	        Patient p1 = new Patient("Patient1","Patient1");
+	        Patient p2 = new Patient("Patient2","Patient2");
+	        Patient p3 = new Patient("Patient3","Patient3");
+	        patientList.add(p1);
+	        patientList.add(p2);
+	        patientList.add(p3);
+	        
+	        
+	        ArrayList<CallerDetail> notifierList = new ArrayList<CallerDetail>();
+	        CallerDetail n1 = new CallerDetail("Notifer1","0664-123456789","Notes taken");
+	        CallerDetail n2 = new CallerDetail("Notifer2","0784-1548154","Notes taken");
+	        CallerDetail n3 = new CallerDetail("Notifer3","2147-123456789","Notes taken");
+	        notifierList.add(n1);
+	        notifierList.add(n2);
+	        notifierList.add(n3);
+	        
+	        ArrayList<StaffMember> staffList = new ArrayList<StaffMember>();
+	        StaffMember s1 = new StaffMember("Staff1","Staff1","nick.staff1");
+	        s1.setPersonId(0);
+	        StaffMember s2 = new StaffMember("Staff2","Staff2","nick.staff2");
+	        s2.setPersonId(1);
+	        StaffMember s3 = new StaffMember("Staff3","Staff3","nick.staff3");
+	        s3.setPersonId(2);
+	        staffList.add(s1);
+	        staffList.add(s2);
+	        staffList.add(s3);
+	        
+	        
+	        ArrayList<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
+	        MobilePhoneDetail ph1 = new MobilePhoneDetail("P1","0699-123456789");
+	        MobilePhoneDetail ph2 = new MobilePhoneDetail("P2","0664-123456789");
+	        MobilePhoneDetail ph3 = new MobilePhoneDetail("P3","0676-123456789");
+	        phoneList.add(ph1);
+	        phoneList.add(ph2);
+	        phoneList.add(ph3);
+	        
+	        
+	      //create the list
+	        ArrayList<VehicleDetail>vehicleList = new ArrayList<VehicleDetail>();
+	        //load dummy data
+	        VehicleDetail v1 = new VehicleDetail();
+	        v1.setVehicleId(0);
+	        v1.setVehicleName("Bm01");
+	        v1.setVehicleType("RTW");
+	        v1.setVehicleNotes("notes vehicle 1");
+	        v1.setBasicStation("BM");
+	        v1.setCurrentStation("BM");
+	        v1.setReadyForAction(true);
+	        v1.setOutOfOrder(false);
+	        v1.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+	        v1.setDriverName(staffList.get(0));
+	        v1.setParamedicIName(staffList.get(1));
+	        v1.setParamedicIIName(staffList.get(2));
+	        v1.setMobilPhone(phoneList.get(0));
+	        
+	        
+	        //second vehicle
+	        VehicleDetail v2 = new VehicleDetail();
+	        v2.setVehicleId(1);
+	        v2.setVehicleName("Bm02");
+	        v2.setVehicleType("KTW");
+	        v2.setVehicleNotes("notes vehicle 2");
+	        v2.setBasicStation("BM");
+	        v2.setCurrentStation("KA");
+	        v2.setReadyForAction(true);
+	        v2.setOutOfOrder(false);
+	        v2.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+	        v2.setDriverName(staffList.get(0));
+	        v2.setParamedicIName(staffList.get(1));
+	        v2.setParamedicIIName(staffList.get(2));
+	        v2.setMobilPhone(phoneList.get(1));
+	        //third vehicle
+	        VehicleDetail v3 = new VehicleDetail();
+	        v3.setVehicleId(2);
+	        v3.setVehicleName("Bm03");
+	        v3.setVehicleType("RTW");
+	        v3.setBasicStation("KA");
+	        v3.setCurrentStation("KA");
+	        v3.setReadyForAction(false);
+	        v3.setOutOfOrder(true);
+	        v3.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+	        v3.setDriverName(staffList.get(0));
+	        v3.setParamedicIName(staffList.get(1));
+	        v3.setParamedicIIName(staffList.get(2));
+	        v3.setMobilPhone(phoneList.get(2));
+	        //add to list
+	        vehicleList.add(v1);
+	        vehicleList.add(v2);
+	        vehicleList.add(v3);
+	        
+	        
+	        
+			Transport t1 = new Transport();
+	        t1.setTransportId(0);
+	        t1.setFromStreet("street_from_1");
+	        t1.setFromNumber("number_from 1");
+	        t1.setFromCity("city_from_1");
+	        t1.setToStreet("street_to_1");
+	        t1.setToNumber("number_to_1");
+	        t1.setToCity("city_to_1");
+	        t1.setPatient(patientList.get(0));
+	        t1.addStatus(1, new Date().getTime());
+	        t1.addStatus(2, new Date().getTime());
+	        t1.setCallerDetail(notifierList.get(0));
+	        t1.setVehicleDetail(vehicleList.get(0));
+	        t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
+	        t1.setDirection(IDirectness.TOWARDS_DISTRICT);
+			
+			
+			TransportForm window = new TransportForm(t1);
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,6 +261,205 @@ public class TransportForm implements IDirectness
 				display.sleep();
 		}
 	}
+	
+	/**
+     * Default class constructor used to create
+     * a new transport entry.
+     */
+    public TransportForm()
+    {
+        createNew = true;
+        this.transport = new Transport();
+        //set up the filds
+        createContents();
+    }
+    
+    
+    /**
+     * used to edit an roster entry
+     * @param rosterEntry the roster entry to edit
+     */
+    public TransportForm(Transport transport)
+    {
+        //update an entry
+        createNew = false;
+        this.transport = transport;
+       
+        //create the fields
+        createContents();
+
+        //set field contents
+        GregorianCalendar gcal = new GregorianCalendar();
+        gcal.setTimeZone(TimeZone.getDefault());
+        
+        //date of transport
+        gcal.setTimeInMillis(transport.getDateOfTransport());
+        this.dateTime.setDay(gcal.get(GregorianCalendar.DATE));
+        this.dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
+        this.dateTime.setYear(gcal.get(GregorianCalendar.YEAR));
+        
+        //planned start of transport
+        if(transport.getPlannedStartOfTransport() != 0)
+        {
+        	gcal.setTimeInMillis(transport.getPlannedStartOfTransport());
+        	String abfahrtTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        	this.textAbf.setText(abfahrtTime);
+        }
+        
+        //time at patient
+        if (transport.getPlannedTimeAtPatient() != 0)
+        {
+        	gcal.setTimeInMillis(transport.getPlannedTimeAtPatient());
+        	String beiPatientTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        	this.textBeiPat.setText(beiPatientTime);
+        }
+        
+        //time at destination
+        if (transport.getAppointmentTimeAtDestination() != 0)
+        {
+        	gcal.setTimeInMillis(transport.getAppointmentTimeAtDestination());
+        	String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        	this.textTermin.setText(terminTime);
+        }
+
+        //other fields
+        this.begleitpersonButton.setSelection(transport.isAccompanyingPerson());
+        this.bergrettungButton.setSelection(transport.isMountainRescueServiceAlarming());
+        System.out.println("TransportForm, set ohter fields, BrkdtAlarming: " +transport.isBrkdtAlarming());
+        this.brkdtButton.setSelection(transport.isBrkdtAlarming());
+
+       
+        if(transport.getKindOfIllness()!= null)
+        	this.comboErkrankungVerletzung.setText(transport.getKindOfIllness());
+        
+        if(transport.getPatient().getLastname() != null)
+        	this.comboNachname.setText(transport.getPatient().getLastname());
+        
+        if(transport.getToCity() != null)
+        	this.comboNachOrt.setText(transport.getToCity());
+        
+        if(transport.getToCity() != null)
+        this.comboNachStrasse.setText(transport.getToStreet());
+        
+        //mandatory fields
+        this.comboPrioritaet.setText(transport.getTransportPriority());
+        this.comboVonStrasse.setText(transport.getFromStreet());
+        
+        if(transport.getResponsibleStation() != null)
+        this.comboZustaendigeOrtsstelle.setText(transport.getResponsibleStation());//mandatory!! default: Bezirk
+        
+        if(transport.getFromCity() != null)
+        	this.comboVonOrt.setText(transport.getFromCity());
+        
+        if(transport.getPatient().getFirstname() != null)
+        	this.comboVorname.setText(transport.getPatient().getFirstname());
+        
+        
+        this.dfButton.setSelection(transport.isDfAlarming());
+        this.fernfahrtButton.setSelection(transport.isLongDistanceTrip());
+        this.feuerwehrButton.setSelection(transport.isFirebrigadeAlarming());
+        this.notarztButton.setSelection(transport.isEmergencyDoctorAlarming());
+        this.polizeiButton.setSelection(transport.isPoliceAlarming());
+        this.rthButton.setSelection(transport.isHelicopterAlarming());
+        this.ruecktransportMoeglichButton.setSelection(transport.isBackTransport());
+        
+        if(transport.getDiseaseNotes() != null)
+        {
+        	this.textAnmerkungen.setText(transport.getDiseaseNotes());
+        }
+        
+        if(transport.getCallerDetail().getCallerName() != null)
+        	this.textAnrufer.setText(transport.getCallerDetail().getCallerName());
+        
+        if(transport.getVehicleDetail().getDriverName().getLastName() != null)
+        	this.textFahrer.setText(transport.getVehicleDetail().getDriverName().getLastName() +" " +transport.getVehicleDetail().getDriverName().getFirstName());
+
+        if(transport.getVehicleDetail().getVehicleName() != null)
+        	this.textFahrzeug.setText(transport.getVehicleDetail().getVehicleName());
+        
+        if(transport.getRealStation() != null)
+        	this.textOrtsstelle.setText(transport.getRealStation());
+        
+        if(transport.getFeedback() != null)
+        	this.textRueckmeldung.setText(transport.getFeedback());
+        
+        if(transport.getVehicleDetail().getParamedicIName().getLastName() != null)
+        	this.textSaniI.setText(transport.getVehicleDetail().getParamedicIName().getLastName() +" " +transport.getVehicleDetail().getParamedicIName().getFirstName());
+        
+        if(transport.getVehicleDetail().getParamedicIIName().getLastName() != null)
+        	this.textSaniII.setText(transport.getVehicleDetail().getParamedicIIName().getLastName() +" " +transport.getVehicleDetail().getParamedicIIName().getFirstName());
+       
+        if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
+        	this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
+        
+        if(transport.getTransportNumber() != null)
+        	this.textTransportNummer.setText(transport.getTransportNumber());
+        
+        
+        
+        
+        
+        //kind of transport
+        String kindOfTransport = transport.getKindOfTransport();
+        if(TRANSPORT_KIND_GEHEND.equalsIgnoreCase(kindOfTransport))
+        {
+        	this.gehendButton.setSelection(true);
+        }
+        else if (TRANSPORT_KIND_TRAGSESSEL.equalsIgnoreCase(kindOfTransport))
+        {
+        	this.tragsesselButton.setSelection(true);
+        }
+        else if (TRANSPORT_KIND_KRANKENTRAGE.equalsIgnoreCase(kindOfTransport))
+        {
+        	this.krankentrageButton.setSelection(true);
+        }
+        else if (TRANSPORT_KIND_ROLLSTUHL.equalsIgnoreCase(kindOfTransport))
+        {
+        	this.eigenerRollstuhlButton.setSelection(true);
+        }
+       
+        
+        
+        
+        //directness
+        int direction = transport.getDirection();
+        if (TOWARDS_DISTRICT == direction)
+        {
+        	this.bezirkButton.setSelection(true);
+        }
+        if (TOWARDS_GRAZ == direction)
+        {
+        	this.grazButton.setSelection(true);
+        }
+        if (TOWARDS_LEOBEN == direction)
+        {
+        	this.leobenButton.setSelection(true);
+        }
+        if (TOWARDS_MARIAZELL== direction)
+        {
+        	this.mariazellButton.setSelection(true);
+        }
+        if (TOWARDS_VIENNA == direction)
+        {
+        	this.wienButton.setSelection(true);
+        }
+        
+        
+        //type of editing (Vormerkung, Notfall, Alles - über Construktor und über Buttons)
+//
+//        //other fields
+//        if(rosterEntry.getRosterNotes() != null)
+//            this.textAnmerkungen.setText(rosterEntry.getRosterNotes());
+//        this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
+//        this.comboVerwendung.setText(rosterEntry.getJob());
+//        this.comboOrtsstelle.setText(rosterEntry.getStation());
+//        this.bereitschaftButton.setSelection(rosterEntry.getStandby());
+//        this.setEmployeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
+    }
+
+
+    
+    
 
 	/**
 	 * Create contents of the window
@@ -203,18 +534,18 @@ public class TransportForm implements IDirectness
 
 		comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachStrasse = new FormData();
+		fd_comboNachStrasse.right = new FormAttachment(0, 260);
 		fd_comboNachStrasse.bottom = new FormAttachment(0, 74);
 		fd_comboNachStrasse.top = new FormAttachment(0, 53);
-		fd_comboNachStrasse.right = new FormAttachment(0, 232);
 		fd_comboNachStrasse.left = new FormAttachment(0, 38);
 		comboNachStrasse.setLayoutData(fd_comboNachStrasse);
 		comboNachStrasse.setItems(new String[] {"Leobnerstraße", "Mariazellerstraße", "Am Hang", "Wienerstraße"});//TODO get from db
 
 		comboVonStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonStrasse = new FormData();
+		fd_comboVonStrasse.right = new FormAttachment(0, 260);
 		fd_comboVonStrasse.bottom = new FormAttachment(0, 47);
 		fd_comboVonStrasse.top = new FormAttachment(0, 26);
-		fd_comboVonStrasse.right = new FormAttachment(0, 232);
 		fd_comboVonStrasse.left = new FormAttachment(0, 38);
 		comboVonStrasse.setLayoutData(fd_comboVonStrasse);
 		comboVonStrasse.setItems(new String[] {"Leobnerstraße", "Mariazellerstraße", "Am Hang", "Wienerstraße"});//TODO get from db
@@ -239,49 +570,49 @@ public class TransportForm implements IDirectness
 		label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		label.setText("Straße");
 
-		comboVonNr = new Combo(transportdatenGroup, SWT.NONE);
-		final FormData fd_comboVonNr = new FormData();
-		fd_comboVonNr.bottom = new FormAttachment(0, 47);
-		fd_comboVonNr.top = new FormAttachment(0, 26);
-		fd_comboVonNr.right = new FormAttachment(0, 313);
-		fd_comboVonNr.left = new FormAttachment(0, 238);
-		comboVonNr.setLayoutData(fd_comboVonNr);
-		comboVonNr.setItems(new String[] {"1", "2", "3", "4"});//TODO get from db
+//		comboVonNr = new Combo(transportdatenGroup, SWT.NONE);
+//		final FormData fd_comboVonNr = new FormData();
+//		fd_comboVonNr.bottom = new FormAttachment(0, 47);
+//		fd_comboVonNr.top = new FormAttachment(0, 26);
+//		fd_comboVonNr.right = new FormAttachment(0, 313);
+//		fd_comboVonNr.left = new FormAttachment(0, 238);
+//		comboVonNr.setLayoutData(fd_comboVonNr);
+//		comboVonNr.setItems(new String[] {"1", "2", "3", "4"});//TODO get from db
+//
+//		comboNachNr = new Combo(transportdatenGroup, SWT.NONE);
+//		final FormData fd_comboNachNr = new FormData();
+//		fd_comboNachNr.bottom = new FormAttachment(0, 74);
+//		fd_comboNachNr.top = new FormAttachment(0, 53);
+//		fd_comboNachNr.right = new FormAttachment(0, 313);
+//		fd_comboNachNr.left = new FormAttachment(0, 238);
+//		comboNachNr.setLayoutData(fd_comboNachNr);
+//		comboNachNr.setItems(new String[] {"1", "2", "3", "4"});//TODO get from db
 
-		comboNachNr = new Combo(transportdatenGroup, SWT.NONE);
-		final FormData fd_comboNachNr = new FormData();
-		fd_comboNachNr.bottom = new FormAttachment(0, 74);
-		fd_comboNachNr.top = new FormAttachment(0, 53);
-		fd_comboNachNr.right = new FormAttachment(0, 313);
-		fd_comboNachNr.left = new FormAttachment(0, 238);
-		comboNachNr.setLayoutData(fd_comboNachNr);
-		comboNachNr.setItems(new String[] {"1", "2", "3", "4"});//TODO get from db
-
-		final Label label_1 = new Label(transportdatenGroup, SWT.NONE);
-		final FormData fd_label_1 = new FormData();
-		fd_label_1.bottom = new FormAttachment(0, 20);
-		fd_label_1.top = new FormAttachment(0, 7);
-		fd_label_1.right = new FormAttachment(0, 313);
-		fd_label_1.left = new FormAttachment(0, 238);
-		label_1.setLayoutData(fd_label_1);
-		label_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
-		label_1.setText("Nr./Stock/Tür");
+//		final Label label_1 = new Label(transportdatenGroup, SWT.NONE);
+//		final FormData fd_label_1 = new FormData();
+//		fd_label_1.bottom = new FormAttachment(0, 20);
+//		fd_label_1.top = new FormAttachment(0, 7);
+//		fd_label_1.right = new FormAttachment(0, 313);
+//		fd_label_1.left = new FormAttachment(0, 238);
+//		label_1.setLayoutData(fd_label_1);
+//		label_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
+//		label_1.setText("Nr./Stock/Tür");
 
 		comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonOrt = new FormData();
+		fd_comboVonOrt.left = new FormAttachment(0, 274);
 		fd_comboVonOrt.bottom = new FormAttachment(0, 47);
 		fd_comboVonOrt.top = new FormAttachment(0, 26);
 		fd_comboVonOrt.right = new FormAttachment(0, 430);
-		fd_comboVonOrt.left = new FormAttachment(0, 319);
 		comboVonOrt.setLayoutData(fd_comboVonOrt);
 		comboVonOrt.setItems(new String[] {"Bruck an der Mur", "Oberaich", "Pernegg", "Turnau", "Kapfenberg"});//TODO get form db
 
 		comboNachOrt = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachOrt = new FormData();
+		fd_comboNachOrt.left = new FormAttachment(0, 274);
 		fd_comboNachOrt.bottom = new FormAttachment(0, 74);
 		fd_comboNachOrt.top = new FormAttachment(0, 53);
 		fd_comboNachOrt.right = new FormAttachment(0, 430);
-		fd_comboNachOrt.left = new FormAttachment(0, 319);
 		comboNachOrt.setLayoutData(fd_comboNachOrt);
 		comboNachOrt.setItems(new String[] {"Bruck an der Mur", "Oberaich", "Pernegg", "Turnau", "Kapfenberg"});//TODO get form db
 
@@ -453,7 +784,7 @@ public class TransportForm implements IDirectness
 		fd_comboZustaendigeOrtsstelle.left = new FormAttachment(0, 319);
 		comboZustaendigeOrtsstelle.setLayoutData(fd_comboZustaendigeOrtsstelle);
 		comboZustaendigeOrtsstelle.setItems(new String[] {"Breitenau", "Bruck an der Mur", "Kapfenberg", "St. Marein", "Thörl", "Turnau"});
-		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonNr, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachNr, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, ruecktransportMoeglichButton, comboZustaendigeOrtsstelle, begleitpersonButton, textAnrufer, textTelefonAnrufer});
+		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, ruecktransportMoeglichButton, comboZustaendigeOrtsstelle, begleitpersonButton, textAnrufer, textTelefonAnrufer});
 
 		planungGroup = new Group(shell, SWT.NONE);
 		planungGroup.setLayout(new FormLayout());
@@ -874,13 +1205,13 @@ public class TransportForm implements IDirectness
 		fd_textFahrer.left = new FormAttachment(0, 73);
 		textFahrer.setLayoutData(fd_textFahrer);
 
-		textSnaniI = new Text(personalAmFahrzeugGroup, SWT.BORDER);
+		textSaniI = new Text(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textSnaniI = new FormData();
 		fd_textSnaniI.bottom = new FormAttachment(0, 59);
 		fd_textSnaniI.top = new FormAttachment(0, 38);
 		fd_textSnaniI.right = new FormAttachment(0, 276);
 		fd_textSnaniI.left = new FormAttachment(0, 73);
-		textSnaniI.setLayoutData(fd_textSnaniI);
+		textSaniI.setLayoutData(fd_textSnaniI);
 
 		textSaniII = new Text(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textSaniII = new FormData();
@@ -919,7 +1250,7 @@ public class TransportForm implements IDirectness
 		paramedicIILabel.setLayoutData(fd_paramedicIILabel);
 		paramedicIILabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		paramedicIILabel.setText("Sanitäter II:");
-		personalAmFahrzeugGroup.setTabList(new Control[] {textFahrer, textSnaniI, textSaniII});
+		personalAmFahrzeugGroup.setTabList(new Control[] {textFahrer, textSaniI, textSaniII});
 
 		
 		//group 'Statusmeldungen'
@@ -1295,7 +1626,7 @@ public class TransportForm implements IDirectness
 			private void getContentOfAllFields()
 			{		
 				paramedicII = textSaniII.getText();
-				paramedicI = textSnaniI.getText();
+				paramedicI = textSaniI.getText();
 				driver = textFahrer.getText();
 				mountainRescue = bergrettungButton.getSelection();
 				police = polizeiButton.getSelection();
@@ -1332,12 +1663,10 @@ public class TransportForm implements IDirectness
 				moving = gehendButton.getSelection();
 				
 				toCommunity = comboNachOrt.getText();
-				toNumber = comboNachNr.getText();
 				toStreet = comboNachStrasse.getText();
 				firstName = comboVorname.getText();
 				lastName = comboNachname.getText();
 				fromCommunity = comboVonOrt.getText();
-				fromNumber = comboVonNr.getText();
 				fromStreet = comboVonStrasse.getText();
 				
 				vehicle = textFahrzeug.getText();
