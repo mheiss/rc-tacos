@@ -52,7 +52,7 @@ public class MyPersonalTooltip extends ToolTip
 		
 		//the name of the staff member
 		Image image = ImageFactory.getInstance().getRegisteredImage("image.personal.user");
-		String title = entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastname();
+		String title = entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName();
 		addIconAndLabel(composite, image, title);
 		//the notes
 		if(entry.hasNotes())
