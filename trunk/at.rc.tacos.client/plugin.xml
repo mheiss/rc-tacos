@@ -71,11 +71,21 @@
             name="InfoView">
       </view>
       
+      
+      
+      
+      
       <view
             name="DispositionView"
             allowMultiple="false"
             class="at.rc.tacos.client.view.DispositionView"
             id="at.rc.tacos.client.view.disposition_view">
+      </view>
+      <view
+            name="OutstandingTransportsView"
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.OutstandingTransportsView"
+            id="at.rc.tacos.client.view.outstandingTransports_view">
       </view>
       
       
