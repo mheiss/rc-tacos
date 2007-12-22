@@ -58,7 +58,7 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 		//Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		formDisp = toolkit.createScrolledForm(parent);
-		formDisp.setText("Transportübersicht");
+		formDisp.setText("Disponierte Transporte");
 		toolkit.decorateFormHeading(formDisp.getForm());
 		formDisp.getBody().setLayout(new FillLayout());
 		
@@ -190,104 +190,8 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 		/** make columns sort able*/
 
 		
-		/**
-		 * area of 'offene Transporte'
-		 */
-		final Group offeneTransporteGroup = new Group(sashForm, SWT.NO_RADIO_GROUP | SWT.BORDER);
 		
-		
-		offeneTransporteGroup.setLayout(new FillLayout());
-		offeneTransporteGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		offeneTransporteGroup.setText("Offene Transporte");
-
-		
-		/** tabFolder Selection Listener not needed? */
-		viewerOffTrans = new TableViewer(offeneTransporteGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerOffTrans.setContentProvider(new DispositionViewOffContentProvider());
-		viewerOffTrans.setLabelProvider(new DispositionViewOffLabelProvider());
-		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportManager());
-		viewerOffTrans.getTable().setLinesVisible(true);
-		
-		/** tool tip*/
-		
-		/** sorter*/
-		
-		
-		
-		final Table tableOff = viewerOffTrans.getTable();
-		tableOff.setRedraw(true);
-		tableOff.setLinesVisible(true);
-		tableOff.setHeaderVisible(true);
-
-		final TableColumn newColumnTableColumnIdOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnIdOffeneTransporte.setWidth(29);
-		newColumnTableColumnIdOffeneTransporte.setText("Id");
-
-		final TableColumn newColumnTableColumnPrioritaetOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnPrioritaetOffeneTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
-		newColumnTableColumnPrioritaetOffeneTransporte.setWidth(31);
-		newColumnTableColumnPrioritaetOffeneTransporte.setText("Pr");
-
-		final TableColumn newColumnTableColumnOSOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
-		newColumnTableColumnOSOffeneTransporte.setWidth(49);
-		newColumnTableColumnOSOffeneTransporte.setText("OS");
-
-		final TableColumn newColumnTableColumnAbfOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnAbfOffeneTransporte.setToolTipText("Abfahrt auf der Dienststelle");
-		newColumnTableColumnAbfOffeneTransporte.setWidth(54);
-		newColumnTableColumnAbfOffeneTransporte.setText("Abf");
-
-		final TableColumn newColumnTableColumnAnkOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnAnkOffeneTransporte.setToolTipText("Ankunft beim Patienten");
-		newColumnTableColumnAnkOffeneTransporte.setWidth(53);
-		newColumnTableColumnAnkOffeneTransporte.setText("Ank.");
-
-		final TableColumn newColumnTableColumnTerminOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnTerminOffeneTransporte.setToolTipText("Terminzeit am Zielort");
-		newColumnTableColumnTerminOffeneTransporte.setWidth(57);
-		newColumnTableColumnTerminOffeneTransporte.setText("Termin");
-
-		final TableColumn newColumnTableColumnTransportVonOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnTransportVonOffeneTransporte.setWidth(102);
-		newColumnTableColumnTransportVonOffeneTransporte.setText("Transport von");
-
-		final TableColumn newColumnTableColumnPatientOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnPatientOffeneTransporte.setWidth(100);
-		newColumnTableColumnPatientOffeneTransporte.setText("Patient");
-
-		final TableColumn newColumnTableColumnTransportNachOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnTransportNachOffeneTransporte.setWidth(100);
-		newColumnTableColumnTransportNachOffeneTransporte.setText("Transport nach");
-
-		final TableColumn newColumnTableColumnAufgOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnAufgOffeneTransporte.setToolTipText("Zeit zu der der Transport aufgenommen wurde");
-		newColumnTableColumnAufgOffeneTransporte.setWidth(100);
-		newColumnTableColumnAufgOffeneTransporte.setText("Aufg");
-
-		final TableColumn newColumnTableColumnTOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnTOffeneTransporte.setToolTipText("Transportart");
-		newColumnTableColumnTOffeneTransporte.setWidth(100);
-		newColumnTableColumnTOffeneTransporte.setText("T");
-
-		final TableColumn newColumnTableColumnErkrankungVerletzungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnErkrankungVerletzungOffeneTransporte.setWidth(74);
-		newColumnTableColumnErkrankungVerletzungOffeneTransporte.setText("Erkrankung/Verletzung");
-
-		final TableColumn newColumnTableColumnAnmerkungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnAnmerkungOffeneTransporte.setWidth(71);
-		newColumnTableColumnAnmerkungOffeneTransporte.setText("Anmerkung");
-
-
-		/** make the columns sort able*/
-
-		//TODO --> for the personal view
-		//group filter
-		
-		
-		//
 	}
-	
 	
 	/**
 	 * Passing the focus request to the viewer's control.
@@ -300,25 +204,21 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
 		{ 
 			this.viewerDispTrans.refresh();
-			this.viewerOffTrans.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_REMOVE".equals(evt.getPropertyName())) 
 		{ 
 			this.viewerDispTrans.refresh();
-			this.viewerOffTrans.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_UPDATE".equals(evt.getPropertyName())) 
 		{ 
 			this.viewerDispTrans.refresh();
-			this.viewerOffTrans.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{ 
 			this.viewerDispTrans.refresh();
-			this.viewerOffTrans.refresh();
 		}
 	}
 }
