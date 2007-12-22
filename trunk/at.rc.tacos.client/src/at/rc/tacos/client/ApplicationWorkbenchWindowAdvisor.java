@@ -20,6 +20,7 @@ import org.eclipse.ui.application.*;
 import at.rc.tacos.client.controller.CreateNewVehicle;
 import at.rc.tacos.client.controller.OpenAboutAction;
 import at.rc.tacos.client.controller.OpenRosterEntryAction;
+import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.modelManager.MyToolbarManager;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
 import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
@@ -114,6 +115,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         tbm.add(new CreateNewVehicle());
         tbm.add(new SwitchToClientPerspective());
         tbm.add(new SwitchToAdminPerspective());
+        tbm.add(new OpenTransportAction());
         tbm.update(true);
         toolbar = (CoolBar)configurer.createCoolBarControl(shell);
         toolbar.setLocked(true);
