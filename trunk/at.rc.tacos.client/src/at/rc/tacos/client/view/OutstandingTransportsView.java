@@ -132,12 +132,13 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		/** sorter*/
 		
 		
-		/** columns*/
+		
 		final Table tableOff = viewerOffTrans.getTable();
 		tableOff.setRedraw(true);
 		tableOff.setLinesVisible(true);
 		tableOff.setHeaderVisible(true);
 	
+		//create the tab items for the personal overview
 		final TableColumn newColumnTableColumnIdOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		newColumnTableColumnIdOffeneTransporte.setWidth(29);
 		newColumnTableColumnIdOffeneTransporte.setText("Id");
