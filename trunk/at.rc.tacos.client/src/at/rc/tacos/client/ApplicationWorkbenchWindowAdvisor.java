@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.application.*;
 
-import at.rc.tacos.client.controller.CreateNewVehicle;
+import at.rc.tacos.client.controller.EditVehicleAction;
 import at.rc.tacos.client.controller.OpenAboutAction;
 import at.rc.tacos.client.controller.OpenRosterEntryAction;
 import at.rc.tacos.client.controller.OpenTransportAction;
@@ -112,7 +112,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         tbm.getControl().setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, true));
         tbm.add(new OpenRosterEntryAction());
         tbm.add(new OpenAboutAction());
-        tbm.add(new CreateNewVehicle());
+        tbm.add(new EditVehicleAction());
         tbm.add(new SwitchToClientPerspective());
         tbm.add(new SwitchToAdminPerspective());
         tbm.add(new OpenTransportAction());

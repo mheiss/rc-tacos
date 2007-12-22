@@ -17,9 +17,9 @@ public class AdminPerspective implements IPerspectiveFactory
      */
     public void createInitialLayout(IPageLayout layout) 
     {
-        //String editorArea = layout.getEditorArea();
-        layout.setEditorAreaVisible(true);
+        String editorArea = layout.getEditorArea();
+        layout.setEditorAreaVisible(false);
         layout.setFixed(true);
-        //the main components
+        layout.addStandaloneView("org.eclipse.ui.views.log", false,IPageLayout.LEFT, 0.25f, editorArea);
     }
 }
