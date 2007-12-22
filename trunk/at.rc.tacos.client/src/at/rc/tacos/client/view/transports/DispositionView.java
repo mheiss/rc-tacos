@@ -23,6 +23,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.DispositionViewDispContentProvider;
 import at.rc.tacos.client.providers.DispositionViewDispLabelProvider;
 import at.rc.tacos.client.providers.DispositionViewOffContentProvider;
+import at.rc.tacos.client.providers.DispositionViewOffLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 
 /**
@@ -35,7 +36,8 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 	public static final String ID = "at.rc.tacos.client.view.transports.disposition_view";
 	
 	private FormToolkit toolkit;
-	private ScrolledForm form;
+	private ScrolledForm formDisp;
+	private ScrolledForm formOff;
 	private TableViewer viewerDispTrans;
 	private TableViewer viewerOffTrans;
 
@@ -55,12 +57,12 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 		
 		//Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-		form = toolkit.createScrolledForm(parent);
-		form.setText("Disponierte Transporte");
-		toolkit.decorateFormHeading(form.getForm());
-		form.getBody().setLayout(new FillLayout());
+		formDisp = toolkit.createScrolledForm(parent);
+		formDisp.setText("Transportübersicht");
+		toolkit.decorateFormHeading(formDisp.getForm());
+		formDisp.getBody().setLayout(new FillLayout());
 		
-		final Composite composite = form.getBody();
+		final Composite composite = formDisp.getBody();
 		
 
 		final SashForm sashForm = new SashForm(composite, SWT.VERTICAL);
@@ -202,7 +204,7 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 		/** tabFolder Selection Listener not needed? */
 		viewerOffTrans = new TableViewer(offeneTransporteGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerOffTrans.setContentProvider(new DispositionViewOffContentProvider());
-		viewerOffTrans.setLabelProvider(new DispositionViewDispLabelProvider());
+		viewerOffTrans.setLabelProvider(new DispositionViewOffLabelProvider());
 		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerOffTrans.getTable().setLinesVisible(true);
 		
