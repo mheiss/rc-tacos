@@ -36,6 +36,52 @@ public class StaffMemberEncoder  implements MessageEncoder
         writer.writeStartElement("userName");
         writer.writeCharacters(member.getUserName());
         writer.writeEndElement();
+        //write the elements and attributes
+        writer.writeStartElement("islocked");
+        writer.writeCharacters(Boolean.toString(member.getIslocked()));
+        writer.writeEndElement();
+        //write the elements and attributes
+        writer.writeStartElement("authorization");
+        writer.writeCharacters(member.getAuthorization());
+        writer.writeEndElement();
+        //write the elements and attributes
+        if(member.getEMail() != null)
+        {
+	        writer.writeStartElement("eMail");
+	        writer.writeCharacters(member.getEMail());
+	        writer.writeEndElement();
+        }
+        //write the elements and attributes
+        if(member.getCityname() != null)
+        {
+	        writer.writeStartElement("cityname");
+	        writer.writeCharacters(member.getCityname());
+	        writer.writeEndElement();
+        }
+     	//write the elements and attributes
+        if(member.getStreetname() != null)
+        {
+	        writer.writeStartElement("streetname");
+	        writer.writeCharacters(member.getStreetname());
+	        writer.writeEndElement();
+        }
+        //write the elements and attributes
+        writer.writeStartElement("primaryLocation");
+        writer.writeCharacters(String.valueOf(member.getPrimaryLocation()));
+        writer.writeEndElement();
+        
+        //write the elements and attributes
+        if(member.getBirthday() > 0)
+        {
+            writer.writeStartElement("birthday");
+            writer.writeCharacters(Long.toString(member.getBirthday()));
+            writer.writeEndElement();
+        }
+        
+      //write the elements and attributes
+        writer.writeStartElement("sex");
+        writer.writeCharacters(Boolean.toString(member.isSex()));
+        writer.writeEndElement();
         
         //end
         writer.writeEndElement();
