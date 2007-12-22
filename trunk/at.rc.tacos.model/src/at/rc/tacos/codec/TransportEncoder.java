@@ -24,15 +24,11 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeStartElement("transportId");
         writer.writeCharacters(String.valueOf(transport.getTransportId()));
         writer.writeEndElement();
-        //the startpoint of the transport: street
+        //the start point of the transport: street
         writer.writeStartElement("fromStreet");
         writer.writeCharacters(transport.getFromStreet());
         writer.writeEndElement();
-        //the startpoint of the transport: number
-        writer.writeStartElement("fromNumber");
-        writer.writeCharacters(transport.getFromNumber());
-        writer.writeEndElement();
-        //the startpoint of the transport: city
+        //the start point of the transport: city
         writer.writeStartElement("fromCity");
         writer.writeCharacters(transport.getFromCity());
         writer.writeEndElement();
@@ -44,13 +40,6 @@ public class TransportEncoder  implements MessageEncoder
         {
             writer.writeStartElement("toStreet");
             writer.writeCharacters(transport.getToStreet());
-            writer.writeEndElement();
-        }
-        //the target number is not mandatory
-        if(transport.getToNumber() != null)
-        {
-            writer.writeStartElement("toNumber");
-            writer.writeCharacters(transport.getToNumber());
             writer.writeEndElement();
         }
         //the target city is not mandatory
@@ -73,7 +62,7 @@ public class TransportEncoder  implements MessageEncoder
             encoder = ProtocolCodecFactory.getDefault().getEncoder(CallerDetail.ID);
             encoder.doEncode(transport.getCallerDetail(), writer);
         }
-        //write is the transport is a backtransport
+        //write is the transport is a back transport
         writer.writeStartElement("backTransport");
         writer.writeCharacters(String.valueOf(transport.isBackTransport()));
         writer.writeEndElement();
