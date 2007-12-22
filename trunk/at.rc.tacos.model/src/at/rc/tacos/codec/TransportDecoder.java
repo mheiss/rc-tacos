@@ -60,14 +60,10 @@ public class TransportDecoder implements MessageDecoder
                     transport.setTransportId(Long.valueOf(reader.getElementText()));   
                 if("fromStreet".equalsIgnoreCase(startName))
                     transport.setFromStreet(reader.getElementText());
-                if("fromNumber".equalsIgnoreCase(startName))
-                    transport.setFromNumber(reader.getElementText());
                 if("fromCity".equalsIgnoreCase(startName))
                     transport.setFromCity(reader.getElementText());
                 if("toStreet".equalsIgnoreCase(startName))
                     transport.setToStreet(reader.getElementText());
-                if("toNumber".equalsIgnoreCase(startName))
-                    transport.setToNumber(reader.getElementText());
                 if("toCity".equalsIgnoreCase(startName))
                     transport.setToCity(reader.getElementText());
                 if("kindOfTransport".equalsIgnoreCase(startName))
