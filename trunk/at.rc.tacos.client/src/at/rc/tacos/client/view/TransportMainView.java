@@ -64,7 +64,7 @@ public class TransportMainView {
 	protected void createContents() 
 	{
 		shell = new Shell();
-		shell.setImage(SWTResourceManager.getImage(TransportsMainView.class, "/image/Tacos_LOGO.jpg"));
+		shell.setImage(SWTResourceManager.getImage(TransportMainView.class, "/image/Tacos_LOGO.jpg"));
 		shell.setLayout(new swing2swt.layout.GridLayout());
 		shell.setText("Transporte");
 
@@ -98,7 +98,7 @@ public class TransportMainView {
 		final TableItem newItemTableItem = new TableItem(table, SWT.BORDER);
 		newItemTableItem.setText(14, "Bm08");
 		newItemTableItem.setText(7, "06:56");
-		newItemTableItem.setImage(16, SWTResourceManager.getImage(TransportsMainView.class, "/image/O_BeglPerson_Table.bmp"));
+		newItemTableItem.setImage(16, SWTResourceManager.getImage(TransportMainView.class, "/image/O_BeglPerson_Table.bmp"));
 		newItemTableItem.setText(2, "13:30");
 		newItemTableItem.setText(1, "12388");
 		newItemTableItem.setText(0, "A");
