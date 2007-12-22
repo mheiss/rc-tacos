@@ -100,7 +100,7 @@ public class TimeForm
 		shell.setSize(263, 200);
 		System.out.println("type: " +type);
 		shell.setText(type);
-		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+		//shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
 
 		text = new Text(shell, SWT.BORDER);
 		final FormData fd_text = new FormData();
@@ -294,7 +294,7 @@ public class TimeForm
 		fd_abbrechenButton.left = new FormAttachment(0, 144);
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
 		abbrechenButton.setText("Abbrechen");
-		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
+		//abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
 		abbrechenButton.addListener(SWT.Selection, exitListener);
 		//
 	}

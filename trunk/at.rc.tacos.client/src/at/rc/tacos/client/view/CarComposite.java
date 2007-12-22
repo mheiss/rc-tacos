@@ -1,4 +1,4 @@
-package at.rc.tacos.client.view.composite;
+package at.rc.tacos.client.view;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;

@@ -3,7 +3,6 @@ package at.rc.tacos.client.perspectives;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import at.rc.tacos.client.view.*;
-import at.rc.tacos.client.view.transports.DispositionView;
 
 /**
  * This is the standard perspective for the employees to work

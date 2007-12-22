@@ -26,7 +26,7 @@
  -----------------------------------------------------------------------------
 */
 
-package swing2swt.layout;
+package at.rc.tacos.swing2swt.layout;
 
 import java.awt.Dimension;
 
