@@ -145,12 +145,8 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeCharacters(Boolean.toString(transport.isHelicopterAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("blueLightToPatient");
-        writer.writeCharacters(Boolean.toString(transport.isBluelightToPatient()));
-        writer.writeEndElement();
-        //write the elements and attributes
         writer.writeStartElement("blueLightToGoal");
-        writer.writeCharacters(Boolean.toString(transport.isBluelightToGoal()));
+        writer.writeCharacters(Boolean.toString(transport.isBlueLightToGoal()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("dfAlarming");
@@ -180,7 +176,7 @@ public class TransportEncoder  implements MessageEncoder
             writer.writeEndElement();
         }
         //write the elements and attributes
-        writer.writeStartElement("directness");
+        writer.writeStartElement("direction");
         writer.writeCharacters(Integer.toString(transport.getDirection()));
         writer.writeEndElement();
         //get the encoder for the vehicle
