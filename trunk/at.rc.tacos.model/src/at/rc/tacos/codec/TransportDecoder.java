@@ -100,8 +100,6 @@ public class TransportDecoder implements MessageDecoder
                     transport.setEmergencyDoctorAlarming(Boolean.valueOf(reader.getElementText()));
                 if("helicopterAlarming".equalsIgnoreCase(startName))
                     transport.setHelicopterAlarming(Boolean.valueOf(reader.getElementText()));
-                if("blueLightToPatient".equalsIgnoreCase(startName))
-                    transport.setBluelightToPatient(Boolean.valueOf(reader.getElementText()));
                 if("blueLightToGoal".equalsIgnoreCase(startName))
                     transport.setBluelightToGoal(Boolean.valueOf(reader.getElementText()));
                 if("dfAlarming".equalsIgnoreCase(startName))
