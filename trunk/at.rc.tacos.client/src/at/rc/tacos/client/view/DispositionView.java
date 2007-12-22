@@ -100,7 +100,7 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 		
 //		table.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND));
 		
-
+		//create the tab items for the disposition view
 		final TableColumn columnPrioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		columnPrioritaetDisponierteTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
 		columnPrioritaetDisponierteTransporte.setWidth(36);
