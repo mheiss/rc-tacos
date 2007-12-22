@@ -26,6 +26,7 @@ public class ModelFactory
     private RosterEntryManager rosterEntryList;
     private VehicleManager vehicleList;
     private StaffManager staffList;
+    private TransportManager transportList;
     
     /**
      * Private class constructor.
@@ -36,6 +37,7 @@ public class ModelFactory
         rosterEntryList = new RosterEntryManager();
         vehicleList = new VehicleManager();
         staffList = new StaffManager();
+        transportList = new TransportManager();
     }
     
     /**
@@ -109,4 +111,15 @@ public class ModelFactory
     {
         return staffList;
     }
+    
+    /**
+     * Returns the manager responsible for the transports
+     * @return the transport manager
+     */
+    public TransportManager getTransportManager()
+    {
+        return transportList;
+    }
+    
+   
 }
