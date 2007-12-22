@@ -47,7 +47,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
     private boolean emergencyDoctorAlarming;
     private boolean helicopterAlarming;
-    private boolean blueLightToPatient;
     private boolean blueLightToGoal;
     private boolean dfAlarming;
     private boolean brkdtAlarming;
@@ -566,21 +565,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         this.appointmentTimeAtDestination = appointmentTimeAtDestination;
     }
 
-    /**
-     * Named: 'BD1'
-     * @return the blueLightToPatient
-     */
-    public boolean isBluelightToPatient() {
-        return blueLightToPatient;
-    }
-
-    /**
-     * @param blueLightToPatient the blueLightToPatient to set
-     */
-    public void setBluelightToPatient(boolean blueLightToPatient) 
-    {
-        this.blueLightToPatient = blueLightToPatient;
-    }
 
     /**
      * @return the blueLightToGoal
@@ -686,21 +670,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         this.helicopterAlarming = helicopterAlarming;
     }
 
-    /**
-     * @return the blueLightToPatient
-     */
-    public boolean isBlueLightToPatient() 
-    {
-        return blueLightToPatient;
-    }
-
-    /**
-     * @param blueLightToPatient the blueLightToPatient to set
-     */
-    public void setBlueLightToPatient(boolean blueLightToPatient) 
-    {
-        this.blueLightToPatient = blueLightToPatient;
-    }
+    
 
     /**
      * @return the blueLightToGoal
