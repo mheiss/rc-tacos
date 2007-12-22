@@ -23,11 +23,9 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private long transportId;
     private String transportNumber;
     private String fromStreet;
-    private String fromNumber;
     private String fromCity;
     private Patient patient; 
     private String toStreet;
-    private String toNumber;
     private String toCity;
     private String kindOfTransport;
     private CallerDetail callerDetail;
@@ -87,14 +85,13 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      *  @param transportPriority the priority of the transport
      *  @param directness the direction of the transport
      */
-    public Transport(String fromStreet,String fromNumber,String fromCity,
+    public Transport(String fromStreet,String fromCity,
             String responsibleStation,long dateOfTransport, long plannedStartOfTransport,
             String transportPriority,int direction)
     {
         super(ID);
         statusMessages = new ArrayList<StatusMessages>();
         setFromStreet(fromStreet);
-        setFromNumber(fromNumber);
         setFromCity(fromCity);
         setResponsibleStation(responsibleStation);
         setDateOfTransport(dateOfTransport);
@@ -138,7 +135,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     @Override
     public String toString()
     {
-        return transportId+","+fromStreet+","+fromNumber+","+fromCity+","+patient+","+toStreet+","+toNumber+","+toCity;
+        return transportId+","+fromStreet+","+fromCity+","+patient+","+toStreet+","+toCity;
     }
 
     /**
@@ -213,24 +210,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         this.fromStreet = fromStreet;
     }
 
-    /**
-     * Returns the street number, floor, number of the flat if available
-     * @return the fromNumber
-     */
-    public String getFromNumber() 
-    {
-        return fromNumber;
-    }
-
-    /**
-     * @param fromNumber the fromNumber to set
-     */
-    public void setFromNumber(String fromNumber) 
-    {
-        if(fromNumber == null)
-            throw new IllegalArgumentException("fromNumber cannot be null");
-        this.fromNumber = fromNumber;
-    }
 
     /**
      * @return the fromCity
@@ -286,23 +265,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         this.toStreet = toStreet;
     }
 
-    /**
-     * @return the toNumber
-     */
-    public String getToNumber() 
-    {
-        return toNumber;
-    }
-
-    /**
-     * @param toNumber the toNumber to set
-     */
-    public void setToNumber(String toNumber) 
-    {
-        if(toNumber == null)
-            throw new IllegalArgumentException("toNumber cannot be null");
-        this.toNumber = toNumber;
-    }
 
     /**
      * @return the toCity
