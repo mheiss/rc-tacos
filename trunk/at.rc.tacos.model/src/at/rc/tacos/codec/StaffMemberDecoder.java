@@ -36,6 +36,23 @@ public class StaffMemberDecoder implements MessageDecoder
                     member.setFirstName(reader.getElementText());
                 if("userName".equalsIgnoreCase(startName))
                     member.setUserName(reader.getElementText());
+                if("streetname".equalsIgnoreCase(startName))
+                    member.setStreetname(reader.getElementText());
+                if("cityname".equalsIgnoreCase(startName))
+                    member.setCityname(reader.getElementText());
+                if("eMail".equalsIgnoreCase(startName))
+                    member.setEMail(reader.getElementText());
+                if("authorization".equalsIgnoreCase(startName))
+                    member.setAuthorization(reader.getElementText());
+                if("islocked".equalsIgnoreCase(startName))
+                    member.setIslocked(Boolean.valueOf(reader.getElementText()));
+                if("function".equalsIgnoreCase(startName))
+                    member.setFunction(reader.getElementText());
+                if("birthday".equalsIgnoreCase(startName))
+                	member.setBirthday(Long.valueOf(reader.getElementText()));
+                if("sex".equalsIgnoreCase(startName))
+                	member.setSex(Boolean.valueOf(reader.getElementText()));
+                
             }
             //check for the end element, and return the object
             if(event.isEndElement())
