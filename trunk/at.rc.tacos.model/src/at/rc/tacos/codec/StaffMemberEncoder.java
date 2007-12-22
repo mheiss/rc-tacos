@@ -1,10 +1,13 @@
 package at.rc.tacos.codec;
 
+import java.util.List;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.StatusMessages;
 
 public class StaffMemberEncoder  implements MessageEncoder
 {
@@ -78,10 +81,18 @@ public class StaffMemberEncoder  implements MessageEncoder
             writer.writeEndElement();
         }
         
-      //write the elements and attributes
+        //write the elements and attributes
         writer.writeStartElement("sex");
         writer.writeCharacters(Boolean.toString(member.isSex()));
         writer.writeEndElement();
+        
+        //encode the status messages
+        for(String phoneNumber:member.getPhonenumber())
+        {
+            writer.writeStartElement("phonenumber");
+            writer.writeCharacters(String.valueOf(phoneNumber));
+            writer.writeEndElement();
+        }
         
         //end
         writer.writeEndElement();
