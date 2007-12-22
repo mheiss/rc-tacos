@@ -46,5 +46,4 @@ public class OpenRosterEntryAction extends Action
         RosterEntryForm window = new RosterEntryForm();
 		window.open();
     }
-
 }

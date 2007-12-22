@@ -7,7 +7,7 @@ import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.TestDataSource;
 import at.rc.tacos.model.VehicleDetail;
 
-public class CreateNewVehicle extends Action
+public class EditVehicleAction extends Action
 {
     /**
      * Returns the tooltip text for the action
@@ -16,7 +16,7 @@ public class CreateNewVehicle extends Action
     @Override
     public String getToolTipText() 
     {
-        return "Fügt ein neues Fahrzeug der Fahrzeugübersicht hinzu";
+        return "Editiert ein vorhandenes Fahrzeut";
     }
     
     /**
@@ -40,7 +40,7 @@ public class CreateNewVehicle extends Action
     }
     
     /**
-     * Shows the abut dialog of the application
+     * Shows the view to edit a vehicle
      */
     @Override
     public void run()

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
-import at.rc.tacos.common.Constants;
 import at.rc.tacos.model.*;
 
 /**
@@ -16,16 +15,10 @@ public class RosterEntryManager extends DataManager
     //the item list
     private List<RosterEntry> objectList = new ArrayList<RosterEntry>();
     
-    //the active day that is showed
-    private String station;
-    
     /**
      * Default class constructor
      */
-    public RosterEntryManager()
-    {
-        station = Constants.STATION_BEZIRK;
-    }
+    public RosterEntryManager() { }
 
     /**
      * Adds a new roster entry to the list
@@ -95,26 +88,6 @@ public class RosterEntryManager extends DataManager
         }); 
         
     }
-    
-    /**
-     * Sets the currently active station to this value
-     * @param activeStation the station to filter
-     */
-    public void setActiveStation(String activeStation)
-    {
-        this.station = activeStation;
-        //force redraw
-        firePropertyChange("ROSTERENTRY_ADD", null, null);
-    }
-    
-    /**
-     * Returns the currently active station
-     * @return the currently active station
-     */
-    public String getActiveStation()
-    {
-        return station;
-    }
 
     /**
      * Converts the list to an array
@@ -123,17 +96,6 @@ public class RosterEntryManager extends DataManager
     public Object[] toArray()
     {
         return objectList.toArray();
-    }
-
-    public Object[] toFilteredArray()
-    {
-        List<RosterEntry> filteredList = new ArrayList<RosterEntry>();
-        for(RosterEntry entry:objectList)
-        {
-            if (entry.getStation().equalsIgnoreCase(station))
-                filteredList.add(entry);
-        }
-        return filteredList.toArray();
     }
 }
 
