@@ -30,6 +30,10 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import at.rc.tacos.client.controller.CreateRosterEntryAction;
+import at.rc.tacos.client.controller.CreateTransportAction;
+import at.rc.tacos.client.controller.UpdateRosterEntryAction;
+import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.ITransportPriority;
@@ -227,10 +231,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			Transport t1 = new Transport();
 	        t1.setTransportId(0);
 	        t1.setFromStreet("street_from_1");
-	        t1.setFromNumber("number_from 1");
 	        t1.setFromCity("city_from_1");
 	        t1.setToStreet("street_to_1");
-	        t1.setToNumber("number_to_1");
 	        t1.setToCity("city_to_1");
 	        t1.setPatient(patientList.get(0));
 	        t1.addStatus(1, new Date().getTime());
@@ -1497,6 +1499,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		//TODO start
 		okButton.addListener(SWT.Selection, new Listener()
 		{
+			
 			String requiredFields;//contains the names of the required fields that have no content
 //			
 			int hourStart;
@@ -1542,12 +1545,10 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			boolean chair;
 			boolean moving;
 			String toCommunity;
-			String toNumber;
 			String toStreet;
 			String firstName;
 			String lastName;
 			String fromCommunity;
-			String fromNumber;
 			String fromStreet;
 			
 			String vehicle;
@@ -1568,6 +1569,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			
 			public void handleEvent(Event event) 
 			{
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent");
 				requiredFields = "";
 				hourStart = -1;
 				hourAtPatient = -1;
@@ -1581,13 +1583,17 @@ public class TransportForm implements IDirectness, IKindOfTransport
 				
 				//get content of all fields
 				this.getContentOfAllFields();
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, nach getContentOfAllFields");
 				this.setDirectness();
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, nach setDirectness");
 				
 				//check required Fields
 				if (!this.checkRequiredFields().equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen:");
+					return;
 				}
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, nach checkrequiredFields");
 				//validating
 				if(!this.checkFormatOfTimeFields().equalsIgnoreCase(""))
 				{
@@ -1595,13 +1601,17 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					return;
 				}
 				
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, vor transformToLong");
 				this.transformToLong();//set planned work time
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, nach transformToLong");
 				//validate: start before atPatient
 				if(atPatientLong<startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, "Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
 				}	
+				
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent nach validate start before at patient");
 				
 				//validate: atPatient before term
 				if((termLong<atPatientLong && !term.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase("")))
@@ -1610,17 +1620,51 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					return;
 				}
 				
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent nach validate at patient before term");
 				//validate: start before term
 				if(termLong<startLong && !term.equalsIgnoreCase("") && !start.equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
 				}
-					
+				System.out.println("TransportForm; Listener des ok Buttons in handleEvent nach validate start before term");
+				
+				
+				   //create a new entry
+				
+
+                if(createNew)
+                {
+                	System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew am Anfang");
+                	transport = new Transport(fromStreet,fromCommunity,theStation,transportDate,startLong,priority,directness);
+                	System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nachc new Transport");
+                	transport.setBackTransport(backTransportPossible);
+                	System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nach setBackTRansport");
+                	//TODO set the other values
+                	
+                	
+                    //create and run the add action
+                    CreateTransportAction newAction = new CreateTransportAction(transport);
+                    System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nach newAction");
+                    newAction.run();//TODO bug fixing!!!!!!!!
+                    System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nach newAction.run");
+                }
+                else
+                {
+                    // set the needed values
+                	transport.setTransportNumber(transportNumber);
+                	//TOD set the values
+                    
+                    //create and run the update action
+                    UpdateTransportAction updateAction = new UpdateTransportAction(transport);
+                    updateAction.run();
+                }
+                
+                System.out.println("TransportForm; Listener des ok Buttons in handleEvent vor shell.close");
+                shell.close();
+                System.out.println("TransportForm; Listener des ok Buttons in handleEvent nach shell.close");
 				System.out.println("Transport angelegt!");
-//				Transport transport = new Transport();
-//				transport.set...
-//				new CreateTransportEntryAction(transport).run();				
+				
 			}
 			
 			private void getContentOfAllFields()
@@ -1693,15 +1737,12 @@ public class TransportForm implements IDirectness, IKindOfTransport
 				//TODO
 				/*TRANSPORT - the required fields
 				- fromStreet ist muss. Wenn da nicht die Substrings "LKH" oder "PH" vorkommen, dann müssen zusätzlich auch die Felder
-				- fromNumber und
 				- from City ausgefüllt sein.
 				*/
 
-
+				System.out.println("TransportForm; Listener des ok Buttons in checkRequiredFields am Anfang");
 				if (fromStreet.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"von Straße";
-				if (fromNumber.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"von Nummer";
 				if (fromCommunity.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"von Ort";
 				if (theStation.equalsIgnoreCase(""))
@@ -1710,7 +1751,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					requiredFields = requiredFields +" " +"Priorität";
 				if (start.equalsIgnoreCase(""))
 					this.setStartTimeDefault();
-				
+				System.out.println("TransportForm; Listener des ok Buttons in checkRequiredFields am Ende");
 				return requiredFields;
 			}
 			
