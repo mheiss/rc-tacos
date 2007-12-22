@@ -33,7 +33,7 @@ import at.rc.tacos.client.util.CustomColors;
 
 public class DispositionView extends ViewPart implements PropertyChangeListener
 {
-	public static final String ID = "at.rc.tacos.client.view.transports.disposition_view";
+	public static final String ID = "at.rc.tacos.client.view.disposition_view";
 	
 	private FormToolkit toolkit;
 	private ScrolledForm formDisp;
