@@ -17,9 +17,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.application.*;
 
-import at.rc.tacos.client.controller.EditVehicleAction;
+import at.rc.tacos.client.controller.VehicleEditAction;
 import at.rc.tacos.client.controller.OpenAboutAction;
-import at.rc.tacos.client.controller.OpenRosterEntryAction;
+import at.rc.tacos.client.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.modelManager.MyToolbarManager;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
@@ -110,9 +110,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         final MyToolbarManager tbm = new MyToolbarManager(new ToolBar(fill, SWT.FLAT));
         tbm.getControl().setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
         tbm.getControl().setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, true));
-        tbm.add(new OpenRosterEntryAction());
+        tbm.add(new PersonalNewEntryAction());
         tbm.add(new OpenAboutAction());
-        tbm.add(new EditVehicleAction());
+        tbm.add(new VehicleEditAction(null));
         tbm.add(new SwitchToClientPerspective());
         tbm.add(new SwitchToAdminPerspective());
         tbm.add(new OpenTransportAction());

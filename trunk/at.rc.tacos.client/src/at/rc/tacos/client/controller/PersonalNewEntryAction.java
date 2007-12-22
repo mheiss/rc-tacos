@@ -2,12 +2,10 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.view.RosterEntryForm;
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.TestDataSource;
-import at.rc.tacos.model.VehicleDetail;
 
-public class EditVehicleAction extends Action
+public class PersonalNewEntryAction extends Action
 {
     /**
      * Returns the tooltip text for the action
@@ -16,7 +14,7 @@ public class EditVehicleAction extends Action
     @Override
     public String getToolTipText() 
     {
-        return "Editiert ein vorhandenes Fahrzeut";
+        return "Öffnet ein Fenster um einen Dienstplan eintrag zu erstellen";
     }
     
     /**
@@ -26,9 +24,9 @@ public class EditVehicleAction extends Action
     @Override
     public String getText()
     {
-        return "Fahrzeug besetzen";
+        return "Neuer Dienstplaneintrag";
     }
-
+    
     /**
      * Returns the image to use for this action.
      * @return the image to use
@@ -36,19 +34,16 @@ public class EditVehicleAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.add");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.calendar");
     }
     
     /**
-     * Shows the view to edit a vehicle
+     * Shows the abut dialog of the application
      */
     @Override
     public void run()
     {
-        //create a new vehicle
-        VehicleDetail detail = new TestDataSource().vehicleList.get(1);
-        ModelFactory.getInstance().getVehicleManager().add(detail);
-//        VehicleForm window = new VehicleForm();
-//        window.open();
+        RosterEntryForm window = new RosterEntryForm();
+		window.open();
     }
 }

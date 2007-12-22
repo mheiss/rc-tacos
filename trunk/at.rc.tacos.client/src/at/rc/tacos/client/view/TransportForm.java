@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -30,9 +28,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import at.rc.tacos.client.controller.CreateRosterEntryAction;
 import at.rc.tacos.client.controller.CreateTransportAction;
-import at.rc.tacos.client.controller.UpdateRosterEntryAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
@@ -41,14 +37,10 @@ import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.Patient;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.model.TestDataSource;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.swtdesigner.SWTResourceManager;
-
-import at.rc.tacos.common.Constants;
 
 /**
  * GUI (form) to manage the transport details

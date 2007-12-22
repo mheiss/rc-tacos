@@ -55,7 +55,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private TableViewer viewer;
-	private MyPersonalTooltip tooltip;
+	private PersonalTooltip tooltip;
 	
 	//the actions for the context menu
 	private PersonalCancelSignInAction cancelSignInAction;
@@ -125,7 +125,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		viewer.setInput(ModelFactory.getInstance().getRosterManager());
 		viewer.getTable().setLinesVisible(true);
 		//set the tooltip
-		tooltip = new MyPersonalTooltip(viewer.getControl());
+		tooltip = new PersonalTooltip(viewer.getControl());
 		//show the tooltip when the selection has changed
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
 		{

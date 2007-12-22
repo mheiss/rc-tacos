@@ -8,7 +8,7 @@ import at.rc.tacos.model.*;
  * The action that is triggered by creating a new roster entry
  * @author b.thek
  */
-public class CreateRosterEntryAction extends Action 
+public class PersonalCreateEntryAction extends Action 
 {
     private RosterEntry entry;
     
@@ -16,7 +16,7 @@ public class CreateRosterEntryAction extends Action
      * Creates a new RosterEntryAction.
      * @param entry the new roster entry
      */
-    public CreateRosterEntryAction(RosterEntry entry) 
+    public PersonalCreateEntryAction(RosterEntry entry) 
     {
         this.entry = entry;
     }
