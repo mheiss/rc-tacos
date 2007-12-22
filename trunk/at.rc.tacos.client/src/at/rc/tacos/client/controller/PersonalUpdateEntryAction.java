@@ -5,11 +5,11 @@ import org.eclipse.jface.action.Action;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.RosterEntry;
 
-public class RemoveRosterEntryAction extends Action
+public class PersonalUpdateEntryAction extends Action
 {
 	private RosterEntry entry;
 
-	public RemoveRosterEntryAction(RosterEntry entry)
+	public PersonalUpdateEntryAction(RosterEntry entry)
 	{
 		this.entry = entry;
 	}
@@ -17,7 +17,6 @@ public class RemoveRosterEntryAction extends Action
 	@Override
 	public void run()
 	{
-		NetWrapper.getDefault().sendRemoveMessage(RosterEntry.ID, entry);
+		NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, entry);
 	}
 }
-

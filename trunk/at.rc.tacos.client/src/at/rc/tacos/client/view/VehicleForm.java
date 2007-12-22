@@ -2,6 +2,8 @@ package at.rc.tacos.client.view;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -18,6 +20,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
@@ -111,9 +115,7 @@ public class VehicleForm
 		ArrayList<StaffMember> staffMemberListAllCheckedIn = new ArrayList<StaffMember>(Arrays.asList(sm1,sm2));
 		
 		//vehicleDetail list with all vehicles which are not out of order
-		VehicleDetail v1 = new VehicleDetail("Bm05","KTW","BM");
-		VehicleDetail v2 = new VehicleDetail("Ka03","RTW","KA");
-		ArrayList<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>(Arrays.asList(v1,v2));
+		List<VehicleDetail> vehicleList = ModelFactory.getInstance().getVehicleManager().getVehicleList();
 		
 		
 		//mobilephone list with all mobile phones

@@ -19,13 +19,13 @@ import at.rc.tacos.model.RosterEntry;
  * This shows the tooltip for a roster entry.
  * @author Michael
  */
-public class MyPersonalTooltip extends ToolTip 
+public class PersonalTooltip extends ToolTip 
 {	
 	/**
 	 * Creates a new tooltip for the personal view
 	 * @param control the control for the tooltip to show
 	 */
-	public MyPersonalTooltip(Control control) 
+	public PersonalTooltip(Control control) 
 	{
 		super(control);
 		setShift(new Point(1, 1));

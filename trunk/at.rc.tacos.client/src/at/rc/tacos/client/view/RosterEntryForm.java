@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import at.rc.tacos.client.controller.CreateRosterEntryAction;
-import at.rc.tacos.client.controller.UpdateRosterEntryAction;
+import at.rc.tacos.client.controller.PersonalCreateEntryAction;
+import at.rc.tacos.client.controller.PersonalUpdateEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StaffComboContentProvider;
 import at.rc.tacos.client.providers.StaffComboLabelProvider;
@@ -447,7 +447,7 @@ public class RosterEntryForm implements PropertyChangeListener
                     rosterEntry.setRosterNotes(rosterNotes);
                     rosterEntry.setStandby(standbyState);
                     //create and run the add action
-                    CreateRosterEntryAction newAction = new CreateRosterEntryAction(rosterEntry);
+                    PersonalCreateEntryAction newAction = new PersonalCreateEntryAction(rosterEntry);
                     newAction.run();
                 }
                 else
@@ -464,7 +464,7 @@ public class RosterEntryForm implements PropertyChangeListener
                     rosterEntry.setRosterNotes(rosterNotes);
                     rosterEntry.setStandby(standbyState);
                     //create and run the update action
-                    UpdateRosterEntryAction updateAction = new UpdateRosterEntryAction(rosterEntry);
+                    PersonalUpdateEntryAction updateAction = new PersonalUpdateEntryAction(rosterEntry);
                     updateAction.run();
                 }
                 shell.close();

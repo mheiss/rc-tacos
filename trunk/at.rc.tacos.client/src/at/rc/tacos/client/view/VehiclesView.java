@@ -79,35 +79,37 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             //Add and update the section for Kapfenberg 
             if("KA".equalsIgnoreCase(basicStation))
             {
-                new CarComposite(compositeKapfenberg,detail);
+                new VehicleComposite(compositeKapfenberg,detail);
                 compositeKapfenberg.layout(true);
             }
             //Add and update the section for Bruck 
             else if("BM".equalsIgnoreCase(basicStation))
             {
-                new CarComposite(compositeBruck,detail);
+                new VehicleComposite(compositeBruck,detail);
                 compositeBruck.layout(true);
             }
             //Add and update the section for St.Marein
             else if("MA".equalsIgnoreCase(basicStation))
             {
-                new CarComposite(compositeStMarein,detail);
+                new VehicleComposite(compositeStMarein,detail);
                 compositeStMarein.layout(true);
             }
             //Add and update the section for Thoerl
             else if("TH".equalsIgnoreCase(basicStation))
             {
-                new CarComposite(compositeThoerl,detail);
+                new VehicleComposite(compositeThoerl,detail);
                 compositeThoerl.layout(true);
             }
             // Add and update the section for Turnau
             else if("TU".equalsIgnoreCase(basicStation))
             {
-                new CarComposite(compositeThurnau,detail);
+                new VehicleComposite(compositeThurnau,detail);
+                compositeThurnau.layout(true);
             }
             else if("BR".equalsIgnoreCase(basicStation))
             {
-                new CarComposite(compositeBreitenau,detail);
+                new VehicleComposite(compositeBreitenau,detail);
+                compositeBreitenau.layout(true);
             }
             else
                 System.out.println("Failed to add vehicle to non existing station: " + basicStation);
