@@ -65,7 +65,7 @@ public class TransportMainView {
 	{
 		shell = new Shell();
 		shell.setImage(SWTResourceManager.getImage(TransportMainView.class, "/image/Tacos_LOGO.jpg"));
-		shell.setLayout(new swing2swt.layout.GridLayout());
+		shell.setLayout(new at.rc.tacos.swing2swt.layout.GridLayout());
 		shell.setText("Transporte");
 
 		final TabFolder tabFolder = new TabFolder(shell, SWT.NONE);

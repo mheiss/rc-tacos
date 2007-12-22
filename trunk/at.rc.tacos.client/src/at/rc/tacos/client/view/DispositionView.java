@@ -1,4 +1,4 @@
-package at.rc.tacos.client.view.transports;
+package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -320,7 +320,5 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 			this.viewerDispTrans.refresh();
 			this.viewerOffTrans.refresh();
 		}
-
 	}
-
 }

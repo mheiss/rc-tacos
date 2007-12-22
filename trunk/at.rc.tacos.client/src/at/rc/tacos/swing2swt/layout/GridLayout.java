@@ -26,7 +26,7 @@
  -----------------------------------------------------------------------------
 */
 
-package swing2swt.layout;
+package at.rc.tacos.swing2swt.layout;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
