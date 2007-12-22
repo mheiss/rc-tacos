@@ -110,10 +110,8 @@ public class TestDataSource
         Transport t1 = new Transport();
         t1.setTransportId(0);
         t1.setFromStreet("street_from_1");
-        t1.setFromNumber("number_from 1");
         t1.setFromCity("city_from_1");
         t1.setToStreet("street_to_1");
-        t1.setToNumber("number_to_1");
         t1.setToCity("city_to_1");
         t1.setPatient(patientList.get(0));
         t1.addStatus(1, new Date().getTime());
@@ -126,10 +124,8 @@ public class TestDataSource
         Transport t2 = new Transport();
         t2.setTransportId(1);
         t2.setFromStreet("street_from_2");
-        t2.setFromNumber("number_from 2");
         t2.setFromCity("city_from_2");
         t2.setToStreet("street_to_2");
-        t2.setToNumber("number_to_2");
         t2.setToCity("city_to_2");
         t2.setPatient(patientList.get(1));
         t2.setCallerDetail(notifierList.get(1));
@@ -140,10 +136,8 @@ public class TestDataSource
         Transport t3 = new Transport();
         t3.setTransportId(2);
         t3.setFromStreet("street_from_3");
-        t3.setFromNumber("number_from 3");
         t3.setFromCity("city_from_3");
         t3.setToStreet("street_to_3");
-        t3.setToNumber("number_to_3");
         t3.setToCity("city_to_3");
         t3.setPatient(patientList.get(2));
         t3.setCallerDetail(notifierList.get(2));
