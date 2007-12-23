@@ -34,6 +34,8 @@ import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
+import at.rc.tacos.client.providers.PersonalViewSorter;
+import at.rc.tacos.client.providers.TransportSorter;
 import at.rc.tacos.client.util.CustomColors;
 
 import at.rc.tacos.model.Transport;
