@@ -2,7 +2,6 @@ package at.rc.tacos.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 
