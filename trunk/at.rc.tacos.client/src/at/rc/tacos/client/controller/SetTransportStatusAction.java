@@ -18,16 +18,15 @@ public class SetTransportStatusAction extends Action
 	//properties
 	private TableViewer viewer;
 	private int status;
+	private String shownAs;
 	
 	/**
-	 * Default class construtor.
+	 * Default class constructor.
 	 * @param viewer the table viewer
 	 */
 	public SetTransportStatusAction(TableViewer viewer)
 	{
-		this.viewer = viewer;
-		setText("Eintrag bearbeiten");
-		setToolTipText("Öffnet ein Fenster um den Transport zu bearbeiten");
+		
 	}
 	
 	/** 
@@ -35,12 +34,13 @@ public class SetTransportStatusAction extends Action
 	 * @param viewer the table viewer
 	 * @param status the transport status to set
 	 */
-	public SetTransportStatusAction(TableViewer viewer, int status)
+	public SetTransportStatusAction(TableViewer viewer, int status, String shownAs)
 	{
 		this.viewer = viewer;
 		this.status = status;
-		setText("Eintrag bearbeiten");
-		setToolTipText("Öffnet ein Fenster um den Transport zu bearbeiten");
+		this.shownAs = shownAs;
+		setText(shownAs);
+		setToolTipText("Setzt den Transportstatus " +" " +shownAs);
 	}
 	
 	@Override
