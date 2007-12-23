@@ -1,17 +1,11 @@
 package at.rc.tacos.client.providers;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
-import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.client.util.CustomColors;
 
 public class JournalViewLabelProvider implements ITableLabelProvider, ITableColorProvider
 {
