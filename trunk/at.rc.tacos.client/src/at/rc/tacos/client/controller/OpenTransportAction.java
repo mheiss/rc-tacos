@@ -2,15 +2,14 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import at.rc.tacos.client.view.RosterEntryForm;
 import at.rc.tacos.client.view.TransportForm;
 import at.rc.tacos.factory.ImageFactory;
 
 public class OpenTransportAction extends Action
 {
     /**
-     * Returns the tooltip text for the action
-     * @return the tooltip text
+     * Returns the tool tip text for the action
+     * @return the tool tip text
      */
     @Override
     public String getToolTipText() 
@@ -19,7 +18,7 @@ public class OpenTransportAction extends Action
     }
     
     /**
-     * Retruns the text to show in the toolbar
+     * Returns the text to show in the tool bar
      * @return the text to render
      */
     @Override
