@@ -43,6 +43,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.PersonalViewContentProvider;
 import at.rc.tacos.client.providers.PersonalViewFilter;
 import at.rc.tacos.client.providers.PersonalViewLabelProvider;
+import at.rc.tacos.client.providers.PersonalViewSorter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.Constants;
 import at.rc.tacos.model.RosterEntry;
