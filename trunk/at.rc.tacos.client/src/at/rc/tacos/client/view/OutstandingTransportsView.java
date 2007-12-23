@@ -48,6 +48,10 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.controller.CancelTransportAction;
+import at.rc.tacos.client.controller.ChangeResponsibleStationAction;
+import at.rc.tacos.client.controller.EditTransportAction;
+import at.rc.tacos.client.controller.ForwardTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.DispositionViewOffContentProvider;
 import at.rc.tacos.client.providers.DispositionViewOffLabelProvider;
@@ -65,12 +69,12 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	private PersonalTooltip tooltip;
 	
 	//the actions for the context menu
-//	private PersonalCancelSignInAction cancelSignInAction;
-//	private PersonalCancelSignOutAction cancelSignOutAction;
-//	private PersonalSignInAction signInAction;
-//	private PersonalSignOutAction signOutAction;
-//	private PersonalEditEntryAction editEntryAction;
-//	private PersonalDeleteEntryAction deleteEntryAction;
+	//TODO - get working ;-)
+//	private ChangeResponsibleStationAction changeResponsibleStationAction;
+//	private AssignCarAction assignCarAction;
+	private ForwardTransportAction forwardTransportAction;
+	private CancelTransportAction cancelTransportAction;
+	private EditTransportAction editTransportAction;
 	
 	
 	
