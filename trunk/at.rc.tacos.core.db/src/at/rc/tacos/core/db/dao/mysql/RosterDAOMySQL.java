@@ -164,7 +164,7 @@ public class RosterDAOMySQL implements RosterDAO
 			staff.setSex(rs2.getBoolean("e.sex"));
 			staff.setBirthday(convertDateIntoLong(rs2.getString("e.birthday")));
 			{
-				staff.setPhonenumber(rs2.getString("e.phonenumber"));
+				staff.addPhonenumber(rs2.getString("e.phonenumber"));
 			}while(rs2.next())
 			staff.setEMail(rs2.getString("e.email"));
 			staff.setAuthorization(rs2.getString("u.authorization"));
@@ -225,7 +225,7 @@ public class RosterDAOMySQL implements RosterDAO
     			staff.setBirthday(convertDateIntoLong(rs2.getString("e.birthday")));
 
     			{
-    				staff.setPhonenumber(rs2.getString("e.phonenumber"));
+    				staff.addPhonenumber(rs2.getString("e.phonenumber"));
     			}while(rs2.next());
     			
     			staff.setEMail(rs2.getString("e.email"));
@@ -290,7 +290,7 @@ public class RosterDAOMySQL implements RosterDAO
     			staff.setBirthday(convertDateIntoLong(rs2.getString("e.birthday")));
 
     			{
-    				staff.setPhonenumber(rs2.getString("e.phonenumber"));
+    				staff.addPhonenumber(rs2.getString("e.phonenumber"));
     			}while(rs2.next());
 
     			staff.setEMail(rs2.getString("e.email"));
@@ -353,7 +353,7 @@ public class RosterDAOMySQL implements RosterDAO
     			staff.setBirthday(convertDateIntoLong(rs2.getString("e.birthday")));
 
     			{
-    				staff.setPhonenumber(rs2.getString("e.phonenumber"));
+    				staff.addPhonenumber(rs2.getString("e.phonenumber"));
     			}while(rs2.next());
 
     			staff.setEMail(rs2.getString("e.email"));
