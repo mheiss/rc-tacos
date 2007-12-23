@@ -3,6 +3,11 @@ package at.rc.tacos.client.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -12,6 +17,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -19,19 +25,29 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.controller.EditTransportAction;
+import at.rc.tacos.client.controller.PersonalCancelSignInAction;
+import at.rc.tacos.client.controller.PersonalCancelSignOutAction;
+import at.rc.tacos.client.controller.PersonalDeleteEntryAction;
+import at.rc.tacos.client.controller.PersonalEditEntryAction;
+import at.rc.tacos.client.controller.PersonalSignInAction;
+import at.rc.tacos.client.controller.PersonalSignOutAction;
+import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.DispositionViewDispContentProvider;
 import at.rc.tacos.client.providers.DispositionViewDispLabelProvider;
 import at.rc.tacos.client.providers.DispositionViewOffContentProvider;
 import at.rc.tacos.client.providers.DispositionViewOffLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.model.RosterEntry;
 
 /**
  * Main view, provides an overview about the transports
  * @author b.thek
  */
 
-public class DispositionView extends ViewPart implements PropertyChangeListener
+public class DispositionView extends ViewPart implements PropertyChangeListener, ITransportStatus
 {
 	public static final String ID = "at.rc.tacos.client.view.disposition_view";
 	
@@ -39,7 +55,19 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 	private ScrolledForm formDisp;
 	private ScrolledForm formOff;
 	private TableViewer viewerDispTrans;
-	private TableViewer viewerOffTrans;
+	
+	//the actions for the context menu
+	private SetTransportStatusAction setTransportStatusS1Action;
+	private SetTransportStatusAction setTransportStatusS2Action;
+	private SetTransportStatusAction setTransportStatusS3Action;
+	private SetTransportStatusAction setTransportStatusS4Action;
+	private SetTransportStatusAction setTransportStatusS5Action;
+	private SetTransportStatusAction setTransportStatusS6Action;
+	private SetTransportStatusAction setTransportStatusS7Action;
+	private SetTransportStatusAction setTransportStatusS8Action;
+	private SetTransportStatusAction setTransportStatusS9Action;
+	
+	private EditTransportAction editTransportAction;
 
 
 
@@ -187,11 +215,92 @@ public class DispositionView extends ViewPart implements PropertyChangeListener
 		columnErkrankungVerletzungDisponierteTransporte.setWidth(146);
 		columnErkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 		
+		
+		
+		
+		//create the actions
+		makeActions();
+		hookContextMenu();
+
+		
+		
+		
+		
 		/** make columns sort able*/
 
 		
 		
 	}
+	
+	
+	/**
+	 * Creates the needed actions
+	 */
+	private void makeActions()
+	{
+		setTransportStatusS1Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_ON_THE_WAY, "S1 Transportbeginn");
+		setTransportStatusS2Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_AT_PATIENT, "S2 Bei Patient");
+		setTransportStatusS3Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_START_WITH_PATIENT, "S3 Abfahrt mit Patient");
+		setTransportStatusS4Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_AT_DESTINATION, "S4 Ankunft am Ziel");
+		setTransportStatusS5Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_DESTINATION_FREE, "S5 Ziel frei");
+		setTransportStatusS6Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_CAR_IN_STATION, "S6 Eingerückt");
+		setTransportStatusS7Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, "S7 Verlässt Einsatzgebiet");
+		setTransportStatusS8Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, "S8 Wieder im Einsatzgebiet");
+		setTransportStatusS9Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_OTHER, "S9 Sonderstatus");
+		
+		editTransportAction = new EditTransportAction(this.viewerDispTrans);
+	}
+	
+	/**
+	 * Creates the context menu 
+	 */
+	private void hookContextMenu() 
+	{
+		MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenu(manager);
+			}
+		});
+		Menu menu = menuManager.createContextMenu(viewerDispTrans.getControl());
+		viewerDispTrans.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewerDispTrans);
+	}
+	
+	
+	/**
+	 * Fills the context menu with the actions
+	 */
+	private void fillContextMenu(IMenuManager manager)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewerDispTrans.getSelection()).getFirstElement();
+			
+		//cast to a RosterEntry
+		RosterEntry entry = (RosterEntry)firstSelectedObject;
+		
+		if(entry == null)
+			return;
+		
+		//add the actions
+		manager.add(setTransportStatusS1Action);
+		manager.add(setTransportStatusS2Action);
+		manager.add(setTransportStatusS3Action);
+		manager.add(setTransportStatusS4Action);
+		manager.add(setTransportStatusS5Action);
+		manager.add(setTransportStatusS6Action);
+		manager.add(setTransportStatusS7Action);
+		manager.add(setTransportStatusS8Action);
+		manager.add(setTransportStatusS9Action);
+		manager.add(new Separator());
+		manager.add(editTransportAction);
+		
+		
+		
+	}
+	
+	
 	
 	/**
 	 * Passing the focus request to the viewer's control.
