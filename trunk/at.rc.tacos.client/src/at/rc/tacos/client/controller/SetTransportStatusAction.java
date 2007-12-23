@@ -50,7 +50,7 @@ public class SetTransportStatusAction extends Action
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		//create the timestamp
+		//create the time stamp
 		GregorianCalendar gcal = new GregorianCalendar();
 		long timestamp = gcal.getTimeInMillis();
 		//set the status
