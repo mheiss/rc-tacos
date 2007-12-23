@@ -1633,6 +1633,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
                 	transport.setBackTransport(backTransportPossible);
                 	System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nach setBackTRansport");
                 	//TODO set the other values
+                	Patient patient = new Patient(lastName,firstName);
+                	transport.setPatient(patient);
                 	
                 	
                     //create and run the add action
