@@ -3,8 +3,6 @@ package at.rc.tacos.client.modelManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
-
-import at.rc.tacos.common.Constants;
 import at.rc.tacos.model.*;
 
 /**
@@ -15,9 +13,7 @@ public class TransportManager extends DataManager
 {
     //the item list
     private List<Transport> objectList = new ArrayList<Transport>();
-    
-    //the active day that is showed
-    private String station;
+
     
     /**
      * Default class constructor
