@@ -5,7 +5,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
-import at.rc.tacos.client.view.TransportForm;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
