@@ -2,7 +2,6 @@ package at.rc.tacos.core.db.dao.mysql;
 
 import at.rc.tacos.core.db.*;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
