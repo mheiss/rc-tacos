@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
 /**
@@ -39,5 +40,6 @@ public class JournalMoveToRunningTransportsAction extends Action implements ITra
 		//change transport program status to 'outstanding'
 		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE, 0);
 		transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION,0);
+		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
