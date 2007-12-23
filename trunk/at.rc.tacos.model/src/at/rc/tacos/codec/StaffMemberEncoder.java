@@ -1,13 +1,12 @@
 package at.rc.tacos.codec;
 
-import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.model.StatusMessages;
+
 
 public class StaffMemberEncoder  implements MessageEncoder
 {
