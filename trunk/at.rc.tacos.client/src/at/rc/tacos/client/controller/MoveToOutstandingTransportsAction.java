@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
 /**
@@ -47,5 +48,6 @@ public class MoveToOutstandingTransportsAction extends Action implements ITransp
 		transport.addStatus(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, 0);
 		transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, 0);
 		transport.addStatus(TRANSPORT_STATUS_OTHER, 0);
+		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
