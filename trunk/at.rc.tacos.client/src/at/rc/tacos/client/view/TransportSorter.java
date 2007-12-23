@@ -5,7 +5,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.model.StatusMessages;
 import at.rc.tacos.model.Transport;
 
 /**
