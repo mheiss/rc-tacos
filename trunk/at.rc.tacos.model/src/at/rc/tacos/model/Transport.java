@@ -128,6 +128,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     {
         statusMessages.add(new StatusMessages(statusId,timestamp));
     }
+    
 
     /**
      * Returns a string based description of the object
@@ -788,5 +789,37 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	public void setTransportNumber(String transportNumber) {
 		this.transportNumber = transportNumber;
 	}	
+	
+	/**
+     * Returns whether or not this transport has disease notes
+     * @return true if there are notes
+     */
+    public boolean hasNotes()
+    {
+        if (diseaseNotes == null)
+            return false;
+        if (diseaseNotes.trim().isEmpty())
+        {
+            return false;
+        }
+        //we have notes :)
+        return true;
+    }
+    
+    /**
+     * Returns whether or not this transport has feedback information
+     * @return true if there in feedback information
+     */
+    public boolean hasFeedback()
+    {
+        if (feedback == null)
+            return false;
+        if (feedback.trim().isEmpty())
+        {
+            return false;
+        }
+        //we have feedback :)
+        return true;
+    }
 }
 
