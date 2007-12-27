@@ -35,6 +35,9 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 	public final static String PARAMEDIC_I_SORTER = "paramedici";
 	public final static String PARAMEDIC_II_SORTER = "paramedicii";
 	public final static String CALLER_SORTER = "caller";
+	public final static String ABF_SORTER = "abfahrt";
+	public final static String TERM_SORTER = "termin";
+	public final static String AT_PATIENT_SORTER = "beipatient";
 	
 	// sort the data based on column and direction
 	
@@ -283,6 +286,45 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         	String c1 = transport1.getCallerDetail().getCallerName();
         	String c2 = transport2.getCallerDetail().getCallerName();
         	returnValue = c1.compareTo(c2);
+        }
+        
+        //sort by the start time of the transport
+        if (column == ABF_SORTER) 
+        {
+        	long start1 = transport1.getPlannedStartOfTransport();
+        	long start2 = transport2.getPlannedStartOfTransport();
+        	if(start1 > start2)
+        		returnValue = -1;
+        	if(start1 < start2)
+        		returnValue = 1;
+        	if (start1 == start2)
+        		returnValue =  0;
+        }
+        
+        //sort by the "at patient"- time
+        if (column == AT_PATIENT_SORTER) 
+        {
+        	long atPatient1 = transport1.getPlannedTimeAtPatient();
+        	long atPatient2 = transport2.getPlannedTimeAtPatient();
+        	if(atPatient1 > atPatient2)
+        		returnValue = -1;
+        	if(atPatient1 < atPatient2)
+        		returnValue = 1;
+        	if (atPatient1 == atPatient2)
+        		returnValue =  0;
+        }
+        
+        //sort by the term time
+        if (column == TERM_SORTER) 
+        {
+        	long term1 = transport1.getAppointmentTimeAtDestination();
+        	long term2 = transport2.getAppointmentTimeAtDestination();
+        	if(term1 > term2)
+        		returnValue = -1;
+        	if(term1 < term2)
+        		returnValue = 1;
+        	if (term1 == term2)
+        		returnValue =  0;
         }
 
         
