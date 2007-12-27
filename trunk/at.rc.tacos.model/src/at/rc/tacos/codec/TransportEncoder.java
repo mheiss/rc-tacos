@@ -13,6 +13,7 @@ import at.rc.tacos.model.VehicleDetail;
 
 public class TransportEncoder  implements MessageEncoder
 {
+	MessageEncoder encoder;
     @Override
     public void doEncode(AbstractMessage message, XMLStreamWriter writer) throws XMLStreamException
     {
@@ -33,8 +34,11 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeCharacters(transport.getFromCity());
         writer.writeEndElement();
         //get the encoder for the patient
-        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Patient.ID);
-        encoder.doEncode(transport.getPatient(), writer);
+        if (transport.getPatient() != null)
+        {
+	        encoder = ProtocolCodecFactory.getDefault().getEncoder(Patient.ID);
+	        encoder.doEncode(transport.getPatient(), writer);
+        }
         //the target street is not mandatory
         if(transport.getToStreet() != null)
         {
@@ -169,8 +173,11 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeCharacters(Integer.toString(transport.getDirection()));
         writer.writeEndElement();
         //get the encoder for the vehicle
+        if(transport.getVehicleDetail() != null)
+        {
         encoder = ProtocolCodecFactory.getDefault().getEncoder(VehicleDetail.ID);
         encoder.doEncode(transport.getVehicleDetail(), writer);
+        }
         //encode the status messages
         for(StatusMessages statusMessage:transport.getStatusMessages())
         {
