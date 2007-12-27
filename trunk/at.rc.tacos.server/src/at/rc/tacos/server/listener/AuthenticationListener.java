@@ -25,12 +25,12 @@ public class AuthenticationListener extends ServerListenerAdapter
         boolean loggedIn = userDao.checkLogin(username, password);
         if(loggedIn)
         {
-            login.setPassword("");
+            login.resetPassword();
             login.setLoggedIn(true);
         }
         else
         {
-            login.setPassword("");
+            login.resetPassword();
             login.setErrorMessage("Wrong username or password");
             login.setLoggedIn(false);
         }

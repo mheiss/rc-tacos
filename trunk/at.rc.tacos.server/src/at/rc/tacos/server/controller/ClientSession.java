@@ -22,6 +22,17 @@ public class ClientSession
         this.connection = connection;
     }
     
+    //METHODS
+    /**
+     * Returns the description for this session
+     * @return the description
+     */
+    @Override
+    public String toString()
+    {
+    	return username + ", webClient = "+webClient + " , " + "connection = "+connection;
+    }
+    
     /**
      * Helper method to determine wheter the client is logged in or not.
      * @return true if the client is logged in, otherwise false

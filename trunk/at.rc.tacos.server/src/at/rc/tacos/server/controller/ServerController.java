@@ -70,6 +70,8 @@ public class ServerController
     { 
         //get the user session
         ClientSession session = getSession(client);
+        
+        System.out.println("Disconnect detected ( "+session+" ) ");
 
         //check the pool
         if(connClientPool.contains(session))
@@ -157,8 +159,9 @@ public class ServerController
         //set up the factory
         XMLFactory factory = new XMLFactory();
         factory.setupEncodeFactory(userId,contentType,queryString);
+        String xml = factory.encode(objectList);
         //encode and send
-        connection.sendMessage(factory.encode(objectList));
+        connection.sendMessage(xml);
         System.out.println("Sending reply "+userId+" : "+contentType+"->"+queryString);
     }
 
