@@ -50,4 +50,16 @@ public interface IModelListener
      * @param message the system message
      */
     public void systemMessage(AbstractMessage message);
+    
+    /**
+     * Nofification about a network status change
+     * @param status the new status
+     */
+    public void connectionChange(int status);
+    
+    /**
+     * Nofification that the message could not be transmitted
+ 	 * @param message the message that was not transmitted
+     */
+    public void transferFailed(String contentType,String queryType,AbstractMessage message);
 }

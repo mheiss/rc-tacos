@@ -21,7 +21,7 @@ public class LoginEncoder implements MessageEncoder
         writer.writeCharacters(login.getUsername());
         writer.writeEndElement();
         
-        if(!login.getPassword().isEmpty())
+        if(login.getPassword() != null && !login.getPassword().isEmpty())
         {
             writer.writeStartElement("password");
             writer.writeCharacters(login.getPassword());

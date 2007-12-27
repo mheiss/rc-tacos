@@ -55,6 +55,16 @@ public class ImageFactory
      */
     public Image getRegisteredImage(String imageId)
     {
+    	if(!images.containsKey(imageId))
+    	{
+    		System.out.println("The image for the key: "+imageId +" cannot be found");
+    		throw new IllegalArgumentException("The image for the key: "+imageId +" cannot be found");
+    	}
+    	if(images.get(imageId) == null)
+    	{
+    		System.out.println("The image file for the key: "+ imageId +" cannot be found");
+    		throw new IllegalArgumentException("The image file for the key: "+ imageId +" cannot be found");
+    	}
         return images.get(imageId).createImage();
     }
     
@@ -66,6 +76,16 @@ public class ImageFactory
      */
     public ImageDescriptor getRegisteredImageDescriptor(String imageId)
     {
+    	if(!images.containsKey(imageId))
+    	{
+    		System.out.println("The image description for the key: "+imageId +" cannot be found");
+    		throw new IllegalArgumentException("The image description for the key: "+imageId +" cannot be found");
+    	}
+    	if(images.get(imageId) == null)
+    	{
+    		System.out.println("The image file for the key:"+ imageId +" cannot be found");
+    		throw new IllegalArgumentException("The image file for the key:"+ imageId +" cannot be found");
+    	}
         return images.get(imageId);
     }
 }

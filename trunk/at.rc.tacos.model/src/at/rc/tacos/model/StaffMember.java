@@ -1,7 +1,6 @@
 package at.rc.tacos.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
@@ -13,193 +12,181 @@ import at.rc.tacos.common.AbstractMessage;
  */
 public class StaffMember extends AbstractMessage
 {
-    //unique identification string
-    public final static String ID = "staffMember";
+	//unique identification string
+	public final static String ID = "staffMember";
 
-    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);    
+	private int personId;
+	private int primaryLocation;
+	private String lastName;
+	private String firstName;
+	private String streetname;
+	private String cityname;
+	private boolean sex;
+	private long birthday;
+	private List<String> phonenumber;
+	private String eMail;
+	private String authorization;
+	private boolean islocked;
+	private String userName;
 
-    private int personId;
-    private int primaryLocation;
-    private String lastName;
-    private String firstName;
-    private String streetname;
-    private String cityname;
-    private boolean sex;
-    private long birthday;
-    private List<String> phonenumber;
-    private String eMail;
-    private String authorization;
-    private Boolean islocked;
-    private String userName;
-    
-    private String function;
+	private String function;
 
-    /**
-     * Class constructor for a staff member
-     */
-    public StaffMember()
-    {
-        super(ID);
-    }
+	/**
+	 * Class constructor for a staff member
+	 */
+	public StaffMember()
+	{
+		super(ID);
+		phonenumber = new ArrayList<String>();
+	}
 
-    /**
-     * Class constructor for a complete staff member
-     * @param firstName the first name
-     * @param lastName the last name
-     * @param userName the username of this member
-     */
-    public StaffMember(String firstName, String lastName, String userName)
-    {
-        super(ID);
-        setFirstName(firstName);
-        setLastName(lastName);
-        setUserName(userName);
-    }
+	/**
+	 * Class constructor for a complete staff member
+	 * @param firstName the first name
+	 * @param lastName the last name
+	 * @param userName the username of this member
+	 */
+	public StaffMember(String firstName, String lastName, String userName)
+	{
+		super(ID);
+		setFirstName(firstName);
+		setLastName(lastName);
+		setUserName(userName);
+		phonenumber = new ArrayList<String>();
+	}
 
-    // METHODS
-    public void addPropertyChangeListener(String propertyName,PropertyChangeListener listener) 
-    {
-        propertyChangeSupport.addPropertyChangeListener(propertyName,listener);
-    }
+	/**
+	 * Returns a string based description of the object
+	 * @return the description of the object
+	 */
+	@Override
+	public String toString()
+	{
+		return userName +","+lastName + " " + firstName;
+	}
 
-    /**
-     * Returns a string based description of the object
-     * @return the description of the object
-     */
-    @Override
-    public String toString()
-    {
-        return userName +","+lastName + " " + firstName;
-    }
-    
-    /**
-     * Returns the calculated hash code based on the staff member id.<br>
-     * Two staff members have the same hash code if the id is the same.
-     * @return the calculated hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return 31 + personId;
-    }
+	/**
+	 * Returns the calculated hash code based on the staff member id.<br>
+	 * Two staff members have the same hash code if the id is the same.
+	 * @return the calculated hash code
+	 */
+	@Override
+	public int hashCode()
+	{
+		return 31 + personId;
+	}
 
-    /**
-     * Returns whether the objects are equal or not.<br>
-     * Two staff members are equal if, and only if, the id is the same.
-     * @return true if the id is the same otherwise false.
-     */
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final StaffMember other = (StaffMember) obj;
-        if (personId != other.personId)
-            return false;
-        return true;
-    }
+	/**
+	 * Returns whether the objects are equal or not.<br>
+	 * Two staff members are equal if, and only if, the id is the same.
+	 * @return true if the id is the same otherwise false.
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final StaffMember other = (StaffMember) obj;
+		if (personId != other.personId)
+			return false;
+		return true;
+	}
 
-    //SETTERS AND GETTERS
-    /**
-     * Returns the personal identification number
-     * @return the personId
-     */
-    public int getPersonId() 
-    {
-        return personId;
-    }
+	//SETTERS AND GETTERS
+	/**
+	 * Returns the personal identification number
+	 * @return the personId
+	 */
+	public int getPersonId() 
+	{
+		return personId;
+	}
 
-    /**
-     * Sets the personal identification number.
-     * @param personId the personId to set
-     * @throws IllegalArgumentException if the id is negative
-     */
-    public void setPersonId(int personId) 
-    {
-        if(personId < 0)
-            throw new IllegalArgumentException("The id cannot be negative");
-        this.personId = personId;
-    }
+	/**
+	 * Sets the personal identification number.
+	 * @param personId the personId to set
+	 * @throws IllegalArgumentException if the id is negative
+	 */
+	public void setPersonId(int personId) 
+	{
+		if(personId < 0)
+			throw new IllegalArgumentException("The id cannot be negative");
+		firePropertyChange("personId", this.personId, personId);
+		this.personId = personId;
+	}
 
-    
-    /**
-     * Returns the last name
-     * @return the lastName
-     */
-    public String getLastName() 
-    {
+
+	/**
+	 * Returns the last name
+	 * @return the lastName
+	 */
+	public String getLastName() 
+	{
 		return lastName;
 	}
-    
-    
-    
-    
-    
 
-    /**
-     * Sets the last name of this staff member
-     * @param lastName the last name to set
-     * @throws IllegalArgumentException if the lastName is null or empty
-     */
-    public void setLastName(String lastName) 
-    {
-        if(lastName == null || lastName.trim().isEmpty())
-            throw new IllegalArgumentException("The last name cannot be null or empty");
-        this.lastName = lastName;
-    }
-
-    /**
-     * Returns the first name of this staff member
-     * @return the first name
-     */
-    public String getFirstName() 
-    {
-        return firstName;
-    }
-
-    /**
-     * Sets the first name of this staff member
-     * @param firstName the first name to set
-     * @throws IllegalArgumentException if the first name is null or empty
-     */
-    public void setFirstName(String firstName) 
-    {
-        if(firstName == null || firstName.trim().isEmpty())
-            throw new IllegalArgumentException("The first name cannot be null or empty");
-        this.firstName = firstName;
-    }
-
-    /**
-     * Returns the username for this staff member
-     * @return the user name
-     */
-    public String getUserName() 
-    {
-        return userName;
-    }
-
-    /**
-     * Sets the username for this staff member
-     * @param userName the user name to set
-     * @throws IllegalArgumentException if the userName is null or empty
-     */
-    public void setUserName(String userName) 
-    {
-        if(userName == null || userName.trim().isEmpty())
-            throw new IllegalArgumentException("The userName cannot be null or empty");
-        this.userName = userName;
-    }
-
-	public PropertyChangeSupport getPropertyChangeSupport() {
-		return propertyChangeSupport;
+	/**
+	 * Sets the last name of this staff member
+	 * @param lastName the last name to set
+	 * @throws IllegalArgumentException if the lastName is null or empty
+	 */
+	public void setLastName(String lastName) 
+	{
+		if(lastName == null || lastName.trim().isEmpty())
+			throw new IllegalArgumentException("The last name cannot be null or empty");
+		String oldName = this.lastName;
+		this.lastName = lastName;
+		firePropertyChange("lastName", oldName, lastName);
 	}
 
-	public void setPropertyChangeSupport(PropertyChangeSupport propertyChangeSupport) {
-		this.propertyChangeSupport = propertyChangeSupport;
+	/**
+	 * Returns the first name of this staff member
+	 * @return the first name
+	 */
+	public String getFirstName() 
+	{
+		return firstName;
+	}
+
+	/**
+	 * Sets the first name of this staff member
+	 * @param firstName the first name to set
+	 * @throws IllegalArgumentException if the first name is null or empty
+	 */
+	public void setFirstName(String firstName) 
+	{
+		if(firstName == null || firstName.trim().isEmpty())
+			throw new IllegalArgumentException("The first name cannot be null or empty");
+		String oldName = this.firstName;
+		this.firstName = firstName;
+		firePropertyChange("lastName", oldName, firstName);
+	}
+
+	/**
+	 * Returns the username for this staff member
+	 * @return the user name
+	 */
+	public String getUserName() 
+	{
+		return userName;
+	}
+
+	/**
+	 * Sets the username for this staff member
+	 * @param userName the user name to set
+	 * @throws IllegalArgumentException if the userName is null or empty
+	 */
+	public void setUserName(String userName) 
+	{
+		if(userName == null || userName.trim().isEmpty())
+			throw new IllegalArgumentException("The userName cannot be null or empty");
+		String oldName = this.userName;
+		this.userName = userName;
+		firePropertyChange("userName",oldName, userName);
 	}
 
 	public int getPrimaryLocation() {
@@ -214,7 +201,9 @@ public class StaffMember extends AbstractMessage
 		return streetname;
 	}
 
-	public void setStreetname(String streetname) {
+	public void setStreetname(String streetname) 
+	{
+		firePropertyChange("streetname", this.streetname, streetname);
 		this.streetname = streetname;
 	}
 
@@ -222,7 +211,9 @@ public class StaffMember extends AbstractMessage
 		return cityname;
 	}
 
-	public void setCityname(String cityname) {
+	public void setCityname(String cityname) 
+	{
+		firePropertyChange("cityname", this.cityname, cityname);
 		this.cityname = cityname;
 	}
 
@@ -230,7 +221,9 @@ public class StaffMember extends AbstractMessage
 		return sex;
 	}
 
-	public void setSex(boolean sex) {
+	public void setSex(boolean sex) 
+	{
+		firePropertyChange("sex", this.sex, sex);
 		this.sex = sex;
 	}
 
@@ -238,7 +231,9 @@ public class StaffMember extends AbstractMessage
 		return birthday;
 	}
 
-	public void setBirthday(long birthday) {
+	public void setBirthday(long birthday) 
+	{
+		firePropertyChange("birthday", this.birthday, birthday);
 		this.birthday = birthday;
 	}
 
@@ -246,7 +241,9 @@ public class StaffMember extends AbstractMessage
 		return phonenumber;
 	}
 
-	public void setPhonenumber(String phonenumber) {
+	public void addPhonenumber(String phonenumber) 
+	{
+		firePropertyChange("phonenumber", this.phonenumber, phonenumber);
 		this.phonenumber.add(phonenumber);
 	}
 
@@ -254,7 +251,9 @@ public class StaffMember extends AbstractMessage
 		return eMail;
 	}
 
-	public void setEMail(String mail) {
+	public void setEMail(String mail) 
+	{
+		firePropertyChange("mail", this.eMail, mail);
 		eMail = mail;
 	}
 
@@ -262,17 +261,19 @@ public class StaffMember extends AbstractMessage
 		return authorization;
 	}
 
-	public void setAuthorization(String authorization) {
+	public void setAuthorization(String authorization) 
+	{
+		firePropertyChange("authorization", this.authorization, authorization);
 		this.authorization = authorization;
 	}
 
-	
-
-	public Boolean getIslocked() {
+	public boolean getIslocked() {
 		return islocked;
 	}
 
-	public void setIslocked(Boolean islocked) {
+	public void setIslocked(Boolean islocked) 
+	{
+		firePropertyChange("islocked", this.islocked, islocked);
 		this.islocked = islocked;
 	}
 

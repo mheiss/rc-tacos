@@ -55,6 +55,14 @@ public class Login extends AbstractMessage
     {
         return username+","+loggedIn;
     }
+    
+    /**
+     * Removes the password from the login object
+     */
+    public void resetPassword()
+    {
+    	this.password = null;
+    }
 
     //GETTERS AND SETTERS
     /**
@@ -128,8 +136,8 @@ public class Login extends AbstractMessage
      */
     public void setPassword(String password)
     {
-        if(password == null)
-            throw new IllegalArgumentException("The password cannot be null");
+        if(password == null || password.trim().isEmpty())
+            throw new IllegalArgumentException("The password cannot be null or empty");
         this.password = password;
     }
 
