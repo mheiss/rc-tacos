@@ -9,7 +9,7 @@ import at.rc.tacos.model.*;
  * All transports
  * @author b.thek
  */
-public class TransportManager extends DataManager 
+public class TransportManager extends PropertyManager 
 {
     //the item list
     private List<Transport> objectList = new ArrayList<Transport>();
@@ -18,10 +18,7 @@ public class TransportManager extends DataManager
     /**
      * Default class constructor
      */
-    public TransportManager()
-    {
-//        station = Constants.STATION_BEZIRK;
-    }
+    public TransportManager() { }
 
     /**
      * Adds a new transport to the list
@@ -71,7 +68,7 @@ public class TransportManager extends DataManager
             	//get the position of the entry
             	int id = objectList.indexOf(transport);
             	objectList.set(id, transport);
-                firePropertyChange("TRANSPORT_UPDATE", transport, null); 
+                firePropertyChange("TRANSPORT_UPDATE", null, transport); 
             }
         }); 
     }

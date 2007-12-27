@@ -75,4 +75,22 @@ public abstract class ClientListenerAdapter implements IModelListener
     {
                 
     }
+    
+    /**
+     * Connection status change to handle
+     */
+    @Override
+    public void connectionChange(int status)
+    {
+    	
+    }
+    
+    /**
+     * Message failed to send
+     */
+    @Override
+    public void transferFailed(String contentType,String queryType,AbstractMessage message)
+    {
+    	
+    }
 }

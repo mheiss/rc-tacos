@@ -2,6 +2,7 @@ package at.rc.tacos.client.perspectives;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
+
 import at.rc.tacos.client.view.*;
 
 /**
@@ -28,5 +29,6 @@ public class Perspective implements IPerspectiveFactory
         layout.addStandaloneView(DispositionView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
         layout.addStandaloneView(OutstandingTransportsView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
         layout.addStandaloneView(JournalView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
+        
 	}
 }

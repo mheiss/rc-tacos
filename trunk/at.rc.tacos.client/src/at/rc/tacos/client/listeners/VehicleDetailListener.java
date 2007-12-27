@@ -12,22 +12,45 @@ import at.rc.tacos.model.VehicleDetail;
  * @author Michael
  */
 public class VehicleDetailListener extends ClientListenerAdapter
-{    
+{   
+	//the vehicle manager
+	VehicleManager manager = ModelFactory.getInstance().getVehicleManager();
+	
+	@Override
+	public void add(AbstractMessage addMessage)
+	{
+		//cast to a vehicle and add it
+        VehicleDetail detail = (VehicleDetail)addMessage;
+        manager.add(detail);
+	}
+	
     @Override
-    public void add(AbstractMessage addMessage)
+    public void remove(AbstractMessage removeMessage)
     {
-        // TODO Auto-generated method stub
-        super.add(addMessage);
+    	//cast to a vehicle and remove it
+        VehicleDetail detail = (VehicleDetail)removeMessage;
+        manager.remove(detail);
     }
-
+	
+	@Override
+	public void update(AbstractMessage updateMessage)
+	{
+		//cast to a vehicle and add it
+        VehicleDetail detail = (VehicleDetail)updateMessage;
+        manager.update(detail);
+	}
+	
     @Override
     public void list(ArrayList<AbstractMessage> listMessage)
     {
-        VehicleManager manager = ModelFactory.getInstance().getVehicleManager();
-        for(AbstractMessage msg:listMessage)
+    	//remove all stored vehicles
+    	manager.resetVehicles();
+        //loop and add all vehicles
+        for(AbstractMessage detailObject:listMessage)
         {
-            VehicleDetail entry = (VehicleDetail)msg;
-            manager.add(entry);
+        	//cast to a vehicle and add it
+            VehicleDetail detail = (VehicleDetail)detailObject;
+            manager.add(detail);
         }
     }
 }

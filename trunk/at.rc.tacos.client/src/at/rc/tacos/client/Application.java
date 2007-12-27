@@ -2,12 +2,12 @@ package at.rc.tacos.client;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.model.Login;
 
 /**
  * This class controls all aspects of the application's execution
@@ -22,15 +22,26 @@ public class Application implements IApplication
     public Object start(IApplicationContext context) 
     {
         Display display = PlatformUI.createDisplay();
-        //TODO: insert login dialog and authenticate the user
-        //TODO: check for ServerConnection and shutdown if not
-        NetWrapper.getDefault().setSessionUsername("user3");
-        NetWrapper.getDefault().sendLoginMessage(new Login("user3","P@ssw0rd",false));
+        //get the network status
+        boolean connected = NetWrapper.getDefault().isConnected();
+        System.out.println("Connection status:"+connected);
+        //show an error message and exit
+        if(!connected)
+        {
+        	display.beep();
+        	MessageDialog.openError(
+    				display.getActiveShell(), 
+    				"Verbindungsfehler", 
+    				"Verbindung zum Server nicht möglich.\n" +
+    				"Applikation wird beendet.");
+        	return IApplication.EXIT_OK;
+        }
         //try to load workbench
         try 
         {
+        	ApplicationWorkbenchAdvisor adv = new ApplicationWorkbenchAdvisor();
             //create the workbench
-            int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
+            int returnCode = PlatformUI.createAndRunWorkbench(display,adv );
             if (returnCode == PlatformUI.RETURN_RESTART) 
                 return IApplication.EXIT_RESTART;
             return IApplication.EXIT_OK;

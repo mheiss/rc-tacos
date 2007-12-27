@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.PlatformObject;
  * property change events.
  * @author Michael
  */
-public abstract class DataManager extends PlatformObject
+public abstract class PropertyManager extends PlatformObject
 {
     //the listeners to inform about data changes
     protected transient PropertyChangeSupport listeners = new PropertyChangeSupport(this);

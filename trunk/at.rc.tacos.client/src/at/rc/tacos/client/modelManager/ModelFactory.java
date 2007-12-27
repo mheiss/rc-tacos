@@ -5,7 +5,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.model.Item;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
@@ -62,7 +61,7 @@ public class ModelFactory
             protected IStatus run(IProgressMonitor monitor) 
             {
                 NetWrapper net = NetWrapper.getDefault();
-                net.requestListing(Item.ID, null);
+                //net.requestListing(Item.ID, null);
                 net.requestListing(VehicleDetail.ID, null);
                 net.requestListing(RosterEntry.ID, null);
                 net.requestListing(StaffMember.ID, null);
@@ -120,6 +119,4 @@ public class ModelFactory
     {
         return transportList;
     }
-    
-   
 }

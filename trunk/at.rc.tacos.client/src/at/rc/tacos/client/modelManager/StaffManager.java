@@ -9,7 +9,7 @@ import at.rc.tacos.model.StaffMember;
  * This class manages the staff
  * @author Michael
  */
-public class StaffManager extends DataManager
+public class StaffManager extends PropertyManager
 {
     //the item list
     private List<StaffMember> objectList = new ArrayList<StaffMember>();
@@ -62,7 +62,7 @@ public class StaffManager extends DataManager
                 //get the position of the entry
                 int id = objectList.indexOf(staffMember);
                 objectList.set(id, staffMember);
-                firePropertyChange("STAFF_UPDATE", staffMember, null); 
+                firePropertyChange("STAFF_UPDATE", null, staffMember); 
             }
         }); 
     }

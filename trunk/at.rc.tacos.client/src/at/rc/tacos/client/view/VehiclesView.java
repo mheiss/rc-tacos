@@ -2,6 +2,7 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import org.eclipse.ui.part.*;
 import org.eclipse.ui.forms.widgets.*;
 import org.eclipse.swt.SWT;
@@ -9,6 +10,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.common.Constants;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
@@ -16,7 +18,7 @@ import at.rc.tacos.model.VehicleDetail;
  * create CarComposite's using the CarCompositeManager
  * @author b.thek
  */
-public class VehiclesView extends ViewPart implements PropertyChangeListener 
+public class VehiclesView extends ViewPart implements PropertyChangeListener
 {
     public static final String ID = "at.rc.tacos.client.view.ressources_view";
 
@@ -33,6 +35,25 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
     private Composite compositeBreitenau;
 
     /**
+     * Default class constructor
+     */
+    public VehiclesView()
+    {
+        // add listener to model to keep on track. 
+        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+    }
+    
+    /**
+     * Cleanup and remove the listener
+     */
+    @Override 
+    public void dispose()
+    {
+        // add listener to model to keep on track. 
+        ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
+    }
+    
+    /**
      * Create contents of the window.
      * @param parent the parent frame to insert the controlls
      */
@@ -46,17 +67,16 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         form.getBody().setLayout(layout);
-        
-        // add listener to model to keep on track. 
-        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 
         // Create the sections for each station
-        compositeKapfenberg = createSection(form,toolkit,"Kapfenberg","Fahzeuge von Kapfenberg");
-        compositeBruck = createSection(form,toolkit,"Bruck","Fahzeuge von Bruck/Mur");
-        compositeStMarein = createSection(form,toolkit,"St.Marein","Fahzeuge von St.Marein");
-        compositeThoerl = createSection(form,toolkit,"Thörl","Fahzeuge von Thörl");
-        compositeThurnau = createSection(form,toolkit,"Thurnau","Fahzeuge von Thurnau");
-        compositeBreitenau = createSection(form,toolkit,"Breitenau","Breitenau");
+        compositeKapfenberg = createSection(form,toolkit,Constants.STATION_KAPFENBERG,"Fahzeuge von Kapfenberg");
+        compositeBruck = createSection(form,toolkit,Constants.STATION_BRUCK,"Fahzeuge von Bruck/Mur");
+        compositeStMarein = createSection(form,toolkit,Constants.STATION_MAREIN,"Fahzeuge von St.Marein");
+        compositeThoerl = createSection(form,toolkit,Constants.STATION_THOERL,"Fahzeuge von Thörl");
+        compositeThurnau = createSection(form,toolkit,Constants.STATION_TURNAU,"Fahzeuge von Thurnau");
+        compositeBreitenau = createSection(form,toolkit,Constants.STATION_BREITENAU,"Breitenau");
+        
+        
     }
 
     @Override
