@@ -55,6 +55,7 @@ import at.rc.tacos.client.controller.ForwardTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.DispositionViewOffContentProvider;
 import at.rc.tacos.client.providers.DispositionViewOffLabelProvider;
+import at.rc.tacos.client.providers.TransportSorter;
 import at.rc.tacos.client.util.CustomColors;
 
 public class OutstandingTransportsView extends ViewPart implements PropertyChangeListener
@@ -66,12 +67,13 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private TableViewer viewerOffTrans;
-	private PersonalTooltip tooltip;
+	private OutstandingTransportsTooltip tooltip;
 	
 	//the actions for the context menu
 	//TODO - get working ;-)
 //	private ChangeResponsibleStationAction changeResponsibleStationAction;
 //	private AssignCarAction assignCarAction;
+//	private CopyTransportAction copyTransportAction;
 	private ForwardTransportAction forwardTransportAction;
 	private CancelTransportAction cancelTransportAction;
 	private EditTransportAction editTransportAction;
@@ -116,25 +118,34 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
-		//'Offene Transporte'
-		final Group offeneTransporteGroup = new Group(composite, SWT.NO_RADIO_GROUP | SWT.BORDER);
-		offeneTransporteGroup.setLayout(new FillLayout());
-		offeneTransporteGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		offeneTransporteGroup.setText("Offene Transporte");
-	
 		
 		/** tabFolder Selection Listener not needed? */
 		
-		viewerOffTrans = new TableViewer(offeneTransporteGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		viewerOffTrans = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerOffTrans.setContentProvider(new DispositionViewOffContentProvider());
 		viewerOffTrans.setLabelProvider(new DispositionViewOffLabelProvider());
 		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerOffTrans.getTable().setLinesVisible(true);
 		
 		/** tool tip*/
+		tooltip = new OutstandingTransportsTooltip(viewerOffTrans.getControl());
+		//show the tool tip when the selection has changed
+		viewerOffTrans.addSelectionChangedListener(new ISelectionChangedListener() 
+		{
+			public void selectionChanged(SelectionChangedEvent event) 
+			{
+				TableItem[] selection = viewerOffTrans.getTable().getSelection();
+				if (selection != null && selection.length > 0) 
+				{
+					Rectangle bounds = selection[0].getBounds();
+					tooltip.show(new Point(bounds.x, bounds.y));
+				}
+			}
+		});  
+		
 		
 		/** sorter*/
-		
+		viewerOffTrans.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
 		
 		
 		final Table tableOff = viewerOffTrans.getTable();
