@@ -45,7 +45,7 @@ public class MySocket extends Socket
     {
         try
         {
-            setSoTimeout(100);
+            setSoTimeout(5000);
         }
         catch(SocketException se)
         {
