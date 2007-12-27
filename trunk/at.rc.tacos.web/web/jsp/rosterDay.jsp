@@ -10,15 +10,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
+<%@page import="at.rc.tacos.web.positions.Timetable"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../css/stylesheet.css" rel="stylesheet" />
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
+<script src="../js/timetable.js" type="text/javascript" language="javascript"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
+<script type="javascript">
+    var height = screen.availHeight;
+    var width = screen.availWidth;
+</script>
 </head>
-<body>
+<body onload="setup();">
 
+<div id="InfoPanel" style="background-color:gray; width:10px; height:10px; position:absolute;">&nbsp;</div>
+
+<!-- 
+<form name="Show" style="position:absolute; top:0px; right:0px;">
+<p align="center"><br>
+<input type="text" name="MouseX" value="0" size="4" style="font-family: Verdana; font-size: 8pt; font-weight: bold"><span style="font-size: 8pt">X-Position</span><br>
+<input type="text" name="MouseY" value="0" size="4" style="font-family: Verdana; font-size: 8pt; font-weight: bold"><span style="font-size: 8pt">Y-Position</span></p>
+</form>
+-->
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 
@@ -80,20 +95,39 @@
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
+										  <% 
+											  Timetable timetable = Timetable.getInstance();
+	                                          out.print(timetable.calculateTimetable(rosterList));
+	                                          
+	                                         
+										  %>
 											<%for(AbstractMessage message:rosterList)
 											{
-												SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-												SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
-												RosterEntry entry = (RosterEntry)message;
-												out.print(entry.getStaffMember().getUserName());
-												out.print(" ");
-												out.print(format.format(new Date(entry.getPlannedStartOfWork())));
-												out.print(" - ");
-												if(entry.isSplitEntry())
-													out.print(format.format(new Date(entry.getPlannedEndOfWork())));
-												else
-													out.print(formatHour.format(new Date(entry.getPlannedEndOfWork())));
-												out.println("<br />");
+												//SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+												//SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
+												//RosterEntry entry = (RosterEntry)message;
+												
+												
+												//out.print(entry.getStaffMember().getUserName());
+												//out.print(" ");
+												//out.print(format.format(new Date(entry.getPlannedStartOfWork())));
+												
+												
+												//out.print(" - ");
+												//if(entry.isSplitEntry())
+													//out.print(format.format(new Date(entry.getPlannedEndOfWork())));
+												//else
+													//out.print(formatHour.format(new Date(entry.getPlannedEndOfWork())));
+												//out.println("<br />");
+												
+												
+												//out.print("Job: "+entry.getJob()+"\n");
+												//out.print("Plan-Start: "+entry.getPlannedStartOfWork()+"\n");
+												//out.print("Plan-Ende: "+entry.getPlannedEndOfWork()+"\n");
+												//out.print("Service: "+entry.getServicetype()+"\n");
+												//out.print("Station: "+entry.getStation()+"\n");
+												//out.print("Username: "+entry.getUsername()+"\n");
+												
 											}											
 											%>
 										</tr>
