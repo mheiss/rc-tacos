@@ -67,7 +67,6 @@ public class ClientHandler implements INetListener
             //add the client to the authenticated list
             if(loginResult.isLoggedIn())
                 session.setAuthenticated(loginResult.getUsername(),loginResult.isWebClient());
-            System.out.println("Web client? --> "+loginResult.isWebClient());
             //notify the sender about the result
             server.sendMessage(session,contentType,queryString,loginResult);
         }
