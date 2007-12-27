@@ -9,7 +9,7 @@ import at.rc.tacos.model.*;
  * All created items.
  * @author Michael
  */
-public class ItemManager extends DataManager 
+public class ItemManager extends PropertyManager 
 {
     //the item list
     private List<Item> objectList = new ArrayList<Item>();

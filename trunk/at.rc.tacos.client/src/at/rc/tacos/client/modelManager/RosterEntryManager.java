@@ -10,7 +10,7 @@ import at.rc.tacos.model.*;
  * All roster entries
  * @author b.thek
  */
-public class RosterEntryManager extends DataManager 
+public class RosterEntryManager extends PropertyManager 
 {
     //the item list
     private List<RosterEntry> objectList = new ArrayList<RosterEntry>();
@@ -66,9 +66,10 @@ public class RosterEntryManager extends DataManager
             public void run ()       
             {  	
             	//get the position of the entry
-            	int id = objectList.indexOf(rosterEntry);
-            	objectList.set(id, rosterEntry);
-                firePropertyChange("ROSTERENTRY_UPDATE", rosterEntry, null); 
+            	int index = objectList.indexOf(rosterEntry);
+            	//replace by the new
+            	objectList.set(index, rosterEntry);
+                firePropertyChange("ROSTERENTRY_UPDATE", null, rosterEntry); 
             }
         }); 
     }
