@@ -31,6 +31,14 @@ public class LoginController implements Controller
 		{
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
+			
+			if(username.trim().isEmpty() || password.trim().isEmpty())
+			{ 
+				params.put("loginError", "Keine Daten eingegeben!");
+				return params;
+			} 
+			
+			
 			//the result
 			WebClient client = new WebClient();
 			//open a connection to the server
@@ -48,10 +56,12 @@ public class LoginController implements Controller
 					//userSession.setLoggedIn(true, loginResult.getUsername(), client);
 					response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.home")); 
 				}
+				
 				else
 				{
-					params.put("loginError", loginResult.getErrorMessage());
+					params.put("loginError", "Falscher Benutzername / Passwort!");
 				}
+				
 			}
 		}
 		if("logout".equalsIgnoreCase(action))
