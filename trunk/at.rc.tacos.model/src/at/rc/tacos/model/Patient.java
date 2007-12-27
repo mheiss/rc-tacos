@@ -129,7 +129,7 @@ public class Patient extends AbstractMessage
      */
     public void setFirstname(String firstname) 
     {
-        if(firstname == null || firstname.trim().isEmpty())
+        if(firstname == null)
             throw new IllegalArgumentException("Invalid firstname");
         this.firstname = firstname.trim();
     }
@@ -150,7 +150,7 @@ public class Patient extends AbstractMessage
      */
     public void setLastname(String lastname)
     {
-        if(lastname == null || lastname.trim().isEmpty())
+        if(lastname == null)
             throw new IllegalArgumentException("Invalid lastname");
         this.lastname = lastname;
     }
