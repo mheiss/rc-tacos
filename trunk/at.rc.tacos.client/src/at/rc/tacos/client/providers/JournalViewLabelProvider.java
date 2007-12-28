@@ -10,6 +10,7 @@ import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.StatusMessages;
 import at.rc.tacos.model.Transport;
 
@@ -40,7 +41,20 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
-    	return null;
+    	Transport transport = (Transport)element;
+        //determine the colum and return a image if needed
+        switch(columnIndex)
+        {
+		    case COLUMN_PATIENT:
+		    	if(transport.isAccompanyingPerson())
+		    		return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
+		    	else return null;
+		    case COLUMN_TRANSPORT_TO:
+		    	if(transport.isLongDistanceTrip())
+		    			return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.longtrip");
+		    	else return null;
+		    default: return null;
+        }
     }
 
     @Override
