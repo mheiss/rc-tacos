@@ -107,7 +107,7 @@ public class CallerDetail extends AbstractMessage
      */
     public void setCallerName(String callerName) 
     {
-        if(callerName == null || callerName.trim().isEmpty())
+        if(callerName == null)
             throw new IllegalArgumentException("Caller name cannot be null or empty");
         this.callerName = callerName.trim();
     }
@@ -129,7 +129,7 @@ public class CallerDetail extends AbstractMessage
      */
     public void setCallerTelephoneNumber(String callerTelephoneNumber) 
     {
-        if(callerTelephoneNumber == null || callerTelephoneNumber.trim().isEmpty())
+        if(callerTelephoneNumber == null)
             throw new IllegalArgumentException("Telephone number cannot be null or emtpy");
         this.callerTelephoneNumber = callerTelephoneNumber.trim();
     }
