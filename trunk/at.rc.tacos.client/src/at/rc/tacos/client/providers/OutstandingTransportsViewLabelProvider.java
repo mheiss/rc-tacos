@@ -40,7 +40,6 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
         //determine the colum and return a image if needed
         switch(columnIndex)
         {
-        
 	        case COLUMN_LOCK: return null;
 	        case COLUMN_PRIORITY: return null;
 	        case COLUMN_RESP_STATION: return null;
@@ -63,6 +62,8 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
     {
     	Transport transport = (Transport)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String street;
+        String city;
         
         switch(columnIndex)
         {
@@ -84,8 +85,18 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 	        		return sdf.format(transport.getAppointmentTimeAtDestination());
 	        	else return "";
 	        case COLUMN_FROM:return transport.getFromStreet() +"/" +transport.getFromCity();
-	        case COLUMN_PATIENT:return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
-	        case COLUMN_TO:return transport.getToStreet() +"/" +transport.getToCity();
+	        case COLUMN_PATIENT:
+	        	if(transport.getPatient() != null)
+	        			return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
+	        	else return "";
+	        case COLUMN_TO:
+	        	if(transport.getToStreet() == null)
+	        		street = "";
+	        	else street = transport.getToStreet();
+	        	if(transport.getToCity() == null)
+	        		city = "";
+	        	else city = transport.getToCity();
+	        	return street +"/" +city;
 	        case COLUMN_AUFG:
 	        	if (transport.getReceiveTime() != 0)
 	        		return sdf.format(transport.getReceiveTime());
