@@ -296,7 +296,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 				
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
-				viewer.setSorter(new PersonalViewSorter(sortIdentifier,dir));
+//				viewer.setSorter(new PersonalViewSorter(sortIdentifier,dir));
 			}
 		};
 
