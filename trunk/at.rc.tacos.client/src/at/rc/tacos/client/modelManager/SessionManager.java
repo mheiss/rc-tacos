@@ -75,12 +75,11 @@ public class SessionManager extends PropertyManager
         {
             public void run ()       
             {
-				//reset the status
-				fireLogout();
 				//bring up the wizard to reconnect
 				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				ConnectionWizardAction connectionWizard = new ConnectionWizardAction(window);
 				connectionWizard.run();
+            	System.out.println("connection lost");
             }
         });
 	}

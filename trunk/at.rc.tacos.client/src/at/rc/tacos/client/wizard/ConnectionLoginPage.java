@@ -119,6 +119,7 @@ public class ConnectionLoginPage extends WizardPage
 			setErrorMessage("Bitte geben sie ein Passwort ein");
 			return false;
 		}
+		setErrorMessage(null);
 		//save the data
 		wizard.setLoginData(username, password);
 		//we have eyerything
