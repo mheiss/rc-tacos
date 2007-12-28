@@ -22,7 +22,7 @@ public class TransportManager extends PropertyManager
 
     /**
      * Adds a new transport to the list
-     * @param rosterEntry the transport to add
+     * @param transport the transport to add
      */
     public void add(final Transport transport) 
     {
@@ -40,7 +40,7 @@ public class TransportManager extends PropertyManager
 
     /**
      * Removes the transport from the list
-     * @param rosterEntry the transport to remove
+     * @param transport the transport to remove
      */
     public void remove(final Transport transport) 
     {
@@ -57,7 +57,7 @@ public class TransportManager extends PropertyManager
     
     /**
      * Updates the transport at the list
-     * @param rosterEntry the transport to update
+     * @param transport the transport to update
      */
     public void update(final Transport transport) 
     {
