@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.Transport;
 
@@ -25,6 +26,10 @@ public class TransportEncoderTestN
     {
         XMLOutputFactory xmlof = XMLOutputFactory.newInstance();
         writer = xmlof.createXMLStreamWriter(new StringWriter());
+        
+        //Register the needed additional encoders
+       ProtocolCodecFactory.getDefault().registerEncoder(Patient.ID,new PatientEncoder());
+
     }
     
     @Before
@@ -47,7 +52,7 @@ public class TransportEncoderTestN
     	Transport transport = new Transport(fromStreet,fromCommunity,theStation,transportDate,startLong,priority,directness);
     	transport.setBackTransport(true);
     	Patient patient = new Patient("derNachname", "derVorname");
-//    	transport.setPatient(patient);
+    	transport.setPatient(patient);
     	
     	encoder.doEncode(transport, writer);
     }
