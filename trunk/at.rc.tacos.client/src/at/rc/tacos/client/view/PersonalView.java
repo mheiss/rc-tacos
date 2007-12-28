@@ -290,7 +290,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		//create the actions
 		makeActions();
 		hookContextMenu();
-		contributeToActionBars();
+//		contributeToActionBars();
 
 		tabFolder.setSelection(1);
 		tabFolder.setSelection(0);
@@ -377,33 +377,33 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		}
 	}
 	
-	/**
-	 * Fills the action bar at the rigt side and the tool bar
-	 */
-	private void contributeToActionBars() 
-	{
-		IActionBars bars = getViewSite().getActionBars();
-		fillLocalPullDown(bars.getMenuManager());
-		fillLocalToolBar(bars.getToolBarManager());
-	}
-	
-	/**
-	 * Fills the pull down bar
-	 * @param manager the manager to add the actions
-	 */
-	private void fillLocalPullDown(IMenuManager manager) 
-	{
-		manager.add(new Separator());
-		manager.add(editEntryAction);
-		manager.add(deleteEntryAction);
-	}
-
-	private void fillLocalToolBar(IToolBarManager manager)
-	{
-		manager.add(new Separator());
-		manager.add(editEntryAction);
-		manager.add(deleteEntryAction);
-	}
+//	/**
+//	 * Fills the action bar at the rigt side and the tool bar
+//	 */
+//	private void contributeToActionBars() 
+//	{
+//		IActionBars bars = getViewSite().getActionBars();
+//		fillLocalPullDown(bars.getMenuManager());
+//		fillLocalToolBar(bars.getToolBarManager());
+//	}
+//	
+//	/**
+//	 * Fills the pull down bar
+//	 * @param manager the manager to add the actions
+//	 */
+//	private void fillLocalPullDown(IMenuManager manager) 
+//	{
+//		manager.add(new Separator());
+//		manager.add(editEntryAction);
+//		manager.add(deleteEntryAction);
+//	}
+//
+//	private void fillLocalToolBar(IToolBarManager manager)
+//	{
+//		manager.add(new Separator());
+//		manager.add(editEntryAction);
+//		manager.add(deleteEntryAction);
+//	}
 
 
 	/**
