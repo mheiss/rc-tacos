@@ -90,10 +90,10 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 
 		final Composite composite = form.getBody();
 		//'Journalblatt'
-		final Group group = new Group(composite, SWT.NONE);
-		group.setLayout(new FillLayout());
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		group.setText("Journalblatt");
+//		final Group group = new Group(composite, SWT.NONE);
+//		group.setLayout(new FillLayout());
+//		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+//		group.setText("Journalblatt");
 
 //		//tab folder 
 //		final TabFolder tabFolder = new TabFolder(group, SWT.NONE);
@@ -112,13 +112,17 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 //			}
 //		});
 		
-		viewer = new TableViewer(group, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		/** Selection listener? */
+		
+		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new JournalViewContentProvider());
 		viewer.setLabelProvider(new JournalViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager());
 		viewer.getTable().setLinesVisible(true);
+		
 		//set the tooltip
 		tooltip = new JournalViewTooltip(viewer.getControl());
+		
 		//show the tooltip when the selection has changed
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
 		{
@@ -133,7 +137,8 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 			}
 		});     
 		//sort the table by default
-		viewer.setSorter(new TransportSorter(TransportSorter.TNR_SORTER,SWT.DOWN));
+		//TODO- bug fix: causes an error when the view gets updated
+//		viewer.setSorter(new TransportSorter(TransportSorter.TNR_SORTER,SWT.DOWN));
 
 		//create the table for the transports
 		final Table table = viewer.getTable();
@@ -233,7 +238,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 
 
 
-		//make the columns sortable
+		//make the columns sort able
 		Listener sortListener = new Listener() 
 		{
 			public void handleEvent(Event e) 
@@ -242,7 +247,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 				TableColumn sortColumn = viewer.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
 				int dir = viewer.getTable().getSortDirection();
-				//revert the sortorder if the column is the same
+				//revert the sort order if the column is the same
 				if (sortColumn == currentColumn) 
 				{
 					if(dir == SWT.UP)
@@ -296,7 +301,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 				
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
-//				viewer.setSorter(new PersonalViewSorter(sortIdentifier,dir));
+				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
 			}
 		};
 
