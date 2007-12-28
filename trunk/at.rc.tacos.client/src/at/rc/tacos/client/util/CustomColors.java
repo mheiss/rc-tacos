@@ -21,6 +21,8 @@ public final class CustomColors
     public static final Color HEADING_COLOR = new Color(null,255,255,255);
     public static final Color SECTION_BACKGROUND = new Color(null,255,255,255);
     public static final Color DARK_GREY_COLOR = new Color(null, 60,179,113);
+    public static final Color BACKGROUND_RED = new Color(null,250,128,114);
+    public static final Color BACKGROUND_BLUE = new Color(null,102,153,255);
     
     private static FormColors formColors;
     
