@@ -47,14 +47,62 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 	        case COLUMN_AT_PATIENT:return null;
 	        case COLUMN_TERM:return null;
 	        case COLUMN_FROM:return null;
-	        case COLUMN_PATIENT:return null;
-	        case COLUMN_TO:return null;
+	        case COLUMN_PATIENT:
+	        	if(transport.isAccompanyingPerson())
+	        		return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
+	        	else return null;
+	        case COLUMN_TO:
+	        	if(transport.isLongDistanceTrip())
+	        			return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.longtrip");
+	        	else return null;
 	        case COLUMN_AUFG:return null;
 	        case COLUMN_T:return null;
 	        case COLUMN_ERKR_VERL:return null;
 	        case COLUMN_NOTES:return null;
 	        default: return null;
         }
+        
+        
+//        RosterEntry entry = (RosterEntry)element;
+//        //determine the colum and return a image if needed
+//        switch(columnIndex)
+//        {
+//        //show lock if the entry is locked
+//        case COLUMN_LOCK: return null;
+//        //show house symbol if the person is at home
+//        case COLUMN_STANDBY: 
+//            if(entry.getStandby())
+//                return ImageFactory.getInstance().getRegisteredImage("image.personal.home");
+//            else
+//                return null;
+//        //show info symbol if there are notes
+//        case COLUMN_NOTES: 
+//            if(entry.hasNotes())
+//                return ImageFactory.getInstance().getRegisteredImage("image.personal.info");
+//            return null;
+//        //show a symbol in front of the name 
+//        case COLUMN_NAME: return ImageFactory.getInstance().getRegisteredImage("image.personal.user");
+//        case COLUMN_PLANED_WORK_TIME:
+//            if(entry.isSplitEntry())
+//                return ImageFactory.getInstance().getRegisteredImage("image.personal.timesplit");
+//            else
+//                return ImageFactory.getInstance().getRegisteredImage("image.personal.time");
+//        
+//        //show a symbol if the planned time is not handled
+//        case COLUMN_CHECK_IN: 
+//            //user is not cheked in but he should
+//            if(entry.getRealStartOfWork() == 0 && entry.getPlannedStartOfWork() > new Date().getTime())
+//                return ImageFactory.getInstance().getRegisteredImage("image.personal.alert");
+//            return null;
+//        case COLUMN_CHECK_OUT: 
+//            //user is not cheked out but he should
+//            if(entry.getPlannedEndOfWork() == 0 && entry.getPlannedEndOfWork() < new Date().getTime())
+//                return ImageFactory.getInstance().getRegisteredImage("image.personal.alert");
+//            return null;
+//        default: return null;
+//        }
+//        
+        
     }
 
     @Override
