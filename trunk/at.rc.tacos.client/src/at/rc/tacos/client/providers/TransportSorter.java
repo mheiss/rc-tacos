@@ -80,6 +80,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         	String number1 = transport1.getTransportNumber();
         	String number2 = transport2.getTransportNumber();
         	returnValue = number1.compareTo(number2);
+        	
         }
         //sort by the priority of the transport
         if (column == PRIORITY_SORTER) 
