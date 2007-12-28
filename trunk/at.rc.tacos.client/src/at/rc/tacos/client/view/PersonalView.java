@@ -98,14 +98,9 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
-		//'Dienstplan'
-		final Group group = new Group(composite, SWT.NONE);
-		group.setLayout(new FillLayout());
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		group.setText("Dienstplan");
 
 		//tab folder "Bruck - Kapfenberg"
-		final TabFolder tabFolder = new TabFolder(group, SWT.NONE);
+		final TabFolder tabFolder = new TabFolder(composite, SWT.NONE);
 		tabFolder.addSelectionListener(new SelectionListener() 
 		{
 			public void widgetSelected(SelectionEvent e) 
@@ -120,11 +115,18 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				widgetSelected(e);
 			}
 		});
+		
+		
+		
 		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new PersonalViewContentProvider());
 		viewer.setLabelProvider(new PersonalViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getRosterManager());
 		viewer.getTable().setLinesVisible(true);
+		
+		viewer.resetFilters();
+//		viewer.refresh();
+		
 		//set the tooltip
 		tooltip = new PersonalTooltip(viewer.getControl());
 		//show the tooltip when the selection has changed
@@ -246,6 +248,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 			}
 		};
 
+		
 		//attach the listener
 		columnStaffName.addListener(SWT.Selection, sortListener);
 		columnWorkTime.addListener(SWT.Selection, sortListener);
@@ -291,6 +294,10 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 		tabFolder.setSelection(1);
 		tabFolder.setSelection(0);
+		
+		//TODO for default- ok?
+		viewer.resetFilters();
+		viewer.addFilter(new PersonalViewFilter(Constants.STATION_BEZIRK));
 	}
 	
 	/**
