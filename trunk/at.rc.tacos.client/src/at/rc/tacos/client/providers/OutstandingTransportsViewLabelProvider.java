@@ -214,7 +214,7 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 	@Override
 	public Color getForeground(Object element, int columnIndex) 
 	{		
-		return CustomColors.GREY_COLOR;
+		return null;
 	}
 }
 
