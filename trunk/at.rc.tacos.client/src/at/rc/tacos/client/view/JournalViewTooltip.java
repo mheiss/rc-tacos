@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
+
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
@@ -20,8 +22,20 @@ import at.rc.tacos.model.Transport;
  * This shows the tool tip for journal transport.
  * @author b.thek
  */
-public class JournalViewTooltip extends ToolTip 
+public class JournalViewTooltip extends ToolTip implements ITransportStatus
 {	
+	
+	private String backtransport = "";
+	private String police = "";
+	private String firebrigade = "";
+	private String brkdt = "";
+	private String df = "";
+	private String emergencyDoctor = "";
+	private String helicopter= "";
+	private String mountainRescue = "";
+	private String emergencyPhone = "";
+	
+	
 	/**
 	 * Creates a new tool tip for the journal transport
 	 * @param control the control for the tool tip to show
@@ -51,12 +65,38 @@ public class JournalViewTooltip extends ToolTip
 		Widget hoverWidget = getTipWidget(event);
 		Transport transport = getTaskListElement(hoverWidget);
 		
-		//the name of the staff member
-		Image image = ImageFactory.getInstance().getRegisteredImage("image.personal.user");
-		String title = transport.getTransportNumber() +" " +transport.getFromStreet() +" " +transport.getFromCity() +" " 
+		//notifying
+		if (transport.isFirebrigadeAlarming())
+			firebrigade = "Bergrettung";
+		if (transport.isBrkdtAlarming())
+			brkdt = "Bezirksrettungskommandant";
+		if (transport.isDfAlarming())
+			df = "Dienstführender";
+		if (transport.isEmergencyDoctorAlarming())
+			emergencyDoctor = "Notarzt";
+		if (transport.isEmergencyPhone())
+			emergencyPhone = "Rufhilfe";
+		if (transport.isHelicopterAlarming())
+			helicopter = "Notarzthubschrauber";
+		if (transport.isPoliceAlarming())
+			police = "Polizei";
+		
+			
+        
+		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.transportShort");
+		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
 			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
-			+transport.getRealStation();
+			+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
+		
+		if(transport.getKindOfTransport() != "")
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.qmark");
+			title = transport.getKindOfTransport();
+			addIconAndLabel(composite,image,title);
+		}
+
+		
 		//the notes
 		if(transport.hasNotes())
 		{
@@ -64,10 +104,43 @@ public class JournalViewTooltip extends ToolTip
 			title = transport.getDiseaseNotes();
 			addIconAndLabel(composite,image,title);
 		}
+		
+		if(transport.getRealStation() != null)
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icons.station");
+			title = transport.getRealStation();
+			addIconAndLabel(composite,image,title);
+		}
+		
+		if(!(transport.getPlannedStartOfTransport() != 0 || transport.getPlannedTimeAtPatient() != 0 || transport.getAppointmentTimeAtDestination() != 0))
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
+			title = "Abfahrt: " +transport.getPlannedStartOfTransport() +" Bei Patient: " +transport.getPlannedTimeAtPatient() +" Termin: " +transport.getAppointmentTimeAtDestination();
+			addIconAndLabel(composite,image,title);
+		}
+		
 		if(transport.hasFeedback())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.feedback");
 			title = transport.getFeedback();
+			addIconAndLabel(composite,image,title);
+		}
+
+		
+		//caller detail
+		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.callerDetail");
+			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
+			addIconAndLabel(composite,image,title);
+		}
+		
+		//notified
+		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
+				|| firebrigade.equalsIgnoreCase("")))
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.exclamation");
+			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
 			addIconAndLabel(composite,image,title);
 		}
 
