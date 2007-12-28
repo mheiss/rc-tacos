@@ -81,7 +81,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 	private Text textAnrufer;
 	private Button ruecktransportMoeglichButton;
 	private Button begleitpersonButton;
-	//private Button rufhilfepatientButton;
+	private Button rufhilfepatientButton;
 	private Button eigenerRollstuhlButton;
 	private Button krankentrageButton;
 	private Button tragsesselButton;
@@ -1079,6 +1079,17 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			}
 		});
 
+		
+		rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
+		final FormData fd_rufhilfepatientButton = new FormData();
+		fd_rufhilfepatientButton.bottom = new FormAttachment(0, 96);
+		fd_rufhilfepatientButton.top = new FormAttachment(0, 80);
+		fd_rufhilfepatientButton.right = new FormAttachment(0, 547);
+		fd_rufhilfepatientButton.left = new FormAttachment(0, 462);
+		rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
+		rufhilfepatientButton.setText("Rufhilfepatient");
+		  
+		  
 		polizeiButton = new Button(planungGroup_1, SWT.CHECK);
 		final FormData fd_polizeiButton = new FormData();
 		fd_polizeiButton.bottom = new FormAttachment(0, 137);
@@ -1505,6 +1516,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			String paramedicII;
 			String paramedicI;
 			String driver;
+			
 			boolean mountainRescue;
 			boolean police;
 			boolean fireBrigade;
@@ -1513,29 +1525,38 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			boolean rth;
 			boolean emergencyDoctor;
 			boolean blueLight;
+			
 			String feedback;
 			String notes;
 			String priority;
 			String kindOfIllness;
+			
 			boolean longDistanceTrip;
+			
 			boolean toMariazell;
 			boolean toVienna;
 			boolean toLeoben;
 			boolean toGraz;
 			boolean toDistrict;
+			
 			String term;
 			String atPatient;
 			String start;
+			
 			String station;
+			
 			String numberNotifier;
 			String notifierName;
+			
 			boolean backTransportPossible;
 			boolean accompanyingPerson;
-			//rufhilfepatientButton;
+			boolean rufhilfepatient;
+			
 			boolean wheelChairButton;
 			boolean gurney;
 			boolean chair;
 			boolean moving;
+			
 			String toCommunity;
 			String toStreet;
 			String firstName;
@@ -1561,6 +1582,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			
 			public void handleEvent(Event event) 
 			{
+				
+				String kindOfTransport;
 				System.out.println("TransportForm; Listener des ok Buttons in handleEvent");
 				requiredFields = "";
 				hourStart = -1;
@@ -1615,10 +1638,25 @@ public class TransportForm implements IDirectness, IKindOfTransport
 				}
 				
 				
+				//set the kind of transport
 				
-				   //create a new entry
+				if(wheelChairButton)
+					kindOfTransport = TRANSPORT_KIND_ROLLSTUHL;
+				else if(gurney)
+					kindOfTransport = TRANSPORT_KIND_KRANKENTRAGE;
+				else if(chair)
+					kindOfTransport = TRANSPORT_KIND_TRAGSESSEL;
+				else if(moving)
+					kindOfTransport = TRANSPORT_KIND_GEHEND;
+				else
+					kindOfTransport = "";
 				
-
+				//set the receiving time
+				Calendar cal = Calendar.getInstance();
+				long receivingTime = cal.getTimeInMillis();
+				
+				//create a new entry
+				
                 if(createNew)
                 {
                 	transport = new Transport(fromStreet,fromCommunity,theStation,transportDate,startLong,priority,directness);
@@ -1626,6 +1664,34 @@ public class TransportForm implements IDirectness, IKindOfTransport
                 	//TODO set the other values
                 	Patient patient = new Patient(lastName,firstName);
                 	transport.setPatient(patient);
+                	transport.setAccompanyingPerson(accompanyingPerson);
+                	transport.setAppointmentTimeAtDestination(termLong);
+                	transport.setBlueLightToGoal(blueLight);
+                	transport.setBrkdtAlarming(brkdt);
+                	CallerDetail callerDetail = new CallerDetail(notifierName,numberNotifier);
+                	transport.setCallerDetail(callerDetail);
+                	transport.setDateOfTransport(transportDate);
+                	transport.setDfAlarming(df);
+                	transport.setDiseaseNotes(notes);
+                	transport.setEmergencyDoctorAlarming(emergencyDoctor);
+                	transport.setEmergencyPhone(rufhilfepatient);
+                	transport.setFeedback(feedback);
+                	transport.setFirebrigadeAlarming(fireBrigade);
+                	transport.setHelicopterAlarming(rth);
+                	transport.setKindOfIllness(kindOfIllness);
+                	transport.setKindOfTransport(kindOfTransport);
+                	transport.setLongDistanceTrip(longDistanceTrip);
+                	transport.setMountainRescueServiceAlarming(mountainRescue);
+                	transport.setPlannedTimeAtPatient(atPatientLong);
+                	transport.setPoliceAlarming(police);
+                	transport.setReceiveTime(receivingTime);
+                	
+                	//TODO setRealStation, Transportnumber, VehicleDetail wann?
+                	
+                	
+                	
+                	
+                	
                 	
                 	
                     //create and run the add action
@@ -1681,7 +1747,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 				notifierName = textAnrufer.getText();
 				backTransportPossible = ruecktransportMoeglichButton.getSelection();
 				accompanyingPerson = begleitpersonButton.getSelection();
-				//rufhilfepatientButton;
+				rufhilfepatientButton.getSelection();
 				wheelChairButton = eigenerRollstuhlButton.getSelection();
 				gurney = krankentrageButton.getSelection();
 				chair = tragsesselButton.getSelection();
