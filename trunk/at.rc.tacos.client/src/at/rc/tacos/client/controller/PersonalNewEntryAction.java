@@ -25,7 +25,7 @@ public class PersonalNewEntryAction extends Action
     @Override
     public String getText()
     {
-        return "Neuer Dienstplaneintrag";
+        return "Dienstplaneintrag";
     }
     
     /**
