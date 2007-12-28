@@ -38,22 +38,21 @@ public class InfoView extends ViewPart
         toolkit.decorateFormHeading(form.getForm());
         form.getBody().setLayout(new GridLayout());
                 
-        final Group filterGroup = new Group(form.getBody(), SWT.NONE);
 
-        final Composite composite = new Composite(form, SWT.NONE);
+        final Composite composite = form.getBody();
         composite.setSize(494, 349);
         form.setContent(composite);
-        filterGroup.setText("Filter");
+
         final GridData gd_filterGroup = new GridData(SWT.FILL, SWT.TOP, true, false);
         gd_filterGroup.heightHint = 150;//for normal date field: "30"
         gd_filterGroup.widthHint = 993;
-        filterGroup.setLayoutData(gd_filterGroup);
+        composite.setLayoutData(gd_filterGroup);
         final GridLayout gridLayout_3 = new GridLayout();
         gridLayout_3.numColumns = 9;
-        filterGroup.setLayout(gridLayout_3);
+        composite.setLayout(gridLayout_3);
             
         //Calendar field
-        dateTime = new DateTime(filterGroup, SWT.CALENDAR);
+        dateTime = new DateTime(composite, SWT.CALENDAR);
         dateTime.setToolTipText("Datum der anzuzeigenden Dienstplanübersicht auswählen");
         dateTime.setBounds(10, 43,180, 171);
         dateTime.setData("newKey", null);
@@ -70,7 +69,7 @@ public class InfoView extends ViewPart
             }
         });
         
-		final Text informationOfTheDay = new Text(filterGroup, SWT.BORDER);
+		final Text informationOfTheDay = new Text(composite, SWT.BORDER);
 		informationOfTheDay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         
     }
