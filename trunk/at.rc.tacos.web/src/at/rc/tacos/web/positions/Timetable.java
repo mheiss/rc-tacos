@@ -125,7 +125,7 @@ public class Timetable extends HttpServlet {
 	private int calculateHeightForEntry(String begin, String end){
 		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
 		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
-		
+		System.out.println("HEIGHT: "+(endPos-startPos)*15);
 		return (endPos-startPos)*15;
 	}
 
