@@ -55,6 +55,8 @@ import at.rc.tacos.client.controller.ForwardTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.DispositionViewOffContentProvider;
 import at.rc.tacos.client.providers.DispositionViewOffLabelProvider;
+import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
+import at.rc.tacos.client.providers.OutstandingTransportsViewLabelProvider;
 import at.rc.tacos.client.providers.TransportSorter;
 import at.rc.tacos.client.util.CustomColors;
 
@@ -121,27 +123,32 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		
 		/** tabFolder Selection Listener not needed? */
 		
+		
+		
 		viewerOffTrans = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerOffTrans.setContentProvider(new DispositionViewOffContentProvider());
-		viewerOffTrans.setLabelProvider(new DispositionViewOffLabelProvider());
+		viewerOffTrans.setContentProvider(new OutstandingTransportsViewContentProvider());
+		viewerOffTrans.setLabelProvider(new OutstandingTransportsViewLabelProvider());
 		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerOffTrans.getTable().setLinesVisible(true);
 		
+		viewerOffTrans.refresh();
+		
 		/** tool tip*/
-		tooltip = new OutstandingTransportsTooltip(viewerOffTrans.getControl());
+//		tooltip = new OutstandingTransportsTooltip(viewerOffTrans.getControl());
 		//show the tool tip when the selection has changed
-		viewerOffTrans.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewerOffTrans.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltip.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});  
+		
+//		viewerOffTrans.addSelectionChangedListener(new ISelectionChangedListener() 
+//		{
+//			public void selectionChanged(SelectionChangedEvent event) 
+//			{
+//				TableItem[] selection = viewerOffTrans.getTable().getSelection();
+//				if (selection != null && selection.length > 0) 
+//				{
+//					Rectangle bounds = selection[0].getBounds();
+//					tooltip.show(new Point(bounds.x, bounds.y));
+//				}
+//			}
+//		});  
 		
 		
 		/** sorter*/
@@ -149,14 +156,13 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		
 		
 		final Table tableOff = viewerOffTrans.getTable();
-		tableOff.setRedraw(true);
 		tableOff.setLinesVisible(true);
 		tableOff.setHeaderVisible(true);
 	
-		//create the tab items for the personal overview
-		final TableColumn newColumnTableColumnIdOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		newColumnTableColumnIdOffeneTransporte.setWidth(29);
-		newColumnTableColumnIdOffeneTransporte.setText("Id");
+		final TableColumn lockColumn = new TableColumn(tableOff, SWT.NONE);
+		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
+		lockColumn.setWidth(30);
+		lockColumn.setText("L");
 	
 		final TableColumn newColumnTableColumnPrioritaetOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		newColumnTableColumnPrioritaetOffeneTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
