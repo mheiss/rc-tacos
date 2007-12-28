@@ -28,8 +28,8 @@ function setup(){
 }
 
 function showInfo(){
-  document.getElementById("InfoPanel").style.left = tempX
-  document.getElementById("InfoPanel").style.top = tempY
+  //document.getElementById("InfoPanel").style.left = tempX
+  //document.getElementById("InfoPanel").style.top = tempY
 }
 
 function getMouseXY(e) {
@@ -53,4 +53,5 @@ function getMouseXY(e) {
   return true
   
 }
+
 

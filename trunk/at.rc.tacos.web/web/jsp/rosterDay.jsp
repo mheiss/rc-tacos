@@ -16,13 +16,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../css/stylesheet.css" rel="stylesheet" />
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
-<script src="../js/timetable.js" type="text/javascript" language="javascript"></script>
+
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 
+
+
 </head>
-<body onload="setup();">
+
+<body >
 
 <div id="InfoPanel" style="background-color:gray; width:10px; height:10px; position:absolute;">&nbsp;</div>
+
+
 
 <!-- 
 <form name="Show" style="position:absolute; top:0px; right:0px;">
@@ -94,7 +99,7 @@
 										<tr>
 										  <% 
 											  Timetable timetable = Timetable.getInstance();
-	                                          out.print(timetable.calculateTimetable(rosterList,formath.format(current)));
+	                                          out.print(timetable.calculateTimetable(rosterList));
 	                                          
 	                                         //out.print(params.values());
 										  %>
