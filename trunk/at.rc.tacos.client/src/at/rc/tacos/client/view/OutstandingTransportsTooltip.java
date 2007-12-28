@@ -152,7 +152,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 				|| firebrigade.equalsIgnoreCase("")))
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.exclamation");
-			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade;
+			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
 			addIconAndLabel(composite,image,title);
 		}
 		
