@@ -82,7 +82,7 @@ public class OutstandingTransportsTooltip extends ToolTip
 		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.transportShort");
 		String title = transport.getFromStreet() +" " +transport.getFromCity() +" " 
 			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
-			+transport.getDirection() +" " +transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber() +" "
+//			+transport.getDirection() +" " +transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber() +" "
 			+backtransport +" " +backtransport +" " +emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df +" " +emergencyPhone +" "
 			+firebrigade;
 		addIconAndLabel(composite, image, title);
