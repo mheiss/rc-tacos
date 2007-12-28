@@ -1575,9 +1575,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 				
 				//get content of all fields
 				this.getContentOfAllFields();
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, nach getContentOfAllFields");
 				this.setDirectness();
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, nach setDirectness");
 				
 				//check required Fields
 				if (!this.checkRequiredFields().equalsIgnoreCase(""))
@@ -1585,7 +1583,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen:");
 					return;
 				}
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, nach checkrequiredFields");
+				
 				//validating
 				if(!this.checkFormatOfTimeFields().equalsIgnoreCase(""))
 				{
@@ -1593,9 +1591,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					return;
 				}
 				
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, vor transformToLong");
 				this.transformToLong();//set planned work time
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent, nach transformToLong");
 				//validate: start before atPatient
 				if(atPatientLong<startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))
 				{
@@ -1603,7 +1599,6 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					return;
 				}	
 				
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent nach validate start before at patient");
 				
 				//validate: atPatient before term
 				if((termLong<atPatientLong && !term.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase("")))
@@ -1612,14 +1607,13 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					return;
 				}
 				
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent nach validate at patient before term");
 				//validate: start before term
 				if(termLong<startLong && !term.equalsIgnoreCase("") && !start.equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
 				}
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent nach validate start before term");
+				
 				
 				
 				   //create a new entry
@@ -1627,11 +1621,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
 
                 if(createNew)
                 {
-                	System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew am Anfang");
                 	transport = new Transport(fromStreet,fromCommunity,theStation,transportDate,startLong,priority,directness);
-                	System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nachc new Transport");
                 	transport.setBackTransport(backTransportPossible);
-                	System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nach setBackTRansport");
                 	//TODO set the other values
                 	Patient patient = new Patient(lastName,firstName);
                 	transport.setPatient(patient);
@@ -1639,9 +1630,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
                 	
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
-                    System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nach newAction");
-                    newAction.run();//TODO bug fixing!!!!!!!!
-                    System.out.println("TransportForm; Listener des ok Buttons in handleEvent in if createNew nach newAction.run");
+                    newAction.run();//TODO
                 }
                 else
                 {
@@ -1653,10 +1642,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
                     UpdateTransportAction updateAction = new UpdateTransportAction(transport);
                     updateAction.run();
                 }
-                
-                System.out.println("TransportForm; Listener des ok Buttons in handleEvent vor shell.close");
+           
                 shell.close();
-                System.out.println("TransportForm; Listener des ok Buttons in handleEvent nach shell.close");
 				System.out.println("Transport angelegt!");
 				
 			}
