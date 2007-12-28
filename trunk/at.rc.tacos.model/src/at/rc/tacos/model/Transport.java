@@ -245,8 +245,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      */
     public void setPatient(Patient patient)
     {
-        if(patient == null)
-            throw new IllegalArgumentException("The patient cannot be null");
+//        if(patient == null)
+//            throw new IllegalArgumentException("The patient cannot be null");
         this.patient = patient;
     }
 
