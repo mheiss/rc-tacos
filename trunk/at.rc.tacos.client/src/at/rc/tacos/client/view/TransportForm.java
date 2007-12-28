@@ -117,6 +117,12 @@ public class TransportForm implements IDirectness, IKindOfTransport
 	
 	//determine whether to update or to create a new entry
     private boolean createNew;
+    
+    /**
+     * transport type used to differ between a normal and an emergency transport
+     * possible values: prebooking, emergencyTransport, wholeTransportDetails
+     */
+    private String transportType;
 
 	/**
 	 * Launch the application
@@ -263,6 +269,19 @@ public class TransportForm implements IDirectness, IKindOfTransport
     public TransportForm()
     {
         createNew = true;
+        this.transport = new Transport();
+        //set up the filds
+        createContents();
+    }
+    
+    /**
+     * constructor used to create a 
+     * a new transport entry.
+     */
+    public TransportForm(String transportType)
+    {
+        createNew = true;
+        this.transportType = transportType;
         this.transport = new Transport();
         //set up the filds
         createContents();
@@ -563,34 +582,6 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		label.setLayoutData(fd_label);
 		label.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		label.setText("Straße");
-
-//		comboVonNr = new Combo(transportdatenGroup, SWT.NONE);
-//		final FormData fd_comboVonNr = new FormData();
-//		fd_comboVonNr.bottom = new FormAttachment(0, 47);
-//		fd_comboVonNr.top = new FormAttachment(0, 26);
-//		fd_comboVonNr.right = new FormAttachment(0, 313);
-//		fd_comboVonNr.left = new FormAttachment(0, 238);
-//		comboVonNr.setLayoutData(fd_comboVonNr);
-//		comboVonNr.setItems(new String[] {"1", "2", "3", "4"});//TODO get from db
-//
-//		comboNachNr = new Combo(transportdatenGroup, SWT.NONE);
-//		final FormData fd_comboNachNr = new FormData();
-//		fd_comboNachNr.bottom = new FormAttachment(0, 74);
-//		fd_comboNachNr.top = new FormAttachment(0, 53);
-//		fd_comboNachNr.right = new FormAttachment(0, 313);
-//		fd_comboNachNr.left = new FormAttachment(0, 238);
-//		comboNachNr.setLayoutData(fd_comboNachNr);
-//		comboNachNr.setItems(new String[] {"1", "2", "3", "4"});//TODO get from db
-
-//		final Label label_1 = new Label(transportdatenGroup, SWT.NONE);
-//		final FormData fd_label_1 = new FormData();
-//		fd_label_1.bottom = new FormAttachment(0, 20);
-//		fd_label_1.top = new FormAttachment(0, 7);
-//		fd_label_1.right = new FormAttachment(0, 313);
-//		fd_label_1.left = new FormAttachment(0, 238);
-//		label_1.setLayoutData(fd_label_1);
-//		label_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
-//		label_1.setText("Nr./Stock/Tür");
 
 		comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonOrt = new FormData();
@@ -1478,6 +1469,30 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		ts9Label.setText("S9:");
 
 		
+		//set uninteresting groups invisible
+		if ("prebooking".equalsIgnoreCase(transportType))
+		{
+			transportdetailsGroup.setVisible(false);
+			statusmeldungenGroup.setVisible(false);
+			personalAmFahrzeugGroup.setVisible(false);
+			planungGroup_1.setVisible(false);
+		}
+		
+		if ("emergencyTransport".equalsIgnoreCase(transportType))
+		{
+			transportdetailsGroup.setVisible(false);
+			statusmeldungenGroup.setVisible(false);
+			personalAmFahrzeugGroup.setVisible(false);
+			planungGroup.setVisible(false);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 		//buttons
 		abbrechenButton = new Button(shell, SWT.NONE);
 		final FormData fd_abbrechenButton = new FormData();
@@ -2003,19 +2018,11 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		{
 			public void widgetSelected(final SelectionEvent e) 
 			{
-				this.setPreBookingInactive();
-			}
-			
-			public void setPreBookingInactive()
-			{
-				planungGroup.setEnabled(false);
-				planungGroup.setBackground(inactiveBackgroundColor);
-//				group.setEnabled(false);
-//				timeAnmeldung.setBackground(inactiveBackgroundColor);
-//				timeAbmeldung.setBackground(inactiveBackgroundColor);
-//				group.setBackground(inactiveBackgroundColor);
-//				anmeldungLabel.setBackground(inactiveBackgroundColor);
-//				abmeldungLabel.setBackground(inactiveBackgroundColor);
+				planungGroup.setVisible(false);
+				planungGroup_1.setVisible(true);
+				transportdetailsGroup.setVisible(false);
+				statusmeldungenGroup.setVisible(false);
+				personalAmFahrzeugGroup.setVisible(false);
 			}
 		});
 		buttonNotfall.setText("Nofall");
@@ -2031,6 +2038,21 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		buttonVormerkung.setLayoutData(fd_buttonVormerkung);
 		buttonVormerkung.setToolTipText("Blendet alle für eine Vormerkung nicht relevanten Felder aus");
 		buttonVormerkung.setText("Vormerkung");
+		buttonVormerkung.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				planungGroup_1.setVisible(false);
+				planungGroup.setVisible(true);
+				transportdetailsGroup.setVisible(false);
+				statusmeldungenGroup.setVisible(false);
+				personalAmFahrzeugGroup.setVisible(false);
+			}
+			
+		});
+		
+		
+		
 
 		buttonAlles = new Button(group, SWT.TOGGLE);
 		final FormData fd_buttonAlles = new FormData();
@@ -2041,6 +2063,17 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		buttonAlles.setLayoutData(fd_buttonAlles);
 		buttonAlles.setToolTipText("Blendet alle Felder ein");
 		buttonAlles.setText("Alle Felder anzeigen");
+		buttonAlles.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				planungGroup_1.setVisible(true);
+				planungGroup.setVisible(true);
+				transportdetailsGroup.setVisible(true);
+				statusmeldungenGroup.setVisible(true);
+				personalAmFahrzeugGroup.setVisible(true);
+			}
+		});
 
 		final Label label_7 = new Label(group, SWT.NONE);
 		final FormData fd_label_7 = new FormData();
@@ -2049,6 +2082,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_label_7.right = new FormAttachment(0, 88);
 		fd_label_7.left = new FormAttachment(0, 5);
 		label_7.setLayoutData(fd_label_7);
+		
+		
 		shell.setTabList(new Control[] {dateTime, transportdatenGroup, planungGroup, patientenzustandGroup, planungGroup_1, transportdetailsGroup, personalAmFahrzeugGroup, statusmeldungenGroup, okButton, abbrechenButton, group});
 		//
 	}
