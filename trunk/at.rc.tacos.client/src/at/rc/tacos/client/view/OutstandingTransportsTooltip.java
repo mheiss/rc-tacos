@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
+
+import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
@@ -20,7 +22,7 @@ import at.rc.tacos.model.Transport;
  * This shows the tool tip for the transports of the outstanding transports view
  * @author b.thek
  */
-public class OutstandingTransportsTooltip extends ToolTip 
+public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 {	
 	
 	private String backtransport = "";
@@ -62,8 +64,6 @@ public class OutstandingTransportsTooltip extends ToolTip
 		Transport transport = getTaskListElement(hoverWidget);
 		
 		//notifying
-		if (transport.isBackTransport())
-			backtransport = "Rücktransport";
 		if (transport.isFirebrigadeAlarming())
 			firebrigade = "Bergrettung";
 		if (transport.isBrkdtAlarming())
@@ -78,14 +78,56 @@ public class OutstandingTransportsTooltip extends ToolTip
 			helicopter = "Notarzthubschrauber";
 		if (transport.isPoliceAlarming())
 			police = "Polizei";
+		
+		
+		//directness
+        int direction = transport.getDirection();
+        String directness;
+        if (TOWARDS_DISTRICT == direction)
+        {
+        	directness = "Bruck - Kapfenberg";
+        }
+        else if (TOWARDS_GRAZ == direction)
+        {
+        	directness = "Graz";
+        }
+        else if (TOWARDS_LEOBEN == direction)
+        {
+        	directness = "Leoben";
+        }
+        else if (TOWARDS_MARIAZELL== direction)
+        {
+        	directness = "Mariazell";
+        }
+        else if (TOWARDS_VIENNA == direction)
+        {
+        	directness = "Wien";
+        }
+        else directness = "Bruck - Kapfenberg"; //default
+        
 			
+        
 		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.transportShort");
-		String title = transport.getFromStreet() +" " +transport.getFromCity() +" " 
+		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
 			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
-//			+transport.getDirection() +" " +transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber() +" "
-			+backtransport +" " +backtransport +" " +emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df +" " +emergencyPhone +" "
-			+firebrigade;
+			+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
+		
+		if(transport.isAccompanyingPerson())
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
+			title = "Begleitperson";
+			addIconAndLabel(composite,image,title);
+		}
+		
+//		//back transport
+//		if(transport.isBackTransport())
+//		{
+//			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.back");
+//			title = backtransport;
+//			addIconAndLabel(composite,image,title);
+//		}
+		
 		//the notes
 		if(transport.hasNotes())
 		{
@@ -93,12 +135,42 @@ public class OutstandingTransportsTooltip extends ToolTip
 			title = transport.getDiseaseNotes();
 			addIconAndLabel(composite,image,title);
 		}
-		if(transport.hasFeedback())
+		
+		//directness
+		image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.directness");
+		title = directness;
+		addIconAndLabel(composite,image,title);
+		
+		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
-			title = transport.getFeedback();
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.callerDetail");
+			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
 			addIconAndLabel(composite,image,title);
 		}
+		
+		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
+				|| firebrigade.equalsIgnoreCase("")))
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.exclamation");
+			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade;
+			addIconAndLabel(composite,image,title);
+		}
+		
+		if(transport.isEmergencyPhone())
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("image.personal.phone");
+			title = emergencyPhone;
+			addIconAndLabel(composite,image,title);
+		}
+			 
+		
+		
+//		if(transport.hasFeedback())
+//		{
+//			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
+//			title = transport.getFeedback();
+//			addIconAndLabel(composite,image,title);
+//		}
 
 		return composite;
 	}  
