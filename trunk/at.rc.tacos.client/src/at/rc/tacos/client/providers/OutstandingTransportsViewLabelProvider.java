@@ -126,9 +126,89 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
     public void removeListener(ILabelProviderListener arg0)  { }
 
 	@Override
-	public Color getBackground(Object element, int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+	public Color getBackground(Object element, int columnIndex) 
+	{
+		Transport transport = (Transport)element;
+        //determine the colum and return a image if needed
+        switch(columnIndex)
+        {
+	        case COLUMN_LOCK: return null;
+	        case COLUMN_PRIORITY: 
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+	        	else return null;
+	        case COLUMN_RESP_STATION: 
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        
+	        case COLUMN_ABF:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        case COLUMN_AT_PATIENT:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        case COLUMN_TERM:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        case COLUMN_FROM:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        case COLUMN_PATIENT:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        case COLUMN_TO:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        case COLUMN_AUFG:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        case COLUMN_T:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+        		else return null;
+	        case COLUMN_ERKR_VERL:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+	        	else return null;
+	        case COLUMN_NOTES:
+	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        			return CustomColors.BACKGROUND_RED;
+	        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        			return CustomColors.BACKGROUND_BLUE;
+	        	else return null;
+	        default: return null;
+        }
+		
 	}
 
 	@Override
