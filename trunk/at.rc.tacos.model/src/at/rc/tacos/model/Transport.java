@@ -54,6 +54,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private boolean longDistanceTrip;
 
     private String feedback;
+    
+    private long receivingTime;
 
     //directness
     private int direction;
@@ -821,5 +823,13 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         //we have feedback :)
         return true;
     }
+
+	public long getReceiveTime() {
+		return receivingTime;
+	}
+
+	public void setReceiveTime(long receiveTime) {
+		this.receivingTime = receiveTime;
+	}
 }
 
