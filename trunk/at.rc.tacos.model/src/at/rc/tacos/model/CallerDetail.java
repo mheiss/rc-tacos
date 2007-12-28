@@ -36,6 +36,13 @@ public class CallerDetail extends AbstractMessage
         setCallerName(callerName);
         setCallerTelephoneNumber(callerTelephoneNumber);
     }
+    
+    public CallerDetail(String callerName,String callerTelephoneNumber)
+    {
+    	super(ID);
+    	setCallerName(callerName);
+    	setCallerTelephoneNumber(callerTelephoneNumber);
+    }
 
     //METHODS
     /**
