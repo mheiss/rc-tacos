@@ -26,12 +26,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.EditTransportAction;
-import at.rc.tacos.client.controller.PersonalCancelSignInAction;
-import at.rc.tacos.client.controller.PersonalCancelSignOutAction;
-import at.rc.tacos.client.controller.PersonalDeleteEntryAction;
-import at.rc.tacos.client.controller.PersonalEditEntryAction;
-import at.rc.tacos.client.controller.PersonalSignInAction;
-import at.rc.tacos.client.controller.PersonalSignOutAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.DispositionViewDispContentProvider;
