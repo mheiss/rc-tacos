@@ -300,3 +300,29 @@ TESt
     height:15px; 
     width:100%;
 }
+
+#singleEntryDiv a {
+color:black;
+text-decoration:none;
+display:block;
+padding:2px;
+/* border:1px solid black; */
+
+}
+
+#singleEntryDiv a:hover {
+color:black;
+background:#ddd8b7;}
+
+#singleEntryDiv a span {display:none;}
+
+#singleEntryDiv a:hover span {
+
+position:absolute; top:10px; right:10px; z-index:3;
+display:block;
+width:350px;
+color:black;
+background:#E0E0E0;
+font:normal 16px courier, sans-serif;
+border:1px solid black;
+padding:10px;}

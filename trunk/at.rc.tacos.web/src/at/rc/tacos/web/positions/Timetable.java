@@ -2,6 +2,7 @@ package at.rc.tacos.web.positions;
 
 
 
+import java.awt.Color;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +29,7 @@ public class Timetable extends HttpServlet {
 	private String timetableDateHead;
 	private String TimeList;
 
+
 	public Timetable(){
 		timetable = "";
 		height = 0;
@@ -35,9 +37,15 @@ public class Timetable extends HttpServlet {
 		tabentry = "";
 		timetableDateHead ="";
 		TimeList="";
+		
 	}
 	
-	public String calculateTimetable(List<StaffMember> rosterList, String dateNow){
+	public String TimetableInfo(List<StaffMember> rosterList){
+		String info="";
+		
+		return info;
+	}
+	public String calculateTimetable(List<StaffMember> rosterList){
 		
 		boolean ok1 = true;
 		boolean ok2 = true;
@@ -46,6 +54,8 @@ public class Timetable extends HttpServlet {
 		SimpleDateFormat format = new SimpleDateFormat("E, dd.MM.yyyy");
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 		String date;
+		int zaehle = 0;
+		String info="";
 		
 		
 		
@@ -77,19 +87,26 @@ public class Timetable extends HttpServlet {
 				{
 					
 					RosterEntry entry = (RosterEntry)message;
+					timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) + " - " + entry.getStaffMember().getPrimaryLocation() + "</b></div>";
 					if(entry.isSplitEntry()){
 						date = format.format(new Date(entry.getPlannedStartOfWork()));
-						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px;'><b>" + dateNow + " - " + entry.getStaffMember().getPrimaryLocation() + "</b></div>";
+						
 					}
 					else{
 						date = formatHour.format(new Date(entry.getPlannedStartOfWork()));	
 					}
-					formatHour.format(new Date(entry.getPlannedStartOfWork()));
-					formatHour.format(new Date(entry.getPlannedEndOfWork()));
-					if(entry.getStation().equalsIgnoreCase("Bruck - Kapfenberg")){
+
+					
+					//if(entry.getStation().equalsIgnoreCase("Bruck - Kapfenberg")){
+						
+						zaehle++;
+						info = "INFORMATION<br><br>Name: <b>"+ entry.getStaffMember().getUserName()+"</b><br>Dienst als: <b>"+ entry.getJob() +"</b><br>Dienstzeit: " +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br>Ortstelle: " + entry.getStation() + "<br>angestellt als: "+entry.getServicetype()+"<br>";
 						tabentry+= 		
-							"<div onmouseover='showInfo();' style='float:left; width:"+ (100/entryCount) +"%;'>" +entry.getRosterId()+entry.getStaffmemberId() + "<br></div>";
-					}
+							"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
+							this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
+							"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
+							"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'>" +entry.getRosterId()+"/"+entry.getStaffmemberId() + "<span>" + info + "</span></a></div>";
+					//}
 					
 					
 				}
@@ -105,23 +122,18 @@ public class Timetable extends HttpServlet {
 		
 	}
 
-
-
-
-	private void TABLE(){
-		timetable+="<table border='1' width='300'>"+timetable+"</table>";
+	private int calculateHeightForEntry(String begin, String end){
+		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
+		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
+		return (endPos-startPos)*15;
 	}
 
-//	private void TABLEROW(){
-//		timetable="<tr>"+timetable+"</tr>";
-//	}
-//	
-//	private void TABLECOLUMN(){
-//		timetable="<td>"+timetable+"</td>";
-//	}
-	private void DIV(){
-		timetable+="<div style='float:left; margin-left:5px;' width='300'>"+timetable+"</div>";
+	private int calculateStartForEntry(String begin){
+		int startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())-5;	
+		return startPos*15;
 	}
+	
+
     /**
      * Creates a new instance of this class or returns the 
      * previousely used instance.
