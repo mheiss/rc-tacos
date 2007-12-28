@@ -104,13 +104,26 @@ public class TransportEncoder  implements MessageEncoder
             writer.writeEndElement();
         }
         //the date of the transport
-        writer.writeStartElement("dateOfTransport");
-        writer.writeCharacters(Long.toString(transport.getDateOfTransport()));
-        writer.writeEndElement();
+        if(transport.getDateOfTransport() >0)
+        {
+	        writer.writeStartElement("dateOfTransport");
+	        writer.writeCharacters(Long.toString(transport.getDateOfTransport()));
+	        writer.writeEndElement();
+        }
+        //the time of receiving the order
+        if(transport.getReceiveTime() >0)
+        {
+        	writer.writeStartElement("receivingTime");
+        	writer.writeCharacters(Long.toString(transport.getReceiveTime()));
+        	writer.writeEndElement();
+        }
         //the starting time
-        writer.writeStartElement("plannedStartOfTransportTime");
-        writer.writeCharacters(Long.toString(transport.getPlannedStartOfTransport()));
-        writer.writeEndElement();
+        if(transport.getPlannedStartOfTransport() >0)
+        {
+	        writer.writeStartElement("plannedStartOfTransportTime");
+	        writer.writeCharacters(Long.toString(transport.getPlannedStartOfTransport()));
+	        writer.writeEndElement();
+        }
         //time at patient is mandatory
         if(transport.getPlannedTimeAtPatient() > 0)
         {
