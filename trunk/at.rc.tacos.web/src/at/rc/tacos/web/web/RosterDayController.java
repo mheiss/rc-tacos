@@ -29,6 +29,7 @@ public class RosterDayController  implements Controller
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
 
+		
 		if("dayView".equalsIgnoreCase(action))
 		{
 			Date current = new Date();

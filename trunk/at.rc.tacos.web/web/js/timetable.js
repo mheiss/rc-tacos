@@ -17,9 +17,12 @@
     
 function setup(){
     //alert(screen.availHeight + " != " + screen.height + "<br>" + screen.availWidth + " != " + screen.width);
-    
-    document.getElementById('MainDivDay').style.height = screen.availHeight/2;
-    document.getElementById('MainDivDay').style.width = screen.availWidth/7;
+    //var timeTabHeight = document.getElementById("TimeTab").getAttribute;
+    //alert(timeTabHeight);
+    //document.getElementById("TimeTab").style.height;
+    //alert(document.getElementById("TimeTab").style.height);
+    //document.getElementById("MainDivDay").style.height = screen.availHeight/2;
+    //document.getElementById("MainDivDay").style.width = screen.availWidth/7;
 
     
 }
