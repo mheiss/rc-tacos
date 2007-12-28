@@ -63,7 +63,7 @@ public class Timetable extends HttpServlet {
 		int i = 5;
 		do {
 			if(i>24){
-				i=0;
+				i=1;
 				ok2=false;
 			}
 			if(i>4 && !ok2){
@@ -125,13 +125,29 @@ public class Timetable extends HttpServlet {
 	private int calculateHeightForEntry(String begin, String end){
 		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
 		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
-		System.out.println("HEIGHT: "+(endPos-startPos)*15);
-		return (endPos-startPos)*15;
+		int retval = 0;
+	
+		if(endPos<startPos){
+			System.out.println("TRUE");
+			retval = ((24+endPos)-startPos)*15;
+		}else{
+			retval = (endPos-startPos)*15;
+		}
+		
+		return retval;
 	}
 
 	private int calculateStartForEntry(String begin){
-		int startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())-5;	
-		return startPos*15;
+		int startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())-5;
+		int retval = 0;
+		if(24>startPos){
+			System.out.println("TRUE");
+			retval = (24+startPos)*15;
+		}else{
+			retval = startPos*15;
+		}
+		System.out.println("HEIGHT: "+retval);
+		return retval;
 	}
 	
 
