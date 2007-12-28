@@ -25,7 +25,7 @@ public class OpenTransportAction extends Action
     @Override
     public String getText()
     {
-        return "Neuer Transport";
+        return "Transport";
     }
     
     /**
