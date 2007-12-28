@@ -16,8 +16,9 @@ import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.core.net.internal.MyClient;
+import at.rc.tacos.core.net.internal.ClientSession;
 import at.rc.tacos.core.net.internal.ServerInfo;
+import at.rc.tacos.model.Login;
 
 public class ConnectionWizard extends Wizard implements INewWizard, PropertyChangeListener
 {
@@ -35,8 +36,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 	private String password;
 
 	//authentication status
-	private boolean fAuthenticated;
-	private int loginStatus;
+	private boolean loginResponse;
 
 	/**
 	 * Default class constructor for a new wizzard
@@ -46,6 +46,8 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 		super();
 		setNeedsProgressMonitor(true);
 		SessionManager.getInstance().addPropertyChangeListener(this);
+		//not authenticated
+		loginResponse = false;
 	}
 
 	/**
@@ -61,7 +63,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 	 * Initializes the wizard.
 	 */
 	@Override
-	public void init(IWorkbench workbench, IStructuredSelection seöection) 
+	public void init(IWorkbench workbench, IStructuredSelection selection) 
 	{
 		//just save the workbench
 		this.workbench = workbench;
@@ -91,7 +93,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 	public boolean canFinish() 
 	{
 		//the wizzard can be finished at the first page if we have a connection
-		if(getContainer().getCurrentPage() == infoPage && !NetWrapper.getDefault().isConnected())
+		if(getContainer().getCurrentPage() == infoPage && NetWrapper.getDefault().isConnected())
 			return true;
 		//the wizard can be finished if we have a valid login
 		if(username != null && password != null)
@@ -103,61 +105,97 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 	@Override
 	public boolean performFinish() 
 	{
-		//connect to the new server and login
-		NetWrapper.getDefault().connectNetwork(selectedServer.getId());
-		//do we have a connection
-		if(NetWrapper.getDefault().getClientSession() == null)
+		//skip and exit, if we are authenticated
+		ClientSession session = NetWrapper.getDefault().getClientSession();
+		if(session != null && session.isAuthenticated())
+			return true;
+		//reset the login status
+		loginResponse = false;
+		//start a thread
+		try
 		{
-			System.out.println("Failed to connect to the server");
-			//show the message to the user
-			MessageDialog.openError(
-					PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
-					"Verbindungsfehler",
-			"Verbindung zum Server ist nicht möglich");
+			getContainer().run(true, true, new IRunnableWithProgress() 
+			{
+				public void run(IProgressMonitor monitor)
+				{
+					monitor.beginTask("Verbindung zum Server " + selectedServer.getDescription()+" wird hergestellt", IProgressMonitor.UNKNOWN);
+					//connect to the new server and login
+					NetWrapper.getDefault().connectNetwork(selectedServer.getId());
+					monitor.done();
+				}
+			});
+
+			//if we have a connection try to login
+			if(NetWrapper.getDefault().getClientSession() == null)
+			{
+				loginPage.setErrorMessage("Verbindung zum Server kann nicht hergestellt werden");
+				//show the message to the user
+				Display.getCurrent().beep();
+				MessageDialog.openError(
+						PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
+						"Serverfehler",
+						"Verbindung zum Server kann nicht hergestellt werden.\n" +
+				"Bitte versuchen sie es erneut oder wählen einen anderen Server.");
+				//exit, we have no connection
+				return false;
+			}
+			//send the login message
+			NetWrapper.getDefault().sendLoginMessage(new Login(username,password,false));
+			getContainer().run(true, true, new IRunnableWithProgress() 
+			{
+				public void run(IProgressMonitor monitor) throws InterruptedException
+				{
+					monitor.beginTask("Sende Anmeldeinformationen zum Server", IProgressMonitor.UNKNOWN);
+					//sleep for some time, until we got the response from the server
+					while (!loginResponse) 
+						Thread.sleep(100);
+					monitor.done();
+				}
+			});
+		}
+		catch (InvocationTargetException ite) 
+		{
+			System.out.println("Failed to connect and login to the server");
+			ite.printStackTrace();
 			return false;
 		}
-		//if we have a connection try to login
-		if(NetWrapper.getDefault().getClientSession().getConnection() != null)
+		catch (InterruptedException e) 
 		{
-			//get the connection
-			MyClient connection = NetWrapper.getDefault().getClientSession().getConnection();
-			try
-			{
-				getContainer().run(true, false, new IRunnableWithProgress() 
-				{
-					public void run(IProgressMonitor monitor)
-					{
-						monitor.beginTask("Sende Anmeldeinformationen zum Server", IProgressMonitor.UNKNOWN);
-						while (!fAuthenticated) 
-						{
-							if (!PlatformUI.getWorkbench().getDisplay().readAndDispatch()) 
-							{
-								//check the status
-								if( loginStatus == 1 )
-									loginSuccessfully();
-								else if(loginStatus == 2 ) 
-									loginFailed();  
-								//sleep
-								PlatformUI.getWorkbench().getDisplay().sleep();
-							}
-						}
-						monitor.done();
-					}
-				});
-			}
-			catch (InvocationTargetException ite) 
-			{
-				System.out.println("Failed to run the login thread");
-				return false;
-			}
-			catch (InterruptedException e) 
-			{
-				System.out.println("Login thread interrupted");
-				return false;
-			}
-		} 
-		//everything is ok
-		return true;
+			System.out.println("Thread interrupted");
+			return false;
+		}
+		//check the login status
+		if(NetWrapper.getDefault().getClientSession().isAuthenticated())
+		{
+			Display.getCurrent().beep();
+			MessageDialog.openInformation(
+					PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
+					"Login Erfolgreich",
+					"Sie haben erfolgreich eine Verbindung zum Server hergestellt");
+			return true;
+		}
+		else
+		{
+			loginPage.setErrorMessage("Anmeldung fehlgeschlagen.\n" +
+			"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
+			Display.getCurrent().beep();
+			MessageDialog.openError(
+					PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+					"Anmeldung fehlgeschlagen",
+					"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
+			return false;
+		}
+	} 
+
+	@Override
+	public boolean performCancel() 
+	{
+		Display.getCurrent().beep();
+		MessageDialog.openError(
+				PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+				"Assistent abbrechen",
+				"Dieser Assistent kann nicht abgebrochen werden.");
+		return false;
 	}
 
 	/**
@@ -189,40 +227,14 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 		return selectedServer;
 	}
 
-	/**
-	 * Fired uppon a successfull login
-	 */
-	private void loginSuccessfully()
-	{
-		fAuthenticated = true;
-		loginStatus = -1;
-	}
-
-	/**
-	 * Fired uppon a failed login
-	 */
-	private void loginFailed()
-	{
-		loginStatus = -1;
-		Display.getCurrent().beep();
-		MessageDialog.openError(
-				PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-				"Anmeldung fehlgeschlagen",
-		"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
-	}
-
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		//connection to the server was successfully
 		if("AUTHENTICATION_SUCCESS".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			loginStatus = 1;
-		}
+			loginResponse = true;
 		if("AUTHENTICATION_FAILED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			loginStatus = 2;
-		}
+			loginResponse = true;
 	}
 }
 

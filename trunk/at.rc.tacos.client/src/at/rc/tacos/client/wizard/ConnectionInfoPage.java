@@ -41,7 +41,7 @@ public class ConnectionInfoPage extends WizardPage
 		//the status of the connection
 		connectionStatus = new CLabel(container,SWT.LEFT);
 		//the image to display
-		if(!NetWrapper.getDefault().isConnected())
+		if(NetWrapper.getDefault().isConnected())
 		{
 			//show true image
 			connectionStatus.setText("Es besteht bereits eine Verbindung zum Server.\n"+
@@ -67,7 +67,7 @@ public class ConnectionInfoPage extends WizardPage
 	public boolean canFlipToNextPage() 
 	{
 		//only go to the next page, if we do not have a connection
-		if(!NetWrapper.getDefault().isConnected())
+		if(NetWrapper.getDefault().isConnected())
 			return false;
 		else
 			return true;
