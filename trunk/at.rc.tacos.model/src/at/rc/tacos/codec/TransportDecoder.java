@@ -84,6 +84,8 @@ public class TransportDecoder implements MessageDecoder
                     transport.setRealStation(reader.getElementText());
                 if("dateOfTransport".equalsIgnoreCase(startName))
                     transport.setDateOfTransport(Long.valueOf(reader.getElementText()));
+                if("receivingTime".equals(startName))
+                	transport.setReceiveTime(Long.valueOf(reader.getElementText()));
                 if("plannedStartOfTransportTime".equalsIgnoreCase(startName))
                     transport.setPlannedStartOfTransport(Long.valueOf(reader.getElementText()));
                 if("plannedTimeAtPatient".equalsIgnoreCase(startName))
