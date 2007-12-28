@@ -1567,6 +1567,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			boolean accompanyingPerson;
 			boolean rufhilfepatient;
 			
+			
 			boolean wheelChairButton;
 			boolean gurney;
 			boolean chair;
@@ -1597,6 +1598,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			
 			public void handleEvent(Event event) 
 			{
+				System.out.println("TransportForm, Ruhilfepatient: :::" +rufhilfepatient);
+				
 				
 				String kindOfTransport;
 				System.out.println("TransportForm; Listener des ok Buttons in handleEvent");
@@ -1707,7 +1710,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
                 	
                 	
                 	
-                	
+                	System.out.println("TransportForm, rufhilfe: " +transport.isEmergencyPhone());
                 	
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
@@ -1762,7 +1765,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 				notifierName = textAnrufer.getText();
 				backTransportPossible = ruecktransportMoeglichButton.getSelection();
 				accompanyingPerson = begleitpersonButton.getSelection();
-				rufhilfepatientButton.getSelection();
+				rufhilfepatient = rufhilfepatientButton.getSelection();
 				wheelChairButton = eigenerRollstuhlButton.getSelection();
 				gurney = krankentrageButton.getSelection();
 				chair = tragsesselButton.getSelection();
