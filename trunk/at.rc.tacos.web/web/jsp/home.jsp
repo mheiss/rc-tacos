@@ -55,32 +55,27 @@
 					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --><%@ include
 						file="navigation.jsp"%></td>
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
-					<table id="Block" width="100%" border='0' cellpadding='0'
+					<table id="Block" width="100%" height="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
 							<td id="BlockHead" align="right" valign="middle">&nbsp;</td>
 						</tr>
 						<tr>
-							<td id="BlockContent">
-							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
-								<tr>
-									<td width="50%"><!-- Timetablebox Day -->
-									<table width="100%" height="100%" border='0' cellpadding='0' cellspacing='0'>
-										<tr>
-											<td><a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>"><img src="../image/calendar.png" /></a><br />
-											Einen neuen Dienst hinzuf&uuml;gen </td>
-											<td><a href="#"><img src="../image/stats.jpg" /></a><br />
-											Dienststunden-Statistik </td>
-										</tr>
-										<tr>
-											<td>c</td>
-											<td><a href="#"><img src="../image/about.png" /></a><br />
-											Information &uuml;ber die Programmierer</td>
-										</tr>
-									</table>
-									</td>
-								</tr>
-							</table>
+							<td id="BlockContent" align="center" valign="middle">
+									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0' align="center">
+										<a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>" ><img src="../image/calendar.png"  width='80px' height='80px' class='hidefocus' /></a><br />
+											<h4>Einen neuen Dienst hinzuf&uuml;gen</h4> 
+									</div>
+									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0'>
+                                        <a href="#"><img src="../image/stats.jpg"  width='80px' height='80px' class='hidefocus' /></a><br />
+                                            <h4>Statistik </h4> 
+                                    </div>
+									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0'>
+										<a href="#"><img src="../image/about.png" width='80px' height='80px' class='hidefocus' /></a><br />
+											<h4>Allgemeine Information</h4> 
+									</div>
+								
+							
 							</td>
 						</tr>
 					</table>
