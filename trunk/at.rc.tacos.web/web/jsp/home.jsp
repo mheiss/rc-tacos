@@ -63,20 +63,21 @@
 						<tr>
 							<td id="BlockContent" align="center" valign="middle">
 									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0' align="center">
-										<a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>" ><img src="../image/calendar.png" class='hidefocus' /></a><br />
+										<a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>" ><img src="../image/calendar.png" class='hidefocus' /></a>
 											<h4>Einen neuen Dienst hinzuf&uuml;gen</h4> 
 									</div>
 									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0'>
-                                        <a href="#"><img src="../image/stats.jpg"  class='hidefocus' /></a><br />
+                                        <a href="#"><img src="../image/stats.jpg"  class='hidefocus' /></a>
                                             <h4>Statistik </h4> 
                                     </div>
 									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0'>
-										<a href="#"><img src="../image/about.png"  class='hidefocus' /></a><br />
+										<a href="#"><img src="../image/about.png"  class='hidefocus' /></a>
 											<h4>Allgemeine Information</h4> 
 									</div>
-								<br /><br />
+								
 							
 							</td>
+					
 						</tr>
 					</table>
 					</td>
