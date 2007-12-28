@@ -178,22 +178,22 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		prioritaetOffeneTransporte.setText("Pr");
 	
 		final TableColumn respOSOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-//		respOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
+		respOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
 		respOSOffeneTransporte.setWidth(49);
 		respOSOffeneTransporte.setText("OS");
 	
 		final TableColumn abfOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-//		abfOffeneTransporte.setToolTipText("Abfahrt auf der Dienststelle");
+		abfOffeneTransporte.setToolTipText("Abfahrt auf der Dienststelle");
 		abfOffeneTransporte.setWidth(54);
 		abfOffeneTransporte.setText("Abf");
 	
 		final TableColumn ankOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-//		ankOffeneTransporte.setToolTipText("Ankunft beim Patienten");
+		ankOffeneTransporte.setToolTipText("Ankunft beim Patienten");
 		ankOffeneTransporte.setWidth(53);
 		ankOffeneTransporte.setText("Ank.");
 	
 		final TableColumn terminOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-//		terminOffeneTransporte.setToolTipText("Terminzeit am Zielort");
+		terminOffeneTransporte.setToolTipText("Terminzeit am Zielort");
 		terminOffeneTransporte.setWidth(57);
 		terminOffeneTransporte.setText("Termin");
 	
