@@ -35,7 +35,7 @@ public class OpenTransportAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.add");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.folderblue");
     }
     
     /**
@@ -44,7 +44,7 @@ public class OpenTransportAction extends Action
     @Override
     public void run()
     {
-    	TransportForm window = new TransportForm();
+    	TransportForm window = new TransportForm("prebooking");
 		window.open();
     }
 
