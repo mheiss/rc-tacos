@@ -18,10 +18,7 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <script src="../js/timetable.js" type="text/javascript" language="javascript"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
-<script type="javascript">
-    var height = screen.availHeight;
-    var width = screen.availWidth;
-</script>
+
 </head>
 <body onload="setup();">
 
@@ -97,39 +94,11 @@
 										<tr>
 										  <% 
 											  Timetable timetable = Timetable.getInstance();
-	                                          out.print(timetable.calculateTimetable(rosterList));
+	                                          out.print(timetable.calculateTimetable(rosterList,formath.format(current)));
 	                                          
-	                                         
+	                                         //out.print(params.values());
 										  %>
-											<%for(AbstractMessage message:rosterList)
-											{
-												//SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-												//SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
-												//RosterEntry entry = (RosterEntry)message;
-												
-												
-												//out.print(entry.getStaffMember().getUserName());
-												//out.print(" ");
-												//out.print(format.format(new Date(entry.getPlannedStartOfWork())));
-												
-												
-												//out.print(" - ");
-												//if(entry.isSplitEntry())
-													//out.print(format.format(new Date(entry.getPlannedEndOfWork())));
-												//else
-													//out.print(formatHour.format(new Date(entry.getPlannedEndOfWork())));
-												//out.println("<br />");
-												
-												
-												//out.print("Job: "+entry.getJob()+"\n");
-												//out.print("Plan-Start: "+entry.getPlannedStartOfWork()+"\n");
-												//out.print("Plan-Ende: "+entry.getPlannedEndOfWork()+"\n");
-												//out.print("Service: "+entry.getServicetype()+"\n");
-												//out.print("Station: "+entry.getStation()+"\n");
-												//out.print("Username: "+entry.getUsername()+"\n");
-												
-											}											
-											%>
+										
 										</tr>
 									</table>
 									</td>
@@ -146,5 +115,6 @@
 	</tbody>
 </table>
 </form>
+
 </body>
 </html>

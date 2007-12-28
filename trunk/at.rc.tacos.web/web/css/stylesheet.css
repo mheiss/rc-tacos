@@ -295,3 +295,8 @@ TESt
     text-align:right;
     font-size:13px;
 }
+
+#timeList{
+    height:15px; 
+    width:100%;
+}

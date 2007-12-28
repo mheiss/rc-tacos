@@ -25,50 +25,77 @@ public class Timetable extends HttpServlet {
 	private int height;
 	private int width;
 	private String tabentry;
-	private boolean ok1 = true;
-	private boolean ok2 = true;
+	private String timetableDateHead;
+	private String TimeList;
 
 	public Timetable(){
 		timetable = "";
 		height = 0;
 		width = 0;
 		tabentry = "";
+		timetableDateHead ="";
+		TimeList="";
 	}
 	
-	public String calculateTimetable(List<StaffMember> rosterList){
+	public String calculateTimetable(List<StaffMember> rosterList, String dateNow){
 		
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		boolean ok1 = true;
+		boolean ok2 = true;
+		int entryCount = 0;
+		
+		SimpleDateFormat format = new SimpleDateFormat("E, dd.MM.yyyy");
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 		String date;
 		
-		timetable = "<div style='float:left; margin-left:5px; border-width:1px; border-style:solid; border-color:red; width:50px;' id='TimeTab' align='center'>";
-
-		for(int i=0;i<=24;i++){
-			timetable+=i+":00\n";
-		}
-		timetable+="</div>";
+		
+		
+		TimeList += "<div style='float:left;' >&nbsp;</div><div style='float:left; margin-left:5px; padding:5px; border-width:1px; border-style:solid; border-color:red; width:50px; height:400px;' id='TimeTab' align='center'>";
+		int i = 5;
+		do {
+			if(i>24){
+				i=0;
+				ok2=false;
+			}
+			if(i>4 && !ok2){
+				ok1=false;
+			}
+			if(i<10){
+				TimeList+="<div id='timeList'>0"+i+":00</div>";
+			}else{
+				TimeList+="<div  id='timeList'>"+i+":00</div>";
+			}
+			i++;
+			
+		}while(ok1);
+		
+		TimeList+="</div>";
 		if(rosterList.isEmpty()!=true){
 	
-				tabentry+="<div onmouseover='showInfo();' style='float:left; margin-left:5px; border-width:1px; border-style:solid; border-color:red; width:13.5%;' id='MainDivDay'>";
+				tabentry+="<div style='float:left; margin-left:5px; border-width:1px; border-style:solid; border-color:red; width:13.5%; height:400px; padding:5px; ' id='MainDivDay'>";
+				entryCount = rosterList.size();
 				for(AbstractMessage message:rosterList)
 				{
 					
 					RosterEntry entry = (RosterEntry)message;
-					if(entry.isSplitEntry())
-						date = format.format(new Date(entry.getPlannedEndOfWork()));
-					else
-						date = formatHour.format(new Date(entry.getPlannedEndOfWork()));	
-					
-					
-					tabentry+="<b>" + entry.getStaffMember().getUserName() + "</b><br>" +
-							entry.getStaffMember().getAuthorization()+ "";
-					
+					if(entry.isSplitEntry()){
+						date = format.format(new Date(entry.getPlannedStartOfWork()));
+						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px;'><b>" + dateNow + " - " + entry.getStaffMember().getPrimaryLocation() + "</b></div>";
+					}
+					else{
+						date = formatHour.format(new Date(entry.getPlannedStartOfWork()));	
+					}
+					formatHour.format(new Date(entry.getPlannedStartOfWork()));
+					formatHour.format(new Date(entry.getPlannedEndOfWork()));
+					if(entry.getStation().equalsIgnoreCase("Bruck - Kapfenberg")){
+						tabentry+= 		
+							"<div onmouseover='showInfo();' style='float:left; width:"+ (100/entryCount) +"%;'>" +entry.getRosterId()+entry.getStaffmemberId() + "<br></div>";
+					}
 					
 					
 				}
 				
 				tabentry+="</div>";
-				timetable+=tabentry;
+				timetable+=timetableDateHead+TimeList+tabentry;
 				tabentry="";
 			return timetable;
 		}
