@@ -346,8 +346,8 @@ padding:10px;}
 	float:left;
     height:150px;
     width:40%;
-    padding:5px;
-    margin:20px;
+    padding:4px;
+    margin:2px;
     text-align:center;
     vertical-align:middle;
     
@@ -360,8 +360,8 @@ padding:10px;}
     float:left;
     height:150px;
     width:40%;
-    padding:5px;
-    margin:20px;
+    padding:4px;
+    margin:2px;
     text-align:center;
     vertical-align:middle;
     background-color:#ffffff;
@@ -370,4 +370,5 @@ padding:10px;}
     border-width:2px;
     border-style:solid;
     border-color:#b1b1b1;
+
 }

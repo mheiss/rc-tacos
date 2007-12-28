@@ -105,7 +105,7 @@ public class Timetable extends HttpServlet {
 							"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
 							this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 							"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-							"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'><img src='../image/info.jpg name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a></div>";
+							"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a></div>";
 					//}
 					
 					
