@@ -38,6 +38,9 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 	public final static String ABF_SORTER = "abfahrt";
 	public final static String TERM_SORTER = "termin";
 	public final static String AT_PATIENT_SORTER = "beipatient";
+	public final static String RESP_STATION_SORTER = "zustortsstelle";
+	public final static String AUFG_SORTER = "aufgenommen";
+	public final static String TA_SORTER = "t";
 	
 	// sort the data based on column and direction
 	
@@ -325,6 +328,43 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         		returnValue = 1;
         	if (term1 == term2)
         		returnValue =  0;
+        }
+        
+        //sort by the station name
+        if (column == RESP_STATION_SORTER) 
+        {
+        	String st1 = transport1.getResponsibleStation();
+        	String st2 = transport2.getResponsibleStation();
+        	returnValue = st1.compareTo(st2);
+        }
+        
+        //sort by the received time
+        if (column == AUFG_SORTER) 
+        {
+        	long aufg1 = transport1.getReceiveTime();
+        	long aufg2 = transport2.getReceiveTime();
+        	if(aufg1 > aufg2)
+        		returnValue = -1;
+        	if(aufg1 < aufg2)
+        		returnValue = 1;
+        	if (aufg1 == aufg2)
+        		returnValue =  0;
+        }
+        
+        //sort by the kind of transport (g,s,l,r)
+        if (column == TA_SORTER) 
+        {
+        	String ta1 = transport1.getKindOfTransport();
+        	String ta2 = transport2.getKindOfTransport();
+        	returnValue = ta1.compareTo(ta2);
+        }
+        
+        //sort by the notes of transport
+        if (column == TA_SORTER) 
+        {
+        	String n1 = transport1.getDiseaseNotes();
+        	String n2 = transport2.getDiseaseNotes();
+        	returnValue = n1.compareTo(n2);
         }
 
         
