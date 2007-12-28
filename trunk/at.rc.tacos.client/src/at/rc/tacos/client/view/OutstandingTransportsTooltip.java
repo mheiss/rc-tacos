@@ -120,13 +120,6 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			addIconAndLabel(composite,image,title);
 		}
 		
-//		//back transport
-//		if(transport.isBackTransport())
-//		{
-//			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.back");
-//			title = backtransport;
-//			addIconAndLabel(composite,image,title);
-//		}
 		
 		//the notes
 		if(transport.hasNotes())
@@ -162,15 +155,6 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			title = emergencyPhone;
 			addIconAndLabel(composite,image,title);
 		}
-			 
-		
-		
-//		if(transport.hasFeedback())
-//		{
-//			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
-//			title = transport.getFeedback();
-//			addIconAndLabel(composite,image,title);
-//		}
 
 		return composite;
 	}  
