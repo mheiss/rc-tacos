@@ -338,7 +338,6 @@ public class TransportForm implements IDirectness, IKindOfTransport
         //other fields
         this.begleitpersonButton.setSelection(transport.isAccompanyingPerson());
         this.bergrettungButton.setSelection(transport.isMountainRescueServiceAlarming());
-        System.out.println("TransportForm, set ohter fields, BrkdtAlarming: " +transport.isBrkdtAlarming());
         this.brkdtButton.setSelection(transport.isBrkdtAlarming());
 
        
@@ -1598,11 +1597,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			
 			public void handleEvent(Event event) 
 			{
-				System.out.println("TransportForm, Ruhilfepatient: :::" +rufhilfepatient);
-				
-				
 				String kindOfTransport;
-				System.out.println("TransportForm; Listener des ok Buttons in handleEvent");
 				requiredFields = "";
 				hourStart = -1;
 				hourAtPatient = -1;
@@ -1703,14 +1698,12 @@ public class TransportForm implements IDirectness, IKindOfTransport
                 	transport.setPlannedTimeAtPatient(atPatientLong);
                 	transport.setPoliceAlarming(police);
                 	transport.setReceiveTime(receivingTime);
+                	transport.setToStreet(toStreet);
+                	transport.setToCity(toCommunity);
                 	
                 	//TODO setRealStation, Transportnumber, VehicleDetail wann?
                 	
-                	
-                	
-                	
-                	
-                	System.out.println("TransportForm, rufhilfe: " +transport.isEmergencyPhone());
+              
                 	
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
@@ -1805,7 +1798,6 @@ public class TransportForm implements IDirectness, IKindOfTransport
 				- from City ausgefüllt sein.
 				*/
 
-				System.out.println("TransportForm; Listener des ok Buttons in checkRequiredFields am Anfang");
 				if (fromStreet.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"von Straße";
 				if (fromCommunity.equalsIgnoreCase(""))
@@ -1816,7 +1808,6 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					requiredFields = requiredFields +" " +"Priorität";
 				if (start.equalsIgnoreCase(""))
 					this.setStartTimeDefault();
-				System.out.println("TransportForm; Listener des ok Buttons in checkRequiredFields am Ende");
 				return requiredFields;
 			}
 			
@@ -1825,7 +1816,6 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			{
 				Date time = new Date();
 				startLong = time.getTime();
-				System.out.println("longStart:  " +startLong);
 			}
 			private String checkFormatOfTimeFields()
 			{
