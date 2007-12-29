@@ -307,6 +307,11 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		final Table tableBruck = viewerBruck.getTable();
 		tableBruck.setLinesVisible(true);
 		tableBruck.setHeaderVisible(true);
+		
+		final TableColumn blockColumn = new TableColumn(tableBruck, SWT.NONE);
+		blockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
+		blockColumn.setWidth(30);
+		blockColumn.setText("L");
 
 		final TableColumn bTableColumnOrtsstelle = new TableColumn(tableBruck, SWT.NONE);
 		bTableColumnOrtsstelle.setWidth(39);
@@ -349,6 +354,11 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		final Table tableKapfenberg = viewerKapfenberg.getTable();
 		tableKapfenberg.setLinesVisible(true);
 		tableKapfenberg.setHeaderVisible(true);
+		
+		final TableColumn klockColumn = new TableColumn(tableKapfenberg, SWT.NONE);
+		klockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
+		klockColumn.setWidth(30);
+		klockColumn.setText("L");
 		
 
 		final TableColumn tableColumnOrtsstelle_2 = new TableColumn(tableKapfenberg, SWT.NONE);
@@ -394,6 +404,10 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		tableMariazell.setLinesVisible(true);
 		tableMariazell.setHeaderVisible(true);
 
+		final TableColumn mlockColumn = new TableColumn(tableMariazell, SWT.NONE);
+		mlockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
+		mlockColumn.setWidth(30);
+		mlockColumn.setText("L");
 
 		final TableColumn tableColumnOrtsstelle_3 = new TableColumn(tableMariazell, SWT.NONE);
 		tableColumnOrtsstelle_3.setWidth(39);
@@ -441,6 +455,11 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		final Table tableGraz= viewerGraz.getTable();
 		tableGraz.setLinesVisible(true);
 		tableGraz.setHeaderVisible(true);
+		
+		final TableColumn glockColumn = new TableColumn(tableGraz, SWT.NONE);
+		glockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
+		glockColumn.setWidth(30);
+		glockColumn.setText("L");
 
 		final TableColumn tableColumnOrtsstelle_4 = new TableColumn(tableGraz, SWT.NONE);
 		tableColumnOrtsstelle_4.setWidth(39);
@@ -483,6 +502,11 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		final Table tableLeoben= viewerLeoben.getTable();
 		tableLeoben.setLinesVisible(true);
 		tableLeoben.setHeaderVisible(true);
+		
+		final TableColumn llockColumn = new TableColumn(tableLeoben, SWT.NONE);
+		llockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
+		llockColumn.setWidth(30);
+		llockColumn.setText("L");
 
 		final TableColumn tableColumnOrtsstelle_5 = new TableColumn(tableLeoben, SWT.NONE);
 		tableColumnOrtsstelle_5.setWidth(39);
@@ -529,6 +553,11 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		final Table tableWien= viewerWien.getTable();
 		tableWien.setLinesVisible(true);
 		tableWien.setHeaderVisible(true);
+		
+		final TableColumn wlockColumn = new TableColumn(tableWien, SWT.NONE);
+		wlockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
+		wlockColumn.setWidth(30);
+		wlockColumn.setText("L");
 
 		final TableColumn tableColumnOrtsstelle_1 = new TableColumn(tableWien, SWT.NONE);
 		tableColumnOrtsstelle_1.setWidth(39);
@@ -569,132 +598,412 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		/** make the columns sort able*/
+		Listener sortListenerLeoben = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewerLeoben.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewerLeoben.getTable().getSortDirection();
+				//revert the sort order if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewerLeoben.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == tableColumnOrtsstelle_5) 
+					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
+				if (currentColumn == tableColumnAbfahrt_5) 
+					sortIdentifier = TransportSorter.ABF_SORTER;
+				if (currentColumn == tableColumnAnkunft_5) 
+					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
+				if (currentColumn == tableColumnTermin_5)
+					sortIdentifier = TransportSorter.TERM_SORTER;
+				if (currentColumn == tableColumnTransportVon_5)
+					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
+				if(currentColumn == tableColumnPatient_5)
+					sortIdentifier = TransportSorter.PATIENT_SORTER;
+				if(currentColumn == tableColumnTransportNach_5)
+					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
+				if(currentColumn == tableColumnTA_5)
+					sortIdentifier = TransportSorter.TA_SORTER;
+				
+				
 
 
-//		//make the columns sort able
-//		Listener sortRichtungBruckListener = new Listener() 
-//		{
-//			public void handleEvent(Event e) 
-//			{
-//				// determine new sort column and direction
-//				TableColumn sortColumn = viewer.getTable().getSortColumn();
-//				TableColumn currentColumn = (TableColumn) e.widget;
-//				int dir = viewer.getTable().getSortDirection();
-//				//revert the sortorder if the column is the same
-//				if (sortColumn == currentColumn) 
-//				{
-//					if(dir == SWT.UP)
-//						dir = SWT.DOWN;
-//					else
-//						dir = SWT.UP;
-//				} 
-//				else 
-//				{
-//					viewer.getTable().setSortColumn(currentColumn);
-//					dir = SWT.UP;
-//				}
-//				// sort the data based on column and direction
-//				String sortIdentifier = null;
-//				if (currentColumn == columnTNr) 
-//					sortIdentifier = TransportSorter.TNR_SORTER;
-//				if (currentColumn == columnPrioritaet) 
-//					sortIdentifier = TransportSorter.PRIORITY_SORTER;
-//				if (currentColumn == columnTransport) 
-//					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-//				if (currentColumn == columnPatient) 
-//					sortIdentifier = TransportSorter.PATIENT_SORTER;
-//				if (currentColumn == columnTransport)
-//					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-//
-//				
-//				
-//				//apply the filter
-//				viewer.getTable().setSortDirection(dir);
-//				viewer.setSorter(new PersonalViewSorter(sortIdentifier,dir));
-//			}
-//		};
-//
-//		//attach the listener
-//		columnTNrJournal.addListener(SWT.Selection, sortListener);
-//		columnPrioritaetJournal.addListener(SWT.Selection, sortListener);
-//		columnTransportVonJournal.addListener(SWT.Selection, sortListener);
-//		columnPatientJournal.addListener(SWT.Selection, sortListener);
-//		columnTransportNachJournal.addListener(SWT.Selection, sortListener);
-//		columnErkrVerlJournal.addListener(SWT.Selection, sortListener);
-//		columnAEJournal.addListener(SWT.Selection, sortListener);
-//		columnS1Journal.addListener(SWT.Selection, sortListener);
-//		columnS2Journal.addListener(SWT.Selection, sortListener);
-//		columnS3Journal.addListener(SWT.Selection, sortListener);
-//		columnS4Journal.addListener(SWT.Selection, sortListener);
-//		columnS5Journal.addListener(SWT.Selection, sortListener);
-//		columnS6Journal.addListener(SWT.Selection, sortListener);
-//		columnFzgJournal.addListener(SWT.Selection, sortListener);
-//		columnSaniIJournal.addListener(SWT.Selection, sortListener);
-//		columnSaniIIJournal.addListener(SWT.Selection, sortListener);
-//		columnAnruferJournal.addListener(SWT.Selection, sortListener);
-//		
-		//create the actions
-		makeActions();
-		hookContextMenu();
-//		contributeToActionBars();
+				
+				//apply the filter
+				viewerLeoben.getTable().setSortDirection(dir);
+				viewerLeoben.setSorter(new TransportSorter(sortIdentifier,dir));
+			}
+		};
+		
+		//attach the listener
+		tableColumnOrtsstelle_5.addListener(SWT.Selection, sortListenerLeoben);
+		tableColumnAbfahrt_5.addListener(SWT.Selection, sortListenerLeoben);
+		tableColumnAnkunft_5.addListener(SWT.Selection, sortListenerLeoben);
+		tableColumnTermin_5.addListener(SWT.Selection, sortListenerLeoben);
+		tableColumnTransportVon_5.addListener(SWT.Selection, sortListenerLeoben);
+		tableColumnPatient_5.addListener(SWT.Selection, sortListenerLeoben);
+		tableColumnTransportNach_5.addListener(SWT.Selection, sortListenerLeoben);
+		tableColumnTA_5.addListener(SWT.Selection, sortListenerLeoben);
+		
+		
+		Listener sortListenerGraz = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewerGraz.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewerGraz.getTable().getSortDirection();
+				//revert the sort order if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewerGraz.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == tableColumnOrtsstelle_4) 
+					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
+				if (currentColumn == tableColumnAbfahrt_4) 
+					sortIdentifier = TransportSorter.ABF_SORTER;
+				if (currentColumn == tableColumnAnkunft_4) 
+					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
+				if (currentColumn == tableColumnTermin_4)
+					sortIdentifier = TransportSorter.TERM_SORTER;
+				if (currentColumn == tableColumnTransportVon_4)
+					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
+				if(currentColumn == tableColumnPatient_4)
+					sortIdentifier = TransportSorter.PATIENT_SORTER;
+				if(currentColumn == tableColumnTransportNach_4)
+					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
+				if(currentColumn == tableColumnTA_4)
+					sortIdentifier = TransportSorter.TA_SORTER;
 
-//		tabFolder.setSelection(1);
-//		tabFolder.setSelection(0);
+
+				
+				//apply the filter
+				viewerGraz.getTable().setSortDirection(dir);
+				viewerGraz.setSorter(new TransportSorter(sortIdentifier,dir));
+			}
+		};
+		
+		//attach the listener
+		tableColumnOrtsstelle_4.addListener(SWT.Selection, sortListenerGraz);
+		tableColumnAbfahrt_4.addListener(SWT.Selection, sortListenerGraz);
+		tableColumnAnkunft_4.addListener(SWT.Selection, sortListenerGraz);
+		tableColumnTermin_4.addListener(SWT.Selection, sortListenerGraz);
+		tableColumnTransportVon_4.addListener(SWT.Selection, sortListenerGraz);
+		tableColumnPatient_4.addListener(SWT.Selection, sortListenerGraz);
+		tableColumnTransportNach_4.addListener(SWT.Selection, sortListenerGraz);
+		tableColumnTA_4.addListener(SWT.Selection, sortListenerGraz);
+		
+		
+		
+		Listener sortListenerWien = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewerWien.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewerWien.getTable().getSortDirection();
+				//revert the sort order if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewerGraz.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == tableColumnOrtsstelle_1) 
+					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
+				if (currentColumn == tableColumnAbfahrt_1) 
+					sortIdentifier = TransportSorter.ABF_SORTER;
+				if (currentColumn == tableColumnAnkunft_1) 
+					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
+				if (currentColumn == tableColumnTermin_1)
+					sortIdentifier = TransportSorter.TERM_SORTER;
+				if (currentColumn == tableColumnTransportVon_1)
+					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
+				if(currentColumn == tableColumnPatient_1)
+					sortIdentifier = TransportSorter.PATIENT_SORTER;
+				if(currentColumn == tableColumnTransportNach_1)
+					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
+				if(currentColumn == tableColumnTA_1)
+					sortIdentifier = TransportSorter.TA_SORTER;
+
+
+				
+				//apply the filter
+				viewerWien.getTable().setSortDirection(dir);
+				viewerWien.setSorter(new TransportSorter(sortIdentifier,dir));
+			}
+		};
+		
+		//attach the listener
+		tableColumnOrtsstelle_1.addListener(SWT.Selection, sortListenerWien);
+		tableColumnAbfahrt_1.addListener(SWT.Selection, sortListenerWien);
+		tableColumnAnkunft_1.addListener(SWT.Selection, sortListenerWien);
+		tableColumnTermin_1.addListener(SWT.Selection, sortListenerWien);
+		tableColumnTransportVon_1.addListener(SWT.Selection, sortListenerWien);
+		tableColumnPatient_1.addListener(SWT.Selection, sortListenerWien);
+		tableColumnTransportNach_1.addListener(SWT.Selection, sortListenerWien);
+		tableColumnTA_1.addListener(SWT.Selection, sortListenerWien);
+		
+		
+		Listener sortListenerBruck = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewerBruck.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewerBruck.getTable().getSortDirection();
+				//revert the sort order if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewerBruck.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == bTableColumnOrtsstelle) 
+					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
+				if (currentColumn == bTableColumnAbfahrt) 
+					sortIdentifier = TransportSorter.ABF_SORTER;
+				if (currentColumn == bTableColumnAnkunft) 
+					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
+				if (currentColumn == bTableColumnTermin)
+					sortIdentifier = TransportSorter.TERM_SORTER;
+				if (currentColumn == bTableColumnTransportVon)
+					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
+				if(currentColumn == bTtableColumnPatient)
+					sortIdentifier = TransportSorter.PATIENT_SORTER;
+				if(currentColumn == bTableColumnTransportNach)
+					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
+				if(currentColumn == bTableColumnTA)
+					sortIdentifier = TransportSorter.TA_SORTER;
+
+
+				
+				//apply the filter
+				viewerBruck.getTable().setSortDirection(dir);
+				viewerBruck.setSorter(new TransportSorter(sortIdentifier,dir));
+			}
+		};
+		
+		//attach the listener
+		 bTableColumnOrtsstelle.addListener(SWT.Selection, sortListenerBruck);
+		 bTableColumnAbfahrt.addListener(SWT.Selection, sortListenerBruck);
+		 bTableColumnAnkunft.addListener(SWT.Selection, sortListenerBruck);
+		 bTableColumnTermin.addListener(SWT.Selection, sortListenerBruck);
+		 bTableColumnTransportVon.addListener(SWT.Selection, sortListenerBruck);
+		 bTtableColumnPatient.addListener(SWT.Selection, sortListenerBruck);
+		 bTableColumnTransportNach.addListener(SWT.Selection, sortListenerBruck);
+		 bTableColumnTA.addListener(SWT.Selection, sortListenerBruck);
+		 
+		 
+		Listener sortListenerKapfenberg = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewerKapfenberg.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewerKapfenberg.getTable().getSortDirection();
+				//revert the sort order if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewerKapfenberg.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == tableColumnOrtsstelle_2) 
+					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
+				if (currentColumn == tableColumnAbfahrt_2) 
+					sortIdentifier = TransportSorter.ABF_SORTER;
+				if (currentColumn == tableColumnAnkunft_2) 
+					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
+				if (currentColumn == tableColumnTermin_2)
+					sortIdentifier = TransportSorter.TERM_SORTER;
+				if (currentColumn == tableColumnTransportVon_2)
+					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
+				if(currentColumn == tableColumnPatient_2)
+					sortIdentifier = TransportSorter.PATIENT_SORTER;
+				if(currentColumn == tableColumnTransportNach_2)
+					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
+				if(currentColumn == tableColumnTA_2)
+					sortIdentifier = TransportSorter.TA_SORTER;
+
+
+				
+				//apply the filter
+				viewerKapfenberg.getTable().setSortDirection(dir);
+				viewerKapfenberg.setSorter(new TransportSorter(sortIdentifier,dir));
+			}
+		};
+		
+		//attach the listener
+		tableColumnOrtsstelle_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		tableColumnAbfahrt_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		tableColumnAnkunft_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		tableColumnAnkunft_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		tableColumnTermin_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		tableColumnTransportVon_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		tableColumnPatient_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		tableColumnTransportNach_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		tableColumnTA_2.addListener(SWT.Selection, sortListenerKapfenberg);
+		
+		
+		Listener sortListenerMariazell = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewerMariazell.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewerMariazell.getTable().getSortDirection();
+				//revert the sort order if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewerMariazell.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == tableColumnOrtsstelle_3) 
+					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
+				if (currentColumn == tableColumnAbfahrt_3) 
+					sortIdentifier = TransportSorter.ABF_SORTER;
+				if (currentColumn == tableColumnAnkunft_3) 
+					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
+				if (currentColumn == tableColumnTermin_3)
+					sortIdentifier = TransportSorter.TERM_SORTER;
+				if (currentColumn == tableColumnTransportVon_3)
+					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
+				if(currentColumn == tableColumnPatient_3)
+					sortIdentifier = TransportSorter.PATIENT_SORTER;
+				if(currentColumn == tableColumnTransportNach_3)
+					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
+				if(currentColumn == tableColumnTA_3)
+					sortIdentifier = TransportSorter.TA_SORTER;
+
+
+				
+				//apply the filter
+				viewerMariazell.getTable().setSortDirection(dir);
+				viewerMariazell.setSorter(new TransportSorter(sortIdentifier,dir));
+			}
+		};
+		
+		//attach the listener
+		tableColumnOrtsstelle_3.addListener(SWT.Selection, sortListenerMariazell);
+		tableColumnAbfahrt_3.addListener(SWT.Selection, sortListenerMariazell);
+		tableColumnAnkunft_3.addListener(SWT.Selection, sortListenerMariazell);
+		tableColumnTermin_3.addListener(SWT.Selection, sortListenerMariazell);
+		tableColumnTransportVon_3.addListener(SWT.Selection, sortListenerMariazell);
+		tableColumnPatient_3.addListener(SWT.Selection, sortListenerMariazell);
+		tableColumnTransportNach_3.addListener(SWT.Selection, sortListenerMariazell);
+		tableColumnTA_3.addListener(SWT.Selection, sortListenerMariazell);
+		
+		
+		
+		
+		makeActionsLeoben(viewerLeoben);
+		hookContextMenu(viewerLeoben);
+		
 	}
 	
 	/**
 	 * Creates the needed actions
 	 */
-	private void makeActions()
+	private void makeActionsLeoben(TableViewer viewer)
 	{		
-		editTransportAction = new EditTransportAction(this.viewerLeoben);
-		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(this.viewerLeoben);
-		cancelTransportAction = new CancelTransportAction(this.viewerLeoben);
+		
+		editTransportAction = new EditTransportAction(viewer);
+		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportAction = new CancelTransportAction(viewer);
 	}
 	
 	/**
-	 * Creates the context menue 
+	 * Creates the context menu 
 	 */
-	private void hookContextMenu() 
+	private void hookContextMenu(final TableViewer viewer) 
 	{
 		MenuManager menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenu(manager);
+				fillContextMenu(manager, viewer);
 			}
 		});
-		Menu menuLeoben = menuManager.createContextMenu(viewerLeoben.getControl());
-		viewerLeoben.getControl().setMenu(menuLeoben);
-		getSite().registerContextMenu(menuManager, viewerLeoben);
+		
+		Menu menuLeoben = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menuLeoben);
+		getSite().registerContextMenu(menuManager, viewer);
+		
+//		Menu menuGraz = menuManager.createContextMenu(viewerGraz.getControl());
+//		viewerGraz.getControl().setMenu(menuGraz);
+//		getSite().registerContextMenu(menuManager, viewerGraz);
 	}
 	
 	/**
 	 * Fills the context menu with the actions
 	 */
-	private void fillContextMenu(IMenuManager manager)
+	private void fillContextMenu(IMenuManager manager, TableViewer viewer)
 	{
 		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewerLeoben.getSelection()).getFirstElement();
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 			
 		//cast to a Transport
 		Transport transport = (Transport)firstSelectedObject;
