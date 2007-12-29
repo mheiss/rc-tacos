@@ -79,11 +79,7 @@ public class Timetable {
 		
 		TimeList+="</div>";
 		if(rosterList.isEmpty()!=true){
-	
-				
-
 				for(int j=1;j<=daysToShow;j++){
-					System.out.println("ROUND: "+j);
 					tabentry+="<div style='float:left; margin-left:5px; border-width:1px; border-style:solid; border-color:red;  height:400px; padding:5px; ' id='MainDivDay'>";
 					for(AbstractMessage message:rosterList)
 					{
@@ -122,12 +118,12 @@ public class Timetable {
 								"<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) + " - " + entry.getStaffMember().getPrimaryLocation() + "</b><div id='singleEntryDiv' style='cursor:pointer; height:" + 
 								this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a></div></div>";
+								"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a></div>";
 						//}
 						
 						
 					}
-					tabentry+="</div>";
+					tabentry+="</div></div>";
 					
 				}//timetableDateHead+
 				
