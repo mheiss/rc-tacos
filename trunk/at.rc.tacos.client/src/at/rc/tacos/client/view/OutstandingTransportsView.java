@@ -159,7 +159,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		});  
 		
 		
-		/** sorter*/
+		/** default sorter*/
 		viewerOffTrans.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
 		
 		
