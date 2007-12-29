@@ -300,7 +300,18 @@ TESt
     height:15px; 
     width:100%;
 }
-
+#mainDayContainer {
+	float:left;
+	height:425px;
+	border-width:1px; border-style:solid; border-color:red;
+	width:13%;
+}
+#mainDayContainerTL {
+    float:left;
+    height:425px;
+    border-width:1px; border-style:solid; border-color:red;
+    width:50;
+}
 #singleEntryDiv a {
 color:black;
 text-decoration:none;

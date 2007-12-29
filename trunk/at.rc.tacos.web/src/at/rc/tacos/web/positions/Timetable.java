@@ -26,6 +26,7 @@ public class Timetable {
 	private int height;
 	private int width;
 	private String tabentry;
+	private String tabentryHead;
 	private String timetableDateHead;
 	private String TimeList;
 
@@ -35,6 +36,7 @@ public class Timetable {
 		height = 0;
 		width = 0;
 		tabentry = "";
+		tabentryHead = "";
 		timetableDateHead ="";
 		TimeList="";
 		
@@ -52,13 +54,12 @@ public class Timetable {
 		
 		SimpleDateFormat format = new SimpleDateFormat("E, dd.MM.yyyy");
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
-		String date;
 		int zaehle = 0;
 		String info="";
 		
 		
 		
-		TimeList += "<div style='float:left;' >&nbsp;</div><div style='float:left; margin-left:5px; padding:5px; border-width:1px; border-style:solid; border-color:red; width:50px; height:400px;' id='TimeTab' align='center'>";
+		TimeList += "<div id='mainDayContainerTL'><div style=' padding:5px; width:100%; height:25px; vertical-align:middle; text-align:center;' >Zeit</div><div style='width:50px; height:400px;' id='TimeTab' align='center'>";
 		int i = 5;
 		do {
 			if(i>24){
@@ -77,23 +78,18 @@ public class Timetable {
 			
 		}while(ok1);
 		
-		TimeList+="</div>";
+		TimeList+="</div></div>";
+		
 		if(rosterList.isEmpty()!=true){
 				for(int j=1;j<=daysToShow;j++){
-					tabentry+="<div style='float:left; margin-left:5px; border-width:1px; border-style:solid; border-color:red;  height:400px; padding:5px; ' id='MainDivDay'>";
+					tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' >" + format.format(new Date()) +  "</div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
 					for(AbstractMessage message:rosterList)
 					{
 						
 						RosterEntry entry = (RosterEntry)message;
-						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) + " - " + entry.getStaffMember().getPrimaryLocation() + "</b></div>";
-						if(entry.isSplitEntry()){
-							date = format.format(new Date(entry.getPlannedStartOfWork()));
-							
-						}
-						else{
-							date = formatHour.format(new Date(entry.getPlannedStartOfWork()));	
-						}
-	/*
+						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
+
+	/* Table-format
 	 * info = "<table><tr><td colspan='2'>INFORMATION</td></tr>" +
 									"<tr><td width='40%'>Name: <b></td><td width='60%'>"+ entry.getStaffMember().getUserName()+"</b></td></tr>" +
 									"<tr><td width='40%'>Dienst als: <b></td><td width='60%'>"+ entry.getJob() + "</b></td></tr>" +
@@ -115,7 +111,7 @@ public class Timetable {
 									"angestellt als:&nbsp;&nbsp;"+entry.getServicetype()+"<br />";
 							
 							tabentry+= 		
-								"<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) + " - " + entry.getStaffMember().getPrimaryLocation() + "</b><div id='singleEntryDiv' style='cursor:pointer; height:" + 
+								"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
 								this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
 								"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a></div>";
@@ -127,7 +123,7 @@ public class Timetable {
 					
 				}//timetableDateHead+
 				
-				timetable+=TimeList+tabentry;
+				timetable+=TimeList+tabentryHead+tabentry;
 				tabentry="";
 			return timetable;
 		}
