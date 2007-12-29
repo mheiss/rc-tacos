@@ -88,8 +88,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	        case COLUMN_AE:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -97,17 +97,20 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	        case COLUMN_S1:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
-		        	else 
-		        		return "";
+	        		System.out.println("JournalViewlabelprovider, S1, " +transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp() +"AUS");
+	        		System.out.println("JournalViewlabelprovider, S2, " +transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp() +"AUS");
+	        		System.out.println("JournalViewlabelprovider, S3, " +transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp() +"AUS");
+	        		System.out.println("JournalViewlabelprovider, S4, " +transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp() +"AUS");
+	        		System.out.println("JournalViewlabelprovider, S5, " +transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getTimestamp() +"AUS");
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp());
 	        	}
-	        	else return "";
+
 	        case COLUMN_S2:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -115,8 +118,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	        case COLUMN_S3:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -124,8 +127,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	        case COLUMN_S4:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -133,8 +136,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	        case COLUMN_S5:  
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -142,8 +145,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	        case COLUMN_S6:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
