@@ -7,12 +7,16 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -31,6 +35,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.view.sorterAndTooltip.UnderwayTransportsTooltip;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.RosterEntry;
 
@@ -45,7 +50,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	
 	private FormToolkit toolkit;
 	private ScrolledForm formDisp;
-	private TableViewer viewerDispTrans;
+	private TableViewer viewer;
+	private UnderwayTransportsTooltip tooltip;
 	
 	//the actions for the context menu
 	private SetTransportStatusAction setTransportStatusS1Action;
@@ -106,19 +112,33 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		disponierteTransporteGroup.setText("Disponierte Transporte");
 
 		/** tabFolder Selection Listener not needed? */
-		viewerDispTrans = new TableViewer(disponierteTransporteGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerDispTrans.setContentProvider(new UnderwayTransportsViewContentProvider());
-		viewerDispTrans.setLabelProvider(new UnderwayTransportsViewLabelProvider());
-		viewerDispTrans.setInput(ModelFactory.getInstance().getTransportManager());
-		viewerDispTrans.getTable().setLinesVisible(true);
+		viewer = new TableViewer(disponierteTransporteGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
+		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
+		viewer.setInput(ModelFactory.getInstance().getTransportManager());
+		viewer.getTable().setLinesVisible(true);
 		
 		/** Tooltip */
+		tooltip = new UnderwayTransportsTooltip(viewer.getControl());
+		//show the tool tip when the selection has changed
 		
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
+		{
+			public void selectionChanged(SelectionChangedEvent event) 
+			{
+				TableItem[] selection = viewer.getTable().getSelection();
+				if (selection != null && selection.length > 0) 
+				{
+					Rectangle bounds = selection[0].getBounds();
+					tooltip.show(new Point(bounds.x, bounds.y));
+				}
+			}
+		});  
 		/** Sorter */
 		
 		
 		
-		final Table tableDisp = viewerDispTrans.getTable();
+		final Table tableDisp = viewer.getTable();
 		tableDisp.setLinesVisible(true);
 		tableDisp.setHeaderVisible(true);
 		
@@ -241,17 +261,17 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	 */
 	private void makeActions()
 	{
-		setTransportStatusS1Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_ON_THE_WAY, "S1 Transportbeginn");
-		setTransportStatusS2Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_AT_PATIENT, "S2 Bei Patient");
-		setTransportStatusS3Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_START_WITH_PATIENT, "S3 Abfahrt mit Patient");
-		setTransportStatusS4Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_AT_DESTINATION, "S4 Ankunft am Ziel");
-		setTransportStatusS5Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_DESTINATION_FREE, "S5 Ziel frei");
-		setTransportStatusS6Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_CAR_IN_STATION, "S6 Eingerückt");
-		setTransportStatusS7Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, "S7 Verlässt Einsatzgebiet");
-		setTransportStatusS8Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, "S8 Wieder im Einsatzgebiet");
-		setTransportStatusS9Action = new SetTransportStatusAction(this.viewerDispTrans,TRANSPORT_STATUS_OTHER, "S9 Sonderstatus");
+		setTransportStatusS1Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_ON_THE_WAY, "S1 Transportbeginn");
+		setTransportStatusS2Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_AT_PATIENT, "S2 Bei Patient");
+		setTransportStatusS3Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_START_WITH_PATIENT, "S3 Abfahrt mit Patient");
+		setTransportStatusS4Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_AT_DESTINATION, "S4 Ankunft am Ziel");
+		setTransportStatusS5Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_DESTINATION_FREE, "S5 Ziel frei");
+		setTransportStatusS6Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_CAR_IN_STATION, "S6 Eingerückt");
+		setTransportStatusS7Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, "S7 Verlässt Einsatzgebiet");
+		setTransportStatusS8Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, "S8 Wieder im Einsatzgebiet");
+		setTransportStatusS9Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_OTHER, "S9 Sonderstatus");
 		
-		editTransportAction = new EditTransportAction(this.viewerDispTrans);
+		editTransportAction = new EditTransportAction(this.viewer);
 	}
 	
 	/**
@@ -266,9 +286,9 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 				fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuManager.createContextMenu(viewerDispTrans.getControl());
-		viewerDispTrans.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewerDispTrans);
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
 	}
 	
 	
@@ -278,7 +298,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private void fillContextMenu(IMenuManager manager)
 	{
 		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewerDispTrans.getSelection()).getFirstElement();
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 			
 		//cast to a RosterEntry
 		RosterEntry entry = (RosterEntry)firstSelectedObject;
@@ -315,22 +335,22 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		// the viewer represents simple model. refresh should be enough.
 		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
 		{ 
-			this.viewerDispTrans.refresh();
+			this.viewer.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_REMOVE".equals(evt.getPropertyName())) 
 		{ 
-			this.viewerDispTrans.refresh();
+			this.viewer.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_UPDATE".equals(evt.getPropertyName())) 
 		{ 
-			this.viewerDispTrans.refresh();
+			this.viewer.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{ 
-			this.viewerDispTrans.refresh();
+			this.viewer.refresh();
 		}
 	}
 }
