@@ -93,9 +93,9 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		//directness
         int direction = transport.getDirection();
         String directness;
-        if (TOWARDS_DISTRICT == direction)
+        if (TOWARDS_KAPFENBERG == direction)
         {
-        	directness = "Bruck - Kapfenberg";
+        	directness = "Kapfenberg";
         }
         else if (TOWARDS_GRAZ == direction)
         {
@@ -113,7 +113,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
         {
         	directness = "Wien";
         }
-        else directness = "Bruck - Kapfenberg"; //default
+        else directness = "Bruck"; //default
         
 			
         
