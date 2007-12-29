@@ -93,8 +93,8 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_AE:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp()!= 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -102,8 +102,8 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_S1:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -111,8 +111,8 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_S2:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -120,8 +120,8 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_S3: 
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -129,8 +129,8 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_S4: 
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -138,8 +138,8 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_S7: 
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -147,8 +147,8 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_S8: 
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
@@ -156,8 +156,8 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_S9:
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getStatus() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getTimestamp() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getTimestamp());
 		        	else 
 		        		return "";
 	        	}
