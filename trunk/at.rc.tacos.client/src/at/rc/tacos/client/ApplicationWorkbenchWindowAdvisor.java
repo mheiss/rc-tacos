@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.application.*;
 
+import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
 import at.rc.tacos.client.controller.VehicleEditAction;
 import at.rc.tacos.client.controller.OpenAboutAction;
 import at.rc.tacos.client.controller.PersonalNewEntryAction;
@@ -116,6 +117,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         tbm.add(new SwitchToClientPerspective());
         tbm.add(new SwitchToAdminPerspective());
         tbm.add(new OpenTransportAction());
+        tbm.add(new OpenEmergencyTransportAction());
         tbm.update(true);
         toolbar = (CoolBar)configurer.createCoolBarControl(shell);
         toolbar.setLocked(true);
