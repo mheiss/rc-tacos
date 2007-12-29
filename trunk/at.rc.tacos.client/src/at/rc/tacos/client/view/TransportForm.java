@@ -73,7 +73,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
 	private Button wienButton;
 	private Button leobenButton;
 	private Button grazButton;
-	private Button bezirkButton;
+	private Button bruckButton;
+	private Button kapfenbergButton;
 	private Text textTermin;
 	private Text textBeiPat;
 	private Text textAbf;
@@ -239,7 +240,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 	        t1.setCallerDetail(notifierList.get(0));
 	        t1.setVehicleDetail(vehicleList.get(0));
 	        t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
-	        t1.setDirection(IDirectness.TOWARDS_DISTRICT);
+	        t1.setDirection(IDirectness.TOWARDS_BRUCK);
 			
 			
 			TransportForm window = new TransportForm(t1);
@@ -436,9 +437,9 @@ public class TransportForm implements IDirectness, IKindOfTransport
         
         //directness
         int direction = transport.getDirection();
-        if (TOWARDS_DISTRICT == direction)
+        if (TOWARDS_BRUCK == direction)
         {
-        	this.bezirkButton.setSelection(true);
+        	this.bruckButton.setSelection(true);
         }
         if (TOWARDS_GRAZ == direction)
         {
@@ -455,6 +456,10 @@ public class TransportForm implements IDirectness, IKindOfTransport
         if (TOWARDS_VIENNA == direction)
         {
         	this.wienButton.setSelection(true);
+        }
+        if (TOWARDS_KAPFENBERG == direction)
+        {
+        	this.kapfenbergButton.setSelection(true);
         }
         
         
@@ -842,53 +847,72 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		//'Richtung'
 		mariazellButton = new Button(planungGroup, SWT.RADIO);
 		final FormData fd_mariazellButton = new FormData();
-		fd_mariazellButton.bottom = new FormAttachment(0, 143);
-		fd_mariazellButton.top = new FormAttachment(0, 127);
-		fd_mariazellButton.right = new FormAttachment(0, 174);
-		fd_mariazellButton.left = new FormAttachment(0, 101);
 		mariazellButton.setLayoutData(fd_mariazellButton);
 		mariazellButton.setText("Mariazell");
 
 		wienButton = new Button(planungGroup, SWT.RADIO);
+		fd_mariazellButton.bottom = new FormAttachment(wienButton, 16, SWT.BOTTOM);
+		fd_mariazellButton.top = new FormAttachment(wienButton, 0, SWT.BOTTOM);
+		fd_mariazellButton.right = new FormAttachment(wienButton, 71, SWT.LEFT);
+		fd_mariazellButton.left = new FormAttachment(wienButton, 0, SWT.LEFT);
 		final FormData fd_wienButton = new FormData();
-		fd_wienButton.bottom = new FormAttachment(0, 118);
-		fd_wienButton.top = new FormAttachment(0, 102);
-		fd_wienButton.right = new FormAttachment(0, 174);
-		fd_wienButton.left = new FormAttachment(0, 101);
 		wienButton.setLayoutData(fd_wienButton);
 		wienButton.setText("Wien");
 
 		leobenButton = new Button(planungGroup, SWT.RADIO);
+		fd_wienButton.bottom = new FormAttachment(leobenButton, 16, SWT.BOTTOM);
+		fd_wienButton.top = new FormAttachment(leobenButton, 0, SWT.BOTTOM);
+		fd_wienButton.right = new FormAttachment(leobenButton, 71, SWT.LEFT);
+		fd_wienButton.left = new FormAttachment(leobenButton, 0, SWT.LEFT);
 		final FormData fd_leobenButton = new FormData();
-		fd_leobenButton.bottom = new FormAttachment(0, 93);
-		fd_leobenButton.top = new FormAttachment(0, 77);
-		fd_leobenButton.right = new FormAttachment(0, 174);
-		fd_leobenButton.left = new FormAttachment(0, 101);
 		leobenButton.setLayoutData(fd_leobenButton);
 		leobenButton.setText("Leoben");
 
 		grazButton = new Button(planungGroup, SWT.RADIO);
+		fd_leobenButton.bottom = new FormAttachment(grazButton, 16, SWT.BOTTOM);
+		fd_leobenButton.top = new FormAttachment(grazButton, 0, SWT.BOTTOM);
+		fd_leobenButton.right = new FormAttachment(grazButton, 71, SWT.LEFT);
+		fd_leobenButton.left = new FormAttachment(grazButton, 0, SWT.LEFT);
 		final FormData fd_grazButton = new FormData();
-		fd_grazButton.bottom = new FormAttachment(0, 68);
-		fd_grazButton.top = new FormAttachment(0, 52);
-		fd_grazButton.right = new FormAttachment(0, 174);
-		fd_grazButton.left = new FormAttachment(0, 101);
 		grazButton.setLayoutData(fd_grazButton);
 		grazButton.setText("Graz");
 
-		bezirkButton = new Button(planungGroup, SWT.RADIO);
+		bruckButton = new Button(planungGroup, SWT.RADIO);
 		final FormData fd_bezirkButton = new FormData();
-		fd_bezirkButton.bottom = new FormAttachment(0, 35);
-		fd_bezirkButton.top = new FormAttachment(0, 19);
-		fd_bezirkButton.right = new FormAttachment(0, 172);
-		fd_bezirkButton.left = new FormAttachment(0, 101);
-		bezirkButton.setLayoutData(fd_bezirkButton);
-		bezirkButton.setText("Bezirk");
+		fd_bezirkButton.bottom = new FormAttachment(bruckButton, 16, SWT.BOTTOM);
+		fd_bezirkButton.top = new FormAttachment(bruckButton, 0, SWT.BOTTOM);
+		fd_bezirkButton.right = new FormAttachment(bruckButton, 77, SWT.LEFT);
+		fd_bezirkButton.left = new FormAttachment(bruckButton, 0, SWT.LEFT);
+		final FormData fd_bruckButton = new FormData();
+		bruckButton.setLayoutData(fd_bruckButton);
+		bruckButton.setText("Bruck");
+		
+		kapfenbergButton = new Button(planungGroup, SWT.RADIO);
+		fd_grazButton.bottom = new FormAttachment(kapfenbergButton, 16, SWT.BOTTOM);
+		fd_grazButton.top = new FormAttachment(kapfenbergButton, 0, SWT.BOTTOM);
+		fd_grazButton.right = new FormAttachment(kapfenbergButton, 71, SWT.LEFT);
+		fd_grazButton.left = new FormAttachment(kapfenbergButton, 0, SWT.LEFT);
+		final FormData fd_kapfenbergButton = new FormData();
+		fd_kapfenbergButton.bottom = new FormAttachment(0, 25);
+		fd_kapfenbergButton.top = new FormAttachment(0, 39);
+		fd_kapfenbergButton.right = new FormAttachment(0, 166);
+		fd_kapfenbergButton.left = new FormAttachment(0, 95);
+		kapfenbergButton.setLayoutData(fd_bezirkButton);
+		kapfenbergButton.setText("Kapfenberg");
 
-		final Label label_2 = new Label(planungGroup, SWT.SEPARATOR);
+		
+		
+		
+		
+		Label label_2;
+		label_2 = new Label(planungGroup, SWT.SEPARATOR);//TODO place
+		fd_bruckButton.bottom = new FormAttachment(label_2, 16, SWT.TOP);
+		fd_bruckButton.top = new FormAttachment(label_2, 0, SWT.TOP);
+		fd_bruckButton.right = new FormAttachment(label_2, 49, SWT.RIGHT);
+		fd_bruckButton.left = new FormAttachment(label_2, 0, SWT.RIGHT);
 		final FormData fd_label_2 = new FormData();
 		fd_label_2.bottom = new FormAttachment(0, 159);
-		fd_label_2.top = new FormAttachment(0, 11);
+		fd_label_2.top = new FormAttachment(0, 20);
 		fd_label_2.right = new FormAttachment(0, 94);
 		fd_label_2.left = new FormAttachment(0, 81);
 		label_2.setLayoutData(fd_label_2);
@@ -902,7 +926,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fernfahrtButton.setLayoutData(fd_fernfahrtButton);
 		fernfahrtButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.fernfahrt"));
 		fernfahrtButton.setToolTipText("Fernfahrten sind lt. RKT deklariert");
-		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, fernfahrtButton, bezirkButton, grazButton, leobenButton, wienButton, mariazellButton});
+		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, fernfahrtButton, bruckButton, kapfenbergButton, grazButton, leobenButton, wienButton, mariazellButton});
 
 		//group 'Patientenzustand'
 		patientenzustandGroup = new Group(shell, SWT.NONE);
@@ -1552,7 +1576,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			boolean toVienna;
 			boolean toLeoben;
 			boolean toGraz;
-			boolean toDistrict;
+			boolean toBruck;
+			boolean toKapfenberg;
 			
 			String term;
 			String atPatient;
@@ -1748,7 +1773,9 @@ public class TransportForm implements IDirectness, IKindOfTransport
 				toVienna = wienButton.getSelection();
 				toLeoben = leobenButton.getSelection();
 				toGraz = grazButton.getSelection();
-				toDistrict = bezirkButton.getSelection();
+				toBruck = bruckButton.getSelection();
+				toKapfenberg = kapfenbergButton.getSelection();
+				
 				
 				term = textTermin.getText();
 				atPatient = textBeiPat.getText();
@@ -1788,8 +1815,10 @@ public class TransportForm implements IDirectness, IKindOfTransport
 					directness = TOWARDS_LEOBEN;
 				else if (toGraz)
 					directness = TOWARDS_GRAZ;
+				else if (toKapfenberg)
+					directness = TOWARDS_KAPFENBERG;
 				else
-					directness = TOWARDS_DISTRICT;
+					directness = TOWARDS_BRUCK;
 			}
 			private String checkRequiredFields()
 			{
