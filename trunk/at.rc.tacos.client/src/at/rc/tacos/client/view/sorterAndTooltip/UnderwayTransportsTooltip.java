@@ -1,6 +1,8 @@
 
 package at.rc.tacos.client.view.sorterAndTooltip;
 
+import java.text.SimpleDateFormat;
+
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -71,6 +73,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 	{		
 		//get the selected transport
 		Composite composite = createToolTipContentAreaComposite(parent);	
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		
 		//notifying
 		System.out.println("UnderwayTransportsTooltip, createToolTipContentArea, firebrigade: " +transport.isFirebrigadeAlarming());
@@ -125,10 +128,20 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		
 
 		//planned times
-		if(!(transport.getPlannedStartOfTransport() != 0 || transport.getPlannedTimeAtPatient() != 0 || transport.getAppointmentTimeAtDestination() != 0))
+		if((transport.getPlannedStartOfTransport() != 0 || transport.getPlannedTimeAtPatient() != 0 || transport.getAppointmentTimeAtDestination() != 0))
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
-			title = "Abfahrt: " +transport.getPlannedStartOfTransport() +" Bei Patient: " +transport.getPlannedTimeAtPatient() +" Termin: " +transport.getAppointmentTimeAtDestination();
+			title = "Abfahrt: " +sdf.format(transport.getPlannedStartOfTransport()) 
+			+" Bei Patient: " +sdf.format(transport.getPlannedTimeAtPatient())
+			+" Termin: " +sdf.format(transport.getAppointmentTimeAtDestination());
+			addIconAndLabel(composite,image,title);
+		}
+		
+		//aufg
+		if(transport.getReceiveTime() != 0)
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
+			title = "Aufgenommen: " +sdf.format(transport.getReceiveTime());
 			addIconAndLabel(composite,image,title);
 		}
 		
@@ -174,6 +187,13 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.phone");
 			title = emergencyPhone;
+			addIconAndLabel(composite,image,title);
+		}
+		
+		if(transport.getKindOfIllness()!="")
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.heart");
+			title = transport.getKindOfIllness();
 			addIconAndLabel(composite,image,title);
 		}
 
