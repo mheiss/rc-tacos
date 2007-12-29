@@ -30,6 +30,7 @@ public class Perspective implements IPerspectiveFactory
         layout.addStandaloneView(OutstandingTransportsView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
         layout.addStandaloneView(JournalView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
         layout.addStandaloneView(PrebookingView.ID,false, IPageLayout.LEFT, 0.45f, editorArea);
+        layout.addStandaloneView(DialysisView.ID,false, IPageLayout.LEFT, 0.45f, editorArea);
         
 	}
 }
