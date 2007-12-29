@@ -19,7 +19,7 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 
-public class Timetable extends HttpServlet {
+public class Timetable {
 	
 	private static Timetable instance;
 	private static String timetable;
@@ -49,7 +49,6 @@ public class Timetable extends HttpServlet {
 		
 		boolean ok1 = true;
 		boolean ok2 = true;
-		int entryCount = 0;
 		
 		SimpleDateFormat format = new SimpleDateFormat("E, dd.MM.yyyy");
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
@@ -82,12 +81,12 @@ public class Timetable extends HttpServlet {
 		if(rosterList.isEmpty()!=true){
 	
 				tabentry+="<div style='float:left; margin-left:5px; border-width:1px; border-style:solid; border-color:red; width:13.5%; height:400px; padding:5px; ' id='MainDivDay'>";
-				entryCount = rosterList.size();
+
 				for(AbstractMessage message:rosterList)
 				{
 					
 					RosterEntry entry = (RosterEntry)message;
-					timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) + " - " + entry.getStaffMember().getPrimaryLocation() + "</b></div>";
+					timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) + " - " + entry.getStaffMember().getPrimaryLocation() + "</b></div>";
 					if(entry.isSplitEntry()){
 						date = format.format(new Date(entry.getPlannedStartOfWork()));
 						
@@ -105,7 +104,7 @@ public class Timetable extends HttpServlet {
 								"<tr><td width='40%'>angestellt als: </td><td width='60%'>"+entry.getServicetype()+"</td></tr></table>";
 						
  */
-					
+					//if(entry.getStation().equalsIgnoreCase(getPrimaryLocation())){
 					//if(entry.getStation().equalsIgnoreCase("Bruck - Kapfenberg")){
 						
 						zaehle++;
