@@ -59,8 +59,7 @@ import at.rc.tacos.client.controller.PersonalEditEntryAction;
 import at.rc.tacos.client.controller.PersonalSignInAction;
 import at.rc.tacos.client.controller.PersonalSignOutAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.DispositionViewOffContentProvider;
-import at.rc.tacos.client.providers.DispositionViewOffLabelProvider;
+
 import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
 import at.rc.tacos.client.providers.OutstandingTransportsViewLabelProvider;
 import at.rc.tacos.client.providers.TransportSorter;
