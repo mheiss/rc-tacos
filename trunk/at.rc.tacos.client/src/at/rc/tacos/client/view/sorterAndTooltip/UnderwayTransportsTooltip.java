@@ -19,7 +19,7 @@ import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
 /**
- * This shows the tool tip for the transports of the outstanding transports view
+ * This shows the tool tip for the transports of the underway (disponierte) transports view
  * @author b.thek
  */
 public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
@@ -64,6 +64,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		Transport transport = getTaskListElement(hoverWidget);
 		
 		//notifying
+		System.out.println("UnderwayTransportsTooltip, createToolTipContentArea, firebrigade: " +transport.isFirebrigadeAlarming());
 		if (transport.isFirebrigadeAlarming())
 			firebrigade = "Bergrettung";
 		if (transport.isBrkdtAlarming())
@@ -113,13 +114,14 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 			+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
 		
-		if(transport.isAccompanyingPerson())
+
+		//planned times
+		if(!(transport.getPlannedStartOfTransport() != 0 || transport.getPlannedTimeAtPatient() != 0 || transport.getAppointmentTimeAtDestination() != 0))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
-			title = "Begleitperson";
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
+			title = "Abfahrt: " +transport.getPlannedStartOfTransport() +" Bei Patient: " +transport.getPlannedTimeAtPatient() +" Termin: " +transport.getAppointmentTimeAtDestination();
 			addIconAndLabel(composite,image,title);
 		}
-		
 		
 		//the notes
 		if(transport.hasNotes())
@@ -129,11 +131,20 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 			addIconAndLabel(composite,image,title);
 		}
 		
+		//feedback
+		if(transport.hasFeedback())
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.feedback");
+			title = transport.getFeedback();
+			addIconAndLabel(composite,image,title);
+		}
+		
 		//directness
 		image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.directness");
 		title = directness;
 		addIconAndLabel(composite,image,title);
 		
+		//caller
 		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.callerDetail");
@@ -141,6 +152,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 			addIconAndLabel(composite,image,title);
 		}
 		
+		//notified
 		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
 				|| firebrigade.equalsIgnoreCase("")))
 		{
