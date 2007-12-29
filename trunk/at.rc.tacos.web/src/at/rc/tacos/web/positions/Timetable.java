@@ -82,7 +82,7 @@ public class Timetable {
 		
 		if(rosterList.isEmpty()!=true){
 				for(int j=1;j<=daysToShow;j++){
-					tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' >" + format.format(new Date()) +  "</div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
+					tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + format.format(new Date()) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
 					for(AbstractMessage message:rosterList)
 					{
 						
@@ -143,7 +143,7 @@ public class Timetable {
 		}else{
 			retval = (endPos-startPos)*15;
 		}
-		
+		System.out.println("ENDPOS: "+endPos);
 		return retval;
 	}
 
@@ -154,7 +154,7 @@ public class Timetable {
 		}else{
 			startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())-5;
 		}
-		return startPos*15;
+		return (startPos*15)-2;
 	}
 	
 
