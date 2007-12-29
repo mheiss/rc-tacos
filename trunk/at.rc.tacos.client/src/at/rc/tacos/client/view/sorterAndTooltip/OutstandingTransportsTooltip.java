@@ -64,6 +64,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		Transport transport = getTaskListElement(hoverWidget);
 		
 		//notifying
+		System.out.println("++++++++++++++OutstandingTransportsTooltip,, createToolTipContentArea, police: " +transport.isPoliceAlarming());
 		if (transport.isFirebrigadeAlarming())
 			firebrigade = "Bergrettung";
 		if (transport.isBrkdtAlarming())
@@ -113,12 +114,13 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
 		
-		if(transport.isAccompanyingPerson())
-		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
-			title = "Begleitperson";
-			addIconAndLabel(composite,image,title);
-		}
+//		if(transport.isAccompanyingPerson())
+//		{
+//			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
+//			title = "Begleitperson";
+//			addIconAndLabel(composite,image,title);
+//		}
+//		--> ist in Spalte direkt
 		
 		
 		//the notes
@@ -134,6 +136,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		title = directness;
 		addIconAndLabel(composite,image,title);
 		
+		//caller
 		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.callerDetail");
@@ -141,6 +144,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			addIconAndLabel(composite,image,title);
 		}
 		
+		//notified
 		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
 				|| firebrigade.equalsIgnoreCase("")))
 		{
