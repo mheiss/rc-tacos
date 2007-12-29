@@ -62,8 +62,9 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
 import at.rc.tacos.client.providers.OutstandingTransportsViewLabelProvider;
-import at.rc.tacos.client.providers.TransportSorter;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
+import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.model.Transport;
 
 
