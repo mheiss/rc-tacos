@@ -158,6 +158,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			addIconAndLabel(composite,image,title);
 		}
 		
+		//rufhilfe
 		if(transport.isEmergencyPhone())
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.phone");
