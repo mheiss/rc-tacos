@@ -105,6 +105,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			addIconAndLabel(composite,image,title);
 		}
 		
+		//real station
 		if(transport.getRealStation() != null)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icons.station");
@@ -112,6 +113,8 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			addIconAndLabel(composite,image,title);
 		}
 		
+		
+		//planned times
 		if(!(transport.getPlannedStartOfTransport() != 0 || transport.getPlannedTimeAtPatient() != 0 || transport.getAppointmentTimeAtDestination() != 0))
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
@@ -119,6 +122,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			addIconAndLabel(composite,image,title);
 		}
 		
+		//feedback
 		if(transport.hasFeedback())
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.feedback");
