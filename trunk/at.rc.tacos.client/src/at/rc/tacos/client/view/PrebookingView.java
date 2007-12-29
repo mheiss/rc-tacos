@@ -124,6 +124,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		
 		final Group richtungBruckGroup = new Group(sashForm_8, SWT.NONE);
 		richtungBruckGroup.setLayout(new FillLayout());
+		richtungBruckGroup.setForeground(CustomColors.RED_COLOR);
 		richtungBruckGroup.setText("Richtung Bruck");
 		
 		final SashForm sashForm_7 = new SashForm(sashForm_8, SWT.VERTICAL);
