@@ -24,18 +24,6 @@
 </head>
 
 <body >
-<!-- 
-<div id="InfoPanel" style="background-color:gray; width:10px; height:10px; position:absolute;">&nbsp;</div>
-
-
-
-
-<form name="Show" style="position:absolute; top:0px; right:0px;">
-<p align="center"><br>
-<input type="text" name="MouseX" value="0" size="4" style="font-family: Verdana; font-size: 8pt; font-weight: bold"><span style="font-size: 8pt">X-Position</span><br>
-<input type="text" name="MouseY" value="0" size="4" style="font-family: Verdana; font-size: 8pt; font-weight: bold"><span style="font-size: 8pt">Y-Position</span></p>
-</form>
--->
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 
@@ -100,8 +88,6 @@
 										  <% 
 											  Timetable timetable = Timetable.getInstance();
 	                                          out.print(timetable.calculateTimetable(rosterList, 1));
-	                                          
-	                                         //out.print(params.values());
 										  %>
 										
 										</tr>
@@ -112,7 +98,7 @@
 							</td>
 						</tr>
 					</table>
-					</td>
+					legende</td>
 				</tr>
 			</table>
 			</td>

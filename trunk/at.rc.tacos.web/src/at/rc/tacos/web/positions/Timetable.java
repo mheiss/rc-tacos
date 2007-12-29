@@ -29,7 +29,7 @@ public class Timetable {
 	private String tabentryHead;
 	private String timetableDateHead;
 	private String TimeList;
-
+	private String tooLong;
 
 	public Timetable(){
 		timetable = "";
@@ -39,7 +39,7 @@ public class Timetable {
 		tabentryHead = "";
 		timetableDateHead ="";
 		TimeList="";
-		
+		tooLong="";
 	}
 	
 	public String TimetableInfo(List<StaffMember> rosterList){
@@ -114,8 +114,13 @@ public class Timetable {
 								"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
 								this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a></div>";
-						//}
+								"px; float:left;" +
+								this.tooLong + 
+								"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a>" +
+								"</div>";
+								
+								
+							//}
 						
 						
 					}
@@ -133,20 +138,30 @@ public class Timetable {
 		
 	}
 
+	//caculate the height-value of the div-tag
 	private int calculateHeightForEntry(String begin, String end){
 		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
 		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
 		int retval = 0;
+		int widthFromTop = this.calculateStartForEntry(begin);
+		tooLong="";
 		
 		if(endPos<startPos){
 			retval = ((24+endPos)-startPos)*15;
 		}else{
 			retval = (endPos-startPos)*15;
 		}
-
+		
+		//check and cut too long values 
+		if((widthFromTop+retval)>365){
+			tooLong="border-bottom-width:3px; border-bottom-style:dotted; border-bottom-color:black;";
+			retval = retval -((widthFromTop+retval)-360);
+		}
+		
 		return retval;
 	}
 
+	//caculate the startposition of the div-tag
 	private int calculateStartForEntry(String begin){
 		int startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue());
 		if(startPos<5){
