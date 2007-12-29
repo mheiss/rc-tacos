@@ -34,6 +34,7 @@ import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.ITransportPriority;
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.Patient;
@@ -1022,8 +1023,8 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_notarztButton.right = new FormAttachment(0, 92);
 		fd_notarztButton.left = new FormAttachment(0, 7);
 		notarztButton.setLayoutData(fd_notarztButton);
-		notarztButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_NEF.gif"));
-		notarztButton.setToolTipText("Externer Notarzt für diesen Transport alarmiert");
+		notarztButton.setImage(ImageFactory.getInstance().getRegisteredImage("toolbar.icon.docExt"));
+		notarztButton.setToolTipText("Externer! Notarzt für diesen Transport alarmiert");
 
 		rthButton = new Button(planungGroup_1, SWT.CHECK);
 		final FormData fd_rthButton = new FormData();
