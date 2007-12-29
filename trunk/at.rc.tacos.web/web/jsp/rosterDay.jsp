@@ -99,7 +99,7 @@
 										<tr>
 										  <% 
 											  Timetable timetable = Timetable.getInstance();
-	                                          out.print(timetable.calculateTimetable(rosterList));
+	                                          out.print(timetable.calculateTimetable(rosterList, 1));
 	                                          
 	                                         //out.print(params.values());
 										  %>
