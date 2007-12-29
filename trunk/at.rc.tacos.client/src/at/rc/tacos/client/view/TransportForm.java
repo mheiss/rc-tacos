@@ -49,7 +49,7 @@ import at.rc.tacos.swtdesigner.SWTResourceManager;
  * @author b.thek
  *
  */
-public class TransportForm implements IDirectness, IKindOfTransport
+public class TransportForm implements IDirectness, IKindOfTransport, ITransportStatus
 {
 
 	private Group transportdetailsGroup;
@@ -1729,7 +1729,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
                 	
                 	//TODO setRealStation, Transportnumber, VehicleDetail wann?
                 	
-              
+                	transport.resetAllStati();//set all transport stati to "0"
                 	
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
@@ -1748,6 +1748,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
            
                 shell.close();
 				System.out.println("Transport angelegt!");
+			
 				
 			}
 			
