@@ -95,18 +95,26 @@ public class Timetable extends HttpServlet {
 					else{
 						date = formatHour.format(new Date(entry.getPlannedStartOfWork()));	
 					}
-
-					
-					//if(entry.getStation().equalsIgnoreCase("Bruck - Kapfenberg")){
-						
-						zaehle++;
-						info = "<table><tr><td colspan='2'>INFORMATION</td></tr>" +
+/*
+ * info = "<table><tr><td colspan='2'>INFORMATION</td></tr>" +
 								"<tr><td width='40%'>Name: <b></td><td width='60%'>"+ entry.getStaffMember().getUserName()+"</b></td></tr>" +
 								"<tr><td width='40%'>Dienst als: <b></td><td width='60%'>"+ entry.getJob() + "</b></td></tr>" +
 								"<tr><td width='40%'>Dienstdatum: </td><td width='60%'>" + format.format(new Date(entry.getPlannedStartOfWork())) + "</td></tr>" +
 								"<tr><td width='40%'>Dienstzeit: </td><td width='60%'>" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "</td></tr>" +
 								"<tr><td width='40%'>Ortstelle: </td><td width='60%'>" + entry.getStation() + "</td></tr>" +
 								"<tr><td width='40%'>angestellt als: </td><td width='60%'>"+entry.getServicetype()+"</td></tr></table>";
+						
+ */
+					
+					//if(entry.getStation().equalsIgnoreCase("Bruck - Kapfenberg")){
+						
+						zaehle++;
+						info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
+								"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob() + "<br /></b>" +
+								"Dienstdatum:&nbsp;&nbsp;" + format.format(new Date(entry.getPlannedStartOfWork())) + "<br />" +
+								"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
+								"Ortstelle:&nbsp;&nbsp;" + entry.getStation() + "<br />" +
+								"angestellt als:&nbsp;&nbsp;"+entry.getServicetype()+"<br />";
 						
 						tabentry+= 		
 							"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
@@ -135,7 +143,6 @@ public class Timetable extends HttpServlet {
 		int retval = 0;
 	
 		if(endPos<startPos){
-			//System.out.println("TRUE");
 			retval = ((24+endPos)-startPos)*15;
 		}else{
 			retval = (endPos-startPos)*15;
@@ -147,6 +154,7 @@ public class Timetable extends HttpServlet {
 	private int calculateStartForEntry(String begin){
 		int startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())-5;
 		int retval = 0;
+		System.out.println("--> start: "+startPos);
 		if(24>startPos){
 			//System.out.println("TRUE");
 			retval = (24+startPos)*15;
@@ -154,7 +162,7 @@ public class Timetable extends HttpServlet {
 			retval = startPos*15;
 		}
 		retval = startPos*15;
-		System.out.println("HEIGHT: "+retval);
+		System.out.println("--> : "+retval);
 		return retval;
 	}
 	

@@ -314,7 +314,7 @@ padding:2px;
 color:black;
 background:#ddd8b7;}
 
-#singleEntryDiv a span {display:none;}
+#singleEntryDiv a span  {display:none;}
 
 #singleEntryDiv a:hover span {
 
