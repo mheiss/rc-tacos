@@ -20,7 +20,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -35,6 +37,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.view.sorterAndTooltip.UnderwayTransportsTooltip;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.RosterEntry;
@@ -102,17 +105,17 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		final Composite composite = formDisp.getBody();
 		
 
-		final SashForm sashForm = new SashForm(composite, SWT.VERTICAL);
-//		dispositionTabItem.setControl(sashForm);
-		sashForm.setLayout(new FillLayout());
-
-		final Group disponierteTransporteGroup = new Group(sashForm, SWT.NONE);
-		disponierteTransporteGroup.setLayout(new FillLayout());
-		disponierteTransporteGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		disponierteTransporteGroup.setText("Disponierte Transporte");
+//		final SashForm sashForm = new SashForm(composite, SWT.VERTICAL);
+////		dispositionTabItem.setControl(sashForm);
+//		sashForm.setLayout(new FillLayout());
+//
+//		final Group disponierteTransporteGroup = new Group(sashForm, SWT.NONE);
+//		disponierteTransporteGroup.setLayout(new FillLayout());
+//		disponierteTransporteGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+//		disponierteTransporteGroup.setText("Disponierte Transporte");
 
 		/** tabFolder Selection Listener not needed? */
-		viewer = new TableViewer(disponierteTransporteGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager());
@@ -134,8 +137,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 				}
 			}
 		});  
-		/** Sorter */
-		
+		/** default Sorter */
+		viewer.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
 		
 		
 		final Table tableDisp = viewer.getTable();
@@ -152,86 +155,86 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 //		table.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND));
 		
 		//create the tab items for the disposition view
-		final TableColumn columnPrioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnPrioritaetDisponierteTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
-		columnPrioritaetDisponierteTransporte.setWidth(36);
-		columnPrioritaetDisponierteTransporte.setText("Pr");
+		final TableColumn prioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		prioritaetDisponierteTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
+		prioritaetDisponierteTransporte.setWidth(36);
+		prioritaetDisponierteTransporte.setText("Pr");
 
-		final TableColumn columnTransportNummerDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnTransportNummerDisponierteTransporte.setToolTipText("Ortsstellenabhängige Transportnummer");
-		columnTransportNummerDisponierteTransporte.setMoveable(true);
-		columnTransportNummerDisponierteTransporte.setWidth(54);
-		columnTransportNummerDisponierteTransporte.setText("TNr");
+		final TableColumn transportNummerDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		transportNummerDisponierteTransporte.setToolTipText("Ortsstellenabhängige Transportnummer");
+		transportNummerDisponierteTransporte.setMoveable(true);
+		transportNummerDisponierteTransporte.setWidth(54);
+		transportNummerDisponierteTransporte.setText("TNr");
 
-		final TableColumn columnTerminDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnTerminDisponierteTransporte.setToolTipText("Termin am Zielort");
-		columnTerminDisponierteTransporte.setMoveable(true);
-		columnTerminDisponierteTransporte.setWidth(48);
-		columnTerminDisponierteTransporte.setText("Termin");
+		final TableColumn terminDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		terminDisponierteTransporte.setToolTipText("Termin am Zielort");
+		terminDisponierteTransporte.setMoveable(true);
+		terminDisponierteTransporte.setWidth(48);
+		terminDisponierteTransporte.setText("Termin");
 
-		final TableColumn columnTransportVonDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnTransportVonDisponierteTransporte.setMoveable(true);
-		columnTransportVonDisponierteTransporte.setWidth(118);
-		columnTransportVonDisponierteTransporte.setText("Transport von");
+		final TableColumn transportVonDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		transportVonDisponierteTransporte.setMoveable(true);
+		transportVonDisponierteTransporte.setWidth(118);
+		transportVonDisponierteTransporte.setText("Transport von");
 
-		final TableColumn columnPatientDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnPatientDisponierteTransporte.setMoveable(true);
-		columnPatientDisponierteTransporte.setWidth(100);
-		columnPatientDisponierteTransporte.setText("Patient");
+		final TableColumn patientDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		patientDisponierteTransporte.setMoveable(true);
+		patientDisponierteTransporte.setWidth(100);
+		patientDisponierteTransporte.setText("Patient");
 
-		final TableColumn columnTransportNachDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnTransportNachDisponierteTransporte.setWidth(100);
-		columnTransportNachDisponierteTransporte.setText("Transport nach");
+		final TableColumn transportNachDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		transportNachDisponierteTransporte.setWidth(100);
+		transportNachDisponierteTransporte.setText("Transport nach");
 
-		final TableColumn columnAEDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnAEDisponierteTransporte.setToolTipText("Auftrag erteilt");
-		columnAEDisponierteTransporte.setWidth(39);
-		columnAEDisponierteTransporte.setText("AE");
+		final TableColumn aeDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		aeDisponierteTransporte.setToolTipText("Auftrag erteilt");
+		aeDisponierteTransporte.setWidth(39);
+		aeDisponierteTransporte.setText("AE");
 
-		final TableColumn columnS1DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnS1DisponierteTransporte.setToolTipText("Transportbeginn");
-		columnS1DisponierteTransporte.setWidth(36);
-		columnS1DisponierteTransporte.setText("S1");
+		final TableColumn s1DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		s1DisponierteTransporte.setToolTipText("Transportbeginn");
+		s1DisponierteTransporte.setWidth(36);
+		s1DisponierteTransporte.setText("S1");
 
-		final TableColumn columnS2DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnS2DisponierteTransporte.setToolTipText("Ankunft bei Patient");
-		columnS2DisponierteTransporte.setWidth(38);
-		columnS2DisponierteTransporte.setText("S2");
+		final TableColumn s2DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		s2DisponierteTransporte.setToolTipText("Ankunft bei Patient");
+		s2DisponierteTransporte.setWidth(38);
+		s2DisponierteTransporte.setText("S2");
 
-		final TableColumn columnS3DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnS3DisponierteTransporte.setToolTipText("Abfahrt mit Patient");
-		columnS3DisponierteTransporte.setWidth(40);
-		columnS3DisponierteTransporte.setText("S3");
+		final TableColumn s3DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		s3DisponierteTransporte.setToolTipText("Abfahrt mit Patient");
+		s3DisponierteTransporte.setWidth(40);
+		s3DisponierteTransporte.setText("S3");
 
-		final TableColumn columnS4DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnS4DisponierteTransporte.setToolTipText("Ankunft Ziel");
-		columnS4DisponierteTransporte.setWidth(36);
-		columnS4DisponierteTransporte.setText("S4");
+		final TableColumn s4DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		s4DisponierteTransporte.setToolTipText("Ankunft Ziel");
+		s4DisponierteTransporte.setWidth(36);
+		s4DisponierteTransporte.setText("S4");
 
-		final TableColumn columnS7DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnS7DisponierteTransporte.setToolTipText("Einsatzgebiet verlassen");
-		columnS7DisponierteTransporte.setWidth(40);
-		columnS7DisponierteTransporte.setText("S7");
+		final TableColumn s7DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		s7DisponierteTransporte.setToolTipText("Einsatzgebiet verlassen");
+		s7DisponierteTransporte.setWidth(40);
+		s7DisponierteTransporte.setText("S7");
 
-		final TableColumn columnS8DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnS8DisponierteTransporte.setToolTipText("Zurück im Einsatzgebiet");
-		columnS8DisponierteTransporte.setWidth(34);
-		columnS8DisponierteTransporte.setText("S8");
+		final TableColumn s8DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		s8DisponierteTransporte.setToolTipText("Zurück im Einsatzgebiet");
+		s8DisponierteTransporte.setWidth(34);
+		s8DisponierteTransporte.setText("S8");
 
-		final TableColumn columnS9DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnS9DisponierteTransporte.setToolTipText("Sonderstatus");
-		columnS9DisponierteTransporte.setWidth(34);
-		columnS9DisponierteTransporte.setText("S9");
+		final TableColumn s9DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		s9DisponierteTransporte.setToolTipText("Sonderstatus");
+		s9DisponierteTransporte.setWidth(34);
+		s9DisponierteTransporte.setText("S9");
 
-		final TableColumn columnFzgDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnFzgDisponierteTransporte.setToolTipText("Fahrzeugkennzeichnung");
-		columnFzgDisponierteTransporte.setWidth(52);
-		columnFzgDisponierteTransporte.setText("Fzg");
+		final TableColumn fzgDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		fzgDisponierteTransporte.setToolTipText("Fahrzeugkennzeichnung");
+		fzgDisponierteTransporte.setWidth(52);
+		fzgDisponierteTransporte.setText("Fzg");
 
-		final TableColumn columnTDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnTDisponierteTransporte.setToolTipText("Transportart");
-		columnTDisponierteTransporte.setWidth(53);
-		columnTDisponierteTransporte.setText("T");
+		final TableColumn taDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		taDisponierteTransporte.setToolTipText("Transportart");
+		taDisponierteTransporte.setWidth(53);
+		taDisponierteTransporte.setText("T");
 		
 
 		final TableColumn columnErkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -240,6 +243,86 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		
 		
 		
+		/** make columns sort able*/
+		Listener sortListener = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewer.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewer.getTable().getSortDirection();
+				//revert the sort order if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewer.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == prioritaetDisponierteTransporte) 
+					sortIdentifier = TransportSorter.PRIORITY_SORTER;
+				if (currentColumn == transportNummerDisponierteTransporte) 
+					sortIdentifier = TransportSorter.TNR_SORTER;
+				if (currentColumn == fzgDisponierteTransporte) 
+					sortIdentifier = TransportSorter.VEHICLE_SORTER;
+				if (currentColumn == terminDisponierteTransporte)
+					sortIdentifier = TransportSorter.TERM_SORTER;
+				if (currentColumn == transportVonDisponierteTransporte)
+					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
+				if(currentColumn == patientDisponierteTransporte)
+					sortIdentifier = TransportSorter.PATIENT_SORTER;
+				if(currentColumn == transportNachDisponierteTransporte)
+					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
+				if(currentColumn == taDisponierteTransporte)
+					sortIdentifier = TransportSorter.TA_SORTER;
+				if(currentColumn == aeDisponierteTransporte)
+					sortIdentifier = TransportSorter.AE_SORTER;
+				if(currentColumn == s1DisponierteTransporte)
+					sortIdentifier = TransportSorter.S1_SORTER;
+				if(currentColumn == s2DisponierteTransporte)
+					sortIdentifier = TransportSorter.S2_SORTER;
+				if(currentColumn == s3DisponierteTransporte)
+					sortIdentifier = TransportSorter.S3_SORTER;
+				if(currentColumn == s4DisponierteTransporte)
+					sortIdentifier = TransportSorter.S4_SORTER;
+				if(currentColumn == s7DisponierteTransporte)
+					sortIdentifier = TransportSorter.S7_SORTER;
+				if(currentColumn == s8DisponierteTransporte)
+					sortIdentifier = TransportSorter.S8_SORTER;
+				if(currentColumn == s9DisponierteTransporte)
+					sortIdentifier = TransportSorter.S9_SORTER;
+				
+				//apply the filter
+				viewer.getTable().setSortDirection(dir);
+				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
+			}
+		};
+		
+		//attach the listener
+		prioritaetDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		transportNummerDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		fzgDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		terminDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		transportVonDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		patientDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		transportNachDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		taDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		aeDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		s1DisponierteTransporte.addListener(SWT.Selection, sortListener);
+		s2DisponierteTransporte.addListener(SWT.Selection, sortListener);
+		s3DisponierteTransporte.addListener(SWT.Selection, sortListener);
+		s4DisponierteTransporte.addListener(SWT.Selection, sortListener);
+		s7DisponierteTransporte.addListener(SWT.Selection, sortListener);
+		s8DisponierteTransporte.addListener(SWT.Selection, sortListener);
+		s9DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		
 		//create the actions
 		makeActions();
@@ -248,8 +331,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		
 		
 		
-		
-		/** make columns sort able*/
+	
 
 		
 		
