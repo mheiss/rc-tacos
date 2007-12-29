@@ -1,6 +1,8 @@
 
 package at.rc.tacos.client.view.sorterAndTooltip;
 
+import java.text.SimpleDateFormat;
+
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -72,7 +74,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 	{		
 		//get the selected transport
 		Composite composite = createToolTipContentAreaComposite(parent);	
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		
 		//notifying
 		if (transport.isFirebrigadeAlarming())
@@ -124,10 +126,12 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		
 		
 		//planned times
-		if(!(transport.getPlannedStartOfTransport() != 0 || transport.getPlannedTimeAtPatient() != 0 || transport.getAppointmentTimeAtDestination() != 0))
+		if((transport.getPlannedStartOfTransport() != 0 || transport.getPlannedTimeAtPatient() != 0 || transport.getAppointmentTimeAtDestination() != 0))
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
-			title = "Abfahrt: " +transport.getPlannedStartOfTransport() +" Bei Patient: " +transport.getPlannedTimeAtPatient() +" Termin: " +transport.getAppointmentTimeAtDestination();
+			title = "Abfahrt: " +sdf.format(transport.getPlannedStartOfTransport()) 
+			+" Bei Patient: " +sdf.format(transport.getPlannedTimeAtPatient())
+			+" Termin: " +sdf.format(transport.getAppointmentTimeAtDestination());
 			addIconAndLabel(composite,image,title);
 		}
 		
