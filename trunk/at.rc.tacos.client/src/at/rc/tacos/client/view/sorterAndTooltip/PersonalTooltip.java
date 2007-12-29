@@ -21,6 +21,9 @@ import at.rc.tacos.model.RosterEntry;
  */
 public class PersonalTooltip extends ToolTip 
 {	
+	//properties
+	private RosterEntry rosterEntry;
+	
 	/**
 	 * Creates a new tooltip for the personal view
 	 * @param control the control for the tooltip to show
@@ -39,7 +42,14 @@ public class PersonalTooltip extends ToolTip
 	@Override
 	protected boolean shouldCreateToolTip(Event event) 
 	{
-		return true;
+		//Get the element
+		Widget hoverWidget = getTipWidget(event);
+		rosterEntry = getTaskListElement(hoverWidget);
+		//assert valid
+		if (rosterEntry != null)
+			return true;
+		//no valid element selected
+		return false;
 	}
 
 	@Override
@@ -47,18 +57,16 @@ public class PersonalTooltip extends ToolTip
 	{		
 		//get the selected roster entry
 		Composite composite = createToolTipContentAreaComposite(parent);	
-		Widget hoverWidget = getTipWidget(event);
-		RosterEntry entry = getTaskListElement(hoverWidget);
 		
 		//the name of the staff member
 		Image image = ImageFactory.getInstance().getRegisteredImage("image.personal.user");
-		String title = entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName();
+		String title = rosterEntry.getStaffMember().getFirstName() + " " + rosterEntry.getStaffMember().getLastName();
 		addIconAndLabel(composite, image, title);
 		//the notes
-		if(entry.hasNotes())
+		if(rosterEntry.hasNotes())
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
-			title = entry.getRosterNotes();
+			title = rosterEntry.getRosterNotes();
 			addIconAndLabel(composite,image,title);
 		}
 
