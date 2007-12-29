@@ -84,48 +84,48 @@ public class Timetable {
 
 				for(int j=1;j<=7;j++){
 					System.out.println("ROUND: "+j);
-				for(AbstractMessage message:rosterList)
-				{
-					
-					RosterEntry entry = (RosterEntry)message;
-					timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) + " - " + entry.getStaffMember().getPrimaryLocation() + "</b></div>";
-					if(entry.isSplitEntry()){
-						date = format.format(new Date(entry.getPlannedStartOfWork()));
+					for(AbstractMessage message:rosterList)
+					{
+						
+						RosterEntry entry = (RosterEntry)message;
+						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) + " - " + entry.getStaffMember().getPrimaryLocation() + "</b></div>";
+						if(entry.isSplitEntry()){
+							date = format.format(new Date(entry.getPlannedStartOfWork()));
+							
+						}
+						else{
+							date = formatHour.format(new Date(entry.getPlannedStartOfWork()));	
+						}
+	/*
+	 * info = "<table><tr><td colspan='2'>INFORMATION</td></tr>" +
+									"<tr><td width='40%'>Name: <b></td><td width='60%'>"+ entry.getStaffMember().getUserName()+"</b></td></tr>" +
+									"<tr><td width='40%'>Dienst als: <b></td><td width='60%'>"+ entry.getJob() + "</b></td></tr>" +
+									"<tr><td width='40%'>Dienstdatum: </td><td width='60%'>" + format.format(new Date(entry.getPlannedStartOfWork())) + "</td></tr>" +
+									"<tr><td width='40%'>Dienstzeit: </td><td width='60%'>" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "</td></tr>" +
+									"<tr><td width='40%'>Ortstelle: </td><td width='60%'>" + entry.getStation() + "</td></tr>" +
+									"<tr><td width='40%'>angestellt als: </td><td width='60%'>"+entry.getServicetype()+"</td></tr></table>";
+							
+	 */
+						//if(entry.getStation().equalsIgnoreCase(getPrimaryLocation())){
+						//if(entry.getStation().equalsIgnoreCase("Bruck - Kapfenberg")){
+							
+							zaehle++;
+							info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
+									"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob() + "<br /></b>" +
+									"Dienstdatum:&nbsp;&nbsp;" + format.format(new Date(entry.getPlannedStartOfWork())) + "<br />" +
+									"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
+									"Ortstelle:&nbsp;&nbsp;" + entry.getStation() + "<br />" +
+									"angestellt als:&nbsp;&nbsp;"+entry.getServicetype()+"<br />";
+							
+							tabentry+= 		
+								"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
+								this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
+								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
+								"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a></div>";
+						//}
+						
 						
 					}
-					else{
-						date = formatHour.format(new Date(entry.getPlannedStartOfWork()));	
-					}
-/*
- * info = "<table><tr><td colspan='2'>INFORMATION</td></tr>" +
-								"<tr><td width='40%'>Name: <b></td><td width='60%'>"+ entry.getStaffMember().getUserName()+"</b></td></tr>" +
-								"<tr><td width='40%'>Dienst als: <b></td><td width='60%'>"+ entry.getJob() + "</b></td></tr>" +
-								"<tr><td width='40%'>Dienstdatum: </td><td width='60%'>" + format.format(new Date(entry.getPlannedStartOfWork())) + "</td></tr>" +
-								"<tr><td width='40%'>Dienstzeit: </td><td width='60%'>" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "</td></tr>" +
-								"<tr><td width='40%'>Ortstelle: </td><td width='60%'>" + entry.getStation() + "</td></tr>" +
-								"<tr><td width='40%'>angestellt als: </td><td width='60%'>"+entry.getServicetype()+"</td></tr></table>";
-						
- */
-					//if(entry.getStation().equalsIgnoreCase(getPrimaryLocation())){
-					//if(entry.getStation().equalsIgnoreCase("Bruck - Kapfenberg")){
-						
-						zaehle++;
-						info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
-								"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob() + "<br /></b>" +
-								"Dienstdatum:&nbsp;&nbsp;" + format.format(new Date(entry.getPlannedStartOfWork())) + "<br />" +
-								"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
-								"Ortstelle:&nbsp;&nbsp;" + entry.getStation() + "<br />" +
-								"angestellt als:&nbsp;&nbsp;"+entry.getServicetype()+"<br />";
-						
-						tabentry+= 		
-							"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
-							this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
-							"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-							"px; float:left;  border-width:1px; border-style:solid; border-color:#E5E4E0; background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a></div>";
-					//}
-					
-					
-				}
 				}
 				tabentry+="</div>";
 				timetable+=timetableDateHead+TimeList+tabentry;
