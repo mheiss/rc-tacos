@@ -41,6 +41,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 	public final static String RESP_STATION_SORTER = "zustortsstelle";
 	public final static String AUFG_SORTER = "aufgenommen";
 	public final static String TA_SORTER = "t";
+	public final static String RT_SORTER = "rt";
 	
 	// sort the data based on column and direction
 	
@@ -363,10 +364,12 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the notes of transport
         if (column == TA_SORTER) 
         {
-        	String n1 = transport1.getDiseaseNotes();
-        	String n2 = transport2.getDiseaseNotes();
+        	String n1 = transport1.getKindOfTransport();
+        	String n2 = transport2.getKindOfTransport();
         	returnValue = n1.compareTo(n2);
         }
+        
+        
 
         
         if (this.dir == SWT.DOWN) {
