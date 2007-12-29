@@ -5,8 +5,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
@@ -26,6 +28,7 @@ public class ModelFactory
     private VehicleManager vehicleList;
     private StaffManager staffList;
     private TransportManager transportList;
+    private DialysisTransportManager dialysisList;
     
     /**
      * Private class constructor.
@@ -37,6 +40,7 @@ public class ModelFactory
         vehicleList = new VehicleManager();
         staffList = new StaffManager();
         transportList = new TransportManager();
+        dialysisList = new DialysisTransportManager();
     }
     
     /**
@@ -65,6 +69,8 @@ public class ModelFactory
                 net.requestListing(VehicleDetail.ID, null);
                 net.requestListing(RosterEntry.ID, null);
                 net.requestListing(StaffMember.ID, null);
+                net.requestListing(Transport.ID, null);
+                net.requestListing(DialysisPatient.ID, null);
                 return Status.OK_STATUS;
             }
         };
@@ -118,5 +124,14 @@ public class ModelFactory
     public TransportManager getTransportManager()
     {
         return transportList;
+    }
+    
+    /**
+     * Returns the manager responsible for the dialysis transports
+     * @return the dialysis transport manager
+     */
+    public DialysisTransportManager getDialysisTransportManager()
+    {
+        return dialysisList;
     }
 }
