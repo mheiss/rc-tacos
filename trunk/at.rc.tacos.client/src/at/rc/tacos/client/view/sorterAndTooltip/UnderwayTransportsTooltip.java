@@ -74,6 +74,10 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		//get the selected transport
 		Composite composite = createToolTipContentAreaComposite(parent);	
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		String plannedStartTime;
+		String plannedTimeAtPatient;
+		String term;
+		String received;
 		
 		//notifying
 		System.out.println("UnderwayTransportsTooltip, createToolTipContentArea, firebrigade: " +transport.isFirebrigadeAlarming());
@@ -128,12 +132,24 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		
 
 		//planned times
-		if((transport.getPlannedStartOfTransport() != 0 || transport.getPlannedTimeAtPatient() != 0 || transport.getAppointmentTimeAtDestination() != 0))
+		if(transport.getPlannedStartOfTransport()!= 0)
+			plannedStartTime = sdf.format(transport.getPlannedStartOfTransport());
+			else
+				plannedStartTime = "";
+		if(transport.getPlannedTimeAtPatient() != 0)
+			plannedTimeAtPatient = sdf.format(transport.getPlannedTimeAtPatient());
+			else 
+			plannedTimeAtPatient = "";
+		if(transport.getAppointmentTimeAtDestination() != 0)
+			term = sdf.format(transport.getAppointmentTimeAtDestination());
+		else
+			term = "";
+		if((!plannedStartTime.equalsIgnoreCase("") || !plannedTimeAtPatient.equalsIgnoreCase("") || !term.equalsIgnoreCase("")))
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
-			title = "Abfahrt: " +sdf.format(transport.getPlannedStartOfTransport()) 
-			+" Bei Patient: " +sdf.format(transport.getPlannedTimeAtPatient())
-			+" Termin: " +sdf.format(transport.getAppointmentTimeAtDestination());
+			title = "Abfahrt: " +plannedStartTime
+			+" Bei Patient: " +plannedTimeAtPatient
+			+" Termin: " +term;
 			addIconAndLabel(composite,image,title);
 		}
 		
