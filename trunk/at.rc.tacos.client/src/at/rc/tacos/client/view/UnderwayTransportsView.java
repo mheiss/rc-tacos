@@ -105,15 +105,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		final Composite composite = formDisp.getBody();
 		
 
-//		final SashForm sashForm = new SashForm(composite, SWT.VERTICAL);
-////		dispositionTabItem.setControl(sashForm);
-//		sashForm.setLayout(new FillLayout());
-//
-//		final Group disponierteTransporteGroup = new Group(sashForm, SWT.NONE);
-//		disponierteTransporteGroup.setLayout(new FillLayout());
-//		disponierteTransporteGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-//		disponierteTransporteGroup.setText("Disponierte Transporte");
-
 		/** tabFolder Selection Listener not needed? */
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
@@ -236,10 +227,9 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		taDisponierteTransporte.setWidth(53);
 		taDisponierteTransporte.setText("T");
 		
-
-		final TableColumn columnErkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		columnErkrankungVerletzungDisponierteTransporte.setWidth(146);
-		columnErkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
+		final TableColumn erkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
+		erkrankungVerletzungDisponierteTransporte.setWidth(146);
+		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 		
 		
 		
@@ -299,6 +289,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 					sortIdentifier = TransportSorter.S8_SORTER;
 				if(currentColumn == s9DisponierteTransporte)
 					sortIdentifier = TransportSorter.S9_SORTER;
+				if(currentColumn == erkrankungVerletzungDisponierteTransporte)
+					sortIdentifier = TransportSorter.KIND_OF_ILLNESS_SORTER;
 				
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
