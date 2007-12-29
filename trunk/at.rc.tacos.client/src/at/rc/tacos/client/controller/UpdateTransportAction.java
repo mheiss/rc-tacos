@@ -2,6 +2,7 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
@@ -12,6 +13,7 @@ public class UpdateTransportAction extends Action
 	public UpdateTransportAction(Transport transport)
 	{
 		this.transport = transport;
+		ModelFactory.getInstance().getTransportManager().update(transport);//TODO -
 	}
 
 	@Override
