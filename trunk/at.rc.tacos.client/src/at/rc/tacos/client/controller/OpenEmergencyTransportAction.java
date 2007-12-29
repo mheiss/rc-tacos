@@ -35,7 +35,7 @@ public class OpenEmergencyTransportAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.folderred");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.folderblueg");
     }
     
     /**
