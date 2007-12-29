@@ -24,6 +24,8 @@ import at.rc.tacos.model.Transport;
  */
 public class JournalViewTooltip extends ToolTip implements ITransportStatus
 {	
+	//properties
+	private Transport transport;
 	
 	private String backtransport = "";
 	private String police = "";
@@ -47,23 +49,30 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 	}
 	
 	/**
-	 * Returns whether or not the tool tip should be created.
+	 * Returns whether or not the tooltip should be created.
 	 * @param event the triggered event
-	 * @return true if the tool atip should be created
+	 * @return true if the tooltip should be created
 	 */
 	@Override
 	protected boolean shouldCreateToolTip(Event event) 
 	{
-		return true;
+		//Get the element
+		Widget hoverWidget = getTipWidget(event);
+		transport = getTaskListElement(hoverWidget);
+		//assert valid
+		if (transport != null)
+			return true;
+		//no valid element selected
+		return false;
 	}
+	
 
 	@Override
 	protected Composite createToolTipContentArea(Event event, Composite parent) 
 	{		
 		//get the selected transport
 		Composite composite = createToolTipContentAreaComposite(parent);	
-		Widget hoverWidget = getTipWidget(event);
-		Transport transport = getTaskListElement(hoverWidget);
+		
 		
 		//notifying
 		if (transport.isFirebrigadeAlarming())
