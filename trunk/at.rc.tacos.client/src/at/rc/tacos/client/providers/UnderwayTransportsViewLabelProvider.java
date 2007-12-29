@@ -1,13 +1,21 @@
 package at.rc.tacos.client.providers;
 
 
+import java.text.SimpleDateFormat;
+
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
-public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider
+import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.StatusMessages;
+
+public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus
 {
     //define the columns
     public static final int COLUMN_LOCK = 0;
@@ -35,12 +43,135 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
-        return null;
+    	Transport transport = (Transport)element;
+        //determine the colum and return a image if needed
+        switch(columnIndex)
+        {
+		    case COLUMN_PATIENT:
+		    	if(transport.isAccompanyingPerson())
+		    		return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
+		    	else return null;
+		    case COLUMN_TRANSPORT_TO:
+		    	if(transport.isLongDistanceTrip())
+		    			return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.longtrip");
+		    	else return null;
+		       
+		    default: return null;
+        }     
     }
 
     @Override
     public String getColumnText(Object element, int columnIndex) 
     {
+    	Transport transport = (Transport)element;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String street;
+        String city;
+        
+        
+        switch(columnIndex)
+        {
+	        case COLUMN_LOCK:return null;
+	        case COLUMN_PRIORITY:transport.getTransportPriority();
+	        case COLUMN_TRANSPORTNUMBER:transport.getTransportNumber();
+	        case COLUMN_TERM:if (transport.getAppointmentTimeAtDestination() != 0)
+        		return sdf.format(transport.getAppointmentTimeAtDestination());
+        	else return "";
+	        case COLUMN_TRANSPORT_FROM:return transport.getFromStreet() +"/" +transport.getFromCity();
+	        case COLUMN_PATIENT:
+	        	if(transport.getPatient() != null)
+        			return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
+        	else return "";
+	        case COLUMN_TRANSPORT_TO:
+	        	if(transport.getToStreet() == null)
+	        		street = "";
+	        	else street = transport.getToStreet();
+	        	if(transport.getToCity() == null)
+	        		city = "";
+	        	else city = transport.getToCity();
+	        	return street +"/" +city;
+	        case COLUMN_AE:
+	        	if(transport.getStatusMessages().size()>0)
+	        	{
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	else 
+		        		return "";
+	        	}
+	        	else return "";
+	        case COLUMN_S1:
+	        	if(transport.getStatusMessages().size()>0)
+	        	{
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getStatus() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	else 
+		        		return "";
+	        	}
+	        	else return "";
+	        case COLUMN_S2:
+	        	if(transport.getStatusMessages().size()>0)
+	        	{
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getStatus() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	else 
+		        		return "";
+	        	}
+	        	else return "";
+	        case COLUMN_S3: 
+	        	if(transport.getStatusMessages().size()>0)
+	        	{
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getStatus() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	else 
+		        		return "";
+	        	}
+	        	else return "";
+	        case COLUMN_S4: 
+	        	if(transport.getStatusMessages().size()>0)
+	        	{
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getStatus() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	else 
+		        		return "";
+	        	}
+	        	else return "";
+	        case COLUMN_S7: 
+	        	if(transport.getStatusMessages().size()>0)
+	        	{
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getStatus() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	else 
+		        		return "";
+	        	}
+	        	else return "";
+	        case COLUMN_S8: 
+	        	if(transport.getStatusMessages().size()>0)
+	        	{
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getStatus() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	else 
+		        		return "";
+	        	}
+	        	else return "";
+	        case COLUMN_S9:
+	        	if(transport.getStatusMessages().size()>0)
+	        	{
+		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getStatus() != 0)
+		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus());
+		        	else 
+		        		return "";
+	        	}
+	        	else return "";
+	        case COLUMN_FZG: 
+	        	if(transport.getVehicleDetail() != null)
+	        	{
+	        		return transport.getVehicleDetail().getVehicleName();
+	        	}
+	        	else return "";
+	        case COLUMN_T: return transport.getKindOfTransport();
+	        case COLUMN_ERKR_VERL:return transport.getKindOfIllness();
+        }
+        
         return null;
         
     }
@@ -61,9 +192,116 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     public void removeListener(ILabelProviderListener arg0)  { }
 
 	@Override
-	public Color getBackground(Object element, int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+	public Color getBackground(Object element, int columnIndex) 
+	{
+		Transport transport = (Transport)element;
+		 switch(columnIndex)
+	        {
+				case COLUMN_LOCK:return null;
+			    case COLUMN_PRIORITY:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_TRANSPORTNUMBER:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_TERM:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_TRANSPORT_FROM:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_PATIENT:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_TRANSPORT_TO:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_AE:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_S1:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_S2:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_S3: 
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_S4: 
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_S7: 
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_S8: 
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_S9:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_FZG: 
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;  	
+			    case COLUMN_T: 
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    case COLUMN_ERKR_VERL:
+			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	        			return CustomColors.BACKGROUND_RED;
+			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+	        			return CustomColors.BACKGROUND_BLUE;
+			    	else return null;
+			    default: return null;
+	        }
 	}
 
 	@Override
