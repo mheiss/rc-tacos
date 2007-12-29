@@ -40,7 +40,7 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.view.sorterAndTooltip.UnderwayTransportsTooltip;
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.Transport;
 
 /**
  * Main view, provides an overview about the transports
@@ -106,6 +106,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		
 
 		/** tabFolder Selection Listener not needed? */
+		
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
@@ -376,10 +377,10 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		//get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 			
-		//cast to a RosterEntry
-		RosterEntry entry = (RosterEntry)firstSelectedObject;
+		//cast to a transport
+		Transport transport = (Transport)firstSelectedObject;
 		
-		if(entry == null)
+		if(transport == null)
 			return;
 		
 		//add the actions
