@@ -35,7 +35,7 @@ public class OpenTransportAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.folderblue");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.folderyellowg");
     }
     
     /**
