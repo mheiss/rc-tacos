@@ -1031,15 +1031,43 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	{
 		// the viewer represents simple model. refresh should be enough.
 		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
+		{
 			this.viewerLeoben.refresh();
+			this.viewerBruck.refresh();
+			this.viewerGraz.refresh();
+			this.viewerKapfenberg.refresh();
+			this.viewerMariazell.refresh();
+			this.viewerWien.refresh();
+		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_REMOVE".equals(evt.getPropertyName())) 
+		{
 			this.viewerLeoben.refresh();
+			this.viewerBruck.refresh();
+			this.viewerGraz.refresh();
+			this.viewerKapfenberg.refresh();
+			this.viewerMariazell.refresh();
+			this.viewerWien.refresh();
+		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_UPDATE".equals(evt.getPropertyName())) 
+		{
 			this.viewerLeoben.refresh();
+			this.viewerBruck.refresh();
+			this.viewerGraz.refresh();
+			this.viewerKapfenberg.refresh();
+			this.viewerMariazell.refresh();
+			this.viewerWien.refresh();
+		}
 		// event on deletion --> also just refresh
 		if ("TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
+		{
 			this.viewerLeoben.refresh();
+			this.viewerBruck.refresh();
+			this.viewerGraz.refresh();
+			this.viewerKapfenberg.refresh();
+			this.viewerMariazell.refresh();
+			this.viewerWien.refresh();
+		}
 	}
 }
