@@ -1,6 +1,8 @@
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
+
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.*;
 
@@ -20,6 +22,8 @@ public class CreateTransportAction extends Action
     public CreateTransportAction(Transport transport) 
     {
         this.transport = transport;
+        ModelFactory.getInstance().getTransportManager().add(transport);//TODO - 
+
     }
 
     public void run() 
