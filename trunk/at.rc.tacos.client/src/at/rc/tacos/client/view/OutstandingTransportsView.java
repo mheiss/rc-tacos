@@ -364,6 +364,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		// the viewer represents simple model. refresh should be enough.
 		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
 		{ 
+			System.out.println("OutstandingTransportsView, probertychange........ TRANSPORT_ADD");
 			this.viewerOffTrans.refresh();
 		}
 		// event on deletion --> also just refresh
