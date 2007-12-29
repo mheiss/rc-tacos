@@ -28,7 +28,7 @@ public class DialysisPatient extends AbstractMessage
     private String fromStreet;
     private String fromCity;
     private String insurance;
-    private String stationary;
+    private boolean stationary;
     private String kindOfTransport;
 
     /**
@@ -404,7 +404,7 @@ public class DialysisPatient extends AbstractMessage
     /**
      * @return the stationary
      */
-    public String getStationary() 
+    public boolean isStationary() 
     {
         return stationary;
     }
@@ -412,10 +412,8 @@ public class DialysisPatient extends AbstractMessage
     /**
      * @param stationary the stationary to set
      */
-    public void setStationary(String stationary) 
+    public void setStationary(boolean stationary) 
     {
-        if(stationary == null)
-            throw new IllegalArgumentException("stationary cannot be null");
         this.stationary = stationary;
 
     }
