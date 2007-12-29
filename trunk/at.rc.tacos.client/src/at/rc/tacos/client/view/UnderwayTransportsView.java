@@ -7,6 +7,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.SubMenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -32,6 +33,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.EditTransportAction;
+import at.rc.tacos.client.controller.EditTransportStatusAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
@@ -66,6 +68,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private SetTransportStatusAction setTransportStatusS7Action;
 	private SetTransportStatusAction setTransportStatusS8Action;
 	private SetTransportStatusAction setTransportStatusS9Action;
+	private EditTransportStatusAction editTransportStatusAction;
 	
 	private EditTransportAction editTransportAction;
 
@@ -347,6 +350,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		setTransportStatusS7Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, "S7 Verlässt Einsatzgebiet");
 		setTransportStatusS8Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, "S8 Wieder im Einsatzgebiet");
 		setTransportStatusS9Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_OTHER, "S9 Sonderstatus");
+		editTransportStatusAction = new EditTransportStatusAction(this.viewer);
 		
 		editTransportAction = new EditTransportAction(this.viewer);
 	}
@@ -358,14 +362,28 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	{
 		MenuManager menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
+		menuManager.addMenuListener(new IMenuListener() 
+		{
+			public void menuAboutToShow(IMenuManager manager) 
+			{
 				fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
+		
+		
+//		SubMenuManager subMenuManager = new SubMenuManager(menuManager);
+//		subMenuManager.setRemoveAllWhenShown(true);
+//		subMenuManager.addMenuListener(new IMenuListener()
+//		{
+//			public void menuAboutToShow(IMenuManager manager)
+//			{
+////				fill
+//			}
+//		});
+		
 	}
 	
 	
@@ -393,6 +411,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(setTransportStatusS7Action);
 		manager.add(setTransportStatusS8Action);
 		manager.add(setTransportStatusS9Action);
+		manager.add(new Separator());
+		manager.add(editTransportStatusAction);
 		manager.add(new Separator());
 		manager.add(editTransportAction);
 		
