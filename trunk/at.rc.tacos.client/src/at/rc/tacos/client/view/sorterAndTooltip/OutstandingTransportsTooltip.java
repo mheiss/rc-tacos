@@ -126,14 +126,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
 		
-//		if(transport.isAccompanyingPerson())
-//		{
-//			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
-//			title = "Begleitperson";
-//			addIconAndLabel(composite,image,title);
-//		}
-//		--> ist in Spalte direkt
-		
+
 		
 		//the notes
 		if(transport.hasNotes())
