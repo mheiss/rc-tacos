@@ -959,15 +959,26 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		
 		
 		
-		makeActionsLeoben(viewerLeoben);
+		makeActions(viewerLeoben);
+		makeActions(viewerGraz);
+		makeActions(viewerWien);
+		makeActions(viewerMariazell);
+		makeActions(viewerBruck);
+		makeActions(viewerKapfenberg);
+		
 		hookContextMenu(viewerLeoben);
+		hookContextMenu(viewerGraz);
+		hookContextMenu(viewerWien);
+		hookContextMenu(viewerMariazell);
+		hookContextMenu(viewerBruck);
+		hookContextMenu(viewerKapfenberg);
 		
 	}
 	
 	/**
 	 * Creates the needed actions
 	 */
-	private void makeActionsLeoben(TableViewer viewer)
+	private void makeActions(TableViewer viewer)
 	{		
 		
 		editTransportAction = new EditTransportAction(viewer);
@@ -991,10 +1002,6 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		Menu menuLeoben = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menuLeoben);
 		getSite().registerContextMenu(menuManager, viewer);
-		
-//		Menu menuGraz = menuManager.createContextMenu(viewerGraz.getControl());
-//		viewerGraz.getControl().setMenu(menuGraz);
-//		getSite().registerContextMenu(menuManager, viewerGraz);
 	}
 	
 	/**
@@ -1016,7 +1023,6 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsAction);
 		manager.add(cancelTransportAction);
-	
 	}
 	
 	
