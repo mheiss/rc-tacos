@@ -259,7 +259,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
-				String sortIdentifier = null;
+				String sortIdentifier = null; 
 				if (currentColumn == prioritaetDisponierteTransporte) 
 					sortIdentifier = TransportSorter.PRIORITY_SORTER;
 				if (currentColumn == transportNummerDisponierteTransporte) 
