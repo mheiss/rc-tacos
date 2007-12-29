@@ -639,10 +639,6 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 				if(currentColumn == tableColumnTA_5)
 					sortIdentifier = TransportSorter.TA_SORTER;
 				
-				
-
-
-				
 				//apply the filter
 				viewerLeoben.getTable().setSortDirection(dir);
 				viewerLeoben.setSorter(new TransportSorter(sortIdentifier,dir));
@@ -983,7 +979,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		
 		editTransportAction = new EditTransportAction(viewer);
 		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportAction = new CancelTransportAction(viewer);
+		cancelTransportAction = new CancelTransportAction(viewerBruck);//TODO change!!!!!!!!!!!!1
 	}
 	
 	/**
