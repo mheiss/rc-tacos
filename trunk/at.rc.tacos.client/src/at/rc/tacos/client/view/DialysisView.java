@@ -86,13 +86,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	//the actions for the context menu
 	//TODO - get working ;-)
 
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * Constructs a new outstanding transports view.
 	 */
@@ -122,7 +116,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
-		form.setText("Offene Transporte");
+		form.setText("Dialysetransporte");
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new FillLayout());
 
