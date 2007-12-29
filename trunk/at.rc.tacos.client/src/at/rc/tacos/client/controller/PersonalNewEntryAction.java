@@ -35,7 +35,7 @@ public class PersonalNewEntryAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.calendar");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.addrosterentry");
     }
     
     /**
