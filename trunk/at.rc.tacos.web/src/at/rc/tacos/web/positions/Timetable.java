@@ -82,6 +82,8 @@ public class Timetable {
 	
 				tabentry+="<div style='float:left; margin-left:5px; border-width:1px; border-style:solid; border-color:red; width:13.5%; height:400px; padding:5px; ' id='MainDivDay'>";
 
+				for(int j=1;j<=7;j++){
+					System.out.println("ROUND: "+j);
 				for(AbstractMessage message:rosterList)
 				{
 					
@@ -124,7 +126,7 @@ public class Timetable {
 					
 					
 				}
-				
+				}
 				tabentry+="</div>";
 				timetable+=timetableDateHead+TimeList+tabentry;
 				tabentry="";
