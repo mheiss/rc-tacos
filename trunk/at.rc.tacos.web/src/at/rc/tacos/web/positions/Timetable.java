@@ -153,19 +153,12 @@ public class Timetable extends HttpServlet {
 
 	private int calculateStartForEntry(String begin){
 		int startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue());
-		if(!(startPos<5)){
+		if(startPos<5){
+			startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())+19;
+		}else{
 			startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())-5;
 		}
-		int retval = 0;
-		System.out.println("--> begin: "+begin);
-		System.out.println("--> start: "+startPos);
-		if(24<startPos){
-			retval = (24+startPos)*15;
-		}else{
-			retval = startPos*15;
-		}
-		System.out.println("--> : "+retval);
-		return retval;
+		return startPos*15;
 	}
 	
 
