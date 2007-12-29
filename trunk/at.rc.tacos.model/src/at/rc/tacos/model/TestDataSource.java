@@ -119,7 +119,7 @@ public class TestDataSource
         t1.setCallerDetail(notifierList.get(0));
         t1.setVehicleDetail(vehicleList.get(0));
         t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
-        t1.setDirection(IDirectness.TOWARDS_DISTRICT);
+        t1.setDirection(IDirectness.TOWARDS_BRUCK);
         //second transport
         Transport t2 = new Transport();
         t2.setTransportId(1);
