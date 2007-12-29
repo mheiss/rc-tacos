@@ -156,12 +156,10 @@ public class Timetable extends HttpServlet {
 		int retval = 0;
 		System.out.println("--> start: "+startPos);
 		if(24>startPos){
-			//System.out.println("TRUE");
 			retval = (24+startPos)*15;
 		}else{
 			retval = startPos*15;
 		}
-		retval = startPos*15;
 		System.out.println("--> : "+retval);
 		return retval;
 	}
