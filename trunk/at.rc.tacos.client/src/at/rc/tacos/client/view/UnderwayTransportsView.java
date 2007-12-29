@@ -112,7 +112,9 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		viewer.setInput(ModelFactory.getInstance().getTransportManager());
 		viewer.getTable().setLinesVisible(true);
 		
-		/** Tooltip */
+		viewer.refresh();
+		
+		/** Tool tip */
 		tooltip = new UnderwayTransportsTooltip(viewer.getControl());
 		//show the tool tip when the selection has changed
 		
@@ -409,6 +411,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		// the viewer represents simple model. refresh should be enough.
 		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
 		{ 
+			System.out.println("UnderwayTransportsView, propertyChange, TRANSPORT_ADD");
 			this.viewer.refresh();
 		}
 		// event on deletion --> also just refresh
