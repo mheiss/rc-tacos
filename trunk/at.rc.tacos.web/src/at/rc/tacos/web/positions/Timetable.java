@@ -137,15 +137,13 @@ public class Timetable {
 		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
 		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
 		int retval = 0;
-		if(endPos>400){
-			endPos = 400;
-		}
+		
 		if(endPos<startPos){
 			retval = ((24+endPos)-startPos)*15;
 		}else{
 			retval = (endPos-startPos)*15;
 		}
-		System.out.println("ENDPOS: "+endPos);
+
 		return retval;
 	}
 
