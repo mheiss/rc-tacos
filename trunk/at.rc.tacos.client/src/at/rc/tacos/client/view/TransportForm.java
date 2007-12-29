@@ -704,7 +704,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 			public void widgetSelected(final SelectionEvent e) {
 			}
 		});
-		begleitpersonButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_BeglPerson.gif"));
+		begleitpersonButton.setImage(ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson"));
 
 		ruecktransportMoeglichButton = new Button(transportdatenGroup, SWT.CHECK);
 		final FormData fd_button_1 = new FormData();
@@ -900,7 +900,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_fernfahrtButton.right = new FormAttachment(0, 80);
 		fd_fernfahrtButton.left = new FormAttachment(0, 7);
 		fernfahrtButton.setLayoutData(fd_fernfahrtButton);
-		fernfahrtButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_Fernfahrt.gif"));
+		fernfahrtButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.fernfahrt"));
 		fernfahrtButton.setToolTipText("Fernfahrten sind lt. RKT deklariert");
 		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, fernfahrtButton, bezirkButton, grazButton, leobenButton, wienButton, mariazellButton});
 
@@ -1023,7 +1023,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_notarztButton.right = new FormAttachment(0, 92);
 		fd_notarztButton.left = new FormAttachment(0, 7);
 		notarztButton.setLayoutData(fd_notarztButton);
-		notarztButton.setImage(ImageFactory.getInstance().getRegisteredImage("toolbar.icon.docExt"));
+		notarztButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.notarzt"));
 		notarztButton.setToolTipText("Externer! Notarzt für diesen Transport alarmiert");
 
 		rthButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1034,7 +1034,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_rthButton.left = new FormAttachment(0, 7);
 		rthButton.setLayoutData(fd_rthButton);
 		rthButton.setToolTipText("Hubschrauber");
-		rthButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_Hubi.gif"));
+		rthButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.hubi"));
 
 		dfButton = new Button(planungGroup_1, SWT.CHECK);
 		final FormData fd_dfButton = new FormData();
@@ -1044,7 +1044,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_dfButton.left = new FormAttachment(0, 7);
 		dfButton.setLayoutData(fd_dfButton);
 		dfButton.setToolTipText("DF/Inspektionsdienst");
-		dfButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_Rotlicht.gif"));
+		dfButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.rotlicht"));
 
 		brkdtButton = new Button(planungGroup_1, SWT.CHECK);
 		final FormData fd_brkdtButton = new FormData();
@@ -1054,7 +1054,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_brkdtButton.left = new FormAttachment(0, 7);
 		brkdtButton.setLayoutData(fd_brkdtButton);
 		brkdtButton.setToolTipText("Bezirksrettungskommandant");
-		brkdtButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_Rotlicht.gif"));
+		brkdtButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.rotlicht"));
 
 		feuerwehrButton = new Button(planungGroup_1, SWT.CHECK);
 		final FormData fd_feuerwehrButton = new FormData();
@@ -1064,7 +1064,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_feuerwehrButton.left = new FormAttachment(0, 7);
 		feuerwehrButton.setLayoutData(fd_feuerwehrButton);
 		feuerwehrButton.setToolTipText("Feuerwehr");
-		feuerwehrButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_FF.gif"));
+		feuerwehrButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.feuerwehr"));
 		feuerwehrButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 			}
@@ -1089,7 +1089,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_polizeiButton.left = new FormAttachment(0, 7);
 		polizeiButton.setLayoutData(fd_polizeiButton);
 		polizeiButton.setToolTipText("Polizei");
-		polizeiButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_Polizei.gif"));
+		polizeiButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.polizei"));
 
 		bergrettungButton = new Button(planungGroup_1, SWT.CHECK);
 		final FormData fd_bergrettungButton = new FormData();
@@ -1098,7 +1098,7 @@ public class TransportForm implements IDirectness, IKindOfTransport
 		fd_bergrettungButton.right = new FormAttachment(0, 92);
 		fd_bergrettungButton.left = new FormAttachment(0, 7);
 		bergrettungButton.setLayoutData(fd_bergrettungButton);
-		bergrettungButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/O_Bergrettung.gif"));
+		bergrettungButton.setImage(ImageFactory.getInstance().getRegisteredImage("image.alarming.bergrettung"));
 		bergrettungButton.setToolTipText("Bergrettung");
 		bergrettungButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
