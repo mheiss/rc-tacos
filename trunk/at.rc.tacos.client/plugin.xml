@@ -96,6 +96,13 @@
             id="at.rc.tacos.client.view.journal_view">
       </view>
       
+      <view
+            name="PrebookingView"
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.PrebookingView"
+            id="at.rc.tacos.client.view.prebooking_view">
+      </view>
+      
       
    </extension>
    <extension
