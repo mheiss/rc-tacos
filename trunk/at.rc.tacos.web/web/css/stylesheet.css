@@ -304,7 +304,7 @@ TESt
 	float:left;
 	height:425px;
 	border-width:1px; border-style:solid; border-color:red;
-	width:13%;
+	/* width:13%; */
 }
 #mainDayContainerTL {
     float:left;
