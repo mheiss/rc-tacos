@@ -1,6 +1,8 @@
 package at.rc.tacos.web.web;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.common.Constants;
 
 public class StationController implements Controller {
 
@@ -27,8 +30,16 @@ public class StationController implements Controller {
 		//the action to do
 		String action = request.getParameter("action");
 
+		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
+		WebClient client = userSession.getConnection();
+		List<AbstractMessage> resultList;
+		
 		if("Breitenau".equalsIgnoreCase(action)) {
-
+			//get roster entries
+			QueryFilter filter = new QueryFilter(IFilterTypes.STATION_FILTER,Constants.STATION_BREITENAU);
+			resultList = client.sendListingRequest(RosterEntry.ID, filter);
+			if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
+				params.put("rosterList", resultList); 
 		}
 		if("Bruck".equalsIgnoreCase(action)) {
 
