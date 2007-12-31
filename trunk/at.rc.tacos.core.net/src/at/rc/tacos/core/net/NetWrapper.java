@@ -259,6 +259,7 @@ public class NetWrapper extends Plugin implements INetListener
 		//get the connection out of the session and send the message
 		MyClient connection = clientSession.getConnection();
 		connection.sendMessage(xmlMessage);
+		System.out.println("Sending: "+xmlMessage);
 	}
 
 	// LISTENER METHODS
