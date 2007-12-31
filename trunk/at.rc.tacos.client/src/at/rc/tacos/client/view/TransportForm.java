@@ -1734,6 +1734,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
                     newAction.run();//TODO
+                    System.out.println("Creating new transport: "+transport);
                 }
                 else
                 {

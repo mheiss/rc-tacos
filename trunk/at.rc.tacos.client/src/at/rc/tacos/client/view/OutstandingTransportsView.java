@@ -361,6 +361,8 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
+		System.out.println("Change");
+		
 		// the viewer represents simple model. refresh should be enough.
 		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
 		{ 

@@ -19,6 +19,7 @@ public class UpdateTransportAction extends Action
 	@Override
 	public void run()
 	{
-		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		ModelFactory.getInstance().getTransportManager().update(transport);
+		//NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
