@@ -10,7 +10,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.Patient;
 
 public class LoginEncoderTest
 {
@@ -22,6 +24,8 @@ public class LoginEncoderTest
     {
         XMLOutputFactory xmlof = XMLOutputFactory.newInstance();
         writer = xmlof.createXMLStreamWriter(new StringWriter());
+        //Register the needed additional encoders
+        ProtocolCodecFactory.getDefault().registerEncoder(Patient.ID,new PatientEncoder());
     }
     
     @Before

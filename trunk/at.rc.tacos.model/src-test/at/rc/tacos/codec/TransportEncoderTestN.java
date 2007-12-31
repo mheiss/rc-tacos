@@ -26,10 +26,8 @@ public class TransportEncoderTestN
     {
         XMLOutputFactory xmlof = XMLOutputFactory.newInstance();
         writer = xmlof.createXMLStreamWriter(new StringWriter());
-        
         //Register the needed additional encoders
        ProtocolCodecFactory.getDefault().registerEncoder(Patient.ID,new PatientEncoder());
-
     }
     
     @Before
