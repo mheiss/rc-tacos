@@ -29,6 +29,7 @@ public class CreateTransportAction extends Action
     public void run() 
     {
         //send the transport
-        NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
+    	ModelFactory.getInstance().getTransportManager().add(transport);
+        //NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
     }
 }
