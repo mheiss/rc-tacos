@@ -50,7 +50,7 @@ public class TacosServer
             //parse
             port = Integer.parseInt(strPort);
             //start the server
-            System.out.println("TACOS-Server Build: 31.12.2007");
+            System.out.println("TACOS-Server Build: 01.01.2008");
             System.out.println("Listening for client request at port: "+port);
             System.out.println("-------------------------------------------");
             TacosServer server = new TacosServer(port);
