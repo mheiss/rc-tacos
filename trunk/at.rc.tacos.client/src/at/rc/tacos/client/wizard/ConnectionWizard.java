@@ -14,6 +14,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.core.net.internal.ClientSession;
@@ -165,16 +166,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 			return false;
 		}
 		//check the login status
-		if(NetWrapper.getDefault().getClientSession().isAuthenticated())
-		{
-			Display.getCurrent().beep();
-			MessageDialog.openInformation(
-					PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
-					"Login Erfolgreich",
-					"Sie haben erfolgreich eine Verbindung zum Server hergestellt");
-			return true;
-		}
-		else
+		if(!NetWrapper.getDefault().getClientSession().isAuthenticated())
 		{
 			loginPage.setErrorMessage("Anmeldung fehlgeschlagen.\n" +
 			"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
@@ -184,6 +176,17 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 					"Anmeldung fehlgeschlagen",
 					"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
 			return false;
+		}
+		else
+		{
+			Display.getCurrent().beep();
+			MessageDialog.openInformation(
+					PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
+					"Login Erfolgreich",
+					"Sie haben erfolgreich eine Verbindung zum Server hergestellt");
+			//request data from server
+			ModelFactory.getInstance().queryInitData();
+			return true;
 		}
 	} 
 
