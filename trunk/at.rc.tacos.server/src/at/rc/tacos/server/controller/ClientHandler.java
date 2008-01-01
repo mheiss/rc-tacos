@@ -83,8 +83,11 @@ public class ClientHandler implements INetListener
         else if(IModelActions.ADD.equalsIgnoreCase(queryString))
         {
             AbstractMessage resultAddMessage = listener.handleAddRequest(objects.get(0));
-            //send the added item
+            //send the added item to all connected clients
             server.brodcastMessage(userId, contentType, queryString, resultAddMessage);
+            //if we have a web client -> send the request back
+            if(session.isWebClient())
+            	server.sendMessage(session, contentType, queryString, resultAddMessage);
         }
         //remove request
         else if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
@@ -92,6 +95,9 @@ public class ClientHandler implements INetListener
             AbstractMessage resultRemoveMessage = listener.handleRemoveRequest(objects.get(0));
             //send the removed item
             server.brodcastMessage(userId, contentType, queryString, resultRemoveMessage);
+            //if we have a web client -> send the request back
+            if(session.isWebClient())
+            	server.sendMessage(session, contentType, queryString, resultRemoveMessage);
         }
         //update request
         else if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
@@ -99,6 +105,9 @@ public class ClientHandler implements INetListener
             AbstractMessage resultUpdateMessage = listener.handleUpdateRequest(objects.get(0));
             //send the updated item
             server.brodcastMessage(userId, contentType, queryString, resultUpdateMessage);
+            //if we have a web client -> send the request back
+            if(session.isWebClient())
+            	server.sendMessage(session, contentType, queryString, resultUpdateMessage);
         }
         else if(IModelActions.LIST.equalsIgnoreCase(queryString))
         {
