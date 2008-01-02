@@ -23,6 +23,11 @@
 			href="<%=request.getContextPath()+"/Dispatcher/rosterWeek.do?action=weekView"%>">Wochen&uuml;bersicht</a><br />
 		</td>
 	</tr>
+	<tr>
+		<td id="BlockContent"><a
+			href="<%=request.getContextPath()+"/Dispatcher/stats.do"%>">Statistik</a><br />
+		</td>
+	</tr>
 </table>
 <!-- NEXT BLOCK  -->
 <table id="Block" width="100%" border='0' cellpadding='0'

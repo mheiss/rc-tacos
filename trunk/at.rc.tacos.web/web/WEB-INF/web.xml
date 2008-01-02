@@ -90,6 +90,16 @@
 		<servlet-name>rosterEntryView</servlet-name>
 		<url-pattern>/rosterEntryView</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>statsView</servlet-name>
+		<jsp-file>/jsp/stats.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>statsView</servlet-name>
+		<url-pattern>/statsView</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>stationView</servlet-name>
