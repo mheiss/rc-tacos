@@ -67,7 +67,7 @@
 											<h4>Einen neuen Dienst hinzuf&uuml;gen</h4> 
 									</div>
 									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0'>
-                                        <a href="#"><img src="../image/stats.jpg"  class='hidefocus' /></a>
+                                        <a href="<%=request.getContextPath()+"/Dispatcher/stats.do"%>"><img src="../image/stats.jpg"  class='hidefocus' /></a>
                                             <h4>Statistik </h4> 
                                     </div>
 									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0'>

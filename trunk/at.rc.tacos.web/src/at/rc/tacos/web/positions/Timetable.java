@@ -1,19 +1,8 @@
 package at.rc.tacos.web.positions;
 
-
-
-import java.awt.Color;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.RosterEntry;
