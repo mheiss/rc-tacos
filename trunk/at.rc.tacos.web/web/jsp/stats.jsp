@@ -1,9 +1,15 @@
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="at.rc.tacos.model.StaffMember"%>
+
 <%
-	UserSession userSession = (UserSession) session
-			.getAttribute("userSession");
+    Map<String,Object> params = (Map)request.getAttribute("params");
+    List<StaffMember> rosterList = (List)params.get("rosterList");
+	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="at.rc.tacos.web.utils.Statistik"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -68,9 +74,15 @@
 									<td width="50%"><!-- Timetablebox Day -->
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
+										<thead><tr><th align="left">TACOS Benutzerstatistik f&uuml;r <%=userSession.getUsername() %></th></tr></thead>
 										<tr>
-											<td><br />
-										<tr>Statistik
+											<td>
+											<%										
+											  Statistik statistik = Statistik.getInstance();
+											  out.print(statistik.getUserLogInfo());
+											%>
+											</td>
+										<tr>
 										</tr>
 									</table>
 									</td>
