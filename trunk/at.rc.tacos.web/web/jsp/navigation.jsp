@@ -37,12 +37,12 @@
 	</tr>
 	<tr>
 		<td id="BlockContent">
-		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Breitenau"%>"><%=Constants.STATION_BREITENAU%></a><br />
-		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Bruck"%>"><%=Constants.STATION_BRUCK%></a><br />
-		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Kapfenberg"%>"><%=Constants.STATION_KAPFENBERG%></a><br />
-		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=StMarein"%>"><%=Constants.STATION_MAREIN%></a><br />
-		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Thoerl"%>"><%=Constants.STATION_THOERL.replaceAll("ö","&ouml;")%></a><br />
-		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Turnau"%>"><%=Constants.STATION_TURNAU%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Constants.STATION_BREITENAU"%>"><%=Constants.STATION_BREITENAU%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Constants.STATION_BRUCK"%>"><%=Constants.STATION_BRUCK%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Constants.STATION_KAPFENBERG"%>"><%=Constants.STATION_KAPFENBERG%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Constants.STATION_MAREIN"%>"><%=Constants.STATION_MAREIN%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Constants.STATION_THOERL"%>"><%=Constants.STATION_THOERL.replaceAll("ö","&ouml;")%></a><br />
+		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action=Constants.STATION_TURNAU"%>"><%=Constants.STATION_TURNAU%></a><br />
 		</td>
 	</tr>
 </table>
