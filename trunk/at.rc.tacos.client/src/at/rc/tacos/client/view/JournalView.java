@@ -14,15 +14,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
@@ -36,11 +35,9 @@ import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
-import at.rc.tacos.client.view.sorterAndTooltip.PersonalViewSorter;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 
 import at.rc.tacos.model.Transport;
-
 
 public class JournalView extends ViewPart implements PropertyChangeListener
 {
@@ -380,11 +377,8 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsAction);
 		manager.add(moveToRunningTransportsAction);
-	
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
-	
-	
-
 
 	/**
 	 * Passing the focus request to the viewer's control.

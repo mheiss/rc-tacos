@@ -4,6 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -19,7 +20,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
+
+import at.rc.tacos.client.util.Util;
+import at.rc.tacos.factory.ImageFactory;
 
 /**
  * Main view, provides an overview about the transports
@@ -64,8 +67,8 @@ public class TransportMainView {
 	protected void createContents() 
 	{
 		shell = new Shell();
-		shell.setImage(SWTResourceManager.getImage(TransportMainView.class, "/image/Tacos_LOGO.jpg"));
-		shell.setLayout(new at.rc.tacos.swing2swt.layout.GridLayout());
+		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+		shell.setLayout(new GridLayout());
 		shell.setText("Transporte");
 
 		final TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
@@ -98,7 +101,7 @@ public class TransportMainView {
 		final TableItem newItemTableItem = new TableItem(table, SWT.BORDER);
 		newItemTableItem.setText(14, "Bm08");
 		newItemTableItem.setText(7, "06:56");
-		newItemTableItem.setImage(16, SWTResourceManager.getImage(TransportMainView.class, "/image/O_BeglPerson_Table.bmp"));
+		newItemTableItem.setImage(16, ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson"));
 		newItemTableItem.setText(2, "13:30");
 		newItemTableItem.setText(1, "12388");
 		newItemTableItem.setText(0, "A");
@@ -406,7 +409,7 @@ public class TransportMainView {
 		datumLabel.setText("Datum:");
 
 		final Label sucheLabel_1 = new Label(filterGroup, SWT.NONE);
-		sucheLabel_1.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		sucheLabel_1.setFont(new Font(null,"Arial", 10, SWT.BOLD));
 		sucheLabel_1.setText("Suche:");
 
 		final Label nachSpalteLabel_1 = new Label(filterGroup, SWT.NONE);
@@ -805,7 +808,7 @@ public class TransportMainView {
 		datumLabel_1.setText("Datum:");
 
 		final Label sucheLabel = new Label(filterGroup_1, SWT.NONE);
-		sucheLabel.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		sucheLabel.setFont(new Font(null,"Arial", 10, SWT.BOLD));
 		sucheLabel.setText("Suche:");
 
 		final Label nachSpalteLabel = new Label(filterGroup_1, SWT.NONE);
@@ -828,7 +831,7 @@ public class TransportMainView {
 		group.setText("Durchgeführte Transporte");
 
 		final Table table_5 = new Table(group, SWT.BORDER);
-		table_5.setForeground(SWTResourceManager.getColor(0, 0, 0));
+		table_5.setForeground(Util.getColor(0, 0, 0));
 		table_5.setLinesVisible(true);
 		table_5.setHeaderVisible(true);
 
@@ -1004,7 +1007,7 @@ public class TransportMainView {
 
 		final TableItem newItemTableItem_8_1 = new TableItem(table_5, SWT.BORDER);
 		newItemTableItem_8_1.setData("newKey", "the new key");
-		newItemTableItem_8_1.setBackground(SWTResourceManager.getColor(255, 255, 128));
+		newItemTableItem_8_1.setBackground(Util.getColor(255, 255, 128));
 		newItemTableItem_8_1.setText("New item");
 
 		final TableItem newItemTableItem_9_1 = new TableItem(table_5, SWT.BORDER);

@@ -7,6 +7,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -15,8 +16,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import at.rc.tacos.client.controller.VehicleEditAction;
+import at.rc.tacos.client.util.Util;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 /**
  * Creates CarComposite for the class VehiclesView, called from the CarCompositeManager
@@ -79,14 +80,14 @@ public class VehicleComposite extends Composite
 		compositeCarTop.setLayout(new FillLayout());
 		// .. name of the ambulance
 		vehicleNameLabel = new Label(compositeCarTop, SWT.NONE);
-		vehicleNameLabel.setForeground(SWTResourceManager.getColor(0, 0, 128));
-		vehicleNameLabel.setFont(SWTResourceManager.getFont("Arial", 18, SWT.BOLD));
-		vehicleNameLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		vehicleNameLabel.setForeground(Util.getColor(0, 0, 128));
+		vehicleNameLabel.setFont(new Font(null,"Arial", 18, SWT.BOLD));
+		vehicleNameLabel.setBackground(Util.getColor(209, 229, 249));
 
 		// .. type of the ambulance
 		final Composite compositeCarType = new Composite(compositeCarTop, SWT.NONE);
 		compositeCarType.setLayout(new FormLayout());
-		compositeCarType.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		compositeCarType.setBackground(Util.getColor(209, 229, 249));
 
 		vehicleTypeLabel = new Label(compositeCarType, SWT.CENTER);
 
@@ -96,9 +97,9 @@ public class VehicleComposite extends Composite
 		fd_label.right = new FormAttachment(0, 68);
 		fd_label.left = new FormAttachment(0, 15);
 		vehicleTypeLabel.setLayoutData(fd_label);
-		vehicleTypeLabel.setForeground(SWTResourceManager.getColor(255, 255, 255));
-		vehicleTypeLabel.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-		vehicleTypeLabel.setBackground(SWTResourceManager.getColor(228, 236, 238));
+		vehicleTypeLabel.setForeground(Util.getColor(255, 255, 255));
+		vehicleTypeLabel.setFont(new Font(null,"Arial", 10, SWT.BOLD));
+		vehicleTypeLabel.setBackground(Util.getColor(228, 236, 238));
 
 		//bottom composite (icons, staff of the ambulance)
 		final Composite compositeCarBottom = new Composite(this, SWT.NONE);
@@ -109,41 +110,41 @@ public class VehicleComposite extends Composite
 
 		// .. icons
 		readyLabel = new Label(compositeCarIcons, SWT.NONE);
-		readyLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		readyLabel.setBackground(Util.getColor(209, 229, 249));
 
 		mobilePhoneLabel = new Label(compositeCarIcons, SWT.NONE);
-		mobilePhoneLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		mobilePhoneLabel.setBackground(Util.getColor(209, 229, 249));
 
 		stationLabel = new Label(compositeCarIcons, SWT.NONE);
-		stationLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		stationLabel.setBackground(Util.getColor(209, 229, 249));
 
 		repairLabel = new Label(compositeCarIcons, SWT.NONE);
-		repairLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		repairLabel.setBackground(Util.getColor(209, 229, 249));
 
 		notesLabel = new Label(compositeCarIcons, SWT.NONE);
-		notesLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		notesLabel.setBackground(Util.getColor(209, 229, 249));
 
 		statusLabel = new Label(compositeCarIcons, SWT.NONE);
-		statusLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		statusLabel.setBackground(Util.getColor(209, 229, 249));
 
 		// .. staff
 		final Composite compositeCarStaff = new Composite(compositeCarBottom, SWT.NONE);
 		compositeCarStaff.setLayout(new FillLayout());
 
 		driverLabel = new Label(compositeCarStaff, SWT.NONE);
-		driverLabel.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		driverLabel.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		driverLabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		driverLabel.setForeground(Util.getColor(0, 0, 102));
+		driverLabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
+		driverLabel.setBackground(Util.getColor(209, 229, 249));
 
 		medicILabel = new Label(compositeCarStaff, SWT.NONE);
-		medicILabel.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		medicILabel.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		medicILabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		medicILabel.setForeground(Util.getColor(0, 0, 102));
+		medicILabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
+		medicILabel.setBackground(Util.getColor(209, 229, 249));
 
 		medicIILabel = new Label(compositeCarStaff, SWT.NONE);
-		medicIILabel.setForeground(SWTResourceManager.getColor(0, 0, 102));
-		medicIILabel.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NONE));
-		medicIILabel.setBackground(SWTResourceManager.getColor(209, 229, 249));
+		medicIILabel.setForeground(Util.getColor(0, 0, 102));
+		medicIILabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
+		medicIILabel.setBackground(Util.getColor(209, 229, 249));
 
 		//create the actions
 		makeActions();

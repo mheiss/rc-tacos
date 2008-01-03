@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
@@ -22,10 +23,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.util.Util;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 /**
  * GUI (form) to manage an ambulance
@@ -51,7 +52,7 @@ public class VehicleForm
 	private Group groupCarDetails;
 	private Group staffGroup;
 	protected Shell shell;
-	private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
+	private Color inactiveBackgroundColor = Util.getColor(245, 245, 245);
 	private Listener exitListener;
 	
 	/**
@@ -173,7 +174,7 @@ public class VehicleForm
 		}
 
 		setDriverCombo.setBounds(100,15,226, 24);
-		setDriverCombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		setDriverCombo.setFont(new Font(null,"Arial", 10, SWT.BOLD));
 		
 		rosterTimeDriver = new Text(staffGroup, SWT.NONE);
 		rosterTimeDriver.setBounds(340,15,100,21);
@@ -195,7 +196,7 @@ public class VehicleForm
 		}
 
 		setParamedicICombo.setBounds(100,42,226,24);
-		setParamedicICombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		setParamedicICombo.setFont(new Font(null,"Arial", 10, SWT.BOLD));
 
 		rosterTimeParamedicI = new Text(staffGroup, SWT.NONE);
 		rosterTimeParamedicI.setBounds(340,42,100,21);
@@ -219,7 +220,7 @@ public class VehicleForm
 		}
 
 		setParamedicIICombo.setBounds(100,69,226, 24);
-		setParamedicIICombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		setParamedicIICombo.setFont(new Font(null,"Arial", 10, SWT.BOLD));
 		
 		rosterTimeParamedicII = new Text(staffGroup, SWT.NONE);
 		rosterTimeParamedicII.setBounds(340,69,100,21);
@@ -253,7 +254,7 @@ public class VehicleForm
 		}
 
 		setVehicleCombo.setBounds(100,15,100, 24);
-		setVehicleCombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		setVehicleCombo.setFont(new Font(null,"Arial", 10, SWT.BOLD));
 		
 		
 		
@@ -271,7 +272,7 @@ public class VehicleForm
 		}
 
 		setMobilePhoneCombo.setBounds(100,42,100, 24);
-		setMobilePhoneCombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		setMobilePhoneCombo.setFont(new Font(null,"Arial", 10, SWT.BOLD));
 
 		button = new Button(groupCarDetails, SWT.CHECK);
 		button.addSelectionListener(new SelectionAdapter() {

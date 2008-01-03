@@ -103,13 +103,12 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
 		
-		if(transport.getKindOfTransport() != "")
+		if(transport.getKindOfTransport() != null)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.qmark");
 			title = transport.getKindOfTransport();
 			addIconAndLabel(composite,image,title);
 		}
-
 		
 		//the notes
 		if(transport.hasNotes())

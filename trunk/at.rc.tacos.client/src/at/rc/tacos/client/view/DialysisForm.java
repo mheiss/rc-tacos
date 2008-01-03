@@ -12,7 +12,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
+
+import at.rc.tacos.client.util.Util;
+import at.rc.tacos.factory.ImageFactory;
 
 /**
  * GUI (form) to manage the details of a dialysis patient
@@ -90,7 +92,7 @@ public class DialysisForm {
 	protected void createContents() {
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
-		shell.setImage(SWTResourceManager.getImage(DialysisForm.class, "/image/Tacos_LOGO.jpg"));
+		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
 		shell.setSize(1083, 223);
 		shell.setText("Dialysetransport");
 
@@ -99,11 +101,11 @@ public class DialysisForm {
 		fd_transportdatenGroup.right = new FormAttachment(0, 1067);
 		fd_transportdatenGroup.left = new FormAttachment(0, 205);
 		transportdatenGroup.setLayoutData(fd_transportdatenGroup);
-		transportdatenGroup.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		transportdatenGroup.setForeground(Util.getColor(128, 128, 128));
 		transportdatenGroup.setText("Transportdaten");
 
 		final Label vonLabel = new Label(transportdatenGroup, SWT.NONE);
-		vonLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		vonLabel.setForeground(Util.getColor(128, 128, 128));
 		vonLabel.setText("von:");
 		vonLabel.setBounds(10, 42, 25, 13);
 
@@ -114,12 +116,12 @@ public class DialysisForm {
 		comboVonStrasse.setBounds(41, 39, 194, 21);
 
 		final Label nachLabel = new Label(transportdatenGroup, SWT.NONE);
-		nachLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		nachLabel.setForeground(Util.getColor(128, 128, 128));
 		nachLabel.setText("nach:");
 		nachLabel.setBounds(10, 69, 25, 13);
 
 		final Label label = new Label(transportdatenGroup, SWT.NONE);
-		label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		label.setForeground(Util.getColor(128, 128, 128));
 		label.setText("Straße");
 		label.setBounds(41, 20, 56, 13);
 
@@ -130,7 +132,7 @@ public class DialysisForm {
 		comboNachNr.setBounds(241, 66, 75, 21);
 
 		final Label label_1 = new Label(transportdatenGroup, SWT.NONE);
-		label_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		label_1.setForeground(Util.getColor(128, 128, 128));
 		label_1.setText("Nr./Stock/Tür");
 		label_1.setBounds(241, 20, 75, 13);
 
@@ -141,7 +143,7 @@ public class DialysisForm {
 		comboNachOrt.setBounds(322, 66, 111, 21);
 
 		final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
-		ortLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ortLabel.setForeground(Util.getColor(128, 128, 128));
 		ortLabel.setText("Ort");
 		ortLabel.setBounds(322, 20, 25, 13);
 
@@ -149,7 +151,7 @@ public class DialysisForm {
 		comboNachname.setBounds(467, 39, 171, 21);
 
 		final Label nachnameLabel = new Label(transportdatenGroup, SWT.NONE);
-		nachnameLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		nachnameLabel.setForeground(Util.getColor(128, 128, 128));
 		nachnameLabel.setText("Nachname");
 		nachnameLabel.setBounds(467, 20, 56, 13);
 
@@ -162,7 +164,7 @@ public class DialysisForm {
 
 		final Label nachnameLabel_1 = new Label(transportdatenGroup, SWT.NONE);
 		nachnameLabel_1.setBounds(644, 20, 56, 13);
-		nachnameLabel_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		nachnameLabel_1.setForeground(Util.getColor(128, 128, 128));
 		nachnameLabel_1.setText("Vorname");
 
 		gehendButton = new Button(transportdatenGroup, SWT.RADIO);
@@ -186,7 +188,7 @@ public class DialysisForm {
 		begleitpersonButton.setBounds(465, 113, 85, 16);
 
 		final Label label_6 = new Label(transportdatenGroup, SWT.NONE);
-		label_6.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		label_6.setForeground(Util.getColor(128, 128, 128));
 		label_6.setText("Zuständige Ortsstelle:");
 		label_6.setBounds(205, 118, 111, 13);
 
@@ -208,17 +210,17 @@ public class DialysisForm {
 		planungGroup.setText("Zeiten");
 
 		final Label abfLabel = new Label(planungGroup, SWT.NONE);
-		abfLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		abfLabel.setForeground(Util.getColor(128, 128, 128));
 		abfLabel.setText("Abf:");
 		abfLabel.setBounds(10, 37, 25, 13);
 
 		final Label beiPatLabel = new Label(planungGroup, SWT.NONE);
-		beiPatLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		beiPatLabel.setForeground(Util.getColor(128, 128, 128));
 		beiPatLabel.setText("Pat.:");
 		beiPatLabel.setBounds(10, 64, 25, 13);
 
 		final Label terminLabel = new Label(planungGroup, SWT.NONE);
-		terminLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		terminLabel.setForeground(Util.getColor(128, 128, 128));
 		terminLabel.setText("Term.");
 		terminLabel.setBounds(10, 91, 28, 13);
 
@@ -233,7 +235,7 @@ public class DialysisForm {
 
 		final Label terminLabel_1 = new Label(planungGroup, SWT.NONE);
 		terminLabel_1.setBounds(10, 118, 28, 13);
-		terminLabel_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		terminLabel_1.setForeground(Util.getColor(128, 128, 128));
 		terminLabel_1.setText("RT:");
 
 		textRT = new Text(planungGroup, SWT.BORDER);
@@ -310,7 +312,7 @@ public class DialysisForm {
 		fd_abbrechenButton.left = new FormAttachment(transportdatenGroup, -96, SWT.RIGHT);
 		fd_abbrechenButton.right = new FormAttachment(transportdatenGroup, 0, SWT.RIGHT);
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
-		abbrechenButton.setImage(SWTResourceManager.getImage(DialysisForm.class, "/image/LAN Warning.ico"));
+		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
 		abbrechenButton.setText("Abbrechen");
 
 		okButton = new Button(shell, SWT.NONE);

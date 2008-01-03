@@ -1,12 +1,9 @@
 package at.rc.tacos.client.view;
 
-
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -14,50 +11,23 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.part.ViewPart;
-
 import at.rc.tacos.client.controller.CancelTransportAction;
-import at.rc.tacos.client.controller.ChangeResponsibleStationAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.ForwardTransportAction;
-import at.rc.tacos.client.controller.PersonalCancelSignInAction;
-import at.rc.tacos.client.controller.PersonalCancelSignOutAction;
-import at.rc.tacos.client.controller.PersonalDeleteEntryAction;
-import at.rc.tacos.client.controller.PersonalEditEntryAction;
-import at.rc.tacos.client.controller.PersonalSignInAction;
-import at.rc.tacos.client.controller.PersonalSignOutAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
@@ -66,7 +36,6 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.model.Transport;
-
 
 public class OutstandingTransportsView extends ViewPart implements PropertyChangeListener
 {
@@ -352,7 +321,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		manager.add(editTransportAction);
 		manager.add(new Separator());
 		manager.add(cancelTransportAction);
-		
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	/**
 	 * Passing the focus request to the viewer's control.
