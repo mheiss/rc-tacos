@@ -112,8 +112,14 @@ public class VehicleManager extends PropertyManager
      */
     public void resetVehicles()
     {
-    	firePropertyChange("VEHICLE_CLEAR", null, null);
-    	objectList.clear();
+    	Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {
+		    	firePropertyChange("VEHICLE_CLEAR", null, null);
+		    	objectList.clear();
+            }
+        });
     }
     
     /**
