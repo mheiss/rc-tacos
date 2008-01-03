@@ -112,6 +112,7 @@ public class VehicleManager extends PropertyManager
      */
     public void resetVehicles()
     {
+    	firePropertyChange("VEHICLE_CLEAR", null, null);
     	objectList.clear();
     }
     

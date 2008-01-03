@@ -74,9 +74,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         compositeStMarein = createSection(form,toolkit,Constants.STATION_MAREIN,"Fahzeuge von St.Marein");
         compositeThoerl = createSection(form,toolkit,Constants.STATION_THOERL,"Fahzeuge von Thörl");
         compositeThurnau = createSection(form,toolkit,Constants.STATION_TURNAU,"Fahzeuge von Thurnau");
-        compositeBreitenau = createSection(form,toolkit,Constants.STATION_BREITENAU,"Breitenau");
-        
-        
+        compositeBreitenau = createSection(form,toolkit,Constants.STATION_BREITENAU,"Breitenau");  
     }
 
     @Override
@@ -133,6 +131,40 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             }
             else
                 System.out.println("Failed to add vehicle to non existing station: " + basicStation);
+        }
+        if("VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName()))
+        {
+        	//remove all children of the sections
+        	for(Control cont:compositeKapfenberg.getChildren())
+        	{
+        		VehicleComposite vehicle = (VehicleComposite)cont;
+        		vehicle.dispose();
+        	}
+        	for(Control cont:compositeBruck.getChildren())
+        	{
+        		VehicleComposite vehicle = (VehicleComposite)cont;
+        		vehicle.dispose();
+        	}
+        	for(Control cont:compositeStMarein.getChildren())
+        	{
+        		VehicleComposite vehicle = (VehicleComposite)cont;
+        		vehicle.dispose();
+        	}
+        	for(Control cont:compositeThoerl.getChildren())
+        	{
+        		VehicleComposite vehicle = (VehicleComposite)cont;
+        		vehicle.dispose();
+        	}
+        	for(Control cont:compositeThurnau.getChildren())
+        	{
+        		VehicleComposite vehicle = (VehicleComposite)cont;
+        		vehicle.dispose();
+        	}
+        	for(Control cont:compositeBreitenau.getChildren())
+        	{
+        		VehicleComposite vehicle = (VehicleComposite)cont;
+        		vehicle.dispose();
+        	}
         }
         //force a redraw of the complete section so that the new composites are drwan
         form.getDisplay().update();

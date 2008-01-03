@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -17,10 +16,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TabFolder;
@@ -28,7 +25,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
@@ -291,12 +288,10 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		//create the actions
 		makeActions();
 		hookContextMenu();
-//		contributeToActionBars();
 
 		tabFolder.setSelection(1);
 		tabFolder.setSelection(0);
-		
-		//TODO for default- ok?
+
 		viewer.resetFilters();
 		viewer.addFilter(new PersonalViewFilter(Constants.STATION_BEZIRK));
 	}
@@ -354,6 +349,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		manager.add(new Separator());
 		manager.add(cancelSignInAction);
 		manager.add(cancelSignOutAction);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		
 		//enable or disable the actions
 		if(entry.getRealStartOfWork() > 0)

@@ -4,6 +4,7 @@ package at.rc.tacos.client.view;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -14,7 +15,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
+
+import at.rc.tacos.client.util.Util;
+import at.rc.tacos.factory.ImageFactory;
 
 /**
  * GUI (form) to change the password if desired
@@ -64,7 +67,7 @@ public class ChangePasswordView {
 	protected void createContents() {
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
-		shell.setImage(SWTResourceManager.getImage(ChangePasswordView.class, "/image/Tacos_LOGO.jpg"));
+		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 		shell.setSize(378, 319);
 		shell.setText("Kennwort ändern");
 
@@ -76,7 +79,7 @@ public class ChangePasswordView {
 		fd_composite.right = new FormAttachment(0, 370);
 		fd_composite.left = new FormAttachment(0, 0);
 		composite.setLayoutData(fd_composite);
-		composite.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		composite.setBackground(Util.getColor(255, 255, 255));
 
 		final Label label = new Label(composite, SWT.NONE);
 		final FormData fd_label = new FormData();
@@ -85,8 +88,8 @@ public class ChangePasswordView {
 		fd_label.right = new FormAttachment(0, 354);
 		fd_label.left = new FormAttachment(0, 80);
 		label.setLayoutData(fd_label);
-		label.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label.setFont(SWTResourceManager.getFont("Arial", 20, SWT.BOLD));
+		label.setBackground(Util.getColor(255, 255, 255));
+		label.setFont(new Font(null,"Arial", 20, SWT.BOLD));
 		label.setText("Kennwort ändern");
 
 		final Label bitteGebenSieLabel = new Label(composite, SWT.NONE);
@@ -96,7 +99,7 @@ public class ChangePasswordView {
 		fd_bitteGebenSieLabel.right = new FormAttachment(0, 354);
 		fd_bitteGebenSieLabel.left = new FormAttachment(0, 80);
 		bitteGebenSieLabel.setLayoutData(fd_bitteGebenSieLabel);
-		bitteGebenSieLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		bitteGebenSieLabel.setBackground(Util.getColor(255, 255, 255));
 		bitteGebenSieLabel.setText("Bitte geben Sie das alte und das neue Kennwort ein.");
 
 		final Label label_1 = new Label(composite, SWT.NONE);
@@ -106,11 +109,11 @@ public class ChangePasswordView {
 		fd_label_1.right = new FormAttachment(0, 74);
 		fd_label_1.left = new FormAttachment(0, 10);
 		label_1.setLayoutData(fd_label_1);
-		label_1.setImage(SWTResourceManager.getImage(ChangePasswordView.class, "/image/Tacos_LOGO_kleinF.bmp"));
-		label_1.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		label_1.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+		label_1.setBackground(Util.getColor(255, 255, 255));
 
 		final Label benutzernameLabel = new Label(shell, SWT.NONE);
-		benutzernameLabel.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		benutzernameLabel.setFont(new Font(null,"Arial", 10, SWT.BOLD));
 		final FormData fd_benutzernameLabel = new FormData();
 		fd_benutzernameLabel.bottom = new FormAttachment(0, 110);
 		fd_benutzernameLabel.top = new FormAttachment(composite, 5, SWT.BOTTOM);
@@ -159,7 +162,7 @@ public class ChangePasswordView {
 		fd_abbrechenButton.right = new FormAttachment(0, 361);
 		fd_abbrechenButton.left = new FormAttachment(0, 248);
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
-		abbrechenButton.setImage(SWTResourceManager.getImage(ChangePasswordView.class, "/image/LAN Warning.ico"));
+		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
 		abbrechenButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 			}

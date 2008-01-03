@@ -8,7 +8,6 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,6 +29,8 @@ import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
+import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.ITransportPriority;
@@ -41,7 +42,6 @@ import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 /**
  * GUI (form) to manage the transport details
@@ -113,8 +113,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	protected Shell shell;
 	
 	private Listener exitListener;
-	private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
-	
 	private Transport transport;
 	
 	//determine whether to update or to create a new entry
@@ -486,18 +484,13 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
 		shell.setRegion(null);
-		shell.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/Tacos_LOGO.jpg"));
+		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 		shell.setSize(1075, 545);
 		shell.setText("Transport");
 
 		
 		//TODO get lists from database
 		//ArrayList<String> streetList = new ArrayList<String>(Arrays.asList("Leobnerstraﬂe", "Grazerstraﬂe"));
-		
-		
-		
-		
-		
 		
 		//listener
 		exitListener = new Listener() {
@@ -535,11 +528,11 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_transportdatenGroup.right = new FormAttachment(0, 1056);
 		fd_transportdatenGroup.left = new FormAttachment(0, 194);
 		transportdatenGroup.setLayoutData(fd_transportdatenGroup);
-		transportdatenGroup.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		transportdatenGroup.setForeground(Util.getColor(128, 128, 128));
 		transportdatenGroup.setText("Transportdaten");
 
 		final Label vonLabel = new Label(transportdatenGroup, SWT.NONE);
-		vonLabel.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		vonLabel.setFont(CustomColors.SUBHEADER_FONT);
 		final FormData fd_vonLabel = new FormData();
 		fd_vonLabel.bottom = new FormAttachment(0, 42);
 		fd_vonLabel.top = new FormAttachment(0, 29);
@@ -547,7 +540,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_vonLabel.left = new FormAttachment(0, 7);
 //		new FormAttachment()
 		vonLabel.setLayoutData(fd_vonLabel);
-		vonLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		vonLabel.setForeground(Util.getColor(128, 128, 128));
 		vonLabel.setText("von:");
 
 		comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
@@ -575,7 +568,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_nachLabel.right = new FormAttachment(0, 32);
 		fd_nachLabel.left = new FormAttachment(0, 7);
 		nachLabel.setLayoutData(fd_nachLabel);
-		nachLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		nachLabel.setForeground(Util.getColor(128, 128, 128));
 		nachLabel.setText("nach:");
 
 		final Label label = new Label(transportdatenGroup, SWT.NONE);
@@ -585,7 +578,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_label.right = new FormAttachment(0, 94);
 		fd_label.left = new FormAttachment(0, 38);
 		label.setLayoutData(fd_label);
-		label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		label.setForeground(Util.getColor(128, 128, 128));
 		label.setText("Straﬂe");
 
 		comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
@@ -613,7 +606,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ortLabel.right = new FormAttachment(0, 344);
 		fd_ortLabel.left = new FormAttachment(0, 319);
 		ortLabel.setLayoutData(fd_ortLabel);
-		ortLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ortLabel.setForeground(Util.getColor(128, 128, 128));
 		ortLabel.setText("Ort");
 
 		comboNachname = new Combo(transportdatenGroup, SWT.NONE);
@@ -631,7 +624,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_nachnameLabel.right = new FormAttachment(0, 520);
 		fd_nachnameLabel.left = new FormAttachment(0, 464);
 		nachnameLabel.setLayoutData(fd_nachnameLabel);
-		nachnameLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		nachnameLabel.setForeground(Util.getColor(128, 128, 128));
 		nachnameLabel.setText("Nachname");
 
 		comboVorname = new Combo(transportdatenGroup, SWT.NONE);
@@ -658,7 +651,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_nachnameLabel_1.right = new FormAttachment(0, 697);
 		fd_nachnameLabel_1.left = new FormAttachment(0, 641);
 		nachnameLabel_1.setLayoutData(fd_nachnameLabel_1);
-		nachnameLabel_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		nachnameLabel_1.setForeground(Util.getColor(128, 128, 128));
 		nachnameLabel_1.setText("Vorname");
 
 		gehendButton = new Button(transportdatenGroup, SWT.RADIO);
@@ -727,7 +720,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_anruferLabel.right = new FormAttachment(0, 657);
 		fd_anruferLabel.left = new FormAttachment(0, 610);
 		anruferLabel.setLayoutData(fd_anruferLabel);
-		anruferLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		anruferLabel.setForeground(Util.getColor(128, 128, 128));
 		anruferLabel.setText("Anrufer:");
 
 		textAnrufer = new Text(transportdatenGroup, SWT.BORDER);
@@ -745,7 +738,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_telefonLabel.right = new FormAttachment(0, 657);
 		fd_telefonLabel.left = new FormAttachment(0, 610);
 		telefonLabel.setLayoutData(fd_telefonLabel);
-		telefonLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		telefonLabel.setForeground(Util.getColor(128, 128, 128));
 		telefonLabel.setText("Telefon:");
 
 		textTelefonAnrufer = new Text(transportdatenGroup, SWT.BORDER);
@@ -763,7 +756,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_label_6.right = new FormAttachment(0, 313);
 		fd_label_6.left = new FormAttachment(0, 202);
 		label_6.setLayoutData(fd_label_6);
-		label_6.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		label_6.setForeground(Util.getColor(128, 128, 128));
 		label_6.setText("Zust‰ndige Ortsstelle:");
 
 		comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.NONE);
@@ -794,7 +787,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_abfLabel.right = new FormAttachment(0, 32);
 		fd_abfLabel.left = new FormAttachment(0, 7);
 		abfLabel.setLayoutData(fd_abfLabel);
-		abfLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		abfLabel.setForeground(Util.getColor(128, 128, 128));
 		abfLabel.setText("Abf:");
 
 		final Label beiPatLabel = new Label(planungGroup, SWT.NONE);
@@ -804,7 +797,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_beiPatLabel.right = new FormAttachment(0, 32);
 		fd_beiPatLabel.left = new FormAttachment(0, 7);
 		beiPatLabel.setLayoutData(fd_beiPatLabel);
-		beiPatLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		beiPatLabel.setForeground(Util.getColor(128, 128, 128));
 		beiPatLabel.setText("Pat.:");
 
 		final Label terminLabel = new Label(planungGroup, SWT.NONE);
@@ -814,7 +807,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_terminLabel.right = new FormAttachment(0, 35);
 		fd_terminLabel.left = new FormAttachment(0, 7);
 		terminLabel.setLayoutData(fd_terminLabel);
-		terminLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		terminLabel.setForeground(Util.getColor(128, 128, 128));
 		terminLabel.setText("Term.");
 
 		textBeiPat = new Text(planungGroup, SWT.BORDER);
@@ -964,7 +957,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_erkrankungverletzungLabel.right = new FormAttachment(0, 134);
 		fd_erkrankungverletzungLabel.left = new FormAttachment(0, 7);
 		erkrankungverletzungLabel.setLayoutData(fd_erkrankungverletzungLabel);
-		erkrankungverletzungLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		erkrankungverletzungLabel.setForeground(Util.getColor(128, 128, 128));
 		erkrankungverletzungLabel.setText("Erkrankung/Verletzung");
 
 		final Label anmerkungenLabel = new Label(patientenzustandGroup, SWT.NONE);
@@ -974,7 +967,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_anmerkungenLabel.right = new FormAttachment(0, 134);
 		fd_anmerkungenLabel.left = new FormAttachment(0, 7);
 		anmerkungenLabel.setLayoutData(fd_anmerkungenLabel);
-		anmerkungenLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		anmerkungenLabel.setForeground(Util.getColor(128, 128, 128));
 		anmerkungenLabel.setText("Anmerkungen");
 
 		textRueckmeldung = new Text(patientenzustandGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
@@ -992,7 +985,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_label_3.right = new FormAttachment(0, 518);
 		fd_label_3.left = new FormAttachment(0, 355);
 		label_3.setLayoutData(fd_label_3);
-		label_3.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		label_3.setForeground(Util.getColor(128, 128, 128));
 		label_3.setText("R¸ckmeldung");
 
 
@@ -1018,14 +1011,14 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		comboPrioritaet.setLayoutData(fd_comboPrioritaet);
 
 		final Label label_4 = new Label(patientenzustandGroup, SWT.NONE);
-		label_4.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		label_4.setFont(CustomColors.SUBHEADER_FONT);
 		final FormData fd_label_4 = new FormData();
 		fd_label_4.left = new FormAttachment(0, 160);
 		fd_label_4.bottom = new FormAttachment(0, 69);
 		fd_label_4.top = new FormAttachment(0, 56);
 		fd_label_4.right = new FormAttachment(0, 220);
 		label_4.setLayoutData(fd_label_4);
-		label_4.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		label_4.setForeground(Util.getColor(128, 128, 128));
 		label_4.setText("Priorit‰t:");
 		patientenzustandGroup.setTabList(new Control[] {comboErkrankungVerletzung, comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
 
@@ -1157,7 +1150,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_transportnumemmerLabel.right = new FormAttachment(0, 54);
 		fd_transportnumemmerLabel.left = new FormAttachment(0, 7);
 		transportnumemmerLabel.setLayoutData(fd_transportnumemmerLabel);
-		transportnumemmerLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		transportnumemmerLabel.setForeground(Util.getColor(128, 128, 128));
 		transportnumemmerLabel.setText("Trsp.Nr.:");
 
 		textTransportNummer = new Text(transportdetailsGroup, SWT.BORDER);
@@ -1175,7 +1168,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ortsstelleLabel.right = new FormAttachment(0, 57);
 		fd_ortsstelleLabel.left = new FormAttachment(0, 7);
 		ortsstelleLabel.setLayoutData(fd_ortsstelleLabel);
-		ortsstelleLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ortsstelleLabel.setForeground(Util.getColor(128, 128, 128));
 		ortsstelleLabel.setText("Ortsstelle:");
 
 		textOrtsstelle = new Text(transportdetailsGroup, SWT.BORDER);
@@ -1201,7 +1194,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_farzeugLabel.right = new FormAttachment(0, 57);
 		fd_farzeugLabel.left = new FormAttachment(0, 7);
 		farzeugLabel.setLayoutData(fd_farzeugLabel);
-		farzeugLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		farzeugLabel.setForeground(Util.getColor(128, 128, 128));
 		farzeugLabel.setText("Fahrzeug:");
 		transportdetailsGroup.setTabList(new Control[] {textTransportNummer, textOrtsstelle, textFahrzeug});
 
@@ -1248,7 +1241,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_driverLabel.right = new FormAttachment(0, 54);
 		fd_driverLabel.left = new FormAttachment(0, 7);
 		driverLabel.setLayoutData(fd_driverLabel);
-		driverLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		driverLabel.setForeground(Util.getColor(128, 128, 128));
 		driverLabel.setText("Fahrer:");
 
 		final Label paramedicILabel = new Label(personalAmFahrzeugGroup, SWT.NONE);
@@ -1258,7 +1251,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_paramedicILabel.right = new FormAttachment(0, 68);
 		fd_paramedicILabel.left = new FormAttachment(0, 7);
 		paramedicILabel.setLayoutData(fd_paramedicILabel);
-		paramedicILabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		paramedicILabel.setForeground(Util.getColor(128, 128, 128));
 		paramedicILabel.setText("Sanit‰ter I:");
 
 		final Label paramedicIILabel = new Label(personalAmFahrzeugGroup, SWT.NONE);
@@ -1268,7 +1261,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_paramedicIILabel.right = new FormAttachment(0, 68);
 		fd_paramedicIILabel.left = new FormAttachment(0, 7);
 		paramedicIILabel.setLayoutData(fd_paramedicIILabel);
-		paramedicIILabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		paramedicIILabel.setForeground(Util.getColor(128, 128, 128));
 		paramedicIILabel.setText("Sanit‰ter II:");
 		personalAmFahrzeugGroup.setTabList(new Control[] {textFahrer, textSaniI, textSaniII});
 
@@ -1299,7 +1292,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_aufgLabel.right = new FormAttachment(0, 43);
 		fd_aufgLabel.left = new FormAttachment(0, 12);
 		aufgLabel.setLayoutData(fd_aufgLabel);
-		aufgLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		aufgLabel.setForeground(Util.getColor(128, 128, 128));
 		aufgLabel.setText("Aufg.:");
 
 		
@@ -1318,7 +1311,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_aeLabel.right = new FormAttachment(0, 43);
 		fd_aeLabel.left = new FormAttachment(0, 12);
 		aeLabel.setLayoutData(fd_aeLabel);
-		aeLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		aeLabel.setForeground(Util.getColor(128, 128, 128));
 		aeLabel.setText("AE:");
 
 		
@@ -1337,7 +1330,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts1Label.right = new FormAttachment(0, 141);
 		fd_ts1Label.left = new FormAttachment(0, 110);
 		ts1Label.setLayoutData(fd_ts1Label);
-		ts1Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts1Label.setForeground(Util.getColor(128, 128, 128));
 		ts1Label.setText("S1:");
 
 		
@@ -1356,7 +1349,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts2Label.right = new FormAttachment(0, 141);
 		fd_ts2Label.left = new FormAttachment(0, 110);
 		ts2Label.setLayoutData(fd_ts2Label);
-		ts2Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts2Label.setForeground(Util.getColor(128, 128, 128));
 		ts2Label.setText("S2:");
 
 		
@@ -1375,7 +1368,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts3Label.right = new FormAttachment(0, 141);
 		fd_ts3Label.left = new FormAttachment(0, 110);
 		ts3Label.setLayoutData(fd_ts3Label);
-		ts3Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts3Label.setForeground(Util.getColor(128, 128, 128));
 		ts3Label.setText("S3:");
 
 		
@@ -1394,7 +1387,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts4Label.right = new FormAttachment(0, 213);
 		fd_ts4Label.left = new FormAttachment(0, 195);
 		ts4Label.setLayoutData(fd_ts4Label);
-		ts4Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts4Label.setForeground(Util.getColor(128, 128, 128));
 		ts4Label.setText("S4:");
 
 		
@@ -1413,7 +1406,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts5Label.right = new FormAttachment(0, 213);
 		fd_ts5Label.left = new FormAttachment(0, 195);
 		ts5Label.setLayoutData(fd_ts5Label);
-		ts5Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts5Label.setForeground(Util.getColor(128, 128, 128));
 		ts5Label.setText("S5:");
 
 		
@@ -1432,7 +1425,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts6Label.right = new FormAttachment(0, 213);
 		fd_ts6Label.left = new FormAttachment(0, 195);
 		ts6Label.setLayoutData(fd_ts6Label);
-		ts6Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts6Label.setForeground(Util.getColor(128, 128, 128));
 		ts6Label.setText("S6:");
 
 		
@@ -1451,7 +1444,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts7Label.right = new FormAttachment(0, 295);
 		fd_ts7Label.left = new FormAttachment(0, 277);
 		ts7Label.setLayoutData(fd_ts7Label);
-		ts7Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts7Label.setForeground(Util.getColor(128, 128, 128));
 		ts7Label.setText("S7:");
 		
 		
@@ -1470,7 +1463,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts8Label.right = new FormAttachment(0, 295);
 		fd_ts8Label.left = new FormAttachment(0, 277);
 		ts8Label.setLayoutData(fd_ts8Label);
-		ts8Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts8Label.setForeground(Util.getColor(128, 128, 128));
 		ts8Label.setText("S8:");
 
 		
@@ -1489,7 +1482,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_ts9Label.right = new FormAttachment(0, 295);
 		fd_ts9Label.left = new FormAttachment(0, 277);
 		ts9Label.setLayoutData(fd_ts9Label);
-		ts9Label.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		ts9Label.setForeground(Util.getColor(128, 128, 128));
 		ts9Label.setText("S9:");
 
 		
@@ -1525,7 +1518,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_abbrechenButton.right = new FormAttachment(0, 1056);
 		fd_abbrechenButton.left = new FormAttachment(0, 960);
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
-		abbrechenButton.setImage(SWTResourceManager.getImage(TransportForm.class, "/image/LAN Warning.ico"));
+		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
 		abbrechenButton.setText("Abbrechen");
 		abbrechenButton.addListener(SWT.Selection, exitListener);
 		

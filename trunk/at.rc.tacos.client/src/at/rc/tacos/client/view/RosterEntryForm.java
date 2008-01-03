@@ -16,6 +16,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
@@ -32,11 +33,11 @@ import at.rc.tacos.client.controller.PersonalUpdateEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StaffComboContentProvider;
 import at.rc.tacos.client.providers.StaffComboLabelProvider;
+import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.Constants;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.swtdesigner.SWTResourceManager;
 
 /**
  * GUI (form) to manage a roster entry
@@ -67,7 +68,7 @@ public class RosterEntryForm implements PropertyChangeListener
     protected Shell shell;
     private Label anmeldungLabel;
     private Label abmeldungLabel;
-    private Color inactiveBackgroundColor = SWTResourceManager.getColor(245, 245, 245);
+    private Color inactiveBackgroundColor = Util.getColor(245, 245, 245);
     private String defaultDate;
     private Listener exitListener;
     
@@ -229,7 +230,7 @@ public class RosterEntryForm implements PropertyChangeListener
 
         Combo employeenameCombo = new Combo(dienstplanGroup, SWT.READ_ONLY);
         employeenameCombo.setBounds(306, 43,226, 24);
-        employeenameCombo.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+        employeenameCombo.setFont(new Font(null,"Arial", 10, SWT.BOLD));
         setEmployeenameCombo = new ComboViewer(employeenameCombo);
         setEmployeenameCombo.setContentProvider(new StaffComboContentProvider());
         setEmployeenameCombo.setLabelProvider(new StaffComboLabelProvider());
