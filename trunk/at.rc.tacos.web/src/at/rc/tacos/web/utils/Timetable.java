@@ -1,4 +1,4 @@
-package at.rc.tacos.web.positions;
+package at.rc.tacos.web.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
