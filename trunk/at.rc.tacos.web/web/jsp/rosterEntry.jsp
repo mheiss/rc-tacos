@@ -124,16 +124,16 @@ function setMonth(month){
 											<td id="rosterViewDayHeadline">T&auml;tigkeit:&nbsp;</td>
 											<td><select name="job" id="rosterViewDayHeadSelbox">
 												<option><%=Constants.JOB_DRIVER%></option>
-												<option><%=Constants.JOB_SANI%></option>
-												<option><%=Constants.JOB_EMERGENCY%></option>
+												<option><%=Constants.JOB_SANI.replaceAll("ä","&auml;")%></option>
+												<option><%=Constants.JOB_EMERGENCY.replaceAll("ä","&auml;")%></option>
 												<option><%=Constants.JOB_DOCTOR%></option>
 												<option><%=Constants.JOB_DISPON%></option>
-												<option><%=Constants.JOB_DF%></option>
+												<option><%=Constants.JOB_DF.replaceAll("ü","&uuml;")%></option>
 												<option><%=Constants.JOB_BRKDT%></option>												
 												<option><%=Constants.JOB_INSP%></option>
 												<option><%=Constants.JOB_BKTW_DRIVER%></option>
 												<option><%=Constants.JOB_JOURNAL%></option>
-												<option><%=Constants.JOB_VOLON%></option>
+												<option><%=Constants.JOB_VOLON.replaceAll("ä","&auml;")%></option>
 												<option><%=Constants.JOB_OTHER%></option>
 											</select></td>
 										</tr>
