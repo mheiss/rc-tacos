@@ -163,7 +163,9 @@ function setMonth(month){
                                                 
                                             <!-- KALENDER -->
                                             <!-- <from name="fomr2" method="post" action="<%=request.getContextPath()+"/Dispatcher/calendar.do" %>" >  -->
+                                            
                                             <%@include file="calendar.jsp" %>
+                                            
                                             <!--  <input type="submit" name="calChange" value="change" />
                                              </from> -->
                                              
