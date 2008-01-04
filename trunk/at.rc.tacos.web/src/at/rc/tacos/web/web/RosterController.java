@@ -28,7 +28,6 @@ public class RosterController implements Controller
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
 
-		//get roster entries
 		resultList = client.sendListingRequest(StaffMember.ID, null);
 		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
 			params.put("employeeList", resultList); 
@@ -36,7 +35,6 @@ public class RosterController implements Controller
 		if("doRosterEntry".equalsIgnoreCase(action))
 		{
 			String staffId = request.getParameter("employee");
-			//oder job statt employee?
 			//request the staff member
 			resultList = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,staffId));	
 			StaffMember staffMember = (StaffMember)resultList.get(0); 
