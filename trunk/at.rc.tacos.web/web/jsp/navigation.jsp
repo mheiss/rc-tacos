@@ -28,6 +28,11 @@
 			href="<%=request.getContextPath()+"/Dispatcher/stats.do"%>">Statistik</a><br />
 		</td>
 	</tr>
+	<tr>
+		<td id="BlockContent"><a
+			href="<%=request.getContextPath()+"/Dispatcher/profile.do"%>">Profil editieren</a><br />
+		</td>
+	</tr>
 </table>
 <!-- NEXT BLOCK  -->
 <table id="Block" width="100%" border='0' cellpadding='0'
@@ -44,6 +49,18 @@
 		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_MAREIN%>"><%=Constants.STATION_MAREIN%></a><br />
 		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_THOERL%>"><%=Constants.STATION_THOERL.replaceAll("ö","&ouml;")%></a><br />
 		<a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_TURNAU%>"><%=Constants.STATION_TURNAU%></a><br />
+		</td>
+	</tr>
+</table>
+<table id="Block" width="100%" border='0' cellpadding='0'
+	cellspacing='0'>
+	<tr>
+		<td id="BlockHead"><b>Administration</b></td>
+	</tr>
+	<tr>
+		<td id="BlockContent">
+		<a href="<%=request.getContextPath()+"/Dispatcher/admin.do"%>">Benutzer anlegen</a><br />
+		<a href="#">Benutzer l&ouml;schen</a><br />
 		</td>
 	</tr>
 </table>

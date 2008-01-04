@@ -94,7 +94,7 @@
 							</td>
 						</tr>
 					</table>
-					legende</td>
+					</td>
 				</tr>
 			</table>
 			</td>

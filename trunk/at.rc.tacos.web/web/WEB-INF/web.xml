@@ -120,6 +120,16 @@
 		<servlet-name>profileView</servlet-name>
 		<url-pattern>/profileView</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>adminView</servlet-name>
+		<jsp-file>/jsp/admin.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>adminView</servlet-name>
+		<url-pattern>/adminView</url-pattern>
+	</servlet-mapping>	
 
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
