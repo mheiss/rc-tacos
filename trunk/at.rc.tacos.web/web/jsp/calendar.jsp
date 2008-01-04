@@ -64,6 +64,7 @@
                                                       int currentmonth = new Date().getMonth();
                                                       int currentyear = new Date().getYear()+1900;
                                                       
+                                                      
                                                       // Die Zahlen für die Monatstage einsetzen
                                                       for(int i=1; i<=tageimmonat; i++) {
                                                                            
@@ -120,3 +121,4 @@
                                                 
                                                            // out.print("<input type='submit' name='submit' value='Monat &auml;ndern'></form><br />"); 
                                                         %>
+
