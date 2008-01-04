@@ -47,8 +47,8 @@ public class PersonalSignInAction extends Action
 		if (dlg.open() == Window.OK) 
 		{
 			//set the time
+			System.out.println("Value: "+dlg.getValue());
 			long time = Util.getTimestampFromTime(dlg.getValue());
-			System.out.println(time);
 			entry.setRealStartOfWork(time);
 			NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, entry);
 		}
