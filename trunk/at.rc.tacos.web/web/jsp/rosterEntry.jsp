@@ -1,5 +1,6 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.*"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
@@ -18,6 +19,23 @@
 <link href="../css/stylesheet.css" rel="stylesheet" />
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <title>TACOS :: RK Bruck-Kapfenberg</title>
+
+<script type="text/javascript" >
+
+function setDataToInput(day, month, year){
+    
+    document.form.startDay.value=day;
+    document.form.startMonth.value=month;
+    document.form.startYear.value=year;
+    
+    document.form.endDay.value=day;
+    document.form.endMonth.value=month;
+    document.form.endYear.value=year;
+}
+function setMonth(month){
+    document.form.startMonth.value=month;
+}
+</script>
 </head>
 <body>
 
@@ -30,7 +48,7 @@
 	Date current = new Date();
 %>
 
-<form method="post" action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
+<form method="post" name="form" action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
 	<thead>
@@ -61,7 +79,7 @@
 				<tr>
 					<!-- #### LEFT CONTAINER NAVIGATION-->
 					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  -->
-					<%@ include file="navigation.jsp"%></td>
+					<%@ include file="navigation.jsp" %></td>
 					<!-- #### CONTENT -->
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
 					<table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
@@ -136,131 +154,85 @@
 										<tr>
 											<td>&nbsp;</td>
 											<td id="rosterViewDayName">
-											<!-- VON -->&nbsp;von:&nbsp;
-											<!-- hour --> <select name="startHour" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Std.</option>
-												<%
-													int hb = 0;
-													while (hb < 24) {
-														hb += 1;
-												%>
-												<option value="<%=hb%>"><%=hb%></option>
-												<%
-													}
-												%>
-											</select> 
-											<!-- minute --> <select name="startMinute" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Min.</option>
-												<option value="0" >0</option>
-												<%
-													int mb = 0;
-													while (mb < 55) {
-														mb += 5;
-												%>
-												<option value="<%=mb%>"><%=mb%></option>
-												<%
-													}
-												%>
-											</select> 
-											<!-- day --> <select name="startDay" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Tag</option>
-												<%
-													int tb = 00;
-													while (tb < 31) {
-														tb += 1;
-												%>
-												<option value="<%=tb%>"><%=tb%></option>
-												<%
-													}
-												%>
-											</select> 
-											 <!-- month --> <select name="startMonth" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Monat</option>
-												<%
-													int mob = 0;
-													while (mob < 12) {
-														mob += 1;
-												%>
-												<option value="<%=mob%>"><%=mob%></option>
-												<%
-													}
-												%>
-											</select> 
-											 <!-- year --> <select name="startYear" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Jahr</option>
-												<%
-													int yb = 2006;
-													while (yb < 2012) {
-														yb += 1;
-												%>
-												<option value="<%=yb%>"><%=yb%></option>
-												<%
-													}
-												%>
-											</select> 
-											<br />
-											<!-- BIS -->&nbsp;bis:&nbsp;&nbsp;
-											<!-- hour --> <select name="endHour" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Std.</option>
-												<%
-													int he = 0;
-													while (he < 24) {
-														he += 1;
-												%>
-												<option value="<%=he%>"><%=he%></option>
-												<%
-													}
-												%>
-											</select>
-											<!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Min.</option>
-												<option value="0" >0</option>
-												<%
-													int me = 0;
-													while (me < 55) {
-														me += 5;
-												%>
-												<option value="<%=me%>"><%=me%></option>
-												<%
-													}
-												%>
-											</select>
-											<!-- day --> <select name="endDay" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Tag</option>
-												<%
-													int te = 00;
-													while (te < 31) {
-														te += 1;
-												%>
-												<option value="<%=te%>"><%=te%></option>
-												<%
-													}
-												%>
-											</select> 
-											 <!-- month --> <select name="endMonth" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Monat</option>
-												<%
-													int moe = 0;
-													while (moe < 12) {
-														moe += 1;
-												%>
-												<option value="<%=moe%>"><%=moe%></option>
-												<%
-													}
-												%>
-											</select>
-											<!-- year --> <select name="endYear" id="rosterViewDayHeadSelboxTime">
-												<option value="leer" selected>Jahr</option>
-												<%
-													int ye = 2006;
-													while (ye < 2012) {
-														ye += 1;
-												%>
-												<option value="<%=ye%>"><%=ye%></option>
-												<%
-													}
-												%>
-											</select> </td>
+
+											
+	                                       <table width="75%">
+                                            <tr>
+                                             <td width="50%">
+                                             
+                                                
+                                            <!-- KALENDER -->
+                                            <!-- <from name="fomr2" method="post" action="<%=request.getContextPath()+"/Dispatcher/calendar.do" %>" >  -->
+                                            <%@include file="calendar.jsp" %>
+                                            <!--  <input type="submit" name="calChange" value="change" />
+                                             </from> -->
+                                             
+                                             </td>
+                                             <td>
+                                             
+                                             <!-- VON -->&nbsp;von:&nbsp;
+                                            <!-- hour --> <select name="startHour" id="rosterViewDayHeadSelboxTime">
+                                                <option value="leer" selected>Std.</option>
+                                                <%
+                                                    int hb = 0;
+                                                    while (hb < 24) {
+                                                        hb += 1;
+                                                %>
+                                                <option value="<%=hb%>"><%=hb%></option>
+                                                <%
+                                                    }
+                                                %>
+                                            </select> 
+                                            <!-- minute --> <select name="startMinute" id="rosterViewDayHeadSelboxTime">
+                                                <option value="leer" selected>Min.</option>
+                                                <option value="0" >0</option>
+                                                <%
+                                                    int mb = 0;
+                                                    while (mb < 55) {
+                                                        mb += 5;
+                                                %>
+                                                <option value="<%=mb%>"><%=mb%></option>
+                                                <%
+                                                    }
+                                                %>
+                                            </select> 
+                                            <br />
+                                            <!-- BIS -->&nbsp;bis:&nbsp;&nbsp;
+                                            <!-- hour --> <select name="endHour" id="rosterViewDayHeadSelboxTime">
+                                                <option value="leer" selected>Std.</option>
+                                                <%
+                                                    int he = 0;
+                                                    while (he < 24) {
+                                                        he += 1;
+                                                %>
+                                                <option value="<%=he%>"><%=he%></option>
+                                                <%
+                                                    }
+                                                %>
+                                            </select>
+                                            <!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
+                                                <option value="leer" selected>Min.</option>
+                                                <option value="0" >0</option>
+                                                <%
+                                                    int me = 0;
+                                                    while (me < 55) {
+                                                        me += 5;
+                                                %>
+                                                <option value="<%=me%>"><%=me%></option>
+                                                <%
+                                                    }
+                                                %>
+                                            </select>
+                                            
+                                             </td>
+                                            </tr>
+                                            </table>
+                                            
+                                            
+								    
+								    
+											
+											</td>
 										</tr>
 										<tr>
 											<td colspan="2" align="right" style="padding: 10px;"><input
@@ -280,6 +252,19 @@
 		</tr>
 	</tbody>
 </table>
+<!-- 
+startHour, startMinute, startDay, startMonth, startYear
+endHour, endMinute, endDay, endMonth, endYear
+--> 
+dd<input type="text" name="startDay" />
+mm<input type="text" name="startMonth" />
+yyyy<input type="text" name="startYear" />
+<br>
+dd<input type="text" name="endDay" />
+mm<input type="text" name="endMonth" />
+yyyy<input type="text" name="endYear" />
+<br>
+
 </form>
 </body>
 </html>
