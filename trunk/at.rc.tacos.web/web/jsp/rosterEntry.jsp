@@ -153,25 +153,17 @@ function setMonth(month){
 										</tr>
 										<tr>
 											<td>&nbsp;</td>
-											<td id="rosterViewDayName">
-
-											
+											<td id="rosterViewDayName">		
 	                                       <table width="75%">
                                             <tr>
                                              <td width="50%">
-                                             
-                                                
                                             <!-- KALENDER -->
                                             <!-- <from name="fomr2" method="post" action="<%=request.getContextPath()+"/Dispatcher/calendar.do" %>" >  -->
-                                            
                                             <%@include file="calendar.jsp" %>
-                                            
                                             <!--  <input type="submit" name="calChange" value="change" />
                                              </from> -->
-                                             
                                              </td>
                                              <td>
-                                             
                                              <!-- VON -->&nbsp;von:&nbsp;
                                             <!-- hour --> <select name="startHour" id="rosterViewDayHeadSelboxTime">
                                                 <option value="leer" selected>Std.</option>
