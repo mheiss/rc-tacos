@@ -55,6 +55,10 @@ public class ControllerFactory {
 		{
 			return new ProfileController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.admin")))
+		{
+			return new AdminController();
+		}		
 		else
 		{
 			return null;
