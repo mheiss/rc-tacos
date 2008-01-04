@@ -34,9 +34,7 @@
 	SimpleDateFormat formath = new SimpleDateFormat("dd.MM.yyyy");
 %>
 
-<form method="post"
-	action=""
-	border='0' cellpadding='0' cellspacing='0'>
+<form method="post" action="" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
 	<thead>
@@ -101,7 +99,8 @@
 													<td>Vorname:</td>
 													<td><input type="text" name="firstName" id="textfield" /></td>
 													<td>Strasse:</td>
-													<td><input type="text" name="streetname" id="textfield7" /></td>
+													<td><input type="text" name="streetname"
+														id="textfield7" /></td>
 												</tr>
 												<tr>
 													<td>Nachname:</td>
@@ -111,7 +110,8 @@
 												</tr>
 												<tr>
 													<td>Gebrtsdatum:</td>
-													<td><input type="text" name="birthday" id="textfield12" value="TT.MM.JJJJ" /></td>
+													<td><input type="text" name="birthday"
+														id="textfield12" value="TT.MM.JJJJ" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
@@ -136,14 +136,9 @@
 												<tr>
 													<td>E-Mail Adresse:</td>
 													<td><input type="text" name="eMail" id="textfield4" /></td>
-													<td>Ausbildung:</td>
-													<td>aaa</td>
-												</tr>
-												<tr>
-													<td>Tel. Nr.:</td>
-													<td><input type="text" name="phonenumber" id="textfield4" /></td>
 													<td>Prim&auml;re Ortsstelle:</td>
-													<td><select name="station" id="rosterViewDayHeadSelbox">
+													<td><select name="station"
+														id="rosterViewDayHeadSelbox">
 														<option><%=Constants.STATION_BEZIRK%></option>
 														<option><%=Constants.STATION_BREITENAU%></option>
 														<option><%=Constants.STATION_BRUCK%></option>
@@ -155,22 +150,83 @@
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
-													<td>aaa</td>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
+													<td><input type="text" name="phonenumber"
+														id="textfield4" /></td>
+													<td><%=Constants.COMPETENCE_DRIVER%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
 													<td>aaa</td>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
+													<td><%=Constants.COMPETENCE_SANI.replaceAll("ä","&auml;")%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
+												</tr>
+												<tr>
+													<td>Tel. Nr.:</td>
+													<td>aaa</td>
+													<td><%=Constants.COMPETENCE_EXECUTIVE_1.replaceAll("ä","&auml;")%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
-													<td colspan="2"><input type="submit" name="button" id="button" value="Speichern"></td>
+													<td><%=Constants.COMPETENCE_EXECUTIVE_2%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td>&nbsp;</td>
+													<td><%=Constants.COMPETENCE_EXECUTIVE_1%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td>&nbsp;</td>
+													<td><%=Constants.COMPETENCE_DISPON%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td>&nbsp;</td>
+													<td><%=Constants.COMPETENCE_EMERGENCY.replaceAll("ä","&auml;")%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td>&nbsp;</td>
+													<td><%=Constants.COMPETENCE_DOCTOR%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td>&nbsp;</td>
+													<td><%=Constants.COMPETENCE_OTHER%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td>&nbsp;</td>
+													<td><%=Constants.COMPETENCE_INTERVENTION%>:</td>
+													<td><input type="checkbox" name="checkbox"
+														id="checkbox" /></td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td>&nbsp;</td>
+													<td colspan="2"><input type="submit" name="button"
+														id="button" value="Speichern"></td>
 												</tr>
 											</table>
+
 										</tr>
 									</table>
 									</td>

@@ -21,11 +21,12 @@
 	<session-config>
 		<session-timeout>15</session-timeout>
 	</session-config>
-	<!-- Register your Views here. Ending must be View. Example: loginView -->
+
 	<servlet>
 		<servlet-name>homeView</servlet-name>
 		<jsp-file>/jsp/home.jsp</jsp-file>
 	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>homeView</servlet-name>
 		<url-pattern>/homeView</url-pattern>
@@ -69,7 +70,9 @@
 	<servlet-mapping>
 		<servlet-name>rosterDayView</servlet-name>
 		<url-pattern>/rosterDayView</url-pattern>
-	</servlet-mapping><servlet>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>rosterWeekView</servlet-name>
 		<jsp-file>/jsp/rosterWeek.jsp</jsp-file>
 	</servlet>
@@ -88,7 +91,7 @@
 		<servlet-name>rosterEntryView</servlet-name>
 		<url-pattern>/rosterEntryView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>statsView</servlet-name>
 		<jsp-file>/jsp/stats.jsp</jsp-file>
@@ -118,7 +121,7 @@
 		<servlet-name>profileView</servlet-name>
 		<url-pattern>/profileView</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>adminView</servlet-name>
 		<jsp-file>/jsp/admin.jsp</jsp-file>
@@ -127,20 +130,18 @@
 	<servlet-mapping>
 		<servlet-name>adminView</servlet-name>
 		<url-pattern>/adminView</url-pattern>
-	</servlet-mapping>	
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>calendarView</servlet-name>
 		<jsp-file>/jsp/calendar.jsp</jsp-file>
-		
-	</servlet><servlet-mapping>
+
+	</servlet>
+	<servlet-mapping>
 		<servlet-name>calendarView</servlet-name>
 		<url-pattern>/calendarView</url-pattern>
-	</servlet-mapping><welcome-file-list>
+	</servlet-mapping>
+	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
 	</welcome-file-list>
-	
-	
-
-
 </web-app>
