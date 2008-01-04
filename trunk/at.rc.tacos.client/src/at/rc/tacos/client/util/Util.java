@@ -14,9 +14,9 @@ import org.eclipse.swt.graphics.Color;
 public class Util 
 {
 	//formatters
-	private final static SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
+	private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-	private final static SimpleDateFormat timeAndDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+	private final static SimpleDateFormat timeAndDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 	
 	
 	/**
@@ -61,7 +61,7 @@ public class Util
 	public final static long getTimestampFromTime(String time)
 	{
 		//set up the parser
-		DateFormat formatter = new SimpleDateFormat("hh:mm");
+		DateFormat formatter = timeFormat;
 		formatter.setLenient(true);
 		//try to parse
 		try
@@ -84,7 +84,7 @@ public class Util
 	public final static long getTimestampFromDate(String time)
 	{
 		//set up the parser
-		DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat formatter = dateFormat;
 		formatter.setLenient(true);
 		//try to parse
 		try
