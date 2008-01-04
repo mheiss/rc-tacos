@@ -18,15 +18,13 @@ public class Constants
     //competence
     public final static String COMPETENCE_DRIVER = "Sicherer Einsatzfahrer";
     public final static String COMPETENCE_SANI = "Rettungssanitäter";
-    public final static String COMPETENCE_EXECUTIVE_1 = "FK1";
-    public final static String COMPETENCE_EXECUTIVE_2 = "FK2";
-    public final static String COMPETENCE_EXECUTIVE_3 = "FK3";
+    public final static String COMPETENCE_EXECUTIVE_INSP = "Insp";
+    public final static String COMPETENCE_EXECUTIVE_DF = "DF";
     public final static String COMPETENCE_DISPON = "Leitstellendisponent";
     public final static String COMPETENCE_EMERGENCY = "Notfallsanitäter";
     public final static String COMPETENCE_DOCTOR = "Notarzt";
     public final static String COMPETENCE_OTHER = "Sonstiges";
     public final static String COMPETENCE_INTERVENTION = "KIT";
-    public final static String COMPETENCE_PSYCH = "SVE";
     public final static String COMPETENCE_BKTW_DRIVER ="Fahrerberechtigung";
     
     //Service
@@ -55,8 +53,8 @@ public class Constants
         STATION_MAREIN, STATION_THOERL , STATION_TURNAU ,STATION_BREITENAU };
     
     /** Array of all competence types */
-    public static String [] competence = { COMPETENCE_DRIVER, COMPETENCE_SANI, COMPETENCE_EXECUTIVE_1, COMPETENCE_EXECUTIVE_2, COMPETENCE_EXECUTIVE_3,
-        COMPETENCE_DISPON , COMPETENCE_EMERGENCY, COMPETENCE_DOCTOR, COMPETENCE_OTHER, COMPETENCE_INTERVENTION, COMPETENCE_PSYCH};
+    public static String [] competence = { COMPETENCE_DRIVER, COMPETENCE_SANI, COMPETENCE_EXECUTIVE_INSP, COMPETENCE_EXECUTIVE_DF,
+        COMPETENCE_DISPON , COMPETENCE_EMERGENCY, COMPETENCE_DOCTOR, COMPETENCE_OTHER, COMPETENCE_INTERVENTION};
     
     /** Array of all service types */
     public static String[] service = { SERVICE_MAIN, SERVICE_VOLUNT , SERVICE_ZIVI , SERVICE_OTHER, SERVICE_TEMP };
