@@ -51,6 +51,10 @@ public class ControllerFactory {
 		{
 			return new StatsController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.profile")))
+		{
+			return new ProfileController();
+		}
 		else
 		{
 			return null;

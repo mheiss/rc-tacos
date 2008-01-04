@@ -5,7 +5,7 @@
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<StaffMember> rosterList = (List)params.get("rosterList");
-	UserSession userSession = (UserSession)session.getAttribute("userSession");
+	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
@@ -27,8 +27,8 @@
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 
-<%
-	Date current = new Date();
+<% 
+        Date current = new Date();
 		SimpleDateFormat formath = new SimpleDateFormat("dd.MM.yyyy");
 %>
 
@@ -55,10 +55,10 @@
 			<td id="MainBodyContent">
 			<table width="100%" id="userInfo">
 				<tr>
-					<td width="50%" align="left"> Willkommen : <%=userSession.getUsername()%>
+					<td width="50%" align="left"> Willkommen : <%= userSession.getUsername() %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="50%" align="right">Heute ist der <%=formath.format(current)%>
+					<td width="50%" align="right">Heute ist der <%= formath.format(current) %>
 					</td>
 				</tr>
 			</table>
@@ -85,11 +85,7 @@
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
-										  <%
-										  	Timetable timetable = Timetable.getInstance();
-										  	                                          out.print(timetable.calculateTimetable(rosterList, 1));
-										  %>
-										
+										Profil editieren
 										</tr>
 									</table>
 									</td>
