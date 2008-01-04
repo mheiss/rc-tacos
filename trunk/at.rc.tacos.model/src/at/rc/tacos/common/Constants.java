@@ -27,6 +27,7 @@ public class Constants
     public final static String COMPETENCE_OTHER = "Sonstiges";
     public final static String COMPETENCE_INTERVENTION = "KIT";
     public final static String COMPETENCE_PSYCH = "SVE";
+    public final static String COMPETENCE_BKTW_DRIVER ="Fahrerberechtigung";
     
     //Service
     public final static String SERVICE_MAIN = "Hauptamtlich";
