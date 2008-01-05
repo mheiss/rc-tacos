@@ -18,15 +18,10 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 
 <title>TACOS :: RK Bruck-Kapfenberg</title>
-
-
-
 </head>
-
 <body >
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
-
 <% 
         Date current = new Date();
 		SimpleDateFormat formath = new SimpleDateFormat("dd.MM.yyyy");

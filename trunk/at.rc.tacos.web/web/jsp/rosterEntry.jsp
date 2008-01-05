@@ -199,17 +199,11 @@ function setMonth(month){
                                             <!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
                                                 <option value="leer" selected>Min.</option>
                                                 <option value="0" >00</option>
-                                                <option value="0" >30</option>
-                                            </select>
-                                            
+                                                <option value="30" >30</option>
+                                            </select>                                            
                                              </td>
                                             </tr>
                                             </table>
-                                            
-                                            
-								    
-								    
-											
 											</td>
 										</tr>
 										<tr>
