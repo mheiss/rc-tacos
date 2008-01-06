@@ -121,7 +121,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		//real station
 		if(transport.getRealStation() != null)
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icons.station");
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.station");
 			title = transport.getRealStation();
 			addIconAndLabel(composite,image,title);
 		}
