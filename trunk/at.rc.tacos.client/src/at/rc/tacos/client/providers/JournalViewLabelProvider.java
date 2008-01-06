@@ -85,7 +85,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	        	else city = transport.getToCity();
 	        	return street +"/" +city;
 	        case COLUMN_ERKR_VERL:return transport.getKindOfIllness();
-	        case COLUMN_AE:
+	        case COLUMN_AE://S0
 	        	if(transport.getStatusMessages().size()>0)
 	        	{
 		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp() != 0)
@@ -94,20 +94,15 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		        		return "";
 	        	}
 	        	else return "";
-	        case COLUMN_S1:
-	        	if(transport.getStatusMessages().size()>0)
+	        case COLUMN_S1://S1
+	        	if(transport.getStatusMessages().size()>1)
 	        	{
-	        		System.out.println("JournalViewlabelprovider, S1, " +transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp() +"AUS");
-	        		System.out.println("JournalViewlabelprovider, S2, " +transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp() +"AUS");
-	        		System.out.println("JournalViewlabelprovider, S3, " +transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp() +"AUS");
-	        		System.out.println("JournalViewlabelprovider, S4, " +transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp() +"AUS");
-	        		System.out.println("JournalViewlabelprovider, S5, " +transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getTimestamp() +"AUS");
 		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp() != 0)
 		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp());
 	        	}
 
-	        case COLUMN_S2:
-	        	if(transport.getStatusMessages().size()>0)
+	        case COLUMN_S2://S2
+	        	if(transport.getStatusMessages().size()>2)
 	        	{
 		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp() != 0)
 		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp());
@@ -115,8 +110,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		        		return "";
 	        	}
 	        	else return "";
-	        case COLUMN_S3:
-	        	if(transport.getStatusMessages().size()>0)
+	        case COLUMN_S3://S3
+	        	if(transport.getStatusMessages().size()>3)
 	        	{
 		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp() != 0)
 		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp());
@@ -124,8 +119,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		        		return "";
 	        	}
 	        	else return "";
-	        case COLUMN_S4:
-	        	if(transport.getStatusMessages().size()>0)
+	        case COLUMN_S4://S4
+	        	if(transport.getStatusMessages().size()>4)
 	        	{
 		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp() != 0)
 		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp());
@@ -133,8 +128,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		        		return "";
 	        	}
 	        	else return "";
-	        case COLUMN_S5:  
-	        	if(transport.getStatusMessages().size()>0)
+	        case COLUMN_S5://S5
+	        	if(transport.getStatusMessages().size()>5)
 	        	{
 		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getTimestamp() != 0)
 		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getTimestamp());
@@ -142,8 +137,8 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		        		return "";
 	        	}
 	        	else return "";
-	        case COLUMN_S6:
-	        	if(transport.getStatusMessages().size()>0)
+	        case COLUMN_S6://S6
+	        	if(transport.getStatusMessages().size()>6)
 	        	{
 		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getTimestamp() != 0)
 		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getTimestamp());
