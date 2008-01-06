@@ -1,5 +1,7 @@
 package at.rc.tacos.client.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,6 +10,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -29,7 +33,12 @@ import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
+import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.providers.StaffComboContentProvider;
+import at.rc.tacos.client.providers.StaffComboLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.util.TimeValidator;
+import at.rc.tacos.client.util.TransformTimeToLong;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
@@ -49,7 +58,7 @@ import at.rc.tacos.model.VehicleDetail;
  * @author b.thek
  *
  */
-public class TransportForm implements IDirectness, IKindOfTransport, ITransportStatus
+public class TransportForm implements IDirectness, IKindOfTransport, ITransportStatus,PropertyChangeListener
 {
 
 	private Group transportdetailsGroup;
@@ -112,155 +121,40 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	private Button gehendButton;
 	protected Shell shell;
 	
+	private Text textAufgen;
+	private Text textAE;
+	
+	private Text textS1;
+	private Text textS2;
+	private Text textS3;
+	private Text textS4;
+	private Text textS5;
+	private Text textS6;
+	private Text textS7;
+	private Text textS8;
+	private Text textS9;
+	
+	
 	private Listener exitListener;
 	private Transport transport;
 	
+	private ComboViewer setTextFahrer;
+	private ComboViewer setTextSaniI;
+	private ComboViewer setTextSaniII;
+	
+	
 	//determine whether to update or to create a new entry
     private boolean createNew;
+    /**
+     * possible editingTypes: journal (the "AllesButton" should be visible), prebooking, outstanding, underway
+     */
+    private String editingType;
     
     /**
      * transport type used to differ between a normal and an emergency transport
      * possible values: prebooking, emergencyTransport, wholeTransportDetails
      */
     private String transportType;
-
-	/**
-	 * Launch the application
-	 * @param args
-	 */
-//	public static void main(String[] args) 
-//	{
-//		try 
-//		{
-//			
-//			ArrayList<Patient> patientList = new ArrayList<Patient>();
-//	        Patient p1 = new Patient("Patient1","Patient1");
-//	        Patient p2 = new Patient("Patient2","Patient2");
-//	        Patient p3 = new Patient("Patient3","Patient3");
-//	        patientList.add(p1);
-//	        patientList.add(p2);
-//	        patientList.add(p3);
-//	        
-//	        
-//	        ArrayList<CallerDetail> notifierList = new ArrayList<CallerDetail>();
-//	        CallerDetail n1 = new CallerDetail("Notifer1","0664-123456789","Notes taken");
-//	        CallerDetail n2 = new CallerDetail("Notifer2","0784-1548154","Notes taken");
-//	        CallerDetail n3 = new CallerDetail("Notifer3","2147-123456789","Notes taken");
-//	        notifierList.add(n1);
-//	        notifierList.add(n2);
-//	        notifierList.add(n3);
-//	        
-//	        ArrayList<StaffMember> staffList = new ArrayList<StaffMember>();
-//	        StaffMember s1 = new StaffMember("Staff1","Staff1","nick.staff1");
-//	        s1.setPersonId(0);
-//	        StaffMember s2 = new StaffMember("Staff2","Staff2","nick.staff2");
-//	        s2.setPersonId(1);
-//	        StaffMember s3 = new StaffMember("Staff3","Staff3","nick.staff3");
-//	        s3.setPersonId(2);
-//	        staffList.add(s1);
-//	        staffList.add(s2);
-//	        staffList.add(s3);
-//	        
-//	        
-//	        ArrayList<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
-//	        MobilePhoneDetail ph1 = new MobilePhoneDetail("P1","0699-123456789");
-//	        MobilePhoneDetail ph2 = new MobilePhoneDetail("P2","0664-123456789");
-//	        MobilePhoneDetail ph3 = new MobilePhoneDetail("P3","0676-123456789");
-//	        phoneList.add(ph1);
-//	        phoneList.add(ph2);
-//	        phoneList.add(ph3);
-//	        
-//	        
-//	      //create the list
-//	        ArrayList<VehicleDetail>vehicleList = new ArrayList<VehicleDetail>();
-//	        //load dummy data
-//	        VehicleDetail v1 = new VehicleDetail();
-//	        v1.setVehicleId(0);
-//	        v1.setVehicleName("Bm01");
-//	        v1.setVehicleType("RTW");
-//	        v1.setVehicleNotes("notes vehicle 1");
-//	        v1.setBasicStation("BM");
-//	        v1.setCurrentStation("BM");
-//	        v1.setReadyForAction(true);
-//	        v1.setOutOfOrder(false);
-//	        v1.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-//	        v1.setDriverName(staffList.get(0));
-//	        v1.setParamedicIName(staffList.get(1));
-//	        v1.setParamedicIIName(staffList.get(2));
-//	        v1.setMobilPhone(phoneList.get(0));
-//	        
-//	        
-//	        //second vehicle
-//	        VehicleDetail v2 = new VehicleDetail();
-//	        v2.setVehicleId(1);
-//	        v2.setVehicleName("Bm02");
-//	        v2.setVehicleType("KTW");
-//	        v2.setVehicleNotes("notes vehicle 2");
-//	        v2.setBasicStation("BM");
-//	        v2.setCurrentStation("KA");
-//	        v2.setReadyForAction(true);
-//	        v2.setOutOfOrder(false);
-//	        v2.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-//	        v2.setDriverName(staffList.get(0));
-//	        v2.setParamedicIName(staffList.get(1));
-//	        v2.setParamedicIIName(staffList.get(2));
-//	        v2.setMobilPhone(phoneList.get(1));
-//	        //third vehicle
-//	        VehicleDetail v3 = new VehicleDetail();
-//	        v3.setVehicleId(2);
-//	        v3.setVehicleName("Bm03");
-//	        v3.setVehicleType("RTW");
-//	        v3.setBasicStation("KA");
-//	        v3.setCurrentStation("KA");
-//	        v3.setReadyForAction(false);
-//	        v3.setOutOfOrder(true);
-//	        v3.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-//	        v3.setDriverName(staffList.get(0));
-//	        v3.setParamedicIName(staffList.get(1));
-//	        v3.setParamedicIIName(staffList.get(2));
-//	        v3.setMobilPhone(phoneList.get(2));
-//	        //add to list
-//	        vehicleList.add(v1);
-//	        vehicleList.add(v2);
-//	        vehicleList.add(v3);
-//	        
-//	        
-//	        
-//			Transport t1 = new Transport();
-//	        t1.setTransportId(0);
-//	        t1.setFromStreet("street_from_1");
-//	        t1.setFromCity("city_from_1");
-//	        t1.setToStreet("street_to_1");
-//	        t1.setToCity("city_to_1");
-//	        t1.setPatient(patientList.get(0));
-//	        t1.addStatus(1, new Date().getTime());
-//	        t1.addStatus(2, new Date().getTime());
-//	        t1.setCallerDetail(notifierList.get(0));
-//	        t1.setVehicleDetail(vehicleList.get(0));
-//	        t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
-//	        t1.setDirection(IDirectness.TOWARDS_BRUCK);
-//			
-//			
-//			TransportForm window = new TransportForm(t1);
-//			window.open();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-//	/**
-//	 * Open the window
-//	 */
-//	public void open() {
-//		final Display display = Display.getDefault();
-//		createContents();
-//		shell.open();
-//		shell.layout();
-//		while (!shell.isDisposed()) {
-//			if (!display.readAndDispatch())
-//				display.sleep();
-//		}
-//	}
 	
 	/**
      * Default class constructor used to create
@@ -300,11 +194,12 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
      * used to edit an roster entry
      * @param rosterEntry the roster entry to edit
      */
-    public TransportForm(Transport transport)
+    public TransportForm(Transport transport, String editingType)
     {
         //update an entry
         createNew = false;
         this.transport = transport;
+        this.editingType = editingType;
        
         //create the fields
         createContents();
@@ -399,20 +294,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
         	this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
         
-        if(transport.getVehicleDetail()!= null)
-        {
-        	if(transport.getVehicleDetail().getDriverName().getLastName() != null)
-        	this.textFahrer.setText(transport.getVehicleDetail().getDriverName().getLastName() +" " +transport.getVehicleDetail().getDriverName().getFirstName());
-
-	        if(transport.getVehicleDetail().getVehicleName() != null)
-	        	this.textFahrzeug.setText(transport.getVehicleDetail().getVehicleName());
-	        if(transport.getVehicleDetail().getParamedicIName().getLastName() != null)
-	        	this.textSaniI.setText(transport.getVehicleDetail().getParamedicIName().getLastName() +" " +transport.getVehicleDetail().getParamedicIName().getFirstName());
-	        
-	        if(transport.getVehicleDetail().getParamedicIIName().getLastName() != null)
-	        	this.textSaniII.setText(transport.getVehicleDetail().getParamedicIIName().getLastName() +" " +transport.getVehicleDetail().getParamedicIIName().getFirstName());
-        }
-        
         if(transport.getRealStation() != null)
         	this.textOrtsstelle.setText(transport.getRealStation());
         
@@ -475,6 +356,13 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         	this.kapfenbergButton.setSelection(true);
         }
         
+        //TODO noch etwas offen??!!!!!!!!1------------------------------------
+        this.setTextFahrer.setSelection(new StructuredSelection(transport.getVehicleDetail().getDriverName()));
+        this.setTextSaniI.setSelection(new StructuredSelection(transport.getVehicleDetail().getParamedicIName()));
+        this.setTextSaniII.setSelection(new StructuredSelection(transport.getVehicleDetail().getParamedicIIName()));
+        
+        
+        
         
         //type of editing (Vormerkung, Notfall, Alles - über Construktor und über Buttons)
 //
@@ -495,7 +383,12 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	/**
 	 * Create contents of the window
 	 */
-	protected void createContents() {
+	protected void createContents() 
+	{
+		 //bind the staff to this view
+        ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+        
+        
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
 		shell.setRegion(null);
@@ -1225,29 +1118,46 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		personalAmFahrzeugGroup.setLayoutData(fd_personalAmFahrzeugGroup);
 		personalAmFahrzeugGroup.setText("Personal am Fahrzeug");
 
-		textFahrer = new Text(personalAmFahrzeugGroup, SWT.BORDER);
+		//TODO----------------------------------------------------------------------------
+		Combo textFahrer = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textFahrer = new FormData();
 		fd_textFahrer.bottom = new FormAttachment(0, 32);
 		fd_textFahrer.top = new FormAttachment(0, 11);
 		fd_textFahrer.right = new FormAttachment(0, 276);
 		fd_textFahrer.left = new FormAttachment(0, 73);
 		textFahrer.setLayoutData(fd_textFahrer);
+		setTextFahrer = new ComboViewer(textFahrer);
+		setTextFahrer.setContentProvider(new StaffComboContentProvider());
+		setTextFahrer.setLabelProvider(new StaffComboLabelProvider());
+		setTextFahrer.setInput(ModelFactory.getInstance().getStaffManager());
+		
 
-		textSaniI = new Text(personalAmFahrzeugGroup, SWT.BORDER);
+		//TODO-----------------------------------------------------------------------------
+		Combo textSaniI = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textSnaniI = new FormData();
 		fd_textSnaniI.bottom = new FormAttachment(0, 59);
 		fd_textSnaniI.top = new FormAttachment(0, 38);
 		fd_textSnaniI.right = new FormAttachment(0, 276);
 		fd_textSnaniI.left = new FormAttachment(0, 73);
 		textSaniI.setLayoutData(fd_textSnaniI);
+		setTextSaniI = new ComboViewer(textSaniI);
+		setTextSaniI.setContentProvider(new StaffComboContentProvider());
+		setTextSaniI.setLabelProvider(new StaffComboLabelProvider());
+		setTextSaniI.setInput(ModelFactory.getInstance().getStaffManager());
 
-		textSaniII = new Text(personalAmFahrzeugGroup, SWT.BORDER);
+		
+		//TODO----------------------------------------------------------------------
+		Combo textSaniII = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textSaniII = new FormData();
 		fd_textSaniII.bottom = new FormAttachment(0, 86);
 		fd_textSaniII.top = new FormAttachment(0, 65);
 		fd_textSaniII.right = new FormAttachment(0, 276);
 		fd_textSaniII.left = new FormAttachment(0, 73);
 		textSaniII.setLayoutData(fd_textSaniII);
+		setTextSaniII = new ComboViewer(textSaniII);
+		setTextSaniII.setContentProvider(new StaffComboContentProvider());
+		setTextSaniII.setLabelProvider(new StaffComboLabelProvider());
+		setTextSaniII.setInput(ModelFactory.getInstance().getStaffManager());
 
 		final Label driverLabel = new Label(personalAmFahrzeugGroup, SWT.NONE);
 		final FormData fd_driverLabel = new FormData();
@@ -1292,7 +1202,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		statusmeldungenGroup.setLayoutData(fd_statusmeldungenGroup);
 		statusmeldungenGroup.setText("Statusmeldungen");
 
-		final Text textAufgen = new Text(statusmeldungenGroup, SWT.BORDER);
+		textAufgen = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textAufgen = new FormData();
 		fd_textAufgen.bottom = new FormAttachment(0, 32);
 		fd_textAufgen.top = new FormAttachment(0, 11);
@@ -1311,7 +1221,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		aufgLabel.setText("Aufg.:");
 
 		
-		final Text textAE = new Text(statusmeldungenGroup, SWT.BORDER);
+		textAE = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textAE = new FormData();
 		fd_textAE.bottom = new FormAttachment(0, 59);
 		fd_textAE.top = new FormAttachment(0, 38);
@@ -1330,7 +1240,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		aeLabel.setText("AE:");
 
 		
-		final Text textS1 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS1 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS1 = new FormData();
 		fd_textS1.bottom = new FormAttachment(0, 32);
 		fd_textS1.top = new FormAttachment(0, 11);
@@ -1349,7 +1259,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts1Label.setText("S1:");
 
 		
-		final Text textS2 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS2 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS2 = new FormData();
 		fd_textS2.bottom = new FormAttachment(0, 59);
 		fd_textS2.top = new FormAttachment(0, 38);
@@ -1368,7 +1278,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts2Label.setText("S2:");
 
 		
-		final Text textS3 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS3 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS3 = new FormData();
 		fd_textS3.bottom = new FormAttachment(0, 86);
 		fd_textS3.top = new FormAttachment(0, 65);
@@ -1387,7 +1297,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts3Label.setText("S3:");
 
 		
-		final Text textS4 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS4 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS4 = new FormData();
 		fd_textS4.bottom = new FormAttachment(0, 32);
 		fd_textS4.top = new FormAttachment(0, 11);
@@ -1406,7 +1316,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts4Label.setText("S4:");
 
 		
-		final Text textS5 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS5 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS5 = new FormData();
 		fd_textS5.bottom = new FormAttachment(0, 59);
 		fd_textS5.top = new FormAttachment(0, 38);
@@ -1425,7 +1335,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts5Label.setText("S5:");
 
 		
-		final Text textS6 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS6 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS6 = new FormData();
 		fd_textS6.bottom = new FormAttachment(0, 86);
 		fd_textS6.top = new FormAttachment(0, 65);
@@ -1444,7 +1354,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts6Label.setText("S6:");
 
 		
-		final Text textS7 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS7 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS7 = new FormData();
 		fd_textS7.bottom = new FormAttachment(0, 32);
 		fd_textS7.top = new FormAttachment(0, 11);
@@ -1463,7 +1373,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts7Label.setText("S7:");
 		
 		
-		final Text textS8 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS8 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS8 = new FormData();
 		fd_textS8.bottom = new FormAttachment(0, 59);
 		fd_textS8.top = new FormAttachment(0, 38);
@@ -1482,7 +1392,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts8Label.setText("S8:");
 
 		
-		final Text textS9 = new Text(statusmeldungenGroup, SWT.BORDER);
+		textS9 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS9 = new FormData();
 		fd_textS9.bottom = new FormAttachment(0, 86);
 		fd_textS9.top = new FormAttachment(0, 65);
@@ -1501,6 +1411,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts9Label.setText("S9:");
 
 		
+		
 		//set uninteresting groups invisible
 		if ("prebooking".equalsIgnoreCase(transportType))
 		{
@@ -1516,6 +1427,19 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			statusmeldungenGroup.setVisible(false);
 			personalAmFahrzeugGroup.setVisible(false);
 			planungGroup.setVisible(false);
+		}
+		
+		if("journal".equalsIgnoreCase(editingType))
+		{
+			transportdetailsGroup.setVisible(true);
+			statusmeldungenGroup.setVisible(true);
+			personalAmFahrzeugGroup.setVisible(true);
+		}
+		else
+		{
+			transportdetailsGroup.setVisible(false);
+			statusmeldungenGroup.setVisible(false);
+			personalAmFahrzeugGroup.setVisible(false);
 		}
 		
 		
@@ -1560,9 +1484,9 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			int minutesTerm;
 			
 			//fields
-			String paramedicII;
-			String paramedicI;
-			String driver;
+//			String paramedicII;
+//			String paramedicI;
+//			String driver;
 			
 			boolean mountainRescue;
 			boolean police;
@@ -1584,14 +1508,28 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			boolean toVienna;
 			boolean toLeoben;
 			boolean toGraz;
-			boolean toBruck;
+			boolean toBruck;//default
 			boolean toKapfenberg;
 			
 			String term;
 			String atPatient;
 			String start;
 			
-			String station;
+			String aeS0;
+			String s1;
+			String s2;
+			String s3;
+			String s4;
+			String s5;
+			String s6;
+			String s7;
+			String s8;
+			String s9;
+			
+			
+			
+			
+			String realStation;//real station -> only if create new = false
 			
 			String numberNotifier;
 			String notifierName;
@@ -1614,7 +1552,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			String fromStreet;
 			
 			String vehicle;
-			String theStation;
+			String theRespStation;
 			String transportNumber;
 			long transportDate;
 			
@@ -1622,11 +1560,29 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			long atPatientLong;
 			long startLong;
 			
+			long aeS0Long;
+			long s1Long;
+			long s2Long;
+			long s3Long;
+			long s4Long;
+			long s5Long;
+			long s6Long;
+			long s7Long;
+			long s8Long;
+			long s9Long;
+			
+			
 			int directness;
 			
 			String formatOfTime;
+			String formatOfTransportStati;
+			
 			
 			Calendar cal = Calendar.getInstance();
+			
+			StaffMember smDriver;
+			StaffMember smParamI;
+			StaffMember smParamII;
 			
 			
 			public void handleEvent(Event event) 
@@ -1661,7 +1617,15 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					return;
 				}
 				
+				System.out.println("------------------" +checkFormatOfTransportStatusTimeFields());
+				if(!this.checkFormatOfTransportStatusTimeFields().trim().equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event,formatOfTime, "Format von Statuszeiten falsch: ");	
+					return;
+				}
+				
 				this.transformToLong();//set planned work time
+				this.transformTransportStatiToLong();
 				//validate: start before atPatient
 				if(atPatientLong<startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))
 				{
@@ -1683,6 +1647,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
 				}
+				
+				//TODO Validating correctness of the TransortStati
 				
 				
 				//set the kind of transport
@@ -1706,18 +1672,20 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				
                 if(createNew)
                 {
-                	transport = new Transport(fromStreet,fromCommunity,theStation,transportDate,startLong,priority,directness);
+                	transport = new Transport(fromStreet,fromCommunity,theRespStation,transportDate,startLong,priority,directness);
                 	transport.setBackTransport(backTransportPossible);
-                	//TODO set the other values
+                	
                 	Patient patient = new Patient(lastName,firstName);
                 	transport.setPatient(patient);
+                	
                 	transport.setAccompanyingPerson(accompanyingPerson);
                 	transport.setAppointmentTimeAtDestination(termLong);
                 	transport.setBlueLightToGoal(blueLight);
                 	transport.setBrkdtAlarming(brkdt);
+                	
                 	CallerDetail callerDetail = new CallerDetail(notifierName,numberNotifier);
                 	transport.setCallerDetail(callerDetail);
-                	transport.setDateOfTransport(transportDate);
+                	
                 	transport.setDfAlarming(df);
                 	transport.setDiseaseNotes(notes);
                 	transport.setEmergencyDoctorAlarming(emergencyDoctor);
@@ -1738,6 +1706,15 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	//TODO setRealStation, Transportnumber, VehicleDetail wann?
                 	
                 	transport.resetAllStati();//set all transport stati to "0"
+                	VehicleDetail vehicleDetail = new VehicleDetail();
+                	StaffMember smD = new StaffMember();
+                	StaffMember smPI = new StaffMember();
+                	StaffMember smPII = new StaffMember();
+                	vehicleDetail.setDriverName(smD);
+                	vehicleDetail.setParamedicIName(smPI);
+                	vehicleDetail.setParamedicIIName(smPII);
+                	
+                	transport.setVehicleDetail(vehicleDetail);
                 	
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
@@ -1747,9 +1724,64 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 else
                 {
                     // set the needed values
+                	transport.setFromStreet(fromStreet);
+                	transport.setFromCity(fromCommunity);
+                	transport.setResponsibleStation(theRespStation);
+                	transport.setDateOfTransport(transportDate);
+                	transport.setPlannedStartOfTransport(startLong);
+                	transport.setTransportPriority(priority);
+                	transport.setDirection(directness);
+                	
+                	transport.setBackTransport(backTransportPossible);
+                	Patient patient = new Patient(lastName,firstName);//OK?
+                	transport.setPatient(patient);
+                	transport.setAccompanyingPerson(accompanyingPerson);
+                	transport.setAppointmentTimeAtDestination(termLong);
+                	transport.setBlueLightToGoal(blueLight);
+                	transport.setBrkdtAlarming(brkdt);
+                	CallerDetail callerDetail = new CallerDetail(notifierName,numberNotifier);//OK?
+                	transport.setCallerDetail(callerDetail);
+                	
+                	transport.setDfAlarming(df);
+                	transport.setDiseaseNotes(notes);
+                	transport.setEmergencyDoctorAlarming(emergencyDoctor);
+                	transport.setEmergencyPhone(rufhilfepatient);
+                	transport.setFeedback(feedback);
+                	transport.setFirebrigadeAlarming(fireBrigade);
+                	transport.setHelicopterAlarming(rth);
+                	transport.setKindOfIllness(kindOfIllness);
+                	transport.setKindOfTransport(kindOfTransport);
+                	transport.setLongDistanceTrip(longDistanceTrip);
+                	transport.setMountainRescueServiceAlarming(mountainRescue);
+                	transport.setPlannedTimeAtPatient(atPatientLong);
+                	transport.setPoliceAlarming(police);
+                	transport.setReceiveTime(receivingTime);
+                	transport.setToStreet(toStreet);
+                	transport.setToCity(toCommunity);
+                	
                 	transport.setTransportNumber(transportNumber);
-                	//TOD set the values
-                    
+                	transport.setRealStation(realStation);
+                	//vehicleDetail
+                	VehicleDetail vehicleDetail = new VehicleDetail();
+                	vehicleDetail.setVehicleName(vehicle);
+                
+                	vehicleDetail.setDriverName(smDriver);
+                	vehicleDetail.setParamedicIName(smParamI);
+                	vehicleDetail.setParamedicIIName(smParamII);
+                	
+                	transport.setVehicleDetail(vehicleDetail);
+                	
+                	transport.addStatus(TRANSPORT_STATUS_ORDER_PLACED, aeS0Long);
+                	transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
+                	transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
+                	transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
+                	transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
+                	transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE,s5Long);
+                	transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, s6Long);
+                	transport.addStatus(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA,s7Long);
+                	transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
+                	transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
+                	              	
                     //create and run the update action
                     UpdateTransportAction updateAction = new UpdateTransportAction(transport);
                     updateAction.run();
@@ -1763,9 +1795,18 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			
 			private void getContentOfAllFields()
 			{		
-				paramedicII = textSaniII.getText();
-				paramedicI = textSaniI.getText();
-				driver = textFahrer.getText();
+				int indexDriver = (setTextFahrer.getCombo().getSelectionIndex());
+				smDriver = (StaffMember)setTextFahrer.getElementAt(indexDriver);
+				
+				int indexParamI = (setTextSaniI.getCombo().getSelectionIndex());
+				smParamI = (StaffMember)setTextSaniI.getElementAt(indexParamI);
+				
+				int indexParamII = (setTextSaniII.getCombo().getSelectionIndex());
+				smParamII = (StaffMember)setTextSaniII.getElementAt(indexParamII);
+				
+				//				paramedicII = textSaniII.getText();
+//				paramedicI = textSaniI.getText();
+//				driver = textFahrer.getText();
 				mountainRescue = bergrettungButton.getSelection();
 				police = polizeiButton.getSelection();
 				fireBrigade = feuerwehrButton.getSelection();
@@ -1778,7 +1819,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				notes = textAnmerkungen.getText();
 				priority = comboPrioritaet.getText();
 				kindOfIllness = comboErkrankungVerletzung.getText();
-				System.out.println("---------------TransportForm, getcontentOfAllFields, kindOfIllness: " +kindOfIllness);
 				longDistanceTrip = fernfahrtButton.getSelection();
 				toMariazell = mariazellButton.getSelection();
 				toVienna = wienButton.getSelection();
@@ -1792,7 +1832,17 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				atPatient = textBeiPat.getText();
 				start = textAbf.getText();
 				
-				theStation = comboZustaendigeOrtsstelle.getText();
+				aeS0 = textS1.getText();
+				s2 = textS2.getText();
+				s3 = textS3.getText();
+				s4 = textS4.getText();
+				s5 = textS5.getText();
+				s6 = textS6.getText();
+				s7 = textS7.getText();
+				s8 = textS8.getText();
+				s9 = textS9.getText();
+				
+				theRespStation = comboZustaendigeOrtsstelle.getText();
 				numberNotifier = textTelefonAnrufer.getText();
 				notifierName = textAnrufer.getText();
 				backTransportPossible = ruecktransportMoeglichButton.getSelection();
@@ -1811,8 +1861,10 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				fromStreet = comboVonStrasse.getText();
 				
 				vehicle = textFahrzeug.getText();
-				station = textOrtsstelle.getText();
+				realStation = textOrtsstelle.getText();
 				transportNumber = textTransportNummer.getText();
+				
+				
 				
 			}
 			
@@ -1843,7 +1895,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					requiredFields = requiredFields +" " +"von Straße";
 				if (fromCommunity.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"von Ort";
-				if (theStation.equalsIgnoreCase(""))
+				if (theRespStation.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"zuständige Ortsstelle";
 				if (priority.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"Priorität";
@@ -1969,6 +2021,84 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				}
 				return formatOfTime;
 			}
+			
+			//checks the time against a valid format, returns a String with the not valid times and the ":" if needed (1234 --> 12:34)
+			private String checkFormatOfTransportStatusTimeFields()
+			{
+				TimeValidator tv = new TimeValidator();
+				
+				if(aeS0 != null)
+				{
+					tv.checkTime(aeS0,"AE (S0)");
+					formatOfTransportStati = tv.getCheckStatus();
+					aeS0 = tv.getTime();
+				}
+				
+				if(s1 != null)
+				{
+					tv.checkTime(s1,"S1");
+					formatOfTransportStati = tv.getCheckStatus();
+					s1 = tv.getTime();
+				}
+				
+				if(s2 != null)
+				{
+					tv.checkTime(s2,"S2");
+					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+					s2 = tv.getTime();
+				}
+				
+				if(s3 != null)
+				{
+					tv.checkTime(s3,"S3");
+					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+					s3 = tv.getTime();
+				}
+				
+				if(s4 != null)
+				{
+					tv.checkTime(s4,"S4");
+					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+					s4 = tv.getTime();
+				}
+				
+				if(s5 != null)
+				{
+					tv.checkTime(s5,"S5");
+					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+					s5 = tv.getTime();
+				}
+				
+				if(s6 != null)
+				{
+					tv.checkTime(s6,"S6");
+					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+					s6 = tv.getTime();
+				}
+				
+				if(s7 != null)
+				{
+					tv.checkTime(s7,"S7");
+					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+					s7 = tv.getTime();
+				}
+				
+				if(s8 != null)
+				{
+					tv.checkTime(s8,"S8");
+					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+					s8 = tv.getTime();
+				}
+				
+				if(s9 != null)
+				{
+					tv.checkTime(s9,"S9");
+					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+					s9 = tv.getTime();	
+				}
+				
+				return formatOfTransportStati;
+			}
 
 			
 			private void transformToLong()
@@ -2012,6 +2142,51 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					startLong = cal.getTimeInMillis();
 				}
 				
+			}
+			
+			private void transformTransportStatiToLong()
+			{
+				TransformTimeToLong tttl = new TransformTimeToLong();
+				if(aeS0 != null)
+				{
+					aeS0Long = tttl.transform(aeS0);
+				}
+				if(s1 != null)
+				{
+					s1Long = tttl.transform(s1);
+				}
+				if(s2 != null)
+				{
+					s2Long = tttl.transform(s2);
+				}
+				if(s3 != null)
+				{
+					s3Long = tttl.transform(s3);
+				}
+				if(s4 != null)
+				{
+					s4Long = tttl.transform(s4);
+				}
+				if(s5 != null)
+				{
+					s5Long = tttl.transform(s5);
+				}
+				if(s6 != null)
+				{
+					s6Long = tttl.transform(s6);
+				}
+				if(s7 != null)
+				{
+					s7Long = tttl.transform(s7);
+				}
+				if(s8 != null)
+				{
+					s8Long = tttl.transform(s8);
+				}
+				if(s9 != null)
+				{
+					s9Long = tttl.transform(s9);
+				}
 			}
 			
 			
@@ -2108,6 +2283,11 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				personalAmFahrzeugGroup.setVisible(true);
 			}
 		});
+		if("journal".equalsIgnoreCase(editingType))
+			buttonAlles.setVisible(true);
+		else
+			buttonAlles.setVisible(false);
+		
 
 		final Label label_7 = new Label(group, SWT.NONE);
 		final FormData fd_label_7 = new FormData();
@@ -2122,10 +2302,38 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		//
 	}
 	
-
-    
-	
-	//METHODS
+	 @Override
+	    public void propertyChange(PropertyChangeEvent evt)
+	    {
+	        // the viewer represents simple model. refresh should be enough.
+	        if ("STAFF_ADD".equals(evt.getPropertyName())) 
+	        { 
+	            setTextFahrer.refresh();
+	            setTextSaniI.refresh();
+	            setTextSaniII.refresh();
+	        }
+	        // event on deletion --> also just refresh
+	        if ("STAFF_REMOVE".equals(evt.getPropertyName())) 
+	        { 
+	            setTextFahrer.refresh();
+	            setTextSaniI.refresh();
+	            setTextSaniII.refresh();
+	        }
+	        // event on deletion --> also just refresh
+	        if ("STAFF_UPDATE".equals(evt.getPropertyName())) 
+	        { 
+	            setTextFahrer.refresh();
+	            setTextSaniI.refresh();
+	            setTextSaniII.refresh();
+	        }
+	        // event on deletion --> also just refresh
+	        if ("STAFF_CLEARED".equals(evt.getPropertyName())) 
+	        { 
+	            setTextFahrer.refresh();
+	            setTextSaniI.refresh();
+	            setTextSaniII.refresh();
+	        }
+	    }
 	
 
 }
