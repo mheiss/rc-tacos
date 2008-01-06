@@ -270,6 +270,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		hookContextMenu();
 		
 //		viewerOffTrans.resetFilters();
+		viewerOffTrans.refresh();
 	}
 
 	
