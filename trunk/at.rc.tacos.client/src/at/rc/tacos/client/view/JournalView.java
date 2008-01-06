@@ -135,8 +135,8 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 			}
 		});     
 		//sort the table by default
-		//TODO- bug fix: causes an error when the view gets updated
-//		viewer.setSorter(new TransportSorter(TransportSorter.TNR_SORTER,SWT.DOWN));
+		//TODO- bug fix: causes an error when the view gets updated--> only if the cells are empty	
+		viewer.setSorter(new TransportSorter(TransportSorter.TRANSPORT_FROM_SORTER,SWT.DOWN));
 
 		//create the table for the transports
 		final Table table = viewer.getTable();
@@ -329,6 +329,8 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 
 //		tabFolder.setSelection(1);
 //		tabFolder.setSelection(0);
+		
+		viewer.refresh();
 	}
 	
 	/**
