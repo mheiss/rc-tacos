@@ -257,13 +257,13 @@ function changeColor(opt)
 startHour, startMinute, startDay, startMonth, startYear
 endHour, endMinute, endDay, endMonth, endYear
 --> 
-dd<input type="text" name="startDay" />
-mm<input type="text" name="startMonth" />
-yyyy<input type="text" name="startYear" />
+dd<input type="hidden" name="startDay"  />
+mm<input type="hidden" name="startMonth"  />
+yyyy<input type="hidden" name="startYear"  />
 <br>
-dd<input type="text" name="endDay" />
-mm<input type="text" name="endMonth" />
-yyyy<input type="text" name="endYear" />
+dd<input type="hidden" name="endDay" />
+mm<input type="hidden" name="endMonth" />
+yyyy<input type="hidden" name="endYear" />
 <br>
 
 </form>
