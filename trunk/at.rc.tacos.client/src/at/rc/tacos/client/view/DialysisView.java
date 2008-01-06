@@ -277,6 +277,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		hookContextMenu();
 		
 //		viewerOffTrans.resetFilters();
+		viewer.refresh();
 	}
 
 	
