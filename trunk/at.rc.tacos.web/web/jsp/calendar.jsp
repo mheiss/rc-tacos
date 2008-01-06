@@ -16,7 +16,7 @@
                                                                 int anzahltage[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
                                                                 int mm, yy;
                                                                
-                                                                out.print("MONTH:"+request.getParameter("startMonth"));
+                                                                //out.print("MONTH:"+request.getParameter("startMonth"));
                                                                 if(request.getParameter("month") == null) {
                                                                     Calendar c = Calendar.getInstance();
                                                                     mm = c.get(Calendar.MONTH);
@@ -39,10 +39,10 @@
                                                       if (mm < 0 || mm > 11)
                                                          throw new IllegalArgumentException("Monat " +(mm+1) + " nein, soll 1-12 sein");
                                                          
-                                                      out.print("<br /><br />" + monate[mm]);
+                                                      //out.print("<br /><br />" + monate[mm]);
                                                    
-                                                      out.print(" ");
-                                                      out.print(yy);
+                                                      //out.print(" ");
+                                                      //out.print(yy);
                                                       out.print("<br />");
                                                       GregorianCalendar calendar = new GregorianCalendar(yy, mm, 1);
                                                       out.println("<tr><td><b>So</b></td><td> <b>Mo</b></td><td> <b>Di</b></td><td> <b>Mi</b></td><td> <b>Do</b></td><td> <b>Fr</b></td><td> <b>Sa</b></td></tr><tr>");
@@ -71,9 +71,9 @@
                                                             if (i == currentday-1  && currentmonth == mm && currentyear == yy){
                                                                     
                                                                 %>
-	<td style='color: red;'>
-	<div id="calDay" name="calDay"
-		onclick="setDataToInput('<%=i %>', '<%=mm %>', '<%=yy %>'); changeColor('calDay<%=i %>')"><b><%=i %></b></div>
+	<td style='border-color:#444444; border-style:solid; border-width:2px;'>
+	<div id="calDay" name="calDay" 
+		onclick="setDataToInput('<%=i %>', '<%=monate[mm] %>', '<%=yy %>'); changeColor('calDay<%=i %>')"><b><%=i %></b></div>
 	</td>
 	<% 
                                                           }
@@ -81,7 +81,7 @@
                                                                  %>
 	<td>
 	<div id="calDay" name="calDay" 
-		onmouseup="changeColor('calDay<%=i %>')" onclick="setDataToInput('<%=i %>', '<%=mm %>', '<%=yy %>')" ><%=i %></div>
+		onclick="setDataToInput('<%=i %>', '<%=monate[mm] %>', '<%=yy %>'); changeColor('calDay<%=i %>')" ><%=i %></div>
 	</td>
 	<%
                                                            
