@@ -63,9 +63,29 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	private JournalViewTooltip tooltipKapfenberg;
 	
 	//the actions for the context menu
-	private EditTransportAction editTransportAction;
-	private CancelTransportAction cancelTransportAction;//!!
-	private MoveToOutstandingTransportsAction moveToOutstandingTransportsAction;
+	private EditTransportAction editTransportActionKapfenberg;
+	private CancelTransportAction cancelTransportActionKapfenberg;//!!
+	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionKapfenberg;
+	
+	private EditTransportAction editTransportActionBruck;
+	private CancelTransportAction cancelTransportActionBruck;//!!
+	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionBruck;
+	
+	private EditTransportAction editTransportActionWien;
+	private CancelTransportAction cancelTransportActionWien;//!!
+	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionWien;
+	
+	private EditTransportAction editTransportActionLeoben;
+	private CancelTransportAction cancelTransportActionLeoben;//!!
+	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionLeoben;
+	
+	private EditTransportAction editTransportActionGraz;
+	private CancelTransportAction cancelTransportActionGraz;//!!
+	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionGraz;
+	
+	private EditTransportAction editTransportActionMariazell;
+	private CancelTransportAction cancelTransportActionMariazell;//!!
+	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionMariazell;
 	
 
 	/**
@@ -953,55 +973,161 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		
 		
 		
-		makeActions(viewerLeoben);
-		makeActions(viewerGraz);
-		makeActions(viewerWien);
-		makeActions(viewerMariazell);
-		makeActions(viewerBruck);
-		makeActions(viewerKapfenberg);
+		makeActionsBruck(viewerBruck);
+		makeActionsKapfenberg(viewerKapfenberg);
+		makeActionsLeoben(viewerLeoben);
+		makeActionsMariazell(viewerMariazell);
+		makeActionsGraz(viewerGraz);
+		makeActionsWien(viewerWien);
 		
-		hookContextMenu(viewerLeoben);
-		hookContextMenu(viewerGraz);
-		hookContextMenu(viewerWien);
-		hookContextMenu(viewerMariazell);
-		hookContextMenu(viewerBruck);
-		hookContextMenu(viewerKapfenberg);
+		
+		hookContextMenuLeoben(viewerLeoben);
+		hookContextMenuGraz(viewerGraz);
+		hookContextMenuWien(viewerWien);
+		hookContextMenuMariazell(viewerMariazell);
+		hookContextMenuBruck(viewerBruck);
+		hookContextMenuKapfenberg(viewerKapfenberg);
 		
 	}
 	
 	/**
 	 * Creates the needed actions
 	 */
-	private void makeActions(TableViewer viewer)
+	private void makeActionsBruck(TableViewer viewer)
 	{		
 		
-		editTransportAction = new EditTransportAction(viewer);
-		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportAction = new CancelTransportAction(viewerBruck);//TODO change!!!!!!!!!!!!1
+		editTransportActionBruck = new EditTransportAction(viewer);
+		moveToOutstandingTransportsActionBruck = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionBruck = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+	}
+	private void makeActionsKapfenberg(TableViewer viewer)
+	{		
+		
+		editTransportActionKapfenberg = new EditTransportAction(viewer);
+		moveToOutstandingTransportsActionKapfenberg = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionKapfenberg = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+	}
+	private void makeActionsLeoben(TableViewer viewer)
+	{		
+		
+		editTransportActionLeoben = new EditTransportAction(viewer);
+		moveToOutstandingTransportsActionLeoben = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionLeoben = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+	}
+	private void makeActionsMariazell(TableViewer viewer)
+	{		
+		
+		editTransportActionMariazell = new EditTransportAction(viewer);
+		moveToOutstandingTransportsActionMariazell = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionMariazell = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+	}
+	private void makeActionsGraz(TableViewer viewer)
+	{		
+		
+		editTransportActionGraz = new EditTransportAction(viewer);
+		moveToOutstandingTransportsActionGraz = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionGraz = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+	}
+	private void makeActionsWien(TableViewer viewer)
+	{		
+		
+		editTransportActionWien = new EditTransportAction(viewer);
+		moveToOutstandingTransportsActionWien = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionWien = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
 	}
 	
 	/**
 	 * Creates the context menu 
 	 */
-	private void hookContextMenu(final TableViewer viewer) 
+	private void hookContextMenuBruck(final TableViewer viewer) 
 	{
 		MenuManager menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenu(manager, viewer);
+				fillContextMenuBruck(manager, viewer);
 			}
 		});
 		
-		Menu menuLeoben = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menuLeoben);
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuKapfenberg(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuKapfenberg(manager, viewer);
+			}
+		});
+		
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuLeoben(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuLeoben(manager, viewer);
+			}
+		});
+		
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuMariazell(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuMariazell(manager, viewer);
+			}
+		});
+		
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuGraz(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuGraz(manager, viewer);
+			}
+		});
+		
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuWien(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuWien(manager, viewer);
+			}
+		});
+		
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
 	
 	/**
 	 * Fills the context menu with the actions
 	 */
-	private void fillContextMenu(IMenuManager manager, TableViewer viewer)
+	private void fillContextMenuBruck(IMenuManager manager, TableViewer viewer)
 	{
 		//get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
@@ -1013,10 +1139,100 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 			return;
 		
 		//add the actions
-		manager.add(editTransportAction);
+		manager.add(editTransportActionBruck);
 		manager.add(new Separator());
-		manager.add(moveToOutstandingTransportsAction);
-		manager.add(cancelTransportAction);
+		manager.add(moveToOutstandingTransportsActionBruck);
+		manager.add(cancelTransportActionBruck);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+	private void fillContextMenuKapfenberg(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+			
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+		
+		if(transport == null)
+			return;
+		
+		//add the actions
+		manager.add(editTransportActionKapfenberg);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionKapfenberg);
+		manager.add(cancelTransportActionKapfenberg);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+	private void fillContextMenuLeoben(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+			
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+		
+		if(transport == null)
+			return;
+		
+		//add the actions
+		manager.add(editTransportActionLeoben);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionLeoben);
+		manager.add(cancelTransportActionLeoben);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+	private void fillContextMenuMariazell(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+			
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+		
+		if(transport == null)
+			return;
+		
+		//add the actions
+		manager.add(editTransportActionLeoben);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionLeoben);
+		manager.add(cancelTransportActionLeoben);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+			
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+		
+		if(transport == null)
+			return;
+		
+		//add the actions
+		manager.add(editTransportActionGraz);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionGraz);
+		manager.add(cancelTransportActionGraz);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+	private void fillContextMenuWien(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+			
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+		
+		if(transport == null)
+			return;
+		
+		//add the actions
+		manager.add(editTransportActionWien);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionWien);
+		manager.add(cancelTransportActionWien);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	
