@@ -128,139 +128,139 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	 * Launch the application
 	 * @param args
 	 */
-	public static void main(String[] args) 
-	{
-		try 
-		{
-			
-			ArrayList<Patient> patientList = new ArrayList<Patient>();
-	        Patient p1 = new Patient("Patient1","Patient1");
-	        Patient p2 = new Patient("Patient2","Patient2");
-	        Patient p3 = new Patient("Patient3","Patient3");
-	        patientList.add(p1);
-	        patientList.add(p2);
-	        patientList.add(p3);
-	        
-	        
-	        ArrayList<CallerDetail> notifierList = new ArrayList<CallerDetail>();
-	        CallerDetail n1 = new CallerDetail("Notifer1","0664-123456789","Notes taken");
-	        CallerDetail n2 = new CallerDetail("Notifer2","0784-1548154","Notes taken");
-	        CallerDetail n3 = new CallerDetail("Notifer3","2147-123456789","Notes taken");
-	        notifierList.add(n1);
-	        notifierList.add(n2);
-	        notifierList.add(n3);
-	        
-	        ArrayList<StaffMember> staffList = new ArrayList<StaffMember>();
-	        StaffMember s1 = new StaffMember("Staff1","Staff1","nick.staff1");
-	        s1.setPersonId(0);
-	        StaffMember s2 = new StaffMember("Staff2","Staff2","nick.staff2");
-	        s2.setPersonId(1);
-	        StaffMember s3 = new StaffMember("Staff3","Staff3","nick.staff3");
-	        s3.setPersonId(2);
-	        staffList.add(s1);
-	        staffList.add(s2);
-	        staffList.add(s3);
-	        
-	        
-	        ArrayList<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
-	        MobilePhoneDetail ph1 = new MobilePhoneDetail("P1","0699-123456789");
-	        MobilePhoneDetail ph2 = new MobilePhoneDetail("P2","0664-123456789");
-	        MobilePhoneDetail ph3 = new MobilePhoneDetail("P3","0676-123456789");
-	        phoneList.add(ph1);
-	        phoneList.add(ph2);
-	        phoneList.add(ph3);
-	        
-	        
-	      //create the list
-	        ArrayList<VehicleDetail>vehicleList = new ArrayList<VehicleDetail>();
-	        //load dummy data
-	        VehicleDetail v1 = new VehicleDetail();
-	        v1.setVehicleId(0);
-	        v1.setVehicleName("Bm01");
-	        v1.setVehicleType("RTW");
-	        v1.setVehicleNotes("notes vehicle 1");
-	        v1.setBasicStation("BM");
-	        v1.setCurrentStation("BM");
-	        v1.setReadyForAction(true);
-	        v1.setOutOfOrder(false);
-	        v1.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-	        v1.setDriverName(staffList.get(0));
-	        v1.setParamedicIName(staffList.get(1));
-	        v1.setParamedicIIName(staffList.get(2));
-	        v1.setMobilPhone(phoneList.get(0));
-	        
-	        
-	        //second vehicle
-	        VehicleDetail v2 = new VehicleDetail();
-	        v2.setVehicleId(1);
-	        v2.setVehicleName("Bm02");
-	        v2.setVehicleType("KTW");
-	        v2.setVehicleNotes("notes vehicle 2");
-	        v2.setBasicStation("BM");
-	        v2.setCurrentStation("KA");
-	        v2.setReadyForAction(true);
-	        v2.setOutOfOrder(false);
-	        v2.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-	        v2.setDriverName(staffList.get(0));
-	        v2.setParamedicIName(staffList.get(1));
-	        v2.setParamedicIIName(staffList.get(2));
-	        v2.setMobilPhone(phoneList.get(1));
-	        //third vehicle
-	        VehicleDetail v3 = new VehicleDetail();
-	        v3.setVehicleId(2);
-	        v3.setVehicleName("Bm03");
-	        v3.setVehicleType("RTW");
-	        v3.setBasicStation("KA");
-	        v3.setCurrentStation("KA");
-	        v3.setReadyForAction(false);
-	        v3.setOutOfOrder(true);
-	        v3.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-	        v3.setDriverName(staffList.get(0));
-	        v3.setParamedicIName(staffList.get(1));
-	        v3.setParamedicIIName(staffList.get(2));
-	        v3.setMobilPhone(phoneList.get(2));
-	        //add to list
-	        vehicleList.add(v1);
-	        vehicleList.add(v2);
-	        vehicleList.add(v3);
-	        
-	        
-	        
-			Transport t1 = new Transport();
-	        t1.setTransportId(0);
-	        t1.setFromStreet("street_from_1");
-	        t1.setFromCity("city_from_1");
-	        t1.setToStreet("street_to_1");
-	        t1.setToCity("city_to_1");
-	        t1.setPatient(patientList.get(0));
-	        t1.addStatus(1, new Date().getTime());
-	        t1.addStatus(2, new Date().getTime());
-	        t1.setCallerDetail(notifierList.get(0));
-	        t1.setVehicleDetail(vehicleList.get(0));
-	        t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
-	        t1.setDirection(IDirectness.TOWARDS_BRUCK);
-			
-			
-			TransportForm window = new TransportForm(t1);
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) 
+//	{
+//		try 
+//		{
+//			
+//			ArrayList<Patient> patientList = new ArrayList<Patient>();
+//	        Patient p1 = new Patient("Patient1","Patient1");
+//	        Patient p2 = new Patient("Patient2","Patient2");
+//	        Patient p3 = new Patient("Patient3","Patient3");
+//	        patientList.add(p1);
+//	        patientList.add(p2);
+//	        patientList.add(p3);
+//	        
+//	        
+//	        ArrayList<CallerDetail> notifierList = new ArrayList<CallerDetail>();
+//	        CallerDetail n1 = new CallerDetail("Notifer1","0664-123456789","Notes taken");
+//	        CallerDetail n2 = new CallerDetail("Notifer2","0784-1548154","Notes taken");
+//	        CallerDetail n3 = new CallerDetail("Notifer3","2147-123456789","Notes taken");
+//	        notifierList.add(n1);
+//	        notifierList.add(n2);
+//	        notifierList.add(n3);
+//	        
+//	        ArrayList<StaffMember> staffList = new ArrayList<StaffMember>();
+//	        StaffMember s1 = new StaffMember("Staff1","Staff1","nick.staff1");
+//	        s1.setPersonId(0);
+//	        StaffMember s2 = new StaffMember("Staff2","Staff2","nick.staff2");
+//	        s2.setPersonId(1);
+//	        StaffMember s3 = new StaffMember("Staff3","Staff3","nick.staff3");
+//	        s3.setPersonId(2);
+//	        staffList.add(s1);
+//	        staffList.add(s2);
+//	        staffList.add(s3);
+//	        
+//	        
+//	        ArrayList<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
+//	        MobilePhoneDetail ph1 = new MobilePhoneDetail("P1","0699-123456789");
+//	        MobilePhoneDetail ph2 = new MobilePhoneDetail("P2","0664-123456789");
+//	        MobilePhoneDetail ph3 = new MobilePhoneDetail("P3","0676-123456789");
+//	        phoneList.add(ph1);
+//	        phoneList.add(ph2);
+//	        phoneList.add(ph3);
+//	        
+//	        
+//	      //create the list
+//	        ArrayList<VehicleDetail>vehicleList = new ArrayList<VehicleDetail>();
+//	        //load dummy data
+//	        VehicleDetail v1 = new VehicleDetail();
+//	        v1.setVehicleId(0);
+//	        v1.setVehicleName("Bm01");
+//	        v1.setVehicleType("RTW");
+//	        v1.setVehicleNotes("notes vehicle 1");
+//	        v1.setBasicStation("BM");
+//	        v1.setCurrentStation("BM");
+//	        v1.setReadyForAction(true);
+//	        v1.setOutOfOrder(false);
+//	        v1.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+//	        v1.setDriverName(staffList.get(0));
+//	        v1.setParamedicIName(staffList.get(1));
+//	        v1.setParamedicIIName(staffList.get(2));
+//	        v1.setMobilPhone(phoneList.get(0));
+//	        
+//	        
+//	        //second vehicle
+//	        VehicleDetail v2 = new VehicleDetail();
+//	        v2.setVehicleId(1);
+//	        v2.setVehicleName("Bm02");
+//	        v2.setVehicleType("KTW");
+//	        v2.setVehicleNotes("notes vehicle 2");
+//	        v2.setBasicStation("BM");
+//	        v2.setCurrentStation("KA");
+//	        v2.setReadyForAction(true);
+//	        v2.setOutOfOrder(false);
+//	        v2.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+//	        v2.setDriverName(staffList.get(0));
+//	        v2.setParamedicIName(staffList.get(1));
+//	        v2.setParamedicIIName(staffList.get(2));
+//	        v2.setMobilPhone(phoneList.get(1));
+//	        //third vehicle
+//	        VehicleDetail v3 = new VehicleDetail();
+//	        v3.setVehicleId(2);
+//	        v3.setVehicleName("Bm03");
+//	        v3.setVehicleType("RTW");
+//	        v3.setBasicStation("KA");
+//	        v3.setCurrentStation("KA");
+//	        v3.setReadyForAction(false);
+//	        v3.setOutOfOrder(true);
+//	        v3.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+//	        v3.setDriverName(staffList.get(0));
+//	        v3.setParamedicIName(staffList.get(1));
+//	        v3.setParamedicIIName(staffList.get(2));
+//	        v3.setMobilPhone(phoneList.get(2));
+//	        //add to list
+//	        vehicleList.add(v1);
+//	        vehicleList.add(v2);
+//	        vehicleList.add(v3);
+//	        
+//	        
+//	        
+//			Transport t1 = new Transport();
+//	        t1.setTransportId(0);
+//	        t1.setFromStreet("street_from_1");
+//	        t1.setFromCity("city_from_1");
+//	        t1.setToStreet("street_to_1");
+//	        t1.setToCity("city_to_1");
+//	        t1.setPatient(patientList.get(0));
+//	        t1.addStatus(1, new Date().getTime());
+//	        t1.addStatus(2, new Date().getTime());
+//	        t1.setCallerDetail(notifierList.get(0));
+//	        t1.setVehicleDetail(vehicleList.get(0));
+//	        t1.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_BLUELIGHT);
+//	        t1.setDirection(IDirectness.TOWARDS_BRUCK);
+//			
+//			
+//			TransportForm window = new TransportForm(t1);
+//			window.open();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	/**
-	 * Open the window
-	 */
-	public void open() {
-		final Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-	}
+//	/**
+//	 * Open the window
+//	 */
+//	public void open() {
+//		final Display display = Display.getDefault();
+//		createContents();
+//		shell.open();
+//		shell.layout();
+//		while (!shell.isDisposed()) {
+//			if (!display.readAndDispatch())
+//				display.sleep();
+//		}
+//	}
 	
 	/**
      * Default class constructor used to create
@@ -289,6 +289,14 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
     
     
     /**
+     * Open the window
+     */
+    public void open() 
+    {
+        shell.open();
+    }
+    
+    /**
      * used to edit an roster entry
      * @param rosterEntry the roster entry to edit
      */
@@ -306,6 +314,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         gcal.setTimeZone(TimeZone.getDefault());
         
         //date of transport
+        System.out.println("RosterEntryForm: transport: " +transport.getFromStreet());
         gcal.setTimeInMillis(transport.getDateOfTransport());
         this.dateTime.setDay(gcal.get(GregorianCalendar.DATE));
         this.dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
@@ -357,6 +366,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         this.comboPrioritaet.setText(transport.getTransportPriority());
         this.comboVonStrasse.setText(transport.getFromStreet());
         
+        System.out.println("transportForm, responsibleStation: " +transport.getResponsibleStation());
         if(transport.getResponsibleStation() != null)
         this.comboZustaendigeOrtsstelle.setText(transport.getResponsibleStation());//mandatory!! default: Bezirk
         
@@ -380,30 +390,35 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         	this.textAnmerkungen.setText(transport.getDiseaseNotes());
         }
         
-        if(transport.getCallerDetail().getCallerName() != null)
-        	this.textAnrufer.setText(transport.getCallerDetail().getCallerName());
+        if(transport.getCallerDetail() != null)
+        {
+	        if(transport.getCallerDetail().getCallerName() != null)
+	        	this.textAnrufer.setText(transport.getCallerDetail().getCallerName());
+        }
         
-        if(transport.getVehicleDetail().getDriverName().getLastName() != null)
+        if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
+        	this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
+        
+        if(transport.getVehicleDetail()!= null)
+        {
+        	if(transport.getVehicleDetail().getDriverName().getLastName() != null)
         	this.textFahrer.setText(transport.getVehicleDetail().getDriverName().getLastName() +" " +transport.getVehicleDetail().getDriverName().getFirstName());
 
-        if(transport.getVehicleDetail().getVehicleName() != null)
-        	this.textFahrzeug.setText(transport.getVehicleDetail().getVehicleName());
+	        if(transport.getVehicleDetail().getVehicleName() != null)
+	        	this.textFahrzeug.setText(transport.getVehicleDetail().getVehicleName());
+	        if(transport.getVehicleDetail().getParamedicIName().getLastName() != null)
+	        	this.textSaniI.setText(transport.getVehicleDetail().getParamedicIName().getLastName() +" " +transport.getVehicleDetail().getParamedicIName().getFirstName());
+	        
+	        if(transport.getVehicleDetail().getParamedicIIName().getLastName() != null)
+	        	this.textSaniII.setText(transport.getVehicleDetail().getParamedicIIName().getLastName() +" " +transport.getVehicleDetail().getParamedicIIName().getFirstName());
+        }
         
         if(transport.getRealStation() != null)
         	this.textOrtsstelle.setText(transport.getRealStation());
         
         if(transport.getFeedback() != null)
         	this.textRueckmeldung.setText(transport.getFeedback());
-        
-        if(transport.getVehicleDetail().getParamedicIName().getLastName() != null)
-        	this.textSaniI.setText(transport.getVehicleDetail().getParamedicIName().getLastName() +" " +transport.getVehicleDetail().getParamedicIName().getFirstName());
-        
-        if(transport.getVehicleDetail().getParamedicIIName().getLastName() != null)
-        	this.textSaniII.setText(transport.getVehicleDetail().getParamedicIIName().getLastName() +" " +transport.getVehicleDetail().getParamedicIIName().getFirstName());
-       
-        if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
-        	this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
-        
+
         if(transport.getTransportNumber() != null)
         	this.textTransportNummer.setText(transport.getTransportNumber());
         
@@ -1763,6 +1778,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				notes = textAnmerkungen.getText();
 				priority = comboPrioritaet.getText();
 				kindOfIllness = comboErkrankungVerletzung.getText();
+				System.out.println("---------------TransportForm, getcontentOfAllFields, kindOfIllness: " +kindOfIllness);
 				longDistanceTrip = fernfahrtButton.getSelection();
 				toMariazell = mariazellButton.getSelection();
 				toVienna = wienButton.getSelection();
