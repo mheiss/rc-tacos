@@ -2334,6 +2334,4 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	            setTextSaniII.refresh();
 	        }
 	    }
-	
-
 }
