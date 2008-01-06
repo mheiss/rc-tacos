@@ -179,8 +179,16 @@ function setMonth(month){
                                             </select> 
                                             <!-- minute --> <select name="startMinute" id="rosterViewDayHeadSelboxTime">
                                                 <option value="leer" selected>Min.</option>
-                                                <option value="0" >00</option>
-                                                <option value="30" >30</option>
+                                                <option value="0" >0</option>
+                                                <%
+                                                    int mb = 0;
+                                                    while (mb < 55) {
+                                                        mb += 5;
+                                                %>
+                                                <option value="<%=mb%>"><%=mb%></option>
+                                                <%
+                                                    }
+                                                %>
                                             </select> 
                                             <br />
                                             <!-- BIS -->&nbsp;bis:&nbsp;&nbsp;
@@ -198,8 +206,16 @@ function setMonth(month){
                                             </select>
                                             <!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
                                                 <option value="leer" selected>Min.</option>
-                                                <option value="0" >00</option>
-                                                <option value="30" >30</option>
+                                               <option value="0" >0</option>
+                                               <%
+                                                    int me = 0;
+                                                    while (me < 55) {
+                                                        me += 5;
+                                                %>
+                                                <option value="<%=me%>"><%=me%></option>
+                                                <%
+                                                    }
+                                                %>
                                             </select>                                            
                                              </td>
                                             </tr>
