@@ -990,6 +990,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		hookContextMenuBruck(viewerBruck);
 		hookContextMenuKapfenberg(viewerKapfenberg);
 		
+		viewerBruck.refresh();
+		viewerGraz.refresh();
+		viewerKapfenberg.refresh();
+		viewerLeoben.refresh();
+		viewerMariazell.refresh();
+		viewerWien.refresh();
+		
 	}
 	
 	/**
