@@ -36,6 +36,8 @@ import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
+import at.rc.tacos.client.providers.PrebookingViewContentProvider;
+import at.rc.tacos.client.providers.PrebookingViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
@@ -177,43 +179,43 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		
 		//viewers
 		viewerLeoben = new TableViewer(richtungLeobenGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerLeoben.setContentProvider(new JournalViewContentProvider());
-		viewerLeoben.setLabelProvider(new JournalViewLabelProvider());
+		viewerLeoben.setContentProvider(new PrebookingViewContentProvider());
+		viewerLeoben.setLabelProvider(new PrebookingViewLabelProvider());
 		viewerLeoben.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerLeoben.getTable().setLinesVisible(true);
 		
 		
 		viewerGraz = new TableViewer(richtungGrazGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerGraz.setContentProvider(new JournalViewContentProvider());
-		viewerGraz.setLabelProvider(new JournalViewLabelProvider());
+		viewerGraz.setContentProvider(new PrebookingViewContentProvider());
+		viewerGraz.setLabelProvider(new PrebookingViewLabelProvider());
 		viewerGraz.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerGraz.getTable().setLinesVisible(true);
 		
 		
 		viewerKapfenberg = new TableViewer(richtungKapfenbergGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerKapfenberg.setContentProvider(new JournalViewContentProvider());
-		viewerKapfenberg.setLabelProvider(new JournalViewLabelProvider());
+		viewerKapfenberg.setContentProvider(new PrebookingViewContentProvider());
+		viewerKapfenberg.setLabelProvider(new PrebookingViewLabelProvider());
 		viewerKapfenberg.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerKapfenberg.getTable().setLinesVisible(true);
 		
 		
 		viewerBruck = new TableViewer(richtungBruckGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerBruck.setContentProvider(new JournalViewContentProvider());
-		viewerBruck.setLabelProvider(new JournalViewLabelProvider());
+		viewerBruck.setContentProvider(new PrebookingViewContentProvider());
+		viewerBruck.setLabelProvider(new PrebookingViewLabelProvider());
 		viewerBruck.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerBruck.getTable().setLinesVisible(true);
 		
 		
 		viewerWien = new TableViewer(richtungWienGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerWien.setContentProvider(new JournalViewContentProvider());
-		viewerWien.setLabelProvider(new JournalViewLabelProvider());
+		viewerWien.setContentProvider(new PrebookingViewContentProvider());
+		viewerWien.setLabelProvider(new PrebookingViewLabelProvider());
 		viewerWien.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerWien.getTable().setLinesVisible(true);
 		
 		
 		viewerMariazell = new TableViewer(richtungMariazellGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerMariazell.setContentProvider(new JournalViewContentProvider());
-		viewerMariazell.setLabelProvider(new JournalViewLabelProvider());
+		viewerMariazell.setContentProvider(new PrebookingViewContentProvider());
+		viewerMariazell.setLabelProvider(new PrebookingViewLabelProvider());
 		viewerMariazell.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerMariazell.getTable().setLinesVisible(true);
 		
@@ -1193,10 +1195,10 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 			return;
 		
 		//add the actions
-		manager.add(editTransportActionLeoben);
+		manager.add(editTransportActionMariazell);
 		manager.add(new Separator());
-		manager.add(moveToOutstandingTransportsActionLeoben);
-		manager.add(cancelTransportActionLeoben);
+		manager.add(moveToOutstandingTransportsActionMariazell);
+		manager.add(cancelTransportActionMariazell);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer)
