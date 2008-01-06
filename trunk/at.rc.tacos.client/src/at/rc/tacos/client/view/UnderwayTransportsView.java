@@ -341,7 +341,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		setTransportStatusS9Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_OTHER, "S9 Sonderstatus");
 		editTransportStatusAction = new EditTransportStatusAction(this.viewer);
 		
-		editTransportAction = new EditTransportAction(this.viewer);
+		editTransportAction = new EditTransportAction(this.viewer,"underway");
 	}
 	
 	/**
