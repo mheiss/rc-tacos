@@ -22,14 +22,14 @@ public class CreateTransportAction extends Action
     public CreateTransportAction(Transport transport) 
     {
         this.transport = transport;
-        ModelFactory.getInstance().getTransportManager().add(transport);//TODO - 
+//        ModelFactory.getInstance().getTransportManager().add(transport);//TODO - 
 
     }
 
     public void run() 
     {
         //send the transport
-    	ModelFactory.getInstance().getTransportManager().add(transport);
-        //NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
+//    	ModelFactory.getInstance().getTransportManager().add(transport);
+        NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
     }
 }
