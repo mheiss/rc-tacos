@@ -1005,42 +1005,42 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	private void makeActionsBruck(TableViewer viewer)
 	{		
 		
-		editTransportActionBruck = new EditTransportAction(viewer);
+		editTransportActionBruck = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionBruck = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionBruck = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
 	}
 	private void makeActionsKapfenberg(TableViewer viewer)
 	{		
 		
-		editTransportActionKapfenberg = new EditTransportAction(viewer);
+		editTransportActionKapfenberg = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionKapfenberg = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionKapfenberg = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
 	}
 	private void makeActionsLeoben(TableViewer viewer)
 	{		
 		
-		editTransportActionLeoben = new EditTransportAction(viewer);
+		editTransportActionLeoben = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionLeoben = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionLeoben = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
 	}
 	private void makeActionsMariazell(TableViewer viewer)
 	{		
 		
-		editTransportActionMariazell = new EditTransportAction(viewer);
+		editTransportActionMariazell = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionMariazell = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionMariazell = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
 	}
 	private void makeActionsGraz(TableViewer viewer)
 	{		
 		
-		editTransportActionGraz = new EditTransportAction(viewer);
+		editTransportActionGraz = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionGraz = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionGraz = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
 	}
 	private void makeActionsWien(TableViewer viewer)
 	{		
 		
-		editTransportActionWien = new EditTransportAction(viewer);
+		editTransportActionWien = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionWien = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionWien = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
 	}
