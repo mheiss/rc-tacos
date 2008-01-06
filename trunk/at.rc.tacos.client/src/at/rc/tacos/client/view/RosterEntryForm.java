@@ -228,7 +228,7 @@ public class RosterEntryForm implements PropertyChangeListener
         mitarbeiterLabel.setBounds(213, 48,55, 13);
         mitarbeiterLabel.setText("Mitarbeiter:");
 
-        Combo employeenameCombo = new Combo(dienstplanGroup, SWT.READ_ONLY);
+        Combo employeenameCombo = new Combo(dienstplanGroup, SWT.READ_ONLY);//TODO change- enter new staff members should be possible
         employeenameCombo.setBounds(306, 43,226, 24);
         employeenameCombo.setFont(new Font(null,"Arial", 10, SWT.BOLD));
         setEmployeenameCombo = new ComboViewer(employeenameCombo);
@@ -476,6 +476,7 @@ public class RosterEntryForm implements PropertyChangeListener
             {
                 index = (setEmployeenameCombo.getCombo().getSelectionIndex());
                 staffMember = (StaffMember)setEmployeenameCombo.getElementAt(index);
+                
                 standbyState = bereitschaftButton.getSelection();
                 station = comboOrtsstelle.getText();
                 job = comboVerwendung.getText();
