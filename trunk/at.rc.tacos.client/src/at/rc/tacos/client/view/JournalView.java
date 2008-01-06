@@ -338,7 +338,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 	 */
 	private void makeActions()
 	{		
-		editTransportAction = new EditTransportAction(this.viewer);
+		editTransportAction = new EditTransportAction(this.viewer, "journal");
 		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(this.viewer);
 		moveToRunningTransportsAction = new JournalMoveToRunningTransportsAction(this.viewer);
 	}
