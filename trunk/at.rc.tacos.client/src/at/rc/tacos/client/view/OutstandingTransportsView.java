@@ -281,7 +281,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	private void makeActions()
 	{
 		forwardTransportAction = new ForwardTransportAction(this.viewerOffTrans);
-		editTransportAction = new EditTransportAction(this.viewerOffTrans);
+		editTransportAction = new EditTransportAction(this.viewerOffTrans, "outstanding");
 		cancelTransportAction = new CancelTransportAction(this.viewerOffTrans);
 		
 	}
