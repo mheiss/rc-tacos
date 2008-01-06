@@ -28,12 +28,23 @@ function setDataToInput(day, month, year){
     document.form.startMonth.value=month;
     document.form.startYear.value=year;
     
+    document.form.selDateView.value= day+"."+month+"."+year;
+    
     document.form.endDay.value=day;
     document.form.endMonth.value=month;
     document.form.endYear.value=year;
+    
+   
 }
 function setMonth(month){
     document.form.startMonth.value=month;
+}
+
+function changeColor(opt)
+{
+    /* document.getElementById('calDay').bgColor = '#333333'; */
+    document.getElementById(opt).style.color = '#984653'; 
+
 }
 </script>
 </head>
@@ -160,10 +171,12 @@ function setMonth(month){
                                             <!-- KALENDER -->
                                             <!-- <from name="fomr2" method="post" action="<%=request.getContextPath()+"/Dispatcher/calendar.do" %>" >  -->
                                             <%@include file="calendar.jsp" %>
+                                            
                                             <!--  <input type="submit" name="calChange" value="change" />
                                              </from> -->
                                              </td>
                                              <td>
+                                             gew&auml;hltes Datum: <input type="text" disabled="disabled" id="selDateView" /><br /><br />
                                              <!-- VON -->&nbsp;von:&nbsp;
                                             <!-- hour --> <select name="startHour" id="rosterViewDayHeadSelboxTime">
                                                 <option value="leer" selected>Std.</option>

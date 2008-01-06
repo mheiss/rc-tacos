@@ -383,3 +383,21 @@ padding:10px;}
     border-color:#b1b1b1;
 
 }
+
+#calDay{
+	cursor: pointer;
+	width:100%;
+	height:100%;
+}
+#calDay:hover{
+    cursor: pointer;
+    font-weight: bold;
+    width:100%;
+    height:100%;
+}
+#calDay:hover span{
+    cursor: pointer;
+    background-color:red;
+}
+
+#selDateView{ border-width:0px; color:black; text-align:center; vertical-align: middle; font-weight: bold; }

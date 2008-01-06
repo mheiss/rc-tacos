@@ -71,17 +71,17 @@
                                                             if (i == currentday-1  && currentmonth == mm && currentyear == yy){
                                                                     
                                                                 %>
-	<td style='color: red'>
-	<div style="cursor: pointer;"
-		onclick="setDataToInput('<%=i %>', '<%=mm %>', '<%=yy %>')"><b><%=i %></b></div>
+	<td style='color: red;'>
+	<div id="calDay" name="calDay"
+		onclick="setDataToInput('<%=i %>', '<%=mm %>', '<%=yy %>'); changeColor('calDay<%=i %>')"><b><%=i %></b></div>
 	</td>
 	<% 
                                                           }
                                                             else{
                                                                  %>
 	<td>
-	<div style="cursor: pointer;"
-		onclick="setDataToInput('<%=i %>', '<%=mm %>', '<%=yy %>')"><%=i %></div>
+	<div id="calDay" name="calDay" 
+		onmouseup="changeColor('calDay<%=i %>')" onclick="setDataToInput('<%=i %>', '<%=mm %>', '<%=yy %>')" ><%=i %></div>
 	</td>
 	<%
                                                            
