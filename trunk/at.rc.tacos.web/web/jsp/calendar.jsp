@@ -1,7 +1,9 @@
 <%@page import="java.util.*"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-
+<!--  
+<from name="formCal" method="post" action="<%=request.getContextPath()+"/Dispatcher/calendar.do" %>" > 
+-->
 <table border="1" cellpadding="5" style="" cellpadding="0"
 	cellspacing="0">
 	<%
@@ -121,4 +123,7 @@
                                                 
                                                            // out.print("<input type='submit' name='submit' value='Monat &auml;ndern'></form><br />"); 
                                                         %>
-
+<!-- 
+<input type="submit" name="calChange" value="change" />
+</from>
+ -->

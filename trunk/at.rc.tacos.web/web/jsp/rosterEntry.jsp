@@ -37,7 +37,7 @@ function setDataToInput(day, month, year){
    
 }
 function setMonth(month){
-    document.form.startMonth.value=month;
+    /* document.form.startMonth.value=month; */
 }
 
 function changeColor(opt)
@@ -169,11 +169,10 @@ function changeColor(opt)
                                             <tr>
                                              <td width="50%">
                                             <!-- KALENDER -->
-                                            <!-- <from name="fomr2" method="post" action="<%=request.getContextPath()+"/Dispatcher/calendar.do" %>" >  -->
+                                            
                                             <%@include file="calendar.jsp" %>
                                             
-                                            <!--  <input type="submit" name="calChange" value="change" />
-                                             </from> -->
+                                            
                                              </td>
                                              <td>
                                              gew&auml;hltes Datum: <input type="text" disabled="disabled" id="selDateView" /><br /><br />
