@@ -320,6 +320,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		//create the actions
 		makeActions();
 		hookContextMenu();	
+		
+		viewer.refresh();
 	}
 	
 	
