@@ -55,6 +55,7 @@ public class SetTransportStatusAction extends Action
 		long timestamp = gcal.getTimeInMillis();
 		//set the status
 		transport.addStatus(status, timestamp);
+		System.out.println("___________SetTransportStatusAction, transport: " +transport);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
