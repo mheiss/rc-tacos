@@ -72,7 +72,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	public UnderwayTransportsView()
 	{
 		//add listener to model to keep on track
-		ModelFactory.getInstance().getRosterManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
 	}
 	
 	
