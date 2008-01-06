@@ -16,14 +16,16 @@ public class EditTransportAction extends Action
 {
 	//properties
 	private TableViewer viewer;
+	private String editingType;
 	
 	/**
 	 * Default class construtor.
 	 * @param viewer the table viewer
 	 */
-	public EditTransportAction(TableViewer viewer)
+	public EditTransportAction(TableViewer viewer, String editingType)
 	{
 		this.viewer = viewer;
+		this.editingType = editingType;
 		setText("Eintrag bearbeiten");
 		setToolTipText("Öffnet ein Fenster um den Transport zu bearbeiten");
 	}
@@ -36,7 +38,7 @@ public class EditTransportAction extends Action
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//open the editor
-		TransportForm form = new TransportForm(transport);
+		TransportForm form = new TransportForm(transport,editingType);
 		form.open();
 	}
 }
