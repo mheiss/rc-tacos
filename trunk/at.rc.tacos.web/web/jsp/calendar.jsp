@@ -75,7 +75,7 @@
                                                                 %>
 	<td style='border-color:#444444; border-style:solid; border-width:2px;'>
 	<div id="calDay" name="calDay" 
-		onclick="setDataToInput('<%=i %>', '<%=monate[mm] %>', '<%=yy %>'); changeColor('calDay<%=i %>')"><b><%=i %></b></div>
+		onclick="setDataToInput('<%=i %>', '<%=monate[mm] %>', '<%=yy %>')"><b><%=i %></b></div>
 	</td>
 	<% 
                                                           }
@@ -83,10 +83,9 @@
                                                                  %>
 	<td>
 	<div id="calDay" name="calDay" 
-		onclick="setDataToInput('<%=i %>', '<%=monate[mm] %>', '<%=yy %>'); changeColor('calDay<%=i %>')" ><%=i %></div>
+		onclick="setDataToInput('<%=i %>', '<%=monate[mm] %>', '<%=yy %>')" ><%=i %></div>
 	</td>
-	<%
-                                                           
+	<%                                                
                                                             }
                                                            
                                                             
