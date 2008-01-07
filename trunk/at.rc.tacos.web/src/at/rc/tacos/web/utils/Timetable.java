@@ -76,7 +76,7 @@ public class Timetable {
 				for(int j=1;j<=daysToShow;j++){
 
 					if(daysToShow>1){
-						if(j==0){
+						if(j==1){
 			           		  dt = new Date();
 			           	}else{
 			           		  dt=dtCal;
