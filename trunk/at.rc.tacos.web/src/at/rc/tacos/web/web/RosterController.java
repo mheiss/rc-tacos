@@ -50,6 +50,15 @@ public class RosterController implements Controller
 			String endYear =  request.getParameter("endYear");
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
+
+			if(startDay.trim().isEmpty() || startMonth.trim().isEmpty() || startYear.trim().isEmpty() 
+					|| startHour.trim().isEmpty() || startMinute.trim().isEmpty() || endDay.trim().isEmpty() 
+					|| endMonth.trim().isEmpty() || endYear.trim().isEmpty() || endHour.trim().isEmpty()
+					|| endMinute.trim().isEmpty())
+			{ 
+				params.put("loginError", "Keine Daten eingegeben!");
+				return params;
+			} 
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
