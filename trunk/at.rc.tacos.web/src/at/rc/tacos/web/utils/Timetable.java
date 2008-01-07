@@ -84,6 +84,7 @@ public class Timetable {
 					{
 						
 						RosterEntry entry = (RosterEntry)message;
+						
 						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
 
 	/* Table-format

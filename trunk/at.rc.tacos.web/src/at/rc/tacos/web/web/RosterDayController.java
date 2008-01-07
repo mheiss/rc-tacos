@@ -32,6 +32,7 @@ public class RosterDayController  implements Controller
 		
 		if("dayView".equalsIgnoreCase(action))
 		{
+			
 			Date current = new Date();
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			//get roster entries

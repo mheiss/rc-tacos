@@ -81,8 +81,23 @@
                                         cellspacing='0'>
                                         <tr>
                                           <% 
-                                          //Timetable timetable = Timetable.getInstance();
-                                          //out.print(timetable.calculateTimetable(rosterList, 7));
+                                          Date dt=null;
+                                          Date dtCal=null;
+                                          for(int i=0;i<=7;i++){
+                                        	  
+                                        	  if(i==0){
+                                        		   dt = new Date();
+                                        	  }else{
+                                        		   dt=dtCal;
+                                        	  }
+                                              dtCal = new Date(dt.getTime()+86400000);
+                                              SimpleDateFormat formathh = new SimpleDateFormat("dd.MM.yyyy");
+                                              out.print(formathh.format(dtCal)+"<br>");
+                                          }
+                                          
+                                          
+                                          Timetable timetable = Timetable.getInstance();
+                                          out.print(timetable.calculateTimetable(rosterList, 7));
                                           
                                           %>
                                         
