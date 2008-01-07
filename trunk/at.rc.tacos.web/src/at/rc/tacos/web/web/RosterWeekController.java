@@ -33,18 +33,31 @@ public class RosterWeekController  implements Controller
 		List<AbstractMessage> resultList;
 		AbstractMessage result;
 
+		
+		
 		if("weekView".equalsIgnoreCase(action))
 		{
-			Date current = new Date();
+			//Date current = new Date();
+			Date dt=null;
+            Date dtCal=null;
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			//get roster entries
 			for(int i=1; i<=7; i++){
-				QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(current));
+	           	  if(i==0){
+	           		   dt = new Date();
+	           	  }else{
+	           		   dt=dtCal;
+	           	  }
+	           	  //set date + one day(->timestamp=86400000)
+	              dtCal = new Date(dt.getTime()+86400000);
+	              
+				QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(dtCal));
 				resultList = client.sendListingRequest(RosterEntry.ID, filter);
 				if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
 					params.put("rosterList", resultList);  
 			}
 		}
+		
 		return params;
 
 
