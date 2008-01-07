@@ -27,7 +27,7 @@
                                                                 else {
                                                                    mm = Integer.parseInt(request.getParameter("month").toString());
                                                                     yy = Integer.parseInt(request.getParameter("year").toString());
-                                                                    out.print(yy +"<br />");
+                                                                    
                                                                 }
                                                                
                                                                 if(request.getParameter("mo") != null && request.getParameter("ye") != null) {
@@ -76,7 +76,7 @@
                                                                 %>
 	<td style='border-color:#444444; border-style:solid; border-width:2px;'>
 	<div id="calDay" name="calDay" 
-		onclick="setDataToInput('<%=i %>', '<%=monate[mm] %>', '<%=yy %>')"><b><%=i %></b></div>
+		onclick="setDataToInput('<%=i %>', '<%=mm+1 %>', '<%=yy %>')"><b><%=i %></b></div>
 	</td>
 	<% 
                                                           }
@@ -84,7 +84,7 @@
                                                                  %>
 	<td>
 	<div id="calDay" name="calDay" 
-		onclick="setDataToInput('<%=i %>', '<%=monate[mm] %>', '<%=yy %>')" ><%=i %></div>
+		onclick="setDataToInput('<%=i %>', '<%=mm+1 %>', '<%=yy %>')" ><%=i %></div>
 	</td>
 	<%                                                
                                                             }
@@ -104,7 +104,7 @@
                                                     
                                                             for(int i=0; i<12; i++) {
                                                             %>
-                                                               <option value="<%=i %>" onclick="setMonth('<%=i %>')" ><%=monate[i] %></option>
+                                                               <option value="<%=i %>" ><input type="submit" name="calChange" value="<%=monate[i] %>" /></option>
                                                             <%
                                                             }
                                                 

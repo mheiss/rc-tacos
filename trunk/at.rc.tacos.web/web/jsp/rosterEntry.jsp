@@ -249,13 +249,13 @@ function setDataToInput(day, month, year){
 startHour, startMinute, startDay, startMonth, startYear
 endHour, endMinute, endDay, endMonth, endYear
 --> 
-<input type="hidden" name="startDay"  value=""  />
-<input type="hidden" name="startMonth"  value=""  />
-<input type="hidden" name="startYear" value=""   />
+<input type="text" name="startDay"  value=""  />
+<input type="text" name="startMonth"  value=""  />
+<input type="text" name="startYear" value=""   />
 <br>
-<input type="hidden" name="endDay" value=""  />
-<input type="hidden" name="endMonth" value=""  />
-<input type="hidden" name="endYear" value="" />
+<input type="text" name="endDay" value=""  />
+<input type="text" name="endMonth" value=""  />
+<input type="text" name="endYear" value="" />
  
 </form>
 
