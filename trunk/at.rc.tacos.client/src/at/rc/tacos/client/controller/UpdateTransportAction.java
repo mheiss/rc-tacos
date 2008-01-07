@@ -13,13 +13,13 @@ public class UpdateTransportAction extends Action
 	public UpdateTransportAction(Transport transport)
 	{
 		this.transport = transport;
-		ModelFactory.getInstance().getTransportManager().update(transport);//TODO -
+//		ModelFactory.getInstance().getTransportManager().update(transport);//TODO -
 	}
 
 	@Override
 	public void run()
 	{
-		ModelFactory.getInstance().getTransportManager().update(transport);
-		//NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+//		ModelFactory.getInstance().getTransportManager().update(transport);
+		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
