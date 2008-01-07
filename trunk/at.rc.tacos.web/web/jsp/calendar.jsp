@@ -104,7 +104,7 @@
                                                     
                                                             for(int i=0; i<12; i++) {
                                                             %>
-                                                               <option value="<%=i %>" ><input type="submit" name="calChange" value="<%=monate[i] %>" /></option>
+                                                               <option value="<%=i %>" ><%=monate[i] %></option>
                                                             <%
                                                             }
                                                 
