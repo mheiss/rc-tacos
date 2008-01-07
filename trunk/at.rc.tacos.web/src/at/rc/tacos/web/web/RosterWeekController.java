@@ -1,11 +1,11 @@
 package at.rc.tacos.web.web;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +16,6 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.StaffMember;
 
 
 public class RosterWeekController  implements Controller
@@ -30,34 +29,32 @@ public class RosterWeekController  implements Controller
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
-		List<AbstractMessage> resultList;
-		AbstractMessage result;
 
-		
-		
-		if("weekView".equalsIgnoreCase(action))
-		{
-			//Date current = new Date();
-			Date dt=null;
-            Date dtCal=null;
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			//get roster entries
-			for(int i=1; i<=7; i++){
-	           	  if(i==0){
-	           		   dt = new Date();
-	           	  }else{
-	           		   dt=dtCal;
-	           	  }
-	           	  //set date + one day(->timestamp=86400000)
-	              dtCal = new Date(dt.getTime()+86400000);
-	              
-				QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(dtCal));
-				resultList = client.sendListingRequest(RosterEntry.ID, filter);
-				if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
-					params.put("rosterList", resultList);  
-			}
-		}
-		
+
+		if("weekView".equalsIgnoreCase(action)) 
+        { 
+            //the result listing, that should contain the week result 
+            List<AbstractMessage> resultList = new ArrayList<AbstractMessage>(); 
+            //the calendar instance with the current date 
+            Calendar cal = Calendar.getInstance(); 
+            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy"); 
+            //get roster entries 
+            for(int i=1; i<=7; i++) 
+            { 
+                //set up the filter with the date               
+                QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(cal.getTime())); 
+                //query the listing for the given day 
+                List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter); 
+                //check if we got the desired type and  add the entries to the list 
+                if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))   
+                    resultList.addAll(dayResult); 
+                //increment the day by one 
+                cal.add(Calendar.DAY_OF_MONTH, 1); 
+            } 
+            //add the resulting list to the params 
+            params.put("rosterList", resultList);   
+        }
+
 		return params;
 
 
