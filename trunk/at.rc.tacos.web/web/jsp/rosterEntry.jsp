@@ -36,16 +36,7 @@ function setDataToInput(day, month, year){
     
    
 }
-function setMonth(month){
-    /* document.form.startMonth.value=month; */
-}
 
-function changeColor(opt)
-{
-    /* document.getElementById('calDay').bgColor = '#333333'; */
-    document.getElementById(opt).style.color = '#984653'; 
-
-}
 </script>
 </head>
 <body>
@@ -60,6 +51,7 @@ function changeColor(opt)
 %>
 
 <form method="post" name="form" action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
+
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
 	<thead>
@@ -263,7 +255,9 @@ endHour, endMinute, endDay, endMonth, endYear
 <input type="hidden" name="endDay" value=""  />
 <input type="hidden" name="endMonth" value=""  />
 <input type="hidden" name="endYear" value="" />
-
+ 
 </form>
+
+
 </body>
 </html>

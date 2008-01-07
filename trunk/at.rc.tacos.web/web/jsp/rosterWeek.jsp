@@ -1,15 +1,16 @@
-<%@ page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Locale"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
-<%@page import="at.rc.tacos.common.Constants"%>
 <%
-	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-	Date current = new Date();
-	UserSession userSession = (UserSession)session.getAttribute("userSession");
+    Map<String,Object> params = (Map)request.getAttribute("params");
+    List<StaffMember> rosterList = (List)params.get("rosterList");
+    UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="at.rc.tacos.common.AbstractMessage"%>
+<%@page import="at.rc.tacos.model.RosterEntry"%>
+<%@page import="at.rc.tacos.web.utils.Timetable"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,118 +18,90 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 
 <title>TACOS :: RK Bruck-Kapfenberg</title>
-
 </head>
-<body>
+<body >
+<%@ page import="java.text.*"%>
+<%@page import="java.util.Date"%>
+<% 
+        Date current = new Date();
+        SimpleDateFormat formath = new SimpleDateFormat("dd.MM.yyyy");
+%>
 
-<form method="post" border='0' cellpadding='0' cellspacing='0'>
+<form method="post" action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
-	id="MainTab">
-	<thead>
-		<tr>
-			<td>
-			<table border='0' cellpadding='0' cellspacing='0' width="100%"
-				id="Tablogo">
-				<tr>
-					<td align="left"><img src="../image/tacos_logo_left.jpg"
-						name="logoLeft" id="logoLeft" /></td>
-					<td align="right"><img src="../image/tacos_logo_right.jpg"
-						name="logoRight" id="logoRight" /></td>
-				</tr>
-			</table>
-			</td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td id="MainBodyContent">
-			<table width="100%" id="userInfo">
-				<tr>
-					<td width="50%" align="left"><!-- 
-                                <form  method="post" action="login" border='0' cellpadding='0' cellspacing='0' width="200"><input type="submit" name="buttonLogout" value="" id="buttonLogout" /></form>
-                                 --> Willkommen : <%= userSession.getUsername()  %>&nbsp;&nbsp;(
-					<a
-						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
-					)</td>
-					<td width="50%" align="right">Heute ist der <%=format.format(current)%>
-					</td>
-				</tr>
-			</table>
-			<table width="100%">
-				<tr>
+    id="MainTab">
+    <thead>
+        <tr>
+            <td>
+            <table border='0' cellpadding='0' cellspacing='0' width="100%"
+                id="Tablogo">
+                <tr>
+                    <td align="left"><img src="../image/tacos_logo_left.jpg"
+                        name="logoLeft" id="logoLeft" /></td>
+                    <td align="right"><img src="../image/tacos_logo_right.jpg"
+                        name="logoRight" id="logoRight" /></td>
+                </tr>
+            </table>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td id="MainBodyContent">
+            <table width="100%" id="userInfo">
+                <tr>
+                    <td width="50%" align="left"> Willkommen : <%= userSession.getUsername() %>
+                    &nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
+                    )</td>
+                    <td width="50%" align="right">Heute ist der <%= formath.format(current) %>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%">
+                <tr>
 
+                    <!-- #### LEFT CONTAINER NAVIGATION-->
+                    <td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --><%@ include
+                        file="navigation.jsp"%></td>
+                    <!-- #### CONTENT -->
 
-					<!-- #### LEFT CONTAINER NAVIGATION-->
-					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --> <%@ include
-						file="navigation.jsp"%></td>
+                    <td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
 
-					<!-- #### CONTENT -->
-					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
-					<table id="Block" width="100%" border='0' cellpadding='0'
-						cellspacing='0'>
-						<tr>
-							<td id="BlockHead" align="right" valign="center"><b>Ortsstelle:</b>
-							<!--  Orstellenliste --> <select name="station"
-								id="rosterViewDayHeadSelbox">
-								<option><%=Constants.STATION_BREITENAU%></option>
-								<option><%=Constants.STATION_BRUCK%></option>
-								<option><%=Constants.STATION_KAPFENBERG%></option>
-								<option><%=Constants.STATION_MAREIN%></option>
-								<option><%=Constants.STATION_THOERL%></option>
-								<option><%=Constants.STATION_TURNAU%></option>
-							</select></td>
-						</tr>
-						<tr>
-							<td id="BlockContent">
-							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
-								<tr>
-									<%
-										if (request.getParameter("timetableEntryDate") != null) {
-											int count = 0;
-											while (request.getParameter("timetableEntryDate") != null) {
-												count++;
-									%>
-									<td id="weekday"></td>
-
-									<%
-										}
-										}
-									%>
-
-
-								</tr>
-							</table>
-							<table id="weekdayTimetable" width="100%" border='0'
-								cellpadding='0' cellspacing='0' style="margin: 2px;">
-								<tr>
-									<td>Weekday</td>
-								</tr>
-								<%
-									if (request.getParameter("timetableEntry") != null) {
-
-										while (request.getParameter("timetableEntry") != null) {
-								%>
-								<tr>
-									<td><%=request.getParameter("timetableEntry")%></td>
-								</tr>
-
-								<%
-									}
-									}
-								%>
-							</table>
-							</td>
-						</tr>
-					</table>
-					</td>
-
-				</tr>
-
-			</table>
-			</td>
-		</tr>
-	</tbody>
+                    <table id="Block" width="100%" border='0' cellpadding='0'
+                        cellspacing='0'>
+                        <tr>
+                            <td id="BlockHead" align="right" valign="center">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td id="BlockContent">
+                            <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+                                <tr>
+                                    <td width="50%"><!-- Timetablebox Day -->
+                                    <table width="100%" height="100%" border='0' cellpadding='0'
+                                        cellspacing='0'>
+                                        <tr>
+                                          <% 
+                                          //Timetable timetable = Timetable.getInstance();
+                                          //out.print(timetable.calculateTimetable(rosterList, 7));
+                                          
+                                          %>
+                                        
+                                        </tr>
+                                    </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                    </table>
+                    legende</td>
+                </tr>
+            </table>
+            </td>
+        </tr>
+    </tbody>
 </table>
 </form>
+
 </body>
 </html>
