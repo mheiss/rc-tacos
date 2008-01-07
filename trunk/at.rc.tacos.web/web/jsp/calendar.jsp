@@ -27,6 +27,7 @@
                                                                 else {
                                                                    mm = Integer.parseInt(request.getParameter("month").toString());
                                                                     yy = Integer.parseInt(request.getParameter("year").toString());
+                                                                    out.print(yy +"<br />");
                                                                 }
                                                                
                                                                 if(request.getParameter("mo") != null && request.getParameter("ye") != null) {

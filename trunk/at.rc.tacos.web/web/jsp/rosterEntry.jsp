@@ -24,6 +24,7 @@
 
 function setDataToInput(day, month, year){
     
+    
     document.form.startDay.value=day;
     document.form.startMonth.value=month;
     document.form.startYear.value=year;
