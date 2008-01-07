@@ -103,9 +103,15 @@
                                                         out.print("<select name='month'>");
                                                     
                                                             for(int i=0; i<12; i++) {
+                                                            	if((mm)==i){
+                                                            %>
+                                                                <option value="<%=i %>" selected><%=monate[i] %></option>
+                                                            <%		
+                                                            	}else{
                                                             %>
                                                                <option value="<%=i %>" ><%=monate[i] %></option>
                                                             <%
+                                                            	}
                                                             }
                                                 
                                                             out.print("</select>");
@@ -114,9 +120,15 @@
                                                             int tmpdate;
                                                             
                                                             for(int i = 0; i <= 1;i++){
-                                                                tmpdate = new Date().getYear()+1900;
+                                                            	tmpdate = new Date().getYear()+1900;
                                                                 tmpdate = tmpdate +i; 
+                                                                
+                                                            	if(yy==tmpdate){
+                                                            		out.print("<option value='"+(tmpdate)+"' selected >"+(tmpdate)+"</option>");      
+                                                                }else{
+                                                                
                                                                 out.print("<option value='"+(tmpdate)+"'>"+(tmpdate)+"</option>");
+                                                                }
                                                             }
                                                         
                                                             out.print("</select>");
