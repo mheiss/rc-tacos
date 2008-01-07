@@ -238,6 +238,83 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         	String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         	this.textTermin.setText(terminTime);
         }
+        
+        //aeS0
+        if(transport.getStatusMessages() != null)
+        {
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textAE.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS1.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS2.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS3.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS4.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS5.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS6.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS7.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS8.setText(time);
+	        }
+	        
+	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getTimestamp() != 0)
+	        {
+	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getTimestamp());
+	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+	        	this.textS9.setText(time);
+	        }
+	        
+	        
+	        
+        }
 
         //other fields
         this.begleitpersonButton.setSelection(transport.isAccompanyingPerson());
@@ -279,6 +356,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         this.polizeiButton.setSelection(transport.isPoliceAlarming());
         this.rthButton.setSelection(transport.isHelicopterAlarming());
         this.ruecktransportMoeglichButton.setSelection(transport.isBackTransport());
+        this.rufhilfepatientButton.setSelection(transport.isEmergencyPhone());
+        
         
         if(transport.getDiseaseNotes() != null)
         {
@@ -357,9 +436,21 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         }
         
         //TODO noch etwas offen??!!!!!!!!1------------------------------------
-        this.setTextFahrer.setSelection(new StructuredSelection(transport.getVehicleDetail().getDriverName()));
-        this.setTextSaniI.setSelection(new StructuredSelection(transport.getVehicleDetail().getParamedicIName()));
-        this.setTextSaniII.setSelection(new StructuredSelection(transport.getVehicleDetail().getParamedicIIName()));
+        if(transport.getVehicleDetail() != null)
+        {
+	        if(transport.getVehicleDetail().getDriverName() != null)
+	        {
+	        	this.setTextFahrer.setSelection(new StructuredSelection(transport.getVehicleDetail().getDriverName()));
+	        }
+	        if(transport.getVehicleDetail().getParamedicIName() != null)
+	        {
+	        	this.setTextSaniI.setSelection(new StructuredSelection(transport.getVehicleDetail().getParamedicIName()));
+	        }
+	        if(transport.getVehicleDetail().getParamedicIIName() != null)
+	        {
+	        	this.setTextSaniII.setSelection(new StructuredSelection(transport.getVehicleDetail().getParamedicIIName()));
+	        }
+        }
         
         
         
@@ -1706,15 +1797,16 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	//TODO setRealStation, Transportnumber, VehicleDetail wann?
                 	
                 	transport.resetAllStati();//set all transport stati to "0"
-                	VehicleDetail vehicleDetail = new VehicleDetail();
-                	StaffMember smD = new StaffMember();
-                	StaffMember smPI = new StaffMember();
-                	StaffMember smPII = new StaffMember();
-                	vehicleDetail.setDriverName(smD);
-                	vehicleDetail.setParamedicIName(smPI);
-                	vehicleDetail.setParamedicIIName(smPII);
                 	
-                	transport.setVehicleDetail(vehicleDetail);
+//                	VehicleDetail vehicleDetail = new VehicleDetail();
+//                	StaffMember smD = new StaffMember();
+//                	StaffMember smPI = new StaffMember();
+//                	StaffMember smPII = new StaffMember();
+//                	vehicleDetail.setDriverName(smD);
+//                	vehicleDetail.setParamedicIName(smPI);
+//                	vehicleDetail.setParamedicIIName(smPII);
+//                	
+//                	transport.setVehicleDetail(vehicleDetail);
                 	
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
