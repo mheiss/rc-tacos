@@ -33,20 +33,32 @@ public class VehicleEncoder  implements MessageEncoder
         writer.writeCharacters(vehicle.getVehicleType());
         writer.writeEndElement();
         //get the encoder for the staff member
-        vehicle.getDriverName().setFunction("driver");
-        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
-        encoder.doEncode(vehicle.getDriverName(), writer);
+        if(vehicle.getDriverName() != null)
+        {
+	        vehicle.getDriverName().setFunction("driver");
+	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
+	        encoder.doEncode(vehicle.getDriverName(), writer);
+        }
         //write the elements and attributes
-        vehicle.getParamedicIName().setFunction("medic1");
-        encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
-        encoder.doEncode(vehicle.getParamedicIName(), writer);
+        if(vehicle.getParamedicIName()!= null)
+        {
+	        vehicle.getParamedicIName().setFunction("medic1");
+	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
+	        encoder.doEncode(vehicle.getParamedicIName(), writer);
+        }
         //write the elements and attributes
-        vehicle.getParamedicIIName().setFunction("medic2");
-        encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
-        encoder.doEncode(vehicle.getParamedicIIName(), writer);
+        if(vehicle.getParamedicIIName()!= null)
+        {
+	        vehicle.getParamedicIIName().setFunction("medic2");
+	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
+	        encoder.doEncode(vehicle.getParamedicIIName(), writer);
+        }
         //get the encoder for the mobile phone
-        encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
-        encoder.doEncode(vehicle.getMobilePhone(), writer);
+        if(vehicle.getMobilePhone()!= null)
+        {
+	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
+	        encoder.doEncode(vehicle.getMobilePhone(), writer);
+        }
         //write the elements and attributes
         writer.writeStartElement("vehicleNotes");
         writer.writeCharacters(vehicle.getVehicleNotes());
