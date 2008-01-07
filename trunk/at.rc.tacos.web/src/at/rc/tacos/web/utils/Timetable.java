@@ -183,15 +183,12 @@ public class Timetable {
      * previousely used instance.
      * @return a instance of the <code>Timetable</code> class.
      */
-    public static synchronized Timetable getInstance() //step 1
-    {
-    	
-        //do we have a valid instance?
-        if(instance == null)
-            //create a new instance and return it
-            return new Timetable();
-        else    
-            return instance;
+	public static Timetable getInstance() //step 1 
+    { 
+        //do we have a valid instance? 
+        if(instance == null) 
+            instance = new Timetable(); 
+        return instance; 
     }
     
     /**
