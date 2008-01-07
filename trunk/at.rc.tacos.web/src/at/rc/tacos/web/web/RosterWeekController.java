@@ -1,5 +1,7 @@
 package at.rc.tacos.web.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,15 @@ public class RosterWeekController  implements Controller
 
 		if("weekView".equalsIgnoreCase(action))
 		{
-			// ... 
+			Date current = new Date();
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			//get roster entries
+			for(int i=1; i<=7; i++){
+				QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(current));
+				resultList = client.sendListingRequest(RosterEntry.ID, filter);
+				if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
+					params.put("rosterList", resultList);  
+			}
 		}
 		return params;
 

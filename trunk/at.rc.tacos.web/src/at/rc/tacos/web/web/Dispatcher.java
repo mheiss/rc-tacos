@@ -65,10 +65,10 @@ public class Dispatcher extends HttpServlet
 		if (relativePath.equals("") || relativePath.equals("/"))
 			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" +  urls.getString("url.home"));
 		// If no controller is found redirect to notFound.do.
-		else if (controller == null)
+		else if (controller == null){
 			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" + urls.getString("url.notFound"));
 		// If user isn't logged in redirect to login.do.
-		else if (!userSession.getLoggedIn()
+		}else if (!userSession.getLoggedIn()
 				&& !relativePath.equals(urls.getString("url.login"))
 				&& !relativePath.equals(urls.getString("url.error"))
 				&& !relativePath.equals(urls.getString("url.notFound")))

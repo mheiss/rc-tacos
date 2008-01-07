@@ -40,6 +40,7 @@ public class Timetable {
 		
 		boolean ok1 = true;
 		boolean ok2 = true;
+		String date = null;
 		
 		SimpleDateFormat format = new SimpleDateFormat("E, dd.MM.yyyy");
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
@@ -71,7 +72,14 @@ public class Timetable {
 		
 		if(rosterList.isEmpty()!=true){
 				for(int j=1;j<=daysToShow;j++){
-					tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + format.format(new Date()) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
+					date = format.format(new Date());
+//					
+//					if(daysToShow>1){
+//						date+=1;
+//					}else{
+//						date = format.format(new Date());
+//					}
+					tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + date +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
 					for(AbstractMessage message:rosterList)
 					{
 						
@@ -105,7 +113,7 @@ public class Timetable {
 								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
 								"px; float:left;" +
 								this.tooLong + 
-								"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='I'  class='hidefocus' /><span>" + info + "</span></a>" +
+								"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span></a>" +
 								"</div>";
 								
 								
@@ -172,7 +180,7 @@ public class Timetable {
     	
         //do we have a valid instance?
         if(instance == null)
-            //create a new and return it
+            //create a new instance and return it
             return new Timetable();
         else    
             return instance;
