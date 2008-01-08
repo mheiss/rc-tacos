@@ -21,6 +21,7 @@
                                                                 //out.print("MONTH:"+request.getParameter("startMonth"));
                                                                 if(request.getParameter("month") == null) {
                                                                     Calendar c = Calendar.getInstance();
+                                
                                                                     mm = c.get(Calendar.MONTH);
                                                                     yy = c.get(Calendar.YEAR);
                                                                 }
@@ -63,15 +64,18 @@
                                                          out.print("<td> </td>");
                                                       }
                                                             
-                                                      int currentday = new Date().getDay();
+                                                      Calendar c = Calendar.getInstance();
+                                                      int currentday = c.get(Calendar.DAY_OF_MONTH);
                                                       int currentmonth = new Date().getMonth();
                                                       int currentyear = new Date().getYear()+1900;
+                                                      
+                                                      //out.print(currentday);
                                                       
                                                       
                                                       // Die Zahlen für die Monatstage einsetzen
                                                       for(int i=1; i<=tageimmonat; i++) {
                                                                            
-                                                            if (i == currentday-1  && currentmonth == mm && currentyear == yy){
+                                                            if (i == currentday  && currentmonth == mm && currentyear == yy){
                                                                     
                                                                 %>
 	<td style='border-color:#444444; border-style:solid; border-width:2px;'>
