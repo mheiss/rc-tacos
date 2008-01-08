@@ -72,6 +72,7 @@ public class Timetable {
 		
 		if(rosterList.isEmpty()!=true){
 			Date dt=null;
+			dt = new Date();
             Date dtCal=null;
 				for(int j=1;j<=daysToShow;j++){
 					if(daysToShow>1){
@@ -80,18 +81,19 @@ public class Timetable {
 			           	}else{
 			           		  dt=dtCal;
 			           	}
+						dtCal = new Date(dt.getTime()+86400000);
 					}else{
 						dt = new Date();
 					}
 					
 		           	 //set date + one day(->timestamp=86400000)
-		             dtCal = new Date(dt.getTime()+86400000);
-					tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + format.format(dtCal) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
+		             
+		             tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + format.format(dtCal) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
 					for(AbstractMessage message:rosterList)
 					{
 						
 						RosterEntry entry = (RosterEntry)message;
-						
+						if(format.format(new Date(entry.getPlannedStartOfWork())).equals(format.format(dtCal))){
 						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
 
 	/* Table-format
@@ -125,7 +127,7 @@ public class Timetable {
 								"</div>";
 								
 								
-							//}
+							}
 						
 						
 					}
@@ -186,7 +188,7 @@ public class Timetable {
 	public static Timetable getInstance() //step 1 
     { 
         //do we have a valid instance? 
-        if(instance == null) 
+        //if(instance == null) 
             instance = new Timetable(); 
         return instance; 
     }
