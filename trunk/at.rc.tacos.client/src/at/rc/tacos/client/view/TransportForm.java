@@ -239,7 +239,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         	this.textTermin.setText(terminTime);
         }
         
-        //aeS0
+        //transport stati
         if(transport.getStatusMessages() != null)
         {
 	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp() != 0)
@@ -249,11 +249,14 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	        	this.textAE.setText(time);
 	        }
 	        
+	        System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii- vor if- TransportForm in createNew = false, beim setzen der felder der s1: " +transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp());
 	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp() != 0)
 	        {
+	        	System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiioben - TransportForm in createNew = false, beim setzen der felder der s1: " +transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp());
 	        	gcal.setTimeInMillis(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp());
 	        	String time = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
 	        	this.textS1.setText(time);
+	        	System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiunten - TransportForm in createNew = false, beim setzen der felder der s1: " +time);
 	        }
 	        
 	        if (transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp() != 0)
@@ -1865,6 +1868,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	
                 	transport.addStatus(TRANSPORT_STATUS_ORDER_PLACED, aeS0Long);
                 	transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
+                	System.out.println("______________________________TransportForm, überarbeitung, der status s1 als long: " +s1Long);
                 	transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
                 	transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
                 	transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
