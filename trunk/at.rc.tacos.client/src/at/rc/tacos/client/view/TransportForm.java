@@ -1666,7 +1666,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			int directness;
 			
 			String formatOfTime;
-			String formatOfTransportStati;
+			String formatOfTransportStati = "";
 			
 			
 			Calendar cal = Calendar.getInstance();
@@ -1924,7 +1924,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				atPatient = textBeiPat.getText();
 				start = textAbf.getText();
 				
-				aeS0 = textS1.getText();
+				aeS0 = textAE.getText();
+				s1 = textS1.getText();
 				s2 = textS2.getText();
 				s3 = textS3.getText();
 				s4 = textS4.getText();
@@ -2131,6 +2132,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					tv.checkTime(s1,"S1");
 					formatOfTransportStati = tv.getCheckStatus();
 					s1 = tv.getTime();
+					System.out.println("TransportForm, checkFormatOfTransportStatusTimeFields- die zurückgegebene Zeit für s1 über tv.getTime(): " +tv.getTime());
+					System.out.println("TransportForm, checkFormatOfTransportStatusTimeFields- die zurückgegebene Zeit für s1: " +s1);
 				}
 				
 				if(s2 != null)
@@ -2239,6 +2242,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			private void transformTransportStatiToLong()
 			{
 				TransformTimeToLong tttl = new TransformTimeToLong();
+				System.out.println("TransportForm............. aeS0 in transformTransportStatiToLong: "+aeS0);
+				System.out.println("TransportForm............. s1 in transformTransportStatiToLong: "+s1);
 				if(aeS0 != null)
 				{
 					aeS0Long = tttl.transform(aeS0);
