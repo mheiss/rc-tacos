@@ -72,22 +72,21 @@ public class Timetable {
 		
 		if(rosterList.isEmpty()!=true){
 			Date dt=null;
-			dt = new Date();
             Date dtCal=null;
-				for(int j=1;j<=daysToShow;j++){
+				for(int j=0;j<daysToShow;j++){
 					if(daysToShow>1){
-						if(j==1){
+						if(j==0){
 			           		  dt = new Date();
 			           	}else{
 			           		  dt=dtCal;
 			           	}
-						dtCal = new Date(dt.getTime()+86400000);
+						
 					}else{
 						dt = new Date();
 					}
 					
 		           	 //set date + one day(->timestamp=86400000)
-		             
+					dtCal = new Date(dt.getTime()+86400000);
 		             tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + format.format(dtCal) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
 					for(AbstractMessage message:rosterList)
 					{
