@@ -53,8 +53,7 @@ function setDataToInput(day, month, year){
 
 <form method="post" name="form" action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
 
-<table border='0' cellpadding='0' cellspacing='0' width="100%"
-	id="MainTab">
+<table border='0' cellpadding='0' cellspacing='0' width="100%" id="MainTab">
 	<thead>
 		<tr>
 			<td>
@@ -167,11 +166,19 @@ function setDataToInput(day, month, year){
                                             
                                             
                                              </td>
-                                             <td>
-                                             gew&auml;hltes Datum: <input type="text" disabled="disabled" id="selDateView" /><br /><br />
-                                             <!-- VON -->&nbsp;von:&nbsp;
-                                            <!-- hour --> <select name="startHour" id="rosterViewDayHeadSelboxTime">
-                                                <option value="leer" selected>Std.</option>
+                             <td>
+                                             gew&auml;hltes Datum: <input type="text" disabled="disabled" id="selDateView" /><br />
+                                            <!-- BIS -->&nbsp;&nbsp;
+                                                                                      
+                                             <table width="162" border="0">
+                                               <tr>
+                                                 <td width="64">&nbsp;</td>
+                                                 <td width="64">Stunde</td>
+                                                 <td width="120">Minute</td>
+                                               </tr>
+                                               <tr>
+                                                 <td>von:</td>
+                                                 <td><!-- hour --> <select name="startHour" id="rosterViewDayHeadSelboxTime">
                                                 <%
                                                     int hb = 0;
                                                     while (hb < 24) {
@@ -181,24 +188,15 @@ function setDataToInput(day, month, year){
                                                 <%
                                                     }
                                                 %>
-                                            </select> 
-                                            <!-- minute --> <select name="startMinute" id="rosterViewDayHeadSelboxTime">
-                                                <option value="leer" selected>Min.</option>
-                                                <option value="0" >0</option>
-                                                <%
-                                                    int mb = 0;
-                                                    while (mb < 55) {
-                                                        mb += 5;
-                                                %>
-                                                <option value="<%=mb%>"><%=mb%></option>
-                                                <%
-                                                    }
-                                                %>
-                                            </select> 
-                                            <br />
-                                            <!-- BIS -->&nbsp;bis:&nbsp;&nbsp;
-                                            <!-- hour --> <select name="endHour" id="rosterViewDayHeadSelboxTime">
-                                                <option value="leer" selected>Std.</option>
+                                            </select></td>
+                                                 <td> <!-- minute --> <select name="startMinute" id="rosterViewDayHeadSelboxTime">
+                                                <option value="0" >00</option>
+                                                <option value="30" >30</option>
+                                            </select> </td>
+                                               </tr>
+                                               <tr>
+                                                 <td>bis:</td>
+                                                 <td><!-- hour --> <select name="endHour" id="rosterViewDayHeadSelboxTime">
                                                 <%
                                                     int he = 0;
                                                     while (he < 24) {
@@ -208,31 +206,13 @@ function setDataToInput(day, month, year){
                                                 <%
                                                     }
                                                 %>
-                                            </select>
-                                            <!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
-                                                <option value="leer" selected>Min.</option>
-                                               <option value="0" >0</option>
-                                               <%
-                                                    int me = 0;
-                                                    while (me < 55) {
-                                                        me += 5;
-                                                %>
-                                                <option value="<%=me%>"><%=me%></option>
-                                                <%
-                                                    }
-                                                %>
-                                            </select>                                            
-                                             </td>
-                                            </tr>
-                                            </table>
-											</td>
-										</tr>
-										<tr>
-											<td colspan="2" align="right" style="padding: 10px;"><input
-												type="submit" id="senden" value="" /></td>
-										</tr>
-									</table>
-									</td>
+                                            </select></td>
+                                                 <td><!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
+                                               <option value="0" >00</option>
+                                               <option value="30" >30</option>
+                                            </select> </td>
+                                               </tr>
+                                             </table></td>
 								</tr>
 							</table>
 							</td>

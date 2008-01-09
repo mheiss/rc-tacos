@@ -34,7 +34,7 @@ public class LoginController implements Controller
 			
 			if(username.trim().isEmpty() || password.trim().isEmpty())
 			{ 
-				params.put("loginError", "Keine Daten eingegeben!");
+				params.put("loginError", "Bitte geben Sie ihren Usernamen und Passwort ein!");
 				return params;
 			} 
 			
@@ -59,7 +59,7 @@ public class LoginController implements Controller
 				
 				else
 				{
-					params.put("loginError", "Falscher Benutzername / Passwort!");
+					params.put("loginError", "Sie haben einen falschen Usernamen oder ein falsches Passwort eingegeben. Korrigieren Sie bitte ihre Eingaben!");
 				}
 				
 			}
