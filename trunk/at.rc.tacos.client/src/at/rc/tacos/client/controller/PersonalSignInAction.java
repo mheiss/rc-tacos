@@ -1,5 +1,6 @@
 package at.rc.tacos.client.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.jface.action.Action;
@@ -46,10 +47,21 @@ public class PersonalSignInAction extends Action
 				Util.formatTime(new Date().getTime()), new DateValidator());
 		if (dlg.open() == Window.OK) 
 		{
-			//set the time
-			System.out.println("Value: "+dlg.getValue());
-			long time = Util.getTimestampFromTime(dlg.getValue());
-			entry.setRealStartOfWork(time);
+		    //get the hour and the minutes
+		    long time = Util.getTimestampFromTime(dlg.getValue());
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(time);
+			//the hour and the minutes
+			int hour = cal.get(Calendar.HOUR_OF_DAY);
+			int minutes = cal.get(Calendar.MINUTE);
+			
+			//now set up a new calendar with the current time and overwrite the 
+			//minutes and the hours
+			cal = Calendar.getInstance();
+			cal.set(Calendar.HOUR_OF_DAY, hour);
+			cal.set(Calendar.MINUTE,minutes);
+			//send the update message
+			entry.setRealStartOfWork(cal.getTimeInMillis());
 			NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, entry);
 		}
 	}

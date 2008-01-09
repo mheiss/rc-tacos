@@ -1,5 +1,6 @@
 package at.rc.tacos.client.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.jface.action.Action;
@@ -17,39 +18,51 @@ import at.rc.tacos.model.RosterEntry;
 
 public class PersonalSignOutAction extends Action
 {
-	//properties
-	private TableViewer viewer;
+    //properties
+    private TableViewer viewer;
 
-	/**
-	 * Default class constructor.
-	 * @param viewer the table viewer
-	 */
-	public PersonalSignOutAction(TableViewer viewer)
-	{
-		this.viewer = viewer;
-		setText("Abmelden");
-		setToolTipText("Meldet eine Person vom Dienst ab");
-	}
+    /**
+     * Default class constructor.
+     * @param viewer the table viewer
+     */
+    public PersonalSignOutAction(TableViewer viewer)
+    {
+        this.viewer = viewer;
+        setText("Abmelden");
+        setToolTipText("Meldet eine Person vom Dienst ab");
+    }
 
-	@Override
-	public void run()
-	{
-		//the selection
-		ISelection selection = viewer.getSelection();
-		//get the selected entry
-		RosterEntry entry = (RosterEntry)((IStructuredSelection)selection).getFirstElement();
-		//confirm the cancel
-		InputDialog dlg = new InputDialog(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				"Abmelden", 
-				"Bitte geben Sie die Abmeldezeit ein", 
-				Util.formatTime(new Date().getTime()), new DateValidator());
-		if (dlg.open() == Window.OK) 
-		{
-			//set the time
-			long time = Util.getTimestampFromTime(dlg.getValue());
-			entry.setRealEndOfWork(time);
-			NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, entry);
-		}
-	}
+    @Override
+    public void run()
+    {
+        //the selection
+        ISelection selection = viewer.getSelection();
+        //get the selected entry
+        RosterEntry entry = (RosterEntry)((IStructuredSelection)selection).getFirstElement();
+        //confirm the cancel
+        InputDialog dlg = new InputDialog(
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                "Abmelden", 
+                "Bitte geben Sie die Abmeldezeit ein", 
+                Util.formatTime(new Date().getTime()), new DateValidator());
+        if (dlg.open() == Window.OK) 
+        {
+            //get the hour and the minutes
+            long time = Util.getTimestampFromTime(dlg.getValue());
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(time);
+            //the hour and the minutes
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            int minutes = cal.get(Calendar.MINUTE);
+
+            //now set up a new calendar with the current time and overwrite the 
+            //minutes and the hours
+            cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, hour);
+            cal.set(Calendar.MINUTE,minutes);
+            //send the update message
+            entry.setRealEndOfWork(cal.getTimeInMillis());
+            NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, entry);
+        }
+    }
 }

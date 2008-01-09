@@ -21,8 +21,13 @@ public class RosterEntryListener extends ClientListenerAdapter
 	@Override
 	public void update(AbstractMessage updateMessage) 
 	{
-		System.out.println("Updating the roster entry: "+(RosterEntry)updateMessage);
 		ModelFactory.getInstance().getRosterManager().update((RosterEntry)updateMessage);
+	}
+	
+	@Override
+	public void remove(AbstractMessage removeMessage)
+	{
+	    ModelFactory.getInstance().getRosterManager().remove((RosterEntry)removeMessage);
 	}
 
 	@Override
