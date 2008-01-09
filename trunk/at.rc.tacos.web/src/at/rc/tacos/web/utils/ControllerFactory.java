@@ -47,10 +47,6 @@ public class ControllerFactory {
 		{
 			return new StationController();
 		}
-		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.stats")))
-		{
-			return new StatsController();
-		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.profile")))
 		{
 			return new ProfileController();
