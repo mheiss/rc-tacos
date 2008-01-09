@@ -23,16 +23,6 @@
 	</session-config>
 
 	<servlet>
-		<servlet-name>homeView</servlet-name>
-		<jsp-file>/jsp/home.jsp</jsp-file>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>homeView</servlet-name>
-		<url-pattern>/homeView</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>loginView</servlet-name>
 		<jsp-file>/jsp/login.jsp</jsp-file>
 	</servlet>

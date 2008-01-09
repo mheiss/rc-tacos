@@ -28,10 +28,6 @@ public class RosterDayController  implements Controller
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
-
-		
-		if("dayView".equalsIgnoreCase(action))
-		{
 			
 			Date current = new Date();
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -40,7 +36,6 @@ public class RosterDayController  implements Controller
 			resultList = client.sendListingRequest(RosterEntry.ID, filter);
 			if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
 				params.put("rosterList", resultList); 
-		}
 		return params;
 	}
 }

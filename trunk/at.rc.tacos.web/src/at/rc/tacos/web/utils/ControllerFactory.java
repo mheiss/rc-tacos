@@ -23,10 +23,6 @@ public class ControllerFactory {
 		{
 			return new LoginController();
 		} 
-		else if (url.equals(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.home")))
-		{
-			return new HomeController();	
-		} 
 		else if (url.equals(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.notFound")))
 		{
 			return new NotFoundController();	

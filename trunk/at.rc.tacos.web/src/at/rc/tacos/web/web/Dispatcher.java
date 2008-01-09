@@ -63,7 +63,7 @@ public class Dispatcher extends HttpServlet
 
 		// If no URL is specified send redirect to home.do.
 		if (relativePath.equals("") || relativePath.equals("/"))
-			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" +  urls.getString("url.home"));
+			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" +  urls.getString("url.rosterDay"));
 		// If no controller is found redirect to notFound.do.
 		else if (controller == null){
 			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" + urls.getString("url.notFound"));
