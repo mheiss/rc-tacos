@@ -23,7 +23,6 @@ public class RosterDayController  implements Controller
 		//values that will be returned to the view
 		Map<String, Object> params = new HashMap<String, Object>();
 		//the action to do
-		String action = request.getParameter("action");
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
