@@ -55,31 +55,7 @@
 					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --><%@ include
 						file="navigation.jsp"%></td>
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
-					<table id="Block" width="100%" height="100%" border='0' cellpadding='0'
-						cellspacing='0'>
-						<tr>
-							<td id="BlockHead" align="right" valign="middle">&nbsp;</td>
-						</tr>
-						<tr>
-							<td id="BlockContent" align="center" valign="middle">
-									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0' align="center">
-										<a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>" ><img src="../image/calendar.png" class='hidefocus' /></a>
-											<h4>Einen neuen Dienst hinzuf&uuml;gen</h4> 
-									</div>
-									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0'>
-                                        <a href="<%=request.getContextPath()+"/Dispatcher/stats.do"%>"><img src="../image/stats.jpg"  class='hidefocus' /></a>
-                                            <h4>Statistik </h4> 
-                                    </div>
-									<div id="homeOverview" border='0' cellpadding='0' cellspacing='0'>
-										<a href="#"><img src="../image/about.png"  class='hidefocus' /></a>
-											<h4>Allgemeine Information</h4> 
-									</div>
-								
-							
-							</td>
-					
-						</tr>
-					</table>
+					home soll gelöscht werden
 					</td>
 				</tr>
 			</table>
