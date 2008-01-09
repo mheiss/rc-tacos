@@ -2,8 +2,10 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.view.RosterEntryForm_old;
+import at.rc.tacos.client.view.RosterEntryForm;
 import at.rc.tacos.factory.ImageFactory;
 
 public class PersonalNewEntryAction extends Action
@@ -44,7 +46,9 @@ public class PersonalNewEntryAction extends Action
     @Override
     public void run()
     {
-        RosterEntryForm_old window = new RosterEntryForm_old();
+        //open the editor
+        Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+        RosterEntryForm window = new RosterEntryForm(parent);
 		window.open();
     }
 }

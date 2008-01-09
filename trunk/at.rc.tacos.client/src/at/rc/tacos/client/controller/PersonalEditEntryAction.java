@@ -4,8 +4,10 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.view.RosterEntryForm_old;
+import at.rc.tacos.client.view.RosterEntryForm;
 import at.rc.tacos.model.RosterEntry;
 
 /**
@@ -36,7 +38,8 @@ public class PersonalEditEntryAction extends Action
 		//get the selected entry
 		RosterEntry entry = (RosterEntry)((IStructuredSelection)selection).getFirstElement();
 		//open the editor
-		RosterEntryForm_old form = new RosterEntryForm_old(entry);
+		Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+		RosterEntryForm form = new RosterEntryForm(parent,entry);
 		form.open();
 	}
 }

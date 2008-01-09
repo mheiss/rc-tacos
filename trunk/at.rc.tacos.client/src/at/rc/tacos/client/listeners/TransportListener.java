@@ -2,10 +2,8 @@ package at.rc.tacos.client.listeners;
 
 import java.util.ArrayList;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.modelManager.RosterEntryManager;
 import at.rc.tacos.client.modelManager.TransportManager;
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 
 /**
@@ -25,6 +23,12 @@ public class TransportListener extends ClientListenerAdapter
 	{
 		System.out.println("Updating the transport (in Listener): "+(Transport)updateMessage);
 		ModelFactory.getInstance().getTransportManager().update((Transport)updateMessage);
+	}
+	
+	@Override
+	public void remove(AbstractMessage removeMessage)
+	{
+	    ModelFactory.getInstance().getTransportManager().remove((Transport)removeMessage);
 	}
 
 	@Override
