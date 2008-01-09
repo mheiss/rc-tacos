@@ -113,10 +113,10 @@ public class Timetable {
 							
 							zaehle++;
 							info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
-									"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob() + "<br /></b>" +
+									"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob().replaceAll("ä","&auml;") + "<br /></b>" +
 									"Dienstdatum:&nbsp;&nbsp;" + format.format(new Date(entry.getPlannedStartOfWork())) + "<br />" +
 									"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
-									"Ortstelle:&nbsp;&nbsp;" + entry.getStation() + "<br />" +
+									"Ortstelle:&nbsp;&nbsp;" + entry.getStation().replaceAll("ö","&ouml;") + "<br />" +
 									"angestellt als:&nbsp;&nbsp;"+entry.getServicetype()+"<br />";
 							
 							tabentry+= 		
