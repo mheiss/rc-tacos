@@ -130,4 +130,22 @@ public class VehicleManager extends PropertyManager
     {
         return objectList;
     }
+    
+    /**
+     * Returns a list of all vehicles which have NOT the status <code>VehicleDetail.outOfOrder</code><br>
+     * In fact this will return a list of all vehicles whicht can be used.
+     * @return list of vehicles ready for action
+     */
+    public List<VehicleDetail> getReadyVehicleList()
+    {
+        List<VehicleDetail> filteredList = new ArrayList<VehicleDetail>();
+        //loop over all vehicles
+        for(VehicleDetail detail:objectList)
+        {
+            if(!detail.isOutOfOrder())
+                filteredList.add(detail);
+        }
+        return filteredList;
+    }
+    
 }

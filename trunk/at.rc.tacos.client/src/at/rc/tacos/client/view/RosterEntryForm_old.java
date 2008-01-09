@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Text;
 import at.rc.tacos.client.controller.PersonalCreateEntryAction;
 import at.rc.tacos.client.controller.PersonalUpdateEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.StaffComboContentProvider;
-import at.rc.tacos.client.providers.StaffComboLabelProvider;
+import at.rc.tacos.client.providers.StaffMemberContentProvider;
+import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.Constants;
 import at.rc.tacos.factory.ImageFactory;
@@ -44,7 +44,7 @@ import at.rc.tacos.model.StaffMember;
  * @author b.thek
  * WindowBuilderFree-CJ0SH-SN1HW-EXUSS
  */
-public class RosterEntryForm implements PropertyChangeListener
+public class RosterEntryForm_old implements PropertyChangeListener
 {
     private Combo dateAbmeldung;
     private Combo dateAnmeldung;
@@ -83,7 +83,7 @@ public class RosterEntryForm implements PropertyChangeListener
      * Default class constructor used to create
      * a new roster entry.
      */
-    public RosterEntryForm()
+    public RosterEntryForm_old()
     {
         createNew = true;
         this.rosterEntry = new RosterEntry();
@@ -95,7 +95,7 @@ public class RosterEntryForm implements PropertyChangeListener
      * used to edit an roster entry
      * @param rosterEntry the roster entry to edit
      */
-    public RosterEntryForm(RosterEntry rosterEntry)
+    public RosterEntryForm_old(RosterEntry rosterEntry)
     {
         //update an entry
         createNew = false;
@@ -232,8 +232,8 @@ public class RosterEntryForm implements PropertyChangeListener
         employeenameCombo.setBounds(306, 43,226, 24);
         employeenameCombo.setFont(new Font(null,"Arial", 10, SWT.BOLD));
         setEmployeenameCombo = new ComboViewer(employeenameCombo);
-        setEmployeenameCombo.setContentProvider(new StaffComboContentProvider());
-        setEmployeenameCombo.setLabelProvider(new StaffComboLabelProvider());
+        setEmployeenameCombo.setContentProvider(new StaffMemberContentProvider());
+        setEmployeenameCombo.setLabelProvider(new StaffMemberLabelProvider());
         setEmployeenameCombo.setInput(ModelFactory.getInstance().getStaffManager());
         
 

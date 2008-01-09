@@ -298,7 +298,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	 */
 	private void hookContextMenu() 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#DialysisPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {

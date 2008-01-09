@@ -2,12 +2,8 @@ package at.rc.tacos.client.perspectives;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-
-import at.rc.tacos.client.view.DialysisView;
-import at.rc.tacos.client.view.JournalView;
-import at.rc.tacos.client.view.OutstandingTransportsView;
-import at.rc.tacos.client.view.PrebookingView;
-import at.rc.tacos.client.view.UnderwayTransportsView;
+import at.rc.tacos.client.view.admin.StaffDetailView;
+import at.rc.tacos.client.view.admin.StaffMemberView;
 
 /**
  * The perspective for the administrator
@@ -26,10 +22,7 @@ public class AdminPerspective implements IPerspectiveFactory
         String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(false);
         layout.setFixed(true);
-        layout.addStandaloneView(PrebookingView.ID,false, IPageLayout.LEFT, 0.45f, editorArea);
-        layout.addStandaloneView(UnderwayTransportsView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
-        layout.addStandaloneView(OutstandingTransportsView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
-        layout.addStandaloneView(JournalView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
-        layout.addStandaloneView(DialysisView.ID,false, IPageLayout.LEFT, 0.45f, editorArea);
+        layout.addStandaloneView(StaffMemberView.ID,false, IPageLayout.LEFT, 0.25f, editorArea);
+        layout.addStandaloneView(StaffDetailView.ID,false, IPageLayout.RIGHT, 0.65f, editorArea);
     }
 }

@@ -23,6 +23,11 @@
             id="at.rc.tacos.client.perspectives.admin"
             name="AdministratorPerspective">
       </perspective>
+      <perspective
+            class="at.rc.tacos.client.perspectives.TransportPerspective"
+            id="at.rc.tacos.client.perspectives.transport"
+            name="TransportPerspective">
+      </perspective>
    </extension>
    <extension
          id="product"
@@ -69,6 +74,18 @@
             class="at.rc.tacos.client.view.InfoView"
             id="at.rc.tacos.client.view.info"
             name="InfoView">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.StaffMemberView"
+            id="at.rc.tacos.client.view.admin.staffMemberView"
+            name="StaffView">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.StaffDetailView"
+            id="at.rc.tacos.client.view.admin.staffDetailView"
+            name="StaffDetail">
       </view>
       
       

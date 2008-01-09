@@ -34,8 +34,6 @@ import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.JournalViewContentProvider;
-import at.rc.tacos.client.providers.JournalViewLabelProvider;
 import at.rc.tacos.client.providers.PrebookingViewContentProvider;
 import at.rc.tacos.client.providers.PrebookingViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -1050,7 +1048,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	 */
 	private void hookContextMenuBruck(final TableViewer viewer) 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#PrebookingBruckPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
@@ -1064,7 +1062,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	}
 	private void hookContextMenuKapfenberg(final TableViewer viewer) 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#PrebookingKapfenbergPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
@@ -1078,7 +1076,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	}
 	private void hookContextMenuLeoben(final TableViewer viewer) 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#PrebookingLeobenPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
@@ -1092,7 +1090,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	}
 	private void hookContextMenuMariazell(final TableViewer viewer) 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#PrebookingMariazellPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
@@ -1106,7 +1104,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	}
 	private void hookContextMenuGraz(final TableViewer viewer) 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#PrebookingGrazPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
@@ -1120,7 +1118,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	}
 	private void hookContextMenuWien(final TableViewer viewer) 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#PrebookingWienPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {

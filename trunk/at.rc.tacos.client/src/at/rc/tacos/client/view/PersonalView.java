@@ -314,7 +314,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	 */
 	private void hookContextMenu() 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#PersonalPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {

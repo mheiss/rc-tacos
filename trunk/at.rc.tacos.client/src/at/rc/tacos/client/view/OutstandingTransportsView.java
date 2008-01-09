@@ -291,7 +291,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	 */
 	private void hookContextMenu() 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#OutstandingPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
