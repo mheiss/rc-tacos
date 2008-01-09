@@ -5,7 +5,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
-import at.rc.tacos.client.view.RosterEntryForm;
+import at.rc.tacos.client.view.RosterEntryForm_old;
 import at.rc.tacos.model.RosterEntry;
 
 /**
@@ -36,7 +36,7 @@ public class PersonalEditEntryAction extends Action
 		//get the selected entry
 		RosterEntry entry = (RosterEntry)((IStructuredSelection)selection).getFirstElement();
 		//open the editor
-		RosterEntryForm form = new RosterEntryForm(entry);
+		RosterEntryForm_old form = new RosterEntryForm_old(entry);
 		form.open();
 	}
 }

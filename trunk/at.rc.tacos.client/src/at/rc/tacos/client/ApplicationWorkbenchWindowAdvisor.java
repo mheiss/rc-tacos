@@ -25,6 +25,7 @@ import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.modelManager.MyToolbarManager;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
 import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
+import at.rc.tacos.client.perspectives.SwitchToTransportPerspective;
 import at.rc.tacos.factory.ImageFactory;
 
 /**
@@ -112,12 +113,13 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         tbm.getControl().setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
         tbm.getControl().setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, true));
         tbm.add(new PersonalNewEntryAction());
-        tbm.add(new OpenAboutAction());
         tbm.add(new VehicleEditAction(null));
-        tbm.add(new SwitchToClientPerspective());
-        tbm.add(new SwitchToAdminPerspective());
         tbm.add(new OpenTransportAction());
         tbm.add(new OpenEmergencyTransportAction());
+        tbm.add(new SwitchToClientPerspective());
+        tbm.add(new SwitchToTransportPerspective());
+        tbm.add(new SwitchToAdminPerspective());
+        
         tbm.update(true);
         toolbar = (CoolBar)configurer.createCoolBarControl(shell);
         toolbar.setLocked(true);

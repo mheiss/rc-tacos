@@ -84,4 +84,13 @@ public class StaffManager extends PropertyManager
     {
         return objectList.toArray();
     }
+    
+    /**
+     * Returns a list with all staff members
+     * @return a staff list
+     */
+    public List<StaffMember> getStaffList()
+    {
+        return objectList;
+    }
 }

@@ -1,3 +1,5 @@
+
+
 package at.rc.tacos.client.providers;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -5,7 +7,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
 
-public class StaffComboContentProvider implements IStructuredContentProvider
+public class StaffMemberContentProvider implements IStructuredContentProvider
 {
     @Override
     public Object[] getElements(Object arg0)

@@ -349,7 +349,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	 */
 	private void hookContextMenu() 
 	{
-		MenuManager menuManager = new MenuManager("#PopupMenu");
+		MenuManager menuManager = new MenuManager("#DispositionPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() 
 		{

@@ -2,7 +2,6 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -22,7 +21,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -34,19 +32,17 @@ import org.eclipse.swt.widgets.Text;
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.StaffComboContentProvider;
-import at.rc.tacos.client.providers.StaffComboLabelProvider;
+import at.rc.tacos.client.providers.StaffMemberContentProvider;
+import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.util.TimeValidator;
 import at.rc.tacos.client.util.TransformTimeToLong;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
-import at.rc.tacos.common.ITransportPriority;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
-import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
@@ -1221,8 +1217,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textFahrer.left = new FormAttachment(0, 73);
 		textFahrer.setLayoutData(fd_textFahrer);
 		setTextFahrer = new ComboViewer(textFahrer);
-		setTextFahrer.setContentProvider(new StaffComboContentProvider());
-		setTextFahrer.setLabelProvider(new StaffComboLabelProvider());
+		setTextFahrer.setContentProvider(new StaffMemberContentProvider());
+		setTextFahrer.setLabelProvider(new StaffMemberLabelProvider());
 		setTextFahrer.setInput(ModelFactory.getInstance().getStaffManager());
 		
 
@@ -1235,8 +1231,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textSnaniI.left = new FormAttachment(0, 73);
 		textSaniI.setLayoutData(fd_textSnaniI);
 		setTextSaniI = new ComboViewer(textSaniI);
-		setTextSaniI.setContentProvider(new StaffComboContentProvider());
-		setTextSaniI.setLabelProvider(new StaffComboLabelProvider());
+		setTextSaniI.setContentProvider(new StaffMemberContentProvider());
+		setTextSaniI.setLabelProvider(new StaffMemberLabelProvider());
 		setTextSaniI.setInput(ModelFactory.getInstance().getStaffManager());
 
 		
@@ -1249,8 +1245,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textSaniII.left = new FormAttachment(0, 73);
 		textSaniII.setLayoutData(fd_textSaniII);
 		setTextSaniII = new ComboViewer(textSaniII);
-		setTextSaniII.setContentProvider(new StaffComboContentProvider());
-		setTextSaniII.setLabelProvider(new StaffComboLabelProvider());
+		setTextSaniII.setContentProvider(new StaffMemberContentProvider());
+		setTextSaniII.setLabelProvider(new StaffMemberLabelProvider());
 		setTextSaniII.setInput(ModelFactory.getInstance().getStaffManager());
 
 		final Label driverLabel = new Label(personalAmFahrzeugGroup, SWT.NONE);

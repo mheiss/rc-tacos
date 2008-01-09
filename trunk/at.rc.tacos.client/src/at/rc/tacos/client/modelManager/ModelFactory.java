@@ -1,11 +1,17 @@
 package at.rc.tacos.client.modelManager;
 
+import java.util.Calendar;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+
+import at.rc.tacos.client.util.Util;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
@@ -65,9 +71,12 @@ public class ModelFactory
             protected IStatus run(IProgressMonitor monitor) 
             {
                 NetWrapper net = NetWrapper.getDefault();
+                //Set up a filter for the current day
+                QueryFilter dateFilter = new QueryFilter();
+                dateFilter.add(IFilterTypes.DATE_FILTER, Util.formatDate(Calendar.getInstance().getTimeInMillis()));
                 //net.requestListing(Item.ID, null);
                 net.requestListing(VehicleDetail.ID, null);
-                net.requestListing(RosterEntry.ID, null);
+                net.requestListing(RosterEntry.ID, dateFilter);
                 net.requestListing(StaffMember.ID, null);
                 net.requestListing(Transport.ID, null);
                 net.requestListing(DialysisPatient.ID, null);
