@@ -1,6 +1,5 @@
 package at.rc.tacos.web.web;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +48,9 @@ public class AdminController implements Controller
 			String cityname = request.getParameter("cityname");
 			String station = request.getParameter("station");
 
+			StaffMemberEntry entry = new UserEntry(staffId, firstName, lastName, birthday, username, eMail, phonenumber, streetname, cityname, station);
+			client.sendAddRequest(RosterEntry.ID, entry);
+			
 //			MemberEntry entry = new MemberEntry(firstName,lastName,birthday,username,eMail,phonenumber,streetname,cityname,station);
 //			client.sendAddRequest(MemberEntry.ID, entry);
 			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))

@@ -54,7 +54,7 @@ public class LoginController implements Controller
 					UserSession userSession = (UserSession)session.getAttribute("userSession");
 					userSession.setLoggedIn(true, username, client);
 					//userSession.setLoggedIn(true, loginResult.getUsername(), client);
-					response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.home")); 
+					response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay")); 
 				}
 				
 				else
