@@ -25,11 +25,6 @@
 	</tr>
 	<tr>
 		<td id="BlockContent"><a
-			href="<%=request.getContextPath()+"/Dispatcher/stats.do"%>">Statistik</a><br />
-		</td>
-	</tr>
-	<tr>
-		<td id="BlockContent"><a
 			href="<%=request.getContextPath()+"/Dispatcher/profile.do"%>">Profil editieren</a><br />
 		</td>
 	</tr>
