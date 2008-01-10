@@ -103,11 +103,15 @@ public class RosterController implements Controller
 			}
 		}
 		
-//		if("doRemoveEntry".equalsIgnoreCase(action))
-//		{
-//			client.sendRemoveRequest(RosterEntry.ID,request.getParameter("id"));
-//		}
-//		
+		if("doRemoveEntry".equalsIgnoreCase(action))
+		{
+			//get the roster entry by id 
+			resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
+			RosterEntry entry = (RosterEntry )resultList.get(0);  
+			 
+			client.sendRemoveRequest(RosterEntry.ID,entry );
+		}
+		
 		return params;
 	}
 }
