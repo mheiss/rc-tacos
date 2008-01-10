@@ -102,6 +102,12 @@ public class RosterController implements Controller
 				//eintrag hat nicht geklappt
 			}
 		}
+		
+//		if("doRemoveEntry".equalsIgnoreCase(action))
+//		{
+//			client.sendRemoveRequest(RosterEntry.ID,request.getParameter("id"));
+//		}
+//		
 		return params;
 	}
 }
