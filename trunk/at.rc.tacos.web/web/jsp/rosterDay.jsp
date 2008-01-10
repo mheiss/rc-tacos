@@ -86,6 +86,9 @@
 										  %>
 										
 										</tr>
+										<tr>
+										<a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + rosterEntry.getRosterID()%>">dienst löschen</a>
+										</tr>
 									</table>
 									</td>
 								</tr>
