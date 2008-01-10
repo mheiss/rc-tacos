@@ -86,9 +86,19 @@
 										  %>
 										
 										</tr>
-										<tr>
-										<a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + rosterEntry.getRosterID()%>">dienst löschen</a>
-										</tr>
+										<tr><td>
+										
+										<% 
+										for(AbstractMessage message:rosterList)
+                                        {
+                                            RosterEntry entry = (RosterEntry)message;
+                                            
+                                            %>
+                                            <a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getJobId()%>">dienst löschen</a>
+                                            <%
+                                        }
+										%>
+										</td></tr>
 									</table>
 									</td>
 								</tr>
