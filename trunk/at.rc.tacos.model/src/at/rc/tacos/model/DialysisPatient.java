@@ -27,6 +27,8 @@ public class DialysisPatient extends AbstractMessage
     private long readyTime;
     private String fromStreet;
     private String fromCity;
+    private String toStreet;
+    private String toCity;
     private String insurance;
     private boolean stationary;
     private String kindOfTransport;
@@ -427,5 +429,21 @@ public class DialysisPatient extends AbstractMessage
 	public static String getID() 
 	{
 		return ID;
+	}
+
+	public String getToStreet() {
+		return toStreet;
+	}
+
+	public void setToStreet(String toStreet) {
+		this.toStreet = toStreet;
+	}
+
+	public String getToCity() {
+		return toCity;
+	}
+
+	public void setToCity(String toCity) {
+		this.toCity = toCity;
 	}
 }
