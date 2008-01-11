@@ -94,7 +94,7 @@
                                             RosterEntry entry = (RosterEntry)message;
                                             
                                             %>
-                                            <a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId()%>">dienst l&nbsp;schen</a>
+                                            <a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId()%>">Dienst l&nbsp;schen</a>
                                             <%
                                         }
 										%>
