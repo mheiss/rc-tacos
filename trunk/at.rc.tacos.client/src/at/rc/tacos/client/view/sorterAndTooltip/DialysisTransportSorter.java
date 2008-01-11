@@ -16,6 +16,7 @@ public class DialysisTransportSorter extends ViewerSorter
 
 	//columns that are sort able
 	public final static String TRANSPORT_FROM_SORTER = "transportfrom";
+	public final static String TRANSPORT_TO_SORTER = "transportto";
 	public final static String PATIENT_SORTER = "patient";
 	public final static String ABF_SORTER = "abfahrt";
 	public final static String TERM_SORTER = "termin";
@@ -65,6 +66,16 @@ public class DialysisTransportSorter extends ViewerSorter
         	String from2 = dia2.getFromCity();
         	returnValue = from1.compareTo(from2);
         }
+        
+      //sort by the transport to column
+        if(column == TRANSPORT_TO_SORTER)
+        {
+        	//TODO right to sort by the city?
+        	String from1 = dia1.getToCity();
+        	String from2 = dia2.getToCity();
+        	returnValue = from1.compareTo(from2);
+        }
+        
         //sort by the patient last name
         if(column == PATIENT_SORTER)
         {
