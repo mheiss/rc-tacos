@@ -14,14 +14,13 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 
 /**
- * Opens the editor to edit the selected dialysis entry
+ * Opens a dialog to confirm and then delete the selected dialysis entry
  * @author b.thek
  */
 public class DialysisDeleteAction extends Action
 {
 	//properties
 	private TableViewer viewer;
-	private String editingType;
 	
 	/**
 	 * Default class constructor.
