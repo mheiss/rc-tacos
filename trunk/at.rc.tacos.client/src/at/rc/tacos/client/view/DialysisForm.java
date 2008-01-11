@@ -16,6 +16,7 @@ import com.swtdesigner.SWTResourceManager;
 
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.DialysisPatient;
 
 /**
  * GUI (form) to manage the details of a dialysis patient
@@ -24,6 +25,7 @@ import at.rc.tacos.factory.ImageFactory;
  */
 
 public class DialysisForm {
+	
 
 	private Text textFertig;
 	private Label abfLabel_1;
@@ -59,6 +61,15 @@ public class DialysisForm {
 	private Button gehendButton;
 	protected Shell shell;
 
+	public DialysisForm()
+	{
+		
+	}
+	
+	public DialysisForm(DialysisPatient patient)
+	{
+		//TODO - set content
+	}
 	/**
 	 * Launch the application
 	 * @param args
