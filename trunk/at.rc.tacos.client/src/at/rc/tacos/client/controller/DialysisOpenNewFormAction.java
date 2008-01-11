@@ -23,7 +23,7 @@ public class DialysisOpenNewFormAction extends Action
 	 * Default class construtor.
 	 * @param viewer the table viewer
 	 */
-	public DialysisOpenNewFormAction(TableViewer viewer, String editingType)
+	public DialysisOpenNewFormAction(TableViewer viewer)
 	{
 		this.viewer = viewer;
 		setText("Neuen Dialyseeintrag vornehmen");
