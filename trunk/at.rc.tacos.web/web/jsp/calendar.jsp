@@ -81,7 +81,7 @@
                                                                            
  if (i == currentday  && currentmonth == mm && currentyear == yy){
  
- out.print(c.get(Calendar.DAY_OF_WEEK));
+ //out.print(c.get(Calendar.DAY_OF_WEEK));
  %>
 	<td
 		style='border-color: #444444; border-style: solid; border-width: 2px;'>
