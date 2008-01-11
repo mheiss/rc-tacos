@@ -167,6 +167,10 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		final TableColumn newColumnTableColumnNameDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnNameDialyse.setWidth(133);
 		newColumnTableColumnNameDialyse.setText("Name");
+		
+		final TableColumn newColumnTableColumnDialyseort = new TableColumn(table_2, SWT.NONE);
+		newColumnTableColumnDialyseort.setWidth(167);
+		newColumnTableColumnDialyseort.setText("Dialyseort");
 
 		final TableColumn newColumnTableColumnMontag = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnMontag.setData("newKey", null);
