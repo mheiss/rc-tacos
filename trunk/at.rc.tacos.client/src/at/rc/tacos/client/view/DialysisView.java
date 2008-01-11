@@ -53,7 +53,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	private OutstandingTransportsTooltip tooltip;
 	
 	//the actions for the context menu
-	private DialysisOpenNewFormAction dialysisNewAction;
+	private DialysisOpenNewFormAction dialysisOpenNewFormAction;
 	private DialysisEditAction dialysisEditAction;
 	private DialysisDeleteAction dialysisDeleteAction;
 	private DialysisTransportNowAction dialysisTransportNowAction;
@@ -107,7 +107,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		viewer.refresh();
 		
 		/** tool tip*/
-		tooltip = new OutstandingTransportsTooltip(viewer.getControl());
+		tooltip = new OutstandingTransportsTooltip(viewer.getControl());//TODO- check OutstandingTransportsTooltip for dialysis!!!!!!!!
 		//show the tool tip when the selection has changed
 		
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
@@ -258,6 +258,8 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 					sortIdentifier = DialysisTransportSorter.TRANSPORT_FROM_SORTER;
 				if(currentColumn == newColumnTableColumnNameDialyse)
 					sortIdentifier = DialysisTransportSorter.PATIENT_SORTER;
+				if (currentColumn == newColumnTableColumnDialyseort)
+					sortIdentifier = DialysisTransportSorter.TRANSPORT_TO_SORTER;
 				if(currentColumn == newColumnTableColumnRTAbfahrtDialyse)
 					sortIdentifier = DialysisTransportSorter.RT_SORTER;
 				if(currentColumn == newColumnTableColumnAbholbereitDialyse)
@@ -284,6 +286,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnRTAbfahrtDialyse.addListener(SWT.Selection, sortListener);
 		newColumnTableColumnAbholbereitDialyse.addListener(SWT.Selection, sortListener);
 		newColumnTableColumnTA.addListener(SWT.Selection, sortListener);
+		newColumnTableColumnDialyseort.addListener(SWT.Selection,sortListener);
 		
 		makeActions();
 		hookContextMenu();
@@ -299,10 +302,11 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	 */
 	private void makeActions()
 	{
-//		forwardTransportAction = new ForwardTransportAction(this.viewerOffTrans);
-//		editTransportAction = new EditTransportAction(this.viewerOffTrans);
-//		cancelTransportAction = new CancelTransportAction(this.viewerOffTrans);
-//		
+		dialysisOpenNewFormAction = new DialysisOpenNewFormAction(this.viewer);
+		dialysisEditAction = new DialysisEditAction(this.viewer);
+		dialysisDeleteAction = new DialysisDeleteAction(this.viewer);
+		dialysisTransportNowAction = new DialysisTransportNowAction(this.viewer);
+	
 	}
 	
 	/**
@@ -337,11 +341,12 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 			return;
 		
 		//add the actions
-//		manager.add(forwardTransportAction);
-//		manager.add(editTransportAction);
+		manager.add(dialysisOpenNewFormAction);
+		manager.add(dialysisEditAction);
 		manager.add(new Separator());
-//		manager.add(cancelTransportAction);
+		manager.add(dialysisDeleteAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(dialysisTransportNowAction);
 	}
 	/**
 	 * Passing the focus request to the viewer's control.
@@ -353,7 +358,6 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		// the viewer represents simple model. refresh should be enough.
 		if ("DIALYSISTRANSPORT_ADD".equals(evt.getPropertyName())) 
 		{ 
-			System.out.println("OutstandingTransportsView, probertychange........ TRANSPORT_ADD");
 			this.viewer.refresh();
 		}
 		// event on deletion --> also just refresh
