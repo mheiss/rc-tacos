@@ -19,15 +19,15 @@
    int mm, yy;
                                                                
    //out.print("MONTH:"+request.getParameter("startMonth"));
-   if(request.getParameter("month") == null) {
+   if(request.getParameter("startMonth") == null) {
          Calendar c = Calendar.getInstance();
                                 
          mm = c.get(Calendar.MONTH);
          yy = c.get(Calendar.YEAR);
    }
    else {
-       mm = Integer.parseInt(request.getParameter("month").toString());
-       yy = Integer.parseInt(request.getParameter("year").toString());
+       mm = Integer.parseInt(request.getParameter("startMonth").toString());
+       yy = Integer.parseInt(request.getParameter("startYear").toString());
                                                                     
   }
                                                                

@@ -97,7 +97,7 @@ function setDataToInput(day, month, year){
 									<table width="100%" border='0' cellpadding='0' cellspacing='0' id="TabAnmeldung">
 										<tr>
 											<td id="rosterViewDayHeadline2" colpsan="2"><br />
-											<% if(params.containsKey("loginError")) { %>
+											<% if(params.containsKey("entry-success")) { %>
 						<div id='meldungstext'><%=params.get("entry-success") %> </div>
 					<% 	} %>
 					<br />
