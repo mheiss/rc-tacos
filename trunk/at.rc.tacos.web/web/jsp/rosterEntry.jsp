@@ -50,7 +50,6 @@ function setDataToInput(day, month, year){
 	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 	Date current = new Date();
 %>
-
 <form method="post" name="form" action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
 
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
@@ -97,7 +96,12 @@ function setDataToInput(day, month, year){
 									<td width="50%">
 									<table width="100%" border='0' cellpadding='0' cellspacing='0' id="TabAnmeldung">
 										<tr>
-											<td id="rosterViewDayHeadline2" colpsan="2"><b>Dienstdaten:</b>
+											<td id="rosterViewDayHeadline2" colpsan="2"><br />
+											<% if(params.containsKey("loginError")) { %>
+						<div id='meldungstext'><%=params.get("entry-success") %> </div>
+					<% 	} %>
+					<br />
+											<b>Dienstdaten:</b>
 											</td>
 										</tr>
 										<tr>
