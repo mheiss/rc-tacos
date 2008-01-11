@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import com.swtdesigner.SWTResourceManager;
 
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.factory.ImageFactory;
@@ -24,6 +25,8 @@ import at.rc.tacos.factory.ImageFactory;
 
 public class DialysisForm {
 
+	private Text textFertig;
+	private Label abfLabel_1;
 	private Button abbrechenButton;
 	private Button okButton;
 	private Group transportdatenGroup;
@@ -37,12 +40,10 @@ public class DialysisForm {
 	private Button tragsesselButton;
 	private Button button;
 	private Combo comboNachOrt;
-	private Combo comboNachNr;
 	private Combo comboNachStrasse;
 	private Combo comboVorname;
 	private Combo comboNachname;
 	private Combo comboVonOrt;
-	private Combo comboVonNr;
 	private Combo comboVonStrasse;
 	private Button sonntagButton;
 	private Button samstagButton;
@@ -51,7 +52,7 @@ public class DialysisForm {
 	private Button mittwochButton;
 	private Button dienstagButton;
 	private Button montagButton;
-	private Text textRT;
+	private Text textAbfRT;
 	private Text textTermin;
 	private Text textBeiPat;
 	private Text textAbf;
@@ -110,10 +111,10 @@ public class DialysisForm {
 		vonLabel.setBounds(10, 42, 25, 13);
 
 		comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
-		comboNachStrasse.setBounds(41, 66, 194, 21);
+		comboNachStrasse.setBounds(41, 66, 230, 21);
 
 		comboVonStrasse = new Combo(transportdatenGroup, SWT.NONE);
-		comboVonStrasse.setBounds(41, 39, 194, 21);
+		comboVonStrasse.setBounds(41, 39, 230, 21);
 
 		final Label nachLabel = new Label(transportdatenGroup, SWT.NONE);
 		nachLabel.setForeground(Util.getColor(128, 128, 128));
@@ -125,22 +126,11 @@ public class DialysisForm {
 		label.setText("Straße");
 		label.setBounds(41, 20, 56, 13);
 
-		comboVonNr = new Combo(transportdatenGroup, SWT.NONE);
-		comboVonNr.setBounds(241, 39, 75, 21);
-
-		comboNachNr = new Combo(transportdatenGroup, SWT.NONE);
-		comboNachNr.setBounds(241, 66, 75, 21);
-
-		final Label label_1 = new Label(transportdatenGroup, SWT.NONE);
-		label_1.setForeground(Util.getColor(128, 128, 128));
-		label_1.setText("Nr./Stock/Tür");
-		label_1.setBounds(241, 20, 75, 13);
-
 		comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
-		comboVonOrt.setBounds(322, 39, 111, 21);
+		comboVonOrt.setBounds(277, 39, 156, 21);
 
 		comboNachOrt = new Combo(transportdatenGroup, SWT.NONE);
-		comboNachOrt.setBounds(322, 66, 111, 21);
+		comboNachOrt.setBounds(277, 66, 156, 21);
 
 		final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
 		ortLabel.setForeground(Util.getColor(128, 128, 128));
@@ -236,16 +226,24 @@ public class DialysisForm {
 		final Label terminLabel_1 = new Label(planungGroup, SWT.NONE);
 		terminLabel_1.setBounds(10, 118, 28, 13);
 		terminLabel_1.setForeground(Util.getColor(128, 128, 128));
-		terminLabel_1.setText("RT:");
+		terminLabel_1.setText("Abf.:");
 
-		textRT = new Text(planungGroup, SWT.BORDER);
-		textRT.setBounds(41, 115, 41, 21);
-		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, textRT});
+		textAbfRT = new Text(planungGroup, SWT.BORDER);
+		textAbfRT.setBounds(41, 115, 41, 21);
+
+		abfLabel_1 = new Label(planungGroup, SWT.NONE);
+		abfLabel_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		abfLabel_1.setText("fertig");
+		abfLabel_1.setBounds(10, 145, 25, 13);
+
+		textFertig = new Text(planungGroup, SWT.BORDER);
+		textFertig.setBounds(41, 142, 41, 21);
+		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, textAbfRT, abfLabel_1, textFertig});
 
 		patientenzustandGroup = new Group(shell, SWT.NONE);
 		fd_transportdatenGroup.bottom = new FormAttachment(patientenzustandGroup, 150, SWT.TOP);
 		fd_transportdatenGroup.top = new FormAttachment(patientenzustandGroup, 0, SWT.TOP);
-		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonNr, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachNr, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, button_1, comboZustOrtsstelle, begleitpersonButton});
+		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, button_1, comboZustOrtsstelle, begleitpersonButton});
 		patientenzustandGroup.setLayout(new FormLayout());
 		final FormData fd_patientenzustandGroup = new FormData();
 		fd_patientenzustandGroup.right = new FormAttachment(transportdatenGroup, -5, SWT.LEFT);
