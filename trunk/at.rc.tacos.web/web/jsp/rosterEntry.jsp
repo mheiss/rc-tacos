@@ -214,10 +214,7 @@ function setDataToInput(day, month, year){
                                                 </td>
                                                </tr>
                                              </table></td>
-                                                 <td><!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
-                                               <option value="00" >00</option>
-                                               <option value="30" >30</option>
-                                            </select>                                        
+                                                 <td>                                       
                                              </td>
                                             </tr>
                                             </table>
@@ -229,7 +226,6 @@ function setDataToInput(day, month, year){
 										</tr>
 									</table>
 									</td>
->>>>>>> .r931
 								</tr>
 							</table>
 							</td>
