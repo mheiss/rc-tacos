@@ -50,7 +50,11 @@ public class ControllerFactory {
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.admin")))
 		{
 			return new AdminController();
-		}		
+		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.calendar")))
+		{
+			return new CalendarController();
+		}	
 		else
 		{
 			return null;

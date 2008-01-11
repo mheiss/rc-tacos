@@ -38,6 +38,7 @@ public class RosterController implements Controller
 			//request the staff member
 			resultList = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,staffId));	
 			StaffMember staffMember = (StaffMember)resultList.get(0); 
+			
 			//planed start
 			String startDay = request.getParameter("startDay");
 			String startMonth = request.getParameter("startMonth");
@@ -51,6 +52,7 @@ public class RosterController implements Controller
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
 
+			
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
@@ -65,7 +67,7 @@ public class RosterController implements Controller
 			endEntry.set(Calendar.YEAR, Integer.valueOf(endYear));
 			endEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(endHour));
 			endEntry.set(Calendar.MINUTE, Integer.valueOf(endMinute));
-
+			
 			long plannedStartOfWork = startEntry.getTimeInMillis();
 			long plannedEndOfWork = endEntry.getTimeInMillis();
 			String station = request.getParameter("station");
@@ -112,6 +114,10 @@ public class RosterController implements Controller
 			client.sendRemoveRequest(RosterEntry.ID,entry );
 		}
 		
+		if("doChangeCal".equals(action)){
+			//not in use
+		}
 		return params;
 	}
+
 }

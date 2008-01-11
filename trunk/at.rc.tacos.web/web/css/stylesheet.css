@@ -400,4 +400,29 @@ padding:10px;}
     background-color:red;
 }
 
+#calTabMain{
+    border-width:1px;
+    border-style:solid;
+    border-color:#FFB2B1;	
+}
+#calDaysSuSo{
+    background-color:#F7DFE0;	
+}
+
+#calTabWeekDays{
+    border-top-width:1px;
+    border-top-style:solid;
+    border-top-color:#FFB2B1;  
+    
+    border-bottom-width:1px;
+    border-bottom-style:solid;
+    border-bottom-color:#FFB2B1;  
+    
+    background-color:#FFB2B1;
+    
+    padding:2px;
+}
+#calMonthYearInfo{
+	background-color:#FFB2B1;
+}
 #selDateView{ border-width:0px; color:black; text-align:center; vertical-align: middle; font-weight: bold; background-color: white; }
