@@ -97,7 +97,7 @@ public class RosterController implements Controller
 			client.sendAddRequest(RosterEntry.ID, entry);
 			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
 			{
-				//eintrag erfolgreich
+				params.put("entry-success", "Dienst erfolgreich eingetragen!");
 			}
 			else
 			{
