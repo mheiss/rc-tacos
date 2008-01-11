@@ -25,6 +25,11 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
+
+import at.rc.tacos.client.controller.DialysisDeleteAction;
+import at.rc.tacos.client.controller.DialysisEditAction;
+import at.rc.tacos.client.controller.DialysisOpenNewFormAction;
+import at.rc.tacos.client.controller.DialysisTransportNowAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.DialysisTransportContentProvider;
@@ -48,7 +53,10 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	private OutstandingTransportsTooltip tooltip;
 	
 	//the actions for the context menu
-	//TODO - get working ;-)
+	private DialysisOpenNewFormAction dialysisNewAction;
+	private DialysisEditAction dialysisEditAction;
+	private DialysisDeleteAction dialysisDeleteAction;
+	private DialysisTransportNowAction dialysisTransportNowAction;
 
 
 	/**
