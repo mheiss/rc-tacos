@@ -111,21 +111,21 @@
                                                 
 if(request.getParameter("month")==null) {
 	%>
-	<input type="text" name="month" id="month" value="<%=currentmonth %>"/> 
+	<input type="hidden" name="month" id="month" value="<%=currentmonth %>"/> 
 	<% 
 }else{
 	   %>
-	    <input type="text" name="month" id="month" value="<%=request.getParameter("month") %>"/> 
+	    <input type="hidden" name="month" id="month" value="<%=request.getParameter("month") %>"/> 
 	    <%
 }
 
 if(request.getParameter("year")==null) {
 	%>
-	<input type="text" name="year" id="month" value="<%=currentyear %>"/> 
+	<input type="hidden" name="year" id="month" value="<%=currentyear %>"/> 
 	<% 
 }else{
     %>
-    <input type="text" name="month" id="month" value="<%=request.getParameter("year") %>"/> 
+    <input type="hidden" name="month" id="month" value="<%=request.getParameter("year") %>"/> 
     <%
 }
 %>
