@@ -17,8 +17,7 @@ public class DialysisPatient extends AbstractMessage
     public final static String ID = "patient";
 
     private long patientId;
-    private String firstname;
-    private String lastname;
+    private Patient patient;
     private String station;
     private long plannedStartOfTransport;
     private long plannedTimeAtPatient;
@@ -32,9 +31,10 @@ public class DialysisPatient extends AbstractMessage
     private String insurance;
     private boolean stationary;
     private String kindOfTransport;
+    private boolean accompanyingPerson;
 
     /**
-     * Default class construtor
+     * Default class constructor
      */
     public DialysisPatient()
     {
@@ -52,13 +52,11 @@ public class DialysisPatient extends AbstractMessage
 	 * @param plannedTimeAtPatient
 	 * @param appointmentTimeAtDialysis
 	 */
-	public DialysisPatient(String id, long patientId, String firstname,
-			String lastname, String station, long plannedStartOfTransport,
+	public DialysisPatient(String id, long patientId,
+			String station, long plannedStartOfTransport,
 			long plannedTimeAtPatient, long appointmentTimeAtDialysis) {
 		super(id);
 		this.patientId = patientId;
-		this.firstname = firstname;
-		this.lastname = lastname;
 		this.station = station;
 		this.plannedStartOfTransport = plannedStartOfTransport;
 		this.plannedTimeAtPatient = plannedTimeAtPatient;
@@ -98,7 +96,7 @@ public class DialysisPatient extends AbstractMessage
     @Override
     public String toString()
     {
-        return patientId+","+firstname+","+lastname;
+        return patientId+","+patient;
     }
     
     /**
@@ -143,55 +141,23 @@ public class DialysisPatient extends AbstractMessage
 	}
 
 
-    /**
-     * Sets the identification number of the patient.
-     * @param patientId the patientId to set
-     * @throws IllegalArgumentException when the patient id is lesser than 0
+	/**
+     * @return the patient
      */
-	public void setPatientId(long patientId) {
-		this.patientId = patientId;
-	}
+    public Patient getPatient() 
+    {
+        return patient;
+    }
 
-	/**
-	 * Returns the firstname of the patient.
-	 * @return the firstname
-	 */
-	public String getFirstname() {
-		return firstname;
-	}
-
-	/**
-    * Sets the first name for the patient.
-    * @param firstname the firstname to set
-    * @throws IllegalArgumentException if the first name is null or empty
-    **/
-	public void setFirstname(String firstname) 
-	{
-        if(firstname == null || firstname.trim().isEmpty())
-            throw new IllegalArgumentException("Invalid firstname");
-        this.firstname = firstname.trim();
-	}
-
-	/**
-	 * Returns the lastname of the patient.
-	 * @return the lastname
-	 */
-	public String getLastname() 
-	{
-		return lastname;
-	}
-
-	/**
-	 * Sets the last name for the DialysisPatient
-	 * @param lastname the lastname to set
-	 * @throws IllegalArgumentException if the first name is null or empty
-	 */
-	public void setLastname(String lastname) 
-	{
-        if(lastname == null || lastname.trim().isEmpty())
-            throw new IllegalArgumentException("Invalid lastname");
-        this.lastname = lastname.trim();
-	}
+    /**
+     * @param patient the patient to set
+     */
+    public void setPatient(Patient patient)
+    {
+//        if(patient == null)
+//            throw new IllegalArgumentException("The patient cannot be null");
+        this.patient = patient;
+    }
 
 	/**
 	 * Returns the responsible station of the DialysisPatient
@@ -278,6 +244,22 @@ public class DialysisPatient extends AbstractMessage
     }
     
     
+    
+    /**
+     * @return the accompanyingPerson
+     */
+    public boolean isAccompanyingPerson() 
+    {
+        return accompanyingPerson;
+    }
+
+    /**
+     * @param accompanyingPerson the accompanyingPerson to set
+     */
+    public void setAccompanyingPerson(boolean accompanyingPerson) 
+    {
+        this.accompanyingPerson = accompanyingPerson;
+    }
     
     
     
