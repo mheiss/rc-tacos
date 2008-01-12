@@ -1,5 +1,10 @@
 package at.rc.tacos.client.view;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -8,15 +13,22 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import com.swtdesigner.SWTResourceManager;
 
+import at.rc.tacos.client.controller.CreateDialysisTransportAction;
+import at.rc.tacos.client.controller.UpdateDialysisTransportAction;
 import at.rc.tacos.client.util.Util;
+import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Patient;
 
 /**
  * GUI (form) to manage the details of a dialysis patient
@@ -24,7 +36,8 @@ import at.rc.tacos.model.DialysisPatient;
  *
  */
 
-public class DialysisForm {
+public class DialysisForm implements IKindOfTransport
+{
 	
 
 	private Text textFertig;
@@ -36,7 +49,7 @@ public class DialysisForm {
 	private Group planungGroup;
 	private Button begleitpersonButton;
 	private Combo comboZustOrtsstelle;
-	private Button button_1;
+	private Button button_stationary;
 	private Button eigenerRollstuhlButton;
 	private Button krankentrageButton;
 	private Button tragsesselButton;
@@ -60,42 +73,151 @@ public class DialysisForm {
 	private Text textAbf;
 	private Button gehendButton;
 	protected Shell shell;
+	
+	private Listener exitListener;
+	
+	private boolean createNew;
+	
+	private DialysisPatient dia;
 
+	 /**
+     * constructor used to create a 
+     * a new dialysis transport entry.
+     */
 	public DialysisForm()
 	{
+		createNew = true;
+		this.dia = new DialysisPatient();
+		createContents();
+	}
+	
+	 /**
+     * Open the window
+     */
+	public void open()
+	{
+		shell.open();
+	}
+	
+	/**
+     * used to edit an dialysis entry
+     * @param dialysisPatient the dialysisPatient to edit
+     */
+	public DialysisForm(DialysisPatient patient)
+	{
+		createNew = false;
+		this.dia = dia;
+		
+		createContents();
+		
+		 GregorianCalendar gcal = new GregorianCalendar();
+		
+		//planned start of transport
+        if(dia.getPlannedStartOfTransport() != 0)
+        {
+        	gcal.setTimeInMillis(dia.getPlannedStartOfTransport());
+        	String abfahrtTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        	this.textAbf.setText(abfahrtTime);
+        }
+        
+        //time at patient
+        if (dia.getPlannedTimeAtPatient() != 0)
+        {
+        	gcal.setTimeInMillis(dia.getPlannedTimeAtPatient());
+        	String beiPatientTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        	this.textBeiPat.setText(beiPatientTime);
+        }
+        
+        //time at destination
+        if (dia.getAppointmentTimeAtDialysis() != 0)
+        {
+        	gcal.setTimeInMillis(dia.getAppointmentTimeAtDialysis());
+        	String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        	this.textTermin.setText(terminTime);
+        }
+        
+        //time abfRT
+        if (dia.getplannedStartForBackTransport() != 0)
+        {
+        	gcal.setTimeInMillis(dia.getplannedStartForBackTransport());
+        	String abfRTTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        	this.textAbfRT.setText(abfRTTime);
+        }
+        
+        //time ready
+        if (dia.getreadyTime() != 0)
+        {
+        	gcal.setTimeInMillis(dia.getreadyTime());
+        	String readyTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        	this.textFertig.setText(readyTime);
+        }
+		
+        comboVonStrasse.setText(dia.getFromStreet());
+        comboVonOrt.setText(dia.getFromCity());
+        comboNachStrasse.setText(dia.getToStreet());
+        if (dia.getToCity() != null)
+        	 comboNachOrt.setText(dia.getToCity());
+        
+        if(dia.getPatient().getLastname() != null)
+        	this.comboNachname.setText(dia.getPatient().getLastname());
+        
+        if(dia.getPatient().getFirstname() != null)
+        	this.comboVorname.setText(dia.getPatient().getFirstname());
+        
+        this.begleitpersonButton.setSelection(dia.isAccompanyingPerson());
+        
+        this.comboZustOrtsstelle.setText(dia.getStation());//mandatory!! default: Bezirk
+        
+        
+
+        //kind of transport
+        String kindOfTransport = dia.getKindOfTransport();
+        if(TRANSPORT_KIND_GEHEND.equalsIgnoreCase(kindOfTransport))
+        {
+        	this.gehendButton.setSelection(true);
+        }
+        else if (TRANSPORT_KIND_TRAGSESSEL.equalsIgnoreCase(kindOfTransport))
+        {
+        	this.tragsesselButton.setSelection(true);
+        }
+        else if (TRANSPORT_KIND_KRANKENTRAGE.equalsIgnoreCase(kindOfTransport))
+        {
+        	this.krankentrageButton.setSelection(true);
+        }
+        else if (TRANSPORT_KIND_ROLLSTUHL.equalsIgnoreCase(kindOfTransport))
+        {
+        	this.eigenerRollstuhlButton.setSelection(true);
+        }
 		
 	}
 	
-	public DialysisForm(DialysisPatient patient)
-	{
-		//TODO - set content
-	}
-	/**
-	 * Launch the application
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			DialysisForm window = new DialysisForm();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-	/**
-	 * Open the window
-	 */
-	public void open() {
-		final Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-	}
+//	/**
+//	 * Launch the application
+//	 * @param args
+//	 */
+//	public static void main(String[] args) {
+//		try {
+//			DialysisForm window = new DialysisForm();
+//			window.open();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+//	/**
+//	 * Open the window
+//	 */
+//	public void open() {
+//		final Display display = Display.getDefault();
+//		createContents();
+//		shell.open();
+//		shell.layout();
+//		while (!shell.isDisposed()) {
+//			if (!display.readAndDispatch())
+//				display.sleep();
+//		}
+//	}
 
 
 	/**
@@ -104,7 +226,7 @@ public class DialysisForm {
 	protected void createContents() {
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
-		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+//		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
 		shell.setSize(1083, 223);
 		shell.setText("Dialysetransport");
 
@@ -121,6 +243,8 @@ public class DialysisForm {
 		vonLabel.setText("von:");
 		vonLabel.setBounds(10, 42, 25, 13);
 
+		
+		
 		comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		comboNachStrasse.setBounds(41, 66, 230, 21);
 
@@ -197,9 +321,9 @@ public class DialysisForm {
 		comboZustOrtsstelle.setItems(new String[] {"Breitenau", "Bruck an der Mur", "Kapfenberg", "St. Marein", "Thörl", "Turnau"});
 		comboZustOrtsstelle.setBounds(322, 113, 112, 21);
 
-		button_1 = new Button(transportdatenGroup, SWT.CHECK);
-		button_1.setText("stationär");
-		button_1.setBounds(41, 118, 85, 16);
+		button_stationary = new Button(transportdatenGroup, SWT.CHECK);
+		button_stationary.setText("stationär");
+		button_stationary.setBounds(41, 118, 85, 16);
 
 		planungGroup = new Group(shell, SWT.NONE);
 		final FormData fd_planungGroup = new FormData();
@@ -254,7 +378,7 @@ public class DialysisForm {
 		patientenzustandGroup = new Group(shell, SWT.NONE);
 		fd_transportdatenGroup.bottom = new FormAttachment(patientenzustandGroup, 150, SWT.TOP);
 		fd_transportdatenGroup.top = new FormAttachment(patientenzustandGroup, 0, SWT.TOP);
-		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, button_1, comboZustOrtsstelle, begleitpersonButton});
+		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, button_stationary, comboZustOrtsstelle, begleitpersonButton});
 		patientenzustandGroup.setLayout(new FormLayout());
 		final FormData fd_patientenzustandGroup = new FormData();
 		fd_patientenzustandGroup.right = new FormAttachment(transportdatenGroup, -5, SWT.LEFT);
@@ -321,8 +445,25 @@ public class DialysisForm {
 		fd_abbrechenButton.left = new FormAttachment(transportdatenGroup, -96, SWT.RIGHT);
 		fd_abbrechenButton.right = new FormAttachment(transportdatenGroup, 0, SWT.RIGHT);
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
-		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
+//		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
 		abbrechenButton.setText("Abbrechen");
+		abbrechenButton.addListener(SWT.Selection, exitListener);
+		
+		//listener
+		exitListener = new Listener() {
+			public void handleEvent(Event e) 
+			{
+				MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+				dialog.setText("Abbrechen");
+				dialog.setMessage("Wollen Sie wirklich abbrechen?");
+				if (e.type == SWT.Close) 
+					e.doit = false;
+				if (dialog.open() != SWT.YES) 
+					return;
+				shell.dispose();
+			}
+		};
+		
 
 		okButton = new Button(shell, SWT.NONE);
 		final FormData fd_okButton = new FormData();
@@ -332,8 +473,555 @@ public class DialysisForm {
 		fd_okButton.right = new FormAttachment(abbrechenButton, -5, SWT.LEFT);
 		okButton.setLayoutData(fd_okButton);
 		okButton.setText("OK");
+		okButton.addListener(SWT.Selection, new Listener()
+		{
+			
+			String requiredFields;
+			
+			
+			int hourStart;
+			int hourAtPatient;
+			int hourTerm;
+			int hourAbfRT;
+			int hourReady;
+			
+			int minutesStart;
+			int minutesAtPatient;
+			int minutesTerm;
+			int minutesAbfRT;
+			int minutesReady;
+			
+			String term;
+			String atPatient;
+			String start;
+			String abfRT;
+			String ready;
+			
+			long termLong;
+			long atPatientLong;
+			long startLong;
+			long abfRTLong;
+			long readyLong;
+			
+			boolean accompanyingPerson;
+			
+			
+			boolean montag;
+			boolean dienstag;
+			boolean mittwoch;
+			boolean donnerstag;
+			boolean freitag;
+			boolean samstag;
+			boolean sonntag;
+			
+			boolean stationary;
+			
+			String toCommunity;
+			String toStreet;
+			
+			String firstName;
+			String lastName;
+			
+			String fromCommunity;
+			String fromStreet;
+			
+			boolean wheelChairButton;
+			boolean gurney;
+			boolean chair;
+			boolean moving;
+			
+			String theRespStation;
+			
+			String formatOfTime;
+			
+			
+			
+			
+			
+			
+			public void handleEvent(Event event) 
+			{
+				String kindOfTransport;
+				
+				requiredFields = "";
+				
+				hourStart = -1;
+				hourAtPatient = -1;
+				hourTerm = -1;
+				hourAbfRT = -1;
+				hourReady = -1;
+				
+				minutesStart = -1;
+				minutesAtPatient = -1;
+				minutesTerm = -1;
+				minutesAbfRT = -1;
+				minutesReady = -1;
+				
+				formatOfTime = "";
+				
+				this.getContentOfAllFields();
+				
+				//check required fields
+				if (!this.checkRequiredFields().equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen:");
+					return;
+				}
+				
+				//validating
+				if(!this.checkFormatOfTimeFields().equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event,formatOfTime, "Format von Transportzeiten falsch: ");	
+					return;
+				}
+				
+				this.transformToLong();
+				
+				//validate: start before atPatient
+				if(atPatientLong<startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, "Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
+					return;
+				}	
+				
+				
+				//validate: atPatient before term
+				if((termLong<atPatientLong && !term.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase("")))
+				{
+					this.displayMessageBox(event, "Termin kann nicht vor Ankunft bei Patient sein", "Fehler (Zeit)");
+					return;
+				}
+				
+				//validate: start before term
+				if(termLong<startLong && !term.equalsIgnoreCase("") && !start.equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
+					return;
+				}
+				
+				//validate: abfRT before ready
+				if(readyLong<abfRTLong && !abfRT.equalsIgnoreCase("") && !ready.equalsIgnoreCase(""))
+				{
+					this.displayMessageBox(event, "Abholzeit (fertig) kann nicht vor Abfahrtszeit liegen", "Fehler (Zeit)");
+					return;
+				}	
+				
+				//set the kind of transport
+				if(wheelChairButton)
+					kindOfTransport = TRANSPORT_KIND_ROLLSTUHL;
+				else if(gurney)
+					kindOfTransport = TRANSPORT_KIND_KRANKENTRAGE;
+				else if(chair)
+					kindOfTransport = TRANSPORT_KIND_TRAGSESSEL;
+				else if(moving)
+					kindOfTransport = TRANSPORT_KIND_GEHEND;
+				else
+					kindOfTransport = "";
+				
+				if(createNew)
+				{
+					dia = new DialysisPatient();
+					dia.setAppointmentTimeAtDialysis(termLong);
+					
+					Patient patient = new Patient();
+					patient.setFirstname(firstName);
+					patient.setLastname(lastName);
+					
+					dia.setFromCity(fromCommunity);
+					dia.setFromStreet(fromStreet);
+					//dia.setInsurance(insurance); -- not implemented yet
+					dia.setKindOfTransport(kindOfTransport);
+					
+					dia.setplannedStartForBackTransport(abfRTLong);
+					dia.setPlannedStartOfTransport(startLong);
+					dia.setPlannedTimeAtPatient(atPatientLong);
+					dia.setreadyTime(readyLong);
+					dia.setStation(theRespStation);
+					dia.setStationary(stationary);
+					dia.setToCity(toCommunity);
+					dia.setToStreet(toStreet);
+					
+					CreateDialysisTransportAction newAction = new CreateDialysisTransportAction(dia);
+					newAction.run();
+					
+				}
+				else
+				{
+					dia = new DialysisPatient();
+					dia.setAppointmentTimeAtDialysis(termLong);
+					
+					Patient patient = new Patient();
+					patient.setFirstname(firstName);
+					patient.setLastname(lastName);
+					
+					dia.setFromCity(fromCommunity);
+					dia.setFromStreet(fromStreet);
+					//dia.setInsurance(insurance); -- not implemented yet
+					dia.setKindOfTransport(kindOfTransport);
+					dia.setplannedStartForBackTransport(abfRTLong);
+					dia.setPlannedStartOfTransport(startLong);
+					dia.setPlannedTimeAtPatient(atPatientLong);
+					dia.setreadyTime(readyLong);
+					dia.setStation(theRespStation);
+					dia.setStationary(stationary);
+					dia.setToCity(toCommunity);
+					dia.setToStreet(toStreet);
+					
+					UpdateDialysisTransportAction updateAction = new UpdateDialysisTransportAction(dia);
+					updateAction.run();
+					
+				
+				}
+				
+				shell.close();
+				
+				
+			}
+			
+			private void getContentOfAllFields()
+			{
+				montag = montagButton.getSelection();
+				dienstag = dienstagButton.getSelection();
+				mittwoch = mittwochButton.getSelection();
+				donnerstag = donnerstagButton.getSelection();
+				freitag = freitagButton.getSelection();
+				samstag = samstagButton.getSelection();
+				sonntag = sonntagButton.getSelection();
+				
+				stationary = button_stationary.getSelection();
+				
+				term = textTermin.getText();
+				atPatient = textBeiPat.getText();
+				start = textAbf.getText();
+				abfRT = textAbfRT.getText();
+				ready = textFertig.getText();
+				
+				theRespStation = comboZustOrtsstelle.getText();
+				accompanyingPerson = begleitpersonButton.getSelection();
+				
+				wheelChairButton = eigenerRollstuhlButton.getSelection();
+				gurney = krankentrageButton.getSelection();
+				chair = tragsesselButton.getSelection();
+				moving = gehendButton.getSelection();
+				
+				toCommunity = comboNachOrt.getText();
+				toStreet = comboNachStrasse.getText();
+				firstName = comboVorname.getText();
+				lastName = comboNachname.getText();
+				fromCommunity = comboVonOrt.getText();
+				fromStreet = comboVonStrasse.getText();
+				
+				
+				
+				
+				
+				
+			}
+			
+			private String checkRequiredFields()
+			{
+				//TODO
+				
+
+				if (fromStreet.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"von Straße";
+				if (fromCommunity.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"von Ort";
+				if (theRespStation.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"zuständige Ortsstelle";
+				if (toStreet.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"Zielort";
+				
+				if (start.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"Abfahrtszeit";
+				if (atPatient.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"Zeit bei Patient";
+				if (term.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"Termin Dialyse";
+				if (abfRT.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"Abfahrt für Rücktransport";
+				if (ready.equalsIgnoreCase(""))
+					requiredFields = requiredFields +" " +"Abholzeit (fertig)";
+				return requiredFields;
+			}
+			
+			private String checkFormatOfTimeFields()
+			{
+				Pattern p4 = Pattern.compile("(\\d{2})(\\d{2})");//if content is e.g. 1234
+				Pattern p5 = Pattern.compile("(\\d{2}):(\\d{2})");//if content is e.g. 12:34
+				
+				//check in
+				if(!start.equalsIgnoreCase(""))
+				{
+					Matcher m41= p4.matcher(start);
+					Matcher m51= p5.matcher(start);
+						if(m41.matches())
+						{
+							hourStart = Integer.parseInt(m41.group(1));
+							minutesStart = Integer.parseInt(m41.group(2));
+							
+							if(hourStart >= 0 && hourStart <=23 && minutesStart >= 0 && minutesStart <=59)
+							{
+								start = hourStart + ":" +minutesStart;//for the splitter
+							}
+							else
+							{
+								formatOfTime = " - Abfahrtszeit";
+							}
+						}
+						else if(m51.matches())
+						{
+								hourStart = Integer.parseInt(m51.group(1));
+								minutesStart = Integer.parseInt(m51.group(2));
+							
+							if(!(hourStart >= 0 && hourStart <=23 && minutesStart >= 0 && minutesStart <=59))
+							{
+								formatOfTime = " - Abfahrtszeit";
+							}
+						}
+						else
+						{
+							formatOfTime = " - Abfahrtszeit";
+						}
+				}
+				
+				//at patient
+				if (!atPatient.equalsIgnoreCase(""))
+				{
+					Matcher m42= p4.matcher(atPatient);
+					Matcher m52= p5.matcher(atPatient);
+					if(m42.matches())
+					{
+						hourAtPatient = Integer.parseInt(m42.group(1));
+						minutesAtPatient = Integer.parseInt(m42.group(2));
+						
+						if(hourAtPatient >= 0 && hourAtPatient <=23 && minutesAtPatient >= 0 && minutesAtPatient <=59)
+						{
+							atPatient = hourAtPatient +":" +minutesAtPatient;
+						}
+						else
+						{
+							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+						}
+					}
+					else if(m52.matches())
+					{
+						hourAtPatient = Integer.parseInt(m52.group(1));
+						minutesAtPatient = Integer.parseInt(m52.group(2));
+						
+						if(!(hourAtPatient >= 0 && hourAtPatient <=23 && minutesAtPatient >= 0 && minutesAtPatient <=59))
+						{
+							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+						}
+					}
+					else
+					{
+						formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+					}
+				}
+				
+				//term
+				if (!term.equalsIgnoreCase(""))
+				{
+					Matcher m42= p4.matcher(term);
+					Matcher m52= p5.matcher(term);
+					if(m42.matches())
+					{
+						hourTerm = Integer.parseInt(m42.group(1));
+						minutesTerm = Integer.parseInt(m42.group(2));
+						
+						if(hourTerm >= 0 && hourTerm <=23 && minutesTerm >= 0 && minutesTerm <=59)
+						{
+							term = hourTerm +":" +minutesTerm;
+						}
+						else
+						{
+							formatOfTime = formatOfTime +"Terminzeit";
+						}
+					}
+					else if(m52.matches())
+					{
+						hourTerm = Integer.parseInt(m52.group(1));
+						minutesTerm = Integer.parseInt(m52.group(2));
+						
+						if(!(hourTerm >= 0 && hourTerm <=23 && minutesTerm >= 0 && minutesTerm <=59))
+						{
+							formatOfTime = formatOfTime +"Terminzeit";
+						}
+					}
+					else
+					{
+						formatOfTime = formatOfTime +"Terminzeit";
+					}
+				}
+				
+				
+				//abf RT
+				if (!abfRT.equalsIgnoreCase(""))
+				{
+					Matcher m42= p4.matcher(abfRT);
+					Matcher m52= p5.matcher(abfRT);
+					if(m42.matches())
+					{
+						hourAbfRT = Integer.parseInt(m42.group(1));
+						minutesAbfRT = Integer.parseInt(m42.group(2));
+						
+						if(hourAbfRT >= 0 && hourAbfRT <=23 && minutesAbfRT >= 0 && minutesAbfRT <=59)
+						{
+							abfRT = hourAbfRT +":" +minutesAbfRT;
+						}
+						else
+						{
+							formatOfTime = formatOfTime +"Abfahrt Rücktransport";
+						}
+					}
+					else if(m52.matches())
+					{
+						hourAbfRT = Integer.parseInt(m52.group(1));
+						minutesAbfRT = Integer.parseInt(m52.group(2));
+						
+						if(!(hourAbfRT >= 0 && hourAbfRT <=23 && minutesAbfRT >= 0 && minutesAbfRT <=59))
+						{
+							formatOfTime = formatOfTime +"Abfahrt Rücktransport";
+						}
+					}
+					else
+					{
+						formatOfTime = formatOfTime +"Abfahrt Rücktransport";
+					}
+				}
+				
+				//fertig
+				if (!ready.equalsIgnoreCase(""))
+				{
+					Matcher m42= p4.matcher(ready);
+					Matcher m52= p5.matcher(ready);
+					if(m42.matches())
+					{
+						hourReady = Integer.parseInt(m42.group(1));
+						minutesReady = Integer.parseInt(m42.group(2));
+						
+						if(hourReady >= 0 && hourReady <=23 && minutesReady >= 0 && minutesReady <=59)
+						{
+							ready = hourReady +":" +minutesReady;
+						}
+						else
+						{
+							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+						}
+					}
+					else if(m52.matches())
+					{
+						hourReady = Integer.parseInt(m52.group(1));
+						minutesReady = Integer.parseInt(m52.group(2));
+						
+						if(!(hourReady >= 0 && hourReady <=23 && minutesReady >= 0 && minutesReady <=59))
+						{
+							formatOfTime = formatOfTime +"Zeit fertig";
+						}
+					}
+					else
+					{
+						formatOfTime = formatOfTime +"Zeit fertig";
+					}
+				}
+				return formatOfTime;
+			}
+			
+			
+			private void transformToLong()
+			{
+				//get a new instance of the calendar
+				GregorianCalendar cal = new GregorianCalendar();
+				
+				
+				if (!term.equalsIgnoreCase(""))
+				{
+					String[] theTerm = term.split(":");
+					
+					int hoursTerm = Integer.valueOf(theTerm[0]).intValue();
+					int minutesTerm = Integer.valueOf(theTerm[1]).intValue();
+	
+					cal.set(GregorianCalendar.HOUR_OF_DAY, hoursTerm);
+					cal.set(GregorianCalendar.MINUTE,minutesTerm);
+					
+					termLong = cal.getTimeInMillis();
+				}
+				
+				if (!atPatient.equalsIgnoreCase(""))
+				{
+					String[] theTimeAtPatient = atPatient.split(":");
+					int hourstheTimeAtPatient = Integer.valueOf(theTimeAtPatient[0]).intValue();
+					int minutestheTimeAtPatient = Integer.valueOf(theTimeAtPatient[1]).intValue();
+					
+					cal.set(GregorianCalendar.HOUR_OF_DAY, hourstheTimeAtPatient);
+					cal.set(GregorianCalendar.MINUTE,minutestheTimeAtPatient);
+					
+					atPatientLong = cal.getTimeInMillis();
+				}
+				
+				if (!start.equalsIgnoreCase(""))
+				{
+					String[] theStartTime = start.split(":");
+					int hourstheStartTime = Integer.valueOf(theStartTime[0]).intValue();
+					int minutestheStartTime = Integer.valueOf(theStartTime[1]).intValue();
+					
+					cal.set(GregorianCalendar.HOUR_OF_DAY, hourstheStartTime);
+					cal.set(GregorianCalendar.MINUTE,minutestheStartTime);
+					
+					startLong = cal.getTimeInMillis();
+				}
+				
+				if (!abfRT.equalsIgnoreCase(""))
+				{
+					String[] theAbfRTTime = start.split(":");
+					int hourstheAbfRTTime = Integer.valueOf(theAbfRTTime[0]).intValue();
+					int minutestheAbfRTTime = Integer.valueOf(theAbfRTTime[1]).intValue();
+					
+					cal.set(GregorianCalendar.HOUR_OF_DAY, hourstheAbfRTTime);
+					cal.set(GregorianCalendar.MINUTE,minutestheAbfRTTime);
+					
+					abfRTLong = cal.getTimeInMillis();
+				}
+				
+				if (!ready.equalsIgnoreCase(""))
+				{
+					String[] theReadyTime = start.split(":");
+					int hourstheReadyTime = Integer.valueOf(theReadyTime[0]).intValue();
+					int minutestheReadyTime = Integer.valueOf(theReadyTime[1]).intValue();
+					
+					cal.set(GregorianCalendar.HOUR_OF_DAY, hourstheReadyTime);
+					cal.set(GregorianCalendar.MINUTE,minutestheReadyTime);
+					
+					readyLong = cal.getTimeInMillis();
+				}
+				
+			}
+			
+			
+			
+			
+			
+			private void displayMessageBox(Event event, String fields, String message)
+			{
+				 MessageBox mb = new MessageBox(shell, 0);
+			     mb.setText(message);
+			     mb.setMessage(fields);
+			     mb.open();
+			     if(event.type == SWT.Close) event.doit = false;
+			}
+		
+		});
+		
+		
+		
+		
 		shell.setTabList(new Control[] {planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton});
 		//
+		
+		
 	}
+	
+	
 
 }
