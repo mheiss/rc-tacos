@@ -111,9 +111,9 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
 	        	else return "";
 	        case COLUMN_FROM:return dia.getFromStreet() +"/" +dia.getFromCity();
 	        case COLUMN_PATIENT:
-	        	if(dia.getLastname() != null)
-	        			return dia.getLastname() +" " +dia.getFirstname();
-	        	else return "";
+	        	if(dia.getPatient() != null)
+        			return dia.getPatient().getLastname() +" " +dia.getPatient().getFirstname();
+        	else return "";
 	        case COLUMN_STAT:
 	        	return null;
 	        
