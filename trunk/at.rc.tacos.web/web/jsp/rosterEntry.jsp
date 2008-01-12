@@ -71,11 +71,13 @@ function setDataToInput(day, month, year){
 			<td id="MainBodyContent">
 			<table width="100%" id="userInfo">
 				<tr>
-					<td width="50%" align="left"> Willkommen : <%=userSession.getUsername()%>
+					<td width="33%" align="left"> Willkommen : <%= userSession.getUsername() %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="50%" align="right">Heute ist der <%=format.format(current)%>
+					<td width="33%" align="center">Diensteintrag hinzuf&uuml;gen</td>
+					<td width="33%" align="right">Heute ist der <%= format.format(current) %>
 					</td>
+					<td>
 				</tr>
 			</table>
 			<table width="100%">

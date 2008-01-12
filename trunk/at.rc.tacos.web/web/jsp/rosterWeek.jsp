@@ -48,15 +48,17 @@
     <tbody>
         <tr>
             <td id="MainBodyContent">
-            <table width="100%" id="userInfo">
-                <tr>
-                    <td width="50%" align="left"> Willkommen : <%= userSession.getUsername() %>
-                    &nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
-                    )</td>
-                    <td width="50%" align="right">Heute ist der <%= formath.format(current) %>
-                    </td>
-                </tr>
-            </table>
+           <table width="100%" id="userInfo">
+				<tr>
+					<td width="33%" align="left"> Willkommen : <%= userSession.getUsername() %>
+					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
+					)</td>
+					<td width="33%" align="center">Wochen&uuml;bersicht ihrer Prim&auml;r-Dienststelle</td>
+					<td width="33%" align="right">Heute ist der <%= formath.format(current) %>
+					</td>
+					<td>
+				</tr>
+			</table>
             <table width="100%">
                 <tr>
 
