@@ -53,13 +53,15 @@
 	<tbody>
 		<tr>
 			<td id="MainBodyContent">
-			<table width="100%" id="userInfo">
+           <table width="100%" id="userInfo">
 				<tr>
-					<td width="50%" align="left"> Willkommen : <%=userSession.getUsername()%>
+					<td width="33%" align="left"> Willkommen : <%= userSession.getUsername() %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="50%" align="right">Heute ist der <%=formath.format(current)%>
+					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%= request.getParameter("action") %></td>
+					<td width="33%" align="right">Heute ist der <%= formath.format(current) %>
 					</td>
+					<td>
 				</tr>
 			</table>
 			<table width="100%">

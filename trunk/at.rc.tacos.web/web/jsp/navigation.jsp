@@ -5,10 +5,6 @@
 		<td id="BlockHead"><b>Navigation</b></td>
 	</tr>
 	<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/home.do"%>">Home</a><br />
-		</td>
-	</tr>
-	<tr>
 		<td id="BlockContent"><a
 			href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do"%>">Dienst eintragen</a><br />
 		</td>
