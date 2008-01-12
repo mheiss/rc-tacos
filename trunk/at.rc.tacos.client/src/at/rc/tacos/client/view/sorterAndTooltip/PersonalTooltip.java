@@ -58,6 +58,8 @@ public class PersonalTooltip extends ToolTip
 		//get the selected roster entry
 		Composite composite = createToolTipContentAreaComposite(parent);	
 		
+		System.out.println("ID:"+rosterEntry.getRosterId());
+		
 		//the name of the staff member
 		Image image = ImageFactory.getInstance().getRegisteredImage("image.personal.user");
 		String title = rosterEntry.getStaffMember().getFirstName() + " " + rosterEntry.getStaffMember().getLastName();

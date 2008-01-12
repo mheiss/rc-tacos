@@ -2,6 +2,9 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+
 import at.rc.tacos.client.view.VehicleForm;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
@@ -47,7 +50,7 @@ public class VehicleEditAction extends Action
 	@Override
 	public ImageDescriptor getImageDescriptor() 
 	{
-		return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.car");
+		return ImageFactory.getInstance().getRegisteredImageDescriptor("image.vehicle.vehicle");
 	}
 
 	/**
@@ -56,7 +59,9 @@ public class VehicleEditAction extends Action
 	@Override
 	public void run()
 	{
-		VehicleForm window = new VehicleForm(detail);
+	    //open the editor
+        Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+		VehicleForm window = new VehicleForm(parent,detail);
 		window.open();
 	}
 }

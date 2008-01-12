@@ -32,7 +32,7 @@ import at.rc.tacos.model.VehicleDetail;
  * GUI (form) to manage an ambulance
  * @author b.thek
  */
-public class VehicleForm  
+public class VehicleForm_old  
 {
 	private Label aktuelleOrtsstelleLabel;
 	private Combo combo;
@@ -62,7 +62,7 @@ public class VehicleForm
 	public static void main(String[] args) 
 	{
 		try {
-				VehicleForm window = new VehicleForm();
+		    VehicleForm_old window = new VehicleForm_old();
 				window.open();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -73,14 +73,14 @@ public class VehicleForm
 	 * used to edit an vehicleDetail entry
 	 * @param vehicleDetail the roster entry to edit
 	 */
-	public VehicleForm(VehicleDetail vehicleDetail)
+	public VehicleForm_old(VehicleDetail vehicleDetail)
 	{
 		this.createContents();
 		
 		//TODO - get date if this object is used to edit an existing (has staff) car
 	}
 	
-	public VehicleForm()
+	public VehicleForm_old()
 	{
 		this.createContents();
 	}

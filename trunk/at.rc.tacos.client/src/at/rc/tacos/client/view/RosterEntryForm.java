@@ -352,13 +352,11 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         {
             public void expansionStateChanging(ExpansionEvent e) 
             {
-                getShell().layout(true);
                 getShell().pack(true);
             }
 
             public void expansionStateChanged(ExpansionEvent e) 
             {
-                getShell().layout(true);
                 getShell().pack(true);
             }
         });
@@ -384,7 +382,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         //end time
         valueComp = makeComposite(client, 2);
         final Label bisLabel = new Label(valueComp, SWT.NONE);
-        bisLabel.setText("Dienst bis: ");
+        bisLabel.setText(" bis: ");
         dienstBis = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
     }
 
@@ -412,13 +410,11 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
       {
           public void expansionStateChanging(ExpansionEvent e) 
           {
-              getShell().layout(true);
               getShell().pack(true);
           }
 
           public void expansionStateChanged(ExpansionEvent e) 
           {
-              getShell().layout(true);
               getShell().pack(true);
           }
       });

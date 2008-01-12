@@ -1,6 +1,5 @@
 package at.rc.tacos.client.view;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +11,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -20,13 +18,11 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import com.swtdesigner.SWTResourceManager;
 
 import at.rc.tacos.client.controller.CreateDialysisTransportAction;
 import at.rc.tacos.client.controller.UpdateDialysisTransportAction;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IKindOfTransport;
-import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Patient;
 
@@ -106,7 +102,7 @@ public class DialysisForm implements IKindOfTransport
 	public DialysisForm(DialysisPatient patient)
 	{
 		createNew = false;
-		this.dia = dia;
+		this.dia = patient;
 		
 		createContents();
 		
@@ -367,7 +363,7 @@ public class DialysisForm implements IKindOfTransport
 		textAbfRT.setBounds(41, 115, 41, 21);
 
 		abfLabel_1 = new Label(planungGroup, SWT.NONE);
-		abfLabel_1.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		abfLabel_1.setForeground(Util.getColor(128, 128, 128));
 		abfLabel_1.setText("fertig");
 		abfLabel_1.setBounds(10, 145, 25, 13);
 

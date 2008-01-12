@@ -11,6 +11,7 @@ import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
@@ -35,6 +36,7 @@ public class ModelFactory
     private StaffManager staffList;
     private TransportManager transportList;
     private DialysisTransportManager dialysisList;
+    private MobilePhoneManager phoneList;
     
     /**
      * Private class constructor.
@@ -47,6 +49,7 @@ public class ModelFactory
         staffList = new StaffManager();
         transportList = new TransportManager();
         dialysisList = new DialysisTransportManager();
+        phoneList = new MobilePhoneManager();
     }
     
     /**
@@ -80,6 +83,7 @@ public class ModelFactory
                 net.requestListing(StaffMember.ID, null);
                 net.requestListing(Transport.ID, null);
                 net.requestListing(DialysisPatient.ID, null);
+                net.requestListing(MobilePhoneDetail.ID, null);
                 return Status.OK_STATUS;
             }
         };
@@ -142,5 +146,14 @@ public class ModelFactory
     public DialysisTransportManager getDialysisTransportManager()
     {
         return dialysisList;
+    }
+    
+    /**
+     * Returns the manager responsible for the mobile phones
+     * @return the phone manager
+     */
+    public MobilePhoneManager getMobilePhoneManager()
+    {
+        return phoneList;
     }
 }
