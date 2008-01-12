@@ -37,7 +37,8 @@ public class RosterEntryEncoderTest
     @Test
     public void testRosterEntryEncode() throws XMLStreamException
     {
-        RosterEntry entry = new TestDataSource().rosterList.get(0);
+        RosterEntry entry = new RosterEntry();
+        entry.setRosterId(1);
         encoder.doEncode(entry, writer);
     }
     
