@@ -187,8 +187,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
     }
     
     /**
-     * used to edit an roster entry
-     * @param rosterEntry the roster entry to edit
+     * used to edit a transport
+     * @param transport the transport to edit
      */
     public TransportForm(Transport transport, String editingType)
     {
@@ -1563,7 +1563,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		//TODO start
 		okButton.addListener(SWT.Selection, new Listener()
 		{
-			
 			String requiredFields;//contains the names of the required fields that have no content
 //			
 			int hourStart;
@@ -1742,7 +1741,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				
 				
 				//set the kind of transport
-				
 				if(wheelChairButton)
 					kindOfTransport = TRANSPORT_KIND_ROLLSTUHL;
 				else if(gurney)
