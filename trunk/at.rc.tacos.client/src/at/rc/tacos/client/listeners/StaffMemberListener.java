@@ -45,6 +45,5 @@ public class StaffMemberListener extends ClientListenerAdapter
             StaffMember member = (StaffMember)msg;
             manager.add(member);
         }
-        System.out.println("Added: "+listMessage.size() + " members");
     }  
 }

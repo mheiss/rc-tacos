@@ -76,7 +76,7 @@ public class VehicleManager extends PropertyManager
     	Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
-            { 
+            {   
             	System.out.println("Manager: Update message");
             	//get the position of the entry
             	int index = objectList.indexOf(vehicle);
@@ -120,6 +120,15 @@ public class VehicleManager extends PropertyManager
 		    	objectList.clear();
             }
         });
+    }
+    
+    /**
+     * Converts the list to an array
+     * @return the list as a array
+     */
+    public Object[] toArray()
+    {
+        return objectList.toArray();
     }
     
     /**
