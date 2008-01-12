@@ -79,8 +79,8 @@ public class DialysisTransportSorter extends ViewerSorter
         //sort by the patient last name
         if(column == PATIENT_SORTER)
         {
-        	String patient1 = dia1.getLastname();
-        	String patient2 = dia2.getLastname();
+        	String patient1 = dia1.getPatient().getLastname();
+        	String patient2 = dia2.getPatient().getLastname();
         	returnValue = patient1.compareTo(patient2);
         }
         
