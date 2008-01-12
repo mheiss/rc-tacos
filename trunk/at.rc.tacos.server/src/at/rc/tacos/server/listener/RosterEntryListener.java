@@ -72,6 +72,13 @@ public class RosterEntryListener extends ServerListenerAdapter
                 throw new IllegalArgumentException("cannot pars the date");
             }
         }
+        else if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER))
+        {
+            //get the query filter
+            final String filter = queryFilter.getFilterValue(IFilterTypes.ID_FILTER);
+            int id = Integer.parseInt(filter);
+            list.add(rosterDao.getRosterEntryById(id));
+        }
         //return the list
         return list;
     }
