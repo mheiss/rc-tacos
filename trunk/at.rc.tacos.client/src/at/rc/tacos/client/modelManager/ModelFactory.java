@@ -37,7 +37,7 @@ public class ModelFactory
     private TransportManager transportList;
     private DialysisTransportManager dialysisList;
     private MobilePhoneManager phoneList;
-    
+
     /**
      * Private class constructor.
      */
