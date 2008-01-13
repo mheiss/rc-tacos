@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.CallerDAO;
@@ -22,7 +23,15 @@ public class NotifyDetailListener extends ServerListenerAdapter
     public AbstractMessage handleAddRequest(AbstractMessage addObject)
     {
         CallerDetail detail = (CallerDetail)addObject;
-        callerDao.addCaller(detail);
+        try
+        {
+            callerDao.addCaller(detail);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return detail;
     }
 
@@ -33,7 +42,15 @@ public class NotifyDetailListener extends ServerListenerAdapter
     public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.addAll(callerDao.listCallers());
+        try
+        {
+            list.addAll(callerDao.listCallers());
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return list;
     }
 
@@ -44,7 +61,15 @@ public class NotifyDetailListener extends ServerListenerAdapter
     public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
     {
         CallerDetail detail = (CallerDetail)removeObject;
-        callerDao.removeCaller(detail);
+        try
+        {
+            callerDao.removeCaller(0);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return detail;
     }
 
@@ -55,7 +80,15 @@ public class NotifyDetailListener extends ServerListenerAdapter
     public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
     {
         CallerDetail detail = (CallerDetail)updateObject;
-        callerDao.updateCaller(detail);
+        try
+        {
+            callerDao.updateCaller(detail,0);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return detail;
     }
 }

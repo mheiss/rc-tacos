@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,8 +28,17 @@ public class RosterEntryListener extends ServerListenerAdapter
     public AbstractMessage handleAddRequest(AbstractMessage addObject)
     {
         RosterEntry entry = (RosterEntry)addObject;
-        int id = rosterDao.addRosterEntry(entry);
-        entry.setRosterId(id);
+        try
+        {
+            int id = rosterDao.addRosterEntry(entry);
+            entry.setRosterId(id);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
+        
         return entry;
     }
 
@@ -46,7 +56,15 @@ public class RosterEntryListener extends ServerListenerAdapter
         //if there is no filter -> request all
         if(queryFilter == null || queryFilter.getFilterList().isEmpty())
         {
-            list.addAll(rosterDao.listRosterEntrys());
+            try
+            {
+                list.addAll(rosterDao.listRosterEntrys());
+            }
+            catch (SQLException e)
+            {
+                // TODO Auto-generated catch block
+                e.getMessage();
+            }
         }
         else if(queryFilter.containsFilterType(IFilterTypes.DATE_FILTER))
         {
@@ -65,7 +83,15 @@ public class RosterEntryListener extends ServerListenerAdapter
                 filterTime.set(Calendar.MINUTE,59);
                 long dateEnd = filterTime.getTimeInMillis();
     
-                list.addAll(rosterDao.listRosterEntryByDate(dateStart, dateEnd));
+                try
+                {
+                    list.addAll(rosterDao.listRosterEntryByDate(dateStart, dateEnd));
+                }
+                catch (SQLException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.getMessage();
+                }
             }
             catch(ParseException pe)
             {
@@ -77,7 +103,15 @@ public class RosterEntryListener extends ServerListenerAdapter
             //get the query filter
             final String filter = queryFilter.getFilterValue(IFilterTypes.ID_FILTER);
             int id = Integer.parseInt(filter);
-            list.add(rosterDao.getRosterEntryById(id));
+            try
+            {
+                list.add(rosterDao.getRosterEntryById(id));
+            }
+            catch (SQLException e)
+            {
+                // TODO Auto-generated catch block
+                e.getMessage();
+            }
         }
         //return the list
         return list;
@@ -90,7 +124,15 @@ public class RosterEntryListener extends ServerListenerAdapter
     public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
     {
         RosterEntry entry = (RosterEntry)removeObject;
-        rosterDao.removeRosterEntry(entry);
+        try
+        {
+            rosterDao.removeRosterEntry(entry);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return entry;
     }
 
@@ -101,7 +143,15 @@ public class RosterEntryListener extends ServerListenerAdapter
     public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
     {
         RosterEntry entry = (RosterEntry)updateObject;
-        rosterDao.updateRosterEntry(entry);
+        try
+        {
+            rosterDao.updateRosterEntry(entry);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return entry;
     }
 }

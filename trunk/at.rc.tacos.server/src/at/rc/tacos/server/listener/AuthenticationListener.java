@@ -1,6 +1,9 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
+
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.core.db.dao.EmployeeDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
@@ -22,11 +25,30 @@ public class AuthenticationListener extends ServerListenerAdapter
         String password = login.getPassword();
         //check agains the database
         UserLoginDAO userDao = DaoService.getInstance().getFactory().createUserDAO();
-        boolean loggedIn = userDao.checkLogin(username, password);
+        EmployeeDAO staffDao = DaoService.getInstance().getFactory().createStaffMemberDAO();
+        boolean loggedIn = false;
+        try
+        {
+            loggedIn = userDao.checkLogin(username, password);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         if(loggedIn)
         {
             login.resetPassword();
             login.setLoggedIn(true);
+            try
+            {
+                login.setUserInformation(staffDao.getStaffMemberByUsername(username));
+            }
+            catch (SQLException e)
+            {
+                // TODO Auto-generated catch block
+                e.getMessage();
+            }
         }
         else
         {

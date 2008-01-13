@@ -1,5 +1,6 @@
 package at.rc.tacos.server.controller;
 
+import java.sql.SQLException;
 import java.util.*;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelActions;
@@ -31,7 +32,15 @@ public class ServerController
         registerEncoderAndDecoder();
         registerModelListeners();
         //prepare and add the dummy data
-        DaoService.getInstance().initData();
+        try
+        {
+            DaoService.getInstance().initData();
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
     }
 
     /**
@@ -224,7 +233,6 @@ public class ServerController
         factory.registerModelListener(Item.ID, new ItemListener());
         factory.registerModelListener(MobilePhoneDetail.ID, new MobilePhoneListener());
         factory.registerModelListener(CallerDetail.ID, new NotifyDetailListener());
-        factory.registerModelListener(Patient.ID, new PatientListener());
         factory.registerModelListener(RosterEntry.ID, new RosterEntryListener());
         factory.registerModelListener(StaffMember.ID, new StaffMemberListener());
         factory.registerModelListener(Transport.ID, new TransportListener());
