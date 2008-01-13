@@ -38,21 +38,21 @@ public class VehicleEncoderTest
     @Test
     public void testTransportEncode1() throws XMLStreamException
     {
-        VehicleDetail detail = new TestDataSource().vehicleList.get(0);
+        VehicleDetail detail = TestDataSource.getInstance().vehicleList.get(0);
         encoder.doEncode(detail, writer);
     }
     
     @Test
     public void testTransportEncode2() throws XMLStreamException
     {
-        VehicleDetail detail = new TestDataSource().vehicleList.get(1);
+        VehicleDetail detail = TestDataSource.getInstance().vehicleList.get(1);
         encoder.doEncode(detail, writer);
     }
     
     @Test
     public void testTransportEncode3() throws XMLStreamException
     {
-        VehicleDetail detail = new TestDataSource().vehicleList.get(2);
+        VehicleDetail detail = TestDataSource.getInstance().vehicleList.get(2);
         encoder.doEncode(detail, writer);
     }
     

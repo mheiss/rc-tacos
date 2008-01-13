@@ -66,7 +66,7 @@ public class VehicleDetailTest
     @Test
     public void testDataSource()
     {
-        VehicleDetail v1 = new TestDataSource().vehicleList.get(0);
+        VehicleDetail v1 = TestDataSource.getInstance().vehicleList.get(0);
         Assert.assertEquals("Staff1", v1.getDriverName().getFirstName());
         Assert.assertEquals("Staff1", v1.getDriverName().getLastName());
         Assert.assertEquals("nick.staff1", v1.getDriverName().getUserName());
