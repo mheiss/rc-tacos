@@ -4,10 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.EmployeeDAO;
+import at.rc.tacos.core.db.dao.StaffMemberDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.server.dao.DaoService;
 
 /**
  * This class will be notified uppon staff member changes
@@ -15,7 +15,7 @@ import at.rc.tacos.server.dao.DaoService;
  */
 public class StaffMemberListener extends ServerListenerAdapter
 {
-    private EmployeeDAO staffDao = DaoService.getInstance().getFactory().createStaffMemberDAO();
+    private StaffMemberDAO staffDao = DaoFactory.TEST.createStaffMemberDAO();
 
     /**
      * Add a staff member

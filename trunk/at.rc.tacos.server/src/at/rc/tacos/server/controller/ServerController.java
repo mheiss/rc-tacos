@@ -1,14 +1,13 @@
 package at.rc.tacos.server.controller;
 
-import java.sql.SQLException;
 import java.util.*;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelActions;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.core.net.internal.*;
 import at.rc.tacos.model.*;
 import at.rc.tacos.codec.*;
 import at.rc.tacos.factory.*;
-import at.rc.tacos.server.dao.DaoService;
 import at.rc.tacos.server.listener.*;
 
 public class ServerController 
@@ -31,15 +30,14 @@ public class ServerController
         //register the encoders and decoders
         registerEncoderAndDecoder();
         registerModelListeners();
-        //prepare and add the dummy data
+        //init the data
         try
         {
-            DaoService.getInstance().initData();
+            initData();
         }
-        catch (SQLException e)
+        catch(Exception e)
         {
-            // TODO Auto-generated catch block
-            e.getMessage();
+            System.out.println("Failed to initalize the data for the database");
         }
     }
 
@@ -230,7 +228,6 @@ public class ServerController
     {
         ServerListenerFactory factory = ServerListenerFactory.getInstance();
         //register the listeners
-        factory.registerModelListener(Item.ID, new ItemListener());
         factory.registerModelListener(MobilePhoneDetail.ID, new MobilePhoneListener());
         factory.registerModelListener(CallerDetail.ID, new NotifyDetailListener());
         factory.registerModelListener(RosterEntry.ID, new RosterEntryListener());
@@ -239,5 +236,35 @@ public class ServerController
         factory.registerModelListener(VehicleDetail.ID, new VehicleDetailListener());
         factory.registerModelListener(Login.ID, new AuthenticationListener());
         factory.registerModelListener(Logout.ID, new AuthenticationListener());
+    }
+    
+    /**
+     * Initalize the data access objects with data
+     */
+    protected void initData() throws Exception
+    {
+        //The data source
+        DaoFactory factory = DaoFactory.TEST;
+        
+        //the data source
+        TestDataSource source = TestDataSource.getInstance();
+        //add phones
+        for(MobilePhoneDetail phone:source.phoneList)
+            factory.createMobilePhoneDAO().addMobilePhone(phone);
+        //add callers
+        for(CallerDetail notifier:source.notifierList)
+            factory.createNotifierDAO().addCaller(notifier);
+        //roster entries
+        for(RosterEntry entry:source.rosterList)
+            factory.createRosterEntryDAO().addRosterEntry(entry);
+        //staff members
+        for(StaffMember member:source.staffList)
+            factory.createStaffMemberDAO().addStaffMember(member,"P@ssw0rd");
+        //transports
+        for(Transport transport:source.transportList)
+            factory.createTransportDAO().addTransport(transport);
+        //vehicles
+        for(VehicleDetail vehicle:source.vehicleList)
+            factory.createVehicleDetailDAO().addVehicle(vehicle); 
     }
 }

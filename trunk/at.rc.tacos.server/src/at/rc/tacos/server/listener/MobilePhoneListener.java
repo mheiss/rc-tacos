@@ -3,9 +3,9 @@ package at.rc.tacos.server.listener;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
-import at.rc.tacos.server.dao.DaoService;
 
 /**
  * This class will be notified uppon mobile phone changes
@@ -13,7 +13,7 @@ import at.rc.tacos.server.dao.DaoService;
  */
 public class MobilePhoneListener extends ServerListenerAdapter
 {
-    private MobilePhoneDAO mobilePhoneDao = DaoService.getInstance().getFactory().createMobilePhoneDAO();
+    private MobilePhoneDAO mobilePhoneDao = DaoFactory.TEST.createMobilePhoneDAO();
     
     /**
      * Add a mobile phone

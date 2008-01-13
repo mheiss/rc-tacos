@@ -3,14 +3,18 @@ package at.rc.tacos.server.listener;
 import java.sql.SQLException;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.core.db.dao.EmployeeDAO;
+import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
-import at.rc.tacos.server.dao.DaoService;
 
 public class AuthenticationListener extends ServerListenerAdapter
 {
+    //The DAO classes
+    private UserLoginDAO userDao = DaoFactory.TEST.createUserDAO();
+    private StaffMemberDAO staffDao = DaoFactory.TEST.createStaffMemberDAO();
+    
     /**
      * Handles the login message and checks the authentication.<br>
      * The password and the username will be checked against the database.
@@ -24,8 +28,7 @@ public class AuthenticationListener extends ServerListenerAdapter
         String username = login.getUsername();
         String password = login.getPassword();
         //check agains the database
-        UserLoginDAO userDao = DaoService.getInstance().getFactory().createUserDAO();
-        EmployeeDAO staffDao = DaoService.getInstance().getFactory().createStaffMemberDAO();
+        
         boolean loggedIn = false;
         try
         {

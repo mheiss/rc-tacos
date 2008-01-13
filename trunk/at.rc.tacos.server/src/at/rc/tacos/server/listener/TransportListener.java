@@ -3,17 +3,16 @@ package at.rc.tacos.server.listener;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.TransportDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.server.dao.DaoService;
-
 /**
  * This class will be notified uppon transport changes
  * @author Michael
  */
 public class TransportListener extends ServerListenerAdapter
 {
-    private TransportDAO transportDao = DaoService.getInstance().getFactory().createTransportDAO();
+    private TransportDAO transportDao = DaoFactory.TEST.createTransportDAO();
     
     /**
      * Add a transport

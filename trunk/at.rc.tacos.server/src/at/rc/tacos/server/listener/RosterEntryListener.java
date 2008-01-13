@@ -9,9 +9,9 @@ import java.util.Calendar;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.RosterDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.server.dao.DaoService;
 
 /**
  * This class will be notified uppon roster entry updates
@@ -19,7 +19,7 @@ import at.rc.tacos.server.dao.DaoService;
  */
 public class RosterEntryListener extends ServerListenerAdapter
 {
-    private RosterDAO rosterDao = DaoService.getInstance().getFactory().createRosterEntryDAO();
+    private RosterDAO rosterDao = DaoFactory.TEST.createRosterEntryDAO();
 
     /**
      * Add a roster entry
@@ -38,7 +38,7 @@ public class RosterEntryListener extends ServerListenerAdapter
             // TODO Auto-generated catch block
             e.getMessage();
         }
-        
+
         return entry;
     }
 
@@ -52,7 +52,7 @@ public class RosterEntryListener extends ServerListenerAdapter
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 
         System.out.println("New listing request");
-        
+
         //if there is no filter -> request all
         if(queryFilter == null || queryFilter.getFilterList().isEmpty())
         {
@@ -76,13 +76,13 @@ public class RosterEntryListener extends ServerListenerAdapter
             try
             {
                 filterTime.setTime(df.parse(dateFilter));
-                
+
                 long dateStart = filterTime.getTimeInMillis();
                 //set the end to 23:59
                 filterTime.set(Calendar.HOUR, 23);
                 filterTime.set(Calendar.MINUTE,59);
                 long dateEnd = filterTime.getTimeInMillis();
-    
+
                 try
                 {
                     list.addAll(rosterDao.listRosterEntryByDate(dateStart, dateEnd));

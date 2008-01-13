@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.VehicleDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.server.dao.DaoService;
 
 /**
  * This class will be notified uppon vehicle detail changes
@@ -14,8 +14,8 @@ import at.rc.tacos.server.dao.DaoService;
  */
 public class VehicleDetailListener extends ServerListenerAdapter
 {
-    private VehicleDAO vehicleDao = DaoService.getInstance().getFactory().createVehicleDetailDAO();
-    
+    private VehicleDAO vehicleDao = DaoFactory.MYSQL.createVehicleDetailDAO();
+        
     /**
      * Vehicle added
      */
