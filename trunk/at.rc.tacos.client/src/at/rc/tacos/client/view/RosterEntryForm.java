@@ -243,6 +243,18 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         section.setLayout(new GridLayout());
         section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         section.setExpanded(true);
+        section.addExpansionListener(new IExpansionListener() 
+        {
+            public void expansionStateChanging(ExpansionEvent e) 
+            {
+                getShell().pack(true);
+            }
+
+            public void expansionStateChanged(ExpansionEvent e) 
+            {
+                getShell().pack(true);
+            }
+        });
 
         Composite client = new Composite(section, SWT.NONE);
         section.setClient(client);

@@ -129,6 +129,21 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         info.update();
         info.layout(true);
       }
+    
+    /**
+     * Helper method to create a composite
+     * @param parent the parent control
+     * @param col the number of cols
+     * @return the returned composite
+     */
+    public Composite makeComposite(Composite parent, int col) 
+    {
+        Composite nameValueComp = toolkit.createComposite(parent);
+        GridLayout layout = new GridLayout(3, false);
+        layout.marginHeight = 3;
+        nameValueComp.setLayout(layout);
+        return nameValueComp;
+    }
 
     /**
      * Creates the info section containing the user information
@@ -146,7 +161,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         info.setLayoutData(calData);
 
         Font userFont = new Font(null,"Arial",12,SWT.BOLD);
-        
+
         //the labels
         Label userLabel = toolkit.createLabel(info, LABEL_NAME);
         userLabel.setFont(userFont);
@@ -155,6 +170,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         
         //logout link
         logoutLink = toolkit.createHyperlink(info, LABEL_LOGOUT, SWT.LEFT);
+        logoutLink.setFont(userFont);
         logoutLink.addHyperlinkListener(new HyperlinkAdapter() 
         {
             public void linkActivated(HyperlinkEvent e) 
@@ -179,17 +195,17 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         data.widthHint = 150;
         userLabel.setLayoutData(data);
         data = new GridData();
-        data.widthHint = 100;
+        data.widthHint = 150;
         dateLabel.setLayoutData(data);
         data = new GridData();
-        data.widthHint = 100;
+        data.widthHint = 150;
         logoutLink.setLayoutData(data);
         //layout for the dynamic fields
         GridData data2 = new GridData();
-        data2.widthHint = 100;
+        data2.widthHint = 150;
         user.setLayoutData(data2);
         data2 = new GridData();
-        data2.widthHint = 100;
+        data2.widthHint = 150;
         date.setLayoutData(data2);
         
         //update the labels

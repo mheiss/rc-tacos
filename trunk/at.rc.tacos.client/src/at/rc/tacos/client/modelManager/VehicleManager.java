@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
-import at.rc.tacos.model.TestDataSource;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
@@ -22,14 +21,6 @@ public class VehicleManager extends PropertyManager
     public VehicleManager()
     {
         objectList = new ArrayList<VehicleDetail>();
-    }
-    
-    /**
-     * Create initialisation data
-     */
-    public void init()
-    {
-        objectList = new TestDataSource().vehicleList;
     }
     
     /**
