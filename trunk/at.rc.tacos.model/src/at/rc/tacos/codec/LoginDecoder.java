@@ -4,7 +4,9 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.StaffMember;
 
 public class LoginDecoder implements MessageDecoder
 {
@@ -31,6 +33,12 @@ public class LoginDecoder implements MessageDecoder
                     login.setUsername(reader.getElementText());
                 if("password".equalsIgnoreCase(startName))
                     login.setPassword(reader.getElementText());
+                //get the patient details
+                if(StaffMember.ID.equalsIgnoreCase(startName))
+                {
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(StaffMember.ID);
+                    login.setUserInformation((StaffMember)decoder.doDecode(reader));
+                }
                 if("loggedIn".equalsIgnoreCase(startName))
                     login.setLoggedIn(Boolean.valueOf(reader.getElementText()));
                 if("webClient".equalsIgnoreCase(startName))
