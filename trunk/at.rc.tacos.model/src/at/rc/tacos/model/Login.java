@@ -5,7 +5,8 @@ import at.rc.tacos.common.AbstractMessage;
 /**
  * This message is for login purpose. A username a password an can be specified.<br>
  * In the response the server sets the <code>isLoggedIn</code> to true if the
- * login was successfully.<br>
+ * login was successfully. Additional information about the user will also be stored 
+ * within this object and send after the login back to the client.
  * In case of a failed login request the error message can be retrieved 
  * with <code>getErrorMessage</code>.<br>
  * Notice that in the response from the server the password field is not valid.
@@ -22,6 +23,9 @@ public class Login extends AbstractMessage
     private boolean loggedIn;
     private boolean webClient;
     private String errorMessage;
+    
+    //Information about the logged in user
+    private StaffMember userInformation;
     
     
     /**
@@ -84,6 +88,16 @@ public class Login extends AbstractMessage
     {
         return password;
     }
+    
+    /**
+     * Returns the additional informations stored about this 
+     * user login.
+     * @return the additional information about the login
+     */
+    public StaffMember getUserInformation()
+    {
+        return userInformation;
+    }
 
     /**
      * Returns whether the user is logged in or not.<br>
@@ -139,6 +153,19 @@ public class Login extends AbstractMessage
         if(password == null || password.trim().isEmpty())
             throw new IllegalArgumentException("The password cannot be null or empty");
         this.password = password;
+    }
+    
+    /**
+     * Sets the additional information that should be accociated with this
+     * login object and send to the client.<br>
+     * The additional information also contains the specific rights for the user.
+     * @param userInformation the information about the user
+     */
+    public void setUserInformation(StaffMember userInformation)
+    {
+        if(userInformation == null)
+            throw new IllegalArgumentException("The user information cannot be null");
+        this.userInformation = userInformation;
     }
 
     /**

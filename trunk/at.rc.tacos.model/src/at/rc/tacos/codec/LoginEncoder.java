@@ -3,7 +3,9 @@ package at.rc.tacos.codec;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.StaffMember;
 
 public class LoginEncoder implements MessageEncoder
 {
@@ -32,6 +34,14 @@ public class LoginEncoder implements MessageEncoder
         writer.writeStartElement("loggedIn");
         writer.writeCharacters(String.valueOf(login.isLoggedIn()));
         writer.writeEndElement();
+        
+        //write the staff member for this user login
+        if(login.getUserInformation() != null)
+        {
+            //get the encoder for a staff member
+            MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
+            encoder.doEncode(login.getUserInformation(), writer);
+        }
         
         //write the element
         writer.writeStartElement("webClient");
