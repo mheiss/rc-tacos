@@ -54,11 +54,13 @@ public class RosterEntryDAOMemory implements RosterDAO
     }
     
     @Override
-    public void updateRosterEntry(RosterEntry entry)
+    public boolean updateRosterEntry(RosterEntry entry)
     {
         int index = rosterList.indexOf(entry);
         rosterList.remove(index);
         rosterList.add(index,entry);
+        
+        return true;
     }
     
     @Override

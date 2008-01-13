@@ -4,7 +4,6 @@ import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.EmployeeDAO;
 import at.rc.tacos.core.db.dao.ItemDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
-import at.rc.tacos.core.db.dao.PatientDAO;
 import at.rc.tacos.core.db.dao.RosterDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
@@ -12,7 +11,6 @@ import at.rc.tacos.core.db.dao.VehicleDAO;
 import at.rc.tacos.core.db.dao.memory.ItemDAOMemory;
 import at.rc.tacos.core.db.dao.memory.MobilePhoneDAOMemory;
 import at.rc.tacos.core.db.dao.memory.NotifierDAOMemory;
-import at.rc.tacos.core.db.dao.memory.PatientDAOMemory;
 import at.rc.tacos.core.db.dao.memory.RosterEntryDAOMemory;
 import at.rc.tacos.core.db.dao.memory.StaffMemberDAOMemory;
 import at.rc.tacos.core.db.dao.memory.TransportDAOMemory;
@@ -41,12 +39,6 @@ public class DaoFactoryTest implements DaoFactory
     public CallerDAO createNotifierDAO()
     {
         return NotifierDAOMemory.getInstance();
-    }
-
-    @Override
-    public PatientDAO createPatientDAO()
-    {
-        return PatientDAOMemory.getInstance();
     }
 
     @Override
