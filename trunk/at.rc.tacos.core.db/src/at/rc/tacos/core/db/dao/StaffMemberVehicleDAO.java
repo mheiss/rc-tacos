@@ -2,7 +2,7 @@ package at.rc.tacos.core.db.dao;
 
 import java.sql.SQLException;
 
-public interface EmployeeVehicleDAO
+public interface StaffMemberVehicleDAO
 {
 	Integer addEmployeeVehicle(String vehicle_ID, int driver_ID, int medic1_ID, int medic2_ID, String note, int currentLocation) throws SQLException;
 	boolean updateEmployeeVehicle(String columnName, String newValue, String employeeVehicleID) throws SQLException;

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import at.rc.tacos.model.StaffMember;
 
-public interface EmployeeDAO 
+public interface StaffMemberDAO 
 {
 	public List<StaffMember> getAllStaffMembers() throws SQLException;
 	public List<StaffMember> getStaffMembersFromLocation(String locationname) throws SQLException;
