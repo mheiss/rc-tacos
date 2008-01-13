@@ -22,7 +22,14 @@ public class MobilePhoneDAOMemory implements MobilePhoneDAO
      */
     private MobilePhoneDAOMemory()
     {
-        phoneList = new ArrayList<MobilePhoneDetail>();;
+        phoneList = new ArrayList<MobilePhoneDetail>();
+        //provide some test data
+        MobilePhoneDetail p1 = new MobilePhoneDetail("P1","0699-123456789");
+        MobilePhoneDetail p2 = new MobilePhoneDetail("P2","0664-123456789");
+        MobilePhoneDetail p3 = new MobilePhoneDetail("P3","0676-123456789");
+        phoneList.add(p1);
+        phoneList.add(p2);
+        phoneList.add(p3);
     }
     
     /**

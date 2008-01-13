@@ -3,14 +3,14 @@ package at.rc.tacos.core.db.dao.memory;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import at.rc.tacos.core.db.dao.EmployeeDAO;
+import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.model.StaffMember;
 
 /**
  * Data source for staff members
  * @author Michael
  */
-public class StaffMemberDAOMemory implements EmployeeDAO
+public class StaffMemberDAOMemory implements StaffMemberDAO
 {
     //the shared instance
     private static StaffMemberDAOMemory instance;

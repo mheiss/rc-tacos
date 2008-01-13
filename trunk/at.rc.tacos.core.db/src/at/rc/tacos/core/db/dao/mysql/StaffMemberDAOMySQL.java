@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.dao.EmployeeDAO;
+import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.model.*;
 
-public class StaffMemberDAOMySQL implements EmployeeDAO
+public class StaffMemberDAOMySQL implements StaffMemberDAO
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
 	
