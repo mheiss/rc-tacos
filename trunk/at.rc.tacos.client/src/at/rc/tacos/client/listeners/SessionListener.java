@@ -16,12 +16,12 @@ public class SessionListener extends ClientListenerAdapter
         //check the login
         if (login.isLoggedIn())
         {
-        	SessionManager.getInstance().fireLoginSuccessfully(login.getUsername());
+        	SessionManager.getInstance().fireLoginSuccessfully(login);
         	System.out.println("Successfully authenticated "+login.getUsername());
         }
         else
         {
-        	SessionManager.getInstance().fireLoginDenied(login.getUsername(),login.getErrorMessage());
+        	SessionManager.getInstance().fireLoginDenied(login);
         	System.out.println("Failed to authenticate "+login.getUsername() +" Cause: "+login.getErrorMessage());
         }
     }
