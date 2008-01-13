@@ -1,8 +1,9 @@
 package at.rc.tacos.core.db.dao.memory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
+import at.rc.tacos.model.Login;
 
 /**
  * Data source for login/logout
@@ -14,14 +15,14 @@ public class UserDAOMemory implements UserLoginDAO
     private static UserDAOMemory instance;
     
     //the data list
-    private Map<String, String> userList;
+    private List<Login> userList;
     
     /**
      * Default class constructor
      */
     private UserDAOMemory()
     {
-        userList = new HashMap<String, String>();
+        userList = new ArrayList<Login>();
     }
     
     /**
@@ -40,34 +41,25 @@ public class UserDAOMemory implements UserLoginDAO
      */
     public void reset()
     {
-        userList = new HashMap<String, String>();
+        userList.clear();
     }
     
     /**
      * Checks the given username and password.
      * @param username the username to check
      * @param password the password to check
-     * @return true if the username and password matches
+     * @return the id of the logged in user or -1 if the login failed
      */
     @Override
     public boolean checkLogin(String username,String password)
     {
-        //get the password for this username
-        String pwd = userList.get(username);
-        //check it
-        if(password.equals(pwd))
-            return true;
+        //loop over all user logins
+        for(Login login:userList)
+        {
+            if(username.equals(login.getUsername()) && password.equals(login.getPassword()))
+                return true;
+        }
+        //no valid login
         return false;
-    }
-
-    /**
-     * Adds a new login to the login list
-     * @param username the username to add
-     * @param password the password to authenticate the user
-     */
-    @Override
-    public void addUserLogin(String username, String password)
-    {
-        userList.put(username,password);
     }
 }

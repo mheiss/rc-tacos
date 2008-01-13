@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.memory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.CallerDAO;
@@ -50,33 +51,39 @@ public class NotifierDAOMemory implements CallerDAO
         notifierList.add(notifierDetail);
         return notifierList.size();
     }
-    
-    @Override
-    public void updateCaller(CallerDetail notifierDetail)
-    {
-        int index = notifierList.indexOf(notifierDetail);
-        notifierList.remove(index);
-        notifierList.add(index, notifierDetail);        
-    }
-    
-    @Override
-    public void removeCaller(CallerDetail notifierDetail)
-    {
-        notifierList.remove(notifierDetail);
-    }
-
-    @Override
-    public CallerDetail getCallerByID(String callerID)
-    {
-        for(CallerDetail detail:notifierList)
-            if(detail.getCallerName().equalsIgnoreCase(callerID))
-                return detail;
-        return null;
-    }
 
     @Override
     public List<CallerDetail> listCallers()
     {
         return notifierList;
+    }
+
+    @Override
+    public CallerDetail getCallerByID(int callerID) throws SQLException
+    {
+        return notifierList.get(callerID);
+    }
+
+    @Override
+    public int getCallerId(CallerDetail notifierDetail) throws SQLException
+    {
+       return notifierList.indexOf(notifierDetail);
+    }
+
+    @Override
+    public boolean removeCaller(int id) throws SQLException
+    {
+        if(notifierList.remove(id) != null)
+                return true;
+        return false;
+    }
+
+    @Override
+    public boolean updateCaller(CallerDetail notifierDetail, int id)  throws SQLException
+    {
+        int index = notifierList.indexOf(notifierDetail);
+        notifierList.remove(index);
+        notifierList.add(index, notifierDetail);  
+        return true;
     }
 }

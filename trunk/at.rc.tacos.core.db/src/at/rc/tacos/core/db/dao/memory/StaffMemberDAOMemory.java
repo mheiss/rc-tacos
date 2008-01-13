@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.memory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.EmployeeDAO;
@@ -45,45 +46,49 @@ public class StaffMemberDAOMemory implements EmployeeDAO
     }
 
     @Override
-    public int addEmployee(StaffMember member)
+    public Integer addStaffMember(StaffMember staffMember, String pwdHash) throws SQLException
     {
-        staffList.add(member);
+        staffList.add(staffMember);
         return staffList.size();
     }
     
     @Override
-    public void updateEmployee(StaffMember member)
+    public boolean updateStaffMember(StaffMember staffMember) throws SQLException
     {
-        int index = staffList.indexOf(member);
+        int index = staffList.indexOf(staffMember);
         staffList.remove(index);
-        staffList.add(index,member);
+        staffList.add(index,staffMember);
+        
+        return true;
     }
 
     @Override
-    public void deleteEmployee(StaffMember member)
+    public boolean deleteStaffMember(StaffMember member) throws SQLException
     {
-        staffList.remove(member);
+        // TODO Auto-generated method stub
+        return false;
     }
 
     @Override
-    public StaffMember getEmployeeById(int employeeID)
-    {
-        for(StaffMember member:staffList)
-        {
-            if(member.getPersonId() == employeeID)
-                return member;
-        }
-        return null;
-    }
-
-    @Override
-    public List<StaffMember> listEmployees()
+    public List<StaffMember> getAllStaffMembers() throws SQLException
     {
         return staffList;
     }
 
     @Override
-    public List<StaffMember> listEmployeesFromLocation(String locationname)
+    public StaffMember getStaffMemberByID(int id) throws SQLException
+    {
+        return staffList.get(id);
+    }
+
+    @Override
+    public StaffMember getStaffMemberByUsername(String username) throws SQLException
+    {
+        return staffList.get(0);
+    }
+
+    @Override
+    public List<StaffMember> getStaffMembersFromLocation(String locationname) throws SQLException
     {
         return staffList;
     }
