@@ -45,7 +45,7 @@ public class TransportEncoderTest
     @Test
     public void testTransportEncode1() throws XMLStreamException
     {
-        Transport transport = new TestDataSource().transportList.get(0);
+        Transport transport = TestDataSource.getInstance().transportList.get(0);
         transport.getVehicleDetail().getDriverName();
         encoder.doEncode(transport, writer);
     }
@@ -53,14 +53,14 @@ public class TransportEncoderTest
     @Test
     public void testTransportEncode2() throws XMLStreamException
     {
-        Transport transport = new TestDataSource().transportList.get(1);
+        Transport transport = TestDataSource.getInstance().transportList.get(1);
         encoder.doEncode(transport, writer);
     }
     
     @Test
     public void testTransportEncode3() throws XMLStreamException
     {
-        Transport transport = new TestDataSource().transportList.get(2);
+        Transport transport = TestDataSource.getInstance().transportList.get(2);
         encoder.doEncode(transport, writer);
     }
     

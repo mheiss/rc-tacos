@@ -18,8 +18,10 @@ import at.rc.tacos.common.ITransportStatus;
  */
 public class TestDataSource
 {
+    //the instance
+    public static TestDataSource instance;
+    
     //the test data
-    public ArrayList<Item> itemList;
     public ArrayList<MobilePhoneDetail> phoneList;
     public ArrayList<CallerDetail> notifierList;
     public ArrayList<Patient> patientList;
@@ -32,10 +34,9 @@ public class TestDataSource
     /**
      * Default class constructor
      */
-    public TestDataSource()
+    private TestDataSource()
     {
         initLogins();
-        initItems();
         initPhones();
         initNotifiers();
         initPatients();
@@ -45,17 +46,17 @@ public class TestDataSource
         initTransports(); 
     }
     
-    //LOAD THE DUMMY DATA
-    private void initItems()
+    /**
+     * Returns the shared instance
+     * @return the instance
+     */
+    public static TestDataSource getInstance()
     {
-        itemList = new ArrayList<Item>();
-        Item i1 = new Item("Item1");
-        Item i2 = new Item("Item2");
-        Item i3 = new Item("Item3");
-        itemList.add(i1);
-        itemList.add(i2);
-        itemList.add(i3);
+        if(instance == null)
+            instance = new TestDataSource();
+        return instance;
     }
+    
     
     private void initPhones()
     {
