@@ -4,9 +4,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.CallerDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.QueryFilter;
-import at.rc.tacos.server.dao.DaoService;
 
 /**
  * This class will be notified uppon NotifyDetail changes
@@ -14,7 +14,7 @@ import at.rc.tacos.server.dao.DaoService;
  */
 public class NotifyDetailListener extends ServerListenerAdapter
 {
-    private CallerDAO callerDao = DaoService.getInstance().getFactory().createNotifierDAO();
+    private CallerDAO callerDao = DaoFactory.TEST.createNotifierDAO();
     
     /**
      * Add a notifier detail
