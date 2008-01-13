@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
@@ -23,8 +24,17 @@ public class StaffMemberListener extends ServerListenerAdapter
     public AbstractMessage handleAddRequest(AbstractMessage addObject)
     {
         StaffMember member = (StaffMember)addObject;
-        int id = staffDao.addEmployee(member);
-        member.setPersonId(id);
+        int id;
+        try
+        {
+            id = staffDao.addStaffMember(member,"");
+            member.setPersonId(id);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return member;
     }
 
@@ -38,14 +48,30 @@ public class StaffMemberListener extends ServerListenerAdapter
         //if there is no filter -> request all
         if(queryFilter == null || queryFilter.getFilterList().isEmpty())
         {
-            list.addAll(staffDao.listEmployees());
+            try
+            {
+                list.addAll(staffDao.getAllStaffMembers());
+            }
+            catch (SQLException e)
+            {
+                // TODO Auto-generated catch block
+                e.getMessage();
+            }
         }
         else if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER))
         {
             //get the query filter
             final String filter = queryFilter.getFilterValue(IFilterTypes.ID_FILTER);
             int id = Integer.parseInt(filter);
-            list.add(staffDao.getEmployeeById(id));
+            try
+            {
+                list.add(staffDao.getStaffMemberByID(id));
+            }
+            catch (SQLException e)
+            {
+                // TODO Auto-generated catch block
+                e.getMessage();
+            }
         }
         return list;
     }
@@ -57,7 +83,15 @@ public class StaffMemberListener extends ServerListenerAdapter
     public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
     {
         StaffMember member = (StaffMember)removeObject;
-        staffDao.deleteEmployee(member);
+        try
+        {
+            staffDao.deleteStaffMember(member);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return member;
     }
 
@@ -68,7 +102,15 @@ public class StaffMemberListener extends ServerListenerAdapter
     public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
     {
         StaffMember member = (StaffMember)updateObject;
-        staffDao.updateEmployee(member);
+        try
+        {
+            staffDao.updateStaffMember(member);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.getMessage();
+        }
         return member;
     }
 }
