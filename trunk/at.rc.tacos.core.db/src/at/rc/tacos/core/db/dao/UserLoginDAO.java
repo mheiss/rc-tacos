@@ -1,7 +1,8 @@
 package at.rc.tacos.core.db.dao;
 
+import java.sql.SQLException;
+
 public interface UserLoginDAO 
 {
-    public void addUserLogin(String username,String password);
-    public boolean checkLogin(String username,String password);
+    public boolean checkLogin(String username,String pwdHash) throws SQLException;
 }
