@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -80,7 +81,7 @@ public class RosterDAOMySQL implements RosterDAO
     }
     
     @Override
-    public void updateRosterEntry(RosterEntry entry)
+    public boolean updateRosterEntry(RosterEntry entry)
     {
     	try
 		{
@@ -102,7 +103,9 @@ public class RosterDAOMySQL implements RosterDAO
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
+		return true;
     }
 
     @Override
@@ -183,7 +186,7 @@ public class RosterDAOMySQL implements RosterDAO
     @Override
     public List<RosterEntry> listRosterEntryByEmployee(int employeeID)
     {
-    	List<RosterEntry> entrylist=null;
+    	List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
     	try
     	{
     		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.RosterBystaffmemberID"));
@@ -247,7 +250,7 @@ public class RosterDAOMySQL implements RosterDAO
     @Override
     public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime)
     {
-    	List<RosterEntry> entrylist=null;
+    	List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
     	try
     	{
     		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.RosterByTime"));
@@ -312,7 +315,7 @@ public class RosterDAOMySQL implements RosterDAO
     @Override
     public List<RosterEntry> listRosterEntrys()
     {
-    	List<RosterEntry> entrylist=null;
+    	List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
     	try
     	{
     		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.RosterEntry"));
