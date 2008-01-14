@@ -5,12 +5,9 @@ import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
-import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Patient;
-import at.rc.tacos.model.StatusMessages;
-import at.rc.tacos.model.Transport;
-import at.rc.tacos.model.VehicleDetail;
+
 
 public class DialysisEncoder  implements MessageEncoder
 {
