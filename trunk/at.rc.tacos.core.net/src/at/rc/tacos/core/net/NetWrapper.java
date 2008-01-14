@@ -151,6 +151,9 @@ public class NetWrapper extends Plugin implements INetListener
 		protFactory.registerEncoder(Logout.ID, new LogoutEncoder());
 		protFactory.registerDecoder(SystemMessage.ID, new SystemMessageDecoder());
 		protFactory.registerEncoder(SystemMessage.ID, new SystemMessageEncoder());
+//		protFactory.registerDecoder(DialysisPatient.ID, new DialysisDecoder());
+//		protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
+
 	}
 
 	// METHODS TO SEND MESSAGES
