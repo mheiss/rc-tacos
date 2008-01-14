@@ -25,6 +25,13 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeStartElement("transportId");
         writer.writeCharacters(String.valueOf(transport.getTransportId()));
         writer.writeEndElement();
+        //the transport number
+        if (transport.getTransportNumber()!= null)
+        {
+        	writer.writeStartElement("transportNumber");
+            writer.writeCharacters(transport.getTransportNumber());
+            writer.writeEndElement();
+        }
         //the start point of the transport: street
         writer.writeStartElement("fromStreet");
         writer.writeCharacters(transport.getFromStreet());
