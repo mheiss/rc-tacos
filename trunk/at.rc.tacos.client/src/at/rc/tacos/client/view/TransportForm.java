@@ -1793,7 +1793,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	
                 	//TODO setRealStation, Transportnumber, VehicleDetail wann?
                 	
-                	transport.resetAllStati();//set all transport stati to "0"
+//                	transport.resetAllStati();//set all transport stati to "0"
                 	
 //                	VehicleDetail vehicleDetail = new VehicleDetail();
 //                	StaffMember smD = new StaffMember();
