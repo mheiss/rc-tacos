@@ -450,8 +450,6 @@ public class DialysisForm implements IKindOfTransport
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
 //		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("icon.stop"));
 		abbrechenButton.setText("Abbrechen");
-		abbrechenButton.addListener(SWT.Selection, exitListener);
-		
 		//listener
 		exitListener = new Listener() {
 			public void handleEvent(Event e) 
@@ -466,6 +464,9 @@ public class DialysisForm implements IKindOfTransport
 				shell.dispose();
 			}
 		};
+		
+		abbrechenButton.addListener(SWT.Selection, exitListener);
+		
 		
 
 		okButton = new Button(shell, SWT.NONE);
