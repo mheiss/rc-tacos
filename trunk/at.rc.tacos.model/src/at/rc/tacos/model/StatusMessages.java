@@ -10,6 +10,8 @@ import at.rc.tacos.common.ITransportStatus;
  */
 public class StatusMessages implements ITransportStatus
 {
+	 public final static String ID = "statusMessages";
+	 
 	private int status;
 	private long timestamp;
 	
