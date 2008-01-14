@@ -68,7 +68,7 @@ public class CopyTransportAction extends Action
     	t2.setReceiveTime(now);
     	t2.setToStreet(t1.getToStreet());
     	t2.setToCity(t1.getToCity());
-    	t2.resetAllStati();
+//    	t2.resetAllStati();
     	
     	NetWrapper.getDefault().sendAddMessage(Transport.ID, t2);
 	}
