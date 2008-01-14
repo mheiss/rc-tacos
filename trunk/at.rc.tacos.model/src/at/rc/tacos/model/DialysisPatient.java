@@ -148,6 +148,18 @@ public class DialysisPatient extends AbstractMessage
 	public long getPatientId() {
 		return patientId;
 	}
+	
+	/**
+     * Sets the identification string of this transport
+     * @param transportId the transportId to set
+     * @throws IllegalArgumentException if the id is negative
+     */
+    public void setPatientId(long patientId) 
+    {
+        if(patientId < 0)
+            throw new IllegalArgumentException("The id cannot be negative");
+        this.patientId = patientId;
+    }
 
 
 	/**
