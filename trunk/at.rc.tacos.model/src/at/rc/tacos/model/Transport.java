@@ -597,7 +597,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      */
     public void setDirection(int direction) 
     {
-        if(direction < 1 || direction > 5)
+        if(direction < 0 || direction > 5)
             throw new IllegalArgumentException("Invalid value for direction. Vaild values: 1,2,3,4,5");
         this.direction = direction;
     }
