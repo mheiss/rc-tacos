@@ -57,7 +57,9 @@ public class TransportDecoder implements MessageDecoder
                 
                 //get the type of the element and set the corresponding value
                 if("transportId".equalsIgnoreCase(startName))
-                    transport.setTransportId(Long.valueOf(reader.getElementText()));   
+                    transport.setTransportId(Long.valueOf(reader.getElementText())); 
+                if("transportNumber".equalsIgnoreCase(startName))
+                    transport.setTransportNumber(reader.getElementText());  
                 if("fromStreet".equalsIgnoreCase(startName))
                     transport.setFromStreet(reader.getElementText());
                 if("fromCity".equalsIgnoreCase(startName))
