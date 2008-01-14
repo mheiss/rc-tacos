@@ -164,6 +164,13 @@ public class DialysisForm implements IKindOfTransport
         
         this.comboZustOrtsstelle.setText(dia.getStation());//mandatory!! default: Bezirk
         
+        this.montagButton.setSelection(dia.isMonday());
+        this.dienstagButton.setSelection(dia.isTuesday());
+        this.mittwochButton.setSelection(dia.isWednesday());
+        this.donnerstagButton.setSelection(dia.isThursday());
+        this.freitagButton.setSelection(dia.isFriday());
+        this.samstagButton.setSelection(dia.isSaturday());
+        this.sonntagButton.setSelection(dia.isSunday());
         
 
         //kind of transport
@@ -637,6 +644,15 @@ public class DialysisForm implements IKindOfTransport
 					dia.setToCity(toCommunity);
 					dia.setToStreet(toStreet);
 					
+					dia.setMonday(montag);
+					dia.setTuesday(dienstag);
+					dia.setWednesday(mittwoch);
+					dia.setThursday(donnerstag);
+					dia.setFriday(freitag);
+					dia.setSaturday(samstag);
+					dia.setSunday(sonntag);
+					
+					
 					CreateDialysisTransportAction newAction = new CreateDialysisTransportAction(dia);
 					newAction.run();
 					
@@ -662,6 +678,14 @@ public class DialysisForm implements IKindOfTransport
 					dia.setStationary(stationary);
 					dia.setToCity(toCommunity);
 					dia.setToStreet(toStreet);
+					
+					dia.setMonday(montag);
+					dia.setTuesday(dienstag);
+					dia.setWednesday(mittwoch);
+					dia.setThursday(donnerstag);
+					dia.setFriday(freitag);
+					dia.setSaturday(samstag);
+					dia.setSunday(sonntag);
 					
 					UpdateDialysisTransportAction updateAction = new UpdateDialysisTransportAction(dia);
 					updateAction.run();
