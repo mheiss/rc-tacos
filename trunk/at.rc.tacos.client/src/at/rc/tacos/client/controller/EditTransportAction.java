@@ -19,7 +19,7 @@ public class EditTransportAction extends Action
 	private String editingType;
 	
 	/**
-	 * Default class construtor.
+	 * Default class constructor.
 	 * @param viewer the table viewer
 	 */
 	public EditTransportAction(TableViewer viewer, String editingType)
