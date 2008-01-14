@@ -2,6 +2,10 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -25,7 +29,10 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
+
+import at.rc.tacos.client.controller.AssignCarAction;
 import at.rc.tacos.client.controller.CancelTransportAction;
+import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.ForwardTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -36,6 +43,7 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 
 public class OutstandingTransportsView extends ViewPart implements PropertyChangeListener
 {
@@ -48,17 +56,17 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	private TableViewer viewerOffTrans;
 	private OutstandingTransportsTooltip tooltip;
 	
+//	private VehicleDetail vehicle;
+	
 	//the actions for the context menu
-	//TODO - get working ;-)
-//	private ChangeResponsibleStationAction changeResponsibleStationAction;
-//	private AssignCarAction assignCarAction;
-//	private CopyTransportAction copyTransportAction;
+	private AssignCarAction assignCarAction;
+	private CopyTransportAction copyTransportAction;
 	private ForwardTransportAction forwardTransportAction;
 	private CancelTransportAction cancelTransportAction;
 	private EditTransportAction editTransportAction;
 	
 	
-	
+	ArrayList<AssignCarAction> actionList = new ArrayList<AssignCarAction>();
 	
 	
 	
@@ -283,6 +291,20 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		forwardTransportAction = new ForwardTransportAction(this.viewerOffTrans);
 		editTransportAction = new EditTransportAction(this.viewerOffTrans, "outstanding");
 		cancelTransportAction = new CancelTransportAction(this.viewerOffTrans);
+		copyTransportAction = new CopyTransportAction(this.viewerOffTrans);
+		//TODO
+//		ArrayList<VehicleDetail> readyVehicles = (ArrayList<VehicleDetail>) ModelFactory.getInstance().getVehicleManager().getReadyVehicleList();
+		
+		VehicleDetail v1 = new VehicleDetail("Bm03","RTW","Bruck an der Mur");
+		VehicleDetail v2 = new VehicleDetail("Bm04","RTW","Bruck an der Mur");
+		
+		List<VehicleDetail> newList = Arrays.asList(v1,v2);
+		ArrayList<VehicleDetail> readyVehicles = new ArrayList<VehicleDetail>(newList);
+		for (VehicleDetail veh : readyVehicles)
+		{
+			AssignCarAction action = new AssignCarAction(this.viewerOffTrans, veh);
+			actionList.add(action);
+		}
 		
 	}
 	
@@ -318,11 +340,18 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 			return;
 		
 		//add the actions
-		manager.add(forwardTransportAction);
-		manager.add(editTransportAction);
-		manager.add(new Separator());
-		manager.add(cancelTransportAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		for(AssignCarAction ac : actionList)
+		{
+			manager.add(ac);
+		}
+		manager.add(new Separator());
+		manager.add(editTransportAction);
+		manager.add(cancelTransportAction);
+		manager.add(new Separator());
+		manager.add(forwardTransportAction);
+		manager.add(copyTransportAction);
+		
 	}
 	/**
 	 * Passing the focus request to the viewer's control.
