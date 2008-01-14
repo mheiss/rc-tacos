@@ -20,7 +20,7 @@ public class CancelTransportAction extends Action implements ITransportStatus
 	private TableViewer viewer;
 	
 	/**
-	 * Default class construtor.
+	 * Default class constructor.
 	 * @param viewer the table viewer
 	 */
 	public CancelTransportAction(TableViewer viewer)
@@ -39,6 +39,7 @@ public class CancelTransportAction extends Action implements ITransportStatus
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		
 		transport.setTransportNumber("STORNO");
+		System.out.println("CancelTransportAction, Transportnummer: " +transport.getTransportNumber());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
