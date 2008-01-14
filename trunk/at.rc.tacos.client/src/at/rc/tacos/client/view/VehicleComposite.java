@@ -1,5 +1,8 @@
 package at.rc.tacos.client.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.action.IMenuListener;
@@ -16,6 +19,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import at.rc.tacos.client.controller.VehicleEditAction;
+import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -23,7 +28,7 @@ import at.rc.tacos.model.VehicleDetail;
  * Creates CarComposite for the class VehiclesView, called from the CarCompositeManager
  * @author b.thek
  */
-public class VehicleComposite extends Composite
+public class VehicleComposite extends Composite implements PropertyChangeListener
 {
 	//the parent composite
 	private VehicleDetail vehicle;
@@ -65,7 +70,19 @@ public class VehicleComposite extends Composite
 		//context menue
     	makeActions();
     	hookContextMenu();
+    	
+    	ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 	}
+	
+	/**
+	 * Cleanup
+	 */
+	@Override
+	public void dispose()
+	{
+		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
+	}
+	
 
 	/**
 	 * Creates and initializes the components
@@ -235,5 +252,24 @@ public class VehicleComposite extends Composite
 		bindingContext.bindValue(
 				new MyImageLabelObserver(statusLabel), 
 				BeansObservables.observeValue(vehicle, "transportStatusImage"), null, null);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) 
+	{
+		if("VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			if(vehicle.isOutOfOrder())
+			{
+				System.out.println("update");
+				setBackground(CustomColors.GREY_COLOR);
+			}
+		}
+		
+		update();
+		redraw();
+		getDisplay().update();
+		layout(true);
+
 	}
 }

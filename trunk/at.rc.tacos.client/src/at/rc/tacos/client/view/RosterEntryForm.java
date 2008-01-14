@@ -137,17 +137,21 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
                 cal.setTimeInMillis(rosterEntry.getRealStartOfWork());
                 anmeldung.setDate(cal);
             }
+           
             //check out
             if(rosterEntry.getRealEndOfWork() != 0)
             {
+            	cal = Calendar.getInstance();
                 cal.setTimeInMillis(rosterEntry.getRealEndOfWork());
                 abmeldung.setDate(cal);
-            }
+            }          
             //planned start of work
+            cal = Calendar.getInstance();
             cal.setTimeInMillis(rosterEntry.getPlannedStartOfWork());
             dienstVon.setDate(cal);
 
             //planned end of work
+            cal = Calendar.getInstance();
             cal.setTimeInMillis(rosterEntry.getPlannedEndOfWork());
             dienstBis.setDate(cal);
 
