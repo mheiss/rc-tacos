@@ -14,7 +14,7 @@ import at.rc.tacos.common.AbstractMessage;
 public class DialysisPatient extends AbstractMessage
 {
     //unique identification string
-    public final static String ID = "patient";
+    public final static String ID = "dialysisPatient";
 
     private long patientId;
     private Patient patient;
