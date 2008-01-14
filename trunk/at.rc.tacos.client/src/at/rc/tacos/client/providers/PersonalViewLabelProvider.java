@@ -61,12 +61,17 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         //show a symbol if the planned time is not handled
         case COLUMN_CHECK_IN: 
             //user is not cheked in but he should
-            if(entry.getRealStartOfWork() == 0 && entry.getPlannedStartOfWork() > new Date().getTime())
-                return ImageFactory.getInstance().getRegisteredImage("image.personal.alert");
+            if(entry.getRealStartOfWork() != 0)
+            	return null;       
+            if (entry.getPlannedStartOfWork() < new Date().getTime())
+            	return ImageFactory.getInstance().getRegisteredImage("image.personal.alert");
+            else
             return null;
         case COLUMN_CHECK_OUT: 
             //user is not cheked out but he should
-            if(entry.getPlannedEndOfWork() == 0 && entry.getPlannedEndOfWork() < new Date().getTime())
+            if(entry.getRealEndOfWork() != 0)
+            	return null;
+            if(entry.getPlannedEndOfWork() < new Date().getTime())
                 return ImageFactory.getInstance().getRegisteredImage("image.personal.alert");
             return null;
         default: return null;

@@ -68,7 +68,7 @@ public class ModelFactory
      */
     public void queryInitData()
     {
-        //get the client connectio
+        //get the client connection
         Job job = new Job("Request data listing") 
         {
             protected IStatus run(IProgressMonitor monitor) 

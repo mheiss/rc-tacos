@@ -94,6 +94,7 @@ public class VehicleManager extends PropertyManager
             	//replace by the new
             	objectList.set(index, vehicle);
             	//we do not fire change event here, the values are updated by the data binding
+            	firePropertyChange("VEHICLE_UPDATE",null,update);
             }
         });
     }
@@ -133,7 +134,8 @@ public class VehicleManager extends PropertyManager
     
     /**
      * Returns a list of all vehicles which have NOT the status <code>VehicleDetail.outOfOrder</code><br>
-     * In fact this will return a list of all vehicles whicht can be used.
+     * and the status the status <code>VehicleDetail.readyForAction.</code>
+     * In fact this will return a list of all vehicles which can be used.
      * @return list of vehicles ready for action
      */
     public List<VehicleDetail> getReadyVehicleList()
@@ -142,10 +144,9 @@ public class VehicleManager extends PropertyManager
         //loop over all vehicles
         for(VehicleDetail detail:objectList)
         {
-            if(!detail.isOutOfOrder())
+            if(!detail.isOutOfOrder() && detail.isReadyForAction())
                 filteredList.add(detail);
         }
         return filteredList;
     }
-    
 }
