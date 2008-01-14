@@ -131,22 +131,22 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         statusMessages.add(new StatusMessages(statusId,timestamp));
     }
     
-    /**
-     * set all stati to "0"
-     */
-    public void resetAllStati()
-    {
-    	statusMessages.add(new StatusMessages(0,0));
-    	statusMessages.add(new StatusMessages(1,0));
-    	statusMessages.add(new StatusMessages(2,0));
-    	statusMessages.add(new StatusMessages(3,0));
-    	statusMessages.add(new StatusMessages(4,0));
-    	statusMessages.add(new StatusMessages(5,0));
-    	statusMessages.add(new StatusMessages(6,0));
-    	statusMessages.add(new StatusMessages(7,0));
-    	statusMessages.add(new StatusMessages(8,0));
-    	statusMessages.add(new StatusMessages(9,0));
-    }
+//    /**
+//     * set all stati to "0"
+//     */
+//    public void resetAllStati()
+//    {
+//    	statusMessages.add(new StatusMessages(0,0));
+//    	statusMessages.add(new StatusMessages(1,0));
+//    	statusMessages.add(new StatusMessages(2,0));
+//    	statusMessages.add(new StatusMessages(3,0));
+//    	statusMessages.add(new StatusMessages(4,0));
+//    	statusMessages.add(new StatusMessages(5,0));
+//    	statusMessages.add(new StatusMessages(6,0));
+//    	statusMessages.add(new StatusMessages(7,0));
+//    	statusMessages.add(new StatusMessages(8,0));
+//    	statusMessages.add(new StatusMessages(9,0));
+//    }
     
 
     /**
