@@ -1,5 +1,7 @@
 package at.rc.tacos.client.controller;
 
+import java.util.GregorianCalendar;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -19,7 +21,7 @@ public class ForwardTransportAction extends Action implements ITransportStatus
 	private TableViewer viewer;
 	
 	/**
-	 * Default class construtor.
+	 * Default class constructor.
 	 * @param viewer the table viewer
 	 */
 	public ForwardTransportAction(TableViewer viewer)
@@ -37,6 +39,10 @@ public class ForwardTransportAction extends Action implements ITransportStatus
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		transport.setTransportNumber("WLTG");//'Weiterleitung'
+		System.out.println("ForwardTransportAction - Transportnummer.......:" +transport.getTransportNumber());
+		GregorianCalendar gcal = new GregorianCalendar();
+		long now = gcal.getTimeInMillis();
+		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE, now);//to mark the transport- should be shown on journal view
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
