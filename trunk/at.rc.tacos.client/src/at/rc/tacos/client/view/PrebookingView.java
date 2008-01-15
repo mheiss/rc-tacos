@@ -30,6 +30,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.CancelTransportAction;
+import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 
@@ -66,26 +67,32 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 	private EditTransportAction editTransportActionKapfenberg;
 	private CancelTransportAction cancelTransportActionKapfenberg;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionKapfenberg;
+	private CopyTransportAction copyTransportActionKapfenberg;
 	
 	private EditTransportAction editTransportActionBruck;
 	private CancelTransportAction cancelTransportActionBruck;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionBruck;
+	private CopyTransportAction copyTransportActionBruck;
 	
 	private EditTransportAction editTransportActionWien;
 	private CancelTransportAction cancelTransportActionWien;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionWien;
+	private CopyTransportAction copyTransportActionWien;
 	
 	private EditTransportAction editTransportActionLeoben;
 	private CancelTransportAction cancelTransportActionLeoben;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionLeoben;
+	private CopyTransportAction copyTransportActionLeoben;
 	
 	private EditTransportAction editTransportActionGraz;
 	private CancelTransportAction cancelTransportActionGraz;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionGraz;
+	private CopyTransportAction copyTransportActionGraz;
 	
 	private EditTransportAction editTransportActionMariazell;
 	private CancelTransportAction cancelTransportActionMariazell;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionMariazell;
+	private CopyTransportAction copyTransportActionMariazell;
 	
 
 	/**
@@ -1006,6 +1013,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		editTransportActionBruck = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionBruck = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionBruck = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		copyTransportActionBruck = new CopyTransportAction(viewer);
 	}
 	private void makeActionsKapfenberg(TableViewer viewer)
 	{		
@@ -1013,6 +1021,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		editTransportActionKapfenberg = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionKapfenberg = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionKapfenberg = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		copyTransportActionKapfenberg = new CopyTransportAction(viewer);
 	}
 	private void makeActionsLeoben(TableViewer viewer)
 	{		
@@ -1020,6 +1029,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		editTransportActionLeoben = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionLeoben = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionLeoben = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		copyTransportActionLeoben = new CopyTransportAction(viewer);
 	}
 	private void makeActionsMariazell(TableViewer viewer)
 	{		
@@ -1027,6 +1037,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		editTransportActionMariazell = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionMariazell = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionMariazell = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		copyTransportActionMariazell = new CopyTransportAction(viewer);
 	}
 	private void makeActionsGraz(TableViewer viewer)
 	{		
@@ -1034,6 +1045,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		editTransportActionGraz = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionGraz = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionGraz = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		copyTransportActionGraz = new CopyTransportAction(viewer);
 	}
 	private void makeActionsWien(TableViewer viewer)
 	{		
@@ -1041,6 +1053,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		editTransportActionWien = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionWien = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionWien = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		copyTransportActionWien = new CopyTransportAction(viewer);
 	}
 	
 	/**
@@ -1151,6 +1164,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		manager.add(moveToOutstandingTransportsActionBruck);
 		manager.add(cancelTransportActionBruck);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionBruck);
 	}
 	private void fillContextMenuKapfenberg(IMenuManager manager, TableViewer viewer)
 	{
@@ -1169,6 +1183,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		manager.add(moveToOutstandingTransportsActionKapfenberg);
 		manager.add(cancelTransportActionKapfenberg);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionKapfenberg);
 	}
 	private void fillContextMenuLeoben(IMenuManager manager, TableViewer viewer)
 	{
@@ -1187,6 +1202,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		manager.add(moveToOutstandingTransportsActionLeoben);
 		manager.add(cancelTransportActionLeoben);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionLeoben);
 	}
 	private void fillContextMenuMariazell(IMenuManager manager, TableViewer viewer)
 	{
@@ -1205,6 +1221,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		manager.add(moveToOutstandingTransportsActionMariazell);
 		manager.add(cancelTransportActionMariazell);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionMariazell);
 	}
 	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer)
 	{
@@ -1223,6 +1240,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		manager.add(moveToOutstandingTransportsActionGraz);
 		manager.add(cancelTransportActionGraz);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionGraz);
 	}
 	private void fillContextMenuWien(IMenuManager manager, TableViewer viewer)
 	{
@@ -1241,6 +1259,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		manager.add(moveToOutstandingTransportsActionWien);
 		manager.add(cancelTransportActionWien);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionWien);
 	}
 	
 	/**
