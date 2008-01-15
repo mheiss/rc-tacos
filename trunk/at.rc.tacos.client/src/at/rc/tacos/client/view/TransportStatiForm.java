@@ -58,6 +58,14 @@ public class TransportStatiForm implements ITransportStatus
 //		}
 //	}
 	
+	/**
+     * Open the window
+     */
+    public void open() 
+    {
+        shell.open();
+    }
+	
 	public TransportStatiForm(Transport transport)
 	{
 		this.createContents();
