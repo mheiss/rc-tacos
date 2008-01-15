@@ -38,6 +38,6 @@ public class EditTransportStatusAction extends Action
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//open the editor
 		TransportStatiForm form = new TransportStatiForm(transport);
-//		form.open();
+		form.open();
 	}
 }
