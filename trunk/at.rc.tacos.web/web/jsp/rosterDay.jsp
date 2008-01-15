@@ -68,7 +68,8 @@
 					<!-- #### CONTENT -->
 
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
-
+ 
+                    
 					<table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
@@ -88,19 +89,7 @@
 										  %>
 										
 										</tr>
-										<tr><td>
 										
-										<% 
-										for(AbstractMessage message:rosterList)
-                                        {
-                                            RosterEntry entry = (RosterEntry)message;
-                                            
-                                            %>
-                                            <a href="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId()%>">Dienst l&nbsp;schen</a>
-                                            <%
-                                        }
-										%>
-										</td></tr>
 									</table>
 									</td>
 								</tr>

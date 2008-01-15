@@ -125,10 +125,11 @@ public class Timetable {
 								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
 								"px; float:left;" +
 								this.tooLong + 
-								"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span></a>" +
-								"</div>";
+								"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
+								"<a href='request.getContextPath()/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
+								"<img src='../image/loeschen.gif' id='del' /></a></div>";
 								
-								
+
 							}
 						
 						
