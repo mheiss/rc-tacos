@@ -104,18 +104,21 @@
 		this.getCell = function(tag, str, mom, yey, cssClass) {
 			var El = document.createElement( tag );
             mom+=1;
+
             if(str!="Mo" || str!="Di" || str!="Mi" || str!="do" || str!="Fr" || str!="Sa" || str!="So" ){
-            El.onclick = function() { 
-                document.form.startDay.value=str;
-			    document.form.startMonth.value=mom;
-			    document.form.startYear.value=yey;
-			    
-			    document.form.selDateView.value= str+"."+mom+"."+yey;
-			    
-			    document.form.endDay.value=str;
-			    document.form.endMonth.value=mom;
-			    document.form.endYear.value=yey;
-             };
+	        
+		            El.onclick = function() { 
+		                document.form.startDay.value=str;
+					    document.form.startMonth.value=mom;
+					    document.form.startYear.value=yey;
+					    
+					    document.form.selDateView.value= str+"."+mom+"."+yey;
+					    
+					    document.form.endDay.value=str;
+					    document.form.endMonth.value=mom;
+					    document.form.endYear.value=yey;
+		             };
+	             
             }
 			El.appendChild(document.createTextNode( str ));
 			if (cssClass != null)
