@@ -10,7 +10,6 @@ import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Transport;
 
 /**
@@ -21,6 +20,7 @@ public class CancelTransportAction extends Action implements ITransportStatus
 {
 	//properties
 	private TableViewer viewer;
+	private String transportNumberOld;
 	
 	/**
 	 * Default class constructor.
@@ -49,6 +49,7 @@ public class CancelTransportAction extends Action implements ITransportStatus
 		if (!cancelConfirmed) 
 			return;
 		//request to cancel (storno)	
+		transportNumberOld = transport.getTransportNumber(); //TODO - Transportnummernverwaltung?
 		transport.setTransportNumber("STORNO");
 		System.out.println("CancelTransportAction, Transportnummer: " +transport.getTransportNumber());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
