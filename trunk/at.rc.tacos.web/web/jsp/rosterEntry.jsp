@@ -6,6 +6,7 @@
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<StaffMember> list = (List)params.get("employeeList");
+	List<StaffMember> rosterList = (List)params.get("rosterList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 %>
 
@@ -22,25 +23,7 @@
 <script type="text/javascript" src="../js/calendar_js.js"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 
-<script type="text/javascript" >
 
-function setDataToInput(day, month, year){
-    
-    
-    document.form.startDay.value=day;
-    document.form.startMonth.value=month;
-    document.form.startYear.value=year;
-    
-    document.form.selDateView.value= day+"."+month+"."+year;
-    
-    document.form.endDay.value=day;
-    document.form.endMonth.value=month;
-    document.form.endYear.value=year;
-    
-   
-}
-
-</script>
 </head>
 <body>
 
@@ -89,6 +72,39 @@ function setDataToInput(day, month, year){
 					<%@ include file="navigation.jsp" %></td>
 					<!-- #### CONTENT -->
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
+					
+					<table id="Block" width="100%" border='0' cellpadding='0'
+                        cellspacing='0'>
+                        <tr>
+                            <td id="BlockHead" align="right" valign="center">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td id="BlockContent">
+                            <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+                                <tr>
+                                    <td width="50%"><!-- quick entry -->
+                                    <table width="100%" border='1' cellpadding='0'
+                                        cellspacing='0'>
+                                      <tr><td>  Dienstanmeldung
+                                      <%
+                                     
+                                        	
+                                        //for(AbstractMessage message:rosterList){ 
+                                        	//RosterEntry entry = (RosterEntry)message;
+                                            //entry.getPlannedStartOfWork();
+                                         //}
+                                        %>
+                                       
+                                        </td></tr>
+                                    </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    
 					<table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
 						<tr>
 							<td id="BlockHead" align="right" valign="center">&nbsp;</td>
