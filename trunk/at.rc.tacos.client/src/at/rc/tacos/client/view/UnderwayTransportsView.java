@@ -27,8 +27,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.controller.CancelTransportAction;
+import at.rc.tacos.client.controller.CopyTransportAction;
+import at.rc.tacos.client.controller.CopyTransportDetailsIntoClipboardAction;
+import at.rc.tacos.client.controller.DetachCarAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.EditTransportStatusAction;
+import at.rc.tacos.client.controller.EmptyTransportAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
@@ -63,9 +68,17 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private SetTransportStatusAction setTransportStatusS7Action;
 	private SetTransportStatusAction setTransportStatusS8Action;
 	private SetTransportStatusAction setTransportStatusS9Action;
+	
 	private EditTransportStatusAction editTransportStatusAction;
 	
+	private DetachCarAction detachCarAction;
 	private EditTransportAction editTransportAction;
+	private EmptyTransportAction emptyTransportAction;
+	private CancelTransportAction cancelTransportAction;
+	private CopyTransportAction copyTransportAction;
+	private CopyTransportDetailsIntoClipboardAction copyTransportDetailsIntoClipboardAction;
+	
+	
 
 
 
@@ -342,6 +355,12 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		editTransportStatusAction = new EditTransportStatusAction(this.viewer);
 		
 		editTransportAction = new EditTransportAction(this.viewer,"underway");
+		detachCarAction = new DetachCarAction(this.viewer);
+		emptyTransportAction = new EmptyTransportAction(this.viewer);
+		cancelTransportAction = new CancelTransportAction(this.viewer);
+		copyTransportAction = new CopyTransportAction(this.viewer);
+		copyTransportDetailsIntoClipboardAction = new CopyTransportDetailsIntoClipboardAction(this.viewer);
+		
 	}
 	
 	/**
@@ -404,6 +423,11 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(new Separator());
 		manager.add(editTransportAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(detachCarAction);
+		manager.add(emptyTransportAction);
+		manager.add(cancelTransportAction);
+		manager.add(copyTransportAction);
+		manager.add(copyTransportDetailsIntoClipboardAction);
 	}
 	
 	/**
