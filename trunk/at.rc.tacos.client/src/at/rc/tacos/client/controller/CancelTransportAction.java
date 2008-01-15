@@ -2,16 +2,19 @@ package at.rc.tacos.client.controller;
 
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Transport;
 
 /**
- * Opens the editor to edit the selected entry
+ * Opens the editor to edit the selected entry (stornieren)
  * @author b.thek
  */
 public class CancelTransportAction extends Action implements ITransportStatus
@@ -38,6 +41,14 @@ public class CancelTransportAction extends Action implements ITransportStatus
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		
+		
+		//confirm the cancel
+		boolean cancelConfirmed = MessageDialog.openQuestion(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+				"Transport stornieren", "Möchten Sie den Transport (von: " +transport.getFromStreet() +") wirklich stornieren?");
+		if (!cancelConfirmed) 
+			return;
+		//request to cancel (storno)	
 		transport.setTransportNumber("STORNO");
 		System.out.println("CancelTransportAction, Transportnummer: " +transport.getTransportNumber());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
