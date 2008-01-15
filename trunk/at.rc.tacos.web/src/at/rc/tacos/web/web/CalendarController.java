@@ -20,8 +20,6 @@ public class CalendarController implements Controller{
 			throws Exception {
 		//values that will be returned to the view
 		Map<String, Object> params = new HashMap<String, Object>();
-		//the action to do
-		String action = request.getParameter("action");
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
@@ -30,8 +28,7 @@ public class CalendarController implements Controller{
 		resultList = client.sendListingRequest(StaffMember.ID, null);
 		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
 			params.put("employeeList", resultList); 
-		
-		
+			
 		return params;
 	}
 
