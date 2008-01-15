@@ -48,8 +48,8 @@ public class AdminController implements Controller
 			String cityname = request.getParameter("cityname");
 			String station = request.getParameter("station");
 
-			StaffMemberEntry entry = new UserEntry(staffId, firstName, lastName, birthday, username, eMail, phonenumber, streetname, cityname, station);
-			client.sendAddRequest(RosterEntry.ID, entry);
+	//		StaffMemberEntry entry = new UserEntry(staffId, firstName, lastName, birthday, username, eMail, phonenumber, streetname, cityname, station);
+	//		client.sendAddRequest(RosterEntry.ID, entry);
 			
 //			MemberEntry entry = new MemberEntry(firstName,lastName,birthday,username,eMail,phonenumber,streetname,cityname,station);
 //			client.sendAddRequest(MemberEntry.ID, entry);

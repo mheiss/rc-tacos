@@ -1,6 +1,7 @@
 package at.rc.tacos.web.web;
 
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.StaffMember;
 
 /**
  * Session information
