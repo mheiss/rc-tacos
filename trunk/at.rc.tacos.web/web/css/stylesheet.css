@@ -401,9 +401,12 @@ padding:10px;}
 }
 
 #calTabMain{
-    border-width:1px;
+    border-width:0px;
     border-style:solid;
     border-color:#FFB2B1;	
+    margin-top:10px;
+    width:300px;
+    height:150px;
 }
 #calDaysSuSo{
     background-color:#F7DFE0;	
@@ -426,3 +429,4 @@ padding:10px;}
 	background-color:#FFB2B1;
 }
 #selDateView{ border-width:0px; color:black; text-align:center; vertical-align: middle; font-weight: bold; background-color: white; }
+

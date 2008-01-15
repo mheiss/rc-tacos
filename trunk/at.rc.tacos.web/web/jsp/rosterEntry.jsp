@@ -17,7 +17,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../css/stylesheet.css" rel="stylesheet" />
+<link href="../css/calendar_js.css" rel="stylesheet" />
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
+<script type="text/javascript" src="../js/calendar_js.js"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 
 <script type="text/javascript" >
