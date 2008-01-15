@@ -619,6 +619,14 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
             throw new IllegalArgumentException("The vehicle detail cannot be null");
         this.vehicleDetail = vehicleDetail;
     }
+    
+    /**
+     * clears the vehicle (detach car from the transport)
+     */
+    public void clearVehicleDetail()
+    {
+    	this.vehicleDetail = null;
+    }
 
     /**
      * @return the emergencyDoctorAlarming
