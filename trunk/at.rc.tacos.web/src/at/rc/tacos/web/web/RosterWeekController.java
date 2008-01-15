@@ -16,6 +16,7 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
 
 
 public class RosterWeekController  implements Controller
@@ -50,6 +51,13 @@ public class RosterWeekController  implements Controller
                     resultList.addAll(dayResult); 
                 //increment the day by one 
                 cal.add(Calendar.DAY_OF_MONTH, 1); 
+                for(AbstractMessage object:dayResult)   
+                {  
+                    RosterEntry entry = (RosterEntry)object;  
+                    if(entry.getStation().equals("Kapfenberg"))
+                    	// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
+                        resultList.add(entry);  
+                }
             } 
             //add the resulting list to the params 
             params.put("rosterList", resultList);   
