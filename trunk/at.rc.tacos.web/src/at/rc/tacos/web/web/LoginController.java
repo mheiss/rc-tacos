@@ -49,12 +49,12 @@ public class LoginController implements Controller
 			if(Login.ID.equalsIgnoreCase(client.getContentType()))
 			{
 				Login loginResult = (Login)result;
-				if(loginResult.isLoggedIn())
-				{
-					UserSession userSession = (UserSession)session.getAttribute("userSession");
-					userSession.setLoggedIn(true, username, client);
-					//userSession.setLoggedIn(true, loginResult.getUsername(), client);
-					response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay")); 
+				if(loginResult.isLoggedIn()) 
+				{ 
+				UserSession userSession = (UserSession)session.getAttribute("userSession"); 
+				userSession.setLoggedIn(true, username, client); 
+				userSession.setStaffMember(loginResult.getUserInformation()); 
+				response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));   
 				}
 				
 				else

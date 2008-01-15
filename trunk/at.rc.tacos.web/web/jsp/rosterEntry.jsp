@@ -56,7 +56,7 @@
 			<td id="MainBodyContent">
 			<table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName(), userSession.getStaffMember().getLastName()  %>
+					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName() %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Diensteintrag hinzuf&uuml;gen</td>
