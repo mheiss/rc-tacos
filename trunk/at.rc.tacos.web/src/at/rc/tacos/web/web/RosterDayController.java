@@ -15,6 +15,7 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
 
 public class RosterDayController  implements Controller
 {
@@ -35,6 +36,15 @@ public class RosterDayController  implements Controller
 			resultList = client.sendListingRequest(RosterEntry.ID, filter);
 			if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
 				params.put("rosterList", resultList); 
+			
+			List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
+			for(AbstractMessage object:dayResult)   
+            {  
+                RosterEntry entry = (RosterEntry)object;  
+                if(entry.getStation().equals("Kapfenberg"))
+                	// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
+                    resultList.add(entry);  
+            }
 		return params;
 	}
 }

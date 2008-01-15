@@ -12,6 +12,15 @@ public class UserSession
 	private Boolean loggedIn;
 	private String username;
 	private WebClient connection;
+	private StaffMember staffMember;
+
+	public StaffMember getStaffMember() {
+		return staffMember;
+	}
+
+	public void setStaffMember(StaffMember staffMember) {
+		this.staffMember = staffMember;
+	}
 
 	/**
 	 * Default constructor

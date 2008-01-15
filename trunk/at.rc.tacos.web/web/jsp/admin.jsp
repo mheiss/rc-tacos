@@ -57,7 +57,7 @@
 			<td id="MainBodyContent">
            <table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left"> Willkommen : <%= userSession.getUsername() %>
+					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName(), userSession.getStaffMember().getLastName()  %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Benutzer hinzuf&uuml;gen</td>
@@ -167,21 +167,14 @@
 												<tr>
 													<td>Tel. Nr.:</td>
 													<td>aaa</td>
-													<td><%=Constants.COMPETENCE_EXECUTIVE_1.replaceAll("ä","&auml;")%>:</td>
+													<td><%=Constants.COMPETENCE_EXECUTIVE_INSP%>:</td>
 													<td><input type="checkbox" name="checkbox"
 														id="checkbox" /></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_EXECUTIVE_2%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_EXECUTIVE_1%>:</td>
+													<td><%=Constants.COMPETENCE_EXECUTIVE_DF%>:</td>
 													<td><input type="checkbox" name="checkbox"
 														id="checkbox" /></td>
 												</tr>
