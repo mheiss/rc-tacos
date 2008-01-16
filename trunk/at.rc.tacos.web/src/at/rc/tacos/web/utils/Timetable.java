@@ -7,6 +7,7 @@ import java.util.List;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.web.Dispatcher;
 
 public class Timetable {
 	
@@ -19,8 +20,9 @@ public class Timetable {
 	private String timetableDateHead;
 	private String TimeList;
 	private String tooLong;
+	private String path;
 
-	public Timetable(){
+	public Timetable(String path){
 		timetable = "";
 		height = 0;
 		width = 0;
@@ -29,6 +31,7 @@ public class Timetable {
 		timetableDateHead ="";
 		TimeList="";
 		tooLong="";
+		this.path = path;
 	}
 	
 	public String TimetableInfo(List<StaffMember> rosterList){
@@ -126,7 +129,7 @@ public class Timetable {
 								"px; float:left;" +
 								this.tooLong + 
 								"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
-								"<a href='request.getContextPath()/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
+								"<a href='" + path + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
 								"<img src='../image/loeschen.gif' id='del' /></a></div>";
 								
 
@@ -188,11 +191,11 @@ public class Timetable {
      * previousely used instance.
      * @return a instance of the <code>Timetable</code> class.
      */
-	public static Timetable getInstance() //step 1 
+	public static Timetable getInstance(String path) //step 1 
     { 
         //do we have a valid instance? 
         //if(instance == null) 
-            instance = new Timetable(); 
+            instance = new Timetable(path); 
         return instance; 
     }
     

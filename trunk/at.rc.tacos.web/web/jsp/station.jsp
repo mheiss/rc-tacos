@@ -87,15 +87,10 @@
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
-										  <% 
-                                          
-                                          
-                                          
-                                          Timetable timetable = Timetable.getInstance();
-                                          out.print(timetable.calculateTimetable(rosterList, 7));
-                                          
-                                          %>
-										
+										<% 
+											  Timetable timetable = Timetable.getInstance(getServletContext().getContextPath());
+	                                          out.print(timetable.calculateTimetable(rosterList, 7));
+										  %>
 										</tr>
 									</table>
 									</td>

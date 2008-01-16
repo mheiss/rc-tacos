@@ -19,7 +19,7 @@ import at.rc.tacos.web.utils.ControllerFactory;
 public class Dispatcher extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
-	public static final String URLS_BUNDLE_PATH = "at.rc.tacos.web.web.urls";
+	public static final String URLS_BUNDLE_PATH = "at.rc.tacos.web.web.urls";	
 
 	/**
 	 * Initializes servlet context.
