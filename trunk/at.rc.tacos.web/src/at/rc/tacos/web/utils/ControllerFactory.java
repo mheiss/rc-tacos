@@ -63,6 +63,10 @@ public class ControllerFactory {
 		{
 			return new DeleteProfileController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.print")))
+		{
+			return new PrintController();
+		}
 		else
 		{
 			return null;

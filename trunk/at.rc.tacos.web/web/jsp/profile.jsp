@@ -62,7 +62,7 @@
 					&nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Benutzer hinzuf&uuml;gen</td>
+					<td width="33%" align="center">Profil editieren</td>
 					<td width="33%" align="right">Heute ist der <%=formath.format(current)%>
 					</td>
 					<td>
@@ -138,16 +138,7 @@
 													<td>E-Mail Adresse:</td>
 													<td><input type="text" name="eMail" id="textfield4" value="<%=userSession.getStaffMember().getEMail() %>" /></td>
 													<td>Prim&auml;re Ortsstelle:</td>
-													<td><select name="station" id="rosterViewDayHeadSelbox">
-														<option><%=userSession.getStaffMember().getPrimaryLocation()%></option>
-														<option><%=Constants.STATION_BEZIRK%></option>
-														<option><%=Constants.STATION_BREITENAU%></option>
-														<option><%=Constants.STATION_BRUCK%></option>
-														<option><%=Constants.STATION_KAPFENBERG%></option>
-														<option><%=Constants.STATION_MAREIN%></option>
-														<option><%=Constants.STATION_THOERL.replaceAll("ö", "&ouml;")%></option>
-														<option><%=Constants.STATION_TURNAU%></option>
-													</select></td>
+													<td><input disabled="disabled" type="text" name="station" id="textfield4" value="<%=userSession.getStaffMember().getPrimaryLocation()%>" /></td>
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>

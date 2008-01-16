@@ -16,6 +16,10 @@
 		</td>
 	</tr>
 	<tr>
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/print.do"%>">Dienstplan drucken</a><br />
+		</td>
+	</tr>
+	<tr>
 		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/profile.do"%>">Profil editieren</a><br />
 		</td>
 	</tr>

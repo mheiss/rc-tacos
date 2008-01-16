@@ -120,6 +120,16 @@
 	<servlet-mapping>
 		<servlet-name>editprofileView</servlet-name>
 		<url-pattern>/editprofileView</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>printView</servlet-name>
+		<jsp-file>/jsp/print.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>printView</servlet-name>
+		<url-pattern>/printView</url-pattern>
 	</servlet-mapping>	
 	
 	<servlet>
