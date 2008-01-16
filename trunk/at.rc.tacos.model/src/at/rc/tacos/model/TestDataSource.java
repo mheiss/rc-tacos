@@ -94,8 +94,16 @@ public class TestDataSource
     private void initStaffMembers()
     {
         staffList = new ArrayList<StaffMember>();
-        StaffMember s1 = new StaffMember("Staff1","Staff1","nick.staff1");
+        StaffMember s1 = new StaffMember("Alex","Bauernhof","nick.staff1");
         s1.setPersonId(0);
+        Calendar cal = Calendar.getInstance(); 
+        cal.set(Calendar.YEAR,1986); 
+        cal.set(Calendar.MONTH,6); 
+        cal.set(Calendar.DAY_OF_MONTH,05); 
+        s1.setBirthday(cal.getTimeInMillis());
+        s1.setCityname("Salzburg");
+        s1.setEMail("alex@bauernhof.at");
+        s1.setStreetname("Auweg 25");
         StaffMember s2 = new StaffMember("Staff2","Staff2","nick.staff2");
         s2.setPersonId(1);
         StaffMember s3 = new StaffMember("Staff3","Staff3","nick.staff3");
