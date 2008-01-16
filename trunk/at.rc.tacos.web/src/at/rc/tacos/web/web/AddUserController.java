@@ -15,7 +15,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 
-public class AdminController implements Controller
+public class AddUserController implements Controller
 {
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
@@ -33,7 +33,7 @@ public class AdminController implements Controller
 		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
 			params.put("employeeList", resultList); 
 
-		if("domemberEntry".equalsIgnoreCase(action))
+		if("doUserEntry".equalsIgnoreCase(action))
 		{
 			String staffId = request.getParameter("employee");
 			//request the staff member

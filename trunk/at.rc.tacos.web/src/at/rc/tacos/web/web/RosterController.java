@@ -116,10 +116,6 @@ public class RosterController implements Controller
 			client.sendRemoveRequest(RosterEntry.ID,entry );
 			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));
 		}
-		
-		if("doChangeCal".equals(action)){
-			//not in use
-		}
 		return params;
 	}
 
