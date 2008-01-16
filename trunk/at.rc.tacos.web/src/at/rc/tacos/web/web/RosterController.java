@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -112,6 +114,7 @@ public class RosterController implements Controller
 			RosterEntry entry = (RosterEntry )resultList.get(0);  
 			 
 			client.sendRemoveRequest(RosterEntry.ID,entry );
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));
 		}
 		
 		if("doChangeCal".equals(action)){
