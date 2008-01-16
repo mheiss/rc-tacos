@@ -61,7 +61,7 @@
 					+ userSession.getStaffMember().getLastName()%> &nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Benutzer l&ouml;schen</td>
+					<td width="33%" align="center">Dienstpl&auml;ne drucken</td>
 					<td width="33%" align="right">Heute ist der <%=formath.format(current)%>
 					</td>
 					<td>
@@ -90,20 +90,8 @@
 									<table width="100%" height="100%" border='0' cellpadding='0' 
                                         cellspacing='0'> 
                                         <tr> 
-                                            <table width="200" border="0"> 
-                                                 
-                                                <% 
-                                                    for (StaffMember member : list) { 
-                                                %> 
-                                                    <tr> 
-                                                        <td id="BlockContent"><%=member.getUserName()%></td> 
-                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteprofile.do?action=doRemoveUser&id="+ member.getPersonId()%>"><img src="../image/loeschen.gif"></a></td> 
-                                                     
-                                                    </tr> 
-                                                    <% 
-                                                    } 
-                                                %> 
-                                            </table> 
+                                           Dienstplan ausdrucken,
+                                           ein Link pro Station?
 
                                         </tr> 
                                     </table>
