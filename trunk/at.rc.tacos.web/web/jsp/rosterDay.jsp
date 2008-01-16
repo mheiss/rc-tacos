@@ -84,12 +84,10 @@
 										cellspacing='0'>
 										<tr>
 										  <% 
-											  Timetable timetable = Timetable.getInstance();
+											  Timetable timetable = Timetable.getInstance(getServletContext().getContextPath());
 	                                          out.print(timetable.calculateTimetable(rosterList, 1));
 										  %>
-										
 										</tr>
-										
 									</table>
 									</td>
 								</tr>
@@ -105,6 +103,5 @@
 	</tbody>
 </table>
 </form>
-
 </body>
 </html>
