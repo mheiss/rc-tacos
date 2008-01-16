@@ -13,6 +13,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
+<%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.common.Constants"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -118,6 +119,7 @@
 												<%
 													for (StaffMember member : list) {
 												%>
+												<option selected value="<%=userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName() %>"><%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName() %></option>
 												<option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
 												<%
 													}
