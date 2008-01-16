@@ -143,7 +143,7 @@ public class Timetable {
 			return timetable;
 		}
 		else{
-			return "kein Eintrag gefunden!";
+			return "Keine Dienste vorhanden!";
 		}
 		
 	}
