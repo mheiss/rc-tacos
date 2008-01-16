@@ -130,6 +130,7 @@
 											<td id="rosterViewDayHeadline">Bezirk /
 											Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
+												<option><%=userSession.getStaffMember().getPrimaryLocation()%></option>
 												<option><%=Constants.STATION_BEZIRK%></option>
 												<option><%=Constants.STATION_BREITENAU%></option>
 												<option><%=Constants.STATION_BRUCK%></option>
