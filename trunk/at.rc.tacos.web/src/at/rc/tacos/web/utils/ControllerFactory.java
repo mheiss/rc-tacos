@@ -54,7 +54,15 @@ public class ControllerFactory {
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.calendar")))
 		{
 			return new CalendarController();
-		}	
+		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.editprofile")))
+		{
+			return new EditProfileController();
+		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteprofile")))
+		{
+			return new DeleteProfileController();
+		}
 		else
 		{
 			return null;

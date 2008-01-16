@@ -111,6 +111,26 @@
 		<servlet-name>adminView</servlet-name>
 		<url-pattern>/adminView</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>editprofileView</servlet-name>
+		<jsp-file>/jsp/editprofile.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>editprofileView</servlet-name>
+		<url-pattern>/editprofileView</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>deleteprofileView</servlet-name>
+		<jsp-file>/jsp/deleteprofile.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>deleteprofileView</servlet-name>
+		<url-pattern>/deleteprofileView</url-pattern>
+	</servlet-mapping>		
 
 	<servlet>
 		<servlet-name>calendarView</servlet-name>
