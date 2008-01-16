@@ -79,28 +79,22 @@
 					<!-- #### CONTENT -->
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
 
-					<table id="Block" width="100%" border='0' cellpadding='0'
-						cellspacing='0'>
-						<tr>
-							<td id="BlockHead" align="right" valign="center">&nbsp;</td>
-						</tr>
-						<tr>
-							<td id="BlockContent">
+					
 							<% if (params.containsKey("entry-success")) 
 			{
-				out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0'>"
+				out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cellspacing='0'><tr><td id=\"BlockHead\" align=\"right\" valign=\"center\">&nbsp;</td></tr><tr><td id=\"BlockContent\">"
+						+ "<table width=\"100%\" border='0' cellpadding='0' cellspacing='0'>"
 						+ "<tr><td width=\"50%\"><!-- quick entry -->"
 						+ "<table width=\"100%\" border='1' cellpadding='0' cellspacing='0'><tr><td>"
-						+ "<div id='meldungstext'>"+params.get("entry-success")+"</td></tr></table></td></tr></table>");
+						+ "<div id='meldungstext'>"+params.get("entry-success")+"</td></tr></table></td></tr></table>"
+						+ "</td></tr></table>");
 			} 
 			else 
 			{
 				out.println("");
 			}
 		%>
-							</td>
-						</tr>
-					</table>
+							
 					<table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
@@ -179,8 +173,11 @@
 											<td id="rosterViewDayName">
 											<table width="75%">
 												<tr>
-													<td width="50%"><!-- KALENDER --> <%@include
-														file="calendar.jsp"%></td>
+													<td width="50%"><!-- KALENDER --><table border="0" cellpadding="5" style="" cellpadding="0"
+	cellspacing="0" id="calTabMain">
+
+<tr><td valign="top" align="center" width="100%"><div id="calendar">Tacos Calendar</div></td></tr>
+</table></td>
 													<td>gew&auml;hltes Datum: <input type="text"
 														disabled="disabled" id="selDateView" /><br />
 													<br />
