@@ -40,7 +40,7 @@ public class DeleteProfileController implements Controller
 			StaffMember user = (StaffMember)resultList.get(0);  
 			 
 			client.sendRemoveRequest(StaffMember.ID,user);
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteprofile"));
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteProfile"));
 		}
 		return params;
 	}

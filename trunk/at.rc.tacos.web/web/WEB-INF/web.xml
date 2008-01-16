@@ -83,74 +83,65 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>stationView</servlet-name>
-		<jsp-file>/jsp/station.jsp</jsp-file>
+		<servlet-name>stationWeekView</servlet-name>
+		<jsp-file>/jsp/stationWeek.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>stationView</servlet-name>
-		<url-pattern>/stationView</url-pattern>
+		<servlet-name>stationWeekView</servlet-name>
+		<url-pattern>/stationWeekView</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>profileView</servlet-name>
-		<jsp-file>/jsp/profile.jsp</jsp-file>
+		<servlet-name>userProfileView</servlet-name>
+		<jsp-file>/jsp/userProfile.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>profileView</servlet-name>
-		<url-pattern>/profileView</url-pattern>
+		<servlet-name>userProfileView</servlet-name>
+		<url-pattern>/userProfileView</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>adminView</servlet-name>
-		<jsp-file>/jsp/admin.jsp</jsp-file>
+		<servlet-name>addUserView</servlet-name>
+		<jsp-file>/jsp/addUser.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>adminView</servlet-name>
-		<url-pattern>/adminView</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>editprofileView</servlet-name>
-		<jsp-file>/jsp/editprofile.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>editprofileView</servlet-name>
-		<url-pattern>/editprofileView</url-pattern>
+		<servlet-name>addUserView</servlet-name>
+		<url-pattern>/addUserView</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>printView</servlet-name>
-		<jsp-file>/jsp/print.jsp</jsp-file>
+		<servlet-name>editProfileView</servlet-name>
+		<jsp-file>/jsp/editProfile.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>printView</servlet-name>
-		<url-pattern>/printView</url-pattern>
+		<servlet-name>editProfileView</servlet-name>
+		<url-pattern>/editProfileView</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>printRosterView</servlet-name>
+		<jsp-file>/jsp/printRoster.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>printRosterView</servlet-name>
+		<url-pattern>/printRosterView</url-pattern>
 	</servlet-mapping>	
 	
 	<servlet>
-		<servlet-name>deleteprofileView</servlet-name>
-		<jsp-file>/jsp/deleteprofile.jsp</jsp-file>
+		<servlet-name>deleteProfileView</servlet-name>
+		<jsp-file>/jsp/deleteProfile.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>deleteprofileView</servlet-name>
-		<url-pattern>/deleteprofileView</url-pattern>
+		<servlet-name>deleteProfileView</servlet-name>
+		<url-pattern>/deleteProfileView</url-pattern>
 	</servlet-mapping>		
 
-	<servlet>
-		<servlet-name>calendarView</servlet-name>
-		<jsp-file>/jsp/calendar.jsp</jsp-file>
-
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>calendarView</servlet-name>
-		<url-pattern>/calendarView</url-pattern>
-	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
 	</welcome-file-list>

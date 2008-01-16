@@ -16,11 +16,11 @@
 		</td>
 	</tr>
 	<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/print.do"%>">Dienstplan drucken</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/printRoster.do"%>">Dienstplan drucken</a><br />
 		</td>
 	</tr>
 	<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/profile.do"%>">Profil editieren</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/userProfile.do"%>">Profil editieren</a><br />
 		</td>
 	</tr>
 </table>
@@ -30,25 +30,25 @@
 		<td id="BlockHead"><b>Ortsstellen</b></td>
 	</tr>
 	<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_BEZIRK%>"><%=Constants.STATION_BEZIRK%></a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BEZIRK%>"><%=Constants.STATION_BEZIRK%></a><br />
 		</td></tr>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_BREITENAU%>"><%=Constants.STATION_BREITENAU%></a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BREITENAU%>"><%=Constants.STATION_BREITENAU%></a><br />
 		</td></tr>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_BRUCK%>"><%=Constants.STATION_BRUCK%></a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BRUCK%>"><%=Constants.STATION_BRUCK%></a><br />
 		</td></tr>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_KAPFENBERG%>"><%=Constants.STATION_KAPFENBERG%></a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_KAPFENBERG%>"><%=Constants.STATION_KAPFENBERG%></a><br />
 		</td></tr>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_MAREIN%>"><%=Constants.STATION_MAREIN%></a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_MAREIN%>"><%=Constants.STATION_MAREIN%></a><br />
 		</td></tr>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_THOERL%>"><%=Constants.STATION_THOERL.replaceAll("ö", "&ouml;")%></a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_THOERL%>"><%=Constants.STATION_THOERL.replaceAll("ö", "&ouml;")%></a><br />
 		</td></tr>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/station.do?action="+Constants.STATION_TURNAU%>"><%=Constants.STATION_TURNAU%></a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_TURNAU%>"><%=Constants.STATION_TURNAU%></a><br />
 		</td>
 	</tr>
 </table>
@@ -57,13 +57,13 @@
 		<td id="BlockHead"><b>Administration</b></td>
 	</tr>
 	<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/admin.do"%>">Benutzer anlegen</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/addUser.do"%>">Benutzer anlegen</a><br />
 		</td></tr>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/editprofile.do"%>">Benutzer editieren</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/editProfile.do"%>">Benutzer editieren</a><br />
 		</td>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteprofile.do"%>">Benutzer l&ouml;schen</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteProfile.do"%>">Benutzer l&ouml;schen</a><br />
 		</td>
 	</tr>
 </table>
