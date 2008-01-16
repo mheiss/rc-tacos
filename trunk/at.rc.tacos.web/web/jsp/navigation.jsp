@@ -56,7 +56,10 @@
 		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/admin.do"%>">Benutzer anlegen</a><br />
 		</td></tr>
 		<tr>
-		<td id="BlockContent"><a href="#">Benutzer l&ouml;schen</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/editprofile.do"%>">Benutzer editieren</a><br />
+		</td>
+		<tr>
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteprofile.do"%>">Benutzer l&ouml;schen</a><br />
 		</td>
 	</tr>
 </table>

@@ -3,8 +3,6 @@ package at.rc.tacos.web.web;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +13,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 
-public class AdminController implements Controller
+public class EditProfileController implements Controller
 {
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
@@ -62,16 +60,6 @@ public class AdminController implements Controller
 			else
 			{
 				//eintrag hat nicht geklappt
-			}
-			
-			if("doRemoveUser".equalsIgnoreCase(action))
-			{
-				//get the roster entry by id 
-				resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
-				RosterEntry entry = (RosterEntry )resultList.get(0);  
-				 
-				client.sendRemoveRequest(RosterEntry.ID,entry );
-				response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));
 			}
 		}
 		return params;
