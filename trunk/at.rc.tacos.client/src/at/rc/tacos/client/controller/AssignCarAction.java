@@ -40,6 +40,7 @@ public class AssignCarAction extends Action
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//open the editor
 		transport.setVehicleDetail(vehicle);
+//		transport.getStatusMessages().set(index, element)//TODO: set status S0 (Auftrag erteilt)
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
