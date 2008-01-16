@@ -17,6 +17,9 @@
 			this.monthCell.appendChild(document.createTextNode( this.monthname[this.mm]+" "+this.yy ));
 			this.tableHead = this.createTableHead();
 			this.parEl = document.getElementById( id );
+			
+
+					    
 			this.show();
 		}
 		
@@ -90,6 +93,13 @@
 					tr.appendChild( this.getCell( "td", i, this.mm, this.yy, "weekend" ) );
 				else
 					tr.appendChild( this.getCell( "td", i, this.mm, this.yy, null ) );
+			document.form.endDay.value=this.date;
+			document.form.endMonth.value=(this.mm+1);
+			document.form.endYear.value=this.now.getFullYear();
+			document.form.startDay.value=this.date;
+			document.form.startMonth.value=(this.mm+1);
+			document.form.startYear.value=this.now.getFullYear();	    
+			document.form.selDateView.value= this.date+"."+(this.mm+1)+"."+this.now.getFullYear();
 			}
 	
 	
