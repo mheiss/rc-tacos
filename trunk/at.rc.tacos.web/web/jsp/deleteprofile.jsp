@@ -87,24 +87,26 @@
 							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
 								<tr>
 									<td width="50%"><!-- Timetablebox Day -->
-									<table width="100%" height="100%" border='0' cellpadding='0'
-										cellspacing='0'>
-										<tr>
-											<table width="200" border="0">
-												<tr>
-												<%
-													for (StaffMember member : list) {
-												%>
-													<td><%=member.getUserName()%></td>
-													<%
-													}
-												%>
-													<td><a href="<%=request.getContextPath()+"/Dispatcher/deleteprofile.do?action=doRemoveUser&id="%>">User l&ouml;schen</a></td>
-												</tr>
-											</table>
+									<table width="100%" height="100%" border='0' cellpadding='0' 
+                                        cellspacing='0'> 
+                                        <tr> 
+                                            <table width="200" border="0"> 
+                                                 
+                                                <% 
+                                                    for (StaffMember member : list) { 
+                                                %> 
+                                                    <tr> 
+                                                        <td><%=member.getUserName()%></td> 
+                                                        <td><a href="<%=request.getContextPath()+"/Dispatcher/deleteprofile.do?action=doRemoveUser&id="+ member.getPersonId()%>">User l&ouml;schen</a></td> 
+                                                     
+                                                    </tr> 
+                                                    <% 
+                                                    } 
+                                                %> 
+                                            </table> 
 
-										</tr>
-									</table>
+                                        </tr> 
+                                    </table>
 									</td>
 								</tr>
 							</table>
