@@ -61,7 +61,7 @@
 					+ userSession.getStaffMember().getLastName()%> &nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Benutzer hinzuf&uuml;gen</td>
+					<td width="33%" align="center">Benutzer l&ouml;schen</td>
 					<td width="33%" align="right">Heute ist der <%=formath.format(current)%>
 					</td>
 					<td>
@@ -92,20 +92,17 @@
 										<tr>
 											<table width="200" border="0">
 												<tr>
-													<td>&nbsp;</td>
-													<td><a href="<%=request.getContextPath()+"/Dispatcher/deleteprofile.do?action=doRemoveUser&id=" + entry.getRosterId()%>">User l&ouml;schen</a></td>
-												</tr>
-											</table>
-
-											<select name="employee" id="rosterViewDayHeadSelbox">
 												<%
 													for (StaffMember member : list) {
 												%>
-												<option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
-												<%
+													<td><%=member.getUserName()%></td>
+													<%
 													}
 												%>
-											</select>
+													<td><a href="<%=request.getContextPath()+"/Dispatcher/deleteprofile.do?action=doRemoveUser&id="%>">User l&ouml;schen</a></td>
+												</tr>
+											</table>
+
 										</tr>
 									</table>
 									</td>
