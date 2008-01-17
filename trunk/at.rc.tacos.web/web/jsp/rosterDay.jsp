@@ -28,7 +28,8 @@
 	Calendar current = Calendar.getInstance();
 	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-
+	Date today = new Date();
+	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	//date to show
 	String startDate = request.getParameter("startDate");
 	//if we have no date, use the current date
@@ -70,7 +71,7 @@
 					)</td>
 					<td width="33%" align="center">Tages&uuml;bersicht ihrer
 					Prim&auml;r-Dienststelle</td>
-					<td width="33%" align="right">Heute ist der <%=formath.format(current.getTime())%>
+					<td width="33%" align="right">Heute ist der <%=format.format(today)%>
 					</td>
 					<td>
 				</tr>
@@ -84,8 +85,6 @@
 					<!-- #### CONTENT -->
 
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
-
-
 					<table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
@@ -97,11 +96,11 @@
 								<tr>
 									<td>
 									<% current.add(Calendar.DAY_OF_MONTH, -1);%>
-									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>"> <<< <%=formath.format(current.getTimeInMillis())%></a></td>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>"><img src="../image/Pfeil_links.jpg"><%=formath.format(current.getTimeInMillis())%></a></td>
 									<td>
 									<div align="right">
 									<% current.add(Calendar.DAY_OF_MONTH, +2);%>
-									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>"> >>> <%=formath.format(current.getTimeInMillis())%></a></div>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>"><img src="../image/Pfeil_rechts.jpg"><%=formath.format(current.getTimeInMillis())%></a></div>
 									</td>
 								</tr>
 							</table>
