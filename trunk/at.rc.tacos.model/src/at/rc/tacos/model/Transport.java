@@ -1,11 +1,14 @@
 package at.rc.tacos.model;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Map;
+import java.util.TreeMap;
+
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IDirectness;
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportPriority;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * Specifies the transport details
@@ -65,7 +68,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private VehicleDetail vehicleDetail;
 
     //used for the status messages
-    private ArrayList<StatusMessages> statusMessages;
+    private Map<Integer,Long> statusMessages;
 
     /**
      * Default class constructors for a transport<br>
@@ -74,7 +77,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     public Transport()
     {
         super(ID);
-        statusMessages = new ArrayList<StatusMessages>();
+        statusMessages = new TreeMap<Integer, Long>();
     }
     
     /**
@@ -92,8 +95,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
             String responsibleStation,long dateOfTransport, long plannedStartOfTransport,
             String transportPriority,int direction)
     {
-        super(ID);
-        statusMessages = new ArrayList<StatusMessages>();
+        this();
         setFromStreet(fromStreet);
         setFromCity(fromCity);
         setResponsibleStation(responsibleStation);
@@ -103,52 +105,19 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         setDirection(direction);
     }
 
-    //METHODS
-    /**
-     * Convinience helper method to ensure a long value
-     * is a valid date.
-     * @param timestamp the value to check
-     * @return true if the value is a date, otherwise false
-     */
-    private boolean isValidDate(long timestamp)
-    {
-        //create a calendar entry
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(timestamp);
-        //check the year
-        if(cal.get(Calendar.YEAR) > 1960 && cal.get(Calendar.YEAR) < 2100)
-            return true;
-        //date out of range
-        return false;
-    }
-
     /**
      * Helper method to set a status for a transport
      * @param statusId the status identification 
-     * @param timestamp the timestamp of the status
+     * @param timestamp the timestamp of the statu
+     * @throws IllegalArgumentException if the date is not valid
      */
     public void addStatus(int statusId, long timestamp)
     {
-        statusMessages.add(new StatusMessages(statusId,timestamp));
-    }
-    
-//    /**
-//     * set all stati to "0"
-//     */
-//    public void resetAllStati()
-//    {
-//    	statusMessages.add(new StatusMessages(0,0));
-//    	statusMessages.add(new StatusMessages(1,0));
-//    	statusMessages.add(new StatusMessages(2,0));
-//    	statusMessages.add(new StatusMessages(3,0));
-//    	statusMessages.add(new StatusMessages(4,0));
-//    	statusMessages.add(new StatusMessages(5,0));
-//    	statusMessages.add(new StatusMessages(6,0));
-//    	statusMessages.add(new StatusMessages(7,0));
-//    	statusMessages.add(new StatusMessages(8,0));
-//    	statusMessages.add(new StatusMessages(9,0));
-//    }
-    
+    	//check the date
+    	if(!MyUtils.isValidDate(timestamp))
+    		throw new IllegalArgumentException("The given date for the transport status is not valid");
+    	statusMessages.put(statusId, timestamp);
+    }  
 
     /**
      * Returns a string based description of the object
@@ -481,10 +450,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      */
     public void setDateOfTransport(long dateOfTransport) 
     {
-        if(dateOfTransport < 0)
-            throw new IllegalArgumentException("Date cannot be negative");
-        if(!isValidDate(dateOfTransport))
-            throw new IllegalArgumentException("Date is out of range");
+        if(!MyUtils.isValidDate(dateOfTransport))
+            throw new IllegalArgumentException("The given date of Transport is not a valid date:");
         this.dateOfTransport = dateOfTransport;
     }
 
@@ -498,13 +465,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
     /**
      * @param plannedStartOfTransport the plannedStartOfTransport to set
+     * @throws IllegalArgumentException if the date is not valid
      */
     public void setPlannedStartOfTransport(long plannedStartOfTransport) 
     {
-        if(plannedStartOfTransport < 0)
-            throw new IllegalArgumentException("Date cannot be negative");
-        if(!isValidDate(plannedStartOfTransport))
-            throw new IllegalArgumentException("Date is out of range");
+        if(!MyUtils.isValidDate(plannedStartOfTransport))
+        	throw new IllegalArgumentException("The given plannedStartOfTrnsport is not a valid date");
         this.plannedStartOfTransport = plannedStartOfTransport;
     }
 
@@ -518,13 +484,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
     /**
      * @param plannedTimeAtPatient the plannedTimeAtPatient to set
+     * @throws IllegalArgumentException if the date is not valid
      */
     public void setPlannedTimeAtPatient(long plannedTimeAtPatient) 
     {
-        if(plannedTimeAtPatient < 0)
-            throw new IllegalArgumentException("Date cannot be negative");
-        if(!isValidDate(plannedTimeAtPatient))
-            throw new IllegalArgumentException("Date is out of range");
+        if(!MyUtils.isValidDate(plannedTimeAtPatient))
+        	throw new IllegalArgumentException("The given plannedTimeAtPatient is not a valid date");
         this.plannedTimeAtPatient = plannedTimeAtPatient;
     }
 
@@ -538,13 +503,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
     /**
      * @param appointmentTimeAtDestination the appointmentTimeAtDestination to set
+     * @throws IllegalArgumentException if the date is not valid
      */
     public void setAppointmentTimeAtDestination(long appointmentTimeAtDestination) 
     {
-        if(appointmentTimeAtDestination < 0)
-            throw new IllegalArgumentException("Date cannot be negative");
-        if(!isValidDate(appointmentTimeAtDestination))
-            throw new IllegalArgumentException("Date is out of range");
+        if(!MyUtils.isValidDate(appointmentTimeAtDestination))
+        	throw new IllegalArgumentException("The given appointmentTimeAtDestination is not a valid date");
         this.appointmentTimeAtDestination = appointmentTimeAtDestination;
     }
 
@@ -764,9 +728,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
+     * Returns a list containing all transport status messages that are set. 
      * @return the statusMessages
      */
-    public ArrayList<StatusMessages> getStatusMessages() 
+    public Map<Integer,Long> getStatusMessages() 
     {
         return statusMessages;
     }
@@ -820,16 +785,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	
 	/**
      * Returns whether or not this transport has disease notes
-     * @return true if there are notes
+     * @return true if the transport has notes
      */
     public boolean hasNotes()
     {
-        if (diseaseNotes == null)
+        if (diseaseNotes == null || diseaseNotes.trim().isEmpty())
             return false;
-        if (diseaseNotes.trim().isEmpty())
-        {
-            return false;
-        }
         //we have notes :)
         return true;
     }
@@ -840,12 +801,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      */
     public boolean hasFeedback()
     {
-        if (feedback == null)
+        if (feedback == null || feedback.trim().isEmpty())
             return false;
-        if (feedback.trim().isEmpty())
-        {
-            return false;
-        }
         //we have feedback :)
         return true;
     }
@@ -861,7 +818,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	/**
 	 * program status to state the view which should show the transport
 	 * the possible program stati are defined in an interface
-	 * @return
+	 * @return the current status of the transport
+	 * @see IProgramStatus
 	 */
 	public int getProgramStatus() {
 		return programStatus;

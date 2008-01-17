@@ -116,7 +116,7 @@ public class TransportDecoder implements MessageDecoder
                     transport.setFeedback(reader.getElementText());
                 if("directness".equalsIgnoreCase(startName))
                     transport.setDirection(Integer.valueOf(reader.getElementText()));
-                if("statusMessage".equalsIgnoreCase(startName))
+                if("transportStatus".equalsIgnoreCase(startName))
                 {
                     Attribute statusAttr = start.getAttributeByName(new QName("status"));
                     Attribute timeAttr = start.getAttributeByName(new QName("time"));
@@ -124,7 +124,6 @@ public class TransportDecoder implements MessageDecoder
                             Integer.valueOf(statusAttr.getValue()),
                             Long.valueOf(timeAttr.getValue()));
                 }
-
             }
             //check for the end element, and return the object
             if(event.isEndElement())
