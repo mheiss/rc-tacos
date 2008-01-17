@@ -99,35 +99,53 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             {
                 new VehicleComposite(compositeKapfenberg,detail);
                 compositeKapfenberg.layout(true);
+                //expand if we have a new vehicle
+                Section section = (Section)compositeKapfenberg.getParent();
+                section.setExpanded(true);
             }
             //Add and update the section for Bruck 
             else if(Constants.STATION_BRUCK.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeBruck,detail);
                 compositeBruck.layout(true);
+                //expand if we have a new vehicle
+                Section section = (Section)compositeBruck.getParent();
+                section.setExpanded(true);
             }
             //Add and update the section for St.Marein
             else if(Constants.STATION_MAREIN.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeStMarein,detail);
                 compositeStMarein.layout(true);
+                //expand if we have a new vehicle
+                Section section = (Section)compositeStMarein.getParent();
+                section.setExpanded(true);
             }
             //Add and update the section for Thoerl
             else if(Constants.STATION_THOERL.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeThoerl,detail);
                 compositeThoerl.layout(true);
+                //expand if we have a new vehicle
+                Section section = (Section)compositeThoerl.getParent();
+                section.setExpanded(true);
             }
             // Add and update the section for Turnau
             else if(Constants.STATION_TURNAU.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeThurnau,detail);
                 compositeThurnau.layout(true);
+                //expand if we have a new vehicle
+                Section section = (Section)compositeThurnau.getParent();
+                section.setExpanded(true);
             }
             else if(Constants.STATION_BREITENAU.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeBreitenau,detail);
                 compositeBreitenau.layout(true);
+                //expand if we have a new vehicle
+                Section section = (Section)compositeBreitenau.getParent();
+                section.setExpanded(true);
             }
             else
                 System.out.println("Failed to add vehicle to non existing station: " + basicStation);
@@ -189,6 +207,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         // Add the title and the description
         section.setText(title);
         section.setDescription(description);
+        section.setExpanded(false);
         //the content of the section
         Composite client = toolkit.createComposite(section,SWT.WRAP);
         GridLayout layout = new GridLayout();
