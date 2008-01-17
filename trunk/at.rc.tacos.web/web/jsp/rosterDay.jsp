@@ -84,8 +84,8 @@
 										cellspacing='0'>
 										<tr>
 										  <% 
-										  Timetable timetable = Timetable.getInstance(getServletContext().getContextPath());
-	                                      out.print(timetable.calculateTimetable(rosterList, 1));
+										      Timetable timetable = new Timetable(getServletContext().getContextPath(),rosterList, 1);
+	                                          out.print(timetable.calculateTimetable());
 										  %>
 										</tr>
 									</table>
