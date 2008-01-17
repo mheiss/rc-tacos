@@ -18,6 +18,8 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
+
+import at.rc.tacos.client.controller.VehicleDetachAllStaffMembersAction;
 import at.rc.tacos.client.controller.VehicleEditAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
@@ -48,6 +50,8 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	
 	//the actions
 	private VehicleEditAction editAction;
+	private VehicleDetachAllStaffMembersAction detachAction;
+	
 
 	/**
 	 * Default constructor creating a new car composite
@@ -174,6 +178,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	private void makeActions()
 	{
 		editAction = new VehicleEditAction(vehicle);
+		detachAction = new VehicleDetachAllStaffMembersAction(vehicle);
 	}
 	
 	/**
@@ -197,6 +202,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	private void fillContextMenu(IMenuManager manager)
 	{
 		manager.add(editAction);
+		manager.add(detachAction);
 	}
 
 	/**
