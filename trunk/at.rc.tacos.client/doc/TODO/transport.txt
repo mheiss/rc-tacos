@@ -1,0 +1,12 @@
+--> Keine Ready liste vom vehiceln
+
+--> Die Fahrzeuge sollten no in a Untermenü (Hauptmenü: Fahrzeug zuweisen, Untermenü Bm03, Bm05...) da werd i no probieren
+
+--> Weiterleiten (= an andere Dienststelle z.B.)       
+                  i setz dabei die Transportnummer auf "WTGL" und den TransportStatus S5 
+
+--> Stornieren: Ein stornierter Transport soll im Journalblatt mit "STORNO" als Transportnummer weiterhin aufscheinen. 
+            Drum setz i Status S5 und Transportnummer auf "WTGL". 
+            Transportnummer wird wie bei Weiterleiten nicht angezeigt. ??? Auch Status S5 nicht.
+
+--> HashMap für Transport stati implementieren
