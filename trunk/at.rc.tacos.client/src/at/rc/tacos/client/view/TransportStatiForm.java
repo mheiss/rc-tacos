@@ -1,10 +1,9 @@
 package at.rc.tacos.client.view;
 
-import java.util.GregorianCalendar;
-
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -14,7 +13,6 @@ import at.rc.tacos.model.Transport;
 
 public class TransportStatiForm implements ITransportStatus
 {
-
 	protected Shell shell;
 	Transport transport = new Transport();
 	private Text aufgenommen;
@@ -28,35 +26,6 @@ public class TransportStatiForm implements ITransportStatus
 	private Text s7;
 	private Text s8;
 	private Text s9;
-
-
-//	/**
-//	 * Launch the application
-//	 * @param args
-//	 */
-//	public static void main(String[] args) {
-//		try {
-//			TransportStatiForm window = new TransportStatiForm();
-//			window.open();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	/**
-//	 * Open the window
-//	 */
-//	public void open() 
-//	{
-//		final Display display = Display.getDefault();
-//		createContents();
-//		shell.open();
-//		shell.layout();
-//		while (!shell.isDisposed()) {
-//			if (!display.readAndDispatch())
-//				display.sleep();
-//		}
-//	}
 	
 	/**
      * Open the window
@@ -210,130 +179,76 @@ public class TransportStatiForm implements ITransportStatus
 		final Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText("OK");
 		okButton.setBounds(337, 358, 89, 23);
-		//
 	}
 	
 	public void setContent()
 	{
-		GregorianCalendar gcal = new GregorianCalendar();
+        //formatter for the date and time
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Calendar cal = Calendar.getInstance();
 		
 		//receive time
-        gcal.setTimeInMillis(transport.getReceiveTime());
-        String receiveTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-		aufgenommen.setText(receiveTime);
-	
-		//transport stati
-		//s0, Auftrag erteilt
-		long s0Long = transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus();
-		if(s0Long != 0)
-		{
-			gcal.setTimeInMillis(s0Long);
-			String s0s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			auftragErteilt.setText(s0s);
-		}
-		else
-			auftragErteilt.setText("");
+        cal.setTimeInMillis(transport.getReceiveTime());
+		aufgenommen.setText(sdf.format(cal.getTime()));
 		
-	
-		//s1 Fahrzeug unterwegs
-		long s1Long = transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getStatus();
-		if(s1Long != 0)
+    	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
 		{
-			gcal.setTimeInMillis(s1Long);
-			String s1s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s1.setText(s1s);
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));
+			auftragErteilt.setText(sdf.format(cal.getTime()));
 		}
-		else
-			s1.setText("");
-		
-		//s2 Ankunft bei Patient
-		long s2Long = transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getStatus();
-		if(s2Long != 0)
+		//Status 0 
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
 		{
-			gcal.setTimeInMillis(s2Long);
-			String s2s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s2.setText(s2s);
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
+			s1.setText(sdf.format(cal.getTime()));
 		}
-		else
-			s2.setText("");
-		
-		//s3 Abfahrt mit Patient
-		long s3Long = transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getStatus();
-		if(s3Long != 0)
+		//Status 2
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
 		{
-			gcal.setTimeInMillis(s3Long);
-			String s3s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s3.setText(s3s);
-		}
-		else
-			s3.setText("");
-		
-		//s4 Ankunft Ziel
-		long s4Long = transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getStatus();
-		if(s4Long != 0)
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
+			s2.setText(sdf.format(cal.getTime()));
+		}       
+		//Status 3
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
 		{
-			gcal.setTimeInMillis(s4Long);
-			String s4s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s4.setText(s4s);
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT));
+			s3.setText(sdf.format(cal.getTime()));
 		}
-		else
-			s4.setText("");
-		
-		//s5 Ziel frei
-		long s5Long = transport.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getStatus();
-		if(s5Long != 0)
+		//Status 4 
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
 		{
-			gcal.setTimeInMillis(s5Long);
-			String s5s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s5.setText(s5s);
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
+			s4.setText(sdf.format(cal.getTime()));
 		}
-		else
-			s5.setText("");
-		
-		//s6 Eingerückt
-		long s6Long = transport.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getStatus();
-		if(s6Long != 0)
+    	//Status 5
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
 		{
-			gcal.setTimeInMillis(s6Long);
-			String s6s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s6.setText(s6s);
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE));
+			s5.setText(sdf.format(cal.getTime()));
 		}
-		else
-			s6.setText("");
-		
-		//s7 Verlässt Einsatzgebiet
-		long s7Long = transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getStatus();
-		if(s7Long != 0)
+    	//Status 6
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
 		{
-			gcal.setTimeInMillis(s7Long);
-			String s7s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s7.setText(s7s);
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION));
+			s6.setText(sdf.format(cal.getTime()));
 		}
-		else
-			s7.setText("");
-		
-		//s8 Zurück im Einsatzgebiet
-		long s8Long = transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getStatus();
-		if(s8Long != 0)
+    	//Status 7
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
 		{
-			gcal.setTimeInMillis(s8Long);
-			String s8s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s8.setText(s8s);
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA));
+			s7.setText(sdf.format(cal.getTime()));
 		}
-		else
-			s8.setText("");
-		
-		//s9 Sonderstatus
-		long s9Long = transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getStatus();
-		if(s9Long != 0)
+    	//Status 8
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
 		{
-			gcal.setTimeInMillis(s9Long);
-			String s9s = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-			s9.setText(s9s);
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
+			s8.setText(sdf.format(cal.getTime()));
 		}
-		else
-			s1.setText("");
-	
+    	//Status 9
+		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+		{
+			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
+			s9.setText(sdf.format(cal.getTime()));
+		} 
 	}
-
 }
