@@ -93,13 +93,15 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));
 					return sdf.format(cal.getTime());
 				}
+				else return null;
 			case COLUMN_S1:
-				//Status 0 
+				//Status 1 
 				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
 				{
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
 					return sdf.format(cal.getTime());
 				}
+				else return null;
 			case COLUMN_S2:
 				//Status 2
 				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
@@ -107,6 +109,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
 					return sdf.format(cal.getTime());
 				}
+				else return null;
 			case COLUMN_S3:
 				//Status 3
 				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
@@ -114,6 +117,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT));
 					return sdf.format(cal.getTime());
 				}
+				else return null;
 			case COLUMN_S4:
 				//Status 4 
 				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
@@ -121,6 +125,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
 					return sdf.format(cal.getTime());
 				}
+				else return null;
 	        case COLUMN_S7: 
 	        	//Status 7
 				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
@@ -128,6 +133,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA));
 					return sdf.format(cal.getTime());
 				}
+				else return null;
 	        case COLUMN_S8:
 	        	//Status 8
 				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
@@ -135,6 +141,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
 					return sdf.format(cal.getTime());
 				}
+				else return null;
 	        case COLUMN_S9:
 	        	//Status 9
 				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
@@ -142,6 +149,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OTHER));
 					return sdf.format(cal.getTime());
 				}
+				else return null;
 	        case COLUMN_FZG: 
 	        	if(transport.getVehicleDetail() != null)
 	        	{
