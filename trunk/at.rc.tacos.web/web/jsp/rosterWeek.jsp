@@ -120,7 +120,10 @@
                             </td>
                         </tr>
                     </table>
-                    legende</td>
+                    <br />
+                    <img src='../image/info.jpg' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <img src='../image/loeschen.gif' name='info' alt='Info'  />&nbsp;l&ouml;schen
+                    </td>
                 </tr>
             </table>
             </td>
