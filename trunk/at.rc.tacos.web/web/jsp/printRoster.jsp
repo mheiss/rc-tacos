@@ -9,6 +9,7 @@
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 	List<RosterEntry> rosterList = (List) params.get("rosterList");
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
