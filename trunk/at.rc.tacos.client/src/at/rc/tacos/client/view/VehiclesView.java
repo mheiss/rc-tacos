@@ -95,36 +95,36 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             //get the station to categorize the vehicle
             final String basicStation = detail.getBasicStation();
             //Add and update the section for Kapfenberg 
-            if("KA".equalsIgnoreCase(basicStation))
+            if(Constants.STATION_KAPFENBERG.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeKapfenberg,detail);
                 compositeKapfenberg.layout(true);
             }
             //Add and update the section for Bruck 
-            else if("BM".equalsIgnoreCase(basicStation))
+            else if(Constants.STATION_BRUCK.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeBruck,detail);
                 compositeBruck.layout(true);
             }
             //Add and update the section for St.Marein
-            else if("MA".equalsIgnoreCase(basicStation))
+            else if(Constants.STATION_MAREIN.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeStMarein,detail);
                 compositeStMarein.layout(true);
             }
             //Add and update the section for Thoerl
-            else if("TH".equalsIgnoreCase(basicStation))
+            else if(Constants.STATION_THOERL.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeThoerl,detail);
                 compositeThoerl.layout(true);
             }
             // Add and update the section for Turnau
-            else if("TU".equalsIgnoreCase(basicStation))
+            else if(Constants.STATION_TURNAU.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeThurnau,detail);
                 compositeThurnau.layout(true);
             }
-            else if("BR".equalsIgnoreCase(basicStation))
+            else if(Constants.STATION_BREITENAU.equalsIgnoreCase(basicStation))
             {
                 new VehicleComposite(compositeBreitenau,detail);
                 compositeBreitenau.layout(true);

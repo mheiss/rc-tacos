@@ -137,9 +137,9 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 				}
 	        case COLUMN_S9:
 	        	//Status 9
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
 				{
-					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OTHER));
 					return sdf.format(cal.getTime());
 				}
 	        case COLUMN_FZG: 
