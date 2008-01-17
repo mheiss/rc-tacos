@@ -90,8 +90,7 @@
                                                 %> 
                                                     <tr> 
                                                         <td id="BlockContent"><%=member.getUserName()%></td> 
-                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteProfile.do?action=doRemoveUser&id="+ member.getPersonId()%>"><img src="../image/loeschen.gif"></a></td> 
-                                                     
+                                                        <td id="BlockContent"><a href="#" onmousedown="openPopUpToDelete(<%=request.getContextPath()+"/Dispatcher/deleteEntryPopUp.do?id="+ member.getPersonId()%>)"><img src="../image/loeschen.gif"></a></td> 
                                                     </tr> 
                                                     <% 
                                                     } 
