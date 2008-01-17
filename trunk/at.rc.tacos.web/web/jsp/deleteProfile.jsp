@@ -100,9 +100,12 @@
 
                                         </tr> 
                                     </table>
+                                    
 									</td>
 								</tr>
 							</table>
+							<br />
+							<img src='../image/loeschen.gif' name='info' alt='Info'  />&nbsp;l&ouml;schen
 							</td>
 						</tr>
 					</table>

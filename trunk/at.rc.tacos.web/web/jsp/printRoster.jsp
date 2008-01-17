@@ -101,6 +101,8 @@
 									</td>
 								</tr>
 							</table>
+							<br />
+							Es werden nur Ortstellen mit Diensten angezeigt
 							</td>
 						</tr>
 					</table>
