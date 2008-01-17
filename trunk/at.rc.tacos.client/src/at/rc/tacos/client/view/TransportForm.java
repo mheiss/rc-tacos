@@ -40,6 +40,7 @@ import at.rc.tacos.client.util.TransformTimeToLong;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
@@ -54,7 +55,7 @@ import at.rc.tacos.model.VehicleDetail;
  * @author b.thek
  *
  */
-public class TransportForm implements IDirectness, IKindOfTransport, ITransportStatus,PropertyChangeListener
+public class TransportForm implements IDirectness, IKindOfTransport, ITransportStatus,IProgramStatus,PropertyChangeListener
 {
 
 	private Group transportdetailsGroup;
@@ -1790,6 +1791,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setReceiveTime(receivingTime);
                 	transport.setToStreet(toStreet);
                 	transport.setToCity(toCommunity);
+                	transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);//TODO change!!!! differ between prebooking and outstanding!!!
                 	
                 	//TODO setRealStation, Transportnumber, VehicleDetail wann?
                 	
