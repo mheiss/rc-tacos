@@ -307,6 +307,7 @@ public class VehicleDetail extends AbstractMessage
 		StaffMember oldDriver = this.driverName;
 		this.driverName = driverName;
 		firePropertyChange("driverName", oldDriver, driverName);
+		firePropertyChange("username", oldDriver, driverName);
 	}
 
 	/**
