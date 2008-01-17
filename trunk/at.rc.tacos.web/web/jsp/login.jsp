@@ -30,7 +30,7 @@
 		<table cellpadding="0" border="0" cellspacing="0" width="800" align="center" id="mainTabLogDate"><tr><td align="right">Heute ist der <%=format.format(current) %></td></tr></table>
 		<table cellpadding="0" border="0" cellspacing="0" width="800" align="center" id="mainTabLog">
 			<tr>
-				<td id="leftLogSite" align="left" valign="bottom"><a href="http://www.st.roteskreuz.at/">Rotes Kreuz Steiermark</a><br/><a href="#">Impressum</a></td>
+				<td id="leftLogSite" align="left" valign="bottom"><a href="http://www.st.roteskreuz.at/">Rotes Kreuz Steiermark</a><br/><a href="impressum.jsp">Impressum</a></td>
 				<td align="right" valign="bottom" id="rightLogSite">
 					<% if(params.containsKey("loginError")) { %>
 						<div id='meldungstext'><%=params.get("loginError") %> </div>
