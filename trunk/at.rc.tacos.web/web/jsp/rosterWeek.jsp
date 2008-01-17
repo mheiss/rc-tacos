@@ -11,6 +11,7 @@
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
 <%@page import="at.rc.tacos.web.utils.Timetable"%>
+<%@page import="java.util.Calendar"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -23,8 +24,18 @@
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <% 
-        Date current = new Date();
-        SimpleDateFormat formath = new SimpleDateFormat("dd.MM.yyyy");
+		Calendar current = Calendar.getInstance();
+		SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		
+		//date to show
+		String startDate = request.getParameter("startDate");
+		//if we have no date, use the current date
+		if (startDate == null || startDate.trim().isEmpty())
+			startDate = formath.format(current.getTime());
+		
+		//current date as calendar
+		current.setTime(df.parse(startDate));
 %>
 
 <form method="post" action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
@@ -81,10 +92,9 @@
                                     <td width="50%"><!-- Timetablebox Day -->
                                     <table width="100%" height="100%" border='0' cellpadding='0'
                                         cellspacing='0'>
-                                        <tr>
-                                          <% 
-                                          Timetable timetable = new Timetable(getServletContext().getContextPath(),rosterList, 7);
-                                          out.print(timetable.calculateTimetable());
+                                        <tr>  <% 
+										  Timetable timetable = new Timetable(getServletContext().getContextPath(),startDate);
+	                                      out.print(timetable.calculateTimetable(rosterList, 7));
 										  %>
                                         </tr>
                                     </table>
