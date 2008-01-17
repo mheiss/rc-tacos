@@ -61,15 +61,18 @@ public class PrinterJobRoster implements Printable{
 		g2.setColor(new Color(0,0,0));
 		for(AbstractMessage message:resultList)
 		{
+			
 			RosterEntry entry = (RosterEntry)message;
-			g2.drawString(" >>> Datum: "+ format2.format(entry.getPlannedStartOfWork())+" - " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName() ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
-			i+=15;
-			g2.drawString("Dienstzeit: (plan) " + formatHour.format(entry.getPlannedStartOfWork())+ " - " + formatHour.format(entry.getPlannedEndOfWork()) + " | (real) "+ formatHour.format(entry.getRealStartOfWork()) + " - " + formatHour.format(entry.getRealEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
-			i+=15;
-			g2.drawString("Dienstart: " + entry.getServicetype(),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
-			i+=15;
-			g2.drawString("--------------------------------------------- " ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
-			i+=20;
+			if(entry.getStation().equalsIgnoreCase(this.getStation())){
+				g2.drawString(" >>> Datum: " + format2.format(entry.getPlannedStartOfWork()),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+				i+=18;
+				g2.drawString("Mitarbeiter: " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName()  ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+				i+=15;
+				g2.drawString("Dienstzeit: (plan) " + formatHour.format(entry.getPlannedStartOfWork())+ " - " + formatHour.format(entry.getPlannedEndOfWork()) + " | (real) "+ formatHour.format(entry.getRealStartOfWork()) + " - " + formatHour.format(entry.getRealEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+				i+=15;
+				g2.drawString("Dienstart: " + entry.getServicetype(),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+				i+=30;
+			}
 		}
 		i+=50;
 		g2.setFont(new Font("Verdana", Font.ITALIC, 10));
