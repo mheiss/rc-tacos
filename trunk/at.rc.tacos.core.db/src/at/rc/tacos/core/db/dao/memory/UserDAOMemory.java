@@ -62,4 +62,13 @@ public class UserDAOMemory implements UserLoginDAO
         //no valid login
         return false;
     }
+    
+    /**
+     * Adds a new login to the dao
+     * @params login the username and the password of the user
+     */
+    public void addLogin(Login login)
+    {
+    	userList.add(login);
+    }
 }
