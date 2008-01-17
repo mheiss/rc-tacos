@@ -3,11 +3,13 @@
 --> Weiterleiten (= an andere Dienststelle z.B.)       
                   i setz dabei die Transportnummer auf "WTGL" und den TransportStatus S5 
 
---> Stornieren: Ein stornierter Transport soll im Journalblatt mit "STORNO" als Transportnummer weiterhin aufscheinen. 
-            Drum setz i Status S5 und Transportnummer auf "WTGL". 
+--> Stornieren: Ein stornierter Transport soll im Journalblatt mit "STORNO" als Transportnummer (ev. Icon rein- würde mir gut gefallen) weiterhin aufscheinen. 
+            Was kann als Markierung für WTGL gesetzt werden? 0? -1?
             Transportnummer wird wie bei Weiterleiten nicht angezeigt. ??? Auch Status S5 nicht.
 
 --> HashMap für Transport stati implementieren
+
+--> Suchfunktion für Transport Views einbauen
 
 --> Tagesinfofeld an auf PersonalView an Datum hängen
 
