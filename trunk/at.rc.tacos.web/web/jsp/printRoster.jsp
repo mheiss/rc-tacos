@@ -2,17 +2,15 @@
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
-<%
-	Map<String, Object> params = (Map) request.getAttribute("params");
-	List<StaffMember> list = (List) params.get("employeeList");
-	UserSession userSession = (UserSession) session
-			.getAttribute("userSession");
-%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
-<%@page import="at.rc.tacos.web.utils.Timetable"%>
 <%@page import="at.rc.tacos.common.Constants"%>
+<%
+	Map<String, Object> params = (Map) request.getAttribute("params");
+	List<StaffMember> rosterList = (List)params.get("rosterList");
+	UserSession userSession = (UserSession) session.getAttribute("userSession");
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -90,8 +88,14 @@
 									<table width="100%" height="100%" border='0' cellpadding='0' 
                                         cellspacing='0'> 
                                         <tr> 
-                                           Dienstplan ausdrucken,
-                                           ein Link pro Station?
+                                        <% 
+                                        for(AbstractMessage message:rosterList){
+                                        	RosterEntry entry = (RosterEntry)message;
+                                              out.println("<table style='padding:3px; border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#333333;' width='100%' border='0' cellpadding='0' cellspacing='0' ><tr><td width='70%'>Ortsstelle: <b>" + entry.getStation()+
+                                                         "</b></td><td width='30%'><a href='" + request.getContextPath()+ "/Dispatcher/printRoster.do?action=" + entry.getStation() + "&id=" + entry.getStationId() + "' >" +
+                                                         "Dienstplan drucken</a></td></tr></table>");
+                                        }
+                                        %>
 
                                         </tr> 
                                     </table>
