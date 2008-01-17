@@ -1,5 +1,7 @@
 package at.rc.tacos.codec;
 
+import java.util.Map.Entry;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -7,7 +9,6 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Patient;
-import at.rc.tacos.model.StatusMessages;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -199,11 +200,11 @@ public class TransportEncoder  implements MessageEncoder
         encoder.doEncode(transport.getVehicleDetail(), writer);
         }
         //encode the status messages
-        for(StatusMessages statusMessage:transport.getStatusMessages())
+        for(Entry<Integer,Long> entry:transport.getStatusMessages().entrySet())
         {
-            writer.writeStartElement("statusMessage");
-            writer.writeAttribute("status", Integer.toString(statusMessage.getStatus()));
-            writer.writeAttribute("time", Long.toString(statusMessage.getTimestamp()));
+            writer.writeStartElement("transportStatus");
+            writer.writeAttribute("status", Integer.toString(entry.getKey()));
+            writer.writeAttribute("time", Long.toString(entry.getValue()));
             writer.writeEndElement();
         }
         //end
