@@ -56,6 +56,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private String feedback;
     
     private long receivingTime;
+    private int programStatus;
 
     //directness
     private int direction;
@@ -855,6 +856,19 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
 	public void setReceiveTime(long receiveTime) {
 		this.receivingTime = receiveTime;
+	}
+
+	/**
+	 * program status to state the view which should show the transport
+	 * the possible program stati are defined in an interface
+	 * @return
+	 */
+	public int getProgramStatus() {
+		return programStatus;
+	}
+
+	public void setProgramStatus(int programStatus) {
+		this.programStatus = programStatus;
 	}
 }
 
