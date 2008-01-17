@@ -67,6 +67,10 @@ public class ControllerFactory {
 		{
 			return new PopUpController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.impressum")))
+		{
+			return new ImpressumController();
+		}
 		else
 		{
 			return null;
