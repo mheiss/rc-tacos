@@ -116,6 +116,24 @@ public class RosterController implements Controller
 			client.sendRemoveRequest(RosterEntry.ID,entry );
 			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));
 		}
+		else if("doRemoveEntry".equalsIgnoreCase(action))
+		{
+			//get the roster entry by id 
+			resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
+			RosterEntry entry = (RosterEntry )resultList.get(0);  
+			 
+			client.sendRemoveRequest(RosterEntry.ID,entry );
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterWeek"));
+		}
+		else if("doRemoveDayEntry".equalsIgnoreCase(action))
+		{
+			//get the roster entry by id 
+			resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
+			RosterEntry entry = (RosterEntry )resultList.get(0);  
+			 
+			client.sendRemoveRequest(RosterEntry.ID,entry );
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));
+		}
 		return params;
 	}
 
