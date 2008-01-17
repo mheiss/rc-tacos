@@ -90,13 +90,15 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));
 				return sdf.format(cal.getTime());
 			}
+			else return null;
 		case COLUMN_S1:
-			//Status 0 
+			//Status 1
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
 			{
 				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
 				return sdf.format(cal.getTime());
 			}
+			else return null;
 		case COLUMN_S2:
 			//Status 2
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
@@ -104,6 +106,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
 				return sdf.format(cal.getTime());
 			}
+			else return null;
 		case COLUMN_S3:
 			//Status 3
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
@@ -111,6 +114,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT));
 				return sdf.format(cal.getTime());
 			}
+			else return null;
 		case COLUMN_S4:
 			//Status 4 
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
@@ -118,6 +122,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
 				return sdf.format(cal.getTime());
 			}
+			else return null;
 		case COLUMN_S5:
 			//Status 5
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
@@ -125,6 +130,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE));
 				return sdf.format(cal.getTime());
 			}
+			else return null;
 		case COLUMN_S6:
 			//Status 6 
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
@@ -132,6 +138,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION));
 				return sdf.format(cal.getTime());
 			}
+			else return null;
 		case COLUMN_FZG:
 			if(transport.getVehicleDetail() != null)
 			{
