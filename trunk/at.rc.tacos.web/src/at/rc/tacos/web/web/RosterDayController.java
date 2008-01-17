@@ -26,6 +26,7 @@ public class RosterDayController  implements Controller
 		//the action to do
 		String action = request.getParameter("action");
 		String currentDate = request.getParameter("id");
+		String howOft = request.getParameter("count");
 		
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
