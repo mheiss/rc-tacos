@@ -63,6 +63,10 @@ public class ControllerFactory {
 		{
 			return new PrintController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteEntryPopUp")))
+		{
+			return new PopUpController();
+		}
 		else
 		{
 			return null;
