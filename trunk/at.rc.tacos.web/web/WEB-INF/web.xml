@@ -150,6 +150,16 @@
 	<servlet-mapping>
 		<servlet-name>deleteEntryPopUpView</servlet-name>
 		<url-pattern>/deleteEntryPopUpView</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>impressumView</servlet-name>
+		<jsp-file>/jsp/impressum.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>impressumView</servlet-name>
+		<url-pattern>/impressumView</url-pattern>
 	</servlet-mapping>		
 
 	<welcome-file-list>
