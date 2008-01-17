@@ -39,7 +39,7 @@ public class Timetable {
 		
 		return info;
 	}
-	public String calculateTimetable(List<StaffMember> rosterList, int daysToShow, String action){
+	public String calculateTimetable(List<StaffMember> rosterList, int daysToShow){
 		
 		boolean ok1 = true;
 		boolean ok2 = true;
@@ -121,9 +121,8 @@ public class Timetable {
 									"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
 									"Ortstelle:&nbsp;&nbsp;" + entry.getStation().replaceAll("ö","&ouml;") + "<br />" +
 									"angestellt als:&nbsp;&nbsp;"+entry.getServicetype()+"<br />";
-							if (action.equals("weekView"))
-							{
-								tabentry+= 		
+							
+							tabentry+= 		
 									"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
 									this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 									"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
@@ -131,23 +130,7 @@ public class Timetable {
 									this.tooLong + 
 									"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
 									"<a href='" + path + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
-									"<img src='../image/loeschen.gif' id='del' /></a></div>";
-							}
-							else
-							{
-								tabentry+= 		
-									"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
-									this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
-									"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-									"px; float:left;" +
-									this.tooLong + 
-									"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
-									"<a href='" + path + "/Dispatcher/rosterEntry.do?action=doRemoveDayEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
-									"<img src='../image/loeschen.gif' id='del' /></a></div>";	
-							}
-							
-								
-
+									"<img src='../image/loeschen.gif' id='del' /></a></div>";							
 							}
 						
 						
