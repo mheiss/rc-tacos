@@ -4,7 +4,7 @@
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
-	List<StaffMember> rosterList = (List)params.get("rosterList");
+	List<RosterEntry> rosterList = (List)params.get("rosterList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -26,10 +26,21 @@
 <body >
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
+<%@page import="java.util.Calendar"%>
 
-<%
-	Date current = new Date();
-		SimpleDateFormat formath = new SimpleDateFormat("dd.MM.yyyy");
+<% 
+		Calendar current = Calendar.getInstance();
+		SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		
+		//date to show
+		String startDate = request.getParameter("startDate");
+		//if we have no date, use the current date
+		if (startDate == null || startDate.trim().isEmpty())
+			startDate = formath.format(current.getTime());
+		
+		//current date as calendar
+		current.setTime(df.parse(startDate));
 %>
 
 <form method="post" action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
@@ -87,8 +98,8 @@
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
-										<% 
-										  Timetable timetable = Timetable.getInstance(getServletContext().getContextPath());
+										 <% 
+										  Timetable timetable = new Timetable(getServletContext().getContextPath(),startDate);
 	                                      out.print(timetable.calculateTimetable(rosterList, 1));
 										  %>
 										</tr>
