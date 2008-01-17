@@ -142,6 +142,16 @@
 		<url-pattern>/deleteProfileView</url-pattern>
 	</servlet-mapping>		
 
+	<servlet>
+		<servlet-name>deleteEntryPopUp</servlet-name>
+		<jsp-file>/jsp/deleteEntryPopUp.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>deleteEntryPopUp</servlet-name>
+		<url-pattern>/deleteEntryPopUp</url-pattern>
+	</servlet-mapping>		
+
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
 	</welcome-file-list>
