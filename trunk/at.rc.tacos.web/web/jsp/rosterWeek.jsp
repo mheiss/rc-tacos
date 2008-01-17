@@ -4,7 +4,7 @@
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
     Map<String,Object> params = (Map)request.getAttribute("params");
-    List<StaffMember> rosterList = (List)params.get("rosterList");
+    List<RosterEntry> rosterList = (List)params.get("rosterList");
     UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
