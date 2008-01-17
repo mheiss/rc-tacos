@@ -62,11 +62,11 @@ public class PrinterJobRoster implements Printable{
 		for(AbstractMessage message:resultList)
 		{
 			RosterEntry entry = (RosterEntry)message;
-			g2.drawString("Datum: "+ format2.format(entry.getPlannedStartOfWork())+" >>> " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName() ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+			g2.drawString(" >>> Datum: "+ format2.format(entry.getPlannedStartOfWork())+"; " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName() ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 			i+=15;
-			g2.drawString("Plan-Dienstzeit: " + formatHour.format(entry.getPlannedStartOfWork())+ " - " + formatHour.format(entry.getPlannedEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+			g2.drawString("Dienstzeit: (plan) " + formatHour.format(entry.getPlannedStartOfWork())+ " - " + formatHour.format(entry.getPlannedEndOfWork()) + " | (real) "+ formatHour.format(entry.getRealStartOfWork()) + " - " + formatHour.format(entry.getRealEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 			i+=15;
-			g2.drawString("Real-Dienstzeit: " + formatHour.format(entry.getRealStartOfWork()) + " - " + formatHour.format(entry.getRealEndOfWork()) ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+			g2.drawString("Dienstart: " + entry.getServicetype(),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 			i+=15;
 			g2.drawString("--------------------------------------------- " ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 			i+=20;
