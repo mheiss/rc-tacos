@@ -10,3 +10,51 @@
             Transportnummer wird wie bei Weiterleiten nicht angezeigt. ??? Auch Status S5 nicht.
 
 --> HashMap für Transport stati implementieren
+
+--> Tagesinfofeld an auf PersonalView an Datum hängen
+
+--> TransportView: Timer für Transportaufruf (2 Std. vor geplanter Abfahrtszeit) -am Client über Background Threads
+
+--> VehicleComposite: Kontextmenü ergänzen (Besatzung abziehen, optional: einsatzbereit und außer Dienst setzen
+
+--> Sperren von Einträgen die bearbeitet werden
+
+--> Admin Perspective: Userdaten bearbeiten ??? - ev. nur Team online
+
+--> Admin Perspective: "Log" Tabelle wo alle relevanten Fehler angezeigt werden
+
+--> Client: Implementierung von Loggern (log4j)
+--> Server: Implementierung von Loggern (log4j)
+
+--> receiving time in Datenbank vorhanden?
+
+--> Doku: welcher Leitstellendisponent hat Aktion (alles was gespeichert wird) durchgeführt? 
+
+--> Sorter: gehören getestet. Probleme, wenn Zellen leer
+
+--> TransportViews: Filter aktivieren (Klasse besteht schon, ProgrammStati müssen noch richtig gesetzt werden)
+
+--> TransportViews: Transportnummern implementieren
+
+--> TransportViews: Storno und Weiterleitung implementieren
+
+--> Gesamt: Zugriffsberechtigungen implementieren. Nur Admins für Adminperspektive. User mit nur Lesezugriff ermöglichen.
+
+--> VehicleView: Symbole - richtige Aktivierung implementieren
+
+--> TransportViews: Verhalten, wenn Priorität A - NEF- Verwaltung
+
+--> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???)
+
+--> Server: Logging
+
+--> Allgemein: Links ergänzen
+
+--> Installanleitung
+
+--> User Manual
+
+--> 30!! Seiten Bericht :-( schreiben
+
+--> Server: Programmstatus ergänzen
+
