@@ -126,8 +126,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'AE' field
         if(column == AE_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -139,8 +139,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'S1' field
         if(column == S1_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -152,8 +152,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'S2' field
         if(column == S2_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -165,8 +165,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'S3' field
         if(column == S3_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -178,8 +178,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'S4' field
         if(column == S4_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -191,8 +191,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'S5' field
         if(column == S5_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_DESTINATION_FREE);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -204,8 +204,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
       //sort by the time of the 'S6' field
         if(column == S6_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_CAR_IN_STATION);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -217,8 +217,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'S7' field
         if(column == S7_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -230,8 +230,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'S8' field
         if(column == S8_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)
@@ -243,8 +243,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the time of the 'S9' field
         if(column == S9_SORTER)
         {
-        	int statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getStatus();
-        	int statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getStatus();
+        	long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_OTHER);
+        	long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_OTHER);
         	if(statustime1 > statustime2)
         		returnValue = -1;
         	if(statustime1 < statustime2)

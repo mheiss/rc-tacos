@@ -2,6 +2,7 @@ package at.rc.tacos.client.providers;
 
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
@@ -13,7 +14,6 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.model.StatusMessages;
 
 public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus
 {
@@ -65,10 +65,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     {
     	Transport transport = (Transport)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String street;
-        String city;
-        
-        
+        Calendar cal = Calendar.getInstance();
         switch(columnIndex)
         {
 	        case COLUMN_LOCK:return null;
@@ -83,85 +80,68 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
         			return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
         	else return "";
 	        case COLUMN_TRANSPORT_TO:
-	        	if(transport.getToStreet() == null)
-	        		street = "";
-	        	else street = transport.getToStreet();
-	        	if(transport.getToCity() == null)
-	        		city = "";
-	        	else city = transport.getToCity();
-	        	return street +"/" +city;
-	        case COLUMN_AE://S0
-	        	if(transport.getStatusMessages().size()>0)
-	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp()!= 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED).getTimestamp());
-		        	else 
-		        		return "";
-	        	}
-	        	else return "";
-	        case COLUMN_S1://S1
-	        	if(transport.getStatusMessages().size()>1)
-	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY).getTimestamp());
-		        	else 
-		        		return "";
-	        	}
-	        	else return "";
-	        case COLUMN_S2://S2
-	        	if(transport.getStatusMessages().size()>2)
-	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_PATIENT).getTimestamp());
-		        	else 
-		        		return "";
-	        	}
-	        	else return "";
-	        case COLUMN_S3://S3
-	        	if(transport.getStatusMessages().size()>3)
-	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT).getTimestamp());
-		        	else 
-		        		return "";
-	        	}
-	        	else return "";
-	        case COLUMN_S4://S4
-	        	if(transport.getStatusMessages().size()>4)
-	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_AT_DESTINATION).getTimestamp());
-		        	else 
-		        		return "";
-	        	}
-	        	else return "";
-	        case COLUMN_S7: //S7
-	        	if(transport.getStatusMessages().size()>7)
-	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getTimestamp() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA).getTimestamp());
-		        	else 
-		        		return "";
-	        	}
-	        	else return "";
-	        case COLUMN_S8://S8
-	        	if(transport.getStatusMessages().size()>8)
-	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getTimestamp() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA).getTimestamp());
-		        	else 
-		        		return "";
-	        	}
-	        	else return "";
-	        case COLUMN_S9://S9
-	        	if(transport.getStatusMessages().size()>9)
-	        	{
-		        	if(transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getTimestamp() != 0)
-		        		return sdf.format(transport.getStatusMessages().get(TRANSPORT_STATUS_OTHER).getTimestamp());
-		        	else 
-		        		return "";
-	        	}
-	        	else return "";
+	        	String label="";
+	        	if(transport.getToStreet() != null)
+	        		label += transport.getToStreet();
+	        	if(transport.getToCity() != null)
+	        		label += " / "+ transport.getToCity();
+	        	return label;
+			case COLUMN_AE:
+				//Status 0 
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));
+					return sdf.format(cal.getTime());
+				}
+			case COLUMN_S1:
+				//Status 0 
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
+					return sdf.format(cal.getTime());
+				}
+			case COLUMN_S2:
+				//Status 2
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
+					return sdf.format(cal.getTime());
+				}
+			case COLUMN_S3:
+				//Status 3
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT));
+					return sdf.format(cal.getTime());
+				}
+			case COLUMN_S4:
+				//Status 4 
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
+					return sdf.format(cal.getTime());
+				}
+	        case COLUMN_S7: 
+	        	//Status 7
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA));
+					return sdf.format(cal.getTime());
+				}
+	        case COLUMN_S8:
+	        	//Status 8
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
+					return sdf.format(cal.getTime());
+				}
+	        case COLUMN_S9:
+	        	//Status 9
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
+					return sdf.format(cal.getTime());
+				}
 	        case COLUMN_FZG: 
 	        	if(transport.getVehicleDetail() != null)
 	        	{
