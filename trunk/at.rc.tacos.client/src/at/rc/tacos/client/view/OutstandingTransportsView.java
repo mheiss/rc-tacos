@@ -10,6 +10,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.SubMenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -280,7 +281,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		makeActions();
 		hookContextMenu();
 		
-		viewerOffTrans.addFilter(new TransportViewFilter(PROGRAM_STATUS_OUTSTANDING));
+//		viewerOffTrans.addFilter(new TransportViewFilter(PROGRAM_STATUS_OUTSTANDING));
 //		viewerOffTrans.resetFilters();
 		viewerOffTrans.refresh();
 	}
@@ -327,6 +328,10 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		Menu menu = menuManager.createContextMenu(viewerOffTrans.getControl());
 		viewerOffTrans.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewerOffTrans);
+		
+		
+		
+		
 	}
 	
 	/**
@@ -343,11 +348,17 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		if(transport == null)
 			return;
 		
+		//submenu for the available vehicles
+		MenuManager menuManagerSub = new MenuManager("Fahrzeug zuweisen");
+//		manager.add(menuManagersub);
+		
 		//add the actions
+		
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(menuManagerSub);
 		for(AssignCarAction ac : actionList)
 		{
-			manager.add(ac);
+			menuManagerSub.add(ac);
 		}
 		manager.add(new Separator());
 		manager.add(editTransportAction);
