@@ -61,9 +61,9 @@ public class TestDataSource
     private void initPhones()
     {
         phoneList = new ArrayList<MobilePhoneDetail>();
-        MobilePhoneDetail p1 = new MobilePhoneDetail("P1","0699-123456789");
-        MobilePhoneDetail p2 = new MobilePhoneDetail("P2","0664-123456789");
-        MobilePhoneDetail p3 = new MobilePhoneDetail("P3","0676-123456789");
+        MobilePhoneDetail p1 = new MobilePhoneDetail("BM01","0699-123456789");
+        MobilePhoneDetail p2 = new MobilePhoneDetail("BM02","0664-123456789");
+        MobilePhoneDetail p3 = new MobilePhoneDetail("BM03","0676-123456789");
         phoneList.add(p1);
         phoneList.add(p2);
         phoneList.add(p3);
@@ -237,8 +237,8 @@ public class TestDataSource
         v1.setVehicleName("Bm01");
         v1.setVehicleType("RTW");
         v1.setVehicleNotes("notes vehicle 1");
-        v1.setBasicStation("BM");
-        v1.setCurrentStation("BM");
+        v1.setBasicStation(Constants.STATION_BRUCK);
+        v1.setCurrentStation(Constants.STATION_KAPFENBERG);
         v1.setReadyForAction(true);
         v1.setOutOfOrder(false);
         v1.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
@@ -252,8 +252,8 @@ public class TestDataSource
         v2.setVehicleName("Bm02");
         v2.setVehicleType("KTW");
         v2.setVehicleNotes("notes vehicle 2");
-        v2.setBasicStation("BM");
-        v2.setCurrentStation("KA");
+        v2.setBasicStation(Constants.STATION_BRUCK);
+        v2.setCurrentStation(Constants.STATION_TURNAU);
         v2.setReadyForAction(true);
         v2.setOutOfOrder(false);
         v2.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
@@ -266,8 +266,8 @@ public class TestDataSource
         v3.setVehicleId(2);
         v3.setVehicleName("Bm03");
         v3.setVehicleType("RTW");
-        v3.setBasicStation("KA");
-        v3.setCurrentStation("KA");
+        v3.setBasicStation(Constants.STATION_BRUCK);
+        v3.setCurrentStation(Constants.STATION_BRUCK);
         v3.setReadyForAction(false);
         v3.setOutOfOrder(true);
         v3.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
