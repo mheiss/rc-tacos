@@ -23,19 +23,20 @@
 <body >
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
-<% 
-		Calendar current = Calendar.getInstance();
-		SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-		
-		//date to show
-		String startDate = request.getParameter("startDate");
-		//if we have no date, use the current date
-		if (startDate == null || startDate.trim().isEmpty())
-			startDate = formath.format(current.getTime());
-		
-		//current date as calendar
-		current.setTime(df.parse(startDate));
+<%
+	Calendar current = Calendar.getInstance();
+	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
+	DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+	Date today = new Date();
+	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	//date to show
+	String startDate = request.getParameter("startDate");
+	//if we have no date, use the current date
+	if (startDate == null || startDate.trim().isEmpty())
+		startDate = formath.format(current.getTime());
+
+	//current date as calendar
+	current.setTime(df.parse(startDate));
 %>
 
 <form method="post" action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
@@ -65,7 +66,7 @@
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Wochen&uuml;bersicht ihrer Prim&auml;r-Dienststelle</td>
-					<td width="33%" align="right">Heute ist der <%= formath.format(current.getTime()) %>
+					<td width="33%" align="right">Heute ist der <%=format.format(today)%>
 					</td>
 					<td>
 				</tr>
@@ -87,6 +88,21 @@
                         </tr>
                         <tr>
                             <td id="BlockContent">
+                            <table width="100%" border="0">
+								<tr>
+									<td valign="middle" align="left" width="20" >
+									<% current.add(Calendar.DAY_OF_MONTH, -7);%>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterWeek.do?action=weekView&startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_links.jpg" alt="# " class="hidefocus" ></a>
+									</td><td valign="middle" align="left">
+									<%=formath.format(current.getTimeInMillis())%>
+									</td>
+									<td valign="middle" align="right">
+									<% current.add(Calendar.DAY_OF_MONTH, +14);%><%=formath.format(current.getTimeInMillis())%>
+									</td><td valign="middle" align="right" width="20" >
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterWeek.do?action=weekView&startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_rechts.jpg" alt="# " class="hidefocus" ></a>
+									</td>
+								</tr>
+							</table>
                             <table width="100%" border='0' cellpadding='0' cellspacing='0'>
                                 <tr>
                                     <td width="50%"><!-- Timetablebox Day -->
