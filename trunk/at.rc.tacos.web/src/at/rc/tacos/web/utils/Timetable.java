@@ -125,11 +125,12 @@ public class Timetable
 							"px; float:left;" +
 							this.tooLong + 
 							"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
-							"<a href='" + path + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
-							"<img src='../image/loeschen.gif' id='del' /></a></div>";							
+							"<a href='#' onmousedown=\"openPopupToDelete('" +  path + "/Dispatcher/deleteEntryPopUp.do?id=" + entry.getRosterId() + "')\" >" +
+							"<img src='../image/loeschen.gif' id='del'  /></a></div>";							
 					}
 				}
 				tabentry+="</div></div>";
+				//"<a href='" + path + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
 			}
 			//timetableDateHead+
 			timetable+=TimeList+tabentryHead+tabentry;
