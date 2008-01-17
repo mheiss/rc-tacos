@@ -49,7 +49,7 @@ public class PrinterJobRoster implements Printable{
 	public void drawPageContents(Graphics2D g2, int pageNo, PageFormat pageFormat) {
 		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 		SimpleDateFormat format2 = new SimpleDateFormat("E, dd.MM.yyyy");
-
+		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 
 		g2.setColor(new Color(182,16,0));
 		g2.setFont(new Font("Verdana", Font.BOLD, 15)); 
@@ -62,11 +62,11 @@ public class PrinterJobRoster implements Printable{
 		for(AbstractMessage message:resultList)
 		{
 			RosterEntry entry = (RosterEntry)message;
-			g2.drawString(">>> " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName() ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+			g2.drawString("Datum: "+ format2.format(entry.getPlannedStartOfWork())+" >>> " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName() ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 			i+=15;
-			g2.drawString("Plan-Dienstzeit: " + format.format(entry.getPlannedStartOfWork())+ " - " + format.format(entry.getPlannedEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+			g2.drawString("Plan-Dienstzeit: " + formatHour.format(entry.getPlannedStartOfWork())+ " - " + formatHour.format(entry.getPlannedEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 			i+=15;
-			g2.drawString("Real-Dienstzeit: " + format.format(entry.getRealStartOfWork()) + " - " + format.format(entry.getRealEndOfWork()) ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+			g2.drawString("Real-Dienstzeit: " + formatHour.format(entry.getRealStartOfWork()) + " - " + formatHour.format(entry.getRealEndOfWork()) ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 			i+=15;
 			g2.drawString("--------------------------------------------- " ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 			i+=20;
