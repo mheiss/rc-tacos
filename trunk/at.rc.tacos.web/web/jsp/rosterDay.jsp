@@ -3,9 +3,10 @@
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
-	Map<String,Object> params = (Map)request.getAttribute("params");
-	List<RosterEntry> rosterList = (List)params.get("rosterList");
-	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
+	Map<String, Object> params = (Map) request.getAttribute("params");
+	List<RosterEntry> rosterList = (List) params.get("rosterList");
+	UserSession userSession = (UserSession) session
+			.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
@@ -20,24 +21,26 @@
 
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
-<body >
+<body>
 <%@ page import="java.text.*"%>
 <%@ page import="java.util.Date"%>
-<% 
-		Calendar current = Calendar.getInstance();
-		SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-		
-		//date to show
-		String startDate = request.getParameter("startDate");
-		//if we have no date, use the current date
-		if (startDate == null || startDate.trim().isEmpty())
-			startDate = formath.format(current.getTime());
-		
-		//current date as calendar
-		current.setTime(df.parse(startDate));
+<%
+	Calendar current = Calendar.getInstance();
+	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
+	DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
+	//date to show
+	String startDate = request.getParameter("startDate");
+	//if we have no date, use the current date
+	if (startDate == null || startDate.trim().isEmpty())
+		startDate = formath.format(current.getTime());
+
+	//current date as calendar
+	current.setTime(df.parse(startDate));
 %>
-<form method="post" action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
+<form method="post"
+	action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>"
+	border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
 	<thead>
@@ -60,11 +63,14 @@
 			<td id="MainBodyContent">
 			<table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName() %>
-					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
+					<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName() + " "
+					+ userSession.getStaffMember().getLastName()%>
+					&nbsp;&nbsp;( <a
+						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Tages&uuml;bersicht ihrer Prim&auml;r-Dienststelle</td>
-					<td width="33%" align="right">Heute ist der <%= formath.format(current.getTime()) %>
+					<td width="33%" align="center">Tages&uuml;bersicht ihrer
+					Prim&auml;r-Dienststelle</td>
+					<td width="33%" align="right">Heute ist der <%=formath.format(current.getTime())%>
 					</td>
 					<td>
 				</tr>
@@ -78,8 +84,8 @@
 					<!-- #### CONTENT -->
 
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
- 
-                    
+
+
 					<table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
@@ -87,17 +93,30 @@
 						</tr>
 						<tr>
 							<td id="BlockContent">
+							<table width="100%" border="0">
+								<tr>
+									<td>
+									<% current.add(Calendar.DAY_OF_MONTH, -1);%>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>"> <<< <%=formath.format(current.getTimeInMillis())%></a></td>
+									<td>
+									<div align="right">
+									<% current.add(Calendar.DAY_OF_MONTH, +2);%>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>"> >>> <%=formath.format(current.getTimeInMillis())%></a></div>
+									</td>
+								</tr>
+							</table>
+
 							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
 								<tr>
 									<td width="50%"><!-- Timetablebox Day -->
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
-										
 										<tr>
-										  <% 
-										  Timetable timetable = new Timetable(getServletContext().getContextPath(),startDate);
-	                                      out.print(timetable.calculateTimetable(rosterList, 1));
-										  %>
+											<%
+												Timetable timetable = new Timetable(getServletContext()
+														.getContextPath(), startDate);
+												out.print(timetable.calculateTimetable(rosterList, 1));
+											%>
 										</tr>
 									</table>
 									</td>
@@ -106,8 +125,7 @@
 							</td>
 						</tr>
 					</table>
-					<% current.add(Calendar.DAY_OF_MONTH,1); %>
-					<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>">>><%=formath.format(current.getTimeInMillis())%></a></td>
+					</td>
 				</tr>
 			</table>
 			</td>
