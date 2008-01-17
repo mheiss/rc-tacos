@@ -1,9 +1,12 @@
 package at.rc.tacos.server.controller;
 
 import java.util.*;
+import java.util.Map.Entry;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
+import at.rc.tacos.core.db.dao.memory.UserDAOMemory;
 import at.rc.tacos.core.net.internal.*;
 import at.rc.tacos.model.*;
 import at.rc.tacos.codec.*;
@@ -266,5 +269,8 @@ public class ServerController
         //vehicles
         for(VehicleDetail vehicle:source.vehicleList)
             factory.createVehicleDetailDAO().addVehicle(vehicle); 
+        //logins
+        for(Entry<String,String> login:source.userLogin.entrySet())
+        	UserDAOMemory.getInstance().addLogin(new Login(login.getKey(),login.getValue(),false));
     }
 }
