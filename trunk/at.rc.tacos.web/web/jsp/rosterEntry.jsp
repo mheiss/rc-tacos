@@ -23,8 +23,6 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <script type="text/javascript" src="../js/calendar_js.js"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
-
-
 </head>
 <body>
 
@@ -33,8 +31,8 @@
 <%@page import="java.util.Locale"%>
 
 <%
-	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 	Date current = new Date();
+	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 %>
 <form method="post" name="form"
 	action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>"

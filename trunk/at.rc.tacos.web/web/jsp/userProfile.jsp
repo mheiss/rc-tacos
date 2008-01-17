@@ -5,8 +5,7 @@
 <%
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	List<StaffMember> list = (List) params.get("jobList");
-	UserSession userSession = (UserSession) session
-			.getAttribute("userSession");
+	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
@@ -18,11 +17,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../css/stylesheet.css" rel="stylesheet" />
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
-
 <title>TACOS :: RK Bruck-Kapfenberg</title>
-
-
-
 </head>
 
 <body>
@@ -31,7 +26,7 @@
 
 <%
 	Date current = new Date();
-	SimpleDateFormat formath = new SimpleDateFormat("dd.MM.yyyy");
+	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
 %>
 
 <form method="post" action="" border='0' cellpadding='0' cellspacing='0'>
