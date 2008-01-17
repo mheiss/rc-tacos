@@ -96,14 +96,14 @@
 								<tr>
 									<td valign="middle" align="left" width="20" >
 									<% current.add(Calendar.DAY_OF_MONTH, -1);%>
-									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_links.jpg" alt="# " class="hidefocus" ></a>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_links.jpg" alt="# " width="15" height="15" class="hidefocus" ></a>
 									</td><td valign="middle" align="left">
 									<%=formath.format(current.getTimeInMillis())%>
 									</td>
 									<td valign="middle" align="right">
 									<% current.add(Calendar.DAY_OF_MONTH, +2);%><%=formath.format(current.getTimeInMillis())%>
 									</td><td valign="middle" align="right" width="20" >
-									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_rechts.jpg" alt="# " class="hidefocus" ></a>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/rosterDay.do?action=dayView&startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_rechts.jpg" alt="# " width="15" height="15" class="hidefocus" ></a>
 									</td>
 								</tr>
 							</table>
