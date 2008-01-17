@@ -1,18 +1,19 @@
 package at.rc.tacos.web.utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.web.web.Dispatcher;
 
-public class Timetable {
-	
-	private static Timetable instance;
-	private static String timetable;
+public class Timetable 
+{
+	private String timetable;
+	private String startDate;
 	private int height;
 	private int width;
 	private String tabentry;
@@ -21,14 +22,10 @@ public class Timetable {
 	private String TimeList;
 	private String tooLong;
 	private String path;
-	private static List<StaffMember> rosterList=null;
-	private static  int daysToShow=0;
-	
-	
-	public Timetable(){}
-	
-	public Timetable(String path,List<StaffMember> rosterList, int daysToShow){
+
+	public Timetable(String path,String startDate){
 		timetable = "";
+		this.startDate = startDate;
 		height = 0;
 		width = 0;
 		tabentry = "";
@@ -36,25 +33,25 @@ public class Timetable {
 		timetableDateHead ="";
 		TimeList="";
 		tooLong="";
-		this.setPath(path);
-		this.setDaysToShow(daysToShow);
-		this.setRosterList(rosterList);
-		
+		this.path = path;
 	}
-	
-	public String calculateTimetable(){
-		
+
+	public String TimetableInfo(List<RosterEntry> rosterList){
+		String info="";
+
+		return info;
+	}
+
+	public String calculateTimetable(List<RosterEntry> rosterList, int daysToShow){
+
 		boolean ok1 = true;
 		boolean ok2 = true;
-		String date = null;
-		
-		SimpleDateFormat format = new SimpleDateFormat("E, dd.MM.yyyy");
+
+		SimpleDateFormat format = new SimpleDateFormat("E, dd-MM-yyyy");
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 		int zaehle = 0;
 		String info="";
-		
-		
-		
+
 		TimeList += "<div id='mainDayContainerTL'><div style=' padding:5px; width:100%; height:25px; vertical-align:middle; text-align:center;' >Zeit</div><div style='width:50px; height:400px;' id='TimeTab' align='center'>";
 		int i = 5;
 		do {
@@ -71,177 +68,147 @@ public class Timetable {
 				TimeList+="<div  id='timeList'>"+i+":00</div>";
 			}
 			i++;
-			
+
 		}while(ok1);
-		
+
 		TimeList+="</div></div>";
-		
-		if(getRosterList().isEmpty()!=true){
+
+		if(rosterList.isEmpty()!=true)
+		{
 			Date dt=null;
-            Date dtCal=null;
-				for(int j=0;j<getDaysToShow();j++){
-					if(getDaysToShow()>1){
-						if(j==0){
-			           		  dt = new Date();
-			           		  dtCal = dt;
-			           	}else{
-			           		  dt=dtCal;
-			           		  dtCal = new Date(dt.getTime()+86400000);
-			           	}
-						
-					}else{
-						dt = new Date();
-						dtCal = dt;
-					}
-					
-		           	 //set date + one day(->timestamp=86400000)
-					
-		             tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + format.format(dtCal) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
-					System.out.println("COUNT: "+getRosterList().size());
-		            for(AbstractMessage message:getRosterList())
+			Date dtCal=null;
+			for(int j=0;j<daysToShow;j++)
+			{
+				if(j==0)
+				{
+					//convert the start date to a date
+					DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+					try
 					{
-						
-						RosterEntry entry = (RosterEntry)message;
-						if(format.format(new Date(entry.getPlannedStartOfWork())).equals(format.format(dtCal))){
-						timetableDateHead += "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><a href='#'>zur&uuml;</a><a href='#'>weiter</a></div>";
-						timetableDateHead += "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
-
-							
-							zaehle++;
-							info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
-									"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob().replaceAll("ä","&auml;") + "<br /></b>" +
-									"Dienstdatum:&nbsp;&nbsp;" + format.format(new Date(entry.getPlannedStartOfWork())) + "<br />" +
-									"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
-									"Ortstelle:&nbsp;&nbsp;" + entry.getStation().replaceAll("ö","&ouml;") + "<br />" +
-									"angestellt als:&nbsp;&nbsp;"+entry.getServicetype()+"<br />";
-							
-							tabentry+= 		
-
-								"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
-								this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
-								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"px; float:left;" +
-								this.tooLong + 
-								"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
-								"<a href='" + getPath() + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
-								"<img src='../image/loeschen.gif' id='del' /></a></div>";
-													
-
-							}
-						
-						
+						dt = df.parse(startDate);
 					}
-					tabentry+="</div></div>";
-					
+					catch(ParseException pe)
+					{
+						System.out.println("Invalid start date, using current date");
+						dt = new Date();
+					}
+					dtCal = dt;
 				}
-				
-				timetable+=TimeList+tabentryHead+tabentry;
-				tabentry="";
+				else
+				{
+					dt = dtCal;
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(dt.getTime());
+					cal.add(Calendar.DAY_OF_MONTH, 1);
+					dtCal = cal.getTime();
+				}
+
+				tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + format.format(dtCal) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
+				for(AbstractMessage message:rosterList)
+				{
+					RosterEntry entry = (RosterEntry)message;
+					if(format.format(new Date(entry.getPlannedStartOfWork())).equals(format.format(dtCal))){
+						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
+
+						zaehle++;
+						info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
+						"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob().replaceAll("ä","&auml;") + "<br /></b>" +
+						"Dienstdatum:&nbsp;&nbsp;" + format.format(new Date(entry.getPlannedStartOfWork())) + "<br />" +
+						"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
+						"Ortstelle:&nbsp;&nbsp;" + entry.getStation().replaceAll("ö","&ouml;") + "<br />" +
+						"angestellt als:&nbsp;&nbsp;"+entry.getServicetype()+"<br />";
+
+						tabentry+= 		
+							"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
+							this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
+							"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
+							"px; float:left;" +
+							this.tooLong + 
+							"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
+							"<a href='" + path + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() + "' alt='loeschen' name='loeschen' >" +
+							"<img src='../image/loeschen.gif' id='del' /></a></div>";							
+					}
+				}
+				tabentry+="</div></div>";
+			}
+			//timetableDateHead+
+			timetable+=TimeList+tabentryHead+tabentry;
+			tabentry="";
 			return timetable;
 		}
-		else{
+		else
+		{
 			return "Keine Dienste vorhanden!";
 		}
-		
+
 	}
 
 	//caculate the height-value of the div-tag
-	private int calculateHeightForEntry(String begin, String end){
+	private int calculateHeightForEntry(String begin, String end)
+	{
 		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
 		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
 		int retval = 0;
 		int widthFromTop = this.calculateStartForEntry(begin);
 		tooLong="";
-		
+
 		if(endPos<startPos){
 			retval = ((24+endPos)-startPos)*15;
-		}else{
+		}
+		else
+		{
 			retval = (endPos-startPos)*15;
 		}
-		
+
 		//check and cut too long values 
-		if((widthFromTop+retval)>365){
+		if((widthFromTop+retval)>365)
+		{
 			tooLong="border-bottom-width:3px; border-bottom-style:dotted; border-bottom-color:black;";
 			retval = retval -((widthFromTop+retval)-360);
 		}
-		
+
 		return retval;
 	}
 
 	//caculate the startposition of the div-tag
-	private int calculateStartForEntry(String begin){
+	private int calculateStartForEntry(String begin)
+	{
 		int startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue());
-		if(startPos<5){
+		if(startPos<5)
+		{
 			startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())+19;
 		}else{
 			startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue())-5;
 		}
 		return (startPos*15)-2;
 	}
-	
 
-    /**
-     * Creates a new instance of this class or returns the 
-     * previousely used instance.
-     * @return a instance of the <code>Timetable</code> class.
-     */
-//	public static Timetable getInstance(String path, List<StaffMember> rosterList, int daysToShow) //step 1 
-//    { 
-//        //do we have a valid instance? 
-////        if(instance == null) 
-//        	instance = new Timetable(path,rosterList, daysToShow); 
-//        return instance; 
-//    }
-    
-    /**
-     * GETTER and SETTERS
-     * 
-     */
-	public static String getTimetable() {
+	/**
+	 * GETTER and SETTERS
+	 * 
+	 */
+	public String getTimetable() 
+	{
 		return timetable;
 	}
 
-	public int getHeight() {
+	public int getHeight() 
+	{
 		return height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(int height) 
+	{
 		this.height = height;
 	}
 
-	public int getWidth() {
+	public int getWidth() 
+	{
 		return width;
 	}
 
-	public void setWidth(int width) {
+	public void setWidth(int width) 
+	{
 		this.width = width;
-	}
-
-	public static int getDaysToShow() {
-		return daysToShow;
-	}
-
-	public static void setDaysToShow(int daysToShow) {
-		Timetable.daysToShow = daysToShow;
-	}
-
-	public static List<StaffMember> getRosterList() {
-		return rosterList;
-	}
-
-	public static void setRosterList(List<StaffMember> rosterList) {
-		Timetable.rosterList = rosterList;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
 	}   
-	
-	
-	
-	
 }
