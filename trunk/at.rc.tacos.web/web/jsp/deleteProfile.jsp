@@ -14,6 +14,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../css/stylesheet.css" rel="stylesheet" />
+<script type="text/javascript" src="../js/windowActions.js"></script>
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
@@ -90,7 +91,7 @@
                                                 %> 
                                                     <tr> 
                                                         <td id="BlockContent"><%=member.getUserName()%></td> 
-                                                        <td id="BlockContent"><a href="#" onmousedown="openPopUpToDelete(<%=request.getContextPath()+"/Dispatcher/deleteEntryPopUp.do?id="+ member.getPersonId()%>)"><img src="../image/loeschen.gif"></a></td> 
+                                                        <td id="BlockContent"><a href="#" onmousedown="openPopupToDelete('<%=request.getContextPath()+"/Dispatcher/deleteEntryPopUp.do?id="+ member.getPersonId()%>')"><img src="../image/loeschen.gif"></a></td> 
                                                     </tr> 
                                                     <% 
                                                     } 
