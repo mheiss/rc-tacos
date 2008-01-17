@@ -148,9 +148,19 @@
 	</servlet>
 
 	<servlet-mapping>
+		<servlet-name>deleteEntryPopUpView</servlet-name>
+		<url-pattern>/deleteEntryPopUpView</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>deleteEntryPopUpView</servlet-name>
+		<jsp-file>/jsp/deleteEntryPopUp.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
 		<servlet-name>deleteEntryPopUp</servlet-name>
 		<url-pattern>/deleteEntryPopUp</url-pattern>
-	</servlet-mapping>		
+	</servlet-mapping>	
 
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
