@@ -14,7 +14,7 @@ public class VehicleManager extends PropertyManager
 {
     //the item list
     private List<VehicleDetail> objectList = new ArrayList<VehicleDetail>();
-    
+
     /**
      * Default class constructor
      */
@@ -22,7 +22,7 @@ public class VehicleManager extends PropertyManager
     {
         objectList = new ArrayList<VehicleDetail>();
     }
-    
+
     /**
      * Adds a new vehicle to the vehicle manager.
      * This class is thread save, that means adding new vehicles,
@@ -49,71 +49,52 @@ public class VehicleManager extends PropertyManager
      */
     public void remove(final VehicleDetail vehicle) 
     {
-    	 Display.getDefault().syncExec(new Runnable ()    
-         {
-             public void run ()       
-             {
-		        objectList.remove(vehicle);
-		        firePropertyChange("VEHICLE_REMOVE", vehicle, null); 
-             }
-         });
+        Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {
+                objectList.remove(vehicle);
+                firePropertyChange("VEHICLE_REMOVE", vehicle, null); 
+            }
+        });
     }
-    
+
     /**
      * Updates the vehicle in the list
      */
     public void update(final VehicleDetail vehicle)
     {
-    	Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
-            	System.out.println("Manager: Update message");
-            	//get the position of the entry
-            	int index = objectList.indexOf(vehicle);
-            	//We must reuse the vehicle we have in the memory and
-            	//update all the vales
-            	//This is because we use DataBinding to reflect the
-            	//status of the vehicle
-            	VehicleDetail update = objectList.get(index);
-            	update.setVehicleId(vehicle.getVehicleId());
-            	update.setVehicleName(vehicle.getVehicleName());
-            	update.setVehicleType(vehicle.getVehicleType());
-            	update.setVehicleNotes(vehicle.getVehicleNotes());
-            	update.setBasicStation(vehicle.getBasicStation());
-            	update.setCurrentStation(vehicle.getCurrentStation());
-            	update.setDriverName(vehicle.getDriverName());
-            	update.setParamedicIName(vehicle.getParamedicIName());
-            	update.setParamedicIIName(vehicle.getParamedicIIName());
-            	update.setMobilPhone(vehicle.getMobilePhone());
-            	update.setMostImportantTransportStatus(vehicle.getMostImportantTransportStatus());
-            	update.setOutOfOrder(vehicle.isOutOfOrder());
-            	update.setReadyForAction(vehicle.isReadyForAction());
-            	//at least update the images
-            	update.updateImages();
-            	//replace by the new
-            	objectList.set(index, vehicle);
-            	//we do not fire change event here, the values are updated by the data binding
-            	firePropertyChange("VEHICLE_UPDATE",null,update);
+                //get the position of the entry
+                int index = objectList.indexOf(vehicle);
+                //replace by the new
+                objectList.set(index, vehicle);
+                //update the data binding
+                firePropertyChange("VEHICLE_UPDATE",null,vehicle);
+                //update the images
+                vehicle.updateImages();
             }
         });
     }
-    
+
     /**
      * Clears the list of vehicles
      */
     public void resetVehicles()
     {
-    	Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
-		    	firePropertyChange("VEHICLE_CLEAR", null, null);
-		    	objectList.clear();
+                firePropertyChange("VEHICLE_CLEAR", null, null);
+                objectList.clear();
             }
         });
     }
-    
+
     /**
      * Converts the list to an array
      * @return the list as a array
@@ -122,7 +103,7 @@ public class VehicleManager extends PropertyManager
     {
         return objectList.toArray();
     }
-    
+
     /**
      * Returns the current list of vehicles 
      * @return the vehicle list
@@ -131,7 +112,7 @@ public class VehicleManager extends PropertyManager
     {
         return objectList;
     }
-    
+
     /**
      * Returns a list of all vehicles which have NOT the status <code>VehicleDetail.outOfOrder</code><br>
      * and the status the status <code>VehicleDetail.readyForAction.</code>

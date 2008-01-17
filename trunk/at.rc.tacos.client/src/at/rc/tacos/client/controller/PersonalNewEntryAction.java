@@ -5,6 +5,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.view.RosterEntryForm;
 import at.rc.tacos.factory.ImageFactory;
 

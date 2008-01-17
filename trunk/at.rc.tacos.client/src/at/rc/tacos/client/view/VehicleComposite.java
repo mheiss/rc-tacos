@@ -257,6 +257,9 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
+	    //update the bindung
+        bindValues();
+        
 		if("VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			if(vehicle.isOutOfOrder())
@@ -265,11 +268,9 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 				setBackground(CustomColors.GREY_COLOR);
 			}
 		}
-		
 		update();
 		redraw();
 		getDisplay().update();
 		layout(true);
-
 	}
 }

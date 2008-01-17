@@ -71,6 +71,7 @@ public class SessionManager extends PropertyManager
     {
         //store the login information
         this.loginInformation = loginInformation;
+        System.out.println(loginInformation.getUserInformation().getEMail());
         //set the username in the client session
         NetWrapper.getDefault().getClientSession().setAuthenticated(loginInformation.getUsername(), false);
         firePropertyChange("AUTHENTICATION_SUCCESS", null, loginInformation.getUsername());
