@@ -1,7 +1,5 @@
 --> Keine Ready liste vom vehiceln
 
---> Die Fahrzeuge sollten no in a Untermenü (Hauptmenü: Fahrzeug zuweisen, Untermenü Bm03, Bm05...) da werd i no probieren
-
 --> Weiterleiten (= an andere Dienststelle z.B.)       
                   i setz dabei die Transportnummer auf "WTGL" und den TransportStatus S5 
 
@@ -57,4 +55,12 @@
 --> 30!! Seiten Bericht :-( schreiben
 
 --> Server: Programmstatus ergänzen
+
+
+
+
+
+DONE:
+
+--> Die Fahrzeuge sollten no in a Untermenü (Hauptmenü: Fahrzeug zuweisen, Untermenü Bm03, Bm05...) da werd i no probieren
 
