@@ -88,9 +88,8 @@
 										cellspacing='0'>
 										<tr>
 										<% 
-										  final String action = request.getParameter("action");  
 										  Timetable timetable = Timetable.getInstance(getServletContext().getContextPath());
-	                                      out.print(timetable.calculateTimetable(rosterList, 1, action));
+	                                      out.print(timetable.calculateTimetable(rosterList, 1));
 										  %>
 										</tr>
 									</table>
