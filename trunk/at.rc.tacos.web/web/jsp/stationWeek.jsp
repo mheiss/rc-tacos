@@ -70,7 +70,7 @@
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%= request.getParameter("action") %></td>
-					<td width="33%" align="right">Heute ist der <%= formath.format(current) %>
+					<td width="33%" align="right">Heute ist der <%= formath.format(current.getTime()) %>
 					</td>
 					<td>
 				</tr>
