@@ -127,9 +127,9 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 			}
 		case COLUMN_S6:
 			//Status 6 
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
 			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
+				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION));
 				return sdf.format(cal.getTime());
 			}
 		case COLUMN_FZG:
