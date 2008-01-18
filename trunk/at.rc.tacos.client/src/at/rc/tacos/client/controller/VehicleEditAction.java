@@ -50,7 +50,7 @@ public class VehicleEditAction extends Action
 	@Override
 	public ImageDescriptor getImageDescriptor() 
 	{
-		return ImageFactory.getInstance().getRegisteredImageDescriptor("image.vehicle.vehicle");
+		return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.carRed24");
 	}
 
 	/**
