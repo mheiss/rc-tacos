@@ -143,6 +143,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>listUserView</servlet-name>
+		<jsp-file>/jsp/listUser.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>listUserView</servlet-name>
+		<url-pattern>/listUserView</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
 		<servlet-name>updateEntryView</servlet-name>
 		<jsp-file>/jsp/updateEntry.jsp</jsp-file>
 	</servlet>
