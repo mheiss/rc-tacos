@@ -155,7 +155,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
     
     /**
      * transport type used to differ between a normal and an emergency transport
-     * possible values: prebooking, emergencyTransport, wholeTransportDetails
+     * possible values: prebooking, emergencyTransport, ?wholeTransportDetails?- possible?
      */
     private String transportType;
 	
@@ -203,6 +203,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         createNew = false;
         this.transport = transport;
         this.editingType = editingType;
+        transportType = "both";
        
         //create the fields
         createContents();
@@ -997,7 +998,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		//set possible priorities
 		if(transportType.equalsIgnoreCase("prebooking"))
 			comboPrioritaet.setItems(prebookingPriorities);
-		if(transportType.equalsIgnoreCase("emergencyTransport"))
+		if(transportType.equalsIgnoreCase("emergencyTransport") || transportType.equalsIgnoreCase("both"))
 			comboPrioritaet.setItems(emergencyAndTransportPriorities);
 		comboPrioritaet.setData("newKey", null);
 		final FormData fd_comboPrioritaet = new FormData();
@@ -1518,11 +1519,23 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			planungGroup.setVisible(false);
 		}
 		
+		
+		
+		
 		if("journal".equalsIgnoreCase(editingType))
 		{
 			transportdetailsGroup.setVisible(true);
 			statusmeldungenGroup.setVisible(true);
 			personalAmFahrzeugGroup.setVisible(true);
+		}
+		else if ("both".equalsIgnoreCase(transportType))//in the case of editing a transport from the following views: UnderwayTransportsView, OutstandingTransportsView, PrebookingView
+		{
+			transportdetailsGroup.setVisible(false);
+			statusmeldungenGroup.setVisible(false);
+			personalAmFahrzeugGroup.setVisible(false);
+			
+			planungGroup.setVisible(true);
+			planungGroup_1.setVisible(true);
 		}
 		else
 		{
