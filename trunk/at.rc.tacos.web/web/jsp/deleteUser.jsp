@@ -5,8 +5,7 @@
 <%
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	List<StaffMember> list = (List) params.get("employeeList");
-	UserSession userSession = (UserSession) session
-			.getAttribute("userSession");
+	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.Constants"%>
