@@ -22,6 +22,10 @@ public class TransportEncoder  implements MessageEncoder
         Transport transport = (Transport)message;
         //start
         writer.writeStartElement(Transport.ID);
+        //the internal transport status
+        writer.writeStartElement("internalTransportStatus");
+        writer.writeCharacters(Integer.toString(transport.getProgramStatus()));
+        writer.writeEndElement();
         //the transport id
         writer.writeStartElement("transportId");
         writer.writeCharacters(String.valueOf(transport.getTransportId()));
@@ -196,8 +200,8 @@ public class TransportEncoder  implements MessageEncoder
         //get the encoder for the vehicle
         if(transport.getVehicleDetail() != null)
         {
-        encoder = ProtocolCodecFactory.getDefault().getEncoder(VehicleDetail.ID);
-        encoder.doEncode(transport.getVehicleDetail(), writer);
+        	encoder = ProtocolCodecFactory.getDefault().getEncoder(VehicleDetail.ID);
+        	encoder.doEncode(transport.getVehicleDetail(), writer);
         }
         //encode the status messages
         for(Entry<Integer,Long> entry:transport.getStatusMessages().entrySet())

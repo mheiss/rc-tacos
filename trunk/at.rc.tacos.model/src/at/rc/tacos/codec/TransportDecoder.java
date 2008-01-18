@@ -56,6 +56,8 @@ public class TransportDecoder implements MessageDecoder
                 }
                 
                 //get the type of the element and set the corresponding value
+                if("internalTransportStatus".equalsIgnoreCase(startName))
+                	transport.setProgramStatus(Integer.valueOf(reader.getElementText()));
                 if("transportId".equalsIgnoreCase(startName))
                     transport.setTransportId(Long.valueOf(reader.getElementText())); 
                 if("transportNumber".equalsIgnoreCase(startName))
