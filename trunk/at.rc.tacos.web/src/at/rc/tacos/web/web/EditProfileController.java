@@ -7,7 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ProfileController implements Controller {
+public class EditProfileController implements Controller {
 
 	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context)
 	{

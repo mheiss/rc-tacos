@@ -45,7 +45,7 @@ public class ControllerFactory {
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.userProfile")))
 		{
-			return new ProfileController();
+			return new EditProfileController();
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.addUser")))
 		{
