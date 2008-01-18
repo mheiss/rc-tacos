@@ -140,7 +140,17 @@
 	<servlet-mapping>
 		<servlet-name>deleteUserView</servlet-name>
 		<url-pattern>/deleteUserView</url-pattern>
-	</servlet-mapping>		
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>updateEntryView</servlet-name>
+		<jsp-file>/jsp/updateEntry.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>updateEntryView</servlet-name>
+		<url-pattern>/updateEntryView</url-pattern>
+	</servlet-mapping>				
 
 	<servlet>
 		<servlet-name>deleteEntryPopUpView</servlet-name>
