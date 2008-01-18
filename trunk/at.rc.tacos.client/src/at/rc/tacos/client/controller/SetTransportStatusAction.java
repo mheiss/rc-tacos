@@ -56,7 +56,7 @@ public class SetTransportStatusAction extends Action
 		//set the status
 		transport.addStatus(status, timestamp);
 		System.out.println("___________SetTransportStatusAction, transport: " +transport);
-		System.out.println("..status: " +status);
+		System.out.println("..status: " +status +" " +timestamp);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
