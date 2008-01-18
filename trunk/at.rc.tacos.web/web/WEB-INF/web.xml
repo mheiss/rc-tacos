@@ -93,13 +93,13 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>userProfileView</servlet-name>
-		<jsp-file>/jsp/userProfile.jsp</jsp-file>
+		<servlet-name>editProfileView</servlet-name>
+		<jsp-file>/jsp/editProfile.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>userProfileView</servlet-name>
-		<url-pattern>/userProfileView</url-pattern>
+		<servlet-name>editProfileView</servlet-name>
+		<url-pattern>/editProfileView</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
