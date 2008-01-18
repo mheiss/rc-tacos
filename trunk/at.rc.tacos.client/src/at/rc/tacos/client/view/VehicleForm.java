@@ -121,9 +121,12 @@ public class VehicleForm extends TitleAreaDialog
             vehicleComboViewer.setSelection(new StructuredSelection(vehicleDetail));
             mobilePhoneComboViewer.setSelection(new StructuredSelection(vehicleDetail.getMobilePhone()));
             stationComboViewer.getCombo().setText(vehicleDetail.getCurrentStation());
-            driverComboViewer.setSelection(new StructuredSelection(vehicleDetail.getDriverName()));
-            medic1ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getParamedicIName()));
-            medic2ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getParamedicIIName()));
+            if(vehicleDetail.getDriverName() != null)
+                driverComboViewer.setSelection(new StructuredSelection(vehicleDetail.getDriverName()));
+            if(vehicleDetail.getParamedicIName() != null)
+                medic1ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getParamedicIName()));
+            if(vehicleDetail.getParamedicIIName() != null)
+                medic2ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getParamedicIIName()));
             readyButton.setSelection(vehicleDetail.isReadyForAction());
             outOfOrder.setSelection(vehicleDetail.isOutOfOrder());
             noteEditor.getDocument().set(vehicleDetail.getVehicleNotes());

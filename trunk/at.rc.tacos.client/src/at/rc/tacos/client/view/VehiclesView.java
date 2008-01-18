@@ -2,10 +2,12 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import org.eclipse.ui.part.*;
 import org.eclipse.ui.forms.widgets.*;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -94,99 +96,67 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             VehicleDetail detail = (VehicleDetail)evt.getNewValue();
             //get the station to categorize the vehicle
             final String basicStation = detail.getBasicStation();
-            //Add and update the section for Kapfenberg 
+            //insert the vehicle to the according station
             if(Constants.STATION_KAPFENBERG.equalsIgnoreCase(basicStation))
             {
-                new VehicleComposite(compositeKapfenberg,detail);
-                compositeKapfenberg.layout(true);
-                //expand if we have a new vehicle
-                Section section = (Section)compositeKapfenberg.getParent();
-                section.setExpanded(true);
+                addVehicleToStation(compositeKapfenberg,detail);
+                updateSection(Constants.STATION_KAPFENBERG,compositeKapfenberg);
             }
-            //Add and update the section for Bruck 
             else if(Constants.STATION_BRUCK.equalsIgnoreCase(basicStation))
             {
-                new VehicleComposite(compositeBruck,detail);
-                compositeBruck.layout(true);
-                //expand if we have a new vehicle
-                Section section = (Section)compositeBruck.getParent();
-                section.setExpanded(true);
+                addVehicleToStation(compositeBruck,detail);
+                updateSection(Constants.STATION_BRUCK,compositeBruck);
             }
-            //Add and update the section for St.Marein
             else if(Constants.STATION_MAREIN.equalsIgnoreCase(basicStation))
             {
-                new VehicleComposite(compositeStMarein,detail);
-                compositeStMarein.layout(true);
-                //expand if we have a new vehicle
-                Section section = (Section)compositeStMarein.getParent();
-                section.setExpanded(true);
+                addVehicleToStation(compositeStMarein,detail);
+                updateSection(Constants.STATION_MAREIN,compositeStMarein);
             }
-            //Add and update the section for Thoerl
             else if(Constants.STATION_THOERL.equalsIgnoreCase(basicStation))
             {
-                new VehicleComposite(compositeThoerl,detail);
-                compositeThoerl.layout(true);
-                //expand if we have a new vehicle
-                Section section = (Section)compositeThoerl.getParent();
-                section.setExpanded(true);
+                addVehicleToStation(compositeThoerl,detail);
+                updateSection(Constants.STATION_THOERL,compositeThoerl);
             }
-            // Add and update the section for Turnau
             else if(Constants.STATION_TURNAU.equalsIgnoreCase(basicStation))
             {
-                new VehicleComposite(compositeThurnau,detail);
-                compositeThurnau.layout(true);
-                //expand if we have a new vehicle
-                Section section = (Section)compositeThurnau.getParent();
-                section.setExpanded(true);
+                addVehicleToStation(compositeThurnau,detail);
+                updateSection(Constants.STATION_TURNAU,compositeThurnau);
             }
             else if(Constants.STATION_BREITENAU.equalsIgnoreCase(basicStation))
             {
-                new VehicleComposite(compositeBreitenau,detail);
-                compositeBreitenau.layout(true);
-                //expand if we have a new vehicle
-                Section section = (Section)compositeBreitenau.getParent();
-                section.setExpanded(true);
+                addVehicleToStation(compositeBreitenau,detail);
+                updateSection(Constants.STATION_BREITENAU,compositeBreitenau);
             }
             else
                 System.out.println("Failed to add vehicle to non existing station: " + basicStation);
         }
+        //remove all children of the sections
         if("VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName()))
         {
-        	//remove all children of the sections
-        	for(Control cont:compositeKapfenberg.getChildren())
-        	{
-        		VehicleComposite vehicle = (VehicleComposite)cont;
-        		vehicle.dispose();
-        	}
-        	for(Control cont:compositeBruck.getChildren())
-        	{
-        		VehicleComposite vehicle = (VehicleComposite)cont;
-        		vehicle.dispose();
-        	}
-        	for(Control cont:compositeStMarein.getChildren())
-        	{
-        		VehicleComposite vehicle = (VehicleComposite)cont;
-        		vehicle.dispose();
-        	}
-        	for(Control cont:compositeThoerl.getChildren())
-        	{
-        		VehicleComposite vehicle = (VehicleComposite)cont;
-        		vehicle.dispose();
-        	}
-        	for(Control cont:compositeThurnau.getChildren())
-        	{
-        		VehicleComposite vehicle = (VehicleComposite)cont;
-        		vehicle.dispose();
-        	}
-        	for(Control cont:compositeBreitenau.getChildren())
-        	{
-        		VehicleComposite vehicle = (VehicleComposite)cont;
-        		vehicle.dispose();
-        	}
+            clearStation(compositeKapfenberg);
+        	clearStation(compositeBruck);
+        	clearStation(compositeStMarein);
+        	clearStation(compositeThoerl);
+        	clearStation(compositeThurnau);
+        	clearStation(compositeBreitenau);
+        	//update
+        	updateSection(Constants.STATION_KAPFENBERG,compositeKapfenberg);
+        	updateSection(Constants.STATION_BRUCK,compositeBruck);
+        	updateSection(Constants.STATION_MAREIN,compositeStMarein);
+        	updateSection(Constants.STATION_THOERL,compositeThoerl);
+        	updateSection(Constants.STATION_TURNAU,compositeThurnau);
+        	updateSection(Constants.STATION_BREITENAU,compositeBreitenau);
         }
-        //force a redraw of the complete section so that the new composites are drwan
-        form.getDisplay().update();
-        form.getBody().layout(true);
+        //update the vehicle description
+        if("VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+        {
+            updateSection(Constants.STATION_KAPFENBERG,compositeKapfenberg);
+            updateSection(Constants.STATION_BRUCK,compositeBruck);
+            updateSection(Constants.STATION_MAREIN,compositeStMarein);
+            updateSection(Constants.STATION_THOERL,compositeThoerl);
+            updateSection(Constants.STATION_TURNAU,compositeThurnau);
+            updateSection(Constants.STATION_BREITENAU,compositeBreitenau);
+        }
     }
 
     /**
@@ -208,6 +178,10 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         section.setText(title);
         section.setDescription(description);
         section.setExpanded(false);
+        section.setLayout(new GridLayout());
+        GridData data = new GridData();
+        data.widthHint = GridData.GRAB_HORIZONTAL;
+        section.setLayoutData(data);
         //the content of the section
         Composite client = toolkit.createComposite(section,SWT.WRAP);
         GridLayout layout = new GridLayout();
@@ -217,5 +191,59 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         section.setClient(client);
         //return the client
         return client;
+    }
+    
+    /**
+     * Inserts a new vehicle into the given station section.
+     * @param stationComposite the composite to add to
+     * @param vehicle the vehicle to add
+     */
+    private void addVehicleToStation(Composite stationComposite,VehicleDetail vehicle)
+    {
+        new VehicleComposite(stationComposite,vehicle);
+        stationComposite.layout(true);
+        //expand if we have a new vehicle
+        Section section = (Section)stationComposite.getParent();
+        section.setExpanded(true);
+    }
+    
+    /**
+     * Clears the vehicles in the given station.
+     * @param stationComposite the composite to clear
+     */
+    private void clearStation(Composite stationComposite)
+    {
+        for(Control cont:stationComposite.getChildren())
+        {
+            VehicleComposite vehicle = (VehicleComposite)cont;
+            vehicle.dispose(); 
+        }
+    }
+    
+    /**
+     * Updates the description in the vehicle section 
+     * to show the vehicles that are ready for action
+     * @param station the name of the station the vehicle is assigned to
+     * @param composite the composite to check
+     */
+    private void updateSection(String station,Composite stationComposite)
+    {
+        //the section of this composite
+        Section section = (Section)stationComposite.getParent();
+        //the number of vehicles in the composite
+        int numOfVehicles = stationComposite.getChildren().length;
+        
+        //get the list of vehicles that are ready for action
+        List<VehicleDetail> vehicleList = ModelFactory.getInstance().getVehicleManager().getReadyVehicleListbyStation(station);
+        
+        //update the description
+        section.setText(station +" - ("+ vehicleList.size() +" / "+numOfVehicles+")");
+        section.setDescription("Zur Zeit sind in "+station +" "+ vehicleList.size() +" Fahrzeuge einsatzbereit von insgesammt "+numOfVehicles);
+        
+        //expand if we have at least one
+        if(numOfVehicles > 0)
+            section.setExpanded(true);
+        else
+            section.setExpanded(false);
     }
 }

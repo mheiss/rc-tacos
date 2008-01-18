@@ -2,10 +2,7 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.view.VehicleForm;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
@@ -61,7 +58,9 @@ public class VehicleDetachAllStaffMembersAction extends Action
 	public void run()
 	{
 	    //detach the staff
-//		detail.setDriverName(null);//TODO!!!!!!!!!!!!!!!!!!! Server zerstört!!!!
-//		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+		detail.setDriverName(null);
+		detail.setParamedicIName(null);
+		detail.setParamedicIIName(null);
+		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
 	}
 }

@@ -8,6 +8,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.core.net.internal.IServerInfo;
 
 /**
  * This class controls all aspects of the application's execution
@@ -22,24 +23,41 @@ public class Application implements IApplication
     public Object start(IApplicationContext context) 
     {
         Display display = PlatformUI.createDisplay();
+        //connect to the server
+        NetWrapper.getDefault().connectNetwork(IServerInfo.PRIMARY_SERVER);
         //get the network status
-        boolean connected = NetWrapper.getDefault().isConnected();
-        System.out.println("Connection status:"+connected);
-        //show an error message and exit
-        if(!connected)
+        System.out.println("Connection status:"+NetWrapper.getDefault().isConnected());
+        if(!NetWrapper.getDefault().isConnected())
         {
-        	display.beep();
-        	MessageDialog.openError(
-    				display.getActiveShell(), 
-    				"Verbindungsfehler", 
-    				"Verbindung zum Server nicht möglich.\n" +
-    				"Applikation wird beendet.");
-        	return IApplication.EXIT_OK;
+            display.beep();
+            //show an error message
+            if(!MessageDialog.openQuestion(display.getActiveShell(), 
+                    "Verbindungsfehler", 
+                    "Verbindung zum primären Server nicht möglich.\n" +
+                    "Soll eine Verbindung zum Backup Server hergestellt werden?"))
+                return IApplication.EXIT_OK;
+            else
+            {
+                //connect to the server
+                NetWrapper.getDefault().connectNetwork(IServerInfo.FAILOVER_SERVER);
+                System.out.println("Connection status:"+NetWrapper.getDefault().isConnected());
+                //get the network status
+                if(!NetWrapper.getDefault().isConnected())
+                {
+                    display.beep();
+                    //show an error message
+                    MessageDialog.openError(display.getActiveShell(), 
+                            "Verbindungsfehler", 
+                            "Verbindung zum primären und zum Backup Server nicht möglich.\n" +
+                            "Applikation wird beendet");
+                    return IApplication.EXIT_OK;
+                }
+            }
         }
         //try to load workbench
         try 
         {
-        	ApplicationWorkbenchAdvisor adv = new ApplicationWorkbenchAdvisor();
+            ApplicationWorkbenchAdvisor adv = new ApplicationWorkbenchAdvisor();
             //create the workbench
             int returnCode = PlatformUI.createAndRunWorkbench(display,adv );
             if (returnCode == PlatformUI.RETURN_RESTART) 
