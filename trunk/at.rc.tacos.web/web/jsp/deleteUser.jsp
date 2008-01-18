@@ -105,7 +105,7 @@
 								</tr>
 							</table>
 							<br />
-							<img src='../image/loeschen.gif' name='info' alt='Info'  />&nbsp;l&ouml;schen
+                    <img src='../image/loeschen.gif' name='info' alt='L&ouml;schen'  />&nbsp;Benutzer&nbsp;l&ouml;schen
 							</td>
 						</tr>
 					</table>
