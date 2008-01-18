@@ -23,7 +23,7 @@ public class ImpressumController implements Controller
 		//values that will be returned to the view
 		Map<String, Object> params = new HashMap<String, Object>();
 
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.impressum"));
+		
 		return params;
 	}
 }

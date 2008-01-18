@@ -129,6 +129,7 @@
 					</table>
 					<br />
 					<img src='../image/info.jpg' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
+					<img src='../image/ndienst.jpg' name='info' alt='Tages&uuml;bergreifend'  />&nbsp;Dienst &uuml;ber zwei Tage&nbsp;&nbsp;|&nbsp;&nbsp;
                     <img src='../image/loeschen.gif' name='info' alt='L&ouml;schen'  />&nbsp;Dienst&nbsp;l&ouml;schen
 					</td>
 				</tr>
