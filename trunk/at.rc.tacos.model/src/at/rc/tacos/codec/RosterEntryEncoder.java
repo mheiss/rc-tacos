@@ -87,7 +87,7 @@ public class RosterEntryEncoder  implements MessageEncoder
         }
         //write the elements and attributes
         writer.writeStartElement("standby");
-        writer.writeCharacters(Boolean.toString(entry.getStandby()));
+        writer.writeCharacters(String.valueOf(entry.getStandby()));
         writer.writeEndElement();
         
 

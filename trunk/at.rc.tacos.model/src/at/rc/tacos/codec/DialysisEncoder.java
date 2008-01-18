@@ -120,36 +120,36 @@ public class DialysisEncoder  implements MessageEncoder
         
         //write the elements and attributes
         writer.writeStartElement("monday");
-        writer.writeCharacters(Boolean.toString(dia.isMonday()));
+        writer.writeCharacters(String.valueOf(dia.isMonday()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("tuesday");
-        writer.writeCharacters(Boolean.toString(dia.isTuesday()));
+        writer.writeCharacters(String.valueOf(dia.isTuesday()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("wednesday");
-        writer.writeCharacters(Boolean.toString(dia.isWednesday()));
+        writer.writeCharacters(String.valueOf(dia.isWednesday()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("thursday");
-        writer.writeCharacters(Boolean.toString(dia.isThursday()));
+        writer.writeCharacters(String.valueOf(dia.isThursday()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("friday");
-        writer.writeCharacters(Boolean.toString(dia.isFriday()));
+        writer.writeCharacters(String.valueOf(dia.isFriday()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("saturday");
-        writer.writeCharacters(Boolean.toString(dia.isSaturday()));
+        writer.writeCharacters(String.valueOf(dia.isSaturday()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("sunday");
-        writer.writeCharacters(Boolean.toString(dia.isSunday()));
+        writer.writeCharacters(String.valueOf(dia.isSunday()));
         writer.writeEndElement();
         
         //write the elements and attributes
         writer.writeStartElement("stationary");
-        writer.writeCharacters(Boolean.toString(dia.isStationary()));
+        writer.writeCharacters(String.valueOf(dia.isStationary()));
         writer.writeEndElement();
         //end
         writer.writeEndElement();

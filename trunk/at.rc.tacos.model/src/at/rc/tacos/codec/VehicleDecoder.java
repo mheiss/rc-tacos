@@ -72,9 +72,9 @@ public class VehicleDecoder  implements MessageDecoder
                 if("currentStation".equalsIgnoreCase(startName))
                     vehicle.setCurrentStation(reader.getElementText());
                 if("readyForAction".equalsIgnoreCase(startName))
-                    vehicle.setReadyForAction(Boolean.getBoolean(reader.getElementText()));
+                    vehicle.setReadyForAction(Boolean.valueOf(reader.getElementText()));
                 if("outOfOrder".equalsIgnoreCase(startName))
-                    vehicle.setOutOfOrder(Boolean.getBoolean(reader.getElementText()));
+                    vehicle.setOutOfOrder(Boolean.valueOf(reader.getElementText()));
                 if("mostImportantTransportStatus".equalsIgnoreCase(startName))
                     vehicle.setMostImportantTransportStatus(Integer.valueOf(reader.getElementText()));
             }

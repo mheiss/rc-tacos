@@ -307,7 +307,6 @@ public class VehicleDetail extends AbstractMessage
 		StaffMember oldDriver = this.driverName;
 		this.driverName = driverName;
 		firePropertyChange("driverName", oldDriver, driverName);
-		firePropertyChange("username", oldDriver, driverName);
 	}
 
 	/**
@@ -352,11 +351,14 @@ public class VehicleDetail extends AbstractMessage
 	 */
 	public void setMobilePhoneImage()
 	{
-		Image oldImage = this.mobilePhoneImage;
-		if (!mobilePhone.getMobilePhoneId().equalsIgnoreCase(vehicleName))
+	    Image oldImage = this.mobilePhoneImage;    
+	    if(mobilePhone == null)
+	        mobilePhoneImage = null;
+		else if (!mobilePhone.getMobilePhoneId().equalsIgnoreCase(vehicleName))
 			mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone");
 		else
-			mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone.na");
+		    mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone.na");
+		    
 		firePropertyChange("mobilePhoneImage", oldImage, mobilePhoneImage);
 	}
 

@@ -2,13 +2,11 @@ package at.rc.tacos.codec;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Patient;
-
 
 public class DialysisDecoder implements MessageDecoder
 {
@@ -25,7 +23,6 @@ public class DialysisDecoder implements MessageDecoder
             XMLEvent event = reader.nextEvent();
             if (event.isStartElement()) 
             {
-                StartElement start = event.asStartElement();
                 String startName = event.asStartElement().getName().getLocalPart();
                 //create a new item 
                 if(DialysisPatient.ID.equalsIgnoreCase(startName))

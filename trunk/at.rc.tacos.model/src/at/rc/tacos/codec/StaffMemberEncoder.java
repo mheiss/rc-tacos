@@ -40,7 +40,7 @@ public class StaffMemberEncoder  implements MessageEncoder
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("islocked");
-        writer.writeCharacters(Boolean.toString(member.getIslocked()));
+        writer.writeCharacters(String.valueOf(member.getIslocked()));
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("authorization");
@@ -82,7 +82,7 @@ public class StaffMemberEncoder  implements MessageEncoder
         
         //write the elements and attributes
         writer.writeStartElement("sex");
-        writer.writeCharacters(Boolean.toString(member.isSex()));
+        writer.writeCharacters(String.valueOf(member.isSex()));
         writer.writeEndElement();
         
         //encode the status messages
