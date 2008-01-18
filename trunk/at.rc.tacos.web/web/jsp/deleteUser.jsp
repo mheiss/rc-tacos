@@ -90,7 +90,7 @@
                                                     for (StaffMember member : list) { 
                                                 %> 
                                                     <tr> 
-                                                        <td id="BlockContent"><%=member.getUserName()%></td> 
+                                                        <td id="BlockContent"><%=member.getFirstName() + " " + member.getLastName()%></td>
                                                         <td id="BlockContent"><a href="#" onmousedown="openPopupToDelete('<%=request.getContextPath()+"/Dispatcher/deleteEntryPopUp.do?id="+ member.getPersonId()%>')"><img src="../image/loeschen.gif"></a></td> 
                                                     </tr> 
                                                     <% 
