@@ -74,8 +74,6 @@ public class VehicleManager extends PropertyManager
                 objectList.set(index, vehicle);
                 //update the data binding
                 firePropertyChange("VEHICLE_UPDATE",null,vehicle);
-                //update the images
-                vehicle.updateImages();
             }
         });
     }
@@ -126,6 +124,25 @@ public class VehicleManager extends PropertyManager
         for(VehicleDetail detail:objectList)
         {
             if(!detail.isOutOfOrder() && detail.isReadyForAction())
+                filteredList.add(detail);
+        }
+        return filteredList;
+    }
+    
+    /**
+     * Returns a list of all vehicles which have NOT the status <code>VehicleDetail.outOfOrder</code><br>
+     * and the status the status <code>VehicleDetail.readyForAction for the given station</code>
+     * In fact this will return a list of all vehicles which can be used.
+     * @param stationName the name of the station to get the list
+     * @return list of vehicles ready for action
+     */
+    public List<VehicleDetail> getReadyVehicleListbyStation(String stationName)
+    {
+        List<VehicleDetail> filteredList = new ArrayList<VehicleDetail>();
+        //loop over all vehicles
+        for(VehicleDetail detail:objectList)
+        {
+            if(!detail.isOutOfOrder() && detail.isReadyForAction() && detail.getBasicStation().equalsIgnoreCase(stationName))
                 filteredList.add(detail);
         }
         return filteredList;

@@ -77,13 +77,12 @@ public class ModelFactory
                 //Set up a filter for the current day
                 QueryFilter dateFilter = new QueryFilter();
                 dateFilter.add(IFilterTypes.DATE_FILTER, Util.formatDate(Calendar.getInstance().getTimeInMillis()));
-                //net.requestListing(Item.ID, null);
-                net.requestListing(VehicleDetail.ID, null);
+                net.requestListing(MobilePhoneDetail.ID, null);
                 net.requestListing(RosterEntry.ID, dateFilter);
+                net.requestListing(VehicleDetail.ID, null);
                 net.requestListing(StaffMember.ID, null);
                 net.requestListing(Transport.ID, null);
                 net.requestListing(DialysisPatient.ID, null);
-                net.requestListing(MobilePhoneDetail.ID, null);
                 return Status.OK_STATUS;
             }
         };
