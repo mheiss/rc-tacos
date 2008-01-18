@@ -1,13 +1,9 @@
---> Keine Ready liste vom vehiceln
-
 --> Weiterleiten (= an andere Dienststelle z.B.)       
                   i setz dabei die Transportnummer auf "WTGL" und den TransportStatus S5 
 
 --> Stornieren: Ein stornierter Transport soll im Journalblatt mit "STORNO" als Transportnummer (ev. Icon rein- würde mir gut gefallen) weiterhin aufscheinen. 
             Was kann als Markierung für WTGL gesetzt werden? 0? -1?
             Transportnummer wird wie bei Weiterleiten nicht angezeigt. ??? Auch Status S5 nicht.
-
---> HashMap für Transport stati implementieren
 
 --> Suchfunktion für Transport Views einbauen
 
@@ -40,8 +36,6 @@
 
 --> Gesamt: Zugriffsberechtigungen implementieren. Nur Admins für Adminperspektive. User mit nur Lesezugriff ermöglichen.
 
---> VehicleView: Symbole - richtige Aktivierung implementieren
-
 --> TransportViews: Verhalten, wenn Priorität A - NEF- Verwaltung
 
 --> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???)
@@ -55,14 +49,3 @@
 --> User Manual
 
 --> 30!! Seiten Bericht :-( schreiben
-
---> Server: Programmstatus ergänzen
-
-
-
-
-
-DONE:
-
---> Die Fahrzeuge sollten no in a Untermenü (Hauptmenü: Fahrzeug zuweisen, Untermenü Bm03, Bm05...) da werd i no probieren
-
