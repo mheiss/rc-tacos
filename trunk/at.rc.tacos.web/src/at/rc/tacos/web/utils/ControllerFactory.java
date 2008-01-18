@@ -65,11 +65,11 @@ public class ControllerFactory {
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteEntryPopUp")))
 		{
-			return new deleteEntryPopUpController();
+			return new DeleteEntryPopUpController();
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteUserPopUp")))
 		{
-			return new adeleteUserPopUpController();
+			return new DeleteUserPopUpController();
 		}		
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.impressum")))
 		{
