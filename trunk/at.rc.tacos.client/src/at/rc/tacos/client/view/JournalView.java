@@ -26,6 +26,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.controller.CreateBackTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.JournalMoveToRunningTransportsAction;
 import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
@@ -53,6 +54,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 	private EditTransportAction editTransportAction;
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsAction;
 	private JournalMoveToRunningTransportsAction moveToRunningTransportsAction;
+	private CreateBackTransportAction createBackTransportAction;
 	
 
 	/**
@@ -341,6 +343,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 		editTransportAction = new EditTransportAction(this.viewer, "journal");
 		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(this.viewer);
 		moveToRunningTransportsAction = new JournalMoveToRunningTransportsAction(this.viewer);
+		createBackTransportAction = new CreateBackTransportAction(this.viewer);
 	}
 	
 	/**
@@ -379,7 +382,10 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsAction);
 		manager.add(moveToRunningTransportsAction);
+		manager.add(new Separator());
+		manager.add(createBackTransportAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(createBackTransportAction);
 	}
 
 	/**
