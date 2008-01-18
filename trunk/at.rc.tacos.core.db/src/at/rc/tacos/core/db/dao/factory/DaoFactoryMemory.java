@@ -1,14 +1,14 @@
 package at.rc.tacos.core.db.dao.factory;
 
-import java.sql.SQLException;
-
 import at.rc.tacos.core.db.dao.CallerDAO;
+import at.rc.tacos.core.db.dao.DialysisPatientDAO;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.RosterDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.VehicleDAO;
+import at.rc.tacos.core.db.dao.memory.DialysisDAOMemory;
 import at.rc.tacos.core.db.dao.memory.MobilePhoneDAOMemory;
 import at.rc.tacos.core.db.dao.memory.NotifierDAOMemory;
 import at.rc.tacos.core.db.dao.memory.RosterEntryDAOMemory;
@@ -16,13 +16,6 @@ import at.rc.tacos.core.db.dao.memory.StaffMemberDAOMemory;
 import at.rc.tacos.core.db.dao.memory.TransportDAOMemory;
 import at.rc.tacos.core.db.dao.memory.UserDAOMemory;
 import at.rc.tacos.core.db.dao.memory.VehicleDetailDAOMemory;
-import at.rc.tacos.model.CallerDetail;
-import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.model.TestDataSource;
-import at.rc.tacos.model.Transport;
-import at.rc.tacos.model.VehicleDetail;
 
 /**
  * Creates the data access objects for testing.<br>
@@ -70,5 +63,11 @@ public class DaoFactoryMemory implements DaoFactory
     public VehicleDAO createVehicleDetailDAO()
     {
         return VehicleDetailDAOMemory.getInstance();
+    }
+    
+    @Override 
+    public DialysisPatientDAO createDialysisPatientDAO()
+    {
+    	return DialysisDAOMemory.getInstance();
     }
 }

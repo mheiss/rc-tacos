@@ -24,13 +24,6 @@ public class NotifierDAOMemory implements CallerDAO
     private NotifierDAOMemory()
     {
         notifierList = new ArrayList<CallerDetail>();  
-        //provide some data
-        CallerDetail n1 = new CallerDetail("Notifer1","0664-123456789","Notes taken");
-        CallerDetail n2 = new CallerDetail("Notifer2","0784-1548154","Notes taken");
-        CallerDetail n3 = new CallerDetail("Notifer3","2147-123456789","Notes taken");
-        notifierList.add(n1);
-        notifierList.add(n2);
-        notifierList.add(n3);
     }
     
     /**

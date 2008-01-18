@@ -1,6 +1,7 @@
 package at.rc.tacos.core.db.dao.factory;
 
 import at.rc.tacos.core.db.dao.CallerDAO;
+import at.rc.tacos.core.db.dao.DialysisPatientDAO;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.RosterDAO;
@@ -26,4 +27,5 @@ public interface DaoFactory
     public TransportDAO createTransportDAO();
     public UserLoginDAO createUserDAO();
     public VehicleDAO createVehicleDetailDAO();
+    public DialysisPatientDAO createDialysisPatientDAO();
 }
