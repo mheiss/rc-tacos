@@ -163,6 +163,16 @@
 	</servlet-mapping>	
 	
 	<servlet>
+		<servlet-name>deleteUserPopUpView</servlet-name>
+		<jsp-file>/jsp/deleteUserPopUp.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>deleteUserPopUpView</servlet-name>
+		<url-pattern>/deleteUserPopUpView</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
 		<servlet-name>impressumView</servlet-name>
 		<jsp-file>/jsp/impressum.jsp</jsp-file>
 	</servlet>
