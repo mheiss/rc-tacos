@@ -19,6 +19,6 @@ public interface IDirectness
 	/** Richtung Mariazell*/
 	public final static int TOWARDS_MARIAZELL = 5;
 	/** Richtung Mariazell*/
-	public final static int TOWARDS_KAPFENBERG = 5;
+	public final static int TOWARDS_KAPFENBERG = 6;
 		
 }
