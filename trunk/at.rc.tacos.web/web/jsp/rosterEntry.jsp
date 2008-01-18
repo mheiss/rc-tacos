@@ -117,7 +117,7 @@
 												<%
 													for (StaffMember member : list) {
 												%>
-												<option selected value="<%=userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName() %>"><%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName() %></option>
+												<option selected value="<%=member.getFirstName() + " " + member.getLastName()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
 												<option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
 												<%
 													}

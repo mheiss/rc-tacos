@@ -113,13 +113,13 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>editProfileView</servlet-name>
-		<jsp-file>/jsp/editProfile.jsp</jsp-file>
+		<servlet-name>editUserView</servlet-name>
+		<jsp-file>/jsp/editUser.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>editProfileView</servlet-name>
-		<url-pattern>/editProfileView</url-pattern>
+		<servlet-name>editUserView</servlet-name>
+		<url-pattern>/editUserView</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -133,13 +133,13 @@
 	</servlet-mapping>	
 	
 	<servlet>
-		<servlet-name>deleteProfileView</servlet-name>
-		<jsp-file>/jsp/deleteProfile.jsp</jsp-file>
+		<servlet-name>deleteUserView</servlet-name>
+		<jsp-file>/jsp/deleteUser.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>deleteProfileView</servlet-name>
-		<url-pattern>/deleteProfileView</url-pattern>
+		<servlet-name>deleteUserView</servlet-name>
+		<url-pattern>/deleteUserView</url-pattern>
 	</servlet-mapping>		
 
 	<servlet>
