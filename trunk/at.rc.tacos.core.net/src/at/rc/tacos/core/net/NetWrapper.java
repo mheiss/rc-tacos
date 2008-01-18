@@ -283,6 +283,7 @@ public class NetWrapper extends Plugin implements INetListener
 		final String queryString = xmlFactory.getQueryString();
 		final String userId = xmlFactory.getUserId();
 
+		System.out.println("Received: " + ne.getMessage());
 		System.out.println("Received: "+ userId+","+contentType+","+queryString);
 
 		//try to get a listener for this message
