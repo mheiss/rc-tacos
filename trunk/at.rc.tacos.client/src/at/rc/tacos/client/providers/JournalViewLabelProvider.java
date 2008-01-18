@@ -2,6 +2,7 @@ package at.rc.tacos.client.providers;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
@@ -42,6 +43,14 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	public Image getColumnImage(Object element, int columnIndex) 
 	{
 		Transport transport = (Transport)element;
+		
+		//calculate time window for a possible back transport
+		GregorianCalendar gcal = new GregorianCalendar();
+		long now = gcal.getTimeInMillis();
+		gcal.set(GregorianCalendar.HOUR_OF_DAY, GregorianCalendar.HOUR_OF_DAY-4);
+		long before4Hours = gcal.getTimeInMillis();
+		
+		
 		//determine the colum and return a image if needed
 		switch(columnIndex)
 		{
@@ -52,6 +61,17 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		case COLUMN_TRANSPORT_TO:
 			if(transport.isLongDistanceTrip())
 				return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.longtrip");
+			else return null;
+		case COLUMN_TRANSPORT_FROM:
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
+			{
+				if(transport.isBackTransport() && ((transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE) < before4Hours)))//bug fix- change from < to >
+				{
+					System.out.println("------- s5: " +transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE) );//TODO bug fix: this time is negative!!!
+					System.out.println("----- before 4 hours: " +before4Hours);
+					return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.back");
+				}
+			}
 			else return null;
 		default: return null;
 		}
