@@ -1849,17 +1849,26 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	
                 	transport.setVehicleDetail(vehicleDetail);
                 	
-                	transport.addStatus(TRANSPORT_STATUS_ORDER_PLACED, aeS0Long);
-                	transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
-                	System.out.println("______________________________TransportForm, überarbeitung, der status s1 als long: " +s1Long);
-                	transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
-                	transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
-                	transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
-                	transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE,s5Long);
-                	transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, s6Long);
-                	transport.addStatus(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA,s7Long);
-                	transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
-                	transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
+                		transport.addStatus(TRANSPORT_STATUS_ORDER_PLACED, aeS0Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
+                		transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
+                		transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
+                		transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
+                		transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
+                		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE,s5Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
+                		transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, s6Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+                		transport.addStatus(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA,s7Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+                		transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
+                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
+                		transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
                 	              	
                     //create and run the update action
                     UpdateTransportAction updateAction = new UpdateTransportAction(transport);
