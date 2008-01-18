@@ -65,8 +65,12 @@ public class ControllerFactory {
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteEntryPopUp")))
 		{
-			return new PopUpController();
+			return new deleteEntryPopUpController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteUserPopUp")))
+		{
+			return new deleteUserPopUpController();
+		}		
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.impressum")))
 		{
 			return new ImpressumController();
