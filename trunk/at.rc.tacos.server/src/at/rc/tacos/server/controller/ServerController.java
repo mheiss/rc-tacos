@@ -214,6 +214,8 @@ public class ServerController
         protFactory.registerEncoder(Transport.ID, new TransportEncoder());
         protFactory.registerDecoder(VehicleDetail.ID, new VehicleDecoder());
         protFactory.registerEncoder(VehicleDetail.ID, new VehicleEncoder()); 
+        protFactory.registerDecoder(DialysisPatient.ID, new DialysisDecoder());
+        protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
         //system events
         protFactory.registerDecoder(Login.ID, new LoginDecoder());
         protFactory.registerEncoder(Login.ID, new LoginEncoder());
@@ -239,6 +241,7 @@ public class ServerController
         factory.registerModelListener(VehicleDetail.ID, new VehicleDetailListener());
         factory.registerModelListener(Login.ID, new AuthenticationListener());
         factory.registerModelListener(Logout.ID, new AuthenticationListener());
+        factory.registerModelListener(DialysisPatient.ID, new DialysisPatientListener());
     }
     
     /**
