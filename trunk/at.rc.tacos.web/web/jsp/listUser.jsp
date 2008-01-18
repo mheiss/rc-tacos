@@ -54,7 +54,7 @@
 					+ userSession.getStaffMember().getLastName()%> &nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Benutzer l&ouml;schen</td>
+					<td width="33%" align="center">Benutzer editieren</td>
 					<td width="33%" align="right">Heute ist der <%=formath.format(current)%>
 					</td>
 					<td>
