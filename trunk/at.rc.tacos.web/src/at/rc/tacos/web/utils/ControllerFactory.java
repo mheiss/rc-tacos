@@ -79,6 +79,10 @@ public class ControllerFactory {
 		{
 			return new UpdateEntryController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.listUser")))
+		{
+			return new ListUserController();
+		}
 		else
 		{
 			return null;
