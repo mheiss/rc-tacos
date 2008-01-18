@@ -86,9 +86,7 @@ public class DialysisTransportManager extends PropertyManager
                 firePropertyChange("DIALYSISPATIENT_CLEARED",null,null);
             }
         }); 
-        
     }
-    
 
     /**
      * Converts the list to an array
