@@ -57,6 +57,8 @@ public class VehicleDetachAllStaffMembersAction extends Action
 	@Override
 	public void run()
 	{
+		//vehicle is not ready for action any more
+		detail.setReadyForAction(false);
 	    //detach the staff
 		detail.setDriverName(null);
 		detail.setParamedicIName(null);
