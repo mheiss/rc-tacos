@@ -13,18 +13,18 @@
 		<td width="50%"><!-- Timetablebox Day -->
 		<table width="100%" height="100%" border='0' cellpadding='0'
 			cellspacing='0'>
-			<tr>
+			<tr><br />
 				<% String action = request.getParameter("action");
 				if ("dayView".equalsIgnoreCase(action)) 
 					{
-					out.println("Wollen Sie diesen Dienst-Eintrag wirklich l&ouml;schen?<br />"
-					+ "<a href=" + request.getContextPath() + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + request.getParameter("id") + "onclick=\"self.close()\">Ja</a>&nbsp;&nbsp;&nbsp;"
+					out.println("Wollen Sie diesen Dienst-Eintrag wirklich l&ouml;schen?<br /><br />"
+					+ "<a href=" + request.getContextPath() + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + request.getParameter("id") + "onclick=\"self.close()\">Ja</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 					+ "<a href=\"javascript:window.close()\">Abbrechen</a><br />");
 					} 
 				else
 					{ 
-					out.println("Wollen Sie diesen User wirklich l&ouml;schen?<br />"
-					+ "<a href=" + request.getContextPath() + "/Dispatcher/deleteUser.do?action=doRemoveUser&id=" + request.getParameter("id") + "&onclick=\"self.close()\">Ja</a>&nbsp;&nbsp;&nbsp;" 
+					out.println("Wollen Sie diesen User wirklich l&ouml;schen?<br /><br />"
+					+ "<a href=" + request.getContextPath() + "/Dispatcher/deleteUser.do?action=doRemoveUser&id=" + request.getParameter("id") + "&onclick=\"self.close()\">Ja</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
 					+ "<a href=\"javascript:window.close()\">Abbrechen</a><br />");
 					} 
 				%>
