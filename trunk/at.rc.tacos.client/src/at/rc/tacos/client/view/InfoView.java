@@ -297,7 +297,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
             {
                 public void run ()       
                 {
-                    updateInfoSection();
+                	//TODO: finde solution to update
+                    //updateInfoSection();
                 }
             });
         }
@@ -307,7 +308,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
             {
                 public void run ()       
                 {
-                    updateInfoSection();
+                	//TODO: find solution to update
+                    //updateInfoSection();
                 }
             });
         }
