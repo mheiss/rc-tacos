@@ -139,6 +139,12 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	private ComboViewer setTextSaniI;
 	private ComboViewer setTextSaniII;
 	
+	private String[] prebookingPriorities = {"C", "D", "E", "F"};
+	private String[] emergencyAndTransportPriorities = {"A", "B", "C", "D", "E", "F", "G"};
+	
+	
+	
+	
 	
 	//determine whether to update or to create a new entry
     private boolean createNew;
@@ -987,7 +993,12 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 
 		comboPrioritaet = new Combo(patientenzustandGroup, SWT.NONE);
 		comboPrioritaet.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), G (NEF extern)");
-		comboPrioritaet.setItems(new String[] {"A", "B", "C", "D", "E", "F", "G"});
+		
+		//set possible priorities
+		if(transportType.equalsIgnoreCase("prebooking"))
+			comboPrioritaet.setItems(prebookingPriorities);
+		if(transportType.equalsIgnoreCase("emergencyTransport"))
+			comboPrioritaet.setItems(emergencyAndTransportPriorities);
 		comboPrioritaet.setData("newKey", null);
 		final FormData fd_comboPrioritaet = new FormData();
 		fd_comboPrioritaet.bottom = new FormAttachment(0, 73);
@@ -1664,6 +1675,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			
 			public void handleEvent(Event event) 
 			{
+				
 				String kindOfTransport;
 				requiredFields = "";
 				hourStart = -1;
@@ -1990,6 +2002,16 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					requiredFields = requiredFields +" " +"Priorität";
 				if (start.equalsIgnoreCase(""))
 					this.setStartTimeDefault();
+				if (transportType.equalsIgnoreCase("prebooking"))
+				{
+					if(start.equals(""))
+							requiredFields = requiredFields +" " +"Abfahrtszeit";
+					if(atPatient.equals(""))
+						requiredFields = requiredFields +" " +"Zeit bei Patient";
+					if(term.equals(""))
+						requiredFields = requiredFields +" " +"Terminzeit";
+					
+				}
 				return requiredFields;
 			}
 			
@@ -2325,9 +2347,19 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				transportdetailsGroup.setVisible(false);
 				statusmeldungenGroup.setVisible(false);
 				personalAmFahrzeugGroup.setVisible(false);
+				
+				transportType = "emergencyTransport";
+				
+				//set possible priorities
+				if(transportType.equalsIgnoreCase("prebooking"))
+					comboPrioritaet.setItems(prebookingPriorities);
+				if(transportType.equalsIgnoreCase("emergencyTransport"))
+					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 			}
+			
+			 
 		});
-		buttonNotfall.setText("Nofall");
+		buttonNotfall.setText("Transport/Einsatz");
 
 		
 	
@@ -2349,6 +2381,14 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				transportdetailsGroup.setVisible(false);
 				statusmeldungenGroup.setVisible(false);
 				personalAmFahrzeugGroup.setVisible(false);
+				
+				transportType = "prebooking";
+				
+				//set possible priorities
+				if(transportType.equalsIgnoreCase("prebooking"))
+					comboPrioritaet.setItems(prebookingPriorities);
+				if(transportType.equalsIgnoreCase("emergencyTransport"))
+					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 			}
 			
 		});
