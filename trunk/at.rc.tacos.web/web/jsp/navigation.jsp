@@ -20,7 +20,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/userProfile.do"%>">Profil editieren</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/editProfile.do"%>">Profil editieren</a><br />
 		</td>
 	</tr>
 </table>

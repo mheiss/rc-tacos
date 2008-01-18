@@ -43,7 +43,7 @@ public class ControllerFactory {
 		{
 			return new StationController();
 		}
-		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.userProfile")))
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.editProfile")))
 		{
 			return new EditProfileController();
 		}
