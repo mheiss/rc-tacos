@@ -5,8 +5,10 @@ import java.util.Date;
 
 import org.eclipse.jface.action.Action;
 
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 
@@ -32,6 +34,9 @@ public class SelectRosterDateAction extends Action
     @Override
     public void run()
     {
+    	//save the date
+    	SessionManager.getInstance().setDisplayedDate(date.getTime());
+    	
         //format the date
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String strDate = sdf.format(date);
@@ -39,5 +44,6 @@ public class SelectRosterDateAction extends Action
         //set up the filter and query the server
         QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,strDate);
         NetWrapper.getDefault().requestListing(RosterEntry.ID,filter);
+        NetWrapper.getDefault().requestListing(DayInfoMessage.ID, filter);
     }
 }
