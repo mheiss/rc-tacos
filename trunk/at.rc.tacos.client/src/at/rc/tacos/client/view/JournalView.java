@@ -34,13 +34,15 @@ import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
+import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
+import at.rc.tacos.common.IProgramStatus;
 
 import at.rc.tacos.model.Transport;
 
-public class JournalView extends ViewPart implements PropertyChangeListener
+public class JournalView extends ViewPart implements PropertyChangeListener, IProgramStatus
 {
 	public static final String ID = "at.rc.tacos.client.view.journal_view";
 
@@ -327,11 +329,8 @@ public class JournalView extends ViewPart implements PropertyChangeListener
 		//create the actions
 		makeActions();
 		hookContextMenu();
-//		contributeToActionBars();
 
-//		tabFolder.setSelection(1);
-//		tabFolder.setSelection(0);
-		
+		viewer.addFilter(new TransportViewFilter(PROGRAM_STATUS_JOURNAL));
 		viewer.refresh();
 	}
 	

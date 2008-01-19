@@ -36,11 +36,13 @@ import at.rc.tacos.client.controller.EditTransportStatusAction;
 import at.rc.tacos.client.controller.EmptyTransportAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.view.sorterAndTooltip.UnderwayTransportsTooltip;
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.Transport;
 
@@ -49,7 +51,7 @@ import at.rc.tacos.model.Transport;
  * @author b.thek
  */
 
-public class UnderwayTransportsView extends ViewPart implements PropertyChangeListener, ITransportStatus
+public class UnderwayTransportsView extends ViewPart implements PropertyChangeListener, ITransportStatus, IProgramStatus
 {
 	public static final String ID = "at.rc.tacos.client.view.disposition_view";
 	
@@ -332,7 +334,9 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		
 		//create the actions
 		makeActions();
-		hookContextMenu();	
+		hookContextMenu();
+		
+		viewer.addFilter(new TransportViewFilter(PROGRAM_STATUS_UNDERWAY));
 		
 		viewer.refresh();
 	}

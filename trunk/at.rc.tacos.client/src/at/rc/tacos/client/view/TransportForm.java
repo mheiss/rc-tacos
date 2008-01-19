@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import sun.font.TextRecord;
+
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -245,6 +247,11 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         	String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         	this.textTermin.setText(terminTime);
         }
+        
+        //receiving time
+        gcal.setTimeInMillis(transport.getReceiveTime());
+        String aufgTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+        this.textAufgen.setText(aufgTime);
         
         //transport stati
         if(transport.getStatusMessages() != null)
@@ -1803,7 +1810,11 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setReceiveTime(receivingTime);
                 	transport.setToStreet(toStreet);
                 	transport.setToCity(toCommunity);
-                	transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);//TODO change!!!! differ between prebooking and outstanding!!!
+                	if(transportType.equalsIgnoreCase("prebooking"))
+                		transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
+                	if(transportType.equalsIgnoreCase("emergencyTransport"))
+                		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+                	
                 	
                 	//TODO setRealStation, Transportnumber, VehicleDetail wann?
                 	
@@ -1823,6 +1834,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                     CreateTransportAction newAction = new CreateTransportAction(transport);
                     newAction.run();//TODO
                     System.out.println("Creating new transport: "+transport);
+                    System.out.println("TransportForm, Richtung.........................................." +transport.getDirection());
                 }
                 else
                 {
@@ -1894,6 +1906,15 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 		transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
                 	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
                 		transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
+                	
+                	if(transportType.equalsIgnoreCase("prebooking"))
+    				{
+    					transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
+    				}
+    				if(transportType.equalsIgnoreCase("emergencyTransport"))
+    				{
+    					transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+    				}
                 	              	
                     //create and run the update action
                     UpdateTransportAction updateAction = new UpdateTransportAction(transport);
@@ -2399,9 +2420,13 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				
 				//set possible priorities
 				if(transportType.equalsIgnoreCase("prebooking"))
+				{
 					comboPrioritaet.setItems(prebookingPriorities);
+				}
 				if(transportType.equalsIgnoreCase("emergencyTransport"))
+				{
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
+				}
 			}
 			
 		});

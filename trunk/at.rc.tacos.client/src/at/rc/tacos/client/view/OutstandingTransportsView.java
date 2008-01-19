@@ -40,7 +40,6 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
 import at.rc.tacos.client.providers.OutstandingTransportsViewLabelProvider;
-import at.rc.tacos.client.providers.PersonalViewFilter;
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
@@ -281,7 +280,8 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		makeActions();
 		hookContextMenu();
 		
-//		viewerOffTrans.addFilter(new TransportViewFilter(PROGRAM_STATUS_OUTSTANDING));
+		viewerOffTrans.resetFilters();
+		viewerOffTrans.addFilter(new TransportViewFilter(PROGRAM_STATUS_OUTSTANDING));
 //		viewerOffTrans.resetFilters();
 		viewerOffTrans.refresh();
 	}
