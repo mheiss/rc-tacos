@@ -7,8 +7,6 @@
 
 --> Suchfunktion für Transport Views einbauen
 
---> Tagesinfofeld an auf PersonalView an Datum hängen
-
 --> TransportView: Timer für Transportaufruf (2 Std. vor geplanter Abfahrtszeit) -am Client über Background Threads
 
 --> VehicleComposite: Kontextmenü ergänzen (Besatzung abziehen, optional: einsatzbereit und außer Dienst setzen
@@ -22,13 +20,12 @@
 --> Client: Implementierung von Loggern (log4j)
 --> Server: Implementierung von Loggern (log4j)
 
---> receiving time in Datenbank vorhanden?
-
 --> Doku: welcher Leitstellendisponent hat Aktion (alles was gespeichert wird) durchgeführt? 
 
 --> Sorter: gehören getestet. Probleme, wenn Zellen leer
 
---> TransportViews: Filter aktivieren (Klasse besteht schon, ProgrammStati müssen noch richtig gesetzt werden)
+--> TransportViews: Filter aktivieren (Klasse besteht schon, ProgrammStati müssen noch richtig gesetzt werden)-> sind aktiviert, funktionieren so
+	weit. Probleme mit PrebookingView weil directness irgendwo verloren geht.
 
 --> TransportViews: Transportnummern implementieren
 
@@ -38,7 +35,8 @@
 
 --> TransportViews: Verhalten, wenn Priorität A - NEF- Verwaltung
 
---> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???)
+--> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???) --> funktioniert nicht, weil der long der Zeit negativ ist
+	(nur Zeit gespeichert, Datum nicht?)
 
 --> Server: Logging
 
@@ -49,3 +47,9 @@
 --> User Manual
 
 --> 30!! Seiten Bericht :-( schreiben
+
+
+
+DONE:
+--> Tagesinfofeld an auf PersonalView an Datum hängen by Michael
+--> receiving time in Datenbank vorhanden? by Walter & Birgit
