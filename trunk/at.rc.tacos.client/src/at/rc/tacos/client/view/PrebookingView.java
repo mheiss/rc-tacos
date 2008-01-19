@@ -1030,7 +1030,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		
 		editTransportActionBruck = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionBruck = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionBruck = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		cancelTransportActionBruck = new CancelTransportAction(viewer);
 		copyTransportActionBruck = new CopyTransportAction(viewer);
 	}
 	private void makeActionsKapfenberg(TableViewer viewer)
@@ -1038,7 +1038,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		
 		editTransportActionKapfenberg = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionKapfenberg = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionKapfenberg = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		cancelTransportActionKapfenberg = new CancelTransportAction(viewer);
 		copyTransportActionKapfenberg = new CopyTransportAction(viewer);
 	}
 	private void makeActionsLeoben(TableViewer viewer)
@@ -1046,7 +1046,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		
 		editTransportActionLeoben = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionLeoben = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionLeoben = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		cancelTransportActionLeoben = new CancelTransportAction(viewer);
 		copyTransportActionLeoben = new CopyTransportAction(viewer);
 	}
 	private void makeActionsMariazell(TableViewer viewer)
@@ -1054,7 +1054,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		
 		editTransportActionMariazell = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionMariazell = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionMariazell = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		cancelTransportActionMariazell = new CancelTransportAction(viewer);
 		copyTransportActionMariazell = new CopyTransportAction(viewer);
 	}
 	private void makeActionsGraz(TableViewer viewer)
@@ -1062,7 +1062,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		
 		editTransportActionGraz = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionGraz = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionGraz = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		cancelTransportActionGraz = new CancelTransportAction(viewer);
 		copyTransportActionGraz = new CopyTransportAction(viewer);
 	}
 	private void makeActionsWien(TableViewer viewer)
@@ -1070,7 +1070,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		
 		editTransportActionWien = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionWien = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionWien = new CancelTransportAction(viewer);//TODO change!!!!!!!!!!!!1
+		cancelTransportActionWien = new CancelTransportAction(viewer);
 		copyTransportActionWien = new CopyTransportAction(viewer);
 	}
 	

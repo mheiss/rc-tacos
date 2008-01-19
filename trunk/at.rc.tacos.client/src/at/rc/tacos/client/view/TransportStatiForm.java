@@ -179,6 +179,7 @@ public class TransportStatiForm implements ITransportStatus
 		final Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText("OK");
 		okButton.setBounds(337, 358, 89, 23);
+		//TODO - implement reaction to ok and cancel  and  validate the entries!
 	}
 	
 	public void setContent()
