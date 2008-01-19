@@ -67,7 +67,9 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 			{
 				if(transport.isBackTransport() && ((transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE) < before4Hours)))//bug fix- change from < to >
 				{
-					System.out.println("------- s5: " +transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE) );//TODO bug fix: this time is negative!!!
+					//icon soll angezeigt werden wenn der status s5 (ziel frei) des hintransportes nicht länger als 4 stunden zurückliegt
+					//TODO Problem: bug fix: this time is negative!!!
+					System.out.println("------- s5: " +transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE) );
 					System.out.println("----- before 4 hours: " +before4Hours);
 					return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.back");
 				}
