@@ -128,7 +128,6 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 
 	@Override
 	public Color getBackground(Object element, int columnIndex) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
