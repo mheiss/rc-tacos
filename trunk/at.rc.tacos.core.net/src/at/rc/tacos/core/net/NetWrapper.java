@@ -153,7 +153,8 @@ public class NetWrapper extends Plugin implements INetListener
 		protFactory.registerEncoder(SystemMessage.ID, new SystemMessageEncoder());
 		protFactory.registerDecoder(DialysisPatient.ID, new DialysisDecoder());
 		protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
-
+		protFactory.registerDecoder(DayInfoMessage.ID, new DayInfoMessageDecoder());
+		protFactory.registerEncoder(DayInfoMessage.ID, new DayInfoMessageEncoder());
 	}
 
 	// METHODS TO SEND MESSAGES
@@ -259,6 +260,10 @@ public class NetWrapper extends Plugin implements INetListener
 			list.add(message);
 		//encode the message
 		String xmlMessage = factory.encode(list);
+		
+		//replace all new lines
+		xmlMessage = xmlMessage.replaceAll("\\s\\s+|\\n|\\r", "<![CDATA[<br/>]]>");
+		
 		//get the connection out of the session and send the message
 		MyClient connection = clientSession.getConnection();
 		connection.sendMessage(xmlMessage);
@@ -275,7 +280,10 @@ public class NetWrapper extends Plugin implements INetListener
 	{
 		//set up the factory to decode
 		XMLFactory xmlFactory = new XMLFactory();
-		xmlFactory.setupDecodeFactory(ne.getMessage());
+		System.out.println(ne.getMessage());
+		String message = ne.getMessage().replaceAll("&lt;br/&gt;", "\n");
+		System.out.println(message);
+		xmlFactory.setupDecodeFactory(message);
 		//decode the message
 		ArrayList<AbstractMessage> objects = xmlFactory.decode();
 		//get the type of the item
@@ -283,7 +291,6 @@ public class NetWrapper extends Plugin implements INetListener
 		final String queryString = xmlFactory.getQueryString();
 		final String userId = xmlFactory.getUserId();
 
-		System.out.println("Received: " + ne.getMessage());
 		System.out.println("Received: "+ userId+","+contentType+","+queryString);
 
 		//try to get a listener for this message
