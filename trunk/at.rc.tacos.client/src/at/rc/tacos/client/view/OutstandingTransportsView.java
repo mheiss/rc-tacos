@@ -297,7 +297,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		editTransportAction = new EditTransportAction(this.viewerOffTrans, "outstanding");
 		cancelTransportAction = new CancelTransportAction(this.viewerOffTrans);
 		copyTransportAction = new CopyTransportAction(this.viewerOffTrans);
-		//TODO
+
 		ArrayList<VehicleDetail> readyVehicles = (ArrayList<VehicleDetail>) ModelFactory.getInstance().getVehicleManager().getReadyVehicleList();
 		
 		for (VehicleDetail veh : readyVehicles)

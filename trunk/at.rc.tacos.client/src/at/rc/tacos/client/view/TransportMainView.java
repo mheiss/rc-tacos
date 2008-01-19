@@ -67,7 +67,7 @@ public class TransportMainView {
 	protected void createContents() 
 	{
 		shell = new Shell();
-		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+//		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
 		shell.setLayout(new GridLayout());
 		shell.setText("Transporte");
 
@@ -101,7 +101,7 @@ public class TransportMainView {
 		final TableItem newItemTableItem = new TableItem(table, SWT.BORDER);
 		newItemTableItem.setText(14, "Bm08");
 		newItemTableItem.setText(7, "06:56");
-		newItemTableItem.setImage(16, ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson"));
+//		newItemTableItem.setImage(16, ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson"));
 		newItemTableItem.setText(2, "13:30");
 		newItemTableItem.setText(1, "12388");
 		newItemTableItem.setText(0, "A");
@@ -184,7 +184,7 @@ public class TransportMainView {
 		columnTDisponierteTransporte.setText("T");
 		
 		
-//		//TODO
+//		//TODO implement the column width handling
 //		//Für Tabelle "disponierte Transporte"
 //		disponierteTransporteGroup.addControlListener(new ControlAdapter() 
 //		{
@@ -386,7 +386,6 @@ public class TransportMainView {
 		composite_1.setLayout(gridLayout_2);
 		vormerkungTabItem.setControl(composite_1);
 
-		//TODO --> for the personal view
 		//group filter
 		final Group filterGroup = new Group(composite_1, SWT.NONE);
 		filterGroup.setText("Filter");

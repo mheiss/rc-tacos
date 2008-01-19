@@ -442,7 +442,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         	this.kapfenbergButton.setSelection(true);
         }
         
-        //TODO noch etwas offen??!!!!!!!!1------------------------------------
+  
         if(transport.getVehicleDetail() != null)
         {
 	        if(transport.getVehicleDetail().getDriverName() != null)
@@ -911,7 +911,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		
 		
 		Label label_2;
-		label_2 = new Label(planungGroup, SWT.SEPARATOR);//TODO place
+		label_2 = new Label(planungGroup, SWT.SEPARATOR);
 		fd_bruckButton.bottom = new FormAttachment(label_2, 16, SWT.TOP);
 		fd_bruckButton.top = new FormAttachment(label_2, 0, SWT.TOP);
 		fd_bruckButton.right = new FormAttachment(label_2, 49, SWT.RIGHT);
@@ -1228,7 +1228,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		personalAmFahrzeugGroup.setLayoutData(fd_personalAmFahrzeugGroup);
 		personalAmFahrzeugGroup.setText("Personal am Fahrzeug");
 
-		//TODO----------------------------------------------------------------------------
 		Combo textFahrer = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textFahrer = new FormData();
 		fd_textFahrer.bottom = new FormAttachment(0, 32);
@@ -1242,7 +1241,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		setTextFahrer.setInput(ModelFactory.getInstance().getStaffManager());
 		
 
-		//TODO-----------------------------------------------------------------------------
+
 		Combo textSaniI = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textSnaniI = new FormData();
 		fd_textSnaniI.bottom = new FormAttachment(0, 59);
@@ -1256,7 +1255,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		setTextSaniI.setInput(ModelFactory.getInstance().getStaffManager());
 
 		
-		//TODO----------------------------------------------------------------------
+
 		Combo textSaniII = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textSaniII = new FormData();
 		fd_textSaniII.bottom = new FormAttachment(0, 86);
@@ -1594,22 +1593,15 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_okButton.left = new FormAttachment(0, 858);
 		okButton.setLayoutData(fd_okButton);
 		okButton.setText("OK");
-		//TODO start
 		okButton.addListener(SWT.Selection, new Listener()
 		{
-			String requiredFields;//contains the names of the required fields that have no content
-//			
+			String requiredFields;//contains the names of the required fields that have no content		
 			int hourStart;
 			int hourAtPatient;
 			int hourTerm;
 			int minutesStart;
 			int minutesAtPatient;
 			int minutesTerm;
-			
-			//fields
-//			String paramedicII;
-//			String paramedicI;
-//			String driver;
 			
 			boolean mountainRescue;
 			boolean police;
@@ -1648,10 +1640,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			String s7;
 			String s8;
 			String s9;
-			
-			
-			
-			
+
 			String realStation;//real station -> only if create new = false
 			
 			String numberNotifier;
@@ -1660,8 +1649,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			boolean backTransportPossible;
 			boolean accompanyingPerson;
 			boolean rufhilfepatient;
-			
-			
+				
 			boolean wheelChairButton;
 			boolean gurney;
 			boolean chair;
@@ -1692,21 +1680,18 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			long s6Long;
 			long s7Long;
 			long s8Long;
-			long s9Long;
-			
+			long s9Long;			
 			
 			int directness;
 			
 			String formatOfTime;
-			String formatOfTransportStati = "";
-			
+			String formatOfTransportStati = "";		
 			
 			Calendar cal = Calendar.getInstance();
 			
 			StaffMember smDriver;
 			StaffMember smParamI;
-			StaffMember smParamII;
-			
+			StaffMember smParamII;		
 			
 			public void handleEvent(Event event) 
 			{
@@ -1740,8 +1725,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					this.displayMessageBox(event,formatOfTime, "Format von Transportzeiten falsch: ");	
 					return;
 				}
-				
-				System.out.println("------------------" +checkFormatOfTransportStatusTimeFields());
+
 				if(!this.checkFormatOfTransportStatusTimeFields().trim().equalsIgnoreCase(""))
 				{
 					this.displayMessageBox(event,formatOfTime, "Format von Statuszeiten falsch: ");	
@@ -1755,8 +1739,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				{
 					this.displayMessageBox(event, "Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
-				}	
-				
+				}				
 				
 				//validate: atPatient before term
 				if((termLong<atPatientLong && !term.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase("")))
@@ -1771,10 +1754,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
 				}
-				
-				//TODO Validating correctness of the TransortStati
-				
-				
+								
 				//set the kind of transport
 				if(wheelChairButton)
 					kindOfTransport = TRANSPORT_KIND_ROLLSTUHL;
@@ -1786,14 +1766,10 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					kindOfTransport = TRANSPORT_KIND_GEHEND;
 				else
 					kindOfTransport = "";
-				
-				
-				
+							
 				//create a new entry
-				
                 if(createNew)
-                {
-                	
+                {              	
                 	//set the receiving time
     				Calendar cal = Calendar.getInstance();
     				long receivingTime = cal.getTimeInMillis();
@@ -1835,13 +1811,13 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
-                    newAction.run();//TODO
+                    newAction.run();
                     if(transport.getTransportPriority().equalsIgnoreCase("A"))
                     {
-                    	
+                    	 DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
+                         duplicateAction.run();
                     }
-                    DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
-                    duplicateAction.run();
+                   //TODO solve the problem with the direction- get lost 
                     System.out.println("TransportForm, Richtung.........................................." +transport.getDirection());
                 }
                 else
@@ -2382,11 +2358,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			}
 		});
 		
-		
-		
-		//TODO - end
-		
-		//transport type selction buttons //TODO
+		//transport type selection buttons
 		group = new Group(shell, SWT.NONE);
 		group.setLayout(new FormLayout());
 		final FormData fd_group = new FormData();
