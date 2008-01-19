@@ -184,13 +184,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         this.transport = new Transport();
         //set up the filds
         createContents();
-        
-        System.out.println("TranpsportForm____________________ im constructor für createNew, die receiving time" +transport.getReceiveTime());
-      //receiving time
-        GregorianCalendar gcal1 = new GregorianCalendar();
-        gcal1.setTimeInMillis(transport.getReceiveTime());
-        String aufgTime = (gcal1.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal1.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal1.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal1.get(GregorianCalendar.MINUTE));
-        this.textAufgen.setText(aufgTime);
     }
     
     
@@ -213,6 +206,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         this.transport = transport;
         this.editingType = editingType;
         transportType = "both";
+
        
         //create the fields
         createContents();
@@ -321,6 +315,12 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			} 
         }
 
+        if(transport.getReceiveTime() != 0)
+        {
+        	cal.setTimeInMillis(transport.getReceiveTime());
+        	textAufgen.setText(sdf.format(cal.getTime()));
+        }
+        	
         //other fields
         this.begleitpersonButton.setSelection(transport.isAccompanyingPerson());
         this.bergrettungButton.setSelection(transport.isMountainRescueServiceAlarming());
@@ -455,8 +455,15 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	        {
 	        	this.setTextSaniII.setSelection(new StructuredSelection(transport.getVehicleDetail().getParamedicIIName()));
 	        }
+	        
+	        textFahrzeug.setText(transport.getVehicleDetail().getVehicleName());
         }
         
+        
+        if(transport.getRealStation() != null)
+        	textOrtsstelle.setText(transport.getRealStation());
+        if(transport.getTransportNumber() != null)
+        textTransportNummer.setText(transport.getTransportNumber());
         
         
         
@@ -1310,6 +1317,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textAufgen.right = new FormAttachment(0, 85);
 		fd_textAufgen.left = new FormAttachment(0, 44);
 		textAufgen.setLayoutData(fd_textAufgen);
+		
+		textAufgen.setEditable(false);
 
 		final Label aufgLabel = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_aufgLabel = new FormData();
@@ -1776,14 +1785,17 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				else
 					kindOfTransport = "";
 				
-				//set the receiving time
-				Calendar cal = Calendar.getInstance();
-				long receivingTime = cal.getTimeInMillis();
+				
 				
 				//create a new entry
 				
                 if(createNew)
                 {
+                	
+                	//set the receiving time
+    				Calendar cal = Calendar.getInstance();
+    				long receivingTime = cal.getTimeInMillis();
+    				
                 	transport = new Transport(fromStreet,fromCommunity,theRespStation,transportDate,startLong,priority,directness);
                 	transport.setBackTransport(backTransportPossible);
                 	
@@ -1874,7 +1886,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setMountainRescueServiceAlarming(mountainRescue);
                 	transport.setPlannedTimeAtPatient(atPatientLong);
                 	transport.setPoliceAlarming(police);
-                	transport.setReceiveTime(receivingTime);
+//                	transport.setReceiveTime(receivingTime); not necessary because changing is not possible
                 	transport.setToStreet(toStreet);
                 	transport.setToCity(toCommunity);
                 	
@@ -2025,6 +2037,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				vehicle = textFahrzeug.getText();
 				realStation = textOrtsstelle.getText();
 				transportNumber = textTransportNummer.getText();
+				
+//				receivingTime = textAufgen.getText();
 				
 				
 				
