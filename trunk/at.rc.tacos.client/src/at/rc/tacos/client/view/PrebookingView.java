@@ -37,13 +37,17 @@ import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.PrebookingViewContentProvider;
 import at.rc.tacos.client.providers.PrebookingViewLabelProvider;
+import at.rc.tacos.client.providers.TransportDirectnessFilter;
+import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
+import at.rc.tacos.common.IDirectness;
+import at.rc.tacos.common.IProgramStatus;
 
 import at.rc.tacos.model.Transport;
 
-public class PrebookingView extends ViewPart implements PropertyChangeListener
+public class PrebookingView extends ViewPart implements PropertyChangeListener, IProgramStatus, IDirectness
 {
 	public static final String ID = "at.rc.tacos.client.view.prebooking_view";
 
@@ -994,6 +998,20 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener
 		hookContextMenuMariazell(viewerMariazell);
 		hookContextMenuBruck(viewerBruck);
 		hookContextMenuKapfenberg(viewerKapfenberg);
+		
+		viewerBruck.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerGraz.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerWien.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerMariazell.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerKapfenberg.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerLeoben.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		
+		viewerBruck.addFilter(new TransportDirectnessFilter(TOWARDS_BRUCK));
+		viewerGraz.addFilter(new TransportDirectnessFilter(TOWARDS_GRAZ));
+		viewerWien.addFilter(new TransportDirectnessFilter(TOWARDS_VIENNA));
+		viewerMariazell.addFilter(new TransportDirectnessFilter(TOWARDS_MARIAZELL));
+		viewerKapfenberg.addFilter(new TransportDirectnessFilter(TOWARDS_KAPFENBERG));
+//		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));		
 		
 		viewerBruck.refresh();
 		viewerGraz.refresh();
