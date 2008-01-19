@@ -1,6 +1,7 @@
 package at.rc.tacos.core.db.dao.factory;
 
 import at.rc.tacos.core.db.dao.CallerDAO;
+import at.rc.tacos.core.db.dao.DayInfoDAO;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.RosterDAO;
@@ -63,6 +64,12 @@ public class DaoFactoryMySql implements DaoFactory
 
 	@Override
 	public DialysisPatientDAO createDialysisPatientDAO() 
+	{
+		return null;
+	}
+
+	@Override
+	public DayInfoDAO createDayInfoDAO() 
 	{
 		return null;
 	}
