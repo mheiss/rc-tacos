@@ -5,8 +5,8 @@
 <%
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	List<StaffMember> list = (List) params.get("jobList");
-	UserSession userSession = (UserSession) session
-			.getAttribute("userSession");
+	List<StaffMember> lista = (List) params.get("employeeList");
+	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
@@ -98,21 +98,24 @@
 													<td><strong>Wohnort</strong></td>
 													<td>&nbsp;</td>
 												</tr>
-												<tr>
+												<tr><% String id = request.getParameter("id");
+												for (StaffMember member : lista) { 
+												 %>
 													<td>Vorname:</td>
-													<td><input type="text" name="firstName" id="textfield" value="<%=userSession.getStaffMember().getFirstName() %>" /></td>
+													<td><input type="text" name="firstName" id="textfield" value="<%=member.getFirstName() %>" /></td>
 													<td>Strasse:</td>
-													<td><input type="text" name="streetname" id="textfield7" value="<%=userSession.getStaffMember().getStreetname() %>"/></td>
+													<td><input type="text" name="streetname" id="textfield7" value="<%=member.getStreetname() %>"/></td>
 												</tr>
+												 
 												<tr>
 													<td>Nachname:</td>
-													<td><input type="text" name="lastName" id="textfield2" value="<%=userSession.getStaffMember().getLastName() %>"/></td>
+													<td><input type="text" name="lastName" id="textfield2" value="<%=member.getLastName() %>"/></td>
 													<td>Ort:</td>
-													<td><input type="text" name="cityname" id="textfield8" value="<%=userSession.getStaffMember().getCityname() %>"/></td>
+													<td><input type="text" name="cityname" id="textfield8" value="<%=member.getCityname() %>"/></td>
 												</tr>
 												<tr>
 													<td>Gebrtsdatum:</td>
-													<td><input type="text" name="birthday" id="textfield12" value="<%=userSession.getStaffMember().getBirthday() %>" /></td>
+													<td><input type="text" name="birthday" id="textfield12" value="<%=member.getBirthday() %>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
@@ -136,10 +139,10 @@
 												</tr>
 												<tr>
 													<td>E-Mail Adresse:</td>
-													<td><input type="text" name="eMail" id="textfield4" value="<%=userSession.getStaffMember().getEMail() %>" /></td>
+													<td><input type="text" name="eMail" id="textfield4" value="<%=member.getEMail() %>" /></td>
 													<td>Prim&auml;re Ortsstelle:</td>
 													<td><select name="station" id="rosterViewDayHeadSelbox">
-														<option><%=userSession.getStaffMember().getPrimaryLocation()%></option>
+														<option><%=member.getPrimaryLocation()%></option>
 														<option><%=Constants.STATION_BEZIRK%></option>
 														<option><%=Constants.STATION_BREITENAU%></option>
 														<option><%=Constants.STATION_BRUCK%></option>
@@ -151,7 +154,7 @@
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
-													<td><input type="text" name="phonenumber" id="textfield4" value="<%=userSession.getStaffMember().getPhonenumber() %>"/></td>
+													<td><input type="text" name="phonenumber" id="textfield4" value="<%=member.getPhonenumber() %>"/></td>
 													<td><%=Constants.COMPETENCE_DRIVER%>:</td>
 													<td><input type="checkbox" name="checkbox"
 														id="checkbox" /></td>
@@ -220,7 +223,9 @@
 														value="Speichern"></td>
 												</tr>
 											</table>
-
+  <% 
+                                                    } 
+                                                %> 
 
 										</tr>
 									</table>
