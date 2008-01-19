@@ -52,8 +52,8 @@ public class DetachCarAction extends Action implements IProgramStatus
 		//---->
 		transportNumberOld = transport.getTransportNumber(); //TODO - Transportnummernverwaltung?
 		
-		transport.getStatusMessages().clear();//ok = ?????
-		transport.clearVehicleDetail();//TODO ok = ?
+		transport.getStatusMessages().clear();
+		transport.clearVehicleDetail();
 		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}

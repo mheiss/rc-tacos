@@ -59,7 +59,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
     	t2.setToCity(t1.getToCity());
     	
     	t2.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
-    	//TODO assign NEF
+    	//TODO dieser Fahrt soll gleich direkt das NEF zugewiesen werden
 
     	NetWrapper.getDefault().sendAddMessage(Transport.ID, t2);
 

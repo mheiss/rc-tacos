@@ -37,7 +37,6 @@ public class MoveToOutstandingTransportsAction extends Action implements ITransp
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		//TODO Michael bitte kontrollieren
 		//change transport program status to 'outstanding'
 		transport.getStatusMessages().clear();
 		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);//TODO- clear the staff members, write the Transport number into the help table
