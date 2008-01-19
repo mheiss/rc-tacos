@@ -184,6 +184,13 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         this.transport = new Transport();
         //set up the filds
         createContents();
+        
+        System.out.println("TranpsportForm____________________ im constructor für createNew, die receiving time" +transport.getReceiveTime());
+      //receiving time
+        GregorianCalendar gcal1 = new GregorianCalendar();
+        gcal1.setTimeInMillis(transport.getReceiveTime());
+        String aufgTime = (gcal1.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal1.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal1.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal1.get(GregorianCalendar.MINUTE));
+        this.textAufgen.setText(aufgTime);
     }
     
     
@@ -248,10 +255,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         	this.textTermin.setText(terminTime);
         }
         
-        //receiving time
-        gcal.setTimeInMillis(transport.getReceiveTime());
-        String aufgTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-        this.textAufgen.setText(aufgTime);
+        
         
         //transport stati
         if(transport.getStatusMessages() != null)
@@ -310,9 +314,9 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				textS8.setText(sdf.format(cal.getTime()));
 			}
         	//Status 9
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
 			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
+				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OTHER));
 				textS9.setText(sdf.format(cal.getTime()));
 			} 
         }
@@ -1886,26 +1890,49 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	
                 	transport.setVehicleDetail(vehicleDetail);
                 	
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
+                	System.out.println("TransportForm, im createNew false vor update action, aeS0: " +aeS0);
+                	System.out.println("TransportForm, im createNew false vor update action, s1: " +s1);
+                	if(!aeS0.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_ORDER_PLACED, aeS0Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
+                	if(!s1.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
+                	if(!s2.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
+                	if(!s3.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
+                	if(!s4.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
+                	if(!s5.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE,s5Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
+                	if(!s6.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, s6Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+                	if(!s7.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA,s7Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+                	if(!s8.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
-                	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
+                	if(!s9.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
+                	
+//                	if(aeS0Long != 0)
+//                		transport.addStatus(TRANSPORT_STATUS_ORDER_PLACED, aeS0Long);
+//                	if(s1Long != 0)
+//                		transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
+//                	if(!s1.equalsIgnoreCase(""))
+//                		transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
+//                	if(!s1.equalsIgnoreCase(""))
+//                		transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
+//                	if(!s1.equalsIgnoreCase(""))
+//                		transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
+//                	if(!s1.equalsIgnoreCase(""))
+//                		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE,s5Long);
+//                	if(!s1.equalsIgnoreCase(""))
+//                		transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, s6Long);
+//                	if(!s1.equalsIgnoreCase(""))
+//                		transport.addStatus(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA,s7Long);
+//                	if(!s1.equalsIgnoreCase(""))
+//                		transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
+//                	if(!s1.equalsIgnoreCase(""))
+//                		transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
                 	
                 	if(transportType.equalsIgnoreCase("prebooking"))
     				{
