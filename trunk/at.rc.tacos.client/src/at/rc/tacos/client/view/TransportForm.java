@@ -32,7 +32,9 @@ import org.eclipse.swt.widgets.Text;
 
 import sun.font.TextRecord;
 
+import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.CreateTransportAction;
+import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
@@ -1831,25 +1833,15 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	if(transportType.equalsIgnoreCase("emergencyTransport"))
                 		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
                 	
-                	
-                	//TODO setRealStation, Transportnumber, VehicleDetail wann?
-                	
-//                	transport.resetAllStati();//set all transport stati to "0"
-                	
-//                	VehicleDetail vehicleDetail = new VehicleDetail();
-//                	StaffMember smD = new StaffMember();
-//                	StaffMember smPI = new StaffMember();
-//                	StaffMember smPII = new StaffMember();
-//                	vehicleDetail.setDriverName(smD);
-//                	vehicleDetail.setParamedicIName(smPI);
-//                	vehicleDetail.setParamedicIIName(smPII);
-//                	
-//                	transport.setVehicleDetail(vehicleDetail);
-                	
                     //create and run the add action
                     CreateTransportAction newAction = new CreateTransportAction(transport);
                     newAction.run();//TODO
-                    System.out.println("Creating new transport: "+transport);
+                    if(transport.getTransportPriority().equalsIgnoreCase("A"))
+                    {
+                    	
+                    }
+                    DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
+                    duplicateAction.run();
                     System.out.println("TransportForm, Richtung.........................................." +transport.getDirection());
                 }
                 else
