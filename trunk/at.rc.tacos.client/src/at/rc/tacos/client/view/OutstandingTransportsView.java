@@ -298,13 +298,8 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		cancelTransportAction = new CancelTransportAction(this.viewerOffTrans);
 		copyTransportAction = new CopyTransportAction(this.viewerOffTrans);
 		//TODO
-//		ArrayList<VehicleDetail> readyVehicles = (ArrayList<VehicleDetail>) ModelFactory.getInstance().getVehicleManager().getReadyVehicleList();
+		ArrayList<VehicleDetail> readyVehicles = (ArrayList<VehicleDetail>) ModelFactory.getInstance().getVehicleManager().getReadyVehicleList();
 		
-		VehicleDetail v1 = new VehicleDetail("Bm03","RTW","Bruck an der Mur");
-		VehicleDetail v2 = new VehicleDetail("Bm04","RTW","Bruck an der Mur");
-		
-		List<VehicleDetail> newList = Arrays.asList(v1,v2);
-		ArrayList<VehicleDetail> readyVehicles = new ArrayList<VehicleDetail>(newList);
 		for (VehicleDetail veh : readyVehicles)
 		{
 			AssignCarAction action = new AssignCarAction(this.viewerOffTrans, veh);
