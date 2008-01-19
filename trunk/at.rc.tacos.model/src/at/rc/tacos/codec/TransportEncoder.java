@@ -159,7 +159,7 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeCharacters(Boolean.toString(transport.isEmergencyDoctorAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("helicopterAlarmingTime");
+        writer.writeStartElement("helicopterAlarming");
         writer.writeCharacters(Boolean.toString(transport.isHelicopterAlarming()));
         writer.writeEndElement();
         //write the elements and attributes
