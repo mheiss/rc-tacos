@@ -6,6 +6,9 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+
+import at.rc.tacos.common.IProgramStatus;
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
@@ -13,7 +16,7 @@ import at.rc.tacos.model.Transport;
  * Sets the given transport status
  * @author b.thek
  */
-public class SetTransportStatusAction extends Action
+public class SetTransportStatusAction extends Action implements ITransportStatus, IProgramStatus
 {
 	//properties
 	private TableViewer viewer;
@@ -55,8 +58,10 @@ public class SetTransportStatusAction extends Action
 		long timestamp = gcal.getTimeInMillis();
 		//set the status
 		transport.addStatus(status, timestamp);
-		System.out.println("___________SetTransportStatusAction, transport: " +transport);
-		System.out.println("..status: " +status +" " +timestamp);
+		
+		if(status == TRANSPORT_STATUS_DESTINATION_FREE)
+			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
+		
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

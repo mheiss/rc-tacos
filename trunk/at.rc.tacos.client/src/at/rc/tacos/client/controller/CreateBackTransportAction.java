@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
 import at.rc.tacos.client.view.TransportForm;
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
@@ -15,7 +16,7 @@ import at.rc.tacos.model.Transport;
  * Creates a backtransport for the selected transport
  * @author b.thek
  */
-public class CreateBackTransportAction extends Action
+public class CreateBackTransportAction extends Action implements IProgramStatus
 {
 	//properties
 	private TableViewer viewer;
@@ -77,6 +78,8 @@ public class CreateBackTransportAction extends Action
     	t2.setReceiveTime(now);
     	t2.setToStreet(t1.getFromStreet());//!! switch for the back transport
     	t2.setToCity(t1.getFromCity());//!! switch for the back transport
+    	
+    	t2.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
     	
     	NetWrapper.getDefault().sendAddMessage(Transport.ID, t2);
 		

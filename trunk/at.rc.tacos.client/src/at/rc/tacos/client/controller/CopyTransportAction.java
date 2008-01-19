@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
 import at.rc.tacos.client.view.TransportForm;
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Patient;
@@ -17,7 +18,7 @@ import at.rc.tacos.model.Transport;
  * Duplicates the transport
  * @author b.thek
  */
-public class CopyTransportAction extends Action
+public class CopyTransportAction extends Action implements IProgramStatus
 {
 	//properties
 	private TableViewer viewer;
@@ -68,6 +69,11 @@ public class CopyTransportAction extends Action
     	t2.setReceiveTime(now);
     	t2.setToStreet(t1.getToStreet());
     	t2.setToCity(t1.getToCity());
+    	
+    	if(t1.getProgramStatus()== PROGRAM_STATUS_UNDERWAY)
+    		t2.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+    	else
+    		t2.setProgramStatus(t1.getProgramStatus());
     	
     	NetWrapper.getDefault().sendAddMessage(Transport.ID, t2);
 	}

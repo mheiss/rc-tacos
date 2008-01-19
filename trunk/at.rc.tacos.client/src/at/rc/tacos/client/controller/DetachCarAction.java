@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
@@ -14,7 +15,7 @@ import at.rc.tacos.model.Transport;
  * Detaches the car from the transport
  * @author b.thek
  */
-public class DetachCarAction extends Action
+public class DetachCarAction extends Action implements IProgramStatus
 {
 	//properties
 	private TableViewer viewer;
@@ -51,8 +52,9 @@ public class DetachCarAction extends Action
 		//---->
 		transportNumberOld = transport.getTransportNumber(); //TODO - Transportnummernverwaltung?
 		
+		transport.getStatusMessages().clear();//ok = ?????
 		transport.clearVehicleDetail();//TODO ok = ?
-//		transport.getStatusMessages().set(arg0, arg1); //TODO - clear all status messages!!!
+		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

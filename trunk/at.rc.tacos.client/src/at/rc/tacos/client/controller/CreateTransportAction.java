@@ -27,6 +27,8 @@ public class CreateTransportAction extends Action
     public void run() 
     {
         //send the transport
+    	System.out.println("CreateTransportAction, Programmstatus::::::" +transport.getProgramStatus());
+    	System.out.println("CreateTransportAction, Richtung::::::::::::::" +transport.getDirection());
         NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
     }
 }
