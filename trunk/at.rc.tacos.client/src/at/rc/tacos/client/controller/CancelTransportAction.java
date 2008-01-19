@@ -50,10 +50,9 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 		if (!cancelConfirmed) 
 			return;
 		//request to cancel (storno)	
-		transportNumberOld = transport.getTransportNumber(); //TODO - Transportnummernverwaltung?
+		transportNumberOld = transport.getTransportNumber(); //TODO - Transportnummernverwaltung? old in Hilfstabelle? -oder alles am Server?
 		transport.setTransportNumber("STORNO");
 		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-		System.out.println("CancelTransportAction, Transportnummer: " +transport.getTransportNumber());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

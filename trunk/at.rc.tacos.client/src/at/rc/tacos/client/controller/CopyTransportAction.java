@@ -71,7 +71,10 @@ public class CopyTransportAction extends Action implements IProgramStatus
     	t2.setToCity(t1.getToCity());
     	
     	if(t1.getProgramStatus()== PROGRAM_STATUS_UNDERWAY)
+    	{
     		t2.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+    		//TODO Transportnummernverwaltung- keine Transportnummer vergeben
+    	}
     	else
     		t2.setProgramStatus(t1.getProgramStatus());
     	

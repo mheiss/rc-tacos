@@ -37,10 +37,9 @@ public class JournalMoveToRunningTransportsAction extends Action implements ITra
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		//TODO Michael bitte kontrollieren
-		//change transport program status to 'outstanding'
+		//change transport program status to 'underway'
 		transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
-		transport.getStatusMessages().clear();//ok? or better to clear only the status 5 (Ziel frei)
+		transport.getStatusMessages().clear();//TODOok? or better to clear only the status 5 (Ziel frei)
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

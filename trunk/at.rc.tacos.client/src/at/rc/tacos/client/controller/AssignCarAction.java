@@ -44,15 +44,11 @@ public class AssignCarAction extends Action implements IProgramStatus
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//open the editor
 		transport.setVehicleDetail(vehicle);
-		//TODO:
 		GregorianCalendar cal = new GregorianCalendar();
 		long now = cal.getTimeInMillis();
 		transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
 		transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
-//		transport.getStatusMessages().set(index, element)//TODO: set status S0 (Auftrag erteilt)
-		
-		//TODO:
-		
+		//TODO assign transport number
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

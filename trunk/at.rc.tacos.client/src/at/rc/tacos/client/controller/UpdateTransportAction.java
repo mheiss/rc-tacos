@@ -11,7 +11,6 @@ public class UpdateTransportAction extends Action
 	public UpdateTransportAction(Transport transport)
 	{
 		this.transport = transport;
-//		ModelFactory.getInstance().getTransportManager().update(transport);//TODO -
 	}
 
 	@Override

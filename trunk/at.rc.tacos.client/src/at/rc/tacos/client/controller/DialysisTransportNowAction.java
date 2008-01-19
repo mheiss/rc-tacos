@@ -53,7 +53,7 @@ public class DialysisTransportNowAction extends Action
 		GregorianCalendar gcal = new GregorianCalendar();
 		long now = gcal.getTimeInMillis();
 		dia.setPlannedStartOfTransport(now);
-		//TODO? move to outstanding transports view
+		//TODO neuen Transport anlegen- program status: outstanding
 		NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, dia);
 	}
 }
