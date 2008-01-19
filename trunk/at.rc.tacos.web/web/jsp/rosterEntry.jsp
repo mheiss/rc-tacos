@@ -113,11 +113,12 @@
 											<td id="rosterViewDayHeadline">Mitglied:&nbsp;</td>
 											<td><!-- Mitarbeiterliste --> <select name="employee"
 												id="rosterViewDayHeadSelbox">
-												<%
+											
+												<option selected value="<%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%>"><%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%></option>
+													<%
 													for (StaffMember member : list) {
 												%>
-												<option selected value="<%=member.getFirstName() + " " + member.getLastName()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
-												<option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
+												<option value="<%=member.getPersonId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
 												<%
 													}
 												%>
