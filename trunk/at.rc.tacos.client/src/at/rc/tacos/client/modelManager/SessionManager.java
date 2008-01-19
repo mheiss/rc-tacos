@@ -1,5 +1,7 @@
 package at.rc.tacos.client.modelManager;
 
+import java.util.Date;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -10,10 +12,11 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IConnectionStates;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Login;
 
 /**
- * Handles the authentication process and manages the 
+ * Handles the authentication process and manages the day info
  * @author Michael
  */
 public class SessionManager extends PropertyManager
@@ -26,11 +29,17 @@ public class SessionManager extends PropertyManager
 
     //the logged in user
     private Login loginInformation;
+    //daily info
+    private DayInfoMessage dayInfo;
+    private long displayedDate;
 
     /**
      * Default class constructor
      */
-    private SessionManager() { } 
+    private SessionManager() 
+    { 
+    	displayedDate = new Date().getTime();
+    } 
 
     /**
      * Returns the shared instance
@@ -61,6 +70,49 @@ public class SessionManager extends PropertyManager
     public Login getLoginInformation()
     {
         return loginInformation;
+    }
+    
+    /**
+     * Returns the dayInfo message to display
+     * @return the dayInfo message
+     */
+    public DayInfoMessage getDayInfoMessage()
+    {
+    	return dayInfo;
+    }
+    
+    /**
+     * Sets the day info message to display in the info view
+     * @param dayInfo the info to display
+     */
+    public void setDayInfoMessage(final DayInfoMessage dayInfo)
+    {
+    	this.dayInfo = dayInfo;
+        Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {
+            	firePropertyChange("DAY_INFO_UPDATED", null, dayInfo);
+            }
+        });
+    }
+    
+    /**
+     * Returns the currently selected date in the day select field
+     * @return the selected date
+     */
+    public long getDisplayedDate()
+    {
+    	return displayedDate;
+    }
+    
+    /**
+     * Sets the currently selected date.
+     * @param displayedDate the selected date
+     */
+    public void setDisplayedDate(long displayedDate)
+    {
+    	this.displayedDate = displayedDate;
     }
 
     /**

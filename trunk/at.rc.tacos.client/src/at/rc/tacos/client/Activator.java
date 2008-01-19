@@ -7,7 +7,6 @@ import org.osgi.framework.BundleContext;
 import at.rc.tacos.client.listeners.*;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.core.net.internal.IServerInfo;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.factory.ListenerFactory;
 import at.rc.tacos.model.*;
@@ -96,8 +95,9 @@ public class Activator extends AbstractUIPlugin
 	    factory.registerListener(Login.ID, new SessionListener());
 	    factory.registerListener(Logout.ID, new SessionListener());
 	    factory.registerListener(SessionManager.ID, new SessionListener());
-	    factory.registerListener(SystemMessage.ID, new SystemMessageListener());
+	    factory.registerListener(SystemMessage.ID, new SessionListener());
 	    factory.registerListener(DialysisPatient.ID, new DialysisPatientListener());
+	    factory.registerListener(DayInfoMessage.ID, new SessionListener());
 	}
 	
 	/**

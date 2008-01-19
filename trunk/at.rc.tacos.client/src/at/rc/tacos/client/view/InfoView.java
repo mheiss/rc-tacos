@@ -6,8 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.ITextListener;
-import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,10 +23,12 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.*;
 
+import at.rc.tacos.client.controller.PersonalUpdateDayInfoAction;
 import at.rc.tacos.client.controller.SelectRosterDateAction;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.util.Util;
+import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.StaffMember;
 
 /**
@@ -139,7 +139,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
     public Composite makeComposite(Composite parent, int col) 
     {
         Composite nameValueComp = toolkit.createComposite(parent);
-        GridLayout layout = new GridLayout(3, false);
+        GridLayout layout = new GridLayout(col, false);
         layout.marginHeight = 3;
         nameValueComp.setLayout(layout);
         return nameValueComp;
@@ -275,13 +275,28 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         noteEditor.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
         noteEditor.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
         noteEditor.setEditable(true);
-        noteEditor.addTextListener(new ITextListener() 
+        
+        //update button
+        Hyperlink updateText = toolkit.createHyperlink(notesField, 
+        		"Tagesinformationen speichern",SWT.NONE);
+        updateText.setFont(new Font(null,"Arial",11,SWT.BOLD));
+        updateText.addHyperlinkListener(new HyperlinkAdapter()
         {
-            public void textChanged(TextEvent event) 
-            {
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+		       	//the text
                 String updatedText = noteEditor.getTextWidget().getText();
-                System.out.println(updatedText);
-            }
+                //the current user
+                String user = SessionManager.getInstance().getLoginInformation().getUsername();
+                //the current selected date
+                long date = SessionManager.getInstance().getDisplayedDate();
+                
+                DayInfoMessage info = new DayInfoMessage(updatedText,date,user);
+                
+                PersonalUpdateDayInfoAction updateAction = new PersonalUpdateDayInfoAction(info);
+                updateAction.run();
+			}
         });
     }
 
@@ -312,6 +327,15 @@ public class InfoView extends ViewPart implements PropertyChangeListener
                     //updateInfoSection();
                 }
             });
+        }
+        if("DAY_INFO_UPDATED".equalsIgnoreCase(pce.getPropertyName()))
+        {
+        	noteEditor.setEditable(false);
+        	//cast to a day info message
+        	DayInfoMessage dayInfo = (DayInfoMessage)pce.getNewValue();
+        	noteEditor.getTextWidget().setText(dayInfo.getMessage());
+        	dayInfoSection.setToolTipText("Tagesinfo zuletzt geändert "+Util.formatTime(dayInfo.getTimestamp()) +" von "+ dayInfo.getLastChangedBy());
+        	noteEditor.setEditable(true);
         }
     }
 }
