@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
@@ -16,7 +17,7 @@ import at.rc.tacos.model.Transport;
  * Opens the editor to edit the selected entry (stornieren)
  * @author b.thek
  */
-public class CancelTransportAction extends Action implements ITransportStatus
+public class CancelTransportAction extends Action implements ITransportStatus, IProgramStatus
 {
 	//properties
 	private TableViewer viewer;
@@ -51,6 +52,7 @@ public class CancelTransportAction extends Action implements ITransportStatus
 		//request to cancel (storno)	
 		transportNumberOld = transport.getTransportNumber(); //TODO - Transportnummernverwaltung?
 		transport.setTransportNumber("STORNO");
+		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
 		System.out.println("CancelTransportAction, Transportnummer: " +transport.getTransportNumber());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}

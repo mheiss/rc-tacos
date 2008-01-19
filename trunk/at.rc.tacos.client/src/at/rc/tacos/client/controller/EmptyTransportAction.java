@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
@@ -17,7 +18,7 @@ import at.rc.tacos.model.Transport;
  * Assigns the transport as an empty transport
  * @author b.thek
  */
-public class EmptyTransportAction extends Action implements ITransportStatus
+public class EmptyTransportAction extends Action implements ITransportStatus, IProgramStatus
 {
 	//properties
 	private TableViewer viewer;
@@ -43,12 +44,11 @@ public class EmptyTransportAction extends Action implements ITransportStatus
 		//confirm the cancel
 		boolean cancelConfirmed = MessageDialog.openQuestion(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-				"Leerfahrt", "Soll die Fahrt (von: " +transport.getFromStreet()+"wirklich als Leerfahrt abgelegt werden?");
+				"Leerfahrt", "Soll die Fahrt (von: " +transport.getFromStreet()+"wirklich als Leerfahrt abgelegt werden? Die Transportnummer bleibt dabei erhalten.");
 		if (!cancelConfirmed) 
 			return;
-		GregorianCalendar gcal = new GregorianCalendar();
-		long now = gcal.getTimeInMillis();
-		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE, now);
+		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
+		transport.setDiseaseNotes(transport.getDiseaseNotes() + "/" +"Leerfahrt!");
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
@@ -15,7 +16,7 @@ import at.rc.tacos.model.Transport;
  * Opens the editor to edit the selected entry
  * @author b.thek
  */
-public class ForwardTransportAction extends Action implements ITransportStatus
+public class ForwardTransportAction extends Action implements ITransportStatus, IProgramStatus
 {
 	//properties
 	private TableViewer viewer;
@@ -40,9 +41,8 @@ public class ForwardTransportAction extends Action implements ITransportStatus
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		transport.setTransportNumber("WLTG");//'Weiterleitung'
 		System.out.println("ForwardTransportAction - Transportnummer.......:" +transport.getTransportNumber());
-		GregorianCalendar gcal = new GregorianCalendar();
-		long now = gcal.getTimeInMillis();
-		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE, now);//to mark the transport- should be shown on journal view
+		
+		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
