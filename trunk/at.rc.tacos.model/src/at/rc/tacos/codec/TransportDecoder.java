@@ -116,7 +116,7 @@ public class TransportDecoder implements MessageDecoder
                     transport.setPoliceAlarming(Boolean.valueOf(reader.getElementText()));
                 if("feedback".equalsIgnoreCase(startName))
                     transport.setFeedback(reader.getElementText());
-                if("directness".equalsIgnoreCase(startName))
+                if("direction".equalsIgnoreCase(startName))
                     transport.setDirection(Integer.valueOf(reader.getElementText()));
                 if("transportStatus".equalsIgnoreCase(startName))
                 {
