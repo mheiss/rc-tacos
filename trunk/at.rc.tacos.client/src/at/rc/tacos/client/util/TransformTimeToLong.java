@@ -23,11 +23,11 @@ public class TransformTimeToLong
 	{
 		if (!stringTime.equalsIgnoreCase(""))
 		{
+			System.out.println("TransformTimeToLong, im !\"\", die übergebene zeit als string: " +stringTime );
 			String[] theTerm = stringTime.split(":");
 			
 			int hoursTerm = Integer.valueOf(theTerm[0]).intValue();
 			int minutesTerm = Integer.valueOf(theTerm[1]).intValue();
-			cal.set(hoursTerm,minutesTerm);
 			cal.set(Calendar.HOUR_OF_DAY, hoursTerm);
 			cal.set(Calendar.MINUTE, minutesTerm);
 			longTime = cal.getTimeInMillis();
