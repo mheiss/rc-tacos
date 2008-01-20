@@ -111,18 +111,16 @@
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">Mitglied:&nbsp;</td>
-											<td><!-- Mitarbeiterliste --> <select name="employee"
-												id="rosterViewDayHeadSelbox">
-											
-												<option selected value="<%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%>"><%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%></option>
-													<%
-													for (StaffMember member : list) {
-												%>
-												<option value="<%=member.getPersonId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
-												<%
-													}
-												%>
-											</select></td>
+											<td><!-- Mitarbeiterliste --> 
+												<select name="employee" id="rosterViewDayHeadSelbox">
+												<% for (StaffMember member : list) {
+													if(member.equals(userSession.getStaffMember())) { %>
+														<option selected="selected" value="<%=member.getPersonId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
+													<% } else { %>
+														<option value="<%=member.getPersonId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
+													<% } } %>
+												</select>
+											</td>
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">Bezirk /
