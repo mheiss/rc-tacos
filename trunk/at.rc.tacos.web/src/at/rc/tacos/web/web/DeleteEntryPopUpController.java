@@ -23,7 +23,21 @@ public class DeleteEntryPopUpController implements Controller
 		//values that will be returned to the view
 		Map<String, Object> params = new HashMap<String, Object>();
 		//the action to do
-
+		String action = request.getParameter("action");
+		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
+		WebClient client = userSession.getConnection();
+		List<AbstractMessage> resultList;
+		resultList = client.sendListingRequest(StaffMember.ID, null);
+		
+		if("doRemoveEntry".equalsIgnoreCase(action))
+		{
+			//get the roster entry by id 
+			resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
+			RosterEntry entry = (RosterEntry )resultList.get(0);  
+			 
+			client.sendRemoveRequest(RosterEntry.ID,entry );
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay")+"?action=DayView");
+		}
 		return params;
 	}
 }
