@@ -15,7 +15,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 
-public class DeleteEntryPopUpController implements Controller
+public class DeleteEntryController implements Controller
 {
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
@@ -24,11 +24,15 @@ public class DeleteEntryPopUpController implements Controller
 		Map<String, Object> params = new HashMap<String, Object>();
 		//the action to do
 		String action = request.getParameter("action");
+
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
+
 		resultList = client.sendListingRequest(StaffMember.ID, null);
-		
+		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
+			params.put("employeeList", resultList); 
+
 		if("doRemoveEntry".equalsIgnoreCase(action))
 		{
 			//get the roster entry by id 

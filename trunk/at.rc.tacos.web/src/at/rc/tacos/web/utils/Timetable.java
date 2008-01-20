@@ -125,8 +125,8 @@ public class Timetable
 							"px; float:left;" +
 							this.tooLong + 
 							"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
-							"<a href='#' onmousedown=\"openPopupToDelete('" +  path + "/Dispatcher/deleteEntryPopUp.do?id=" + entry.getRosterId() + "')\" >" +
-							"<img src='../image/loeschen.gif' id='del'  /></a></div>";							
+							"<a href=" +  path + "/Dispatcher/deleteEntry.do?id=" + entry.getRosterId() + "onClick=\"return confirm('M&ouml;chten Sie diesen Dienst wirklich l&ouml;schen?')\" >" +
+							"<img src='../image/loeschen.gif' id='del'  /></a></div>";	
 					}
 				}
 				tabentry+="</div></div>";
