@@ -141,6 +141,16 @@
 		<servlet-name>deleteUserView</servlet-name>
 		<url-pattern>/deleteUserView</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>deleteEntryView</servlet-name>
+		<jsp-file>/jsp/rosterDay.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>deleteEntryView</servlet-name>
+		<url-pattern>/deleteEntryView</url-pattern>
+	</servlet-mapping>	
 	
 	<servlet>
 		<servlet-name>listUserView</servlet-name>
@@ -160,27 +170,7 @@
 	<servlet-mapping>
 		<servlet-name>updateEntryView</servlet-name>
 		<url-pattern>/updateEntryView</url-pattern>
-	</servlet-mapping>				
-
-	<servlet>
-		<servlet-name>deleteEntryPopUpView</servlet-name>
-		<jsp-file>/jsp/deleteEntryPopUp.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>deleteEntryPopUpView</servlet-name>
-		<url-pattern>/deleteEntryPopUpView</url-pattern>
-	</servlet-mapping>	
-	
-	<servlet>
-		<servlet-name>deleteUserPopUpView</servlet-name>
-		<jsp-file>/jsp/deleteUserPopUp.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>deleteUserPopUpView</servlet-name>
-		<url-pattern>/deleteUserPopUpView</url-pattern>
-	</servlet-mapping>			
+	</servlet-mapping>						
 
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
