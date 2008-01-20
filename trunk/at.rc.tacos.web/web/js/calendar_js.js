@@ -1,4 +1,3 @@
-
 	function CalendarJS() {
 		this.now = new Date();
 		this.dayname = ["Mo","Di","Mi","Do","Fr","Sa","So"];
@@ -17,9 +16,6 @@
 			this.monthCell.appendChild(document.createTextNode( this.monthname[this.mm]+" "+this.yy ));
 			this.tableHead = this.createTableHead();
 			this.parEl = document.getElementById( id );
-			
-
-					    
 			this.show();
 		}
 		
@@ -102,13 +98,10 @@
 			document.form.selDateView.value= this.date+"."+(this.mm+1)+"."+this.now.getFullYear();
 			}
 	
-	
 			for (var i=sevendaysaweek; i<this.dayname.length; i++)
 				tr.appendChild( this.getCell( "td", " "," ", " ", null  ) );
-	
 			tbody.appendChild( tr );
 			return tbody;
-			
 		}
 		
 		this.getCell = function(tag, str, mom, yey, cssClass) {
@@ -121,9 +114,7 @@
 		                document.form.startDay.value=str;
 					    document.form.startMonth.value=mom;
 					    document.form.startYear.value=yey;
-					    
 					    document.form.selDateView.value= str+"."+mom+"."+yey;
-					    
 					    document.form.endDay.value=str;
 					    document.form.endMonth.value=mom;
 					    document.form.endYear.value=yey;

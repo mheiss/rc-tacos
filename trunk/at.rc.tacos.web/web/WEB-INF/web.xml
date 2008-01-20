@@ -141,16 +141,6 @@
 		<servlet-name>deleteUserView</servlet-name>
 		<url-pattern>/deleteUserView</url-pattern>
 	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>deleteEntryView</servlet-name>
-		<jsp-file>/jsp/rosterDay.jsp</jsp-file>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>deleteEntryView</servlet-name>
-		<url-pattern>/deleteEntryView</url-pattern>
-	</servlet-mapping>	
 	
 	<servlet>
 		<servlet-name>listUserView</servlet-name>

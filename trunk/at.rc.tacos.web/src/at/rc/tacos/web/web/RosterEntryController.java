@@ -56,14 +56,14 @@ public class RosterEntryController implements Controller
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
-			startEntry.set(Calendar.MONTH, Integer.valueOf(startMonth));
+			startEntry.set(Calendar.MONTH, Integer.valueOf(startMonth)-1);
 			startEntry.set(Calendar.YEAR, Integer.valueOf(startYear));
 			startEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startHour));
 			startEntry.set(Calendar.MINUTE, Integer.valueOf(startMinute));
 			//construct a startCalendar
 			Calendar endEntry = Calendar.getInstance();
 			endEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(endDay));
-			endEntry.set(Calendar.MONTH, Integer.valueOf(endMonth));
+			endEntry.set(Calendar.MONTH, Integer.valueOf(endMonth)-1);
 			endEntry.set(Calendar.YEAR, Integer.valueOf(endYear));
 			endEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(endHour));
 			endEntry.set(Calendar.MINUTE, Integer.valueOf(endMinute));
@@ -103,6 +103,15 @@ public class RosterEntryController implements Controller
 			{
 				//eintrag hat nicht geklappt
 			}
+		}
+		if("doRemoveEntry".equalsIgnoreCase(action))
+		{
+			//get the roster entry by id 
+			resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
+			RosterEntry entry = (RosterEntry )resultList.get(0);  
+			 
+			client.sendRemoveRequest(RosterEntry.ID,entry );
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay")+"?action=DayView");
 		}
 		return params;
 	}
