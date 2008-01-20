@@ -80,7 +80,7 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
     {
     	DialysisPatient dia = (DialysisPatient)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        
+        System.out.println("DialysisTransportlabel, in getcolumn Text, der dia transport: " +dia.getFromStreet() +" " +dia.getStation());
         
         switch(columnIndex)
         {
