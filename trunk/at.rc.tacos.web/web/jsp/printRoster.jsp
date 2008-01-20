@@ -1,15 +1,15 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
 <%@page import="at.rc.tacos.common.Constants"%>
+<%@page import="java.text.*"%>
+<%@page import="java.util.Date"%>
 <%
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 	List<RosterEntry> rosterList = (List) params.get("rosterList");
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,16 +19,11 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
-
 <body>
-<%@page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-
 <%
 	Date current = new Date();
 	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
 %>
-
 <form method="post" action="" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">

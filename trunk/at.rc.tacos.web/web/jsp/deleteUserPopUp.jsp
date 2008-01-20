@@ -7,6 +7,8 @@
 <script type="text/javascript" src="../js/windowActions.js"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
+<%@page import="java.util.Map"%>
+<% 	Map<String,Object> params = (Map)request.getAttribute("params"); %>
 <body>
 <table width="100%" border='0' cellpadding='0' cellspacing='0'>
 	<tr>
@@ -19,6 +21,16 @@
 					+ "<a href=" + request.getContextPath() + "/Dispatcher/deleteUser.do?action=doRemoveUser&id=" + request.getParameter("id") + ">Ja</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
 					+ "<a href=\"javascript:window.close()\">Abbrechen</a><br />");
 				%>
+				
+				<% if (params.containsKey("userdelete-success")) 
+			{
+				out.println("Der User wurde erfolgreich gelöscht!");
+			} 
+			else 
+			{
+				out.println("");
+			}
+		%>
 			</tr>
 		</table>
 		</td>

@@ -46,7 +46,7 @@ public class Timetable
 
 		boolean ok1 = true;
 		boolean ok2 = true;
-
+		
 		SimpleDateFormat format = new SimpleDateFormat("E, dd-MM-yyyy");
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 		int zaehle = 0;
@@ -73,7 +73,7 @@ public class Timetable
 
 		TimeList+="</div></div>";
 
-		if(rosterList.isEmpty()!=true)
+		if(!rosterList.isEmpty())
 		{
 			Date dt=null;
 			Date dtCal=null;

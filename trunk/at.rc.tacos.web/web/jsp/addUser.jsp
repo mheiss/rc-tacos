@@ -1,5 +1,7 @@
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@ page import="java.text.*"%>
+<%@page import="java.util.Date"%>
 <%
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
@@ -13,9 +15,6 @@
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
 <body>
-<%@ page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-
 <%
 	Date current = new Date();
 	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
@@ -99,7 +98,7 @@
 												<tr>
 													<td>Gebrtsdatum:</td>
 													<td><input type="text" name="birthday"
-														id="textfield12" value="TT.MM.JJJJ" /></td>
+														id="textfield12" value="TT-MM-JJJJ" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>

@@ -2,6 +2,8 @@
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@ page import="java.text.*"%>
+<%@page import="java.util.Date"%>
 <%
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	List<StaffMember> list = (List) params.get("employeeList");
@@ -17,16 +19,11 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
-
 <body>
-<%@ page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-
 <%
 	Date current = new Date();
 	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
 %>
-
 <form method="post" action="" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">

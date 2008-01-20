@@ -71,10 +71,6 @@ public class ControllerFactory {
 		{
 			return new DeleteUserPopUpController();
 		}		
-		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.impressum")))
-		{
-			return new ImpressumController();
-		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.updateEntry")))
 		{
 			return new UpdateEntryController();

@@ -1,16 +1,17 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="at.rc.tacos.model.RosterEntry"%>
+<%@page import="at.rc.tacos.web.utils.Timetable"%>
+<%@ page import="java.text.*"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Calendar"%>
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<RosterEntry> rosterList = (List)params.get("rosterList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@page import="at.rc.tacos.common.AbstractMessage"%>
-<%@page import="at.rc.tacos.model.RosterEntry"%>
-<%@page import="at.rc.tacos.web.utils.Timetable"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,12 +19,7 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
-
 <body >
-<%@ page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Calendar"%>
-
 <%
 	Calendar current = Calendar.getInstance();
 	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");

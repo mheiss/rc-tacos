@@ -51,13 +51,13 @@ public class RosterWeekController  implements Controller
                     resultList.addAll(dayResult); 
                 //increment the day by one 
                 cal.add(Calendar.DAY_OF_MONTH, 1); 
-                for(AbstractMessage object:dayResult)   
-                {  
-                    RosterEntry entry = (RosterEntry)object;  
-                    if(entry.getStation().equals("Kapfenberg"))
-                    	// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
-                        resultList.add(entry);  
-                }
+//                for(AbstractMessage object:dayResult)   
+//                {  
+//                    RosterEntry entry = (RosterEntry)object;  
+//                    if(entry.getStation().equals("Kapfenberg"))
+//                    	// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
+//                        resultList.add(entry);  
+//                }
             } 
             //add the resulting list to the params 
             params.put("rosterList", resultList);   

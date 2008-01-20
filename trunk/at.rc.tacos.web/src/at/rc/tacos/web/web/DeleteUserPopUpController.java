@@ -29,10 +29,6 @@ public class DeleteUserPopUpController implements Controller
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
 
-		resultList = client.sendListingRequest(StaffMember.ID, null);
-		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
-			params.put("employeeList", resultList); 
-
 		if("doRemoveUser".equalsIgnoreCase(action))
 		{
 			//get the roster entry by id 
@@ -40,6 +36,7 @@ public class DeleteUserPopUpController implements Controller
 			StaffMember user = (StaffMember)resultList.get(0);  
 			 
 			client.sendRemoveRequest(StaffMember.ID,user);
+			params.put("userdelete-success", "User erfolgreich gelöscht!");
 			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteProfile"));
 		}
 		return params;

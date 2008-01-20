@@ -1,18 +1,18 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
-<%@page import="java.util.*"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
+<%@page import="at.rc.tacos.model.RosterEntry"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="java.text.*"%>
+<%@page import="java.util.Date"%>
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<StaffMember> list = (List)params.get("employeeList");
-	List<StaffMember> rosterList = (List)params.get("rosterList");
+	List<RosterEntry> rosterList = (List)params.get("rosterList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@page import="at.rc.tacos.model.RosterEntry"%>
-<%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.common.Constants"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -24,11 +24,6 @@
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
 <body>
-
-<%@page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Locale"%>
-
 <%
 	Date current = new Date();
 	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
