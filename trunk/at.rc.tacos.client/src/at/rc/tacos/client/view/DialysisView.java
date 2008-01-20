@@ -101,31 +101,33 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		viewer= new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new DialysisTransportContentProvider());
 		viewer.setLabelProvider(new DialysisTransportLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getTransportManager());
+		viewer.setInput(ModelFactory.getInstance().getDialysisTransportManager());
 		viewer.getTable().setLinesVisible(true);
 		
 		viewer.refresh();
 		
 		/** tool tip*/
-		tooltip = new OutstandingTransportsTooltip(viewer.getControl());//TODO- check OutstandingTransportsTooltip for dialysis!!!!!!!!
+//		tooltip = new OutstandingTransportsTooltip(viewer.getControl());//TODO- check OutstandingTransportsTooltip for dialysis!!!!!!!!
+		
+		
 		//show the tool tip when the selection has changed
 		
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewer.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltip.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});  
-		
+//		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
+//		{
+//			public void selectionChanged(SelectionChangedEvent event) 
+//			{
+//				TableItem[] selection = viewer.getTable().getSelection();
+//				if (selection != null && selection.length > 0) 
+//				{
+//					Rectangle bounds = selection[0].getBounds();
+//					tooltip.show(new Point(bounds.x, bounds.y));
+//				}
+//			}
+//		});  
+//		
 		
 		/** default sorter*/
-		viewer.setSorter(new TransportSorter(DialysisTransportSorter.ABF_SORTER,SWT.DOWN));
+//		viewer.setSorter(new TransportSorter(DialysisTransportSorter.ABF_SORTER,SWT.DOWN));
 		
 		
 		final Table table_2 = viewer.getTable();
