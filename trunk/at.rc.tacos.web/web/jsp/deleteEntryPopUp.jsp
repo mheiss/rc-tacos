@@ -16,7 +16,7 @@
 			<tr><br />
 				<% 
 					out.println("Wollen Sie diesen Dienst-Eintrag wirklich l&ouml;schen?<br /><br />"
-					+ "<a href=" + request.getContextPath() + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + request.getParameter("id") + ">Ja</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+					+ "<a href=" + request.getContextPath() + "/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + request.getParameter("id") + "onClick='return confirm(Moechten Sie diesen Dienst wirklich loeschen?')'\">Ja</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 					+ "<a href=\"javascript:window.close()\">Abbrechen</a><br />");
 				%>
 			</tr>
