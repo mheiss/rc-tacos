@@ -62,8 +62,6 @@ public class DialysisDecoder implements MessageDecoder
                     dia.setPlannedTimeAtPatient(Long.valueOf(reader.getElementText()));
                 if("appointmentTimeAtDestination".equalsIgnoreCase(startName))
                     dia.setAppointmentTimeAtDialysis(Long.valueOf(reader.getElementText()));
-                if("appointmentTimeAtDestination".equalsIgnoreCase(startName))
-                    dia.setAppointmentTimeAtDialysis(Long.valueOf(reader.getElementText()));
                 if("plannedStartForBackTransport".equalsIgnoreCase(startName))
                     dia.setplannedStartForBackTransport(Long.valueOf(reader.getElementText()));
                 if("readyTime".equalsIgnoreCase(startName))

@@ -34,6 +34,8 @@ public class DayInfoMessageDecoder implements MessageDecoder
                     dayInfo.setMessage(reader.getElementText());
                 if("lastChangedBy".equalsIgnoreCase(startName))
                     dayInfo.setLastChangedBy(reader.getElementText());
+                if("dirty".equalsIgnoreCase(startName))
+                	dayInfo.setDirty(Boolean.valueOf(reader.getElementText()));
             }
             //check for the end element, and return the object
             if(event.isEndElement())
