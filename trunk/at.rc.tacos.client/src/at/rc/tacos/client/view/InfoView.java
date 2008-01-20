@@ -6,8 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.swt.*;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
@@ -19,6 +22,7 @@ import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.*;
@@ -28,8 +32,10 @@ import at.rc.tacos.client.controller.SelectRosterDateAction;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.util.Util;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * A view showing custom informations
@@ -53,6 +59,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
     private Label user;
     private Hyperlink logoutLink;
     private Label date;
+    private ImageHyperlink saveDayInfoLink;
+    private CLabel dayInfoMessage;
 
     //labels for the view
     public final static String LABEL_NOTES = "Tagesinformationen";
@@ -142,6 +150,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         GridLayout layout = new GridLayout(col, false);
         layout.marginHeight = 3;
         nameValueComp.setLayout(layout);
+        nameValueComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         return nameValueComp;
     }
 
@@ -261,7 +270,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         dayInfoSection.setExpanded(true);
         dayInfoSection.setLayout(new GridLayout());
         dayInfoSection.setLayoutData(new GridData(GridData.FILL_BOTH));
-
+        
         //create the container for the notes
         Composite notesField = toolkit.createComposite(dayInfoSection);
         dayInfoSection.setClient(notesField);
@@ -269,35 +278,50 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         GridData notesData = new GridData(GridData.FILL_BOTH);
         notesData.grabExcessVerticalSpace = true;
         notesField.setLayoutData(notesData);
+        
+        //make a composite on the top of the input field
+        Composite controlls = makeComposite(notesField, 2);
+        
+        //update button
+        saveDayInfoLink = toolkit.createImageHyperlink(controlls,SWT.NONE);
+        saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save.na"));
+        saveDayInfoLink.addHyperlinkListener(new HyperlinkAdapter()
+        {
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+                //set the last chane user
+                String user = SessionManager.getInstance().getLoginInformation().getUsername();
+                DayInfoMessage dayInfo = SessionManager.getInstance().getDayInfoMessage();
+                dayInfo.setMessage(noteEditor.getTextWidget().getText());
+                dayInfo.setLastChangedBy(user);
+                dayInfo.setDirty(true);
+                //send the update request
+                PersonalUpdateDayInfoAction updateAction = new PersonalUpdateDayInfoAction(dayInfo);
+                updateAction.run();
+			}
+        });
+        
+        dayInfoMessage = new CLabel(controlls,SWT.LEFT);
+        dayInfoMessage.setText("Zuletzt geändert von <nicht verfügbar>, <nicht verfügbar>");
+        dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.warning"));
 
         noteEditor = new TextViewer(notesField, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
         noteEditor.setDocument(new Document());
         noteEditor.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
         noteEditor.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
         noteEditor.setEditable(true);
-        
-        //update button
-        Hyperlink updateText = toolkit.createHyperlink(notesField, 
-        		"Tagesinformationen speichern",SWT.NONE);
-        updateText.setFont(new Font(null,"Arial",11,SWT.BOLD));
-        updateText.addHyperlinkListener(new HyperlinkAdapter()
+        noteEditor.addTextListener(new ITextListener()
         {
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
+			public void textChanged(TextEvent te) 
 			{
-		       	//the text
-                String updatedText = noteEditor.getTextWidget().getText();
-                //the current user
-                String user = SessionManager.getInstance().getLoginInformation().getUsername();
-                //the current selected date
-                long date = SessionManager.getInstance().getDisplayedDate();
-                
-                DayInfoMessage info = new DayInfoMessage(updatedText,date,user);
-                
-                PersonalUpdateDayInfoAction updateAction = new PersonalUpdateDayInfoAction(info);
-                updateAction.run();
+				//Get the text and update it
+				String text = noteEditor.getTextWidget().getText();
+				SessionManager.getInstance().updateLocalDayInfoMessage(text);
 			}
         });
+
     }
 
     /**
@@ -328,14 +352,37 @@ public class InfoView extends ViewPart implements PropertyChangeListener
                 }
             });
         }
-        if("DAY_INFO_UPDATED".equalsIgnoreCase(pce.getPropertyName()))
+        if("DAY_INFO_CHANGED".equalsIgnoreCase(pce.getPropertyName()))
         {
         	noteEditor.setEditable(false);
         	//cast to a day info message
         	DayInfoMessage dayInfo = (DayInfoMessage)pce.getNewValue();
         	noteEditor.getTextWidget().setText(dayInfo.getMessage());
-        	dayInfoSection.setToolTipText("Tagesinfo zuletzt geändert "+Util.formatTime(dayInfo.getTimestamp()) +" von "+ dayInfo.getLastChangedBy());
         	noteEditor.setEditable(true);
+        	//update the labels
+        	saveDayInfoLink.setEnabled(false);
+        	saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save.na"));
+        	dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.ok"));
+        	dayInfoMessage.setText("Zuletzt geändert von "+dayInfo.getLastChangedBy()+","+ MyUtils.formatTimeAndDate(dayInfo.getTimestamp()));
+        }
+        if("DAY_INFO_LOCAL_CHANGED".equalsIgnoreCase(pce.getPropertyName()))
+        {
+        	//cast to a day info message
+        	DayInfoMessage dayInfo = (DayInfoMessage)pce.getNewValue();
+        	if(dayInfo.isDirty())
+        	{
+        		saveDayInfoLink.setEnabled(true);
+        		saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save"));
+        		dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.warning"));
+        		dayInfoMessage.setText("Bitte speichern sie ihre lokalen Änderungen");
+        	}
+        	else
+        	{
+            	saveDayInfoLink.setEnabled(false);
+            	saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save.na"));
+            	dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.ok"));
+            	dayInfoMessage.setText("Zuletzt geändert von "+dayInfo.getLastChangedBy()+","+ MyUtils.formatTimeAndDate(dayInfo.getTimestamp()));
+        	}
         }
     }
 }

@@ -9,7 +9,7 @@
 
 --> TransportView: Timer für Transportaufruf (2 Std. vor geplanter Abfahrtszeit) -am Client über Background Threads
 
---> VehicleComposite: Kontextmenü ergänzen (Besatzung abziehen, optional: einsatzbereit und außer Dienst setzen
+--> VehicleComposite: Kontextmenü ergänzen einsatzbereit und außer Dienst setzen
 
 --> Sperren von Einträgen die bearbeitet werden
 
