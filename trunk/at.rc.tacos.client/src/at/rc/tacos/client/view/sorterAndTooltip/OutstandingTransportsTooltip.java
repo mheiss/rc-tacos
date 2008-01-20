@@ -27,15 +27,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 	//properties
 	private Transport transport;
 	
-	private String backtransport = "";
-	private String police = "";
-	private String firebrigade = "";
-	private String brkdt = "";
-	private String df = "";
-	private String emergencyDoctor = "";
-	private String helicopter= "";
-	private String mountainRescue = "";
-	private String emergencyPhone = "";
+	
 	/**
 	 * Creates a new tool tip for the outstanding transport
 	 * @param control the control for the tool tip to show
@@ -74,23 +66,25 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		//get the selected transport
 		Composite composite = createToolTipContentAreaComposite(parent);	
 	
+		String alarming = "";
+		
 		
 		//notifying
 		System.out.println("++++++++++++++OutstandingTransportsTooltip,, createToolTipContentArea, police: " +transport.isPoliceAlarming());
 		if (transport.isFirebrigadeAlarming())
-			firebrigade = "Bergrettung";
+			alarming = "Bergrettung";
 		if (transport.isBrkdtAlarming())
-			brkdt = "Bezirksrettungskommandant";
+			alarming = alarming +" Bezirksrettungskommandant";
 		if (transport.isDfAlarming())
-			df = "Dienstführender";
+			alarming = alarming +" Dienstführender";
 		if (transport.isEmergencyDoctorAlarming())
-			emergencyDoctor = "Notarzt";
+			alarming = alarming +" Notarzt";
 		if (transport.isEmergencyPhone())
-			emergencyPhone = "Rufhilfe";
+			alarming = alarming +" Rufhilfe";
 		if (transport.isHelicopterAlarming())
-			helicopter = "Notarzthubschrauber";
+			alarming = alarming +" Notarzthubschrauber";
 		if (transport.isPoliceAlarming())
-			police = "Polizei";
+			alarming = alarming +" Polizei";
 		
 		
 		//directness
@@ -150,11 +144,10 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		}
 		
 		//notified
-		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
-				|| firebrigade.equalsIgnoreCase("")))
+		if (!alarming.equalsIgnoreCase(""))
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.exclamation");
-			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
+			title = alarming;
 			addIconAndLabel(composite,image,title);
 		}
 		
@@ -162,7 +155,14 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		if(transport.isEmergencyPhone())
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.phone");
-			title = emergencyPhone;
+			title = "Rufhilfepatient";
+			addIconAndLabel(composite,image,title);
+		}
+		
+		if(transport.isBackTransport())
+		{
+			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.back");
+			title = "Rücktransport möglich";
 			addIconAndLabel(composite,image,title);
 		}
 
