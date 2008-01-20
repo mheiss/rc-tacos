@@ -114,7 +114,7 @@ public class RosterEntryController implements Controller
 			RosterEntry entry = (RosterEntry )resultList.get(0);  
 			 
 			client.sendRemoveRequest(RosterEntry.ID,entry );
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterWeek"));
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterWeek")+"?action=weekView");
 		}
 		return params;
 	}
