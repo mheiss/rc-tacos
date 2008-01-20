@@ -1,6 +1,7 @@
 package at.rc.tacos.model;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * Info text for each day to display
@@ -15,6 +16,7 @@ public class DayInfoMessage extends AbstractMessage
 	private long timestamp;
 	private String message;
 	private String lastChangedBy;
+	private boolean dirty;
 	
 	/**
 	 * Default class constructor
@@ -34,9 +36,61 @@ public class DayInfoMessage extends AbstractMessage
 		setTimestamp(timestamp);
 		setLastChangedBy(lastChangedBy);
 	}
+	
+	//methods
+	/**
+	 * Returns the string based description of the message.
+	 * @return the message and the meta data
+	 */
+	@Override
+	public String toString()
+	{
+		return message + ": last changed: "+MyUtils.formatTimeAndDate(timestamp) +", by " +lastChangedBy +" local changes" + dirty;
+	}
+	
+	
 
 	//getters and setters
 	
+	/**
+     * Returns the calculated hash code based on the day info message.<br>
+     * Two day info messages have the same hash code if the message is the same.
+     * @return the calculated hash code
+     */
+	@Override
+	public int hashCode() 
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		return result;
+	}
+
+	/**
+     * Returns whether the objects are equal or not.<br>
+     * Two day info messages are equal if, and only if, the message is the same.
+     * @return true if the message is the same otherwise false.
+     */
+	@Override
+	public boolean equals(Object obj) 
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final DayInfoMessage other = (DayInfoMessage) obj;
+		if (message == null) 
+		{
+			if (other.message != null)
+				return false;
+		} 
+		else if (!message.equals(other.message))
+			return false;
+		return true;
+	}
+
 	/**
 	 * Returns the timestamp containing the day the message is assigned to
 	 * @return the timestamp the day the message is assigned to
@@ -59,10 +113,30 @@ public class DayInfoMessage extends AbstractMessage
 	 * Returns the username of the member that changed the message at last.
 	 * @return the lastChangedBy the username of the member
 	 */
-	public String getLastChangedBy() {
+	public String getLastChangedBy() 
+	{
 		return lastChangedBy;
 	}
-
+	
+	/**
+	 * Returns whether the day info has local unsaved changes and should be
+	 * saved in order to keep the changes.
+	 * @return true if there are local changes
+	 */
+	public boolean isDirty()
+	{
+		return dirty;
+	}
+	
+	/**
+	 * Sets the flag to indicate that the day info was changed locally.
+	 * @param dirty set to true to indicate local changes
+	 */
+	public void setDirty(boolean dirty)
+	{
+		this.dirty = dirty;
+	}
+	
 	/**
 	 * Sets the timestamp for which day the message is
 	 * @param timestamp the day the message is assigned to

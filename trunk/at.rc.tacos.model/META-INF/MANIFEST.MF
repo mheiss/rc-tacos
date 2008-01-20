@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0
 Export-Package: at.rc.tacos.codec;uses:="javax.xml.stream,at.rc.tacos.common",
  at.rc.tacos.common,
  at.rc.tacos.factory;uses:="at.rc.tacos.common,at.rc.tacos.codec",
- at.rc.tacos.model;uses:="at.rc.tacos.common"
+ at.rc.tacos.model;uses:="at.rc.tacos.common",
+ at.rc.tacos.util
 Require-Bundle: org.eclipse.swt,
  org.eclipse.jface,
  org.eclipse.core.databinding

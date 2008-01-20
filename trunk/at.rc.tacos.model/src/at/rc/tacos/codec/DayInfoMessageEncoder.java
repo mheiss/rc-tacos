@@ -17,17 +17,21 @@ public class DayInfoMessageEncoder  implements MessageEncoder
         //start
         writer.writeStartElement(DayInfoMessage.ID);
 
-        //id for this entry
+        //timestamp of the last change
         writer.writeStartElement("timestamp");
         writer.writeCharacters(Long.toString(dayInfo.getTimestamp()));
         writer.writeEndElement();
-        //station id
+        //the message
         writer.writeStartElement("message");
         writer.writeCharacters(dayInfo.getMessage());
         writer.writeEndElement();
-        //staff member id
+        //last change username
         writer.writeStartElement("lastChangedBy");
         writer.writeCharacters(dayInfo.getLastChangedBy());
+        writer.writeEndElement();
+        //indicate a change
+        writer.writeStartElement("dirty");
+        writer.writeCharacters(String.valueOf(dayInfo.isDirty()));
         writer.writeEndElement();
         
         //end
