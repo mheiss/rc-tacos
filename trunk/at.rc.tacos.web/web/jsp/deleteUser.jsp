@@ -87,7 +87,7 @@
                                                 %> 
                                                     <tr> 
                                                         <td id="BlockContent"><%=member.getFirstName() + " " + member.getLastName()%></td>
-                                                        <td id="BlockContent"><a href="#" onmousedown="openPopupToDelete('<%=request.getContextPath()+"/Dispatcher/deleteUserPopUp.do?id="+ member.getPersonId()%>')"><img src="../image/loeschen.gif"></a></td> 
+                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteUserPopUp.do?id="+ member.getPersonId()%>+onClick='return confirm(M&ouml;chten Sie diesen Dienst wirklich l&ouml;schen?')'"><img src="../image/loeschen.gif"></a></td> 
                                                     </tr> 
                                                     <% 
                                                     } 

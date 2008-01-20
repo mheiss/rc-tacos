@@ -53,8 +53,6 @@ public class RosterEntryController implements Controller
 			String endYear =  request.getParameter("endYear");
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
-
-			
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
@@ -105,16 +103,6 @@ public class RosterEntryController implements Controller
 			{
 				//eintrag hat nicht geklappt
 			}
-		}
-		
-		if("doRemoveEntry".equalsIgnoreCase(action))
-		{
-			//get the roster entry by id 
-			resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
-			RosterEntry entry = (RosterEntry )resultList.get(0);  
-			 
-			client.sendRemoveRequest(RosterEntry.ID,entry );
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterWeek")+"?action=weekView");
 		}
 		return params;
 	}
