@@ -40,6 +40,8 @@
 
 --> Server: Logging
 
+--> Druckfunktion
+
 --> Allgemein: Links ergänzen
 
 --> Installanleitung
