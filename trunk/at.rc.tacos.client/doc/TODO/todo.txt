@@ -1,8 +1,8 @@
 --> Weiterleiten (= an andere Dienststelle z.B.)       
                   i setz dabei die Transportnummer auf "WTGL" und den TransportStatus S5 
 
---> Stornieren: Ein stornierter Transport soll im Journalblatt mit "STORNO" als Transportnummer (ev. Icon rein- würde mir gut gefallen) weiterhin aufscheinen. 
-            Was kann als Markierung für WTGL gesetzt werden? 0? -1?
+--> Stornieren: Ein stornierter Transport soll im Journalblatt mit "STORNO" als Transportnummer --> 1 in der DB (ev. Icon rein- würde mir gut gefallen) weiterhin aufscheinen. 
+            Was kann als Markierung für WTGL gesetzt werden? Antwort: 2
             Transportnummer wird wie bei Weiterleiten nicht angezeigt. ??? Auch Status S5 nicht.
 
 --> Suchfunktion für Transport Views einbauen
@@ -24,8 +24,8 @@
 
 --> Sorter: gehören getestet. Probleme, wenn Zellen leer
 
---> TransportViews: Filter aktivieren (Klasse besteht schon, ProgrammStati müssen noch richtig gesetzt werden)-> sind aktiviert, funktionieren so
-	weit. Probleme mit PrebookingView weil directness irgendwo verloren geht.
+--> TransportViews: Filter aktivieren (Klasse besteht schon, ProgrammStati müssen noch richtig gesetzt werden - ist erledigt)-> sind aktiviert, 
+	funktionieren soweit. Probleme mit PrebookingView weil directness irgendwo verloren geht.
 
 --> TransportViews: Transportnummern implementieren
 
@@ -33,7 +33,8 @@
 
 --> Gesamt: Zugriffsberechtigungen implementieren. Nur Admins für Adminperspektive. User mit nur Lesezugriff ermöglichen.
 
---> TransportViews: Verhalten, wenn Priorität A - NEF- Verwaltung
+--> TransportViews: Verhalten, wenn Priorität A - NEF- Verwaltung --> zum Teil implementiert. Offen ist: wie kann ich
+	das Vehicle NEF direkt (automatisch in der action) zuweisen?
 
 --> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???) --> funktioniert nicht, weil der long der Zeit negativ ist
 	(nur Zeit gespeichert, Datum nicht?)
