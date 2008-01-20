@@ -45,13 +45,13 @@ public class RosterDayController  implements Controller
 				params.put("rosterList", resultList); 
 			
 			List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
-			for(AbstractMessage object:dayResult)   
-            {  
-                RosterEntry entry = (RosterEntry)object;  
-                if(entry.getStation().equals("Kapfenberg"))
-                	// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
-                    resultList.add(entry);  
-            }
+//			for(AbstractMessage object:dayResult)   
+//            {  
+//                RosterEntry entry = (RosterEntry)object;  
+//                if(entry.getStation().equals("Kapfenberg"))
+//                	// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
+//                    resultList.add(entry);  
+//            }
 		return params;
 	}
 }

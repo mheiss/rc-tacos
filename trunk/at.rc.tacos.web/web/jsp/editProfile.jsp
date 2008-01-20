@@ -1,17 +1,12 @@
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.model.StaffMember"%>
+<%@page import="at.rc.tacos.common.Constants"%>
+<%@page import="at.rc.tacos.util.MyUtils"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@ page import="java.text.*"%>
+<%@page import="java.util.Date"%>
 <%
-	Map<String, Object> params = (Map) request.getAttribute("params");
-	List<StaffMember> list = (List) params.get("jobList");
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@page import="at.rc.tacos.common.AbstractMessage"%>
-<%@page import="at.rc.tacos.model.RosterEntry"%>
-<%@page import="at.rc.tacos.web.utils.Timetable"%>
-<%@page import="at.rc.tacos.common.Constants"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -19,16 +14,11 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
-
 <body>
-<%@ page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-
 <%
 	Date current = new Date();
 	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
 %>
-
 <form method="post" action="" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
@@ -107,7 +97,7 @@
 												</tr>
 												<tr>
 													<td>Gebrtsdatum:</td>
-													<td><input disabled="disabled" type="text" name="birthday" id="textfield12" value="<%=userSession.getStaffMember().getBirthday() %>" /></td>
+													<td><input disabled="disabled" type="text" name="birthday" id="textfield12" value="<%=MyUtils.formatDate(userSession.getStaffMember().getBirthday() )%>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
