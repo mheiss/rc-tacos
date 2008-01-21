@@ -98,7 +98,7 @@ public class MobilePhoneManager  extends PropertyManager
      * Returns the current list of phones 
      * @return the phone list
      */
-    public List<MobilePhoneDetail> getVehicleList()
+    public List<MobilePhoneDetail> getMobilePhoneList()
     {
         return objectList;
     }
