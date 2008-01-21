@@ -4,6 +4,8 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import at.rc.tacos.client.view.admin.StaffDetailView;
 import at.rc.tacos.client.view.admin.StaffMemberView;
+import at.rc.tacos.client.view.admin.VehicleAdminView;
+import at.rc.tacos.client.view.admin.VehicleDetailAdminView;
 
 /**
  * The perspective for the administrator
@@ -24,5 +26,7 @@ public class AdminPerspective implements IPerspectiveFactory
         layout.setFixed(true);
         layout.addStandaloneView(StaffMemberView.ID,false, IPageLayout.LEFT, 0.25f, editorArea);
         layout.addStandaloneView(StaffDetailView.ID,false, IPageLayout.RIGHT, 0.65f, editorArea);
+        layout.addStandaloneView(VehicleDetailAdminView.ID,false, IPageLayout.LEFT, 0.25f, editorArea);
+        layout.addStandaloneView(VehicleAdminView.ID,false, IPageLayout.RIGHT, 0.65f, editorArea);
     }
 }
