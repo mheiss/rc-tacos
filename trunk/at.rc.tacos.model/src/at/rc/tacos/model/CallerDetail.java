@@ -10,8 +10,9 @@ import at.rc.tacos.common.AbstractMessage;
 public class CallerDetail extends AbstractMessage
 {
     //unique identification string
-    public final static String ID = "callerDetail";
+    public static String ID = "callerDetail";
 
+    private int callerId;
     private String callerName;
     private String callerTelephoneNumber;
 
@@ -40,6 +41,14 @@ public class CallerDetail extends AbstractMessage
     public CallerDetail(String callerName,String callerTelephoneNumber)
     {
     	super(ID);
+    	setCallerName(callerName);
+    	setCallerTelephoneNumber(callerTelephoneNumber);
+    }
+    
+    public CallerDetail(Integer callerId, String callerName, String callerTelephoneNumber)
+    {
+    	super(ID);
+    	setCallerId(callerId);
     	setCallerName(callerName);
     	setCallerTelephoneNumber(callerTelephoneNumber);
     }
@@ -133,4 +142,13 @@ public class CallerDetail extends AbstractMessage
             throw new IllegalArgumentException("Telephone number cannot be null or emtpy");
         this.callerTelephoneNumber = callerTelephoneNumber.trim();
     }
+
+	public Integer getCallerId() {
+		return callerId;
+	}
+
+	public void setCallerId(Integer callerId) {
+		this.callerId = callerId;
+	}
+
 }

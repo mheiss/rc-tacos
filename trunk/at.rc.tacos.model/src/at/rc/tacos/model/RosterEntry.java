@@ -14,24 +14,26 @@ public class RosterEntry extends AbstractMessage
     //unique identification string
     public final static String ID = "rosterEntry";
     
-    //Rückgabewerte:
-    //ro.roster_ID, lo.locationname, e.username, st.servicetype, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note
 	private int rosterId;
-	private String station;
+	
 	private int stationId;
+	private String station;
+	
 	private int staffmemberId;
-	private String username;
 	private StaffMember staffMember;
+	private String username;
+	private String createdByUser;
 	private long plannedStartOfWork;
 	private long plannedEndOfWork;
 	private long realStartOfWork;
 	private long realEndOfWork;
 
 	private int servicetypeId;
-	private String job;
-
 	private String servicetype;
+	
 	private int jobId;
+	private String job;
+	
 	private String rosterNotes;
 	private boolean standby;	
 	
@@ -520,6 +522,18 @@ public class RosterEntry extends AbstractMessage
 
 	public void setStationId(int stationId) {
 		this.stationId = stationId;
+	}
+
+	public String getCreatedByUser() {
+		return createdByUser;
+	}
+
+	public void setCreatedByUser(String createdByUser) {
+		this.createdByUser = createdByUser;
+	}
+
+	public void setStaffmemberId(int staffmemberId) {
+		this.staffmemberId = staffmemberId;
 	}
 }
 

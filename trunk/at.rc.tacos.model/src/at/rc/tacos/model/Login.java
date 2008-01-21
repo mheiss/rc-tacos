@@ -23,6 +23,8 @@ public class Login extends AbstractMessage
     private boolean loggedIn;
     private boolean webClient;
     private String errorMessage;
+	private String authorization;
+	private boolean islocked;
     
     //Information about the logged in user
     private StaffMember userInformation;
@@ -198,4 +200,20 @@ public class Login extends AbstractMessage
             throw new IllegalArgumentException("The error message cannot be null or empty");
         this.errorMessage = errorMessage;
     }
+
+	public String getAuthorization() {
+		return authorization;
+	}
+
+	public void setAuthorization(String authorization) {
+		this.authorization = authorization;
+	}
+
+	public boolean isIslocked() {
+		return islocked;
+	}
+
+	public void setIslocked(boolean islocked) {
+		this.islocked = islocked;
+	}
 }
