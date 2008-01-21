@@ -24,9 +24,6 @@
 
 --> Sorter: gehören getestet. Probleme, wenn Zellen leer
 
---> TransportViews: Filter aktivieren (Klasse besteht schon, ProgrammStati müssen noch richtig gesetzt werden - ist erledigt)-> sind aktiviert, 
-	funktionieren soweit. Probleme mit PrebookingView weil directness irgendwo verloren geht.
-
 --> TransportViews: Transportnummern implementieren
 
 --> TransportViews: Storno und Weiterleitung implementieren
@@ -51,8 +48,14 @@
 
 --> 30!! Seiten Bericht :-( schreiben
 
+--> Datum Filter für Transport View
+
+--> create/delete buttons für die admin views erstellen
+
 
 
 DONE:
 --> Tagesinfofeld an auf PersonalView an Datum hängen by Michael
 --> receiving time in Datenbank vorhanden? by Walter & Birgit
+--> TransportViews: Filter aktivieren (Klasse besteht schon, ProgrammStati müssen noch richtig gesetzt werden - ist erledigt)-> sind aktiviert, 
+	funktionieren soweit. Probleme mit PrebookingView weil directness irgendwo verloren geht. by Birgit
