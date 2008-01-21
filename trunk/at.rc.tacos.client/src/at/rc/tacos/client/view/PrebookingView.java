@@ -1011,7 +1011,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerWien.addFilter(new TransportDirectnessFilter(TOWARDS_VIENNA));
 		viewerMariazell.addFilter(new TransportDirectnessFilter(TOWARDS_MARIAZELL));
 		viewerKapfenberg.addFilter(new TransportDirectnessFilter(TOWARDS_KAPFENBERG));
-//		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));		
+		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));		
 		
 		viewerBruck.refresh();
 		viewerGraz.refresh();
