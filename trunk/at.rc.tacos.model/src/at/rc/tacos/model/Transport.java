@@ -27,7 +27,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private String transportNumber;
     private String fromStreet;
     private String fromCity;
-    private Patient patient; 
+    private Patient patient;
     private String toStreet;
     private String toCity;
     private String kindOfTransport;
@@ -37,6 +37,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private boolean emergencyPhone;
     private String kindOfIllness;
     private String diseaseNotes;
+    private String responsibeStationId;
     private String responsibleStation;
     private String realStation;
     private long dateOfTransport;
@@ -60,9 +61,11 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     
     private long receivingTime;
     private int programStatus;
+    private String createdByUser;
 
     //directness
     private int direction;
+    private int directionname;
 
     //vehicle and staff assigned to the transport
     private VehicleDetail vehicleDetail;
@@ -827,6 +830,30 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
 	public void setProgramStatus(int programStatus) {
 		this.programStatus = programStatus;
+	}
+
+	public String getCreatedByUser() {
+		return createdByUser;
+	}
+
+	public void setCreatedByUser(String createdByUser) {
+		this.createdByUser = createdByUser;
+	}
+
+	public int getDirectionname() {
+		return directionname;
+	}
+
+	public void setDirectionname(int directionname) {
+		this.directionname = directionname;
+	}
+
+	public String getResponsibeStationId() {
+		return responsibeStationId;
+	}
+
+	public void setResponsibeStationId(String responsibeStationId) {
+		this.responsibeStationId = responsibeStationId;
 	}
 }
 

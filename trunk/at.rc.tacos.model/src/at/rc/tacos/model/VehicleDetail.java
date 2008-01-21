@@ -14,9 +14,10 @@ public class VehicleDetail extends AbstractMessage
 	//unique identification string
 	public final static String ID = "vehicleDetail";
 	//properties
-	private int vehicleId;
+	//private int vehicleId;
 	private String vehicleName;
 	private String vehicleType;
+	private String vehicleTypeNote;
 	private StaffMember driverName;
 	private StaffMember paramedicIName;
 	private StaffMember paramedicIIName;
@@ -497,5 +498,13 @@ public class VehicleDetail extends AbstractMessage
 	public Image getTransportStatusImage()
 	{
 		return transportStatusImage;
+	}
+
+	public String getVehicleTypeNote() {
+		return vehicleTypeNote;
+	}
+
+	public void setVehicleTypeNote(String vehicleTypeNote) {
+		this.vehicleTypeNote = vehicleTypeNote;
 	}
 }

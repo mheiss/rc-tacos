@@ -11,7 +11,7 @@ public class MobilePhoneDetail extends AbstractMessage
     //unique identification string
     public final static String ID = "mobilePhoneDetail";
 
-    private String mobilePhoneId;
+    private int mobilePhoneId;
     private String mobilePhoneNumber;
 
     /**
@@ -91,7 +91,7 @@ public class MobilePhoneDetail extends AbstractMessage
      * Returns the id of the mobile phone object.
      * @return the id of the mobile phone
      */
-    public String getMobilePhoneId() 
+    public int getMobilePhoneId() 
     {
         return mobilePhoneId;
     }
@@ -104,7 +104,7 @@ public class MobilePhoneDetail extends AbstractMessage
      * @param mobilePhoneId the mobilePhoneId to set
      * @throws IllegalArgumentException if the mobilePhoneId is null or empty
      */
-    public void setMobilePhoneId(String mobilePhoneId)
+    public void setMobilePhoneId(int mobilePhoneId)
     {
         if(mobilePhoneId == null || mobilePhoneId.trim().isEmpty())
             throw new IllegalArgumentException("The id cannot be null or empty");

@@ -17,18 +17,16 @@ public class StaffMember extends AbstractMessage
 
 	private int personId;
 	private int primaryLocation;
+	private String primaryLocationName;
 	private String lastName;
 	private String firstName;
 	private String streetname;
 	private String cityname;
 	private boolean sex;
 	private long birthday;
-	private List<String> phonenumber;
+	private List<MobilePhoneDetail> phonelist;
 	private String eMail;
-	private String authorization;
-	private boolean islocked;
 	private String userName;
-
 	private String function;
 
 	/**
@@ -37,7 +35,6 @@ public class StaffMember extends AbstractMessage
 	public StaffMember()
 	{
 		super(ID);
-		phonenumber = new ArrayList<String>();
 	}
 
 	/**
@@ -52,7 +49,6 @@ public class StaffMember extends AbstractMessage
 		setFirstName(firstName);
 		setLastName(lastName);
 		setUserName(userName);
-		phonenumber = new ArrayList<String>();
 	}
 
 	/**
@@ -237,16 +233,6 @@ public class StaffMember extends AbstractMessage
 		this.birthday = birthday;
 	}
 
-	public List<String> getPhonenumber() {
-		return phonenumber;
-	}
-
-	public void addPhonenumber(String phonenumber) 
-	{
-		firePropertyChange("phonenumber", this.phonenumber, phonenumber);
-		this.phonenumber.add(phonenumber);
-	}
-
 	public String getEMail() {
 		return eMail;
 	}
@@ -257,26 +243,6 @@ public class StaffMember extends AbstractMessage
 		eMail = mail;
 	}
 
-	public String getAuthorization() {
-		return authorization;
-	}
-
-	public void setAuthorization(String authorization) 
-	{
-		firePropertyChange("authorization", this.authorization, authorization);
-		this.authorization = authorization;
-	}
-
-	public boolean getIslocked() {
-		return islocked;
-	}
-
-	public void setIslocked(Boolean islocked) 
-	{
-		firePropertyChange("islocked", this.islocked, islocked);
-		this.islocked = islocked;
-	}
-
 	public String getFunction() {
 		return function;
 	}
@@ -284,4 +250,21 @@ public class StaffMember extends AbstractMessage
 	public void setFunction(String function) {
 		this.function = function;
 	}
+
+	public String getPrimaryLocationName() {
+		return primaryLocationName;
+	}
+
+	public void setPrimaryLocationName(String primaryLocationName) {
+		this.primaryLocationName = primaryLocationName;
+	}
+
+	public List<MobilePhoneDetail> getPhonelist() {
+		return phonelist;
+	}
+
+	public void setPhonelist(List<MobilePhoneDetail> phonelist) {
+		this.phonelist = phonelist;
+	}
+
 }
