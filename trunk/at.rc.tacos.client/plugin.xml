@@ -89,6 +89,36 @@
       </view>
       
       
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.VehicleAdminView"
+            id="at.rc.tacos.client.view.admin.vehicleAdminView"
+            name="VehicleAdminView">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.VehicleDetailAdminView"
+            id="at.rc.tacos.client.view.admin.vehicleDetailAdminView"
+            name="VehicleAdminDetail">
+      </view>
+      
+      
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.PhoneAdminView"
+            id="at.rc.tacos.client.view.admin.phoneAdminView"
+            name="PhoneAdminView">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.PhoneDetailAdminView"
+            id="at.rc.tacos.client.view.admin.phoneDetailAdminView"
+            name="PhoneAdminDetail">
+      </view>
+      
+      
+      
+      
       
       
       
