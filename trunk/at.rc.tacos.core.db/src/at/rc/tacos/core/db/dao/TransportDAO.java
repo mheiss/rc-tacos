@@ -5,10 +5,11 @@ import at.rc.tacos.model.Transport;
 
 public interface TransportDAO 
 {
-    public int addTransport(Transport transport);
-    public void updateTransport(Transport transport);
-    public void removeTransport(Transport transport);
+    public String addTransport(Transport transport, int staffmemberVehicleId);
+    public boolean updateTransport(Transport transport);
+    public boolean removeTransportByNr(long transportNr);
     
-    public Transport getTransportById(int transportId);
+    public Transport getTransportByNr(int transportId, int locationId);
     public List<Transport> listTransports();
+    public List<Transport> listTransports(long startdate, long enddate);
 }
