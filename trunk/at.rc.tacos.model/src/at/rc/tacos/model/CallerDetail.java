@@ -16,7 +16,6 @@ public class CallerDetail extends AbstractMessage
     private String callerName;
     private String callerTelephoneNumber;
 
-
     /**
      * Default class constructor
      */
@@ -31,26 +30,11 @@ public class CallerDetail extends AbstractMessage
      * @param callerTelephoneNumber the telephone number
      * @param callerNotes notes taken from the caller
      */
-    public CallerDetail(String callerName, String callerTelephoneNumber,String callerNotes) 
+    public CallerDetail(String callerName, String callerTelephoneNumber) 
     {
         super(ID);
         setCallerName(callerName);
         setCallerTelephoneNumber(callerTelephoneNumber);
-    }
-    
-    public CallerDetail(String callerName,String callerTelephoneNumber)
-    {
-    	super(ID);
-    	setCallerName(callerName);
-    	setCallerTelephoneNumber(callerTelephoneNumber);
-    }
-    
-    public CallerDetail(Integer callerId, String callerName, String callerTelephoneNumber)
-    {
-    	super(ID);
-    	setCallerId(callerId);
-    	setCallerName(callerName);
-    	setCallerTelephoneNumber(callerTelephoneNumber);
     }
 
     //METHODS
@@ -65,22 +49,20 @@ public class CallerDetail extends AbstractMessage
     }
     
     /**
-     * Returns the calculated hash code based on the caller name and the telephone number.<br>
-     * Two callers have the same hash code if the name and 
-     * the telephone number is equal
+     * Returns the calculated hash code based on the caller id<br>
+     * Two callers have the same hash code if the id is equal.
      * @return the calculated hash code
      */
     @Override
     public int hashCode()
     {
-        return 31 + callerName.hashCode() + callerTelephoneNumber.hashCode();
+        return 31 + callerId;
     }
 
     /**
      * Returns whether the objects are equal or not.<br>
-     * Two callers are equal if, and only if, the caller name 
-     * and the telephone number is the same.
-     * @return true if the name and the number is the same, otherwise false
+     * Two callers are equal if, and only if, the caller id is the same
+     * @return true if the callerId is the same, otherwise false
      */
     @Override
     public boolean equals(Object obj)
@@ -92,14 +74,22 @@ public class CallerDetail extends AbstractMessage
         if (getClass() != obj.getClass())
             return false;
         final CallerDetail other = (CallerDetail) obj;
-        if (!callerName.equals(other.callerName))
-            return false;
-        if (!callerTelephoneNumber.equals(other.callerTelephoneNumber))
+        if(callerId != other.getCallerId())
             return false;
         return true;
     }
 
     //GETTERS AND SETTERS
+    /**
+     * Returns the id of the caller.<br>
+     * The id is a internal value to identify the caller
+     * @return id the unique id
+     */
+    public Integer getCallerId() 
+    {
+        return callerId;
+    }
+    
     /**
      * Returns the name of the caller.
      * @return the callerName
@@ -107,6 +97,16 @@ public class CallerDetail extends AbstractMessage
     public String getCallerName() 
     {
         return callerName;
+    }
+    
+    /**
+     * Sets the unique id for the caller object.<br>
+     * The id is the number of the primary key in the database.
+     * @param callerId the id of the caller
+     */
+    public void setCallerId(Integer callerId) 
+    {
+        this.callerId = callerId;
     }
 
     /**
@@ -130,7 +130,6 @@ public class CallerDetail extends AbstractMessage
         return callerTelephoneNumber;
     }
 
-
     /**
      * Sets the telephone number of the person who called the emergency
      * @param callerTelephoneNumber the telephone number of the caller
@@ -142,13 +141,4 @@ public class CallerDetail extends AbstractMessage
             throw new IllegalArgumentException("Telephone number cannot be null or emtpy");
         this.callerTelephoneNumber = callerTelephoneNumber.trim();
     }
-
-	public Integer getCallerId() {
-		return callerId;
-	}
-
-	public void setCallerId(Integer callerId) {
-		this.callerId = callerId;
-	}
-
 }

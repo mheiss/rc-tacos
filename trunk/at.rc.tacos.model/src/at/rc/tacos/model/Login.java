@@ -20,16 +20,15 @@ public class Login extends AbstractMessage
     //properties
     private String username;
     private String password;
-    private boolean loggedIn;
-    private boolean webClient;
-    private String errorMessage;
+    private StaffMember userInformation;
 	private String authorization;
 	private boolean islocked;
-    
-    //Information about the logged in user
-    private StaffMember userInformation;
-    
-    
+	
+	//additonal information
+	private boolean loggedIn;
+	private String errorMessage;
+	private boolean webClient;
+ 
     /**
      * Default class constructor
      */

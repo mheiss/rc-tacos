@@ -11,7 +11,9 @@ public class MobilePhoneDetail extends AbstractMessage
     //unique identification string
     public final static String ID = "mobilePhoneDetail";
 
-    private int mobilePhoneId;
+    //properties
+    private int id;
+    private String mobilePhoneName;
     private String mobilePhoneNumber;
 
     /**
@@ -23,24 +25,14 @@ public class MobilePhoneDetail extends AbstractMessage
     }
     
     /**
-     * Constructor for a minimal mobile phone object
-     * @param mobilePhoneId the id of the details
+     * Constructor for a complete mobile phone object.
+     * @param mobilePhoneName the name of the mobile phone.
+     * @param mobilePhoneNumber the number of the phone
      */
-    public MobilePhoneDetail(String mobilePhoneId) 
+    public MobilePhoneDetail(String mobilePhoneName,String mobilePhoneNumber) 
     {
         super(ID);
-        setMobilePhoneId(mobilePhoneId);
-    }
-
-    /**
-     * Constructor for a complete mobile phone detail
-     * @param mobilePhoneId the id of the details
-     * @param mobilePhoneNumber the mobile phone number
-     */
-    public MobilePhoneDetail(String mobilePhoneId, String mobilePhoneNumber) 
-    {
-        super(ID);
-        setMobilePhoneId(mobilePhoneId);
+        setMobilePhoneName(mobilePhoneName);
         setMobilePhoneNumber(mobilePhoneNumber);
     }
 
@@ -52,7 +44,7 @@ public class MobilePhoneDetail extends AbstractMessage
     @Override
     public String toString()
     {
-        return mobilePhoneId+mobilePhoneNumber;
+        return id+": "+mobilePhoneName+" - "+mobilePhoneNumber;
     }
 
     /**
@@ -63,7 +55,7 @@ public class MobilePhoneDetail extends AbstractMessage
     @Override
     public int hashCode()
     {
-        return 31 +  mobilePhoneId.hashCode();
+        return 31 + id;
     }
 
     /**
@@ -81,21 +73,51 @@ public class MobilePhoneDetail extends AbstractMessage
         if (getClass() != obj.getClass())
             return false;
         final MobilePhoneDetail other = (MobilePhoneDetail) obj;
-        if (!mobilePhoneId.equals(other.mobilePhoneId))
+        if (id != other.id)
             return false;
         return true;
     }
 
     //SETTERS AND GETTERS
     /**
-     * Returns the id of the mobile phone object.
-     * @return the id of the mobile phone
+     * Returns the internal identification number of the mobile phone.
+     * The id is a internal value in the database to identify the phone.
+     * @param id the uniqe id
      */
-    public int getMobilePhoneId() 
+    public int getId()
     {
-        return mobilePhoneId;
+        return id;
     }
-
+    
+    /**
+     * Returns the name of the mobile phone.<br>
+     * When the mobile phone is accociated to a vehicle the name of the phone
+     * is equal to the name of the vehicle.
+     * @return the name of the phone
+     */
+    public String getMobilePhoneName()
+    {
+        return mobilePhoneName;
+    }
+    
+    /**
+     * Returns the mobile phone number
+     * @return the mobilePhoneNumber
+     */
+    public String getMobilePhoneNumber() 
+    {
+        return mobilePhoneNumber;
+    }
+    
+    /**
+     * Sets the id of this mobile phone.
+     * @param id the unique id out of the database
+     */
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+        
     /**
      * Sets the identification of the mobile phone.<br>
      * The string is constructed using two chars to specify the station 
@@ -104,20 +126,11 @@ public class MobilePhoneDetail extends AbstractMessage
      * @param mobilePhoneId the mobilePhoneId to set
      * @throws IllegalArgumentException if the mobilePhoneId is null or empty
      */
-    public void setMobilePhoneId(int mobilePhoneId)
+    public void setMobilePhoneName(String mobilePhoneName)
     {
-        if(mobilePhoneId == null || mobilePhoneId.trim().isEmpty())
-            throw new IllegalArgumentException("The id cannot be null or empty");
-        this.mobilePhoneId = mobilePhoneId;
-    }
-
-    /**
-     * Returns the mobile phone number
-     * @return the mobilePhoneNumber
-     */
-    public String getMobilePhoneNumber() 
-    {
-        return mobilePhoneNumber;
+        if(mobilePhoneName == null || mobilePhoneName.trim().isEmpty())
+            throw new IllegalArgumentException("The name cannot be null or empty");
+        this.mobilePhoneName = mobilePhoneName;
     }
 
     /**

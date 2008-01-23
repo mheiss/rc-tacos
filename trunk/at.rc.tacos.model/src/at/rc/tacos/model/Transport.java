@@ -1,11 +1,13 @@
 package at.rc.tacos.model;
 
+import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
 
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IDirectness;
+import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportPriority;
 import at.rc.tacos.util.MyUtils;
@@ -19,34 +21,46 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     //unique identification string
     public final static String ID = "transport";
 
-    //Rückgabewerte:
-    //t.transport_ID, d.direction, dis.disease, t.diseasenote, t.priority, t.feedback, t.creationDate, t.departure,
-    //t.appointment, t.appointmentPatient, t.ambulant_stationary, t.assistant, t.transportstate, tt.transporttype,
-    //ca.callername, ca.caller_phonenumber, ca.caller_note, no.name AS notyfied, tn.date AS notyficationDate,
+    // properties
     private long transportId;
-    private String transportNumber;
+    private int year;
+    private int transportNumber;
+
+    // Infos about the source
+    private CallerDetail callerDetail;
+
+    // transport infos
     private String fromStreet;
     private String fromCity;
     private Patient patient;
     private String toStreet;
-    private String toCity;
+    private String toCity; 
     private String kindOfTransport;
-    private CallerDetail callerDetail;
-    private boolean backTransport;
-    private boolean accompanyingPerson;
-    private boolean emergencyPhone;
+    private String transportPriority;
+    private boolean longDistanceTrip;
+    private int direction;
+
+    // patient infos
     private String kindOfIllness;
-    private String diseaseNotes;
-    private String responsibeStationId;
-    private String responsibleStation;
-    private String realStation;
+    private boolean backTransport;
+    private boolean assistantPerson;
+    private boolean emergencyPhone;
+    private String feedback;
+
+    //shedule information
+    private long creationTime;
     private long dateOfTransport;
     private long plannedStartOfTransport;
     private long plannedTimeAtPatient;
     private long appointmentTimeAtDestination;
 
-    private String transportPriority;
+    //general informations
+    private Location planedLocation;   
+    private String notes;
+    private int programStatus;
+    private String createdByUser;
 
+    //notification infos
     private boolean emergencyDoctorAlarming;
     private boolean helicopterAlarming;
     private boolean blueLightToGoal;
@@ -55,22 +69,11 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private boolean firebrigadeAlarming;
     private boolean mountainRescueServiceAlarming;
     private boolean policeAlarming;
-    private boolean longDistanceTrip;
 
-    private String feedback;
-    
-    private long receivingTime;
-    private int programStatus;
-    private String createdByUser;
-
-    //directness
-    private int direction;
-    private int directionname;
-
-    //vehicle and staff assigned to the transport
+    //vehicle and staff assigned 
     private VehicleDetail vehicleDetail;
 
-    //used for the status messages
+    //status messages
     private Map<Integer,Long> statusMessages;
 
     /**
@@ -82,7 +85,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         super(ID);
         statusMessages = new TreeMap<Integer, Long>();
     }
-    
+
     /**
      *  Constructor for a minimal Transport object.
      *  @param fromStreet the street to get the transport
@@ -95,13 +98,13 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      *  @param directness the direction of the transport
      */
     public Transport(String fromStreet,String fromCity,
-            String responsibleStation,long dateOfTransport, long plannedStartOfTransport,
+            Location planedLocation,long dateOfTransport, long plannedStartOfTransport,
             String transportPriority,int direction)
     {
         this();
         setFromStreet(fromStreet);
         setFromCity(fromCity);
-        setResponsibleStation(responsibleStation);
+        setResponsibleStation(planedLocation);
         setDateOfTransport(dateOfTransport);
         setPlannedStartOfTransport(plannedStartOfTransport);
         setTransportPriority(transportPriority);
@@ -116,11 +119,19 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      */
     public void addStatus(int statusId, long timestamp)
     {
-    	//check the date
-    	if(!MyUtils.isValidDate(timestamp))
-    		throw new IllegalArgumentException("The given date for the transport status is not valid");
-    	statusMessages.put(statusId, timestamp);
+        //check the date
+        if(!MyUtils.isValidDate(timestamp))
+            throw new IllegalArgumentException("The given date for the transport status is not valid");
+        statusMessages.put(statusId, timestamp);
     }  
+
+    /**
+     * clears the vehicle (detach car from the transport)
+     */
+    public void clearVehicleDetail()
+    {
+        this.vehicleDetail = null;
+    }
 
     /**
      * Returns a string based description of the object
@@ -164,6 +175,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     } 
 
     //GETTERS AND SETTERS
+    /* -------------------------------------
+     * PROPERTIES OF A TRANSPORT
+     * -------------------------------------*/
+
     /**
      * Returns the identification string of this transport
      * @return the transportId
@@ -174,17 +189,38 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * Sets the identification string of this transport
-     * @param transportId the transportId to set
-     * @throws IllegalArgumentException if the id is negative
+     * Returns the year when the transport is sheduled for.
+     * The year has four digits. e.g 2008
+     * @return the year.
      */
-    public void setTransportId(long transportId) 
+    public int getYear()
     {
-        if(transportId < 0)
-            throw new IllegalArgumentException("The id cannot be negative");
-        this.transportId = transportId;
+        return year;
     }
 
+    /**
+     * Returns the transport number of this transport
+     * @return the transport number
+     */
+    public int getTransportNumber()
+    {
+        return transportNumber;
+    }
+
+    /* ------------------------------------------
+     * Infos about the source
+     * --------------------------------------------*/
+    /**
+     * @return the callerDetail
+     */
+    public CallerDetail getCallerDetail() 
+    {
+        return callerDetail;
+    }
+
+    /* ------------------------------------------
+     * transport infos
+     * --------------------------------------------*/
     /**
      * @return the fromStreet
      */
@@ -194,32 +230,11 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @param fromStreet the fromStreet to set
-     */
-    public void setFromStreet(String fromStreet) 
-    {
-        if(fromStreet == null || fromStreet.trim().isEmpty())
-            throw new IllegalArgumentException("The fromStreet cannot be null or empty");
-        this.fromStreet = fromStreet;
-    }
-
-
-    /**
      * @return the fromCity
      */
     public String getFromCity() 
     {
         return fromCity;
-    }
-
-    /**
-     * @param fromCity the fromCity to set
-     */
-    public void setFromCity(String fromCity) 
-    {
-        if(fromCity == null)
-            throw new IllegalArgumentException("fromCity cannot be null");
-        this.fromCity = fromCity;
     }
 
     /**
@@ -231,33 +246,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @param patient the patient to set
-     */
-    public void setPatient(Patient patient)
-    {
-//        if(patient == null)
-//            throw new IllegalArgumentException("The patient cannot be null");
-        this.patient = patient;
-    }
-
-    /**
      * @return the toStreet
      */
     public String getToStreet() 
     {
         return toStreet;
     }
-
-    /**
-     * @param toStreet the toStreet to set
-     */
-    public void setToStreet(String toStreet) 
-    {
-        if(toStreet == null)
-            throw new IllegalArgumentException("The toStreet cannot be null");
-        this.toStreet = toStreet;
-    }
-
 
     /**
      * @return the toCity
@@ -268,18 +262,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @param toCity the toCity to set
-     */
-    public void setToCity(String toCity) 
-    {
-        if(toCity == null)
-            throw new IllegalArgumentException("toCity cannot be null");
-        this.toCity = toCity;
-    }
-
-    /**
-     * Possible: 'gehend', 'Tragsessel', 'Krankentrage', Eigener Rollstuhl'
-     * @return the kindOfTransport
+     * Returns the transport type for the given patient.
+     * The different types are defined in the <code>IKindOfTransport</code> inteface.
+     * @see IKindOfTransport
+     * @return the transport type
      */
     public String getKindOfTransport() 
     {
@@ -287,31 +273,39 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @param kindOfTransport the kindOfTransport to set
+     * @return the transportPriority
+     * the transport priorities are shown in the ITransportPriority Interface
      */
-    public void setKindOfTransport(String kindOfTransport) 
+    public String getTransportPriority() 
     {
-        if(kindOfTransport == null)
-            throw new IllegalArgumentException("The kind of transport cannot be null");
-        this.kindOfTransport = kindOfTransport;
+        return transportPriority;
     }
 
     /**
-     * @return the callerDetail
+     * @return the longDistanceTrip
      */
-    public CallerDetail getCallerDetail() 
+    public boolean isLongDistanceTrip() 
     {
-        return callerDetail;
+        return longDistanceTrip;
     }
 
     /**
-     * @param callerDetail the callerDetail to set
+     * @return the directness
      */
-    public void setCallerDetail(CallerDetail callerDetail) 
+    public int getDirection() 
     {
-        if(callerDetail == null)
-            throw new IllegalArgumentException("The callerDetail cannot be null");
-        this.callerDetail = callerDetail;
+        return direction;
+    }
+
+    /* ------------------------------------------
+     * patient infos
+     * --------------------------------------------*/
+    /**
+     * @return the kindOfIllness
+     */
+    public String getKindOfIllness() 
+    {
+        return kindOfIllness;
     }
 
     /**
@@ -323,27 +317,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @param backTransport the backTransport to set
+     * Returns whether or not this transport has a assistant Person.
+     * @return true if the transport has a additonal assistant person.
      */
-    public void setBackTransport(boolean backTransport) 
+    public boolean isAssistantPerson()
     {
-        this.backTransport = backTransport;
-    }
-
-    /**
-     * @return the accompanyingPerson
-     */
-    public boolean isAccompanyingPerson() 
-    {
-        return accompanyingPerson;
-    }
-
-    /**
-     * @param accompanyingPerson the accompanyingPerson to set
-     */
-    public void setAccompanyingPerson(boolean accompanyingPerson) 
-    {
-        this.accompanyingPerson = accompanyingPerson;
+        return assistantPerson;
     }
 
     /**
@@ -357,87 +336,35 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @param emergencyPhone the emergencyPhone to set
+     * Returns whether or not this transport has feedback information
+     * @return true if there in feedback information
      */
-    public void setEmergencyPhone(boolean emergencyPhone) 
+    public boolean hasFeedback()
     {
-        this.emergencyPhone = emergencyPhone;
+        if (feedback == null || feedback.trim().isEmpty())
+            return false;
+        //we have feedback :)
+        return true;
     }
 
     /**
-     * @return the kindOfIllness
+     * @return the feedback
      */
-    public String getKindOfIllness() 
+    public String getFeedback() 
     {
-        return kindOfIllness;
+        return feedback;
     }
 
+    /* ------------------------------------------
+     * shedule information
+     * --------------------------------------------*/
     /**
-     * @param kindOfIllness the kindOfIllness to set
+     * Returns the timestamp when this transport was created.
+     * @return the creation time
      */
-    public void setKindOfIllness(String kindOfIllness) 
+    public long getCreationTime() 
     {
-        if(kindOfIllness == null)
-            throw new IllegalArgumentException("The kind of illness cannot be null");
-        this.kindOfIllness = kindOfIllness;
-    }
-
-    /**
-     * @return the diseaseNotes
-     */
-    public String getDiseaseNotes() 
-    {
-        return diseaseNotes;
-    }
-
-    /**
-     * @param diseaseNotes the diseaseNotes to set
-     */
-    public void setDiseaseNotes(String diseaseNotes) 
-    {
-        if(diseaseNotes == null)
-            throw new IllegalArgumentException("The disease notes cannot be null");
-        this.diseaseNotes = diseaseNotes;
-    }
-
-    /**
-     * The hole operational area is divided into six stations.
-     * Primary for each location within the operational area one defined station is responsible
-     * @return the responsibleStation
-     * @see RosterEntry
-     */
-    public String getResponsibleStation() 
-    {
-        return responsibleStation;
-    }
-
-    /**
-     * @param responsibleStation the responsibleStation to set
-     */
-    public void setResponsibleStation(String responsibleStation)
-    {
-        if(responsibleStation == null)
-            throw new IllegalArgumentException("The responsible station cannot be null");
-        this.responsibleStation = responsibleStation;
-    }
-
-    /**
-     * The primary responsible station is not all the time the station which execute the transport
-     * @return the realStation
-     */
-    public String getRealStation() 
-    {
-        return realStation;
-    }
-
-    /**
-     * @param realStation the realStation to set
-     */
-    public void setRealStation(String realStation) 
-    {
-        if(realStation == null)
-            throw new IllegalArgumentException("The real station cannot be null");
-        this.realStation = realStation;
+        return creationTime;
     }
 
     /**
@@ -449,32 +376,11 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @param dateOfTransport the dateOfTransport to set
-     */
-    public void setDateOfTransport(long dateOfTransport) 
-    {
-        if(!MyUtils.isValidDate(dateOfTransport))
-            throw new IllegalArgumentException("The given date of Transport is not a valid date:");
-        this.dateOfTransport = dateOfTransport;
-    }
-
-    /**
      * @return the plannedStartOfTransportTime
      */
     public long getPlannedStartOfTransport() 
     {
         return plannedStartOfTransport;
-    }
-
-    /**
-     * @param plannedStartOfTransport the plannedStartOfTransport to set
-     * @throws IllegalArgumentException if the date is not valid
-     */
-    public void setPlannedStartOfTransport(long plannedStartOfTransport) 
-    {
-        if(!MyUtils.isValidDate(plannedStartOfTransport))
-        	throw new IllegalArgumentException("The given plannedStartOfTrnsport is not a valid date");
-        this.plannedStartOfTransport = plannedStartOfTransport;
     }
 
     /**
@@ -486,17 +392,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @param plannedTimeAtPatient the plannedTimeAtPatient to set
-     * @throws IllegalArgumentException if the date is not valid
-     */
-    public void setPlannedTimeAtPatient(long plannedTimeAtPatient) 
-    {
-        if(!MyUtils.isValidDate(plannedTimeAtPatient))
-        	throw new IllegalArgumentException("The given plannedTimeAtPatient is not a valid date");
-        this.plannedTimeAtPatient = plannedTimeAtPatient;
-    }
-
-    /**
      * @return the appointmentTimeAtDestination
      */
     public long getAppointmentTimeAtDestination() 
@@ -504,59 +399,280 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         return appointmentTimeAtDestination;
     }
 
+    /* ------------------------------------------
+     * general informations
+     * --------------------------------------------*/
     /**
-     * @param appointmentTimeAtDestination the appointmentTimeAtDestination to set
-     * @throws IllegalArgumentException if the date is not valid
+     * Returns the planned responsible location who will ececute the transport.
+     * @return the planed location
      */
-    public void setAppointmentTimeAtDestination(long appointmentTimeAtDestination) 
+    public Location getPlanedLocation() 
     {
-        if(!MyUtils.isValidDate(appointmentTimeAtDestination))
-        	throw new IllegalArgumentException("The given appointmentTimeAtDestination is not a valid date");
-        this.appointmentTimeAtDestination = appointmentTimeAtDestination;
+        return planedLocation;
     }
 
+    /**
+     * @return the notes
+     */
+    public String getNotes() 
+    {
+        return notes;
+    }
+
+    /**
+     * Returns whether or not this transport has notes
+     * @return true if the transport has notes
+     */
+    public boolean hasNotes()
+    {
+        if (notes == null || notes.trim().isEmpty())
+            return false;
+        //we have notes :)
+        return true;
+    }
+
+    /**
+     * program status to state the view which should show the transport
+     * the possible program stati are defined in an interface
+     * @return the current status of the transport
+     * @see IProgramStatus
+     */
+    public int getProgramStatus() 
+    {
+        return programStatus;
+    }
+
+    /**
+     * Returns the name of the user who created the roster entry.
+     * @return the username of the creator.
+     */
+    public String getCreatedByUsername()
+    {
+        return createdByUser;
+    }
+
+    /* ------------------------------------------
+     * notification infos
+     * --------------------------------------------*/
+    /**
+     * @return the emergencyDoctorAlarming
+     */
+    public boolean isEmergencyDoctorAlarming() 
+    {
+        return emergencyDoctorAlarming;
+    }
+
+    /**
+     * @return the helicopterAlarming
+     */
+    public boolean isHelicopterAlarming() 
+    {
+        return helicopterAlarming;
+    }
 
     /**
      * @return the blueLightToGoal
-     * Named: 'BD2'
      */
-    public boolean isBluelightToGoal() 
+    public boolean isBlueLightToGoal() 
     {
         return blueLightToGoal;
     }
 
     /**
-     * @param blueLightToGoal the blueLightToGoal to set
+     * df = 'Dienstführender'
+     * @return the dfAlarming
      */
-    public void setBluelightToGoal(boolean blueLightToGoal) 
+    public boolean isDfAlarming() 
     {
-        this.blueLightToGoal = blueLightToGoal;
+        return dfAlarming;
     }
 
     /**
-     * @return the feedback
+     * brkdt = 'Bezirksrettungskommandant'
+     * @return the brkdtAlarming
      */
-    public String getFeedback() 
+    public boolean isBrkdtAlarming() 
     {
-        return feedback;
+        return brkdtAlarming;
     }
 
     /**
-     * @param feedback the feedback to set
+     * @return the firebrigadeAlarming
      */
-    public void setFeedback(String feedback) 
+    public boolean isFirebrigadeAlarming() 
     {
-        if(feedback == null)
-            throw new IllegalArgumentException("The feedback cannot be null");
-        this.feedback = feedback;
+        return firebrigadeAlarming;
     }
 
     /**
-     * @return the directness
+     * @return the mountainRescueServiceAlarming
      */
-    public int getDirection() 
+    public boolean isMountainRescueServiceAlarming() 
     {
-        return direction;
+        return mountainRescueServiceAlarming;
+    }
+
+    /**
+     * @return the policeAlarming
+     */
+    public boolean isPoliceAlarming() 
+    {
+        return policeAlarming;
+    }
+
+    /* ------------------------------------------
+     * vehicle and staff assigned
+     * --------------------------------------------*/ 
+    /**
+     * @return the vehicleDetail
+     */
+    public VehicleDetail getVehicleDetail() 
+    {
+        return vehicleDetail;
+    }
+
+    /* ------------------------------------------
+     * status messages
+     * --------------------------------------------*/ 
+    /**
+     * Returns a list containing all transport status messages that are set. 
+     * @return the statusMessages
+     */
+    public Map<Integer,Long> getStatusMessages() 
+    {
+        return statusMessages;
+    }
+
+    /* -------------------------------------
+     * PROPERTIES OF A TRANSPORT
+     * -------------------------------------*/
+    /**
+     * Sets the identification string of this transport
+     * @param transportId the transportId to set
+     * @throws IllegalArgumentException if the id is negative
+     */
+    public void setTransportId(long transportId) 
+    {
+        if(transportId < 0)
+            throw new IllegalArgumentException("The id cannot be negative");
+        this.transportId = transportId;
+    }
+
+    /**
+     * Sets the transport year, when the transport is sheduled.
+     * The year must have four digits.
+     */
+    public void setYear(int year)
+    {
+        if(year < Calendar.getInstance().get(Calendar.YEAR))
+            throw new IllegalArgumentException("Cannot set a date in the past");
+        this.year = year;
+    }
+
+    /**
+     * Sets the transport number for this transport.
+     * A transport number of -1 indicates that the transport is cancled
+     * and the number is free to reuse again.
+     * @param number the number of the transport
+     */
+    public void setTransportNumber(int transportNumber)
+    {
+        this.transportNumber = transportNumber;
+    }
+
+    /* ------------------------------------------
+     * Infos about the source
+     * --------------------------------------------*/
+    /**
+     * @param callerDetail the callerDetail to set
+     */
+    public void setCallerDetail(CallerDetail callerDetail) 
+    {
+        if(callerDetail == null)
+            throw new IllegalArgumentException("The callerDetail cannot be null");
+        this.callerDetail = callerDetail;
+    }
+
+    /* ------------------------------------------
+     * transport infos
+     * --------------------------------------------*/
+    /**
+     * @param fromStreet the fromStreet to set
+     */
+    public void setFromStreet(String fromStreet) 
+    {
+        if(fromStreet == null || fromStreet.trim().isEmpty())
+            throw new IllegalArgumentException("The fromStreet cannot be null or empty");
+        this.fromStreet = fromStreet;
+    }
+
+    /**
+     * @param fromCity the fromCity to set
+     */
+    public void setFromCity(String fromCity) 
+    {
+        if(fromCity == null)
+            throw new IllegalArgumentException("fromCity cannot be null");
+        this.fromCity = fromCity;
+    }
+
+    /**
+     * @param patient the patient to set
+     */
+    public void setPatient(Patient patient)
+    {
+        if(patient == null)
+            throw new IllegalArgumentException("The patient cannot be null");
+        this.patient = patient;
+    }
+
+    /**
+     * @param toStreet the toStreet to set
+     */
+    public void setToStreet(String toStreet) 
+    {
+        if(toStreet == null)
+            throw new IllegalArgumentException("The toStreet cannot be null");
+        this.toStreet = toStreet;
+    }
+
+    /**
+     * @param toCity the toCity to set
+     */
+    public void setToCity(String toCity) 
+    {
+        if(toCity == null)
+            throw new IllegalArgumentException("toCity cannot be null");
+        this.toCity = toCity;
+    }
+
+    /**
+     * Sets the kind of the transport for the given patient
+     * @param kindOfTransport the kind of the transport type.
+     */
+    public void setKindOfTransport(String kindOfTransport) 
+    {
+        if(kindOfTransport == null)
+            throw new IllegalArgumentException("The kind of transport cannot be null");
+        this.kindOfTransport = kindOfTransport;
+    }
+
+    /**
+     * @param transportPriority the transportPriority to set
+     */
+    public void setTransportPriority(String transportPriority) 
+    {
+        if(transportPriority == null || transportPriority.trim().isEmpty())
+            throw new IllegalArgumentException("The transport priority cannot be null");
+        this.transportPriority = transportPriority;
+    }
+
+    /**
+     * @param longDistanceTrip the longDistanceTrip to set
+     */
+    public void setLongDistanceTrip(boolean longDistanceTrip) 
+    {
+        this.longDistanceTrip = longDistanceTrip;
     }
 
     /**
@@ -570,40 +686,155 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         this.direction = direction;
     }
 
+    /* ------------------------------------------
+     * patient infos
+     * --------------------------------------------*/
     /**
-     * @return the vehicleDetail
+     * @param kindOfIllness the kindOfIllness to set
      */
-    public VehicleDetail getVehicleDetail() 
+    public void setKindOfIllness(String kindOfIllness) 
     {
-        return vehicleDetail;
+        if(kindOfIllness == null)
+            throw new IllegalArgumentException("The kind of illness cannot be null");
+        this.kindOfIllness = kindOfIllness;
     }
 
     /**
-     * @param vehicleDetail the vehicleDetail to set
+     * @param backTransport the backTransport to set
      */
-    public void setVehicleDetail(VehicleDetail vehicleDetail) 
+    public void setBackTransport(boolean backTransport) 
     {
-        if(vehicleDetail == null)
-            throw new IllegalArgumentException("The vehicle detail cannot be null");
-        this.vehicleDetail = vehicleDetail;
-    }
-    
-    /**
-     * clears the vehicle (detach car from the transport)
-     */
-    public void clearVehicleDetail()
-    {
-    	this.vehicleDetail = null;
+        this.backTransport = backTransport;
     }
 
     /**
-     * @return the emergencyDoctorAlarming
+     * Sets the flag to indicate that this transport has a assistant person
+     * @param assistanPerson true if the transport has one
      */
-    public boolean isEmergencyDoctorAlarming() 
+    public void setAssistantPerson(boolean assistantPerson)
     {
-        return emergencyDoctorAlarming;
+        this.assistantPerson = assistantPerson;
     }
 
+    /**
+     * @param emergencyPhone the emergencyPhone to set
+     */
+    public void setEmergencyPhone(boolean emergencyPhone) 
+    {
+        this.emergencyPhone = emergencyPhone;
+    }
+
+    /**
+     * @param feedback the feedback to set
+     */
+    public void setFeedback(String feedback) 
+    {
+        if(feedback == null)
+            throw new IllegalArgumentException("The feedback cannot be null");
+        this.feedback = feedback;
+    }
+
+    /* ------------------------------------------
+     * shedule information
+     * --------------------------------------------*/
+    /**
+     * Sets the timestamp when this transport was created.
+     * @param creationTime the creation time
+     */
+    public void setCreationTime(long creationTime) 
+    {
+        this.creationTime = creationTime;
+    }
+
+    /**
+     * @param dateOfTransport the dateOfTransport to set
+     */
+    public void setDateOfTransport(long dateOfTransport) 
+    {
+        if(!MyUtils.isValidDate(dateOfTransport))
+            throw new IllegalArgumentException("The given date of Transport is not a valid date:");
+        this.dateOfTransport = dateOfTransport;
+    }
+
+    /**
+     * @param plannedStartOfTransport the plannedStartOfTransport to set
+     * @throws IllegalArgumentException if the date is not valid
+     */
+    public void setPlannedStartOfTransport(long plannedStartOfTransport) 
+    {
+        if(!MyUtils.isValidDate(plannedStartOfTransport))
+            throw new IllegalArgumentException("The given plannedStartOfTrnsport is not a valid date");
+        this.plannedStartOfTransport = plannedStartOfTransport;
+    }
+
+    /**
+     * @param plannedTimeAtPatient the plannedTimeAtPatient to set
+     * @throws IllegalArgumentException if the date is not valid
+     */
+    public void setPlannedTimeAtPatient(long plannedTimeAtPatient) 
+    {
+        if(!MyUtils.isValidDate(plannedTimeAtPatient))
+            throw new IllegalArgumentException("The given plannedTimeAtPatient is not a valid date");
+        this.plannedTimeAtPatient = plannedTimeAtPatient;
+    }
+
+    /**
+     * @param appointmentTimeAtDestination the appointmentTimeAtDestination to set
+     * @throws IllegalArgumentException if the date is not valid
+     */
+    public void setAppointmentTimeAtDestination(long appointmentTimeAtDestination) 
+    {
+        if(!MyUtils.isValidDate(appointmentTimeAtDestination))
+            throw new IllegalArgumentException("The given appointmentTimeAtDestination is not a valid date");
+        this.appointmentTimeAtDestination = appointmentTimeAtDestination;
+    }
+
+    /* ------------------------------------------
+     * general informations
+     * --------------------------------------------*/
+    /**
+     * Sets the planned location for the transport.<br>
+     * The planned location must not do not have to be the real location
+     * @param responsibleStation the responsibleStation to set
+     */
+    public void setResponsibleStation(Location planedLocation)
+    {
+        if(planedLocation == null)
+            throw new IllegalArgumentException("The planned location cannot be null");
+        this.planedLocation = planedLocation;
+    }
+
+    /**
+     * @param notes the notes for the transport
+     */
+    public void setNotes(String notes) 
+    {
+        if(notes == null)
+            throw new IllegalArgumentException("The notes cannot be null");
+        this.notes = notes;
+    }
+
+    /**
+     * Sets the internal status of this transport.
+     * @param programStatus
+     */
+    public void setProgramStatus(int programStatus) 
+    {
+        this.programStatus = programStatus;
+    }
+
+    /**
+     * Sets the name of the staff member who created the entry.
+     * @param username the username of the creator
+     */
+    public void setCreatedByUsername(String createdByUser) 
+    {
+        this.createdByUser = createdByUser;
+    }
+
+    /* ------------------------------------------
+     * notification infos
+     * --------------------------------------------*/
     /**
      * @param emergencyDoctorAlarming the emergencyDoctorAlarming to set
      */
@@ -613,30 +844,12 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @return the helicopterAlarming
-     */
-    public boolean isHelicopterAlarming() 
-    {
-        return helicopterAlarming;
-    }
-
-    /**
      * @param helicopterAlarming the helicopterAlarming to set
      */
     public void setHelicopterAlarming(boolean helicopterAlarming) 
     {
         this.helicopterAlarming = helicopterAlarming;
-    }
-
-    
-
-    /**
-     * @return the blueLightToGoal
-     */
-    public boolean isBlueLightToGoal() 
-    {
-        return blueLightToGoal;
-    }
+    }  
 
     /**
      * @param blueLightToGoal the blueLightToGoal to set
@@ -647,30 +860,11 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     *  df = 'Dienstführender'
-     * @return the dfAlarming
-     */
-    public boolean isDfAlarming() 
-    {
-        return dfAlarming;
-    }
-
-    /**
      * @param dfAlarming the dfAlarming to set
      */
     public void setDfAlarming(boolean dfAlarming) 
     {
         this.dfAlarming = dfAlarming;
-    }
-
-
-    /**
-     * @return the brkdtAlarming
-     * brkdt = 'Bezirksrettungskommandant'
-     */
-    public boolean isBrkdtAlarming() 
-    {
-        return brkdtAlarming;
     }
 
     /**
@@ -682,14 +876,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @return the firebrigadeAlarming
-     */
-    public boolean isFirebrigadeAlarming() 
-    {
-        return firebrigadeAlarming;
-    }
-
-    /**
      * @param firebrigadeAlarming the firebrigadeAlarming to set
      */
     public void setFirebrigadeAlarming(boolean firebrigadeAlarming) 
@@ -698,28 +884,11 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     }
 
     /**
-     * @return the mountainRescueServiceAlarming
-     */
-    public boolean isMountainRescueServiceAlarming() 
-    {
-        return mountainRescueServiceAlarming;
-    }
-
-    /**
      * @param mountainRescueServiceAlarming the mountainRescueServiceAlarming to set
      */
-    public void setMountainRescueServiceAlarming(
-            boolean mountainRescueServiceAlarming) 
+    public void setMountainRescueServiceAlarming(boolean mountainRescueServiceAlarming) 
     {
         this.mountainRescueServiceAlarming = mountainRescueServiceAlarming;
-    }
-
-    /**
-     * @return the policeAlarming
-     */
-    public boolean isPoliceAlarming() 
-    {
-        return policeAlarming;
     }
 
     /**
@@ -730,130 +899,17 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         this.policeAlarming = policeAlarming;
     }
 
+    /* ------------------------------------------
+     * vehicle and staff assigned
+     * --------------------------------------------*/ 
     /**
-     * Returns a list containing all transport status messages that are set. 
-     * @return the statusMessages
+     * @param vehicleDetail the vehicleDetail to set
      */
-    public Map<Integer,Long> getStatusMessages() 
+    public void setVehicleDetail(VehicleDetail vehicleDetail) 
     {
-        return statusMessages;
+        if(vehicleDetail == null)
+            throw new IllegalArgumentException("The vehicle detail cannot be null");
+        this.vehicleDetail = vehicleDetail;
     }
-
-    /**
-     * @return the transportPriority
-     * the transport priorities are shown in the ITransportPriority Interface
-     */
-    public String getTransportPriority() 
-    {
-        return transportPriority;
-    }
-
-    /**
-     * @param transportPriority the transportPriority to set
-     */
-    public void setTransportPriority(String transportPriority) 
-    {
-        if(transportPriority == null || transportPriority.trim().isEmpty())
-            throw new IllegalArgumentException("The transport priority cannot be null");
-        this.transportPriority = transportPriority;
-    }
-
-	/**
-	 * @return the longDistanceTrip
-	 */
-	public boolean isLongDistanceTrip() {
-		return longDistanceTrip;
-	}
-
-	/**
-	 * @param longDistanceTrip the longDistanceTrip to set
-	 */
-	public void setLongDistanceTrip(boolean longDistanceTrip) {
-		this.longDistanceTrip = longDistanceTrip;
-	}
-
-	/**
-	 * @return the transportNumber
-	 */
-	public String getTransportNumber() {
-		return transportNumber;
-	}
-
-	/**
-	 * @param transportNumber the transportNumber to set
-	 */
-	public void setTransportNumber(String transportNumber) {
-		this.transportNumber = transportNumber;
-	}	
-	
-	/**
-     * Returns whether or not this transport has disease notes
-     * @return true if the transport has notes
-     */
-    public boolean hasNotes()
-    {
-        if (diseaseNotes == null || diseaseNotes.trim().isEmpty())
-            return false;
-        //we have notes :)
-        return true;
-    }
-    
-    /**
-     * Returns whether or not this transport has feedback information
-     * @return true if there in feedback information
-     */
-    public boolean hasFeedback()
-    {
-        if (feedback == null || feedback.trim().isEmpty())
-            return false;
-        //we have feedback :)
-        return true;
-    }
-
-	public long getReceiveTime() {
-		return receivingTime;
-	}
-
-	public void setReceiveTime(long receiveTime) {
-		this.receivingTime = receiveTime;
-	}
-
-	/**
-	 * program status to state the view which should show the transport
-	 * the possible program stati are defined in an interface
-	 * @return the current status of the transport
-	 * @see IProgramStatus
-	 */
-	public int getProgramStatus() {
-		return programStatus;
-	}
-
-	public void setProgramStatus(int programStatus) {
-		this.programStatus = programStatus;
-	}
-
-	public String getCreatedByUser() {
-		return createdByUser;
-	}
-
-	public void setCreatedByUser(String createdByUser) {
-		this.createdByUser = createdByUser;
-	}
-
-	public int getDirectionname() {
-		return directionname;
-	}
-
-	public void setDirectionname(int directionname) {
-		this.directionname = directionname;
-	}
-
-	public String getResponsibeStationId() {
-		return responsibeStationId;
-	}
-
-	public void setResponsibeStationId(String responsibeStationId) {
-		this.responsibeStationId = responsibeStationId;
-	}
 }
 
