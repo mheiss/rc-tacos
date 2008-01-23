@@ -72,9 +72,9 @@ public class TestDataSource
     private void initNotifiers()
     {
         notifierList = new ArrayList<CallerDetail>();
-        CallerDetail n1 = new CallerDetail("Notifer1","0664-123456789","Notes taken");
-        CallerDetail n2 = new CallerDetail("Notifer2","0784-1548154","Notes taken");
-        CallerDetail n3 = new CallerDetail("Notifer3","2147-123456789","Notes taken");
+        CallerDetail n1 = new CallerDetail("Hofer","0664-123456789","Notes taken");
+        CallerDetail n2 = new CallerDetail("Huber","0784-1548154","Notes taken");
+        CallerDetail n3 = new CallerDetail("Hauer","2147-123456789","Notes taken");
         notifierList.add(n1);
         notifierList.add(n2);
         notifierList.add(n3);
@@ -83,9 +83,9 @@ public class TestDataSource
     private void initPatients()
     {
         patientList = new ArrayList<Patient>();
-        Patient p1 = new Patient("Patient1","Patient1");
-        Patient p2 = new Patient("Patient2","Patient2");
-        Patient p3 = new Patient("Patient3","Patient3");
+        Patient p1 = new Patient("Muster","Max");
+        Patient p2 = new Patient("Meier","Hans");
+        Patient p3 = new Patient("Bacher","Hermine");
         patientList.add(p1);
         patientList.add(p2);
         patientList.add(p3);
@@ -94,7 +94,7 @@ public class TestDataSource
     private void initStaffMembers()
     {
         staffList = new ArrayList<StaffMember>();
-        StaffMember s1 = new StaffMember("Alex","Bauernhof","nick.staff1");
+        StaffMember s1 = new StaffMember("Michael","Heiﬂ","m.heiﬂ");
         s1.setPersonId(0);
         Calendar cal = Calendar.getInstance(); 
         cal.set(Calendar.YEAR,1986); 
@@ -104,9 +104,9 @@ public class TestDataSource
         s1.setCityname("Salzburg");
         s1.setEMail("alex@bauernhof.at");
         s1.setStreetname("Auweg 25");
-        StaffMember s2 = new StaffMember("Staff2","Staff2","nick.staff2");
+        StaffMember s2 = new StaffMember("Walter","Lohmann","w.lohm");
         s2.setPersonId(1);
-        StaffMember s3 = new StaffMember("Staff3","Staff3","nick.staff3");
+        StaffMember s3 = new StaffMember("Birgit","Thek","b.thek");
         s3.setPersonId(2);
         staffList.add(s1);
         staffList.add(s2);
@@ -118,10 +118,10 @@ public class TestDataSource
         transportList = new ArrayList<Transport>();
         Transport t1 = new Transport();
         t1.setTransportId(0);
-        t1.setFromStreet("street_from_1");
-        t1.setFromCity("city_from_1");
-        t1.setToStreet("street_to_1");
-        t1.setToCity("city_to_1");
+        t1.setFromStreet("Wienerstr. 46");
+        t1.setFromCity("Kapfenberg");
+        t1.setToStreet("LKH Bruck");
+        t1.setToCity("Unf. Amb.");
         t1.setPatient(patientList.get(0));
         t1.addStatus(1, new Date().getTime());
         t1.addStatus(2, new Date().getTime());
@@ -132,10 +132,10 @@ public class TestDataSource
         //second transport
         Transport t2 = new Transport();
         t2.setTransportId(1);
-        t2.setFromStreet("street_from_2");
-        t2.setFromCity("city_from_2");
-        t2.setToStreet("street_to_2");
-        t2.setToCity("city_to_2");
+        t2.setFromStreet("Forstschule");
+        t2.setFromCity("Bruck an der Mur");
+        t2.setToStreet("LKH Leoben");
+        t2.setToCity("HNO Amb.");
         t2.setPatient(patientList.get(1));
         t2.setCallerDetail(notifierList.get(1));
         t2.setVehicleDetail(vehicleList.get(1));
@@ -144,10 +144,10 @@ public class TestDataSource
         //third transport
         Transport t3 = new Transport();
         t3.setTransportId(2);
-        t3.setFromStreet("street_from_3");
-        t3.setFromCity("city_from_3");
-        t3.setToStreet("street_to_3");
-        t3.setToCity("city_to_3");
+        t3.setFromStreet("LKH Bruck");
+        t3.setFromCity("Med A");
+        t3.setToStreet("LKH Graz");
+        t3.setToCity("ZRI");
         t3.setPatient(patientList.get(2));
         t3.setCallerDetail(notifierList.get(2));
         t3.setVehicleDetail(vehicleList.get(2));
@@ -221,10 +221,10 @@ public class TestDataSource
     private void initLogins()
     {
         userLogin = new HashMap<String, String>();
-        userLogin.put("user1", "P@ssw0rd");
-        userLogin.put("user2", "P@ssw0rd");
+        userLogin.put("m.heiﬂ", "P@ssw0rd");
+        userLogin.put("w.lohm", "P@ssw0rd");
+        userLogin.put("b.thek", "P@ssw0rd");
         userLogin.put("user3", "P@ssw0rd");
-        userLogin.put("testUser", "P@ssw0rd");
     }
     
     private void initVehicles()
@@ -241,7 +241,7 @@ public class TestDataSource
         v1.setCurrentStation(Constants.STATION_KAPFENBERG);
         v1.setReadyForAction(true);
         v1.setOutOfOrder(false);
-        v1.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+        v1.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT);
         v1.setDriverName(staffList.get(0));
         v1.setParamedicIName(staffList.get(1));
         v1.setParamedicIIName(staffList.get(2));
@@ -275,9 +275,24 @@ public class TestDataSource
         v3.setParamedicIName(staffList.get(1));
         v3.setParamedicIIName(staffList.get(2));
         v3.setMobilPhone(phoneList.get(2));
+        //fourth vehicle
+        VehicleDetail v4 = new VehicleDetail();
+        v4.setVehicleId(2);
+        v4.setVehicleName("Ka04");
+        v4.setVehicleType("RTW");
+        v4.setBasicStation(Constants.STATION_KAPFENBERG);
+        v4.setCurrentStation(Constants.STATION_BRUCK);
+        v4.setReadyForAction(false);
+        v4.setOutOfOrder(true);
+        v4.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
+        v4.setDriverName(staffList.get(0));
+        v4.setParamedicIName(staffList.get(1));
+        v4.setParamedicIIName(staffList.get(2));
+        v4.setMobilPhone(phoneList.get(2));
         //add to list
         vehicleList.add(v1);
         vehicleList.add(v2);
         vehicleList.add(v3);
+        vehicleList.add(v4);
     }
 }
