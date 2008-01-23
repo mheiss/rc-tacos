@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * Represents a staff member (there are several kinds: regular staff member, civil server, volunteer)
@@ -16,8 +17,7 @@ public class StaffMember extends AbstractMessage
 	public final static String ID = "staffMember";
 
 	private int personId;
-	private int primaryLocation;
-	private String primaryLocationName;
+	private Location primaryLocation;
 	private String lastName;
 	private String firstName;
 	private String streetname;
@@ -25,8 +25,11 @@ public class StaffMember extends AbstractMessage
 	private boolean sex;
 	private long birthday;
 	private List<MobilePhoneDetail> phonelist;
+	private List<Competence> competenceList;
 	private String eMail;
 	private String userName;
+	
+	//additonal info
 	private String function;
 
 	/**
@@ -35,6 +38,8 @@ public class StaffMember extends AbstractMessage
 	public StaffMember()
 	{
 		super(ID);
+		phonelist = new ArrayList<MobilePhoneDetail>();
+		competenceList = new ArrayList<Competence>();
 	}
 
 	/**
@@ -45,7 +50,7 @@ public class StaffMember extends AbstractMessage
 	 */
 	public StaffMember(String firstName, String lastName, String userName)
 	{
-		super(ID);
+		this();
 		setFirstName(firstName);
 		setLastName(lastName);
 		setUserName(userName);
@@ -97,7 +102,7 @@ public class StaffMember extends AbstractMessage
 	 * Returns the personal identification number
 	 * @return the personId
 	 */
-	public int getPersonId() 
+	public int getStaffMemberId() 
 	{
 		return personId;
 	}
@@ -107,14 +112,31 @@ public class StaffMember extends AbstractMessage
 	 * @param personId the personId to set
 	 * @throws IllegalArgumentException if the id is negative
 	 */
-	public void setPersonId(int personId) 
+	public void setStaffMemberId(int personId) 
 	{
 		if(personId < 0)
 			throw new IllegalArgumentException("The id cannot be negative");
 		firePropertyChange("personId", this.personId, personId);
 		this.personId = personId;
 	}
-
+	
+	/**
+	 * Returns the primary location of this staff member
+	 * @return the primary location
+	 */
+	public Location getPrimaryLocation()
+	{
+	    return primaryLocation;
+	}
+	
+	/**
+	 * Sets the primary location for this staff member
+	 * @param primaryLocation the primary location
+	 */
+	public void setPrimaryLocation(Location primaryLocation)
+	{
+	    this.primaryLocation = primaryLocation;
+	}
 
 	/**
 	 * Returns the last name
@@ -185,86 +207,160 @@ public class StaffMember extends AbstractMessage
 		firePropertyChange("userName",oldName, userName);
 	}
 
-	public int getPrimaryLocation() {
-		return primaryLocation;
-	}
-
-	public void setPrimaryLocation(int primaryLocation) {
-		this.primaryLocation = primaryLocation;
-	}
-
+	/**
+	 * Returns the name of the street
+	 * @return the name of the street
+	 */
 	public String getStreetname() {
 		return streetname;
 	}
 
+	/**
+	 * Sets the name of the street where this staff member is at home
+	 * @param streetname the name of the street
+	 */
 	public void setStreetname(String streetname) 
 	{
-		firePropertyChange("streetname", this.streetname, streetname);
 		this.streetname = streetname;
 	}
 
-	public String getCityname() {
+	/**
+	 * Returns the cityname where the staff member is at home
+	 * @return the cityname
+	 */
+	public String getCityname() 
+	{
 		return cityname;
 	}
 
+	/**
+	 * Sets the name of the city where the person is at home
+	 * @param cityname the cityname
+	 */
 	public void setCityname(String cityname) 
 	{
-		firePropertyChange("cityname", this.cityname, cityname);
 		this.cityname = cityname;
 	}
+	
+    /**
+     * Returns the birthday of the patient
+     * @return the date of birht
+     */
+    public long getBirthday()
+    {
+        return birthday;
+    }
+    
+    /**
+     * Sets the date of the birthday of this patient
+     * @param sex the date of birth
+     */
+    public void setBirthday(long birhtday)
+    {
+        if(!MyUtils.isValidDate(birthday))
+            throw new IllegalArgumentException("This is not a valid birthday");
+        this.birthday = birhtday;
+    }
+    
+    /**
+     * Returns whether or not this patient is male.
+     * @return true if the patient is male, otherwise female ;)
+     */
+    public boolean isMale() 
+    {
+        return sex;
+    }
 
-	public boolean isSex() {
-		return sex;
-	}
+    /**
+     * Sets a flag to indicate that the patient is male.
+     * Set this to false for female.
+     * @param male true if the patient is male, otherwise false
+     */
+    public void setMale(boolean sex) 
+    {
+        this.sex = sex;
+    }
 
-	public void setSex(boolean sex) 
+    /**
+     * Returns the mail address of this staff member
+     * @return the mail address
+     */
+	public String getEMail() 
 	{
-		firePropertyChange("sex", this.sex, sex);
-		this.sex = sex;
-	}
-
-	public long getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(long birthday) 
-	{
-		firePropertyChange("birthday", this.birthday, birthday);
-		this.birthday = birthday;
-	}
-
-	public String getEMail() {
 		return eMail;
 	}
 
+	/**
+	 * Sets the mail address of this staff member
+	 * @param mail the mail address
+	 */
 	public void setEMail(String mail) 
 	{
-		firePropertyChange("mail", this.eMail, mail);
 		eMail = mail;
 	}
-
-	public String getFunction() {
-		return function;
-	}
-
-	public void setFunction(String function) {
-		this.function = function;
-	}
-
-	public String getPrimaryLocationName() {
-		return primaryLocationName;
-	}
-
-	public void setPrimaryLocationName(String primaryLocationName) {
-		this.primaryLocationName = primaryLocationName;
-	}
-
-	public List<MobilePhoneDetail> getPhonelist() {
+	
+	/**
+	 * Returns the list of phones accociated to the staff member
+	 * @return the phone list
+	 */
+	public List<MobilePhoneDetail> getPhonelist() 
+	{
 		return phonelist;
 	}
-
-	public void setPhonelist(List<MobilePhoneDetail> phonelist) {
+	
+	/**
+	 * Helper method to add a mobile phone to a staff member
+	 * @param phone the mobile phone to add
+	 */
+	public void addMobilePhone(MobilePhoneDetail phone)
+	{
+	    phonelist.add(phone);
+	}
+	
+	/**
+	 * Sets the list of phones for this staff member
+	 * @param phonelist the phone list to set
+	 */
+	public void setPhonelist(List<MobilePhoneDetail> phonelist) 
+	{
 		this.phonelist = phonelist;
 	}
+	
+	/**
+	 * Returns a list of all competences for this staff member
+     * @return the competenceList the competence list
+     */
+    public List<Competence> getCompetenceList()
+    {
+        return competenceList;
+    }
 
+    /**
+     * Sets the list of competences for this staff member
+     * @param competenceList the competenceList to set
+     */
+    public void setCompetenceList(List<Competence> competenceList)
+    {
+        this.competenceList = competenceList;
+    }
+    
+    /**
+     * Helper method to add a competence to a staff member
+     * @param competence the competence to add
+     */
+    public void addCompetence(Competence competence)
+    {
+        competenceList.add(competence);
+    }
+
+    //internal methods and information, only needed to serialize and deserialize
+	public String getFunction() 
+	{
+        return function;
+    }
+
+    public void setFunction(String function) 
+    {
+        this.function = function;
+    }
 }

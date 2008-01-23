@@ -1,9 +1,7 @@
 package at.rc.tacos.model;
 
-import java.util.List;
-
 import at.rc.tacos.common.AbstractMessage;
-
+import at.rc.tacos.util.MyUtils;
 
 /**
  * Contains the data of the patient.
@@ -15,19 +13,13 @@ public class Patient extends AbstractMessage
     //unique identification string
     public final static String ID = "patient";
 
-    //Rückgabewerte:
-    //p.firstname, p.lastname, sex, birthday, t.transport_ID, s.streetname, sn.streetnumber, cy.cityname, cy.zipcode
+    //properties
     private long patientId;
     private String firstname;
     private String lastname;
     private boolean sex;
-    private List<String> transportID;
-    private String streetname;
-    private String streetnumber;
-    private String cityname;
-    private int zipcode;
+    private long birthday;
     
-
     /**
      * Default class construtor
      */
@@ -100,6 +92,42 @@ public class Patient extends AbstractMessage
     {
         return patientId;
     }
+    
+    /**
+     * Returns the last name of the patient.
+     * @return the lastname
+     */
+    public String getLastname() 
+    {
+        return lastname;
+    }
+    
+    /**
+     * Returns the firstname of the patient.
+     * @return the firstname
+     */
+    public String getFirstname() 
+    {
+        return firstname;
+    }
+    
+    /**
+     * Returns the birthday of the patient
+     * @return the date of birht
+     */
+    public long getBirthday()
+    {
+        return birthday;
+    }
+    
+    /**
+     * Returns whether or not this patient is male.
+     * @return true if the patient is male, otherwise female ;)
+     */
+    public boolean isMale() 
+    {
+        return sex;
+    }
 
     /**
      * Sets the identification number of the patient.
@@ -114,33 +142,15 @@ public class Patient extends AbstractMessage
     }
 
     /**
-     * Returns the firstname of the patient.
-     * @return the firstname
-     */
-    public String getFirstname() 
-    {
-        return firstname;
-    }
-
-    /**
      * Sets the last name for the patient.
      * @param firstname the firstname to set
      * @throws IllegalArgumentException if the first name is null or empty
      */
     public void setFirstname(String firstname) 
     {
-//        if(firstname == null)
-//            throw new IllegalArgumentException("Invalid firstname");
+        if(firstname == null)
+            throw new IllegalArgumentException("Invalid firstname");
         this.firstname = firstname.trim();
-    }
-
-    /**
-     * Returns the last name of the patient.
-     * @return the lastname
-     */
-    public String getLastname() 
-    {
-        return lastname;
     }
 
     /**
@@ -150,56 +160,29 @@ public class Patient extends AbstractMessage
      */
     public void setLastname(String lastname)
     {
-//        if(lastname == null)
-//            throw new IllegalArgumentException("Invalid lastname");
+        if(lastname == null)
+            throw new IllegalArgumentException("Invalid lastname");
         this.lastname = lastname;
     }
+    
+    /**
+     * Sets the date of the birthday of this patient
+     * @param sex the date of birth
+     */
+    public void setBirthday(long birhtday)
+    {
+        if(!MyUtils.isValidDate(birthday))
+            throw new IllegalArgumentException("This is not a valid birthday");
+        this.birthday = birhtday;
+    }
 
-	public boolean isSex() {
-		return sex;
-	}
-
-	public void setSex(boolean sex) {
+    /**
+     * Sets a flag to indicate that the patient is male.
+     * Set this to false for female.
+     * @param male true if the patient is male, otherwise false
+     */
+	public void setMale(boolean sex) 
+	{
 		this.sex = sex;
-	}
-
-	public List<String> getTransportID() {
-		return transportID;
-	}
-
-	public void setTransportID(List<String> transportID) {
-		this.transportID = transportID;
-	}
-
-	public String getStreetname() {
-		return streetname;
-	}
-
-	public void setStreetname(String streetname) {
-		this.streetname = streetname;
-	}
-
-	public String getStreetnumber() {
-		return streetnumber;
-	}
-
-	public void setStreetnumber(String streetnumber) {
-		this.streetnumber = streetnumber;
-	}
-
-	public String getCityname() {
-		return cityname;
-	}
-
-	public void setCityname(String cityname) {
-		this.cityname = cityname;
-	}
-
-	public int getZipcode() {
-		return zipcode;
-	}
-
-	public void setZipcode(int zipcode) {
-		this.zipcode = zipcode;
 	}
 }

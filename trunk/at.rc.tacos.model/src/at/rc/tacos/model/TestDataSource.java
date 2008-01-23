@@ -22,6 +22,10 @@ public class TestDataSource
     public static TestDataSource instance;
     
     //the test data
+    public ArrayList<Competence> competenceList;
+    public ArrayList<Job> jobList;
+    public ArrayList<ServiceType> serviceList;
+    public ArrayList<Location> locationList;
     public ArrayList<MobilePhoneDetail> phoneList;
     public ArrayList<CallerDetail> notifierList;
     public ArrayList<Patient> patientList;
@@ -37,6 +41,10 @@ public class TestDataSource
     private TestDataSource()
     {
         initLogins();
+        initJobs();
+        initLocations();
+        initServiceTypes();
+        initCompetences();
         initPhones();
         initNotifiers();
         initPatients();
@@ -57,6 +65,54 @@ public class TestDataSource
         return instance;
     }
     
+    private void initJobs()
+    {
+        jobList = new ArrayList<Job>();
+        //add all jobs
+        for(int i = 0; i < Constants.job.length; i++)
+        {
+            Job job = new Job(Constants.job[i]);
+            job.setId(i);
+            jobList.add(job);
+        }
+    }
+    
+    private void initServiceTypes()
+    {
+        serviceList = new ArrayList<ServiceType>();
+        //add all service types
+        for(int i = 0; i < Constants.service.length; i++)
+        {
+            ServiceType serviceType = new ServiceType(Constants.service[i]);
+            serviceType.setId(i);
+            serviceList.add(serviceType);
+        }
+    }
+    
+    private void initCompetences()
+    {
+        competenceList = new ArrayList<Competence>();
+        //add all competences
+        for(int i = 0; i < Constants.competence.length; i++)
+        {
+            Competence comp = new Competence(Constants.competence[i]);
+            comp.setId(i);
+            competenceList.add(comp);
+        }
+    }
+    
+    public void initLocations()
+    {
+        locationList = new ArrayList<Location>();
+        //add all locations
+        for(int i = 0; i < Constants.stations.length; i++)
+        {
+            Location location = new Location();
+            location.setLocationName(Constants.stations[i]);
+            location.setId(i);
+            locationList.add(location);
+        }
+    }
     
     private void initPhones()
     {
@@ -72,9 +128,9 @@ public class TestDataSource
     private void initNotifiers()
     {
         notifierList = new ArrayList<CallerDetail>();
-        CallerDetail n1 = new CallerDetail("Hofer","0664-123456789","Notes taken");
-        CallerDetail n2 = new CallerDetail("Huber","0784-1548154","Notes taken");
-        CallerDetail n3 = new CallerDetail("Hauer","2147-123456789","Notes taken");
+        CallerDetail n1 = new CallerDetail("Hofer","0664-123456789");
+        CallerDetail n2 = new CallerDetail("Huber","0784-1548154");
+        CallerDetail n3 = new CallerDetail("Hauer","2147-123456789");
         notifierList.add(n1);
         notifierList.add(n2);
         notifierList.add(n3);
@@ -95,7 +151,7 @@ public class TestDataSource
     {
         staffList = new ArrayList<StaffMember>();
         StaffMember s1 = new StaffMember("Michael","Heiß","m.heiß");
-        s1.setPersonId(0);
+        s1.setStaffMemberId(0);
         Calendar cal = Calendar.getInstance(); 
         cal.set(Calendar.YEAR,1986); 
         cal.set(Calendar.MONTH,6); 
@@ -105,9 +161,9 @@ public class TestDataSource
         s1.setEMail("alex@bauernhof.at");
         s1.setStreetname("Auweg 25");
         StaffMember s2 = new StaffMember("Walter","Lohmann","w.lohm");
-        s2.setPersonId(1);
+        s2.setStaffMemberId(1);
         StaffMember s3 = new StaffMember("Birgit","Thek","b.thek");
-        s3.setPersonId(2);
+        s3.setStaffMemberId(2);
         staffList.add(s1);
         staffList.add(s2);
         staffList.add(s3);
@@ -166,7 +222,7 @@ public class TestDataSource
         Calendar cal = Calendar.getInstance();
         RosterEntry e1 = new RosterEntry();
         e1.setRosterId(0);
-        e1.setJob(Constants.JOB_DRIVER);
+        e1.setJob(jobList.get(0));
         //start -> now
         e1.setPlannedStartOfWork(cal.getTimeInMillis());
         e1.setRealStartOfWork(cal.getTimeInMillis());
@@ -174,14 +230,14 @@ public class TestDataSource
         cal.add(Calendar.HOUR_OF_DAY,6);
         e1.setPlannedEndOfWork(cal.getTimeInMillis());
         e1.setRealEndOfWork(cal.getTimeInMillis());
-        e1.setServicetype(Constants.SERVICE_ZIVI);
+        e1.setServicetype(serviceList.get(0));
         e1.setStandby(false);
-        e1.setStation(Constants.STATION_BRUCK);
+        e1.setStation(locationList.get(0));
         e1.setStaffMember(staffList.get(0));
         //second entry
         RosterEntry e2 = new RosterEntry();
         e2.setRosterId(1);
-        e2.setJob(Constants.JOB_DISPON);
+        e2.setJob(jobList.get(1));
         //start -> tomorrow
         cal.add(Calendar.DAY_OF_MONTH, +1);
         e2.setPlannedStartOfWork(cal.getTimeInMillis());
@@ -191,14 +247,14 @@ public class TestDataSource
         e2.setPlannedEndOfWork(cal.getTimeInMillis());
         e2.setRealEndOfWork(cal.getTimeInMillis());
         e2.setRosterNotes("mix");
-        e2.setServicetype(Constants.SERVICE_VOLUNT);
+        e2.setServicetype(serviceList.get(1));
         e2.setStandby(true);
-        e2.setStation(Constants.STATION_KAPFENBERG);
+        e2.setStation(locationList.get(1));
         e2.setStaffMember(staffList.get(1));
         //third entry
         RosterEntry e3 = new RosterEntry();
         e3.setRosterId(2);
-        e3.setJob(Constants.JOB_DOCTOR);
+        e3.setJob(jobList.get(2));
         //start -> one day after tomorrow
         cal.add(Calendar.DAY_OF_MONTH, +1);
         e3.setPlannedStartOfWork(cal.getTimeInMillis());
@@ -208,9 +264,9 @@ public class TestDataSource
         e3.setPlannedEndOfWork(cal.getTimeInMillis());
         e3.setRealStartOfWork(cal.getTimeInMillis());
         e3.setRosterNotes("mix");
-        e3.setServicetype(Constants.SERVICE_MAIN);
+        e3.setServicetype(serviceList.get(2));
         e3.setStandby(false);
-        e3.setStation(Constants.STATION_MAREIN);
+        e3.setStation(locationList.get(2));
         e3.setStaffMember(staffList.get(2));
         //add to list
         rosterList.add(e1);
@@ -233,61 +289,57 @@ public class TestDataSource
         vehicleList = new ArrayList<VehicleDetail>();
         //load dummy data
         VehicleDetail v1 = new VehicleDetail();
-        v1.setVehicleId(0);
         v1.setVehicleName("Bm01");
         v1.setVehicleType("RTW");
         v1.setVehicleNotes("notes vehicle 1");
-        v1.setBasicStation(Constants.STATION_BRUCK);
-        v1.setCurrentStation(Constants.STATION_KAPFENBERG);
+        v1.setBasicStation(locationList.get(0));
+        v1.setCurrentStation(locationList.get(0));
         v1.setReadyForAction(true);
         v1.setOutOfOrder(false);
-        v1.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT);
-        v1.setDriverName(staffList.get(0));
-        v1.setParamedicIName(staffList.get(1));
-        v1.setParamedicIIName(staffList.get(2));
+        v1.setTransportStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT);
+        v1.setDriver(staffList.get(0));
+        v1.setFirstParamedic(staffList.get(1));
+        v1.setSecondParamedic(staffList.get(2));
         v1.setMobilPhone(phoneList.get(0));
         //second vehicle
         VehicleDetail v2 = new VehicleDetail();
-        v2.setVehicleId(1);
         v2.setVehicleName("Bm02");
         v2.setVehicleType("KTW");
         v2.setVehicleNotes("notes vehicle 2");
-        v2.setBasicStation(Constants.STATION_BRUCK);
-        v2.setCurrentStation(Constants.STATION_TURNAU);
+        v2.setBasicStation(locationList.get(1));
+        v2.setCurrentStation(locationList.get(1));
         v2.setReadyForAction(true);
         v2.setOutOfOrder(false);
-        v2.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-        v2.setDriverName(staffList.get(0));
-        v2.setParamedicIName(staffList.get(1));
-        v2.setParamedicIIName(staffList.get(2));
+        v2.setTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+        v2.setDriver(staffList.get(0));
+        v2.setFirstParamedic(staffList.get(1));
+        v2.setSecondParamedic(staffList.get(2));
         v2.setMobilPhone(phoneList.get(1));
         //third vehicle
         VehicleDetail v3 = new VehicleDetail();
-        v3.setVehicleId(2);
         v3.setVehicleName("Bm03");
         v3.setVehicleType("RTW");
-        v3.setBasicStation(Constants.STATION_BRUCK);
-        v3.setCurrentStation(Constants.STATION_BRUCK);
+        v3.setBasicStation(locationList.get(1));
+        v3.setCurrentStation(locationList.get(0));
         v3.setReadyForAction(false);
         v3.setOutOfOrder(true);
-        v3.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-        v3.setDriverName(staffList.get(0));
-        v3.setParamedicIName(staffList.get(1));
-        v3.setParamedicIIName(staffList.get(2));
+        v3.setTransportStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+        v3.setDriver(staffList.get(0));
+        v3.setFirstParamedic(staffList.get(1));
+        v3.setSecondParamedic(staffList.get(2));
         v3.setMobilPhone(phoneList.get(2));
         //fourth vehicle
         VehicleDetail v4 = new VehicleDetail();
-        v4.setVehicleId(2);
         v4.setVehicleName("Ka04");
         v4.setVehicleType("RTW");
-        v4.setBasicStation(Constants.STATION_KAPFENBERG);
-        v4.setCurrentStation(Constants.STATION_BRUCK);
+        v3.setBasicStation(locationList.get(2));
+        v3.setCurrentStation(locationList.get(3));
         v4.setReadyForAction(false);
         v4.setOutOfOrder(true);
-        v4.setMostImportantTransportStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
-        v4.setDriverName(staffList.get(0));
-        v4.setParamedicIName(staffList.get(1));
-        v4.setParamedicIIName(staffList.get(2));
+        v4.setTransportStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
+        v4.setDriver(staffList.get(0));
+        v4.setFirstParamedic(staffList.get(1));
+        v4.setSecondParamedic(staffList.get(2));
         v4.setMobilPhone(phoneList.get(2));
         //add to list
         vehicleList.add(v1);
