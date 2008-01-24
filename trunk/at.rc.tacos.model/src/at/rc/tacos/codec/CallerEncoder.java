@@ -22,9 +22,12 @@ public class CallerEncoder  implements MessageEncoder
         writer.writeEndElement();
         
         //write the notifier name
-        writer.writeStartElement("callerName");
-        writer.writeCharacters(notifier.getCallerName());
-        writer.writeEndElement();
+        if(notifier.getCallerName() != null)
+        {
+	        writer.writeStartElement("callerName");
+	        writer.writeCharacters(notifier.getCallerName());
+	        writer.writeEndElement();
+        }
         //the number is not mandatory
         if(notifier.getCallerTelephoneNumber() != null)
         {

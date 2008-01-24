@@ -26,9 +26,12 @@ public class JobEncoder implements MessageEncoder
         writer.writeCharacters(String.valueOf(job.getId()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("jobName");
-        writer.writeCharacters(job.getJobName());
-        writer.writeEndElement();
+        if(job.getJobName() != null)
+        {
+	        writer.writeStartElement("jobName");
+	        writer.writeCharacters(job.getJobName());
+	        writer.writeEndElement();
+        }
         
         //end of the job
         writer.writeEndElement();

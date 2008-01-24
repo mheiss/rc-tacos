@@ -78,14 +78,20 @@ public class StaffMemberEncoder  implements MessageEncoder
             writer.writeEndElement();
         }
         //get the encoder for the phone and write the list
-        encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
-        for(MobilePhoneDetail detail:member.getPhonelist())
-            encoder.doEncode(detail, writer);
+        if(member.getPhonelist().isEmpty())
+        {
+	        encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
+	        for(MobilePhoneDetail detail:member.getPhonelist())
+	            encoder.doEncode(detail, writer);
+        }
         
         //get the encoder for the competence and write the list
-        encoder = ProtocolCodecFactory.getDefault().getEncoder(Competence.ID);
-        for(Competence comp:member.getCompetenceList())
-            encoder.doEncode(comp, writer);
+        if(member.getCompetenceList().isEmpty())
+        {
+	        encoder = ProtocolCodecFactory.getDefault().getEncoder(Competence.ID);
+	        for(Competence comp:member.getCompetenceList())
+	            encoder.doEncode(comp, writer);
+        }
         //end
         writer.writeEndElement();
     }

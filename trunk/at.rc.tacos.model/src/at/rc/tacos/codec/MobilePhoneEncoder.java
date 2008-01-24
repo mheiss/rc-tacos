@@ -19,9 +19,12 @@ public class MobilePhoneEncoder  implements MessageEncoder
         writer.writeCharacters(String.valueOf(phone.getId()));
         writer.writeEndElement();
         //write the name of the phone
-        writer.writeStartElement("mobilePhoneName");
-        writer.writeCharacters(phone.getMobilePhoneName());
-        writer.writeEndElement();
+        if(phone.getMobilePhoneName() != null)
+        {
+	        writer.writeStartElement("mobilePhoneName");
+	        writer.writeCharacters(phone.getMobilePhoneName());
+	        writer.writeEndElement();
+        }
         //the phone number is not a required field
         if(phone.getMobilePhoneNumber() != null)
         {

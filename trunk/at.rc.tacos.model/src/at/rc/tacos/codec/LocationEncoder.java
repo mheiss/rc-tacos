@@ -31,32 +31,53 @@ public class LocationEncoder implements MessageEncoder
         writer.writeCharacters(String.valueOf(location.getId()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("locationName");
-        writer.writeCharacters(location.getLocationName());
-        writer.writeEndElement();
+        if(location.getLocationName() != null)
+        {
+	        writer.writeStartElement("locationName");
+	        writer.writeCharacters(location.getLocationName());
+	        writer.writeEndElement();
+        }
         //write the elements and attributes
-        writer.writeStartElement("street");
-        writer.writeCharacters(location.getStreet());
-        writer.writeEndElement();
+        if(location.getStreet() != null)
+        {
+	        writer.writeStartElement("street");
+	        writer.writeCharacters(location.getStreet());
+	        writer.writeEndElement();
+        }
         //write the elements and attributes
-        writer.writeStartElement("streetNumber");
-        writer.writeCharacters(location.getStreetNumber());
-        writer.writeEndElement();
+        if(location.getStreetNumber()!= null)
+        {
+	        writer.writeStartElement("streetNumber");
+	        writer.writeCharacters(location.getStreetNumber());
+	        writer.writeEndElement();
+        }
         //write the elements and attributes
-        writer.writeStartElement("zipcode");
-        writer.writeCharacters(String.valueOf(location.getZipcode()));
-        writer.writeEndElement();
+        if(location.getZipcode() > 0)
+        {
+	        writer.writeStartElement("zipcode");
+	        writer.writeCharacters(String.valueOf(location.getZipcode()));
+	        writer.writeEndElement();
+        }
         //write the elements and attributes
-        writer.writeStartElement("city");
-        writer.writeCharacters(location.getCity());
-        writer.writeEndElement();
+        if(location.getCity() != null)
+        {
+	        writer.writeStartElement("city");
+	        writer.writeCharacters(location.getCity());
+	        writer.writeEndElement();
+        }
         //write the elements and attributes
-        writer.writeStartElement("notes");
-        writer.writeCharacters(location.getNotes());
-        writer.writeEndElement();
+        if(location.getNotes() != null)
+        {
+	        writer.writeStartElement("notes");
+	        writer.writeCharacters(location.getNotes());
+	        writer.writeEndElement();
+        }
         //get the encoder for the mobile phone
-        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
-        encoder.doEncode(location.getPhone(), writer);
+        if(location.getPhone() != null)
+        {
+	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
+	        encoder.doEncode(location.getPhone(), writer);
+        }
         
         //end of the item
         writer.writeEndElement();

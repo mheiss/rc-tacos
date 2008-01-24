@@ -26,9 +26,12 @@ public class DiseaseEncoder implements MessageEncoder
         writer.writeCharacters(String.valueOf(disease.getId()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("diseaseName");
-        writer.writeCharacters(disease.getDiseaseName());
-        writer.writeEndElement();
+        if(disease.getDiseaseName() != null)
+        {
+	        writer.writeStartElement("diseaseName");
+	        writer.writeCharacters(disease.getDiseaseName());
+	        writer.writeEndElement();
+        }
         
         //end of the disease
         writer.writeEndElement();

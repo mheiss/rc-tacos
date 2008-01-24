@@ -26,9 +26,12 @@ public class ServiceTypeEncoder implements MessageEncoder
         writer.writeCharacters(String.valueOf(serviceType.getId()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("serviceName");
-        writer.writeCharacters(serviceType.getServiceName());
-        writer.writeEndElement();
+        if(serviceType.getServiceName() != null)
+        {
+	        writer.writeStartElement("serviceName");
+	        writer.writeCharacters(serviceType.getServiceName());
+	        writer.writeEndElement();
+        }
         
         //end of the service type
         writer.writeEndElement();

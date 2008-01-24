@@ -22,13 +22,19 @@ public class VehicleEncoder  implements MessageEncoder
         writer.writeStartElement(VehicleDetail.ID);
 
         //write the elements and attributes
-        writer.writeStartElement("vehicleName");
-        writer.writeCharacters(vehicle.getVehicleName());
-        writer.writeEndElement();
+        if(vehicle.getVehicleName() != null)
+        {
+	        writer.writeStartElement("vehicleName");
+	        writer.writeCharacters(vehicle.getVehicleName());
+	        writer.writeEndElement();
+        }
         //write the elements and attributes
-        writer.writeStartElement("vehicleType");
-        writer.writeCharacters(vehicle.getVehicleType());
-        writer.writeEndElement();
+        if(vehicle.getVehicleType() != null)
+        {
+	        writer.writeStartElement("vehicleType");
+	        writer.writeCharacters(vehicle.getVehicleType());
+	        writer.writeEndElement();
+        }
         //get the encoder for the staff member
         if(vehicle.getDriver() != null)
         {
@@ -57,9 +63,12 @@ public class VehicleEncoder  implements MessageEncoder
 	        encoder.doEncode(vehicle.getMobilePhone(), writer);
         }
         //write the elements and attributes
-        writer.writeStartElement("vehicleNotes");
-        writer.writeCharacters(vehicle.getVehicleNotes());
-        writer.writeEndElement();
+        if(vehicle.getVehicleNotes() != null)
+        {
+	        writer.writeStartElement("vehicleNotes");
+	        writer.writeCharacters(vehicle.getVehicleNotes());
+	        writer.writeEndElement();
+        }
         
         //write the elements and attributes
         vehicle.getCurrentStation().type = "current";
@@ -79,9 +88,12 @@ public class VehicleEncoder  implements MessageEncoder
         writer.writeCharacters(String.valueOf(vehicle.isOutOfOrder()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("transportStatus");
-        writer.writeCharacters(String.valueOf(vehicle.getTransportStatus()));
-        writer.writeEndElement();
+        if(vehicle.getTransportStatus() > 0)
+        {
+	        writer.writeStartElement("transportStatus");
+	        writer.writeCharacters(String.valueOf(vehicle.getTransportStatus()));
+	        writer.writeEndElement();
+        }
 
         //end
         writer.writeEndElement();
