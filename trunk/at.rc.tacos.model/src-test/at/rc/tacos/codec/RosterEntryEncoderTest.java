@@ -12,7 +12,6 @@ import org.junit.Test;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.model.TestDataSource;
 
 public class RosterEntryEncoderTest
 {
