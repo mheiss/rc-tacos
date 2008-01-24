@@ -167,9 +167,12 @@ public class TestDataSource
         s2.setStaffMemberId(1);
         StaffMember s3 = new StaffMember("Birgit","Thek","b.thek");
         s3.setStaffMemberId(2);
+        StaffMember s4 = new StaffMember("Gerhard","Nachname","user3");
+        s4.setStaffMemberId(3);
         staffList.add(s1);
         staffList.add(s2);
         staffList.add(s3);
+        staffList.add(s4);
     }
     
     private void initTransports()
