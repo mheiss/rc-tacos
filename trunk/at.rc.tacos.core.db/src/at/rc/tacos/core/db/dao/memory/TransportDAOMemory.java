@@ -45,28 +45,42 @@ public class TransportDAOMemory implements TransportDAO
     }
 
     @Override
-    public int addTransport(Transport transport)
+    public String addTransport(Transport transport,int test)
     {
         transportList.add(transport);
-        return transportList.size();
+        return String.valueOf(transportList.size());
     }
     
     @Override
-    public void updateTransport(Transport transport)
+    public boolean updateTransport(Transport transport)
     {
         int index = transportList.indexOf(transport);
         transportList.remove(index);
         transportList.add(index,transport);
+        return true;
     }
 
     @Override
-    public void removeTransport(Transport transport)
+    public boolean removeTransportByNr(long id)
     {
-        transportList.remove(transport);
+        Transport transportToRemove = null;
+        //loop and check
+        for(Transport transport:transportList)
+        {
+            if(transport.getTransportId() == id)
+                transportToRemove = transport;
+        }
+        //do we have something to remove?
+        if(transportToRemove != null)
+        {
+            transportList.remove(transportToRemove);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public Transport getTransportById(int transportId)
+    public Transport getTransportByNr(int transportId, int locationId)
     {
         for(Transport transport:transportList)
         {
@@ -78,6 +92,12 @@ public class TransportDAOMemory implements TransportDAO
 
     @Override
     public List<Transport> listTransports()
+    {
+        return transportList;
+    }
+
+    @Override
+    public List<Transport> listTransports(long startdate, long enddate)
     {
         return transportList;
     }

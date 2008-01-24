@@ -69,7 +69,7 @@ public class MobilePhoneDAOMemory implements MobilePhoneDAO
     public MobilePhoneDetail getMobilePhoneById(String mobilePhoneId)
     {
         for(MobilePhoneDetail detail:phoneList)
-            if(detail.getMobilePhoneId().equalsIgnoreCase(mobilePhoneId))
+            if(detail.getMobilePhoneName().equalsIgnoreCase(mobilePhoneId))
                 return detail;
         return null;
     }
