@@ -39,7 +39,6 @@ import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.common.Constants;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
@@ -248,7 +247,7 @@ public class VehicleForm extends TitleAreaDialog
 		stationComboViewer = new ComboViewer(stationCombo);
 		stationComboViewer.setContentProvider(new StationContentProvider());
 		stationComboViewer.setLabelProvider(new StationLabelProvider());
-		stationComboViewer.setInput(Constants.stations);
+		stationComboViewer.setInput(ModelFactory.getInstance().getLocationList());
 
 		//layout for the labels
 		GridData data = new GridData();

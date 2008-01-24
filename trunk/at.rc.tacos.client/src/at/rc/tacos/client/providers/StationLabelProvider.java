@@ -4,6 +4,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.Location;
 
 public class StationLabelProvider extends LabelProvider 
 {
@@ -24,6 +25,7 @@ public class StationLabelProvider extends LabelProvider
     @Override
     public String getText(Object object)
     {
-        return object.toString();
+        Location location = (Location)object;
+        return location.getLocationName();
     }
 }

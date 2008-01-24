@@ -97,6 +97,10 @@ public class Activator extends AbstractUIPlugin
 	    factory.registerListener(SystemMessage.ID, new SessionListener());
 	    factory.registerListener(DialysisPatient.ID, new DialysisPatientListener());
 	    factory.registerListener(DayInfoMessage.ID, new SessionListener());
+	    factory.registerListener(Competence.ID, new CompetenceListener());
+	    factory.registerListener(Job.ID,new JobListener());
+	    factory.registerListener(Location.ID, new LocationListener());
+	    factory.registerListener(ServiceType.ID, new ServiceTypeListener());
 	}
 	
 	/**

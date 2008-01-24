@@ -1,6 +1,6 @@
 package at.rc.tacos.client.listeners;
 
-public class ServiceTypeListener
+public class ServiceTypeListener extends ClientListenerAdapter
 {
 
 }

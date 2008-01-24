@@ -2,14 +2,15 @@ package at.rc.tacos.client.providers;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import at.rc.tacos.common.Constants;
+
+import at.rc.tacos.client.modelManager.ModelFactory;
 
 public class StationContentProvider implements IStructuredContentProvider
 {
     @Override
     public Object[] getElements(Object arg0)
     {
-        return Constants.stations;
+        return ModelFactory.getInstance().getLocationList().toArray();
     }
 
     @Override
