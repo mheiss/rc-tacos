@@ -22,6 +22,14 @@ public interface TransportDAO
      */
     public int assignVehicleToTransport(Transport transport);
     
+    /**
+     * Stores the actual transport in the log table and prevents modification of the transport in the future.
+     * This method deletes the current transportId out of the transport table and moves the transport to the log.
+     * @param transport the transport to archive
+     * @return true if the archive was successfully
+     */
+    public boolean archiveTransport(Transport transport);
+    
     /**    
      * Updates a given transport.<br>
      * This method updates every column of the transport table except the transport number.
