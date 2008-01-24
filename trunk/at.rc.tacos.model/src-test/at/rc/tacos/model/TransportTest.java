@@ -5,22 +5,21 @@ import static org.junit.Assert.*;
 import java.util.Date;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportPriority;
 
-public class TransportTest implements IProgramStatus
+public class TransportTest implements IProgramStatus 
 {
 	private Transport t1 = new Transport();
 	
 	@Before
 	public void setUp()
-	{
+	{     
+        //transport
         t1.setTransportId(0);
         t1.setFromStreet("Wienerstr. 46");
         t1.setFromCity("Kapfenberg");
