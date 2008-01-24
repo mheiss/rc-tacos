@@ -21,8 +21,8 @@ public class TransportListener extends ServerListenerAdapter
     public AbstractMessage handleAddRequest(AbstractMessage addObject)
     {
         Transport transport = (Transport)addObject;
-        int id = transportDao.addTransport(transport);
-        transport.setTransportId(id);
+        String id = transportDao.addTransport(transport,0);
+        transport.setTransportId(Integer.parseInt(id));
         return transport;
     }
 
@@ -44,7 +44,7 @@ public class TransportListener extends ServerListenerAdapter
     public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
     {
         Transport transport = (Transport)removeObject;
-        transportDao.removeTransport(transport);
+        transportDao.removeTransportByNr(transport.getTransportId());
         return transport;
     }
 

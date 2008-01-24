@@ -24,11 +24,10 @@ public class DialysisPatientListener extends ServerListenerAdapter
 		try
 		{
 			int id = dialysisDao.addDialysisPatient(patient);
-			patient.setPatientId(id);
+			patient.setId(id);
 		}
 		catch (SQLException e)
 		{
-			// TODO Auto-generated catch block
 			e.getMessage();
 		}
 
