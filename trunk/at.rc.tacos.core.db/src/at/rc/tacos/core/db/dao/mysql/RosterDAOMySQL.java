@@ -45,27 +45,28 @@ public class RosterDAOMySQL implements RosterDAO
 	}
 	
     @Override
-    public Integer addRosterEntry(RosterEntry entry)
+    public int addRosterEntry(RosterEntry entry)
     {
     	Integer rosterId = null;
 		try
 		{	
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.RosterEntry"));
-			query.setInt(1, entry.getStationId());
-			query.setInt(2, entry.getStaffmemberId());
-			query.setInt(3, entry.getServicetypeId());
-			query.setInt(4, entry.getJobId());
+			query.setInt(1, entry.getStation().getId());
+			query.setInt(2, entry.getStaffMember().getStaffMemberId());
+			query.setInt(3, entry.getServicetype().getId());
+			query.setInt(4, entry.getJob().getId());
 			query.setString(5, convertDate(entry.getPlannedStartOfWork()));
 			query.setString(6, convertDate(entry.getPlannedEndOfWork()));
 			query.setString(7, convertDate(entry.getRealStartOfWork()));
 			query.setString(8, convertDate(entry.getRealEndOfWork()));
 			query.setString(9, entry.getRosterNotes());
 			query.setBoolean(10, entry.getStandby());
+			query.setString(11, entry.getCreatedByUsername());
 			
 			query.executeUpdate();
 			
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.RosterEntryId"));
-			query1.setInt(1, entry.getStaffmemberId());
+			query1.setInt(1, entry.getStaffMember().getStaffMemberId());
 			query1.setString(2, convertDate(entry.getPlannedStartOfWork()));
 			final ResultSet rsRosterId = query1.executeQuery();
 			
@@ -75,7 +76,7 @@ public class RosterDAOMySQL implements RosterDAO
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			return null;
+			return -1;
 		}
 		return rosterId;
     }
@@ -86,17 +87,18 @@ public class RosterDAOMySQL implements RosterDAO
     	try
 		{
     	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.RosterEntry"));
-		query.setInt(1, entry.getStationId());
-		query.setInt(2, entry.getStaffmemberId());
-		query.setInt(3, entry.getServicetypeId());
-		query.setInt(4, entry.getJobId());
+    	query.setInt(1, entry.getStation().getId());
+		query.setInt(2, entry.getStaffMember().getStaffMemberId());
+		query.setInt(3, entry.getServicetype().getId());
+		query.setInt(4, entry.getJob().getId());
 		query.setString(5, convertDate(entry.getPlannedStartOfWork()));
 		query.setString(6, convertDate(entry.getPlannedEndOfWork()));
 		query.setString(7, convertDate(entry.getRealStartOfWork()));
 		query.setString(8, convertDate(entry.getRealEndOfWork()));
 		query.setString(9, entry.getRosterNotes());
 		query.setBoolean(10, entry.getStandby());
-		query.setInt(11, entry.getRosterId());
+		query.setString(11, entry.getCreatedByUsername());
+		query.setInt(12, entry.getRosterId());
 		
 		query.executeUpdate();
 		}
@@ -109,7 +111,7 @@ public class RosterDAOMySQL implements RosterDAO
     }
 
     @Override
-    public void removeRosterEntry(RosterEntry rosterEntry)
+    public boolean removeRosterEntry(RosterEntry rosterEntry)
     {
     	try
     	{
@@ -121,14 +123,21 @@ public class RosterDAOMySQL implements RosterDAO
     	catch (SQLException e)
     	{
     		e.printStackTrace();
+    		return false;
     	}
-
+    	return true;
     }
 
     @Override
     public RosterEntry getRosterEntryById(int rosterEntryId)
     {
     	RosterEntry entry = new RosterEntry();
+    	Location station = new Location();
+    	StaffMember staff = new StaffMember();
+    	ServiceType service = new ServiceType();
+    	Job job = new Job();
+    	Competence competence = new Competence();
+    	List<Competence> competences = new ArrayList<Competence>();
     	try
     	{
     		//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
@@ -139,19 +148,27 @@ public class RosterDAOMySQL implements RosterDAO
 
     		rs.first();
     		entry.setRosterId(rs.getInt("ro.roster_ID"));
-    		entry.setStationId(rs.getInt("ro.location_ID"));
-			entry.setStation(rs.getString("lo.locationname"));
-			entry.setStaffmemberId(rs.getInt("ro.staffmember_ID"));
-			entry.setUsername(rs.getString("e.username"));
-			entry.setCreatedByUser(rs.getString("ro.entry_createdBy"));
+    		
+    		station.setId(rs.getInt("ro.location_ID"));
+    		station.setLocationName(rs.getString("lo.locationname"));
+    		entry.setStation(station);
+    		
+    		//staff will be set last at this method
+    		
+			entry.setCreatedByUsername(rs.getString("ro.entry_createdBy"));
 			entry.setPlannedStartOfWork(convertDateIntoLong(rs.getString("ro.starttime")));
 			entry.setPlannedEndOfWork(convertDateIntoLong(rs.getString("ro.endtime")));
 			entry.setRealStartOfWork(convertDateIntoLong(rs.getString("ro.checkIn")));
 			entry.setRealEndOfWork(convertDateIntoLong(rs.getString("ro.checkOut")));
-			entry.setServicetypeId(rs.getInt("ro.servicetype_ID"));
-			entry.setServicetype(rs.getString("st.servicetype"));
-			entry.setJobId(rs.getInt("ro.job_ID"));
-			entry.setJob(rs.getString("j.jobname"));
+			
+			service.setId(rs.getInt("ro.servicetype_ID"));
+			service.setServiceName(rs.getString("st.servicetype"));
+			entry.setServicetype(service);
+			
+			job.setId(rs.getInt("ro.job_ID"));
+			job.setJobName(rs.getString("j.jobname"));
+			entry.setJob(job);
+			
 			entry.setRosterNotes(rs.getString("ro.note"));
 			entry.setStandby(rs.getBoolean("ro.standby"));
 
@@ -159,19 +176,29 @@ public class RosterDAOMySQL implements RosterDAO
     		query2.setInt(1, rs.getInt("ro.staffmember_ID"));
     		final ResultSet rs2 = query2.executeQuery();
 
-    		StaffMember staff = new StaffMember();
+    		station = null;
     		rs2.first();    		
-    		staff.setPersonId(rs2.getInt("e.staffmember_ID"));
-    		staff.setPrimaryLocation(rs2.getInt("e.primaryLocation"));
-    		staff.setPrimaryLocationName(rs2.getString("lo.locationname"));
+    		staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));
+    		
+    		station.setId(rs2.getInt("e.primaryLocation"));
+    		station.setLocationName(rs2.getString("lo.locationname"));
+    		staff.setPrimaryLocation(station);
+    		
     		staff.setLastName(rs2.getString("e.lastname"));
     		staff.setFirstName(rs2.getString("e.firstname"));
     		staff.setStreetname(rs2.getString("e.street"));
     		staff.setCityname(rs2.getString("e.city"));
-    		staff.setSex(rs2.getBoolean("e.sex"));
+    		staff.setMale(rs2.getBoolean("e.sex"));
     		staff.setBirthday(convertDateIntoLong(rs2.getString("e.birthday")));
     		staff.setEMail(rs2.getString("e.email"));
     		staff.setUserName(rs2.getString("e.username"));
+    		
+    		{
+    			competence.setId(rs2.getInt("c.competence_ID"));
+    			competence.setCompetenceName(rs2.getString("c.competence"));
+    			competences.add(competence);
+    		}while(rs2.next());
+    		staff.setCompetenceList(competences);
 
     		//ph.phonenumber, ph.phonenumber_ID
     		final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
@@ -183,7 +210,7 @@ public class RosterDAOMySQL implements RosterDAO
     		{
     			MobilePhoneDetail phone = new MobilePhoneDetail();
     			
-    			phone.setMobilePhoneId(rs3.getInt("ph.phonenumber_ID"));
+    			phone.setId(rs3.getInt("ph.phonenumber_ID"));
     			phone.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
     			phoneList.add(phone);
     		}
@@ -200,10 +227,16 @@ public class RosterDAOMySQL implements RosterDAO
     }
 
     @Override
-    public List<RosterEntry> listRosterEntryByEmployee(int employeeID)
+    public List<RosterEntry> listRosterEntryByStaffMember(int employeeID)
     {
     	List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
     	RosterEntry entry = new RosterEntry();
+    	Location station = new Location();
+    	StaffMember staff = new StaffMember();
+    	ServiceType service = new ServiceType();
+    	Job job = new Job();
+    	Competence competence = new Competence();
+    	List<Competence> competences = new ArrayList<Competence>();
     	try
     	{
     		//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
@@ -214,20 +247,29 @@ public class RosterDAOMySQL implements RosterDAO
 
     		while(rs.next())
     		{
+    			entry = null;
     			entry.setRosterId(rs.getInt("ro.roster_ID"));
-    			entry.setStationId(rs.getInt("ro.location_ID"));
-    			entry.setStation(rs.getString("lo.locationname"));
-    			entry.setStaffmemberId(rs.getInt("ro.staffmember_ID"));
-    			entry.setUsername(rs.getString("e.username"));
-    			entry.setCreatedByUser(rs.getString("ro.entry_createdBy"));
+
+    			station.setId(rs.getInt("ro.location_ID"));
+    			station.setLocationName(rs.getString("lo.locationname"));
+    			entry.setStation(station);
+
+    			//staff will be set last at this method
+
+    			entry.setCreatedByUsername(rs.getString("ro.entry_createdBy"));
     			entry.setPlannedStartOfWork(convertDateIntoLong(rs.getString("ro.starttime")));
     			entry.setPlannedEndOfWork(convertDateIntoLong(rs.getString("ro.endtime")));
     			entry.setRealStartOfWork(convertDateIntoLong(rs.getString("ro.checkIn")));
     			entry.setRealEndOfWork(convertDateIntoLong(rs.getString("ro.checkOut")));
-    			entry.setServicetypeId(rs.getInt("ro.servicetype_ID"));
-    			entry.setServicetype(rs.getString("st.servicetype"));
-    			entry.setJobId(rs.getInt("ro.job_ID"));
-    			entry.setJob(rs.getString("j.jobname"));
+
+    			service.setId(rs.getInt("ro.servicetype_ID"));
+    			service.setServiceName(rs.getString("st.servicetype"));
+    			entry.setServicetype(service);
+
+    			job.setId(rs.getInt("ro.job_ID"));
+    			job.setJobName(rs.getString("j.jobname"));
+    			entry.setJob(job);
+
     			entry.setRosterNotes(rs.getString("ro.note"));
     			entry.setStandby(rs.getBoolean("ro.standby"));
 
@@ -235,19 +277,29 @@ public class RosterDAOMySQL implements RosterDAO
     			query2.setInt(1, rs.getInt("ro.staffmember_ID"));
     			final ResultSet rs2 = query2.executeQuery();
 
-    			StaffMember staff = new StaffMember();
+    			station = null;
     			rs2.first();    		
-    			staff.setPersonId(rs2.getInt("e.staffmember_ID"));
-    			staff.setPrimaryLocation(rs2.getInt("e.primaryLocation"));
-    			staff.setPrimaryLocationName(rs2.getString("lo.locationname"));
+    			staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));
+
+    			station.setId(rs2.getInt("e.primaryLocation"));
+    			station.setLocationName(rs2.getString("lo.locationname"));
+    			staff.setPrimaryLocation(station);
+
     			staff.setLastName(rs2.getString("e.lastname"));
     			staff.setFirstName(rs2.getString("e.firstname"));
     			staff.setStreetname(rs2.getString("e.street"));
     			staff.setCityname(rs2.getString("e.city"));
-    			staff.setSex(rs2.getBoolean("e.sex"));
+    			staff.setMale(rs2.getBoolean("e.sex"));
     			staff.setBirthday(convertDateIntoLong(rs2.getString("e.birthday")));
     			staff.setEMail(rs2.getString("e.email"));
     			staff.setUserName(rs2.getString("e.username"));
+
+    			{
+    				competence.setId(rs2.getInt("c.competence_ID"));
+    				competence.setCompetenceName(rs2.getString("c.competence"));
+    				competences.add(competence);
+    			}while(rs2.next());
+    			staff.setCompetenceList(competences);
 
     			//ph.phonenumber, ph.phonenumber_ID
     			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
@@ -259,13 +311,14 @@ public class RosterDAOMySQL implements RosterDAO
     			{
     				MobilePhoneDetail phone = new MobilePhoneDetail();
 
-    				phone.setMobilePhoneId(rs3.getInt("ph.phonenumber_ID"));
+    				phone.setId(rs3.getInt("ph.phonenumber_ID"));
     				phone.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
     				phoneList.add(phone);
     			}
     			staff.setPhonelist(phoneList);
 
     			entry.setStaffMember(staff);
+    			entrylist.add(entry);
     		}
     	}
     	catch (SQLException e)
@@ -281,6 +334,12 @@ public class RosterDAOMySQL implements RosterDAO
     {
     	List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
     	RosterEntry entry = new RosterEntry();
+    	Location station = new Location();
+    	StaffMember staff = new StaffMember();
+    	ServiceType service = new ServiceType();
+    	Job job = new Job();
+    	Competence competence = new Competence();
+    	List<Competence> competences = new ArrayList<Competence>();
     	try
     	{
     		//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
@@ -292,20 +351,29 @@ public class RosterDAOMySQL implements RosterDAO
 
     		while(rs.next())
     		{
+    			entry = null;
     			entry.setRosterId(rs.getInt("ro.roster_ID"));
-    			entry.setStationId(rs.getInt("ro.location_ID"));
-    			entry.setStation(rs.getString("lo.locationname"));
-    			entry.setStaffmemberId(rs.getInt("ro.staffmember_ID"));
-    			entry.setUsername(rs.getString("e.username"));
-    			entry.setCreatedByUser(rs.getString("ro.entry_createdBy"));
+
+    			station.setId(rs.getInt("ro.location_ID"));
+    			station.setLocationName(rs.getString("lo.locationname"));
+    			entry.setStation(station);
+
+    			//staff will be set last at this method
+
+    			entry.setCreatedByUsername(rs.getString("ro.entry_createdBy"));
     			entry.setPlannedStartOfWork(convertDateIntoLong(rs.getString("ro.starttime")));
     			entry.setPlannedEndOfWork(convertDateIntoLong(rs.getString("ro.endtime")));
     			entry.setRealStartOfWork(convertDateIntoLong(rs.getString("ro.checkIn")));
     			entry.setRealEndOfWork(convertDateIntoLong(rs.getString("ro.checkOut")));
-    			entry.setServicetypeId(rs.getInt("ro.servicetype_ID"));
-    			entry.setServicetype(rs.getString("st.servicetype"));
-    			entry.setJobId(rs.getInt("ro.job_ID"));
-    			entry.setJob(rs.getString("j.jobname"));
+
+    			service.setId(rs.getInt("ro.servicetype_ID"));
+    			service.setServiceName(rs.getString("st.servicetype"));
+    			entry.setServicetype(service);
+
+    			job.setId(rs.getInt("ro.job_ID"));
+    			job.setJobName(rs.getString("j.jobname"));
+    			entry.setJob(job);
+
     			entry.setRosterNotes(rs.getString("ro.note"));
     			entry.setStandby(rs.getBoolean("ro.standby"));
 
@@ -313,19 +381,29 @@ public class RosterDAOMySQL implements RosterDAO
     			query2.setInt(1, rs.getInt("ro.staffmember_ID"));
     			final ResultSet rs2 = query2.executeQuery();
 
-    			StaffMember staff = new StaffMember();
+    			station = null;
     			rs2.first();    		
-    			staff.setPersonId(rs2.getInt("e.staffmember_ID"));
-    			staff.setPrimaryLocation(rs2.getInt("e.primaryLocation"));
-    			staff.setPrimaryLocationName(rs2.getString("lo.locationname"));
+    			staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));
+
+    			station.setId(rs2.getInt("e.primaryLocation"));
+    			station.setLocationName(rs2.getString("lo.locationname"));
+    			staff.setPrimaryLocation(station);
+
     			staff.setLastName(rs2.getString("e.lastname"));
     			staff.setFirstName(rs2.getString("e.firstname"));
     			staff.setStreetname(rs2.getString("e.street"));
     			staff.setCityname(rs2.getString("e.city"));
-    			staff.setSex(rs2.getBoolean("e.sex"));
+    			staff.setMale(rs2.getBoolean("e.sex"));
     			staff.setBirthday(convertDateIntoLong(rs2.getString("e.birthday")));
     			staff.setEMail(rs2.getString("e.email"));
     			staff.setUserName(rs2.getString("e.username"));
+
+    			{
+    				competence.setId(rs2.getInt("c.competence_ID"));
+    				competence.setCompetenceName(rs2.getString("c.competence"));
+    				competences.add(competence);
+    			}while(rs2.next());
+    			staff.setCompetenceList(competences);
 
     			//ph.phonenumber, ph.phonenumber_ID
     			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
@@ -337,89 +415,14 @@ public class RosterDAOMySQL implements RosterDAO
     			{
     				MobilePhoneDetail phone = new MobilePhoneDetail();
 
-    				phone.setMobilePhoneId(rs3.getInt("ph.phonenumber_ID"));
+    				phone.setId(rs3.getInt("ph.phonenumber_ID"));
     				phone.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
     				phoneList.add(phone);
     			}
     			staff.setPhonelist(phoneList);
 
     			entry.setStaffMember(staff);
-    		}
-    	}
-    	catch (SQLException e)
-    	{
-    		e.printStackTrace();
-    		return null;
-    	}
-    	return entrylist;
-    }
-
-    @Override
-    public List<RosterEntry> listRosterEntrys()
-    {
-    	List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-    	RosterEntry entry = new RosterEntry();
-    	try
-    	{
-    		//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
-    		//st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note, ro.standby
-    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("llist.RosterEntrys"));
-    		final ResultSet rs = query.executeQuery();
-
-    		while(rs.next())
-    		{
-    			entry.setRosterId(rs.getInt("ro.roster_ID"));
-    			entry.setStationId(rs.getInt("ro.location_ID"));
-    			entry.setStation(rs.getString("lo.locationname"));
-    			entry.setStaffmemberId(rs.getInt("ro.staffmember_ID"));
-    			entry.setUsername(rs.getString("e.username"));
-    			entry.setCreatedByUser(rs.getString("ro.entry_createdBy"));
-    			entry.setPlannedStartOfWork(convertDateIntoLong(rs.getString("ro.starttime")));
-    			entry.setPlannedEndOfWork(convertDateIntoLong(rs.getString("ro.endtime")));
-    			entry.setRealStartOfWork(convertDateIntoLong(rs.getString("ro.checkIn")));
-    			entry.setRealEndOfWork(convertDateIntoLong(rs.getString("ro.checkOut")));
-    			entry.setServicetypeId(rs.getInt("ro.servicetype_ID"));
-    			entry.setServicetype(rs.getString("st.servicetype"));
-    			entry.setJobId(rs.getInt("ro.job_ID"));
-    			entry.setJob(rs.getString("j.jobname"));
-    			entry.setRosterNotes(rs.getString("ro.note"));
-    			entry.setStandby(rs.getBoolean("ro.standby"));
-
-    			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberByID"));
-    			query2.setInt(1, rs.getInt("ro.staffmember_ID"));
-    			final ResultSet rs2 = query2.executeQuery();
-
-    			StaffMember staff = new StaffMember();
-    			rs2.first();    		
-    			staff.setPersonId(rs2.getInt("e.staffmember_ID"));
-    			staff.setPrimaryLocation(rs2.getInt("e.primaryLocation"));
-    			staff.setPrimaryLocationName(rs2.getString("lo.locationname"));
-    			staff.setLastName(rs2.getString("e.lastname"));
-    			staff.setFirstName(rs2.getString("e.firstname"));
-    			staff.setStreetname(rs2.getString("e.street"));
-    			staff.setCityname(rs2.getString("e.city"));
-    			staff.setSex(rs2.getBoolean("e.sex"));
-    			staff.setBirthday(convertDateIntoLong(rs2.getString("e.birthday")));
-    			staff.setEMail(rs2.getString("e.email"));
-    			staff.setUserName(rs2.getString("e.username"));
-
-    			//ph.phonenumber, ph.phonenumber_ID
-    			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
-    			query3.setInt(1, rs.getInt("ro.staffmember_ID"));
-    			final ResultSet rs3 = query3.executeQuery();
-
-    			List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
-    			while(rs3.next())
-    			{
-    				MobilePhoneDetail phone = new MobilePhoneDetail();
-
-    				phone.setMobilePhoneId(rs3.getInt("ph.phonenumber_ID"));
-    				phone.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
-    				phoneList.add(phone);
-    			}
-    			staff.setPhonelist(phoneList);
-
-    			entry.setStaffMember(staff);
+    			entrylist.add(entry);
     		}
     	}
     	catch (SQLException e)
