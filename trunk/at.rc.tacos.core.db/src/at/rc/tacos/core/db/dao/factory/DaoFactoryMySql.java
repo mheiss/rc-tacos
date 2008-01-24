@@ -1,10 +1,14 @@
 package at.rc.tacos.core.db.dao.factory;
 
 import at.rc.tacos.core.db.dao.CallerDAO;
+import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.DayInfoDAO;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
+import at.rc.tacos.core.db.dao.JobDAO;
+import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.RosterDAO;
+import at.rc.tacos.core.db.dao.ServiceTypeDAO;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
@@ -23,7 +27,8 @@ public class DaoFactoryMySql implements DaoFactory
     @Override
     public MobilePhoneDAO createMobilePhoneDAO()
     {
-        return null; 
+    	//TODO: insert the MYSQL-DAO
+    	return null;
     }
 
     @Override
@@ -59,18 +64,49 @@ public class DaoFactoryMySql implements DaoFactory
     @Override
     public VehicleDAO createVehicleDetailDAO()
     {
-        return null;
+    	//TODO: insert the MYSQL-DAO
+    	return null;
     }
 
 	@Override
 	public DialysisPatientDAO createDialysisPatientDAO() 
 	{
-		return null;
+		//TODO: insert the MYSQL-DAO
+    	return null;
 	}
 
 	@Override
 	public DayInfoDAO createDayInfoDAO() 
 	{
-		return null;
+		//TODO: insert the MYSQL-DAO
+    	return null;
+	}
+
+	@Override
+	public LocationDAO createLocationDAO() 
+	{
+		//TODO: insert the MYSQL-DAO
+    	return null;
+	}
+
+	@Override
+	public CompetenceDAO createCompetenceDAO() 
+	{
+		//TODO: insert the MYSQL-DAO
+    	return null;
+	}
+
+	@Override
+	public JobDAO createJobDAO() 
+	{
+		//TODO: insert the MYSQL-DAO
+    	return null;
+	}
+
+	@Override
+	public ServiceTypeDAO createServiceTypeDAO() 
+	{
+		//TODO: insert the MYSQL-DAO
+    	return null;
 	}
 }

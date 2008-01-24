@@ -24,7 +24,7 @@ public interface RosterDAO
      * @param id the id of the roster entry to remove
      * @return true if the remove was successfull
      */
-    public boolean removeRosterEntry(RosterEntry entry);
+    public boolean removeRosterEntry(int id);
     
     /**
      * Returns a specifiy roster entry identfied by the id

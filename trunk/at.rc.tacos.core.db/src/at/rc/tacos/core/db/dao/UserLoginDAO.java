@@ -43,12 +43,12 @@ public interface UserLoginDAO
     public boolean removeLogin(int id);
 	
 	/**
-	 * Checks the username and the password hash agains the database
+	 * Checks the username and the password hash agains the database.
 	 * @param username the username 
 	 * @param pwdHash the password to authenticate
-	 * @return 0 if the authentication was successfull
-	 * @return -1 if password or username was wrong
-	 * @return -2 user is locked
+	 * @return <code>UserDAOMemory.LOGIN_SUCCESSFULL</code> if the authentication was successfull
+	 *  	   <code>UserDAOMemory.LOGIN_FAILED</code> if password or username was wrong
+	 *		   <code>UserDAOMemory.LOGIN_DENIED</code> if the user is locked
 	 */
     public int checkLogin(String username,String pwdHash);
 

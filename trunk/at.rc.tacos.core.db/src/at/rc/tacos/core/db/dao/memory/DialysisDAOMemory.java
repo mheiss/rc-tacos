@@ -1,6 +1,5 @@
 package at.rc.tacos.core.db.dao.memory;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,39 +34,36 @@ public class DialysisDAOMemory implements DialysisPatientDAO
 		return instance;
 	}
 	
-	
 	@Override
-	public int addDialysisPatient(DialysisPatient patient) throws SQLException 
+	public int addDialysisPatient(DialysisPatient patient)
 	{
 		dialysisList.add(patient);
 		return dialysisList.size();
 	}
 
 	@Override
-	public DialysisPatient getDialysisPatientById(int patientID) throws SQLException 
+	public DialysisPatient getDialysisPatientById(int id)
 	{
-        for(DialysisPatient patient:dialysisList)
-        {
-            if(patient.getId() == patientID)
-                return patient;
-        }
-        return null;
+        return dialysisList.get(id);
 	}
 
 	@Override
-	public List<DialysisPatient> listDialysisPatient() throws SQLException 
+	public List<DialysisPatient> listDialysisPatient()
 	{
 		return dialysisList;
 	}
 
 	@Override
-	public void removeDialysisPatient(DialysisPatient patient) throws SQLException 
+	public boolean removeDialysisPatient(int id)
 	{
-		dialysisList.remove(patient);
+		if(dialysisList.remove(id) != null)
+			return true;
+		//nothing deleted
+		return false;
 	}
 
 	@Override
-	public boolean updateDialysisPatient(DialysisPatient patient) throws SQLException 
+	public boolean updateDialysisPatient(DialysisPatient patient)
 	{
 		int index = dialysisList.indexOf(patient);
 		dialysisList.remove(index);

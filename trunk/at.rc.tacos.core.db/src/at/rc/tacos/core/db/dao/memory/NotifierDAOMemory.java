@@ -1,8 +1,6 @@
 package at.rc.tacos.core.db.dao.memory;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.model.CallerDetail;
 
@@ -53,37 +51,16 @@ public class NotifierDAOMemory implements CallerDAO
     }
 
     @Override
-    public List<CallerDetail> listCallers()
-    {
-        return notifierList;
-    }
-
-    @Override
-    public CallerDetail getCallerByID(int callerID) throws SQLException
+    public CallerDetail getCallerByID(int callerID)
     {
         return notifierList.get(callerID);
     }
 
     @Override
-    public int getCallerId(CallerDetail notifierDetail) throws SQLException
-    {
-       return notifierList.indexOf(notifierDetail);
-    }
-
-    @Override
-    public boolean removeCaller(int id) throws SQLException
-    {
-        if(notifierList.remove(id) != null)
-                return true;
-        return false;
-    }
-
-    @Override
-    public boolean updateCaller(CallerDetail notifierDetail, int id)  throws SQLException
+    public boolean updateCaller(CallerDetail notifierDetail)
     {
         int index = notifierList.indexOf(notifierDetail);
-        notifierList.remove(index);
-        notifierList.add(index, notifierDetail);  
+        notifierList.set(index, notifierDetail);
         return true;
     }
 }
