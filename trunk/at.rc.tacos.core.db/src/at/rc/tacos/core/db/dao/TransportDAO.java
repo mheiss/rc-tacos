@@ -52,4 +52,12 @@ public interface TransportDAO
      * @return the list of transports in the given interval.
      */
     public List<Transport> listTransports(long startdate, long enddate);
+    
+    /**
+     * Returns a list of all transports accociated with the given vehicle
+     * and with the program status <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>
+     * @param vehicleId the id of the vehicle to get the transports from
+     * @return the list of transports
+     */
+    public List<Transport> getTransportsFromVehicle(int vehicleId);
 }
