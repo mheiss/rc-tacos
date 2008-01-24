@@ -1,16 +1,18 @@
 package at.rc.tacos.server.listener;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
+import at.rc.tacos.model.StaffMember;
 
 public class AuthenticationListener extends ServerListenerAdapter
 {
     //The DAO classes
     private UserLoginDAO userDao = DaoFactory.TEST.createUserDAO();
-    
+    private StaffMemberDAO memberDao = DaoFactory.TEST.createStaffMemberDAO();  
     /**
      * Handles the login message and checks the authentication.<br>
      * The password and the username will be checked against the database.
@@ -30,10 +32,10 @@ public class AuthenticationListener extends ServerListenerAdapter
         if(loginResult == UserLoginDAO.LOGIN_SUCCESSFULL)
         {
         	//get the infos out of the database
-        	Login loginInfo = userDao.getLoginAndStaffmember(username);
-        	if(loginInfo != null)
+        	StaffMember member = memberDao.getStaffMemberByUsername(username);
+        	if(member != null)
         	{
-        		login.setUserInformation(loginInfo.getUserInformation());
+        		login.setUserInformation(member);
         		login.setLoggedIn(true);
         	}
         	else
