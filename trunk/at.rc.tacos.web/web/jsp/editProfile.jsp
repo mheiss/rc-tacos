@@ -96,7 +96,7 @@
 													<td><input type="text" name="cityname" id="textfield8" value="<%=userSession.getStaffMember().getCityname() %>"/></td>
 												</tr>
 												<tr>
-													<td>Gebrtsdatum:</td>
+													<td>Geburtsdatum:</td>
 													<td><input disabled="disabled" type="text" name="birthday" id="textfield12" value="<%=MyUtils.formatDate(userSession.getStaffMember().getBirthday() )%>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
