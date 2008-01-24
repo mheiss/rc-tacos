@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,6 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.StaffMember;
 
 public class RosterDayController  implements Controller
 {
@@ -44,7 +42,7 @@ public class RosterDayController  implements Controller
 			if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
 				params.put("rosterList", resultList); 
 			
-			List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
+//			List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
 //			for(AbstractMessage object:dayResult)   
 //            {  
 //                RosterEntry entry = (RosterEntry)object;  
