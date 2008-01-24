@@ -27,7 +27,7 @@ public class EditUserController implements Controller
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
-		QueryFilter filter = new QueryFilter(IFilterTypes.EMPLOYEE_FILTER, request.getParameter("id")); 
+		QueryFilter filter = new QueryFilter(IFilterTypes.ID_FILTER, request.getParameter("id")); 
 		List<AbstractMessage> Lista;  
 		Lista = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id")));
 		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
