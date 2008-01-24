@@ -129,8 +129,6 @@ public class NetWrapper extends Plugin implements INetListener
 	{
 		//register the needed model types with the decoders and encoders
 		ProtocolCodecFactory protFactory = ProtocolCodecFactory.getDefault();
-		protFactory.registerDecoder(Item.ID, new ItemDecoder());
-		protFactory.registerEncoder(Item.ID, new ItemEncoder());
 		protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
 		protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
 		protFactory.registerDecoder(CallerDetail.ID, new CallerDecoder());
@@ -155,6 +153,14 @@ public class NetWrapper extends Plugin implements INetListener
 		protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
 		protFactory.registerDecoder(DayInfoMessage.ID, new DayInfoMessageDecoder());
 		protFactory.registerEncoder(DayInfoMessage.ID, new DayInfoMessageEncoder());
+        protFactory.registerDecoder(Job.ID, new JobDecoder());
+        protFactory.registerEncoder(Job.ID, new JobEncoder());
+        protFactory.registerDecoder(Location.ID, new LocationDecoder());
+        protFactory.registerEncoder(Location.ID, new LocationEncoder());
+        protFactory.registerDecoder(Competence.ID, new CompetenceDecoder());
+        protFactory.registerEncoder(Competence.ID, new CompetenceEncoder());
+        protFactory.registerDecoder(ServiceType.ID, new ServiceTypeDecoder());
+        protFactory.registerEncoder(ServiceType.ID, new ServiceTypeEncoder());
 	}
 
 	// METHODS TO SEND MESSAGES
