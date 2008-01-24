@@ -64,7 +64,8 @@ public class PrinterJobRoster implements Printable{
 		{
 			
 			RosterEntry entry = (RosterEntry)message;
-			if(entry.getStation().equalsIgnoreCase(this.getStation())){
+			if(entry.getStation().equals(this.getStation()))
+			{
 				g2.drawString(" >>> Datum: " + format2.format(entry.getPlannedStartOfWork()),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 				i+=18;
 				g2.drawString("Mitarbeiter: " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName()  ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
