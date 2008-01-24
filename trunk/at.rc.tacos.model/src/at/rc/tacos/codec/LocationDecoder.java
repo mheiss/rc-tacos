@@ -16,7 +16,7 @@ public class LocationDecoder implements MessageDecoder
     {
         //create a new location
         Location location = new Location();
-        
+
         //parse and set up the object
         while(reader.hasNext())
         {

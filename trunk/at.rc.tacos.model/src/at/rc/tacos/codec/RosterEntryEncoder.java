@@ -18,6 +18,13 @@ public class RosterEntryEncoder  implements MessageEncoder
     {
         //Cast the object to a item
         RosterEntry entry = (RosterEntry)message;
+        
+        //assert valid
+        if(entry ==  null)
+        {
+            System.out.println("WARNING: Object roster entry is null and cannot be encoded");
+            return;
+        }
 
         //start
         writer.writeStartElement(RosterEntry.ID);

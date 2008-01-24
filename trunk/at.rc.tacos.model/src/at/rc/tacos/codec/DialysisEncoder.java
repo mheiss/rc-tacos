@@ -18,6 +18,14 @@ public class DialysisEncoder  implements MessageEncoder
     {
         //Cast the object to a item
         DialysisPatient dia = (DialysisPatient)message;
+        
+        //assert valid
+        if(dia ==  null)
+        {
+            System.out.println("WARNING: Object dialysis is null and cannot be encoded");
+            return;
+        }
+        
         //start
         writer.writeStartElement(DialysisPatient.ID);
         //the transport id

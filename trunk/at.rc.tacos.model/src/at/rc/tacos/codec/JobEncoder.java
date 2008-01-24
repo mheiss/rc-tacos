@@ -18,6 +18,13 @@ public class JobEncoder implements MessageEncoder
         //Cast the object to a job
         Job job = (Job)message;
         
+        //assert valid
+        if(job ==  null)
+        {
+            System.out.println("WARNING: Object job is null and cannot be encoded");
+            return;
+        }
+        
         //write the start element
         writer.writeStartElement(Job.ID);
        

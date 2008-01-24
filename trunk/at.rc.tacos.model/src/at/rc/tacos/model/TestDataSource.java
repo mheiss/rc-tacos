@@ -152,23 +152,73 @@ public class TestDataSource
     
     private void initStaffMembers()
     {
+        //perpare data for members
         staffList = new ArrayList<StaffMember>();
-        StaffMember s1 = new StaffMember("Michael","Heiﬂ","m.heiﬂ");
+        
+        //setup the first staff member
+        StaffMember s1 = new StaffMember("Michael","Heiﬂ","heissm");
         s1.setStaffMemberId(0);
         Calendar cal = Calendar.getInstance(); 
-        cal.set(Calendar.YEAR,1986); 
-        cal.set(Calendar.MONTH,6); 
-        cal.set(Calendar.DAY_OF_MONTH,05); 
+        cal.set(Calendar.YEAR,1984); 
+        cal.set(Calendar.MONTH,12); 
+        cal.set(Calendar.DAY_OF_MONTH,02); 
         s1.setBirthday(cal.getTimeInMillis());
-        s1.setCityname("Salzburg");
-        s1.setEMail("alex@bauernhof.at");
-        s1.setStreetname("Auweg 25");
+        s1.setCityname("Scharnitz");
+        s1.setEMail("michael.heiss.itm05@fh-joanneum.at");
+        s1.setStreetname("Gieﬂenbach 330");
+        s1.addMobilePhone(phoneList.get(0));
+        s1.addCompetence(competenceList.get(0));
+        s1.setMale(true);
+        
+        //second member
         StaffMember s2 = new StaffMember("Walter","Lohmann","w.lohm");
         s2.setStaffMemberId(1);
+        cal = Calendar.getInstance(); 
+        cal.set(Calendar.YEAR,1984); 
+        cal.set(Calendar.MONTH,10); 
+        cal.set(Calendar.DAY_OF_MONTH,17); 
+        s2.setBirthday(cal.getTimeInMillis());
+        s2.setCityname("Seefeld");
+        s2.setEMail("walter.lohmann.itm05@fh-joanneum.at");
+        s2.setStreetname("Weg13");
+        s2.addMobilePhone(phoneList.get(1));
+        s2.addCompetence(competenceList.get(0));
+        s2.addCompetence(competenceList.get(1));
+        s2.setMale(true);
+        
+        //third member
         StaffMember s3 = new StaffMember("Birgit","Thek","b.thek");
         s3.setStaffMemberId(2);
-        StaffMember s4 = new StaffMember("Gerhard","Nachname","user3");
+        cal = Calendar.getInstance(); 
+        cal.set(Calendar.YEAR,1973); 
+        cal.set(Calendar.MONTH,05); 
+        cal.set(Calendar.DAY_OF_MONTH,20); 
+        s3.setBirthday(cal.getTimeInMillis());
+        s3.setCityname("Kapfenberg");
+        s3.setEMail("birgit.thek.itm05@fh-joanneum.at");
+        s3.setStreetname("Straﬂe 30");
+        s3.addMobilePhone(phoneList.get(2));
+        s3.addCompetence(competenceList.get(1));
+        s3.addCompetence(competenceList.get(3));
+        s3.setPrimaryLocation(locationList.get(0));
+        s3.setMale(false);
+        
+        //fourth member
+        StaffMember s4 = new StaffMember("vorname","nachname","user3");
         s4.setStaffMemberId(3);
+        cal = Calendar.getInstance(); 
+        cal.set(Calendar.YEAR,1998); 
+        cal.set(Calendar.MONTH,8); 
+        cal.set(Calendar.DAY_OF_MONTH,14); 
+        s4.setBirthday(cal.getTimeInMillis());
+        s4.setCityname("Kapfenberg");
+        s4.setEMail("test@fh-joanneum.at");
+        s4.setStreetname("Wist 18");
+        s4.addMobilePhone(phoneList.get(2));
+        s4.addCompetence(competenceList.get(0));
+        s4.setMale(true);
+        
+        //add the created members
         staffList.add(s1);
         staffList.add(s2);
         staffList.add(s3);
@@ -283,7 +333,7 @@ public class TestDataSource
     private void initLogins()
     {
         userLogin = new HashMap<String, String>();
-        userLogin.put("m.heiﬂ", "P@ssw0rd");
+        userLogin.put("heissm", "P@ssw0rd");
         userLogin.put("w.lohm", "P@ssw0rd");
         userLogin.put("b.thek", "P@ssw0rd");
         userLogin.put("user3", "P@ssw0rd");
@@ -298,8 +348,8 @@ public class TestDataSource
         v1.setVehicleName("Bm01");
         v1.setVehicleType("RTW");
         v1.setVehicleNotes("notes vehicle 1");
-        v1.setBasicStation(locationList.get(0));
-        v1.setCurrentStation(locationList.get(0));
+        v1.setBasicStation(locationList.get(1));
+        v1.setCurrentStation(locationList.get(1));
         v1.setReadyForAction(true);
         v1.setOutOfOrder(false);
         v1.setTransportStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT);
@@ -338,8 +388,8 @@ public class TestDataSource
         VehicleDetail v4 = new VehicleDetail();
         v4.setVehicleName("Ka04");
         v4.setVehicleType("RTW");
-        v3.setBasicStation(locationList.get(2));
-        v3.setCurrentStation(locationList.get(3));
+        v4.setBasicStation(locationList.get(2));
+        v4.setCurrentStation(locationList.get(3));
         v4.setReadyForAction(false);
         v4.setOutOfOrder(true);
         v4.setTransportStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);

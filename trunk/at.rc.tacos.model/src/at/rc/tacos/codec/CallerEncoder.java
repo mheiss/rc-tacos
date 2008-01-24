@@ -14,6 +14,13 @@ public class CallerEncoder  implements MessageEncoder
         //Cast the object to a item
         CallerDetail notifier = (CallerDetail)message;
         
+        //assert valid
+        if(notifier ==  null)
+        {
+            System.out.println("WARNING: Object "+ getClass().getName()+" is null and cannot be encoded");
+            return;
+        }
+        
         writer.writeStartElement(CallerDetail.ID);
         
         //write the id
