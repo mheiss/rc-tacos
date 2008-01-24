@@ -100,9 +100,15 @@ public class TransportDecoder implements MessageDecoder
                 //next
                 if(Location.ID.equalsIgnoreCase(startName))
                 {
-                    //get the decoder for the staff
+                    //get the decoder for the location
                     MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
                     transport.setPlanedLocation((Location)decoder.doDecode(reader));
+                }
+                if(Location.ID.equalsIgnoreCase(startName))
+                {
+                	 //get the decoder for the Location
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
+                    transport.setRealLocation((Location)decoder.doDecode(reader));
                 }
                 if("notes".equalsIgnoreCase(startName))
                     transport.setNotes(reader.getElementText());
