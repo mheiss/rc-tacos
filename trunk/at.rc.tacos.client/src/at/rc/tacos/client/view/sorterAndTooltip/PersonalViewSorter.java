@@ -96,13 +96,13 @@ public class PersonalViewSorter extends ViewerSorter
         }
         //sort by the service
         if(column == SERVICE_SORTER)
-        	returnValue = entry1.getServicetype().compareTo(entry2.getServicetype());
+        	returnValue = entry1.getServicetype().getServiceName().compareTo(entry2.getServicetype().getServiceName());
         //sort by the job
         if(column == JOB_SORTER)
-        	returnValue = entry1.getJob().compareTo(entry2.getJob());
+        	returnValue = entry1.getJob().getJobName().compareTo(entry2.getJob().getJobName());
         //sort by the station
         if(column == STATION_SORTER)
-        	returnValue = entry1.getStation().compareTo(entry2.getStation());
+        	returnValue = entry1.getStation().getLocationName().compareTo(entry2.getStation().getLocationName());
         if (this.dir == SWT.DOWN) {
             returnValue = returnValue * -1;
         }

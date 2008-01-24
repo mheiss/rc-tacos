@@ -3,14 +3,10 @@ package at.rc.tacos.client.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.SubMenuManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -59,20 +55,14 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	private TableViewer viewerOffTrans;
 	private OutstandingTransportsTooltip tooltip;
 	
-//	private VehicleDetail vehicle;
-	
 	//the actions for the context menu
 	private AssignCarAction assignCarAction;
 	private CopyTransportAction copyTransportAction;
 	private ForwardTransportAction forwardTransportAction;
 	private CancelTransportAction cancelTransportAction;
 	private EditTransportAction editTransportAction;
-	
-	
+
 	ArrayList<AssignCarAction> actionList = new ArrayList<AssignCarAction>();
-	
-	
-	
 	
 	/**
 	 * Constructs a new outstanding transports view.
@@ -80,7 +70,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	public OutstandingTransportsView()
 	{
 		// add listener to model to keep on track. 
-		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -89,11 +79,9 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
 	}
-	
-	
-	
+
 	/**
 	 * Call back method to create the control and initialize them.
 	 * @param parent the parent composite to add
@@ -116,7 +104,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		viewerOffTrans = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerOffTrans.setContentProvider(new OutstandingTransportsViewContentProvider());
 		viewerOffTrans.setLabelProvider(new OutstandingTransportsViewLabelProvider());
-		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportManager());
+		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportList());
 		viewerOffTrans.getTable().setLinesVisible(true);
 		
 		viewerOffTrans.refresh();
@@ -282,7 +270,6 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		
 		viewerOffTrans.resetFilters();
 		viewerOffTrans.addFilter(new TransportViewFilter(PROGRAM_STATUS_OUTSTANDING));
-//		viewerOffTrans.resetFilters();
 		viewerOffTrans.refresh();
 	}
 
@@ -298,7 +285,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		cancelTransportAction = new CancelTransportAction(this.viewerOffTrans);
 		copyTransportAction = new CopyTransportAction(this.viewerOffTrans);
 
-		ArrayList<VehicleDetail> readyVehicles = (ArrayList<VehicleDetail>) ModelFactory.getInstance().getVehicleManager().getReadyVehicleList();
+		ArrayList<VehicleDetail> readyVehicles = (ArrayList<VehicleDetail>) ModelFactory.getInstance().getVehicleList().getReadyVehicleList();
 		
 		for (VehicleDetail veh : readyVehicles)
 		{

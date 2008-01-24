@@ -29,7 +29,6 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 	//properties
 	private Transport transport;
 	
-	private String backtransport = "";
 	private String police = "";
 	private String firebrigade = "";
 	private String brkdt = "";
@@ -114,15 +113,15 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		if(transport.hasNotes())
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
-			title = transport.getDiseaseNotes();
+			title = transport.getNotes();
 			addIconAndLabel(composite,image,title);
 		}
 		
 		//real station
-		if(transport.getRealStation() != null)
+		if(transport.getVehicleDetail().getCurrentStation() != null)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.station");
-			title = transport.getRealStation();
+			title = transport.getVehicleDetail().getCurrentStation().getLocationName();
 			addIconAndLabel(composite,image,title);
 		}
 		

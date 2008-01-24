@@ -70,7 +70,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	public PersonalView()
 	{
 		// add listener to model to keep on track. 
-		ModelFactory.getInstance().getRosterManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getRosterManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getRosterEntryList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new PersonalViewContentProvider());
 		viewer.setLabelProvider(new PersonalViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getRosterManager());
+		viewer.setInput(ModelFactory.getInstance().getRosterEntryList());
 		viewer.getTable().setLinesVisible(true);
 		
 		viewer.resetFilters();

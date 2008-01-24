@@ -29,30 +29,24 @@ public class ModelFactory
 {
     //the shared instance
     private static ModelFactory instance;
-    
+
     //the model manager to handle
-    private ItemManager itemList;
-    private RosterEntryManager rosterEntryList;
-    private VehicleManager vehicleList;
-    private StaffManager staffList;
-    private TransportManager transportList;
-    private DialysisTransportManager dialysisList;
-    private MobilePhoneManager phoneList;
+    private final RosterEntryManager rosterEntryList = new RosterEntryManager();
+    private final VehicleManager vehicleList = new VehicleManager();
+    private final StaffManager staffList = new StaffManager();
+    private final TransportManager transportList = new TransportManager();
+    private final DialysisTransportManager dialyseList = new DialysisTransportManager();
+    private final MobilePhoneManager phoneList = new MobilePhoneManager();
+    private final JobManager jobList = new JobManager();
+    private final CompetenceManager competenceList = new CompetenceManager();
+    private final LocationManager locationList = new LocationManager();
+    private final ServiceTypeManager serviceList = new ServiceTypeManager();
 
     /**
      * Private class constructor.
      */
-    private ModelFactory()
-    {
-        itemList = new ItemManager();
-        rosterEntryList = new RosterEntryManager();
-        vehicleList = new VehicleManager();
-        staffList = new StaffManager();
-        transportList = new TransportManager();
-        dialysisList = new DialysisTransportManager();
-        phoneList = new MobilePhoneManager();
-    }
-    
+    private ModelFactory() { }
+
     /**
      * Returns the shared instance
      * @return the shared instance
@@ -63,7 +57,7 @@ public class ModelFactory
             instance = new ModelFactory();
         return instance;
     }
-    
+
     /**
      *  Queries the server sequentially for all needed data.
      */
@@ -92,69 +86,55 @@ public class ModelFactory
         job.setUser(true);
         job.schedule(); 
     }
-    
-    
-    //GETTERS FOR THE MANAGERS
-    /**
-     * Returns the manager responsible for the items
-     * @return the item manager
-     */
-    public ItemManager getItemManager()
-    {
-        return itemList;
-    }
-    
-    /**
-     * Returns the manager responsible for the roster entries
-     * @return the roster manager
-     */
-    public RosterEntryManager getRosterManager()
+
+    //GETTERS FOR THE MANAGER
+    public final RosterEntryManager getRosterEntryList()
     {
         return rosterEntryList;
     }
-    
-    /**
-     * Returns the manager responsible for the vehicles
-     * @return the vehicle manager
-     */
-    public VehicleManager getVehicleManager()
+
+    public final VehicleManager getVehicleList()
     {
         return vehicleList;
     }
-    
-    /**
-     * Returns the manager respnosible for the staff
-     * @return the staff manager
-     */
-    public StaffManager getStaffManager()
+
+    public final StaffManager getStaffList()
     {
         return staffList;
     }
-    
-    /**
-     * Returns the manager responsible for the transports
-     * @return the transport manager
-     */
-    public TransportManager getTransportManager()
+
+    public final TransportManager getTransportList()
     {
         return transportList;
     }
-    
-    /**
-     * Returns the manager responsible for the dialysis transports
-     * @return the dialysis transport manager
-     */
-    public DialysisTransportManager getDialysisTransportManager()
+
+    public final DialysisTransportManager getDialyseList()
     {
-        return dialysisList;
+        return dialyseList;
     }
-    
-    /**
-     * Returns the manager responsible for the mobile phones
-     * @return the phone manager
-     */
-    public MobilePhoneManager getMobilePhoneManager()
+
+    public final MobilePhoneManager getPhoneList()
     {
         return phoneList;
+    }
+
+    public final JobManager getJobList()
+    {
+        return jobList;
+    }
+
+    public final CompetenceManager getCompetenceList()
+    {
+        return competenceList;
+    }
+
+    public final LocationManager getLocationList()
+    {
+        return locationList;
+    }
+
+    public final ServiceTypeManager getServiceList()
+    {
+        return serviceList;
     }
 }

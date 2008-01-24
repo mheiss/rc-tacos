@@ -105,7 +105,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	public PrebookingView()
 	{
 		// add listener to model to keep on track. 
-		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -190,42 +190,42 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerLeoben = new TableViewer(richtungLeobenGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerLeoben.setContentProvider(new PrebookingViewContentProvider());
 		viewerLeoben.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerLeoben.setInput(ModelFactory.getInstance().getTransportManager());
+		viewerLeoben.setInput(ModelFactory.getInstance().getTransportList());
 		viewerLeoben.getTable().setLinesVisible(true);
 		
 		
 		viewerGraz = new TableViewer(richtungGrazGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerGraz.setContentProvider(new PrebookingViewContentProvider());
 		viewerGraz.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerGraz.setInput(ModelFactory.getInstance().getTransportManager());
+		viewerGraz.setInput(ModelFactory.getInstance().getTransportList());
 		viewerGraz.getTable().setLinesVisible(true);
 		
 		
 		viewerKapfenberg = new TableViewer(richtungKapfenbergGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerKapfenberg.setContentProvider(new PrebookingViewContentProvider());
 		viewerKapfenberg.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerKapfenberg.setInput(ModelFactory.getInstance().getTransportManager());
+		viewerKapfenberg.setInput(ModelFactory.getInstance().getTransportList());
 		viewerKapfenberg.getTable().setLinesVisible(true);
 		
 		
 		viewerBruck = new TableViewer(richtungBruckGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerBruck.setContentProvider(new PrebookingViewContentProvider());
 		viewerBruck.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerBruck.setInput(ModelFactory.getInstance().getTransportManager());
+		viewerBruck.setInput(ModelFactory.getInstance().getTransportList());
 		viewerBruck.getTable().setLinesVisible(true);
 		
 		
 		viewerWien = new TableViewer(richtungWienGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerWien.setContentProvider(new PrebookingViewContentProvider());
 		viewerWien.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerWien.setInput(ModelFactory.getInstance().getTransportManager());
+		viewerWien.setInput(ModelFactory.getInstance().getTransportList());
 		viewerWien.getTable().setLinesVisible(true);
 		
 		
 		viewerMariazell = new TableViewer(richtungMariazellGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerMariazell.setContentProvider(new PrebookingViewContentProvider());
 		viewerMariazell.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerMariazell.setInput(ModelFactory.getInstance().getTransportManager());
+		viewerMariazell.setInput(ModelFactory.getInstance().getTransportList());
 		viewerMariazell.getTable().setLinesVisible(true);
 		
 		//set the tool tip

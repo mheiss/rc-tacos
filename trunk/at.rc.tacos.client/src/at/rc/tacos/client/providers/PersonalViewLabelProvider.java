@@ -101,9 +101,9 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         		return sdf.format(entry.getRealEndOfWork());
         	else
         		return "";
-        case COLUMN_SERVICE_TYPE: return entry.getServicetype();
-        case COLUMN_JOB: return entry.getJob();
-        case COLUMN_STATION: return entry.getStation();
+        case COLUMN_SERVICE_TYPE: return entry.getServicetype().getServiceName();
+        case COLUMN_JOB: return entry.getJob().getJobName();
+        case COLUMN_STATION: return entry.getStation().getLocationName();
         case COLUMN_VEHICLE: return "Auto";
         default: return null;
         }

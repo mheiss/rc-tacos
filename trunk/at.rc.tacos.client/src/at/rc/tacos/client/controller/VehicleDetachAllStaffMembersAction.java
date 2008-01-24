@@ -60,9 +60,9 @@ public class VehicleDetachAllStaffMembersAction extends Action
 		//vehicle is not ready for action any more
 		detail.setReadyForAction(false);
 	    //detach the staff
-		detail.setDriverName(null);
-		detail.setParamedicIName(null);
-		detail.setParamedicIIName(null);
+		detail.setDriver(null);
+		detail.setFirstParamedic(null);
+		detail.setSecondParamedic(null);
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
 	}
 }

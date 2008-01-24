@@ -78,10 +78,14 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the transport number
         if (column == TNR_SORTER) 
         {
-        	String number1 = transport1.getTransportNumber();
-        	String number2 = transport2.getTransportNumber();
-        	returnValue = number1.compareTo(number2);
-        	
+        	int number1 = transport1.getTransportNumber();
+        	int number2 = transport2.getTransportNumber();
+        	if(number1 > number2)
+        	    return -1;
+        	if(number1 < number2)
+        	    return 1;
+        	if(number1 == number2)
+        	    return 0;
         }
         //sort by the priority of the transport
         if (column == PRIORITY_SORTER) 
@@ -264,24 +268,24 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the driver name
         if (column == DRIVER_SORTER) 
         {
-        	String d1 = transport1.getVehicleDetail().getDriverName().getLastName();
-        	String d2 = transport2.getVehicleDetail().getDriverName().getLastName();
+        	String d1 = transport1.getVehicleDetail().getDriver().getLastName();
+        	String d2 = transport2.getVehicleDetail().getDriver().getLastName();
         	returnValue = d1.compareTo(d2);
         }
         
         //sort by the paramedic I name
         if (column == PARAMEDIC_I_SORTER) 
         {
-        	String p1 = transport1.getVehicleDetail().getParamedicIName().getLastName();
-        	String p2 = transport2.getVehicleDetail().getParamedicIName().getLastName();
+        	String p1 = transport1.getVehicleDetail().getFirstParamedic().getLastName();
+        	String p2 = transport2.getVehicleDetail().getFirstParamedic().getLastName();
         	returnValue = p1.compareTo(p2);
         }
         
         //sort by the paramedic II name
         if (column == PARAMEDIC_II_SORTER) 
         {
-        	String p1 = transport1.getVehicleDetail().getParamedicIIName().getLastName();
-        	String p2 = transport2.getVehicleDetail().getParamedicIIName().getLastName();
+        	String p1 = transport1.getVehicleDetail().getSecondParamedic().getLastName();
+        	String p2 = transport2.getVehicleDetail().getSecondParamedic().getLastName();
         	returnValue = p1.compareTo(p2);
         }
         
@@ -335,16 +339,16 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the station name
         if (column == RESP_STATION_SORTER) 
         {
-        	String st1 = transport1.getResponsibleStation();
-        	String st2 = transport2.getResponsibleStation();
+        	String st1 = transport1.getVehicleDetail().getCurrentStation().getLocationName();
+        	String st2 = transport2.getVehicleDetail().getCurrentStation().getLocationName();
         	returnValue = st1.compareTo(st2);
         }
         
         //sort by the received time
         if (column == AUFG_SORTER) 
         {
-        	long aufg1 = transport1.getReceiveTime();
-        	long aufg2 = transport2.getReceiveTime();
+        	long aufg1 = transport1.getCreationTime();
+        	long aufg2 = transport2.getCreationTime();
         	if(aufg1 > aufg2)
         		returnValue = -1;
         	if(aufg1 < aufg2)

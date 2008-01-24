@@ -154,10 +154,10 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		}
 		
 		//aufg
-		if(transport.getReceiveTime() != 0)
+		if(transport.getCreationTime() != 0)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
-			title = "Aufgenommen: " +sdf.format(transport.getReceiveTime());
+			title = "Aufgenommen: " +sdf.format(transport.getCreationTime());
 			addIconAndLabel(composite,image,title);
 		}
 		
@@ -165,7 +165,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		if(transport.hasNotes())
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
-			title = transport.getDiseaseNotes();
+			title = transport.getNotes();
 			addIconAndLabel(composite,image,title);
 		}
 		

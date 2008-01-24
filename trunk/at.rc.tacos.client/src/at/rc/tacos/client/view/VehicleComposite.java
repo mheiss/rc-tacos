@@ -73,7 +73,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
         makeActions();
         hookContextMenu();
 
-        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
     }
 
     /**
@@ -83,7 +83,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
     public void dispose()
     {
         super.dispose();
-        ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
     }
 
     /**
@@ -220,29 +220,29 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
                 SWTObservables.observeText(vehicleTypeLabel), 
                 BeansObservables.observeValue(vehicle, "vehicleType"), null, null);
         //bind the name of the driver
-        if(vehicle.getDriverName() != null)
+        if(vehicle.getDriver() != null)
         {
             bindingContext.bindValue(
                     SWTObservables.observeText(driverLabel), 
-                    BeansObservables.observeValue(vehicle.getDriverName(), "userName"), null, null);
+                    BeansObservables.observeValue(vehicle.getDriver(), "userName"), null, null);
         }
         else
             driverLabel.setText("");
         //bind the name of the medic
-        if(vehicle.getParamedicIName() != null)
+        if(vehicle.getFirstParamedic() != null)
         {
             bindingContext.bindValue(
                     SWTObservables.observeText(medicILabel), 
-                    BeansObservables.observeValue(vehicle.getParamedicIName(), "userName"), null, null);
+                    BeansObservables.observeValue(vehicle.getFirstParamedic(), "userName"), null, null);
         }
         else
             medicILabel.setText("");
         //bind the name of the second medic
-        if(vehicle.getParamedicIIName() != null)
+        if(vehicle.getSecondParamedic() != null)
         {
             bindingContext.bindValue(
                     SWTObservables.observeText(medicIILabel), 
-                    BeansObservables.observeValue(vehicle.getParamedicIIName(), "userName"), null, null);
+                    BeansObservables.observeValue(vehicle.getSecondParamedic(), "userName"), null, null);
         }
         else
             medicIILabel.setText("");

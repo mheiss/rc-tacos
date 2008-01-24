@@ -4,7 +4,6 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.modelManager.RosterEntryManager;
 import at.rc.tacos.client.modelManager.TransportManager;
 
 public class OutstandingTransportsViewContentProvider implements IStructuredContentProvider 
@@ -21,7 +20,7 @@ public class OutstandingTransportsViewContentProvider implements IStructuredCont
 
 	public Object[] getElements(Object parent) 
 	{
-		TransportManager manager = ModelFactory.getInstance().getTransportManager();
+		TransportManager manager = ModelFactory.getInstance().getTransportList();
 		//return the elements
 		return manager.toArray();
 	}

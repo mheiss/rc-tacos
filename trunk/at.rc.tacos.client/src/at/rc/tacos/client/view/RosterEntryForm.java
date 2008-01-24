@@ -72,7 +72,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		super(parentShell);
 		createNew = true;
 		//bind the staff to this view
-		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		createNew = false;
 		this.rosterEntry = rosterEntry;
 		//bind the staff to this view
-		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	 */
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -166,9 +166,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			//other fields
 			if(rosterEntry.getRosterNotes() != null)
 				noteEditor.getDocument().set(rosterEntry.getRosterNotes());
-			this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype());
-			this.comboVerwendung.setText(rosterEntry.getJob());
-			this.comboOrtsstelle.setText(rosterEntry.getStation());
+			this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype().getServiceName());
+			this.comboVerwendung.setText(rosterEntry.getJob().getJobName());
+			this.comboOrtsstelle.setText(rosterEntry.getStation().getLocationName());
 			this.bereitschaftButton.setSelection(rosterEntry.getStandby());
 			this.employeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
 		}
@@ -220,9 +220,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			// set the needed values
 			int index = employeenameCombo.getCombo().getSelectionIndex();
 			rosterEntry.setStaffMember((StaffMember)employeenameCombo.getElementAt(index));
-			rosterEntry.setServicetype(comboDienstverhaeltnis.getText());
-			rosterEntry.setJob(comboVerwendung.getText());
-			rosterEntry.setStation(comboOrtsstelle.getText());
+			rosterEntry.setServicetype(ModelFactory.getInstance().getServiceList().getServiceTypeByName(comboDienstverhaeltnis.getText()));
+			rosterEntry.setJob(ModelFactory.getInstance().getJobList().getJobByName(comboVerwendung.getText()));
+			rosterEntry.setStation(ModelFactory.getInstance().getLocationList().getLocationByName(comboOrtsstelle.getText()));
 			rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
 			rosterEntry.setStandby(bereitschaftButton.isEnabled());
 
@@ -284,7 +284,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		employeenameCombo = new ComboViewer(combo);
 		employeenameCombo.setContentProvider(new StaffMemberContentProvider());
 		employeenameCombo.setLabelProvider(new StaffMemberLabelProvider());
-		employeenameCombo.setInput(ModelFactory.getInstance().getStaffManager());
+		employeenameCombo.setInput(ModelFactory.getInstance().getStaffList());
 
 		final Label labelStation = new Label(client, SWT.NONE);
 		labelStation.setText("Ortsstelle:");

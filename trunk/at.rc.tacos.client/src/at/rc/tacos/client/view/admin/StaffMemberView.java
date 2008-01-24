@@ -67,7 +67,7 @@ public class StaffMemberView extends ViewPart
        
         this.viewer.setContentProvider(new StaffMemberContentProvider());
         this.viewer.setLabelProvider(new StaffMemberLabelProvider());
-        this.viewer.setInput(ModelFactory.getInstance().getStaffManager().getStaffList());
+        this.viewer.setInput(ModelFactory.getInstance().getStaffList().getStaffList());
         getViewSite().setSelectionProvider(this.viewer);
         this.form.setLayoutData(gd);
         

@@ -17,7 +17,6 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.StaffMember;
 
 public class PhoneDetailAdminView extends ViewPart implements ISelectionListener 
 {
@@ -128,7 +127,7 @@ public class PhoneDetailAdminView extends ViewPart implements ISelectionListener
             System.out.println(selection);
             System.out.println(structuredSelection);
             System.out.println(phone);
-            mobilePhoneId.setText(phone.getMobilePhoneId());
+            mobilePhoneId.setText(phone.getMobilePhoneName());
             mobilePhoneNumber.setText(phone.getMobilePhoneNumber());
         } 
         else 

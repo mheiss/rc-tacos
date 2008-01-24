@@ -65,7 +65,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	public JournalView()
 	{
 		// add listener to model to keep on track. 
-		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new JournalViewContentProvider());
 		viewer.setLabelProvider(new JournalViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getTransportManager());
+		viewer.setInput(ModelFactory.getInstance().getTransportList());
 		viewer.getTable().setLinesVisible(true);
 		
 		//set the tooltip

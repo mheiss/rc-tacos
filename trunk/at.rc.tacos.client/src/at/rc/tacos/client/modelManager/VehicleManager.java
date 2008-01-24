@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
+
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
@@ -139,10 +141,11 @@ public class VehicleManager extends PropertyManager
     public List<VehicleDetail> getReadyVehicleListbyStation(String stationName)
     {
         List<VehicleDetail> filteredList = new ArrayList<VehicleDetail>();
+        Location loc = ModelFactory.getInstance().getLocationList().getLocationByName(stationName);
         //loop over all vehicles
         for(VehicleDetail detail:objectList)
         {
-            if(!detail.isOutOfOrder() && detail.isReadyForAction() && detail.getBasicStation().equalsIgnoreCase(stationName))
+            if(!detail.isOutOfOrder() && detail.isReadyForAction() && detail.getBasicStation().equals(loc))
                 filteredList.add(detail);
         }
         return filteredList;
