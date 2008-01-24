@@ -25,6 +25,11 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     //Transport stati
     public final static int TRANSPORT_CANCLED = -1;
     public final static int TRANSPORT_FORWARD = -1;
+    
+    //Type of transports to display
+    public final static String TRANSPORT_PROGRESS = "TRANSPORT_PROGRESS";
+    //transports are in the journal and cannot be edited
+    public final static String TRANSPORT_JOURNAL = "TRANSPORT_JOURNAL";
 
     // properties
     private int transportId;
