@@ -48,7 +48,8 @@
 
 --> 30!! Seiten Bericht :-( schreiben
 
---> Datum Filter für Transport View
+--> Datum Filter für Transport View --> geht über suchfunktion. Ist bei Outstanding und Underway nicht nötig, da Programm
+	status entscheidend ist.
 
 --> create/delete buttons für die admin views erstellen
 
