@@ -19,7 +19,7 @@ import at.rc.tacos.util.MyUtils;
 public class UserLoginDAOMySQL implements UserLoginDAO
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
-	
+
 	@Override
 	public int checkLogin(String username, String pwdHash)
 	{
@@ -57,7 +57,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
-			//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
+			//*u.authorization, *u.isloggedin, *u.locked, u.pwd, e.city, e.street
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberbyUsername"));
 			query.setString(1, username);
 			final ResultSet rs = query.executeQuery();
@@ -67,7 +67,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			login.setIslocked(rs.getBoolean("u.locked"));
 			login.setLoggedIn(rs.getBoolean("u.isloggedin"));
 			login.setUsername(rs.getString("u.username"));
-
+			login.setPassword(rs.getString("u.pwd"));
 			staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
 			station.setId(rs.getInt("e.primaryLocation"));
@@ -116,21 +116,77 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 	}
 
 	@Override
-	public int addLogin(Login login) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addLogin(Login login)
+	{
+		int staffMemberId = 0;
+		try
+		{	
+			// username, pwd, authorization, isloggedin, locked
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.User"));
+			query.setString(1, login.getUsername());
+			query.setString(2, login.getPassword());
+			query.setString(3, login.getAuthorization());
+			query.setBoolean(4, login.isLoggedIn());
+			query.setBoolean(5, login.isIslocked());
+			query.executeUpdate();
+
+			// staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username
+			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.staffmember"));
+			query2.setInt(1, login.getUserInformation().getStaffMemberId());
+			query2.setInt(2, login.getUserInformation().getPrimaryLocation().getId());
+			query2.setString(3, login.getUserInformation().getFirstName());
+			query2.setString(4, login.getUserInformation().getLastName());
+			query2.setBoolean(5, login.getUserInformation().isMale());
+			query2.setString(6, MyUtils.formatDate(login.getUserInformation().getBirthday()));
+			query2.setString(7, login.getUserInformation().getEMail());
+			query2.setString(8, login.getUserInformation().getStreetname());
+			query2.setString(9, login.getUserInformation().getCityname());
+			query2.setString(10, login.getUserInformation().getUserName());
+			query2.executeUpdate();
+
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberId"));
+			query1.setString(1, login.getUsername());
+			final ResultSet rsStaffMemberId = query1.executeQuery();
+
+			if(rsStaffMemberId.first())
+				staffMemberId = rsStaffMemberId.getInt("staffmember_ID");
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return -1;
+		}
+		return staffMemberId;
 	}
 
 	@Override
-	public boolean removeLogin(int id) {
-		// TODO Auto-generated method stub
+	public boolean removeLogin(int id)
+	{
+		// TODO NOT POSSIBLE because of ForeignKeys!!! just lock the user.
 		return false;
 	}
 
 	@Override
-	public boolean updateLogin(Login login) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateLogin(Login login)
+	{
+		try
+		{
+			// pwd, authorization, isloggedin, locked, username
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.User"));
+			query.setString(1, login.getPassword());
+			query.setString(2, login.getAuthorization());
+			query.setBoolean(3, login.isLoggedIn());
+			query.setBoolean(4, login.isIslocked());
+			query.setString(5, login.getUsername());
+
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
-	
+
 }

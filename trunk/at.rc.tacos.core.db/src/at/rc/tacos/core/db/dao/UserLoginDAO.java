@@ -26,7 +26,7 @@ public interface UserLoginDAO
     /**
      * Adds a new login to the database, the connected staff member will also be created.
      * @param login the login object to create
-     * @return the id of the created login
+     * @return the id of the created staffmember
      */
     public int addLogin(Login login);
     
@@ -43,6 +43,7 @@ public interface UserLoginDAO
      * @param id the id of the login to remove
      * @return true if the remove was successfull
      */
+    // TODO NOT POSSIBLE because of ForeignKeys!!! just lock the user.
     public boolean removeLogin(int id);
 	
 	/**

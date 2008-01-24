@@ -10,8 +10,6 @@ import java.util.ResourceBundle;
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.dao.DiseaseDAO;
 import at.rc.tacos.model.Disease;
-import at.rc.tacos.model.Location;
-import at.rc.tacos.model.MobilePhoneDetail;
 
 public class DiseaseDAOMySQL implements DiseaseDAO
 {
@@ -32,8 +30,8 @@ public class DiseaseDAOMySQL implements DiseaseDAO
 			query1.setString(1, disease.getDiseaseName());
 			final ResultSet rsDiseaseId = query1.executeQuery();
 			
-			if(rsDiseaseId.first())
-				diseaseId = rsDiseaseId.getInt("disease_ID");
+			rsDiseaseId.first();
+			diseaseId = rsDiseaseId.getInt("disease_ID");
 		}
 		catch (SQLException e)
 		{
