@@ -1,10 +1,12 @@
 package at.rc.tacos.model;
 
+import at.rc.tacos.common.AbstractMessage;
+
 /**
  * The available competences for the staff members
  * @author Michael
  */
-public class Competence
+public class Competence extends AbstractMessage
 {
     //unique identification string
     public final static String ID = "competence";
@@ -14,10 +16,19 @@ public class Competence
     private String competenceName;
     
     /**
+     * Default class constructor
+     */
+    public Competence()
+    {
+        super(ID);
+    }
+    
+    /**
      * Default class constructor for a competence
      */
     public Competence(String competenceName)
     {
+        this();
         this.competenceName = competenceName;
     }
     

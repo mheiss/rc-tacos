@@ -5,6 +5,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
@@ -21,10 +22,6 @@ public class VehicleEncoder  implements MessageEncoder
         writer.writeStartElement(VehicleDetail.ID);
 
         //write the elements and attributes
-        writer.writeStartElement("vehicleId");
-        writer.writeCharacters(String.valueOf(vehicle.getVehicleId()));
-        writer.writeEndElement();
-        //write the elements and attributes
         writer.writeStartElement("vehicleName");
         writer.writeCharacters(vehicle.getVehicleName());
         writer.writeEndElement();
@@ -33,25 +30,25 @@ public class VehicleEncoder  implements MessageEncoder
         writer.writeCharacters(vehicle.getVehicleType());
         writer.writeEndElement();
         //get the encoder for the staff member
-        if(vehicle.getDriverName() != null)
+        if(vehicle.getDriver() != null)
         {
-	        vehicle.getDriverName().setFunction("driver");
+	        vehicle.getDriver().function = "driver";
 	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
-	        encoder.doEncode(vehicle.getDriverName(), writer);
+	        encoder.doEncode(vehicle.getDriver(), writer);
         }
         //write the elements and attributes
-        if(vehicle.getParamedicIName()!= null)
+        if(vehicle.getFirstParamedic()!= null)
         {
-	        vehicle.getParamedicIName().setFunction("medic1");
+	        vehicle.getFirstParamedic().function = "firstParamedic";
 	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
-	        encoder.doEncode(vehicle.getParamedicIName(), writer);
+	        encoder.doEncode(vehicle.getFirstParamedic(), writer);
         }
         //write the elements and attributes
-        if(vehicle.getParamedicIIName()!= null)
+        if(vehicle.getSecondParamedic()!= null)
         {
-	        vehicle.getParamedicIIName().setFunction("medic2");
+	        vehicle.getSecondParamedic().function = "secondParamedic";
 	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
-	        encoder.doEncode(vehicle.getParamedicIIName(), writer);
+	        encoder.doEncode(vehicle.getSecondParamedic(), writer);
         }
         //get the encoder for the mobile phone
         if(vehicle.getMobilePhone()!= null)
@@ -63,14 +60,16 @@ public class VehicleEncoder  implements MessageEncoder
         writer.writeStartElement("vehicleNotes");
         writer.writeCharacters(vehicle.getVehicleNotes());
         writer.writeEndElement();
+        
         //write the elements and attributes
-        writer.writeStartElement("basicStation");
-        writer.writeCharacters(vehicle.getBasicStation());
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("currentStation");
-        writer.writeCharacters(vehicle.getCurrentStation());
-        writer.writeEndElement();
+        vehicle.getCurrentStation().type = "current";
+        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
+        encoder.doEncode(vehicle.getCurrentStation(), writer);
+        
+        vehicle.getBasicStation().type = "basic";
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
+        encoder.doEncode(vehicle.getBasicStation(), writer);
+        
         //write the elements and attributes
         writer.writeStartElement("readyForAction");
         writer.writeCharacters(String.valueOf(vehicle.isReadyForAction()));
@@ -80,8 +79,8 @@ public class VehicleEncoder  implements MessageEncoder
         writer.writeCharacters(String.valueOf(vehicle.isOutOfOrder()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("mostImportantTransportStatus");
-        writer.writeCharacters(String.valueOf(vehicle.getMostImportantTransportStatus()));
+        writer.writeStartElement("transportStatus");
+        writer.writeCharacters(String.valueOf(vehicle.getTransportStatus()));
         writer.writeEndElement();
 
         //end

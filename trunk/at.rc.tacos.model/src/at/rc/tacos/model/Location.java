@@ -13,13 +13,16 @@ public class Location extends AbstractMessage
     
     //properties
     private int id;
-    private String locationname;
+    private String locationName;
     private String street;
-    private String streetnumber;
+    private String streetNumber;
     private int zipcode;
     private String city;
     private String notes;
     private MobilePhoneDetail phone;
+    
+    //internal
+    public String type;
     
     /**
      * Default class constructor for a empty location
@@ -42,7 +45,7 @@ public class Location extends AbstractMessage
      */
     public String getLocationName()
     {
-        return locationname;
+        return locationName;
     }
 
     /**
@@ -56,9 +59,9 @@ public class Location extends AbstractMessage
     /**
      * @return the streetnumber
      */
-    public String getStreetnumber()
+    public String getStreetNumber()
     {
-        return streetnumber;
+        return streetNumber;
     }
 
     /**
@@ -102,11 +105,11 @@ public class Location extends AbstractMessage
     }
 
     /**
-     * @param locationname the locationname to set
+     * @param locationName the locationname to set
      */
-    public void setLocationName(String locationname)
+    public void setLocationName(String locationName)
     {
-        this.locationname = locationname;
+        this.locationName = locationName;
     }
 
     /**
@@ -120,9 +123,9 @@ public class Location extends AbstractMessage
     /**
      * @param streetnumber the streetnumber to set
      */
-    public void setStreetnumber(String streetnumber)
+    public void setStreetNumber(String streetNumber)
     {
-        this.streetnumber = streetnumber;
+        this.streetNumber = streetNumber;
     }
 
     /**

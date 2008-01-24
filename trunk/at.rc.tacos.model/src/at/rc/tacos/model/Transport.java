@@ -22,7 +22,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     public final static String ID = "transport";
 
     // properties
-    private long transportId;
+    private int transportId;
     private int year;
     private int transportNumber;
 
@@ -104,7 +104,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
         this();
         setFromStreet(fromStreet);
         setFromCity(fromCity);
-        setResponsibleStation(planedLocation);
+        setPlanedLocation(planedLocation);
         setDateOfTransport(dateOfTransport);
         setPlannedStartOfTransport(plannedStartOfTransport);
         setTransportPriority(transportPriority);
@@ -183,7 +183,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      * Returns the identification string of this transport
      * @return the transportId
      */
-    public long getTransportId() 
+    public int getTransportId() 
     {
         return transportId;
     }
@@ -551,7 +551,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      * @param transportId the transportId to set
      * @throws IllegalArgumentException if the id is negative
      */
-    public void setTransportId(long transportId) 
+    public void setTransportId(int transportId) 
     {
         if(transportId < 0)
             throw new IllegalArgumentException("The id cannot be negative");
@@ -797,7 +797,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      * The planned location must not do not have to be the real location
      * @param responsibleStation the responsibleStation to set
      */
-    public void setResponsibleStation(Location planedLocation)
+    public void setPlanedLocation(Location planedLocation)
     {
         if(planedLocation == null)
             throw new IllegalArgumentException("The planned location cannot be null");

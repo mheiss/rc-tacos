@@ -5,7 +5,10 @@ import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
 public class RosterEntryEncoder  implements MessageEncoder
@@ -23,24 +26,11 @@ public class RosterEntryEncoder  implements MessageEncoder
         writer.writeStartElement("rosterId");
         writer.writeCharacters(String.valueOf(entry.getRosterId()));
         writer.writeEndElement();
-        //station id
-        writer.writeStartElement("stationId");
-        writer.writeCharacters(String.valueOf(entry.getStationId()));
-        writer.writeEndElement();
-        //staff member id
-        writer.writeStartElement("stationId");
-        writer.writeCharacters(String.valueOf(entry.getStationId()));
-        writer.writeEndElement();
-        //servicetypeId
-        writer.writeStartElement("servicetypeId");
-        writer.writeCharacters(String.valueOf(entry.getServicetypeId()));
-        writer.writeEndElement();
-        //jobId
-        writer.writeStartElement("jobId");
-        writer.writeCharacters(String.valueOf(entry.getJobId()));
-        writer.writeEndElement();
+        //get the encoder for the location
+        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
+        encoder.doEncode(entry.getStation(), writer);
         //get the encoder for the staff member
-        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
         encoder.doEncode(entry.getStaffMember(), writer);
         //planned start of work
         writer.writeStartElement("plannedStartOfWork");
@@ -64,20 +54,12 @@ public class RosterEntryEncoder  implements MessageEncoder
             writer.writeCharacters(Long.toString(entry.getRealEndOfWork()));
             writer.writeEndElement();
         }
-        //the station for the service
-        writer.writeStartElement("station");
-        writer.writeCharacters(entry.getStation());
-        writer.writeEndElement();
-        
-        
-        //the competence for this service
-        writer.writeStartElement("job");
-        writer.writeCharacters(entry.getJob());
-        writer.writeEndElement();
-        //the type of the service
-        writer.writeStartElement("servicetype");
-        writer.writeCharacters(entry.getServicetype());
-        writer.writeEndElement();
+        //get the encoder for the service type
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(Job.ID);
+        encoder.doEncode(entry.getJob(), writer);
+        //get the encoder for the staff job
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(ServiceType.ID);
+        encoder.doEncode(entry.getServicetype(), writer);
         //notes are mandatory
         if(entry.getRosterNotes() != null)
         {
@@ -86,10 +68,13 @@ public class RosterEntryEncoder  implements MessageEncoder
             writer.writeEndElement();
         }
         //write the elements and attributes
+        writer.writeStartElement("createdByUser");
+        writer.writeCharacters(entry.getCreatedByUsername());
+        writer.writeEndElement();
+        //write the elements and attributes
         writer.writeStartElement("standby");
         writer.writeCharacters(String.valueOf(entry.getStandby()));
         writer.writeEndElement();
-        
 
         //end
         writer.writeEndElement();

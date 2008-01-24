@@ -85,7 +85,7 @@ public class CallerDetail extends AbstractMessage
      * The id is a internal value to identify the caller
      * @return id the unique id
      */
-    public Integer getCallerId() 
+    public int getCallerId() 
     {
         return callerId;
     }
@@ -104,7 +104,7 @@ public class CallerDetail extends AbstractMessage
      * The id is the number of the primary key in the database.
      * @param callerId the id of the caller
      */
-    public void setCallerId(Integer callerId) 
+    public void setCallerId(int callerId) 
     {
         this.callerId = callerId;
     }

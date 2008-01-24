@@ -1,10 +1,12 @@
 package at.rc.tacos.model;
 
+import at.rc.tacos.common.AbstractMessage;
+
 /**
  * The available jobs 
  * @author Michael
  */
-public class Job
+public class Job extends AbstractMessage
 {
     //unique identification string
     public final static String ID = "jobs";
@@ -14,10 +16,19 @@ public class Job
     private String jobName;
     
     /**
+     * Default class constructor
+     */
+    public Job()
+    {
+        super(ID);
+    }
+    
+    /**
      * Default class constructor for a job
      */
     public Job(String jobName)
     {
+        this();
         this.jobName = jobName;
     }
     

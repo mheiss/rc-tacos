@@ -1,10 +1,12 @@
 package at.rc.tacos.model;
 
+import at.rc.tacos.common.AbstractMessage;
+
 /**
  * The service types for a roster entry
  * @author Michael
  */
-public class ServiceType
+public class ServiceType extends AbstractMessage
 {
     //unique identification string
     public final static String ID = "serviceType";
@@ -14,10 +16,19 @@ public class ServiceType
     private String serviceName;
     
     /**
+     * Default class constructor
+     */
+    public ServiceType()
+    {
+        super(ID);
+    }
+    
+    /**
      * Default class constructor for a service type
      */
     public ServiceType(String serviceName)
     {
+        this();
         this.serviceName = serviceName;
     }
     

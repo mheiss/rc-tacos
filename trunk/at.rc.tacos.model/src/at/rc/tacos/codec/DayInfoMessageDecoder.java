@@ -28,6 +28,8 @@ public class DayInfoMessageDecoder implements MessageDecoder
                 	dayInfo = new DayInfoMessage();
                 
                 //get the type of the element and set the corresponding value
+                if("id".equalsIgnoreCase(startName))
+                    dayInfo.setId(Integer.valueOf(reader.getElementText()));
                 if("timestamp".equalsIgnoreCase(startName))
                     dayInfo.setTimestamp(Long.valueOf(reader.getElementText()));
                 if("message".equalsIgnoreCase(startName))

@@ -55,6 +55,16 @@ public class LoginEncoder implements MessageEncoder
             writer.writeCharacters(login.getErrorMessage());
             writer.writeEndElement();
         }
+        //write the elements and attributes
+        if(login.getAuthorization() != null && !login.getAuthorization().isEmpty())
+        {
+            writer.writeStartElement("authorization");
+            writer.writeCharacters(login.getAuthorization());
+            writer.writeEndElement();
+        }
+        writer.writeStartElement("islocked");
+        writer.writeCharacters(String.valueOf(login.isIslocked()));
+        writer.writeEndElement();
         
         //end of the item
         writer.writeEndElement();

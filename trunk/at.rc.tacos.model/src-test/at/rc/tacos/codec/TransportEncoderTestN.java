@@ -13,7 +13,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.rc.tacos.factory.ProtocolCodecFactory;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.TestDataSource;
 import at.rc.tacos.model.Transport;
 
 public class TransportEncoderTestN
@@ -41,7 +43,7 @@ public class TransportEncoderTestN
     {
     	String fromStreet = "von Straﬂe";
     	String fromCommunity = "von Ort";
-    	String theStation = "Bruck an der Mur";
+    	Location theStation = TestDataSource.getInstance().locationList.get(0);
     	Calendar cal = Calendar.getInstance();
     	long transportDate = cal.getTimeInMillis();
     	long startLong = cal.getTimeInMillis();

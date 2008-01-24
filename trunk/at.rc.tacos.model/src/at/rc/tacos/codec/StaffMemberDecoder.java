@@ -5,6 +5,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.factory.ProtocolCodecFactory;
+import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.Location;
+import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 
 public class StaffMemberDecoder implements MessageDecoder
@@ -28,8 +32,15 @@ public class StaffMemberDecoder implements MessageDecoder
                     member = new StaffMember();
                 
                 //get the type of the element and set the corresponding value
-                if("personId".equalsIgnoreCase(startName))
-                    member.setPersonId(Integer.valueOf(reader.getElementText()));
+                if("staffMemberId".equalsIgnoreCase(startName))
+                    member.setStaffMemberId(Integer.valueOf(reader.getElementText()));
+                //get the type of the element and set the corresponding value
+                if(Location.ID.equalsIgnoreCase(startName))
+                {
+                    //get the decoder for the staff
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
+                    member.setPrimaryLocation((Location)decoder.doDecode(reader));
+                }
                 if("lastName".equalsIgnoreCase(startName))
                     member.setLastName(reader.getElementText());
                 if("firstName".equalsIgnoreCase(startName))
@@ -42,17 +53,22 @@ public class StaffMemberDecoder implements MessageDecoder
                     member.setCityname(reader.getElementText());
                 if("eMail".equalsIgnoreCase(startName))
                     member.setEMail(reader.getElementText());
-                if("authorization".equalsIgnoreCase(startName))
-                    member.setAuthorization(reader.getElementText());
-                if("islocked".equalsIgnoreCase(startName))
-                    member.setIslocked(Boolean.valueOf(reader.getElementText()));
-                if("function".equalsIgnoreCase(startName))
-                    member.setFunction(reader.getElementText());
                 if("birthday".equalsIgnoreCase(startName))
                 	member.setBirthday(Long.valueOf(reader.getElementText()));
                 if("sex".equalsIgnoreCase(startName))
-                	member.setSex(Boolean.valueOf(reader.getElementText()));
-                
+                	member.setMale(Boolean.valueOf(reader.getElementText()));
+                //decode the list of phones
+                if(MobilePhoneDetail.ID.equalsIgnoreCase(startName))
+                {
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(MobilePhoneDetail.ID);
+                    member.addMobilePhone((MobilePhoneDetail)decoder.doDecode(reader));
+                }
+                //decode the list of competences
+                if(Competence.ID.equalsIgnoreCase(startName))
+                {
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Competence.ID);
+                    member.addCompetence((Competence)decoder.doDecode(reader));
+                }
             }
             //check for the end element, and return the object
             if(event.isEndElement())
