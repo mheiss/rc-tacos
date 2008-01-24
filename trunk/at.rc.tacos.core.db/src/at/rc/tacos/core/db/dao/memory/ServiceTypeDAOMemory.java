@@ -5,6 +5,7 @@ import java.util.List;
 
 import at.rc.tacos.core.db.dao.ServiceTypeDAO;
 import at.rc.tacos.model.ServiceType;
+import at.rc.tacos.model.TestDataSource;
 
 public class ServiceTypeDAOMemory implements ServiceTypeDAO
 {
@@ -20,6 +21,8 @@ public class ServiceTypeDAOMemory implements ServiceTypeDAO
 	private ServiceTypeDAOMemory()
 	{
 		serviceList = new ArrayList<ServiceType>();
+		for(ServiceType service:TestDataSource.getInstance().serviceList)
+			serviceList.add(service);
 	}
 	
 	/**

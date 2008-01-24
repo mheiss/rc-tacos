@@ -2,8 +2,10 @@ package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.TestDataSource;
 
 /**
  * Data source for mobile phones
@@ -23,6 +25,9 @@ public class MobilePhoneDAOMemory implements MobilePhoneDAO
     private MobilePhoneDAOMemory()
     {
         phoneList = new ArrayList<MobilePhoneDetail>();
+		//init the test data
+		for(MobilePhoneDetail detail:TestDataSource.getInstance().phoneList)
+			phoneList.add(detail);
     }
     
     /**

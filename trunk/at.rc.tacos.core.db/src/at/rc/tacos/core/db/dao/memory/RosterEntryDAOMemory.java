@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.RosterDAO;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.TestDataSource;
 import at.rc.tacos.util.MyUtils;
 
 /**
@@ -24,6 +25,8 @@ public class RosterEntryDAOMemory implements RosterDAO
 	private RosterEntryDAOMemory()
 	{
 		rosterList = new ArrayList<RosterEntry>();
+		for(RosterEntry entry:TestDataSource.getInstance().rosterList)
+			rosterList.add(entry);
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.TestDataSource;
 
 /**
  * Data source for staff members
@@ -23,6 +24,8 @@ public class StaffMemberDAOMemory implements StaffMemberDAO
     private StaffMemberDAOMemory()
     {
         staffList = new ArrayList<StaffMember>();
+        for(StaffMember member:TestDataSource.getInstance().staffList)
+        	staffList.add(member);
     }
     
     /**

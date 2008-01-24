@@ -5,6 +5,7 @@ import java.util.List;
 
 import at.rc.tacos.core.db.dao.JobDAO;
 import at.rc.tacos.model.Job;
+import at.rc.tacos.model.TestDataSource;
 
 public class JobDAOMemory implements JobDAO
 {
@@ -19,6 +20,9 @@ public class JobDAOMemory implements JobDAO
 	private JobDAOMemory()
 	{
 		jobList = new ArrayList<Job>();
+		//init the test data
+		for(Job job:TestDataSource.getInstance().jobList)
+			jobList.add(job);
 	}
 	
 	/**

@@ -5,18 +5,21 @@ import at.rc.tacos.model.Login;
 public interface UserLoginDAO 
 {
 	/** 
-	 * Successfully authenticateed the user
+	 * Successfully authenticateed the user.<br>
+	 * This represents the value 0.
 	 */
 	public final static int LOGIN_SUCCESSFULL = 0;
 	
 	/**
 	 * Failed to authenticate the user<br>
-	 * The provided username or the password is wrong
+	 * The provided username or the password is wrong.<br>
+	 * This represents the value -1.
 	 */
 	public final static int LOGIN_FAILED = -1;
 	
 	/**
-	 * The account is locked an the user is not allowed to login
+	 * The account is locked an the user is not allowed to login.<br>
+	 * This represents the value -2.
 	 */
 	public final static int LOGIN_DENIED = -2;
 	

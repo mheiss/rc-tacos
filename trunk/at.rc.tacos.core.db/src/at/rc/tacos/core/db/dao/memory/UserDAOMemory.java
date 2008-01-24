@@ -2,9 +2,12 @@ package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.TestDataSource;
 
 /**
  * Data source for login/logout
@@ -24,6 +27,12 @@ public class UserDAOMemory implements UserLoginDAO
     private UserDAOMemory()
     {
         userList = new ArrayList<Login>();
+        //add test data
+        for(Entry<String,String> entry:TestDataSource.getInstance().userLogin.entrySet())
+        {
+        	Login login = new Login(entry.getKey(),entry.getValue(),false);
+        	userList.add(login);
+        }
     }
     
     /**

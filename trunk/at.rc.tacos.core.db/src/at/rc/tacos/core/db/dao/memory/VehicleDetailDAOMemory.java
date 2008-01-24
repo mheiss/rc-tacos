@@ -3,6 +3,7 @@ package at.rc.tacos.core.db.dao.memory;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.VehicleDAO;
+import at.rc.tacos.model.TestDataSource;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
@@ -23,6 +24,9 @@ public class VehicleDetailDAOMemory implements VehicleDAO
     private VehicleDetailDAOMemory()
     {
         vehicleList = new ArrayList<VehicleDetail>();
+        //add test data
+        for(VehicleDetail vehicle:TestDataSource.getInstance().vehicleList)
+        	vehicleList.add(vehicle);
     }
     
     /**
