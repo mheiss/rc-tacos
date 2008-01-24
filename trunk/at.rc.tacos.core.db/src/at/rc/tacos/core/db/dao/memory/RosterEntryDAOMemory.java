@@ -92,7 +92,7 @@ public class RosterEntryDAOMemory implements RosterDAO
         List<RosterEntry> resultList = new ArrayList<RosterEntry>();
         for(RosterEntry entry:rosterList)
         {
-            if(entry.getStaffMember().getPersonId() == emplyeeID)
+            if(entry.getStaffMember().getStaffMemberId() == emplyeeID)
                 resultList.add(entry);
         }
         return resultList;

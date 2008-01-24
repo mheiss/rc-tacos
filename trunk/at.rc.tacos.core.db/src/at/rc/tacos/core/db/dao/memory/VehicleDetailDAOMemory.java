@@ -52,25 +52,27 @@ public class VehicleDetailDAOMemory implements VehicleDAO
     }
     
     @Override
-    public void updateVehicle(VehicleDetail vehicle)
+    public boolean updateVehicle(VehicleDetail vehicle)
     {
         int index = vehicleList.indexOf(vehicle);
         vehicleList.remove(index);
         vehicleList.add(index,vehicle);
+        return true;
     }
 
     @Override
-    public void removeVehicle(VehicleDetail vehicle)
+    public boolean removeVehicle(VehicleDetail vehicle)
     {
         vehicleList.remove(vehicle);
+        return true;
     }
 
     @Override
-    public VehicleDetail getVehicleById(int vehicleId)
+    public VehicleDetail getVehicleById(String vehicleId)
     {
         for(VehicleDetail detail:vehicleList)
         {
-            if(detail.getVehicleId() == vehicleId)
+            if(detail.getVehicleName().equalsIgnoreCase(vehicleId))
                 return detail;
         }
         return null;

@@ -48,7 +48,7 @@ public class DialysisDAOMemory implements DialysisPatientDAO
 	{
         for(DialysisPatient patient:dialysisList)
         {
-            if(patient.getPatientId() == patientID)
+            if(patient.getId() == patientID)
                 return patient;
         }
         return null;
