@@ -21,6 +21,14 @@ public class TransportEncoder  implements MessageEncoder
     {
         //Cast the object to a item
         Transport transport = (Transport)message;
+        
+        //assert valid
+        if(transport ==  null)
+        {
+            System.out.println("WARNING: Object transport is null and cannot be encoded");
+            return;
+        }
+        
         //start
         writer.writeStartElement(Transport.ID);
 

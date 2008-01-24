@@ -367,6 +367,13 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setMobilePhoneImage()
     {
+        //assert valid
+        if(mobilePhone == null)
+        {
+            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone.na");
+            return;
+        }
+        //determine the image
         Image oldImage = this.mobilePhoneImage;    
         if(mobilePhone == null)
             mobilePhoneImage = null;
@@ -414,6 +421,13 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setStationImage()
     {
+        //assert valid
+        if(basicStation == null || currentStation == null)
+        {
+            stationImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.house.na");
+            return;
+        }
+        //determine the image
         Image oldImage = this.stationImage;
         if (!basicStation.getLocationName().equalsIgnoreCase(currentStation.getLocationName()))
             stationImage =  ImageFactory.getInstance().getRegisteredImage("image.vehicle.house");

@@ -18,6 +18,13 @@ public class CompetenceEncoder implements MessageEncoder
         //Cast the object to a Competence
         Competence competence = (Competence)message;
         
+        //assert valid
+        if(competence ==  null)
+        {
+            System.out.println("WARNING: Object competence is null and cannot be encoded");
+            return;
+        }
+        
         //write the start element
         writer.writeStartElement(Competence.ID);
        

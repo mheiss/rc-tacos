@@ -13,6 +13,13 @@ public class SystemMessageEncoder implements MessageEncoder
         //Cast the object to a item
         SystemMessage sysMessage = (SystemMessage)message;
         
+        //assert valid
+        if(sysMessage ==  null)
+        {
+            System.out.println("WARNING: Object sysMessage is null and cannot be encoded");
+            return;
+        }
+        
         //write the start element
         writer.writeStartElement(SystemMessage.ID);
        

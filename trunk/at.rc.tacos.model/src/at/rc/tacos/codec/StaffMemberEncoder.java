@@ -20,6 +20,13 @@ public class StaffMemberEncoder  implements MessageEncoder
         //Cast the object to a item
         StaffMember member = (StaffMember)message;
        
+        //assert valid
+        if(member ==  null)
+        {
+            System.out.println("WARNING: Object staffMember is null and cannot be encoded");
+            return;
+        }
+        
         //start
         writer.writeStartElement(StaffMember.ID);
         //do we have a funtion, then write it as attribute

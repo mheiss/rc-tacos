@@ -13,6 +13,14 @@ public class PatientEncoder implements MessageEncoder
     {
         //Cast the object to a item
         Patient patient = (Patient)message;
+        
+        //assert valid
+        if(patient ==  null)
+        {
+            System.out.println("WARNING: Object patient is null and cannot be encoded");
+            return;
+        }
+        
         //write the start element
         writer.writeStartElement(Patient.ID);
         //write the patient id

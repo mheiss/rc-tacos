@@ -17,6 +17,13 @@ public class DiseaseEncoder implements MessageEncoder
     {
         //Cast the object to a disease
     	Disease disease = (Disease)message;
+    	
+        //assert valid
+        if(disease ==  null)
+        {
+            System.out.println("WARNING: Object disease is null and cannot be encoded");
+            return;
+        }
       
         //write the start element
         writer.writeStartElement(Disease.ID);

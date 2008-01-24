@@ -15,6 +15,13 @@ public class LoginEncoder implements MessageEncoder
         //Cast the object to a item
         Login login = (Login)message;
         
+        //assert valid
+        if(login ==  null)
+        {
+            System.out.println("WARNING: Object login is null and cannot be encoded");
+            return;
+        }
+        
         //write the start element
         writer.writeStartElement(Login.ID);
        
@@ -38,6 +45,7 @@ public class LoginEncoder implements MessageEncoder
         //write the staff member for this user login
         if(login.getUserInformation() != null)
         {
+            System.out.println("encoding user");
             //get the encoder for a staff member
             MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
             encoder.doEncode(login.getUserInformation(), writer);

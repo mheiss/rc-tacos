@@ -17,6 +17,13 @@ public class VehicleEncoder  implements MessageEncoder
     {
         //Cast the object to a item
         VehicleDetail vehicle = (VehicleDetail)message;
+        
+        //assert valid
+        if(vehicle ==  null)
+        {
+            System.out.println("WARNING: Object vehicle is null and cannot be encoded");
+            return;
+        }
 
         //start
         writer.writeStartElement(VehicleDetail.ID);
@@ -71,13 +78,18 @@ public class VehicleEncoder  implements MessageEncoder
         }
         
         //write the elements and attributes
-        vehicle.getCurrentStation().type = "current";
-        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
-        encoder.doEncode(vehicle.getCurrentStation(), writer);
-        
-        vehicle.getBasicStation().type = "basic";
-        encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
-        encoder.doEncode(vehicle.getBasicStation(), writer);
+        if(vehicle.getCurrentStation() != null)
+        {
+            vehicle.getCurrentStation().type = "current";
+            MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
+            encoder.doEncode(vehicle.getCurrentStation(), writer);
+        }
+        if(vehicle.getBasicStation() != null)
+        {
+            vehicle.getBasicStation().type = "basic";
+            MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
+            encoder.doEncode(vehicle.getBasicStation(), writer);
+        }
         
         //write the elements and attributes
         writer.writeStartElement("readyForAction");

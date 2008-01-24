@@ -13,6 +13,14 @@ public class MobilePhoneEncoder  implements MessageEncoder
     {
         //Cast the object to a item
         MobilePhoneDetail phone = (MobilePhoneDetail)message;
+        
+        //assert valid
+        if(phone ==  null)
+        {
+            System.out.println("WARNING: Object mobile phone is null and cannot be encoded");
+            return;
+        }
+        
         writer.writeStartElement(MobilePhoneDetail.ID);
         //write the id
         writer.writeStartElement("id");

@@ -20,6 +20,13 @@ public class LocationEncoder implements MessageEncoder
         //Cast the object to a Location
         Location location = (Location)message;
         
+        //assert valid
+        if(location ==  null)
+        {
+            System.out.println("WARNING: Object location is null and cannot be encoded");
+            return;
+        }
+        
         //write the start element
         writer.writeStartElement(Location.ID);
         //do we have a funtion, then write it as attribute

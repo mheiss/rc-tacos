@@ -13,6 +13,13 @@ public class DayInfoMessageEncoder  implements MessageEncoder
     {
         //Cast the object to a item
         DayInfoMessage dayInfo = (DayInfoMessage)message;
+        
+        //assert valid
+        if(dayInfo ==  null)
+        {
+            System.out.println("WARNING: Object dayInfo is null and cannot be encoded");
+            return;
+        }
 
         //start
         writer.writeStartElement(DayInfoMessage.ID);

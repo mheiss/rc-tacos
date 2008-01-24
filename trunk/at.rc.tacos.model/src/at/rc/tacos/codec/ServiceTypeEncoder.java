@@ -18,6 +18,13 @@ public class ServiceTypeEncoder implements MessageEncoder
         //Cast the object to a ServiceType
         ServiceType serviceType = (ServiceType)message;
         
+        //assert valid
+        if(serviceType ==  null)
+        {
+            System.out.println("WARNING: Object serviceType is null and cannot be encoded");
+            return;
+        }
+        
         //write the start element
         writer.writeStartElement(ServiceType.ID);
        

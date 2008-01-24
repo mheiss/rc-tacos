@@ -13,6 +13,13 @@ public class LogoutEncoder implements MessageEncoder
         //Cast the object to a item
         Logout logout = (Logout)message;
         
+        //assert valid
+        if(logout ==  null)
+        {
+            System.out.println("WARNING: Object logout is null and cannot be encoded");
+            return;
+        }
+        
         //write the start element
         writer.writeStartElement(Logout.ID);
        
