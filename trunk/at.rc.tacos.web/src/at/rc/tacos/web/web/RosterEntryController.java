@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Location;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
@@ -40,7 +44,9 @@ public class RosterEntryController implements Controller
 			//request the staff member
 			resultList = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,staffId));	
 			StaffMember staffMember = (StaffMember)resultList.get(0); 
-			
+			String station = request.getParameter("station");
+			String job = request.getParameter("job");
+			String servicetype = request.getParameter("service");
 			//planed start
 			String startDay = request.getParameter("startDay");
 			String startMonth = request.getParameter("startMonth");
@@ -53,6 +59,12 @@ public class RosterEntryController implements Controller
 			String endYear =  request.getParameter("endYear");
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
+			Location location = new Location();
+			location.setLocationName(station);
+			Job jobb = new Job();
+			jobb.setJobName(job);
+			ServiceType service = new ServiceType();
+			service.setServiceName(servicetype);
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
@@ -70,9 +82,6 @@ public class RosterEntryController implements Controller
 			
 			long plannedStartOfWork = startEntry.getTimeInMillis();
 			long plannedEndOfWork = endEntry.getTimeInMillis();
-			String station = request.getParameter("station");
-			String job = request.getParameter("job");
-			String servicetype = request.getParameter("service");
 
 			if(staffId.trim().isEmpty() 
 					|| startDay.trim().isEmpty() 
@@ -93,7 +102,7 @@ public class RosterEntryController implements Controller
 				return params;
 			} 
 
-			RosterEntry entry = new RosterEntry(staffMember,servicetype,job,station,plannedStartOfWork,plannedEndOfWork);
+			RosterEntry entry = new RosterEntry(StaffMember staffMember,ServiceType serviceType,Job job, Location station,long plannedStartOfWork, longplannedEndOfWork);
 			client.sendAddRequest(RosterEntry.ID, entry);
 			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
 			{
