@@ -8,7 +8,6 @@ import at.rc.tacos.util.MyUtils;
  * Contains the data of the dialysis patient.
  * @author b.thek
  */
-//TODO set days of the dialysis transport
 public class DialysisPatient extends AbstractMessage
 {
     //unique identification string
@@ -124,7 +123,7 @@ public class DialysisPatient extends AbstractMessage
      * Returns the patient informations about this transport
      * @return the patient
      */
-    public Patient getPatientId() 
+    public Patient getPatient() 
     {
         return patient;
     }

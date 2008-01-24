@@ -217,7 +217,7 @@ public class VehicleDetail extends AbstractMessage
      * Returns the transport status to visualize in the vehicle composite
      * @return the mostImportantTransportStatus
      */
-    public int getMostImportantTransportStatus()
+    public int getTransportStatus()
     {
         return transportStatus;
     }

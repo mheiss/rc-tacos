@@ -19,18 +19,27 @@ public class PatientEncoder implements MessageEncoder
         writer.writeStartElement("patientId");
         writer.writeCharacters(String.valueOf(patient.getPatientId()));
         writer.writeEndElement();
-        //name is not mandatory -> could be that the name is just not  known
+        //name is not mandatory -> could be that the name is just not known
         if(patient.getFirstname() != null)
         {
             writer.writeStartElement("firstname");
             writer.writeCharacters(patient.getFirstname());
             writer.writeEndElement();
         }
-        //name is not mandatory -> could be that the name is just not  known
+        //name is not mandatory -> could be that the name is just not known
         if(patient.getLastname() != null)
         {
             writer.writeStartElement("lastname");
             writer.writeCharacters(patient.getLastname());
+            writer.writeEndElement();
+        } 
+        writer.writeStartElement("sex");
+        writer.writeCharacters(String.valueOf(patient.isMale()));
+        writer.writeEndElement();
+        if(patient.getBirthday() > 0)
+        {
+            writer.writeStartElement("birthday");
+            writer.writeCharacters(String.valueOf(patient.getBirthday()));
             writer.writeEndElement();
         } 
         //end of the item

@@ -16,7 +16,7 @@ public class StaffMember extends AbstractMessage
 	//unique identification string
 	public final static String ID = "staffMember";
 
-	private int personId;
+	private int staffMemberId;
 	private Location primaryLocation;
 	private String lastName;
 	private String firstName;
@@ -29,8 +29,8 @@ public class StaffMember extends AbstractMessage
 	private String eMail;
 	private String userName;
 	
-	//additonal info
-	private String function;
+	//internal information, only needed to serialize and deserialize
+	public String function;
 
 	/**
 	 * Class constructor for a staff member
@@ -74,7 +74,7 @@ public class StaffMember extends AbstractMessage
 	@Override
 	public int hashCode()
 	{
-		return 31 + personId;
+		return 31 + staffMemberId;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class StaffMember extends AbstractMessage
 		if (getClass() != obj.getClass())
 			return false;
 		final StaffMember other = (StaffMember) obj;
-		if (personId != other.personId)
+		if (staffMemberId != other.staffMemberId)
 			return false;
 		return true;
 	}
@@ -100,24 +100,23 @@ public class StaffMember extends AbstractMessage
 	//SETTERS AND GETTERS
 	/**
 	 * Returns the personal identification number
-	 * @return the personId
+	 * @return the staffMemberId
 	 */
 	public int getStaffMemberId() 
 	{
-		return personId;
+		return staffMemberId;
 	}
 
 	/**
 	 * Sets the personal identification number.
-	 * @param personId the personId to set
+	 * @param staffMemberId the personId to set
 	 * @throws IllegalArgumentException if the id is negative
 	 */
-	public void setStaffMemberId(int personId) 
+	public void setStaffMemberId(int staffMemberId) 
 	{
-		if(personId < 0)
+		if(staffMemberId < 0)
 			throw new IllegalArgumentException("The id cannot be negative");
-		firePropertyChange("personId", this.personId, personId);
-		this.personId = personId;
+		this.staffMemberId = staffMemberId;
 	}
 	
 	/**
@@ -156,9 +155,7 @@ public class StaffMember extends AbstractMessage
 	{
 		if(lastName == null || lastName.trim().isEmpty())
 			throw new IllegalArgumentException("The last name cannot be null or empty");
-		String oldName = this.lastName;
 		this.lastName = lastName;
-		firePropertyChange("lastName", oldName, lastName);
 	}
 
 	/**
@@ -179,9 +176,7 @@ public class StaffMember extends AbstractMessage
 	{
 		if(firstName == null || firstName.trim().isEmpty())
 			throw new IllegalArgumentException("The first name cannot be null or empty");
-		String oldName = this.firstName;
 		this.firstName = firstName;
-		firePropertyChange("lastName", oldName, firstName);
 	}
 
 	/**
@@ -351,16 +346,5 @@ public class StaffMember extends AbstractMessage
     public void addCompetence(Competence competence)
     {
         competenceList.add(competence);
-    }
-
-    //internal methods and information, only needed to serialize and deserialize
-	public String getFunction() 
-	{
-        return function;
-    }
-
-    public void setFunction(String function) 
-    {
-        this.function = function;
     }
 }

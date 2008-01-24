@@ -5,6 +5,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.factory.ProtocolCodecFactory;
+import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.Location;
+import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 
 
@@ -18,14 +22,17 @@ public class StaffMemberEncoder  implements MessageEncoder
        
         //start
         writer.writeStartElement(StaffMember.ID);
-        //do we have a funtion
-        if(member.getFunction() != null)
-            writer.writeAttribute("function", member.getFunction());
+        //do we have a funtion, then write it as attribute
+        if(member.function != null)
+            writer.writeAttribute("function", member.function);
         
         //write the elements and attributes
-        writer.writeStartElement("personId");
-        writer.writeCharacters(String.valueOf(member.getPersonId()));
+        writer.writeStartElement("staffMemberId");
+        writer.writeCharacters(String.valueOf(member.getStaffMemberId()));
         writer.writeEndElement();
+        //get the encoder for the location
+        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
+        encoder.doEncode(member.getPrimaryLocation(), writer);
         //write the elements and attributes
         writer.writeStartElement("lastName");
         writer.writeCharacters(member.getLastName());
@@ -39,39 +46,30 @@ public class StaffMemberEncoder  implements MessageEncoder
         writer.writeCharacters(member.getUserName());
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("islocked");
-        writer.writeCharacters(String.valueOf(member.getIslocked()));
-        writer.writeEndElement();
-        //write the elements and attributes
-        writer.writeStartElement("authorization");
-        writer.writeCharacters(member.getAuthorization());
-        writer.writeEndElement();
-        //write the elements and attributes
-        if(member.getEMail() != null)
+        if(member.getStreetname() != null)
         {
-	        writer.writeStartElement("eMail");
-	        writer.writeCharacters(member.getEMail());
-	        writer.writeEndElement();
+            writer.writeStartElement("streetname");
+            writer.writeCharacters(member.getStreetname());
+            writer.writeEndElement();
         }
         //write the elements and attributes
         if(member.getCityname() != null)
         {
-	        writer.writeStartElement("cityname");
-	        writer.writeCharacters(member.getCityname());
-	        writer.writeEndElement();
-        }
-     	//write the elements and attributes
-        if(member.getStreetname() != null)
-        {
-	        writer.writeStartElement("streetname");
-	        writer.writeCharacters(member.getStreetname());
-	        writer.writeEndElement();
+            writer.writeStartElement("cityname");
+            writer.writeCharacters(member.getCityname());
+            writer.writeEndElement();
         }
         //write the elements and attributes
-        writer.writeStartElement("primaryLocation");
-        writer.writeCharacters(String.valueOf(member.getPrimaryLocation()));
+        if(member.getEMail() != null)
+        {
+            writer.writeStartElement("eMail");
+            writer.writeCharacters(member.getEMail());
+            writer.writeEndElement();
+        }
+        //write the elements and attributes
+        writer.writeStartElement("sex");
+        writer.writeCharacters(String.valueOf(member.isMale()));
         writer.writeEndElement();
-        
         //write the elements and attributes
         if(member.getBirthday() > 0)
         {
@@ -79,20 +77,15 @@ public class StaffMemberEncoder  implements MessageEncoder
             writer.writeCharacters(Long.toString(member.getBirthday()));
             writer.writeEndElement();
         }
+        //get the encoder for the phone and write the list
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
+        for(MobilePhoneDetail detail:member.getPhonelist())
+            encoder.doEncode(detail, writer);
         
-        //write the elements and attributes
-        writer.writeStartElement("sex");
-        writer.writeCharacters(String.valueOf(member.isSex()));
-        writer.writeEndElement();
-        
-        //encode the status messages
-        for(String phoneNumber:member.getPhonenumber())
-        {
-            writer.writeStartElement("phonenumber");
-            writer.writeCharacters(String.valueOf(phoneNumber));
-            writer.writeEndElement();
-        }
-        
+        //get the encoder for the competence and write the list
+        encoder = ProtocolCodecFactory.getDefault().getEncoder(Competence.ID);
+        for(Competence comp:member.getCompetenceList())
+            encoder.doEncode(comp, writer);
         //end
         writer.writeEndElement();
     }

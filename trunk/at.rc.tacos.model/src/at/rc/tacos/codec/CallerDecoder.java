@@ -28,9 +28,11 @@ public class CallerDecoder implements MessageDecoder
                     notifier = new CallerDetail();
                 
                 //get the type of the element and set the corresponding value
-                if("name".equalsIgnoreCase(startName))
+                if("callerId".equalsIgnoreCase(startName))
+                    notifier.setCallerId(Integer.valueOf(reader.getElementText()));
+                if("callerName".equalsIgnoreCase(startName))
                     notifier.setCallerName(reader.getElementText());
-                if("telephoneNumer".equalsIgnoreCase(startName))
+                if("callerTelephoneNumber".equalsIgnoreCase(startName))
                     notifier.setCallerTelephoneNumber(reader.getElementText());
             }
             //check for the end element, and return the object

@@ -15,14 +15,20 @@ public class CallerEncoder  implements MessageEncoder
         CallerDetail notifier = (CallerDetail)message;
         
         writer.writeStartElement(CallerDetail.ID);
+        
+        //write the id
+        writer.writeStartElement("callerId");
+        writer.writeCharacters(String.valueOf(notifier.getCallerId()));
+        writer.writeEndElement();
+        
         //write the notifier name
-        writer.writeStartElement("name");
+        writer.writeStartElement("callerName");
         writer.writeCharacters(notifier.getCallerName());
         writer.writeEndElement();
         //the number is not mandatory
         if(notifier.getCallerTelephoneNumber() != null)
         {
-            writer.writeStartElement("telephoneNumer");
+            writer.writeStartElement("callerTelephoneNumber");
             writer.writeCharacters(notifier.getCallerTelephoneNumber());
             writer.writeEndElement();
         }

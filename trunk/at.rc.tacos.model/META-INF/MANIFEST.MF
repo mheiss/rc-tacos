@@ -10,4 +10,5 @@ Export-Package: at.rc.tacos.codec;uses:="javax.xml.stream,at.rc.tacos.common",
  at.rc.tacos.util
 Require-Bundle: org.eclipse.swt,
  org.eclipse.jface,
- org.eclipse.core.databinding
+ org.eclipse.core.databinding,
+ org.junit4

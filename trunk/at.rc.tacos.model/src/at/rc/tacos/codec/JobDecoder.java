@@ -5,16 +5,16 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.Job;
 
-public class MobilePhoneDecoder implements MessageDecoder
+public class JobDecoder implements MessageDecoder
 {
     @Override
     public AbstractMessage doDecode(XMLEventReader reader) throws XMLStreamException
     {
-        //The mobile phone to decode
-        MobilePhoneDetail mobilePhone = new MobilePhoneDetail();
-            
+        //create a new job
+        Job job = new Job();
+        
         //parse and set up the object
         while(reader.hasNext())
         {
@@ -24,16 +24,14 @@ public class MobilePhoneDecoder implements MessageDecoder
             {
                 String startName = event.asStartElement().getName().getLocalPart();
                 //create a new item 
-                if(MobilePhoneDetail.ID.equalsIgnoreCase(startName))
-                    mobilePhone = new MobilePhoneDetail();
+                if(Job.ID.equalsIgnoreCase(startName))
+                    job = new Job();
                 
                 //get the type of the element and set the corresponding value
                 if("id".equalsIgnoreCase(startName))
-                    mobilePhone.setId(Integer.valueOf(reader.getElementText()));
-                if("mobilePhoneName".equalsIgnoreCase(startName))
-                    mobilePhone.setMobilePhoneName(reader.getElementText());
-                if("mobilePhoneNumber".equalsIgnoreCase(startName))
-                    mobilePhone.setMobilePhoneNumber(reader.getElementText());
+                    job.setId(Integer.valueOf(reader.getElementText()));
+                if("jobName".equalsIgnoreCase(startName))
+                    job.setJobName(reader.getElementText());
             }
             //check for the end element, and return the object
             if(event.isEndElement())
@@ -41,8 +39,8 @@ public class MobilePhoneDecoder implements MessageDecoder
                 //get the name
                 String endElement = event.asEndElement().getName().getLocalPart();
                 //check if we have reached the end
-                if (MobilePhoneDetail.ID.equalsIgnoreCase(endElement))
-                    return mobilePhone;
+                if (Job.ID.equalsIgnoreCase(endElement))
+                    return job;
             }
         }
         return null;

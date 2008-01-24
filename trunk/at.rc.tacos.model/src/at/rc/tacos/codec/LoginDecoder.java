@@ -45,6 +45,10 @@ public class LoginDecoder implements MessageDecoder
                     login.setWebClient(Boolean.valueOf(reader.getElementText()));
                 if("errorMessage".equalsIgnoreCase(startName))
                     login.setErrorMessage(reader.getElementText());
+                if("authorization".equalsIgnoreCase(startName))
+                    login.setAuthorization(reader.getElementText());
+                if("islocked".equalsIgnoreCase(startName))
+                    login.setIslocked(Boolean.valueOf(reader.getElementText()));
             }
             //check for the end element, and return the object
             if(event.isEndElement())

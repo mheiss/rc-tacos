@@ -9,6 +9,7 @@ import javax.xml.stream.events.XMLEvent;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.CallerDetail;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -33,6 +34,14 @@ public class TransportDecoder implements MessageDecoder
                 //create a new item 
                 if(Transport.ID.equalsIgnoreCase(startName))
                     transport = new Transport();
+                
+                if("transportId".equalsIgnoreCase(startName))
+                    transport.setTransportId(Integer.valueOf(reader.getElementText())); 
+                if("year".equalsIgnoreCase(startName))
+                    transport.setYear(Integer.valueOf(reader.getElementText())); 
+                if("transportNumber".equalsIgnoreCase(startName))
+                    transport.setTransportNumber(Integer.valueOf(reader.getElementText())); 
+                
                 //get the notifier details
                 if(CallerDetail.ID.equalsIgnoreCase(startName))
                 {
@@ -40,70 +49,75 @@ public class TransportDecoder implements MessageDecoder
                     MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(CallerDetail.ID);
                     transport.setCallerDetail((CallerDetail)decoder.doDecode(reader));
                 }
-                //get the patient details
+                
+                if("fromStreet".equalsIgnoreCase(startName))
+                    transport.setFromStreet(reader.getElementText());
+                if("fromCity".equalsIgnoreCase(startName))
+                    transport.setFromCity(reader.getElementText());
                 if(Patient.ID.equalsIgnoreCase(startName))
                 {
                     //get the decoder for the staff
                     MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Patient.ID);
                     transport.setPatient((Patient)decoder.doDecode(reader));
                 }
-                //get the patient details
-                if(VehicleDetail.ID.equalsIgnoreCase(startName))
-                {
-                    //get the decoder for the staff
-                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(VehicleDetail.ID);
-                    transport.setVehicleDetail((VehicleDetail)decoder.doDecode(reader));
-                }
-                
-                //get the type of the element and set the corresponding value
-                if("internalTransportStatus".equalsIgnoreCase(startName))
-                	transport.setProgramStatus(Integer.valueOf(reader.getElementText()));
-                if("transportId".equalsIgnoreCase(startName))
-                    transport.setTransportId(Long.valueOf(reader.getElementText())); 
-                if("transportNumber".equalsIgnoreCase(startName))
-                    transport.setTransportNumber(reader.getElementText());  
-                if("fromStreet".equalsIgnoreCase(startName))
-                    transport.setFromStreet(reader.getElementText());
-                if("fromCity".equalsIgnoreCase(startName))
-                    transport.setFromCity(reader.getElementText());
                 if("toStreet".equalsIgnoreCase(startName))
                     transport.setToStreet(reader.getElementText());
                 if("toCity".equalsIgnoreCase(startName))
                     transport.setToCity(reader.getElementText());
                 if("kindOfTransport".equalsIgnoreCase(startName))
                     transport.setKindOfTransport(reader.getElementText());
-                if("backTransport".equalsIgnoreCase(startName))
-                    transport.setBackTransport(Boolean.valueOf(reader.getElementText()));
-                if("accompanyingPerson".equalsIgnoreCase(startName))
-                    transport.setAccompanyingPerson(Boolean.valueOf(reader.getElementText()));
-                if("emergencyPhone".equalsIgnoreCase(startName))
-                    transport.setEmergencyPhone(Boolean.valueOf(reader.getElementText()));
+                if("transportPriority".equalsIgnoreCase(startName))
+                    transport.setTransportPriority(reader.getElementText());
+                if("longDistanceTrip".equalsIgnoreCase(startName))
+                    transport.setLongDistanceTrip(Boolean.valueOf(reader.getElementText()));
+                if("direction".equalsIgnoreCase(startName))
+                    transport.setDirection(Integer.valueOf(reader.getElementText()));
+                
+                //next
                 if("kindOfIllness".equalsIgnoreCase(startName))
                     transport.setKindOfIllness(reader.getElementText());
-                if("transportNotes".equalsIgnoreCase(startName))
-                    transport.setDiseaseNotes(reader.getElementText());
-                if("responsibleStation".equalsIgnoreCase(startName))
-                    transport.setResponsibleStation(reader.getElementText());
-                if("realStation".equalsIgnoreCase(startName))
-                    transport.setRealStation(reader.getElementText());
+                if("backTransport".equalsIgnoreCase(startName))
+                    transport.setBackTransport(Boolean.valueOf(reader.getElementText()));
+                if("assistantPerson".equalsIgnoreCase(startName))
+                    transport.setAssistantPerson(Boolean.valueOf(reader.getElementText()));
+                if("emergencyPhone".equalsIgnoreCase(startName))
+                    transport.setEmergencyPhone(Boolean.valueOf(reader.getElementText()));
+                if("feedback".equalsIgnoreCase(startName))
+                    transport.setFeedback(reader.getElementText());
+                
+                //next
+                if("creationTime".equals(startName))
+                    transport.setCreationTime(Long.valueOf(reader.getElementText()));
                 if("dateOfTransport".equalsIgnoreCase(startName))
                     transport.setDateOfTransport(Long.valueOf(reader.getElementText()));
-                if("receivingTime".equals(startName))
-                	transport.setReceiveTime(Long.valueOf(reader.getElementText()));
-                if("plannedStartOfTransportTime".equalsIgnoreCase(startName))
+                if("plannedStartOfTransport".equalsIgnoreCase(startName))
                     transport.setPlannedStartOfTransport(Long.valueOf(reader.getElementText()));
                 if("plannedTimeAtPatient".equalsIgnoreCase(startName))
                     transport.setPlannedTimeAtPatient(Long.valueOf(reader.getElementText()));
                 if("appointmentTimeAtDestination".equalsIgnoreCase(startName))
                     transport.setAppointmentTimeAtDestination(Long.valueOf(reader.getElementText()));
-                if("transportPriority".equalsIgnoreCase(startName))
-                    transport.setTransportPriority(reader.getElementText());
+                
+                //next
+                if(Location.ID.equalsIgnoreCase(startName))
+                {
+                    //get the decoder for the staff
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
+                    transport.setPlanedLocation((Location)decoder.doDecode(reader));
+                }
+                if("notes".equalsIgnoreCase(startName))
+                    transport.setNotes(reader.getElementText());
+                if("programStatus".equalsIgnoreCase(startName))
+                    transport.setProgramStatus(Integer.valueOf(reader.getElementText()));
+                if("createdByUser".equalsIgnoreCase(startName))
+                    transport.setCreatedByUsername(reader.getElementText());
+                
+                //next
                 if("emergencyDoctoralarming".equalsIgnoreCase(startName))
                     transport.setEmergencyDoctorAlarming(Boolean.valueOf(reader.getElementText()));
                 if("helicopterAlarming".equalsIgnoreCase(startName))
                     transport.setHelicopterAlarming(Boolean.valueOf(reader.getElementText()));
                 if("blueLightToGoal".equalsIgnoreCase(startName))
-                    transport.setBluelightToGoal(Boolean.valueOf(reader.getElementText()));
+                    transport.setBlueLightToGoal(Boolean.valueOf(reader.getElementText()));
                 if("dfAlarming".equalsIgnoreCase(startName))
                     transport.setDfAlarming(Boolean.valueOf(reader.getElementText()));
                 if("brkdtAlarming".equalsIgnoreCase(startName))
@@ -114,10 +128,16 @@ public class TransportDecoder implements MessageDecoder
                     transport.setMountainRescueServiceAlarming(Boolean.valueOf(reader.getElementText()));
                 if("policeAlarming".equalsIgnoreCase(startName))
                     transport.setPoliceAlarming(Boolean.valueOf(reader.getElementText()));
-                if("feedback".equalsIgnoreCase(startName))
-                    transport.setFeedback(reader.getElementText());
-                if("direction".equalsIgnoreCase(startName))
-                    transport.setDirection(Integer.valueOf(reader.getElementText()));
+                
+                //next
+                if(VehicleDetail.ID.equalsIgnoreCase(startName))
+                {
+                    //get the decoder for the staff
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(VehicleDetail.ID);
+                    transport.setVehicleDetail((VehicleDetail)decoder.doDecode(reader));
+                }
+                
+                //next
                 if("transportStatus".equalsIgnoreCase(startName))
                 {
                     Attribute statusAttr = start.getAttributeByName(new QName("status"));

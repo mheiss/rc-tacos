@@ -6,7 +6,10 @@ import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
 public class RosterEntryDecoder implements MessageDecoder
@@ -29,13 +32,30 @@ public class RosterEntryDecoder implements MessageDecoder
                 if(RosterEntry.ID.equalsIgnoreCase(startName))
                     entry = new RosterEntry();
                 //get the type of the element and set the corresponding value
+                if(Location.ID.equalsIgnoreCase(startName))
+                {
+                    //get the decoder for the staff
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
+                    entry.setStation((Location)decoder.doDecode(reader));
+                }
                 if(StaffMember.ID.equalsIgnoreCase(startName))
                 {
                     //get the decoder for the staff
                     MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(StaffMember.ID);
                     entry.setStaffMember((StaffMember)decoder.doDecode(reader));
                 }
-
+                if(Job.ID.equalsIgnoreCase(startName))
+                {
+                    //get the decoder for the staff
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Job.ID);
+                    entry.setJob((Job)decoder.doDecode(reader));
+                }
+                if(ServiceType.ID.equalsIgnoreCase(startName))
+                {
+                    //get the decoder for the staff
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(ServiceType.ID);
+                    entry.setServicetype((ServiceType)decoder.doDecode(reader));
+                }
                 //get the type of the element and set the corresponding value
                 if("rosterId".equalsIgnoreCase(startName))
                     entry.setRosterId(Integer.valueOf(reader.getElementText()));
@@ -52,29 +72,13 @@ public class RosterEntryDecoder implements MessageDecoder
                 if("realEndOfWork".equalsIgnoreCase(startName))
                     entry.setRealEndOfWork(Long.valueOf(reader.getElementText()));
                 //get the type of the element and set the corresponding value
-                if("station".equalsIgnoreCase(startName))
-                    entry.setStation(reader.getElementText());
-                //get the type of the element and set the corresponding value
-                if("job".equalsIgnoreCase(startName))
-                    entry.setJob(reader.getElementText());
-                //get the type of the element and set the corresponding value
-                if("servicetype".equalsIgnoreCase(startName))
-                    entry.setServicetype(reader.getElementText());
-                //get the type of the element and set the corresponding value
                 if("rosterNotes".equalsIgnoreCase(startName))
                     entry.setRosterNotes(reader.getElementText());
                 //get the type of the element and set the corresponding value
                 if("standby".equalsIgnoreCase(startName))
                     entry.setStandby(Boolean.valueOf(reader.getElementText()));
-                //get the type of the element and set the corresponding value
-                if("stationId".equalsIgnoreCase(startName))
-                	entry.setStationId(Integer.valueOf(reader.getElementText()));
-                //get the type of the element and set the corresponding value
-                if("staffMemberId".equalsIgnoreCase(startName))
-                	entry.setstaffmemberId(Integer.valueOf(reader.getElementText()));
-              //get the type of the element and set the corresponding value
-                if("servicetypeId".equalsIgnoreCase(startName))
-                	entry.setServicetypeId(Integer.valueOf(reader.getElementText()));
+                if("createdByUser".equalsIgnoreCase(startName))
+                    entry.setCreatedByUsername(reader.getElementText());
             }
             //check for the end element, and return the object
             if(event.isEndElement())

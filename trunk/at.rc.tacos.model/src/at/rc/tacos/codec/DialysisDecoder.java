@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 
 public class DialysisDecoder implements MessageDecoder
@@ -34,12 +35,16 @@ public class DialysisDecoder implements MessageDecoder
                     //get the decoder for the staff
                     MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Patient.ID);
                     dia.setPatient((Patient)decoder.doDecode(reader));
-                }
-                
-         
+                }   
+                if(Location.ID.equalsIgnoreCase(startName))
+                {
+                    //get the decoder for the staff
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
+                    dia.setLocation((Location)decoder.doDecode(reader));
+                }  
                 //get the type of the element and set the corresponding value
-                if("patientId".equalsIgnoreCase(startName))
-                    dia.setPatientId(Long.valueOf(reader.getElementText()));   
+                if("id".equalsIgnoreCase(startName))
+                    dia.setId(Integer.valueOf(reader.getElementText()));   
                 if("fromStreet".equalsIgnoreCase(startName))
                     dia.setFromStreet(reader.getElementText());
                 if("fromCity".equalsIgnoreCase(startName))
@@ -50,22 +55,20 @@ public class DialysisDecoder implements MessageDecoder
                     dia.setToCity(reader.getElementText());
                 if("kindOfTransport".equalsIgnoreCase(startName))
                     dia.setKindOfTransport(reader.getElementText());
-                if("accompanyingPerson".equalsIgnoreCase(startName))
-                    dia.setAccompanyingPerson(Boolean.valueOf(reader.getElementText())); 
-                if("station".equalsIgnoreCase(startName))
-                    dia.setStation(reader.getElementText());
+                if("assistantPerson".equalsIgnoreCase(startName))
+                    dia.setAssistantPerson(Boolean.valueOf(reader.getElementText())); 
                 if("insurance".equalsIgnoreCase(startName))
                     dia.setInsurance(reader.getElementText());
-                if("plannedStartOfTransportTime".equalsIgnoreCase(startName))
+                if("plannedStartOfTransport".equalsIgnoreCase(startName))
                     dia.setPlannedStartOfTransport(Long.valueOf(reader.getElementText()));
                 if("plannedTimeAtPatient".equalsIgnoreCase(startName))
                     dia.setPlannedTimeAtPatient(Long.valueOf(reader.getElementText()));
                 if("appointmentTimeAtDialysis".equalsIgnoreCase(startName))
                     dia.setAppointmentTimeAtDialysis(Long.valueOf(reader.getElementText()));
                 if("plannedStartForBackTransport".equalsIgnoreCase(startName))
-                    dia.setplannedStartForBackTransport(Long.valueOf(reader.getElementText()));
+                    dia.setPlannedStartForBackTransport(Long.valueOf(reader.getElementText()));
                 if("readyTime".equalsIgnoreCase(startName))
-                    dia.setreadyTime(Long.valueOf(reader.getElementText()));
+                    dia.setReadyTime(Long.valueOf(reader.getElementText()));
                 if("monday".equalsIgnoreCase(startName))
                     dia.setMonday(Boolean.valueOf(reader.getElementText()));
                 if("tuesday".equalsIgnoreCase(startName))

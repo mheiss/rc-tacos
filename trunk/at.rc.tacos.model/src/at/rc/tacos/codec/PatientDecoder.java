@@ -29,11 +29,15 @@ public class PatientDecoder implements MessageDecoder
                 
                 //get the type of the element and set the corresponding value
                 if("patientId".equalsIgnoreCase(startName))
-                    patient.setPatientId(Long.valueOf(reader.getElementText()));
+                    patient.setPatientId(Integer.valueOf(reader.getElementText()));
                 if("firstname".equalsIgnoreCase(startName))
                     patient.setFirstname(reader.getElementText());
                 if("lastname".equalsIgnoreCase(startName))
                     patient.setLastname(reader.getElementText());
+                if("sex".equalsIgnoreCase(startName))
+                    patient.setMale(Boolean.valueOf(reader.getElementText()));
+                if("birthday".equalsIgnoreCase(startName))
+                    patient.setBirthday(Long.valueOf(reader.getElementText()));
             }
             //check for the end element, and return the object
             if(event.isEndElement())

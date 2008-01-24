@@ -46,7 +46,7 @@ public class TransportEncoderTest
     public void testTransportEncode1() throws XMLStreamException
     {
         Transport transport = TestDataSource.getInstance().transportList.get(0);
-        transport.getVehicleDetail().getDriverName();
+        transport.getVehicleDetail().getDriver();
         encoder.doEncode(transport, writer);
     }
     

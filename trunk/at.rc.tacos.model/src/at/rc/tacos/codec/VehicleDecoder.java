@@ -9,6 +9,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
@@ -30,16 +31,16 @@ public class VehicleDecoder  implements MessageDecoder
             {
                 StartElement start = event.asStartElement();
                 String startName = start.getName().getLocalPart();
+                
                 //create a new item 
                 if(VehicleDetail.ID.equalsIgnoreCase(startName))
                     vehicle = new VehicleDetail();
-                //get the mobile phone detail
-                if(MobilePhoneDetail.ID.equalsIgnoreCase(startName))
-                {
-                    //get the decoder for the staff
-                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(MobilePhoneDetail.ID);
-                    vehicle.setMobilPhone((MobilePhoneDetail)decoder.doDecode(reader));
-                }
+                
+                //get the type of the element and set the corresponding value
+                if("vehicleName".equalsIgnoreCase(startName))
+                    vehicle.setVehicleName(reader.getElementText());
+                if("vehicleType".equalsIgnoreCase(startName))
+                    vehicle.setVehicleType(reader.getElementText());                
                 //get the driver
                 if(StaffMember.ID.equalsIgnoreCase(startName))
                 {
@@ -51,32 +52,43 @@ public class VehicleDecoder  implements MessageDecoder
                     {
                         //set the value
                         if("driver".equalsIgnoreCase(functionAttr.getValue()))
-                            vehicle.setDriverName((StaffMember)decoder.doDecode(reader));
-                        if("medic1".equalsIgnoreCase(functionAttr.getValue()))
-                            vehicle.setParamedicIName((StaffMember)decoder.doDecode(reader));
-                        if("medic2".equalsIgnoreCase(functionAttr.getValue()))
-                            vehicle.setParamedicIIName((StaffMember)decoder.doDecode(reader));
+                            vehicle.setDriver((StaffMember)decoder.doDecode(reader));
+                        if("firstParamedic".equalsIgnoreCase(functionAttr.getValue()))
+                            vehicle.setFirstParamedic((StaffMember)decoder.doDecode(reader));
+                        if("secondParamedic".equalsIgnoreCase(functionAttr.getValue()))
+                            vehicle.setSecondParamedic((StaffMember)decoder.doDecode(reader));
                     }
                 }
-                //get the type of the element and set the corresponding value
-                if("vehicleId".equalsIgnoreCase(startName))
-                    vehicle.setVehicleId(Integer.valueOf(reader.getElementText()));
-                if("vehicleName".equalsIgnoreCase(startName))
-                    vehicle.setVehicleName(reader.getElementText());
-                if("vehicleType".equalsIgnoreCase(startName))
-                    vehicle.setVehicleType(reader.getElementText());
+                //get the mobile phone detail
+                if(MobilePhoneDetail.ID.equalsIgnoreCase(startName))
+                {
+                    //get the decoder for the staff
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(MobilePhoneDetail.ID);
+                    vehicle.setMobilPhone((MobilePhoneDetail)decoder.doDecode(reader));
+                }
                 if("vehicleNotes".equalsIgnoreCase(startName))
                     vehicle.setVehicleNotes(reader.getElementText());
-                if("basicStation".equalsIgnoreCase(startName))
-                    vehicle.setBasicStation(reader.getElementText());
-                if("currentStation".equalsIgnoreCase(startName))
-                    vehicle.setCurrentStation(reader.getElementText());
+                if(Location.ID.equalsIgnoreCase(startName))
+                {
+                    MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
+                    //get the first attribute
+                    Attribute functionAttr = start.getAttributeByName(new QName("type"));
+                    //assert valid
+                    if(functionAttr != null)
+                    {
+                        //set the value
+                        if("basic".equalsIgnoreCase(functionAttr.getValue()))
+                            vehicle.setBasicStation((Location)decoder.doDecode(reader));
+                        if("current".equalsIgnoreCase(functionAttr.getValue()))
+                            vehicle.setCurrentStation((Location)decoder.doDecode(reader));
+                    }
+                }
                 if("readyForAction".equalsIgnoreCase(startName))
                     vehicle.setReadyForAction(Boolean.valueOf(reader.getElementText()));
                 if("outOfOrder".equalsIgnoreCase(startName))
                     vehicle.setOutOfOrder(Boolean.valueOf(reader.getElementText()));
-                if("mostImportantTransportStatus".equalsIgnoreCase(startName))
-                    vehicle.setMostImportantTransportStatus(Integer.valueOf(reader.getElementText()));
+                if("transportStatus".equalsIgnoreCase(startName))
+                    vehicle.setTransportStatus(Integer.valueOf(reader.getElementText()));
             }
             //check for the end element, and return the object
             if(event.isEndElement())
