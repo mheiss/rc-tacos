@@ -145,6 +145,7 @@ public class MyUtils
 
     /**
      * Parses the given time string into a timestamp.<br>
+     * Parser uses the format: HH:mm <br>
      * When the string is not parseable the mehtod will return -1
      * @param soureString the string to parse
      * @return the timestamp or -1 in case of an error
@@ -168,6 +169,7 @@ public class MyUtils
 
     /**
      * Parses the given date string into a timestamp.<br>
+     * Parser uses the value : dd-MM-yyyy <br>
      * When the string is not parseable the mehtod will return -1
      * @param soureString the string to parse
      * @return the timestamp or -1 in case of an error
@@ -176,6 +178,27 @@ public class MyUtils
     {
         //set up the parser
         DateFormat formatter = dateFormat;
+        formatter.setLenient(true);
+        //try to parse
+        try
+        {
+            return formatter.parse(time).getTime();
+        }
+        catch(ParseException pe)
+        {
+            System.out.println("Failed to validate the given date: "+time);
+            return -1;
+        }
+    }
+    
+    /**
+     * Parses the given date and time value into a timestamp.
+     * Parser uses the value : dd-MM-yyyy HH:mm
+     */
+    public final static long getTimestampFromDateAndTime(String time)
+    {
+    	//set up the parser
+        DateFormat formatter = timeAndDateFormat;
         formatter.setLenient(true);
         //try to parse
         try
