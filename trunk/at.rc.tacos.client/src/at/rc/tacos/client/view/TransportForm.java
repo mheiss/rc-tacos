@@ -374,8 +374,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
         	this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
         
-        if(transport.getVehicleDetail().getCurrentStation() != null)
-        	this.textOrtsstelle.setText(transport.getVehicleDetail().getCurrentStation().getLocationName());
+        if(transport.getPlanedLocation().getLocationName() != null)
+        	this.textOrtsstelle.setText(transport.getPlanedLocation().getLocationName());
         
         if(transport.getFeedback() != null)
         	this.textRueckmeldung.setText(transport.getFeedback());
