@@ -96,7 +96,7 @@
 													<td><input type="text" name="cityname" id="textfield8" /></td>
 												</tr>
 												<tr>
-													<td>Gebrtsdatum:</td>
+													<td>Geburtsdatum:</td>
 													<td><input type="text" name="birthday"
 														id="textfield12" value="TT-MM-JJJJ" /></td>
 													<td>&nbsp;</td>
