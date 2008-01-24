@@ -4,6 +4,22 @@ import at.rc.tacos.model.Login;
 
 public interface UserLoginDAO 
 {
+	/** 
+	 * Successfully authenticateed the user
+	 */
+	public final static int LOGIN_SUCCESSFULL = 0;
+	
+	/**
+	 * Failed to authenticate the user<br>
+	 * The provided username or the password is wrong
+	 */
+	public final static int LOGIN_FAILED = -1;
+	
+	/**
+	 * The account is locked an the user is not allowed to login
+	 */
+	public final static int LOGIN_DENIED = -2;
+	
     /**
      * Adds a new login to the database, the connected staff member will also be created.
      * @param login the login object to create
