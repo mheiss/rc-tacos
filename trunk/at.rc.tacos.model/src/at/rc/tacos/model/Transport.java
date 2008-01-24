@@ -21,6 +21,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 {
     //unique identification string
     public final static String ID = "transport";
+    
+    //Transport stati
+    public final static int TRANSPORT_CANCLED = -1;
+    public final static int TRANSPORT_FORWARD = -1;
 
     // properties
     private int transportId;
@@ -77,7 +81,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
     //status messages
     private Map<Integer,Long> statusMessages;
-
     /**
      * Default class constructors for a transport<br>
      * The needed values should be accessed by the getter and setter methods
