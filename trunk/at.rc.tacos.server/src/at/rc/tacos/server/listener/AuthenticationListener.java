@@ -31,12 +31,14 @@ public class AuthenticationListener extends ServerListenerAdapter
         login.resetPassword();
         if(loginResult == UserLoginDAO.LOGIN_SUCCESSFULL)
         {
+            System.out.println("Login successfully, checking member");
         	//get the infos out of the database
         	StaffMember member = memberDao.getStaffMemberByUsername(username);
         	if(member != null)
         	{
         		login.setUserInformation(member);
         		login.setLoggedIn(true);
+        		System.out.println("member check successfully");
         	}
         	else
         	{
@@ -61,6 +63,7 @@ public class AuthenticationListener extends ServerListenerAdapter
         	login.setErrorMessage("Unexpected error occured");	
         }
         //return the message
+        System.out.println("returning: "+login);
         return login;
     }
 
