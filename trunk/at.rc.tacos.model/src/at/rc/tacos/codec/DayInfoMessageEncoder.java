@@ -26,9 +26,12 @@ public class DayInfoMessageEncoder  implements MessageEncoder
         writer.writeCharacters(String.valueOf(dayInfo.getTimestamp()));
         writer.writeEndElement();
         //the message
-        writer.writeStartElement("message");
-        writer.writeCharacters(dayInfo.getMessage());
-        writer.writeEndElement();
+        if(dayInfo.getMessage() != null)
+        {
+	        writer.writeStartElement("message");
+	        writer.writeCharacters(dayInfo.getMessage());
+	        writer.writeEndElement();
+        }
         //last change username
         writer.writeStartElement("lastChangedBy");
         writer.writeCharacters(dayInfo.getLastChangedBy());

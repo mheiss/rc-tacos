@@ -26,9 +26,12 @@ public class CompetenceEncoder implements MessageEncoder
         writer.writeCharacters(String.valueOf(competence.getId()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("competenceName");
-        writer.writeCharacters(competence.getCompetenceName());
-        writer.writeEndElement();
+        if(competence.getCompetenceName() != null)
+        {
+	        writer.writeStartElement("competenceName");
+	        writer.writeCharacters(competence.getCompetenceName());
+	        writer.writeEndElement();
+        }
         
         //end of the competence
         writer.writeEndElement();

@@ -28,12 +28,18 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeStartElement("transportId");
         writer.writeCharacters(String.valueOf(transport.getTransportId()));
         writer.writeEndElement();
-        writer.writeStartElement("year");
-        writer.writeCharacters(String.valueOf(transport.getYear()));
-        writer.writeEndElement();
-        writer.writeStartElement("transportNumber");
-        writer.writeCharacters(String.valueOf(transport.getTransportNumber()));
-        writer.writeEndElement();
+        if(transport.getYear() > 0)
+        {
+	        writer.writeStartElement("year");
+	        writer.writeCharacters(String.valueOf(transport.getYear()));
+	        writer.writeEndElement();
+        }
+        if(transport.getTransportNumber() > 0)
+        {
+	        writer.writeStartElement("transportNumber");
+	        writer.writeCharacters(String.valueOf(transport.getTransportNumber()));
+	        writer.writeEndElement();
+        }
 
         //next
         if(transport.getCallerDetail() != null)
@@ -46,9 +52,12 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeStartElement("fromStreet");
         writer.writeCharacters(transport.getFromStreet());
         writer.writeEndElement();
-        writer.writeStartElement("fromCity");
-        writer.writeCharacters(transport.getFromCity());
-        writer.writeEndElement();
+        if(transport.getFromCity() != null)
+        {
+	        writer.writeStartElement("fromCity");
+	        writer.writeCharacters(transport.getFromCity());
+	        writer.writeEndElement();
+        }
         if (transport.getPatient() != null)
         {
             encoder = ProtocolCodecFactory.getDefault().getEncoder(Patient.ID);
@@ -140,16 +149,22 @@ public class TransportEncoder  implements MessageEncoder
         //next
         MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
         encoder.doEncode(transport.getPlanedLocation(), writer);
-        encoder.doEncode(transport.getRealLocation(), writer);
+        if(transport.getRealLocation() != null)
+        {
+        	encoder.doEncode(transport.getRealLocation(), writer);
+        }
         if(transport.getNotes() != null)
         {
             writer.writeStartElement("notes");
             writer.writeCharacters(transport.getNotes());
             writer.writeEndElement();
         }
-        writer.writeStartElement("programStatus");
-        writer.writeCharacters(Integer.toString(transport.getProgramStatus()));
-        writer.writeEndElement();
+        if(transport.getProgramStatus() > 0)
+        {
+	        writer.writeStartElement("programStatus");
+	        writer.writeCharacters(Integer.toString(transport.getProgramStatus()));
+	        writer.writeEndElement();
+        }
         writer.writeStartElement("createdByUser");
         writer.writeCharacters(transport.getCreatedByUsername());
         writer.writeEndElement();
