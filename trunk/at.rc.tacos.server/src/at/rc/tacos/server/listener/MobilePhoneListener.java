@@ -44,7 +44,7 @@ public class MobilePhoneListener extends ServerListenerAdapter
     public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)removeObject;
-        mobilePhoneDao.removeMobilePhone(phone);
+        mobilePhoneDao.removeMobilePhone(phone.getId());
         return phone;
     }
 

@@ -1,9 +1,6 @@
 package at.rc.tacos.server.listener;
 
-import java.sql.SQLException;
-
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Login;
@@ -13,7 +10,6 @@ public class AuthenticationListener extends ServerListenerAdapter
 {
     //The DAO classes
     private UserLoginDAO userDao = DaoFactory.TEST.createUserDAO();
-    private StaffMemberDAO staffDao = DaoFactory.TEST.createStaffMemberDAO();
     
     /**
      * Handles the login message and checks the authentication.<br>
@@ -27,34 +23,40 @@ public class AuthenticationListener extends ServerListenerAdapter
         //check the password and the user
         String username = login.getUsername();
         String password = login.getPassword();
-        //check agains the database
-        boolean loggedIn = false;
-        try
+        //check agains the database        
+        int loginResult = userDao.checkLogin(username, password);
+        //for security reset the password
+        login.resetPassword();
+        if(loginResult == UserLoginDAO.LOGIN_SUCCESSFULL)
         {
-            loggedIn = userDao.checkLogin(username, password);
+        	//get the infos out of the database
+        	Login loginInfo = userDao.getLoginAndStaffmember(username);
+        	if(loginInfo != null)
+        	{
+        		login.setUserInformation(loginInfo.getUserInformation());
+        		login.setLoggedIn(true);
+        	}
+        	else
+        	{
+        		login.setLoggedIn(false);
+            	login.setErrorMessage("Failed to get the staff details for the given login");
+        	}
         }
-        catch (SQLException e)
+        else if(loginResult == UserLoginDAO.LOGIN_FAILED)
         {
-            e.getMessage();
+        	login.setLoggedIn(false);
+        	login.setErrorMessage("Wrong username or password");
         }
-        if(loggedIn)
+        else if(loginResult == UserLoginDAO.LOGIN_DENIED)
         {
-            login.resetPassword();
-            login.setLoggedIn(true);
-            try
-            {
-                login.setUserInformation(staffDao.getStaffMemberByUsername(username));
-            }
-            catch (SQLException e)
-            {
-                e.getMessage();
-            }
+        	login.setLoggedIn(false);
+        	login.setIslocked(true);
+        	login.setErrorMessage("Your account is locked, please contact the administrator");
         }
         else
         {
-            login.resetPassword();
-            login.setErrorMessage("Wrong username or password");
-            login.setLoggedIn(false);
+        	login.setLoggedIn(false);
+        	login.setErrorMessage("Unexpected error occured");	
         }
         //return the message
         return login;

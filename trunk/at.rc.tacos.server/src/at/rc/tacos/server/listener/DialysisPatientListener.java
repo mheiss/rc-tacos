@@ -1,6 +1,5 @@
 package at.rc.tacos.server.listener;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
@@ -21,16 +20,8 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	public AbstractMessage handleAddRequest(AbstractMessage addObject)
 	{
 		DialysisPatient patient = (DialysisPatient)addObject;
-		try
-		{
-			int id = dialysisDao.addDialysisPatient(patient);
-			patient.setId(id);
-		}
-		catch (SQLException e)
-		{
-			e.getMessage();
-		}
-
+		int id = dialysisDao.addDialysisPatient(patient);
+		patient.setId(id);
 		return patient;
 	}
 
@@ -42,37 +33,19 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-
-		System.out.println("New listing request");
-
 		//if there is no filter -> request all
 		if(queryFilter == null || queryFilter.getFilterList().isEmpty())
 		{
-			try
-			{
-				list.addAll(dialysisDao.listDialysisPatient());
-			}
-			catch (SQLException e)
-			{
-				// TODO Auto-generated catch block
-				e.getMessage();
-			}
+			list.addAll(dialysisDao.listDialysisPatient());
 		}
 		else if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER))
-        {
-            //get the query filter
-            final String filter = queryFilter.getFilterValue(IFilterTypes.ID_FILTER);
-            int id = Integer.parseInt(filter);
-            try
-            {
-                list.add(dialysisDao.getDialysisPatientById(id));
-            }
-            catch (SQLException e)
-            {
-                // TODO Auto-generated catch block
-                e.getMessage();
-            }
-        }
+		{
+			//get the query filter
+			final String filter = queryFilter.getFilterValue(IFilterTypes.ID_FILTER);
+			int id = Integer.parseInt(filter);
+
+			list.add(dialysisDao.getDialysisPatientById(id));
+		}
 		//return the list
 		return list;
 	}
@@ -84,15 +57,7 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
 	{
 		DialysisPatient patient = (DialysisPatient)removeObject;
-		try
-		{
-			dialysisDao.removeDialysisPatient(patient);
-		}
-		catch (SQLException e)
-		{
-			// TODO Auto-generated catch block
-			e.getMessage();
-		}
+		dialysisDao.removeDialysisPatient(patient.getId());
 		return patient;
 	}
 
@@ -103,15 +68,7 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
 	{
 		DialysisPatient patient = (DialysisPatient)updateObject;
-		try
-		{
-			dialysisDao.updateDialysisPatient(patient);
-		}
-		catch (SQLException e)
-		{
-			// TODO Auto-generated catch block
-			e.getMessage();
-		}
+		dialysisDao.updateDialysisPatient(patient);
 		return patient;
 	}
 }
