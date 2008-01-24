@@ -3,11 +3,7 @@ package at.rc.tacos.core.db.dao.mysql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-//import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -18,36 +14,11 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.util.MyUtils;
 
 public class UserLoginDAOMySQL implements UserLoginDAO
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
-
-//	private String convertDate (long date)
-//	{
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTimeInMillis(date);
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-//		String stringdate = sdf.format(cal.getTime());
-//		
-//		return stringdate;
-//	}
-	
-	private long convertDateIntoLong (String stringdate)
-	{
-		long date=0;
-        try
-        {
-            DateFormat dateFormat =  new SimpleDateFormat("yyyyMMddhhmmss"); 
-            date = dateFormat.parse(stringdate).getTime();
-        }
-        catch(ParseException pe)
-        {
-            System.out.println("Failed to parse the given date");
-            System.out.println(pe.getMessage());
-        }
-        return date;
-	}
 	
 	@Override
 	public int checkLogin(String username, String pwdHash)
@@ -108,7 +79,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			staff.setStreetname(rs.getString("e.street"));
 			staff.setCityname(rs.getString("e.city"));
 			staff.setMale(rs.getBoolean("e.sex"));
-			staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+			staff.setBirthday(MyUtils.getTimestampFromDate(rs.getString("e.birthday")));
 			staff.setEMail(rs.getString("e.email"));
 			staff.setUserName(rs.getString("e.username"));
 
