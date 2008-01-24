@@ -42,9 +42,7 @@ public class StationController  implements Controller
             //query the listing for the given day  
             List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);  
             //check if we got the desired type and  add the entries to the list  
-            request.getParameter("action");
-            request.setAttribute("<name>", "<wert>"); 
-            request.getAttribute("<name>");
+            request.setAttribute("action", action);
             //increment the day by one  
             cal.add(Calendar.DAY_OF_MONTH, 1);  
             for(AbstractMessage object:dayResult)   
