@@ -14,7 +14,7 @@ import at.rc.tacos.model.VehicleDetail;
 public class VehicleDetailListener extends ClientListenerAdapter
 {   
 	//the vehicle manager
-	VehicleManager manager = ModelFactory.getInstance().getVehicleManager();
+	VehicleManager manager = ModelFactory.getInstance().getVehicleList();
 	
 	@Override
 	public void add(AbstractMessage addMessage)

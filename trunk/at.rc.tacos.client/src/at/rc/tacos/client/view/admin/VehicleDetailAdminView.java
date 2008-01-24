@@ -16,7 +16,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
 
 public class VehicleDetailAdminView extends ViewPart implements ISelectionListener 
@@ -140,7 +139,7 @@ public class VehicleDetailAdminView extends ViewPart implements ISelectionListen
             System.out.println(detail);
             vehicleName.setText(detail.getVehicleName());
             vehicleType.setText(detail.getVehicleType());
-            basicStation.setText(detail.getBasicStation());
+            basicStation.setText(detail.getBasicStation().getLocationName());
         } 
         else 
         {

@@ -21,7 +21,6 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 {
 	//properties
 	private TableViewer viewer;
-	private String transportNumberOld;
 	
 	/**
 	 * Default class constructor.
@@ -50,8 +49,7 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 		if (!cancelConfirmed) 
 			return;
 		//request to cancel (storno)	
-		transportNumberOld = transport.getTransportNumber(); //TODO - Transportnummernverwaltung? old in Hilfstabelle? -oder alles am Server?
-		transport.setTransportNumber("STORNO");
+		transport.setTransportNumber(-1);
 		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}

@@ -5,7 +5,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 
 import at.rc.tacos.model.DialysisPatient;
-import at.rc.tacos.model.RosterEntry;
 
 /**
  * Provides sorting functions for the dialysis transport table.
@@ -128,8 +127,8 @@ public class DialysisTransportSorter extends ViewerSorter
         //sort by the rt time
         if (column == RT_SORTER) 
         {
-        	long term1 = dia1.getplannedStartForBackTransport();
-        	long term2 = dia2.getplannedStartForBackTransport();
+        	long term1 = dia1.getPlannedStartForBackTransport();
+        	long term2 = dia2.getPlannedStartForBackTransport();
         	if(term1 > term2)
         		returnValue = -1;
         	if(term1 < term2)
@@ -141,8 +140,8 @@ public class DialysisTransportSorter extends ViewerSorter
         //sort by the ready time
         if (column == READY_SORTER) 
         {
-        	long term1 = dia1.getreadyTime();
-        	long term2 = dia2.getreadyTime();
+        	long term1 = dia1.getReadyTime();
+        	long term2 = dia2.getReadyTime();
         	if(term1 > term2)
         		returnValue = -1;
         	if(term1 < term2)
@@ -154,12 +153,10 @@ public class DialysisTransportSorter extends ViewerSorter
         //sort by the station name
         if (column == RESP_STATION_SORTER) 
         {
-        	String st1 = dia1.getStation();
-        	String st2 = dia2.getStation();
+        	String st1 = dia1.getLocation().getLocationName();
+        	String st2 = dia2.getLocation().getLocationName();
         	returnValue = st1.compareTo(st2);
         }
-        
-      
         
         //sort by the kind of transport (g,s,l,r)
         if (column == TA_SORTER) 

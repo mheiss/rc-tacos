@@ -20,7 +20,7 @@ public class JournalViewContentProvider implements IStructuredContentProvider
 
 	public Object[] getElements(Object parent) 
 	{
-		TransportManager manager = ModelFactory.getInstance().getTransportManager();
+		TransportManager manager = ModelFactory.getInstance().getTransportList();
 		//return the elements
 		return manager.toArray();
 	}

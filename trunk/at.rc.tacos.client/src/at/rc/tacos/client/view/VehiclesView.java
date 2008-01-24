@@ -42,7 +42,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
     public VehiclesView()
     {
         // add listener to model to keep on track. 
-        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
     }
     
     /**
@@ -52,7 +52,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
     public void dispose()
     {
         // add listener to model to keep on track. 
-        ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
     }
     
     /**
@@ -95,7 +95,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             //the vehicle added
             VehicleDetail detail = (VehicleDetail)evt.getNewValue();
             //get the station to categorize the vehicle
-            final String basicStation = detail.getBasicStation();
+            final String basicStation = detail.getBasicStation().getLocationName();
             //insert the vehicle to the according station
             if(Constants.STATION_KAPFENBERG.equalsIgnoreCase(basicStation))
             {
@@ -234,7 +234,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
         int numOfVehicles = stationComposite.getChildren().length;
         
         //get the list of vehicles that are ready for action
-        List<VehicleDetail> vehicleList = ModelFactory.getInstance().getVehicleManager().getReadyVehicleListbyStation(station);
+        List<VehicleDetail> vehicleList = ModelFactory.getInstance().getVehicleList().getReadyVehicleListbyStation(station);
         
         //update the description
         section.setText(station +" - ("+ vehicleList.size() +" / "+numOfVehicles+")");

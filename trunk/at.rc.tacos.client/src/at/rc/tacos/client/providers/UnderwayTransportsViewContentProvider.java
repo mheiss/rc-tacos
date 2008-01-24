@@ -20,7 +20,7 @@ public class UnderwayTransportsViewContentProvider implements IStructuredContent
 
     public Object[] getElements(Object parent) 
     {
-    	TransportManager manager = ModelFactory.getInstance().getTransportManager();       
+    	TransportManager manager = ModelFactory.getInstance().getTransportList();       
         return manager.toArray();
     }
 }

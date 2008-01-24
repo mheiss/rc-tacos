@@ -20,7 +20,7 @@ public class PersonalViewContentProvider implements IStructuredContentProvider
 
 	public Object[] getElements(Object parent) 
 	{
-		RosterEntryManager manager = ModelFactory.getInstance().getRosterManager();
+		RosterEntryManager manager = ModelFactory.getInstance().getRosterEntryList();
 		//return the elements
 		return manager.toArray();
 	}

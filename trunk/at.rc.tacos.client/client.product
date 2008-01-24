@@ -24,12 +24,15 @@ Time and Configuration Management
    <launcher name="Tacos - Client">
       <solaris/>
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="/at.rc.tacos.client/icons/launcher/launcher_16.bmp"
+            winMediumHigh="/at.rc.tacos.client/icons/launcher/launcher_32.bmp"
+            winLargeHigh="/at.rc.tacos.client/icons/launcher/launcher_48.bmp"/>
       </win>
    </launcher>
 
+
    <vm>
-      <windows type="jre">jre1.6.0</windows>
    </vm>
 
    <plugins>
@@ -37,6 +40,8 @@ Time and Configuration Management
       <plugin id="at.rc.tacos.core.net"/>
       <plugin id="at.rc.tacos.model"/>
       <plugin id="com.ibm.icu"/>
+      <plugin id="com.ibm.icu36.data.update" fragment="true"/>
+      <plugin id="javax.servlet"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
@@ -55,6 +60,7 @@ Time and Configuration Management
       <plugin id="org.eclipse.jface.databinding"/>
       <plugin id="org.eclipse.jface.text"/>
       <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.text"/>
@@ -62,6 +68,7 @@ Time and Configuration Management
       <plugin id="org.eclipse.ui.forms"/>
       <plugin id="org.eclipse.ui.views"/>
       <plugin id="org.eclipse.ui.workbench"/>
+      <plugin id="org.junit4"/>
    </plugins>
 
 </product>

@@ -46,7 +46,6 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		
 		//calculate time window for a possible back transport
 		GregorianCalendar gcal = new GregorianCalendar();
-		long now = gcal.getTimeInMillis();
 		gcal.set(GregorianCalendar.HOUR_OF_DAY, GregorianCalendar.HOUR_OF_DAY-4);
 		long before4Hours = gcal.getTimeInMillis();
 		
@@ -55,7 +54,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		switch(columnIndex)
 		{
 		case COLUMN_PATIENT:
-			if(transport.isAccompanyingPerson())
+			if(transport.isAssistantPerson())
 				return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
 			else return null;
 		case COLUMN_TRANSPORT_TO:
@@ -90,7 +89,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		{
 		//define the columns
 		case COLUMN_LOCK: return null;
-		case COLUMN_TRANSPORT_NUMBER: return transport.getTransportNumber();
+		case COLUMN_TRANSPORT_NUMBER: return String.valueOf(transport.getTransportNumber());
 		case COLUMN_PRIORITY: return transport.getTransportPriority();
 		case COLUMN_TRANSPORT_FROM: return transport.getFromStreet() +"/" +transport.getFromCity();
 		case COLUMN_PATIENT:
@@ -170,27 +169,27 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		case COLUMN_DRIVER:
 			if(transport.getVehicleDetail() != null)
 			{
-				if(transport.getVehicleDetail().getDriverName() != null)
+				if(transport.getVehicleDetail().getDriver() != null)
 				{
-					return transport.getVehicleDetail().getDriverName().getLastName() + " " +transport.getVehicleDetail().getDriverName().getFirstName();
+					return transport.getVehicleDetail().getDriver().getLastName() + " " +transport.getVehicleDetail().getDriver().getFirstName();
 				}
 			}
 			else return "";
 		case COLUMN_PARAMEDIC_I:
 			if(transport.getVehicleDetail() != null)
 			{
-				if(transport.getVehicleDetail().getParamedicIName() != null)
+				if(transport.getVehicleDetail().getFirstParamedic() != null)
 				{
-					return transport.getVehicleDetail().getParamedicIName().getLastName() + " " +transport.getVehicleDetail().getParamedicIName().getFirstName();
+					return transport.getVehicleDetail().getFirstParamedic().getLastName() + " " +transport.getVehicleDetail().getFirstParamedic().getFirstName();
 				}
 				else return "";
 			}
 		case COLUMN_PARAMEDIC_II:
 			if(transport.getVehicleDetail() != null)
 			{
-				if(transport.getVehicleDetail().getParamedicIIName() != null)
+				if(transport.getVehicleDetail().getSecondParamedic() != null)
 				{
-					return transport.getVehicleDetail().getParamedicIIName().getLastName() + " " +transport.getVehicleDetail().getParamedicIIName().getFirstName();
+					return transport.getVehicleDetail().getSecondParamedic().getLastName() + " " +transport.getVehicleDetail().getSecondParamedic().getFirstName();
 				}
 				else return "";
 			}

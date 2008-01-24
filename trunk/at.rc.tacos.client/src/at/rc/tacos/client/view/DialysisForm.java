@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.controller.CreateDialysisTransportAction;
 import at.rc.tacos.client.controller.UpdateDialysisTransportAction;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.model.DialysisPatient;
@@ -29,13 +30,9 @@ import at.rc.tacos.model.Patient;
 /**
  * GUI (form) to manage the details of a dialysis patient
  * @author b.thek
- *
- */
-
+*/
 public class DialysisForm implements IKindOfTransport
 {
-	
-
 	private Text textFertig;
 	private Label abfLabel_1;
 	private Button abbrechenButton;
@@ -133,17 +130,17 @@ public class DialysisForm implements IKindOfTransport
         }
         
         //time abfRT
-        if (dia.getplannedStartForBackTransport() != 0)
+        if (dia.getPlannedStartForBackTransport() != 0)
         {
-        	gcal.setTimeInMillis(dia.getplannedStartForBackTransport());
+        	gcal.setTimeInMillis(dia.getPlannedStartForBackTransport());
         	String abfRTTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         	this.textAbfRT.setText(abfRTTime);
         }
         
         //time ready
-        if (dia.getreadyTime() != 0)
+        if (dia.getReadyTime() != 0)
         {
-        	gcal.setTimeInMillis(dia.getreadyTime());
+        	gcal.setTimeInMillis(dia.getReadyTime());
         	String readyTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         	this.textFertig.setText(readyTime);
         }
@@ -160,9 +157,9 @@ public class DialysisForm implements IKindOfTransport
         if(dia.getPatient().getFirstname() != null)
         	this.comboVorname.setText(dia.getPatient().getFirstname());
         
-        this.begleitpersonButton.setSelection(dia.isAccompanyingPerson());
+        this.begleitpersonButton.setSelection(dia.isAssistantPerson());
         
-        this.comboZustOrtsstelle.setText(dia.getStation());//mandatory!! default: Bezirk
+        this.comboZustOrtsstelle.setText(dia.getLocation().getLocationName());
         
         this.montagButton.setSelection(dia.isMonday());
         this.dienstagButton.setSelection(dia.isTuesday());
@@ -636,11 +633,11 @@ public class DialysisForm implements IKindOfTransport
 					//dia.setInsurance(insurance); -- not implemented yet
 					dia.setKindOfTransport(kindOfTransport);
 					
-					dia.setplannedStartForBackTransport(abfRTLong);
+					dia.setPlannedStartForBackTransport(abfRTLong);
 					dia.setPlannedStartOfTransport(startLong);
 					dia.setPlannedTimeAtPatient(atPatientLong);
-					dia.setreadyTime(readyLong);
-					dia.setStation(theRespStation);
+					dia.setReadyTime(readyLong);
+					dia.setLocation(ModelFactory.getInstance().getLocationList().getLocationByName(theRespStation));
 					dia.setStationary(stationary);
 					dia.setToCity(toCommunity);
 					dia.setToStreet(toStreet);
@@ -671,11 +668,11 @@ public class DialysisForm implements IKindOfTransport
 					dia.setFromStreet(fromStreet);
 					//dia.setInsurance(insurance); -- not implemented yet
 					dia.setKindOfTransport(kindOfTransport);
-					dia.setplannedStartForBackTransport(abfRTLong);
+					dia.setPlannedStartForBackTransport(abfRTLong);
 					dia.setPlannedStartOfTransport(startLong);
 					dia.setPlannedTimeAtPatient(atPatientLong);
-					dia.setreadyTime(readyLong);
-					dia.setStation(theRespStation);
+					dia.setReadyTime(readyLong);
+					dia.setLocation(ModelFactory.getInstance().getLocationList().getLocationByName(theRespStation));
 					dia.setStationary(stationary);
 					dia.setToCity(toCommunity);
 					dia.setToStreet(toStreet);

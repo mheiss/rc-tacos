@@ -26,7 +26,7 @@ public class MobilePhoneLabelProvider  extends LabelProvider
     public String getText(Object object)
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)object;
-        return phone.getMobilePhoneId() + "-"+phone.getMobilePhoneNumber();
+        return phone.getMobilePhoneName() + "-"+phone.getMobilePhoneNumber();
     }
 }
 

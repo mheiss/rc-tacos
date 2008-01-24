@@ -126,7 +126,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		if(transport.hasNotes())
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
-			title = transport.getDiseaseNotes();
+			title = transport.getNotes();
 			addIconAndLabel(composite,image,title);
 		}
 		

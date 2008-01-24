@@ -10,8 +10,6 @@ import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DialysisPatient;
-import at.rc.tacos.model.Transport;
-import at.rc.tacos.client.util.CustomColors;
 
 public class DialysisTransportLabelProvider implements ITableLabelProvider, ITableColorProvider
 {
@@ -34,8 +32,6 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
     public static final int COLUMN_STAT = 15;
     
     
-
-
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
@@ -80,8 +76,7 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
     {
     	DialysisPatient dia = (DialysisPatient)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        System.out.println("DialysisTransportlabel, in getcolumn Text, der dia transport: " +dia.getFromStreet() +" " +dia.getStation());
-        
+
         switch(columnIndex)
         {
 	        case COLUMN_LOCK: return null;
@@ -102,12 +97,12 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
 	        	else return "";
 	        case COLUMN_ABF_RT:
 	        	if (dia.getPlannedStartOfTransport() != 0)
-	        		return sdf.format(dia.getplannedStartForBackTransport());
+	        		return sdf.format(dia.getPlannedStartForBackTransport());
 	        	else return "";
 	        	
 	        case COLUMN_READY_FOR_BACKTRANSPORT:
-	        	if (dia.getreadyTime() != 0)
-	        		return sdf.format(dia.getreadyTime());
+	        	if (dia.getReadyTime() != 0)
+	        		return sdf.format(dia.getReadyTime());
 	        	else return "";
 	        case COLUMN_FROM:return dia.getFromStreet() +"/" +dia.getFromCity();
 	        case COLUMN_PATIENT:
@@ -116,13 +111,10 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
         	else return "";
 	        case COLUMN_STAT:
 	        	return null;
-	        
-	        
+
 	       
 	        default: return null;
         }
-        
-        
     }
 
     @Override

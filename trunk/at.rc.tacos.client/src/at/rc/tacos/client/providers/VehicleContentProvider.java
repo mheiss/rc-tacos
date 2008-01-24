@@ -10,7 +10,7 @@ public class VehicleContentProvider implements IStructuredContentProvider
     @Override
     public Object[] getElements(Object arg0)
     {
-        return ModelFactory.getInstance().getVehicleManager().toArray();
+        return ModelFactory.getInstance().getVehicleList().toArray();
     }
 
     @Override

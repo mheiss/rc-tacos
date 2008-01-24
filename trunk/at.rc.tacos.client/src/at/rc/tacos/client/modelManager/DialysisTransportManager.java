@@ -18,7 +18,10 @@ public class DialysisTransportManager extends PropertyManager
     /**
      * Default class constructor
      */
-    public DialysisTransportManager() { }
+    public DialysisTransportManager() 
+    { 
+        objectList = new ArrayList<DialysisPatient>();
+    }
 
     /**
      * Adds a new dialysis transport to the list
@@ -96,7 +99,4 @@ public class DialysisTransportManager extends PropertyManager
     {
         return objectList.toArray();
     }
-
 }
-
-

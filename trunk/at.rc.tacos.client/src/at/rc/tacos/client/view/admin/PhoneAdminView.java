@@ -13,8 +13,6 @@ import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
-import at.rc.tacos.client.providers.StaffMemberContentProvider;
-import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 
 public class PhoneAdminView extends ViewPart
@@ -69,7 +67,7 @@ public class PhoneAdminView extends ViewPart
        
         this.viewer.setContentProvider(new MobilePhoneContentProvider());
         this.viewer.setLabelProvider(new MobilePhoneLabelProvider());
-        this.viewer.setInput(ModelFactory.getInstance().getMobilePhoneManager().getMobilePhoneList());
+        this.viewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
         getViewSite().setSelectionProvider(this.viewer);
         this.form.setLayoutData(gd);
         

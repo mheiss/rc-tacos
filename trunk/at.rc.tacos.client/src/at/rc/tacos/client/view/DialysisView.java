@@ -6,13 +6,9 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -20,7 +16,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -36,21 +31,16 @@ import at.rc.tacos.client.providers.DialysisTransportContentProvider;
 import at.rc.tacos.client.providers.DialysisTransportLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.DialysisTransportSorter;
-import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
-import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.model.DialysisPatient;
-
 
 public class DialysisView extends ViewPart implements PropertyChangeListener
 {
 	public static final String ID = "at.rc.tacos.client.view.dialysis_view";
-
 	
 	//the toolkit to use
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private TableViewer viewer;
-	private OutstandingTransportsTooltip tooltip;
 	
 	//the actions for the context menu
 	private DialysisOpenNewFormAction dialysisOpenNewFormAction;
@@ -58,14 +48,13 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	private DialysisDeleteAction dialysisDeleteAction;
 	private DialysisTransportNowAction dialysisTransportNowAction;
 
-
 	/**
 	 * Constructs a new outstanding transports view.
 	 */
 	public DialysisView()
 	{
 		// add listener to model to keep on track. 
-		ModelFactory.getInstance().getDialysisTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getDialyseList().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -74,7 +63,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getDialysisTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getDialyseList().removePropertyChangeListener(this);
 	}
 	
 	
@@ -103,7 +92,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		viewer= new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new DialysisTransportContentProvider());
 		viewer.setLabelProvider(new DialysisTransportLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getDialysisTransportManager());
+		viewer.setInput(ModelFactory.getInstance().getDialyseList());
 		viewer.getTable().setLinesVisible(true);
 		
 		viewer.refresh();

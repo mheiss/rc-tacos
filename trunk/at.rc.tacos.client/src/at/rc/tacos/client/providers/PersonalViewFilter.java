@@ -36,7 +36,7 @@ public class PersonalViewFilter extends ViewerFilter
 		//cast the element
 		RosterEntry entry = (RosterEntry)element;
 		//check the entry
-		if(entry.getStation().equalsIgnoreCase(station))
+		if(entry.getStation().getLocationName().equalsIgnoreCase(station))
 			return true;
 		//filter the element out
 		return false;

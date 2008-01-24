@@ -189,7 +189,7 @@ public class TransportStatiForm implements ITransportStatus
         Calendar cal = Calendar.getInstance();
 		
 		//receive time
-        cal.setTimeInMillis(transport.getReceiveTime());
+        cal.setTimeInMillis(transport.getCreationTime());
 		aufgenommen.setText(sdf.format(cal.getTime()));
 		
     	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))

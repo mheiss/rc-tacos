@@ -11,8 +11,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.StaffMemberContentProvider;
-import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -69,7 +67,7 @@ public class VehicleAdminView extends ViewPart
        
         this.viewer.setContentProvider(new VehicleContentProvider());
         this.viewer.setLabelProvider(new VehicleLabelProvider());
-        this.viewer.setInput(ModelFactory.getInstance().getVehicleManager().getVehicleList());
+        this.viewer.setInput(ModelFactory.getInstance().getVehicleList().getVehicleList());
         getViewSite().setSelectionProvider(this.viewer);
         this.form.setLayoutData(gd);
         

@@ -9,7 +9,7 @@ import at.rc.tacos.model.DialysisPatient;
 
 public class DialysisPatientListener extends ClientListenerAdapter
 {
-	DialysisTransportManager manager = ModelFactory.getInstance().getDialysisTransportManager();
+	DialysisTransportManager manager = ModelFactory.getInstance().getDialyseList();
 	
     @Override
     public void add(AbstractMessage addMessage)

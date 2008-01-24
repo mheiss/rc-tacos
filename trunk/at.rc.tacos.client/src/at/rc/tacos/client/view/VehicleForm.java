@@ -41,6 +41,7 @@ import at.rc.tacos.client.providers.VehicleLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.Constants;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
@@ -129,13 +130,13 @@ public class VehicleForm extends TitleAreaDialog
 		{
 			vehicleComboViewer.setSelection(new StructuredSelection(vehicleDetail));
 			mobilePhoneComboViewer.setSelection(new StructuredSelection(vehicleDetail.getMobilePhone()));
-			stationComboViewer.getCombo().setText(vehicleDetail.getCurrentStation());
-			if(vehicleDetail.getDriverName() != null)
-				driverComboViewer.setSelection(new StructuredSelection(vehicleDetail.getDriverName()));
-			if(vehicleDetail.getParamedicIName() != null)
-				medic1ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getParamedicIName()));
-			if(vehicleDetail.getParamedicIIName() != null)
-				medic2ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getParamedicIIName()));
+			stationComboViewer.setSelection(new StructuredSelection(vehicleDetail.getCurrentStation()));
+			if(vehicleDetail.getDriver() != null)
+				driverComboViewer.setSelection(new StructuredSelection(vehicleDetail.getDriver()));
+			if(vehicleDetail.getFirstParamedic() != null)
+				medic1ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getFirstParamedic()));
+			if(vehicleDetail.getSecondParamedic() != null)
+				medic2ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getSecondParamedic()));
 			readyButton.setSelection(vehicleDetail.isReadyForAction());
 			outOfOrder.setSelection(vehicleDetail.isOutOfOrder());
 			noteEditor.getDocument().set(vehicleDetail.getVehicleNotes());
@@ -173,13 +174,13 @@ public class VehicleForm extends TitleAreaDialog
 	{
 		//driver
 		int index = driverComboViewer.getCombo().getSelectionIndex();
-		vehicleDetail.setDriverName((StaffMember)driverComboViewer.getElementAt(index));
+		vehicleDetail.setDriver((StaffMember)driverComboViewer.getElementAt(index));
 		//medic
 		index = medic1ComboViewer.getCombo().getSelectionIndex();
-		vehicleDetail.setParamedicIName((StaffMember)medic1ComboViewer.getElementAt(index));
+		vehicleDetail.setFirstParamedic((StaffMember)medic1ComboViewer.getElementAt(index));
 		//medic1
 		index = medic2ComboViewer.getCombo().getSelectionIndex();
-		vehicleDetail.setParamedicIIName((StaffMember)medic2ComboViewer.getElementAt(index));
+		vehicleDetail.setSecondParamedic((StaffMember)medic2ComboViewer.getElementAt(index));
 		//notes
 		vehicleDetail.setVehicleNotes(noteEditor.getTextWidget().getText());
 		//status
@@ -189,7 +190,8 @@ public class VehicleForm extends TitleAreaDialog
 		index = mobilePhoneComboViewer.getCombo().getSelectionIndex();
 		vehicleDetail.setMobilPhone((MobilePhoneDetail)mobilePhoneComboViewer.getElementAt(index));
 		//station
-		vehicleDetail.setCurrentStation(stationComboViewer.getCombo().getText());
+		index = stationComboViewer.getCombo().getSelectionIndex();
+		vehicleDetail.setCurrentStation((Location)stationComboViewer.getElementAt(index));
 
 		//Send the update message
 		VehicleUpdateAction updateAction = new VehicleUpdateAction(vehicleDetail);
@@ -225,7 +227,7 @@ public class VehicleForm extends TitleAreaDialog
 		vehicleComboViewer = new ComboViewer(vehicleCombo);
 		vehicleComboViewer.setContentProvider(new VehicleContentProvider());
 		vehicleComboViewer.setLabelProvider(new VehicleLabelProvider());
-		vehicleComboViewer.setInput(ModelFactory.getInstance().getVehicleManager());
+		vehicleComboViewer.setInput(ModelFactory.getInstance().getVehicleList());
 
 		//Mobile Phone
 		final Label labelPhone = new Label(client, SWT.NONE);
@@ -235,7 +237,7 @@ public class VehicleForm extends TitleAreaDialog
 		mobilePhoneComboViewer = new ComboViewer(mobilePhoneCombo);
 		mobilePhoneComboViewer.setContentProvider(new MobilePhoneContentProvider());
 		mobilePhoneComboViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		mobilePhoneComboViewer.setInput(ModelFactory.getInstance().getMobilePhoneManager());
+		mobilePhoneComboViewer.setInput(ModelFactory.getInstance().getPhoneList());
 
 		//Station
 		final Label labelStation = new Label(client, SWT.NONE);
@@ -403,7 +405,7 @@ public class VehicleForm extends TitleAreaDialog
 		});
 		driverComboViewer.setContentProvider(new StaffMemberContentProvider());
 		driverComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		driverComboViewer.setInput(ModelFactory.getInstance().getStaffManager());
+		driverComboViewer.setInput(ModelFactory.getInstance().getStaffList());
 		//create the hyperlink
 		ImageHyperlink removeDriver = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeDriver.setToolTipText("Zieht den aktuell zugewiesenen Fahrer vom Fahrzeug ab");
@@ -436,7 +438,7 @@ public class VehicleForm extends TitleAreaDialog
 		});
 		medic1ComboViewer.setContentProvider(new StaffMemberContentProvider());
 		medic1ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffManager());
+		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffList());
 		//create the hyperlink
 		ImageHyperlink removeMedic = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
@@ -469,7 +471,7 @@ public class VehicleForm extends TitleAreaDialog
 		});
 		medic2ComboViewer.setContentProvider(new StaffMemberContentProvider());
 		medic2ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffManager());
+		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffList());
 		//create the hyperlink
 		ImageHyperlink removeMedic2 = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic2.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");

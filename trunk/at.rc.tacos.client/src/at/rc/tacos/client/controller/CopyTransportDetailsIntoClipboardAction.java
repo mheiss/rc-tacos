@@ -35,7 +35,6 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 	private String al = "";
 	private String smsData;	
 	
-	
 	/**
 	 * Default class constructor.
 	 * @param viewer the table viewer
@@ -55,8 +54,7 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//copy the details into the windows clipboard
-		if(transport.getTransportNumber() != null)
-			transportNumber = transport.getTransportNumber();
+		transportNumber = String.valueOf(transport.getTransportNumber());
 		
 		fromStreet = transport.getFromStreet();
 		if(transport.getFromCity() != null)
@@ -74,8 +72,8 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 		
 		kindOfIllness = transport.getKindOfIllness();
 		
-		if(transport.getDiseaseNotes() != null)
-			notes = transport.getDiseaseNotes();
+		if(transport.getNotes() != null)
+			notes = transport.getNotes();
 		
 		priority = transport.getTransportPriority();
 		if(transport.getTransportPriority().equalsIgnoreCase("A") || transport.getTransportPriority().equalsIgnoreCase("B"))

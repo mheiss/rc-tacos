@@ -1,8 +1,6 @@
 package at.rc.tacos.client.providers;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -10,7 +8,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.client.util.CustomColors;
 
@@ -48,7 +45,7 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 	        case COLUMN_TERM:return null;
 	        case COLUMN_FROM:return null;
 	        case COLUMN_PATIENT:
-	        	if(transport.isAccompanyingPerson())
+	        	if(transport.isAssistantPerson())
 	        		return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
 	        	else return null;
 	        case COLUMN_TO:
@@ -75,7 +72,7 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
         {
 	        case COLUMN_LOCK: return null;
 	        case COLUMN_PRIORITY: return transport.getTransportPriority();
-	        case COLUMN_RESP_STATION: return transport.getResponsibleStation();
+	        case COLUMN_RESP_STATION: return transport.getPlanedLocation().getLocationName();
 	        case COLUMN_ABF:
 	        	if (transport.getPlannedStartOfTransport() != 0)
 	        		return sdf.format(transport.getPlannedStartOfTransport());
@@ -104,12 +101,12 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 	        	else city = transport.getToCity();
 	        	return street +"/" +city;
 	        case COLUMN_AUFG:
-	        	if (transport.getReceiveTime() != 0)
-	        		return sdf.format(transport.getReceiveTime());
+	        	if (transport.getCreationTime() != 0)
+	        		return sdf.format(transport.getCreationTime());
 	        	else return "";
 	        case COLUMN_T:return transport.getKindOfTransport();
 	        case COLUMN_ERKR_VERL:return transport.getKindOfIllness();
-	        case COLUMN_NOTES:return transport.getDiseaseNotes();
+	        case COLUMN_NOTES:return transport.getNotes();
 	        default: return null;
         }
         

@@ -1,8 +1,6 @@
 package at.rc.tacos.client.providers;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -10,7 +8,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.client.util.CustomColors;
 
@@ -43,7 +40,7 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 	        case COLUMN_TERM:return null;
 	        case COLUMN_FROM:return null;
 	        case COLUMN_PATIENT:
-	        	if(transport.isAccompanyingPerson())
+	        	if(transport.isAssistantPerson())
 	        		return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
 	        	else return null;
 	        case COLUMN_TO:
@@ -66,7 +63,7 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
         switch(columnIndex)
         {
 	        case COLUMN_LOCK: return null;
-	        case COLUMN_RESP_STATION: return transport.getResponsibleStation();
+	        case COLUMN_RESP_STATION: return transport.getPlanedLocation().getLocationName();
 	        case COLUMN_ABF:
 	        	if (transport.getPlannedStartOfTransport() != 0)
 	        		return sdf.format(transport.getPlannedStartOfTransport());

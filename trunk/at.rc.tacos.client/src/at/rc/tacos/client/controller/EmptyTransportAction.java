@@ -1,7 +1,5 @@
 package at.rc.tacos.client.controller;
 
-import java.util.GregorianCalendar;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -48,7 +46,7 @@ public class EmptyTransportAction extends Action implements ITransportStatus, IP
 		if (!cancelConfirmed) 
 			return;
 		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-		transport.setDiseaseNotes(transport.getDiseaseNotes() + "/" +"Leerfahrt!");
+		transport.setNotes(transport.getNotes() + "/" +"Leerfahrt!");
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

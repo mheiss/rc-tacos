@@ -88,6 +88,7 @@ public class SessionManager extends PropertyManager
 	 */
 	public void setDayInfoMessage(final DayInfoMessage dayInfo)
 	{
+	    System.out.println(MyUtils.formatTimeAndDate(dayInfo.getTimestamp()));
 		//check if current displayed date is equal to the date of the day info update message
 		//--> display the message if equal
 		if(MyUtils.isEqualDate(dayInfo.getTimestamp(), displayedDate))
@@ -111,15 +112,9 @@ public class SessionManager extends PropertyManager
 	{
 		//check if the messages are the same
 		if(dayInfo.getMessage().equals(message))
-		{
-			System.out.println("day info is equal");
 			dayInfo.setDirty(false);
-		}
 		else
-		{
-			System.out.println("day info has changes");
 			dayInfo.setDirty(true);
-		}
 		//fire change
 		firePropertyChange("DAY_INFO_LOCAL_CHANGED", null, dayInfo);
 	}

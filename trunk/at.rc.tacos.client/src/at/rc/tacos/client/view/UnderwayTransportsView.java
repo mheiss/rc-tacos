@@ -87,7 +87,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	public UnderwayTransportsView()
 	{
 		//add listener to model to keep on track
-		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
 	
 	
@@ -97,7 +97,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
 	}
 	
 	
@@ -123,7 +123,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getTransportManager());
+		viewer.setInput(ModelFactory.getInstance().getTransportList());
 		viewer.getTable().setLinesVisible(true);
 		
 		viewer.refresh();
