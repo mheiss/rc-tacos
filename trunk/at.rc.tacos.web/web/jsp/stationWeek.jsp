@@ -62,7 +62,7 @@
 					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName() %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%= request.getParameter("action") %></td>
+					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%= request.getAttribute("action") %></td>
 					<td width="33%" align="right">Heute ist der <%=format.format(today)%>
 					</td>
 					<td>
@@ -89,14 +89,14 @@
 								<tr>
 									<td valign="middle" align="left" width="20" >
 									<% current.add(Calendar.DAY_OF_MONTH, -7);%>
-									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/stationWeek.do?action=" + request.getParameter("action") + "&id=startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_links.jpg" alt="# " class="hidefocus" ></a>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/stationWeek.do?action=" + request.getAttribute("action") + "&startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_links.jpg" alt="# " class="hidefocus" ></a>
 									</td><td valign="middle" align="left">
 									<%=formath.format(current.getTimeInMillis())%>
 									</td>
 									<td valign="middle" align="right">
 									<% current.add(Calendar.DAY_OF_MONTH, +14);%><%=formath.format(current.getTimeInMillis())%>
 									</td><td valign="middle" align="right" width="20" >
-									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/stationWeek.do?action=" + request.getParameter("action") + "&id=startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_rechts.jpg" alt="# " class="hidefocus" ></a>
+									<a href="<%=getServletContext().getContextPath()%>/Dispatcher/stationWeek.do?action=" + request.getAttribute("action") + "&startDate=<%=formath.format(current.getTimeInMillis())%>" ><img src="../image/Pfeil_rechts.jpg" alt="# " class="hidefocus" ></a>
 									</td>
 								</tr>
 							</table>
