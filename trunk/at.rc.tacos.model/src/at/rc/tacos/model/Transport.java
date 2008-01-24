@@ -10,13 +10,14 @@ import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportPriority;
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.util.MyUtils;
 
 /**
  * Specifies the transport details
  * @author b.thek
  */
-public class Transport extends AbstractMessage implements ITransportPriority,IDirectness
+public class Transport extends AbstractMessage implements ITransportPriority,IDirectness, ITransportStatus
 {
     //unique identification string
     public final static String ID = "transport";
@@ -132,6 +133,64 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     public void clearVehicleDetail()
     {
         this.vehicleDetail = null;
+    }
+    
+    /**
+     * Returns an integer with the highest transport status
+     * of a transport
+     * returns -1 if no condition matches (should not be possible for transports with the program status 'underway'
+     */
+    public int getMostImportantStatusMessageOfOneTransport()
+    {
+    	//S9
+    	if (statusMessages.containsKey(TRANSPORT_STATUS_OTHER))
+    		return TRANSPORT_STATUS_OTHER;
+    	//S8
+    	else if (statusMessages.containsKey(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+    	{
+    		//S4
+        	if (statusMessages.containsKey(TRANSPORT_STATUS_AT_DESTINATION))
+        		return TRANSPORT_STATUS_AT_DESTINATION;
+        	//S3
+        	else if (statusMessages.containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
+        		return TRANSPORT_STATUS_START_WITH_PATIENT;
+        	//S2
+        	else if (statusMessages.containsKey(TRANSPORT_STATUS_AT_PATIENT))
+        		return TRANSPORT_STATUS_AT_PATIENT;
+        	//S1
+        	else if (statusMessages.containsKey(TRANSPORT_STATUS_ON_THE_WAY))
+        		return TRANSPORT_STATUS_ON_THE_WAY;
+        	//S0
+        	else if (statusMessages.containsKey(TRANSPORT_STATUS_ORDER_PLACED))
+        		return TRANSPORT_STATUS_ORDER_PLACED;
+        	else return -2;
+    	}
+    	//S7
+    	else if (statusMessages.containsKey(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+    		return TRANSPORT_STATUS_OUT_OF_OPERATION_AREA;
+    	//S6
+    	else if (statusMessages.containsKey(TRANSPORT_STATUS_CAR_IN_STATION))
+    		return TRANSPORT_STATUS_CAR_IN_STATION;
+    	//S5
+    	else if(statusMessages.containsKey(TRANSPORT_STATUS_DESTINATION_FREE))
+    		return TRANSPORT_STATUS_DESTINATION_FREE;
+    	//S4
+    	else if (statusMessages.containsKey(TRANSPORT_STATUS_AT_DESTINATION))
+    		return TRANSPORT_STATUS_AT_DESTINATION;
+    	//S3
+    	else if (statusMessages.containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
+    		return TRANSPORT_STATUS_START_WITH_PATIENT;
+    	//S2
+    	else if (statusMessages.containsKey(TRANSPORT_STATUS_AT_PATIENT))
+    		return TRANSPORT_STATUS_AT_PATIENT;
+    	//S1
+    	else if (statusMessages.containsKey(TRANSPORT_STATUS_ON_THE_WAY))
+    		return TRANSPORT_STATUS_ON_THE_WAY;
+    	//S0
+    	else if (statusMessages.containsKey(TRANSPORT_STATUS_ORDER_PLACED))
+    		return TRANSPORT_STATUS_ORDER_PLACED;
+    	
+    	else return -1;
     }
 
     /**
@@ -934,7 +993,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
             throw new IllegalArgumentException("The vehicle detail cannot be null");
         this.vehicleDetail = vehicleDetail;
     }
-
-	
+    	
 }
 
