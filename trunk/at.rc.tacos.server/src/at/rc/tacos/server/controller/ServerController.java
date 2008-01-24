@@ -198,8 +198,6 @@ public class ServerController
     {
         //register the needed model types with the decoders and encoders
         ProtocolCodecFactory protFactory = ProtocolCodecFactory.getDefault();
-        protFactory.registerDecoder(Item.ID, new ItemDecoder());
-        protFactory.registerEncoder(Item.ID, new ItemEncoder());
         protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
         protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
         protFactory.registerDecoder(CallerDetail.ID, new CallerDecoder());
@@ -218,6 +216,14 @@ public class ServerController
         protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
         protFactory.registerDecoder(DayInfoMessage.ID, new DayInfoMessageDecoder());
         protFactory.registerEncoder(DayInfoMessage.ID, new DayInfoMessageEncoder());
+        protFactory.registerDecoder(Job.ID, new JobDecoder());
+        protFactory.registerEncoder(Job.ID, new JobEncoder());
+        protFactory.registerDecoder(Location.ID, new LocationDecoder());
+        protFactory.registerEncoder(Location.ID, new LocationEncoder());
+        protFactory.registerDecoder(Competence.ID, new CompetenceDecoder());
+        protFactory.registerEncoder(Competence.ID, new CompetenceEncoder());
+        protFactory.registerDecoder(ServiceType.ID, new ServiceTypeDecoder());
+        protFactory.registerEncoder(ServiceType.ID, new ServiceTypeEncoder());
         //system events
         protFactory.registerDecoder(Login.ID, new LoginDecoder());
         protFactory.registerEncoder(Login.ID, new LoginEncoder());
@@ -245,6 +251,10 @@ public class ServerController
         factory.registerModelListener(Logout.ID, new AuthenticationListener());
         factory.registerModelListener(DialysisPatient.ID, new DialysisPatientListener());
         factory.registerModelListener(DayInfoMessage.ID, new DayInfoListener());
+        factory.registerModelListener(Job.ID, new JobListener());
+        factory.registerModelListener(Location.ID, new LocationListener());
+        factory.registerModelListener(Competence.ID, new CompetenceListener());
+        factory.registerModelListener(ServiceType.ID, new ServiceTypeListener());
     }
     
     /**
@@ -271,7 +281,7 @@ public class ServerController
             factory.createStaffMemberDAO().addStaffMember(member,"P@ssw0rd");
         //transports
         for(Transport transport:source.transportList)
-            factory.createTransportDAO().addTransport(transport);
+            factory.createTransportDAO().addTransport(transport,5);
         //vehicles
         for(VehicleDetail vehicle:source.vehicleList)
             factory.createVehicleDetailDAO().addVehicle(vehicle); 

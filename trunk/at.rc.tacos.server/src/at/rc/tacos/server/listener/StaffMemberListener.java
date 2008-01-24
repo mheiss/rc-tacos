@@ -28,11 +28,10 @@ public class StaffMemberListener extends ServerListenerAdapter
         try
         {
             id = staffDao.addStaffMember(member,"");
-            member.setPersonId(id);
+            member.setStaffMemberId(id);
         }
         catch (SQLException e)
         {
-            // TODO Auto-generated catch block
             e.getMessage();
         }
         return member;
@@ -54,7 +53,6 @@ public class StaffMemberListener extends ServerListenerAdapter
             }
             catch (SQLException e)
             {
-                // TODO Auto-generated catch block
                 e.getMessage();
             }
         }
@@ -69,7 +67,6 @@ public class StaffMemberListener extends ServerListenerAdapter
             }
             catch (SQLException e)
             {
-                // TODO Auto-generated catch block
                 e.getMessage();
             }
         }
@@ -89,7 +86,6 @@ public class StaffMemberListener extends ServerListenerAdapter
         }
         catch (SQLException e)
         {
-            // TODO Auto-generated catch block
             e.getMessage();
         }
         return member;
@@ -108,7 +104,6 @@ public class StaffMemberListener extends ServerListenerAdapter
         }
         catch (SQLException e)
         {
-            // TODO Auto-generated catch block
             e.getMessage();
         }
         return member;

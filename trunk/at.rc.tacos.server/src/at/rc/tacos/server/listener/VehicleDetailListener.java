@@ -23,8 +23,7 @@ public class VehicleDetailListener extends ServerListenerAdapter
     public AbstractMessage handleAddRequest(AbstractMessage addObject)
     {
         VehicleDetail vehicle = (VehicleDetail)addObject;
-        int id = vehicleDao.addVehicle(vehicle);
-        vehicle.setVehicleId(id);
+        vehicleDao.addVehicle(vehicle);
         return vehicle;
     }
 

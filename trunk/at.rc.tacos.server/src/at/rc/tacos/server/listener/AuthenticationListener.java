@@ -28,7 +28,6 @@ public class AuthenticationListener extends ServerListenerAdapter
         String username = login.getUsername();
         String password = login.getPassword();
         //check agains the database
-        
         boolean loggedIn = false;
         try
         {
@@ -36,7 +35,6 @@ public class AuthenticationListener extends ServerListenerAdapter
         }
         catch (SQLException e)
         {
-            // TODO Auto-generated catch block
             e.getMessage();
         }
         if(loggedIn)
@@ -49,7 +47,6 @@ public class AuthenticationListener extends ServerListenerAdapter
             }
             catch (SQLException e)
             {
-                // TODO Auto-generated catch block
                 e.getMessage();
             }
         }
