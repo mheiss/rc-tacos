@@ -111,12 +111,12 @@ public class RosterDAOMySQL implements RosterDAO
     }
 
     @Override
-    public boolean removeRosterEntry(RosterEntry rosterEntry)
+    public boolean removeRosterEntry(int id)
     {
     	try
     	{
     		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.RosterEntry"));
-    		query.setInt(1, rosterEntry.getRosterId());
+    		query.setInt(1, id);
 
     		query.executeUpdate();
     	}
