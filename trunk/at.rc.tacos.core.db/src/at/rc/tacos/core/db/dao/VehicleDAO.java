@@ -10,7 +10,7 @@ public interface VehicleDAO
 	 * @param vehicle the vehicle to add
 	 * @return the id of the added vehicle
 	 */
-    public int addVehicle(VehicleDetail vehicle);
+    public boolean addVehicle(VehicleDetail vehicle);
     
     /**
      * Updates the vehicle in the database
