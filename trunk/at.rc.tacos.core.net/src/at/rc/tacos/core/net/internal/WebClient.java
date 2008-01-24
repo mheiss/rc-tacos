@@ -4,8 +4,17 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import at.rc.tacos.codec.ItemDecoder;
-import at.rc.tacos.codec.ItemEncoder;
+
+import at.rc.tacos.codec.CompetenceDecoder;
+import at.rc.tacos.codec.CompetenceEncoder;
+import at.rc.tacos.codec.DayInfoMessageDecoder;
+import at.rc.tacos.codec.DayInfoMessageEncoder;
+import at.rc.tacos.codec.DialysisDecoder;
+import at.rc.tacos.codec.DialysisEncoder;
+import at.rc.tacos.codec.JobDecoder;
+import at.rc.tacos.codec.JobEncoder;
+import at.rc.tacos.codec.LocationDecoder;
+import at.rc.tacos.codec.LocationEncoder;
 import at.rc.tacos.codec.LoginDecoder;
 import at.rc.tacos.codec.LoginEncoder;
 import at.rc.tacos.codec.LogoutDecoder;
@@ -18,6 +27,8 @@ import at.rc.tacos.codec.PatientDecoder;
 import at.rc.tacos.codec.PatientEncoder;
 import at.rc.tacos.codec.RosterEntryDecoder;
 import at.rc.tacos.codec.RosterEntryEncoder;
+import at.rc.tacos.codec.ServiceTypeDecoder;
+import at.rc.tacos.codec.ServiceTypeEncoder;
 import at.rc.tacos.codec.StaffMemberDecoder;
 import at.rc.tacos.codec.StaffMemberEncoder;
 import at.rc.tacos.codec.SystemMessageDecoder;
@@ -30,7 +41,11 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.factory.XMLFactory;
-import at.rc.tacos.model.Item;
+import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.DayInfoMessage;
+import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
 import at.rc.tacos.model.MobilePhoneDetail;
@@ -38,6 +53,7 @@ import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.model.Transport;
@@ -319,8 +335,6 @@ public class WebClient
     {
         //register the needed model types with the decoders and encoders
         ProtocolCodecFactory protFactory = ProtocolCodecFactory.getDefault();
-        protFactory.registerDecoder(Item.ID, new ItemDecoder());
-        protFactory.registerEncoder(Item.ID, new ItemEncoder());
         protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
         protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
         protFactory.registerDecoder(CallerDetail.ID, new CallerDecoder());
@@ -335,13 +349,24 @@ public class WebClient
         protFactory.registerEncoder(Transport.ID, new TransportEncoder());
         protFactory.registerDecoder(VehicleDetail.ID, new VehicleDecoder());
         protFactory.registerEncoder(VehicleDetail.ID, new VehicleEncoder()); 
-        //system events
         protFactory.registerDecoder(Login.ID, new LoginDecoder());
         protFactory.registerEncoder(Login.ID, new LoginEncoder());
         protFactory.registerDecoder(Logout.ID, new LogoutDecoder());
         protFactory.registerEncoder(Logout.ID, new LogoutEncoder());
         protFactory.registerDecoder(SystemMessage.ID, new SystemMessageDecoder());
         protFactory.registerEncoder(SystemMessage.ID, new SystemMessageEncoder());
+        protFactory.registerDecoder(DialysisPatient.ID, new DialysisDecoder());
+        protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
+        protFactory.registerDecoder(DayInfoMessage.ID, new DayInfoMessageDecoder());
+        protFactory.registerEncoder(DayInfoMessage.ID, new DayInfoMessageEncoder());
+        protFactory.registerDecoder(Job.ID, new JobDecoder());
+        protFactory.registerEncoder(Job.ID, new JobEncoder());
+        protFactory.registerDecoder(Location.ID, new LocationDecoder());
+        protFactory.registerEncoder(Location.ID, new LocationEncoder());
+        protFactory.registerDecoder(Competence.ID, new CompetenceDecoder());
+        protFactory.registerEncoder(Competence.ID, new CompetenceEncoder());
+        protFactory.registerDecoder(ServiceType.ID, new ServiceTypeDecoder());
+        protFactory.registerEncoder(ServiceType.ID, new ServiceTypeEncoder());
     }
 
     /**

@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.model.Item;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.CallerDetail;
@@ -97,17 +96,7 @@ public class WebClientTest
         Assert.assertEquals(StaffMember.ID, client.getContentType());
         Assert.assertEquals(3, resultList.size());
     }
-    
-    @Test
-    public void testItemListing()
-    {
-        client.sendLoginRequest("testUser","P@ssw0rd");
-        //send the request for the listing
-        resultList = client.sendListingRequest(Item.ID, null);
-        Assert.assertEquals(Item.ID, client.getContentType());
-        Assert.assertEquals(3, resultList.size());
-    }
-    
+       
     @Test
     public void testMobilePhoneDetailListing()
     {
