@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -18,16 +17,6 @@ import at.rc.tacos.model.*;
 public class StaffMemberDAOMySQL implements StaffMemberDAO
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
-	
-	private String convertDate (long date)
-	{
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(date);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-		String stringdate = sdf.format(cal.getTime());
-		
-		return stringdate;
-	}
 	
 	private long convertDateIntoLong (String stringdate)
 	{
@@ -48,27 +37,58 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	public List<StaffMember> getAllStaffMembers()
 	{
 		List<StaffMember> staffMembers = new ArrayList<StaffMember>();
+		StaffMember staff = new StaffMember();
+		Location station = new Location();
+		Competence competence = new Competence();
+		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
+			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
+			//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.staffmembers"));
 			final ResultSet rs = query.executeQuery();
 
 			while(rs.next())
 			{
-				StaffMember staff = new StaffMember();
+				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
+	    		
+	    		station.setId(rs.getInt("e.primaryLocation"));
+	    		station.setLocationName(rs.getString("lo.locationname"));
+	    		staff.setPrimaryLocation(station);
+	    		
+	    		staff.setLastName(rs.getString("e.lastname"));
+	    		staff.setFirstName(rs.getString("e.firstname"));
+	    		staff.setStreetname(rs.getString("e.street"));
+	    		staff.setCityname(rs.getString("e.city"));
+	    		staff.setMale(rs.getBoolean("e.sex"));
+	    		staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+	    		staff.setEMail(rs.getString("e.email"));
+	    		staff.setUserName(rs.getString("e.username"));
+	    		
+	    		{
+	    			competence.setId(rs.getInt("c.competence_ID"));
+	    			competence.setCompetenceName(rs.getString("c.competence"));
+	    			competences.add(competence);
+	    		}while(rs.next());
+	    		staff.setCompetenceList(competences);
 
-				staff.setPrimaryLocation(rs.getInt("primaryLocation"));
-				staff.setLastName(rs.getString("lastname"));
-				staff.setFirstName(rs.getString("firstname"));
-				staff.setSex(rs.getBoolean("sex"));
-				staff.setBirthday(convertDateIntoLong(rs.getString("birthday")));
-				staff.setEMail(rs.getString("email"));
-				staff.setStreetname(rs.getString("street"));
-				staff.setCityname(rs.getString("city"));
-				staff.setUserName(rs.getString("username"));
-				staff.setAuthorization(rs.getString("authorization"));
-
-				staffMembers.add(staff);
+	    		//ph.phonenumber, ph.phonenumber_ID
+	    		final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
+	    		query3.setInt(1, rs.getInt("ro.staffmember_ID"));
+	    		final ResultSet rs2 = query3.executeQuery();
+	    		
+	    		List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
+	    		while(rs2.next())
+	    		{
+	    			MobilePhoneDetail phone = new MobilePhoneDetail();
+	    			
+	    			phone.setId(rs2.getInt("ph.phonenumber_ID"));
+	    			phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
+	    			phoneList.add(phone);
+	    		}
+	    		staff.setPhonelist(phoneList);
+	    		
+	    		staffMembers.add(staff);
 			}
 		}
 		catch (SQLException e)
@@ -79,31 +99,62 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 		return staffMembers;
 	}
 	
-	public List<StaffMember> getStaffMembersFromLocation(String locationname)
+	public List<StaffMember> getStaffMembersFromLocation(int locationId)
 	{
 		List<StaffMember> staffMembers = new ArrayList<StaffMember>();
+		StaffMember staff = new StaffMember();
+		Location station = new Location();
+		Competence competence = new Competence();
+		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
+			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
+			//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.staffmembersFromLocation"));
-			query.setString(1, locationname);
+			query.setInt(1, locationId);
 			final ResultSet rs = query.executeQuery();
 
 			while(rs.next())
 			{
-				StaffMember staff= new StaffMember();
+				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
+	    		
+	    		station.setId(rs.getInt("e.primaryLocation"));
+	    		station.setLocationName(rs.getString("lo.locationname"));
+	    		staff.setPrimaryLocation(station);
+	    		
+	    		staff.setLastName(rs.getString("e.lastname"));
+	    		staff.setFirstName(rs.getString("e.firstname"));
+	    		staff.setStreetname(rs.getString("e.street"));
+	    		staff.setCityname(rs.getString("e.city"));
+	    		staff.setMale(rs.getBoolean("e.sex"));
+	    		staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+	    		staff.setEMail(rs.getString("e.email"));
+	    		staff.setUserName(rs.getString("e.username"));
+	    		
+	    		{
+	    			competence.setId(rs.getInt("c.competence_ID"));
+	    			competence.setCompetenceName(rs.getString("c.competence"));
+	    			competences.add(competence);
+	    		}while(rs.next());
+	    		staff.setCompetenceList(competences);
 
-				staff.setPrimaryLocation(rs.getInt("primaryLocation"));
-				staff.setLastName(rs.getString("lastname"));
-				staff.setFirstName(rs.getString("firstname"));
-				staff.setSex(rs.getBoolean("sex"));
-				staff.setBirthday(convertDateIntoLong(rs.getString("birthday")));
-				staff.setEMail(rs.getString("email"));
-				staff.setStreetname(rs.getString("street"));
-				staff.setCityname(rs.getString("city"));
-				staff.setUserName(rs.getString("username"));
-				staff.setAuthorization(rs.getString("authorization"));
-
-				staffMembers.add(staff);
+	    		//ph.phonenumber, ph.phonenumber_ID
+	    		final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
+	    		query3.setInt(1, rs.getInt("ro.staffmember_ID"));
+	    		final ResultSet rs2 = query3.executeQuery();
+	    		
+	    		List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
+	    		while(rs2.next())
+	    		{
+	    			MobilePhoneDetail phone = new MobilePhoneDetail();
+	    			
+	    			phone.setId(rs2.getInt("ph.phonenumber_ID"));
+	    			phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
+	    			phoneList.add(phone);
+	    		}
+	    		staff.setPhonelist(phoneList);
+	    		
+	    		staffMembers.add(staff);
 			}
 		}
 		catch (SQLException e)
@@ -116,158 +167,123 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	
 	public StaffMember getStaffMemberByID(int id)
 	{
-		StaffMember staffMember = new StaffMember();
+		StaffMember staff = new StaffMember();
+		Location station = new Location();
+		Competence competence = new Competence();
+		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.staffmembersFromLocation"));
+			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
+			//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberByID"));
 			query.setInt(1, id);
 			final ResultSet rs = query.executeQuery();
 
 			rs.first();
+				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
+	    		
+	    		station.setId(rs.getInt("e.primaryLocation"));
+	    		station.setLocationName(rs.getString("lo.locationname"));
+	    		staff.setPrimaryLocation(station);
+	    		
+	    		staff.setLastName(rs.getString("e.lastname"));
+	    		staff.setFirstName(rs.getString("e.firstname"));
+	    		staff.setStreetname(rs.getString("e.street"));
+	    		staff.setCityname(rs.getString("e.city"));
+	    		staff.setMale(rs.getBoolean("e.sex"));
+	    		staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+	    		staff.setEMail(rs.getString("e.email"));
+	    		staff.setUserName(rs.getString("e.username"));
+	    		
+	    		{
+	    			competence.setId(rs.getInt("c.competence_ID"));
+	    			competence.setCompetenceName(rs.getString("c.competence"));
+	    			competences.add(competence);
+	    		}while(rs.next());
+	    		staff.setCompetenceList(competences);
 
-			StaffMember staff= new StaffMember();
-
-			staff.setPrimaryLocation(rs.getInt("primaryLocation"));
-			staff.setLastName(rs.getString("lastname"));
-			staff.setFirstName(rs.getString("firstname"));
-			staff.setSex(rs.getBoolean("sex"));
-			staff.setBirthday(convertDateIntoLong(rs.getString("birthday")));
-			staff.setEMail(rs.getString("email"));
-			staff.setStreetname(rs.getString("street"));
-			staff.setCityname(rs.getString("city"));
-			staff.setUserName(rs.getString("username"));
-			staff.setAuthorization(rs.getString("authorization"));
+	    		//ph.phonenumber, ph.phonenumber_ID
+	    		final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
+	    		query3.setInt(1, rs.getInt("ro.staffmember_ID"));
+	    		final ResultSet rs2 = query3.executeQuery();
+	    		
+	    		List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
+	    		while(rs2.next())
+	    		{
+	    			MobilePhoneDetail phone = new MobilePhoneDetail();
+	    			
+	    			phone.setId(rs2.getInt("ph.phonenumber_ID"));
+	    			phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
+	    			phoneList.add(phone);
+	    		}
+	    		staff.setPhonelist(phoneList);
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 			return null;
 		}
-		
-		return staffMember;
+		return staff;
 	}
 	
 	public StaffMember getStaffMemberByUsername(String username)
 	{
-		StaffMember staffMember = new StaffMember();
+		StaffMember staff = new StaffMember();
+		Location station = new Location();
+		Competence competence = new Competence();
+		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.staffmembersFromLocation"));
+			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
+			//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberbyUsername"));
 			query.setString(1, username);
 			final ResultSet rs = query.executeQuery();
 
 			rs.first();
+				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
+	    		
+	    		station.setId(rs.getInt("e.primaryLocation"));
+	    		station.setLocationName(rs.getString("lo.locationname"));
+	    		staff.setPrimaryLocation(station);
+	    		
+	    		staff.setLastName(rs.getString("e.lastname"));
+	    		staff.setFirstName(rs.getString("e.firstname"));
+	    		staff.setStreetname(rs.getString("e.street"));
+	    		staff.setCityname(rs.getString("e.city"));
+	    		staff.setMale(rs.getBoolean("e.sex"));
+	    		staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+	    		staff.setEMail(rs.getString("e.email"));
+	    		staff.setUserName(rs.getString("e.username"));
+	    		
+	    		{
+	    			competence.setId(rs.getInt("c.competence_ID"));
+	    			competence.setCompetenceName(rs.getString("c.competence"));
+	    			competences.add(competence);
+	    		}while(rs.next());
+	    		staff.setCompetenceList(competences);
 
-			StaffMember staff = new StaffMember();
-
-			staff.setPrimaryLocation(rs.getInt("primaryLocation"));
-			staff.setLastName(rs.getString("lastname"));
-			staff.setFirstName(rs.getString("firstname"));
-			staff.setSex(rs.getBoolean("sex"));
-			staff.setBirthday(convertDateIntoLong(rs.getString("birthday")));
-			staff.setEMail(rs.getString("email"));
-			staff.setStreetname(rs.getString("street"));
-			staff.setCityname(rs.getString("city"));
-			staff.setUserName(rs.getString("username"));
-			staff.setAuthorization(rs.getString("authorization"));
+	    		//ph.phonenumber, ph.phonenumber_ID
+	    		final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
+	    		query3.setInt(1, rs.getInt("ro.staffmember_ID"));
+	    		final ResultSet rs2 = query3.executeQuery();
+	    		
+	    		List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
+	    		while(rs2.next())
+	    		{
+	    			MobilePhoneDetail phone = new MobilePhoneDetail();
+	    			
+	    			phone.setId(rs2.getInt("ph.phonenumber_ID"));
+	    			phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
+	    			phoneList.add(phone);
+	    		}
+	    		staff.setPhonelist(phoneList);
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 			return null;
 		}
-		
-		return staffMember;
-	}
-	
-	public Integer addStaffMember(StaffMember staffMember, String pwdHash)
-	{
-		Integer staffMemberId = null;
-		try
-		{	// username, pwd, authorization
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.User"));
-			query1.setString(1, staffMember.getUserName());
-			query1.setString(2, pwdHash);
-			query1.setString(3, staffMember.getAuthorization());
-			query1.executeUpdate();
-			
-			// staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username
-			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.staffmember"));
-			query2.setInt(1, staffMember.getPersonId());
-			query2.setInt(2, staffMember.getPrimaryLocation());
-			query2.setString(3, staffMember.getFirstName());
-			query2.setString(4, staffMember.getLastName());
-			query2.setBoolean(5, staffMember.isSex());
-			query2.setString(6, convertDate(staffMember.getBirthday()));
-			query2.setString(7, staffMember.getEMail());
-			query2.setString(8, staffMember.getStreetname());
-			query2.setString(9, staffMember.getCityname());
-			query2.setString(10, staffMember.getUserName());
-			
-			query2.executeUpdate();
-			
-			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberbyUsername"));
-			query3.setString(1, staffMember.getUserName());
-			final ResultSet rsStaffMemberId = query3.executeQuery();
-			
-			if(rsStaffMemberId.next())
-				staffMemberId = rsStaffMemberId.getInt("staffmember_ID");
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-		return staffMemberId;
-	}
-
-	public boolean updateStaffMember(StaffMember staffMember)
-	{
-		try
-		{
-			// primaryLocation, firstname, lastname, sex, birthday, email, street, city, username, staffmember_ID
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.staffmember"));
-			query.setInt(1, staffMember.getPrimaryLocation());
-			query.setString(2, staffMember.getFirstName());
-			query.setString(3, staffMember.getLastName());
-			query.setBoolean(4, staffMember.isSex());
-			query.setString(5, convertDate(staffMember.getBirthday()));
-			query.setString(6, staffMember.getEMail());
-			query.setString(7, staffMember.getStreetname());
-			query.setString(8, staffMember.getCityname());
-			query.setString(9, staffMember.getUserName());
-			query.setInt(10, staffMember.getPersonId());
-
-			query.executeUpdate();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean deleteStaffMember(StaffMember member)
-	{
-    	try
-    	{
-    		// delete.User
-    		final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.User"));
-    		query1.setString(1, member.getUserName());
-    		query1.executeUpdate();
-    		
-    		//delete.staffmember
-    		final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.staffmember"));
-    		query2.setInt(1, member.getPersonId());
-    		query2.executeUpdate();
-    	}
-    	catch (SQLException e)
-    	{
-    		e.printStackTrace();
-    		return false;
-    	}
-    	return true;
+		return staff;
 	}
 }

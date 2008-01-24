@@ -46,9 +46,11 @@ public interface UserLoginDAO
 	 * Checks the username and the password hash agains the database
 	 * @param username the username 
 	 * @param pwdHash the password to authenticate
-	 * @return true if the authentication was successfull
+	 * @return 0 if the authentication was successfull
+	 * @return -1 if password or username was wrong
+	 * @return -2 user is locked
 	 */
-    public boolean checkLogin(String username,String pwdHash);
+    public int checkLogin(String username,String pwdHash);
 
     /**
      * Returns the accociated login object identified by the username
