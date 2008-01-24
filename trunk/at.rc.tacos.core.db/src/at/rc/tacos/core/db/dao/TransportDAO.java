@@ -54,10 +54,18 @@ public interface TransportDAO
     public List<Transport> listTransports(long startdate, long enddate);
     
     /**
+     * Returns all archived transports in the given interval.
+     * @param startdate the start date
+     * @param enddate the end date
+     * @return the list of archived transports in the given interval.
+     */
+    public List<Transport> listArchivedTransports(long startdate, long enddate);
+    
+    /**
      * Returns a list of all transports accociated with the given vehicle
      * and with the program status <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>
-     * @param vehicleId the id of the vehicle to get the transports from
+     * @param vehicleName the name of the vehicle to get the transports from
      * @return the list of transports
      */
-    public List<Transport> getTransportsFromVehicle(int vehicleId);
+    public List<Transport> getTransportsFromVehicle(String vehicleName);
 }

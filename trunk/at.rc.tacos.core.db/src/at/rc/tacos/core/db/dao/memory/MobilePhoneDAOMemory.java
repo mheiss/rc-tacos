@@ -52,25 +52,30 @@ public class MobilePhoneDAOMemory implements MobilePhoneDAO
     }
     
     @Override
-    public void updateMobilePhone(MobilePhoneDetail phone)
+    public boolean updateMobilePhone(MobilePhoneDetail phone)
     {
         int index = phoneList.indexOf(phone);
         phoneList.remove(index);
         phoneList.add(index, phone);
+        return true;
     }
     
     @Override
-    public void removeMobilePhone(MobilePhoneDetail phone)
+    public boolean removeMobilePhone(int id)
     {
-        phoneList.remove(phone);
+    	if(phoneList.remove(id) != null)
+    		return true;
+    	//nothing remove
+    	return false;
     }
 
     @Override
-    public MobilePhoneDetail getMobilePhoneById(String mobilePhoneId)
+    public MobilePhoneDetail getMobilePhoneByName(String mobilePhoneName)
     {
         for(MobilePhoneDetail detail:phoneList)
-            if(detail.getMobilePhoneName().equalsIgnoreCase(mobilePhoneId))
+            if(detail.getMobilePhoneName().equalsIgnoreCase(mobilePhoneName))
                 return detail;
+        //Nothing found
         return null;
     }
 

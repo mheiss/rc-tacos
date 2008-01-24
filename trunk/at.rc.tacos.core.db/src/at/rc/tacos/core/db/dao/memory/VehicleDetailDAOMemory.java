@@ -68,11 +68,11 @@ public class VehicleDetailDAOMemory implements VehicleDAO
     }
 
     @Override
-    public VehicleDetail getVehicleById(String vehicleId)
+    public VehicleDetail getVehicleByName(String vehicleName)
     {
         for(VehicleDetail detail:vehicleList)
         {
-            if(detail.getVehicleName().equalsIgnoreCase(vehicleId))
+            if(detail.getVehicleName().equalsIgnoreCase(vehicleName))
                 return detail;
         }
         return null;

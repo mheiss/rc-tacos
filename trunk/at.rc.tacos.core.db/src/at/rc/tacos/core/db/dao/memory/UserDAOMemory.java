@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.StaffMember;
 
 /**
  * Data source for login/logout
@@ -44,31 +45,72 @@ public class UserDAOMemory implements UserLoginDAO
         userList.clear();
     }
     
-    /**
-     * Checks the given username and password.
-     * @param username the username to check
-     * @param password the password to check
-     * @return the id of the logged in user or -1 if the login failed
-     */
     @Override
-    public boolean checkLogin(String username,String password)
+    public int checkLogin(String username,String password)
     {
         //loop over all user logins
         for(Login login:userList)
         {
             if(username.equals(login.getUsername()) && password.equals(login.getPassword()))
-                return true;
+                return LOGIN_SUCCESSFULL;
         }
         //no valid login
-        return false;
+        return LOGIN_FAILED;
     }
     
-    /**
-     * Adds a new login to the dao
-     * @params login the username and the password of the user
-     */
-    public void addLogin(Login login)
+    @Override
+    public int addLogin(Login login)
     {
+    	//add the staffMember
+    	StaffMember member = login.getUserInformation();
+    	int staffId = StaffMemberDAOMemory.getInstance().addStaffMember(member);
+    	member.setStaffMemberId(staffId);
+    	
+    	//add the login
     	userList.add(login);
+    	return userList.size();
     }
+
+	@Override
+	public Login getLoginAndStaffmember(String username) 
+	{
+		//loop
+		for(Login login:userList)
+		{
+			if(login.getUsername().equalsIgnoreCase(username))
+				return login;
+		}
+		//nothing
+		return null;
+	}
+
+	@Override
+	public boolean removeLogin(int id) 
+	{
+		//the login
+		Login login = userList.get(id);
+		//assert valid
+		if(login == null)
+			return false;
+		
+		//remove the staff member
+		StaffMemberDAOMemory.getInstance().removeStaffMember(login.getUserInformation().getStaffMemberId());
+		//remove the login
+		if(userList.remove(id) != null)
+			return true;
+		//nothing removed 
+		return false;
+	}
+
+	@Override
+	public boolean updateLogin(Login login) 
+	{
+		//update the staff member
+		StaffMember member = login.getUserInformation();
+		StaffMemberDAOMemory.getInstance().updateStaffMember(member);
+		//update the login
+		int index = userList.indexOf(login);
+		userList.set(index, login);
+		return true;	
+	}
 }

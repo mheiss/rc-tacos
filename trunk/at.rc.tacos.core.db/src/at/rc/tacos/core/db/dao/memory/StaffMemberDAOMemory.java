@@ -1,6 +1,5 @@
 package at.rc.tacos.core.db.dao.memory;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
@@ -46,50 +45,73 @@ public class StaffMemberDAOMemory implements StaffMemberDAO
     }
 
     @Override
-    public Integer addStaffMember(StaffMember staffMember, String pwdHash) throws SQLException
-    {
-        staffList.add(staffMember);
-        return staffList.size();
-    }
-    
-    @Override
-    public boolean updateStaffMember(StaffMember staffMember) throws SQLException
-    {
-        int index = staffList.indexOf(staffMember);
-        staffList.remove(index);
-        staffList.add(index,staffMember);
-        
-        return true;
-    }
-
-    @Override
-    public boolean deleteStaffMember(StaffMember member) throws SQLException
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public List<StaffMember> getAllStaffMembers() throws SQLException
+    public List<StaffMember> getAllStaffMembers()
     {
         return staffList;
     }
 
     @Override
-    public StaffMember getStaffMemberByID(int id) throws SQLException
+    public StaffMember getStaffMemberByID(int id)
     {
         return staffList.get(id);
     }
 
     @Override
-    public StaffMember getStaffMemberByUsername(String username) throws SQLException
+    public StaffMember getStaffMemberByUsername(String username)
     {
-        return staffList.get(0);
+    	for(StaffMember member:staffList)
+    	{
+    		if(member.getUserName().equalsIgnoreCase(username))
+    			return member;
+    	}
+    	//nothing found
+    	return null;
     }
 
     @Override
-    public List<StaffMember> getStaffMembersFromLocation(String locationname) throws SQLException
+    public List<StaffMember> getStaffMembersFromLocation(int locationId)
     {
-        return staffList;
+    	List<StaffMember> filteredList = new ArrayList<StaffMember>();
+    	//loop and filter
+    	for(StaffMember member:staffList)
+    	{
+    		if(member.getPrimaryLocation().getId() == locationId)
+    			filteredList.add(member);
+    	}
+    	//return the list
+        return filteredList;
+    }
+    
+    
+    // METHODS ONLY FOR TESTING PURPOSE !!!
+    
+    /**
+     * Adds a new staff member to the list
+     */
+    public int addStaffMember(StaffMember member)
+    {
+    	staffList.add(member);
+    	return staffList.size();
+    }
+    
+    /**
+     * Updates the staff member
+     */
+    public boolean updateStaffMember(StaffMember member)
+    {
+    	int index = staffList.indexOf(member);
+    	staffList.set(index, member);
+    	return true;
+    }
+    
+    /**
+     * Removes the staff member
+     */
+    public boolean removeStaffMember(int id)
+    {
+    	if(staffList.remove(id) != null)
+    		return true;
+    	//Nothing removed
+    	return false;
     }
 }

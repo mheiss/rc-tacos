@@ -2,8 +2,11 @@ package at.rc.tacos.core.db.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import at.rc.tacos.core.db.dao.TransportDAO;
-import at.rc.tacos.model.Transport;;
+import at.rc.tacos.model.Transport;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * Data source for transports
@@ -16,6 +19,7 @@ public class TransportDAOMemory implements TransportDAO
     
     //the data list
     private ArrayList<Transport> transportList; 
+    private ArrayList<Transport> archivedList;
     
     /**
      * Default class constructor
@@ -23,6 +27,7 @@ public class TransportDAOMemory implements TransportDAO
     private TransportDAOMemory()
     {
         transportList = new ArrayList<Transport>();
+        archivedList = new ArrayList<Transport>();
     }
     
     /**
@@ -35,70 +40,93 @@ public class TransportDAOMemory implements TransportDAO
             instance = new TransportDAOMemory();
         return instance;
     }
-    
-    /**
-     * Cleans up the data of the list
-     */
-    public void reset()
-    {
-        transportList = new ArrayList<Transport>();
-    }
 
-    @Override
-    public String addTransport(Transport transport,int test)
-    {
-        transportList.add(transport);
-        return String.valueOf(transportList.size());
-    }
-    
-    @Override
-    public boolean updateTransport(Transport transport)
-    {
-        int index = transportList.indexOf(transport);
-        transportList.remove(index);
-        transportList.add(index,transport);
-        return true;
-    }
+	@Override
+	public int addTransport(Transport transport) 
+	{
+		transportList.add(transport);
+		return transportList.size();
+	}
 
-    @Override
-    public boolean removeTransportByNr(long id)
-    {
-        Transport transportToRemove = null;
-        //loop and check
-        for(Transport transport:transportList)
-        {
-            if(transport.getTransportId() == id)
-                transportToRemove = transport;
-        }
-        //do we have something to remove?
-        if(transportToRemove != null)
-        {
-            transportList.remove(transportToRemove);
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean archiveTransport(Transport transport) 
+	{
+		transportList.remove(transport);
+		archivedList.add(transport);
+		return true;
+	}
 
-    @Override
-    public Transport getTransportByNr(int transportId, int locationId)
-    {
-        for(Transport transport:transportList)
-        {
-            if(transport.getTransportId() == transportId)
-                return transport;
-        }
-        return null;
-    }
+	@Override
+	public int assignVehicleToTransport(Transport transport) 
+	{
+		Random r = new Random();
+		int randomTransportNumber = r.nextInt(9999);
+		transport.setTransportNumber(randomTransportNumber);
+		return randomTransportNumber;
+	}
 
-    @Override
-    public List<Transport> listTransports()
-    {
-        return transportList;
-    }
+	@Override
+	public boolean cancelTransport(int transportId) 
+	{
+		Transport transport = transportList.get(transportId);
+		if(transport != null)
+		{
+			transport.setTransportNumber(Transport.TRANSPORT_CANCLED);
+			return true;
+		}
+		//failed to update
+		return false;
+	}
 
-    @Override
-    public List<Transport> listTransports(long startdate, long enddate)
-    {
-        return transportList;
-    }
+	@Override
+	public List<Transport> getTransportsFromVehicle(String vehicleName) 
+	{
+		List<Transport> filteredList = new ArrayList<Transport>();
+		//loop 
+		for(Transport transport:transportList)
+		{
+			if(transport.getVehicleDetail().getVehicleName().equalsIgnoreCase(vehicleName))
+				filteredList.add(transport);
+		}
+		//return the filtered list
+		return filteredList;
+	}
+
+	@Override
+	public List<Transport> listTransports(long startdate, long enddate) 
+	{
+		List<Transport> filteredList = new ArrayList<Transport>();
+		//loop 
+		for(Transport transport:transportList)
+		{
+			long transportTime = transport.getDateOfTransport();
+			if(MyUtils.isEqualDate(startdate, transportTime))
+				filteredList.add(transport);
+		}
+		//return the filtered list
+		return filteredList;
+	}
+
+	@Override
+	public boolean updateTransport(Transport transport) 
+	{
+		int index = transportList.indexOf(transport);
+		transportList.set(index, transport);
+		return true;
+	}
+
+	@Override
+	public List<Transport> listArchivedTransports(long startdate, long enddate) 
+	{
+		List<Transport> filteredList = new ArrayList<Transport>();
+		//loop 
+		for(Transport transport:archivedList)
+		{
+			long transportTime = transport.getDateOfTransport();
+			if(MyUtils.isEqualDate(startdate, transportTime))
+				filteredList.add(transport);
+		}
+		//return the filtered list
+		return filteredList;
+	}
 }

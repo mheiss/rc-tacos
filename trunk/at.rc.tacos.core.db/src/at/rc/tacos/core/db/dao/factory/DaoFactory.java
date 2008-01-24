@@ -1,8 +1,12 @@
 package at.rc.tacos.core.db.dao.factory;
 
 import at.rc.tacos.core.db.dao.CallerDAO;
+import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.DayInfoDAO;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
+import at.rc.tacos.core.db.dao.JobDAO;
+import at.rc.tacos.core.db.dao.LocationDAO;
+import at.rc.tacos.core.db.dao.ServiceTypeDAO;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.RosterDAO;
@@ -30,4 +34,8 @@ public interface DaoFactory
     public VehicleDAO createVehicleDetailDAO();
     public DialysisPatientDAO createDialysisPatientDAO();
     public DayInfoDAO createDayInfoDAO();
+    public LocationDAO createLocationDAO();
+    public JobDAO createJobDAO();
+    public ServiceTypeDAO createServiceTypeDAO();
+    public CompetenceDAO createCompetenceDAO();
 }
