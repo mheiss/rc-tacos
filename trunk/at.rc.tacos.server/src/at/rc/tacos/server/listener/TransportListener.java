@@ -5,8 +5,6 @@ import java.util.Calendar;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.common.IProgramStatus;
-import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.QueryFilter;
