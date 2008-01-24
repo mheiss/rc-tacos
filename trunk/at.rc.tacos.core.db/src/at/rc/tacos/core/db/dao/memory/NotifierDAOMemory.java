@@ -3,6 +3,7 @@ package at.rc.tacos.core.db.dao.memory;
 import java.util.ArrayList;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.model.CallerDetail;
+import at.rc.tacos.model.TestDataSource;
 
 /**
  * Data source for notifiers
@@ -22,6 +23,8 @@ public class NotifierDAOMemory implements CallerDAO
     private NotifierDAOMemory()
     {
         notifierList = new ArrayList<CallerDetail>();  
+        for(CallerDetail detail:TestDataSource.getInstance().notifierList)
+        	notifierList.add(detail);
     }
     
     /**

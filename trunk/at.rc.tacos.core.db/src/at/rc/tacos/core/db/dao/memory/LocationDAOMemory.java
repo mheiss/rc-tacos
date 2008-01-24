@@ -5,6 +5,7 @@ import java.util.List;
 
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.TestDataSource;
 
 public class LocationDAOMemory implements LocationDAO
 {
@@ -19,6 +20,9 @@ public class LocationDAOMemory implements LocationDAO
 	private LocationDAOMemory()
 	{
 		locationList = new ArrayList<Location>();
+		//init the test data
+		for(Location location:TestDataSource.getInstance().locationList)
+			locationList.add(location);
 	}
 	
 	/**

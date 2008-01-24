@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import at.rc.tacos.core.db.dao.TransportDAO;
+import at.rc.tacos.model.TestDataSource;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.util.MyUtils;
 
@@ -28,6 +29,9 @@ public class TransportDAOMemory implements TransportDAO
     {
         transportList = new ArrayList<Transport>();
         archivedList = new ArrayList<Transport>();
+        //add test data
+        for(Transport transport:TestDataSource.getInstance().transportList)
+        	transportList.add(transport);
     }
     
     /**

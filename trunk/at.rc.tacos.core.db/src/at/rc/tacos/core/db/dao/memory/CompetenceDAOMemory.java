@@ -5,6 +5,7 @@ import java.util.List;
 
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.TestDataSource;
 
 public class CompetenceDAOMemory implements CompetenceDAO
 {
@@ -20,6 +21,9 @@ public class CompetenceDAOMemory implements CompetenceDAO
 	private CompetenceDAOMemory()
 	{
 		competenceList = new ArrayList<Competence>();
+		//add test data
+		for(Competence comp:TestDataSource.getInstance().competenceList)
+			competenceList.add(comp);
 	}
 	
 	/**
