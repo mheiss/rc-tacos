@@ -19,7 +19,7 @@ import at.rc.tacos.common.ITransportStatus;
 public class TestDataSource
 {
     //the instance
-    public static TestDataSource instance;
+    private static TestDataSource instance;
     
     //the test data
     public ArrayList<Competence> competenceList;
@@ -118,8 +118,11 @@ public class TestDataSource
     {
         phoneList = new ArrayList<MobilePhoneDetail>();
         MobilePhoneDetail p1 = new MobilePhoneDetail("BM01","0699-123456789");
+        p1.setId(0);
         MobilePhoneDetail p2 = new MobilePhoneDetail("BM02","0664-123456789");
+        p2.setId(1);
         MobilePhoneDetail p3 = new MobilePhoneDetail("BM03","0676-123456789");
+        p3.setId(2);
         phoneList.add(p1);
         phoneList.add(p2);
         phoneList.add(p3);
