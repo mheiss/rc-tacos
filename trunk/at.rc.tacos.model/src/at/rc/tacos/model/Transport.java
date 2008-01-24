@@ -55,7 +55,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
     private long appointmentTimeAtDestination;
 
     //general informations
-    private Location planedLocation;   
+    private Location planedLocation;  
+    private Location realLocation;
     private String notes;
     private int programStatus;
     private String createdByUser;
@@ -403,13 +404,24 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
      * general informations
      * --------------------------------------------*/
     /**
-     * Returns the planned responsible location who will ececute the transport.
+     * Returns the planned responsible location who will execute the transport.
      * @return the planed location
      */
     public Location getPlanedLocation() 
     {
         return planedLocation;
     }
+    
+    /**
+     * Returns the real location who really execute the transport
+     * @return the real location
+     */
+    public Location getRealLocation() 
+    {
+		return realLocation;
+	}
+
+	
 
     /**
      * @return the notes
@@ -803,6 +815,17 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
             throw new IllegalArgumentException("The planned location cannot be null");
         this.planedLocation = planedLocation;
     }
+    
+  
+    /**
+     * Sets the real location of the transport.<br>
+     * The real location which really execute the transport
+     * @param realLocation the realLocation to set
+     */
+    public void setRealLocation(Location realLocation) 
+    {
+		this.realLocation = realLocation;
+	}
 
     /**
      * @param notes the notes for the transport
@@ -911,5 +934,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
             throw new IllegalArgumentException("The vehicle detail cannot be null");
         this.vehicleDetail = vehicleDetail;
     }
+
+	
 }
 
