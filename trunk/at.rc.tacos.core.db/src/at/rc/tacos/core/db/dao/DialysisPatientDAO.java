@@ -35,7 +35,7 @@ public interface DialysisPatientDAO
     public DialysisPatient getDialysisPatientById(int id);  
     
     /**    
-     * Returns a list of all stored dialysis patient stored in the database
+     * Returns a list of all stored dialysis patients in the database
      * @return the complete list of all dialysis patients
      */
 	public List<DialysisPatient> listDialysisPatient();
