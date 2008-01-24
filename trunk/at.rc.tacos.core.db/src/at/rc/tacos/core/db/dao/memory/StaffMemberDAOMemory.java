@@ -62,8 +62,10 @@ public class StaffMemberDAOMemory implements StaffMemberDAO
     @Override
     public StaffMember getStaffMemberByUsername(String username)
     {
+    	System.out.println("Request staff member for :"+username);
     	for(StaffMember member:staffList)
     	{
+    		System.out.println("Checking: "+member.getUserName());
     		if(member.getUserName().equalsIgnoreCase(username))
     			return member;
     	}

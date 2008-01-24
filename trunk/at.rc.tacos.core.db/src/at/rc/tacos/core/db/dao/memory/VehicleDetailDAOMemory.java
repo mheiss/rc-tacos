@@ -49,10 +49,10 @@ public class VehicleDetailDAOMemory implements VehicleDAO
     }
     
     @Override
-    public int addVehicle(VehicleDetail vehicle)
+    public boolean addVehicle(VehicleDetail vehicle)
     {
         vehicleList.add(vehicle);
-        return vehicleList.size();
+        return false;
     }
     
     @Override
