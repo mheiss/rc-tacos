@@ -6,18 +6,14 @@ import java.awt.print.PrinterJob;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
-import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.utils.PrinterJobRoster;
 
 public class PrintController implements Controller
