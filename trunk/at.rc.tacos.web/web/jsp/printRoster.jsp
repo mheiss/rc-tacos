@@ -12,6 +12,11 @@
 	List<RosterEntry> rosterList = (List) params.get("rosterList");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashSet"%>
+<%@page import="java.lang.reflect.Array"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Iterator"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -81,12 +86,19 @@
                                         cellspacing='0'> 
                                         <tr> 
                                         <% 
+                                        Set set = new HashSet();
                                         for(AbstractMessage message:rosterList){
                                         	RosterEntry entry = (RosterEntry)message;
-                                              out.println("<table style='padding:3px; border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#333333;' width='100%' border='0' cellpadding='0' cellspacing='0' ><tr><td width='70%'>Ortsstelle: <b>" + entry.getStation()+
+                                              set.add("<table style='padding:3px; border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#333333;' width='100%' border='0' cellpadding='0' cellspacing='0' ><tr><td width='70%'>Ortsstelle: <b>" + entry.getStation()+
                                                          "</b></td><td width='30%'><a href='" + request.getContextPath()+ "/Dispatcher/printRoster.do?action=" + entry.getStation() + "&id=" + entry.getStationId() + "' >" +
                                                          "Dienstplan drucken</a></td></tr></table>");
                                         }
+                                        Iterator it = set.iterator();
+                                        while (it.hasNext()){
+                                        	out.println(it.next().toString());
+                                        }
+                                        
+                                        
                                         %>
                                         
                                         
