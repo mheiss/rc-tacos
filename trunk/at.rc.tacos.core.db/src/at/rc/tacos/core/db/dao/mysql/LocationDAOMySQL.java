@@ -95,24 +95,83 @@ public class LocationDAOMySQL implements LocationDAO
 
 
 	@Override
-	public int addLocation(Location location) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addLocation(Location location)
+	{
+		int locationId = 0;
+		try
+		{	
+			// location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.location"));
+			query.setInt(1, location.getId());
+			query.setString(2, location.getLocationName());
+			query.setString(3, location.getStreet());
+			query.setString(4, location.getStreetNumber());
+			query.setInt(5, location.getZipcode());
+			query.setString(6, location.getCity());
+			query.setString(7, location.getNotes());
+			query.setInt(8, location.getPhone().getId());
+			query.executeUpdate();
+			
+			//locationname, zipcode, street
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.locationID"));
+			query1.setString(1, location.getLocationName());
+			query1.setInt(2, location.getZipcode());
+			query1.setString(3, location.getStreet());
+			final ResultSet rsLocationId = query1.executeQuery();
+			
+			if(rsLocationId.first())
+				locationId = rsLocationId.getInt("location_ID");
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return -1;
+		}
+		return locationId;
 	}
 
 
 	@Override
-	public boolean removeLocation(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeLocation(int id)
+	{
+		try
+    	{
+    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.location"));
+    		query.setInt(1, id);
+    		query.executeUpdate();
+    	}
+    	catch (SQLException e)
+    	{
+    		e.printStackTrace();
+    		return false;
+    	}
+    	return true;
 	}
 
 
 	@Override
-	public boolean updateLocation(Location location) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateLocation(Location location)
+	{
+    	try
+		{
+    	// locationname, street, streetnumber, zipcode, city, note, phonenumber_ID, location_ID
+    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.location"));
+		query.setString(1, location.getLocationName());
+		query.setString(2, location.getStreet());
+		query.setString(3, location.getStreetNumber());
+		query.setInt(4, location.getZipcode());
+		query.setString(5, location.getCity());
+		query.setString(6, location.getNotes());
+		query.setInt(7, location.getPhone().getId());
+		query.setInt(8, location.getId());
+		
+		query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
-
-
 }

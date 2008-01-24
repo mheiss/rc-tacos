@@ -36,7 +36,7 @@ public class CallerDAOMySQL implements CallerDAO
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			return 0;
+			return -1;
 		}
 		return callerId;
 	}
@@ -147,6 +147,5 @@ public class CallerDAOMySQL implements CallerDAO
 			return false;
 		}
 		return true;
-		
 	}
 }
