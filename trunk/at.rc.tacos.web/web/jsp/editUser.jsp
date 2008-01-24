@@ -144,7 +144,7 @@
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
-													<td><input type="text" name="phonenumber" id="textfield4" value="<%=member.getPhonenumber() %>"/></td>
+													<td><input type="text" name="phonenumber" id="textfield4" value="<%=member.getPhonelist()%>"/></td>
 													<td><%=Constants.COMPETENCE_DRIVER%>:</td>
 													<td><input type="checkbox" name="checkbox"
 														id="checkbox" /></td>
