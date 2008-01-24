@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Location;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
@@ -40,7 +43,9 @@ public class UpdateEntryController implements Controller
 			//request the staff member
 			resultList = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,staffId));	
 			StaffMember staffMember = (StaffMember)resultList.get(0); 
-			
+			String station = request.getParameter("station");
+			String job = request.getParameter("job");
+			String servicetype = request.getParameter("service");
 			//planed start
 			String startDay = request.getParameter("startDay");
 			String startMonth = request.getParameter("startMonth");
@@ -53,28 +58,29 @@ public class UpdateEntryController implements Controller
 			String endYear =  request.getParameter("endYear");
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
-
-			
+			Location location = new Location();
+			location.setLocationName(station);
+			Job jobb = new Job();
+			jobb.setJobName(job);
+			ServiceType service = new ServiceType();
+			service.setServiceName(servicetype);
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
-			startEntry.set(Calendar.MONTH, Integer.valueOf(startMonth));
+			startEntry.set(Calendar.MONTH, Integer.valueOf(startMonth)-1);
 			startEntry.set(Calendar.YEAR, Integer.valueOf(startYear));
 			startEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startHour));
 			startEntry.set(Calendar.MINUTE, Integer.valueOf(startMinute));
 			//construct a startCalendar
 			Calendar endEntry = Calendar.getInstance();
 			endEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(endDay));
-			endEntry.set(Calendar.MONTH, Integer.valueOf(endMonth));
+			endEntry.set(Calendar.MONTH, Integer.valueOf(endMonth)-1);
 			endEntry.set(Calendar.YEAR, Integer.valueOf(endYear));
 			endEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(endHour));
 			endEntry.set(Calendar.MINUTE, Integer.valueOf(endMinute));
 			
 			long plannedStartOfWork = startEntry.getTimeInMillis();
 			long plannedEndOfWork = endEntry.getTimeInMillis();
-			String station = request.getParameter("station");
-			String job = request.getParameter("job");
-			String servicetype = request.getParameter("service");
 
 			if(staffId.trim().isEmpty() 
 					|| startDay.trim().isEmpty() 
@@ -95,7 +101,7 @@ public class UpdateEntryController implements Controller
 				return params;
 			} 
 
-			RosterEntry entry = new RosterEntry(staffMember,servicetype,job,station,plannedStartOfWork,plannedEndOfWork);
+			RosterEntry entry = new RosterEntry(staffMember,service,jobb, location,plannedStartOfWork, plannedEndOfWork);
 			client.sendAddRequest(RosterEntry.ID, entry);
 			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
 			{
@@ -106,7 +112,6 @@ public class UpdateEntryController implements Controller
 				//eintrag hat nicht geklappt
 			}
 		}
-		
 		if("doRemoveEntry".equalsIgnoreCase(action))
 		{
 			//get the roster entry by id 
@@ -114,7 +119,7 @@ public class UpdateEntryController implements Controller
 			RosterEntry entry = (RosterEntry )resultList.get(0);  
 			 
 			client.sendRemoveRequest(RosterEntry.ID,entry );
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterWeek"));
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay")+"?action=DayView");
 		}
 		return params;
 	}

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
-import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.ServiceType;
@@ -102,7 +101,7 @@ public class RosterEntryController implements Controller
 				return params;
 			} 
 
-			RosterEntry entry = new RosterEntry(StaffMember staffMember,ServiceType serviceType,Job job, Location station,long plannedStartOfWork, longplannedEndOfWork);
+			RosterEntry entry = new RosterEntry(staffMember,service,jobb, location,plannedStartOfWork, plannedEndOfWork);
 			client.sendAddRequest(RosterEntry.ID, entry);
 			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
 			{
