@@ -94,11 +94,11 @@ public class DiseaseDAOMySQL implements DiseaseDAO
 	{
 		try
 		{
-    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DiseaseDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.disease"));
-    	query.setString(1,disease.getDiseaseName());
-    	query.setInt(2, disease.getId());
-				
-		query.executeUpdate();
+	    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DiseaseDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.disease"));
+	    	query.setString(1,disease.getDiseaseName());
+	    	query.setInt(2, disease.getId());
+					
+			query.executeUpdate();
 		}
 		catch (SQLException e)
 		{
