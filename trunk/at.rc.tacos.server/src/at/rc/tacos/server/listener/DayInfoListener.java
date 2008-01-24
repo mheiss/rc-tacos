@@ -46,7 +46,7 @@ public class DayInfoListener extends ServerListenerAdapter
 	{
 		DayInfoMessage dayInfo = (DayInfoMessage)updateObject;
 		//update the message on the server
-		dayInfoDao.setDayInfoMessage(dayInfo);
+		dayInfoDao.updateDayInfoMessage(dayInfo);
 		//reset the dirty flag
 		dayInfo.setDirty(false);
 		return dayInfo;

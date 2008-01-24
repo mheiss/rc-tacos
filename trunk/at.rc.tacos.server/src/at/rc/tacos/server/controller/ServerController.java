@@ -1,12 +1,8 @@
 package at.rc.tacos.server.controller;
 
 import java.util.*;
-import java.util.Map.Entry;
-
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelActions;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
-import at.rc.tacos.core.db.dao.memory.UserDAOMemory;
 import at.rc.tacos.core.net.internal.*;
 import at.rc.tacos.model.*;
 import at.rc.tacos.codec.*;
@@ -33,15 +29,6 @@ public class ServerController
         //register the encoders and decoders
         registerEncoderAndDecoder();
         registerModelListeners();
-        //init the data
-        try
-        {
-            initData();
-        }
-        catch(Exception e)
-        {
-            System.out.println("Failed to initalize the data for the database");
-        }
     }
 
     /**
@@ -255,38 +242,5 @@ public class ServerController
         factory.registerModelListener(Location.ID, new LocationListener());
         factory.registerModelListener(Competence.ID, new CompetenceListener());
         factory.registerModelListener(ServiceType.ID, new ServiceTypeListener());
-    }
-    
-    /**
-     * Initalize the data access objects with data
-     */
-    protected void initData() throws Exception
-    {
-        //The data source
-        DaoFactory factory = DaoFactory.TEST;
-        
-        //the data source
-        TestDataSource source = TestDataSource.getInstance();
-        //add phones
-        for(MobilePhoneDetail phone:source.phoneList)
-            factory.createMobilePhoneDAO().addMobilePhone(phone);
-        //add callers
-        for(CallerDetail notifier:source.notifierList)
-            factory.createNotifierDAO().addCaller(notifier);
-        //roster entries
-        for(RosterEntry entry:source.rosterList)
-            factory.createRosterEntryDAO().addRosterEntry(entry);
-        //staff members
-        for(StaffMember member:source.staffList)
-            factory.createStaffMemberDAO().addStaffMember(member,"P@ssw0rd");
-        //transports
-        for(Transport transport:source.transportList)
-            factory.createTransportDAO().addTransport(transport,5);
-        //vehicles
-        for(VehicleDetail vehicle:source.vehicleList)
-            factory.createVehicleDetailDAO().addVehicle(vehicle); 
-        //logins
-        for(Entry<String,String> login:source.userLogin.entrySet())
-        	UserDAOMemory.getInstance().addLogin(new Login(login.getKey(),login.getValue(),false));
     }
 }
