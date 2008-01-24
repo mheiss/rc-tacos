@@ -1,6 +1,6 @@
 package at.rc.tacos.client.listeners;
 
-public class LocationListener
+public class LocationListener extends ClientListenerAdapter
 {
 
 }

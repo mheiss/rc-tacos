@@ -5,16 +5,19 @@ import java.util.Calendar;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -64,7 +67,7 @@ public class ModelFactory
     public void queryInitData()
     {
         //get the client connection
-        Job job = new Job("Request data listing") 
+        org.eclipse.core.runtime.jobs.Job job = new org.eclipse.core.runtime.jobs.Job("Request data listing") 
         {
             protected IStatus run(IProgressMonitor monitor) 
             {
@@ -72,17 +75,22 @@ public class ModelFactory
                 //Set up a filter for the current day
                 QueryFilter dateFilter = new QueryFilter();
                 dateFilter.add(IFilterTypes.DATE_FILTER, Util.formatDate(Calendar.getInstance().getTimeInMillis()));
+                net.requestListing(Location.ID, null);
+                net.requestListing(Job.ID, null);
+                net.requestListing(ServiceType.ID, null);
+                net.requestListing(Competence.ID, null);
                 net.requestListing(MobilePhoneDetail.ID, null);
                 net.requestListing(RosterEntry.ID, dateFilter);
                 net.requestListing(DayInfoMessage.ID, dateFilter);
                 net.requestListing(VehicleDetail.ID, null);
                 net.requestListing(StaffMember.ID, null);
-                net.requestListing(Transport.ID, null);
+                dateFilter.add(IFilterTypes.TYPE_FILTER, Transport.TRANSPORT_PROGRESS);
+                net.requestListing(Transport.ID, dateFilter);
                 net.requestListing(DialysisPatient.ID, null);
                 return Status.OK_STATUS;
             }
         };
-        job.setPriority(Job.SHORT);
+        job.setPriority(org.eclipse.core.runtime.jobs.Job.SHORT);
         job.setUser(true);
         job.schedule(); 
     }

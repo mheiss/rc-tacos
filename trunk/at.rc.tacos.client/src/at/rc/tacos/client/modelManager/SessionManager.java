@@ -194,32 +194,39 @@ public class SessionManager extends PropertyManager
 
 	}
 
-	public void fireTransferFailed(String contentType,String queryType,AbstractMessage message)
+	public void fireTransferFailed(final String contentType,final String queryType,final AbstractMessage message)
 	{
 		//the message to display
-		StringBuffer msg = new StringBuffer();
+		final StringBuffer msg = new StringBuffer();
 		msg.append("Die folgende Anforderung konnte nicht an den Server übertragen werden.\n");
 		msg.append(contentType+" -> "+queryType);
 
-		//show the message to the user
-		MessageDialog.openError(
-				PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
-				"Netzwerkfehler",
-				msg.toString());
-		//retry
-		boolean retryConfirmed = MessageDialog.openConfirm(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-				"Senden wiederholen",
-		"Wollen sie die Nachricht noch einmal senden?");
-		if (!retryConfirmed) 
-			return;
-		//send the request
-		if(IModelActions.ADD.equalsIgnoreCase(queryType))
-			NetWrapper.getDefault().sendAddMessage(contentType, message);
-		if(IModelActions.REMOVE.equalsIgnoreCase(queryType))
-			NetWrapper.getDefault().sendRemoveMessage(contentType, message);
-		if(IModelActions.UPDATE.equalsIgnoreCase(queryType))
-			NetWrapper.getDefault().sendUpdateMessage(contentType, message);
-		if(IModelActions.LIST.equalsIgnoreCase(queryType))
-			NetWrapper.getDefault().requestListing(contentType, null);
+		//show a message
+        Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {
+        		//show the message to the user
+        		MessageDialog.openError(
+        				PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
+        				"Netzwerkfehler",
+        				msg.toString());
+        		//retry
+        		boolean retryConfirmed = MessageDialog.openConfirm(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+        				"Senden wiederholen",
+        		"Wollen sie die Nachricht noch einmal senden?");
+        		if (!retryConfirmed) 
+        			return;
+        		//send the request
+        		if(IModelActions.ADD.equalsIgnoreCase(queryType))
+        			NetWrapper.getDefault().sendAddMessage(contentType, message);
+        		if(IModelActions.REMOVE.equalsIgnoreCase(queryType))
+        			NetWrapper.getDefault().sendRemoveMessage(contentType, message);
+        		if(IModelActions.UPDATE.equalsIgnoreCase(queryType))
+        			NetWrapper.getDefault().sendUpdateMessage(contentType, message);
+        		if(IModelActions.LIST.equalsIgnoreCase(queryType))
+        			NetWrapper.getDefault().requestListing(contentType, null);
+            }
+        });
 	}
 }
