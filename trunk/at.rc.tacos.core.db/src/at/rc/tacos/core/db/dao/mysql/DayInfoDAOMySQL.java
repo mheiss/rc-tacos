@@ -3,22 +3,11 @@ package at.rc.tacos.core.db.dao.mysql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.dao.DayInfoDAO;
-import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.DayInfoMessage;
-import at.rc.tacos.model.Job;
-import at.rc.tacos.model.Location;
-import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.ServiceType;
-import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.util.MyUtils;
 
 public class DayInfoDAOMySQL implements DayInfoDAO

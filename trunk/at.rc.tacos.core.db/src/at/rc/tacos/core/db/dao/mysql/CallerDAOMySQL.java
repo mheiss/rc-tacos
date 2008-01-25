@@ -41,28 +41,6 @@ public class CallerDAOMySQL implements CallerDAO
 		return callerId;
 	}
 
-//	@Override
-//	public int getCallerId(CallerDetail notifierDetail)
-//	{
-//		int callerId = 0;
-//		try
-//		{
-//			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.callerID"));
-//			query1.setString(1, notifierDetail.getCallerName());
-//			query1.setString(2, notifierDetail.getCallerTelephoneNumber());
-//			final ResultSet rsCallerId = query1.executeQuery();
-//			
-//			if(rsCallerId.first())
-//				callerId = rsCallerId.getInt("caller_ID");
-//		}
-//		catch (SQLException e)
-//		{
-//			e.printStackTrace();
-//			return 0;
-//		}
-//		return callerId;
-//	}
-	
 	@Override
 	public CallerDetail getCallerByID(int callerID)
 	{

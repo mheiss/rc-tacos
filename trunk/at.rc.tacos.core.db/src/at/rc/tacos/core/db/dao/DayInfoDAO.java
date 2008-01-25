@@ -9,6 +9,7 @@ public interface DayInfoDAO
 	 * @param message the message to update
 	 * @return the id of the created or updated day info message
 	 */
+	// TODO return should be a boolean!
 	public int updateDayInfoMessage(DayInfoMessage message);
 	
 	/**
