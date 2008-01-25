@@ -30,6 +30,8 @@ public class RosterEntryManager extends PropertyManager
         {
             public void run ()       
             {
+                System.out.println("adding: "+rosterEntry.getStation().getLocationName());
+                System.out.println("adding: "+rosterEntry.getStation());
                 //add the item
                 objectList.add(rosterEntry);
                 //notify the view

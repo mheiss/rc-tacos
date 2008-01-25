@@ -100,6 +100,15 @@ public class LocationManager extends PropertyManager
         //nothing found
         return null;
     }
+    
+    /**
+     * Returns all locations in the list
+     * @return the location list
+     */
+    public List<Location> getLocations()
+    {
+        return objectList;
+    }
 
     /**
      * Converts the list to an array

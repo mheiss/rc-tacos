@@ -174,9 +174,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			//other fields
 			if(rosterEntry.getRosterNotes() != null)
 				noteEditor.getDocument().set(rosterEntry.getRosterNotes());
-			this.comboDienstverhaeltnis.setSelection(new StructuredSelection(rosterEntry.getServicetype().getServiceName()));
-			this.comboVerwendung.setSelection(new StructuredSelection(rosterEntry.getJob().getJobName()));
-			this.comboOrtsstelle.setSelection(new StructuredSelection(rosterEntry.getStation().getLocationName()));
+			this.comboDienstverhaeltnis.setSelection(new StructuredSelection(rosterEntry.getServicetype()));
+			this.comboVerwendung.setSelection(new StructuredSelection(rosterEntry.getJob()));
+			this.comboOrtsstelle.setSelection(new StructuredSelection(rosterEntry.getStation()));
 			this.bereitschaftButton.setSelection(rosterEntry.getStandby());
 			this.employeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
 		}
@@ -237,9 +237,10 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			
 			int index2 = comboOrtsstelle.getCombo().getSelectionIndex();
 			rosterEntry.setStation((Location)comboOrtsstelle.getElementAt(index2));
+			System.out.println(rosterEntry.getStation());
 			
 			rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
-			rosterEntry.setStandby(bereitschaftButton.isEnabled());
+			rosterEntry.setStandby(bereitschaftButton.getSelection());
 
 			//create a new entry
 			if(createNew)
@@ -303,7 +304,6 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 
 		final Label labelStation = new Label(client, SWT.NONE);
 		labelStation.setText("Ortsstelle:");
-
 		
 		Combo comboOrts = new Combo(client, SWT.READ_ONLY);
 		comboOrtsstelle = new ComboViewer(comboOrts);
