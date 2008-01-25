@@ -75,6 +75,16 @@
             id="at.rc.tacos.client.view.info"
             name="InfoView">
       </view>
+ 
+      
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.FilterView"
+            id="at.rc.tacos.client.view.filter"
+            name="FilterView">
+      </view>
+      
+      
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.admin.StaffMemberView"
