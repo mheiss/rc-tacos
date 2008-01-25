@@ -31,14 +31,13 @@ import at.rc.tacos.client.controller.PersonalUpdateEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.JobContentProvider;
 import at.rc.tacos.client.providers.JobLabelProvider;
-import at.rc.tacos.client.providers.LocationContentProvider;
-import at.rc.tacos.client.providers.LocationLabelProvider;
 import at.rc.tacos.client.providers.ServiceTypeContentProvider;
 import at.rc.tacos.client.providers.ServiceTypeLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
+import at.rc.tacos.client.providers.StationContentProvider;
+import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.common.Constants;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
@@ -308,8 +307,8 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		
 		Combo comboOrts = new Combo(client, SWT.READ_ONLY);
 		comboOrtsstelle = new ComboViewer(comboOrts);
-		comboOrtsstelle.setContentProvider(new LocationContentProvider());
-		comboOrtsstelle.setLabelProvider(new LocationLabelProvider());
+		comboOrtsstelle.setContentProvider(new StationContentProvider());
+		comboOrtsstelle.setLabelProvider(new StationLabelProvider());
 		comboOrtsstelle.setInput(ModelFactory.getInstance().getJobList());
 
 		bereitschaftButton = new Button(client, SWT.CHECK);
