@@ -31,6 +31,54 @@ public class Location extends AbstractMessage
     {
         super(ID);
     }
+    
+    //METHODS
+    /**
+     * Returns a string based description of the object.<br>
+     * The returned values are the location id and the name.
+     * @return the description of the object
+     */
+    @Override
+    public String toString()
+    {
+        return id +","+locationName;
+    }
+
+    /**
+     * Returns the calculated hash code based on the location id.<br>
+     * Two locations have the same hash code if the id is the same.
+     * @return the calculated hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
+    }
+
+    /**
+     * Returns whether the objects are equal or not.<br>
+     * Two locations are equal if, and only if, the location id is the same.
+     * @return true if the id is the same otherwise false.
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Location other = (Location) obj;
+        if (id != other.id)
+            return false;
+        return true;
+    }
+
+
 
     /**
      * @return the id
