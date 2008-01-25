@@ -43,7 +43,7 @@ import at.rc.tacos.client.providers.PersonalViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.PersonalTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.PersonalViewSorter;
-import at.rc.tacos.common.Constants;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.RosterEntry;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
@@ -55,6 +55,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	private ScrolledForm form;
 	private TableViewer viewer;
 	private PersonalTooltip tooltip;
+	//the tab folder
+	private TabFolder tabFolder;
 	
 	//the actions for the context menu
 	private PersonalCancelSignInAction cancelSignInAction;
@@ -71,6 +73,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	{
 		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -80,6 +83,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	public void dispose() 
 	{
 		ModelFactory.getInstance().getRosterEntryList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -98,23 +102,21 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		final Composite composite = form.getBody();
 
 		//tab folder "Bruck - Kapfenberg"
-		final TabFolder tabFolder = new TabFolder(composite, SWT.NONE);
+		tabFolder = new TabFolder(composite, SWT.NONE);
 		tabFolder.addSelectionListener(new SelectionListener() 
 		{
 			public void widgetSelected(SelectionEvent e) 
 			{
 				//get the selected station
-				String station = tabFolder.getItem(tabFolder.getSelectionIndex()).getText();
+				TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
 				//remove all filters and add the new
 				viewer.resetFilters();
-				viewer.addFilter(new PersonalViewFilter(station));
+				viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 		});
-		
-		
 		
 		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new PersonalViewContentProvider());
@@ -123,7 +125,6 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		viewer.getTable().setLinesVisible(true);
 		
 		viewer.resetFilters();
-//		viewer.refresh();
 		
 		//set the tooltip
 		tooltip = new PersonalTooltip(viewer.getControl());
@@ -245,7 +246,6 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				viewer.setSorter(new PersonalViewSorter(sortIdentifier,dir));
 			}
 		};
-
 		
 		//attach the listener
 		columnStaffName.addListener(SWT.Selection, sortListener);
@@ -255,45 +255,12 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		columnService.addListener(SWT.Selection, sortListener);
 		columnJob.addListener(SWT.Selection, sortListener);
 		columnStation.addListener(SWT.Selection, sortListener);
-
-		//create the tab items for the personal overview
-		final TabItem bezirkTabItem = new TabItem(tabFolder, SWT.NONE);
-		bezirkTabItem.setText(Constants.STATION_BEZIRK);
-		bezirkTabItem.setControl(table);
-
-		final TabItem bruckmurTabItem = new TabItem(tabFolder, SWT.NONE);
-		bruckmurTabItem.setText(Constants.STATION_BRUCK);
-		bruckmurTabItem.setControl(table);
-
-		final TabItem kapfenbergTabItem = new TabItem(tabFolder, SWT.NONE);
-		kapfenbergTabItem.setText(Constants.STATION_KAPFENBERG);
-		kapfenbergTabItem.setControl(table);
-
-		final TabItem stMareinTabItem = new TabItem(tabFolder, SWT.NONE);
-		stMareinTabItem.setText(Constants.STATION_MAREIN);
-		stMareinTabItem.setControl(table);
-
-		final TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText(Constants.STATION_THOERL);
-		tabItem.setControl(table);
-
-		final TabItem turnauTabItem = new TabItem(tabFolder, SWT.NONE);
-		turnauTabItem.setText(Constants.STATION_TURNAU);
-		turnauTabItem.setControl(table);
-
-		final TabItem breitenauTabItem = new TabItem(tabFolder, SWT.NONE);
-		breitenauTabItem.setText(Constants.STATION_BREITENAU);
-		breitenauTabItem.setControl(table);
 		
 		//create the actions
 		makeActions();
 		hookContextMenu();
 
-		tabFolder.setSelection(1);
-		tabFolder.setSelection(0);
-
 		viewer.resetFilters();
-		viewer.addFilter(new PersonalViewFilter(Constants.STATION_BEZIRK));
 	}
 	
 	/**
@@ -373,35 +340,6 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 			cancelSignOutAction.setEnabled(false);
 		}
 	}
-	
-//	/**
-//	 * Fills the action bar at the rigt side and the tool bar
-//	 */
-//	private void contributeToActionBars() 
-//	{
-//		IActionBars bars = getViewSite().getActionBars();
-//		fillLocalPullDown(bars.getMenuManager());
-//		fillLocalToolBar(bars.getToolBarManager());
-//	}
-//	
-//	/**
-//	 * Fills the pull down bar
-//	 * @param manager the manager to add the actions
-//	 */
-//	private void fillLocalPullDown(IMenuManager manager) 
-//	{
-//		manager.add(new Separator());
-//		manager.add(editEntryAction);
-//		manager.add(deleteEntryAction);
-//	}
-//
-//	private void fillLocalToolBar(IToolBarManager manager)
-//	{
-//		manager.add(new Separator());
-//		manager.add(editEntryAction);
-//		manager.add(deleteEntryAction);
-//	}
-
 
 	/**
 	 * Passing the focus request to the viewer's control.
@@ -410,6 +348,21 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
+	    if("LOCATION_ADD".equalsIgnoreCase(evt.getPropertyName()))
+        {
+	        //get the new location
+	        Location location = (Location)evt.getNewValue();
+	        //create a new tab item
+	        TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+	        tabItem.setText(location.getLocationName());
+	        //Store the location
+	        tabItem.setData(location);
+	        tabItem.setControl(viewer.getTable());
+	        //set the first tabfoler as selected
+	        tabFolder.setSelection(tabItem);
+	        tabFolder.setSelection(0);
+        }
+	    
 		// the viewer represents simple model. refresh should be enough.
 		if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())) 
 			this.viewer.refresh();

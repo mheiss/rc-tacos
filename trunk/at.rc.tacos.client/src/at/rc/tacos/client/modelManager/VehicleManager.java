@@ -135,17 +135,16 @@ public class VehicleManager extends PropertyManager
      * Returns a list of all vehicles which have NOT the status <code>VehicleDetail.outOfOrder</code><br>
      * and the status the status <code>VehicleDetail.readyForAction for the given station</code>
      * In fact this will return a list of all vehicles which can be used.
-     * @param stationName the name of the station to get the list
+     * @param location the location object to get the list from
      * @return list of vehicles ready for action
      */
-    public List<VehicleDetail> getReadyVehicleListbyStation(String stationName)
+    public List<VehicleDetail> getReadyVehicleListbyLocation(Location location)
     {
         List<VehicleDetail> filteredList = new ArrayList<VehicleDetail>();
-        Location loc = ModelFactory.getInstance().getLocationList().getLocationByName(stationName);
         //loop over all vehicles
         for(VehicleDetail detail:objectList)
         {
-            if(!detail.isOutOfOrder() && detail.isReadyForAction() && detail.getBasicStation().equals(loc))
+            if(!detail.isOutOfOrder() && detail.isReadyForAction() && detail.getBasicStation().equals(location))
                 filteredList.add(detail);
         }
         return filteredList;
