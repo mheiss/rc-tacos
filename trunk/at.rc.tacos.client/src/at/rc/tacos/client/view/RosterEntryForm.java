@@ -29,12 +29,21 @@ import org.eclipse.ui.forms.widgets.Section;
 import at.rc.tacos.client.controller.PersonalCreateEntryAction;
 import at.rc.tacos.client.controller.PersonalUpdateEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.providers.JobContentProvider;
+import at.rc.tacos.client.providers.JobLabelProvider;
+import at.rc.tacos.client.providers.LocationContentProvider;
+import at.rc.tacos.client.providers.LocationLabelProvider;
+import at.rc.tacos.client.providers.ServiceTypeContentProvider;
+import at.rc.tacos.client.providers.ServiceTypeLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.Constants;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
 /**
@@ -45,9 +54,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 {
 	private FormToolkit toolkit;
 	private TextViewer noteEditor;
-	private Combo comboDienstverhaeltnis;
-	private Combo comboVerwendung;
-	private Combo comboOrtsstelle;
+	private ComboViewer comboDienstverhaeltnis;
+	private ComboViewer comboVerwendung;
+	private ComboViewer comboOrtsstelle;
 	private Button bereitschaftButton;
 	private ComboViewer employeenameCombo;
 
@@ -166,9 +175,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			//other fields
 			if(rosterEntry.getRosterNotes() != null)
 				noteEditor.getDocument().set(rosterEntry.getRosterNotes());
-			this.comboDienstverhaeltnis.setText(rosterEntry.getServicetype().getServiceName());
-			this.comboVerwendung.setText(rosterEntry.getJob().getJobName());
-			this.comboOrtsstelle.setText(rosterEntry.getStation().getLocationName());
+			this.comboDienstverhaeltnis.setSelection(new StructuredSelection(rosterEntry.getServicetype().getServiceName()));
+			this.comboVerwendung.setSelection(new StructuredSelection(rosterEntry.getJob().getJobName()));
+			this.comboOrtsstelle.setSelection(new StructuredSelection(rosterEntry.getStation().getLocationName()));
 			this.bereitschaftButton.setSelection(rosterEntry.getStandby());
 			this.employeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
 		}
@@ -220,9 +229,16 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			// set the needed values
 			int index = employeenameCombo.getCombo().getSelectionIndex();
 			rosterEntry.setStaffMember((StaffMember)employeenameCombo.getElementAt(index));
-			rosterEntry.setServicetype(ModelFactory.getInstance().getServiceList().getServiceTypeByName(comboDienstverhaeltnis.getText()));
-			rosterEntry.setJob(ModelFactory.getInstance().getJobList().getJobByName(comboVerwendung.getText()));
-			rosterEntry.setStation(ModelFactory.getInstance().getLocationList().getLocationByName(comboOrtsstelle.getText()));
+			
+			int index3 = comboDienstverhaeltnis.getCombo().getSelectionIndex();
+			rosterEntry.setServicetype((ServiceType)comboDienstverhaeltnis.getElementAt(index3));
+			
+			int index1 = comboVerwendung.getCombo().getSelectionIndex();
+			rosterEntry.setJob((Job)comboVerwendung.getElementAt(index1));
+			
+			int index2 = comboOrtsstelle.getCombo().getSelectionIndex();
+			rosterEntry.setStation((Location)comboOrtsstelle.getElementAt(index2));
+			
 			rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
 			rosterEntry.setStandby(bereitschaftButton.isEnabled());
 
@@ -289,8 +305,12 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		final Label labelStation = new Label(client, SWT.NONE);
 		labelStation.setText("Ortsstelle:");
 
-		comboOrtsstelle = new Combo(client, SWT.READ_ONLY);
-		comboOrtsstelle.setItems(Constants.stations);
+		
+		Combo comboOrts = new Combo(client, SWT.READ_ONLY);
+		comboOrtsstelle = new ComboViewer(comboOrts);
+		comboOrtsstelle.setContentProvider(new LocationContentProvider());
+		comboOrtsstelle.setLabelProvider(new LocationLabelProvider());
+		comboOrtsstelle.setInput(ModelFactory.getInstance().getJobList());
 
 		bereitschaftButton = new Button(client, SWT.CHECK);
 		bereitschaftButton.setText("Bereitschaft");
@@ -302,14 +322,20 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		final Label labelJob = new Label(client, SWT.NONE);
 		labelJob.setText("Verwendung:");
 
-		comboVerwendung = new Combo(client, SWT.READ_ONLY);
-		comboVerwendung.setItems(Constants.job);
+		Combo comboVerw = new Combo(client, SWT.READ_ONLY);
+		comboVerwendung = new ComboViewer(comboVerw);
+		comboVerwendung.setContentProvider(new JobContentProvider());
+		comboVerwendung.setLabelProvider(new JobLabelProvider());
+		comboVerwendung.setInput(ModelFactory.getInstance().getJobList());
 
 		final Label labelService = new Label(client, SWT.NONE);
 		labelService.setText("Dienstverhältnis:");
 
-		comboDienstverhaeltnis = new Combo(client,SWT.READ_ONLY);
-		comboDienstverhaeltnis.setItems(Constants.service);
+		Combo comboDienstv = new Combo(client,SWT.READ_ONLY);
+		comboDienstverhaeltnis = new ComboViewer(comboDienstv);
+		comboDienstverhaeltnis.setContentProvider(new ServiceTypeContentProvider());
+		comboDienstverhaeltnis.setLabelProvider(new ServiceTypeLabelProvider());
+		comboDienstverhaeltnis.setInput(ModelFactory.getInstance().getServiceList());
 
 		//create the section
 		Section dayInfoSection = toolkit.createSection(client, ExpandableComposite.TITLE_BAR);
@@ -355,11 +381,11 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		combo.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		comboOrtsstelle.setLayoutData(data2);
+		comboOrts.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		comboVerwendung.setLayoutData(data2);
+		comboVerw.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		comboDienstverhaeltnis.setLayoutData(data2);
+		comboDienstv.setLayoutData(data2);
 	}
 
 	/**
@@ -487,17 +513,17 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			setErrorMessage("Bitte wählen Sie einen Mitarbeiter aus");
 			return false;
 		}
-		if (comboOrtsstelle.getText().equalsIgnoreCase(""))
+		if (comboOrtsstelle.getCombo().getSelectionIndex() == -1)
 		{
 			setErrorMessage("Bitte geben Sie eine Ortsstelle an");
 			return false;
 		}
-		if (comboVerwendung.getText().equalsIgnoreCase(""))
+		if (comboVerwendung.getCombo().getSelectionIndex() == -1)
 		{
 			setErrorMessage("Bitte geben Sie eine Verwendung an");
 			return false;
 		}
-		if (comboDienstverhaeltnis.getText().equalsIgnoreCase(""))
+		if (comboDienstverhaeltnis.getCombo().getSelectionIndex() == -1)
 		{
 			setErrorMessage("Bitte geben Sie ein Dienstverhältnis an");
 			return false;
@@ -537,21 +563,33 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		if ("STAFF_ADD".equals(evt.getPropertyName())) 
 		{ 
 			employeenameCombo.refresh();
+			comboVerwendung.refresh();
+			comboOrtsstelle.refresh();
+			comboDienstverhaeltnis.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("STAFF_REMOVE".equals(evt.getPropertyName())) 
 		{ 
 			employeenameCombo.refresh();
+			comboVerwendung.refresh();
+			comboOrtsstelle.refresh();
+			comboDienstverhaeltnis.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("STAFF_UPDATE".equals(evt.getPropertyName())) 
 		{ 
 			employeenameCombo.refresh();
+			comboVerwendung.refresh();
+			comboOrtsstelle.refresh();
+			comboDienstverhaeltnis.refresh();
 		}
 		// event on deletion --> also just refresh
 		if ("STAFF_CLEARED".equals(evt.getPropertyName())) 
 		{ 
 			employeenameCombo.refresh();
+			comboVerwendung.refresh();
+			comboOrtsstelle.refresh();
+			comboDienstverhaeltnis.refresh();
 		}
 	}
 }
