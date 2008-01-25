@@ -339,7 +339,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         this.comboPrioritaet.setText(transport.getTransportPriority());
         this.comboVonStrasse.setText(transport.getFromStreet());
         
-        System.out.println("transportForm, responsibleStation: " +transport.getPlanedLocation());
         if(transport.getPlanedLocation() != null)
         this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(transport.getPlanedLocation()));//mandatory!! default: Bezirk
         
