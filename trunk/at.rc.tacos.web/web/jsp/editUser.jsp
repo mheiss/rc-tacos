@@ -4,8 +4,9 @@
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%@page import="at.rc.tacos.util.MyUtils"%>
 <%@page import="at.rc.tacos.common.Constants"%>
-<%@ page import="java.text.*"%>
+<%@page import="java.text.*"%>
 <%@page import="java.util.Date"%>
+<%@page import="at.rc.tacos.model.MobilePhoneDetail"%>
 <%
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	List<StaffMember> lista = (List) params.get("employeeList");
@@ -92,26 +93,26 @@
 												for (StaffMember member : lista) { 
 												 %>
 													<td>Vorname:</td>
-													<td><input type="text" name="firstName" id="textfield" value="<%=member.getFirstName() %>" /></td>
+													<td><input type="text" name="firstName" id="textfield" value="<%=member.getFirstName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
 													<td>Strasse:</td>
-													<td><input type="text" name="streetname" id="textfield7" value="<%=member.getStreetname() %>"/></td>
+													<td><input type="text" name="streetname" id="textfield7" value="<%=member.getStreetname().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
 												</tr>
 												 
 												<tr>
 													<td>Nachname:</td>
-													<td><input type="text" name="lastName" id="textfield2" value="<%=member.getLastName() %>"/></td>
+													<td><input type="text" name="lastName" id="textfield2" value="<%=member.getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
 													<td>Ort:</td>
-													<td><input type="text" name="cityname" id="textfield8" value="<%=member.getCityname() %>"/></td>
+													<td><input type="text" name="cityname" id="textfield8" value="<%=member.getCityname().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
 												</tr>
 												<tr>
-													<td>Gebrtsdatum:</td>
-													<td><input type="text" name="birthday" id="textfield12" value="<%=MyUtils.formatDate(member.getBirthday() )%>" /></td>
+													<td>Geburtsdatum:</td>
+													<td><input type="text" name="birthday" id="textfield12" value="<%=MyUtils.formatDate(member.getBirthday())%>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
 												<tr>
 													<td>K&uuml;rzel:</td>
-													<td>&nbsp;</td>
+													<td><input type="text" name="lastName" id="textfield2" value="<%=userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
@@ -142,9 +143,23 @@
 														<option><%=Constants.STATION_TURNAU%></option>
 													</select></td>
 												</tr>
+												<% MobilePhoneDetail phone1 = new MobilePhoneDetail(); 
+                                                phone1.setMobilePhoneName("mein erstes telefon"); 
+                                                phone1.setMobilePhoneNumber("0664/4143824"); 
+                                                MobilePhoneDetail phone2 = new MobilePhoneDetail(); 
+                                                phone2.setMobilePhoneName("mein zweites telefon"); 
+                                                phone2.setMobilePhoneNumber("0664/1321323"); 
+                                                member.addMobilePhone(phone1); 
+                                                member.addMobilePhone(phone2);
+                                                List<MobilePhoneDetail> list = member.getPhonelist();
+                                                %>
 												<tr>
 													<td>Tel. Nr.:</td>
-													<td><input type="text" name="phonenumber" id="textfield4" value="<%=member.getPhonelist().get(0).getMobilePhoneNumber()%>"/></td>
+													<%for(MobilePhoneDetail phone : list) 
+														{ 
+														%>
+													<td><input type="text" name="phonenumber" id="textfield4" value="<%=member.getPhonelist()%>"/><br /></td>
+													<%}%>
 													<td><%=Constants.COMPETENCE_DRIVER%>:</td>
 													<td><input type="checkbox" name="checkbox"
 														id="checkbox" /></td>

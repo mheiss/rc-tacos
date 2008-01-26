@@ -85,15 +85,15 @@
 												</tr>
 												<tr>
 													<td>Vorname:</td>
-													<td><input disabled="disabled" type="text" name="firstName" id="textfield" value="<%=userSession.getStaffMember().getFirstName() %>" /></td>
+													<td><input disabled="disabled" type="text" name="firstName" id="textfield" value="<%=userSession.getStaffMember().getFirstName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
 													<td>Strasse:</td>
-													<td><input type="text" name="streetname" id="textfield7" value="<%=userSession.getStaffMember().getStreetname() %>"/></td>
+													<td><input type="text" name="streetname" id="textfield7" value="<%=userSession.getStaffMember().getStreetname().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
 												</tr>
 												<tr>
 													<td>Nachname:</td>
-													<td><input type="text" name="lastName" id="textfield2" value="<%=userSession.getStaffMember().getLastName() %>"/></td>
+													<td><input type="text" name="lastName" id="textfield2" value="<%=userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
 													<td>Ort:</td>
-													<td><input type="text" name="cityname" id="textfield8" value="<%=userSession.getStaffMember().getCityname() %>"/></td>
+													<td><input type="text" name="cityname" id="textfield8" value="<%=userSession.getStaffMember().getCityname().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
 												</tr>
 												<tr>
 													<td>Geburtsdatum:</td>
@@ -103,7 +103,7 @@
 												</tr>
 												<tr>
 													<td>K&uuml;rzel:</td>
-													<td>&nbsp;</td>
+													<td><input type="text" name="lastName" id="textfield2" value="<%=userSession.getStaffMember().getUserName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
@@ -123,7 +123,7 @@
 													<td>E-Mail Adresse:</td>
 													<td><input type="text" name="eMail" id="textfield4" value="<%=userSession.getStaffMember().getEMail() %>" /></td>
 													<td>Prim&auml;re Ortsstelle:</td>
-													<td><input disabled="disabled" type="text" name="station" id="textfield4" value="<%=userSession.getStaffMember().getPrimaryLocation()%>" /></td>
+													<td><input disabled="disabled" type="text" name="station" id="textfield4" value="<%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>" /></td>
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
