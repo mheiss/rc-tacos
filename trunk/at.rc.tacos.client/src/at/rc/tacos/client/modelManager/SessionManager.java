@@ -88,7 +88,6 @@ public class SessionManager extends PropertyManager
 	 */
 	public void setDayInfoMessage(final DayInfoMessage dayInfo)
 	{
-	    System.out.println(MyUtils.formatTimeAndDate(dayInfo.getTimestamp()));
 		//check if current displayed date is equal to the date of the day info update message
 		//--> display the message if equal
 		if(MyUtils.isEqualDate(dayInfo.getTimestamp(), displayedDate))
