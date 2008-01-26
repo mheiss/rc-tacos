@@ -22,7 +22,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	public List<StaffMember> getAllStaffMembers()
 	{
 		List<StaffMember> staffMembers = new ArrayList<StaffMember>();
-		Location station = new Location();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -35,6 +34,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				StaffMember staff = new StaffMember();
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
+				Location station = new Location();
 				station.setId(rs.getInt("e.primaryLocation"));
 				station.setLocationName(rs.getString("lo.locationname"));
 				staff.setPrimaryLocation(station);
@@ -65,7 +65,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	public List<StaffMember> getStaffMembersFromLocation(int locationId)
 	{
 		List<StaffMember> staffMembers = new ArrayList<StaffMember>();
-		Location station = new Location();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -76,6 +75,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 
 			while(rs.next())
 			{
+				Location station = new Location();
 				StaffMember staff = new StaffMember();
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
@@ -109,7 +109,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	public StaffMember getStaffMemberByID(int id)
 	{
 		StaffMember staff = new StaffMember();
-		Location station = new Location();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -122,6 +121,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			{
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
+				Location station = new Location();
 				station.setId(rs.getInt("e.primaryLocation"));
 				station.setLocationName(rs.getString("lo.locationname"));
 				staff.setPrimaryLocation(station);
@@ -150,7 +150,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	public StaffMember getStaffMemberByUsername(String username)
 	{
 		StaffMember staff = new StaffMember();
-		Location station = new Location();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -163,6 +162,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			{
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
+				Location station = new Location();
 				station.setId(rs.getInt("e.primaryLocation"));
 				station.setLocationName(rs.getString("lo.locationname"));
 				staff.setPrimaryLocation(station);
