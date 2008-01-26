@@ -7,10 +7,9 @@ public interface DayInfoDAO
 	/**
 	 * Creates a new day info message or updates a existing message in the database.
 	 * @param message the message to update
-	 * @return the id of the created or updated day info message
+	 * @return the a boolean value if update/insert was sucessful
 	 */
-	// TODO return should be a boolean!
-	public int updateDayInfoMessage(DayInfoMessage message);
+	public boolean updateDayInfoMessage(DayInfoMessage message);
 	
 	/**
 	 * Returns the day info message for a given date.
