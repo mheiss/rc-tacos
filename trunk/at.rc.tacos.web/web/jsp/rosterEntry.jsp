@@ -1,6 +1,7 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
+<%@page import="at.rc.tacos.model.Location"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%@page import="java.text.*"%>
@@ -8,7 +9,7 @@
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<StaffMember> list = (List)params.get("employeeList");
-	List<Station> lista = (List)params.get("stationList");
+	List<Location> lista = (List)params.get("stationList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 %>
 
@@ -121,8 +122,8 @@
 											<td id="rosterViewDayHeadline">Bezirk /
 											Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
-											<% for (Station station : lista) {
-													if(member.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
+											<% for (Location station : lista) {
+													if(station.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
 												<option selected="selected"><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
 												<% } else { %>
 												<option><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
