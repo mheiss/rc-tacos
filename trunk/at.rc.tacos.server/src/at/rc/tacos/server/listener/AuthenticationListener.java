@@ -1,7 +1,6 @@
 package at.rc.tacos.server.listener;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Login;
@@ -11,8 +10,8 @@ import at.rc.tacos.model.StaffMember;
 public class AuthenticationListener extends ServerListenerAdapter
 {
     //The DAO classes
-    private UserLoginDAO userDao = DaoFactory.TEST.createUserDAO();
-    private StaffMemberDAO memberDao = DaoFactory.TEST.createStaffMemberDAO();  
+    private UserLoginDAO userDao = DaoFactory.MYSQL.createUserDAO();
+
     /**
      * Handles the login message and checks the authentication.<br>
      * The password and the username will be checked against the database.
@@ -33,7 +32,7 @@ public class AuthenticationListener extends ServerListenerAdapter
         {
             System.out.println("Login successfully, checking member");
         	//get the infos out of the database
-        	StaffMember member = memberDao.getStaffMemberByUsername(username);
+        	StaffMember member = userDao.getLoginAndStaffmember(username).getUserInformation();
         	if(member != null)
         	{
         		login.setUserInformation(member);

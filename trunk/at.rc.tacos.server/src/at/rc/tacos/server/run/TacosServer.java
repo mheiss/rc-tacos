@@ -2,6 +2,8 @@ package at.rc.tacos.server.run;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.net.internal.MyServer;
 import at.rc.tacos.server.controller.ClientHandler;
 import at.rc.tacos.server.controller.ServerController;
@@ -50,9 +52,18 @@ public class TacosServer
             //parse
             port = Integer.parseInt(strPort);
             //start the server
-            System.out.println("TACOS-Server Build: 19.01.2008");
-            System.out.println("Listening for client request at port: "+port);
+            System.out.println("TACOS-Server Build: 26.01.2008"); 
             System.out.println("-------------------------------------------");
+            System.out.println("Open a connection to the database server");
+            //try to get a connection to the database
+            if(DataSource.getInstance().getConnection() == null)
+            {
+                System.out.println("Failed to connect to the database");
+                System.out.println("Shuting down the server");
+                System.exit(1);
+            }
+            System.out.println("-------------------------------------------");
+            System.out.println("Listening for client request at port: "+port);
             TacosServer server = new TacosServer(port);
             server.startServer();
             
