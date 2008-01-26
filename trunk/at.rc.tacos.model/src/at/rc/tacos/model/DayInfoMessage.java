@@ -47,7 +47,7 @@ public class DayInfoMessage extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return message + ": last changed: "+MyUtils.formatTimeAndDate(timestamp) +", by " +lastChangedBy +" local changes" + dirty;
+		return message + ": last changed: "+MyUtils.timestampToString(timestamp, MyUtils.dateFormat) +", by " +lastChangedBy +" local changes" + dirty;
 	}
 
 	/**
