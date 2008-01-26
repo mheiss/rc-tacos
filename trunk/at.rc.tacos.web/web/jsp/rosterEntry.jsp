@@ -122,8 +122,8 @@
 											<td id="rosterViewDayHeadline">Bezirk /
 											Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
-											<% for (Location station : lista) {
-													if(station.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
+											<% for (Location location : lista) {
+													if(location.equals(userSession.getStaffMember().getPrimaryLocation().getLocationName())) { %>
 												<option selected="selected"><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
 												<% } else { %>
 												<option><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
