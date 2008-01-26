@@ -32,10 +32,9 @@ public class RosterEntryController implements Controller
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
-
 		resultList = client.sendListingRequest(StaffMember.ID, null);
 		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
-			params.put("employeeList", resultList); 
+			params.put("employeeList", resultList);
 
 		if("doRosterEntry".equalsIgnoreCase(action))
 		{
