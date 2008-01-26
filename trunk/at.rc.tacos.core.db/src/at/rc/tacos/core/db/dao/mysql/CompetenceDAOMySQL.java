@@ -131,4 +131,30 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 		return true;
 	}
 
+	@Override
+	public List<Competence> listCompetencesOfStaffMember(int id)
+	{
+		List<Competence> competences = new ArrayList<Competence>();
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.competenceOfStaffMember"));
+			query.setInt(1, id);
+			final ResultSet rs = query.executeQuery();
+
+			while(rs.next())
+			{
+				Competence competence = new Competence();
+				competence.setCompetenceName(rs.getString("competence"));
+				competence.setId(rs.getInt("competence_ID"));
+				competences.add(competence);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return competences;
+	}
+
 }
