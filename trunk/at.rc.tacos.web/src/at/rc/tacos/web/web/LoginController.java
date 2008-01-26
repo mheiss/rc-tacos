@@ -1,6 +1,7 @@
 package at.rc.tacos.web.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -11,7 +12,11 @@ import javax.servlet.http.HttpSession;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.ServiceType;
 
 /**
  * Servlet implementation class for Servlet: LoginController
@@ -25,6 +30,9 @@ public class LoginController implements Controller
 		//the action to do
 		String action = request.getParameter("action");
 
+
+		
+		
 		HttpSession session = request.getSession();
 
 		if("login".equalsIgnoreCase(action))
@@ -46,6 +54,28 @@ public class LoginController implements Controller
 			//client.connect("localhost", 4711);
 			AbstractMessage result = client.sendLoginRequest(username, password);
 			//get the content
+			
+			List<AbstractMessage> stationList;
+			stationList = client.sendListingRequest(Location.ID, null);
+			if(Location.ID.equalsIgnoreCase(client.getContentType()))          
+				params.put("stationList", stationList);
+			
+			List<AbstractMessage> jobList;
+			jobList = client.sendListingRequest(Job.ID, null);
+			if(Job.ID.equalsIgnoreCase(client.getContentType()))          
+				params.put("jobList", jobList);
+			
+			List<AbstractMessage> compList;
+			compList = client.sendListingRequest(Competence.ID, null);
+			if(Competence.ID.equalsIgnoreCase(client.getContentType()))          
+				params.put("compList", compList);
+			
+			List<AbstractMessage> serviceList;
+			serviceList = client.sendListingRequest(ServiceType.ID, null);
+			if(Job.ID.equalsIgnoreCase(client.getContentType()))          
+				params.put("serviceList", serviceList);
+			
+			
 			if(Login.ID.equalsIgnoreCase(client.getContentType()))
 			{
 				Login loginResult = (Login)result;
