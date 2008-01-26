@@ -81,7 +81,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			staff.setMale(rs.getBoolean("e.sex"));
 			staff.setBirthday(MyUtils.getTimestampFromDate(rs.getString("e.birthday")));
 			staff.setEMail(rs.getString("e.email"));
-			staff.setUserName(rs.getString("e.username"));
+			staff.setUserName(rs.getString("u.username"));
 
 			{
 				competence.setId(rs.getInt("c.competence_ID"));
