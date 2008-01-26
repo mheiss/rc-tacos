@@ -89,12 +89,12 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 				competences.add(competence);
 			}while(rs.next());
 			staff.setCompetenceList(competences);
-
+			
 			//ph.phonenumber, ph.phonenumber_ID
 			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
-			query3.setInt(1, rs.getInt("e.staffmember_ID"));
+			query3.setInt(1, staff.getStaffMemberId());
 			final ResultSet rs2 = query3.executeQuery();
-
+			
 			List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
 			while(rs2.next())
 			{
