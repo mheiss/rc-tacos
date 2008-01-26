@@ -53,10 +53,8 @@ public class DiseaseDAOMySQL implements DiseaseDAO
 			while(rs.next())
 			{
 				Disease disease = new Disease();
-				
 				disease.setId(rs.getInt("disease_ID"));
 				disease.setDiseaseName(rs.getString("disease"));
-
 				diseases.add(disease);
 			}
 

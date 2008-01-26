@@ -52,7 +52,6 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		Login login = new Login();
 		StaffMember staff = new StaffMember();
 		Location station = new Location();
-		Competence competence = new Competence();
 		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
@@ -84,6 +83,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			staff.setUserName(rs.getString("u.username"));
 
 			{
+				Competence competence = new Competence();
 				competence.setId(rs.getInt("c.competence_ID"));
 				competence.setCompetenceName(rs.getString("c.competence"));
 				competences.add(competence);
@@ -99,7 +99,6 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			while(rs2.next())
 			{
 				MobilePhoneDetail phone = new MobilePhoneDetail();
-
 				phone.setId(rs2.getInt("ph.phonenumber_ID"));
 				phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
 				phoneList.add(phone);

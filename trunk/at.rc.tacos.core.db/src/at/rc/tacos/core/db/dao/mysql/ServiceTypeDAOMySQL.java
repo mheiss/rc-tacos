@@ -69,7 +69,6 @@ public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 	@Override
 	public List<ServiceType> listServiceTypes()
 	{
-		ServiceType servicetype = new ServiceType();
 		List<ServiceType> servicetypes = new ArrayList<ServiceType>();
 		try
 		{
@@ -78,6 +77,7 @@ public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 
 			while(rs.next())
 			{
+				ServiceType servicetype = new ServiceType();
 				servicetype.setId(rs.getInt("servicetype_ID"));
 				servicetype.setServiceName(rs.getString("servicetype"));
 				servicetypes.add(servicetype);

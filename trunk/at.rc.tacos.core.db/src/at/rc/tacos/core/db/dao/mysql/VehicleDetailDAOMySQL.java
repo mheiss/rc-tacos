@@ -104,7 +104,6 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 
 				StaffMember staff = new StaffMember();
 
-				Competence competence = new Competence();
 				List<Competence> competences = new ArrayList<Competence>();
 				try
 				{
@@ -131,6 +130,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 					staff.setUserName(rs2.getString("e.username"));
 
 					{
+						Competence competence = new Competence();
 						competence.setId(rs2.getInt("c.competence_ID"));
 						competence.setCompetenceName(rs2.getString("c.competence"));
 						competences.add(competence);
@@ -145,9 +145,10 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 					List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
 					while(rs3.next())
 					{
-						phone.setId(rs3.getInt("ph.phonenumber_ID"));
-						phone.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
-						phoneList.add(phone);
+						MobilePhoneDetail phone2 = new MobilePhoneDetail();
+						phone2.setId(rs3.getInt("ph.phonenumber_ID"));
+						phone2.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
+						phoneList.add(phone2);
 					}
 					staff.setPhonelist(phoneList);
 
@@ -178,7 +179,8 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 	{
 
 		List<VehicleDetail> vehicles = new ArrayList<VehicleDetail>();
-		VehicleDetail vehicle = new VehicleDetail();
+
+		
 		Location station = new Location();
 		try
 		{
@@ -189,6 +191,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			//v.vehicletype, v.readyForAction, v.outOfOrder, v.phonenumber_ID, pn.phonenumber, v.note
 			while(rs.next())
 			{
+				VehicleDetail vehicle = new VehicleDetail();
 				vehicle.setVehicleName(rs.getString("v.vehicle_ID"));
 				vehicle.setVehicleType(rs.getString("v.vehicletype"));
 				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
@@ -230,7 +233,6 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 
 					StaffMember staff = new StaffMember();
 
-					Competence competence = new Competence();
 					List<Competence> competences = new ArrayList<Competence>();
 					try
 					{
@@ -257,6 +259,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 						staff.setUserName(rs2.getString("e.username"));
 
 						{
+							Competence competence = new Competence();
 							competence.setId(rs2.getInt("c.competence_ID"));
 							competence.setCompetenceName(rs2.getString("c.competence"));
 							competences.add(competence);
@@ -271,9 +274,10 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 						List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
 						while(rs3.next())
 						{
-							phone.setId(rs3.getInt("ph.phonenumber_ID"));
-							phone.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
-							phoneList.add(phone);
+							MobilePhoneDetail phone2 = new MobilePhoneDetail();
+							phone2.setId(rs3.getInt("ph.phonenumber_ID"));
+							phone2.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
+							phoneList.add(phone2);
 						}
 						staff.setPhonelist(phoneList);
 
@@ -304,19 +308,19 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 	@Override
 	public boolean removeVehicle(VehicleDetail vehicle)
 	{
-    	try
-    	{
-    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.vehicle"));
-    		query.setString(1, vehicle.getVehicleName());
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.vehicle"));
+			query.setString(1, vehicle.getVehicleName());
 
-    		query.executeUpdate();
-    	}
-    	catch (SQLException e)
-    	{
-    		e.printStackTrace();
-    		return false;
-    	}
-    	return true;
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
