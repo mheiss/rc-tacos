@@ -365,6 +365,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         	dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.ok"));
         	dayInfoMessage.setText("Zuletzt geändert von "+dayInfo.getLastChangedBy()+" am "+ MyUtils.formatTimeAndDate(dayInfo.getTimestamp()));
         	dayInfoSection.setText("Tagesinformationen für den "+MyUtils.formatDate(dayInfo.getTimestamp()));
+        	dayInfoSection.layout(true);
+        	System.out.println("Updating day info");
         }
         if("DAY_INFO_LOCAL_CHANGED".equalsIgnoreCase(pce.getPropertyName()))
         {
@@ -382,7 +384,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
             	saveDayInfoLink.setEnabled(false);
             	saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save.na"));
             	dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.ok"));
-            	dayInfoMessage.setText("Zuletzt geändert von "+dayInfo.getLastChangedBy()+" am "+ MyUtils.formatTimeAndDate(dayInfo.getTimestamp()));
+            	dayInfoMessage.setText("Zuletzt geändert von "+dayInfo.getLastChangedBy());
         	}
         }
     }
