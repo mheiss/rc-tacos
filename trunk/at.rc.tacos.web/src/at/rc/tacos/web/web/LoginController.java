@@ -54,28 +54,7 @@ public class LoginController implements Controller
 			//client.connect("localhost", 4711);
 			AbstractMessage result = client.sendLoginRequest(username, password);
 			//get the content
-			
-			List<AbstractMessage> stationList;
-			stationList = client.sendListingRequest(Location.ID, null);
-			if(Location.ID.equalsIgnoreCase(client.getContentType()))          
-				params.put("stationList", stationList);
-			
-			List<AbstractMessage> jobList;
-			jobList = client.sendListingRequest(Job.ID, null);
-			if(Job.ID.equalsIgnoreCase(client.getContentType()))          
-				params.put("jobList", jobList);
-			
-			List<AbstractMessage> compList;
-			compList = client.sendListingRequest(Competence.ID, null);
-			if(Competence.ID.equalsIgnoreCase(client.getContentType()))          
-				params.put("compList", compList);
-			
-			List<AbstractMessage> serviceList;
-			serviceList = client.sendListingRequest(ServiceType.ID, null);
-			if(Job.ID.equalsIgnoreCase(client.getContentType()))          
-				params.put("serviceList", serviceList);
-			
-			
+
 			if(Login.ID.equalsIgnoreCase(client.getContentType()))
 			{
 				Login loginResult = (Login)result;
@@ -86,6 +65,26 @@ public class LoginController implements Controller
 				userSession.setStaffMember(loginResult.getUserInformation()); 
 				response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));   
 				}
+				
+				List<AbstractMessage> stationList;
+				stationList = client.sendListingRequest(Location.ID, null);
+				if(Location.ID.equalsIgnoreCase(client.getContentType()))          
+					params.put("stationList", stationList);
+				
+				List<AbstractMessage> jobList;
+				jobList = client.sendListingRequest(Job.ID, null);
+				if(Job.ID.equalsIgnoreCase(client.getContentType()))          
+					params.put("jobList", jobList);
+				
+				List<AbstractMessage> compList;
+				compList = client.sendListingRequest(Competence.ID, null);
+				if(Competence.ID.equalsIgnoreCase(client.getContentType()))          
+					params.put("compList", compList);
+				
+				List<AbstractMessage> serviceList;
+				serviceList = client.sendListingRequest(ServiceType.ID, null);
+				if(Job.ID.equalsIgnoreCase(client.getContentType()))          
+					params.put("serviceList", serviceList);
 				
 				else
 				{

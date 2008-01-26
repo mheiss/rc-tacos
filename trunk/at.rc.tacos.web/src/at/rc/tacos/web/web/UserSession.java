@@ -2,6 +2,10 @@ package at.rc.tacos.web.web;
 
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.Location;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.ServiceType;
+import at.rc.tacos.model.Competence;
 
 /**
  * Session information
@@ -13,11 +17,38 @@ public class UserSession
 	private String username;
 	private WebClient connection;
 	private StaffMember staffMember;
+	private Competence competence;
+	private Job job;
+	private ServiceType serviceType;
+	private Location location;
 
+	public Competence getCompetence() {
+		return competence;
+	}
+	public void setCompetence(Competence competence) {
+		this.competence = competence;
+	}
+	public Job getJob() {
+		return job;
+	}
+	public void setJob(Job job) {
+		this.job = job;
+	}
+	public ServiceType getServiceType() {
+		return serviceType;
+	}
+	public void setServiceType(ServiceType serviceType) {
+		this.serviceType = serviceType;
+	}
+	public Location getLocation() {
+		return location;
+	}
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 	public StaffMember getStaffMember() {
 		return staffMember;
 	}
-
 	public void setStaffMember(StaffMember staffMember) {
 		this.staffMember = staffMember;
 	}
