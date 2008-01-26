@@ -52,9 +52,12 @@ public class JobDAOMySQL implements JobDAO
 			query1.setInt(1, id);
 			final ResultSet rs = query1.executeQuery();
 
-			rs.first();
+			if(rs.first())
+			{
 			job.setId(id);
 			job.setJobName(rs.getString("jobname"));
+			}
+			else return null;
 		}
 		catch (SQLException e)
 		{

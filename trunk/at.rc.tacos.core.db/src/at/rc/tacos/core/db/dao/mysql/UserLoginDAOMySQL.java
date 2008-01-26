@@ -30,13 +30,16 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			query.setString(2, pwdHash);
 			final ResultSet rs = query.executeQuery();
 
-			rs.first();
-			if (rs.getString("username") != null && rs.getBoolean("locked") == false)
-				return 0;
-			else if(rs.getString("username") != null)
-				return -1;
-			else if(rs.getBoolean("locked") == true)
-				return -2;
+			if(rs.first())
+			{
+				if (rs.getString("username") != null && rs.getBoolean("locked") == false)
+					return 0;
+				else if(rs.getString("username") != null)
+					return -1;
+				else if(rs.getBoolean("locked") == true)
+					return -2;
+			}
+			else return -1;
 		}
 		catch (SQLException e)
 		{
@@ -61,40 +64,43 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			query.setString(1, username);
 			final ResultSet rs = query.executeQuery();
 
-			rs.first();
-			login.setAuthorization(rs.getString("u.authorization"));
-			login.setIslocked(rs.getBoolean("u.locked"));
-			login.setLoggedIn(rs.getBoolean("u.isloggedin"));
-			login.setUsername(rs.getString("u.username"));
-			login.setPassword(rs.getString("u.pwd"));
-			staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
-
-			station.setId(rs.getInt("e.primaryLocation"));
-			station.setLocationName(rs.getString("lo.locationname"));
-			staff.setPrimaryLocation(station);
-
-			staff.setLastName(rs.getString("e.lastname"));
-			staff.setFirstName(rs.getString("e.firstname"));
-			staff.setStreetname(rs.getString("e.street"));
-			staff.setCityname(rs.getString("e.city"));
-			staff.setMale(rs.getBoolean("e.sex"));
-			staff.setBirthday(MyUtils.getTimestampFromDate(rs.getString("e.birthday")));
-			staff.setEMail(rs.getString("e.email"));
-			staff.setUserName(rs.getString("u.username"));
-
+			if(rs.first())
 			{
-				Competence competence = new Competence();
-				competence.setId(rs.getInt("c.competence_ID"));
-				competence.setCompetenceName(rs.getString("c.competence"));
-				competences.add(competence);
-			}while(rs.next());
-			staff.setCompetenceList(competences);
-			
+				login.setAuthorization(rs.getString("u.authorization"));
+				login.setIslocked(rs.getBoolean("u.locked"));
+				login.setLoggedIn(rs.getBoolean("u.isloggedin"));
+				login.setUsername(rs.getString("u.username"));
+				login.setPassword(rs.getString("u.pwd"));
+				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
+
+				station.setId(rs.getInt("e.primaryLocation"));
+				station.setLocationName(rs.getString("lo.locationname"));
+				staff.setPrimaryLocation(station);
+
+				staff.setLastName(rs.getString("e.lastname"));
+				staff.setFirstName(rs.getString("e.firstname"));
+				staff.setStreetname(rs.getString("e.street"));
+				staff.setCityname(rs.getString("e.city"));
+				staff.setMale(rs.getBoolean("e.sex"));
+				staff.setBirthday(MyUtils.getTimestampFromDate(rs.getString("e.birthday")));
+				staff.setEMail(rs.getString("e.email"));
+				staff.setUserName(rs.getString("u.username"));
+
+				{
+					Competence competence = new Competence();
+					competence.setId(rs.getInt("c.competence_ID"));
+					competence.setCompetenceName(rs.getString("c.competence"));
+					competences.add(competence);
+				}while(rs.next());
+				staff.setCompetenceList(competences);
+			}
+			else return null;
+
 			//ph.phonenumber, ph.phonenumber_ID
 			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
 			query3.setInt(1, staff.getStaffMemberId());
 			final ResultSet rs2 = query3.executeQuery();
-			
+
 			List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
 			while(rs2.next())
 			{

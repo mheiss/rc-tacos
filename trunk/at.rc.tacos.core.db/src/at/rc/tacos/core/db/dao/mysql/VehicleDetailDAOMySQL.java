@@ -62,109 +62,112 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 
 			//v.vehicle_ID, v.medic1_ID, v.medic2_ID, v.driver_ID, v.currentLocation, v.primaryLocation, lo.locationname, lo.location_ID,
 			//v.vehicletype, v.readyForAction, v.outOfOrder, v.phonenumber_ID, pn.phonenumber, v.note
-			rs.first();
-			vehicle.setVehicleName(rs.getString("v.vehicle_ID"));
-			vehicle.setVehicleType(rs.getString("v.vehicletype"));
-			vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
-			vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
-			vehicle.setVehicleNotes(rs.getString("v.note"));
-
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setId(rs.getInt("v.phonenumber_ID"));
-			phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-			phone.setMobilePhoneName(rs.getString("pn.phonename"));
-			vehicle.setMobilPhone(phone);
-
+			if(rs.first())
 			{
-				if(rs.getInt("v.currentLocation") == rs.getInt("lo.location_ID"))
+				vehicle.setVehicleName(rs.getString("v.vehicle_ID"));
+				vehicle.setVehicleType(rs.getString("v.vehicletype"));
+				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
+				vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
+				vehicle.setVehicleNotes(rs.getString("v.note"));
+
+				MobilePhoneDetail phone = new MobilePhoneDetail();
+				phone.setId(rs.getInt("v.phonenumber_ID"));
+				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
+				phone.setMobilePhoneName(rs.getString("pn.phonename"));
+				vehicle.setMobilPhone(phone);
+
 				{
-					station.setId(rs.getInt("v.currentLocation"));
-					station.setLocationName(rs.getString("lo.locationname"));
-					vehicle.setCurrentStation(station);
-				}
-				else if(rs.getInt("v.primaryLocation") == rs.getInt("lo.location_ID"))
-				{
-					station.setId(rs.getInt("v.primaryLocation"));
-					station.setLocationName(rs.getString("lo.locationname"));
-					vehicle.setBasicStation(station);
-				}
-			}while(rs.next());
-			rs.first();
-
-			int i=1;
-			for(i=1; i>3; i++)
-			{
-				int staffID = 0;
-				if(i==1)
-					staffID = rs.getInt("v.medic1_ID");
-				else if(i==2)
-					staffID = rs.getInt("v.medic2_ID");
-				else if(i==3)
-					staffID = rs.getInt("v.driver_ID");
-
-				StaffMember staff = new StaffMember();
-
-				List<Competence> competences = new ArrayList<Competence>();
-				try
-				{
-					//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
-					//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
-					final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberByID"));
-					query2.setInt(1, staffID);
-					final ResultSet rs2 = query.executeQuery();
-
-					rs2.first();
-					staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));
-
-					station.setId(rs2.getInt("e.primaryLocation"));
-					station.setLocationName(rs2.getString("lo.locationname"));
-					staff.setPrimaryLocation(station);
-
-					staff.setLastName(rs2.getString("e.lastname"));
-					staff.setFirstName(rs2.getString("e.firstname"));
-					staff.setStreetname(rs2.getString("e.street"));
-					staff.setCityname(rs2.getString("e.city"));
-					staff.setMale(rs2.getBoolean("e.sex"));
-					staff.setBirthday(MyUtils.getTimestampFromDate(rs2.getString("e.birthday")));
-					staff.setEMail(rs2.getString("e.email"));
-					staff.setUserName(rs2.getString("e.username"));
-
+					if(rs.getInt("v.currentLocation") == rs.getInt("lo.location_ID"))
 					{
-						Competence competence = new Competence();
-						competence.setId(rs2.getInt("c.competence_ID"));
-						competence.setCompetenceName(rs2.getString("c.competence"));
-						competences.add(competence);
-					}while(rs.next());
-					staff.setCompetenceList(competences);
-
-					//ph.phonenumber, ph.phonenumber_ID
-					final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
-					query3.setInt(1, rs2.getInt("ro.staffmember_ID"));
-					final ResultSet rs3 = query3.executeQuery();
-
-					List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
-					while(rs3.next())
-					{
-						MobilePhoneDetail phone2 = new MobilePhoneDetail();
-						phone2.setId(rs3.getInt("ph.phonenumber_ID"));
-						phone2.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
-						phoneList.add(phone2);
+						station.setId(rs.getInt("v.currentLocation"));
+						station.setLocationName(rs.getString("lo.locationname"));
+						vehicle.setCurrentStation(station);
 					}
-					staff.setPhonelist(phoneList);
+					else if(rs.getInt("v.primaryLocation") == rs.getInt("lo.location_ID"))
+					{
+						station.setId(rs.getInt("v.primaryLocation"));
+						station.setLocationName(rs.getString("lo.locationname"));
+						vehicle.setBasicStation(station);
+					}
+				}while(rs.next());
+				rs.first();
 
-					if(i==1)
-						vehicle.setFirstParamedic(staff);
-					else if(i==2)
-						vehicle.setSecondParamedic(staff);
-					else if(i==3)
-						vehicle.setDriver(staff);
-				}
-				catch (SQLException e)
+				int i=1;
+				for(i=1; i>3; i++)
 				{
-					e.printStackTrace();
-					return null;
+					int staffID = 0;
+					if(i==1)
+						staffID = rs.getInt("v.medic1_ID");
+					else if(i==2)
+						staffID = rs.getInt("v.medic2_ID");
+					else if(i==3)
+						staffID = rs.getInt("v.driver_ID");
+
+					StaffMember staff = new StaffMember();
+
+					List<Competence> competences = new ArrayList<Competence>();
+					try
+					{
+						//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
+						//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
+						final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberByID"));
+						query2.setInt(1, staffID);
+						final ResultSet rs2 = query.executeQuery();
+
+						rs2.first();
+						staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));
+
+						station.setId(rs2.getInt("e.primaryLocation"));
+						station.setLocationName(rs2.getString("lo.locationname"));
+						staff.setPrimaryLocation(station);
+
+						staff.setLastName(rs2.getString("e.lastname"));
+						staff.setFirstName(rs2.getString("e.firstname"));
+						staff.setStreetname(rs2.getString("e.street"));
+						staff.setCityname(rs2.getString("e.city"));
+						staff.setMale(rs2.getBoolean("e.sex"));
+						staff.setBirthday(MyUtils.getTimestampFromDate(rs2.getString("e.birthday")));
+						staff.setEMail(rs2.getString("e.email"));
+						staff.setUserName(rs2.getString("e.username"));
+
+						{
+							Competence competence = new Competence();
+							competence.setId(rs2.getInt("c.competence_ID"));
+							competence.setCompetenceName(rs2.getString("c.competence"));
+							competences.add(competence);
+						}while(rs.next());
+						staff.setCompetenceList(competences);
+
+						//ph.phonenumber, ph.phonenumber_ID
+						final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
+						query3.setInt(1, rs2.getInt("ro.staffmember_ID"));
+						final ResultSet rs3 = query3.executeQuery();
+
+						List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
+						while(rs3.next())
+						{
+							MobilePhoneDetail phone2 = new MobilePhoneDetail();
+							phone2.setId(rs3.getInt("ph.phonenumber_ID"));
+							phone2.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
+							phoneList.add(phone2);
+						}
+						staff.setPhonelist(phoneList);
+
+						if(i==1)
+							vehicle.setFirstParamedic(staff);
+						else if(i==2)
+							vehicle.setSecondParamedic(staff);
+						else if(i==3)
+							vehicle.setDriver(staff);
+					}
+					catch (SQLException e)
+					{
+						e.printStackTrace();
+						return null;
+					}
 				}
 			}
+			else return null;
 		}
 		catch (SQLException e)
 		{
@@ -180,7 +183,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 
 		List<VehicleDetail> vehicles = new ArrayList<VehicleDetail>();
 
-		
+
 		Location station = new Location();
 		try
 		{

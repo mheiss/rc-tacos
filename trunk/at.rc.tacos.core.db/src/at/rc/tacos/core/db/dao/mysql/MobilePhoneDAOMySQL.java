@@ -55,10 +55,13 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 			query1.setString(1, mobilePhoneName);
 			final ResultSet rs = query1.executeQuery();
 
-			rs.first();
+			if(rs.first())
+			{
 			phone.setId(rs.getInt("phonenumber_ID"));
 			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
 			phone.setMobilePhoneName(rs.getString("phonename"));
+			}
+			else return null;
 		}
 		catch (SQLException e)
 		{

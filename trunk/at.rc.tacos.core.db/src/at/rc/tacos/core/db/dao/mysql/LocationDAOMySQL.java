@@ -28,20 +28,23 @@ public class LocationDAOMySQL implements LocationDAO
 			query.setInt(1, locationID);
 			final ResultSet rs = query.executeQuery();
 
-			rs.first();
-			location.setCity(rs.getString("lo.city"));
-			location.setId(rs.getInt("lo.location_ID"));
-			location.setLocationName(rs.getString("lo.locationname"));
-			location.setNotes(rs.getString("lo.note"));
-			
-			phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-			phone.setMobilePhoneName(rs.getString("pn.phonename"));
-			phone.setId(rs.getInt("lo.phonenumber_ID"));
-			location.setPhone(phone);
-			
-			location.setStreet(rs.getString("lo.street"));
-			location.setStreetNumber(rs.getString("lo.streetnumber"));
-			location.setZipcode(rs.getInt("lo.zipcode"));
+			if(rs.first())
+			{
+				location.setCity(rs.getString("lo.city"));
+				location.setId(rs.getInt("lo.location_ID"));
+				location.setLocationName(rs.getString("lo.locationname"));
+				location.setNotes(rs.getString("lo.note"));
+
+				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
+				phone.setMobilePhoneName(rs.getString("pn.phonename"));
+				phone.setId(rs.getInt("lo.phonenumber_ID"));
+				location.setPhone(phone);
+
+				location.setStreet(rs.getString("lo.street"));
+				location.setStreetNumber(rs.getString("lo.streetnumber"));
+				location.setZipcode(rs.getInt("lo.zipcode"));
+			}
+			else return null;
 		}
 		catch (SQLException e)
 		{
@@ -71,12 +74,12 @@ public class LocationDAOMySQL implements LocationDAO
 				location.setId(rs.getInt("lo.location_ID"));
 				location.setLocationName(rs.getString("lo.locationname"));
 				location.setNotes(rs.getString("lo.note"));
-				
+
 				phone.setId(rs.getInt("lo.phonenumber_ID"));
 				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
 				phone.setMobilePhoneName(rs.getString("pn.phonename"));
 				location.setPhone(phone);
-				
+
 				location.setStreet(rs.getString("lo.street"));
 				location.setStreetNumber(rs.getString("lo.streetnumber"));
 				location.setZipcode(rs.getInt("lo.zipcode"));
@@ -111,14 +114,14 @@ public class LocationDAOMySQL implements LocationDAO
 			query.setString(7, location.getNotes());
 			query.setInt(8, location.getPhone().getId());
 			query.executeUpdate();
-			
+
 			//locationname, zipcode, street
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.locationID"));
 			query1.setString(1, location.getLocationName());
 			query1.setInt(2, location.getZipcode());
 			query1.setString(3, location.getStreet());
 			final ResultSet rsLocationId = query1.executeQuery();
-			
+
 			if(rsLocationId.first())
 				locationId = rsLocationId.getInt("location_ID");
 		}
@@ -135,37 +138,37 @@ public class LocationDAOMySQL implements LocationDAO
 	public boolean removeLocation(int id)
 	{
 		try
-    	{
-    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.location"));
-    		query.setInt(1, id);
-    		query.executeUpdate();
-    	}
-    	catch (SQLException e)
-    	{
-    		e.printStackTrace();
-    		return false;
-    	}
-    	return true;
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.location"));
+			query.setInt(1, id);
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 
 	@Override
 	public boolean updateLocation(Location location)
 	{
-    	try
+		try
 		{
-    	// locationname, street, streetnumber, zipcode, city, note, phonenumber_ID, location_ID
-    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.location"));
-		query.setString(1, location.getLocationName());
-		query.setString(2, location.getStreet());
-		query.setString(3, location.getStreetNumber());
-		query.setInt(4, location.getZipcode());
-		query.setString(5, location.getCity());
-		query.setString(6, location.getNotes());
-		query.setInt(7, location.getPhone().getId());
-		query.setInt(8, location.getId());
-		
-		query.executeUpdate();
+			// locationname, street, streetnumber, zipcode, city, note, phonenumber_ID, location_ID
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.location"));
+			query.setString(1, location.getLocationName());
+			query.setString(2, location.getStreet());
+			query.setString(3, location.getStreetNumber());
+			query.setInt(4, location.getZipcode());
+			query.setString(5, location.getCity());
+			query.setString(6, location.getNotes());
+			query.setInt(7, location.getPhone().getId());
+			query.setInt(8, location.getId());
+
+			query.executeUpdate();
 		}
 		catch (SQLException e)
 		{

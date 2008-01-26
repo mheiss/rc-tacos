@@ -85,35 +85,38 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 			query1.setInt(1, id);
 			final ResultSet rs = query1.executeQuery();
 
-			rs.first();
-			dialysis.setAppointmentTimeAtDialysis(MyUtils.getTimestampFromDateAndTime(rs.getString("appointmentTimeAtDialysis")));
-			dialysis.setAssistantPerson(rs.getBoolean("assistant"));
-			dialysis.setFriday(rs.getBoolean("friday"));
-			dialysis.setFromCity(rs.getString("fromCity"));
-			dialysis.setFromStreet(rs.getString("fromStreet"));
-			dialysis.setId(rs.getInt("dialysis_ID"));
-			dialysis.setInsurance(rs.getString("insurance"));
-			dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
-			location.setLocationName(rs.getString("stationname"));
-			dialysis.setLocation(location);
-			dialysis.setMonday(rs.getBoolean("monday"));
+			if(rs.first())
+			{
+				dialysis.setAppointmentTimeAtDialysis(MyUtils.getTimestampFromDateAndTime(rs.getString("appointmentTimeAtDialysis")));
+				dialysis.setAssistantPerson(rs.getBoolean("assistant"));
+				dialysis.setFriday(rs.getBoolean("friday"));
+				dialysis.setFromCity(rs.getString("fromCity"));
+				dialysis.setFromStreet(rs.getString("fromStreet"));
+				dialysis.setId(rs.getInt("dialysis_ID"));
+				dialysis.setInsurance(rs.getString("insurance"));
+				dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
+				location.setLocationName(rs.getString("stationname"));
+				dialysis.setLocation(location);
+				dialysis.setMonday(rs.getBoolean("monday"));
 
-			patient.setFirstname(rs.getString("firstname"));
-			patient.setLastname(rs.getString("lastname"));
-			dialysis.setPatient(patient);
+				patient.setFirstname(rs.getString("firstname"));
+				patient.setLastname(rs.getString("lastname"));
+				dialysis.setPatient(patient);
 
-			dialysis.setPlannedStartForBackTransport(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedStartForBackTransport")));
-			dialysis.setPlannedStartOfTransport(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedStartOfTransport")));
-			dialysis.setPlannedTimeAtPatient(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedTimeAtPatient")));
-			dialysis.setReadyTime(MyUtils.getTimestampFromDateAndTime(rs.getString("readyTime")));
-			dialysis.setSaturday(rs.getBoolean("saturday"));
-			dialysis.setStationary(rs.getBoolean("stationary"));
-			dialysis.setSunday(rs.getBoolean("sunday"));
-			dialysis.setThursday(rs.getBoolean("thursday"));
-			dialysis.setToCity(rs.getString("toCity"));
-			dialysis.setToStreet(rs.getString("toStreet"));
-			dialysis.setTuesday(rs.getBoolean("tuesday"));
-			dialysis.setWednesday(rs.getBoolean("wednesday"));
+				dialysis.setPlannedStartForBackTransport(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedStartForBackTransport")));
+				dialysis.setPlannedStartOfTransport(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedStartOfTransport")));
+				dialysis.setPlannedTimeAtPatient(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedTimeAtPatient")));
+				dialysis.setReadyTime(MyUtils.getTimestampFromDateAndTime(rs.getString("readyTime")));
+				dialysis.setSaturday(rs.getBoolean("saturday"));
+				dialysis.setStationary(rs.getBoolean("stationary"));
+				dialysis.setSunday(rs.getBoolean("sunday"));
+				dialysis.setThursday(rs.getBoolean("thursday"));
+				dialysis.setToCity(rs.getString("toCity"));
+				dialysis.setToStreet(rs.getString("toStreet"));
+				dialysis.setTuesday(rs.getBoolean("tuesday"));
+				dialysis.setWednesday(rs.getBoolean("wednesday"));
+			}
+			else return null;
 		}
 		catch (SQLException e)
 		{

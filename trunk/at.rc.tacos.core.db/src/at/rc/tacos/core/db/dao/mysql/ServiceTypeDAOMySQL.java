@@ -54,9 +54,12 @@ public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 			query1.setInt(1, id);
 			final ResultSet rs = query1.executeQuery();
 
-			rs.first();
-			servicetype.setId(rs.getInt("servicetype_ID"));
-			servicetype.setServiceName(rs.getString("servicetype"));
+			if(rs.first())
+			{
+				servicetype.setId(rs.getInt("servicetype_ID"));
+				servicetype.setServiceName(rs.getString("servicetype"));
+			}
+			else return null;
 		}
 		catch (SQLException e)
 		{
@@ -94,31 +97,31 @@ public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 	@Override
 	public boolean removeServiceType(int id)
 	{
-    	try
-    	{
-    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.servicetype"));
-    		query.setInt(1, id);
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.servicetype"));
+			query.setInt(1, id);
 
-    		query.executeUpdate();
-    	}
-    	catch (SQLException e)
-    	{
-    		e.printStackTrace();
-    		return false;
-    	}
-    	return true;
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean updateServiceType(ServiceType serviceType)
 	{
-    	try
+		try
 		{
-    	// servicetype, servicetype_ID
-    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.servicetype"));
-		query.setString(1, serviceType.getServiceName());
-		query.setInt(2, serviceType.getId());
-		query.executeUpdate();
+			// servicetype, servicetype_ID
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.servicetype"));
+			query.setString(1, serviceType.getServiceName());
+			query.setInt(2, serviceType.getId());
+			query.executeUpdate();
 		}
 		catch (SQLException e)
 		{
