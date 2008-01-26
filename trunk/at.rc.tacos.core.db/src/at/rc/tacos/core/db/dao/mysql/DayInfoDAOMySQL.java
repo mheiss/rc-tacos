@@ -22,7 +22,7 @@ public class DayInfoDAOMySQL implements DayInfoDAO
     	try
     	{
     		//dayinfo_ID, username, date, message
-    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DayInfoDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.DayInfoByDate"));
+    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DayInfoDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.dayInfoByDate"));
     		query.setString(1,MyUtils.formatDate(date));
     		
     		final ResultSet rs = query.executeQuery();
