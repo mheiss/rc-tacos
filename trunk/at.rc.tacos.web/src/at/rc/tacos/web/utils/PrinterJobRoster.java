@@ -11,9 +11,6 @@ import java.awt.print.PrinterException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
-
-import javax.swing.JPanel;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.RosterEntry;
