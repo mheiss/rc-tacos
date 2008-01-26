@@ -50,7 +50,7 @@ public class TransportListener extends ServerListenerAdapter
 			final String type = queryFilter.getFilterValue(IFilterTypes.TYPE_FILTER);
 			//get the query filter and parse it to a date time
 			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.DATE_FILTER);
-			long dateStart = MyUtils.getTimestampFromDate(dateFilter);
+			long dateStart = MyUtils.stringToTimestamp(dateFilter,MyUtils.dateFormat);
 			
 			//show current transports that are in progress
 			if(Transport.TRANSPORT_PROGRESS.equalsIgnoreCase(type))

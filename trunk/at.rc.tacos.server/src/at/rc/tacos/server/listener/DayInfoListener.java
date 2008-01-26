@@ -24,7 +24,7 @@ public class DayInfoListener extends ServerListenerAdapter
 			//get the query filter
 			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.DATE_FILTER);
 			//get the timestamp
-			long date = MyUtils.getTimestampFromDate(dateFilter);
+			long date = MyUtils.stringToTimestamp(dateFilter, MyUtils.dateFormat);
 			//the day info
 			DayInfoMessage message = dayInfoDao.getDayInfoByDate(date);
 			//assert valid
