@@ -12,7 +12,7 @@ import at.rc.tacos.util.MyUtils;
 public class DayInfoListener extends ServerListenerAdapter
 {
 	//The DAO classes
-	private DayInfoDAO dayInfoDao = DaoFactory.TEST.createDayInfoDAO();
+	private DayInfoDAO dayInfoDao = DaoFactory.MYSQL.createDayInfoDAO();
 
 	@Override
 	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) 

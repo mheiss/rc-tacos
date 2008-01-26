@@ -10,7 +10,7 @@ import at.rc.tacos.model.QueryFilter;
 
 public class JobListener extends ServerListenerAdapter
 {
-	private JobDAO jobDao = DaoFactory.TEST.createJobDAO();
+	private JobDAO jobDao = DaoFactory.MYSQL.createJobDAO();
 	
     @Override
     public AbstractMessage handleAddRequest(AbstractMessage addObject)
