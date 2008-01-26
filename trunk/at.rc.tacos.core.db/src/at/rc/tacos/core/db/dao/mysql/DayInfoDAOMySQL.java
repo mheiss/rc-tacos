@@ -27,10 +27,14 @@ public class DayInfoDAOMySQL implements DayInfoDAO
 
 			final ResultSet rs = query.executeQuery();
 
-			rs.first();
-			dayInfo.setLastChangedBy(rs.getString("username"));
-			dayInfo.setTimestamp(MyUtils.getTimestampFromDate(rs.getString("date")));
-			dayInfo.setMessage(rs.getString("message"));
+			if(rs.first())
+			{
+				dayInfo.setLastChangedBy(rs.getString("username"));
+
+				dayInfo.setTimestamp(MyUtils.getTimestampFromDate(rs.getString("date")));
+				dayInfo.setMessage(rs.getString("message"));
+			}
+			else return null;
 		}
 		catch (SQLException e)
 		{
