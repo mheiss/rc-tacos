@@ -104,6 +104,7 @@ public class MySocket extends Socket
         //assert we have a valid output stream
         if (out != null)
         {
+        	out.println(message);
             out.flush();
             //check errors
             if (out.checkError())
