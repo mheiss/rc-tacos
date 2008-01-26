@@ -39,4 +39,10 @@ public interface MobilePhoneDAO
 	 * @return the list of mobile phones
 	 */
 	public List<MobilePhoneDetail> listMobilePhones();
+	
+	/**
+	 * Returns a list of mobile phones of a specific Staffmember
+	 * @return a list of mobilephones of a specific staffmember
+	 */
+	public List<MobilePhoneDetail> listMobilePhonesOfStaffMember(int id);
 }

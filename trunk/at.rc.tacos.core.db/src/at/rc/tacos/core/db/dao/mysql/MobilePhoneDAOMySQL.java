@@ -104,7 +104,6 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
     	{
     		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.phone"));
     		query.setInt(1, id);
-
     		query.executeUpdate();
     	}
     	catch (SQLException e)
@@ -135,5 +134,34 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 		}
 		return true;
 	}
+
+	@Override
+	public List<MobilePhoneDetail> listMobilePhonesOfStaffMember(int id)
+	{
+		List<MobilePhoneDetail> phones = new ArrayList<MobilePhoneDetail>();
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
+			query.setInt(1, id);
+			final ResultSet rs = query.executeQuery();
+
+			while(rs.next())
+			{
+				MobilePhoneDetail phone = new MobilePhoneDetail();
+				phone.setId(rs.getInt("phonenumber_ID"));
+				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+				phone.setMobilePhoneName(rs.getString("phonename"));
+				phones.add(phone);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return phones;
+	}
+	
+	
 
 }
