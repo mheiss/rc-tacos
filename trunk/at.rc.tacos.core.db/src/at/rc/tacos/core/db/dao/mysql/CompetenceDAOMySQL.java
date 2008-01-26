@@ -67,7 +67,6 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 	@Override
 	public List<Competence> listCompetences()
 	{
-		Competence competence = new Competence();
 		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
@@ -76,10 +75,10 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 
 			while(rs.next())
 			{
+				Competence competence = new Competence();
 				competence.setCompetenceName(rs.getString("competence"));
 				competence.setId(rs.getInt("competence_ID"));
 				competences.add(competence);
-				System.out.println(competence);
 			}
 		}
 		catch (SQLException e)
