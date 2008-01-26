@@ -33,6 +33,8 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 
 			if(rs.first())
 				competenceId = rs.getInt("caller_ID");
+			else
+				return -1;
 		}
 		catch (SQLException e)
 		{
@@ -52,9 +54,13 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 			query1.setInt(1, id);
 			final ResultSet rs = query1.executeQuery();
 
-			rs.first();
-			competence.setCompetenceName(rs.getString("competence"));
-			competence.setId(id);
+			if(rs.first())
+			{
+				competence.setCompetenceName(rs.getString("competence"));
+				competence.setId(id);
+			}
+			else
+				return null;
 		}
 		catch (SQLException e)
 		{
@@ -92,30 +98,30 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 	@Override
 	public boolean removeCompetence(int id)
 	{
-    	try
-    	{
-    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.competence"));
-    		query.setInt(1, id);
-    		query.executeUpdate();
-    	}
-    	catch (SQLException e)
-    	{
-    		e.printStackTrace();
-    		return false;
-    	}
-    	return true;
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.competence"));
+			query.setInt(1, id);
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean updateCompetence(Competence competence)
 	{
-    	try
+		try
 		{
-    	// competence, competence_ID
-    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.competence"));
-		query.setString(1, competence.getCompetenceName());
-		query.setInt(2, competence.getId());
-		query.executeUpdate();
+			// competence, competence_ID
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.competence"));
+			query.setString(1, competence.getCompetenceName());
+			query.setInt(2, competence.getId());
+			query.executeUpdate();
 		}
 		catch (SQLException e)
 		{

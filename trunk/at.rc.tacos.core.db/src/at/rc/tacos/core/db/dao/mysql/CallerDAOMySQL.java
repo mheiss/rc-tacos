@@ -51,9 +51,13 @@ public class CallerDAOMySQL implements CallerDAO
 			query1.setInt(1, callerID);
 			final ResultSet rs = query1.executeQuery();
 
-			rs.first();
+			if(rs.first())
+			{
 			caller.setCallerName(rs.getString("callername"));
 			caller.setCallerName(rs.getString("caller_phonenumber"));
+			}
+			else
+				return null;
 		}
 		catch (SQLException e)
 		{
