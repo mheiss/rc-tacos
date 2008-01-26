@@ -11,7 +11,7 @@ import at.rc.tacos.model.QueryFilter;
 public class CompetenceListener extends ServerListenerAdapter
 {
 	//the DAO
-	private CompetenceDAO compDao = DaoFactory.TEST.createCompetenceDAO();
+	private CompetenceDAO compDao = DaoFactory.MYSQL.createCompetenceDAO();
 	
     @Override
     public AbstractMessage handleAddRequest(AbstractMessage addObject)
@@ -27,6 +27,11 @@ public class CompetenceListener extends ServerListenerAdapter
     {
     	ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
     	list.addAll(compDao.listCompetences());
+    	for(AbstractMessage ab:list)
+    	{
+    		Competence comp = (Competence)ab;
+    		System.out.println(comp);
+    	}
         return list;
     }
 
