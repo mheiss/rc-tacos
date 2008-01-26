@@ -14,9 +14,13 @@ import java.util.Date;
 public class MyUtils 
 {
     //formatters
-    private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-    private final static SimpleDateFormat timeAndDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    public final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    public final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    public final static SimpleDateFormat timeAndDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    
+    //sql date
+    public final static SimpleDateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
+    public final static SimpleDateFormat sqlDateTime = new SimpleDateFormat("yyyyMMddHHmmss");
 
     /**
      * Convinience helper method to ensure a long value is a valid date.
@@ -111,70 +115,26 @@ public class MyUtils
     }
 
     /**
-     * Formats and returns the given timestamp as time string.<br>
-     * The format options will be hh:mm
-     * @param timestamp the time to format
-     * @return the formatted string
-     */
-    public static String formatTime(long timestamp)
-    {
-        return timeFormat.format(new Date(timestamp));
-    }
-
-    /**
      * Formats and returns the given timestamp as date string.<br>
-     * The format options will be dd-MM-yyyy
+     * The format options will must be given
      * @param timestamp the time to format
+     * @param dateFormat the format of the date to use
      * @return the formatted string
      */
-    public static String formatDate(long timestamp)
+    public static String timestampToString(long timestamp,SimpleDateFormat dateFormat)
     {
         return dateFormat.format(new Date(timestamp));
     }
 
     /**
-     * Formats and returns the given timestamp as time and date string.<br>
-     * The format options will be dd-MM-yyyy hh:mmm
-     * @param timestamp the time to format
-     * @return the formatted string
-     */
-    public static String formatTimeAndDate(long timestamp)
-    {
-        return timeAndDateFormat.format(new Date(timestamp));
-    }
-
-    /**
      * Parses the given time string into a timestamp.<br>
-     * Parser uses the format: HH:mm <br>
+     * The parsing string must be specified <br>
      * When the string is not parseable the mehtod will return -1
      * @param soureString the string to parse
+     * @param dateFormat the format of the date
      * @return the timestamp or -1 in case of an error
      */
-    public final static long getTimestampFromTime(String time)
-    {
-        //set up the parser
-        DateFormat formatter = timeFormat;
-        formatter.setLenient(true);
-        //try to parse
-        try
-        {
-            return formatter.parse(time).getTime();
-        }
-        catch(ParseException pe)
-        {
-            System.out.println("Failed to validate the given time: "+time);
-            return -1;
-        }
-    }
-
-    /**
-     * Parses the given date string into a timestamp.<br>
-     * Parser uses the value : dd-MM-yyyy <br>
-     * When the string is not parseable the mehtod will return -1
-     * @param soureString the string to parse
-     * @return the timestamp or -1 in case of an error
-     */
-    public final static long getTimestampFromDate(String time)
+    public final static long stringToTimestamp(String time,SimpleDateFormat dateFormat)
     {
         //set up the parser
         DateFormat formatter = dateFormat;
@@ -186,28 +146,7 @@ public class MyUtils
         }
         catch(ParseException pe)
         {
-            System.out.println("Failed to validate the given date: "+time);
-            return -1;
-        }
-    }
-    
-    /**
-     * Parses the given date and time value into a timestamp.
-     * Parser uses the value : dd-MM-yyyy HH:mm
-     */
-    public final static long getTimestampFromDateAndTime(String time)
-    {
-    	//set up the parser
-        DateFormat formatter = timeAndDateFormat;
-        formatter.setLenient(true);
-        //try to parse
-        try
-        {
-            return formatter.parse(time).getTime();
-        }
-        catch(ParseException pe)
-        {
-            System.out.println("Failed to validate the given date: "+time);
+            System.out.println("Failed to validate the given time: "+time);
             return -1;
         }
     }
