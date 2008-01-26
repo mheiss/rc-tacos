@@ -57,7 +57,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
-			//*u.authorization, *u.isloggedin, *u.locked, u.pwd, e.city, e.street
+			//u.authorization, u.isloggedin, u.locked, u.pwd, e.city, e.street, pe.phonenumber_ID, ph.phonenumber, c.competence_ID, c.competence
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberbyUsername"));
 			query.setString(1, username);
 			final ResultSet rs = query.executeQuery();
@@ -92,7 +92,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 
 			//ph.phonenumber, ph.phonenumber_ID
 			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
-			query3.setInt(1, rs.getInt("ro.staffmember_ID"));
+			query3.setInt(1, rs.getInt("e.staffmember_ID"));
 			final ResultSet rs2 = query3.executeQuery();
 
 			List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
