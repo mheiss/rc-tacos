@@ -67,7 +67,6 @@ public class JobDAOMySQL implements JobDAO
 	@Override
 	public List<Job> listJobs()
 	{
-		Job job = new Job();
 		List<Job> jobs = new ArrayList<Job>();
 		try
 		{
@@ -76,6 +75,7 @@ public class JobDAOMySQL implements JobDAO
 
 			while(rs.next())
 			{
+				Job job = new Job();
 				job.setId(rs.getInt("job_ID"));
 				job.setJobName(rs.getString("jobname"));
 				jobs.add(job);

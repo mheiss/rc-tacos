@@ -71,7 +71,6 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 	@Override
 	public List<MobilePhoneDetail> listMobilePhones()
 	{
-		MobilePhoneDetail phone = new MobilePhoneDetail();
 		List<MobilePhoneDetail> phones = new ArrayList<MobilePhoneDetail>();
 		try
 		{
@@ -80,6 +79,7 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 
 			while(rs.next())
 			{
+				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("phonenumber_ID"));
 				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
 				phone.setMobilePhoneName(rs.getString("phonename"));
