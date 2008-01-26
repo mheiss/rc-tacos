@@ -72,7 +72,7 @@ public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 		List<ServiceType> servicetypes = new ArrayList<ServiceType>();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.servicetypeByID"));
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.servicetypes"));
 			final ResultSet rs = query1.executeQuery();
 
 			while(rs.next())
