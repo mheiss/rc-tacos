@@ -13,7 +13,6 @@ public class DayInfoMessage extends AbstractMessage
 	public final static String ID = "dayInfo";
 	
 	//properties
-	private int id;
 	private long timestamp;
 	private String message;
 	private String lastChangedBy;
@@ -53,7 +52,7 @@ public class DayInfoMessage extends AbstractMessage
 
 	/**
      * Returns the calculated hash code based on the day info message.<br>
-     * Two day info messages have the same hash code if the message is the same.
+     * Two day info messages have the same hash code if the timestamp is the same.
      * @return the calculated hash code
      */
 	@Override
@@ -61,13 +60,14 @@ public class DayInfoMessage extends AbstractMessage
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
 		return result;
 	}
 
+
 	/**
      * Returns whether the objects are equal or not.<br>
-     * Two day info messages are equal if, and only if, the message is the same.
+     * Two day info messages are equal if, and only if, the timestamp is the same.
      * @return true if the message is the same otherwise false.
      */
 	@Override
@@ -80,21 +80,12 @@ public class DayInfoMessage extends AbstractMessage
 		if (getClass() != obj.getClass())
 			return false;
 		final DayInfoMessage other = (DayInfoMessage) obj;
-		if (id == other.getId())
+		if (timestamp != other.timestamp)
 			return false;
 		return true;
 	}
-	//getters and setters
-	/**
-	 * Returns the id of the day info message.<br>
-	 * The id is a internal value in the database to identify the message.
-	 * @retunr id the id of the day info
-	 */
-	public int getId()
-	{
-	    return id;
-	}
 
+	//getters and setters
 	/**
 	 * Returns the timestamp containing the day the message is assigned to
 	 * @return the timestamp the day the message is assigned to
@@ -139,15 +130,6 @@ public class DayInfoMessage extends AbstractMessage
 	public void setDirty(boolean dirty)
 	{
 		this.dirty = dirty;
-	}
-	
-	/**
-	 * Sets the id for the day info message.
-	 * @param id the id to set.
-	 */
-	public void setId(int id)
-	{
-	    this.id = id;
 	}
 	
 	/**
