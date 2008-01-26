@@ -79,6 +79,7 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 				competence.setCompetenceName(rs.getString("competence"));
 				competence.setId(rs.getInt("competence_ID"));
 				competences.add(competence);
+				System.out.println(competence);
 			}
 		}
 		catch (SQLException e)
