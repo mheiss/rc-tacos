@@ -47,7 +47,7 @@ public class DayInfoDAOMemory implements DayInfoDAO
 	}
 
 	@Override
-	public int updateDayInfoMessage(DayInfoMessage message)
+	public boolean updateDayInfoMessage(DayInfoMessage message)
 	{
 		//check if we have a day info for this date
 		if(getDayInfoByDate(message.getTimestamp()) != null)
@@ -56,10 +56,10 @@ public class DayInfoDAOMemory implements DayInfoDAO
 			DayInfoMessage dayInfo = getDayInfoByDate(message.getTimestamp());
 			int index = dayInfoList.indexOf(dayInfo);
 			dayInfoList.set(index, message);
-			return index;
+			return true;
 		}	
 		//nothing found so add to the server list
 		dayInfoList.add(message);
-		return dayInfoList.size();
+		return true;
 	}
 }
