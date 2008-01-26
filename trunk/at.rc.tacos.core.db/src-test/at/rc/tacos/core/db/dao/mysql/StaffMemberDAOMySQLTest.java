@@ -40,8 +40,10 @@ public class StaffMemberDAOMySQLTest
         //request the listing
         stafflist = staffMemberDAO.getAllStaffMembers();
         
+        System.out.println(stafflist);
         //Assert.assertNotNull(stafflist);
         Assert.assertEquals(4, stafflist.size());
+       
         
     }
 }
