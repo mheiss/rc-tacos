@@ -8,7 +8,7 @@
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<StaffMember> list = (List)params.get("employeeList");
-	List<RosterEntry> rosterList = (List)params.get("rosterList");
+	List<Station> lista = (List)params.get("stationList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 %>
 
@@ -110,9 +110,9 @@
 												<select name="employee" id="rosterViewDayHeadSelbox">
 												<% for (StaffMember member : list) {
 													if(member.equals(userSession.getStaffMember())) { %>
-														<option selected="selected" value="<%=member.getPersonId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
+														<option selected="selected" value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
 													<% } else { %>
-														<option value="<%=member.getPersonId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
+														<option value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
 													<% } } %>
 												</select>
 											</td>
@@ -121,14 +121,12 @@
 											<td id="rosterViewDayHeadline">Bezirk /
 											Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
-												<option><%=userSession.getStaffMember().getPrimaryLocation()%></option>
-												<option><%=Constants.STATION_BEZIRK%></option>
-												<option><%=Constants.STATION_BREITENAU%></option>
-												<option><%=Constants.STATION_BRUCK%></option>
-												<option><%=Constants.STATION_KAPFENBERG%></option>
-												<option><%=Constants.STATION_MAREIN%></option>
-												<option><%=Constants.STATION_THOERL.replaceAll("ö","&ouml;")%></option>
-												<option><%=Constants.STATION_TURNAU%></option>
+											<% for (Station station : lista) {
+													if(member.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
+												<option selected="selected"><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
+												<% } else { %>
+												<option><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
+												<% } } %>
 											</select></td>
 										</tr>
 										<tr>
