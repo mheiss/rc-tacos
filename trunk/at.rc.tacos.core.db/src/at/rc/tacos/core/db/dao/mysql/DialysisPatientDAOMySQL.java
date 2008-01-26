@@ -31,11 +31,11 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
 			query.setString(3, patient.getLocation().getLocationName());
-			query.setString(4, MyUtils.formatTime(patient.getPlannedStartOfTransport()));
-			query.setString(5, MyUtils.formatTime(patient.getPlannedTimeAtPatient()));
-			query.setString(6, MyUtils.formatTime(patient.getAppointmentTimeAtDialysis()));
-			query.setString(7, MyUtils.formatTime(patient.getPlannedStartForBackTransport()));
-			query.setString(8, MyUtils.formatTime(patient.getReadyTime()));
+			query.setString(4, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
+			query.setString(5, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
+			query.setString(6, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.sqlDateTime));
+			query.setString(7, MyUtils.timestampToString(patient.getPlannedStartForBackTransport(), MyUtils.sqlDateTime));
+			query.setString(8, MyUtils.timestampToString(patient.getReadyTime(), MyUtils.sqlDateTime));
 			query.setString(9, patient.getFromStreet());
 			query.setString(10, patient.getFromCity());
 			query.setString(11, patient.getToStreet());
@@ -87,7 +87,7 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 
 			if(rs.first())
 			{
-				dialysis.setAppointmentTimeAtDialysis(MyUtils.getTimestampFromDateAndTime(rs.getString("appointmentTimeAtDialysis")));
+				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlDateTime));
 				dialysis.setAssistantPerson(rs.getBoolean("assistant"));
 				dialysis.setFriday(rs.getBoolean("friday"));
 				dialysis.setFromCity(rs.getString("fromCity"));
@@ -103,10 +103,10 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 				patient.setLastname(rs.getString("lastname"));
 				dialysis.setPatient(patient);
 
-				dialysis.setPlannedStartForBackTransport(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedStartForBackTransport")));
-				dialysis.setPlannedStartOfTransport(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedStartOfTransport")));
-				dialysis.setPlannedTimeAtPatient(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedTimeAtPatient")));
-				dialysis.setReadyTime(MyUtils.getTimestampFromDateAndTime(rs.getString("readyTime")));
+				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlDateTime));
+				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlDateTime));
+				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlDateTime));
+				dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlDateTime));
 				dialysis.setSaturday(rs.getBoolean("saturday"));
 				dialysis.setStationary(rs.getBoolean("stationary"));
 				dialysis.setSunday(rs.getBoolean("sunday"));
@@ -140,7 +140,7 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 
 			while(rs.next())
 			{
-				dialysis.setAppointmentTimeAtDialysis(MyUtils.getTimestampFromDateAndTime(rs.getString("appointmentTimeAtDialysis")));
+				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlDateTime));
 				dialysis.setAssistantPerson(rs.getBoolean("assistant"));
 				dialysis.setFriday(rs.getBoolean("friday"));
 				dialysis.setFromCity(rs.getString("fromCity"));
@@ -156,10 +156,10 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 				patient.setLastname(rs.getString("lastname"));
 				dialysis.setPatient(patient);
 
-				dialysis.setPlannedStartForBackTransport(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedStartForBackTransport")));
-				dialysis.setPlannedStartOfTransport(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedStartOfTransport")));
-				dialysis.setPlannedTimeAtPatient(MyUtils.getTimestampFromDateAndTime(rs.getString("plannedTimeAtPatient")));
-				dialysis.setReadyTime(MyUtils.getTimestampFromDateAndTime(rs.getString("readyTime")));
+				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlDateTime));
+				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlDateTime));
+				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlDateTime));
+				dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlDateTime));
 				dialysis.setSaturday(rs.getBoolean("saturday"));
 				dialysis.setStationary(rs.getBoolean("stationary"));
 				dialysis.setSunday(rs.getBoolean("sunday"));
@@ -210,11 +210,11 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
 			query.setString(3, patient.getLocation().getLocationName());
-			query.setString(4, MyUtils.formatTime(patient.getPlannedStartOfTransport()));
-			query.setString(5, MyUtils.formatTime(patient.getPlannedTimeAtPatient()));
-			query.setString(6, MyUtils.formatTime(patient.getAppointmentTimeAtDialysis()));
-			query.setString(7, MyUtils.formatTime(patient.getPlannedStartForBackTransport()));
-			query.setString(8, MyUtils.formatTime(patient.getReadyTime()));
+			query.setString(4, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
+			query.setString(5, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
+			query.setString(6, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.sqlDateTime));
+			query.setString(7, MyUtils.timestampToString(patient.getPlannedStartForBackTransport(), MyUtils.sqlDateTime));
+			query.setString(8, MyUtils.timestampToString(patient.getReadyTime(), MyUtils.sqlDateTime));
 			query.setString(9, patient.getFromStreet());
 			query.setString(10, patient.getFromCity());
 			query.setString(11, patient.getToStreet());
