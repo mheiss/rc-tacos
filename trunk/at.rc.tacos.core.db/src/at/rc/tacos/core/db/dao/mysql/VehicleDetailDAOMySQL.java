@@ -126,7 +126,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 						staff.setStreetname(rs2.getString("e.street"));
 						staff.setCityname(rs2.getString("e.city"));
 						staff.setMale(rs2.getBoolean("e.sex"));
-						staff.setBirthday(MyUtils.getTimestampFromDate(rs2.getString("e.birthday")));
+						staff.setBirthday(MyUtils.stringToTimestamp(rs2.getString("e.birthday"), MyUtils.sqlDate));
 						staff.setEMail(rs2.getString("e.email"));
 						staff.setUserName(rs2.getString("e.username"));
 
@@ -257,7 +257,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 						staff.setStreetname(rs2.getString("e.street"));
 						staff.setCityname(rs2.getString("e.city"));
 						staff.setMale(rs2.getBoolean("e.sex"));
-						staff.setBirthday(MyUtils.getTimestampFromDate(rs2.getString("e.birthday")));
+						staff.setBirthday(MyUtils.stringToTimestamp(rs2.getString("e.birthday"), MyUtils.sqlDate));
 						staff.setEMail(rs2.getString("e.email"));
 						staff.setUserName(rs2.getString("e.username"));
 

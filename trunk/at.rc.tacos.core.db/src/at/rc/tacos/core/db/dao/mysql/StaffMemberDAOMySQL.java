@@ -171,7 +171,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.dateFormat));
+				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
