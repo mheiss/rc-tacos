@@ -23,11 +23,6 @@ public class DayInfoMessageEncoder  implements MessageEncoder
 
         //start
         writer.writeStartElement(DayInfoMessage.ID);
-
-        //write the id
-        writer.writeStartElement("id");
-        writer.writeCharacters(String.valueOf(dayInfo.getId()));
-        writer.writeEndElement();
         //timestamp of the last change
         writer.writeStartElement("timestamp");
         writer.writeCharacters(String.valueOf(dayInfo.getTimestamp()));
