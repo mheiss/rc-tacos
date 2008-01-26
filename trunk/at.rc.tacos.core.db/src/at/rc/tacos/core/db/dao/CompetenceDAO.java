@@ -39,4 +39,10 @@ public interface CompetenceDAO
 	 * @return the list of competences
 	 */
 	public List<Competence> listCompetences();
+	
+	/**
+	 * Lists all competences of a staffmember
+	 * @result competencelist of a staffmember
+	 */
+	public List<Competence> listCompetencesOfStaffMember(int id);
 }

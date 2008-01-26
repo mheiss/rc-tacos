@@ -8,19 +8,21 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.dao.StaffMemberDAO;
+import at.rc.tacos.core.db.dao.*;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
 import at.rc.tacos.util.MyUtils;
 
 public class StaffMemberDAOMySQL implements StaffMemberDAO
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
+	private final CompetenceDAO competenceDAO = DaoFactory.MYSQL.createCompetenceDAO();
+	private final MobilePhoneDAO mobilePhoneDAO = DaoFactory.MYSQL.createMobilePhoneDAO();
 
 	public List<StaffMember> getAllStaffMembers()
 	{
 		List<StaffMember> staffMembers = new ArrayList<StaffMember>();
 		Location station = new Location();
-		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -46,28 +48,8 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
-				{
-					Competence competence = new Competence();
-					competence.setId(rs.getInt("c.competence_ID"));
-					competence.setCompetenceName(rs.getString("c.competence"));
-					competences.add(competence);
-				}while(rs.next());
-				staff.setCompetenceList(competences);
-
-				//ph.phonenumber, ph.phonenumber_ID
-				final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
-				query3.setInt(1, staff.getStaffMemberId());
-				final ResultSet rs2 = query3.executeQuery();
-
-				List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
-				while(rs2.next())
-				{
-					MobilePhoneDetail phone = new MobilePhoneDetail();
-					phone.setId(rs2.getInt("ph.phonenumber_ID"));
-					phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
-					phoneList.add(phone);
-				}
-				staff.setPhonelist(phoneList);
+				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
+				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
 
 				staffMembers.add(staff);
 			}
@@ -84,7 +66,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	{
 		List<StaffMember> staffMembers = new ArrayList<StaffMember>();
 		Location station = new Location();
-		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -111,28 +92,8 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
-				{
-					Competence competence = new Competence();
-					competence.setId(rs.getInt("c.competence_ID"));
-					competence.setCompetenceName(rs.getString("c.competence"));
-					competences.add(competence);
-				}while(rs.next());
-				staff.setCompetenceList(competences);
-
-				//ph.phonenumber, ph.phonenumber_ID
-				final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
-				query3.setInt(1, staff.getStaffMemberId());
-				final ResultSet rs2 = query3.executeQuery();
-
-				List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
-				while(rs2.next())
-				{
-					MobilePhoneDetail phone = new MobilePhoneDetail();
-					phone.setId(rs2.getInt("ph.phonenumber_ID"));
-					phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
-					phoneList.add(phone);
-				}
-				staff.setPhonelist(phoneList);
+				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
+				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
 
 				staffMembers.add(staff);
 			}
@@ -149,7 +110,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	{
 		StaffMember staff = new StaffMember();
 		Location station = new Location();
-		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -175,30 +135,9 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
-				{
-					Competence competence = new Competence();
-					competence.setId(rs.getInt("c.competence_ID"));
-					competence.setCompetenceName(rs.getString("c.competence"));
-					competences.add(competence);
-				}while(rs.next());
-				staff.setCompetenceList(competences);
+				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
+				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
 			}
-			else return null;
-
-			//ph.phonenumber, ph.phonenumber_ID
-			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
-			query3.setInt(1, staff.getStaffMemberId());
-			final ResultSet rs2 = query3.executeQuery();
-
-			List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
-			while(rs2.next())
-			{
-				MobilePhoneDetail phone = new MobilePhoneDetail();
-				phone.setId(rs2.getInt("ph.phonenumber_ID"));
-				phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
-				phoneList.add(phone);
-			}
-			staff.setPhonelist(phoneList);
 		}
 		catch (SQLException e)
 		{
@@ -212,7 +151,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	{
 		StaffMember staff = new StaffMember();
 		Location station = new Location();
-		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -238,30 +176,9 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
-				{
-					Competence competence = new Competence();
-					competence.setId(rs.getInt("c.competence_ID"));
-					competence.setCompetenceName(rs.getString("c.competence"));
-					competences.add(competence);
-				}while(rs.next());
-				staff.setCompetenceList(competences);
+				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
+				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
 			}
-			else return null;
-
-			//ph.phonenumber, ph.phonenumber_ID
-			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
-			query3.setInt(1, staff.getStaffMemberId());
-			final ResultSet rs2 = query3.executeQuery();
-
-			List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
-			while(rs2.next())
-			{
-				MobilePhoneDetail phone = new MobilePhoneDetail();
-				phone.setId(rs2.getInt("ph.phonenumber_ID"));
-				phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
-				phoneList.add(phone);
-			}
-			staff.setPhonelist(phoneList);
 		}
 		catch (SQLException e)
 		{
