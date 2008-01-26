@@ -23,7 +23,7 @@ public class DayInfoDAOMySQL implements DayInfoDAO
 		{
 			//dayinfo_ID, username, date, message
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DayInfoDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.dayInfoByDate"));
-			query.setString(1,MyUtils.formatDate(date));
+			query.setString(1,MyUtils.timestampToString(date, MyUtils.sqlDate));
 
 			final ResultSet rs = query.executeQuery();
 
@@ -31,7 +31,7 @@ public class DayInfoDAOMySQL implements DayInfoDAO
 			{
 				dayInfo.setLastChangedBy(rs.getString("username"));
 
-				dayInfo.setTimestamp(MyUtils.getTimestampFromDate(rs.getString("date")));
+				dayInfo.setTimestamp(MyUtils.stringToTimestamp(rs.getString("date"), MyUtils.sqlDate));
 				dayInfo.setMessage(rs.getString("message"));
 			}
 			else return null;
@@ -56,17 +56,17 @@ public class DayInfoDAOMySQL implements DayInfoDAO
 				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DayInfoDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.dayInfo"));
 				query.setString(1,message.getLastChangedBy());
 				query.setString(2,message.getMessage());
-				query.setString(3, MyUtils.formatDate(message.getTimestamp()));
+				query.setString(3, MyUtils.timestampToString(message.getTimestamp(), MyUtils.sqlDate));
 				query.executeUpdate();
 				return true;
 			}
 			else if (dayInfo == null)
 			{
-				System.out.println(MyUtils.formatDate(message.getTimestamp()));
+				System.out.println(MyUtils.timestampToString(message.getTimestamp(), MyUtils.sqlDate));
 				//username, date, message
 				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.dayInfo"));
 				query.setString(1, message.getLastChangedBy());
-				query.setString(2, MyUtils.formatDate(message.getTimestamp()));
+				query.setString(2, MyUtils.timestampToString(message.getTimestamp(), MyUtils.sqlDate));
 				query.setString(3, message.getMessage());
 				query.executeUpdate();
 				return true;

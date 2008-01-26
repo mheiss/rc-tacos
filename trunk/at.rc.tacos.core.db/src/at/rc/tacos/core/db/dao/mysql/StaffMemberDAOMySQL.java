@@ -3,9 +3,6 @@ package at.rc.tacos.core.db.dao.mysql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -13,26 +10,11 @@ import java.util.ResourceBundle;
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.model.*;
+import at.rc.tacos.util.MyUtils;
 
 public class StaffMemberDAOMySQL implements StaffMemberDAO
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
-
-	private long convertDateIntoLong (String stringdate)
-	{
-		long date=0;
-		try
-		{
-			DateFormat dateFormat =  new SimpleDateFormat("yyyyMMddhhmmss"); 
-			date = dateFormat.parse(stringdate).getTime();
-		}
-		catch(ParseException pe)
-		{
-			System.out.println("Failed to parse the given date");
-			System.out.println(pe.getMessage());
-		}
-		return date;
-	}
 
 	public List<StaffMember> getAllStaffMembers()
 	{
@@ -60,7 +42,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
@@ -125,7 +107,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
@@ -189,7 +171,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.dateFormat));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
@@ -252,7 +234,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
+				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
