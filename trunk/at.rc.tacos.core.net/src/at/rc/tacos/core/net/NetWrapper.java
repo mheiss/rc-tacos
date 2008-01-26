@@ -273,7 +273,6 @@ public class NetWrapper extends Plugin implements INetListener
 		//get the connection out of the session and send the message
 		MyClient connection = clientSession.getConnection();
 		connection.sendMessage(xmlMessage);
-		System.out.println("Sending: "+xmlMessage);
 	}
 
 	// LISTENER METHODS
@@ -288,7 +287,6 @@ public class NetWrapper extends Plugin implements INetListener
 		XMLFactory xmlFactory = new XMLFactory();
 		System.out.println(ne.getMessage());
 		String message = ne.getMessage().replaceAll("&lt;br/&gt;", "\n");
-		System.out.println(message);
 		xmlFactory.setupDecodeFactory(message);
 		//decode the message
 		ArrayList<AbstractMessage> objects = xmlFactory.decode();
