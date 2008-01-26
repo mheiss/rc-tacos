@@ -63,7 +63,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	    		staff.setMale(rs.getBoolean("e.sex"));
 	    		staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
 	    		staff.setEMail(rs.getString("e.email"));
-	    		staff.setUserName(rs.getString("e.username"));
+	    		staff.setUserName(rs.getString("u.username"));
 	    		
 	    		{
 	    			competence.setId(rs.getInt("c.competence_ID"));
@@ -129,7 +129,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	    		staff.setMale(rs.getBoolean("e.sex"));
 	    		staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
 	    		staff.setEMail(rs.getString("e.email"));
-	    		staff.setUserName(rs.getString("e.username"));
+	    		staff.setUserName(rs.getString("u.username"));
 	    		
 	    		{
 	    			competence.setId(rs.getInt("c.competence_ID"));
@@ -193,7 +193,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	    		staff.setMale(rs.getBoolean("e.sex"));
 	    		staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
 	    		staff.setEMail(rs.getString("e.email"));
-	    		staff.setUserName(rs.getString("e.username"));
+	    		staff.setUserName(rs.getString("u.username"));
 	    		
 	    		{
 	    			competence.setId(rs.getInt("c.competence_ID"));
@@ -254,7 +254,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 	    		staff.setMale(rs.getBoolean("e.sex"));
 	    		staff.setBirthday(convertDateIntoLong(rs.getString("e.birthday")));
 	    		staff.setEMail(rs.getString("e.email"));
-	    		staff.setUserName(rs.getString("e.username"));
+	    		staff.setUserName(rs.getString("u.username"));
 	    		
 	    		{
 	    			competence.setId(rs.getInt("c.competence_ID"));
