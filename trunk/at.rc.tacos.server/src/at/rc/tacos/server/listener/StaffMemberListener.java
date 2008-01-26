@@ -13,7 +13,7 @@ import at.rc.tacos.model.QueryFilter;
  */
 public class StaffMemberListener extends ServerListenerAdapter
 {
-    private StaffMemberDAO staffDao = DaoFactory.TEST.createStaffMemberDAO();
+    private StaffMemberDAO staffDao = DaoFactory.MYSQL.createStaffMemberDAO();
 
     /**
      * Listing of all members
