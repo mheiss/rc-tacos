@@ -82,7 +82,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(MyUtils.getTimestampFromDate(rs.getString("e.birthday")));
+				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
@@ -142,7 +142,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			query2.setString(3, login.getUserInformation().getFirstName());
 			query2.setString(4, login.getUserInformation().getLastName());
 			query2.setBoolean(5, login.getUserInformation().isMale());
-			query2.setString(6, MyUtils.formatDate(login.getUserInformation().getBirthday()));
+			query2.setString(6, MyUtils.timestampToString(login.getUserInformation().getBirthday(), MyUtils.sqlDate));
 			query2.setString(7, login.getUserInformation().getEMail());
 			query2.setString(8, login.getUserInformation().getStreetname());
 			query2.setString(9, login.getUserInformation().getCityname());
