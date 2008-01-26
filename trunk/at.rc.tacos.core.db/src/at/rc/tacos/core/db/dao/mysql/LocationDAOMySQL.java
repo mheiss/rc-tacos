@@ -35,7 +35,7 @@ public class LocationDAOMySQL implements LocationDAO
 			location.setNotes(rs.getString("lo.note"));
 			
 			phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-			phone.setMobilePhoneName(null);
+			phone.setMobilePhoneName(rs.getString("pn.phonename"));
 			phone.setId(rs.getInt("lo.phonenumber_ID"));
 			location.setPhone(phone);
 			
@@ -74,7 +74,7 @@ public class LocationDAOMySQL implements LocationDAO
 				
 				phone.setId(rs.getInt("lo.phonenumber_ID"));
 				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-				phone.setMobilePhoneName(null);
+				phone.setMobilePhoneName(rs.getString("pn.phonename"));
 				location.setPhone(phone);
 				
 				location.setStreet(rs.getString("lo.street"));
