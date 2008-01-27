@@ -1,5 +1,6 @@
 package at.rc.tacos.web.utils;
 
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,13 @@ public class Timetable
 	private String TimeList;
 	private String tooLong;
 	private String path;
+	
+	public static final String DRIVER_COLOR = "#0F1BFF";
+	public static final String PARAMEDIC_COLOR = "#6863FF";
+	public static final String EPARAMEDIC_COLOR = "#FFBD72";
+	public static final String DOC_COLOR = "#FF871E";
+	public static final String OTHERS_COLOR = "#3CC140";
+
 
 	public Timetable(String path,String startDate){
 		timetable = "";
@@ -109,7 +117,7 @@ public class Timetable
 					RosterEntry entry = (RosterEntry)message;
 					if(format.format(new Date(entry.getPlannedStartOfWork())).equals(format.format(dtCal))){
 						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
-
+					
 						zaehle++;
 						info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
 						"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob().getJobName().replaceAll("ä", "&auml;") + "<br /></b>" +
@@ -124,9 +132,9 @@ public class Timetable
 							"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
 							"px; float:left;" +
 							this.tooLong + 
-							"background-color:#CECE52;'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
+							"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.jpg' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
 							"<a href=href=\""+ path +"/Dispatcher/updateEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() +"\" >" +
-							"<img src='../image/b_edit.png' id='edit'  class='hidefocus /></a><br />" +
+							"<img src='../image/b_edit.png' id='edit'  class='hidefocus /><br /></a>" +
 							"<a href=\""+ path +"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() +"\" onClick=\"return confirm('M&ouml;chten Sie diesen Dienst wirklich l&ouml;schen?')\" >" +
 							"<img src='../image/b_drop.png' id='del' class='hidefocus' /></a></div>";							
 					}
@@ -212,5 +220,21 @@ public class Timetable
 	public void setWidth(int width) 
 	{
 		this.width = width;
+	}
+
+	public String getBgColor(String TODO) {
+		System.out.println("TODO: " + TODO);
+		if(TODO.equalsIgnoreCase("Notarzt")){
+			return DOC_COLOR;
+		} else if (TODO.equalsIgnoreCase("Notfallsanitäter")) {
+			return EPARAMEDIC_COLOR;
+		} else if (TODO.equalsIgnoreCase("Sanitäter")) {
+			return PARAMEDIC_COLOR;
+		} else if (TODO.equalsIgnoreCase("Fahrer")) {
+			return DRIVER_COLOR;
+		} else{
+			return OTHERS_COLOR;
+		}
+		
 	}   
 }
