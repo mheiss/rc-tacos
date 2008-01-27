@@ -109,7 +109,7 @@ public class UpdateEntryController implements Controller
 			}
 			else
 			{
-				//eintrag hat nicht geklappt
+				params.put("entry-error", "Dienst konnte wegen eines unvorhergesehenen Fehler nicht eingetragen werden! Bitte versuchen Sie es zu einem späteren Zeitpunkt wieder oder kontaktieren Sie Ihre Leitstelle.");
 			}
 		}
 		if("doRemoveEntry".equalsIgnoreCase(action))
