@@ -99,8 +99,9 @@ public class RosterEntryController implements Controller
 				params.put("loginError", "Keine Daten eingegeben!");
 				return params;
 			} 
-
+ 
 			RosterEntry entry = new RosterEntry(staffMember,service,jobb, location,plannedStartOfWork, plannedEndOfWork);
+
 			client.sendAddRequest(RosterEntry.ID, entry);
 			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
 			{

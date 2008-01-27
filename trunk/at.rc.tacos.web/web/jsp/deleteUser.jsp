@@ -86,8 +86,8 @@
                                                     for (StaffMember member : list) { 
                                                 %> 
                                                     <tr> 
-                                                        <td id="BlockContent"><%=member.getFirstName() + " " + member.getLastName()%></td> 
-                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteUser.do?id="+ member.getStaffMemberId()%>" onclick="return confirm('M&ouml;chten Sie diesen User wirklich l&ouml;schen?')" ><img src="../image/loeschen.gif"></a></td>
+                                                        <td id="BlockContent" width="40%" ><%=member.getFirstName() + " " + member.getLastName()%></td> 
+                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteUser.do?id="+ member.getStaffMemberId()%>" onclick="return confirm('M&ouml;chten Sie diesen User wirklich l&ouml;schen?')" ><img src="../image/b_drop.png"></a></td>
                                                     </tr> 
                                                     <% 
                                                     } 

@@ -86,8 +86,8 @@
                                                     for (StaffMember member : list) { 
                                                 %> 
                                                     <tr> 
-                                                        <td width="150" id="BlockContent"><%=member.getFirstName() + " " + member.getLastName()%></td>
-                                                        <td width="50" id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/editUser.do?id="+ member.getStaffMemberId()%>">User bearbeiten</a></td> 
+                                                        <td width="40%" id="BlockContent"><%=member.getFirstName() + " " + member.getLastName()%></td>
+                                                        <td width="50" id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/editUser.do?id="+ member.getStaffMemberId()%>"><img src="../image/b_edit.png"></a></td> 
                                                     </tr> 
                                                     <% 
                                                     } 
