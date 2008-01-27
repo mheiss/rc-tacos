@@ -87,7 +87,7 @@
                                                 %> 
                                                     <tr> 
                                                         <td width="40%" id="BlockContent"><%=member.getFirstName() + " " + member.getLastName()%></td>
-                                                        <td width="50" id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/editUser.do?id="+ member.getStaffMemberId()%>"><img src="../image/b_edit.png"></a></td> 
+                                                        <td width="50" id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/editUser.do?id="+ member.getStaffMemberId()%>"><img src="../image/b_edit.png" class="hidefocus" /></a></td> 
                                                     </tr> 
                                                     <% 
                                                     } 
