@@ -5,6 +5,8 @@ import at.rc.tacos.model.Job;
 
 public interface JobDAO 
 {
+    public static final String TABLE_NAME = "job";
+    
 	/**
 	 * Adds a new job to the database and returns the unique id.
 	 * @param job the job to add

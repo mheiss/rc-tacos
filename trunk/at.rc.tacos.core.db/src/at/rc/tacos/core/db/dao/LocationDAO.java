@@ -5,6 +5,8 @@ import at.rc.tacos.model.*;
 
 public interface LocationDAO 
 {
+    public static final String TABLE_NAME = "location";
+    
 	/**
 	 * Adds a new location to the database and returns the generated is
 	 * @param location the location to add

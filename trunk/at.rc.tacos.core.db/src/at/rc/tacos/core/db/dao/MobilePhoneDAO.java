@@ -5,6 +5,8 @@ import at.rc.tacos.model.MobilePhoneDetail;
 
 public interface MobilePhoneDAO
 {
+    public static final String TABLE_NAME = "phonenumbers";
+    
 	/**
 	 * Adds a new mobile phone to the database.
 	 * @param phone the mobile phone to add

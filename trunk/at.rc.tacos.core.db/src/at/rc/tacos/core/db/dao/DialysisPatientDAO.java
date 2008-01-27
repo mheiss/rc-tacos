@@ -6,6 +6,8 @@ import at.rc.tacos.model.DialysisPatient;
 
 public interface DialysisPatientDAO 
 {
+    public static final String TABLE_NAME = "dialysis";
+    
 	/**
 	 * Adds a new dialyse patient to the database and returns the unique id.
 	 * @param patient the patient to add

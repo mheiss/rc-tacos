@@ -71,4 +71,11 @@ public class LocationDAOMemory implements LocationDAO
 		locationList.set(index, location);
 		return true;
 	}
+
+    @Override
+    public Location getLocationByName(String locationname)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

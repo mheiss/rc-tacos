@@ -5,6 +5,8 @@ import at.rc.tacos.model.VehicleDetail;
 
 public interface VehicleDAO 
 {
+    public static final String TABLE_NAME = "vehicles";
+    
 	/**
 	 * Adds a new vehicle to the list of vehicles
 	 * @param vehicle the vehicle to add

@@ -72,4 +72,11 @@ public class CompetenceDAOMemory implements CompetenceDAO
 		competenceList.set(index, competence);
 		return true;
 	}
+
+    @Override
+    public List<Competence> listCompetencesOfStaffMember(int id)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

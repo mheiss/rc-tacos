@@ -6,6 +6,8 @@ import at.rc.tacos.model.Competence;
 
 public interface CompetenceDAO 
 {
+    public static final String TABLE_NAME = "competences";
+    
 	/**
 	 * Adds a new competence to the competence list
 	 * @param competence the competence to add

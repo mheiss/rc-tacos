@@ -5,6 +5,8 @@ import at.rc.tacos.model.Disease;
 
 public interface DiseaseDAO
 {
+    public static final String TABLE_NAME = "disease";
+    
 	/**
 	 * Adds a new disease into the database and returns the generated id
 	 * @param disease the diasese to add
