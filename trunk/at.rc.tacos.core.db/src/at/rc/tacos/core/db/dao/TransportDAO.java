@@ -23,6 +23,13 @@ public interface TransportDAO
     public int assignVehicleToTransport(Transport transport);
     
     /**
+     * removes an assigned vehicle from a transport
+     * @param transport
+     * @return true if everything was sucessful
+     */
+    public boolean removeVehicleFromTransport(Transport transport);
+    
+    /**
      * Stores the actual transport in the log table and prevents modification of the transport in the future.
      * This method deletes the current transportId out of the transport table and moves the transport to the log.
      * @param transport the transport to archive
