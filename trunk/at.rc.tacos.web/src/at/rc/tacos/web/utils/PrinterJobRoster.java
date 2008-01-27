@@ -59,7 +59,6 @@ public class PrinterJobRoster implements Printable{
 		g2.setColor(new Color(0,0,0));
 		for(AbstractMessage message:resultList)
 		{
-			
 			RosterEntry entry = (RosterEntry)message;
 			if(entry.getStation().equals(this.getStation()))
 			{
