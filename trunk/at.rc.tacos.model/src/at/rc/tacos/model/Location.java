@@ -32,6 +32,28 @@ public class Location extends AbstractMessage
         super(ID);
     }
     
+    /**
+     * Default class constructor for a complet location object
+     * @param locationName the name of the station
+     * @param phone the mobilePhone of the location
+     * @param street the street name
+     * @param streetNumber the number of the street
+     * @param zipcode the zip code
+     * @param city the name of the city
+     * @param notes some notes to add to the station
+     */
+    public Location(String locationName,MobilePhoneDetail phone,String street,String streetNumber,
+            int zipcode,String city,String notes) {
+        this();
+        this.locationName = locationName;
+        this.phone = phone;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.zipcode = zipcode;
+        this.city = city;
+        this.notes = notes;
+    }
+    
     //METHODS
     /**
      * Returns a string based description of the object.<br>
