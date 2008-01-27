@@ -133,7 +133,7 @@
 													<td><input type="text" name="eMail" id="textfield4" value="<%=member.getEMail() %>" /></td>
 													<td>Prim&auml;re Ortsstelle:</td>
 													<td><select name="station" id="rosterViewDayHeadSelbox">
-														<option><%=member.getPrimaryLocation()%></option>
+														<option><%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 														<option><%=Constants.STATION_BEZIRK%></option>
 														<option><%=Constants.STATION_BREITENAU%></option>
 														<option><%=Constants.STATION_BRUCK%></option>

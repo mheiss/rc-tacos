@@ -111,7 +111,7 @@
 												<select name="employee" id="rosterViewDayHeadSelbox">
 												<% for (StaffMember member : list) {
 													if(member.equals(userSession.getStaffMember())) { %>
-														<option selected="selected" value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
+														<option selected="selected" value="<%=userSession.getStaffMember().getStaffMemberId()%>"><%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%></option>
 													<% } else { %>
 														<option value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
 													<% } } %>
@@ -123,10 +123,10 @@
 											Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
 											<% for (Location location : lista) {
-													if(location.equals(userSession.getStaffMember().getPrimaryLocation().getLocationName())) { %>
-												<option selected="selected"><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
+													if(location.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
+												<option selected="selected" value="<%=userSession.getStaffMember().getPrimaryLocation()%>"><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
 												<% } else { %>
-												<option><%=userSession.getStaffMember().getPrimaryLocation().getLocationName()%></option>
+												<option value="<%=location.getLocationName()%>"><%=location.getLocationName()%></option>
 												<% } } %>
 											</select></td>
 										</tr>
