@@ -108,7 +108,9 @@
 			var El = document.createElement( tag );
             mom+=1;
 
-            if(str!="Mo" || str!="Di" || str!="Mi" || str!="do" || str!="Fr" || str!="Sa" || str!="So" ){
+            if(str!="Mo" || str!="Di" || str!="Mi" || str!="Do" || str!="Fr" || str!="Sa" || str!="So" ){
+	        
+	        
 	        
 		            El.onclick = function() { 
 		                document.form.startDay.value=str;
