@@ -100,7 +100,7 @@ public class TransportDAOMySQL implements TransportDAO
 
 				transport.setTransportId(rs.getInt("t.transport_ID"));
 				transport.setTransportNumber(rs.getInt("t.transportNr"));
-				
+
 				Location station = new Location();
 				station.setId(rs.getInt("t.planned_location"));
 				station.setLocationName(rs.getString("lo.locationname"));
@@ -159,7 +159,61 @@ public class TransportDAOMySQL implements TransportDAO
 				vehicle.setVehicleType(rs.getString("av.vehicletype"));
 				transport.setVehicleDetail(vehicle);
 
-				// TODO set the boolean values!
+				// find the selected items (boolean values)
+				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.selectedTransportItems"));
+				query1.setInt(1, transport.getTransportId());
+				final ResultSet rs1 = query1.executeQuery();
+
+				while(rs1.next())
+				{
+					if(rs1.getInt("selected_ID") == 1)
+						transport.setEmergencyDoctorAlarming(true);
+					else transport.setEmergencyDoctorAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 2)
+						transport.setPoliceAlarming(true);
+					else transport.setPoliceAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 3)
+						transport.setFirebrigadeAlarming(true);
+					else transport.setFirebrigadeAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 4)
+						transport.setMountainRescueServiceAlarming(true);
+					else transport.setMountainRescueServiceAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 5)
+						transport.setDfAlarming(true);
+					else transport.setDfAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 6)
+						transport.setBrkdtAlarming(true);
+					else transport.setBrkdtAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 7)
+						transport.setBlueLightToGoal(true);
+					else transport.setBlueLightToGoal(false);
+
+					if(rs1.getInt("selected_ID") == 8)
+						transport.setHelicopterAlarming(true);
+					else transport.setHelicopterAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 9)
+						transport.setAssistantPerson(true);
+					else transport.setAssistantPerson(false);
+
+					if(rs1.getInt("selected_ID") == 10)
+						transport.setBackTransport(true);
+					else transport.setBackTransport(false);
+
+					if(rs1.getInt("selected_ID") == 11)
+						transport.setLongDistanceTrip(true);
+					else transport.setLongDistanceTrip(false);
+
+					if(rs1.getInt("selected_ID") == 12)
+						transport.setEmergencyPhone(true);
+					else transport.setEmergencyPhone(false);
+				}
 				transports.add(transport);
 			}
 		}
@@ -204,6 +258,8 @@ public class TransportDAOMySQL implements TransportDAO
 			query.setString(22, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDate));
 			query.setInt(23, transport.getTransportId());
 			query.executeUpdate();
+
+			assignTransportstate(transport);
 		}
 		catch (SQLException e)
 		{
@@ -223,45 +279,169 @@ public class TransportDAOMySQL implements TransportDAO
 	@Override
 	public int assignVehicleToTransport(Transport transport)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		try
+		{
+			//select vehicle from transport
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.vehicleFromTransport"));
+			query1.setInt(1, transport.getTransportId());
+			final ResultSet rs1 = query1.executeQuery();
+
+			if(rs1.next())
+			{
+				//Updates existing vehicle
+				//vehicle_ID = ?, medic2_ID = ?, medic1_ID = ?, driver_ID = ?, locationname = ?, note = ?, vehicletype = ? WHERE transport_ID = ?;
+				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.assignedVehicle"));
+				query.setString(1, transport.getVehicleDetail().getVehicleName());
+				query.setInt(2, transport.getVehicleDetail().getSecondParamedic().getStaffMemberId());
+				query.setInt(3, transport.getVehicleDetail().getFirstParamedic().getStaffMemberId());
+				query.setInt(4, transport.getVehicleDetail().getDriver().getStaffMemberId());
+				query.setString(5, transport.getVehicleDetail().getCurrentStation().getLocationName());
+				query.setString(6, transport.getVehicleDetail().getVehicleNotes());
+				query.setString(7, transport.getVehicleDetail().getVehicleType());
+				query.setInt(8, transport.getTransportId());
+				query.executeUpdate();
+				return 1;
+			}
+			else
+			{
+				//transport_ID, vehicle_ID, medic2_ID, medic1_ID, driver_ID, locationname, note, vehicletype
+				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.assignedVehicle"));
+				query.setInt(1, transport.getTransportId());
+				query.setString(2, transport.getVehicleDetail().getVehicleName());
+				query.setInt(3, transport.getVehicleDetail().getSecondParamedic().getStaffMemberId());
+				query.setInt(4, transport.getVehicleDetail().getFirstParamedic().getStaffMemberId());
+				query.setInt(5, transport.getVehicleDetail().getDriver().getStaffMemberId());
+				query.setString(6, transport.getVehicleDetail().getCurrentStation().getLocationName());
+				query.setString(7, transport.getVehicleDetail().getVehicleNotes());
+				query.setString(8, transport.getVehicleDetail().getVehicleType());
+				query.executeUpdate();
+				return 1;
+			}
+
+
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return -1;
+		}	
 	}
 
 	@Override
-	public boolean cancelTransport(int transportId) {
+	public boolean removeVehicleFromTransport(Transport transport)
+	{
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.assignedVehicle"));
+			query.setInt(1, transport.getTransportId());
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}	
+		return true;
+	}
+
+	@Override
+	public boolean cancelTransport(int transportId)
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public List<Transport> getTransportsFromVehicle(String vehicleName) {
+	public List<Transport> getTransportsFromVehicle(String vehicleName)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Transport> listArchivedTransports(long startdate, long enddate) {
+	public List<Transport> listArchivedTransports(long startdate, long enddate)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public boolean assignTransportstate(Transport transport) {
-		// TODO Auto-generated method stub
-		return false;
+	/**
+	 * inserts a new transportstate
+	 * @param transportId
+	 * @param selectedId
+	 * @return true if insert was sucessful
+	 */
+	private boolean addTransportState(int transportId, int selectedId)
+	{
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.selectedTransportItem"));
+			query.setInt(1, selectedId);
+			query.setInt(2, transportId);			
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}		
+		return true;
 	}
 
 	@Override
-	public boolean removeTransportstate(Transport transport) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean assignTransportstate(Transport transport)
+	{
+		//removes all selected transports for specific transportId
+		removeTransportstate(transport);
+
+		if(transport.isEmergencyDoctorAlarming() == true)
+			addTransportState(transport.getTransportId(), 1);
+		if(transport.isPoliceAlarming() == true)
+			addTransportState(transport.getTransportId(), 2);
+		if(transport.isFirebrigadeAlarming() == true)
+			addTransportState(transport.getTransportId(), 3);
+		if(transport.isMountainRescueServiceAlarming() == true)
+			addTransportState(transport.getTransportId(), 4);
+		if(transport.isDfAlarming() == true)
+			addTransportState(transport.getTransportId(), 5);
+		if(transport.isBrkdtAlarming() == true)
+			addTransportState(transport.getTransportId(), 6);
+		if(transport.isBlueLightToGoal() == true)
+			addTransportState(transport.getTransportId(), 7);
+		if(transport.isHelicopterAlarming() == true)
+			addTransportState(transport.getTransportId(), 8);
+		if(transport.isAssistantPerson() == true)
+			addTransportState(transport.getTransportId(), 9);
+		if(transport.isBackTransport() == true)
+			addTransportState(transport.getTransportId(), 10);
+		if(transport.isLongDistanceTrip() == true)
+			addTransportState(transport.getTransportId(), 11);
+		if(transport.isEmergencyPhone() == true)
+			addTransportState(transport.getTransportId(), 12);
+
+		return true;
 	}
 
 	@Override
-	public boolean updateTransportstate(Transport transport) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeTransportstate(Transport transport)
+	{
+		try
+		{
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.AllSelectedTransportItems"));
+			query1.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
-
+	@Override
+	public boolean updateTransportstate(Transport transport)
+	{
+		boolean result = assignTransportstate(transport);
+		return result;
+	}
 }
