@@ -3,10 +3,11 @@
 <!-- DO NOT TOUCH THIS -->
 <!-- ============================================================== -->
 <project name="Project-TACOS" basedir="." >
+	<property file="src/at/rc/tacos/core/db/config/db.properties" />
 	<property name="src.dir" value="src" />
 	<property name="src.tests.dir" value="src-test" />
 	<property name="reports.tests.dir" value="tests" />
-	<property name="sql.dir" values="sql" />
+	<property name="sql.dir" value="sql" />
 	<property name="db.createTables.script" value="${sql.dir}/createTables.sql" />
 	<property name="db.insertData.script" value="${sql.dir}/insertData.sql" />
 	<property name="db.clearData.script" value="${sql.dir}/clearData.sql" />
