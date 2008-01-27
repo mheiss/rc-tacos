@@ -155,7 +155,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     public void testListStaffMemberByLocation()
     {
         List<StaffMember> list = staffMemberDAO.getStaffMembersFromLocation(location1.getId());
-        Assert.assertEquals(2, list.size()); 
+        Assert.assertEquals(1, list.size()); 
     }
     
     @Test
