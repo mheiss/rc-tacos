@@ -40,8 +40,8 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     Competence comp2 = new Competence("comp2");
     Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
     Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-    StaffMember member1 = new StaffMember("fname1","lname1","uname1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-    StaffMember member2 = new StaffMember("fname2","lname2","uname2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+    StaffMember member1 = new StaffMember(50100001,"fname1","lname1","uname1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
+    StaffMember member2 = new StaffMember(50100002,"fname2","lname2","uname2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
     
     @Before
     public void setUp() 
@@ -71,11 +71,8 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         login2.setUserInformation(member2);
         login2.setIslocked(true);
         login2.setAuthorization("User");
-        int staffId1 = loginDAO.addLogin(login1);
-        int staffId2 = loginDAO.addLogin(login2);
-        //set the ids
-        member1.setStaffMemberId(staffId1);
-        member2.setStaffMemberId(staffId2);
+        loginDAO.addLogin(login1);
+        loginDAO.addLogin(login2);
     }
     
     @After
@@ -165,7 +162,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     public void testGetStaffMemberById()
     {
         StaffMember sm = staffMemberDAO.getStaffMemberByID(member1.getStaffMemberId());
-        Assert.assertEquals(member1.getStaffMemberId(), sm.getStaffMemberId());
+        Assert.assertEquals(50100001, sm.getStaffMemberId());
         Assert.assertEquals("fname1", sm.getFirstName());
         Assert.assertEquals("lname1", sm.getLastName());
         Assert.assertEquals("uname1",sm.getUserName());
