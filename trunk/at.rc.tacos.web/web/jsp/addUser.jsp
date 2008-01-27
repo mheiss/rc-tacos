@@ -1,8 +1,10 @@
+<%@page import="java.util.Map"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%
+Map<String,Object> params = (Map)request.getAttribute("params");
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -72,6 +74,20 @@
 							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
 								<tr>
 									<td width="50%"><!-- Timetablebox Day -->
+									                           <% if (params.containsKey("entry-success")) 
+            {
+                out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cellspacing='0'><tr><td id=\"BlockHead\" align=\"right\" valign=\"center\">&nbsp;</td></tr><tr><td id=\"BlockContent\">"
+                        + "<table width=\"100%\" border='0' cellpadding='0' cellspacing='0'>"
+                        + "<tr><td width=\"50%\"><!-- quick entry -->"
+                        + "<table width=\"100%\" border='1' cellpadding='0' cellspacing='0'><tr><td>"
+                        + "<div id='meldungstext'>"+params.get("entry-success")+"</td></tr></table></td></tr></table>"
+                        + "</td></tr></table>");
+            } 
+            else 
+            {
+                out.println("");
+            }
+        %>
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
