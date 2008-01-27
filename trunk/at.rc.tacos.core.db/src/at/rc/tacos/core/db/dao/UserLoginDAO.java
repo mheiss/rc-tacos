@@ -40,14 +40,21 @@ public interface UserLoginDAO
     public boolean updateLogin(Login login);
     
     /**
-     * Removes the login from the database.
-     * The connected staff member will also be deleted.
-     * @param id the id of the login to remove
-     * @return true if the remove was successfull
+     * lockes a login
+     * no login will be possible for this user
+     * @param username
+     * @return true if locking was successfull
      */
-    // TODO NOT POSSIBLE because of ForeignKeys!!! just lock the user.
-    public boolean removeLogin(int id);
+    public boolean lockLogin(String username);
 	
+    /**
+     * unlockes a login
+     * login will be possible again for this user
+     * @param username
+     * @return true if unlocking was successfull
+     */
+    public boolean unlockLogin(String username);
+    
 	/**
 	 * Checks the username and the password hash agains the database.
 	 * @param username the username 
