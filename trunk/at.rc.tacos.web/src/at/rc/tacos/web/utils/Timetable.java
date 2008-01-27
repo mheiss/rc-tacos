@@ -134,7 +134,7 @@ public class Timetable
 							this.tooLong + 
 							"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
 							"<a href='"+ path +"/Dispatcher/updateEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() +"' >" +
-							"<img src='../image/b_edit.png' id='edit' class='hidefocus /></a>d<br />d" +
+							"<img src='../image/b_edit.png' id='edit' class='hidefocus' /></a>" +
 							"<a href='"+ path +"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() +"' onClick=\"return confirm('M&ouml;chten Sie diesen Dienst wirklich l&ouml;schen?')\" >" +
 							"<img src='../image/b_drop.png' id='del' class='hidefocus' /></a></div>";							
 					}
