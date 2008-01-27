@@ -5,6 +5,8 @@ import at.rc.tacos.model.StaffMember;
 
 public interface StaffMemberDAO 
 {
+    public static final String TABLE_NAME = "staffmembers";
+    
 	// note: add update and remove of staff members is handled in the userLoginDAO
 	public List<StaffMember> getAllStaffMembers();
 	public List<StaffMember> getStaffMembersFromLocation(int locationId);

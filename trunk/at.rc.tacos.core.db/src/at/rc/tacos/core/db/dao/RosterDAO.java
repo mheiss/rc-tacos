@@ -5,6 +5,8 @@ import at.rc.tacos.model.*;
 
 public interface RosterDAO 
 {
+    public static final String TABLE_NAME = "roster";
+    
 	/**
 	 * Adds a new entry to the list of roster entries.
 	 * @param entry the entry to add.

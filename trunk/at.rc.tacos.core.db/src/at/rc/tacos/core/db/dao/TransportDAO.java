@@ -5,6 +5,8 @@ import at.rc.tacos.model.Transport;
 
 public interface TransportDAO 
 {
+    public static final String TABLE_NAME = "transports";
+    
 	/**
 	 * Adds a new transport to the table and returns the transport id.<br>
 	 * The transport id is the internal primary key in the database and is unique for every transport.

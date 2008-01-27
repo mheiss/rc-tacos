@@ -4,6 +4,8 @@ import at.rc.tacos.model.CallerDetail;
 
 public interface CallerDAO 
 {
+    public static final String TABLE_NAME = "caller";
+    
 	/**
 	 * Adds a new caller to the list of callers.
 	 * @param notifierDetail the details of the caller

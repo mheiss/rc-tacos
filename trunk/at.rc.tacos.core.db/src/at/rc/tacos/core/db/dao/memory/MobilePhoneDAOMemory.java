@@ -89,4 +89,11 @@ public class MobilePhoneDAOMemory implements MobilePhoneDAO
     {
         return phoneList;
     }
+
+    @Override
+    public List<MobilePhoneDetail> listMobilePhonesOfStaffMember(int id)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

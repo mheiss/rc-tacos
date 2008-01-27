@@ -4,6 +4,8 @@ import at.rc.tacos.model.DayInfoMessage;
 
 public interface DayInfoDAO 
 {
+    public static final String TABLE_NAME = "dayinfo";
+    
 	/**
 	 * Creates a new day info message or updates a existing message in the database.
 	 * @param message the message to update

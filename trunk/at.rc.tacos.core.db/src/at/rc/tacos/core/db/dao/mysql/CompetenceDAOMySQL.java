@@ -32,7 +32,7 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 			final ResultSet rs = query1.executeQuery();
 
 			if(rs.first())
-				competenceId = rs.getInt("caller_ID");
+				competenceId = rs.getInt("competence_ID");
 			else
 				return -1;
 		}

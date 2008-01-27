@@ -133,4 +133,32 @@ public class TransportDAOMemory implements TransportDAO
 		//return the filtered list
 		return filteredList;
 	}
+
+    @Override
+    public boolean assignTransportstate(Transport transport)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean removeTransportstate(Transport transport)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean removeVehicleFromTransport(Transport transport)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean updateTransportstate(Transport transport)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

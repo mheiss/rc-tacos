@@ -6,6 +6,8 @@ import at.rc.tacos.model.ServiceType;;
 
 public interface ServiceTypeDAO 
 {
+    public static final String TABLE_NAME = "servicetype";
+    
 	/**
 	 * Adds a new service type to the database and returns the unique id.
 	 * @param serviceType the service type to add

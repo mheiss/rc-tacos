@@ -4,6 +4,8 @@ import at.rc.tacos.model.Login;
 
 public interface UserLoginDAO 
 {
+    public static final String TABLE_NAME = "userlogin";
+    
 	/** 
 	 * Successfully authenticateed the user.<br>
 	 * This represents the value 0.
