@@ -34,7 +34,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			{
 				if (rs.getString("username") != null && rs.getBoolean("locked") == false)
 					return 0;
-				else if(rs.getString("username") != null)
+				else if(rs.getString("username") == null)
 					return -1;
 				else if(rs.getBoolean("locked") == true)
 					return -2;
@@ -55,7 +55,6 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		Login login = new Login();
 		StaffMember staff = new StaffMember();
 		Location station = new Location();
-		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
@@ -86,13 +85,16 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
+				final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.competenceOfStaffMember"));
+				query2.setInt(1, staff.getStaffMemberId());
+				final ResultSet rs2 = query2.executeQuery();
+				while(rs2.next())
 				{
 					Competence competence = new Competence();
 					competence.setId(rs.getInt("c.competence_ID"));
 					competence.setCompetenceName(rs.getString("c.competence"));
-					competences.add(competence);
-				}while(rs.next());
-				staff.setCompetenceList(competences);
+					staff.addCompetence(competence);
+				}
 			}
 			else return null;
 
@@ -146,8 +148,27 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			query2.setString(7, login.getUserInformation().getEMail());
 			query2.setString(8, login.getUserInformation().getStreetname());
 			query2.setString(9, login.getUserInformation().getCityname());
-			query2.setString(10, login.getUserInformation().getUserName());
+			query2.setString(10, login.getUsername());
 			query2.executeUpdate();
+
+			// TODO check if this works ...
+			for(int i=0; i >= login.getUserInformation().getCompetenceList().size(); i++)
+			{
+				//staffmember_ID, competence_ID
+				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.competenceToStaffMember"));
+				query1.setInt(1, login.getUserInformation().getStaffMemberId());
+				query1.setInt(2, login.getUserInformation().getCompetenceList().get(i).getId());
+				query1.executeUpdate();
+			}
+
+			for(int i=0; i>=login.getUserInformation().getPhonelist().size(); i++)
+			{
+				//staffmember_ID, phonenumber_ID
+				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.Phonestaffmember"));
+				query1.setInt(1, login.getUserInformation().getStaffMemberId());
+				query1.setInt(2, login.getUserInformation().getPhonelist().get(i).getId());
+				query1.executeUpdate();
+			}
 
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberId"));
 			query1.setString(1, login.getUsername());
@@ -165,26 +186,71 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 	}
 
 	@Override
-	public boolean removeLogin(int id)
+	public boolean lockLogin(String username)
 	{
-		// TODO NOT POSSIBLE because of ForeignKeys!!! just lock the user.
-		return false;
+		try
+		{
+			// locked = ? WHERE username = ?
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.lockUser"));
+			query.setBoolean(1, true);
+			query.setString(2, username);
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
+	
+	@Override
+	public boolean unlockLogin(String username)
+	{
+		try
+		{
+			// locked = ? WHERE username = ?
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.lockUser"));
+			query.setBoolean(1, false);
+			query.setString(2, username);
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}	
 
 	@Override
 	public boolean updateLogin(Login login)
 	{
 		try
 		{
-			// pwd, authorization, isloggedin, locked, username
+			// pwd = ?, authorization = ?, isloggedin = ?, locked = ? WHERE username
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.User"));
 			query.setString(1, login.getPassword());
 			query.setString(2, login.getAuthorization());
 			query.setBoolean(3, login.isLoggedIn());
 			query.setBoolean(4, login.isIslocked());
 			query.setString(5, login.getUsername());
-
 			query.executeUpdate();
+
+			// primaryLocation = ?, firstname = ?, lastname = ?, sex = ?, birthday = ?, email = ?, street = ?, city = ?, username = ? where staffmember_ID = ?;
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.staffmember"));
+			query1.setInt(1, login.getUserInformation().getPrimaryLocation().getId());
+			query1.setString(2, login.getUserInformation().getFirstName());
+			query1.setString(3, login.getUserInformation().getLastName());
+			query1.setBoolean(4, login.getUserInformation().isMale());
+			query1.setString(5, MyUtils.timestampToString(login.getUserInformation().getBirthday(), MyUtils.sqlDate));
+			query1.setString(6, login.getUserInformation().getEMail());
+			query1.setString(7, login.getUserInformation().getStreetname());
+			query1.setString(8, login.getUserInformation().getCityname());
+			query1.setString(9, login.getUserInformation().getUserName());
+			query1.setInt(10, login.getUserInformation().getStaffMemberId());
+			query1.executeUpdate();
+
 		}
 		catch (SQLException e)
 		{
