@@ -68,4 +68,25 @@ public interface TransportDAO
      * @return the list of transports
      */
     public List<Transport> getTransportsFromVehicle(String vehicleName);
+    
+    /**
+     * Assigns a new transportstate to an existing transport
+     * @param transport
+     * @return boolean if insert was sucessful or not
+     */
+    public boolean assignTransportstate(Transport transport);
+    
+    /**
+     * updates the time of an existing transportstate
+     * @param transport
+     * @return boolean if insert was sucessful or not
+     */
+    public boolean updateTransportstate(Transport transport);
+    
+    /**
+     * removes an inserted transportstate
+     * @param transport
+     * @return boolean if remove was sucessful or not
+     */
+    public boolean removeTransportstate(Transport transport);
 }

@@ -38,4 +38,11 @@ public interface LocationDAO
 	 * @return the location or null if no location with this id was found
 	 */
 	public Location getLocation(int id);
+	
+	/**
+	 * Returns the location by the locationname
+	 * @param locationname
+	 * @return the location
+	 */
+	public Location getLocationByName(String locationname);
 }
