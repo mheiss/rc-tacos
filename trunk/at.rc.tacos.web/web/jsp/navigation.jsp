@@ -1,4 +1,5 @@
 <%@page import="at.rc.tacos.common.Constants"%>
+<%@page import="at.rc.tacos.web.web.UserSession"%>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td id="BlockHead"><b>Navigation</b></td>
