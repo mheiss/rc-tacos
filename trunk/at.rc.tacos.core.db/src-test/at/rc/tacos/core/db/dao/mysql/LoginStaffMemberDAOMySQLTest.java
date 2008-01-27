@@ -40,8 +40,8 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     Competence comp2 = new Competence("comp2");
     Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
     Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-    StaffMember member1 = new StaffMember(50100001,"fname1","lname1","uname1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-    StaffMember member2 = new StaffMember(50100002,"fname2","lname2","uname2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+    StaffMember member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
+    StaffMember member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
     
     @Before
     public void setUp() 
