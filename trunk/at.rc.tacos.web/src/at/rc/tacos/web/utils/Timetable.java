@@ -1,3 +1,7 @@
+/**
+ * 2007 - 2008
+ * @author hade - Hannes Derler
+ */
 package at.rc.tacos.web.utils;
 
 import java.awt.Color;
