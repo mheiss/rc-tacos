@@ -120,7 +120,7 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
     	try
 		{
     	// phonenumber, phonename, phonenumber_ID
-    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.caller"));
+    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.Phonenumber"));
 		query.setString(1, phone.getMobilePhoneNumber());
 		query.setString(2, phone.getMobilePhoneName());
 		query.setInt(3, phone.getId());
