@@ -59,11 +59,12 @@ public class StaffMember extends AbstractMessage
 	/**
 	 * Class constructor for a complete staff member
 	 */
-	public StaffMember(String firstName, String lastName, String userName,
+	public StaffMember(int staffId,String firstName, String lastName, String userName,
 	        String streetname,String cityname,boolean sex,long birthday,
 	        MobilePhoneDetail phone,Competence competence,String eMail,Location primaryLocation)
 	{
 	    this();
+	    setStaffMemberId(staffId);
 	    setFirstName(firstName);
         setLastName(lastName);
         setUserName(userName);
@@ -120,7 +121,7 @@ public class StaffMember extends AbstractMessage
 
 	//SETTERS AND GETTERS
 	/**
-	 * Returns the personal identification number
+	 * Returns the personal identification number.
 	 * @return the staffMemberId
 	 */
 	public int getStaffMemberId() 
