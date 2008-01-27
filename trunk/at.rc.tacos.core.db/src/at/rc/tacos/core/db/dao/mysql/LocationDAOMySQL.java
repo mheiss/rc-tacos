@@ -177,4 +177,42 @@ public class LocationDAOMySQL implements LocationDAO
 		}
 		return true;
 	}
+
+	@Override
+	public Location getLocationByName(String locationname)
+	{
+		Location location = new Location();
+		MobilePhoneDetail phone = new MobilePhoneDetail();
+		try
+		{
+			//lo.location_ID, lo.locationname, lo.street, lo. streetnumber, lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.locationByName"));
+			query.setString(1, locationname);
+			final ResultSet rs = query.executeQuery();
+
+			if(rs.first())
+			{
+				location.setCity(rs.getString("lo.city"));
+				location.setId(rs.getInt("lo.location_ID"));
+				location.setLocationName(rs.getString("lo.locationname"));
+				location.setNotes(rs.getString("lo.note"));
+
+				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
+				phone.setMobilePhoneName(rs.getString("pn.phonename"));
+				phone.setId(rs.getInt("lo.phonenumber_ID"));
+				location.setPhone(phone);
+
+				location.setStreet(rs.getString("lo.street"));
+				location.setStreetNumber(rs.getString("lo.streetnumber"));
+				location.setZipcode(rs.getInt("lo.zipcode"));
+			}
+			else return null;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return location;
+	}
 }
