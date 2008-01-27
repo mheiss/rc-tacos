@@ -55,6 +55,27 @@ public class StaffMember extends AbstractMessage
 		setLastName(lastName);
 		setUserName(userName);
 	}
+	
+	/**
+	 * Class constructor for a complete staff member
+	 */
+	public StaffMember(String firstName, String lastName, String userName,
+	        String streetname,String cityname,boolean sex,long birthday,
+	        MobilePhoneDetail phone,Competence competence,String eMail,Location primaryLocation)
+	{
+	    this();
+	    setFirstName(firstName);
+        setLastName(lastName);
+        setUserName(userName);
+        setStreetname(streetname);
+        setCityname(cityname);
+        setMale(sex);
+        setBirthday(birthday);
+        addCompetence(competence);
+        addMobilePhone(phone);
+        setEMail(eMail);
+        setPrimaryLocation(primaryLocation);
+	}
 
 	/**
 	 * Returns a string based description of the object
