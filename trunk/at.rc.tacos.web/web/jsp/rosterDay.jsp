@@ -128,11 +128,11 @@
 					<img src='../image/info.jpg' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/ndienst.jpg' name='info' alt='Tages&uuml;bergreifend'  />&nbsp;Dienst &uuml;ber zwei Tage&nbsp;&nbsp;|&nbsp;&nbsp;
                     <img src='../image/b_drop.png' name='info' alt='L&ouml;schen'  />&nbsp;Dienst&nbsp;l&ouml;schen<br />
-                    <img src='../image/tableLegendDriver.png' name='info' alt='Fahrer'  />&nbsp;sicherer&nbsp;Einsatzfahrer
-                    <img src='../image/tableLegendParametic.png' name='info' alt='Sanitaeter'  />&nbsp;Sanit&auml;ter
-                    <img src='../image/tableLegendEParametic.png' name='info' alt='Notfall Sanitaeter'  />&nbsp;Notfall&nbsp;Sanit&auml;ter
-                    <img src='../image/tableLegendDoctor.png' name='info' alt='Notfall Arzt'  />&nbsp;Notfall&nbsp;Arzt
-                    <img src='../image/tableLegendOthers.png' name='info' alt='Sonstige'  />&nbsp;Sonstige
+                    <img src='../image/tableLegendDriver.jpg' name='info' alt='Fahrer'  />&nbsp;sicherer&nbsp;Einsatzfahrer
+                    <img src='../image/tableLegendParametic.jpg' name='info' alt='Sanitaeter'  />&nbsp;Sanit&auml;ter
+                    <img src='../image/tableLegendEParametic.jpg' name='info' alt='Notfall Sanitaeter'  />&nbsp;Notfall&nbsp;Sanit&auml;ter
+                    <img src='../image/tableLegendDoctor.jpg' name='info' alt='Notfall Arzt'  />&nbsp;Notfall&nbsp;Arzt
+                    <img src='../image/tableLegendOther.jpg' name='info' alt='Sonstige'  />&nbsp;Sonstige
 					</td>
 				</tr>
 			</table>
