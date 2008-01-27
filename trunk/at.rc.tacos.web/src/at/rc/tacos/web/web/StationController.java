@@ -48,7 +48,7 @@ public class StationController  implements Controller
             for(AbstractMessage object:dayResult)   
             {  
                 RosterEntry entry = (RosterEntry)object;  
-                if(entry.getStation().equals(action))  
+                if(entry.getStation().getLocationName().equals(action))  
                     resultList.add(entry);  
             }  
         }  
