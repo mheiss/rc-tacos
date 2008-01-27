@@ -16,7 +16,7 @@ TYPE=InnoDB;
 CREATE TABLE phonenumbers (
   phonenumber_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   phonenumber VARCHAR(30) NOT NULL,
-  phonename VARCHAR(10) NULL,
+  phonename VARCHAR(30) NULL,
   PRIMARY KEY(phonenumber_ID)
 )
 TYPE=InnoDB;
