@@ -165,7 +165,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         Assert.assertEquals(50100001, sm.getStaffMemberId());
         Assert.assertEquals("fname1", sm.getFirstName());
         Assert.assertEquals("lname1", sm.getLastName());
-        Assert.assertEquals("uname1",sm.getUserName());
+        Assert.assertEquals("user1",sm.getUserName());
         Assert.assertEquals("street1", sm.getStreetname());
         Assert.assertEquals("city1", sm.getCityname());
         Assert.assertEquals(false, sm.isMale());
@@ -185,7 +185,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         Assert.assertEquals(member1.getStaffMemberId(), sm.getStaffMemberId());
         Assert.assertEquals("fname1", sm.getFirstName());
         Assert.assertEquals("lname1", sm.getLastName());
-        Assert.assertEquals("uname1",sm.getUserName());
+        Assert.assertEquals("user1",sm.getUserName());
         Assert.assertEquals("street1", sm.getStreetname());
         Assert.assertEquals("city1", sm.getCityname());
         Assert.assertEquals(false, sm.isMale());
