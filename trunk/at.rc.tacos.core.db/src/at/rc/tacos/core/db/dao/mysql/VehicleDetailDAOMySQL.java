@@ -29,6 +29,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			//vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.vehicle"));
 			query.setString(1, vehicle.getVehicleName());
+			// TODO driver, medic1, medic2, phone auf null überprüfen!!!
 			query.setInt(2, vehicle.getDriver().getStaffMemberId());
 			query.setInt(3, vehicle.getFirstParamedic().getStaffMemberId());
 			query.setInt(4, vehicle.getSecondParamedic().getStaffMemberId());
