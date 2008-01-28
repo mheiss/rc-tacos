@@ -1,4 +1,4 @@
--- drop tables data script version 1.5
+-- drop tables data script version 1.5, lastChanged: 28.01.2008
 DROP TABLE IF EXISTS transport_selected;
 
 DROP TABLE IF EXISTS assigned_vehicle;
