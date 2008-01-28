@@ -7,6 +7,7 @@ import at.rc.tacos.model.Competence;
 public interface CompetenceDAO 
 {
     public static final String TABLE_NAME = "competences";
+    public static final String TABLE_DEPENDENT_NAME = "staffmember_competence";
     
 	/**
 	 * Adds a new competence to the competence list

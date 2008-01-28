@@ -81,8 +81,10 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         deleteTable(UserLoginDAO.TABLE_NAME);
         deleteTable(StaffMemberDAO.TABLE_NAME);
         deleteTable(MobilePhoneDAO.TABLE_NAME);
+        deleteTable(MobilePhoneDAO.TABLE_DEPENDENT_NAME);
         deleteTable(LocationDAO.TABLE_NAME);
         deleteTable(CompetenceDAO.TABLE_NAME);
+        deleteTable(CompetenceDAO.TABLE_DEPENDENT_NAME);
     }
     
     @Test
