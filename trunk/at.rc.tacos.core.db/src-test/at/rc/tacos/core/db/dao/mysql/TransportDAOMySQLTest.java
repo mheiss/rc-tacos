@@ -33,7 +33,7 @@ import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
 
 
-public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus 
+public class TransportDAOMySQLTest extends DBTestBase
 {
 	private final VehicleDAO vehicleDAO = DaoFactory.MYSQL.createVehicleDetailDAO();
 	private final MobilePhoneDAO mobilePhoneDAO = DaoFactory.MYSQL.createMobilePhoneDAO();
@@ -72,16 +72,23 @@ public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus
 	Transport  transport2 = new Transport("vonStraﬂe2","vonStadt2",location1,cal,cal,"B",2);
 	
 	
-	
     @Before
     public void setUp() 
     {
+    	System.out.println("setup von transportdaomysqltest");
     	//insert the phones
         int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
         int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);
         //set the inserted ids
         phone1.setId(phoneId1);
         phone2.setId(phoneId2);
+        
+        //insert the competences
+        int compId1 = competenceDAO.addCompetence(comp1);
+        int compId2 = competenceDAO.addCompetence(comp2);
+        //set the inserted ids
+        comp1.setId(compId1);
+        comp2.setId(compId2);
         
         //insert locations
         int id1 = locationDAO.addLocation(location1);
@@ -90,12 +97,7 @@ public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus
         location1.setId(id1);
         location2.setId(id2);
         
-        //insert the competences
-        int compId1 = competenceDAO.addCompetence(comp1);
-        int compId2 = competenceDAO.addCompetence(comp2);
-        //set the inserted ids
-        comp1.setId(compId1);
-        comp2.setId(compId2);
+       
         
         //staff member
         
@@ -108,14 +110,16 @@ public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus
         login2.setAuthorization("User");
         loginDAO.addLogin(login1);
         loginDAO.addLogin(login2);
-        
+        System.out.println("......................................111");
         //insert transports
         transport1.setCreatedByUsername(login1.getUsername());
         transport2.setCreatedByUsername(login2.getUsername());
+        
         int tr1id = transportDAO.addTransport(transport1);
         int tr2id = transportDAO.addTransport(transport2);
         transport1.setTransportId(tr1id);
-        transport2.setTransportId(tr2id);        
+        transport2.setTransportId(tr2id);   
+        System.out.println("......................................222");
     }
     
     @After
@@ -135,7 +139,7 @@ public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus
 	 @Test
 	 public void testListTransports()
 	 {
-		 
+		 System.out.println("......................................");
 		 List<Transport> list = transportDAO.listTransports(cal, cal);
          Assert.assertEquals(2, list.size());
 	 }
