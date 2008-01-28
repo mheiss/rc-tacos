@@ -14,9 +14,11 @@
 	List<Location> lista = userSession.getLocationList();
 	List<ServiceType> listServiceType = userSession.getServiceTypeList();
 	List<Job> listJob = userSession.getJobList();
+	RosterEntry entry = (RosterEntry)params.get("rosterEntry"); 
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="at.rc.tacos.model.RosterEntry"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -32,7 +34,7 @@
 	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 %>
 <form method="post" name="form"
-	action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>"
+	action="<%=request.getContextPath()+"/Dispatcher/updateEntry.do?action=doSaveEntry"%>"
 	border='0' cellpadding='0' cellspacing='0'>
 
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
@@ -76,13 +78,13 @@
 					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
 
 					
-							<% if (params.containsKey("entry-success")) 
+							<% if (params.containsKey("update-success")) 
 			{
 				out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cellspacing='0'><tr><td id=\"BlockHead\" align=\"right\" valign=\"center\">&nbsp;</td></tr><tr><td id=\"BlockContent\">"
 						+ "<table width=\"100%\" border='0' cellpadding='0' cellspacing='0'>"
 						+ "<tr><td width=\"50%\"><!-- quick entry -->"
 						+ "<table width=\"100%\" border='1' cellpadding='0' cellspacing='0'><tr><td>"
-						+ "<div id='meldungstext'>"+params.get("entry-success")+"</td></tr></table></td></tr></table>"
+						+ "<div id='meldungstext'>"+params.get("update-success")+"</td></tr></table></td></tr></table>"
 						+ "</td></tr></table>");
 			} 
 			else 
@@ -112,40 +114,45 @@
 											<td><!-- Mitarbeiterliste --> 
 												<select name="employee" id="rosterViewDayHeadSelbox">
 												<% for (StaffMember member : list) {
-													if(member.equals(userSession.getStaffMember())) { %>
-														<option selected="selected" value="<%=userSession.getStaffMember().getStaffMemberId()%>"><%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%></option>
+													if(member.equals(entry.getStaffMember())) { %>
+														<option selected="selected" value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 													<% } else { %>
-														<option value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
+														<option value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 													<% } } %>
 												</select>
 											</td>
 										</tr>
 										<tr>
-											<td id="rosterViewDayHeadline">Bezirk /
-											Ortsstelle:&nbsp;</td>
+											<td id="rosterViewDayHeadline">Bezirk / Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
 											<% for (Location location : lista) {
-													if(location.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
-												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName()%></option>
+													if(location.equals(entry.getStation())) { %>
+												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 												<% } else { %>
-												<option value="<%=location.getId()%>"><%=location.getLocationName()%></option>
+												<option value="<%=location.getId()%>"><%=location.getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 												<% } } %>
 											</select></td>
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">T&auml;tigkeit:&nbsp;</td>
 											<td><select name="job" id="rosterViewDayHeadSelbox">
-											<% for (Job job :  listJob) { %>
-												<option value="<%=job.getId()%>"><%=job.getJobName()%></option>
-											<% } %>
+											<% for (Job job :  listJob) {
+													if(job.equals(entry.getJob())) { %>
+												<option selected="selected" value="<%=job.getId()%>"><%=job.getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
+											<% } else { %>
+												<option value="<%=job.getId()%>"><%=job.getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
+												<% } } %>
 											</select></td>
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">Dienstverh&auml;ltniss:&nbsp;</td>
 											<td><select name="service" id="rosterViewDayHeadSelbox">
-											<% for (ServiceType service :  listServiceType) { %>
+											<% for (ServiceType service :  listServiceType) {
+													if(service.equals(entry.getServicetype())) { %>
+												<option selected="selected" value="<%=service.getId()%>"><%=service.getServiceName()%></option>
+											<% } else { %>
 												<option value="<%=service.getId()%>"><%=service.getServiceName()%></option>
-											<% } %>
+												<% } } %>
 											</select></td>
 										</tr>
 										<tr>
@@ -173,8 +180,7 @@
 														</tr>
 														<tr>
 															<td>von:</td>
-															<td><!-- hour --> <select name="startHour"
-																id="rosterViewDayHeadSelboxTime">
+															<td><!-- hour --> <select name="startHour" id="rosterViewDayHeadSelboxTime">
 																<%
                                                     int hb = 0;
                                                     while (hb < 24) {
@@ -185,16 +191,14 @@
                                                     }
                                                 %>
 															</select></td>
-															<td><!-- minute --> <select name="startMinute"
-																id="rosterViewDayHeadSelboxTime">
+															<td><!-- minute --> <select name="startMinute" id="rosterViewDayHeadSelboxTime">
 																<option value="00">00</option>
 																<option value="30">30</option>
 															</select></td>
 														</tr>
 														<tr>
 															<td>bis:</td>
-															<td><!-- hour --> <select name="endHour"
-																id="rosterViewDayHeadSelboxTime">
+															<td><!-- hour --> <select name="endHour" id="rosterViewDayHeadSelboxTime">
 																<%
                                                     int he = 0;
                                                     while (he < 24) {
@@ -205,8 +209,7 @@
                                                     }
                                                 %>
 															</select></td>
-															<td><!-- minute --> <select name="endMinute"
-																id="rosterViewDayHeadSelboxTime">
+															<td><!-- minute --> <select name="endMinute" id="rosterViewDayHeadSelboxTime">
 																<option value="0">00</option>
 																<option value="30">30</option>
 															</select></td>
