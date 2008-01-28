@@ -24,19 +24,23 @@ public class TransportDAOMySQL implements TransportDAO
 	public int addTransport(Transport transport)
 	{
 		int transportId = 0;
-		CallerDetail caller = transport.getCallerDetail();
-		Patient patient = transport.getPatient();
+//		CallerDetail caller = transport.getCallerDetail();
+//		Patient patient = transport.getPatient();
+		System.out.println("lkklklkl");
 
 		try
 		{	
 			//transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate,
 			//departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location,
 			//from_street, from_city, to_street, to_city, programstate, dateOfTransport
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.transport"));
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(TransportDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.transport"));
 			query.setString(1, null); //transport.getTransportId()
 			query.setInt(2, transport.getTransportNumber());
-			query.setInt(3, transport.getDirection());			
-			query.setInt(4, caller.getCallerId());
+			query.setInt(3, transport.getDirection());	
+			if(transport.getCallerDetail() == null)
+				query.setString(4, null);
+			else
+				query.setInt(4, transport.getCallerDetail().getCallerId());
 			query.setString(5, transport.getNotes());
 			query.setString(6, transport.getCreatedByUsername());
 			query.setString(7, transport.getTransportPriority());
@@ -47,9 +51,20 @@ public class TransportDAOMySQL implements TransportDAO
 			query.setString(12, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
 			query.setString(13, transport.getKindOfTransport());
 			query.setString(14, transport.getKindOfIllness());
-			query.setString(15, patient.getFirstname());
-			query.setString(16, patient.getLastname());
-			query.setInt(17, transport.getPlanedLocation().getId());
+			if(transport.getPatient() == null)
+			{
+				query.setString(15,null);
+				query.setString(16, null);
+			}
+			else
+			{
+				query.setString(15, transport.getPatient().getFirstname());
+				query.setString(16, transport.getPatient().getLastname());
+			}
+			if(transport.getPlanedLocation() == null)
+				query.setString(17, null);
+			else
+				query.setInt(17, transport.getPlanedLocation().getId());
 			query.setString(18, transport.getFromStreet());
 			query.setString(19, transport.getFromCity());
 			query.setString(20, transport.getToStreet());
@@ -61,8 +76,18 @@ public class TransportDAOMySQL implements TransportDAO
 			// t.creationDate, t.firstname, t.lastname, t.to_street, t.appointment = ?;
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportID"));
 			query1.setString(1, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlDateTime));
-			query1.setString(2, transport.getPatient().getFirstname());
-			query1.setString(3, transport.getPatient().getLastname());
+			if(transport.getPatient() == null)
+			{
+				query.setString(2, null);
+				query.setString(3, null);
+				
+			}
+			else
+			{
+				query1.setString(2, transport.getPatient().getFirstname());
+				query1.setString(3, transport.getPatient().getLastname());
+			}
+			
 			query1.setString(4, transport.getToStreet());
 			query1.setString(5, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
 			final ResultSet rsId = query1.executeQuery();
