@@ -309,12 +309,6 @@ public class RosterDAOMySQL implements RosterDAO
 	public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime)
 	{
 		List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-		RosterEntry entry = new RosterEntry();
-		Location station = new Location();
-		StaffMember staff = new StaffMember();
-		ServiceType service = new ServiceType();
-		Job job = new Job();
-		Competence competence = new Competence();
 		List<Competence> competences = new ArrayList<Competence>();
 		try
 		{
@@ -327,25 +321,27 @@ public class RosterDAOMySQL implements RosterDAO
 
 			while(rs.next())
 			{
-				entry = null;
+				RosterEntry entry = new RosterEntry();
 				entry.setRosterId(rs.getInt("ro.roster_ID"));
-
+				
+				//Set the location
+				Location station = new Location();
 				station.setId(rs.getInt("ro.location_ID"));
 				station.setLocationName(rs.getString("lo.locationname"));
 				entry.setStation(station);
-
-				//staff will be set last at this method
 
 				entry.setCreatedByUsername(rs.getString("ro.entry_createdBy"));
 				entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("ro.starttime"), MyUtils.sqlDateTime));
 				entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("ro.endtime"), MyUtils.sqlDateTime));
 				entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("ro.checkIn"), MyUtils.sqlDateTime));
 				entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("ro.checkOut"), MyUtils.sqlDateTime));
-
+				//set the service type
+				ServiceType service = new ServiceType();
 				service.setId(rs.getInt("ro.servicetype_ID"));
 				service.setServiceName(rs.getString("st.servicetype"));
 				entry.setServicetype(service);
-
+				//Set the job
+				Job job = new Job();
 				job.setId(rs.getInt("ro.job_ID"));
 				job.setJobName(rs.getString("j.jobname"));
 				entry.setJob(job);
@@ -358,7 +354,10 @@ public class RosterDAOMySQL implements RosterDAO
 				final ResultSet rs2 = query2.executeQuery();
 
 				station = null;
-				rs2.first();    		
+				if(!rs2.first())
+					return null;
+				
+				StaffMember staff = new StaffMember();
 				staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));
 
 				station.setId(rs2.getInt("e.primaryLocation"));
@@ -375,9 +374,11 @@ public class RosterDAOMySQL implements RosterDAO
 				staff.setUserName(rs2.getString("e.username"));
 
 				{
+					Competence competence = new Competence();
 					competence.setId(rs2.getInt("c.competence_ID"));
 					competence.setCompetenceName(rs2.getString("c.competence"));
 					competences.add(competence);
+					staff.addCompetence(competence);
 				}while(rs2.next());
 				staff.setCompetenceList(competences);
 
@@ -386,16 +387,14 @@ public class RosterDAOMySQL implements RosterDAO
 				query3.setInt(1, rs.getInt("ro.staffmember_ID"));
 				final ResultSet rs3 = query3.executeQuery();
 
-				List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
 				while(rs3.next())
 				{
 					MobilePhoneDetail phone = new MobilePhoneDetail();
-
 					phone.setId(rs3.getInt("ph.phonenumber_ID"));
 					phone.setMobilePhoneNumber(rs3.getString("ph.phonenumber"));
-					phoneList.add(phone);
+					phone.setMobilePhoneName(rs3.getString("ph.phonename"));
+					staff.addMobilePhone(phone);
 				}
-				staff.setPhonelist(phoneList);
 
 				entry.setStaffMember(staff);
 				entrylist.add(entry);
