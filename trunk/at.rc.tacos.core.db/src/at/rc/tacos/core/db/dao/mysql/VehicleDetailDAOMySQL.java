@@ -29,13 +29,27 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			//vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.vehicle"));
 			query.setString(1, vehicle.getVehicleName());
-			// TODO driver, medic1, medic2, phone auf null überprüfen!!!
-			query.setInt(2, vehicle.getDriver().getStaffMemberId());
-			query.setInt(3, vehicle.getFirstParamedic().getStaffMemberId());
-			query.setInt(4, vehicle.getSecondParamedic().getStaffMemberId());
-			query.setInt(5, vehicle.getMobilePhone().getId());
+			if(vehicle.getDriver() == null)
+				query.setString(2,null);
+			else
+				query.setInt(2, vehicle.getDriver().getStaffMemberId());
+			if(vehicle.getFirstParamedic() == null)
+				query.setString(3,null);
+			else
+				query.setInt(3, vehicle.getFirstParamedic().getStaffMemberId());
+			if(vehicle.getSecondParamedic() == null)
+				query.setString(4,null);
+			else
+				query.setInt(4, vehicle.getSecondParamedic().getStaffMemberId());
+			if(vehicle.getMobilePhone() == null)
+				query.setString(5,null);
+			else
+				query.setInt(5, vehicle.getMobilePhone().getId());
 			query.setString(6, vehicle.getVehicleType());
-			query.setInt(7, vehicle.getCurrentStation().getId());
+			if(vehicle.getCurrentStation() == null)
+				query.setString(7,null);
+			else
+				query.setInt(7, vehicle.getCurrentStation().getId());
 			query.setInt(8, vehicle.getBasicStation().getId());
 			query.setString(9, vehicle.getVehicleNotes());
 			query.setBoolean(10, vehicle.isReadyForAction());
