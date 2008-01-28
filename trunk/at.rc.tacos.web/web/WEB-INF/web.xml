@@ -133,13 +133,13 @@
 	</servlet-mapping>	
 	
 	<servlet>
-		<servlet-name>deleteUserView</servlet-name>
-		<jsp-file>/jsp/deleteUser.jsp</jsp-file>
+		<servlet-name>lockUserView</servlet-name>
+		<jsp-file>/jsp/lockUser.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>deleteUserView</servlet-name>
-		<url-pattern>/deleteUserView</url-pattern>
+		<servlet-name>lockUserView</servlet-name>
+		<url-pattern>/lockUserView</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>

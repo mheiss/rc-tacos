@@ -55,9 +55,9 @@ public class ControllerFactory {
 		{
 			return new EditUserController();
 		}
-		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteUser")))
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.lockUser")))
 		{
-			return new DeleteUserController();
+			return new LockUserController();
 		}	
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.printRoster")))
 		{
