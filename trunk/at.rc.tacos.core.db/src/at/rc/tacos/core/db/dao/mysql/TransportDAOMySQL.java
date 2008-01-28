@@ -709,6 +709,65 @@ public class TransportDAOMySQL implements TransportDAO
 		return true;
 	}
 
+	/**
+	 * first removes all old transportitems and sets all to the new value
+	 * @param transport
+	 * @return true if update was ok
+	 */
+	private boolean assignTransportItems(Transport transport)
+	{
+		//removes all selected transports for specific transportId
+		removeTransportItems(transport);
+
+		if(transport.isEmergencyDoctorAlarming() == true)
+			addTransportState(transport.getTransportId(), 1);
+		if(transport.isPoliceAlarming() == true)
+			addTransportState(transport.getTransportId(), 2);
+		if(transport.isFirebrigadeAlarming() == true)
+			addTransportState(transport.getTransportId(), 3);
+		if(transport.isMountainRescueServiceAlarming() == true)
+			addTransportState(transport.getTransportId(), 4);
+		if(transport.isDfAlarming() == true)
+			addTransportState(transport.getTransportId(), 5);
+		if(transport.isBrkdtAlarming() == true)
+			addTransportState(transport.getTransportId(), 6);
+		if(transport.isBlueLightToGoal() == true)
+			addTransportState(transport.getTransportId(), 7);
+		if(transport.isHelicopterAlarming() == true)
+			addTransportState(transport.getTransportId(), 8);
+		if(transport.isAssistantPerson() == true)
+			addTransportState(transport.getTransportId(), 9);
+		if(transport.isBackTransport() == true)
+			addTransportState(transport.getTransportId(), 10);
+		if(transport.isLongDistanceTrip() == true)
+			addTransportState(transport.getTransportId(), 11);
+		if(transport.isEmergencyPhone() == true)
+			addTransportState(transport.getTransportId(), 12);
+
+		return true;
+	}
+	
+	/**
+	 * removes all selected items from a transport
+	 * @param transport
+	 * @return true if all items were removed
+	 */
+	private boolean removeTransportItems(Transport transport)
+	{
+		try
+		{
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.AllSelectedTransportItems"));
+			query1.setInt(1, transport.getTransportId());
+			query1.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean assignTransportstate(Transport transport)
 	{
