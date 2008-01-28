@@ -72,13 +72,17 @@ public class TransportDAOMySQL implements TransportDAO
 			query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
 			query.executeUpdate();
 			
-			assignTransportstate(transport);
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.lastInsertedID"));
 			final ResultSet rsId = query1.executeQuery();
 			if(!rsId.first())
 				return -1;
-			return rsId.getInt(1);
-
+			int transportId = rsId.getInt(1);
+			System.out.println("id:"+transportId);
+			transport.setTransportId(transportId);
+			//set the transport booleans ;)
+			assignTransportstate(transport);
+			
+			return transport.getTransportId();
 		}
 		catch (SQLException e)
 		{
@@ -366,7 +370,10 @@ public class TransportDAOMySQL implements TransportDAO
 					 */
 					//vehicle_ID = ?, medic2_ID = ?, medic1_ID = ?, driver_ID = ?, locationname = ?, note = ?, vehicletype = ? WHERE transport_ID = ?;
 					final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.assignedVehicle"));
-					query.setString(1, transport.getVehicleDetail().getVehicleName());
+					if(transport.getVehicleDetail() == null)
+						query.setString(1, null);
+					else
+						query.setString(1, transport.getVehicleDetail().getVehicleName());
 					query.setInt(2, transport.getVehicleDetail().getSecondParamedic().getStaffMemberId());
 					query.setInt(3, transport.getVehicleDetail().getFirstParamedic().getStaffMemberId());
 					query.setInt(4, transport.getVehicleDetail().getDriver().getStaffMemberId());
