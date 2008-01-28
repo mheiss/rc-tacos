@@ -45,7 +45,7 @@ public class StaffMemberView extends ViewPart
         layout = new GridLayout(1, false);
         this.form.getBody().setLayout(layout);
 
-        this.form.setText("Overview"); 
+        this.form.setText("Liste der registrierten Benutzer"); 
         this.toolkit.decorateFormHeading(this.form.getForm());
      
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true ,true);
