@@ -119,4 +119,16 @@ public class StaffMemberDAOMemory implements StaffMemberDAO
     	//Nothing removed
     	return false;
     }
+
+	@Override
+	public boolean updateCompetenceList(StaffMember staff) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateMobilePhoneList(StaffMember staff) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -161,4 +161,10 @@ public class TransportDAOMemory implements TransportDAO
         // TODO Auto-generated method stub
         return false;
     }
+
+	@Override
+	public Transport getTransportById(int transportId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
