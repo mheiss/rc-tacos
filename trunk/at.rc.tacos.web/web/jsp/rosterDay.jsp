@@ -23,9 +23,11 @@
 </head>
 <body>
 <%
+
 	Calendar current = Calendar.getInstance();
 	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+	SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 	Date today = new Date();
 	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	//date to show
@@ -84,15 +86,21 @@
 
 					<td id="ContentContainer" valign="top"><!-- quick acknowledgment -->
 					<%
+					int i=1;
 					for(AbstractMessage message:rosterList)
 	                {
-	                    RosterEntry entry = (RosterEntry)message;
+	                    RosterEntry entry = (RosterEntry)message; 
 	                    
 	                    if(format.format(entry.getPlannedStartOfWork()).equalsIgnoreCase(format.format(today))){
-	                    	if(entry.getStaffMember().getLastName().equalsIgnoreCase(userSession.getStaffMember().getLastName())){
-	                    		out.println("AAAAA");
+	                    	//out.println(userSession.getStaffMember().getLastName() + " = " + entry.getStaffMember().getLastName());
+	                    	if( userSession.getStaffMember().getLastName().toString().equals(entry.getStaffMember().getLastName()) &&
+	                    		userSession.getStaffMember().getFirstName().toString().equals(entry.getStaffMember().getFirstName())
+	                    	){ 
+	                %>
+	                       <table width="100%" height="15"><tr><td><%=i++ %></td><td>Dienst als <%=entry.getJob().getJobName() %> ( <%=entry.getServicetype().getServiceName() %> )&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;<%=formatHour.format(entry.getPlannedStartOfWork()) %>&nbsp;bis&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %></td><td><a href="#" >Dienst&nbsp;best&auml;tigen</a></td></tr></table>
+	                
+	                <%
 	                    	}
-	                    	
 	                    }
 					}
 					%>
