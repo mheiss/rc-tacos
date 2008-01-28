@@ -3,7 +3,7 @@
 		this.dayname = ["Mo","Di","Mi","Do","Fr","Sa","So"];
 		this.monthname = ["Januar","Februar","Maerz","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 		this.dayspermonth = [31,28,31,30,31,30,31,31,30,31,30,31];
-		this.tooltip = ["vorheriger Monat","nächster Monat"];
+		this.tooltip = ["vorheriger Monat","naechster Monat"];
 		this.monthCell = document.createElement("th");
 		this.tableHead = null;
 		this.parEl = null;
