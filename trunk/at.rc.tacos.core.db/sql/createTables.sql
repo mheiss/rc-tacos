@@ -1,4 +1,4 @@
--- Create table script version 1.5
+-- Create table script version 1.5, lastChanged: 28.01.2008
 CREATE TABLE servicetype (
   servicetype_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   servicetype VARCHAR(30) NOT NULL,
@@ -58,10 +58,9 @@ VALUES(null, 'Herr Maier', '0342 - 12345');
 
 
 CREATE TABLE tmptransports (
-  PK INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   transportNr INTEGER UNSIGNED NOT NULL,
   location INTEGER UNSIGNED NOT NULL,
-  PRIMARY KEY(PK)
+  PRIMARY KEY(transportNr,location)
 )
 TYPE=InnoDB;
 

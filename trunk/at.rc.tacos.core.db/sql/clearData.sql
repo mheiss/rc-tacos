@@ -1,4 +1,4 @@
---  Clear data script version 1.5
+--  Clear data script version 1.5, lastChanged: 28.01.2008
 DELETE FROM transport_selected;
 
 DELETE FROM assigned_vehicle;
