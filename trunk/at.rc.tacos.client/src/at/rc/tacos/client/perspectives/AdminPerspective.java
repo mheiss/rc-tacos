@@ -1,5 +1,6 @@
 package at.rc.tacos.client.perspectives;
 
+import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
@@ -27,13 +28,15 @@ public class AdminPerspective implements IPerspectiveFactory
         String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(false);
         layout.setFixed(true);
-        layout.addStandaloneView(StaffMemberView.ID,false, IPageLayout.LEFT, 0.25f, editorArea);
-        layout.addStandaloneView(StaffDetailView.ID,false, IPageLayout.RIGHT, 0.65f, editorArea);
-        
-        layout.addStandaloneView(VehicleAdminView.ID,false, IPageLayout.RIGHT, 0.65f, editorArea);
-        layout.addStandaloneView(VehicleDetailAdminView.ID,false, IPageLayout.LEFT, 0.25f, editorArea);
-        
-        layout.addStandaloneView(PhoneAdminView.ID,false, IPageLayout.RIGHT, 0.65f, editorArea);
-        layout.addStandaloneView(PhoneDetailAdminView.ID,false, IPageLayout.LEFT, 0.25f, editorArea);
+        //Create a folder on the left
+        IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.26, editorArea);
+        left.addView(StaffMemberView.ID);
+        left.addView(VehicleAdminView.ID);
+        left.addView(PhoneAdminView.ID);
+        //Create the folder on the right
+        IFolderLayout right = layout.createFolder("left", IPageLayout.LEFT, (float) 0.70, editorArea);
+        right.addView(StaffDetailView.ID);
+        right.addView(VehicleDetailAdminView.ID);
+        right.addView(PhoneDetailAdminView.ID);
     }
 }

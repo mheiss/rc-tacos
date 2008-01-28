@@ -8,7 +8,10 @@ import org.eclipse.ui.application.*;
 import org.eclipse.ui.actions.ActionFactory.*;
 
 import at.rc.tacos.client.controller.ConnectionWizardAction;
+import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
+import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
 import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
+import at.rc.tacos.client.perspectives.SwitchToTransportPerspective;
 
 /**
  * An action bar advisor is responsible for creating, adding, and disposing of the
@@ -21,6 +24,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	private IWorkbenchAction exitAction;
 	private IWorkbenchAction aboutAction;
 	private ConnectionWizardAction conWizard;
+	private SwitchToClientPerspective switchToClient;
+	private SwitchToAdminPerspective switchToAdmin;
+	private SwitchToTransportPerspective switchToTransport;
 	private SwitchToLogPerspective switchToLog;
 
 	/**
@@ -41,6 +47,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		exitAction = ActionFactory.QUIT.create(window);
 		aboutAction = ActionFactory.ABOUT.create(window);
 		conWizard = new ConnectionWizardAction(window);
+		switchToClient = new SwitchToClientPerspective();
+		switchToTransport = new SwitchToTransportPerspective();
+		switchToAdmin = new SwitchToAdminPerspective();
 		switchToLog = new SwitchToLogPerspective();
 
 		register(aboutAction);
@@ -56,16 +65,24 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		//the file menu
 		MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
 		fileMenu.add(exitAction);
+		
+		//window menue
+		MenuManager windowMenu = new MenuManager("&Window");
+		windowMenu.add(switchToClient);
+		windowMenu.add(switchToTransport);
+		windowMenu.add(switchToAdmin);
+		windowMenu.add(switchToLog);
 
 		//help menu
-		MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
+		MenuManager helpMenu = new MenuManager("&Help");
 		helpMenu.add(aboutAction);
 		helpMenu.add(conWizard);
-		helpMenu.add(switchToLog);
 
 		//add the manager to the main menu
 		menuBar.add(fileMenu);
+		menuBar.add(windowMenu);
 		menuBar.add(helpMenu);
+		
 	}
 
 	/**
