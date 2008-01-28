@@ -113,7 +113,7 @@
 												<select name="employee" id="rosterViewDayHeadSelbox">
 												<% for (StaffMember member : list) {
 													if(member.equals(userSession.getStaffMember())) { %>
-														<option selected="selected" value="<%=userSession.getStaffMember().getStaffMemberId()%>"><%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%></option>
+														<option selected="selected" value="<%=userSession.getStaffMember().getStaffMemberId()%>"><%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 													<% } else { %>
 														<option value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 													<% } } %>
