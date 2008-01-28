@@ -30,7 +30,7 @@ public class PrintController implements Controller
 		//the action to do
 		String action = request.getParameter("action");
 		String id = request.getParameter("id");
-		
+
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
@@ -40,23 +40,24 @@ public class PrintController implements Controller
 		if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
 			params.put("rosterList", resultList); 
 
-		
 		if(action!=null && id!=null){
 			PrinterJob pj = PrinterJob.getPrinterJob();
 			if(pj.printDialog()){
 				PageFormat pf= pj.defaultPage();
 				pf=pj.pageDialog(pf);			
 				pj.setPrintable(new PrinterJobRoster(resultList, action),pf);
-				
-				try {
+
+				try 
+				{
 					pj.print();
-				} catch (PrinterException e1) {
-					// TODO Auto-generated catch block
+				} 
+				catch (PrinterException e1) 
+				{
 					e1.printStackTrace();
 				}
 			}
 		}
-		
+
 		return params;
 	}
 }

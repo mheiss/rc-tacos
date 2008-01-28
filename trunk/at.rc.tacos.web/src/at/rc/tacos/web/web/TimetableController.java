@@ -27,24 +27,23 @@ public class TimetableController implements Controller{
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
-			
-			Date current = new Date();
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			//get roster entries
-			QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(current));
-			resultList = client.sendListingRequest(RosterEntry.ID, filter);
-			if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
-				params.put("rosterList", resultList); 
-			
-			List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
-			for(AbstractMessage object:dayResult)   
-            {  
-                RosterEntry entry = (RosterEntry)object;  
-                if(entry.getStation().equals("Kapfenberg"))
-                	// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
-                    resultList.add(entry);  
-            }
+
+		Date current = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		//get roster entries
+		QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(current));
+		resultList = client.sendListingRequest(RosterEntry.ID, filter);
+		if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
+			params.put("rosterList", resultList); 
+
+		List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
+		for(AbstractMessage object:dayResult)   
+		{  
+			RosterEntry entry = (RosterEntry)object;  
+			if(entry.getStation().equals("Kapfenberg"))
+				// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
+				resultList.add(entry);  
+		}
 		return params;
 	}
-
 }

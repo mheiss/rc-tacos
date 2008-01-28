@@ -65,7 +65,7 @@ public class RosterEntryController implements Controller
 			endEntry.set(Calendar.YEAR, Integer.valueOf(endYear));
 			endEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(endHour));
 			endEntry.set(Calendar.MINUTE, Integer.valueOf(endMinute));
-			
+
 			long plannedStartOfWork = startEntry.getTimeInMillis();
 			long plannedEndOfWork = endEntry.getTimeInMillis();
 
@@ -87,7 +87,7 @@ public class RosterEntryController implements Controller
 				params.put("loginError", "Keine Daten eingegeben!");
 				return params;
 			} 
- 
+
 			RosterEntry entry = new RosterEntry(member,service,job, location,plannedStartOfWork, plannedEndOfWork);
 			entry.setCreatedByUsername(userSession.getUsername());
 			client.sendAddRequest(RosterEntry.ID, entry);
@@ -105,7 +105,7 @@ public class RosterEntryController implements Controller
 			//get the roster entry by id 
 			List<AbstractMessage> resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
 			RosterEntry entry = (RosterEntry )resultList.get(0);  
-			 
+
 			client.sendRemoveRequest(RosterEntry.ID,entry );
 			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay")+"?action=DayView");
 		}
@@ -127,5 +127,4 @@ public class RosterEntryController implements Controller
 		}
 		return params;
 	}
-
 }

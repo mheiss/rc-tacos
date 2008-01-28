@@ -42,8 +42,7 @@ public class UpdateEntryController implements Controller
 			List<AbstractMessage> rosterList = client.sendListingRequest(RosterEntry.ID,filter);
 			//convert to roster entry
 			RosterEntry entry = (RosterEntry)rosterList.get(0);
-			
-			//TODO: 
+
 			//planed start
 			String startDay = request.getParameter("startDay");
 			String startMonth = request.getParameter("startMonth");
@@ -75,10 +74,10 @@ public class UpdateEntryController implements Controller
 			endEntry.set(Calendar.YEAR, Integer.valueOf(endYear));
 			endEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(endHour));
 			endEntry.set(Calendar.MINUTE, Integer.valueOf(endMinute));
-			
+
 			long plannedStartOfWork = startEntry.getTimeInMillis();
 			long plannedEndOfWork = endEntry.getTimeInMillis();
-			
+
 			if(member == null 
 					|| startDay.trim().isEmpty() 
 					|| startMonth.trim().isEmpty() 
@@ -97,7 +96,7 @@ public class UpdateEntryController implements Controller
 				params.put("loginError", "Keine Daten eingegeben!");
 				return params;
 			} 
-			
+
 			entry.setServicetype(service);
 			entry.setJob(job);
 			entry.setStation(location);
