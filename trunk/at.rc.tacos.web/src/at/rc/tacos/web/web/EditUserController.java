@@ -1,17 +1,11 @@
 package at.rc.tacos.web.web;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.net.internal.WebClient;
-import at.rc.tacos.model.QueryFilter;
-import at.rc.tacos.model.StaffMember;
 
 public class EditUserController implements Controller
 {
@@ -24,12 +18,7 @@ public class EditUserController implements Controller
 		String action = request.getParameter("id");
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
-		WebClient client = userSession.getConnection();
-		QueryFilter filter = new QueryFilter(IFilterTypes.ID_FILTER, request.getParameter("id")); 
-		List<AbstractMessage> Lista;  
-		Lista = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id")));
-		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
-			params.put("employeeList", Lista); 
+		params.put("editStaffMember", userSession.getStaffMemberById(Integer.valueOf(action)));
 
 		return params;
 	}
