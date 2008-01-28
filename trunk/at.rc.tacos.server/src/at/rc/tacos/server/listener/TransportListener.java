@@ -51,13 +51,16 @@ public class TransportListener extends ServerListenerAdapter
 			//get the query filter and parse it to a date time
 			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.DATE_FILTER);
 			long dateStart = MyUtils.stringToTimestamp(dateFilter,MyUtils.dateFormat);
-			
+			Calendar calEnd = Calendar.getInstance();
+			calEnd.setTimeInMillis(dateStart);
+			calEnd.add(Calendar.DAY_OF_MONTH, 1);
+			long dateEnd = calEnd.getTimeInMillis();
 			//show current transports that are in progress
 			if(Transport.TRANSPORT_PROGRESS.equalsIgnoreCase(type))
-				list.addAll(transportDao.listTransports(dateStart, dateStart));
+				list.addAll(transportDao.listTransports(dateStart, dateEnd));
 			//show the transports in the journal
 			if(Transport.TRANSPORT_JOURNAL.equalsIgnoreCase(type))
-				list.addAll(transportDao.listArchivedTransports(dateStart, dateStart));
+				list.addAll(transportDao.listArchivedTransports(dateStart, dateEnd));
 		}
 		return list;
     }

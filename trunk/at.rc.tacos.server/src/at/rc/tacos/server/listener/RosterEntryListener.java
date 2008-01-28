@@ -1,6 +1,8 @@
 package at.rc.tacos.server.listener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.RosterDAO;
@@ -47,7 +49,11 @@ public class RosterEntryListener extends ServerListenerAdapter
 			//get the query filter and parse it to a date time
 			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.DATE_FILTER);
 			long dateStart = MyUtils.stringToTimestamp(dateFilter,MyUtils.dateFormat);
-			list.addAll(rosterDao.listRosterEntryByDate(dateStart, dateStart));
+			Calendar calEnd = Calendar.getInstance();
+			calEnd.setTimeInMillis(dateStart);
+			calEnd.add(Calendar.DAY_OF_MONTH, 1);
+			long dateEnd = calEnd.getTimeInMillis();
+			list.addAll(rosterDao.listRosterEntryByDate(dateStart, dateEnd));
 		}
 		else if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER))
 		{
