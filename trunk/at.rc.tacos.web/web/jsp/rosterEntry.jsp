@@ -11,7 +11,7 @@
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 	List<StaffMember> list = userSession.getStaffList();
-	List<Location> lista = userSession.getLocationList();
+	List<Location> listLocation = userSession.getLocationList();
 	List<ServiceType> listServiceType = userSession.getServiceTypeList();
 	List<Job> listJob = userSession.getJobList();
 %>
@@ -124,7 +124,7 @@
 											<td id="rosterViewDayHeadline">Bezirk /
 											Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
-											<% for (Location location : lista) {
+											<% for (Location location : listLocation) {
 													if(location.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
 												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName()%></option>
 												<% } else { %>
