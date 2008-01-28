@@ -64,7 +64,7 @@ public class SessionListener extends ClientListenerAdapter
     {
         SystemMessage sysMessage = (SystemMessage)message;
         //Create a new log message
-        Status status = new Status(IStatus.INFO,"Client",0,sysMessage.getMessage(),null);
+        Status status = new Status(IStatus.INFO,Activator.PLUGIN_ID,sysMessage.getMessage());
         Activator.getDefault().getLog().log(status);
     }
 
