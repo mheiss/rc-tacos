@@ -7,11 +7,12 @@
 <%@page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%@page import="at.rc.tacos.model.MobilePhoneDetail"%>
+<%@page import="at.rc.tacos.model.Competence"%>
 <%
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	List<Location> listLocation = userSession.getLocationList();
-	List<StaffMember> lista = (List) params.get("employeeList");
+	StaffMember editStaffMember = (StaffMember) params.get("editStaffMember");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.model.Location"%>
@@ -50,9 +51,12 @@
 			<td id="MainBodyContent">
 			<table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName() + " "
-					+ userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
-					&nbsp;&nbsp;( <a
+					<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName()
+					+ " "
+					+ userSession.getStaffMember().getLastName().replaceAll(
+							"ä", "&auml;").replaceAll("ö", "&ouml;")
+							.replaceAll("ü", "&uuml;").replaceAll("ß", "ss")%> &nbsp;&nbsp;(
+					<a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Benutzer editieren</td>
@@ -84,154 +88,103 @@
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
-											<table width="682" height="302" border="0">
+											<table width="682" height="127" border="0">
 												<tr>
-													<td><strong>Pers&ouml;nliche Daten</strong></td>
-													<td>&nbsp;</td>
-													<td><strong>Wohnort</strong></td>
-													<td>&nbsp;</td>
+													<td width="138"><strong>Pers&ouml;nliche
+													Daten</strong></td>
+													<td width="144">&nbsp;</td>
+													<td width="24">&nbsp;</td>
+													<td width="74"><strong>Wohnort</strong></td>
+													<td width="280">&nbsp;</td>
 												</tr>
-												<tr><% String id = request.getParameter("id");
-												for (StaffMember member : lista) { 
-												 %>
+												<tr>
 													<td>Vorname:</td>
-													<td><input type="text" name="firstName" id="textfield" value="<%=member.getFirstName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
+													<td><input type="text" name="firstName" id="textfield"
+														value="<%=editStaffMember.getFirstName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
+													<td>&nbsp;</td>
 													<td>Strasse:</td>
-													<td><input type="text" name="streetname" id="textfield7" value="<%=member.getStreetname().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
+													<td><input type="text" name="streetname"
+														id="textfield7"
+														value="<%=editStaffMember.getStreetname().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
 												</tr>
-												 
 												<tr>
 													<td>Nachname:</td>
-													<td><input type="text" name="lastName" id="textfield2" value="<%=member.getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
+													<td><input type="text" name="lastName" id="textfield2"
+														value="<%=editStaffMember.getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
+													<td>&nbsp;</td>
 													<td>Ort:</td>
-													<td><input type="text" name="cityname" id="textfield8" value="<%=member.getCityname().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
+													<td><input type="text" name="cityname" id="textfield8"
+														value="<%=editStaffMember.getCityname().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
 												</tr>
 												<tr>
 													<td>Geburtsdatum:</td>
-													<td><input type="text" name="birthday" id="textfield12" value="<%=MyUtils.timestampToString(member.getBirthday(),MyUtils.dateFormat)%>" /></td>
+													<td><input type="text" name="birthday"
+														id="textfield12"
+														value="<%=MyUtils.timestampToString(editStaffMember.getBirthday(),MyUtils.dateFormat)%>" /></td>
+													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
 												<tr>
 													<td>K&uuml;rzel:</td>
-													<td><input type="text" name="lastName" id="textfield2" value="<%=userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>"/></td>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-												</tr>
-												<tr>
+													<td><input type="text" name="userName" id="textfield2"
+														value="<%=editStaffMember.getUserName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-												</tr>
-												<tr>
-													<td><strong>Kontakt Daten</strong></td>
-													<td>&nbsp;</td>
-													<td><strong>Dienst Daten</strong></td>
-													<td>&nbsp;</td>
-												</tr>
-												<tr>
-													<td>E-Mail Adresse:</td>
-													<td><input type="text" name="eMail" id="textfield4" value="<%=member.getEMail() %>" /></td>
-													<td>Prim&auml;re Ortsstelle:</td>
-													<td><select name="station" id="rosterViewDayHeadSelbox">
-											<% for (Location location : listLocation) {
-													if(location.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
-												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName()%></option>
-												<% } else { %>
-												<option value="<%=location.getId()%>"><%=location.getLocationName()%></option>
-												<% } } %>
-											</select></td>
-												</tr>
-												<% MobilePhoneDetail phone1 = new MobilePhoneDetail(); 
-                                                phone1.setMobilePhoneName("mein erstes telefon"); 
-                                                phone1.setMobilePhoneNumber("0664/4143824"); 
-                                                MobilePhoneDetail phone2 = new MobilePhoneDetail(); 
-                                                phone2.setMobilePhoneName("mein zweites telefon"); 
-                                                phone2.setMobilePhoneNumber("0664/1321323"); 
-                                                member.addMobilePhone(phone1); 
-                                                member.addMobilePhone(phone2);
-                                                List<MobilePhoneDetail> list = member.getPhonelist();
-                                                %>
-												<tr>
-													<td>Tel. Nr.:</td>
-													<%for(MobilePhoneDetail phone : list) 
-														{ 
-														%>
-													<td><input type="text" name="phonenumber" id="textfield4" value="<%=member.getPhonelist()%>"/><br /></td>
-													<%}%>
-													<td><%=Constants.COMPETENCE_DRIVER%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>Tel. Nr.:</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_SANI.replaceAll("ä", "&auml;")%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>Tel. Nr.:</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_EXECUTIVE_INSP%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_EXECUTIVE_DF%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_DISPON%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_EMERGENCY.replaceAll("ä", "&auml;")%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_DOCTOR%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_OTHER%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><%=Constants.COMPETENCE_INTERVENTION%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><input type="submit" name="button" id="button"
-														value="Speichern"></td>
 												</tr>
 											</table>
-  <% 
-                                                    } 
-                                                %> 
-
+											<table width="682" border="0">
+												<tr>
+													<td>
+													<table width="336" height="133" border="0">
+														<tr>
+															<td width="111"><strong>Kontakt Daten</strong></td>
+															<td width="200">&nbsp;</td>
+														</tr>
+														<tr>
+															<td>E-Mail Adresse:</td>
+															<td><input type="text" name="eMail" id="textfield4"
+																value="<%=editStaffMember.getEMail() %>" /></td>
+														</tr>
+															<%
+																for (MobilePhoneDetail phone : editStaffMember.getPhonelist()) 
+																{
+															%>
+														<tr>
+															<td>Tel. Nr.:</td>
+															<td><input type="text" name="phonenumber" id="textfield4" value="<%=phone.getMobilePhoneNumber()%>" /></td>
+														</tr>
+															<% } %>
+													</table>
+													</td>
+													<td>
+													<table width="284" height="71" border="0">
+														<tr>
+															<td width="146"><strong>Dienst Daten</strong></td>
+															<td width="120">&nbsp;</td>
+														</tr>
+														<tr>
+															<td>Prim&auml;re Ortsstelle:</td>
+															<td>&nbsp;</td>
+														</tr>
+														<%
+																for (Competence comp : editStaffMember.getCompetenceList()) 
+																{
+														%>
+														<tr>
+															<td>Kompetenzen:</td>
+															<td>&nbsp;</td>
+														</tr>
+														<tr>
+												        <td>&nbsp;</td>
+												        <td><input type="checkbox" name="checkbox" id="checkbox"></td>
+												      </tr>
+															<% } %>
+													</table>
+													</td>
+												</tr>
+											</table>
 										</tr>
 									</table>
 									</td>

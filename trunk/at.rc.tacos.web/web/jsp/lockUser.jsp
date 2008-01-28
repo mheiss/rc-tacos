@@ -101,7 +101,7 @@
 								</tr>
 							</table>
 							<br />
-                    <img src='../image/loeschen.gif' name='info' alt='L&ouml;schen'  />&nbsp;Benutzer&nbsp;sperren
+                    <img src='../image/b_drop.png' name='info' alt='Sperren'  />&nbsp;Benutzer&nbsp;sperren
 							</td>
 						</tr>
 					</table>
