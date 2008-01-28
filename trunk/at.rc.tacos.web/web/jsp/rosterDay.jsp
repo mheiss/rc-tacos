@@ -152,7 +152,7 @@
 					<img src='../image/info.jpg' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/b_edit.png' name='info' alt='Editieren'  />&nbsp;Dienst editieren&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/b_drop.png' name='info' alt='L&ouml;schen'  />&nbsp;Dienst&nbsp;l&ouml;schen&nbsp;&nbsp;|&nbsp;&nbsp;
-					<img src='../image/ndienst.jpg' name='info' alt='Tages&uuml;bergreifend'  />&nbsp;Dienst &uuml;ber zwei Tage&nbsp;&nbsp;|&nbsp;&nbsp;<br />
+					<img src='../image/ndienst.jpg' name='info' alt='Tages&uuml;bergreifend'  />&nbsp;Dienst &uuml;ber zwei Tage<br />
                     <img src='../image/tableLegendDriver.jpg' name='info' alt='Fahrer'  />&nbsp;sicherer&nbsp;Einsatzfahrer&nbsp;&nbsp;|&nbsp;&nbsp;
                     <img src='../image/tableLegendParametic.jpg' name='info' alt='Sanitaeter'  />&nbsp;Sanit&auml;ter&nbsp;&nbsp;|&nbsp;&nbsp;
                     <img src='../image/tableLegendEParametic.jpg' name='info' alt='Notfall Sanitaeter'  />&nbsp;Notfall&nbsp;Sanit&auml;ter&nbsp;&nbsp;|&nbsp;&nbsp;
