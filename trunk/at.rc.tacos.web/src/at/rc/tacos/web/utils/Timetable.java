@@ -136,7 +136,7 @@ public class Timetable
 							"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
 							"px; float:left;" +
 							this.tooLong + 
-							"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span>" + info + "</span><br /></a>" +
+							"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span id='infoBox' >" + info + "</span><br /></a>" +
 							"<a href='"+ path +"/Dispatcher/rosterEntry.do?action=doUpdateEntry&id=" + entry.getRosterId() +"' >" +
 							"<img src='../image/b_edit.png' id='edit' class='hidefocus' /></a>" +
 							"<a href='"+ path +"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() +"' onClick=\"return confirm('M&ouml;chten Sie diesen Dienst wirklich l&ouml;schen?')\" >" +
