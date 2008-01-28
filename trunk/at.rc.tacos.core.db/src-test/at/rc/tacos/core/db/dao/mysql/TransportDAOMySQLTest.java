@@ -104,7 +104,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 		login2.setAuthorization("User");
 		loginDAO.addLogin(login1);
 		loginDAO.addLogin(login2);
-		System.out.println("......................................111");
 		//insert transports
 		transport1.setCreatedByUsername(login1.getUsername());
 		transport2.setCreatedByUsername(login2.getUsername());
@@ -112,11 +111,12 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 		int tr1id = transportDAO.addTransport(transport1);
 		int tr2id = transportDAO.addTransport(transport2);
+		System.out.println(".... id: " +tr1id);
 		transport1.setTransportId(tr1id);
 		transport2.setTransportId(tr2id); 
 		System.out.println(tr1id);
 		System.out.println(tr2id);
-		System.out.println("......................................222");
+
 	}
 
 	@After
@@ -133,7 +133,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@Test
 	public void testListTransports()
 	{
-		System.out.println("......................................");
 		long startTime = MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat);
 		//set the end date to date +1
 		Calendar cal = Calendar.getInstance();
