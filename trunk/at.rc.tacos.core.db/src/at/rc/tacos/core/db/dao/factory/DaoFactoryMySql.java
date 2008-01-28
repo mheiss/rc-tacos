@@ -48,7 +48,7 @@ public class DaoFactoryMySql implements DaoFactory
     @Override
     public TransportDAO createTransportDAO()
     {
-        return null;
+        return new TransportDAOMySQL();
     }
 
     @Override
