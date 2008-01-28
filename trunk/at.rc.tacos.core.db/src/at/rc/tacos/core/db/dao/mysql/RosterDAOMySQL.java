@@ -417,7 +417,8 @@ public class RosterDAOMySQL implements RosterDAO
 
 				StaffMember staff = new StaffMember();
 				staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));
-
+				//Set the location
+				station = new Location();
 				station.setId(rs2.getInt("e.primaryLocation"));
 				station.setLocationName(rs2.getString("lo.locationname"));
 				staff.setPrimaryLocation(station);
@@ -430,7 +431,6 @@ public class RosterDAOMySQL implements RosterDAO
 				staff.setBirthday(MyUtils.stringToTimestamp(rs2.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs2.getString("e.email"));
 				staff.setUserName(rs2.getString("e.username"));
-
 				{
 					Competence competence = new Competence();
 					competence.setId(rs2.getInt("c.competence_ID"));
