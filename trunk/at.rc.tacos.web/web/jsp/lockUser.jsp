@@ -51,7 +51,7 @@
 					+ userSession.getStaffMember().getLastName()%> &nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Benutzer l&ouml;schen</td>
+					<td width="33%" align="center">Benutzer sperren</td>
 					<td width="33%" align="right">Heute ist der <%=formath.format(current)%>
 					</td>
 					<td>
@@ -87,7 +87,7 @@
                                                 %> 
                                                     <tr> 
                                                         <td id="BlockContent" width="40%" ><%=member.getFirstName() + " " + member.getLastName()%></td> 
-                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteUser.do?id="+ member.getStaffMemberId()%>" onclick="return confirm('M&ouml;chten Sie diesen User wirklich sperren?')" ><img src="../image/b_drop.png" class="hidefocus" /></a></td>
+                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/lockUser.do?id="+ member.getStaffMemberId()%>" onclick="return confirm('M&ouml;chten Sie diesen User wirklich sperren?')" ><img src="../image/b_drop.png" class="hidefocus" /></a></td>
                                                     </tr> 
                                                     <% 
                                                     } 
@@ -101,7 +101,7 @@
 								</tr>
 							</table>
 							<br />
-                    <img src='../image/loeschen.gif' name='info' alt='L&ouml;schen'  />&nbsp;Benutzer&nbsp;l&ouml;schen
+                    <img src='../image/loeschen.gif' name='info' alt='L&ouml;schen'  />&nbsp;Benutzer&nbsp;sperren
 							</td>
 						</tr>
 					</table>

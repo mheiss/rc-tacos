@@ -64,7 +64,7 @@
 		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/listUser.do"%>">Benutzer editieren</a><br />
 		</td>
 		<tr>
-		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteUser.do"%>">Benutzer l&ouml;schen</a><br />
+		<td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/lockUser.do"%>">Benutzer sperren</a><br />
 		</td>
 	</tr>
 </table>
