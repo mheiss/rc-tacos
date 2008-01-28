@@ -22,10 +22,10 @@ INSERT INTO job(job_ID, jobname) VALUES(11, 'Volontär');
 INSERT INTO job(job_ID, jobname) VALUES(12, 'Sonstiges');
 
 -- Mobile phones
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(null, '0699-11321018', 'BM01');
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(null, '0699-10342965', 'BM02');
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(null, '0664-12345678', 'privat');
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(null, '0361-12345678', 'privat');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(1, '0699-11321018', 'BM01');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(2, '0699-10342965', 'BM02');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(3, '0664-12345678', 'privat');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(4, '0361-12345678', 'privat');
 
 -- logins
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('walter', 'pwd', 'Administrator', false, false);
@@ -49,9 +49,9 @@ INSERT INTO selected(selected_ID, name) VALUES(10, 'return_transport');
 INSERT INTO selected(selected_ID, name) VALUES(11, 'longDistance');
 
 --diseases
-INSERT INTO disease(disease_ID, disease) VALUES(null, 'Knochenbruch');
-INSERT INTO disease(disease_ID, disease) VALUES(null, 'Kreislauf');
-INSERT INTO disease(disease_ID, disease) VALUES(null, 'Neuronale Beschwerden');
+INSERT INTO disease(disease_ID, disease) VALUES(1, 'Knochenbruch');
+INSERT INTO disease(disease_ID, disease) VALUES(2, 'Kreislauf');
+INSERT INTO disease(disease_ID, disease) VALUES(3, 'Neuronale Beschwerden');
 
 --competences
 INSERT INTO competences(competence_ID, competence) VALUES(1, 'Rettungssani');

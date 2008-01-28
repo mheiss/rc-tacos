@@ -132,20 +132,15 @@ public class RosterDAOMySQL implements RosterDAO
 	@Override
 	public RosterEntry getRosterEntryById(int rosterEntryId)
 	{
-		RosterEntry entry = new RosterEntry();
 		try
 		{
-			//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
-			//st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note, ro.standby
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.RosterByID"));
 			query.setInt(1, rosterEntryId);
 			final ResultSet rs = query.executeQuery();
-
 			if(rs.first())
 			{
-				
+				RosterEntry entry = new RosterEntry();
 				entry.setRosterId(rs.getInt("ro.roster_ID"));
-
 				//Set the location
 				Location station = new Location();
 				station.setId(rs.getInt("ro.location_ID"));
@@ -188,17 +183,19 @@ public class RosterDAOMySQL implements RosterDAO
 				query2.setInt(1, rs.getInt("ro.staffmember_ID"));
 				final ResultSet rs2 = query2.executeQuery();
 
-				station = null;
+				System.out.println("Request the staff member");
 				if(!rs2.first())
 					return null;
+				System.out.println("We have a staff member");
 
 				StaffMember staff = new StaffMember();
 				staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));
 
+				station = new Location();
 				station.setId(rs2.getInt("e.primaryLocation"));
 				station.setLocationName(rs2.getString("lo.locationname"));
 				staff.setPrimaryLocation(station);
-
+				
 				staff.setLastName(rs2.getString("e.lastname"));
 				staff.setFirstName(rs2.getString("e.firstname"));
 				staff.setStreetname(rs2.getString("e.street"));
@@ -211,6 +208,8 @@ public class RosterDAOMySQL implements RosterDAO
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
 
 				entry.setStaffMember(staff);
+				
+				return entry;
 			}
 		}
 		catch (SQLException e)
@@ -218,7 +217,7 @@ public class RosterDAOMySQL implements RosterDAO
 			e.printStackTrace();
 			return null;
 		}
-		return entry;
+		return null;
 	}
 
 	@Override
