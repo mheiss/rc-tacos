@@ -23,7 +23,6 @@ public class TransportDAOMySQL implements TransportDAO
 	@Override
 	public int addTransport(Transport transport)
 	{
-		int transportId = 0;
 //		CallerDetail caller = transport.getCallerDetail();
 //		Patient patient = transport.getPatient();
 		System.out.println("lkklklkl");
@@ -72,47 +71,19 @@ public class TransportDAOMySQL implements TransportDAO
 			query.setInt(22, transport.getProgramStatus());
 			query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
 			query.executeUpdate();
-
-			// t.creationDate, t.firstname, t.lastname, t.to_street, t.appointment = ?;
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportID"));
-			query1.setString(1, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlDateTime));
-			if(transport.getPatient() == null)
-			{
-				query.setString(2, null);
-				query.setString(3, null);
-				
-			}
-			else
-			{
-				query1.setString(2, transport.getPatient().getFirstname());
-				query1.setString(3, transport.getPatient().getLastname());
-			}
 			
-			query1.setString(4, transport.getToStreet());
-			query1.setString(5, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.lastInsertedID"));
 			final ResultSet rsId = query1.executeQuery();
-
-			if(rsId.next())
-			{
-				transportId = rsId.getInt("transport_ID");
-				transport.setTransportId(transportId);
-				assignTransportstate(transport);
-
-				int result = 0;
-				if(transport.getVehicleDetail().getVehicleName() != null)
-					result = assignVehicleToTransport(transport);
-				if(result == -1)
-					return -1;
-			}
-			else
+			if(!rsId.first())
 				return -1;
+			return rsId.getInt("SELECT LAST_INSERT_ID()");
+
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 			return -1;
 		}
-		return transportId;
 	}
 
 	@Override
