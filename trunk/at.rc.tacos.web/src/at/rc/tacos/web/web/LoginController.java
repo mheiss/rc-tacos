@@ -17,6 +17,7 @@ import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.ServiceType;
+import at.rc.tacos.model.StaffMember;
 
 /**
  * Servlet implementation class for Servlet: LoginController
@@ -29,10 +30,6 @@ public class LoginController implements Controller
 		Map<String, Object> params = new HashMap<String, Object>();
 		//the action to do
 		String action = request.getParameter("action");
-
-
-		
-		
 		HttpSession session = request.getSession();
 
 		if("login".equalsIgnoreCase(action))
@@ -60,37 +57,53 @@ public class LoginController implements Controller
 				Login loginResult = (Login)result;
 				if(loginResult.isLoggedIn()) 
 				{ 
-				UserSession userSession = (UserSession)session.getAttribute("userSession"); 
-				userSession.setLoggedIn(true, username, client); 
-				userSession.setStaffMember(loginResult.getUserInformation()); 
-				response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));   
+					UserSession userSession = (UserSession)session.getAttribute("userSession"); 
+					userSession.setLoggedIn(true, username, client); 
+					userSession.setStaffMember(loginResult.getUserInformation()); 
+				
+					//request the frequently used object from the server
+					List<AbstractMessage> stationList = client.sendListingRequest(Location.ID, null);
+					if(Location.ID.equalsIgnoreCase(client.getContentType())) 
+					{
+						for(AbstractMessage abstractLoaction:stationList)
+							userSession.addLocation((Location)abstractLoaction);
+					}
+					
+					List<AbstractMessage> jobList = client.sendListingRequest(Job.ID, null);
+					if(Job.ID.equalsIgnoreCase(client.getContentType())) 
+					{
+						for(AbstractMessage abstractJob:jobList)
+							userSession.addJob((Job)abstractJob);
+					}
+					
+					List<AbstractMessage> compList = client.sendListingRequest(Competence.ID, null);
+					if(Competence.ID.equalsIgnoreCase(client.getContentType()))    
+					{
+						for(AbstractMessage abstractCompetence:compList)
+							userSession.addCompetence((Competence)abstractCompetence);
+					}
+
+					List<AbstractMessage> serviceList = client.sendListingRequest(ServiceType.ID, null);
+					if(ServiceType.ID.equalsIgnoreCase(client.getContentType()))  
+					{
+						for(AbstractMessage abstractServiceType:serviceList)
+							userSession.addServiceType((ServiceType)abstractServiceType);
+					}
+					
+					List<AbstractMessage> staffList = client.sendListingRequest(StaffMember.ID, null);
+					if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))  
+					{
+						for(AbstractMessage abstractStaffMember:staffList)
+							userSession.addStaffMember((StaffMember)abstractStaffMember);
+					}
+				
+					//redirect to the roster day view
+					response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));   
 				}
-				
-				List<AbstractMessage> stationList;
-				stationList = client.sendListingRequest(Location.ID, null);
-				if(Location.ID.equalsIgnoreCase(client.getContentType()))          
-					params.put("stationList", stationList);
-				
-				List<AbstractMessage> jobList;
-				jobList = client.sendListingRequest(Job.ID, null);
-				if(Job.ID.equalsIgnoreCase(client.getContentType()))          
-					params.put("jobList", jobList);
-				
-				List<AbstractMessage> compList;
-				compList = client.sendListingRequest(Competence.ID, null);
-				if(Competence.ID.equalsIgnoreCase(client.getContentType()))          
-					params.put("compList", compList);
-				
-				List<AbstractMessage> serviceList;
-				serviceList = client.sendListingRequest(ServiceType.ID, null);
-				if(Job.ID.equalsIgnoreCase(client.getContentType()))          
-					params.put("serviceList", serviceList);
-				
 				else
 				{
 					params.put("loginError", "Sie haben einen falschen Usernamen oder ein falsches Passwort eingegeben. Korrigieren Sie bitte ihre Eingaben!");
 				}
-				
 			}
 		}
 		if("logout".equalsIgnoreCase(action))

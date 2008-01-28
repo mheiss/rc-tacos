@@ -31,20 +31,9 @@ public class RosterEntryController implements Controller
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
-		List<AbstractMessage> resultList;
-		resultList = client.sendListingRequest(StaffMember.ID, null);
-		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
-			params.put("employeeList", resultList);
 
 		if("doRosterEntry".equalsIgnoreCase(action))
 		{
-			String staffId = request.getParameter("employee");
-			//request the staff member
-			resultList = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,staffId));	
-			StaffMember staffMember = (StaffMember)resultList.get(0); 
-			String station = request.getParameter("station");
-			String job = request.getParameter("job");
-			String servicetype = request.getParameter("service");
 			//planed start
 			String startDay = request.getParameter("startDay");
 			String startMonth = request.getParameter("startMonth");
@@ -57,12 +46,11 @@ public class RosterEntryController implements Controller
 			String endYear =  request.getParameter("endYear");
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
-			Location location = new Location();
-			location.setLocationName(station);
-			Job jobb = new Job();
-			jobb.setJobName(job);
-			ServiceType service = new ServiceType();
-			service.setServiceName(servicetype);
+			//get the objects from the session
+			Location location = userSession.getLocationById(Integer.valueOf(request.getParameter("station")));
+			Job job = userSession.getJobById(Integer.valueOf(request.getParameter("job")));
+			ServiceType service = userSession.getServiceTypeById(Integer.valueOf(request.getParameter("service")));
+			StaffMember member = userSession.getStaffMemberById(Integer.valueOf(request.getParameter("employee")));
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
@@ -81,7 +69,7 @@ public class RosterEntryController implements Controller
 			long plannedStartOfWork = startEntry.getTimeInMillis();
 			long plannedEndOfWork = endEntry.getTimeInMillis();
 
-			if(staffId.trim().isEmpty() 
+			if(member == null 
 					|| startDay.trim().isEmpty() 
 					|| startMonth.trim().isEmpty() 
 					|| startYear.trim().isEmpty() 
@@ -92,16 +80,16 @@ public class RosterEntryController implements Controller
 					|| endYear.trim().isEmpty() 
 					|| endHour.trim().isEmpty()
 					|| endMinute.trim().isEmpty() 
-					|| station.trim().isEmpty() 
-					|| job.trim().isEmpty()
-					|| servicetype.trim().isEmpty())
+					|| location == null 
+					|| job == null
+					|| service == null)
 			{ 
 				params.put("loginError", "Keine Daten eingegeben!");
 				return params;
 			} 
  
-			RosterEntry entry = new RosterEntry(staffMember,service,jobb, location,plannedStartOfWork, plannedEndOfWork);
-
+			RosterEntry entry = new RosterEntry(member,service,job, location,plannedStartOfWork, plannedEndOfWork);
+			entry.setCreatedByUsername(userSession.getUsername());
 			client.sendAddRequest(RosterEntry.ID, entry);
 			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
 			{
@@ -115,7 +103,7 @@ public class RosterEntryController implements Controller
 		if("doRemoveEntry".equalsIgnoreCase(action))
 		{
 			//get the roster entry by id 
-			resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
+			List<AbstractMessage> resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
 			RosterEntry entry = (RosterEntry )resultList.get(0);  
 			 
 			client.sendRemoveRequest(RosterEntry.ID,entry );
