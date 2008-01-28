@@ -8,11 +8,13 @@
 <%@page import="java.util.Date"%>
 <%@page import="at.rc.tacos.model.MobilePhoneDetail"%>
 <%
-	Map<String, Object> params = (Map) request.getAttribute("params");
-	List<StaffMember> lista = (List) params.get("employeeList");
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
+	Map<String, Object> params = (Map) request.getAttribute("params");
+	List<Location> listLocation = userSession.getLocationList();
+	List<StaffMember> lista = (List) params.get("employeeList");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="at.rc.tacos.model.Location"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -133,15 +135,13 @@
 													<td><input type="text" name="eMail" id="textfield4" value="<%=member.getEMail() %>" /></td>
 													<td>Prim&auml;re Ortsstelle:</td>
 													<td><select name="station" id="rosterViewDayHeadSelbox">
-														<option><%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
-														<option><%=Constants.STATION_BEZIRK%></option>
-														<option><%=Constants.STATION_BREITENAU%></option>
-														<option><%=Constants.STATION_BRUCK%></option>
-														<option><%=Constants.STATION_KAPFENBERG%></option>
-														<option><%=Constants.STATION_MAREIN%></option>
-														<option><%=Constants.STATION_THOERL.replaceAll("ö", "&ouml;")%></option>
-														<option><%=Constants.STATION_TURNAU%></option>
-													</select></td>
+											<% for (Location location : listLocation) {
+													if(location.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
+												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName()%></option>
+												<% } else { %>
+												<option value="<%=location.getId()%>"><%=location.getLocationName()%></option>
+												<% } } %>
+											</select></td>
 												</tr>
 												<% MobilePhoneDetail phone1 = new MobilePhoneDetail(); 
                                                 phone1.setMobilePhoneName("mein erstes telefon"); 
