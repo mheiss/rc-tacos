@@ -128,7 +128,8 @@ public class Timetable
 						"Dienstdatum:&nbsp;&nbsp;" + format.format(new Date(entry.getPlannedStartOfWork())) + "<br />" +
 						"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
 						"Ortstelle:&nbsp;&nbsp;" + entry.getStation().getLocationName().replaceAll("ö","&ouml;") + "<br />" +
-						"angestellt als:&nbsp;&nbsp;"+entry.getServicetype().getServiceName()+"<br />";
+						"angestellt als:&nbsp;&nbsp;"+entry.getServicetype().getServiceName()+"<br />" + 
+						"eingetragen von:&nbsp;&nbsp;"+entry.getCreatedByUsername() +"<br />";
 
 						tabentry+= 		
 							"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
