@@ -1,6 +1,7 @@
 package at.rc.tacos.web.web;
 
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class PrintController implements Controller
 			if(pj.printDialog()){
 				PageFormat pf= pj.defaultPage();
 				pf=pj.pageDialog(pf);			
-				pj.setPrintable(new PrinterJobRoster(resultList, action),pf);
+				pj.setPrintable(new PrinterJobRoster(resultList, action),pf); 
 
 				try 
 				{
@@ -59,5 +60,31 @@ public class PrintController implements Controller
 		}
 
 		return params;
+	}
+	
+//  set PageFormat fix to "A4"
+	private PageFormat getPaperSize()
+	{
+		PageFormat pf = new PageFormat();
+		Paper a4 = new Paper(); 
+		double reso = 72.0;
+  	           
+//  	 size (inch)
+		double a4Width  =  8.26;
+		double a4Height = 11.69;
+		a4.setSize(a4Width * reso, a4Height * reso);
+
+//  	 margin (inch)
+		double a4LeftMargin   = 0.78; 
+		double a4RightMargin  = 0.78;
+		double a4TopMargin    = 0.78;
+		double a4BottomMargin = 0.78;
+
+		a4.setImageableArea(a4LeftMargin * reso, a4TopMargin * reso,
+  	                   (a4Width - a4LeftMargin - a4RightMargin)*reso,
+  	                   (a4Height - a4TopMargin - a4BottomMargin)*reso);
+		pf.setPaper(a4);
+	  	
+		return pf;
 	}
 }

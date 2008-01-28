@@ -33,6 +33,7 @@ public class PrinterJobRoster implements Printable{
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
 			throws PrinterException {
 		
+		System.out.println("pageIndex: " + pageIndex);
 		Graphics2D g2 = (Graphics2D) graphics;
 		if (pageIndex >= 1) {
 			return Printable.NO_SUCH_PAGE;
@@ -78,35 +79,11 @@ public class PrinterJobRoster implements Printable{
 		g2.setColor(new Color(171,171,171));
 		g2.drawString("[ Dokument wurde erstellt am: " + new Date().toString() + " ]", (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableY())+i));
 
-		i=0;
+		//i=0;
 		
 	}
 
-//  set PageFormat fix to "A4"
-	private PageFormat getPaperSize()
-	{
-		PageFormat pf = new PageFormat();
-		Paper a4 = new Paper(); 
-		double reso = 72.0;
-  	           
-//  	 size (inch)
-		double a4Width  =  8.26;
-		double a4Height = 11.69;
-		a4.setSize(a4Width * reso, a4Height * reso);
 
-//  	 margin (inch)
-		double a4LeftMargin   = 0.78; 
-		double a4RightMargin  = 0.78;
-		double a4TopMargin    = 0.78;
-		double a4BottomMargin = 0.78;
-
-		a4.setImageableArea(a4LeftMargin * reso, a4TopMargin * reso,
-  	                   (a4Width - a4LeftMargin - a4RightMargin)*reso,
-  	                   (a4Height - a4TopMargin - a4BottomMargin)*reso);
-		pf.setPaper(a4);
-	  	
-		return pf;
-	}
 	
 	public String getStation() {
 		return station;
