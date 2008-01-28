@@ -32,7 +32,7 @@ public class DeleteUserController implements Controller
 		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
 			params.put("employeeList", resultList); 
 
-		if("doRemoveUser".equalsIgnoreCase(action))
+		if("doLockUser".equalsIgnoreCase(action))
 		{
 			//get the roster entry by id 
 			resultList = client.sendListingRequest(StaffMember.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
