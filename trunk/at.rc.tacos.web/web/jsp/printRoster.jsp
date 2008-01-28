@@ -17,6 +17,12 @@
 <%@page import="java.lang.reflect.Array"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Iterator"%>
+<%@page import="java.util.SortedSet"%>
+<%@page import="org.apache.tomcat.jni.Directory"%>
+<%@page import="javax.naming.spi.DirectoryManager"%>
+<%@page import="java.util.Collection"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Collections"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -85,21 +91,23 @@
 									<table width="100%" height="100%" border='0' cellpadding='0' 
                                         cellspacing='0'> 
                                         <tr> 
-                                        <% 
-                                        Set set = new HashSet();
+                                        <%
+                                        Map map = Collections.synchronizedMap(new HashMap());
                                         if(rosterList.size()>0){
 	                                        for(AbstractMessage message:rosterList){
 	                                        	RosterEntry entry = (RosterEntry)message;
-	                                              set.add("<table style='padding:3px; border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#333333;' width='100%' border='0' cellpadding='0' cellspacing='0' ><tr><td width='70%'>Ortsstelle: <b>" + entry.getStation().getLocationName()+
-	                                                         "</b></td><td width='30%'><a href='" + request.getContextPath()+ "/Dispatcher/printRoster.do?action=" + entry.getStation().getLocationName() + "&id=" + entry.getServicetype().getId() + "' >" +
-	                                                         "Dienstplan drucken</a></td></tr></table>");
+	                                        	map.put(entry.getStation().getLocationName(), 
+	                                        			"<table style='padding:3px; border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#333333;' width='100%' border='0' cellpadding='0' cellspacing='0' ><tr><td width='70%'>Ortsstelle: <b>" + entry.getStation().getLocationName()+
+	                                                                     "</b></td><td width='30%'><a href='" + request.getContextPath()+ "/Dispatcher/printRoster.do?action=" + entry.getStation().getLocationName() + "&id=" + entry.getServicetype().getId() + "' >" +
+	                                                                     "Dienstplan drucken</a></td></tr></table>");
 	                                        }
-	                                        Iterator it = set.iterator();
-	                                        while (it.hasNext()){
-	                                        	out.println(it.next().toString());
+	                                        Iterator it = map.values().iterator();
+	                                        while(it.hasNext()){
+	                                        	   out.println(it.next());
 	                                        }
+	                                       
                                         }else{
-                                        	out.print("Es wurde keine Eintr&auml;ge gefunden!");
+                                        	out.print("Es wurden keine Eintr&auml;ge gefunden!");
                                         }
                                         
                                         
