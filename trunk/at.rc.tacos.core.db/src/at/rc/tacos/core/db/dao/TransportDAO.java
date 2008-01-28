@@ -101,4 +101,10 @@ public interface TransportDAO
      * @return boolean if remove was sucessful or not
      */
     public boolean removeTransportstate(Transport transport);
+    /**
+     * Returns a transport searched by id
+     * @param id the id of the transport
+     * @return transport
+     */
+    public Transport getTransportById(int transportId);
 }
