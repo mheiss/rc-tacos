@@ -1,15 +1,19 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
+<%@page import="at.rc.tacos.model.Location"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
-<%@page import="at.rc.tacos.common.Constants"%>
+<%@page import="at.rc.tacos.model.ServiceType"%>
+<%@page import="at.rc.tacos.model.Job"%>
 <%@page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
-	List<StaffMember> rosterList = (List)params.get("rosterList");
-	List<StaffMember> list = (List) params.get("employeeList");
 	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
+	List<StaffMember> list = userSession.getStaffList();
+	List<Location> lista = userSession.getLocationList();
+	List<ServiceType> listServiceType = userSession.getServiceTypeList();
+	List<Job> listJob = userSession.getJobList();
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,7 +61,7 @@
 					&nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Diensteintrag bearbeiten</td>
+					<td width="33%" align="center">Diensteintrag &auml;ndern</td>
 					<td width="33%" align="right">Heute ist der <%= format.format(current) %>
 					</td>
 					<td>
@@ -105,57 +109,43 @@
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">Mitglied:&nbsp;</td>
-											<td><!-- Mitarbeiterliste --> <select name="employee"
-												id="rosterViewDayHeadSelbox">
-												<%
-													for (StaffMember member : list) {
-												%>
-												<option selected value="<%=member.getFirstName() + " " + member.getLastName()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
-												<option value="<%=member.getPersonId()%>"><%=member.getUserName()%></option>
-												<%
-													}
-												%>
-											</select></td>
+											<td><!-- Mitarbeiterliste --> 
+												<select name="employee" id="rosterViewDayHeadSelbox">
+												<% for (StaffMember member : list) {
+													if(member.equals(userSession.getStaffMember())) { %>
+														<option selected="selected" value="<%=userSession.getStaffMember().getStaffMemberId()%>"><%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%></option>
+													<% } else { %>
+														<option value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
+													<% } } %>
+												</select>
+											</td>
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">Bezirk /
 											Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
-												<option><%=userSession.getStaffMember().getPrimaryLocation()%></option>
-												<option><%=Constants.STATION_BEZIRK%></option>
-												<option><%=Constants.STATION_BREITENAU%></option>
-												<option><%=Constants.STATION_BRUCK%></option>
-												<option><%=Constants.STATION_KAPFENBERG%></option>
-												<option><%=Constants.STATION_MAREIN%></option>
-												<option><%=Constants.STATION_THOERL.replaceAll("ö","&ouml;")%></option>
-												<option><%=Constants.STATION_TURNAU%></option>
+											<% for (Location location : lista) {
+													if(location.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
+												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName()%></option>
+												<% } else { %>
+												<option value="<%=location.getId()%>"><%=location.getLocationName()%></option>
+												<% } } %>
 											</select></td>
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">T&auml;tigkeit:&nbsp;</td>
 											<td><select name="job" id="rosterViewDayHeadSelbox">
-												<option><%=Constants.JOB_DRIVER%></option>
-												<option><%=Constants.JOB_SANI.replaceAll("ä","&auml;")%></option>
-												<option><%=Constants.JOB_EMERGENCY.replaceAll("ä","&auml;")%></option>
-												<option><%=Constants.JOB_DOCTOR%></option>
-												<option><%=Constants.JOB_DISPON%></option>
-												<option><%=Constants.JOB_DF.replaceAll("ü","&uuml;")%></option>
-												<option><%=Constants.JOB_BRKDT%></option>
-												<option><%=Constants.JOB_INSP%></option>
-												<option><%=Constants.JOB_BKTW_DRIVER%></option>
-												<option><%=Constants.JOB_JOURNAL%></option>
-												<option><%=Constants.JOB_VOLON.replaceAll("ä","&auml;")%></option>
-												<option><%=Constants.JOB_OTHER%></option>
+											<% for (Job job :  listJob) { %>
+												<option value="<%=job.getId()%>"><%=job.getJobName()%></option>
+											<% } %>
 											</select></td>
 										</tr>
 										<tr>
 											<td id="rosterViewDayHeadline">Dienstverh&auml;ltniss:&nbsp;</td>
 											<td><select name="service" id="rosterViewDayHeadSelbox">
-												<option><%=Constants.SERVICE_MAIN%></option>
-												<option><%=Constants.SERVICE_VOLUNT%></option>
-												<option><%=Constants.SERVICE_ZIVI%></option>
-												<option><%=Constants.SERVICE_OTHER%></option>
-												<option><%=Constants.SERVICE_TEMP%></option>
+											<% for (ServiceType service :  listServiceType) { %>
+												<option value="<%=service.getId()%>"><%=service.getServiceName()%></option>
+											<% } %>
 											</select></td>
 										</tr>
 										<tr>
