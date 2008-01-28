@@ -90,8 +90,8 @@
                                         if(rosterList.size()>0){
 	                                        for(AbstractMessage message:rosterList){
 	                                        	RosterEntry entry = (RosterEntry)message;
-	                                              set.add("<table style='padding:3px; border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#333333;' width='100%' border='0' cellpadding='0' cellspacing='0' ><tr><td width='70%'>Ortsstelle: <b>" + entry.getStation()+
-	                                                         "</b></td><td width='30%'><a href='" + request.getContextPath()+ "/Dispatcher/printRoster.do?action=" + entry.getStation() + "&id=" + entry.getServicetype().getId() + "' >" +
+	                                              set.add("<table style='padding:3px; border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#333333;' width='100%' border='0' cellpadding='0' cellspacing='0' ><tr><td width='70%'>Ortsstelle: <b>" + entry.getStation().getLocationName()+
+	                                                         "</b></td><td width='30%'><a href='" + request.getContextPath()+ "/Dispatcher/printRoster.do?action=" + entry.getStation().getLocationName() + "&id=" + entry.getServicetype().getId() + "' >" +
 	                                                         "Dienstplan drucken</a></td></tr></table>");
 	                                        }
 	                                        Iterator it = set.iterator();

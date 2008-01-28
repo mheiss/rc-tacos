@@ -5,6 +5,8 @@
 <%@page import="java.util.Date"%>
 <%
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
+	out.println("Location:"  + userSession.getStaffMember().getPrimaryLocation());
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -97,7 +99,7 @@
 												</tr>
 												<tr>
 													<td>Geburtsdatum:</td>
-													<td><input disabled="disabled" type="text" name="birthday" id="textfield12" value="<%=MyUtils.formatDate(userSession.getStaffMember().getBirthday() )%>" /></td>
+													<td><input disabled="disabled" type="text" name="birthday" id="textfield12" value="<%=MyUtils.timestampToString(userSession.getStaffMember().getBirthday(),MyUtils.dateFormat)%>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
@@ -123,7 +125,7 @@
 													<td>E-Mail Adresse:</td>
 													<td><input type="text" name="eMail" id="textfield4" value="<%=userSession.getStaffMember().getEMail() %>" /></td>
 													<td>Prim&auml;re Ortsstelle:</td>
-													<td><input disabled="disabled" type="text" name="station" id="textfield4" value="<%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>" /></td>
+													<td><input disabled="disabled" type="text" name="station" id="textfield4" value=" <!--<%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>" /></td>
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
