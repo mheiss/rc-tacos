@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: at.rc.tacos.server.run.TacosServer
+Class-Path: mysql-connector-java-5.1.5-bin.jar
+
