@@ -725,7 +725,7 @@ public class TransportDAOMySQL implements TransportDAO
 	}
 	
 
-	public Transport getTransportByID(int id)
+	public Transport getTransportById(int id)
 	{
 		Transport transport = new Transport();
 		try
