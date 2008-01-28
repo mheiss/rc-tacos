@@ -180,7 +180,8 @@ public class RosterDAOMySQL implements RosterDAO
 				job.setJobName(rs.getString("j.jobname"));
 				entry.setJob(job);
 
-				entry.setRosterNotes(rs.getString("ro.note"));
+				if(rs.getString("ro.note") != null)
+					entry.setRosterNotes(rs.getString("ro.note"));
 				entry.setStandby(rs.getBoolean("ro.standby"));
 
 				final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberByID"));
@@ -271,7 +272,8 @@ public class RosterDAOMySQL implements RosterDAO
 				job.setJobName(rs.getString("j.jobname"));
 				entry.setJob(job);
 
-				entry.setRosterNotes(rs.getString("ro.note"));
+				if(rs.getString("ro.note") != null)
+					entry.setRosterNotes(rs.getString("ro.note"));
 				entry.setStandby(rs.getBoolean("ro.standby"));
 
 				final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberByID"));
@@ -363,8 +365,8 @@ public class RosterDAOMySQL implements RosterDAO
 				job.setId(rs.getInt("ro.job_ID"));
 				job.setJobName(rs.getString("j.jobname"));
 				entry.setJob(job);
-
-				entry.setRosterNotes(rs.getString("ro.note"));
+				if(rs.getString("ro.note") != null)
+					entry.setRosterNotes(rs.getString("ro.note"));
 				entry.setStandby(rs.getBoolean("ro.standby"));
 
 				final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberByID"));
