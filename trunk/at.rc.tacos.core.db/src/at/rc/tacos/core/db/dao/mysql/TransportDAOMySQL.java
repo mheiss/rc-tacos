@@ -13,7 +13,6 @@ import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
 import at.rc.tacos.util.MyUtils;
-import at.rc.tacos.util.MyUtilsTest;
 
 public class TransportDAOMySQL implements TransportDAO
 {
@@ -243,33 +242,32 @@ public class TransportDAOMySQL implements TransportDAO
 	{
 		try
 		{
-			// transportNr = ?, direction = ?, caller_ID = ?, note = ?, createdBy_user = ?, priority = ?, feedback = ?, creationDate = ?, 
+			// direction = ?, caller_ID = ?, note = ?, createdBy_user = ?, priority = ?, feedback = ?, creationDate = ?, 
 			//departure = ?, appointment = ?, appointmentPatient = ?, transporttype = ?, disease = ?, firstname = ?, lastname = ?, 
 			//planned_location = ?, from_street = ?, from_city = ?, to_street = ?, to_city = ?, programstate = ?, dateOfTransport = ?, transport_ID = ?;
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transport"));
-			query.setInt(1, transport.getTransportNumber());
-			query.setInt(2, transport.getDirection());
-			query.setInt(3, transport.getCallerDetail().getCallerId());
-			query.setString(4, transport.getNotes());
-			query.setString(5, transport.getCreatedByUsername());
-			query.setString(6, transport.getTransportPriority());
-			query.setString(7, transport.getFeedback());
-			query.setString(8, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlDateTime));
-			query.setString(9, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
-			query.setString(10, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
-			query.setString(11, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
-			query.setString(12, transport.getKindOfTransport());
-			query.setString(13, transport.getKindOfIllness());
-			query.setString(14, transport.getPatient().getFirstname());
-			query.setString(15, transport.getPatient().getLastname());
-			query.setInt(16, transport.getPlanedLocation().getId());
-			query.setString(17, transport.getFromStreet());
-			query.setString(18, transport.getFromCity());
-			query.setString(19, transport.getToStreet());
-			query.setString(20, transport.getToCity());
-			query.setInt(21, transport.getProgramStatus());
-			query.setString(22, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDate));
-			query.setInt(23, transport.getTransportId());
+			query.setInt(1, transport.getDirection());
+			query.setInt(2, transport.getCallerDetail().getCallerId());
+			query.setString(3, transport.getNotes());
+			query.setString(4, transport.getCreatedByUsername());
+			query.setString(5, transport.getTransportPriority());
+			query.setString(6, transport.getFeedback());
+			query.setString(7, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlDateTime));
+			query.setString(8, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
+			query.setString(9, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
+			query.setString(10, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
+			query.setString(11, transport.getKindOfTransport());
+			query.setString(12, transport.getKindOfIllness());
+			query.setString(13, transport.getPatient().getFirstname());
+			query.setString(14, transport.getPatient().getLastname());
+			query.setInt(15, transport.getPlanedLocation().getId());
+			query.setString(16, transport.getFromStreet());
+			query.setString(17, transport.getFromCity());
+			query.setString(18, transport.getToStreet());
+			query.setString(19, transport.getToCity());
+			query.setInt(20, transport.getProgramStatus());
+			query.setString(21, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDate));
+			query.setInt(22, transport.getTransportId());
 			query.executeUpdate();
 
 			assignTransportstate(transport);
