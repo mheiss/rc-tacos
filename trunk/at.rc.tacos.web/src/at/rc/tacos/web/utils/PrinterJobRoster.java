@@ -52,25 +52,26 @@ public class PrinterJobRoster implements Printable{
 		g2.setColor(new Color(182,16,0));
 		g2.setFont(new Font("Verdana", Font.BOLD, 15)); 
 		
-		g2.drawString("Dienstplanübersicht für die Ortstelle: "+this.getStation(), (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableX())+20));
-		int i = 60;
+		g2.drawString("Dienstplanübersicht für die Ortstelle: ", (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableX())+20));
+		g2.drawString(this.getStation(), (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableX())+40));
+		int i = 80;
 		int siteRight = 20;
 		g2.setFont(new Font("Verdana", Font.PLAIN, 12));
 		g2.setColor(new Color(0,0,0));
 		for(AbstractMessage message:resultList)
 		{
 			RosterEntry entry = (RosterEntry)message;
-			if(entry.getStation().equals(this.getStation()))
-			{
+//			if(entry.getStation().equals(this.getStation()))
+//			{
 				g2.drawString(" >>> Datum: " + format2.format(entry.getPlannedStartOfWork()),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 				i+=18;
 				g2.drawString("Mitarbeiter: " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName()  ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 				i+=15;
 				g2.drawString("Dienstzeit: (plan) " + formatHour.format(entry.getPlannedStartOfWork())+ " - " + formatHour.format(entry.getPlannedEndOfWork()) + " | (real) "+ formatHour.format(entry.getRealStartOfWork()) + " - " + formatHour.format(entry.getRealEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 				i+=15;
-				g2.drawString("Dienstart: " + entry.getServicetype(),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+				g2.drawString("Dienstart: " + entry.getServicetype().getServiceName(),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
 				i+=30;
-			}
+//			}
 		}
 		i+=50;
 		g2.setFont(new Font("Verdana", Font.ITALIC, 10));
