@@ -72,11 +72,12 @@ public class TransportDAOMySQL implements TransportDAO
 			query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
 			query.executeUpdate();
 			
+			assignTransportstate(transport);
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.lastInsertedID"));
 			final ResultSet rsId = query1.executeQuery();
 			if(!rsId.first())
 				return -1;
-			return rsId.getInt("SELECT LAST_INSERT_ID()");
+			return rsId.getInt(1);
 
 		}
 		catch (SQLException e)
@@ -703,6 +704,7 @@ public class TransportDAOMySQL implements TransportDAO
 		try
 		{
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.AllSelectedTransportItems"));
+			query1.setInt(1, transport.getTransportId());
 			query1.executeUpdate();
 		}
 		catch (SQLException e)
@@ -726,7 +728,7 @@ public class TransportDAOMySQL implements TransportDAO
 		Transport transport = new Transport();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(TransportDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportByNr"));
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(TransportDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportById"));
 			query.setInt(1, id);
 			final ResultSet rs = query.executeQuery();
 
