@@ -46,8 +46,8 @@ public class LoginController implements Controller
 			//the result
 			WebClient client = new WebClient();
 			//open a connection to the server
-			client.connect("81.189.52.155", 4711);
-			//client.connect("localhost", 4711);
+			//client.connect("81.189.52.155", 4711);
+			client.connect("localhost", 4711);
 			AbstractMessage result = client.sendLoginRequest(username, password);
 			//get the content
 
