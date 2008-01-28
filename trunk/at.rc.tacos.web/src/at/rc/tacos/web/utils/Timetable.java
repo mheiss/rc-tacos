@@ -227,7 +227,6 @@ public class Timetable
 	}
 
 	public String getBgColor(String TODO) {
-		System.out.println("TODO: " + TODO);
 		if(TODO.equalsIgnoreCase("Notarzt")){
 			return DOC_COLOR;
 		} else if (TODO.equalsIgnoreCase("Notfallsanitäter")) {
