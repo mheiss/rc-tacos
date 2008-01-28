@@ -2,6 +2,9 @@ package at.rc.tacos.client.listeners;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IConnectionStates;
@@ -60,7 +63,9 @@ public class SessionListener extends ClientListenerAdapter
     public void systemMessage(AbstractMessage message)
     {
         SystemMessage sysMessage = (SystemMessage)message;
-        System.out.println("System message: " + sysMessage);
+        //Create a new log message
+        Status status = new Status(IStatus.INFO,"Client",0,sysMessage.getMessage(),null);
+        Activator.getDefault().getLog().log(status);
     }
 
 	@Override

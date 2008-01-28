@@ -8,6 +8,7 @@ import org.eclipse.ui.application.*;
 import org.eclipse.ui.actions.ActionFactory.*;
 
 import at.rc.tacos.client.controller.ConnectionWizardAction;
+import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
 
 /**
  * An action bar advisor is responsible for creating, adding, and disposing of the
@@ -16,10 +17,11 @@ import at.rc.tacos.client.controller.ConnectionWizardAction;
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor 
 {
-	// Actions - allocated in the maka actions method
+	// Actions - allocated in the make actions method
 	private IWorkbenchAction exitAction;
 	private IWorkbenchAction aboutAction;
 	private ConnectionWizardAction conWizard;
+	private SwitchToLogPerspective switchToLog;
 
 	/**
 	 * Default class constructor.
@@ -39,6 +41,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		exitAction = ActionFactory.QUIT.create(window);
 		aboutAction = ActionFactory.ABOUT.create(window);
 		conWizard = new ConnectionWizardAction(window);
+		switchToLog = new SwitchToLogPerspective();
 
 		register(aboutAction);
 		register(exitAction);
@@ -57,15 +60,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		//help menu
 		MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
 		helpMenu.add(aboutAction);
-
-		//Server connection 
-		MenuManager conMenu = new MenuManager("&Verbindung", "Verbindung");
-		conMenu.add(conWizard);
+		helpMenu.add(conWizard);
+		helpMenu.add(switchToLog);
 
 		//add the manager to the main menu
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
-		menuBar.add(conMenu);
 	}
 
 	/**

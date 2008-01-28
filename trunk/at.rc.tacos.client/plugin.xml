@@ -28,6 +28,11 @@
             id="at.rc.tacos.client.perspectives.transport"
             name="TransportPerspective">
       </perspective>
+      <perspective
+            class="at.rc.tacos.client.perspectives.LogPerspective"
+            id="at.rc.tacos.client.perspectives.log"
+            name="LogPerspective">
+      </perspective>
    </extension>
    <extension
          id="product"

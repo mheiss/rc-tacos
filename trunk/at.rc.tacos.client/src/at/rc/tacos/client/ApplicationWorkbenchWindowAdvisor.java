@@ -117,11 +117,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         tbm.add(new OpenTransportAction());
         tbm.add(new OpenEmergencyTransportAction());
         tbm.add(new OpenDialysisTransportAction());
+        tbm.add(new SwitchToAdminPerspective());
         tbm.add(new SwitchToClientPerspective());
         tbm.add(new SwitchToTransportPerspective());
-        tbm.add(new SwitchToAdminPerspective());
-       
-        
+
         tbm.update(true);
         toolbar = (CoolBar)configurer.createCoolBarControl(shell);
         toolbar.setLocked(true);

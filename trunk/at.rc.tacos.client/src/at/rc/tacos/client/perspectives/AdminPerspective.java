@@ -35,7 +35,5 @@ public class AdminPerspective implements IPerspectiveFactory
         
         layout.addStandaloneView(PhoneAdminView.ID,false, IPageLayout.RIGHT, 0.65f, editorArea);
         layout.addStandaloneView(PhoneDetailAdminView.ID,false, IPageLayout.LEFT, 0.25f, editorArea);
-        
-       
     }
 }

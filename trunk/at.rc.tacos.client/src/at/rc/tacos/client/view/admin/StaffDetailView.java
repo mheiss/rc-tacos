@@ -132,13 +132,16 @@ public class StaffDetailView extends ViewPart implements ISelectionListener
         if (!selection.isEmpty()) 
         {
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
-            StaffMember member = (StaffMember)structuredSelection.getFirstElement();
-            System.out.println(selection);
-            System.out.println(structuredSelection);
-            System.out.println(member);
-            userName.setText(member.getUserName());
-            firstName.setText(member.getFirstName());
-            lastName.setText(member.getLastName());
+            if (structuredSelection instanceof StaffMember) 
+            {
+	            StaffMember member = (StaffMember)structuredSelection.getFirstElement();
+	            System.out.println(selection);
+	            System.out.println(structuredSelection);
+	            System.out.println(member);
+	            userName.setText(member.getUserName());
+	            firstName.setText(member.getFirstName());
+	            lastName.setText(member.getLastName());
+            }
         } 
         else 
         {
