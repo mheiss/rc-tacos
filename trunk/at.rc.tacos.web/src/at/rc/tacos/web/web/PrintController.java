@@ -3,6 +3,8 @@ package at.rc.tacos.web.web;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.utils.PrinterJobRoster;
 
@@ -30,9 +34,9 @@ public class PrintController implements Controller
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 		List<AbstractMessage> resultList;
-
-		//QueryFilter filter = new QueryFilter(IFilterTypes.STATION_FILTER, null);
-		resultList = client.sendListingRequest(RosterEntry.ID, null);
+		SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
+		QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,formath.format(new Date()));
+		resultList = client.sendListingRequest(RosterEntry.ID, filter);
 		if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
 			params.put("rosterList", resultList); 
 
