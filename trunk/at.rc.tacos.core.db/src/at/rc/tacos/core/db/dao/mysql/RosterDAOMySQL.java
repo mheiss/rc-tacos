@@ -201,7 +201,7 @@ public class RosterDAOMySQL implements RosterDAO
 				staff.setMale(rs2.getBoolean("e.sex"));
 				staff.setBirthday(MyUtils.stringToTimestamp(rs2.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs2.getString("e.email"));
-				staff.setUserName(rs2.getString("e.username"));
+				staff.setUserName(rs2.getString("u.username"));
 
 				{
 					Competence competence = new Competence();
@@ -314,7 +314,7 @@ public class RosterDAOMySQL implements RosterDAO
 				staff.setMale(rs2.getBoolean("e.sex"));
 				staff.setBirthday(MyUtils.stringToTimestamp(rs2.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs2.getString("e.email"));
-				staff.setUserName(rs2.getString("e.username"));
+				staff.setUserName(rs2.getString("u.username"));
 
 				{
 					Competence competence = new Competence();
@@ -430,7 +430,7 @@ public class RosterDAOMySQL implements RosterDAO
 				staff.setMale(rs2.getBoolean("e.sex"));
 				staff.setBirthday(MyUtils.stringToTimestamp(rs2.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs2.getString("e.email"));
-				staff.setUserName(rs2.getString("e.username"));
+				staff.setUserName(rs2.getString("u.username"));
 				{
 					Competence competence = new Competence();
 					competence.setId(rs2.getInt("c.competence_ID"));
