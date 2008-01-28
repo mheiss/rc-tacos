@@ -86,7 +86,7 @@
                                                     for (StaffMember member : list) { 
                                                 %> 
                                                     <tr> 
-                                                        <td id="BlockContent" width="40%" ><%=member.getFirstName() + " " + member.getLastName()%></td> 
+                                                        <td id="BlockContent" width="40%" ><%=member.getFirstName() + " " + member.getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></td> 
                                                         <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/lockUser.do?id="+ member.getStaffMemberId()%>" onclick="return confirm('M&ouml;chten Sie diesen User wirklich sperren?')" ><img src="../image/b_drop.png" class="hidefocus" /></a></td>
                                                     </tr> 
                                                     <% 

@@ -106,7 +106,7 @@
 												</tr>
 												<tr>
 													<td>Geburtsdatum:</td>
-													<td><input type="text" name="birthday" id="textfield12" value="<%=MyUtils.formatDate(member.getBirthday())%>" /></td>
+													<td><input type="text" name="birthday" id="textfield12" value="<%=MyUtils.timestampToString(member.getBirthday(),MyUtils.dateFormat)%>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
