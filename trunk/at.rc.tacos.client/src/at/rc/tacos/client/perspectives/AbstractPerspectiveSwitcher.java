@@ -21,7 +21,7 @@ public class AbstractPerspectiveSwitcher extends Action implements IPerspectiveL
         IWorkbench workbench = PlatformUI.getWorkbench();
         setText(workbench.getPerspectiveRegistry().findPerspectiveWithId(getId()).getLabel());
         setImageDescriptor(workbench.getPerspectiveRegistry().findPerspectiveWithId(getId()).getImageDescriptor());
-        workbench.getActiveWorkbenchWindow().addPerspectiveListener(this);
+        //workbench.getActiveWorkbenchWindow().addPerspectiveListener(this);
     }
     /**
      * Sets the perspective

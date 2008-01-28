@@ -123,12 +123,15 @@ public class PhoneDetailAdminView extends ViewPart implements ISelectionListener
         if (!selection.isEmpty()) 
         {
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
-            MobilePhoneDetail phone = (MobilePhoneDetail)structuredSelection.getFirstElement();
-            System.out.println(selection);
-            System.out.println(structuredSelection);
-            System.out.println(phone);
-            mobilePhoneId.setText(phone.getMobilePhoneName());
-            mobilePhoneNumber.setText(phone.getMobilePhoneNumber());
+            if (structuredSelection instanceof MobilePhoneDetail) 
+            {
+				MobilePhoneDetail phone = (MobilePhoneDetail) structuredSelection.getFirstElement();
+	            System.out.println(selection);
+	            System.out.println(structuredSelection);
+	            System.out.println(phone);
+	            mobilePhoneId.setText(phone.getMobilePhoneName());
+	            mobilePhoneNumber.setText(phone.getMobilePhoneNumber());
+            }
         } 
         else 
         {
