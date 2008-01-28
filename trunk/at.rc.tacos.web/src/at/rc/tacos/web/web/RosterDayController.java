@@ -1,6 +1,7 @@
 package at.rc.tacos.web.web;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,6 @@ public class RosterDayController  implements Controller
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
-		List<AbstractMessage> resultList;
 			
 		//date to show
 		Calendar current = Calendar.getInstance();
@@ -37,18 +37,16 @@ public class RosterDayController  implements Controller
 			startDate = formath.format(current.getTime());
 		
 			//get roster entries
-			QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,startDate);
-			resultList = client.sendListingRequest(RosterEntry.ID, filter);
-			if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
-				params.put("rosterList", resultList); 
-			
+			QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,startDate);			
 			List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
-//			for(AbstractMessage object:dayResult)   
-//            {  
-//                RosterEntry entry = (RosterEntry)object;  
-//                if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
-//                resultList.add(entry);  
-//            }
+			List<RosterEntry> filterdByLocation = new ArrayList<RosterEntry>();
+			for(AbstractMessage object:dayResult)   
+            {  
+                RosterEntry entry = (RosterEntry)object;  
+                if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
+                	filterdByLocation.add(entry); 
+            }
+			params.put("rosterList", filterdByLocation);
 		return params;
 	}
 }

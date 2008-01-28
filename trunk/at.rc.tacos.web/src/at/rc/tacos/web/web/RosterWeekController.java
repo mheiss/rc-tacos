@@ -26,11 +26,9 @@ public class RosterWeekController  implements Controller
 		Map<String, Object> params = new HashMap<String, Object>();
 		//the action to do
 		String action = request.getParameter("action");
-
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
-
-
+		
 		if("weekView".equalsIgnoreCase(action)) 
         { 
             //the result listing, that should contain the week result 
@@ -39,6 +37,7 @@ public class RosterWeekController  implements Controller
             Calendar cal = Calendar.getInstance(); 
             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy"); 
             //get roster entries 
+            List<RosterEntry> filterdByLocation = new ArrayList<RosterEntry>();
             for(int i=1; i<=7; i++) 
             { 
                 //set up the filter with the date               
@@ -49,17 +48,18 @@ public class RosterWeekController  implements Controller
                 if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))   
                     resultList.addAll(dayResult); 
                 //increment the day by one 
-                cal.add(Calendar.DAY_OF_MONTH, 1); 
-
-                
-                
+                cal.add(Calendar.DAY_OF_MONTH, 1);  
+    			
+    			for(AbstractMessage object:dayResult)   
+                {  
+                    RosterEntry entry = (RosterEntry)object;  
+                    if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
+                    	filterdByLocation.add(entry); 
+                }
             } 
             //add the resulting list to the params 
-            params.put("rosterList", resultList);   
+            params.put("rosterList", filterdByLocation);  
         }
-
 		return params;
-
-
 	}
 }
