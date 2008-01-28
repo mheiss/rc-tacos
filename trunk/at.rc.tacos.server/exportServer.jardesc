@@ -4,13 +4,13 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/at.rc.tacos.server/exportServer.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="true" mainClassHandleIdentifier="=at.rc.tacos.server/src&lt;at.rc.tacos.server.run{TacosServer.java[TacosServer" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="false" mainClassHandleIdentifier="=at.rc.tacos.server/src&lt;at.rc.tacos.server.run{TacosServer.java[TacosServer" manifestLocation="/at.rc.tacos.server/manifest.mf" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
-    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+    <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
         <javaElement handleIdentifier="=at.rc.tacos.core.db/src"/>
         <javaElement handleIdentifier="=at.rc.tacos.model/src"/>
         <folder path="/at.rc.tacos.core.db/lib"/>
