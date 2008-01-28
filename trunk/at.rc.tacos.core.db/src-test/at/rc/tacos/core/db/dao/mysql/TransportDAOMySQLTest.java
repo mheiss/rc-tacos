@@ -18,8 +18,10 @@ import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.VehicleDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
+import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -42,7 +44,8 @@ public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus
     VehicleDetail veh2 = new VehicleDetail("veh2","vehicleType2",location2);
 	
 	GregorianCalendar gcal = new GregorianCalendar();
-	long cal = gcal.getTimeInMillis();
+	long cal = (gcal.getTimeInMillis()-10);
+	
 	Transport  transport1 = new Transport("vonStraﬂe1","vonStadt1",location1,cal,cal,"A",2);
 	Transport  transport2 = new Transport("vonStraﬂe2","vonStadt2",location1,cal,cal,"B",2);
 	
@@ -92,25 +95,85 @@ public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus
 	 
 	 
 	 @Test
-	 public void testUpdateTranpsort()
+	 public void testUpdateTranpsport()
 	 {
 		 {
-			 Transport transport = transportDAO.g
-	        	VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
-	        	vehicle.setVehicleType("newType");
-	        	vehicle.setOutOfOrder(true);
-	        	vehicle.setReadyForAction(true);
-	        	vehicle.setVehicleNotes("newNotes");
-	        	vehicleDAO.updateVehicle(vehicle);
-	        }
-	        {
-	        	VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
-	        	assertEquals("vehicle1",vehicle.getVehicleName());
-	        	assertEquals("newType",vehicle.getVehicleType());
-	        	assertEquals("newNotes",vehicle.getVehicleType());
-	        	assertTrue(vehicle.isOutOfOrder());
-	        	assertTrue(vehicle.isReadyForAction());
-	        }
+			 Transport transport = transportDAO.getTransportById(transport1.getTransportId());
+			 long cal2 = gcal.getTimeInMillis();
+			 transport.setCreationTime(cal2);
+			 transport.setAppointmentTimeAtDestination(cal2);
+			 transport.setAssistantPerson(true);
+			 transport.setBackTransport(true);
+			 transport.setBlueLightToGoal(true);
+			 transport.setBrkdtAlarming(true);
+			 
+			 CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
+			 transport.setCallerDetail(caller1Detail);
+			 transport.setCreatedByUsername("crUser");
+			 transport.setCreationTime(cal2);
+			 transport.setDateOfTransport(cal2);
+			 transport.setDfAlarming(true);
+			 transport.setDirection(2);
+			 transport.setEmergencyDoctorAlarming(true);
+			 transport.setEmergencyPhone(true);
+			 transport.setFeedback("feedbackNew");
+			 transport.setFirebrigadeAlarming(true);
+			 transport.setFromCity("fromCity1");
+			 transport.setFromStreet("fromStreet1");
+			 transport.setHelicopterAlarming(true);
+			 transport.setKindOfIllness("Schlaganfall");
+			 transport.setKindOfTransport("mobil");
+			 transport.setLongDistanceTrip(true);
+			 transport.setMountainRescueServiceAlarming(true);
+			 transport.setNotes("thenotes");
+			 
+			 Patient patient1 = new Patient("Muster","Max");
+			 transport.setPatient(patient1);
+			 
+			 Location planedLocation = new Location("Bruck",phone1,"street1","241",8601,"BruckCity1", "theNotes1");
+			 transport.setPlanedLocation(planedLocation);
+			 Location realLocation = new Location("Bruck2",phone2,"street2","242",8602,"BruckCity2", "theNotes2");
+			 
+			 transport.setPlannedStartOfTransport(cal2);
+			 transport.setPlannedTimeAtPatient(cal2);
+			 transport.setPoliceAlarming(true);
+			 transport.setProgramStatus(1);
+			 transport.setRealLocation(realLocation);
+			 transport.setToCity("toCity");
+			 transport.setToStreet("toStreet");
+			 //set transport number not possible
+			 transport.setTransportPriority("C");
+			 
+			 transport.setVehicleDetail(veh1);
+			 //set transport year not possible
+	        
+			 transportDAO.updateTransport(transport);
+	       
+	      }
+	      {
+	    	  Transport transport = transportDAO.getTransportById(transport1.getTransportId());
+	    	  
+	    	 
+	        assertNotSame(cal,transport.getAppointmentTimeAtDestination());
+	        assertEquals("anrufer1",transport.getCallerDetail().getCallerName());
+	        assertEquals("crUser",transport.getCreatedByUsername());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	   
+	      }
 	 }
 	 
 
