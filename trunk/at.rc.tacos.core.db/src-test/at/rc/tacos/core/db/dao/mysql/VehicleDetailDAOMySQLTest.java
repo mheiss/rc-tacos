@@ -150,7 +150,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
         	VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
         	assertEquals("vehicle1",vehicle.getVehicleName());
         	assertEquals("newType",vehicle.getVehicleType());
-        	assertEquals("newNotes",vehicle.getVehicleType());
+        	assertEquals("newNotes",vehicle.getVehicleNotes());
         	assertTrue(vehicle.isOutOfOrder());
         	assertTrue(vehicle.isReadyForAction());
         }
@@ -168,7 +168,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
     		Assert.assertEquals(member1, vehicle.getDriver());
     		Assert.assertEquals("fname1", vehicle.getDriver().getFirstName());
-    		Assert.assertEquals("lname2", vehicle.getDriver().getLastName());
+    		Assert.assertEquals("lname1", vehicle.getDriver().getLastName());
     		Assert.assertEquals("user1",vehicle.getDriver().getUserName());
     	}
     }
@@ -185,7 +185,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
     		Assert.assertEquals(member1, vehicle.getFirstParamedic());
     		Assert.assertEquals("fname1", vehicle.getFirstParamedic().getFirstName());
-    		Assert.assertEquals("lname2", vehicle.getFirstParamedic().getLastName());
+    		Assert.assertEquals("lname1", vehicle.getFirstParamedic().getLastName());
     		Assert.assertEquals("user1",vehicle.getFirstParamedic().getUserName());
     	}    	
     }
@@ -202,7 +202,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
     		Assert.assertEquals(member1, vehicle.getSecondParamedic());
     		Assert.assertEquals("fname1", vehicle.getSecondParamedic().getFirstName());
-    		Assert.assertEquals("lname2", vehicle.getSecondParamedic().getLastName());
+    		Assert.assertEquals("lname1", vehicle.getSecondParamedic().getLastName());
     		Assert.assertEquals("user1",vehicle.getSecondParamedic().getUserName());
     	}
     }
