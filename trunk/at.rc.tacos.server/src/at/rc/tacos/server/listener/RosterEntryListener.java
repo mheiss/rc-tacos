@@ -15,7 +15,7 @@ import at.rc.tacos.util.MyUtils;
  */
 public class RosterEntryListener extends ServerListenerAdapter
 {
-	private RosterDAO rosterDao = DaoFactory.TEST.createRosterEntryDAO();
+	private RosterDAO rosterDao = DaoFactory.MYSQL.createRosterEntryDAO();
 
 	/**
 	 * Add a roster entry
