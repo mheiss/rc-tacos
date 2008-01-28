@@ -115,7 +115,7 @@
 													if(member.equals(userSession.getStaffMember())) { %>
 														<option selected="selected" value="<%=userSession.getStaffMember().getStaffMemberId()%>"><%=userSession.getStaffMember().getFirstName() + " " + userSession.getStaffMember().getLastName()%></option>
 													<% } else { %>
-														<option value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName()%></option>
+														<option value="<%=member.getStaffMemberId()%>"><%=member.getFirstName() + " " + member.getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 													<% } } %>
 												</select>
 											</td>
@@ -136,7 +136,7 @@
 											<td id="rosterViewDayHeadline">T&auml;tigkeit:&nbsp;</td>
 											<td><select name="job" id="rosterViewDayHeadSelbox">
 											<% for (Job job :  listJob) { %>
-												<option value="<%=job.getId()%>"><%=job.getJobName()%></option>
+												<option value="<%=job.getId()%>"><%=job.getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 											<% } %>
 											</select></td>
 										</tr>
@@ -144,7 +144,7 @@
 											<td id="rosterViewDayHeadline">Dienstverh&auml;ltniss:&nbsp;</td>
 											<td><select name="service" id="rosterViewDayHeadSelbox">
 											<% for (ServiceType service :  listServiceType) { %>
-												<option value="<%=service.getId()%>"><%=service.getServiceName()%></option>
+												<option value="<%=service.getId()%>"><%=service.getServiceName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 											<% } %>
 											</select></td>
 										</tr>
