@@ -119,6 +119,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 
 			if(rs.first())
 			{
+				System.out.println("getStaffMemberByID");
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
 				Location station = new Location();
@@ -136,7 +137,13 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setUserName(rs.getString("u.username"));
 
 				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
+				for(Competence comp:staff.getCompetenceList())
+					System.out.println(comp);
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
+				for(MobilePhoneDetail detail:staff.getPhonelist())
+					System.out.println(detail);
+				System.out.println(staff);
+				return staff;
 			}
 		}
 		catch (SQLException e)
@@ -144,7 +151,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			e.printStackTrace();
 			return null;
 		}
-		return staff;
+		return null;
 	}
 
 	public StaffMember getStaffMemberByUsername(String username)
@@ -160,6 +167,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 
 			if(rs.first())
 			{
+				System.out.println("getStaffMemberByUsername");
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
 				Location station = new Location();
@@ -178,6 +186,8 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 
 				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
+				System.out.println(staff);
+				return staff;
 			}
 		}
 		catch (SQLException e)
@@ -185,6 +195,102 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			e.printStackTrace();
 			return null;
 		}
-		return staff;
+		return null;
+	}
+
+	@Override
+	public boolean updateStaffMember(StaffMember staffmember)
+	{
+		try
+		{
+			// primaryLocation = ?, firstname = ?, lastname = ?, sex = ?, birthday = ?, email = ?, street = ?, city = ?, username = ? where staffmember_ID = ?;
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.staffmember"));
+			query1.setInt(1, staffmember.getPrimaryLocation().getId());
+			query1.setString(2, staffmember.getFirstName());
+			query1.setString(3, staffmember.getLastName());
+			query1.setBoolean(4, staffmember.isMale());
+			query1.setString(5, MyUtils.timestampToString(staffmember.getBirthday(), MyUtils.sqlDate));
+			query1.setString(6, staffmember.getEMail());
+			query1.setString(7, staffmember.getStreetname());
+			query1.setString(8, staffmember.getCityname());
+			query1.setInt(9, staffmember.getStaffMemberId());
+			query1.executeUpdate();
+			
+			//resets all competenses to new value
+			boolean result1 = updateCompetenceList(staffmember);
+			if(result1 == false)
+				return false;
+			
+			//update phonenumber
+			for(MobilePhoneDetail detail:staffmember.getPhonelist())
+				mobilePhoneDAO.updateMobilePhone(detail);
+			
+			//update connection phonenumber - staffmember
+			boolean result2 = updateMobilePhoneList(staffmember);
+			if(result2 == false)
+				return false;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean updateCompetenceList(StaffMember staff)
+	{
+		try
+		{
+			//delete all competences of staffmember
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.competencesOfStaffMember"));
+			query.setInt(1, staff.getStaffMemberId());
+			query.executeUpdate();
+
+			//inserts all new competences of staffmember
+			//staffmember_ID, competence_ID
+			for(Competence comp:staff.getCompetenceList())
+			{
+				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.competenceToStaffMember"));
+				query1.setInt(1, staff.getStaffMemberId());
+				query1.setInt(2, comp.getId());
+				query1.executeUpdate();
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+
+	}
+
+	@Override
+	public boolean updateMobilePhoneList(StaffMember staff)
+	{
+		try
+		{
+			//delete all phonenumbers of staffmember
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.phonesOfStaffMember"));
+			query.setInt(1, staff.getStaffMemberId());
+			query.executeUpdate();
+			
+			for(MobilePhoneDetail detail:staff.getPhonelist())
+			{
+				//staffmember_ID, phonenumber_ID
+				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.Phonestaffmember"));
+				query1.setInt(1, staff.getStaffMemberId());
+				query1.setInt(2, detail.getId());
+				query1.executeUpdate();
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

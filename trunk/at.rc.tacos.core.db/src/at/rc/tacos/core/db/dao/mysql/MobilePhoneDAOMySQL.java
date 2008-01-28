@@ -57,9 +57,9 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 
 			if(rs.first())
 			{
-			phone.setId(rs.getInt("phonenumber_ID"));
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
+				phone.setId(rs.getInt("phonenumber_ID"));
+				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+				phone.setMobilePhoneName(rs.getString("phonename"));
 			}
 			else return null;
 		}
@@ -100,32 +100,43 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 	@Override
 	public boolean removeMobilePhone(int id)
 	{
-    	try
-    	{
-    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.phone"));
-    		query.setInt(1, id);
-    		query.executeUpdate();
-    	}
-    	catch (SQLException e)
-    	{
-    		e.printStackTrace();
-    		return false;
-    	}
-    	return true;
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.phone"));
+			query.setInt(1, id);
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean updateMobilePhone(MobilePhoneDetail phone)
 	{
-    	try
+		try
 		{
-    	// phonenumber, phonename, phonenumber_ID
-    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.Phonenumber"));
-		query.setString(1, phone.getMobilePhoneNumber());
-		query.setString(2, phone.getMobilePhoneName());
-		query.setInt(3, phone.getId());
-		
-		query.executeUpdate();
+			//check if phone exists
+			//phonenumber_ID =? AND phonenumber = ? AND phonename = ?
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("check.ifPhoneExists"));
+			query1.setInt(1, phone.getId());
+			query1.setString(2, phone.getMobilePhoneNumber());
+			query1.setString(3, phone.getMobilePhoneName());
+			final ResultSet rs = query1.executeQuery();
+
+			if(!rs.first())
+			{
+				// phonenumber, phonename, phonenumber_ID
+				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.Phonenumber"));
+				query.setString(1, phone.getMobilePhoneNumber());
+				query.setString(2, phone.getMobilePhoneName());
+				query.setInt(3, phone.getId());
+
+				query.executeUpdate();
+			}
 		}
 		catch (SQLException e)
 		{
@@ -161,7 +172,7 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 		}
 		return phones;
 	}
-	
-	
+
+
 
 }

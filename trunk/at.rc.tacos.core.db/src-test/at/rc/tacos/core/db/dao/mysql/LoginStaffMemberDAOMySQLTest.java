@@ -119,6 +119,34 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @Test
+    public void testStaffMemberUpdate()
+    {
+    	{
+    		StaffMember staffMember = staffMemberDAO.getStaffMemberByUsername("user1");
+    		staffMember.setFirstName("newFName");
+    		staffMember.setLastName("newLName");
+    		staffMember.setStreetname("newStreetName");
+    		staffMember.setCityname("newCityName");
+    		staffMember.setEMail("newEMail");
+    		staffMember.setPrimaryLocation(location2);
+    		staffMember.setMale(true);
+    		staffMember.setBirthday(MyUtils.stringToTimestamp("27-01-2008", MyUtils.dateFormat));
+    		staffMemberDAO.updateStaffMember(staffMember);
+    	}
+    	{
+    		StaffMember staffMember = staffMemberDAO.getStaffMemberByUsername("user1");
+    		Assert.assertEquals("user1", staffMember.getUserName());
+            Assert.assertEquals("newFName", staffMember.getFirstName());
+            Assert.assertEquals("newLName", staffMember.getLastName());
+            Assert.assertEquals("newStreetName", staffMember.getStreetname());
+            Assert.assertEquals("newCityName", staffMember.getCityname());
+            Assert.assertEquals(true, staffMember.isMale());
+            Assert.assertEquals("newEMail",staffMember.getEMail());
+            Assert.assertEquals(location2, staffMember.getPrimaryLocation());
+    	}
+    }
+    
+    @Test
     public void testUpdateLogin()
     {
         {
@@ -126,6 +154,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
             login.setAuthorization("newAdministrator");
             login.setIslocked(true);
             login.setUserInformation(member2);
+            login.getUserInformation().setStaffMemberId(member1.getStaffMemberId());
             loginDAO.updateLogin(login);
         }
         {
@@ -138,7 +167,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
             Assert.assertEquals("user1", login.getUserInformation().getUserName());
             Assert.assertEquals("street2", login.getUserInformation().getStreetname());
             Assert.assertEquals("city2", login.getUserInformation().getCityname());
-            Assert.assertEquals(false, login.getUserInformation().isMale());
+            Assert.assertEquals(true, login.getUserInformation().isMale());
             Assert.assertEquals("mail2",login.getUserInformation().getEMail());
             Assert.assertEquals(location2, login.getUserInformation().getPrimaryLocation());
             Assert.assertEquals(1, login.getUserInformation().getPhonelist().size());
@@ -151,6 +180,22 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     public void testRemoveLogin()
     {
         //TODO: Implement the test to chek whether the login is locked
+    }
+    
+    @Test
+    public void testCompetenceList()
+    {
+    	List<Competence> compList = competenceDAO.listCompetencesOfStaffMember(member1.getStaffMemberId());
+    	Assert.assertEquals(1, compList.size());
+    	Assert.assertEquals("comp1", compList.get(0).getCompetenceName());
+    }
+    
+    @Test
+    public void testMobilePhoneList()
+    {
+    	List<MobilePhoneDetail> phoneList = mobilePhoneDAO.listMobilePhonesOfStaffMember(member1.getStaffMemberId());
+    	Assert.assertEquals(1, phoneList.size());
+    	Assert.assertEquals("phone1", phoneList.get(0).getMobilePhoneName());
     }
     
     @Test
@@ -179,9 +224,9 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         Assert.assertEquals("city1", sm.getCityname());
         Assert.assertEquals(false, sm.isMale());
         Assert.assertEquals(MyUtils.stringToTimestamp("27-01-2008", MyUtils.dateFormat), sm.getBirthday());
-        Assert.assertEquals(1, sm.getPhonelist());
+        Assert.assertEquals(1, sm.getPhonelist().size());
         Assert.assertEquals(phone1, sm.getPhonelist().get(0));
-        Assert.assertEquals(1, sm.getCompetenceList());
+        Assert.assertEquals(1, sm.getCompetenceList().size());
         Assert.assertEquals(comp1, sm.getCompetenceList().get(0));
         Assert.assertEquals("mail1", sm.getEMail());
         Assert.assertEquals(location1, sm.getPrimaryLocation());
@@ -199,9 +244,9 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         Assert.assertEquals("city1", sm.getCityname());
         Assert.assertEquals(false, sm.isMale());
         Assert.assertEquals(MyUtils.stringToTimestamp("27-01-2008", MyUtils.dateFormat), sm.getBirthday());
-        Assert.assertEquals(1, sm.getPhonelist());
+        Assert.assertEquals(1, sm.getPhonelist().size());
         Assert.assertEquals(phone1, sm.getPhonelist().get(0));
-        Assert.assertEquals(1, sm.getCompetenceList());
+        Assert.assertEquals(1, sm.getCompetenceList().size());
         Assert.assertEquals(comp1, sm.getCompetenceList().get(0));
         Assert.assertEquals("mail1", sm.getEMail());
         Assert.assertEquals(location1, sm.getPrimaryLocation());
