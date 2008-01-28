@@ -93,15 +93,13 @@
                                                     } 
                                                 %> 
                                             </table> 
-
                                         </tr> 
                                     </table>
-                                    
 									</td>
 								</tr>
 							</table>
 							<br />
-                    <img src='../image/loeschen.gif' name='info' alt='L&ouml;schen'  />&nbsp;Benutzer&nbsp;l&ouml;schen
+                    <img src='../image/b_edit.png' name='info' alt='Editieren'  />&nbsp;Benutzer&nbsp;editieren
 							</td>
 						</tr>
 					</table>
