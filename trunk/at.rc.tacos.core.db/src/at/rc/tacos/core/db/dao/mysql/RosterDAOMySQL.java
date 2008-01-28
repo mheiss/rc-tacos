@@ -28,10 +28,22 @@ public class RosterDAOMySQL implements RosterDAO
 			query.setInt(2, entry.getStaffMember().getStaffMemberId());
 			query.setInt(3, entry.getServicetype().getId());
 			query.setInt(4, entry.getJob().getId());
-			query.setString(5, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.sqlDateTime));
-			query.setString(6, MyUtils.timestampToString(entry.getPlannedEndOfWork(), MyUtils.sqlDateTime));
-			query.setString(7, MyUtils.timestampToString(entry.getRealStartOfWork(), MyUtils.sqlDateTime));
-			query.setString(8, MyUtils.timestampToString(entry.getRealEndOfWork(), MyUtils.sqlDateTime));
+			if(entry.getPlannedStartOfWork() == 0)
+				query.setString(5, null);
+			else
+				query.setString(5, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.sqlDateTime));
+			if(entry.getPlannedEndOfWork() == 0)
+				query.setString(6, null);
+			else
+				query.setString(6, MyUtils.timestampToString(entry.getPlannedEndOfWork(), MyUtils.sqlDateTime));
+			if(entry.getRealStartOfWork() == 0)
+				query.setString(7, null);
+			else
+				query.setString(7, MyUtils.timestampToString(entry.getRealStartOfWork(), MyUtils.sqlDateTime));
+			if(entry.getRealEndOfWork() == 0)
+				query.setString(8, null);
+			else
+				query.setString(8, MyUtils.timestampToString(entry.getRealEndOfWork(), MyUtils.sqlDateTime));
 			query.setString(9, entry.getRosterNotes());
 			query.setBoolean(10, entry.getStandby());
 			query.setString(11, entry.getCreatedByUsername());
@@ -64,10 +76,22 @@ public class RosterDAOMySQL implements RosterDAO
 			query.setInt(2, entry.getStaffMember().getStaffMemberId());
 			query.setInt(3, entry.getServicetype().getId());
 			query.setInt(4, entry.getJob().getId());
-			query.setString(5, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.sqlDateTime));
-			query.setString(6, MyUtils.timestampToString(entry.getPlannedEndOfWork(), MyUtils.sqlDateTime));
-			query.setString(7, MyUtils.timestampToString(entry.getRealStartOfWork(), MyUtils.sqlDateTime));
-			query.setString(8, MyUtils.timestampToString(entry.getRealEndOfWork(), MyUtils.sqlDateTime));
+			if(entry.getPlannedStartOfWork() == 0)
+				query.setString(5, null);
+			else
+				query.setString(5, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.sqlDateTime));
+			if(entry.getPlannedEndOfWork() == 0)
+				query.setString(6, null);
+			else
+				query.setString(6, MyUtils.timestampToString(entry.getPlannedEndOfWork(), MyUtils.sqlDateTime));
+			if(entry.getRealStartOfWork() == 0)
+				query.setString(7, null);
+			else
+				query.setString(7, MyUtils.timestampToString(entry.getRealStartOfWork(), MyUtils.sqlDateTime));
+			if(entry.getRealEndOfWork() == 0)
+				query.setString(8, null);
+			else
+				query.setString(8, MyUtils.timestampToString(entry.getRealEndOfWork(), MyUtils.sqlDateTime));
 			query.setString(9, entry.getRosterNotes());
 			query.setBoolean(10, entry.getStandby());
 			query.setString(11, entry.getCreatedByUsername());
@@ -90,7 +114,6 @@ public class RosterDAOMySQL implements RosterDAO
 		{
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.RosterEntry"));
 			query.setInt(1, id);
-
 			query.executeUpdate();
 		}
 		catch (SQLException e)
