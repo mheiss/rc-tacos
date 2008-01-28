@@ -13,8 +13,6 @@ public class AddUserController implements Controller
 	{
 		//values that will be returned to the view
 		Map<String, Object> params = new HashMap<String, Object>();
-		//the action to do
-
 
 		return params;
 	}

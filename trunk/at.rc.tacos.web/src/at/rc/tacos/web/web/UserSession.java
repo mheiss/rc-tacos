@@ -38,7 +38,7 @@ public class UserSession
 		staffList = new ArrayList<StaffMember>();
 		serviceTypeList = new ArrayList<ServiceType>();
 	}
-	
+
 	//HELPER METHODS
 	public Job getJobById(int id)
 	{
@@ -50,7 +50,7 @@ public class UserSession
 		//nothing found
 		return null;
 	}
-	
+
 	public Location getLocationById(int id)
 	{
 		for(Location loc:locationList)
@@ -61,7 +61,7 @@ public class UserSession
 		//nothing found
 		return null;
 	}
-	
+
 	public Competence getCompetenceById(int id)
 	{
 		for(Competence comp:competenceList)
@@ -72,7 +72,7 @@ public class UserSession
 		//nothing found
 		return null;
 	}
-	
+
 	public ServiceType getServiceTypeById(int id)
 	{
 		for(ServiceType st:serviceTypeList)
@@ -83,7 +83,7 @@ public class UserSession
 		//nothing found
 		return null;
 	}
-	
+
 	public StaffMember getStaffMemberById(int id)
 	{
 		for(StaffMember sm:staffList)
@@ -162,14 +162,14 @@ public class UserSession
 	public List<Location> getLocationList() {
 		return locationList;
 	}
-	
+
 	/**
 	 * @return the staffList
 	 */
 	public List<StaffMember> getStaffList() {
 		return staffList;
 	}
-	
+
 	/**
 	 * @return the staffMember
 	 */
@@ -209,7 +209,7 @@ public class UserSession
 	{
 		locationList.add(location);
 	}
-	
+
 	/**
 	 * @param staffList the staffList to set
 	 */
@@ -217,7 +217,7 @@ public class UserSession
 	{
 		staffList.add(staffMember);
 	}
-	
+
 	/**
 	 * @param staffMember the staffMember to set
 	 */

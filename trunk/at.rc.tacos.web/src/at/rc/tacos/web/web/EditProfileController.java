@@ -12,6 +12,7 @@ public class EditProfileController implements Controller {
 	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context)
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
+
 		return params;
 	}
 }

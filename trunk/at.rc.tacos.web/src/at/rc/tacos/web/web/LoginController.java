@@ -36,14 +36,13 @@ public class LoginController implements Controller
 		{
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
-			
+
 			if(username.trim().isEmpty() || password.trim().isEmpty())
 			{ 
 				params.put("loginError", "Bitte geben Sie ihren Usernamen und Passwort ein!");
 				return params;
 			} 
-			
-			
+
 			//the result
 			WebClient client = new WebClient();
 			//open a connection to the server
@@ -60,7 +59,7 @@ public class LoginController implements Controller
 					UserSession userSession = (UserSession)session.getAttribute("userSession"); 
 					userSession.setLoggedIn(true, username, client); 
 					userSession.setStaffMember(loginResult.getUserInformation()); 
-				
+
 					//request the frequently used object from the server
 					List<AbstractMessage> stationList = client.sendListingRequest(Location.ID, null);
 					if(Location.ID.equalsIgnoreCase(client.getContentType())) 
@@ -68,14 +67,14 @@ public class LoginController implements Controller
 						for(AbstractMessage abstractLoaction:stationList)
 							userSession.addLocation((Location)abstractLoaction);
 					}
-					
+
 					List<AbstractMessage> jobList = client.sendListingRequest(Job.ID, null);
 					if(Job.ID.equalsIgnoreCase(client.getContentType())) 
 					{
 						for(AbstractMessage abstractJob:jobList)
 							userSession.addJob((Job)abstractJob);
 					}
-					
+
 					List<AbstractMessage> compList = client.sendListingRequest(Competence.ID, null);
 					if(Competence.ID.equalsIgnoreCase(client.getContentType()))    
 					{
@@ -89,14 +88,14 @@ public class LoginController implements Controller
 						for(AbstractMessage abstractServiceType:serviceList)
 							userSession.addServiceType((ServiceType)abstractServiceType);
 					}
-					
+
 					List<AbstractMessage> staffList = client.sendListingRequest(StaffMember.ID, null);
 					if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))  
 					{
 						for(AbstractMessage abstractStaffMember:staffList)
 							userSession.addStaffMember((StaffMember)abstractStaffMember);
 					}
-				
+
 					//redirect to the roster day view
 					response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay"));   
 				}

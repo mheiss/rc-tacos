@@ -27,7 +27,7 @@ public class RosterDayController  implements Controller
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
-			
+
 		//date to show
 		Calendar current = Calendar.getInstance();
 		SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
@@ -35,18 +35,18 @@ public class RosterDayController  implements Controller
 		//if we have no date, use the current date
 		if (startDate == null || startDate.trim().isEmpty())
 			startDate = formath.format(current.getTime());
-		
-			//get roster entries
-			QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,startDate);			
-			List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
-			List<RosterEntry> filterdByLocation = new ArrayList<RosterEntry>();
-			for(AbstractMessage object:dayResult)   
-            {  
-                RosterEntry entry = (RosterEntry)object;  
-                if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
-                	filterdByLocation.add(entry); 
-            }
-			params.put("rosterList", filterdByLocation);
+
+		//get roster entries
+		QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,startDate);			
+		List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
+		List<RosterEntry> filterdByLocation = new ArrayList<RosterEntry>();
+		for(AbstractMessage object:dayResult)   
+		{  
+			RosterEntry entry = (RosterEntry)object;  
+			if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
+				filterdByLocation.add(entry); 
+		}
+		params.put("rosterList", filterdByLocation);
 		return params;
 	}
 }

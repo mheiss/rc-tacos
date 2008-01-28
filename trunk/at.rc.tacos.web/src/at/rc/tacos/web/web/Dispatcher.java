@@ -11,11 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import at.rc.tacos.web.utils.ControllerFactory;
 
-/**
- * This class gets all the browser requests and maps them to request handlers.
- * @author Nechan
- * @version 1.0 
- */
 public class Dispatcher extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
@@ -67,7 +62,7 @@ public class Dispatcher extends HttpServlet
 		// If no controller is found redirect to notFound.do.
 		else if (controller == null){
 			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" + urls.getString("url.notFound"));
-		// If user isn't logged in redirect to login.do.
+			// If user isn't logged in redirect to login.do.
 		}else if (!userSession.getLoggedIn()
 				&& !relativePath.equals(urls.getString("url.login"))
 				&& !relativePath.equals(urls.getString("url.error"))

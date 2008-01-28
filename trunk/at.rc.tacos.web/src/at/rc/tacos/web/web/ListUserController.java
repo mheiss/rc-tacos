@@ -27,7 +27,6 @@ public class ListUserController implements Controller
 		if(StaffMember.ID.equalsIgnoreCase(client.getContentType()))          
 			params.put("employeeList", resultList); 
 
-
 		return params;
 	}
 }
