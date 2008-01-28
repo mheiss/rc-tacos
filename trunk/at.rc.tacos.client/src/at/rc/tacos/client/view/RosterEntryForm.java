@@ -29,6 +29,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import at.rc.tacos.client.controller.PersonalCreateEntryAction;
 import at.rc.tacos.client.controller.PersonalUpdateEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.JobContentProvider;
 import at.rc.tacos.client.providers.JobLabelProvider;
 import at.rc.tacos.client.providers.ServiceTypeContentProvider;
@@ -241,6 +242,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			
 			rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
 			rosterEntry.setStandby(bereitschaftButton.getSelection());
+			rosterEntry.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
 
 			//create a new entry
 			if(createNew)
