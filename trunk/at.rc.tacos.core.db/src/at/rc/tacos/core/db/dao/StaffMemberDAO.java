@@ -1,6 +1,7 @@
 package at.rc.tacos.core.db.dao;
 
 import java.util.List;
+
 import at.rc.tacos.model.StaffMember;
 
 public interface StaffMemberDAO 
@@ -12,4 +13,7 @@ public interface StaffMemberDAO
 	public List<StaffMember> getStaffMembersFromLocation(int locationId);
 	public StaffMember getStaffMemberByID(int id);
 	public StaffMember getStaffMemberByUsername(String username);
+	public boolean updateStaffMember(StaffMember staffmember);
+	public boolean updateMobilePhoneList(StaffMember staff);
+	public boolean updateCompetenceList(StaffMember staff);
 }
