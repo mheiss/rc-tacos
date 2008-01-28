@@ -212,22 +212,27 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			//driver_ID = ?, medic1_ID = ?, medic2_ID = ?, phonenumber_ID = ?, vehicletype = '?', currentLocation = ?,
 			//primaryLocation = ?, note = '?', readyForAction = ?, outOfOrder = ? where vehicle_ID = '?';
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.vehicle"));
+			//assert we have a driver
 			if(vehicle.getDriver() == null)
 				query.setString(1,null);
 			else
 				query.setInt(1, vehicle.getDriver().getStaffMemberId());
+			//assert we have a medic
 			if(vehicle.getFirstParamedic() == null)
 				query.setString(2, null);
 			else
 				query.setInt(2, vehicle.getFirstParamedic().getStaffMemberId());
+			//assert we have a secondary medic
 			if(vehicle.getSecondParamedic() == null)
 				query.setString(3, null);
 			else
 				query.setInt(3, vehicle.getSecondParamedic().getStaffMemberId());
+			//assert we have a phone
 			if(vehicle.getMobilePhone() == null)
 				query.setString(4, null);
 			else
 				query.setInt(4, vehicle.getMobilePhone().getId());
+			//update the other properties
 			query.setString(5, vehicle.getVehicleType());
 			query.setInt(6, vehicle.getCurrentStation().getId());
 			query.setInt(7, vehicle.getBasicStation().getId());
