@@ -87,7 +87,7 @@
                                                 %> 
                                                     <tr> 
                                                         <td id="BlockContent" width="40%" ><%=member.getFirstName() + " " + member.getLastName()%></td> 
-                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteUser.do?id="+ member.getStaffMemberId()%>" onclick="return confirm('M&ouml;chten Sie diesen User wirklich l&ouml;schen?')" ><img src="../image/b_drop.png" class="hidefocus" /></a></td>
+                                                        <td id="BlockContent"><a href="<%=request.getContextPath()+"/Dispatcher/deleteUser.do?id="+ member.getStaffMemberId()%>" onclick="return confirm('M&ouml;chten Sie diesen User wirklich sperren?')" ><img src="../image/b_drop.png" class="hidefocus" /></a></td>
                                                     </tr> 
                                                     <% 
                                                     } 
