@@ -94,24 +94,6 @@ public class UserDAOMemory implements UserLoginDAO
 	}
 
 	@Override
-	public boolean removeLogin(int id) 
-	{
-		//the login
-		Login login = userList.get(id);
-		//assert valid
-		if(login == null)
-			return false;
-		
-		//remove the staff member
-		StaffMemberDAOMemory.getInstance().removeStaffMember(login.getUserInformation().getStaffMemberId());
-		//remove the login
-		if(userList.remove(id) != null)
-			return true;
-		//nothing removed 
-		return false;
-	}
-
-	@Override
 	public boolean updateLogin(Login login) 
 	{
 		//update the staff member
@@ -121,5 +103,19 @@ public class UserDAOMemory implements UserLoginDAO
 		int index = userList.indexOf(login);
 		userList.set(index, login);
 		return true;	
+	}
+
+	@Override
+	public boolean lockLogin(String username) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean unlockLogin(String username) 
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
