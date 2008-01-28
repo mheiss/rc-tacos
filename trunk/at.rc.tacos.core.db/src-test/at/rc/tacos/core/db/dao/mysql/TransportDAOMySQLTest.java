@@ -130,7 +130,7 @@ public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus
 			 Patient patient1 = new Patient("Muster","Max");
 			 transport.setPatient(patient1);
 			 
-			 Location planedLocation = new Location("Bruck",phone1,"street1","241",8601,"BruckCity1", "theNotes1");
+			 Location planedLocation = new Location("Bruck1",phone1,"street1","241",8601,"BruckCity1", "theNotes1");
 			 transport.setPlanedLocation(planedLocation);
 			 Location realLocation = new Location("Bruck2",phone2,"street2","242",8602,"BruckCity2", "theNotes2");
 			 
@@ -157,21 +157,26 @@ public class TransportDAOMySQLTest extends DBTestBase implements IProgramStatus
 	        assertNotSame(cal,transport.getAppointmentTimeAtDestination());
 	        assertEquals("anrufer1",transport.getCallerDetail().getCallerName());
 	        assertEquals("crUser",transport.getCreatedByUsername());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
-	        assertEquals("vehicle1",transport.getAppointmentTimeAtDestination());
+	        assertNotSame(cal,transport.getCreationTime());
+//	        assertEquals(cal2,transport.getDateOfTransport());//TODO????
+	        assertEquals(2,transport.getDirection());
+	        assertEquals("feedbackNew",transport.getFeedback());
+	        assertEquals("fromCity1",transport.getFromCity());
+	        assertEquals("fromStreet1",transport.getFromStreet());
+	        assertEquals("Schlaganfall",transport.getKindOfIllness());
+	        assertEquals("mobil",transport.getKindOfTransport());
+	        assertEquals("thenotes",transport.getNotes());
+	        assertEquals("Muster",transport.getPatient().getLastname());
+	        assertEquals("Bruck1",transport.getPlanedLocation().getLocationName());
+	        assertNotSame(cal,transport.getPlannedStartOfTransport());
+	        assertNotSame(cal,transport.getPlannedTimeAtPatient());
+	        assertEquals("Bruck2",transport.getRealLocation().getLocationName());
+	        assertEquals("toCity",transport.getToCity());
+	        assertEquals("toStreet",transport.getToStreet());
+	        assertEquals("C",transport.getTransportPriority());
+	        //vehicle detail
+	        
+	        
 	   
 	      }
 	 }
