@@ -13,6 +13,7 @@ import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
 import at.rc.tacos.util.MyUtils;
+import at.rc.tacos.util.MyUtilsTest;
 
 public class TransportDAOMySQL implements TransportDAO
 {
@@ -723,5 +724,87 @@ public class TransportDAOMySQL implements TransportDAO
 	{
 		boolean result = assignTransportstate(transport);
 		return result;
+	}
+	
+
+	public Transport getTransportByID(int id)
+	{
+		Transport transport = new Transport();
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(TransportDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportByNr"));
+			query.setInt(1, id);
+			final ResultSet rs = query.executeQuery();
+
+			if(rs.first())
+			{				
+				transport.setTransportId(rs.getInt("t.transport_ID"));
+				transport.setTransportNumber(rs.getInt("t.transportNr"));
+
+				Location station = new Location();
+				station.setId(rs.getInt("t.planned_location"));
+				station.setLocationName(rs.getString("lo.locationname"));
+				transport.setPlanedLocation(station);
+
+				CallerDetail caller = new CallerDetail();
+				caller.setCallerId(rs.getInt("t.caller_ID"));
+				caller.setCallerName(rs.getString("ca.callername"));
+				caller.setCallerTelephoneNumber(rs.getString("ca.caller_phonenumber"));
+				transport.setCallerDetail(caller);
+				transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
+				transport.setNotes(rs.getString("t.note"));
+				transport.setFeedback(rs.getString("t.feedback"));
+				transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
+				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
+				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
+				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+				transport.setKindOfIllness(rs.getString("t.disease"));
+
+				Patient patient = new Patient();
+				patient.setFirstname(rs.getString("t.firstname"));
+				patient.setLastname(rs.getString("t.lastname"));
+				transport.setPatient(patient);
+
+				transport.setFromStreet(rs.getString("t.from_street"));
+				transport.setFromCity(rs.getString("t.from_city"));
+				transport.setToStreet(rs.getString("t.to_street"));
+				transport.setToCity(rs.getString("t.to_city"));
+				transport.setProgramStatus(rs.getInt("t.programstate"));
+				transport.setKindOfTransport(rs.getString("t.transporttype"));
+				transport.setTransportPriority(rs.getString("t.priority"));
+				transport.setDirection(rs.getInt("t.direction_ID"));
+				transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
+
+				VehicleDetail vehicle = new VehicleDetail();
+
+				Location currentStation = new Location();
+				currentStation = locationDAO.getLocationByName(rs.getString("av.locationname"));
+				vehicle.setCurrentStation(currentStation);
+
+				vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
+
+				StaffMember driver = new StaffMember();
+				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("v.driver_ID"));
+				vehicle.setDriver(driver);
+
+				StaffMember firstParamedic = new StaffMember();
+				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic1_ID"));
+				vehicle.setFirstParamedic(firstParamedic);
+
+				StaffMember secondParamedic = new StaffMember();
+				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic2_ID"));
+				vehicle.setSecondParamedic(secondParamedic);
+
+				vehicle.setVehicleNotes(rs.getString("av.note"));
+				vehicle.setVehicleType(rs.getString("av.vehicletype"));
+				transport.setVehicleDetail(vehicle);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return transport;
 	}
 }
