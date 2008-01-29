@@ -71,23 +71,21 @@ public class TransportDAOMySQL implements TransportDAO
 			query.setInt(22, transport.getProgramStatus());
 			query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
 			query.executeUpdate();
-			
-			
+
+
 			// t.creationDate, t.firstname, t.lastname, t.to_street, t.appointment = ?;
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportID"));
-			  
 			query1.setString(1, transport.getFromStreet());
 			query1.setString(2, transport.getFromCity());
 			//TODO nach mehreren Werten abfragen, um Eindeutigkeit zu gewährleisten
+			final ResultSet rsId = query1.executeQuery();
 
-			 final ResultSet rsId = query1.executeQuery();
-			  
-			 if(!rsId.first())
-				  return -3;
-			 int transportId = rsId.getInt(1);
-			   transport.setTransportId(transportId);
-			 //assign....
-			 return transport.getTransportId();
+			if(!rsId.first())
+				return -3;
+			int transportId = rsId.getInt(1);
+			transport.setTransportId(transportId);
+			// TODO assign transportitems & transportstate...
+			return transport.getTransportId();
 
 		}
 		catch (SQLException e)
@@ -95,7 +93,7 @@ public class TransportDAOMySQL implements TransportDAO
 			e.printStackTrace();
 			return -2;
 		}
-	
+
 	}
 
 	@Override
@@ -278,7 +276,7 @@ public class TransportDAOMySQL implements TransportDAO
 			query.setInt(22, transport.getTransportId());
 			query.executeUpdate();
 
-			assignTransportstate(transport);
+			assignTransportItems(transport);
 
 			int result = 0;
 			if(transport.getVehicleDetail().getVehicleName() != null)
@@ -661,7 +659,7 @@ public class TransportDAOMySQL implements TransportDAO
 	 * @param selectedId
 	 * @return true if insert was sucessful
 	 */
-	private boolean addTransportState(int transportId, int selectedId)
+	private boolean addTransportItem(int transportId, int selectedId)
 	{
 		try
 		{
@@ -689,33 +687,33 @@ public class TransportDAOMySQL implements TransportDAO
 		removeTransportItems(transport);
 
 		if(transport.isEmergencyDoctorAlarming() == true)
-			addTransportState(transport.getTransportId(), 1);
+			addTransportItem(transport.getTransportId(), 1);
 		if(transport.isPoliceAlarming() == true)
-			addTransportState(transport.getTransportId(), 2);
+			addTransportItem(transport.getTransportId(), 2);
 		if(transport.isFirebrigadeAlarming() == true)
-			addTransportState(transport.getTransportId(), 3);
+			addTransportItem(transport.getTransportId(), 3);
 		if(transport.isMountainRescueServiceAlarming() == true)
-			addTransportState(transport.getTransportId(), 4);
+			addTransportItem(transport.getTransportId(), 4);
 		if(transport.isDfAlarming() == true)
-			addTransportState(transport.getTransportId(), 5);
+			addTransportItem(transport.getTransportId(), 5);
 		if(transport.isBrkdtAlarming() == true)
-			addTransportState(transport.getTransportId(), 6);
+			addTransportItem(transport.getTransportId(), 6);
 		if(transport.isBlueLightToGoal() == true)
-			addTransportState(transport.getTransportId(), 7);
+			addTransportItem(transport.getTransportId(), 7);
 		if(transport.isHelicopterAlarming() == true)
-			addTransportState(transport.getTransportId(), 8);
+			addTransportItem(transport.getTransportId(), 8);
 		if(transport.isAssistantPerson() == true)
-			addTransportState(transport.getTransportId(), 9);
+			addTransportItem(transport.getTransportId(), 9);
 		if(transport.isBackTransport() == true)
-			addTransportState(transport.getTransportId(), 10);
+			addTransportItem(transport.getTransportId(), 10);
 		if(transport.isLongDistanceTrip() == true)
-			addTransportState(transport.getTransportId(), 11);
+			addTransportItem(transport.getTransportId(), 11);
 		if(transport.isEmergencyPhone() == true)
-			addTransportState(transport.getTransportId(), 12);
+			addTransportItem(transport.getTransportId(), 12);
 
 		return true;
 	}
-	
+
 	/**
 	 * removes all selected items from a transport
 	 * @param transport
@@ -736,47 +734,23 @@ public class TransportDAOMySQL implements TransportDAO
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean assignTransportstate(Transport transport)
 	{
-		//removes all selected transports for specific transportId
-		removeTransportstate(transport);
+		// TODO remove transportstate
+		//removeTransportstate(transport);
 
-		if(transport.isEmergencyDoctorAlarming() == true)
-			addTransportState(transport.getTransportId(), 1);
-		if(transport.isPoliceAlarming() == true)
-			addTransportState(transport.getTransportId(), 2);
-		if(transport.isFirebrigadeAlarming() == true)
-			addTransportState(transport.getTransportId(), 3);
-		if(transport.isMountainRescueServiceAlarming() == true)
-			addTransportState(transport.getTransportId(), 4);
-		if(transport.isDfAlarming() == true)
-			addTransportState(transport.getTransportId(), 5);
-		if(transport.isBrkdtAlarming() == true)
-			addTransportState(transport.getTransportId(), 6);
-		if(transport.isBlueLightToGoal() == true)
-			addTransportState(transport.getTransportId(), 7);
-		if(transport.isHelicopterAlarming() == true)
-			addTransportState(transport.getTransportId(), 8);
-		if(transport.isAssistantPerson() == true)
-			addTransportState(transport.getTransportId(), 9);
-		if(transport.isBackTransport() == true)
-			addTransportState(transport.getTransportId(), 10);
-		if(transport.isLongDistanceTrip() == true)
-			addTransportState(transport.getTransportId(), 11);
-		if(transport.isEmergencyPhone() == true)
-			addTransportState(transport.getTransportId(), 12);
-
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean removeTransportstate(Transport transport)
 	{
+		// TODO remove Transportstates !!!
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.AllSelectedTransportItems"));
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString(""));
 			query1.setInt(1, transport.getTransportId());
 			query1.executeUpdate();
 		}
@@ -785,16 +759,16 @@ public class TransportDAOMySQL implements TransportDAO
 			e.printStackTrace();
 			return false;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean updateTransportstate(Transport transport)
 	{
-		boolean result = assignTransportstate(transport);
-		return result;
+		//boolean result = assignTransportstate(transport);
+		return false;
 	}
-	
+
 
 	public Transport getTransportById(int id)
 	{
