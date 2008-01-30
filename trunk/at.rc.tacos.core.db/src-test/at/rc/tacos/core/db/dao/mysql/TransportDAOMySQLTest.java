@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -13,7 +12,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
@@ -150,6 +148,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 	{
 		{
 			Transport transport = transportDAO.getTransportById(transport1.getTransportId());
+			System.out.println("test transportid: "+transport.getTransportId());
 			transport.setCreationTime(Calendar.getInstance().getTimeInMillis());
 			transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
 			transport.setAssistantPerson(true);
@@ -157,7 +156,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport.setBlueLightToGoal(true);
 			transport.setBrkdtAlarming(true);
 
-			CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
+			CallerDetail caller1Detail = new CallerDetail(1, "anrufer1","0664-132435");
 			transport.setCallerDetail(caller1Detail);
 			transport.setCreatedByUsername("crUser");
 			transport.setDateOfTransport(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat));
