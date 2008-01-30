@@ -57,7 +57,7 @@ public class TransportListener extends ServerListenerAdapter
 			long dateEnd = calEnd.getTimeInMillis();
 			//show current transports that are in progress
 			if(Transport.TRANSPORT_PROGRESS.equalsIgnoreCase(type))
-				list.addAll(transportDao.listTransports(dateStart, dateEnd));
+				list.addAll(transportDao.listTransportsByDateOfTransport(dateStart, dateEnd));
 			//show the transports in the journal
 			if(Transport.TRANSPORT_JOURNAL.equalsIgnoreCase(type))
 				list.addAll(transportDao.listArchivedTransports(dateStart, dateEnd));
