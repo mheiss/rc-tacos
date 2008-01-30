@@ -19,8 +19,8 @@ public class MyUtils
     public final static SimpleDateFormat timeAndDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     
     //sql date
-    public final static SimpleDateFormat sqlDate = new SimpleDateFormat("yyyyMMdd");
-    public final static SimpleDateFormat sqlDateTime = new SimpleDateFormat("yyyyMMddHHmmss");
+    public final static SimpleDateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
+    public final static SimpleDateFormat sqlDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Convinience helper method to ensure a long value is a valid date.
@@ -123,7 +123,9 @@ public class MyUtils
      */
     public static String timestampToString(long timestamp,SimpleDateFormat dateFormat)
     {
-        return dateFormat.format(new Date(timestamp));
+    	String string = dateFormat.format(new Date(timestamp));
+    	System.out.println("timestampToString, string: " +string);
+        return string;
     }
 
     /**
@@ -142,7 +144,9 @@ public class MyUtils
         //try to parse
         try
         {
-            return formatter.parse(time).getTime();
+        	long timestamp = formatter.parse(time).getTime();
+        	System.out.println("string to timestamp, timestamp(long): " +timestamp);
+            return timestamp;
         }
         catch(ParseException pe)
         {
