@@ -65,6 +65,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 	Transport  transport1 = new Transport("vonStraﬂe1","vonStadt1",location1,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 12:00", MyUtils.timeAndDateFormat),"A",2);
 	Transport  transport2 = new Transport("vonStraﬂe2","vonStadt2",location1,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 14:00", MyUtils.timeAndDateFormat),"B",2);
 
+	CallerDetail caller1 = new CallerDetail("derCaller","0664-4143824");
 
 	@Before
 	public void setUp() 
@@ -105,6 +106,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		//insert transports
 		transport1.setCreatedByUsername(login1.getUsername());
 		transport2.setCreatedByUsername(login2.getUsername());
+		transport1.setCallerDetail(caller1);
 
 
 		int tr1id = transportDAO.addTransport(transport1);
@@ -156,7 +158,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport.setBlueLightToGoal(true);
 			transport.setBrkdtAlarming(true);
 
-			CallerDetail caller1Detail = new CallerDetail(1, "anrufer1","0664-132435");
+			CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
 			transport.setCallerDetail(caller1Detail);
 			transport.setCreatedByUsername("crUser");
 			transport.setDateOfTransport(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat));
