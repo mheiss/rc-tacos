@@ -140,7 +140,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		cal.add(Calendar.DAY_OF_MONTH, 1);
 		long endTime = cal.getTimeInMillis();
 		List<Transport> list = new ArrayList<Transport>();
-		list = transportDAO.listTransports(startTime, endTime);
+		list = transportDAO.listTransportsByDateOfTransport(startTime, endTime);
 		Assert.assertEquals(2, list.size());
 	}
 
