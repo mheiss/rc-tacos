@@ -97,12 +97,12 @@ public class TransportDAOMySQL implements TransportDAO
 	}
 
 	@Override
-	public List<Transport> listTransports(long startdate, long enddate)
+	public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate)
 	{
 		List<Transport> transports = null;
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.transports"));
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.transportsByDateOfTransport"));
 			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDateTime));
 			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
 			final ResultSet rs = query.executeQuery();
