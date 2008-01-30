@@ -97,7 +97,7 @@ public class TransportDAOMemory implements TransportDAO
 	}
 
 	@Override
-	public List<Transport> listTransports(long startdate, long enddate) 
+	public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate) 
 	{
 		List<Transport> filteredList = new ArrayList<Transport>();
 		//loop 
