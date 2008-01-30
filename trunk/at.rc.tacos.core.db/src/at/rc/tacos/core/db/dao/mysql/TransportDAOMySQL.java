@@ -3,6 +3,7 @@ package at.rc.tacos.core.db.dao.mysql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -99,7 +100,8 @@ public class TransportDAOMySQL implements TransportDAO
 	@Override
 	public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate)
 	{
-		List<Transport> transports = null;
+		System.out.println("listTransportsByDateOfTransport: start: "+MyUtils.timestampToString(startdate, MyUtils.sqlDateTime)+ "end: "+MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
+		List<Transport> transports = new ArrayList<Transport>();
 		try
 		{
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.transportsByDateOfTransport"));
@@ -119,63 +121,101 @@ public class TransportDAOMySQL implements TransportDAO
 				transport.setTransportId(rs.getInt("t.transport_ID"));
 				transport.setTransportNumber(rs.getInt("t.transportNr"));
 
-				Location station = new Location();
-				station.setId(rs.getInt("t.planned_location"));
-				station.setLocationName(rs.getString("lo.locationname"));
-				transport.setPlanedLocation(station);
+				if(rs.getInt("t.planned_location") != 0)
+				{
+					Location station = new Location();
+					station.setId(rs.getInt("t.planned_location"));
+					station.setLocationName(rs.getString("lo.locationname"));
+					transport.setPlanedLocation(station);
+				}
 
-				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("t.caller_ID"));
-				caller.setCallerName(rs.getString("ca.callername"));
-				caller.setCallerTelephoneNumber(rs.getString("ca.caller_phonenumber"));
-				transport.setCallerDetail(caller);
+				if(rs.getInt("t.caller_ID") != 0)
+				{
+					CallerDetail caller = new CallerDetail();
+					caller.setCallerId(rs.getInt("t.caller_ID"));
+					caller.setCallerName(rs.getString("ca.callername"));
+					caller.setCallerTelephoneNumber(rs.getString("ca.caller_phonenumber"));
+					transport.setCallerDetail(caller);
+				}
 				transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
-				transport.setNotes(rs.getString("t.note"));
-				transport.setFeedback(rs.getString("t.feedback"));
+				if(rs.getString("t.note") == null)
+					transport.setNotes("");
+				else
+					transport.setNotes(rs.getString("t.note"));
+				if(rs.getString("t.feedback") == null)
+					transport.setFeedback("");
+				else
+					transport.setFeedback(rs.getString("t.feedback"));
 				transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
 				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
 				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
 				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
-				transport.setKindOfIllness(rs.getString("t.disease"));
+				if(rs.getString("t.disease") == null)
+					transport.setKindOfIllness("");
+				else
+					transport.setKindOfIllness(rs.getString("t.disease"));
 
 				Patient patient = new Patient();
-				patient.setFirstname(rs.getString("t.firstname"));
-				patient.setLastname(rs.getString("t.lastname"));
+				if(rs.getString("t.firstname") == null)
+					patient.setFirstname("");
+				else
+					patient.setFirstname(rs.getString("t.firstname"));
+				if(rs.getString("t.lastname") == null)
+					patient.setLastname("");
+				else
+					patient.setLastname(rs.getString("t.lastname"));
 				transport.setPatient(patient);
 
-				transport.setFromStreet(rs.getString("t.from_street"));
-				transport.setFromCity(rs.getString("t.from_city"));
-				transport.setToStreet(rs.getString("t.to_street"));
-				transport.setToCity(rs.getString("t.to_city"));
+				if(rs.getString("t.from_street") == null)
+					transport.setFromStreet("");
+				else
+					transport.setFromStreet(rs.getString("t.from_street"));
+				if(rs.getString("t.from_city") == null)
+					transport.setFromCity("");
+				else
+					transport.setFromCity(rs.getString("t.from_city"));
+				if(rs.getString("t.to_street") == null)
+					transport.setToStreet("");
+				else
+					transport.setToStreet(rs.getString("t.to_street"));
+				if(rs.getString("t.to_city") == null)
+					transport.setToCity("");
+				else
+					transport.setToCity(rs.getString("t.to_city"));
 				transport.setProgramStatus(rs.getInt("t.programstate"));
-				transport.setKindOfTransport(rs.getString("t.transporttype"));
+				if(rs.getString("t.transporttype") == null)
+					transport.setKindOfTransport("");
+				else
+					transport.setKindOfTransport(rs.getString("t.transporttype"));
 				transport.setTransportPriority(rs.getString("t.priority"));
-				transport.setDirection(rs.getInt("t.direction_ID"));
+				transport.setDirection(rs.getInt("t.direction"));
 				transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
 
-				VehicleDetail vehicle = new VehicleDetail();
+				if(rs.getString("av.locationname") != null)
+				{
+					VehicleDetail vehicle = new VehicleDetail();
+					Location currentStation = new Location();
+					currentStation = locationDAO.getLocationByName(rs.getString("av.locationname"));
+					vehicle.setCurrentStation(currentStation);
 
-				Location currentStation = new Location();
-				currentStation = locationDAO.getLocationByName(rs.getString("av.locationname"));
-				vehicle.setCurrentStation(currentStation);
+					vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
 
-				vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
+					StaffMember driver = new StaffMember();
+					driver = staffMemberDAO.getStaffMemberByID(rs.getInt("av.driver_ID"));
+					vehicle.setDriver(driver);
 
-				StaffMember driver = new StaffMember();
-				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("v.driver_ID"));
-				vehicle.setDriver(driver);
+					StaffMember firstParamedic = new StaffMember();
+					firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("av.medic1_ID"));
+					vehicle.setFirstParamedic(firstParamedic);
 
-				StaffMember firstParamedic = new StaffMember();
-				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic1_ID"));
-				vehicle.setFirstParamedic(firstParamedic);
+					StaffMember secondParamedic = new StaffMember();
+					secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("av.medic2_ID"));
+					vehicle.setSecondParamedic(secondParamedic);
 
-				StaffMember secondParamedic = new StaffMember();
-				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic2_ID"));
-				vehicle.setSecondParamedic(secondParamedic);
-
-				vehicle.setVehicleNotes(rs.getString("av.note"));
-				vehicle.setVehicleType(rs.getString("av.vehicletype"));
-				transport.setVehicleDetail(vehicle);
+					vehicle.setVehicleNotes(rs.getString("av.note"));
+					vehicle.setVehicleType(rs.getString("av.vehicletype"));
+					transport.setVehicleDetail(vehicle);
+				}
 
 				// find the selected items (boolean values)
 				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.selectedTransportItems"));
@@ -232,15 +272,16 @@ public class TransportDAOMySQL implements TransportDAO
 						transport.setEmergencyPhone(true);
 					else transport.setEmergencyPhone(false);
 				}
+				System.out.println("transport: "+transport);
 				transports.add(transport);
 			}
+			return transports;
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 			return null;
 		}
-		return transports;
 	}
 
 	@Override
