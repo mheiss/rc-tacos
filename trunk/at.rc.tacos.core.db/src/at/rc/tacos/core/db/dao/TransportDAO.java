@@ -63,7 +63,7 @@ public interface TransportDAO
      * @param enddate the end date
      * @return the list of transports in the given interval.
      */
-    public List<Transport> listTransports(long startdate, long enddate);
+    public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate);
     
     /**
      * Returns all archived transports in the given interval.
