@@ -12,7 +12,7 @@ public interface CompetenceDAO
 	/**
 	 * Adds a new competence to the competence list
 	 * @param competence the competence to add
-	 * @return the generated it
+	 * @return the generated id
 	 */
 	public int addCompetence(Competence competence);
 	
