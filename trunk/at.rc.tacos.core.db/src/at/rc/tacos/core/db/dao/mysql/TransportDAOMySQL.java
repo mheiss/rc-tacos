@@ -314,7 +314,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			}
 			else
 				callerDAO.updateCaller(transport.getCallerDetail());
-			assignVehicleToTransport(transport);
+			//assignVehicleToTransport(transport);
 
 			// direction = ?, caller_ID = ?, note = ?, createdBy_user = ?, priority = ?, feedback = ?, creationDate = ?, 
 			//departure = ?, appointment = ?, appointmentPatient = ?, transporttype = ?, disease = ?, firstname = ?, lastname = ?, 
@@ -353,10 +353,10 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			
 			assignTransportItems(transport);
 			
-			int result = 0;
+			boolean result = false;
 			if(transport.getVehicleDetail().getVehicleName() != null)
 				result = assignVehicleToTransport(transport);
-			if(result == -1)
+			if(result == false)
 				return false;
 		}
 		catch (SQLException e)
@@ -426,7 +426,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	}
 
 	@Override
-	public int assignVehicleToTransport(Transport transport)
+	public boolean assignVehicleToTransport(Transport transport)
 	{
 		try
 		{
@@ -462,7 +462,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					query.setString(7, transport.getVehicleDetail().getVehicleType());
 					query.setInt(8, transport.getTransportId());
 					query.executeUpdate();
-					return 1;
+					return true;
 				}
 				else
 				{
@@ -478,21 +478,21 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 						//archive transportnumber
 						boolean result = archiveTransportNumber(rs2.getInt("transportNr"), transport.getVehicleDetail().getCurrentStation().getLocationName());
 						if(result == false)
-							return -1;
+							return false;
 
 						int transportNr = getNewTransportNrForLocation(transport.getVehicleDetail().getCurrentStation().getLocationName());
 						if(transportNr == -1)
-							return -1;
+							return false;
 
 						//insert new transportnumber to existing transport
 						final PreparedStatement query6 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
 						query6.setInt(1, transportNr);
 						query6.setInt(2, transport.getTransportId());
 						query6.executeUpdate();
-						return 1;
+						return true;
 					}
 				}
-				return -1;
+				return false;
 			}
 			else
 			{
@@ -532,13 +532,13 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					query6.setInt(2, transport.getTransportId());
 					query6.executeUpdate();
 				}
-				return 1;
+				return true;
 			}
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			return -1;
+			return false;
 		}	
 	}
 
@@ -883,8 +883,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setTransportId(rs.getInt("t.transport_ID"));
 				transport.setTransportNumber(rs.getInt("t.transportNr"));
 
+				System.out.println("plannedLocation ID: "+rs.getInt("t.planned_location"));
+				System.out.println("plannedLocation name: "+rs.getString("lo.locationname"));
 				if(rs.getInt("t.planned_location") != 0)
 				{
+					System.out.println("getTransportById - plannedLocation");
 					Location station = new Location();
 					station.setId(rs.getInt("t.planned_location"));
 					station.setLocationName(rs.getString("lo.locationname"));
