@@ -188,43 +188,41 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 		Transport transport4 = transportDAO.getTransportById(trId3);
 		
-		assertEquals(location1,transport4.getPlanedLocation());//R
-		assertEquals(dateTime1,transport4.getCreationTime());//R
-		System.out.println("creation time init: ........: " +MyUtils.timestampToString(dateTime1, MyUtils.timeAndDateFormat));
-		System.out.println("creation time back from db..: " +MyUtils.timestampToString(transport4.getCreationTime(), MyUtils.timeAndDateFormat));
-		assertEquals(dateTime2,transport4.getAppointmentTimeAtDestination());//R
-		assertEquals(caller1Detail,transport4.getCallerDetail());//R
-		assertEquals("user2",transport4.getCreatedByUsername());//R
-		assertEquals(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),transport4.getDateOfTransport());//R
-		assertEquals(MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),transport4.getPlannedStartOfTransport());//R
-		assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport4.getPlannedTimeAtPatient());//R
-		assertEquals(2,transport4.getDirection());//R
-		assertEquals("feedbackNew",transport4.getFeedback());//R
-		assertEquals("vonStadt3",transport4.getFromCity());//R
-		assertEquals("vonStraﬂe3",transport4.getFromStreet());//R
-		assertEquals("Schlaganfall",transport4.getKindOfIllness());//R
-		assertEquals("Tragsessel",transport4.getKindOfTransport());//R
-		assertEquals("thenotes",transport4.getNotes());//R
-		assertEquals(patient1,transport4.getPatient());//R
-//		assertEquals(location2,transport4.getRealLocation());//R//TODO ------ got null back
-		assertEquals("toCity",transport4.getToCity());//R
-		assertEquals("toStreet",transport4.getToStreet());//R
-		assertEquals("C",transport4.getTransportPriority());//R
-		assertEquals(1,transport4.getProgramStatus());//R
-//		assertEquals(veh1,transport4.getVehicleDetail());//R//TODO ---- got null back
+		assertEquals(location1,transport4.getPlanedLocation());
+		assertEquals(dateTime1,transport4.getCreationTime());
+		assertEquals(dateTime2,transport4.getAppointmentTimeAtDestination());
+		assertEquals(caller1Detail,transport4.getCallerDetail());
+		assertEquals("user2",transport4.getCreatedByUsername());
+		assertEquals(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),transport4.getDateOfTransport());
+		assertEquals(MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),transport4.getPlannedStartOfTransport());
+		assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport4.getPlannedTimeAtPatient());
+		assertEquals(2,transport4.getDirection());
+		assertEquals("feedbackNew",transport4.getFeedback());
+		assertEquals("vonStadt3",transport4.getFromCity());
+		assertEquals("vonStraﬂe3",transport4.getFromStreet());
+		assertEquals("Schlaganfall",transport4.getKindOfIllness());
+		assertEquals("Tragsessel",transport4.getKindOfTransport());
+		assertEquals("thenotes",transport4.getNotes());
+		assertEquals(patient1,transport4.getPatient());
+		assertEquals(location2,transport4.getRealLocation());//TODO ------ got null back
+		assertEquals("toCity",transport4.getToCity());
+		assertEquals("toStreet",transport4.getToStreet());
+		assertEquals("C",transport4.getTransportPriority());
+		assertEquals(1,transport4.getProgramStatus());
+		assertEquals(veh1,transport4.getVehicleDetail());//TODO ---- got null back
 
-		assertTrue(transport4.isAssistantPerson());//R//TODO ---- got irgendwas back
-		assertTrue(transport4.isBackTransport());//R
-		assertTrue(transport4.isBlueLightToGoal());//R
-		assertTrue(transport4.isBrkdtAlarming());//R
-		assertTrue(transport4.isDfAlarming());//R
-		assertTrue(transport4.isEmergencyDoctorAlarming());//R
-		assertTrue(transport4.isEmergencyPhone());//R
-		assertTrue(transport4.isFirebrigadeAlarming());//R
-		assertTrue(transport4.isHelicopterAlarming());//R
-		assertTrue(transport4.isLongDistanceTrip());//R
-		assertTrue(transport4.isMountainRescueServiceAlarming());//R
-		assertTrue(transport4.isPoliceAlarming());//R
+		assertTrue(transport4.isAssistantPerson());//TODO ---- got irgendwas back
+		assertTrue(transport4.isBackTransport());
+		assertTrue(transport4.isBlueLightToGoal());
+		assertTrue(transport4.isBrkdtAlarming());
+		assertTrue(transport4.isDfAlarming());
+		assertTrue(transport4.isEmergencyDoctorAlarming());
+		assertTrue(transport4.isEmergencyPhone());
+		assertTrue(transport4.isFirebrigadeAlarming());
+		assertTrue(transport4.isHelicopterAlarming());
+		assertTrue(transport4.isLongDistanceTrip());
+		assertTrue(transport4.isMountainRescueServiceAlarming());
+		assertTrue(transport4.isPoliceAlarming());
 	}
 	
 	
