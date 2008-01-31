@@ -300,6 +300,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	@Override
 	public boolean updateTransport(Transport transport)
 	{
+		System.out.println("updateTransport");
+		System.out.println("start Planned Location: "+transport.getPlanedLocation());
 		try
 		{
 			int callerId;
@@ -336,8 +338,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			query.setString(12, transport.getKindOfIllness());
 			query.setString(13, transport.getPatient().getFirstname());
 			query.setString(14, transport.getPatient().getLastname());
-			System.out.println("Planned Location: "+transport.getPlanedLocation().getId());
-			if(transport.getPlanedLocation().getId() == 0)
+			System.out.println("Planned Location ID: "+transport.getPlanedLocation().getId());
+			if(transport.getPlanedLocation() == null)
 				query.setString(15, null);
 			else
 				query.setInt(15, transport.getPlanedLocation().getId());
@@ -866,6 +868,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
 	public Transport getTransportById(int id)
 	{
+		System.out.println("getTransportById - plannedLocation");
 		Transport transport = new Transport();
 		try
 		{
@@ -888,7 +891,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				System.out.println("plannedLocation name: "+rs.getString("lo.locationname"));
 				if(rs.getInt("t.planned_location") != 0)
 				{
-					System.out.println("getTransportById - plannedLocation");
+					
 					Location station = new Location();
 					station.setId(rs.getInt("t.planned_location"));
 					station.setLocationName(rs.getString("lo.locationname"));
