@@ -400,20 +400,27 @@ public class TransportDAOMySQLTest extends DBTestBase
 			veh2.setVehicleName("Bm09");
 			veh2.setVehicleType("KTW");
 
-			transport3.setVehicleDetail(veh2);
+			Transport transportNew = transportDAO.getTransportById(trId3);
+			
+			transportNew.setVehicleDetail(veh2);
 
-			int trId4 = transportDAO.assignVehicleToTransport(transport3);
+			int trNumber0 = transportDAO.assignVehicleToTransport(transportNew);
 
-			Transport transport5 = transportDAO.getTransportById(trId4);
+			Transport transport5 = transportDAO.getTransportById(trId3);
 
-			System.out.println("transportID:..::::: " +trId4);
+			System.out.println("transportID (old) :..::::: " +trId3);
 
-			assertNotSame(0, trId4);
 			System.out.println("Transportnumber: öööööööööööööö " +transport5.getTransportNumber());
+			System.out.println("Transportnumber: öööööööööööööö " +trNumber0);
+			
+			
+			assertEquals(veh2,transport5.getVehicleDetail());
+			assertNotSame(0,trNumber0);
+			
 		}
 		
 		{
-			Transport  transport3 = new Transport("vonStraße3","vonStadt3",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
+			Transport  transport3 = new Transport("vonStraße4","vonStadt4",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
 
 			long dateTime1 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
 			long dateTime2 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
@@ -461,7 +468,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			//assign the vehicle
 			VehicleDetail veh2 = new VehicleDetail();
 			veh2.setBasicStation(location1);
-			veh2.setCurrentStation(location1);
+			veh2.setCurrentStation(location1);//same location as first transport --> transport number +1
 			veh2.setDriver(member1);
 			veh2.setMobilPhone(phone1);
 			veh2.setReadyForAction(true);
@@ -469,19 +476,23 @@ public class TransportDAOMySQLTest extends DBTestBase
 			veh2.setVehicleName("Bm09");
 			veh2.setVehicleType("KTW");
 
-			transport3.setVehicleDetail(veh2);
+			Transport transportNew = transportDAO.getTransportById(trId3);
+			
+			transportNew.setVehicleDetail(veh2);
 
-			int trId4 = transportDAO.assignVehicleToTransport(transport3);
+			int trNumber0 = transportDAO.assignVehicleToTransport(transportNew);
 
-			Transport transport5 = transportDAO.getTransportById(trId4);
+			Transport transport5 = transportDAO.getTransportById(trId3);
 
-			System.out.println("transportID:..::::: " +trId4);
+			System.out.println("transportID (old) :..::::: " +trId3);
 
-			assertNotSame(0, trId4);
 			System.out.println("Transportnumber: öööööööööööööö " +transport5.getTransportNumber());
+			System.out.println("Transportnumber: öööööööööööööö " +trNumber0);
+			
+			
+			assertEquals(veh2,transport5.getVehicleDetail());
+			assertNotSame(0,trNumber0);
 		}
-
-
 	}
 
 //	@Test
