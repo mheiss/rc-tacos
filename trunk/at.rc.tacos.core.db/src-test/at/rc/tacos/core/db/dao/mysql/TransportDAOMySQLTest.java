@@ -48,6 +48,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 	Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
 	Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
+	Location plannedLocation = new Location("Bruck1",phone1,"street1","241",8601,"BruckCity1", "theNotes1");
 
 	VehicleDetail veh1 = new VehicleDetail("veh1","vehicleType1",location1);
 	VehicleDetail veh2 = new VehicleDetail("veh2","vehicleType2",location2);
@@ -127,14 +128,14 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown()
 	{
-		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-		deleteTable(TransportDAO.TABLE_NAME);
-		deleteTable(MobilePhoneDAO.TABLE_NAME);
-		deleteTable(LocationDAO.TABLE_NAME);
-		deleteTable(CallerDAO.TABLE_NAME);
-		deleteTable(UserLoginDAO.TABLE_NAME);
-		deleteTable(StaffMemberDAO.TABLE_NAME);
-		deleteTable(CompetenceDAO.TABLE_NAME);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+//		deleteTable(TransportDAO.TABLE_NAME);
+//		deleteTable(MobilePhoneDAO.TABLE_NAME);
+//		deleteTable(LocationDAO.TABLE_NAME);
+//		deleteTable(CallerDAO.TABLE_NAME);
+//		deleteTable(UserLoginDAO.TABLE_NAME);
+//		deleteTable(StaffMemberDAO.TABLE_NAME);
+//		deleteTable(CompetenceDAO.TABLE_NAME);
 	}
 
 
@@ -255,7 +256,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 			CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
 			transport.setCallerDetail(caller1Detail);
-			transport.setCreatedByUsername("user1");
+			transport.setCreatedByUsername("user2");
 			transport.setDateOfTransport(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat));
 			transport.setDfAlarming(true);
 			transport.setDirection(2);
@@ -267,16 +268,15 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport.setFromStreet("fromStreet1");
 			transport.setHelicopterAlarming(true);
 			transport.setKindOfIllness("Schlaganfall");
-			transport.setKindOfTransport("Tragsessel");
+			transport.setKindOfTransport("mobil");
 			transport.setLongDistanceTrip(true);
 			transport.setMountainRescueServiceAlarming(true);
 			transport.setNotes("thenotes");
 
-			Patient patient1 = new Patient("Muster","Max");
+			Patient patient1 = new Patient("Max","Muster");
 			transport.setPatient(patient1);
 
-			Location planedLocation = new Location("Bruck1",phone1,"street1","241",8601,"BruckCity1", "theNotes1");
-			transport.setPlanedLocation(planedLocation);
+			transport.setPlanedLocation(plannedLocation);
 			Location realLocation = new Location("Bruck2",phone2,"street2","242",8602,"BruckCity2", "theNotes2");
 
 			transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp("29-01-2008 15:00", MyUtils.timeAndDateFormat));
@@ -299,7 +299,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			assertEquals(transport1.getTransportId(),transport.getTransportId());
 			assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport.getAppointmentTimeAtDestination());
 			assertEquals("anrufer1",transport.getCallerDetail().getCallerName());
-			assertEquals("crUser",transport.getCreatedByUsername());
+			assertEquals("user2",transport.getCreatedByUsername());
 //			assertEquals(cal2,transport.getDateOfTransport());//TODO????
 			assertEquals(2,transport.getDirection());
 			assertEquals("feedbackNew",transport.getFeedback());
@@ -308,6 +308,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			assertEquals("Schlaganfall",transport.getKindOfIllness());
 			assertEquals("mobil",transport.getKindOfTransport());
 			assertEquals("thenotes",transport.getNotes());
+			assertEquals("Max",transport.getPatient().getFirstname());
 			assertEquals("Muster",transport.getPatient().getLastname());
 			assertEquals("Bruck1",transport.getPlanedLocation().getLocationName());
 			assertEquals("Bruck2",transport.getRealLocation().getLocationName());
