@@ -65,7 +65,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 
 	Transport  transport1 = new Transport("vonStraﬂe1","vonStadt1",location1,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 12:00", MyUtils.timeAndDateFormat),"A",2);
-	Transport  transport2 = new Transport("vonStraﬂe2","vonStadt2",location1,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 14:00", MyUtils.timeAndDateFormat),"B",2);
+	Transport  transport2 = new Transport("vonStraﬂe2","vonStadt2",location2,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 14:00", MyUtils.timeAndDateFormat),"B",2);
 
 	CallerDetail caller1 = new CallerDetail("derCaller","0664-4143824");
 
@@ -112,6 +112,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		long creationTime = Calendar.getInstance().getTimeInMillis();
 		transport1.setCreationTime(creationTime);
 		transport2.setCreationTime(creationTime);
+		transport1.setPlanedLocation(location1);
+		transport2.setPlanedLocation(location2);
 
 
 		int tr1id = transportDAO.addTransport(transport1);
