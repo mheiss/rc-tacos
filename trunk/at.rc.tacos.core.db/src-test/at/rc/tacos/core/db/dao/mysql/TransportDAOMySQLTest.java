@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
@@ -114,7 +115,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 		int tr1id = transportDAO.addTransport(transport1);
 		int tr2id = transportDAO.addTransport(transport2);
-		System.out.println(".... id: " +tr1id);
+		System.out.println("Transport1 id: " +tr1id);
+		System.out.println("Transport2 id: " +tr2id);
 		transport1.setTransportId(tr1id);
 		transport2.setTransportId(tr2id); 
 		System.out.println(tr1id);
@@ -130,6 +132,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		deleteTable(TransportDAO.TABLE_NAME);
 		deleteTable(UserLoginDAO.TABLE_NAME);
 		deleteTable(StaffMemberDAO.TABLE_NAME);
+		deleteTable(CompetenceDAO.TABLE_NAME);
+		deleteTable(CallerDAO.TABLE_NAME);
 	}
 
 
