@@ -28,8 +28,12 @@ public class SystemMessageEncoder implements MessageEncoder
         writer.writeCharacters(sysMessage.getMessage());
         writer.writeEndElement();
         
-        //end of the item
+        //write the error type
+        writer.writeStartElement("type");
+        writer.writeCharacters(String.valueOf(sysMessage.getType()));
         writer.writeEndElement();
         
+        //end of the item
+        writer.writeEndElement();
     }
 }

@@ -12,8 +12,13 @@ public class SystemMessage extends AbstractMessage
     //Identification of a system message
     public final static String ID = "system";
     
+    //Types for the message
+    public static final int TYPE_INFO = 0x01;
+    public static final int TYPE_ERROR = 0x02;
+    
     //properties
     private String message;
+    private int type;
     
     /**
      * Default class constructor.
@@ -24,12 +29,13 @@ public class SystemMessage extends AbstractMessage
     }
     
     /**
-     * Default class constructor for a system message.
+     * Default class constructor for a system message specifying the message type
      * @param message the message
      */
-    public SystemMessage(String message)
+    public SystemMessage(String message,int type)
     {
         super(ID);
+        setType(type);
         setMessage(message);
     }
     
@@ -62,5 +68,23 @@ public class SystemMessage extends AbstractMessage
     public String getMessage()
     {
         return message;
+    }
+    
+    /**
+     * Sets the type of the system message.
+     * @param type the type of the message
+     */
+    public void setType(int type)
+    {
+    	this.type = type;
+    }
+    
+    /**
+     * Returns the type of the system message to categorize them
+     * @return the type of the message
+     */
+    public int getType()
+    {
+    	return type;
     }
 }

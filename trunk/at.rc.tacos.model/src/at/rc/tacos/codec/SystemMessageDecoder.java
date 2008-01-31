@@ -30,6 +30,10 @@ public class SystemMessageDecoder implements MessageDecoder
                 //get the type of the element and set the corresponding value
                 if("message".equalsIgnoreCase(startName))
                     message.setMessage(reader.getElementText());
+                
+                //the type of the message
+                if("type".equalsIgnoreCase(startName))
+                	message.setType(Integer.valueOf(reader.getElementText()));
             }
             //check for the end element, and return the object
             if(event.isEndElement())
