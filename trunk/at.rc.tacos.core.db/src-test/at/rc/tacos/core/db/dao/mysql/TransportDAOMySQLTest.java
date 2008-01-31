@@ -236,7 +236,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals("C",transport4.getTransportPriority());
 		assertEquals(1,transport4.getProgramStatus());
 
-		assertTrue(transport4.isAssistantPerson());//TODO ---- got irgendwas back
+		assertTrue(transport4.isAssistantPerson());
 		assertTrue(transport4.isBackTransport());
 		assertTrue(transport4.isBlueLightToGoal());
 		assertTrue(transport4.isBrkdtAlarming());
