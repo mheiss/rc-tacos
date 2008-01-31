@@ -132,9 +132,10 @@ public class VehicleDetailAdminView extends ViewPart implements ISelectionListen
         if (!selection.isEmpty()) 
         {
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
-            if (structuredSelection instanceof VehicleDetail) 
+            Object selectedObject = structuredSelection.getFirstElement();
+            if (selectedObject instanceof VehicleDetail) 
             {
-	            VehicleDetail detail = (VehicleDetail)structuredSelection.getFirstElement();
+	            VehicleDetail detail = (VehicleDetail)selectedObject;
 	            vehicleName.setText(detail.getVehicleName());
 	            vehicleType.setText(detail.getVehicleType());
 	            basicStation.setText(detail.getBasicStation().getLocationName());

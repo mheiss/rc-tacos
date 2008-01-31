@@ -1,5 +1,10 @@
 package at.rc.tacos.client.view.admin;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -10,12 +15,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.controller.OpenViewAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 
-public class PhoneAdminView extends ViewPart
+public class PhoneAdminView extends ViewPart implements PropertyChangeListener
 {
     public static final String ID = "at.rc.tacos.client.view.admin.phoneAdminView";  
     
@@ -23,6 +29,23 @@ public class PhoneAdminView extends ViewPart
     private TableViewer viewer;
     private FormToolkit toolkit;
     private ScrolledForm form;
+    
+    /**
+     * Default class constructor
+     */
+    public PhoneAdminView()
+    {
+    	ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+    }
+    
+    /**
+     * Cleanup the view
+     */
+    @Override
+    public void dispose()
+    {
+    	ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+    }
 
     /**
      * This is a callback that will allow us to create the viewer and initialize it.
@@ -40,13 +63,13 @@ public class PhoneAdminView extends ViewPart
 
         comp.setLayout(layout);
 
-        this.toolkit = new FormToolkit(CustomColors.FORM_COLOR(comp.getDisplay()));
-        this.form = this.toolkit.createScrolledForm(comp);
+        toolkit = new FormToolkit(CustomColors.FORM_COLOR(comp.getDisplay()));
+        form = this.toolkit.createScrolledForm(comp);
         layout = new GridLayout(1, false);
-        this.form.getBody().setLayout(layout);
+        form.getBody().setLayout(layout);
 
-        this.form.setText("Liste der Mobiltelefone"); 
-        this.toolkit.decorateFormHeading(this.form.getForm());
+        form.setText("Liste der Mobiltelefone"); 
+        toolkit.decorateFormHeading(this.form.getForm());
      
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true ,true);
 
@@ -58,18 +81,26 @@ public class PhoneAdminView extends ViewPart
         layout.marginWidth = 0;
         client.setLayout(layout);
         client.setLayoutData(gd);
-        this.form.setLayout(layout);
+        form.setLayout(layout);
         
         final Table browseTree = new Table(client, SWT.V_SCROLL);
         gd = new GridData(SWT.FILL, SWT.FILL, true, true);
         browseTree.setLayoutData(gd);
-        this.viewer = new TableViewer(browseTree);
-       
-        this.viewer.setContentProvider(new MobilePhoneContentProvider());
-        this.viewer.setLabelProvider(new MobilePhoneLabelProvider());
-        this.viewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
+        viewer = new TableViewer(browseTree);
+        viewer.addDoubleClickListener(new IDoubleClickListener()
+        {
+			@Override
+			public void doubleClick(DoubleClickEvent dce) 
+			{
+				OpenViewAction view = new OpenViewAction(PhoneDetailAdminView.ID);
+				view.run();
+			}
+        });
+        viewer.setContentProvider(new MobilePhoneContentProvider());
+        viewer.setLabelProvider(new MobilePhoneLabelProvider());
+        viewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
         getViewSite().setSelectionProvider(this.viewer);
-        this.form.setLayoutData(gd);
+        form.setLayoutData(gd);
         
         //set this table as a selection provider
         getViewSite().setSelectionProvider(this.viewer);
@@ -80,4 +111,18 @@ public class PhoneAdminView extends ViewPart
      */
     @Override
     public void setFocus() { }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) 
+	{
+		String event = evt.getPropertyName();
+		if("PHONE_CLEAR".equalsIgnoreCase(event) ||
+				"PHONE_UPDATE".equalsIgnoreCase(event) ||
+				"PHONE_REMOVE".equalsIgnoreCase(event) ||
+				"PHONE_ADD".equalsIgnoreCase(event))
+		{
+			//just refresh the viewer
+			viewer.refresh();
+		}
+	}
 }

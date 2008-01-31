@@ -24,12 +24,17 @@ public class SessionListener extends ClientListenerAdapter
         if (login.isLoggedIn())
         {
         	SessionManager.getInstance().fireLoginSuccessfully(login);
+        	//log the message
         	System.out.println("Successfully authenticated "+login.getUsername());
+        	Status status = new Status(IStatus.OK,Activator.PLUGIN_ID,"Successfully authenticated "+login.getUsername()); 
+            Activator.getDefault().getLog().log(status);
         }
         else
         {
         	SessionManager.getInstance().fireLoginDenied(login);
         	System.out.println("Failed to authenticate "+login.getUsername() +" Cause: "+login.getErrorMessage());
+        	Status status = new Status(IStatus.WARNING,Activator.PLUGIN_ID,"Failed to authenticate "+login.getUsername()); 
+            Activator.getDefault().getLog().log(status);
         }
     }
 
@@ -43,6 +48,8 @@ public class SessionListener extends ClientListenerAdapter
         {
         	SessionManager.getInstance().fireLogout();
             System.out.println("Successfully logged out the user: "+logout.getUsername());
+            Status status = new Status(IStatus.INFO,Activator.PLUGIN_ID,"Successfully logged out the user: "+logout.getUsername()); 
+            Activator.getDefault().getLog().log(status);
         }
     }
 
@@ -63,8 +70,17 @@ public class SessionListener extends ClientListenerAdapter
     public void systemMessage(AbstractMessage message)
     {
         SystemMessage sysMessage = (SystemMessage)message;
-        //Create a new log message
-        Status status = new Status(IStatus.INFO,Activator.PLUGIN_ID,sysMessage.getMessage());
+        //the log message
+        Status status;
+        
+        if(sysMessage.getType() == SystemMessage.TYPE_INFO)
+        	status = new Status(IStatus.INFO,Activator.PLUGIN_ID,sysMessage.getMessage());
+        else if(sysMessage.getType() == SystemMessage.TYPE_ERROR)
+        	status = new Status(IStatus.ERROR,Activator.PLUGIN_ID,sysMessage.getMessage());
+        //log as an error message
+        else 
+        	status = new Status(IStatus.ERROR,Activator.PLUGIN_ID,sysMessage.getMessage());
+        //log the message
         Activator.getDefault().getLog().log(status);
     }
 

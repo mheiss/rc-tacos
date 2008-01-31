@@ -97,7 +97,7 @@
             name="StaffView">
       </view>
       <view
-            allowMultiple="false"
+            allowMultiple="true"
             class="at.rc.tacos.client.view.admin.StaffDetailView"
             id="at.rc.tacos.client.view.admin.staffDetailView"
             name="StaffDetail">
@@ -111,7 +111,7 @@
             name="VehicleAdminView">
       </view>
       <view
-            allowMultiple="false"
+            allowMultiple="true"
             class="at.rc.tacos.client.view.admin.VehicleDetailAdminView"
             id="at.rc.tacos.client.view.admin.vehicleDetailAdminView"
             name="VehicleAdminDetail">
@@ -125,7 +125,7 @@
             name="PhoneAdminView">
       </view>
       <view
-            allowMultiple="false"
+            allowMultiple="true"
             class="at.rc.tacos.client.view.admin.PhoneDetailAdminView"
             id="at.rc.tacos.client.view.admin.phoneDetailAdminView"
             name="PhoneAdminDetail">
@@ -170,6 +170,12 @@
             allowMultiple="false"
             class="at.rc.tacos.client.view.DialysisView"
             id="at.rc.tacos.client.view.dialysis_view">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.NavigationView"
+            id="at.rc.tacos.client.view.navigation"
+            name="NavigationView">
       </view>
       
       

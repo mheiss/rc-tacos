@@ -1,5 +1,10 @@
 package at.rc.tacos.client.view.admin;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -10,12 +15,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.controller.OpenViewAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 
-public class VehicleAdminView extends ViewPart
+public class VehicleAdminView extends ViewPart implements PropertyChangeListener
 {
     public static final String ID = "at.rc.tacos.client.view.admin.vehicleAdminView";  
     
@@ -23,6 +29,23 @@ public class VehicleAdminView extends ViewPart
     private TableViewer viewer;
     private FormToolkit toolkit;
     private ScrolledForm form;
+    
+    /**
+     * Default class constructor
+     */
+    public VehicleAdminView()
+    {
+    	ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
+    }
+    
+    /**
+     * Cleanup
+     */
+    @Override
+    public void dispose()
+    {
+    	ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
+    }
 
     /**
      * This is a callback that will allow us to create the viewer and initialize it.
@@ -37,16 +60,15 @@ public class VehicleAdminView extends ViewPart
         layout.verticalSpacing = 0;
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-
         comp.setLayout(layout);
 
-        this.toolkit = new FormToolkit(CustomColors.FORM_COLOR(comp.getDisplay()));
-        this.form = this.toolkit.createScrolledForm(comp);
+        toolkit = new FormToolkit(CustomColors.FORM_COLOR(comp.getDisplay()));
+        form = this.toolkit.createScrolledForm(comp);
         layout = new GridLayout(1, false);
-        this.form.getBody().setLayout(layout);
+        form.getBody().setLayout(layout);
 
-        this.form.setText("Liste der Fahrzeuge"); 
-        this.toolkit.decorateFormHeading(this.form.getForm());
+        form.setText("Liste der Fahrzeuge"); 
+        toolkit.decorateFormHeading(this.form.getForm());
      
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true ,true);
 
@@ -58,19 +80,25 @@ public class VehicleAdminView extends ViewPart
         layout.marginWidth = 0;
         client.setLayout(layout);
         client.setLayoutData(gd);
-        this.form.setLayout(layout);
+        form.setLayout(layout);
         
         final Table browseTree = new Table(client, SWT.V_SCROLL);
         gd = new GridData(SWT.FILL, SWT.FILL, true, true);
         browseTree.setLayoutData(gd);
-        this.viewer = new TableViewer(browseTree);
-       
-        this.viewer.setContentProvider(new VehicleContentProvider());
-        this.viewer.setLabelProvider(new VehicleLabelProvider());
-        this.viewer.setInput(ModelFactory.getInstance().getVehicleList().getVehicleList());
-        getViewSite().setSelectionProvider(this.viewer);
-        this.form.setLayoutData(gd);
-        
+        viewer = new TableViewer(browseTree);
+        viewer.setContentProvider(new VehicleContentProvider());
+        viewer.addDoubleClickListener(new IDoubleClickListener()
+        {
+			@Override
+			public void doubleClick(DoubleClickEvent dce) 
+			{
+				OpenViewAction view = new OpenViewAction(VehicleDetailAdminView.ID);
+				view.run();
+			}
+        });
+        viewer.setLabelProvider(new VehicleLabelProvider());
+        viewer.setInput(ModelFactory.getInstance().getVehicleList().getVehicleList());
+        form.setLayoutData(gd);
         //set this table as a selection provider
         getViewSite().setSelectionProvider(this.viewer);
     }
@@ -80,4 +108,18 @@ public class VehicleAdminView extends ViewPart
      */
     @Override
     public void setFocus() { }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) 
+	{
+		String event = evt.getPropertyName();
+		if("VEHICLE_CLEAR".equalsIgnoreCase(event) ||
+				"VEHICLE_UPDATE".equalsIgnoreCase(event) ||
+				"VEHICLE_REMOVE".equalsIgnoreCase(event) ||
+				"VEHICLE_ADD".equalsIgnoreCase(event))
+		{
+			//just refresh the viewer
+			viewer.refresh();
+		}
+	}
 }
