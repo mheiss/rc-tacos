@@ -31,8 +31,6 @@ DELETE FROM caller;
 
 DELETE FROM disease;
 
-DELETE FROM selected;
-
 DELETE FROM userlogin;
 
 DELETE FROM phonenumbers;

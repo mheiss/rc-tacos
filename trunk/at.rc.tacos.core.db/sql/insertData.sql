@@ -42,11 +42,12 @@ INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
 INSERT INTO selected(selected_ID, name) VALUES(4, 'Bergrettung');
 INSERT INTO selected(selected_ID, name) VALUES(5, 'Dienstführender');
 INSERT INTO selected(selected_ID, name) VALUES(6, 'Bezirksrettungskommandant');
-INSERT INTO selected(selected_ID, name) VALUES(7, 'BD1');
-INSERT INTO selected(selected_ID, name) VALUES(8, 'BD2');
-INSERT INTO selected(selected_ID, name) VALUES(9, 'assistant');
-INSERT INTO selected(selected_ID, name) VALUES(10, 'return_transport');
-INSERT INTO selected(selected_ID, name) VALUES(11, 'longDistance');
+INSERT INTO selected(selected_ID, name) VALUES(7, 'Blaufahrt');
+INSERT INTO selected(selected_ID, name) VALUES(8, 'Hubschrauber');
+INSERT INTO selected(selected_ID, name) VALUES(9, 'Begleitperson');
+INSERT INTO selected(selected_ID, name) VALUES(10, 'Ruecktransport');
+INSERT INTO selected(selected_ID, name) VALUES(11, 'Langstrecke');
+INSERT INTO selected(selected_ID, name) VALUES(12, 'Notruf');
 
 --diseases
 INSERT INTO disease(disease_ID, disease) VALUES(1, 'Knochenbruch');
