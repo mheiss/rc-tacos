@@ -48,7 +48,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 	Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
 	Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-	Location plannedLocation = new Location("Bruck1",phone1,"street1","241",8601,"BruckCity1", "theNotes1");
 
 	VehicleDetail veh1 = new VehicleDetail("veh1","vehicleType1",location1);
 	VehicleDetail veh2 = new VehicleDetail("veh2","vehicleType2",location2);
@@ -278,14 +277,14 @@ public class TransportDAOMySQLTest extends DBTestBase
 			Patient patient1 = new Patient("Max","Muster");
 			transport.setPatient(patient1);
 
-			transport.setPlanedLocation(plannedLocation);
-			Location realLocation = new Location("Bruck2",phone2,"street2","242",8602,"BruckCity2", "theNotes2");
+			transport.setPlanedLocation(location2);
 
 			transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp("29-01-2008 15:00", MyUtils.timeAndDateFormat));
 			transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
 			transport.setPoliceAlarming(true);
 			transport.setProgramStatus(1);
-			transport.setRealLocation(realLocation);
+			//will be set when a vehicle is assigned
+			//transport.setRealLocation(location1);
 			transport.setToCity("toCity");
 			transport.setToStreet("toStreet");
 			//set transport number not possible
@@ -312,8 +311,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 			assertEquals("thenotes",transport.getNotes());
 			assertEquals("Max",transport.getPatient().getFirstname());
 			assertEquals("Muster",transport.getPatient().getLastname());
-			assertEquals("Bruck1",transport.getPlanedLocation().getLocationName());
-			assertEquals("Bruck2",transport.getRealLocation().getLocationName());
+			assertEquals("location2",transport.getPlanedLocation().getLocationName());
+			//assertEquals("location1",transport.getRealLocation().getLocationName());
 			assertEquals("toCity",transport.getToCity());
 			assertEquals("toStreet",transport.getToStreet());
 			assertEquals("C",transport.getTransportPriority());
