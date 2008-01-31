@@ -2,11 +2,13 @@ package at.rc.tacos.server.listener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.RosterDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
+import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.util.MyUtils;
@@ -23,10 +25,12 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Add a roster entry
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject)
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
 	{
 		RosterEntry entry = (RosterEntry)addObject;
 		int id = rosterDao.addRosterEntry(entry);
+		if(id == -1)
+			throw new DAOException("RosterEntryListener","Failed to add the roster entry "+entry);
 		entry.setRosterId(id);
 		return entry;
 	}
@@ -35,14 +39,16 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Listing of all entries 
 	 */
 	@Override
-	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
+	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
+		List<RosterEntry> rosterList;
+		
 		//if there is no filter -> request all
 		if(queryFilter == null || queryFilter.getFilterList().isEmpty())
 		{
 			System.out.println("WARNING: Listing of all roster entries is denied.");
-			return list;
+			throw new DAOException("RosterEntryListener","Listing of all roster entries is denied");
 		}
 		else if(queryFilter.containsFilterType(IFilterTypes.DATE_FILTER))
 		{
@@ -53,14 +59,23 @@ public class RosterEntryListener extends ServerListenerAdapter
 			calEnd.setTimeInMillis(dateStart);
 			calEnd.add(Calendar.DAY_OF_MONTH, 1);
 			long dateEnd = calEnd.getTimeInMillis();
-			list.addAll(rosterDao.listRosterEntryByDate(dateStart, dateEnd));
+			rosterList = rosterDao.listRosterEntryByDate(dateStart, dateEnd);
+			if(rosterList == null)
+			{
+				String time = MyUtils.timestampToString(dateStart, MyUtils.dateFormat) +" bis " +MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
+				throw new DAOException("RosterEntryListener","Failed to list the roster entries by date from "+time);
+			}
+			list.addAll(rosterList);
 		}
 		else if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER))
 		{
 			//get the query filter
 			final String filter = queryFilter.getFilterValue(IFilterTypes.ID_FILTER);
 			int id = Integer.parseInt(filter);
-			list.add(rosterDao.getRosterEntryById(id));
+			RosterEntry entry = rosterDao.getRosterEntryById(id);
+			if(entry == null)
+				throw new DAOException("RosterEntryListener","Failed to list the roster entry by id:"+id);
+			list.add(entry);
 		}
 		//return the list
 		return list;
@@ -70,10 +85,11 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Remove a roster entry
 	 */
 	@Override
-	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
+	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
 	{
 		RosterEntry entry = (RosterEntry)removeObject;
-		rosterDao.removeRosterEntry(entry.getRosterId());
+		if(!rosterDao.removeRosterEntry(entry.getRosterId()))
+			throw new DAOException("RosterEntryListener","Failed to remove the roster entry:"+entry);
 		return entry;
 	}
 
@@ -81,10 +97,11 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Update a roster entry
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
 	{
 		RosterEntry entry = (RosterEntry)updateObject;
-		rosterDao.updateRosterEntry(entry);
+		if(!rosterDao.updateRosterEntry(entry))
+			throw new DAOException("RosterEntryListener","Failed to update the roster entry:"+entry);
 		return entry;
 	}
 }

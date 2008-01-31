@@ -1,10 +1,12 @@
 package at.rc.tacos.server.listener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.VehicleDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
+import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -20,10 +22,11 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Vehicle added
      */
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject)
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
     {
         VehicleDetail vehicle = (VehicleDetail)addObject;
-        vehicleDao.addVehicle(vehicle);
+        if(!vehicleDao.addVehicle(vehicle))
+        	throw new DAOException("VehicleDetailListener","Failed to add the vehicle:"+vehicle);
         return vehicle;
     }
 
@@ -31,10 +34,13 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Vehicle listing
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.addAll(vehicleDao.listVehicles());
+        List<VehicleDetail> vehicleList = vehicleDao.listVehicles();
+        if(vehicleList == null)
+        	throw new DAOException("VehicleDetailListener","Failed to list the vehicles");
+        list.addAll(vehicleList);
         return list;
     }
 
@@ -42,10 +48,11 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Remove a vehicle
      */
     @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
     {
         VehicleDetail vehicle = (VehicleDetail)removeObject;
-        vehicleDao.removeVehicle(vehicle);
+        if(!vehicleDao.removeVehicle(vehicle))
+        	throw new DAOException("VehicleDetailListener","Failed to remove the vehicle "+vehicle);
         return vehicle;
     }
 
@@ -53,10 +60,11 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Updates a vehicle
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
     {
         VehicleDetail vehicle = (VehicleDetail)updateObject;
-        vehicleDao.updateVehicle(vehicle);
+        if(!vehicleDao.updateVehicle(vehicle))
+        	throw new DAOException("VehicleDetailListener","Failed to update the vehicle "+vehicle);
         return vehicle;
     }
 }

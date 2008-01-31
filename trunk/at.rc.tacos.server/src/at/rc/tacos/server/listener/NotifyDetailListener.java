@@ -4,6 +4,7 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.CallerDetail;
+import at.rc.tacos.model.DAOException;
 
 /**
  * This class will be notified uppon NotifyDetail changes
@@ -17,10 +18,12 @@ public class NotifyDetailListener extends ServerListenerAdapter
      * Add a notifier detail
      */
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject)
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
     {
         CallerDetail detail = (CallerDetail)addObject;
-        callerDao.addCaller(detail);
+        int id = callerDao.addCaller(detail);
+        if(id == -1)
+        	throw new DAOException("NotifyDetailListener","Failed to add the caller:"+detail);
         return detail;
     }
 
@@ -28,10 +31,11 @@ public class NotifyDetailListener extends ServerListenerAdapter
      * Update a notifier detail
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
     {
         CallerDetail detail = (CallerDetail)updateObject;
-        callerDao.updateCaller(detail);
+        if(!callerDao.updateCaller(detail))
+        	throw new DAOException("NotifyDetailListener","Failed to update the caller:"+detail);
         return detail;
     }
 }
