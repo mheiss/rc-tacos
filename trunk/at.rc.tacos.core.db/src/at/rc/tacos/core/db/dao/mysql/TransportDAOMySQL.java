@@ -86,9 +86,41 @@ public class TransportDAOMySQL implements TransportDAO
 
 			// t.creationDate, t.firstname, t.lastname, t.to_street, t.appointment = ?;
 			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportID"));
-			query1.setString(1, transport.getFromStreet());
-			query1.setString(2, transport.getFromCity());
-			//TODO nach mehreren Werten abfragen, um Eindeutigkeit zu gewährleisten
+			query1.setInt(1, transport.getDirection());	
+			if(transport.getCallerDetail() == null)
+				query1.setString(2, null);
+			else
+				query1.setInt(2, transport.getCallerDetail().getCallerId());
+			query1.setString(3, transport.getNotes());
+			query1.setString(4, transport.getCreatedByUsername());
+			query1.setString(5, transport.getTransportPriority());
+			query1.setString(6, transport.getFeedback());
+			query1.setString(7, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlDateTime));
+			query1.setString(8, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
+			query1.setString(9, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
+			query1.setString(10, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
+			query1.setString(11, transport.getKindOfTransport());
+			query1.setString(12, transport.getKindOfIllness());
+			if(transport.getPatient() == null)
+			{
+				query1.setString(13,null);
+				query1.setString(14, null);
+			}
+			else
+			{
+				query1.setString(13, transport.getPatient().getFirstname());
+				query1.setString(14, transport.getPatient().getLastname());
+			}
+			if(transport.getPlanedLocation() == null)
+				query1.setString(15, null);
+			else
+				query1.setInt(15, transport.getPlanedLocation().getId());
+			query1.setString(16, transport.getFromStreet());
+			query1.setString(17, transport.getFromCity());
+			query1.setString(18, transport.getToStreet());
+			query1.setString(19, transport.getToCity());
+			query1.setInt(20, transport.getProgramStatus());
+			query1.setString(21, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
 			final ResultSet rsId = query1.executeQuery();
 
 			if(!rsId.first())
