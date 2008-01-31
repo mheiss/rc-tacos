@@ -119,7 +119,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 
 			if(rs.first())
 			{
-				System.out.println("getStaffMemberByID");
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
 				Location station = new Location();
@@ -135,14 +134,8 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
-
 				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
-				for(Competence comp:staff.getCompetenceList())
-					System.out.println(comp);
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
-				for(MobilePhoneDetail detail:staff.getPhonelist())
-					System.out.println(detail);
-				System.out.println(staff);
 				return staff;
 			}
 		}
