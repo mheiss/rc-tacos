@@ -1,11 +1,13 @@
 package at.rc.tacos.server.listener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.QueryFilter;
 
 public class CompetenceListener extends ServerListenerAdapter
@@ -14,40 +16,49 @@ public class CompetenceListener extends ServerListenerAdapter
 	private CompetenceDAO compDao = DaoFactory.MYSQL.createCompetenceDAO();
 	
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject)
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
     {
         Competence comp = (Competence)addObject;
         int id = compDao.addCompetence(comp);
+        //check for error while adding
+        if(id == -1)
+        	throw new DAOException("CompetenceListener","Failed to add the competence "+ comp +" to the database");
         comp.setId(id);
         return comp;
     }
 
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
     {
     	ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-    	list.addAll(compDao.listCompetences());
-    	for(AbstractMessage ab:list)
-    	{
-    		Competence comp = (Competence)ab;
-    		System.out.println(comp);
-    	}
+    	List<Competence> competenceList = compDao.listCompetences();
+    	
+    	//check the result
+    	if(competenceList == null)
+    		throw new DAOException("CompetenceListener","Failed to list the competences");
+    	
+    	//add all returned competences
+    	for(AbstractMessage ab:competenceList)
+    		list.add(ab);
+    	
         return list;
     }
 
     @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
     {
     	Competence comp = (Competence)removeObject;
-    	compDao.removeCompetence(comp.getId());
+    	if(!compDao.removeCompetence(comp.getId()))
+    		throw new DAOException("CompetenceListener","Failed to remove the competence "+ comp);
     	return comp;
     }
 
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
     {
     	Competence comp = (Competence)updateObject;
-    	compDao.updateCompetence(comp);
+    	if(!compDao.updateCompetence(comp))
+    		throw new DAOException("CompetenceListener","Failed to update the competence: "+comp);
     	return comp;
     }
 }

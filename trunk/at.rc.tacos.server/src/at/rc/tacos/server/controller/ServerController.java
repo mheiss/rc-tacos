@@ -66,17 +66,15 @@ public class ServerController
     public void clientDisconnected(MyClient client)
     { 
         //get the user session
-        ClientSession session = getSession(client);
-        
+        ClientSession session = getSession(client);   
         System.out.println("Disconnect detected ( "+session+" ) ");
-
         //check the pool
         if(connClientPool.contains(session))
         {
             connClientPool.remove(session);
             //brodcast the message to all other authenticated clients
-            brodcastMessage("system",SystemMessage.ID, IModelActions.SYSTEM,
-                    new SystemMessage("Client "+session.getUsername() +" disconnected"));
+            SystemMessage system = new SystemMessage("Client "+session.getUsername() +" disconnected",SystemMessage.TYPE_INFO);
+            brodcastMessage("system",SystemMessage.ID, IModelActions.SYSTEM,system);
         }
     }
 

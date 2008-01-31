@@ -5,6 +5,7 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.DayInfoDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
+import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.util.MyUtils;
@@ -15,7 +16,7 @@ public class DayInfoListener extends ServerListenerAdapter
 	private DayInfoDAO dayInfoDao = DaoFactory.MYSQL.createDayInfoDAO();
 
 	@Override
-	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) 
+	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		//listing by date
@@ -42,11 +43,12 @@ public class DayInfoListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) 
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
 	{
 		DayInfoMessage dayInfo = (DayInfoMessage)updateObject;
 		//update the message on the server
-		dayInfoDao.updateDayInfoMessage(dayInfo);
+		if(!dayInfoDao.updateDayInfoMessage(dayInfo))
+			throw new DAOException("DayInfoListener","Failed to update the day info message: "+dayInfo);
 		//reset the dirty flag
 		dayInfo.setDirty(false);
 		return dayInfo;

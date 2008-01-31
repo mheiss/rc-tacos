@@ -1,9 +1,12 @@
 package at.rc.tacos.server.listener;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
+import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 
@@ -19,10 +22,13 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Add a mobile phone
      */    
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject)
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)addObject;
-        mobilePhoneDao.addMobilePhone(phone);
+        int id = mobilePhoneDao.addMobilePhone(phone);
+        if(id == -1)
+        	throw new DAOException("MobilePhoneListener","Failed to add the mobile phone:"+phone);
+        phone.setId(id);
         return addObject;
     }
 
@@ -30,10 +36,13 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Listing of all mobile phones
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)  throws DAOException
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.addAll(mobilePhoneDao.listMobilePhones());
+        List<MobilePhoneDetail> phoneList = mobilePhoneDao.listMobilePhones();
+        if(phoneList == null)
+        	throw new DAOException("MobilePhoneListener","Failed to list the mobile phones");
+        list.addAll(phoneList);
         return list;
     }
 
@@ -41,10 +50,11 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Remove a mobile phone
      */
     @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)  throws DAOException
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)removeObject;
-        mobilePhoneDao.removeMobilePhone(phone.getId());
+        if(!mobilePhoneDao.removeMobilePhone(phone.getId()))
+        	throw new DAOException("MobilePhoneListener","Failed to remove the mobile phone:"+phone);
         return phone;
     }
 
@@ -52,10 +62,11 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Update a mobile phone
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)updateObject;
-        mobilePhoneDao.updateMobilePhone(phone);
+        if(!mobilePhoneDao.updateMobilePhone(phone))
+        	throw new DAOException("MobilePhoneListener","Failed to update the mobile phone:"+phone);
         return phone;
     }
 }
