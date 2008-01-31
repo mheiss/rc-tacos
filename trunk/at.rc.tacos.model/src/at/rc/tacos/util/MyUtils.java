@@ -124,7 +124,6 @@ public class MyUtils
     public static String timestampToString(long timestamp,SimpleDateFormat dateFormat)
     {
     	String string = dateFormat.format(new Date(timestamp));
-    	System.out.println("timestampToString, string: " +string);
         return string;
     }
 
@@ -145,7 +144,6 @@ public class MyUtils
         try
         {
         	long timestamp = formatter.parse(time).getTime();
-        	System.out.println("string to timestamp, timestamp(long): " +timestamp);
             return timestamp;
         }
         catch(ParseException pe)
