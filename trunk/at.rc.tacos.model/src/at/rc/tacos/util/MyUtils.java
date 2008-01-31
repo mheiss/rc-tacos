@@ -123,6 +123,8 @@ public class MyUtils
      */
     public static String timestampToString(long timestamp,SimpleDateFormat dateFormat)
     {
+    	if(timestamp == 0)
+    		return null;
     	String string = dateFormat.format(new Date(timestamp));
         return string;
     }
@@ -137,6 +139,9 @@ public class MyUtils
      */
     public final static long stringToTimestamp(String time,SimpleDateFormat dateFormat)
     {
+    	if(time == null)
+    		return 0;
+    	
         //set up the parser
         DateFormat formatter = dateFormat;
         formatter.setLenient(true);
