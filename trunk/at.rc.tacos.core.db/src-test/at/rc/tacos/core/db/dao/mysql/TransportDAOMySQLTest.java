@@ -180,7 +180,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 		
 		transport3.setCallerDetail(caller1);
-		transport3.setCreatedByUsername("user2");
+		transport3.setCreatedByUsername("user1");
 		transport3.setDfAlarming(true);
 		transport3.setDirection(2);
 		transport3.setEmergencyDoctorAlarming(true);
@@ -210,6 +210,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 		//insert the transport
 		int trId3 = transportDAO.addTransport(transport3);
+		
+		System.out.println("iiiiiiiiiiiiiiiiiiiii transportid3: " +trId3);
 
 		Transport transport4 = transportDAO.getTransportById(trId3);
 
@@ -217,7 +219,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals(dateTime1,transport4.getCreationTime());
 		assertEquals(dateTime2,transport4.getAppointmentTimeAtDestination());
 		assertEquals(caller1,transport4.getCallerDetail());
-		assertEquals("user2",transport4.getCreatedByUsername());
+		assertEquals("user1",transport4.getCreatedByUsername());
 		assertEquals(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),transport4.getDateOfTransport());
 		assertEquals(MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),transport4.getPlannedStartOfTransport());
 		assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport4.getPlannedTimeAtPatient());
@@ -246,6 +248,50 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertTrue(transport4.isLongDistanceTrip());
 		assertTrue(transport4.isMountainRescueServiceAlarming());
 		assertTrue(transport4.isPoliceAlarming());
+		
+		
+		//add a second transport
+		Transport  transport7 = new Transport("vonStraße2","vonStadt2",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
+
+		transport7.setCreationTime(dateTime1);
+		transport7.setAppointmentTimeAtDestination(dateTime2);
+		transport7.setAssistantPerson(true);
+		transport7.setBackTransport(true);
+		transport7.setBlueLightToGoal(true);
+		transport7.setBrkdtAlarming(true);
+		
+		transport7.setCallerDetail(caller1);
+		transport7.setCreatedByUsername("user2");
+		transport7.setDfAlarming(true);
+		transport7.setDirection(2);
+		transport7.setEmergencyDoctorAlarming(true);
+		transport7.setEmergencyPhone(true);
+		transport7.setFeedback("feedbackNew");
+		transport7.setFirebrigadeAlarming(true);
+		transport7.setHelicopterAlarming(true);
+		transport7.setKindOfIllness("Schlaganfall");
+		transport7.setKindOfTransport("Tragsessel");
+		transport7.setLongDistanceTrip(true);
+		transport7.setMountainRescueServiceAlarming(true);
+		transport7.setNotes("thenotes");
+		Patient patient2 = new Patient("Muster","Max");
+		transport7.setPatient(patient2);
+
+		transport7.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
+		transport7.setPoliceAlarming(true);
+		transport7.setProgramStatus(1);
+		transport7.setToCity("toCity");
+		transport7.setToStreet("toStreet");
+		//set transport number not possible
+		transport7.setTransportPriority("C");
+		//set transport year not possible
+
+		//realLocation and vehicle is for a new transport not possible
+
+		//insert the transport
+		int trId7 = transportDAO.addTransport(transport7);
+		System.out.println("iiiiiiiiiiiiiiiiiiiii transportid7: " +trId7);
+		
 	}
 
 
@@ -320,7 +366,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			Transport transport = transportDAO.getTransportById(transport1.getTransportId());
 			assertEquals(transport1.getTransportId(),transport.getTransportId());
 			assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport.getAppointmentTimeAtDestination());
-			assertEquals("anrufer1",transport.getCallerDetail().getCallerName());
+			assertEquals("derCaller",transport.getCallerDetail().getCallerName());
 			assertEquals("user2",transport.getCreatedByUsername());
 //			assertEquals(cal2,transport.getDateOfTransport());//TODO????
 			assertEquals(2,transport.getDirection());
@@ -410,7 +456,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 			//insert the transport
 			int trId3 = transportDAO.addTransport(transport3);
 
-			
 			Transport transportNew = transportDAO.getTransportById(trId3);
 			
 			transportNew.setVehicleDetail(veh2);
@@ -419,7 +464,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 			Transport transport5 = transportDAO.getTransportById(trId3);
 
-			System.out.println("transportID (old) :..::::: " +trId3);
+			System.out.println("transportID (old)eins :..::::: " +trId3);
 
 			System.out.println("Transportnumber: öööööööööööööö " +transport5.getTransportNumber());
 			System.out.println("Transportnumber: öööööööööööööö " +trNumber0);
@@ -445,7 +490,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 			CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
 			transport3.setCallerDetail(caller1Detail);
-			transport3.setCreatedByUsername("user2");
+			transport3.setCreatedByUsername("user1");//to differ between the two transports
 			transport3.setDfAlarming(true);
 			transport3.setDirection(2);
 			transport3.setEmergencyDoctorAlarming(true);
@@ -487,15 +532,15 @@ public class TransportDAOMySQLTest extends DBTestBase
 			veh2.setVehicleName("Bm09");
 			veh2.setVehicleType("KTW");
 
-			Transport transportNew = transportDAO.getTransportById(trId3);
+			Transport transportBack = transportDAO.getTransportById(trId3);
 			
-			transportNew.setVehicleDetail(veh2);
+			transportBack.setVehicleDetail(veh2);
 
-			int trNumber0 = transportDAO.assignVehicleToTransport(transportNew);
+			int trNumber0 = transportDAO.assignVehicleToTransport(transportBack);
 
 			Transport transport5 = transportDAO.getTransportById(trId3);
 
-			System.out.println("transportID (old) :..::::: " +trId3);
+			System.out.println("transportID (old) zwei :..::::: " +trId3);
 
 			System.out.println("Transportnumber: öööööööööööööö " +transport5.getTransportNumber());
 			System.out.println("Transportnumber: öööööööööööööö " +trNumber0);
