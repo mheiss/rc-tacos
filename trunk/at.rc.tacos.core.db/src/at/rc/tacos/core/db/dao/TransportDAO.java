@@ -25,7 +25,7 @@ public interface TransportDAO
      * @param transport the transport to assign
      * @return the transport number.
      */
-    public int assignVehicleToTransport(Transport transport);
+    public boolean assignVehicleToTransport(Transport transport);
     
     /**
      * removes an assigned vehicle from a transport
