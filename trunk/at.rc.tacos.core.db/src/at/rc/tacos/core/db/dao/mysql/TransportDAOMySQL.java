@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
@@ -16,7 +17,7 @@ import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
 import at.rc.tacos.util.MyUtils;
 
-public class TransportDAOMySQL implements TransportDAO
+public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
 	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
@@ -301,7 +302,6 @@ public class TransportDAOMySQL implements TransportDAO
 	{
 		try
 		{
-			// TODO update all FK tables!!!
 			int callerId;
 			CallerDetail caller = new CallerDetail();
 			caller = transport.getCallerDetail();
@@ -598,15 +598,15 @@ public class TransportDAOMySQL implements TransportDAO
 	@Override
 	public List<Transport> listArchivedTransports(long startdate, long enddate)
 	{
-		// TODO What number stands for archived transports? check and endit queries!!!
 		List<Transport> transports = null;
 		try
 		{
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.archivedTransports"));
 			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDateTime));
 			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
+			query.setInt(3, PROGRAM_STATUS_JOURNAL);
 			final ResultSet rs = query.executeQuery();
-
+			
 			while(rs.next())
 			{
 				Transport transport = new Transport();
@@ -983,58 +983,57 @@ public class TransportDAOMySQL implements TransportDAO
 				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.selectedTransportItems"));
 				query1.setInt(1, transport.getTransportId());
 				final ResultSet rs1 = query1.executeQuery();
-
+				
+				transport.setEmergencyDoctorAlarming(false);
+				transport.setPoliceAlarming(false);
+				transport.setFirebrigadeAlarming(false);
+				transport.setMountainRescueServiceAlarming(false);
+				transport.setDfAlarming(false);
+				transport.setBrkdtAlarming(false);
+				transport.setBlueLightToGoal(false);
+				transport.setHelicopterAlarming(false);
+				transport.setAssistantPerson(false);
+				transport.setBackTransport(false);
+				transport.setLongDistanceTrip(false);
+				transport.setEmergencyPhone(false);
 				while(rs1.next())
 				{
 					if(rs1.getInt("selected_ID") == 1)
 						transport.setEmergencyDoctorAlarming(true);
-					else transport.setEmergencyDoctorAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 2)
 						transport.setPoliceAlarming(true);
-					else transport.setPoliceAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 3)
 						transport.setFirebrigadeAlarming(true);
-					else transport.setFirebrigadeAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 4)
 						transport.setMountainRescueServiceAlarming(true);
-					else transport.setMountainRescueServiceAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 5)
 						transport.setDfAlarming(true);
-					else transport.setDfAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 6)
 						transport.setBrkdtAlarming(true);
-					else transport.setBrkdtAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 7)
 						transport.setBlueLightToGoal(true);
-					else transport.setBlueLightToGoal(false);
-
+					
 					if(rs1.getInt("selected_ID") == 8)
 						transport.setHelicopterAlarming(true);
-					else transport.setHelicopterAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 9)
 						transport.setAssistantPerson(true);
-					else transport.setAssistantPerson(false);
 
 					if(rs1.getInt("selected_ID") == 10)
 						transport.setBackTransport(true);
-					else transport.setBackTransport(false);
 
 					if(rs1.getInt("selected_ID") == 11)
 						transport.setLongDistanceTrip(true);
-					else transport.setLongDistanceTrip(false);
 
 					if(rs1.getInt("selected_ID") == 12)
 						transport.setEmergencyPhone(true);
-					else transport.setEmergencyPhone(false);
 				}
-				System.out.println("transport: "+transport);
 			}
 			return transport;
 		}
