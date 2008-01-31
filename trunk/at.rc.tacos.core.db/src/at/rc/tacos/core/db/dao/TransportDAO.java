@@ -6,9 +6,9 @@ import at.rc.tacos.model.Transport;
 public interface TransportDAO 
 {
     public static final String TABLE_NAME = "transports";
-    public static final String TABLE_DEPENDENT_NAME = "transportstate";
-    public static final String TABLE_DEPENDENT_NAME2 = "transport_selected";
-    public static final String TABLE_DEPENDENT_NAME3 = "assigned_vehicle";
+    public static final String TABLE_DEPENDENT_STATE = "transportstate";
+    public static final String TABLE_DEPENDENT_SELECTED = "transport_selected";
+    public static final String TABLE_DEPENDENT_ASSIGNED_VEHICLES = "assigned_vehicle";
     
 	/**
 	 * Adds a new transport to the table and returns the transport id.<br>
