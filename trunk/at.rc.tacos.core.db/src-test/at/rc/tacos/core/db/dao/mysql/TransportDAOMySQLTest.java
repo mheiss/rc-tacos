@@ -176,13 +176,13 @@ public class TransportDAOMySQLTest extends DBTestBase
 		transport3.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
 		transport3.setPoliceAlarming(true);
 		transport3.setProgramStatus(1);
-		transport3.setRealLocation(location2);
 		transport3.setToCity("toCity");
 		transport3.setToStreet("toStreet");
 		//set transport number not possible
 		transport3.setTransportPriority("C");
-		transport3.setVehicleDetail(veh1);
 		//set transport year not possible
+		
+		//realLocation and vehicle is for a new transport not possible
 		
 		//insert the transport
 		int trId3 = transportDAO.addTransport(transport3);
@@ -205,12 +205,10 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals("Tragsessel",transport4.getKindOfTransport());
 		assertEquals("thenotes",transport4.getNotes());
 		assertEquals(patient1,transport4.getPatient());
-		assertEquals(location2,transport4.getRealLocation());//TODO ------ got null back
 		assertEquals("toCity",transport4.getToCity());
 		assertEquals("toStreet",transport4.getToStreet());
 		assertEquals("C",transport4.getTransportPriority());
 		assertEquals(1,transport4.getProgramStatus());
-		assertEquals(veh1,transport4.getVehicleDetail());//TODO ---- got null back
 
 		assertTrue(transport4.isAssistantPerson());//TODO ---- got irgendwas back
 		assertTrue(transport4.isBackTransport());
