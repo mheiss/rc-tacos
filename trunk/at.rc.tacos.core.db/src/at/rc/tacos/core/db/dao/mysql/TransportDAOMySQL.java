@@ -353,10 +353,10 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			
 			assignTransportItems(transport);
 			
-			boolean result = false;
+			int result = 0;
 			if(transport.getVehicleDetail().getVehicleName() != null)
 				result = assignVehicleToTransport(transport);
-			if(result == false)
+			if(result == -1)
 				return false;
 		}
 		catch (SQLException e)
@@ -426,7 +426,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	}
 
 	@Override
-	public boolean assignVehicleToTransport(Transport transport)
+	public int assignVehicleToTransport(Transport transport)
 	{
 		try
 		{
@@ -462,7 +462,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					query.setString(7, transport.getVehicleDetail().getVehicleType());
 					query.setInt(8, transport.getTransportId());
 					query.executeUpdate();
-					return true;
+					return transport.getTransportNumber();
 				}
 				else
 				{
@@ -478,21 +478,21 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 						//archive transportnumber
 						boolean result = archiveTransportNumber(rs2.getInt("transportNr"), transport.getVehicleDetail().getCurrentStation().getLocationName());
 						if(result == false)
-							return false;
+							return -1;
 
 						int transportNr = getNewTransportNrForLocation(transport.getVehicleDetail().getCurrentStation().getLocationName());
 						if(transportNr == -1)
-							return false;
+							return -1;
 
 						//insert new transportnumber to existing transport
 						final PreparedStatement query6 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
 						query6.setInt(1, transportNr);
 						query6.setInt(2, transport.getTransportId());
 						query6.executeUpdate();
-						return true;
+						return transportNr;
 					}
 				}
-				return false;
+				return -1;
 			}
 			else
 			{
@@ -522,23 +522,24 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				query.setString(7, transport.getVehicleDetail().getVehicleNotes());
 				query.setString(8, transport.getVehicleDetail().getVehicleType());
 				query.executeUpdate();
-
+				
+				int transportNr=0;
 				if(transport.getVehicleDetail().getCurrentStation() != null)
 				{
-					int transportNr = getNewTransportNrForLocation(transport.getVehicleDetail().getCurrentStation().getLocationName());
+					transportNr = getNewTransportNrForLocation(transport.getVehicleDetail().getCurrentStation().getLocationName());
 					//insert new transportnumber to existing transport
 					final PreparedStatement query6 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
 					query6.setInt(1, transportNr);
 					query6.setInt(2, transport.getTransportId());
 					query6.executeUpdate();
 				}
-				return true;
+				return transportNr;
 			}
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			return false;
+			return -1;
 		}	
 	}
 
