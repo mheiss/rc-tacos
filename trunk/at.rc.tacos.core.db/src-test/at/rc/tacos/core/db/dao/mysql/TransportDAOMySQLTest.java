@@ -107,6 +107,9 @@ public class TransportDAOMySQLTest extends DBTestBase
 		transport1.setCreatedByUsername(login1.getUsername());
 		transport2.setCreatedByUsername(login2.getUsername());
 		transport1.setCallerDetail(caller1);
+		long creationTime = Calendar.getInstance().getTimeInMillis();
+		transport1.setCreationTime(creationTime);
+		transport2.setCreationTime(creationTime);
 
 
 		int tr1id = transportDAO.addTransport(transport1);
@@ -130,6 +133,99 @@ public class TransportDAOMySQLTest extends DBTestBase
 	}
 
 
+	@Test
+	public void testInsertTransport()
+	{
+		//fromStreet, fromCity, plannedLocation, dateOfTransport, plannedStartOfTransport, transportPriority, direction
+		Transport  transport3 = new Transport("vonStraﬂe3","vonStadt3",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
+		
+		long dateTime1 = Calendar.getInstance().getTimeInMillis();
+		long dateTime2 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
+																										
+		transport3.setCreationTime(dateTime1);
+		transport3.setAppointmentTimeAtDestination(dateTime2);
+		transport3.setAssistantPerson(true);
+		transport3.setBackTransport(true);
+		transport3.setBlueLightToGoal(true);
+		transport3.setBrkdtAlarming(true);
+
+		CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
+		transport3.setCallerDetail(caller1Detail);
+		transport3.setCreatedByUsername("user2");
+		transport3.setDfAlarming(true);
+		transport3.setDirection(2);
+		transport3.setEmergencyDoctorAlarming(true);
+		transport3.setEmergencyPhone(true);
+		transport3.setFeedback("feedbackNew");
+		transport3.setFirebrigadeAlarming(true);
+		transport3.setFromCity("fromCity1");
+		transport3.setFromStreet("fromStreet1");
+		transport3.setHelicopterAlarming(true);
+		transport3.setKindOfIllness("Schlaganfall");
+		transport3.setKindOfTransport("Tragsessel");
+		transport3.setLongDistanceTrip(true);
+		transport3.setMountainRescueServiceAlarming(true);
+		transport3.setNotes("thenotes");
+																										
+		Patient patient1 = new Patient("Muster","Max");
+		transport3.setPatient(patient1);
+
+
+		transport3.setPlannedStartOfTransport(MyUtils.stringToTimestamp("29-01-2008 15:00", MyUtils.timeAndDateFormat));
+		transport3.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
+		transport3.setPoliceAlarming(true);
+		transport3.setProgramStatus(1);
+		transport3.setRealLocation(location2);
+		transport3.setToCity("toCity");
+		transport3.setToStreet("toStreet");
+		//set transport number not possible
+		transport3.setTransportPriority("C");
+		transport3.setVehicleDetail(veh1);
+		//set transport year not possible
+		
+		//insert the transport
+		int trId3 = transportDAO.addTransport(transport3);
+
+		Transport transport4 = transportDAO.getTransportById(trId3);
+		
+		assertEquals(location1,transport4.getPlanedLocation());//R
+		assertEquals(dateTime1,transport4.getCreationTime());//R
+		assertEquals(dateTime2,transport4.getAppointmentTimeAtDestination());//R
+		assertEquals(caller1Detail,transport4.getCallerDetail());//R
+		assertEquals("user2",transport4.getCreatedByUsername());//R
+		assertEquals(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),transport4.getDateOfTransport());//R
+		assertEquals(MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),transport4.getPlannedStartOfTransport());//R
+		assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport4.getPlannedTimeAtPatient());//R
+		assertEquals(2,transport4.getDirection());//R
+		assertEquals("feedbackNew",transport4.getFeedback());//R
+		assertEquals("vonStadt3",transport4.getFromCity());//R
+		assertEquals("vonStraﬂe3",transport4.getFromStreet());//R
+		assertEquals("Schlaganfall",transport4.getKindOfIllness());//R
+		assertEquals("Tragsessel",transport4.getKindOfTransport());//R
+		assertEquals("thenotes",transport4.getNotes());//R
+		assertEquals(patient1,transport4.getPatient());//R
+		assertEquals(location2,transport4.getRealLocation());//R
+		assertEquals("toCity",transport4.getToCity());//R
+		assertEquals("toStreet",transport4.getToStreet());//R
+		assertEquals("C",transport4.getTransportPriority());//R
+		assertEquals(1,transport4.getProgramStatus());//R
+		assertEquals(veh1,transport4.getVehicleDetail());//R
+		
+		assertTrue(transport4.isAssistantPerson());//R
+		assertTrue(transport4.isBackTransport());//R
+		assertTrue(transport4.isBlueLightToGoal());//R
+		assertTrue(transport4.isBrkdtAlarming());//R
+		assertTrue(transport4.isDfAlarming());//R
+		assertTrue(transport4.isEmergencyDoctorAlarming());//R
+		assertTrue(transport4.isEmergencyPhone());//R
+		assertTrue(transport4.isFirebrigadeAlarming());//R
+		assertTrue(transport4.isHelicopterAlarming());//R
+		assertTrue(transport4.isLongDistanceTrip());//R
+		assertTrue(transport4.isMountainRescueServiceAlarming());//R
+		assertTrue(transport4.isPoliceAlarming());//R
+	}
+	
+	
 	@Test
 	public void testListTransports()
 	{
@@ -160,7 +256,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 			CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
 			transport.setCallerDetail(caller1Detail);
-			transport.setCreatedByUsername("crUser");
+			transport.setCreatedByUsername("user1");
 			transport.setDateOfTransport(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat));
 			transport.setDfAlarming(true);
 			transport.setDirection(2);
@@ -172,7 +268,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport.setFromStreet("fromStreet1");
 			transport.setHelicopterAlarming(true);
 			transport.setKindOfIllness("Schlaganfall");
-			transport.setKindOfTransport("mobil");
+			transport.setKindOfTransport("Tragsessel");
 			transport.setLongDistanceTrip(true);
 			transport.setMountainRescueServiceAlarming(true);
 			transport.setNotes("thenotes");
