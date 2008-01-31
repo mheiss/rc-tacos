@@ -34,9 +34,9 @@ public class AdminPerspective implements IPerspectiveFactory
         left.addView(VehicleAdminView.ID);
         left.addView(PhoneAdminView.ID);
         //Create the folder on the right
-        IFolderLayout right = layout.createFolder("left", IPageLayout.LEFT, (float) 0.70, editorArea);
-        right.addView(StaffDetailView.ID);
-        right.addView(VehicleDetailAdminView.ID);
-        right.addView(PhoneDetailAdminView.ID);
+        IFolderLayout right = layout.createFolder("right", IPageLayout.LEFT, (float) 0.70, editorArea);
+        right.addPlaceholder(StaffDetailView.ID);
+        right.addPlaceholder(VehicleDetailAdminView.ID);
+        right.addPlaceholder(PhoneDetailAdminView.ID);
     }
 }

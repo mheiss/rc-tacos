@@ -65,7 +65,7 @@ public class MobilePhoneManager  extends PropertyManager
                 //get the position of the entry
                 int id = objectList.indexOf(phone);
                 objectList.set(id, phone);
-                firePropertyChange("STAFF_UPDATE", null, phone); 
+                firePropertyChange("PHONE_UPDATE", null, phone); 
             }
         });
     }

@@ -18,7 +18,7 @@ import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.StaffMember;
 
-public class StaffDetailView extends ViewPart implements ISelectionListener 
+public class StaffDetailView extends ViewPart implements ISelectionListener
 {
     public static final String ID = "at.rc.tacos.client.view.admin.staffDetailView"; 
     //properties
@@ -132,12 +132,10 @@ public class StaffDetailView extends ViewPart implements ISelectionListener
         if (!selection.isEmpty()) 
         {
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
-            if (structuredSelection instanceof StaffMember) 
+            Object selectedObject = structuredSelection.getFirstElement();
+            if (selectedObject instanceof StaffMember) 
             {
-	            StaffMember member = (StaffMember)structuredSelection.getFirstElement();
-	            System.out.println(selection);
-	            System.out.println(structuredSelection);
-	            System.out.println(member);
+	            StaffMember member = (StaffMember)selectedObject;
 	            userName.setText(member.getUserName());
 	            firstName.setText(member.getFirstName());
 	            lastName.setText(member.getLastName());
