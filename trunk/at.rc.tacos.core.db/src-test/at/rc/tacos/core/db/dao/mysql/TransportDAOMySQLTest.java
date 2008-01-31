@@ -123,7 +123,29 @@ public class TransportDAOMySQLTest extends DBTestBase
 		transport2.setTransportId(tr2id); 
 		System.out.println(tr1id);
 		System.out.println(tr2id);
-
+		
+		//vehicle
+		veh1.setBasicStation(location1);
+		veh1.setCurrentStation(location1);
+		veh1.setDriver(member1);
+		veh1.setMobilPhone(phone1);
+		veh1.setReadyForAction(true);
+		veh1.setTransportStatus(10);
+		veh1.setVehicleName("Bm09");
+		veh1.setVehicleType("KTW");
+		
+		veh2.setBasicStation(location1);
+		veh2.setCurrentStation(location1);
+		veh2.setDriver(member1);
+		veh2.setMobilPhone(phone1);
+		veh2.setReadyForAction(true);
+		veh2.setTransportStatus(10);
+		veh2.setVehicleName("Bm09");
+		veh2.setVehicleType("KTW");
+		
+		boolean checkVeh1 = vehicleDAO.addVehicle(veh1);
+		boolean checkVeh2 = vehicleDAO.addVehicle(veh2);
+		
 	}
 
 	@After
@@ -156,8 +178,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		transport3.setBlueLightToGoal(true);
 		transport3.setBrkdtAlarming(true);
 
-		CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
-		transport3.setCallerDetail(caller1Detail);
+		
+		transport3.setCallerDetail(caller1);
 		transport3.setCreatedByUsername("user2");
 		transport3.setDfAlarming(true);
 		transport3.setDirection(2);
@@ -194,7 +216,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals(location1,transport4.getPlanedLocation());
 		assertEquals(dateTime1,transport4.getCreationTime());
 		assertEquals(dateTime2,transport4.getAppointmentTimeAtDestination());
-		assertEquals(caller1Detail,transport4.getCallerDetail());
+		assertEquals(caller1,transport4.getCallerDetail());
 		assertEquals("user2",transport4.getCreatedByUsername());
 		assertEquals(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),transport4.getDateOfTransport());
 		assertEquals(MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),transport4.getPlannedStartOfTransport());
@@ -255,8 +277,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport.setBlueLightToGoal(true);
 			transport.setBrkdtAlarming(true);
 
-			CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
-			transport.setCallerDetail(caller1Detail);
+			transport.setCallerDetail(caller1);
 			transport.setCreatedByUsername("user2");
 			transport.setDateOfTransport(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat));
 			transport.setDfAlarming(true);
@@ -357,8 +378,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport3.setBlueLightToGoal(true);
 			transport3.setBrkdtAlarming(true);
 
-			CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
-			transport3.setCallerDetail(caller1Detail);
+			transport3.setCallerDetail(caller1);
 			transport3.setCreatedByUsername("user2");
 			transport3.setDfAlarming(true);
 			transport3.setDirection(2);
@@ -390,17 +410,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			//insert the transport
 			int trId3 = transportDAO.addTransport(transport3);
 
-			//assign the vehicle
-			VehicleDetail veh2 = new VehicleDetail();
-			veh2.setBasicStation(location1);
-			veh2.setCurrentStation(location1);
-			veh2.setDriver(member1);
-			veh2.setMobilPhone(phone1);
-			veh2.setReadyForAction(true);
-			veh2.setTransportStatus(10);
-			veh2.setVehicleName("Bm09");
-			veh2.setVehicleType("KTW");
-
+			
 			Transport transportNew = transportDAO.getTransportById(trId3);
 			
 			transportNew.setVehicleDetail(veh2);
