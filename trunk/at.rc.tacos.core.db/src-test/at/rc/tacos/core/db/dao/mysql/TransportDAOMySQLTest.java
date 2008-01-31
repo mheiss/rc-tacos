@@ -339,12 +339,78 @@ public class TransportDAOMySQLTest extends DBTestBase
 //	}
 
 
-//	@Test
-//	public void testAssignVehicleToTransport()
-//	{
+	@Test
+	public void testAssignVehicleToTransport()
+	{
+		Transport  transport3 = new Transport("vonStraße3","vonStadt3",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
+		
+		long dateTime1 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
+		long dateTime2 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
+																										
+		transport3.setCreationTime(dateTime1);
+		transport3.setAppointmentTimeAtDestination(dateTime2);
+		transport3.setAssistantPerson(true);
+		transport3.setBackTransport(true);
+		transport3.setBlueLightToGoal(true);
+		transport3.setBrkdtAlarming(true);
+
+		CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
+		transport3.setCallerDetail(caller1Detail);
+		transport3.setCreatedByUsername("user2");
+		transport3.setDfAlarming(true);
+		transport3.setDirection(2);
+		transport3.setEmergencyDoctorAlarming(true);
+		transport3.setEmergencyPhone(true);
+		transport3.setFeedback("feedbackNew");
+		transport3.setFirebrigadeAlarming(true);
+		transport3.setHelicopterAlarming(true);
+		transport3.setKindOfIllness("Schlaganfall");
+		transport3.setKindOfTransport("Tragsessel");
+		transport3.setLongDistanceTrip(true);
+		transport3.setMountainRescueServiceAlarming(true);
+		transport3.setNotes("thenotes");
+																										
+		Patient patient1 = new Patient("Muster","Max");
+		transport3.setPatient(patient1);
+
+		transport3.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
+		transport3.setPoliceAlarming(true);
+		transport3.setProgramStatus(1);
+		transport3.setToCity("toCity");
+		transport3.setToStreet("toStreet");
+		//set transport number not possible
+		transport3.setTransportPriority("C");
+		//set transport year not possible
+		
+		
+		
+		//insert the transport
+		int trId3 = transportDAO.addTransport(transport3);
+		
+		//assign the vehicle
+		VehicleDetail veh2 = new VehicleDetail();
+		veh2.setBasicStation(location1);
+		veh2.setCurrentStation(location1);
+		veh2.setDriver(member1);
+		veh2.setMobilPhone(phone1);
+		veh2.setReadyForAction(true);
+		veh2.setTransportStatus(10);
+		veh2.setVehicleName("Bm09");
+		veh2.setVehicleType("KTW");
+		
+		transport3.setVehicleDetail(veh2);
+		
+		int trId4 = transportDAO.assignVehicleToTransport(transport3);
+		
+		Transport transport5 = transportDAO.getTransportById(trId4);
+		
+		System.out.println("transportID:..::::: " +trId4);
+		
+		assertNotSame(0, trId4);
+		System.out.println("Transportnumber: öööööööööööööö" +transport5.getTransportNumber());
 
 
-//	}
+	}
 
 //	@Test
 //	public void testRemoveVehicleFromTransport()
