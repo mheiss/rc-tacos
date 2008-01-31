@@ -40,55 +40,32 @@ public class MyUtilsTest
         cal1.set(2008, 01, 10);
         Calendar cal2 = Calendar.getInstance();
         cal2.set(2008, 01, 11);
-
         boolean result = MyUtils.isEqualDate(cal1.getTimeInMillis(), cal2.getTimeInMillis());
-
-        Assert.assertFalse(result);
-    }
-
-    /**
-     * Testcase 2: test a valid year
-     */
-    @Test 
-    public void testValidYear()
-    {
-        int year = 2008;
-        boolean result = MyUtils.isValidYear(year);
-        Assert.assertTrue(result);
-    }
-
-
-    /**
-     * Testcase 2a: test a invalid year
-     */
-    @Test 
-    public void testInValidYear()
-    {
-        int year = 6984;
-        boolean result = MyUtils.isValidYear(year);
         Assert.assertFalse(result);
     }
     
     /**
-     * Testcase 3: test a valid date
+     * Testcase 4: Convert string date to timestamp and back
      */
-    @Test 
-    public void testValidDate()
+    @Test
+    public void testConvertDate()
+    {
+        String date = "27-01-2008";
+        long timestamp = MyUtils.stringToTimestamp(date, MyUtils.dateFormat);
+        Assert.assertEquals("27-01-2008", MyUtils.timestampToString(timestamp, MyUtils.dateFormat));
+    }
+    
+    /**
+     * Testcase 5: Convert timestamp to string and back
+     */
+    @Test
+    public void testConvertTimestamp()
     {
         Calendar cal = Calendar.getInstance();
-        boolean result = MyUtils.isValidDate(cal.getTimeInMillis());
-        Assert.assertTrue(result);
-    }
-
-
-    /**
-     * Testcase 3a: test a invalid date
-     */
-    @Test 
-    public void testInValidDate()
-    {
-        boolean result = MyUtils.isValidDate(-48);
-        Assert.assertFalse(result);
+        cal.set(2008, 01, 28, 15, 30);
+        long timestamp = cal.getTimeInMillis();
+        String date = MyUtils.timestampToString(timestamp, MyUtils.timeAndDateFormat);
+        Assert.assertEquals(timestamp, MyUtils.stringToTimestamp(date, MyUtils.timeAndDateFormat));
     }
     
 //    @Test 
