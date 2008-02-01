@@ -67,6 +67,9 @@ public class TransportDAOMySQLTest extends DBTestBase
 	Transport  transport2 = new Transport("vonStraße2","vonStadt2",location2,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 14:00", MyUtils.timeAndDateFormat),"B",2);
 
 	CallerDetail caller1 = new CallerDetail("derCaller","0664-4143824");
+	
+	int tr1id;
+	int tr2id;
 
 	@Before
 	public void setUp() 
@@ -115,8 +118,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		transport2.setPlanedLocation(location2);
 
 
-		int tr1id = transportDAO.addTransport(transport1);
-		int tr2id = transportDAO.addTransport(transport2);
+		tr1id = transportDAO.addTransport(transport1);
+		tr2id = transportDAO.addTransport(transport2);
 		System.out.println("Transport1 id: " +tr1id);
 		System.out.println("Transport2 id: " +tr2id);
 		transport1.setTransportId(tr1id);
@@ -551,11 +554,28 @@ public class TransportDAOMySQLTest extends DBTestBase
 		}
 	}
 
-//	@Test
-//	public void testRemoveVehicleFromTransport()
-//	{
+	@Test
+	public void testRemoveVehicleFromTransport()
+	{
+		//assign a vehicle to the transport
+		transport1.setVehicleDetail(veh1);
+		int trNumber0 = transportDAO.assignVehicleToTransport(transport1);//DB
+		assertNotSame(0,trNumber0);
+		
+		//get the updated transport back from the db
+		Transport transportBackFromDB = transportDAO.getTransportById(tr1id);
+		
+		//remove the vehicle from the transport
+		assertTrue(transportDAO.removeVehicleFromTransport(transportBackFromDB));
 
-//	}
+		//get the updated transport back from the db
+		Transport transportBackFromDBAfterRemove = transportDAO.getTransportById(tr1id);
+		
+		//compare the transort number (shoul be 0)
+		assertEquals(0,transportBackFromDBAfterRemove.getTransportNumber());//TODO- bug fixing?
+		//TODO abklären: wird das vehicle am client/server schon aus dem Transport gelöscht?
+		
+	}
 
 
 //	@Test
