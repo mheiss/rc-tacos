@@ -158,7 +158,7 @@
 
 <tr><td valign="top" align="center" width="100%"><div id="calendar">Tacos Calendar</div></td></tr>
 </table></td>
-													<td>gew&auml;hltes Datum: <input type="text"
+													<td>gew&auml;hltes Datum: <input type="text" 
 														disabled="disabled" id="selDateView" /><br />
 													<br />
 													<table width="162" border="0">
