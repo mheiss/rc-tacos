@@ -1,5 +1,6 @@
-package at.rc.tacos.client.view.admin;
+package at.rc.tacos.client.editors;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -8,34 +9,39 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.model.StaffMember;
 
-public class VehicleDetailAdminView extends ViewPart implements ISelectionListener 
+public class StaffMemberEditor extends EditorPart implements ISelectionListener
 {
-    public static final String ID = "at.rc.tacos.client.view.admin.vehicleDetailAdminView"; 
+    public static final String ID = "at.rc.tacos.client.editors.staffMemberEditor"; 
     //properties
     private Label headerLabel;
     private FormToolkit toolkit;
     private ScrolledForm form;
-    private Text vehicleName;
-    private Text vehicleType;
-    private Text basicStation;
-    private Label vehicleNameLabel;
-    private Label vehicleTypeLabel;
-    private Label basicStationLabel;  
+    private Text userName;
+    private Text firstName;
+    private Text lastName;
+    private Label userNameLabel;
+    private Label firstNameLabel;
+    private Label lastNameLabel;  
+    
+    protected boolean isDirty;
     
     /**
      * Default class constructor
      */
-    public VehicleDetailAdminView()
+    public StaffMemberEditor()
     {
         //Attach a selection change listener to the view
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener(this);
@@ -50,6 +56,38 @@ public class VehicleDetailAdminView extends ViewPart implements ISelectionListen
         //remove the listener
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().removeSelectionListener(this); 
     }
+    
+    @Override
+    public void doSave(IProgressMonitor monitor) 
+    {
+        
+    }
+    
+    @Override
+    public boolean isSaveAsAllowed() 
+    {
+        return false;
+    }
+    
+    @Override
+    public void doSaveAs() 
+    {
+        // don't support saving as
+    }
+
+    @Override
+    public boolean isDirty() 
+    {
+        return isDirty;
+    }
+
+    @Override
+    public void init(IEditorSite site, IEditorInput input) throws PartInitException 
+    {
+        setSite(site);
+        setInput(input);
+        setPartName(input.getName());
+    }
 
     /**
      * This is a callback that will allow us to create the viewer and initialize it.
@@ -60,7 +98,7 @@ public class VehicleDetailAdminView extends ViewPart implements ISelectionListen
         //Create the form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
-        form.setText("Fahrzeug");
+        form.setText("Allgemeine Daten");
         toolkit.decorateFormHeading(form.getForm());
         form.getBody().setLayout(new GridLayout());
         //the body for the other components to add
@@ -84,33 +122,33 @@ public class VehicleDetailAdminView extends ViewPart implements ISelectionListen
         gridLayout.numColumns = 2;
         client.setLayout(gridLayout);
         
-        //vehicle name
-        vehicleNameLabel = toolkit.createLabel(client, "Fahrzeugname");
-        vehicleName = toolkit.createText(client, "");
-        //vehicle type
-        vehicleTypeLabel = toolkit.createLabel(client, "Fahrzeugtyp");
-        vehicleType = toolkit.createText(client, "");
-        //basic station
-        basicStationLabel = this.toolkit.createLabel(client, "Primäre Ortsstelle");
-        basicStation = this.toolkit.createText(client, "");
+        //username
+        userNameLabel = toolkit.createLabel(client, "Username");
+        userName = toolkit.createText(client, "");
+        //first name
+        firstNameLabel = toolkit.createLabel(client, "Vorname");
+        firstName = toolkit.createText(client, "");
+        //last name
+        lastNameLabel = this.toolkit.createLabel(client, "Nachname");
+        lastName = this.toolkit.createText(client, "");
         
         //layout for the labels
         GridData data = new GridData();
         data.widthHint = 80;
-        vehicleNameLabel.setLayoutData(data);
+        userNameLabel.setLayoutData(data);
         data = new GridData();
         data.widthHint = 80;
-        vehicleTypeLabel.setLayoutData(data);
+        firstNameLabel.setLayoutData(data);
         data = new GridData();
         data.widthHint = 80;
-        basicStationLabel.setLayoutData(data);
+        lastNameLabel.setLayoutData(data);
         //layout for the text fields
         GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
-        vehicleName.setLayoutData(data2);
+        userName.setLayoutData(data2);
         data2 = new GridData(GridData.FILL_HORIZONTAL);
-        vehicleType.setLayoutData(data2);
+        firstName.setLayoutData(data2);
         data2 = new GridData(GridData.FILL_HORIZONTAL);
-        basicStation.setLayoutData(data2);
+        lastName.setLayoutData(data2);
        
         //redraw the form
         form.reflow(true);
@@ -133,19 +171,19 @@ public class VehicleDetailAdminView extends ViewPart implements ISelectionListen
         {
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
             Object selectedObject = structuredSelection.getFirstElement();
-            if (selectedObject instanceof VehicleDetail) 
+            if (selectedObject instanceof StaffMember) 
             {
-	            VehicleDetail detail = (VehicleDetail)selectedObject;
-	            vehicleName.setText(detail.getVehicleName());
-	            vehicleType.setText(detail.getVehicleType());
-	            basicStation.setText(detail.getBasicStation().getLocationName());
+	            StaffMember member = (StaffMember)selectedObject;
+	            userName.setText(member.getUserName());
+	            firstName.setText(member.getFirstName());
+	            lastName.setText(member.getLastName());
             }
         } 
         else 
         {
-            vehicleName.setText(""); 
-            vehicleType.setText(""); 
-            basicStation.setText("");
+            userName.setText(""); 
+            firstName.setText(""); 
+            lastName.setText("");
         }
     }
 }

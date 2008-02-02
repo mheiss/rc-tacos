@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.3"?>
 <plugin>
-
    <extension
          id="application"
          point="org.eclipse.core.runtime.applications">
@@ -60,14 +59,12 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      
       <view
             name="RessourcesView"
             allowMultiple="false"
             class="at.rc.tacos.client.view.VehiclesView"
             id="at.rc.tacos.client.view.ressources_view">
       </view>
-      
       <view
             name="PersonalView"
             allowMultiple="false"
@@ -80,30 +77,18 @@
             id="at.rc.tacos.client.view.info"
             name="InfoView">
       </view>
- 
-      
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.FilterView"
             id="at.rc.tacos.client.view.filter"
             name="FilterView">
       </view>
-      
-      
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.admin.StaffMemberView"
             id="at.rc.tacos.client.view.admin.staffMemberView"
-            name="StaffView">
+            name="StaffAdminView">
       </view>
-      <view
-            allowMultiple="true"
-            class="at.rc.tacos.client.view.admin.StaffDetailView"
-            id="at.rc.tacos.client.view.admin.staffDetailView"
-            name="StaffDetail">
-      </view>
-      
-      
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.admin.VehicleAdminView"
@@ -111,32 +96,11 @@
             name="VehicleAdminView">
       </view>
       <view
-            allowMultiple="true"
-            class="at.rc.tacos.client.view.admin.VehicleDetailAdminView"
-            id="at.rc.tacos.client.view.admin.vehicleDetailAdminView"
-            name="VehicleAdminDetail">
-      </view>
-      
-      
-      <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.admin.PhoneAdminView"
             id="at.rc.tacos.client.view.admin.phoneAdminView"
             name="PhoneAdminView">
       </view>
-      <view
-            allowMultiple="true"
-            class="at.rc.tacos.client.view.admin.PhoneDetailAdminView"
-            id="at.rc.tacos.client.view.admin.phoneDetailAdminView"
-            name="PhoneAdminDetail">
-      </view>
-      
-      
-      
-      
-      
-      
-      
       <view
             name="DispositionView"
             allowMultiple="false"
@@ -149,22 +113,18 @@
             class="at.rc.tacos.client.view.OutstandingTransportsView"
             id="at.rc.tacos.client.view.outstandingTransports_view">
       </view>
-      
-      
       <view
             name="JournalView"
             allowMultiple="false"
             class="at.rc.tacos.client.view.JournalView"
             id="at.rc.tacos.client.view.journal_view">
       </view>
-      
       <view
             name="PrebookingView"
             allowMultiple="false"
             class="at.rc.tacos.client.view.PrebookingView"
             id="at.rc.tacos.client.view.prebooking_view">
       </view>
-      
       <view
             name="DialysisView"
             allowMultiple="false"
@@ -177,8 +137,12 @@
             id="at.rc.tacos.client.view.navigation"
             name="NavigationView">
       </view>
-      
-      
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.LogHeaderView"
+            id="at.rc.tacos.client.view.logHeader"
+            name="LogHeaderView">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.splashHandlers">
@@ -191,5 +155,25 @@
             splashId="at.rc.tacos.client.splashHandlers.interactive">
       </splashHandlerProductBinding>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="at.rc.tacos.client.editors.MobilePhoneEditor"
+            id="at.rc.tacos.client.editors.mobilePhoneEditor"
+            name="MobilePhone Editor"
+            icon="icons/vehicle/handy.gif">
+      </editor>
+      <editor
+            class="at.rc.tacos.client.editors.StaffMemberEditor"
+            id="at.rc.tacos.client.editors.staffMemberEditor"
+            name="StaffMember Editor"
+            icon="icons/personal/user.png">
+      </editor>
+      <editor
+            class="at.rc.tacos.client.editors.VehicleDetailEditor"
+            id="at.rc.tacos.client.editors.vehicleDetailEditor"
+            name="Vehicle Editor"
+            icon="icons/personal/bereitschaft.png">
+      </editor>
+   </extension>
 </plugin>

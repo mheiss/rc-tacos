@@ -1,5 +1,6 @@
-package at.rc.tacos.client.view.admin;
+package at.rc.tacos.client.editors;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -8,19 +9,22 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.MobilePhoneDetail;
 
-public class PhoneDetailAdminView extends ViewPart implements ISelectionListener 
+public class MobilePhoneEditor extends EditorPart implements ISelectionListener 
 {
-    public static final String ID = "at.rc.tacos.client.view.admin.phoneDetailAdminView"; 
+    public static final String ID = "at.rc.tacos.client.editors.mobilePhoneEditor"; 
     //properties
     private Label headerLabel;
     private FormToolkit toolkit;
@@ -30,10 +34,12 @@ public class PhoneDetailAdminView extends ViewPart implements ISelectionListener
     private Label mobilePhoneIdLabel;
     private Label mobilePhoneNumberLabel;
     
+    protected boolean isDirty;
+    
     /**
      * Default class constructor
      */
-    public PhoneDetailAdminView()
+    public MobilePhoneEditor()
     {
         //Attach a selection change listener to the view
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener(this);
@@ -47,6 +53,38 @@ public class PhoneDetailAdminView extends ViewPart implements ISelectionListener
     {
         //remove the listener
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().removeSelectionListener(this); 
+    }
+    
+    @Override
+    public void doSave(IProgressMonitor monitor) 
+    {
+        
+    }
+    
+    @Override
+    public boolean isSaveAsAllowed() 
+    {
+        return false;
+    }
+    
+    @Override
+    public void doSaveAs() 
+    {
+        // don't support saving as
+    }
+
+    @Override
+    public boolean isDirty() 
+    {
+        return isDirty;
+    }
+
+    @Override
+    public void init(IEditorSite site, IEditorInput input) throws PartInitException 
+    {
+        setSite(site);
+        setInput(input);
+        setPartName(input.getName());
     }
 
     /**
@@ -88,7 +126,6 @@ public class PhoneDetailAdminView extends ViewPart implements ISelectionListener
         //mobile phone number
         mobilePhoneNumberLabel = toolkit.createLabel(client, "Handynummer");
         mobilePhoneNumber = toolkit.createText(client, "");
-       
         
         //layout for the labels
         GridData data = new GridData();
@@ -106,13 +143,10 @@ public class PhoneDetailAdminView extends ViewPart implements ISelectionListener
         //redraw the form
         form.reflow(true);
     }
-
-    /**
-     * Passes the focus to the view
-     */
+    
     @Override
-    public void setFocus() {  }
-
+    public void setFocus() {}
+    
     /**
      * The selection has changed.
      * @param part the workbenchpart where the selection event was triggered

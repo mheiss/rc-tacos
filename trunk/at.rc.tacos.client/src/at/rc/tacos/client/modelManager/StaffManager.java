@@ -73,7 +73,13 @@ public class StaffManager extends PropertyManager
     public void removeAllElements()
     {
         objectList.clear();
-        firePropertyChange("STAFF_CLEARED", null, null); 
+        Display.getDefault().syncExec(new Runnable ()    
+        {
+            public void run ()       
+            {
+                firePropertyChange("STAFF_CLEARED", null, null); 
+            }
+        });
     }
 
     /**

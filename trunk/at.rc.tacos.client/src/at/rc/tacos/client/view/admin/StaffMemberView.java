@@ -3,23 +3,33 @@ package at.rc.tacos.client.view.admin;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.controller.OpenViewAction;
+import at.rc.tacos.client.Activator;
+import at.rc.tacos.client.editors.StaffMemberEditor;
+import at.rc.tacos.client.editors.StaffMemberEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.model.StaffMember;
 
 public class StaffMemberView extends ViewPart implements PropertyChangeListener
 {
@@ -89,12 +99,25 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
         viewer = new TableViewer(browseTree);
         viewer.addDoubleClickListener(new IDoubleClickListener()
         {
-			@Override
-			public void doubleClick(DoubleClickEvent dce) 
-			{
-				OpenViewAction view = new OpenViewAction(StaffDetailView.ID);
-				view.run();
-			}
+            @Override
+            public void doubleClick(DoubleClickEvent dce) 
+            {
+                ISelection selection = viewer.getSelection();
+                Object obj = ((IStructuredSelection) selection).getFirstElement();
+                StaffMember member = (StaffMember)obj;
+                StaffMemberEditorInput input = new StaffMemberEditorInput(member);
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try 
+                {
+                    page.openEditor(input, StaffMemberEditor.ID);
+                    IWorkbenchPart active = page.getActivePart();
+                    ((StaffMemberEditor)active).selectionChanged(active, selection);
+                } 
+                catch (PartInitException e) 
+                {
+                    Activator.getDefault().log("Failed to open the editor for the staff member "+member, IStatus.ERROR);
+                }
+            }
         });
         viewer.setContentProvider(new StaffMemberContentProvider());
         viewer.setLabelProvider(new StaffMemberLabelProvider());
