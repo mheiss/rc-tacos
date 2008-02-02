@@ -11,8 +11,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.client.util.DateValidator;
 import at.rc.tacos.client.util.Util;
-import at.rc.tacos.client.validators.DateValidator;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.RosterEntry;
 

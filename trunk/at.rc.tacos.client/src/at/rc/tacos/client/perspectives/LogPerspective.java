@@ -3,6 +3,8 @@ package at.rc.tacos.client.perspectives;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import at.rc.tacos.client.view.LogHeaderView;
+
 public class LogPerspective implements IPerspectiveFactory 
 {
 	public static final String ID = "at.rc.tacos.client.perspectives.log";
@@ -16,6 +18,7 @@ public class LogPerspective implements IPerspectiveFactory
     	String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(false);
         layout.setFixed(true);
-        layout.addStandaloneView("org.eclipse.pde.runtime.LogView", false,IPageLayout.TOP, 1f, editorArea);
+        layout.addStandaloneView(LogHeaderView.ID, false, IPageLayout.TOP, 0.12f,editorArea);
+        layout.addStandaloneView("org.eclipse.pde.runtime.LogView", false,IPageLayout.BOTTOM, 0.8f, editorArea);
     }
 }

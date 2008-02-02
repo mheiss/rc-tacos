@@ -1,6 +1,8 @@
 package at.rc.tacos.client;
 
 import java.util.ResourceBundle;
+
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -132,5 +134,16 @@ public class Activator extends AbstractUIPlugin
 	        System.out.println("Faild to load the images files");
 	        System.out.println("Please check the images and the properties file");
 	    }
+	}
+	
+	/**
+	 * Logs the given message
+	 * @param message the message
+	 * @param type the type of the message
+	 */
+	public void log(String message,int type)
+	{
+	    Status status = new Status(type,Activator.PLUGIN_ID,message); 
+	    getLog().log(status);
 	}
 }

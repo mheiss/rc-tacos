@@ -1,8 +1,7 @@
-package at.rc.tacos.client.validators;
+package at.rc.tacos.client.util;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 
-import at.rc.tacos.client.util.Util;
 
 /**
  * This class validates a date. It makes sure that the given string

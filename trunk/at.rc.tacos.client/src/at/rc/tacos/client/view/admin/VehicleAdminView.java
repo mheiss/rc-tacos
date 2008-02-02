@@ -3,23 +3,33 @@ package at.rc.tacos.client.view.admin;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.controller.OpenViewAction;
+import at.rc.tacos.client.Activator;
+import at.rc.tacos.client.editors.VehicleDetailEditor;
+import at.rc.tacos.client.editors.VehicleDetailEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.model.VehicleDetail;
 
 public class VehicleAdminView extends ViewPart implements PropertyChangeListener
 {
@@ -92,8 +102,21 @@ public class VehicleAdminView extends ViewPart implements PropertyChangeListener
 			@Override
 			public void doubleClick(DoubleClickEvent dce) 
 			{
-				OpenViewAction view = new OpenViewAction(VehicleDetailAdminView.ID);
-				view.run();
+			    ISelection selection = viewer.getSelection();
+		        Object obj = ((IStructuredSelection) selection).getFirstElement();
+		        VehicleDetail vehicle = (VehicleDetail)obj;
+		        VehicleDetailEditorInput input = new VehicleDetailEditorInput(vehicle);
+		        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		        try 
+		        {
+		            page.openEditor(input, VehicleDetailEditor.ID);
+                    IWorkbenchPart active = page.getActivePart();
+                    ((VehicleDetailEditor)active).selectionChanged(active, selection);
+		        } 
+		        catch (PartInitException e) 
+		        {
+		            Activator.getDefault().log("Failed to open the editor for the vehicle "+vehicle, IStatus.ERROR);
+		        }
 			}
         });
         viewer.setLabelProvider(new VehicleLabelProvider());

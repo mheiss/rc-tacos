@@ -2,8 +2,6 @@ package at.rc.tacos.client.perspectives;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-import org.eclipse.ui.internal.PageLayout;
-
 import at.rc.tacos.client.view.*;
 
 /**
