@@ -44,7 +44,7 @@
 			<td>
 			<table border='0' cellpadding='0' cellspacing='0' width="100%" id="Tablogo">
 				<tr>
-					<td style="background:url(../image/tacos_logo_mpx.jpg) repeat-x center;"><img src="../image/tacos_logo_m.jpg" name="logoLeft" id="logoLeft" /></td>
+					<td style="background:url(../image/headlogopx.jpg) repeat-x center;"><img src="../image/headlogo.jpg" name="logoLeft" id="logoLeft" /></td>
 				</tr>
 			</table>
 			</td>
