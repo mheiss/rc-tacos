@@ -115,7 +115,7 @@
                         </tr>
                     </table>
                     <br />
-					<img src='../image/info.jpg' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
+					<img src='../image/info.png' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/b_edit.png' name='info' alt='Editieren'  />&nbsp;Dienst editieren&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/b_drop.png' name='info' alt='L&ouml;schen'  />&nbsp;Dienst&nbsp;l&ouml;schen&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/ndienst.jpg' name='info' alt='Tages&uuml;bergreifend'  />&nbsp;Dienst &uuml;ber zwei Tage<br />
