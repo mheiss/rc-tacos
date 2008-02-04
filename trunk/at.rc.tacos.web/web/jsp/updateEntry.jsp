@@ -34,8 +34,7 @@
 	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 %>
 <form method="post" name="form"
-	action="<%=request.getContextPath()+"/Dispatcher/updateEntry.do?action=doSaveEntry"%>"
-	border='0' cellpadding='0' cellspacing='0'>
+	action="<%=request.getContextPath()+"/Dispatcher/updateEntry.do?action=doSaveEntry"%>" border='0' cellpadding='0' cellspacing='0'>
 
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
