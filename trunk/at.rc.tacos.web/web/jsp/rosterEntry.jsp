@@ -122,9 +122,9 @@
 											<td><select name="station" id="rosterViewDayHeadSelbox">
 											<% for (Location location : listLocation) {
 													if(location.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
-												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName()%></option>
+												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 												<% } else { %>
-												<option value="<%=location.getId()%>"><%=location.getLocationName()%></option>
+												<option value="<%=location.getId()%>"><%=location.getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
 												<% } } %>
 											</select></td>
 										</tr>
