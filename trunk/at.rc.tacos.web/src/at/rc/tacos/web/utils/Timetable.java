@@ -119,7 +119,7 @@ public class Timetable
 				{
 					RosterEntry entry = (RosterEntry)message;
 					if(format.format(new Date(entry.getPlannedStartOfWork())).equals(format.format(dtCal))){
-						timetableDateHead = "<div style='width:100%; height:25px; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;'><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
+						timetableDateHead = "<div id='mainDayTab' ><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
 					
 						zaehle++;
 						info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
