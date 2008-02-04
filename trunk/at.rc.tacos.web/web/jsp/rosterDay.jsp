@@ -91,15 +91,18 @@
 	                    {
 	                    	if( userSession.getStaffMember().getLastName().toString().equals(entry.getStaffMember().getLastName()) &&
 	                    		userSession.getStaffMember().getFirstName().toString().equals(entry.getStaffMember().getFirstName()))
-	                    		
-	                    if(entry.getRealStartOfWork() == 0) { %>
-	                       <table width="100%" height="15"><tr><td width="10" ><%=i++ %></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;<%=formatHour.format(entry.getPlannedStartOfWork()) %>&nbsp;bis&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %></td><td  width="20%"  ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignIn&id=<%=entry.getRosterId()%>">Dienst&nbsp;anmelden</a></td></tr></table>
-	                <% } else { %>
-	                	   <table width="100%" height="15"><tr><td width="10" ><%=i++ %></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;<%=formatHour.format(entry.getPlannedStartOfWork()) %>&nbsp;bis&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %></td><td  width="20%"   ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignOut&id=<%=entry.getRosterId()%>">Dienst&nbsp;abmelden</a></td></tr></table>
-	                <%
-	                    	}
+	                    	{
+
+			                    if(entry.getRealStartOfWork() == 0) { %>
+				                       <table width="100%" height="15"><tr><td width="10" ><%=i++ %></td><td width="15" ><img src="../image/b_exit13x13.png" alt="--" /></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;<%=formatHour.format(entry.getPlannedStartOfWork()) %>&nbsp;bis&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %></td><td  width="20%"  ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignIn&id=<%=entry.getRosterId()%>">Dienst&nbsp;anmelden</a></td></tr></table>
+				                <% } else { %>
+				                	   <table width="100%" height="15" style="color:#DBDBDB;"><tr><td width="10" ><%=i++ %></td><td width="15" ><img src="../image/b_save13x13.png" alt="--" /></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;<%=formatHour.format(entry.getPlannedStartOfWork()) %>&nbsp;bis&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %></td><td  width="20%"   ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignOut&id=<%=entry.getRosterId()%>">Dienst&nbsp;abmelden</a></td></tr></table>
+				                <%
+			
+				                   }
+			                 }
 	                    }
-					}
+	                }
 					%>
 					<!-- CONTENT BLOCK  -->
 					<table id="Block" width="100%" border='0' cellpadding='0'
