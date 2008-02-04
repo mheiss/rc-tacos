@@ -43,20 +43,21 @@ public class PrintController implements Controller
 
 		if(action!=null && id!=null){
 			PrinterJob pj = PrinterJob.getPrinterJob();
-			if(pj.printDialog()){
-				PageFormat pf= pj.defaultPage();
-				pf=pj.pageDialog(pf);			
-				pj.setPrintable(new PrinterJobRoster(resultList, action),pf); 
-
-				try 
-				{
+				
+			try 
+			{
+				if(pj.printDialog()){
+//					PageFormat pf= pj.defaultPage();
+//					pf=pj.pageDialog(pf);
+					pj.setPrintable(new PrinterJobRoster(resultList, action),this.getPaperSize()); 
 					pj.print();
-				} 
-				catch (PrinterException e1) 
-				{
-					e1.printStackTrace();
 				}
+			} 
+			catch (PrinterException e1) 
+			{
+				e1.printStackTrace();
 			}
+			
 		}
 
 		return params;

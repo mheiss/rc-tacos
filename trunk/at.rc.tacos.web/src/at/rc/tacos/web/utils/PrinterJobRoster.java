@@ -9,6 +9,7 @@ import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,68 +22,85 @@ public class PrinterJobRoster implements Printable{
 	
 	private String station = null;
 	private List<AbstractMessage> resultList = null;
-
+	private List<AbstractMessage> resultListFilter = null;
 	public PrinterJobRoster() {}
 
 	public PrinterJobRoster(List<AbstractMessage> resultList, String doStation) {
 		this.setStation(doStation);
 		this.setResultList(resultList);
+		resultListFilter = new ArrayList<AbstractMessage>();
+		
 	}
 
 	@Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
 			throws PrinterException {
-		
-		System.out.println("pageIndex: " + pageIndex);
 		Graphics2D g2 = (Graphics2D) graphics;
-		if (pageIndex >= 1) {
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat format2 = new SimpleDateFormat("E, dd.MM.yyyy");
+		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");	
+		int maxPage = 1;
+		
+		if(resultList.size() / 8 >=1){
+			maxPage = (resultList.size() / 8) + 1; 
+		}
+		
+		if (pageIndex >= maxPage) {
 			return Printable.NO_SUCH_PAGE;
 		} else {	
-			drawPageContents(g2, pageIndex+1, pageFormat);
+			if(pageIndex<1){
+				g2.setColor(new Color(182,16,0));
+				g2.setFont(new Font("Verdana", Font.BOLD, 15)); 
+				
+				g2.drawString("Dienstplanübersicht für die Ortstelle: ", (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableX())+20));
+				g2.drawString(this.getStation(), (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableX())+40));
+			}
+			int i = 80;
+			int siteRight = 20;
+			g2.setFont(new Font("Verdana", Font.PLAIN, 12));
+			g2.setColor(new Color(0,0,0));
+
+			g2.drawString("Seite " + (pageIndex+1) + " / " + maxPage,(int) (pageFormat.getImageableWidth() +
+					pageFormat.getImageableY() - 100), (int) (pageFormat.getImageableHeight() + pageFormat.getImageableX() - 10));
+			
+			int j = 0;
+			//Set right data to filterArray
+			//Max entries -> 8/site
+			for(j = pageIndex*8; j < (pageIndex+1)*8 ; j++)
+			{
+				if(j<resultList.size()){
+					resultListFilter.add(resultList.get(j));
+				}
+			}
+			System.out.println("LSIT: " + resultListFilter.size());
+			for(AbstractMessage message:resultListFilter)
+			{		
+					if(i<pageFormat.getImageableHeight()-50){
+						RosterEntry entry = (RosterEntry)message;
+							g2.drawString(" >>> Datum: " + format2.format(entry.getPlannedStartOfWork()),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+							i+=18;
+							g2.drawString("Mitarbeiter: " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName()  ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+							i+=15;
+							g2.drawString("Dienstzeit: (plan) " + formatHour.format(entry.getPlannedStartOfWork())+ " - " + formatHour.format(entry.getPlannedEndOfWork()) + " | (real) "+ formatHour.format(entry.getRealStartOfWork()) + " - " + formatHour.format(entry.getRealEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+							i+=15;
+							g2.drawString("Dienstart: " + entry.getServicetype().getServiceName(),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
+							i+=30;
+					} 
+					j++;
+				
+				
+			}
+			resultListFilter.clear();
+			i+=50;
+			g2.setFont(new Font("Verdana", Font.ITALIC, 10));
+			g2.setColor(new Color(171,171,171));
+			g2.drawString("[ Dokument wurde erstellt am: " + new Date().toString() + " ]", (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableY())+i));
+
 			return Printable.PAGE_EXISTS; 
 		}
 		
 		
 	}
-
-	public void drawPageContents(Graphics2D g2, int pageNo, PageFormat pageFormat) {
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-		SimpleDateFormat format2 = new SimpleDateFormat("E, dd.MM.yyyy");
-		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
-
-		g2.setColor(new Color(182,16,0));
-		g2.setFont(new Font("Verdana", Font.BOLD, 15)); 
-		
-		g2.drawString("Dienstplanübersicht für die Ortstelle: ", (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableX())+20));
-		g2.drawString(this.getStation(), (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableX())+40));
-		int i = 80;
-		int siteRight = 20;
-		g2.setFont(new Font("Verdana", Font.PLAIN, 12));
-		g2.setColor(new Color(0,0,0));
-		for(AbstractMessage message:resultList)
-		{
-			RosterEntry entry = (RosterEntry)message;
-//			if(entry.getStation().equals(this.getStation()))
-//			{
-				g2.drawString(" >>> Datum: " + format2.format(entry.getPlannedStartOfWork()),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
-				i+=18;
-				g2.drawString("Mitarbeiter: " + entry.getStaffMember().getFirstName() + " " + entry.getStaffMember().getLastName()  ,(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
-				i+=15;
-				g2.drawString("Dienstzeit: (plan) " + formatHour.format(entry.getPlannedStartOfWork())+ " - " + formatHour.format(entry.getPlannedEndOfWork()) + " | (real) "+ formatHour.format(entry.getRealStartOfWork()) + " - " + formatHour.format(entry.getRealEndOfWork()), (int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
-				i+=15;
-				g2.drawString("Dienstart: " + entry.getServicetype().getServiceName(),(int)((pageFormat.getImageableY())+siteRight), (int)((pageFormat.getImageableY())+i));
-				i+=30;
-//			}
-		}
-		i+=50;
-		g2.setFont(new Font("Verdana", Font.ITALIC, 10));
-		g2.setColor(new Color(171,171,171));
-		g2.drawString("[ Dokument wurde erstellt am: " + new Date().toString() + " ]", (int)((pageFormat.getImageableY())+10), (int)((pageFormat.getImageableY())+i));
-
-		//i=0;
-		
-	}
-
 
 	
 	public String getStation() {
@@ -100,4 +118,10 @@ public class PrinterJobRoster implements Printable{
 	public void setResultList(List<AbstractMessage> resultList) {
 		this.resultList = resultList;
 	}
+
+
+
+
+	
+	
 }
