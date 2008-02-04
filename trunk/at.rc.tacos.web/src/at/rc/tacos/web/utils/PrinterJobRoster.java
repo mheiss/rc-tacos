@@ -72,7 +72,7 @@ public class PrinterJobRoster implements Printable{
 					resultListFilter.add(resultList.get(j));
 				}
 			}
-			System.out.println("LSIT: " + resultListFilter.size());
+
 			for(AbstractMessage message:resultListFilter)
 			{		
 					if(i<pageFormat.getImageableHeight()-50){
