@@ -13,6 +13,8 @@ import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.web.UserSession;
 
 public class Timetable 
 {
@@ -26,7 +28,7 @@ public class Timetable
 	private String TimeList;
 	private String tooLong;
 	private String path;
-	
+
 	public static final String DRIVER_COLOR = "#0F1BFF";
 	public static final String PARAMEDIC_COLOR = "#6863FF";
 	public static final String EPARAMEDIC_COLOR = "#FFBD72";
@@ -57,7 +59,7 @@ public class Timetable
 
 		boolean ok1 = true;
 		boolean ok2 = true;
-		
+
 		SimpleDateFormat format = new SimpleDateFormat("E, dd-MM-yyyy");
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 		int zaehle = 0;
@@ -120,7 +122,7 @@ public class Timetable
 					RosterEntry entry = (RosterEntry)message;
 					if(format.format(new Date(entry.getPlannedStartOfWork())).equals(format.format(dtCal))){
 						timetableDateHead = "<div id='mainDayTab' ><b>" + format.format(new Date(entry.getPlannedStartOfWork())) +  "</b></div>";
-					
+
 						zaehle++;
 						info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
 						"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob().getJobName().replaceAll("ä", "&auml;") + "<br /></b>" +
@@ -130,17 +132,31 @@ public class Timetable
 						"angestellt als:&nbsp;&nbsp;"+entry.getServicetype().getServiceName()+"<br />" + 
 						"eingetragen von:&nbsp;&nbsp;"+entry.getCreatedByUsername() +"<br />";
 
-						tabentry+= 		
-							"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
-							this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
-							"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-							"px; float:left;" +
-							this.tooLong + 
-							"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span id='infoBox' >" + info + "</span><br /></a>" +
-							"<a href='"+ path +"/Dispatcher/updateEntry.do?action=doUpdateEntry&id=" + entry.getRosterId() +"' >" +
-							"<img src='../image/b_edit.png' id='edit' class='hidefocus' /></a>" +
-							"<a href='"+ path +"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() +"' onClick=\"return confirm('M&ouml;chten Sie diesen Dienst wirklich l&ouml;schen?')\" >" +
-							"<img src='../image/b_drop.png' id='del' class='hidefocus' /></a></div>";							
+						if(entry.getCreatedByUsername().equals(entry.getStaffMember().getUserName()))
+						{
+							tabentry+= 		
+								"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
+								this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
+								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
+								"px; float:left;" +
+								this.tooLong + 
+								"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span id='infoBox' >" + info + "</span><br /></a>" +
+								"<a href='"+ path +"/Dispatcher/updateEntry.do?action=doUpdateEntry&id=" + entry.getRosterId() +"' >" +
+								"<img src='../image/b_edit.png' id='edit' class='hidefocus' /></a>" +
+								"<a href='"+ path +"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() +"' onClick=\"return confirm('M&ouml;chten Sie diesen Dienst wirklich l&ouml;schen?')\" >" +							
+								"<img src='../image/b_drop.png' id='del' class='hidefocus' /></a></div>";							
+						}
+						else
+						{
+							tabentry+= 		
+								"<div id='singleEntryDiv' style='cursor:pointer; height:" + 
+								this.calculateHeightForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
+								"px; margin-top:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
+								"px; float:left;" +
+								this.tooLong + 
+								"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span id='infoBox' >" + info + "</span><br /></a>";
+						}
+
 					}
 				}
 				tabentry+="</div></div>";
@@ -238,6 +254,6 @@ public class Timetable
 		} else{
 			return OTHERS_COLOR;
 		}
-		
+
 	}   
 }
