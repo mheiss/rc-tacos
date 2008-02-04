@@ -47,8 +47,6 @@ public class PrintController implements Controller
 			try 
 			{
 				if(pj.printDialog()){
-//					PageFormat pf= pj.defaultPage();
-//					pf=pj.pageDialog(pf);
 					pj.setPrintable(new PrinterJobRoster(resultList, action),this.getPaperSize()); 
 					pj.print();
 				}
