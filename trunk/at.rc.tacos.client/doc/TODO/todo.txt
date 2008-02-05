@@ -1,3 +1,10 @@
+BUG FIXING:
+Dienstplaneinträge haben nichts mit dem Datum zu tun. Auch Tagesinfo nicht.
+Tagesinfo: speichern geht nicht.
+Dienstplaneinträge: updaten nicht von selbst (z.B. nach Anmeldung)
+
+
+
 --> Weiterleiten (= an andere Dienststelle z.B.)       
                   i setz dabei die Transportnummer auf "WTGL" und den TransportStatus S5 
 
