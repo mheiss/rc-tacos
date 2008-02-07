@@ -2,7 +2,6 @@
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
-<%@page import="at.rc.tacos.web.utils.Timetable"%>
 <%@page import="java.util.Calendar"%>
 <%@ page import="java.text.*"%>
 <%@ page import="java.util.Date"%>
@@ -13,6 +12,7 @@
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
+<%@page import="at.rc.tacos.web.utils.TimetableVertical"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -96,7 +96,7 @@
 			                    if(entry.getRealStartOfWork() == 0) { %>
 				                       <table width="100%" height="15"><tr><td width="10" ><%=i++ %></td><td width="15" ><img src="../image/b_exit13x13.png" alt="--" /></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;[<%=formath.format(entry.getPlannedStartOfWork()) %>&nbsp;&nbsp;<%=formatHour.format(entry.getPlannedStartOfWork()) %>]&nbsp;bis&nbsp;[<%=formath.format(entry.getPlannedEndOfWork()) %>&nbsp;-&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %>]</td><td  width="20%"  ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignIn&id=<%=entry.getRosterId()%>"><b>Dienst&nbsp;anmelden</b></a></td></tr></table>
 				                <% } else if(entry.getRealEndOfWork() != 0) { %>
-				                	   <table width="100%" height="15" style="color:#DBDBDB;"><tr><td width="10" ></td><td width="15" ></td><td></td><td  width="20%"></td></tr></table>
+				                	   <table width="100%" height="1" style="color:#DBDBDB;"><tr><td width="10" ></td><td width="15" ></td><td></td><td  width="20%"></td></tr></table>
 				                <% } else { %>
 			<table width="100%" height="15" style="color:#DBDBDB;"><tr><td width="10" ><%=i++ %></td><td width="15" ><img src="../image/b_save13x13.png" alt="--" /></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;[<%=formath.format(entry.getPlannedStartOfWork()) %>]&nbsp;&nbsp;[<%=formatHour.format(entry.getPlannedStartOfWork()) %>]&nbsp;bis&nbsp;[<%=formath.format(entry.getPlannedEndOfWork()) %>&nbsp;-&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %>]</td><td  width="20%"   ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignOut&id=<%=entry.getRosterId()%>">Dienst&nbsp;abmelden</a></td></tr></table>
 			
@@ -136,7 +136,7 @@
 										cellspacing='0'>
 										<tr>
 											<%
-												Timetable timetable = new Timetable(getServletContext()
+												TimetableVertical timetable = new TimetableVertical(getServletContext()
 														.getContextPath(), startDate);
 												out.print(timetable.calculateTimetable(rosterList, 1));
 											%>
