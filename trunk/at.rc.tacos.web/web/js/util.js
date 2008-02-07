@@ -30,6 +30,13 @@ function modityDateIfNeeded(){
                 }
                 
             }
+        }else{
+	        //End = Start
+	        document.form.startDay.value = document.form.endDay.value;
+	        document.form.startMonth.value = document.form.endMonth.value;
+	        document.form.startYear.value = document.form.endYear.value;  
+	        //Anzeige
+            document.form.selDateView.value= document.form.startDay.value+"."+document.form.startMonth.value+"."+document.form.startYear.value;      
         }
     }
     if(getRadioCheckedValue() == "day"){

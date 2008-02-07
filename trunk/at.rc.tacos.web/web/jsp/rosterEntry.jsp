@@ -176,7 +176,7 @@
 														<tr>
 															<td>von:</td>
 															<td><!-- hour --> <select name="startHour"
-																id="rosterViewDayHeadSelboxTime">
+																id="rosterViewDayHeadSelboxTime" onchange="modityDateIfNeeded();">
 												<%
                                                     int hb = 0;
                                                     while (hb < 24) {
@@ -194,7 +194,7 @@
                                                 %>
 															</select></td>
 															<td><!-- minute --> <select name="startMinute"
-																id="rosterViewDayHeadSelboxTime">
+																id="rosterViewDayHeadSelboxTime" onchange="modityDateIfNeeded();">
 																<option value="00">00</option>
 																<option value="30">30</option>
 															</select></td>
@@ -202,7 +202,7 @@
 														<tr>
 															<td>bis:</td>
 															<td><!-- hour --> <select name="endHour"
-																id="rosterViewDayHeadSelboxTime">
+																id="rosterViewDayHeadSelboxTime" onchange="modityDateIfNeeded();">
 																<%
                                                     int he = 0;
                                                     while (he < 24) {
@@ -220,7 +220,7 @@
                                                 %>
 															</select></td>
 															<td><!-- minute --> <select name="endMinute"
-																id="rosterViewDayHeadSelboxTime">
+																id="rosterViewDayHeadSelboxTime" onchange="modityDateIfNeeded();">
 																<option value="0">00</option>
 																<option value="30">30</option>
 															</select></td>
