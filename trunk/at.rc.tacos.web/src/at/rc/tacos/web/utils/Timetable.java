@@ -116,7 +116,7 @@ public class Timetable
 					dtCal = cal.getTime();
 				}
 
-				tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%%; height:25px; ' ><b>" + format.format(dtCal) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
+				tabentry+="<div id='mainDayContainer'><div style=' padding:5px; width:100%; height:25px; ' ><b>" + format.format(dtCal) +  "</b></div><div style='height:400px; padding:5px; ' id='MainDivDay'>";
 				for(AbstractMessage message:rosterList)
 				{
 					RosterEntry entry = (RosterEntry)message;

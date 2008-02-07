@@ -115,8 +115,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td id="rosterViewDayHeadline">Bezirk /
-											Ortsstelle:&nbsp;</td>
+											<td id="rosterViewDayHeadline">Bezirk/Ortsstelle:&nbsp;</td>
 											<td><select name="station" id="rosterViewDayHeadSelbox">
 											<% for (Location location : listLocation) {
 													if(location.equals(userSession.getStaffMember().getPrimaryLocation())) { %>
