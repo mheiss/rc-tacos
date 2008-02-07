@@ -1,3 +1,8 @@
+/*
+    author: Hannes Derler
+    date: 02.01.2008
+*/
+
 	function CalendarJS() {
 		this.now = new Date();
 		this.dayname = ["Mo","Di","Mi","Do","Fr","Sa","So"];
@@ -89,13 +94,16 @@
 					tr.appendChild( this.getCell( "td", i, this.mm, this.yy, "weekend" ) );
 				else
 					tr.appendChild( this.getCell( "td", i, this.mm, this.yy, null ) );
-			document.form.endDay.value=this.date;
-			document.form.endMonth.value=(this.mm+1);
-			document.form.endYear.value=this.now.getFullYear();
-			document.form.startDay.value=this.date;
-			document.form.startMonth.value=(this.mm+1);
-			document.form.startYear.value=this.now.getFullYear();	    
-			document.form.selDateView.value= this.date+"."+(this.mm+1)+"."+this.now.getFullYear();
+			
+				if(!document.form.endDay.value){
+					document.form.endDay.value=this.date;
+					document.form.endMonth.value=(this.mm+1);
+					document.form.endYear.value=this.now.getFullYear();
+					document.form.startDay.value=this.date;
+					document.form.startMonth.value=(this.mm+1);
+					document.form.startYear.value=this.now.getFullYear();	    
+					document.form.selDateView.value= this.date+"."+(this.mm+1)+"."+this.now.getFullYear();
+				}
 			}
 	
 			for (var i=sevendaysaweek; i<this.dayname.length; i++)
@@ -109,17 +117,21 @@
             mom+=1;
 
             if(str!="Mo" || str!="Di" || str!="Mi" || str!="Do" || str!="Fr" || str!="Sa" || str!="So" ){
-	        
-	        
-	        
 		            El.onclick = function() { 
+		                //Startdatum
 		                document.form.startDay.value=str;
 					    document.form.startMonth.value=mom;
 					    document.form.startYear.value=yey;
+					    
+					    //Anzeige
 					    document.form.selDateView.value= str+"."+mom+"."+yey;
+					    
+					    //Enddatum
 					    document.form.endDay.value=str;
 					    document.form.endMonth.value=mom;
 					    document.form.endYear.value=yey;
+					    
+					    modityDateIfNeeded();
 		             };
 	             
             }

@@ -288,6 +288,7 @@ TESt
     padding:3px;
     font-size:13px;   	
 }
+
 #rosterViewDayHeadline{
     text-align:right;
     font-size:13px;
@@ -449,3 +450,8 @@ TESt
     background-repeat: no-repeat;
 }
 
+#timeTabRosterEntry{
+    border-width:1px;
+    border-style:dotted;
+    border-color:#666666;
+}

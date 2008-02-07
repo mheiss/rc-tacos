@@ -1,4 +1,7 @@
-
+/*
+    author: Hannes Derler
+    date: 17.12.2007
+*/
 function openPopupToDelete( address ) {
   popup = window.open(address, "Tacos Eintrag loeschen", "width=300,height=400,left=100,top=200");
   popup.focus();
@@ -23,4 +26,14 @@ function getMouseXY(e) {
   //document.Show.MouseY.value = tempY
   return true
   
+}
+
+function changeTime(sel){
+    if(sel=="day"){
+        document.form.startHour.selectedIndex = 5;
+        document.form.endHour.selectedIndex = 17;
+    }else if(sel=="night"){
+        document.form.startHour.selectedIndex = 17;
+        document.form.endHour.selectedIndex = 5;       
+    }
 }
