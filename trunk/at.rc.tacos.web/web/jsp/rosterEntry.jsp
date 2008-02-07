@@ -24,6 +24,8 @@
 <link href="../css/calendar_js.css" rel="stylesheet" />
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <script type="text/javascript" src="../js/calendar_js.js"></script>
+<script type="text/javascript" src="../js/windowActions.js"></script>
+<script type="text/javascript" src="../js/util.js"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 </head>
 <body>
@@ -74,12 +76,8 @@
 					
 							<% if (params.containsKey("entry-success")) 
 			{
-				out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cellspacing='0'><tr><td id=\"BlockHead\" align=\"right\" valign=\"center\">&nbsp;</td></tr><tr><td id=\"BlockContent\">"
-						+ "<table width=\"100%\" border='0' cellpadding='0' cellspacing='0'>"
-						+ "<tr><td width=\"50%\"><!-- quick entry -->"
-						+ "<table width=\"100%\" border='1' cellpadding='0' cellspacing='0'><tr><td>"
-						+ "<div id='meldungstext'>"+params.get("entry-success")+"</td></tr></table></td></tr></table>"
-						+ "</td></tr></table>");
+				out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0' style=\"background-color:#4fd138; color:#ffffff; padding-left:10px; padding-top:3px; padding-bottom:3px;\" ><tr><td>"
+						+params.get("entry-success")+"</td></tr></table>");
 			} 
 			else 
 			{
@@ -161,7 +159,15 @@
 													<td>gew&auml;hltes Datum: <input type="text" 
 														disabled="disabled" id="selDateView" /><br />
 													<br />
-													<table width="162" border="0">
+													
+											<table width="100%" border="0" id="timeTabRosterEntry">
+                                                <tr>
+                                                    <td valign="middle" width="250">
+                                                        <input type="radio" name="rosterKind" value="day" checked onclick="changeTime('day'); modityDateIfNeeded(); " />&nbsp;Tagdienst<br/>
+                                                        <input type="radio" name="rosterKind" value="night" onclick="changeTime('night'); modityDateIfNeeded(); "/>&nbsp;Nachtdienst
+                                                   </td>
+                                                    <td>
+													<table border="0">
 														<tr>
 															<td width="64">&nbsp;</td>
 															<td width="64">Stunde</td>
@@ -171,13 +177,19 @@
 															<td>von:</td>
 															<td><!-- hour --> <select name="startHour"
 																id="rosterViewDayHeadSelboxTime">
-																<%
+												<%
                                                     int hb = 0;
                                                     while (hb < 24) {
                                                         hb += 1;
+                                                        if(hb==6){
+                                                %>
+                                                            <option value="<%=hb%>" selected><%=hb%></option>
+                                                <%
+                                                        }else{
                                                 %>
 																<option value="<%=hb%>"><%=hb%></option>
-																<%
+												<%
+														}
                                                     }
                                                 %>
 															</select></td>
@@ -195,9 +207,15 @@
                                                     int he = 0;
                                                     while (he < 24) {
                                                         he += 1;
+                                                        if(he==18){
+                                                %>
+                                                         <option value="<%=he%>" selected><%=he%></option>
+                                                <%
+                                                         }else{
                                                 %>
 																<option value="<%=he%>"><%=he%></option>
-																<%
+												<%
+                                                         }
                                                     }
                                                 %>
 															</select></td>
@@ -208,6 +226,10 @@
 															</select></td>
 														</tr>
 													</table>
+												
+                                               </td></tr></table>
+                                               
+                                                    
 													</td>
 													<td></td>
 												</tr>
@@ -235,12 +257,14 @@
 <!-- 
 startHour, startMinute, startDay, startMonth, startYear
 endHour, endMinute, endDay, endMonth, endYear
---> <input type="hidden" name="startDay" value="" /> <input
-	type="hidden" name="startMonth" value="" /> <input type="hidden"
-	name="startYear" value="" /> <br>
-<input type="hidden" name="endDay" value="" /> <input type="hidden"
-	name="endMonth" value="" /> <input type="hidden" name="endYear"
-	value="" /></form>
+--> 
+<input type="hidden" name="startDay" value="" /> 
+<input type="hidden" name="startMonth" value="" /> 
+<input type="hidden" name="startYear" value="" /> <br>
+<input type="hidden" name="endDay" value="" /> 
+<input type="hidden" name="endMonth" value="" /> 
+<input type="hidden" name="endYear" value="" />
+</form>
 
 
 </body>
