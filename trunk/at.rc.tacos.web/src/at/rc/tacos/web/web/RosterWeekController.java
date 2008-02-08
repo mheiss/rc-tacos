@@ -20,6 +20,8 @@ import at.rc.tacos.model.RosterEntry;
 
 public class RosterWeekController  implements Controller
 {
+	private String splitedDate[] = null;
+	
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
 	{
 		//values that will be returned to the view
@@ -36,12 +38,24 @@ public class RosterWeekController  implements Controller
 			//the calendar instance with the current date 
 			Calendar cal = Calendar.getInstance(); 
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy"); 
+			String startDate = request.getParameter("startDate");
+			//if we have no date, use the current date
+			if (startDate == null || startDate.trim().isEmpty()){
+				startDate = format.format(cal.getTime());
+			}else{
+				splitedDate = startDate.split("-");
+				//cal.set(year, month, day)
+				cal.set(Integer.parseInt(splitedDate[2]), Integer.parseInt(splitedDate[1])-1, Integer.parseInt(splitedDate[0]));				
+			}
+			
+
+			
 			//get roster entries 
 			List<RosterEntry> filterdByLocation = new ArrayList<RosterEntry>();
 			for(int i=1; i<=7; i++) 
 			{ 
 				//set up the filter with the date               
-				QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(cal.getTime())); 
+				QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER, format.format(cal.getTime())); //cal.getTime()
 				//query the listing for the given day 
 				List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter); 
 				//check if we got the desired type and  add the entries to the list 
@@ -49,7 +63,7 @@ public class RosterWeekController  implements Controller
 					resultList.addAll(dayResult); 
 				//increment the day by one 
 				cal.add(Calendar.DAY_OF_MONTH, 1);  
-
+				//cal.add(startDate, 1); 
 				for(AbstractMessage object:dayResult)   
 				{  
 					RosterEntry entry = (RosterEntry)object;  
