@@ -2,7 +2,6 @@
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
-<%@page import="at.rc.tacos.web.utils.Timetable"%>
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Calendar"%>
@@ -12,6 +11,7 @@
 	UserSession userSession = (UserSession)session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="at.rc.tacos.web.utils.TimetableVertical"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -103,7 +103,7 @@
 										cellspacing='0'>
 										<tr>
 										 <% 
-										  Timetable timetable = new Timetable(getServletContext().getContextPath(),startDate);
+										  TimetableVertical timetable = new TimetableVertical(getServletContext().getContextPath(),startDate);
 	                                      out.print(timetable.calculateTimetable(rosterList, 7));
 										  %>
 										</tr>
