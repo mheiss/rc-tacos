@@ -22,7 +22,6 @@ public class TimetableVertical {
 	private int width;
 	private String tabentry;
 	private String tabentryHead;
-	private String timetableDateHead;
 	private String TimeList;
 	private String tooLong;
 	private String path;
@@ -41,17 +40,11 @@ public class TimetableVertical {
 		width = 0;
 		tabentry = "";
 		tabentryHead = "";
-		timetableDateHead ="";
 		TimeList="";
 		tooLong="";
 		this.path = path;
 	}
 
-	public String TimetableInfo(List<RosterEntry> rosterList){
-		String info="";
-
-		return info;
-	}
 
 	public String calculateTimetable(List<RosterEntry> rosterList, int daysToShow){
 
@@ -62,7 +55,7 @@ public class TimetableVertical {
 		SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 		int zaehle = 0;
 		String info="";
-//<div style='padding:5px; width:30px; height:25px; vertical-align:middle; text-align:left; float:left;' ><img src='../image/clock_klein.jpg' /></div>
+
 		TimeList += "<div id='mainDayContainerTL' align='center'>";
 		int i = 5;
 		do {
@@ -114,6 +107,8 @@ public class TimetableVertical {
 					dtCal = cal.getTime();
 				}
 
+				System.out.println("ROSTERLIST: " + rosterList.size());
+				
 				tabentry+="<div id='mainDayContainer'><div style='padding:1px; width:100%; height:25px;' ><b>" + format.format(dtCal) +  "</b></div><div style='padding:5px; ' id='MainDivDay'>";
 				for(AbstractMessage message:rosterList)
 				{
@@ -159,7 +154,6 @@ public class TimetableVertical {
 				}
 				tabentry+="</div></div>";
 			}
-			//timetableDateHead+
 			timetable+=TimeList+tabentryHead+tabentry;
 			tabentry="";
 			return timetable;
