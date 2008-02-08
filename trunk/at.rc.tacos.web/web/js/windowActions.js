@@ -37,3 +37,7 @@ function changeTime(sel){
         document.form.endHour.selectedIndex = 5;       
     }
 }
+
+function getWindowWidth(){
+    return window.document.body.offsetWidth;
+}

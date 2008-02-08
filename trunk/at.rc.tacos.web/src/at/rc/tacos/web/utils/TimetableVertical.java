@@ -107,7 +107,7 @@ public class TimetableVertical {
 					dtCal = cal.getTime();
 				}
 
-				System.out.println("ROSTERLIST: " + rosterList.size());
+				tabentry+=TimeList;
 				
 				tabentry+="<div id='mainDayContainer'><div style='padding:1px; width:100%; height:25px;' ><b>" + format.format(dtCal) +  "</b></div><div style='padding:5px; ' id='MainDivDay'>";
 				for(AbstractMessage message:rosterList)
@@ -129,7 +129,7 @@ public class TimetableVertical {
 						{
 							tabentry+= 		
 								"<div id='singleEntryDiv' style='margin-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"%; " +
+								"px; " +
 								this.tooLong + 
 								" width:" +this.calculateWidthForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"%; " +
@@ -143,7 +143,7 @@ public class TimetableVertical {
 						{
 							tabentry+= 		
 								"<div id='singleEntryDiv' style='margin-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"%; " +
+								"px; " +
 								this.tooLong + 
 								" width:" +this.calculateWidthForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"%; " +
@@ -154,8 +154,9 @@ public class TimetableVertical {
 				}
 				tabentry+="</div></div>";
 			}
-			timetable+=TimeList+tabentryHead+tabentry;
+			timetable+=tabentryHead+tabentry;
 			tabentry="";
+
 			return timetable;
 		}
 		else
@@ -184,10 +185,10 @@ public class TimetableVertical {
 		}
 
 		//check and cut too long values 
-		if(retval>98)
+		if(retval>100)
 		{
 			tooLong="border-right-width:3px; border-right-style:dotted; border-right-color:black;";
-			retval = 98;
+			retval = 100;
 		}
 
 		
@@ -207,7 +208,6 @@ public class TimetableVertical {
 		if(retval < 0){
 			retval = 0;
 		}
-
 		return retval;
 	}
 

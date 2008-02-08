@@ -20,6 +20,10 @@
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <script type="text/javascript" src="../js/windowActions.js"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
+<script type="text/javascript">
+    var offWidth = getWindowWidth();
+   
+</script>
 </head>
 <body>
 <%
@@ -106,7 +110,7 @@
 	                }
 					%>
 					<!-- CONTENT BLOCK  -->
-					<table id="Block" width="100%" border='0' cellpadding='0'
+					<a name="ContentBlock"><table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
 							<td id="BlockHead" align="right" valign="center">&nbsp;</td>
@@ -136,8 +140,7 @@
 										cellspacing='0'>
 										<tr>
 											<%
-												TimetableVertical timetable = new TimetableVertical(getServletContext()
-														.getContextPath(), startDate);
+												TimetableVertical timetable = new TimetableVertical(getServletContext().getContextPath(), startDate);
 												out.print(timetable.calculateTimetable(rosterList, 1));
 											%>
 										</tr>
@@ -147,7 +150,7 @@
 							</table>
 							</td>
 						</tr>
-					</table>
+					</table></a>
 					<br />
 					<img src='../image/info.png' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/b_edit.png' name='info' alt='Editieren'  />&nbsp;Dienst editieren&nbsp;&nbsp;|&nbsp;&nbsp;
