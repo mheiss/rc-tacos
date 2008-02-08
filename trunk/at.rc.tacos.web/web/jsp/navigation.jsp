@@ -31,7 +31,7 @@
 		<td id="BlockHead" colspan="2"><b>Ortsstellen</b></td>
 	</tr>
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BEZIRK%>"><%=Constants.STATION_BEZIRK%></a><br />
+		<td id="navIcon"><img src="../image/wappen_bezirk.jpg" name="bezirk" alt="bezirk" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BEZIRK%>">Bezirk <%=Constants.STATION_BEZIRK%></a><br />
 		</td></tr>
 		<tr>
 		<td id="navIcon"><img src="../image/wappen_breitenau.jpg" name="breitenau" alt="breitenau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BREITENAU%>"><%=Constants.STATION_BREITENAU%></a><br />
