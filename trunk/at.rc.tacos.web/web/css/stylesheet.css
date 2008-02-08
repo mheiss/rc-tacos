@@ -118,6 +118,19 @@ a:active {
 	width:100%;
 }
 
+#BlockContentNav {
+    vertical-align:middle;
+    text-align:left;
+    padding:2px;
+    width:100%;
+    font-size: 150%;
+}
+
+#navIcon {
+	vertical-align:middle;
+    text-align:left;
+    padding:2px;
+}
 
 /*
 	Kalender Style
