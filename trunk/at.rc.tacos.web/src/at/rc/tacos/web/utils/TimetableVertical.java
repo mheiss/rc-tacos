@@ -205,8 +205,6 @@ public class TimetableVertical {
 				retval += minEnd;
 			}
 		}
-		
-
 		return retval + 0.4;
 	}
 
