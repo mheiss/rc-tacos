@@ -162,6 +162,26 @@
 		<url-pattern>/updateEntryView</url-pattern>
 	</servlet-mapping>						
 
+    <servlet>
+        <servlet-name>statisticEmployeeView</servlet-name>
+        <jsp-file>/jsp/statisticEmployee.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>statisticEmployeeView</servlet-name>
+        <url-pattern>/statisticEmployeeView</url-pattern>
+    </servlet-mapping>
+ 
+     <servlet>
+        <servlet-name>statisticTransportView</servlet-name>
+        <jsp-file>/jsp/statisticTransport.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>statisticTransportView</servlet-name>
+        <url-pattern>/statisticTransportView</url-pattern>
+    </servlet-mapping>
+       
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
 	</welcome-file-list>

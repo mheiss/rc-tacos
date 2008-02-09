@@ -71,6 +71,14 @@ public class ControllerFactory {
 		{
 			return new ListUserController();
 		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.statisticEmployee")))
+		{
+			return new statisticEmployeeController();
+		}
+		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.statisticTransport")))
+		{
+			return new statisticTransportController();
+		}
 		else
 		{
 			return null;
