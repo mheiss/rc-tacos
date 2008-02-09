@@ -13,7 +13,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/rosterWeek.do?action=weekView"%>">Wochen&uuml;bersicht</a><br />
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/rosterWeek.do?action=weekView&&station=primary"%>">Wochen&uuml;bersicht</a><br />
 		</td>
 	</tr>
 	<tr>
@@ -31,25 +31,25 @@
 		<td id="BlockHead" colspan="2"><b>Ortsstellen</b></td>
 	</tr>
 	<tr>
-		<td id="navIcon"><img src="../image/wappen_bezirk.jpg" name="bezirk" alt="bezirk" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BEZIRK%>">Bezirk <%=Constants.STATION_BEZIRK%></a><br />
+		<td id="navIcon"><img src="../image/wappen_bezirk.jpg" name="bezirk" alt="bezirk" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station="+Constants.STATION_BEZIRK%>">Bezirk <%=Constants.STATION_BEZIRK%></a><br />
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_breitenau.jpg" name="breitenau" alt="breitenau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BREITENAU%>"><%=Constants.STATION_BREITENAU%></a><br />
+		<td id="navIcon"><img src="../image/wappen_breitenau.jpg" name="breitenau" alt="breitenau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station="+Constants.STATION_BREITENAU%>"><%=Constants.STATION_BREITENAU%></a><br />
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_bruck.jpg" name="bruck" alt="bruck" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_BRUCK%>"><%=Constants.STATION_BRUCK%></a><br />
+		<td id="navIcon"><img src="../image/wappen_bruck.jpg" name="bruck" alt="bruck" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station="+Constants.STATION_BRUCK%>"><%=Constants.STATION_BRUCK%></a><br />
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_kapfenberg.jpg" name="kapfenberg" alt="kapfenberg" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_KAPFENBERG%>"><%=Constants.STATION_KAPFENBERG%></a><br />
+		<td id="navIcon"><img src="../image/wappen_kapfenberg.jpg" name="kapfenberg" alt="kapfenberg" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station="+Constants.STATION_KAPFENBERG%>"><%=Constants.STATION_KAPFENBERG%></a><br />
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_stMarein.jpg" name="stMarein" alt="stMarein" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_MAREIN%>"><%=Constants.STATION_MAREIN%></a><br />
+		<td id="navIcon"><img src="../image/wappen_stMarein.jpg" name="stMarein" alt="stMarein" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station="+Constants.STATION_MAREIN%>"><%=Constants.STATION_MAREIN%></a><br />
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_thoerl.jpg" name="thoerl" alt="thoerl" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_THOERL%>"><%=Constants.STATION_THOERL.replaceAll("ö", "&ouml;")%></a><br />
+		<td id="navIcon"><img src="../image/wappen_thoerl.jpg" name="thoerl" alt="thoerl" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station="+Constants.STATION_THOERL%>"><%=Constants.STATION_THOERL.replaceAll("ö", "&ouml;")%></a><br />
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_thurnau.jpg" name="thurnau" alt="thurnau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action="+Constants.STATION_TURNAU%>"><%=Constants.STATION_TURNAU%></a><br />
+		<td id="navIcon"><img src="../image/wappen_thurnau.jpg" name="thurnau" alt="thurnau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station="+Constants.STATION_TURNAU%>"><%=Constants.STATION_TURNAU%></a><br />
 		</td>
 	</tr>
 </table>

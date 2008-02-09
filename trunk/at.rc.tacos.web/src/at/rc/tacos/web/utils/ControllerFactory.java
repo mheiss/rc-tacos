@@ -41,7 +41,7 @@ public class ControllerFactory {
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.stationWeek")))
 		{
-			return new StationController();
+			return new RosterWeekController();
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.editProfile")))
 		{
