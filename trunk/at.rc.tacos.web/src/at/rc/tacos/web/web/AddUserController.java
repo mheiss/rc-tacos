@@ -84,7 +84,7 @@ public class AddUserController implements Controller
 				params.put("entry-error", "Es ist ein unvorhergesehener Fehler aufgetreten! Bitte versuchen Sie zu einem anderen Zeitpunkt wieder.");
 				return params;
 			}
-			System.out.println("OK");
+			 
 			String birthData = birthday + "-" + birthmonth + "-" + birthyear;
 			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 			
@@ -121,6 +121,7 @@ public class AddUserController implements Controller
 			
 			/*
 			 * TODO
+			 * eMail auf gültigkeit prüfen
 			 * Übergabe der Werte an den Server -> speichern
 			 */
 
