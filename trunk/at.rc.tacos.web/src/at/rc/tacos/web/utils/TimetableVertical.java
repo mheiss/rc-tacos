@@ -172,10 +172,11 @@ public class TimetableVertical {
 	//caculate the width-value of the div-tag
 	private double calculateWidthForEntry(String begin, String end)
 	{
-		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
-		int minStart = (Integer.valueOf( begin.substring(3, 5) ).intValue());
-		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
-		int minEnd = (Integer.valueOf( end.substring(3, 5) ).intValue());
+		double startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
+		double minStart = (Integer.valueOf( begin.substring(3, 5) ).intValue());
+		double endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
+		double minEnd = (Integer.valueOf( end.substring(3, 5) ).intValue());
+		double diff = 0;
 		double retval = 0.0;
 		
 		if(minStart>0){
