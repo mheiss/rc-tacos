@@ -81,7 +81,10 @@
 			} 
 			else 
 			{
-				out.println("");
+				if(params.containsKey("entry-error")){
+				out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0' style=\"background-color:red; color:#ffffff; padding-left:10px; padding-top:3px; padding-bottom:3px;\" ><tr><td>"
+                        +params.get("entry-error")+"</td></tr></table>");
+				}
 			}
 		%>
 							
