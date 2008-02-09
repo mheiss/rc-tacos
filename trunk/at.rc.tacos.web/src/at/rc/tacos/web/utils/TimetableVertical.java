@@ -125,11 +125,13 @@ public class TimetableVertical {
 						"angestellt als:&nbsp;&nbsp;"+entry.getServicetype().getServiceName()+"<br />" + 
 						"eingetragen von:&nbsp;&nbsp;"+entry.getCreatedByUsername() +"<br />";
 
+						tabentry+= 		
+							"<div id='singleEntryDivCase' style='width:100%; padding-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
+								"%; ' >";
 						if(entry.getCreatedByUsername().equals(entry.getStaffMember().getUserName()))
 						{
 							tabentry+= 		
-								"<div id='singleEntryDiv' style='margin-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"%; " +
+								"<div id='singleEntryDiv' style='" + 
 								this.tooLong + 
 								" width:" +this.calculateWidthForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"%; " +
@@ -142,13 +144,13 @@ public class TimetableVertical {
 						else
 						{
 							tabentry+= 		
-								"<div id='singleEntryDiv' style='margin-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"%; " +
+								"<div id='singleEntryDiv' style='" +
 								this.tooLong + 
 								" width:" +this.calculateWidthForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"%; " +
 								"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span id='infoBox' >" + info + "</span><br /></a></div>";
 						}
+						tabentry+= "</div>";
 
 					}
 				}

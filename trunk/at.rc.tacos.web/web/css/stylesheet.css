@@ -331,7 +331,10 @@ weekdayZ {
     text-align: left;
     margin-top:2px;
 }
-
+#singleEntryDivCase{
+    margin:0;
+    padding:0;	
+}
 #singleEntryDiv a {
 	color:black;
 	text-decoration:none;
