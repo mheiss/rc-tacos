@@ -39,5 +39,11 @@ function changeTime(sel){
 }
 
 function getWindowWidth(){
-    return window.document.body.offsetWidth;
+    var width = window.document.body.offsetWidth;
+        if (document.getElementById) {
+		   document.getElementById("test").style.left = width/2;
+		} else if (document.all) {
+		    document.all.test.style.left = width/2;
+		}
+    
 }

@@ -121,7 +121,7 @@ public class RosterEntryController implements Controller
 		{
 			List<AbstractMessage> resultList = client.sendListingRequest(RosterEntry.ID, new QueryFilter(IFilterTypes.ID_FILTER,request.getParameter("id"))); 
 			RosterEntry entry = (RosterEntry )resultList.get(0); 
-			entry.setRealEndOfWork(Calendar.getInstance().getTimeInMillis());
+			entry.setRealEndOfWork(Calendar.getInstance().getTimeInMillis()); 		
 			client.sendUpdateRequest(RosterEntry.ID,entry);
 			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.rosterDay")+"?action=DayView");
 		}
