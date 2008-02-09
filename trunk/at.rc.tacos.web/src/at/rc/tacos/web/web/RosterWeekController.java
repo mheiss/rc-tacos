@@ -28,6 +28,7 @@ public class RosterWeekController  implements Controller
 		Map<String, Object> params = new HashMap<String, Object>();
 		//the action to do
 		String action = request.getParameter("action");
+		String station = request.getParameter("station");
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 
@@ -39,7 +40,9 @@ public class RosterWeekController  implements Controller
 			Calendar cal = Calendar.getInstance(); 
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy"); 
 			String startDate = request.getParameter("startDate");
+			
 			//if we have no date, use the current date
+			//else take the request parameter "startDate"
 			if (startDate == null || startDate.trim().isEmpty()){
 				startDate = format.format(cal.getTime());
 			}else{
@@ -47,8 +50,6 @@ public class RosterWeekController  implements Controller
 				//cal.set(year, month, day)
 				cal.set(Integer.parseInt(splitedDate[2]), Integer.parseInt(splitedDate[1])-1, Integer.parseInt(splitedDate[0]));				
 			}
-			
-
 			
 			//get roster entries 
 			List<RosterEntry> filterdByLocation = new ArrayList<RosterEntry>();
@@ -67,8 +68,15 @@ public class RosterWeekController  implements Controller
 				for(AbstractMessage object:dayResult)   
 				{  
 					RosterEntry entry = (RosterEntry)object;  
-					if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
-						filterdByLocation.add(entry); 
+					if(station.equalsIgnoreCase("primary")){
+						if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation())){
+							filterdByLocation.add(entry); 
+						}
+					}else{
+						if(entry.getStation().getLocationName().equals(station)) {
+							filterdByLocation.add(entry); 
+						}
+					}
 				}
 			} 
 			//add the resulting list to the params 
