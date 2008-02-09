@@ -113,7 +113,7 @@ public class RosterEntryController implements Controller
 						|| job == null
 						|| service == null)
 				{ 
-					params.put("loginError", "Keine Daten eingegeben!");
+					params.put("entry-success", "Keine Daten eingegeben!");
 					return params;
 				} 
 	

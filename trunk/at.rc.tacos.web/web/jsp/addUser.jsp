@@ -22,7 +22,9 @@ Map<String,Object> params = (Map)request.getAttribute("params");
 	SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
 %>
 
-<form method="post" action="" border='0' cellpadding='0' cellspacing='0'>
+<form method="post" 
+    action="<%=request.getContextPath()+"/Dispatcher/addUser.do?action=doAddUser"%>" 
+    border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
 	<thead>
@@ -70,24 +72,23 @@ Map<String,Object> params = (Map)request.getAttribute("params");
 							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
 								<tr>
 									<td width="50%"><!-- Timetablebox Day -->
-									                           <% if (params.containsKey("entry-success")) 
+									 <% if (params.containsKey("entry-success")) 
             {
-                out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cellspacing='0'><tr><td id=\"BlockHead\" align=\"right\" valign=\"center\">&nbsp;</td></tr><tr><td id=\"BlockContent\">"
-                        + "<table width=\"100%\" border='0' cellpadding='0' cellspacing='0'>"
-                        + "<tr><td width=\"50%\"><!-- quick entry -->"
-                        + "<table width=\"100%\" border='1' cellpadding='0' cellspacing='0'><tr><td>"
-                        + "<div id='meldungstext'>"+params.get("entry-success")+"</td></tr></table></td></tr></table>"
-                        + "</td></tr></table>");
+                out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0' style=\"background-color:#4fd138; color:#ffffff; padding-left:10px; padding-top:3px; padding-bottom:3px;\" ><tr><td>"
+                        +params.get("entry-success")+"</td></tr></table>");
             } 
             else 
             {
-                out.println("");
+                if(params.containsKey("entry-error")){
+                out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0' style=\"background-color:red; color:#ffffff; padding-left:10px; padding-top:3px; padding-bottom:3px;\" ><tr><td>"
+                        +params.get("entry-error")+"</td></tr></table>");
+                }
             }
         %>
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
-											<table width="682" height="302" border="0">
+											<table width="100%"  border="0">
 												<tr>
 													<td><strong>Pers&ouml;nliche Daten</strong></td>
 													<td>&nbsp;</td>
@@ -108,15 +109,56 @@ Map<String,Object> params = (Map)request.getAttribute("params");
 													<td><input type="text" name="cityname" id="textfield8" /></td>
 												</tr>
 												<tr>
-													<td>Geburtsdatum:</td>
-													<td><input type="text" name="birthday"
-														id="textfield12" value="TT-MM-JJJJ" /></td>
+													<td valign="center" >Geburtsdatum:</td>
+													<td><table ><tr><td>Tag</td><td>Monat</td><td>Jahr</td></tr><tr>
+													<td >
+													<select name="birthday" id="rosterViewDayHeadSelboxTime" style="width: 50px;">
+                                                        <% 
+                                                        int d = 0;
+                                                        for(d=1; d<=31; d++){ 
+                                                        %>
+                                                        <option><%=d %></option>
+                                                        <%
+                                                        }
+                                                        %>
+                                                        </select>
+													</td>
+													<td >
+													<select name="birthmonth" id="rosterViewDayHeadSelboxTime" style="width: 50px;">
+                                                        <% 
+                                                        int m = 0;
+                                                        for(m=1; m<=12; m++){ 
+                                                        %>
+                                                        <option><%=m %></option>
+                                                        <%
+                                                        }
+                                                        %>
+                                                        </select>
+													</td>
+													<td >
+													<select name="birthyear" id="rosterViewDayHeadSelboxTime" style="width: 70px;">
+                                                        <% 
+                                                        int y = 0;
+                                                        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+                                                        String year = format.format(current);
+                                                        //current year - 80 years
+                                                        for(y=(Integer.valueOf(year).intValue())-80; y<=Integer.valueOf(year).intValue(); y++){
+                                                        %>
+                                                        <option><%=y %></option>
+                                                        <%
+                                                        }
+                                                        %>
+                                                        </select>
+													</td>
+													</tr></table>
+														
+                                                    </td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
 												<tr>
 													<td>K&uuml;rzel:</td>
-													<td>aaa</td>
+													<td>Wird automatisch generiert</td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
@@ -152,71 +194,70 @@ Map<String,Object> params = (Map)request.getAttribute("params");
 													<td><input type="text" name="phonenumber"
 														id="textfield4" /></td>
 													<td><%=Constants.COMPETENCE_DRIVER%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceDriver"
+														id="competenceDriver" value="<%=Constants.COMPETENCE_DRIVER%>"/></td>
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
-													<td>aaa</td>
+													<td>-</td>
 													<td><%=Constants.COMPETENCE_SANI.replaceAll("ä","&auml;")%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceSani"
+														id="competenceSani" value="<%=Constants.COMPETENCE_SANI.replaceAll("ä","&auml;")%>"/></td>
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
-													<td>aaa</td>
+													<td>-</td>
 													<td><%=Constants.COMPETENCE_EXECUTIVE_INSP%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceIsp"
+														id="competenceIsp" value="<%=Constants.COMPETENCE_EXECUTIVE_INSP%>"/></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td><%=Constants.COMPETENCE_EXECUTIVE_DF%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceDf"
+														id="competenceDf" value="<%=Constants.COMPETENCE_EXECUTIVE_DF%>" /></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td><%=Constants.COMPETENCE_DISPON%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceDispon"
+														id="competenceDispon" value="<%=Constants.COMPETENCE_DISPON%>"/></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td><%=Constants.COMPETENCE_EMERGENCY.replaceAll("ä","&auml;")%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceEmergency"
+														id="competenceEmergency" value="<%=Constants.COMPETENCE_EMERGENCY.replaceAll("ä","&auml;")%>"/></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td><%=Constants.COMPETENCE_DOCTOR%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceDoctor"
+														id="competenceDoctor" value="<%=Constants.COMPETENCE_DOCTOR%>"/></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td><%=Constants.COMPETENCE_OTHER%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceOther"
+														id="competenceOther" value="<%=Constants.COMPETENCE_OTHER%>"/></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td><%=Constants.COMPETENCE_INTERVENTION%>:</td>
-													<td><input type="checkbox" name="checkbox"
-														id="checkbox" /></td>
+													<td><input type="checkbox" name="competenceIntervention"
+														id="competenceIntervention" value="<%=Constants.COMPETENCE_INTERVENTION%>"/></td>
 												</tr>
+												
 												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td colspan="2"><input type="submit" name="button"
-														id="button" value="Speichern"></td>
-												</tr>
+                                            <td colspan="4" align="right" style="padding: 10px;"><input
+                                                type="submit" id="submitButton" value="Benutzer anlegen" /></td>
+                                        </tr>
 											</table>
 										</tr>
 									</table>

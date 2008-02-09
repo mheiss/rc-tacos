@@ -72,7 +72,7 @@
 									<table width="100%" height="100%" border='0' cellpadding='0'
 										cellspacing='0'>
 										<tr>
-											<table width="682" height="302" border="0">
+											<table width="100%" border="0">
 												<tr>
 													<td><strong>Pers&ouml;nliche Daten</strong></td>
 													<td>&nbsp;</td>
@@ -184,12 +184,11 @@
 													<td><input type="checkbox" name="checkbox"
 														id="checkbox" /></td>
 												</tr>
+												
 												<tr>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td>&nbsp;</td>
-													<td><input type="submit" name="button" id="button" value="Speichern"></td>
-												</tr>
+                                            <td colspan="4" align="right" style="padding: 10px;"><input
+                                                type="submit" id="submitButton" value="Einstellungen speichern" /></td>
+                                                </tr>
 											</table>
 										</tr>
 									</table>

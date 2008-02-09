@@ -71,23 +71,7 @@
 					<td id="LeftContainerPanel" valign="top"><!-- NAV BLOCK  --> <%@ include
 						file="navigation.jsp"%></td>
 					<!-- #### CONTENT -->
-					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->
-
-					
-							<% if (params.containsKey("entry-success")) 
-			{
-				out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0' style=\"background-color:#4fd138; color:#ffffff; padding-left:10px; padding-top:3px; padding-bottom:3px;\" ><tr><td>"
-						+params.get("entry-success")+"</td></tr></table>");
-			} 
-			else 
-			{
-				if(params.containsKey("entry-error")){
-				out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0' style=\"background-color:red; color:#ffffff; padding-left:10px; padding-top:3px; padding-bottom:3px;\" ><tr><td>"
-                        +params.get("entry-error")+"</td></tr></table>");
-				}
-			}
-		%>
-							
+					<td id="ContentContainer" valign="top"><!-- CONTENT BLOCK  -->	
 					<table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
@@ -98,6 +82,19 @@
 							<table width="100%" border='0' cellpadding='0' cellspacing='0'>
 								<tr>
 									<td width="50%">
+									<% if (params.containsKey("entry-success")) 
+            {
+                out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0' style=\"background-color:#4fd138; color:#ffffff; padding-left:10px; padding-top:3px; padding-bottom:3px;\" ><tr><td>"
+                        +params.get("entry-success")+"</td></tr></table>");
+            } 
+            else 
+            {
+                if(params.containsKey("entry-error")){
+                out.println("<table width=\"100%\" border='0' cellpadding='0' cellspacing='0' style=\"background-color:red; color:#ffffff; padding-left:10px; padding-top:3px; padding-bottom:3px;\" ><tr><td>"
+                        +params.get("entry-error")+"</td></tr></table>");
+                }
+            }
+        %>
 									<table width="100%" border='0' cellpadding='0' cellspacing='0'
 										id="TabAnmeldung">
 										<tr>
@@ -240,7 +237,7 @@
 										</tr>
 										<tr>
 											<td colspan="2" align="right" style="padding: 10px;"><input
-												type="submit" id="senden" value="" /></td>
+												type="submit" id="submitButton" value="Dienst eintragen" /></td>
 										</tr>
 									</table>
 									</td>
