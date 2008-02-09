@@ -169,12 +169,11 @@ public class TimetableVertical {
 	}
 
 	//caculate the width-value of the div-tag
-	private int calculateWidthForEntry(String begin, String end)
+	private double calculateWidthForEntry(String begin, String end)
 	{
 		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
 		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
-		int retval = 0;
-		int val1 = 0, val2 = 0;
+		double retval = 0.0;
 		//int widthFromleft = this.calculateStartForEntry(begin);
 		tooLong="";
 
@@ -193,23 +192,30 @@ public class TimetableVertical {
 			retval = 100;
 		}
 
-		
+		System.out.println("RETVAL-WIDTH: " + retval);
 		return retval;
 	}
 
 	//caculate the startposition of the div-tag
-	private int calculateStartForEntry(String begin)
+	private double calculateStartForEntry(String begin)
 	{
 		int startPos = (Integer.valueOf( begin.substring(0, 2) ).intValue());
 		int min = (Integer.valueOf( begin.substring(3, 5) ).intValue());
-		int retval = 0;
+		double retval = 0.0;
 		if(min>0){
 			min = 2;
 		}
-		retval = ((100 * (startPos-5)) / 24) + min;
-		if(retval < 0){
-			retval = 0;
+		if(startPos>=12){
+			retval = (((100 * (startPos-5)) / 24) + min) + 1;
+		}else if(startPos>=18){
+			retval = (((100 * (startPos-5)) / 24) + min) - 1.5;
+		}else{
+			retval = (((100 * (startPos-5)) / 24) + min) + 1.5;
 		}
+		if(retval < 0){
+			retval =0;
+		}
+		System.out.println("RETVAL-POS: " + retval);
 		return retval;
 	}
 

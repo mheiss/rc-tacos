@@ -296,12 +296,6 @@ weekdayZ {
     vertical-align: middle;
     text-align: center;
     background-color: #DBDBDB;
-    /*background-image: url('../image/clock_klein.jpg');
-    background-position:center;
-    background-repeat:no-repeat;
-    padding: 0;
-    margin: 0;
-    border: 0;*/
 }
 #mainDayContainer {
     
@@ -332,8 +326,8 @@ weekdayZ {
     margin-top:2px;
 }
 #singleEntryDivCase{
-    margin:0;
-    padding:0;	
+	vertical-align: top;
+    text-align: left;
 }
 #singleEntryDiv a {
 	color:black;
