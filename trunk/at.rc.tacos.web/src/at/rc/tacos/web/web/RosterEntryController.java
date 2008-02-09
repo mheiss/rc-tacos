@@ -1,5 +1,7 @@
 package at.rc.tacos.web.web;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +30,7 @@ public class RosterEntryController implements Controller
 		Map<String, Object> params = new HashMap<String, Object>();
 		//the action to do
 		String action = request.getParameter("action");
-
+		Boolean dupl = true;
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
 
@@ -46,58 +48,88 @@ public class RosterEntryController implements Controller
 			String endYear =  request.getParameter("endYear");
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
+			
 			//get the objects from the session
 			Location location = userSession.getLocationById(Integer.valueOf(request.getParameter("station")));
 			Job job = userSession.getJobById(Integer.valueOf(request.getParameter("job")));
 			ServiceType service = userSession.getServiceTypeById(Integer.valueOf(request.getParameter("service")));
 			StaffMember member = userSession.getStaffMemberById(Integer.valueOf(request.getParameter("employee")));
-			//construct a startCalendar
-			Calendar startEntry = Calendar.getInstance();
-			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
-			startEntry.set(Calendar.MONTH, Integer.valueOf(startMonth)-1);
-			startEntry.set(Calendar.YEAR, Integer.valueOf(startYear));
-			startEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startHour));
-			startEntry.set(Calendar.MINUTE, Integer.valueOf(startMinute));
-			//construct a startCalendar
-			Calendar endEntry = Calendar.getInstance();
-			endEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(endDay));
-			endEntry.set(Calendar.MONTH, Integer.valueOf(endMonth)-1);
-			endEntry.set(Calendar.YEAR, Integer.valueOf(endYear));
-			endEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(endHour));
-			endEntry.set(Calendar.MINUTE, Integer.valueOf(endMinute));
 
-			long plannedStartOfWork = startEntry.getTimeInMillis();
-			long plannedEndOfWork = endEntry.getTimeInMillis();
-
-			if(member == null 
-					|| startDay.trim().isEmpty() 
-					|| startMonth.trim().isEmpty() 
-					|| startYear.trim().isEmpty() 
-					|| startHour.trim().isEmpty() 
-					|| startMinute.trim().isEmpty() 
-					|| endDay.trim().isEmpty() 
-					|| endMonth.trim().isEmpty() 
-					|| endYear.trim().isEmpty() 
-					|| endHour.trim().isEmpty()
-					|| endMinute.trim().isEmpty() 
-					|| location == null 
-					|| job == null
-					|| service == null)
-			{ 
-				params.put("loginError", "Keine Daten eingegeben!");
-				return params;
-			} 
-
-			RosterEntry entry = new RosterEntry(member,service,job, location,plannedStartOfWork, plannedEndOfWork);
-			entry.setCreatedByUsername(userSession.getUsername());
-			client.sendAddRequest(RosterEntry.ID, entry);
-			if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
-			{
-				params.put("entry-success", "Dienst erfolgreich eingetragen!");
+			SimpleDateFormat formatHour = new SimpleDateFormat("hh");
+			String startDate = startDay + "-" + startMonth + "-" + startYear;
+			//get roster entries
+			QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,startDate);			
+			List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
+			if(Integer.parseInt(startHour)<10){
+				startHour = "0"+startHour;
 			}
-			else
-			{
-				params.put("entry-error", "Dienst konnte wegen eines unvorhergesehenen Fehler nicht eingetragen werden! Bitte versuchen Sie es zu einem späteren Zeitpunkt wieder oder kontaktieren Sie Ihre Leitstelle."); 
+			if(Integer.parseInt(endHour)<10){
+				endHour = "0"+endHour;
+			}
+			
+			for(AbstractMessage object:dayResult)   
+			{  
+				RosterEntry entry = (RosterEntry)object;  
+				if(entry.getStaffMember().getStaffMemberId() == member.getStaffMemberId()){
+					dupl = false;
+				}
+				
+					
+			}
+			
+			
+			//no access to dupl entry
+			if(dupl){			
+				//construct a startCalendar
+				Calendar startEntry = Calendar.getInstance();
+				startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
+				startEntry.set(Calendar.MONTH, Integer.valueOf(startMonth)-1);
+				startEntry.set(Calendar.YEAR, Integer.valueOf(startYear));
+				startEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(startHour));
+				startEntry.set(Calendar.MINUTE, Integer.valueOf(startMinute));
+				//construct a startCalendar
+				Calendar endEntry = Calendar.getInstance();
+				endEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(endDay));
+				endEntry.set(Calendar.MONTH, Integer.valueOf(endMonth)-1);
+				endEntry.set(Calendar.YEAR, Integer.valueOf(endYear));
+				endEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(endHour));
+				endEntry.set(Calendar.MINUTE, Integer.valueOf(endMinute));
+	
+				long plannedStartOfWork = startEntry.getTimeInMillis();
+				long plannedEndOfWork = endEntry.getTimeInMillis();
+	
+				if(member == null 
+						|| startDay.trim().isEmpty() 
+						|| startMonth.trim().isEmpty() 
+						|| startYear.trim().isEmpty() 
+						|| startHour.trim().isEmpty() 
+						|| startMinute.trim().isEmpty() 
+						|| endDay.trim().isEmpty() 
+						|| endMonth.trim().isEmpty() 
+						|| endYear.trim().isEmpty() 
+						|| endHour.trim().isEmpty()
+						|| endMinute.trim().isEmpty() 
+						|| location == null 
+						|| job == null
+						|| service == null)
+				{ 
+					params.put("loginError", "Keine Daten eingegeben!");
+					return params;
+				} 
+	
+				RosterEntry entry = new RosterEntry(member,service,job, location,plannedStartOfWork, plannedEndOfWork);
+				entry.setCreatedByUsername(userSession.getUsername());
+				client.sendAddRequest(RosterEntry.ID, entry);
+				if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
+				{
+					params.put("entry-success", "Dienst erfolgreich eingetragen!");
+				}
+				else
+				{
+					params.put("entry-error", "Dienst konnte wegen eines unvorhergesehenen Fehler nicht eingetragen werden! Bitte versuchen Sie es zu einem späteren Zeitpunkt wieder oder kontaktieren Sie Ihre Leitstelle."); 
+				}
+			}else{
+				params.put("entry-error", "Sie oder die Person die Sie eintragen m&ouml;chten haben/hat an diesem Tag schon einen Dienst eingetragen. Bitte w&auml;hlen Sie ein anderen Tag."); 
 			}
 		}
 		if("doRemoveEntry".equalsIgnoreCase(action))
