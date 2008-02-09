@@ -58,7 +58,7 @@
 					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%= request.getAttribute("action") %></td>
+					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%=request.getParameter("station") %></td>
 					<td width="33%" align="right">Heute ist der <%=format.format(today)%>
 					</td>
 					<td>
@@ -118,7 +118,8 @@
 					<img src='../image/info.png' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/b_edit.png' name='info' alt='Editieren'  />&nbsp;Dienst editieren&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/b_drop.png' name='info' alt='L&ouml;schen'  />&nbsp;Dienst&nbsp;l&ouml;schen&nbsp;&nbsp;|&nbsp;&nbsp;
-					<img src='../image/tableLegendNightShift.jpg' name='info' alt='Tages&uuml;bergreifend'  />&nbsp;Dienst &uuml;ber zwei Tage<br />
+                    <img src='../image/rosterArrowRight.jpg' alt='Tages&uuml;bergreifend' />&nbsp;Dienst &uuml;ber zwei Tage (weiterf&uuml;hrend n&auml;chster Tag)&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <img src='../image/rosterArrowLeft.jpg' alt='Tages&uuml;bergreifend' />&nbsp;Dienst &uuml;ber zwei Tage (beginnend vorheriger Tag)<br />
                     <img src='../image/tableLegendDriver.jpg' name='info' alt='Fahrer'  />&nbsp;sicherer&nbsp;Einsatzfahrer&nbsp;&nbsp;|&nbsp;&nbsp;
                     <img src='../image/tableLegendParametic.jpg' name='info' alt='Sanitaeter'  />&nbsp;Sanit&auml;ter&nbsp;&nbsp;|&nbsp;&nbsp;
                     <img src='../image/tableLegendEParametic.jpg' name='info' alt='Notfall Sanitaeter'  />&nbsp;Notfall&nbsp;Sanit&auml;ter&nbsp;&nbsp;|&nbsp;&nbsp;

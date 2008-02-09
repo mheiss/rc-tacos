@@ -129,7 +129,7 @@ public class RosterEntryController implements Controller
 					params.put("entry-error", "Dienst konnte wegen eines unvorhergesehenen Fehler nicht eingetragen werden! Bitte versuchen Sie es zu einem späteren Zeitpunkt wieder oder kontaktieren Sie Ihre Leitstelle."); 
 				}
 			}else{
-				params.put("entry-error", "Sie oder die Person die Sie eintragen m&ouml;chten haben/hat an diesem Tag schon einen Dienst eingetragen. Bitte w&auml;hlen Sie ein anderen Tag."); 
+				params.put("entry-error", "Sie oder die Person die Sie eintragen m&ouml;chten haben/hat an diesem Tag schon einen Dienst eingetragen. Bitte w&auml;hlen Sie einen anderen Tag."); 
 			}
 		}
 		if("doRemoveEntry".equalsIgnoreCase(action))
