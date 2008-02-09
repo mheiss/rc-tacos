@@ -129,7 +129,7 @@ public class TimetableVertical {
 						{
 							tabentry+= 		
 								"<div id='singleEntryDiv' style='margin-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"px; " +
+								"%; " +
 								this.tooLong + 
 								" width:" +this.calculateWidthForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"%; " +
@@ -143,7 +143,7 @@ public class TimetableVertical {
 						{
 							tabentry+= 		
 								"<div id='singleEntryDiv' style='margin-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"px; " +
+								"%; " +
 								this.tooLong + 
 								" width:" +this.calculateWidthForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"%; " +

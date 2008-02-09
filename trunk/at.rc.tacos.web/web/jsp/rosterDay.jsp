@@ -21,8 +21,7 @@
 <script type="text/javascript" src="../js/windowActions.js"></script>
 <title>TACOS :: RK Bruck-Kapfenberg</title>
 <script type="text/javascript">
-    var offWidth = getWindowWidth();
-   
+    /* var offWidth = getWindowWidth(); */
 </script>
 </head>
 <body>
@@ -100,9 +99,9 @@
 			                    if(entry.getRealStartOfWork() == 0) { %>
 				                       <table width="100%" height="15"><tr><td width="10" ><%=i++ %></td><td width="15" ><img src="../image/b_exit13x13.png" alt="--" /></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;[<%=formath.format(entry.getPlannedStartOfWork()) %>&nbsp;&nbsp;<%=formatHour.format(entry.getPlannedStartOfWork()) %>]&nbsp;bis&nbsp;[<%=formath.format(entry.getPlannedEndOfWork()) %>&nbsp;-&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %>]</td><td  width="20%"  ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignIn&id=<%=entry.getRosterId()%>"><b>Dienst&nbsp;anmelden</b></a></td></tr></table>
 				                <% } else if(entry.getRealEndOfWork() != 0) { %>
-				                	   <table width="100%" height="1" style="color:#DBDBDB;"><tr><td width="10" ></td><td width="15" ></td><td></td><td  width="20%"></td></tr></table>
+				                	   <table width="100%" height="15" style="color:#DBDBDB;"><tr><td colspan="3" >Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;in&nbsp;<%=entry.getStation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;angemeldet:&nbsp;<%=formath.format(entry.getRealStartOfWork()) %>,&nbsp;<%=formatHour.format(entry.getRealStartOfWork()) %>&nbsp;&nbsp;abgemeldet:&nbsp;<%=formath.format(entry.getRealEndOfWork()) %>,&nbsp;<%=formatHour.format(entry.getRealEndOfWork()) %></td></tr></table>
 				                <% } else { %>
-			<table width="100%" height="15" style="color:#DBDBDB;"><tr><td width="10" ><%=i++ %></td><td width="15" ><img src="../image/b_save13x13.png" alt="--" /></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;[<%=formath.format(entry.getPlannedStartOfWork()) %>]&nbsp;&nbsp;[<%=formatHour.format(entry.getPlannedStartOfWork()) %>]&nbsp;bis&nbsp;[<%=formath.format(entry.getPlannedEndOfWork()) %>&nbsp;-&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %>]</td><td  width="20%"   ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignOut&id=<%=entry.getRosterId()%>">Dienst&nbsp;abmelden</a></td></tr></table>
+			                           <table width="100%" height="15" style="color:#DBDBDB;"><tr><td width="10" ><%=i++ %></td><td width="15" ><img src="../image/b_save13x13.png" alt="--" /></td><td>Dienst als <%=entry.getJob().getJobName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>&nbsp;&nbsp;-&nbsp;&nbsp;von&nbsp;[<%=formath.format(entry.getPlannedStartOfWork()) %>]&nbsp;&nbsp;[<%=formatHour.format(entry.getPlannedStartOfWork()) %>]&nbsp;bis&nbsp;[<%=formath.format(entry.getPlannedEndOfWork()) %>&nbsp;-&nbsp;<%=formatHour.format(entry.getPlannedEndOfWork()) %>]</td><td  width="20%"   ><a href="<%=request.getContextPath()%>/Dispatcher/rosterEntry.do?action=doSignOut&id=<%=entry.getRosterId()%>">Dienst&nbsp;abmelden</a></td></tr></table>
 			
 				                   <% }
 			                 }
@@ -110,7 +109,7 @@
 	                }
 					%>
 					<!-- CONTENT BLOCK  -->
-					<a name="ContentBlock"><table id="Block" width="100%" border='0' cellpadding='0'
+					<table id="Block" width="100%" border='0' cellpadding='0'
 						cellspacing='0'>
 						<tr>
 							<td id="BlockHead" align="right" valign="center">&nbsp;</td>
@@ -150,7 +149,7 @@
 							</table>
 							</td>
 						</tr>
-					</table></a>
+					</table>
 					<br />
 					<img src='../image/info.png' name='info' alt='Info'  />&nbsp;Information&nbsp;&nbsp;|&nbsp;&nbsp;
 					<img src='../image/b_edit.png' name='info' alt='Editieren'  />&nbsp;Dienst editieren&nbsp;&nbsp;|&nbsp;&nbsp;
