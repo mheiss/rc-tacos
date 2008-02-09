@@ -23,7 +23,7 @@ public class TimetableVertical {
 	private String tabentry;
 	private String tabentryHead;
 	private String TimeList;
-	private String tooLong;
+	
 	private String path;
 
 	public static final String DRIVER_COLOR = "#0F1BFF";
@@ -41,7 +41,6 @@ public class TimetableVertical {
 		tabentry = "";
 		tabentryHead = "";
 		TimeList="";
-		tooLong="";
 		this.path = path;
 	}
 
@@ -132,23 +131,25 @@ public class TimetableVertical {
 						{
 							tabentry+= 		
 								"<div id='singleEntryDiv' style='" + 
-								this.tooLong + 
 								" width:" +this.calculateWidthForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"%; " +
 								"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#' style='float:left;'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span id='infoBox' >" + info + "</span><br /></a>" +
 								"<a href='"+ path +"/Dispatcher/updateEntry.do?action=doUpdateEntry&id=" + entry.getRosterId() +"'  style='float:left;'>" +
 								"<img src='../image/b_edit.png' id='edit' class='hidefocus' /></a>" +
 								"<a href='"+ path +"/Dispatcher/rosterEntry.do?action=doRemoveEntry&id=" + entry.getRosterId() +"' onClick=\"return confirm('M&ouml;chten Sie diesen Dienst wirklich l&ouml;schen?')\"  style='float:left;'>" +							
-								"<img src='../image/b_drop.png' id='del' class='hidefocus' /></a></div>";							
+								"<img src='../image/b_drop.png' id='del' class='hidefocus' /></a>" +
+								"&nbsp&nbsp;" + this.getTooLong(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) + 
+								"</div>";							
 						}
 						else
 						{
 							tabentry+= 		
 								"<div id='singleEntryDiv' style='" +
-								this.tooLong + 
 								" width:" +this.calculateWidthForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
 								"%; " +
-								"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span id='infoBox' >" + info + "</span><br /></a></div>";
+								"background-color:" + this.getBgColor(entry.getJob().getJobName()) + ";'><a href='#' style='float:left;'><img src='../image/info.png' name='info' alt='Info'  class='hidefocus' /><span id='infoBox' >" + info + "</span><br /></a>" +
+								"&nbsp&nbsp;" + this.getTooLong(formatHour.format(new Date(entry.getPlannedStartOfWork())), formatHour.format(new Date(entry.getPlannedEndOfWork()))) +
+								"</div>";
 						}
 						tabentry+= "</div>";
 
@@ -172,28 +173,37 @@ public class TimetableVertical {
 	private double calculateWidthForEntry(String begin, String end)
 	{
 		int startPos = Integer.valueOf( begin.substring(0, 2) ).intValue();
+		int minStart = (Integer.valueOf( begin.substring(3, 5) ).intValue());
 		int endPos = Integer.valueOf( end.substring(0, 2) ).intValue();
+		int minEnd = (Integer.valueOf( end.substring(3, 5) ).intValue());
 		double retval = 0.0;
-		//int widthFromleft = this.calculateStartForEntry(begin);
-		tooLong="";
+		
+		if(minStart>0){
+			minStart = 2;
+		}
+		if(minEnd>0){
+			minEnd = 2;
+		}		
+
 
 		if(endPos>startPos){
-			retval = ((endPos-startPos)*100) / 25;
-		}else if(endPos == startPos){
-			retval = 100;
+			retval = ((endPos - startPos) * 100) / 25;
 		}else{
-			retval = ((startPos-endPos)*100) / 25;
+			retval = (((endPos + 24) - startPos) * 100) / 25;
 		}
+		
 
-		//check and cut too long values 
-		if(retval>100)
-		{
-			tooLong="border-right-width:3px; border-right-style:dotted; border-right-color:black;";
-			retval = 100;
+		
+		if(minStart != 0 && minEnd != 0){
+			//nothing should happen
+		}else{
+			if(minStart != 0){
+				retval -= minStart;
+			}else if (minEnd != 0){
+				retval += minEnd;
+			}
 		}
-
-		System.out.println("RETVAL-WIDTH: " + retval);
-		return retval;
+		return retval + 0.4;
 	}
 
 	//caculate the startposition of the div-tag
@@ -205,20 +215,38 @@ public class TimetableVertical {
 		if(min>0){
 			min = 2;
 		}
-		if(startPos>=12){
-			retval = (((100 * (startPos-5)) / 24) + min) + 1;
-		}else if(startPos>=18){
-			retval = (((100 * (startPos-5)) / 24) + min) - 1.5;
+		if(startPos >= 11){
+			if(startPos >= 17){
+				retval = (((100 * (startPos-5)) / 24) + min) - 0.2;
+			}else{
+				retval = (((100 * (startPos-5)) / 24) + min) + 0.5;
+			}
 		}else{
 			retval = (((100 * (startPos-5)) / 24) + min) + 1.5;
 		}
 		if(retval < 0){
 			retval =0;
 		}
-		System.out.println("RETVAL-POS: " + retval);
 		return retval;
 	}
 
+	private String getTooLong(String begin, String end){
+		String tooLong;
+		double widthFromleft = this.calculateStartForEntry(begin);
+		double widthFromLine = this.calculateWidthForEntry(begin, end);
+		String retval = null;
+
+		//check and cut too long values 
+		if((widthFromleft+widthFromLine)>100)
+		{
+			retval = "<img src='../image/rosterArrowRight.jpg' alt='Nachtdienst' />";
+		}else if(widthFromleft == 0){
+			retval = "<img src='../image/rosterArrowLeft.jpg' alt='Nachtdienst' />";
+		}else{
+			retval = "";
+		}
+		return retval;
+	}
 	/**
 	 * GETTER and SETTERS
 	 * 
