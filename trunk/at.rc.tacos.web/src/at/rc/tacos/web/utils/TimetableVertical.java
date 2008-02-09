@@ -186,14 +186,15 @@ public class TimetableVertical {
 			minEnd = 2;
 		}		
 
-
+		if(startPos >= 0 && startPos < 5){
+			startPos = 4.5 ;
+		}
+		
 		if(endPos>startPos){
 			retval = ((endPos - startPos) * 100) / 25;
 		}else{
 			retval = (((endPos + 24) - startPos) * 100) / 25;
 		}
-		
-
 		
 		if(minStart != 0 && minEnd != 0){
 			//nothing should happen
@@ -204,6 +205,8 @@ public class TimetableVertical {
 				retval += minEnd;
 			}
 		}
+		
+
 		return retval + 0.4;
 	}
 
