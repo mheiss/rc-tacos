@@ -196,15 +196,19 @@ weekdayZ {
 	color:#000000;
 }
 
-#senden {
+#submitButton {
+	/*
     background-image:url(../image/anmelden.jpg);
     background-position:center;
     background-repeat:no-repeat;
-
-    color:white	;
-    width:110px;
+*/
+    color:black	;
+    width:200px;
     height:26px;
-
+    vertical-align:middle;
+    text-align:center;   
+    background-color:white;
+    font-weight:bold;
     /*
     border-width:2px;
     border-color:#be0107;
@@ -280,7 +284,7 @@ weekdayZ {
 }
 #rosterViewDayHeadSelboxTime {
     width:50px;
-    padding:3px;
+    padding:1px;
     font-size:13px;   	
 }
 
