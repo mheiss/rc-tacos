@@ -1,5 +1,29 @@
 <%@page import="at.rc.tacos.common.Constants"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="at.rc.tacos.model.DayInfoMessage"%>
+<%@page import="java.util.List"%>
+<%
+
+List<DayInfoMessage> dayInfoList = userSession.getDayInfoList();
+%>
+<table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
+    <tr>
+        <td id="BlockHeadBlack" colspan="2"><b>Nachricht des Tages</b></td>
+    </tr>
+    <tr>
+        <td style="font-size:10px; background-color: black; color: white; padding:1px;">
+1. Die Umfahrung in xxxxxx ist heute wegen Bauarbeiten gesperrt! Es wird der Verkehr &uuml;ber die neue xxxxxx umgeleitet. <br/>
+2. Die Umfahrung in xxxxxx ist heute wegen Bauarbeiten gesperrt! Es wird der Verkehr &uuml;ber die neue xxxxxx umgeleitet. 
+        <%
+        
+//           for(DayInfoMessage message : dayInfoList){
+//             out.println(message);
+               
+//           }
+        %>
+        </td>
+    </tr>
+</table>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
@@ -81,3 +105,4 @@
         </td>
     </tr>
 </table>
+

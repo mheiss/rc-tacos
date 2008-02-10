@@ -25,6 +25,7 @@
 </script>
 </head>
 <body>
+
 <%
 
 	Calendar current = Calendar.getInstance();

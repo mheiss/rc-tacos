@@ -104,6 +104,15 @@ a:active {
 	
 	margin-top:5px;	
 }
+#BlockHeadBlack {
+    background-image: url('../image/blockheadBlack.jpg');
+    background-repeat:repeat-x;
+    background-position:top left;
+    padding-left:16px;
+    height:15px;	
+    color:white;
+    font-style: italic;
+}
 #BlockHead {
 		
 	background-image: url('../image/blockhead.jpg');
