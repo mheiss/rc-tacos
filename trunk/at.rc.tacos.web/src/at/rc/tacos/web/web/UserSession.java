@@ -9,6 +9,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Job;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.DayInfoMessage;
 
 /**
  * Session information
@@ -25,6 +26,7 @@ public class UserSession
 	private List<ServiceType> serviceTypeList;
 	private List<Location> locationList;
 	private List<StaffMember> staffList;
+	private List<DayInfoMessage> dayInfoList;
 
 	/**
 	 * Default constructor
@@ -37,6 +39,7 @@ public class UserSession
 		locationList = new ArrayList<Location>();
 		staffList = new ArrayList<StaffMember>();
 		serviceTypeList = new ArrayList<ServiceType>();
+		dayInfoList = new ArrayList<DayInfoMessage>();
 	}
 
 	//HELPER METHODS
@@ -224,4 +227,22 @@ public class UserSession
 	public void setStaffMember(StaffMember staffMember) {
 		this.staffMember = staffMember;
 	}
+
+	/**
+	 * @return the dayInfoMessageList
+	 */
+	public List<DayInfoMessage> getDayInfoList() {
+		return dayInfoList;
+	}
+
+	/**
+	 * @param dayInfoList 
+	 */
+	public void addDayInfo(List<DayInfoMessage> dayInfoList) {
+		this.dayInfoList = dayInfoList;
+	}
+	
+	
+	
+	
 }
