@@ -218,7 +218,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td colspan="2" align="right" style="padding: 10px;"><input type="submit" name="button" id="button" value="Speichern"></td>
+											<td colspan="2" align="right" style="padding: 10px;"><input type="submit" id="submitButton" value="&Auml;nderungen speichern" /></td>
 										</tr>
 									</table>
 									</td>
