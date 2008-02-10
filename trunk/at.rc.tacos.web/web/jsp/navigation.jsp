@@ -3,7 +3,7 @@
 <%@page import="at.rc.tacos.model.DayInfoMessage"%>
 <%@page import="java.util.List"%>
 <%
-
+UserSession userSession = (UserSession)session.getAttribute("userSession");
 List<DayInfoMessage> dayInfoList = userSession.getDayInfoList();
 %>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
