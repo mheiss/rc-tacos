@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Job;
@@ -20,7 +21,7 @@ public class UserSession
 	private Boolean loggedIn;
 	private String username;
 	private WebClient connection;
-	private StaffMember staffMember;
+	private Login loginInfo;
 	private List<Competence> competenceList;
 	private List<Job> jobList;
 	private List<ServiceType> serviceTypeList;
@@ -113,10 +114,11 @@ public class UserSession
 	 * @param loggedIn true if the login was successfully
 	 * @param userData the information about the user
 	 */
-	public void setLoggedIn(Boolean loggedIn,String username,WebClient connection)
+	public void setLoggedIn(Boolean loggedIn,Login loginInfo,WebClient connection)
 	{
 		this.loggedIn = loggedIn;
-		this.username = username;
+		this.loginInfo = loginInfo;
+		this.username = loginInfo.getUsername();
 		this.connection = connection;
 	}
 
@@ -174,10 +176,23 @@ public class UserSession
 	}
 
 	/**
+	 * Returns the staff member accociated with this user session. <br >
+	 * The staffMember contains the personal information about the member
 	 * @return the staffMember
 	 */
-	public StaffMember getStaffMember() {
-		return staffMember;
+	public StaffMember getStaffMember() 
+	{
+		return loginInfo.getUserInformation();
+	}
+	
+	/**
+	 * Returns the login information and the authorization for this user. <br>
+	 * Note that the password is not set in this login info.
+	 * @return the login information
+	 */
+	public Login getLoginInformation()
+	{
+		return loginInfo;
 	}
 
 	/**
@@ -219,13 +234,6 @@ public class UserSession
 	public void addStaffMember(StaffMember staffMember) 
 	{
 		staffList.add(staffMember);
-	}
-
-	/**
-	 * @param staffMember the staffMember to set
-	 */
-	public void setStaffMember(StaffMember staffMember) {
-		this.staffMember = staffMember;
 	}
 
 	/**

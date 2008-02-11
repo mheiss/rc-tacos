@@ -57,9 +57,8 @@ public class LoginController implements Controller
 				if(loginResult.isLoggedIn()) 
 				{ 
 					UserSession userSession = (UserSession)session.getAttribute("userSession"); 
-					userSession.setLoggedIn(true, username, client); 
-					userSession.setStaffMember(loginResult.getUserInformation()); 
-
+					userSession.setLoggedIn(true, loginResult, client); 
+					
 					//request the frequently used object from the server
 					List<AbstractMessage> stationList = client.sendListingRequest(Location.ID, null);
 					if(Location.ID.equalsIgnoreCase(client.getContentType())) 
