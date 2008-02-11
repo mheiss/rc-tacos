@@ -241,8 +241,4 @@ public class UserSession
 	public void addDayInfo(List<DayInfoMessage> dayInfoList) {
 		this.dayInfoList = dayInfoList;
 	}
-	
-	
-	
-	
 }
