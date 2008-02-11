@@ -73,11 +73,11 @@ public class ControllerFactory {
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.statisticEmployee")))
 		{
-			return new statisticEmployeeController();
+			return new StatisticEmployeeController();
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.statisticTransport")))
 		{
-			return new statisticTransportController();
+			return new StatisticTransportController();
 		}
 		else
 		{
