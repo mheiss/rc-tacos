@@ -1,6 +1,5 @@
 package at.rc.tacos.web.web;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +53,6 @@ public class RosterEntryController implements Controller
 			ServiceType service = userSession.getServiceTypeById(Integer.valueOf(request.getParameter("service")));
 			StaffMember member = userSession.getStaffMemberById(Integer.valueOf(request.getParameter("employee")));
 
-			SimpleDateFormat formatHour = new SimpleDateFormat("hh");
 			String startDate = startDay + "-" + startMonth + "-" + startYear;
 			//get roster entries
 			QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,startDate);			
