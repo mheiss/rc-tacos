@@ -34,8 +34,7 @@
 	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 %>
 <form method="post" name="form"
-	action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>"
-	border='0' cellpadding='0' cellspacing='0'>
+	action="<%=request.getContextPath()+"/Dispatcher/rosterEntry.do?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
 
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
@@ -56,9 +55,7 @@
 			<table width="100%" id="userInfo">
 				<tr>
 					<td width="33%" align="left">Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
-					&nbsp;&nbsp;( <a
-						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
-					)</td>
+					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
 					<td width="33%" align="center">Diensteintrag hinzuf&uuml;gen</td>
 					<td width="33%" align="right">Heute ist der <%= format.format(current) %>
 					</td>
