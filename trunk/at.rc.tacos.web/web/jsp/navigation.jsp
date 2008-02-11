@@ -3,7 +3,7 @@
 <%@page import="at.rc.tacos.web.web.LoginController"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
-	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
+	UserSession user = (UserSession)session.getAttribute("userSession"); 
 %>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
 	<tr>
@@ -58,7 +58,7 @@
 		</td>
 	</tr>
 </table>
-<% if(Login.getAuthorization().equals("Administrator")) 
+<% if(user.getLoginInformation().getAuthorization().equals(Login.AUTH_ADMIN)) 
 {
 out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cellspacing='0'>" +
 "<tr><td id=\"BlockHead\" colspan=\"2\"><b>Administration</b></td></tr><tr>" +
