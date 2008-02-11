@@ -1,8 +1,3 @@
-/**
- * 2007 - 2008
- * @author hade - Hannes Derler
- */
-
 package at.rc.tacos.web.utils;
 
 import java.text.DateFormat;
@@ -15,7 +10,8 @@ import java.util.List;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.RosterEntry;
 
-public class TimetableVertical {
+public class TimetableVertical 
+{
 	private String timetable;
 	private String startDate;
 	private int height;
@@ -23,7 +19,7 @@ public class TimetableVertical {
 	private String tabentry;
 	private String tabentryHead;
 	private String TimeList;
-	
+	private String currentUser;
 	private String path;
 
 	public static final String DRIVER_COLOR = "#0F1BFF";
@@ -32,8 +28,8 @@ public class TimetableVertical {
 	public static final String DOC_COLOR = "#FF871E";
 	public static final String OTHERS_COLOR = "#3CC140";
 
-
-	public TimetableVertical(String path,String startDate){
+	public TimetableVertical(String path,String startDate, String currentUser)
+	{
 		timetable = "";
 		this.startDate = startDate;
 		height = 0;
@@ -42,10 +38,11 @@ public class TimetableVertical {
 		tabentryHead = "";
 		TimeList="";
 		this.path = path;
+		currentUser = currentUser;
 	}
 
-
-	public String calculateTimetable(List<RosterEntry> rosterList, int daysToShow){
+	public String calculateTimetable(List<RosterEntry> rosterList, int daysToShow)
+	{
 
 		boolean ok1 = true;
 		boolean ok2 = true;
@@ -57,7 +54,8 @@ public class TimetableVertical {
 
 		TimeList += "<div id='mainDayContainerTL' align='center'>";
 		int i = 5;
-		do {
+		do 
+		{
 			if(i>24){
 				i=1;
 				ok2=false;
@@ -72,7 +70,8 @@ public class TimetableVertical {
 			}
 			i++;
 
-		}while(ok1);
+		}
+		while(ok1);
 
 		TimeList += "</div>"; 
 
@@ -107,13 +106,13 @@ public class TimetableVertical {
 				}
 
 				tabentry+=TimeList;
-				
+
 				tabentry+="<div id='mainDayContainer'><div style='padding:1px; width:100%; height:25px;' ><b>" + format.format(dtCal) +  "</b></div><div style='padding:5px; ' id='MainDivDay'>";
 				for(AbstractMessage message:rosterList)
 				{
 					RosterEntry entry = (RosterEntry)message;
-					if(format.format(new Date(entry.getPlannedStartOfWork())).equals(format.format(dtCal))){
-
+					if(format.format(new Date(entry.getPlannedStartOfWork())).equals(format.format(dtCal)))
+					{
 						zaehle++;
 						info = "INFORMATION<br /><br />Name:&nbsp;&nbsp;<b>"+ entry.getStaffMember().getUserName()+"</b><br />" +
 						"Dienst als:&nbsp;&nbsp;<b>"+ entry.getJob().getJobName().replaceAll("ä", "&auml;") + "<br /></b>" +
@@ -126,7 +125,7 @@ public class TimetableVertical {
 
 						tabentry+= 		
 							"<div id='singleEntryDivCase' style='width:100%; padding-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
-								"%; ' >";
+							"%; ' >";
 						if(entry.getCreatedByUsername().equals(entry.getStaffMember().getUserName()))
 						{
 							tabentry+= 		
@@ -178,7 +177,7 @@ public class TimetableVertical {
 		double minEnd = (Integer.valueOf( end.substring(3, 5) ).intValue());
 		double diff = 0;
 		double retval = 0.0;
-		
+
 		if(minStart>0){
 			minStart = 2;
 		}
@@ -189,13 +188,13 @@ public class TimetableVertical {
 		if(startPos >= 0 && startPos < 5){
 			startPos = 4.5 ;
 		}
-		
+
 		if(endPos>startPos){
 			retval = ((endPos - startPos) * 100) / 25;
 		}else{
 			retval = (((endPos + 24) - startPos) * 100) / 25;
 		}
-		
+
 		if(minStart != 0 && minEnd != 0){
 			//nothing should happen
 		}else{
@@ -232,7 +231,8 @@ public class TimetableVertical {
 		return retval;
 	}
 
-	private String getTooLong(String begin, String end){
+	private String getTooLong(String begin, String end)
+	{
 		String tooLong;
 		double widthFromleft = this.calculateStartForEntry(begin);
 		double widthFromLine = this.calculateWidthForEntry(begin, end);
@@ -278,14 +278,19 @@ public class TimetableVertical {
 		this.width = width;
 	}
 
-	public String getBgColor(String TODO) {
-		if(TODO.equalsIgnoreCase("Notarzt")){
+	public String getBgColor(String TODO) 
+	{
+		if(TODO.equalsIgnoreCase("Notarzt"))
+		{
 			return DOC_COLOR;
-		} else if (TODO.equalsIgnoreCase("Notfallsanitäter")) {
+		} else if (TODO.equalsIgnoreCase("Notfallsanitäter"))
+		{
 			return EPARAMEDIC_COLOR;
-		} else if (TODO.equalsIgnoreCase("Sanitäter")) {
+		} else if (TODO.equalsIgnoreCase("Sanitäter")) 
+		{
 			return PARAMEDIC_COLOR;
-		} else if (TODO.equalsIgnoreCase("Fahrer")) {
+		} else if (TODO.equalsIgnoreCase("Fahrer")) 
+		{
 			return DRIVER_COLOR;
 		} else{
 			return OTHERS_COLOR;
