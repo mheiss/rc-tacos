@@ -4,6 +4,7 @@
 <%@page import="java.util.List"%>
 <%
 List<DayInfoMessage> dayInfoList = userSession.getDayInfoList();
+if(dayInfoList.size()>0){
 %>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
     <tr>
@@ -11,18 +12,15 @@ List<DayInfoMessage> dayInfoList = userSession.getDayInfoList();
     </tr>
     <tr>
         <td style="font-size:10px; background-color: black; color: white; padding:1px;">
-1. Die Umfahrung in xxxxxx ist heute wegen Bauarbeiten gesperrt! Es wird der Verkehr &uuml;ber die neue xxxxxx umgeleitet. <br/>
-2. Die Umfahrung in xxxxxx ist heute wegen Bauarbeiten gesperrt! Es wird der Verkehr &uuml;ber die neue xxxxxx umgeleitet. 
         <%
-        
-//           for(DayInfoMessage message : dayInfoList){
-//             out.println(message);
-               
-//           }
+           for(DayInfoMessage message : dayInfoList){
+             out.println(message);  
+           }
         %>
         </td>
     </tr>
 </table>
+<%} %>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
@@ -96,11 +94,11 @@ List<DayInfoMessage> dayInfoList = userSession.getDayInfoList();
         <td id="BlockHead" colspan="2"><b>Statistik</b></td>
     </tr>
     <tr>
-        <td id="navIcon">&nbsp;</td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/statisticEmployee.do?notice=Mitarbeiter"%>">Mitarbeiter</a>
+        <td id="navIcon">&nbsp;</td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/statisticEmployee.do?action=doEmployeeStat&notice=Mitarbeiter"%>">Mitarbeiter</a>
         </td>
     </tr>
     <tr>
-        <td id="navIcon">&nbsp;</td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/statisticTransport.do?notice=Transporte"%>">Transporte</a>
+        <td id="navIcon">&nbsp;</td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/statisticTransport.do?action=doTransportStat&notice=Transporte"%>">Transporte</a>
         </td>
     </tr>
 </table>
