@@ -58,7 +58,7 @@
 					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%=request.getParameter("station") %></td>
+					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%=userSession.getLocationById(Integer.valueOf(request.getParameter("station") )).getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></td>
 					<td width="33%" align="right">Heute ist der <%=format.format(today)%>
 					</td>
 					<td>
