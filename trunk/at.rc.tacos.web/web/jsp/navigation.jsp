@@ -33,7 +33,7 @@
 		<td id="BlockHead" colspan="2"><b>Ortsstellen</b></td>
 	</tr>
 	<tr>
-		<td id="navIcon"><img src="../image/wappen_bezirk.jpg" name="bezirk" alt="bezirk" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Bezirk:%20Bruck%20-%20Kapfenberg"%>">Bezirk Bruck an der Mur</a>
+		<td id="navIcon"><img src="../image/wappen_bezirk.jpg" name="bezirk" alt="bezirk" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Bezirk:%20Bruck%20-%20Kapfenberg"%>">Bezirk: Bruck - Kapfenberg</a>
 		</td></tr>
 		<tr>
 		<td id="navIcon"><img src="../image/wappen_breitenau.jpg" name="breitenau" alt="breitenau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Breitenau"%>">Breitenau</a>
