@@ -103,7 +103,7 @@
 										cellspacing='0'>
 										<tr>
 										 <% 
-										  TimetableVertical timetable = new TimetableVertical(getServletContext().getContextPath(),startDate);
+										  TimetableVertical timetable = new TimetableVertical(getServletContext().getContextPath(),startDate, userSession.getUsername());
 	                                      out.print(timetable.calculateTimetable(rosterList, 7));
 										  %>
 										</tr>
