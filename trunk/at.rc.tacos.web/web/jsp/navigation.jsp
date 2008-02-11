@@ -33,25 +33,25 @@
 		<td id="BlockHead" colspan="2"><b>Ortsstellen</b></td>
 	</tr>
 	<tr>
-		<td id="navIcon"><img src="../image/wappen_bezirk.jpg" name="bezirk" alt="bezirk" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Bezirk:%20Bruck%20-%20Kapfenberg"%>">Bezirk: Bruck - Kapfenberg</a>
+		<td id="navIcon"><img src="../image/wappen_bezirk.jpg" name="bezirk" alt="bezirk" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=1"%>">Bezirk: Bruck - Kapfenberg</a>
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_breitenau.jpg" name="breitenau" alt="breitenau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Breitenau"%>">Breitenau</a>
+		<td id="navIcon"><img src="../image/wappen_breitenau.jpg" name="breitenau" alt="breitenau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=6"%>">Breitenau</a>
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_bruck.jpg" name="bruck" alt="bruck" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Bruck%20an%20der%20Mur"%>">Bruck an der Mur</a>
+		<td id="navIcon"><img src="../image/wappen_bruck.jpg" name="bruck" alt="bruck" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=2"%>">Bruck an der Mur</a>
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_kapfenberg.jpg" name="kapfenberg" alt="kapfenberg" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Kapfenberg"%>">Kapfenberg</a>
+		<td id="navIcon"><img src="../image/wappen_kapfenberg.jpg" name="kapfenberg" alt="kapfenberg" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=3"%>">Kapfenberg</a>
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_stMarein.jpg" name="stMarein" alt="stMarein" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=St.%20Marein"%>">St. Marein</a>
+		<td id="navIcon"><img src="../image/wappen_stMarein.jpg" name="stMarein" alt="stMarein" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=7"%>">St. Marein</a>
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_thoerl.jpg" name="thoerl" alt="thoerl" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Th&ouml;rl"%>">Th&ouml;rl</a>
+		<td id="navIcon"><img src="../image/wappen_thoerl.jpg" name="thoerl" alt="thoerl" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=4"%>">Th&ouml;rl</a>
 		</td></tr>
 		<tr>
-		<td id="navIcon"><img src="../image/wappen_thurnau.jpg" name="thurnau" alt="thurnau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=Turnau"%>">Turnau</a>
+		<td id="navIcon"><img src="../image/wappen_thurnau.jpg" name="thurnau" alt="thurnau" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/stationWeek.do?action=weekView&&station=5"%>">Turnau</a>
 		</td>
 	</tr>
 </table>
