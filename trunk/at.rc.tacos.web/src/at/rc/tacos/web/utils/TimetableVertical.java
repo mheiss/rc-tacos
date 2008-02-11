@@ -38,7 +38,7 @@ public class TimetableVertical
 		tabentryHead = "";
 		TimeList="";
 		this.path = path;
-		currentUser = currentUser;
+		this.currentUser = currentUser;
 	}
 
 	public String calculateTimetable(List<RosterEntry> rosterList, int daysToShow)
@@ -122,7 +122,8 @@ public class TimetableVertical
 							"Dienstdatum(Ende):&nbsp;&nbsp;" + format.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
 							"Dienstzeit:&nbsp;&nbsp;" +formatHour.format(new Date(entry.getPlannedStartOfWork()))+ " - " + formatHour.format(new Date(entry.getPlannedEndOfWork())) + "<br />" +
 							"Ortstelle:&nbsp;&nbsp;" + entry.getStation().getLocationName().replaceAll("ö","&ouml;") + "<br />" +
-							"angestellt als:&nbsp;&nbsp;"+entry.getServicetype().getServiceName()+"<br />";
+							"angestellt als:&nbsp;&nbsp;"+entry.getServicetype().getServiceName()+"<br />" +
+							"eingetragen von:&nbsp;&nbsp;" +entry.getCreatedByUsername() +"<br />";
 						}
 						else 
 						{
@@ -139,7 +140,7 @@ public class TimetableVertical
 						tabentry+= 		
 							"<div id='singleEntryDivCase' style='width:100%; padding-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
 							"%; ' >";
-						if(entry.getCreatedByUsername().equals(entry.getStaffMember().getUserName()) || entry.getStaffMember().getUserName().equals(currentUser) || entry.getCreatedByUsername().equals(currentUser))
+						if(entry.getCreatedByUsername().equals(entry.getStaffMember().getUserName()) || currentUser.equals(entry.getStaffMember().getUserName()) || currentUser.equals(entry.getCreatedByUsername()))
 						{
 							tabentry+= 		
 								"<div id='singleEntryDiv' style='" + 
@@ -164,14 +165,12 @@ public class TimetableVertical
 								"</div>";
 						}
 						tabentry+= "</div>";
-
 					}
 				}
 				tabentry+="</div></div>";
 			}
 			timetable+=tabentryHead+tabentry;
 			tabentry="";
-
 			return timetable;
 		}
 		else
