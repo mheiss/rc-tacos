@@ -255,8 +255,7 @@ Map<String,Object> params = (Map)request.getAttribute("params");
 												</tr>
 												
 												<tr>
-                                            <td colspan="4" align="right" style="padding: 10px;"><input
-                                                type="submit" id="submitButton" value="Benutzer anlegen" /></td>
+                                            <td colspan="4" align="right" style="padding: 10px;"><input type="submit" id="submitButton" value="Benutzer anlegen" /></td>
                                         </tr>
 											</table>
 										</tr>
