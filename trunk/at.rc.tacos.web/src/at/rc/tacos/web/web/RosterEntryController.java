@@ -1,7 +1,6 @@
 package at.rc.tacos.web.web;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +47,7 @@ public class RosterEntryController implements Controller
 			String endYear =  request.getParameter("endYear");
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
-			
+
 			//get the objects from the session
 			Location location = userSession.getLocationById(Integer.valueOf(request.getParameter("station")));
 			Job job = userSession.getJobById(Integer.valueOf(request.getParameter("job")));
@@ -66,18 +65,14 @@ public class RosterEntryController implements Controller
 			if(Integer.parseInt(endHour)<10){
 				endHour = "0"+endHour;
 			}
-			
+
 			for(AbstractMessage object:dayResult)   
 			{  
 				RosterEntry entry = (RosterEntry)object;  
 				if(entry.getStaffMember().getStaffMemberId() == member.getStaffMemberId()){
 					dupl = false;
 				}
-				
-					
 			}
-			
-			
 			//no access to dupl entry
 			if(dupl){			
 				//construct a startCalendar
@@ -94,10 +89,10 @@ public class RosterEntryController implements Controller
 				endEntry.set(Calendar.YEAR, Integer.valueOf(endYear));
 				endEntry.set(Calendar.HOUR_OF_DAY, Integer.valueOf(endHour));
 				endEntry.set(Calendar.MINUTE, Integer.valueOf(endMinute));
-	
+
 				long plannedStartOfWork = startEntry.getTimeInMillis();
 				long plannedEndOfWork = endEntry.getTimeInMillis();
-	
+
 				if(member == null 
 						|| startDay.trim().isEmpty() 
 						|| startMonth.trim().isEmpty() 
@@ -116,7 +111,7 @@ public class RosterEntryController implements Controller
 					params.put("entry-success", "Keine Daten eingegeben!");
 					return params;
 				} 
-	
+
 				RosterEntry entry = new RosterEntry(member,service,job, location,plannedStartOfWork, plannedEndOfWork);
 				entry.setCreatedByUsername(userSession.getUsername());
 				client.sendAddRequest(RosterEntry.ID, entry);
@@ -128,7 +123,9 @@ public class RosterEntryController implements Controller
 				{
 					params.put("entry-error", "Dienst konnte wegen eines unvorhergesehenen Fehler nicht eingetragen werden! Bitte versuchen Sie es zu einem späteren Zeitpunkt wieder oder kontaktieren Sie Ihre Leitstelle."); 
 				}
-			}else{
+			}
+			else
+			{
 				params.put("entry-error", "Sie oder die Person die Sie eintragen m&ouml;chten haben/hat an diesem Tag schon einen Dienst eingetragen. Bitte w&auml;hlen Sie einen anderen Tag."); 
 			}
 		}
