@@ -1,7 +1,10 @@
-<%@page import="at.rc.tacos.common.Constants"%>
-<%@page import="at.rc.tacos.web.web.UserSession"%>
-<%@page import="at.rc.tacos.model.DayInfoMessage"%>
 <%@page import="java.util.List"%>
+<%@page import="at.rc.tacos.model.Login"%>
+<%@page import="at.rc.tacos.web.web.LoginController"%>
+<%@page import="at.rc.tacos.web.web.UserSession"%>
+<%
+	UserSession userSession = (UserSession)session.getAttribute("userSession"); 
+%>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
@@ -55,21 +58,22 @@
 		</td>
 	</tr>
 </table>
-<table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
-	<tr>
-		<td id="BlockHead" colspan="2"><b>Administration</b></td>
-	</tr>
-	<tr>
-		<td id="navIcon"><img src="../image/benutzerNew.jpg" name="benutzer" alt="benutzer" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/addUser.do"%>">Benutzer anlegen</a>
-		</td></tr>
-		<tr>
-		<td id="navIcon"><img src="../image/benutzerEdit.jpg" name="benutzer" alt="benutzer" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/listUser.do"%>">Benutzer editieren</a>
-		</td>
-		<tr>
-		<td id="navIcon"><img src="../image/benutzerDel.jpg" name="benutzer" alt="benutzer" /></td><td id="BlockContentNav"><a href="<%=request.getContextPath()+"/Dispatcher/lockUser.do"%>">Benutzer sperren</a>
-		</td>
-	</tr>
-</table>
+<% if(Login.getAuthorization().equals("Administrator")) 
+{
+out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cellspacing='0'>" +
+"<tr><td id=\"BlockHead\" colspan=\"2\"><b>Administration</b></td></tr><tr>" +
+"<td id=\"navIcon\"><img src=\"../image/benutzerNew.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href=\"+request.getContextPath()+\"/Dispatcher/addUser.do+\">Benutzer anlegen</a>" +
+"</td></tr><tr>" +
+"<td id=\"navIcon\"><img src=\"../image/benutzerEdit.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href=\"+request.getContextPath()+\"/Dispatcher/listUser.do+>\">Benutzer editieren</a>" +
+"</td><tr>" +
+"<td id=\"navIcon\"><img src=\"../image/benutzerDel.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href=\"+request.getContextPath()+\"/Dispatcher/lockUser.do+\">Benutzer sperren</a>" +
+"</td></tr></table>"); 
+} 
+else
+{
+out.println("");
+}
+%>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
     <tr>
         <td id="BlockHead" colspan="2"><b>Statistik</b></td>
