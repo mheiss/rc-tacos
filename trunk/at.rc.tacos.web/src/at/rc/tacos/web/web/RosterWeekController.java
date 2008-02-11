@@ -21,7 +21,7 @@ import at.rc.tacos.model.RosterEntry;
 public class RosterWeekController  implements Controller
 {
 	private String splitedDate[] = null;
-	
+
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
 	{
 		//values that will be returned to the view
@@ -40,7 +40,7 @@ public class RosterWeekController  implements Controller
 			Calendar cal = Calendar.getInstance(); 
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy"); 
 			String startDate = request.getParameter("startDate");
-			
+
 			//if we have no date, use the current date
 			//else take the request parameter "startDate"
 			if (startDate == null || startDate.trim().isEmpty()){
@@ -50,7 +50,7 @@ public class RosterWeekController  implements Controller
 				//cal.set(year, month, day)
 				cal.set(Integer.parseInt(splitedDate[2]), Integer.parseInt(splitedDate[1])-1, Integer.parseInt(splitedDate[0]));				
 			}
-			
+
 			//get roster entries 
 			List<RosterEntry> filterdByLocation = new ArrayList<RosterEntry>();
 			for(int i=1; i<=7; i++) 
@@ -68,20 +68,31 @@ public class RosterWeekController  implements Controller
 				for(AbstractMessage object:dayResult)   
 				{  
 					RosterEntry entry = (RosterEntry)object;  
-					if(station.equalsIgnoreCase("primary")){
+					if(station.equalsIgnoreCase("primary"))
+					{
 						if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation())){
 							filterdByLocation.add(entry); 
 						}
-					}else{
-						if(entry.getStation().getLocationName().equals(station)) {
-							filterdByLocation.add(entry); 
-						}
 					}
-				}
-			} 
-			//add the resulting list to the params 
-			params.put("rosterList", filterdByLocation);  
-		}
-		return params;
-	}
+                    else 
+                    { 
+                        //try to convert the station to a integer vale 
+                        try 
+                        { 
+                            int id = Integer.parseInt(station); 
+                            if(id == entry.getStation().getId()) 
+                                filterdByLocation.add(entry);  
+                        } 
+                        catch(NumberFormatException nfe) 
+                        { 
+                            System.out.println("The given station id cannot be converted to a number"); 
+                        } 
+                    } 
+                } 
+            }  
+            //add the resulting list to the params  
+            params.put("rosterList", filterdByLocation);   
+        } 
+        return params; 
+    } 
 }
