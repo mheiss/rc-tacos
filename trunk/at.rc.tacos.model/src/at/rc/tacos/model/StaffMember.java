@@ -31,6 +31,11 @@ public class StaffMember extends AbstractMessage
 	
 	//internal information, only needed to serialize and deserialize
 	public String function;
+	
+	//define constants
+	public final static String STAFF_MALE = "männlich";
+	public final static String STAFF_FEMALE = "weiblich";
+	public final static String STAFF[] = { STAFF_MALE, STAFF_FEMALE };
 
 	/**
 	 * Class constructor for a staff member

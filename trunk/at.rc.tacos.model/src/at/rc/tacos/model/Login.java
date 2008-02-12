@@ -28,6 +28,11 @@ public class Login extends AbstractMessage
 	private boolean loggedIn;
 	private String errorMessage;
 	private boolean webClient;
+	
+	//define constants
+	public final static String AUTH_USER = "Benutzer";
+	public final static String AUTH_ADMIN = "Administrator";
+	public final static String[] AUTHORIZATION = { AUTH_USER, AUTH_ADMIN };
  
     /**
      * Default class constructor
@@ -68,8 +73,38 @@ public class Login extends AbstractMessage
     {
     	this.password = null;
     }
+    
+    /**
+     * Returns the calculated hash code based on the username.<br>
+     * Two logins have the same hash code if the username is the same.
+     * @return the calculated hash code
+     */
+	@Override
+	public int hashCode() 
+	{
+		return  31 + username.hashCode();
+	}
 
-    //GETTERS AND SETTERS
+	/**
+     * Returns whether the objects are equal or not.<br>
+     * Two logins are equal if, and only if, the location id is the same.
+     * @return true if the id is the same otherwise false.
+     */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Login other = (Login) obj;
+		if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
+	//GETTERS AND SETTERS
     /**
      * Returns the username of this login object.<br>
      * This method will contain the username in the response from the server.

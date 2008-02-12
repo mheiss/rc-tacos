@@ -45,7 +45,6 @@ public class LoginEncoder implements MessageEncoder
         //write the staff member for this user login
         if(login.getUserInformation() != null)
         {
-            System.out.println("encoding user");
             //get the encoder for a staff member
             MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(StaffMember.ID);
             encoder.doEncode(login.getUserInformation(), writer);
