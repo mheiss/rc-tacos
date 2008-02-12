@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Display;
 import at.rc.tacos.model.StaffMember;
 
 /**
- * This class manages the staff
+ * This class manages the staff members
  * @author Michael
  */
 public class StaffManager extends PropertyManager
@@ -98,5 +98,20 @@ public class StaffManager extends PropertyManager
     public List<StaffMember> getStaffList()
     {
         return objectList;
+    }
+    
+    /**
+     * Returns the staff member accociated with this username
+     * @param username the username to get the staff member
+     */
+    public StaffMember getStaffMemberByUsername(String username)
+    {
+    	for(StaffMember member:objectList)
+    	{
+    		if(member.getUserName().equals(username))
+    			return member;
+    	}
+    	//Nothing found
+    	return null;
     }
 }

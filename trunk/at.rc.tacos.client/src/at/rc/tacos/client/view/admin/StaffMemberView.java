@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -15,7 +16,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -29,6 +29,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.model.StaffMember;
 
 public class StaffMemberView extends ViewPart implements PropertyChangeListener
@@ -78,7 +79,7 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
         layout = new GridLayout(1, false);
         form.getBody().setLayout(layout);
 
-        form.setText("Liste der registrierten Benutzer"); 
+        form.setText("Liste der Mitarbeiter"); 
         toolkit.decorateFormHeading(this.form.getForm());
      
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true ,true);
@@ -105,13 +106,22 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
                 ISelection selection = viewer.getSelection();
                 Object obj = ((IStructuredSelection) selection).getFirstElement();
                 StaffMember member = (StaffMember)obj;
-                StaffMemberEditorInput input = new StaffMemberEditorInput(member);
+                Login login = ModelFactory.getInstance().getLoginList().getLoginByUsername(member.getUserName());
+                //assert valid
+                if(login == null)
+                {
+                	Activator.getDefault().log("Failed to open the editor for the staff member "+member +
+                			"\n The login object for the user is null", IStatus.ERROR);
+                	MessageDialog.openError(getSite().getShell(),
+                			"Fehler beim ändern von "+member.getUserName(),
+                			"Der Mitarbeiter" +member.getFirstName()+ " " + member.getLastName() +" kann nicht editiert werden");
+                }
+                
+                StaffMemberEditorInput input = new StaffMemberEditorInput(member,login,false);
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try 
                 {
                     page.openEditor(input, StaffMemberEditor.ID);
-                    IWorkbenchPart active = page.getActivePart();
-                    ((StaffMemberEditor)active).selectionChanged(active, selection);
                 } 
                 catch (PartInitException e) 
                 {

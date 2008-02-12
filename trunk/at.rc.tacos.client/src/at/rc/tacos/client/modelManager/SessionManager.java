@@ -17,7 +17,8 @@ import at.rc.tacos.model.Login;
 import at.rc.tacos.util.MyUtils;
 
 /**
- * Handles the authentication process and manages the day info
+ * This class manages the logged in user and the data accociated with the current session.
+ * The day info message is also managed here.
  * @author Michael
  */
 public class SessionManager extends PropertyManager
@@ -146,7 +147,7 @@ public class SessionManager extends PropertyManager
 		this.loginInformation = loginInformation;
 		//set the username in the client session
 		NetWrapper.getDefault().getClientSession().setAuthenticated(loginInformation.getUsername(), false);
-		firePropertyChange("AUTHENTICATION_SUCCESS", null, loginInformation.getUsername());
+		firePropertyChange("AUTHENTICATION_SUCCESS", null, loginInformation);
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class SessionManager extends PropertyManager
 	 */
 	public void fireLoginDenied(final Login loginInformation)
 	{
-		firePropertyChange("AUTHENTICATION_FAILED", null, loginInformation.getUsername());
+		firePropertyChange("AUTHENTICATION_FAILED", null, loginInformation);
 	}
 
 	/**

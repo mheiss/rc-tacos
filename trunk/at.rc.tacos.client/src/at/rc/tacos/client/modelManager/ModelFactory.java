@@ -14,6 +14,7 @@ import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
@@ -37,6 +38,7 @@ public class ModelFactory
     private final RosterEntryManager rosterEntryList = new RosterEntryManager();
     private final VehicleManager vehicleList = new VehicleManager();
     private final StaffManager staffList = new StaffManager();
+    private final LoginManager loginList = new LoginManager();
     private final TransportManager transportList = new TransportManager();
     private final DialysisTransportManager dialyseList = new DialysisTransportManager();
     private final MobilePhoneManager phoneList = new MobilePhoneManager();
@@ -83,6 +85,7 @@ public class ModelFactory
                 net.requestListing(RosterEntry.ID, dateFilter);
                 net.requestListing(DayInfoMessage.ID, dateFilter);
                 net.requestListing(VehicleDetail.ID, null);
+                net.requestListing(Login.ID, null);
                 net.requestListing(StaffMember.ID, null);
                 dateFilter.add(IFilterTypes.TYPE_FILTER, Transport.TRANSPORT_PROGRESS);
                 net.requestListing(Transport.ID, dateFilter);
@@ -109,6 +112,11 @@ public class ModelFactory
     public final StaffManager getStaffList()
     {
         return staffList;
+    }
+    
+    public final LoginManager getLoginList()
+    {
+    	return loginList;
     }
 
     public final TransportManager getTransportList()
