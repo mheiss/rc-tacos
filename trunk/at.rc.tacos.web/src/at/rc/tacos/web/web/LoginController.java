@@ -19,9 +19,6 @@ import at.rc.tacos.model.Login;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
-/**
- * Servlet implementation class for Servlet: LoginController
- */
 public class LoginController implements Controller 
 {
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
