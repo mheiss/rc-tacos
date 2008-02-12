@@ -1,0 +1,32 @@
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            description="Manage the editors"
+            id="at.rc.tacos.client.editors.actionSet.ManageEditors"
+            label="Manage Editor Actions"
+            visible="false">
+         <action
+               class="at.rc.tacos.client.controller.CloseEditorAction"
+               id="at.rc.tacos.client.controller.closeEditor"
+               label="Fenster schließen"
+               icon="icons/admin/close.gif"
+               tooltip="Schließt das aktuelle Fenster und verwirft die Änderungen"
+               toolbarPath="Normal">
+         </action>
+         <action
+               class="at.rc.tacos.client.controller.SaveEditorAction"
+               id="at.rc.tacos.client.controller.saveEditor"
+               label="Änderungen speichern"
+               icon="icons/admin/save.png"
+               tooltip="Speichert die aktuellen Änderungen."
+               toolbarPath="Normal">
+         </action>
+      </actionSet>
+   </extension>
+   <extension 
+   		point="org.eclipse.ui.perspectiveExtensions">
+	  <perspectiveExtension 
+			targetID="at.rc.tacos.client.perspectives.AdminPerspective">
+			<actionSet id="at.rc.tacos.client.editors.actionSet.ManageEditors" />
+	  </perspectiveExtension>
+   </extension> 

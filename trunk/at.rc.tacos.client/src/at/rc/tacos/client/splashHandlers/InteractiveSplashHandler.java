@@ -33,7 +33,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	private ProgressBar progressBar;
 	private boolean fAuthenticated;
 	private Composite fCompositeLogin;
-	
+
 	//the login status
 	int loginStatus;
 
@@ -99,44 +99,60 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	private void doEventLoop() 
 	{
 		Shell splash = getSplash();
-	    while (!fAuthenticated) 
-	    {
-	        if (!splash.getDisplay().readAndDispatch()) 
-	        {
-	        	//check the status
-	            if( loginStatus == 1 )
-	                loginSuccess();
-	            else if(loginStatus == 2 ) 
-	                loginFailure();  
-	            //sleep
-	            splash.getDisplay().sleep();
-	        }
-	    }
+		while (!fAuthenticated) 
+		{
+			if (!splash.getDisplay().readAndDispatch()) 
+			{
+				//check the status
+				if( loginStatus == 1 )
+					loginSuccess();
+				else if(loginStatus == 2 ) 
+					loginDenied();
+				else if(loginStatus == 3)
+					loginFailure();  
+				//sleep
+				splash.getDisplay().sleep();
+			}
+		}
 	}
-	
+
 	/**
 	 * Fired to indicate a successully login
 	 */
 	private void loginSuccess() 
 	{
-	    toggelCheckProgress(false);
-	    fCompositeLogin.setVisible(false);
-	    fAuthenticated = true;
-	    loginStatus = -1;
+		toggelCheckProgress(false);
+		fCompositeLogin.setVisible(false);
+		fAuthenticated = true;
+		loginStatus = -1;
 	}
 	
+	/**
+	 * Fired to indicate that the login is locked and so failed
+	 */
+	private void loginDenied()
+	{
+		toggelCheckProgress(false);
+		loginStatus = -1;
+		Display.getCurrent().beep();
+		MessageDialog.openError(
+				getSplash(),
+				"Anmeldung fehlgeschlagen",
+				"Ihr Account ist gesperrt, bitte wenden Sie sich an ihren Administrator.");
+	}
+
 	/**
 	 * Fired to indicate that the login failed
 	 */
 	private void loginFailure() 
 	{
-	    toggelCheckProgress(false);
-	    loginStatus = -1;
-	    Display.getCurrent().beep();
-	    MessageDialog.openError(
-	        getSplash(),
-	        "Anmeldung fehlgeschlagen",
-			"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
+		toggelCheckProgress(false);
+		loginStatus = -1;
+		Display.getCurrent().beep();
+		MessageDialog.openError(
+				getSplash(),
+				"Anmeldung fehlgeschlagen",
+		"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
 	}
 
 	/**
@@ -197,8 +213,8 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 			//show the warning message
 			MessageDialog.openInformation(
 					getSplash(),
-			        "Anmeldung",
-					"Sie müssen einen Benutzernamen und ein Passwort eingeben um sich anzumelden");
+					"Anmeldung",
+			"Sie müssen einen Benutzernamen und ein Passwort eingeben um sich anzumelden");
 		}
 	}
 
@@ -272,7 +288,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		data.widthHint = F_BUTTON_WIDTH_HINT;   
 		data.verticalIndent = 10;
 		fButtonCancel.setLayoutData(data);
-		
+
 		//init values
 		fTextUsername.setText("user3");
 		fTextPassword.setText("P@ssw0rd");
@@ -325,7 +341,12 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		}
 		if("AUTHENTICATION_FAILED".equalsIgnoreCase(evt.getPropertyName()))
 		{
-			loginStatus = 2;
+			//get the login object
+			Login login = (Login)evt.getNewValue();
+			if(login.isIslocked())
+				loginStatus = 2;
+			else
+				loginStatus = 3;
 		}
 	}
 }

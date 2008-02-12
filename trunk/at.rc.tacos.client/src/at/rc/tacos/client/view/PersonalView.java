@@ -57,7 +57,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	private PersonalTooltip tooltip;
 	//the tab folder
 	private TabFolder tabFolder;
-	
+
 	//the actions for the context menu
 	private PersonalCancelSignInAction cancelSignInAction;
 	private PersonalCancelSignOutAction cancelSignOutAction;
@@ -75,7 +75,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup the view
 	 */
@@ -117,15 +117,15 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				widgetSelected(e);
 			}
 		});
-		
+
 		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new PersonalViewContentProvider());
 		viewer.setLabelProvider(new PersonalViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getRosterEntryList());
 		viewer.getTable().setLinesVisible(true);
-		
+
 		viewer.resetFilters();
-		
+
 		//set the tooltip
 		tooltip = new PersonalTooltip(viewer.getControl());
 		//show the tooltip when the selection has changed
@@ -246,7 +246,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				viewer.setSorter(new PersonalViewSorter(sortIdentifier,dir));
 			}
 		};
-		
+
 		//attach the listener
 		columnStaffName.addListener(SWT.Selection, sortListener);
 		columnWorkTime.addListener(SWT.Selection, sortListener);
@@ -255,14 +255,14 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		columnService.addListener(SWT.Selection, sortListener);
 		columnJob.addListener(SWT.Selection, sortListener);
 		columnStation.addListener(SWT.Selection, sortListener);
-		
+
 		//create the actions
 		makeActions();
 		hookContextMenu();
 
 		viewer.resetFilters();
 	}
-	
+
 	/**
 	 * Creates the needed actions
 	 */
@@ -275,7 +275,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		editEntryAction = new PersonalEditEntryAction(this.viewer);
 		deleteEntryAction = new PersonalDeleteEntryAction(this.viewer);
 	}
-	
+
 	/**
 	 * Creates the context menue 
 	 */
@@ -292,7 +292,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
-	
+
 	/**
 	 * Fills the context menu with the actions
 	 */
@@ -300,13 +300,13 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	{
 		//get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
+
 		//cast to a RosterEntry
 		RosterEntry entry = (RosterEntry)firstSelectedObject;
-		
+
 		if(entry == null)
 			return;
-		
+
 		//add the actions
 		manager.add(signInAction);
 		manager.add(signOutAction);
@@ -317,7 +317,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		manager.add(cancelSignInAction);
 		manager.add(cancelSignOutAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		
+
 		//enable or disable the actions
 		if(entry.getRealStartOfWork() > 0)
 		{
@@ -348,32 +348,77 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-	    if("LOCATION_ADD".equalsIgnoreCase(evt.getPropertyName()))
-        {
-	        //get the new location
-	        Location location = (Location)evt.getNewValue();
-	        //create a new tab item
-	        TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-	        tabItem.setText(location.getLocationName());
-	        //Store the location
-	        tabItem.setData(location);
-	        tabItem.setControl(viewer.getTable());
-	        //set the first tabfoler as selected
-	        tabFolder.setSelection(tabItem);
-	        tabFolder.setSelection(0);
-        }
-	    
+		//add a new tab item to the TabFolder
+		if("LOCATION_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the new location
+			Location location = (Location)evt.getNewValue();
+			//create a new tab item
+			TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+			tabItem.setText(location.getLocationName());
+			//Store the location
+			tabItem.setData(location);
+			tabItem.setControl(viewer.getTable());
+			//set the first tabfoler as selected
+			tabFolder.setSelection(tabItem);
+			tabFolder.setSelection(0);
+		}
+		//update the TabItem
+		if("LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//the updated location
+			Location updatedLocation = (Location)evt.getNewValue();
+
+			//loop and update the location in the tab folder
+			for(TabItem tabItem:tabFolder.getItems())
+			{
+				//get the location out of the tab
+				Location tabLocation = (Location)tabItem.getData();
+				//check if we have the location
+				if(tabLocation.equals(updatedLocation))
+				{
+					//store the new location in the data and update the tab text
+					tabItem.setData(updatedLocation);
+					tabItem.setText(updatedLocation.getLocationName());
+				}
+			}
+		}
+		//remove a specific location
+		if("LOCATION_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the removed location
+			Location removedLocation = (Location)evt.getOldValue();
+
+			//loop and remove the location
+			for(TabItem tabItem:tabFolder.getItems())
+			{
+				//get the location out of the tab
+				Location tabLocation = (Location)tabItem.getData();
+				//check if we have the tab and dispose it
+				if(tabLocation.equals(removedLocation))
+					tabItem.dispose();	
+			}
+		}
+
+		//clear the locations
+		if("LOCATION_CLEAR".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//loop and remove all tabs
+			for(TabItem tabItem:tabFolder.getItems())
+				tabItem.dispose();
+		}
+
 		// the viewer represents simple model. refresh should be enough.
 		if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())) 
-			this.viewer.refresh();
+			viewer.refresh();
 		// event on deletion --> also just refresh
 		if ("ROSTERENTRY_REMOVE".equals(evt.getPropertyName())) 
-			this.viewer.refresh();
+			viewer.refresh();
 		// event on deletion --> also just refresh
 		if ("ROSTERENTRY_UPDATE".equals(evt.getPropertyName())) 
-			this.viewer.refresh();
+			viewer.refresh();
 		// event on deletion --> also just refresh
 		if ("ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
-			this.viewer.refresh();
+			viewer.refresh();
 	}
 }

@@ -29,6 +29,7 @@ import org.eclipse.ui.part.*;
 
 import at.rc.tacos.client.controller.PersonalUpdateDayInfoAction;
 import at.rc.tacos.client.controller.SelectRosterDateAction;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.util.Util;
@@ -77,6 +78,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
      */
     public InfoView()
     {
+    	ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
         SessionManager.getInstance().addPropertyChangeListener(this);
     }
 
@@ -86,6 +88,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose() 
     {
+    	ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
         SessionManager.getInstance().removePropertyChangeListener(this);
         super.dispose();
     }
@@ -333,14 +336,25 @@ public class InfoView extends ViewPart implements PropertyChangeListener
     @Override
     public void propertyChange(PropertyChangeEvent pce)
     {
+    	if("STAFF_UPDATE".equalsIgnoreCase(pce.getPropertyName()))
+    	{
+    		//get the updated member
+    		StaffMember updatedMember = (StaffMember)pce.getNewValue();
+    		StaffMember currentMember = SessionManager.getInstance().getLoginInformation().getUserInformation();
+    		//is this staff member the current logged in member?
+    		if(updatedMember.equals(currentMember))
+    		{
+    			SessionManager.getInstance().getLoginInformation().setUserInformation(updatedMember);
+    			updateInfoSection();
+    		}
+    	}
         if("AUTHENTICATION_SUCCESS".equalsIgnoreCase(pce.getPropertyName()))
         {
             Display.getDefault().syncExec(new Runnable ()    
             {
                 public void run ()       
                 {
-                	//TODO: finde solution to update
-                    //updateInfoSection();
+                	updateInfoSection();
                 }
             });
         }
@@ -350,8 +364,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
             {
                 public void run ()       
                 {
-                	//TODO: find solution to update
-                    //updateInfoSection();
+                	updateInfoSection();
                 }
             });
         }

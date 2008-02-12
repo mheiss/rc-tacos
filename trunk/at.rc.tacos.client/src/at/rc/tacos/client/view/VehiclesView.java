@@ -7,10 +7,13 @@ import java.util.List;
 
 import org.eclipse.ui.part.*;
 import org.eclipse.ui.forms.widgets.*;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
+
+import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.Location;
@@ -75,8 +78,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
     public void setFocus() { }
 
     /**
-     * Notification that the data model has changed so the view
-     * must be updated.
+     * Notification that the data model has changed so the view have to be updated.
      * @param evt the fired property event
      */
     public void propertyChange(final PropertyChangeEvent evt) 
@@ -91,6 +93,52 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             section.setData(newLocation);
             sectionList.add(section);           
         }
+        //remove all locations
+        if("LOCATION_CLEAR".equalsIgnoreCase(evt.getPropertyName()))
+        {
+        	//loop and dispose all locations
+        	for(int i=0;i<sectionList.size();i++)
+        	{
+        		Section section = sectionList.get(i);
+        		section.dispose();
+        		sectionList.remove(i);
+        	}
+        }
+        //update the location
+        if("LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+        {
+        	//get the updated location
+        	Location updatedLocation = (Location)evt.getNewValue();
+        	//loop and update the location in the section
+        	for(Section section:sectionList)
+        	{
+        		//get the location in the section and compare
+        		Location sectionLocation = (Location)section.getData();
+        		if(sectionLocation.equals(updatedLocation))
+        		{
+        			section.setData(updatedLocation);
+        			updateSection(section);
+        		}
+        	}
+        }
+        //remove a specific location
+        if("LOCATION_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+        {
+        	//get the removed location
+        	Location removedLocation = (Location)evt.getOldValue();
+        	//loop and remove the section
+        	for(int i=0;i<  sectionList.size(); i++)
+        	{
+        		Section section = sectionList.get(i);
+        		//get the location in the section and compare
+        		Location sectionLocation = (Location)section.getData();
+        		if(sectionLocation.equals(removedLocation) &! section.isDisposed())
+        		{
+        			sectionList.remove(i);
+        			section.dispose();
+        		}
+        	}
+        }
         // create the new composite
         if ("VEHICLE_ADD".equals(evt.getPropertyName())) 
         { 
@@ -99,7 +147,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             VehicleDetail detail = (VehicleDetail)evt.getNewValue();
             //get the station to categorize the vehicle
             final String basicStation = detail.getBasicStation().getLocationName();
-            //loop and try to get the section to inser the vehicle
+            //loop and try to get the section to insert the vehicle
             for(Section section:sectionList)
             {
                 //get the location from the section
@@ -113,7 +161,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
                 }
             }
             if(!added)
-                System.out.println("Failed to add vehicle to non existing station: " + basicStation);
+                Activator.getDefault().log("Failed to add vehicle to non existing station: " + basicStation,IStatus.ERROR);
         }
         //remove all children of the sections
         if("VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName()))
@@ -123,11 +171,14 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             {
                 //get the child control
                 Composite client = (Composite)section.getClient();
+                if(client.isDisposed())
+                	return;
                 //remove all vehicles
                 for(Control cont:client.getChildren())
                 {
                     VehicleComposite vehicle = (VehicleComposite)cont;
-                    vehicle.dispose(); 
+                    if(!vehicle.isDisposed())
+                    	vehicle.dispose(); 
                 }
                 //update
                 updateSection(section);

@@ -92,8 +92,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	{
 		IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
 		coolBar.add(new ToolBarContributionItem(toolbar, "main"));  
-		toolbar.add(exitAction);
-		toolbar.add(aboutAction);
 	}
 
 	/**

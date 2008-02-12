@@ -6,7 +6,7 @@ import java.util.List;
 import org.eclipse.swt.widgets.Display;
 import at.rc.tacos.model.MobilePhoneDetail;
 
-public class MobilePhoneManager  extends PropertyManager 
+public class MobilePhoneManager extends PropertyManager 
 {
 //  the item list
     private List<MobilePhoneDetail> objectList = new ArrayList<MobilePhoneDetail>();

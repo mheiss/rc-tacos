@@ -25,6 +25,7 @@ public class AdminPerspective implements IPerspectiveFactory
         String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(true);
         layout.setFixed(true);
+        
         //Create a folder on the left
         IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.26, editorArea);
         left.addView(StaffMemberView.ID);

@@ -442,7 +442,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	private Composite makeComposite(Composite parent, int col) 
 	{
 		Composite nameValueComp = toolkit.createComposite(parent);
-		GridLayout layout = new GridLayout(3, false);
+		GridLayout layout = new GridLayout(col, false);
 		layout.marginHeight = 3;
 		nameValueComp.setLayout(layout);
 		return nameValueComp;

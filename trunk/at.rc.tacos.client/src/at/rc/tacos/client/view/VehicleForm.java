@@ -546,7 +546,7 @@ public class VehicleForm extends TitleAreaDialog
     public Composite makeComposite(Composite parent, int col) 
     {
         Composite nameValueComp = toolkit.createComposite(parent);
-        GridLayout layout = new GridLayout(3, false);
+        GridLayout layout = new GridLayout(col, false);
         layout.marginHeight = 3;
         nameValueComp.setLayout(layout);
         nameValueComp.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -572,13 +572,11 @@ public class VehicleForm extends TitleAreaDialog
 		if(medic1ComboViewer.getSelection().isEmpty())
 		{
 			setErrorMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.");
-			readyButton.setSelection(false);
 			return false;
 		}
 		if(medic2ComboViewer.getSelection().isEmpty())
 		{
 			setErrorMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.");
-			readyButton.setSelection(false);
 			return false;
 		}
 		return true;

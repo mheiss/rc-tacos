@@ -2,6 +2,7 @@ package at.rc.tacos.client;
 
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -131,7 +132,8 @@ public class Activator extends AbstractUIPlugin
         }
 	    catch(NullPointerException npe)
 	    {
-	        System.out.println("Faild to load the images files");
+	    	Activator.getDefault().log("Please check the images and the properties file", IStatus.ERROR);
+	        System.out.println("Failed to load the images files");
 	        System.out.println("Please check the images and the properties file");
 	    }
 	}
