@@ -285,7 +285,6 @@ public class NetWrapper extends Plugin implements INetListener
 	{
 		//set up the factory to decode
 		XMLFactory xmlFactory = new XMLFactory();
-		System.out.println(ne.getMessage());
 		String message = ne.getMessage().replaceAll("&lt;br/&gt;", "\n");
 		xmlFactory.setupDecodeFactory(message);
 		//decode the message
