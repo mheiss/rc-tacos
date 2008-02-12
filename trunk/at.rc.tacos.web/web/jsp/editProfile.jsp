@@ -119,7 +119,7 @@
 													<td>E-Mail Adresse:</td>
 													<td><input type="text" name="eMail" id="textfield4" value="<%=userSession.getStaffMember().getEMail() %>" /></td>
 													<td>Prim&auml;re Ortsstelle:</td>
-													<td><input disabled="disabled" type="text" name="station" id="textfield4" value="fehlt noch" /></td>
+													<td><input disabled="disabled" type="text" name="station" id="textfield4" value="<%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>" /></td>
 												</tr>
 												<tr>
 													<td>Tel. Nr.:</td>
