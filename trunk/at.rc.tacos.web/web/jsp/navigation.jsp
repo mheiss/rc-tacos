@@ -64,7 +64,7 @@ out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cells
 "<tr><td id=\"BlockHead\" colspan=\"2\"><b>Administration</b></td></tr><tr>" +
 "<td id=\"navIcon\"><img src=\"../image/benutzerNew.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href=\"+request.getContextPath()+\"/Dispatcher/addUser.do+\">Benutzer anlegen</a>" +
 "</td></tr><tr>" +
-"<td id=\"navIcon\"><img src=\"../image/benutzerEdit.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href=\"+request.getContextPath()+\"/Dispatcher/listUser.do+>\">Benutzer editieren</a>" +
+"<td id=\"navIcon\"><img src=\"../image/benutzerEdit.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href=\"+request.getContextPath()+\"/Dispatcher/listUser.do+\">Benutzer editieren</a>" +
 "</td><tr>" +
 "<td id=\"navIcon\"><img src=\"../image/benutzerDel.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href=\"+request.getContextPath()+\"/Dispatcher/lockUser.do+\">Benutzer sperren</a>" +
 "</td></tr></table>"); 
