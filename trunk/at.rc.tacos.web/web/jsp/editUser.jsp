@@ -162,7 +162,14 @@
 														</tr>
 														<tr>
 															<td>Prim&auml;re Ortsstelle:</td>
-															<td>&nbsp;</td>
+															<td><select name="station" id="rosterViewDayHeadSelbox">
+											<% for (Location location : listLocation) {
+													if(location.equals(editStaffMember.getPrimaryLocation())) { %>
+												<option selected="selected" value="<%=location.getId()%>"><%=location.getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
+												<% } else { %>
+												<option value="<%=location.getId()%>"><%=location.getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></option>
+												<% } } %>
+											</select></td>
 														</tr>
 														<%
 																for (Competence comp : editStaffMember.getCompetenceList()) 
