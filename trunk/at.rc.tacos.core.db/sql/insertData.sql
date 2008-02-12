@@ -31,9 +31,7 @@ INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(4, '0361
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('walter', 'pwd', 'Administrator', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('michael', 'pwd', 'Administrator', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('birgit', 'pwd', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('benutzer', 'pwd', 'User', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('locked', 'pwd', 'User', false, true);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('user3', 'P@ssw0rd', 'User', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('user3', 'P@ssw0rd', 'Benutzer', false, false);
 
 -- notifiers
 INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');

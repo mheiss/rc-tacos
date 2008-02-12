@@ -1,5 +1,7 @@
 package at.rc.tacos.core.db.dao;
 
+import java.util.List;
+
 import at.rc.tacos.model.Login;
 
 public interface UserLoginDAO 
@@ -33,11 +35,26 @@ public interface UserLoginDAO
     public int addLogin(Login login);
     
     /**
-     * Updates a login and the accociated staff member in the database.
-     * @param login the login and the staff member to update.
+     * Updates a login information in the database. This method will <b>NOT</b> update the staff member.
+     * Please use the <code>StaffMemberDAO.updateStaffMember</code> to update the staff member.!<br>
+     * This will update all fields in the database except the password field.
+     * @param login the login information to update
      * @return true if the login was successfully
      */
     public boolean updateLogin(Login login);
+    
+    /**
+     * Updates the password for the user in the database
+     * @param username the user to update
+     * @param newPwd the hash value of the new password
+     * @return true if the update was successfully
+     */
+    public boolean updatePassword(String username,String newPwd);
+    
+    /**
+     * Lists all logins stored in the database. The password filds are empty.
+     */
+    public List<Login> listLogins();
     
     /**
      * lockes a login
