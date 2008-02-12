@@ -118,4 +118,16 @@ public class UserDAOMemory implements UserLoginDAO
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean updatePassword(String username, String newPwd) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<Login> listLogins() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -3,12 +3,12 @@ package at.rc.tacos.core.db.dao.mysql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
@@ -19,14 +19,13 @@ import at.rc.tacos.util.MyUtils;
 public class UserLoginDAOMySQL implements UserLoginDAO
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
-	private final StaffMemberDAO staffMemberDAO = DaoFactory.MYSQL.createStaffMemberDAO();
 
 	@Override
 	public int checkLogin(String username, String pwdHash)
 	{
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("check.UserLogin"));
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("check.UserLogin"));
 			query.setString(1, username);
 			query.setString(2, pwdHash);
 			final ResultSet rs = query.executeQuery();
@@ -60,13 +59,12 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		{
 			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
 			//u.authorization, u.isloggedin, u.locked, u.pwd, e.city, e.street, pe.phonenumber_ID, ph.phonenumber, c.competence_ID, c.competence
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberbyUsername"));
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberbyUsername"));
 			query.setString(1, username);
 			final ResultSet rs = query.executeQuery();
 
 			if(rs.first())
 			{
-				System.out.println("user");
 				login.setAuthorization(rs.getString("u.authorization"));
 				login.setIslocked(rs.getBoolean("u.locked"));
 				login.setLoggedIn(rs.getBoolean("u.isloggedin"));
@@ -87,7 +85,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 
-				final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.competenceOfStaffMember"));
+				final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.competenceOfStaffMember"));
 				query2.setInt(1, staff.getStaffMemberId());
 				final ResultSet rs2 = query2.executeQuery();
 				while(rs2.next())
@@ -102,7 +100,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			else return null;
 
 			//ph.phonenumber, ph.phonenumber_ID
-			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
+			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
 			query3.setInt(1, staff.getStaffMemberId());
 			final ResultSet rs2 = query3.executeQuery();
 
@@ -132,7 +130,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		try
 		{	
 			// username, pwd, authorization, isloggedin, locked
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.User"));
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.User"));
 			query.setString(1, login.getUsername());
 			query.setString(2, login.getPassword());
 			query.setString(3, login.getAuthorization());
@@ -141,7 +139,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			query.executeUpdate();
 
 			// staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username
-			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.staffmember"));
+			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.staffmember"));
 			query2.setInt(1, login.getUserInformation().getStaffMemberId());
 			query2.setInt(2, login.getUserInformation().getPrimaryLocation().getId());
 			query2.setString(3, login.getUserInformation().getFirstName());
@@ -156,7 +154,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 
 			for(Competence comp:login.getUserInformation().getCompetenceList())
 			{
-				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.competenceToStaffMember"));
+				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.competenceToStaffMember"));
 				query1.setInt(1, login.getUserInformation().getStaffMemberId());
 				query1.setInt(2, comp.getId());
 				query1.executeUpdate();
@@ -165,13 +163,13 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			for(MobilePhoneDetail detail:login.getUserInformation().getPhonelist())
 			{
 				//staffmember_ID, phonenumber_ID
-				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.Phonestaffmember"));
+				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.Phonestaffmember"));
 				query1.setInt(1, login.getUserInformation().getStaffMemberId());
 				query1.setInt(2, detail.getId());
 				query1.executeUpdate();
 			}
 
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberId"));
+			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberId"));
 			query1.setString(1, login.getUsername());
 			final ResultSet rsStaffMemberId = query1.executeQuery();
 
@@ -192,7 +190,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		try
 		{
 			// locked = ? WHERE username = ?
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.lockUser"));
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.lockUser"));
 			query.setBoolean(1, true);
 			query.setString(2, username);
 			query.executeUpdate();
@@ -211,7 +209,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		try
 		{
 			// locked = ? WHERE username = ?
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.lockUser"));
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.lockUser"));
 			query.setBoolean(1, false);
 			query.setString(2, username);
 			query.executeUpdate();
@@ -229,16 +227,13 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 	{
 		try
 		{
-			// pwd = ?, authorization = ?, isloggedin = ?, locked = ? WHERE username
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.User"));
-			query.setString(1, login.getPassword());
-			query.setString(2, login.getAuthorization());
-			query.setBoolean(3, login.isLoggedIn());
-			query.setBoolean(4, login.isIslocked());
-			query.setString(5, login.getUsername());
+			// authorization = ?, isloggedin = ?, locked = ? WHERE username
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.User"));
+			query.setString(1, login.getAuthorization());
+			query.setBoolean(2, login.isLoggedIn());
+			query.setBoolean(3, login.isIslocked());
+			query.setString(4, login.getUsername());
 			query.executeUpdate();
-			
-			staffMemberDAO.updateStaffMember(login.getUserInformation());
 		}
 		catch (SQLException e)
 		{
@@ -248,4 +243,49 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 		return true;
 	}
 
+	@Override
+	public boolean updatePassword(String username, String newPwd) 
+	{
+		try
+		{
+			// pwd = ? WHERE username
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.Password"));
+			query.setString(1, newPwd);
+			query.setString(2, username);
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public List<Login> listLogins() 
+	{
+		List<Login> loginList = new ArrayList<Login>();
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.User"));
+			final ResultSet rs = query.executeQuery();
+			//loop and add the logins
+			while(rs.next())
+			{
+				Login login = new Login();
+				login.setUsername(rs.getString("username"));
+				login.setAuthorization(rs.getString("authorization"));
+				login.setIslocked(rs.getBoolean("locked"));
+				login.setLoggedIn(rs.getBoolean("isloggedin"));
+				loginList.add(login);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return loginList;
+	}
 }
