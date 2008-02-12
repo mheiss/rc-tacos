@@ -80,7 +80,6 @@ public class RosterEntryEncoder  implements MessageEncoder
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("standby");
-        System.out.println("Bereitschaft:" +entry.getStandby());
         writer.writeCharacters(String.valueOf(entry.getStandby()));
         writer.writeEndElement();
 
