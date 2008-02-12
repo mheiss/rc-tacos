@@ -12,10 +12,6 @@ import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.DayInfoMessage;
 
-/**
- * Session information
- * @author Nechan
- */
 public class UserSession 
 {
 	private Boolean loggedIn;
