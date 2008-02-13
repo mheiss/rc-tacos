@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!-- ============================================================== -->
+<!-- ANT Configuration file for the tacos web project               -->
+<!-- ============================================================== -->
+<project name="ProjectTacosOnline" basedir="." default="clean-compile-deploy">
+	<property file="build.properties" />
+	
+	<property name="src.dir" value="src" />
+	<property name="web.dir" value="web" />
+	<property name="build.dir" value="${web.dir}/WEB-INF/classes" />
+	<property name="dist.dir" value="dist" />
+	<property name="name" value="tacos" />
+
+	<path id="master-classpath">
+		<fileset dir="${web.dir}/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${appserver.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${appserver.home}/bin">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement path="${build.dir}" />
+	</path>
+
+	<target name="clean" description="Clean the build and dist directories">
+		<delete dir="${build.dir}" />
+		<delete dir="${deploy.path}/${name}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="compile" description="Compile the application">
+		<mkdir dir="${build.dir}" />
+		<javac destdir="${build.dir}" target="1.6">
+			<src path="${src.dir}" />
+			<classpath refid="master-classpath" />
+		</javac>
+		<copy todir="${build.dir}" preservelastmodified="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile-deploy" depends="compile,deploy" description="Compile and deploy the application" />
+
+	<target name="compile-deploy-reload" depends="compile,deploy,reload" description="Compile, deploy and reload application" />
+
+	<target name="deploy" description="Deploy application as a WAR file">
+		<mkdir dir="${deploy.path}" />
+		<war destfile="${deploy.path}/${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</war>
+	</target>
+
+	<target name="dist" description="Distribute application as a WAR file">
+		<mkdir dir="${dist.dir}" />
+		<war destfile="${dist.dir}/${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</war>
+	</target>
+
+	<target name="compile-dist" depends="compile,dist" description="Compile and distribute application as a WAR file" />
+
+	<target name="clean-compile-deploy" depends="clean,compile,deploy" description="Clean, compile and deploy the application" />
+
+	<target name="clean-compile-deploy-reload" depends="clean,compile,deploy,reload" description="Clean, compile, deploy and reload the application" />
+	
+	<!-- ============================================================== -->
+	<!-- Tomcat tasks - remove these if you don't have Tomcat installed -->
+	<!-- ============================================================== -->
+	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
+		<classpath>
+			<path location="${appserver.home}/lib/catalina-ant.jar" />
+		</classpath>
+	</taskdef>
+	<taskdef name="list" classname="org.apache.catalina.ant.ListTask">
+		<classpath>
+			<path location="${appserver.home}/lib/catalina-ant.jar" />
+		</classpath>
+	</taskdef>
+	<taskdef name="start" classname="org.apache.catalina.ant.StartTask">
+		<classpath>
+			<path location="${appserver.home}/lib/catalina-ant.jar" />
+		</classpath>
+	</taskdef>
+	<taskdef name="stop" classname="org.apache.catalina.ant.StopTask">
+		<classpath>
+			<path location="${appserver.home}/lib/catalina-ant.jar" />
+		</classpath>
+	</taskdef>
+	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask">
+		<classpath>
+			<path location="${appserver.home}/lib/catalina-ant.jar" />
+		</classpath>
+	</taskdef>
+
+	<target name="reload" description="Reload application in Tomcat">
+		<reload url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
+	</target>
+
+	<target name="start" description="Start Tomcat application">
+		<start url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
+	</target>
+
+	<target name="stop" description="Stop Tomcat application">
+		<stop url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
+	</target>
+
+	<target name="list" description="List Tomcat applications">
+		<list url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" />
+	</target>
+
+	<target name="undeploy" description="Remove application from servlet container">
+		<undeploy url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
+	</target>
+	<!-- End Tomcat tasks -->
+</project>
