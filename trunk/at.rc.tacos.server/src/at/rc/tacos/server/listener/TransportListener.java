@@ -42,7 +42,7 @@ public class TransportListener extends ServerListenerAdapter
     public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)  throws DAOException
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        List<Transport> transportList;
+        List<Transport> transportList = null;
 		//if there is no filter -> request all
 		if(queryFilter == null || queryFilter.getFilterList().isEmpty())
 		{
@@ -64,10 +64,8 @@ public class TransportListener extends ServerListenerAdapter
 			if(Transport.TRANSPORT_PROGRESS.equalsIgnoreCase(type))
 				transportList = transportDao.listTransportsByDateOfTransport(dateStart, dateEnd);
 			//show the transports in the journal
-			if(Transport.TRANSPORT_JOURNAL.equalsIgnoreCase(type))
+			else if(Transport.TRANSPORT_JOURNAL.equalsIgnoreCase(type))
 				transportList = transportDao.listArchivedTransports(dateStart, dateEnd);
-			else
-				transportList = null;
 			//check
 			if(transportList == null)
 			{
