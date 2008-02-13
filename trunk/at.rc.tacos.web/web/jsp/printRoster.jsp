@@ -58,7 +58,7 @@
 					+ userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%> &nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Dienstpl&auml;ne drucken</td>
+					<td width="33%" align="center">Dienstplan drucken</td>
 					<td width="33%" align="right">Heute ist der <%=formath.format(current)%>
 					</td>
 					<td>
