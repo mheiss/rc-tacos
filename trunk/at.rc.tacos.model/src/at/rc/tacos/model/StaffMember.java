@@ -43,6 +43,9 @@ public class StaffMember extends AbstractMessage
 	public StaffMember()
 	{
 		super(ID);
+		//set default values
+		lastName = "";
+		firstName = "";
 		phonelist = new ArrayList<MobilePhoneDetail>();
 		competenceList = new ArrayList<Competence>();
 	}
