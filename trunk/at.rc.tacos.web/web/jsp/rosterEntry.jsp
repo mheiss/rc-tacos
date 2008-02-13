@@ -56,7 +56,7 @@
 				<tr>
 					<td width="33%" align="left">Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a> )</td>
-					<td width="33%" align="center">Diensteintrag hinzuf&uuml;gen</td>
+					<td width="33%" align="center">Dienst eintragen</td>
 					<td width="33%" align="right">Heute ist der <%= format.format(current) %>
 					</td>
 					<td>
