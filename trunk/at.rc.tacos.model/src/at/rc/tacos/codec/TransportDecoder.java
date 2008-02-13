@@ -150,16 +150,13 @@ public class TransportDecoder implements MessageDecoder
 			{
 				//get the name
 				String endElement = event.asEndElement().getName().getLocalPart();
-				System.out.println("End element:"+endElement);
 				//check if we have reached the end
 				if (Transport.ID.equalsIgnoreCase(endElement))
 				{
-					System.out.println("returning: "+transport);
 					return transport;
 				}
 			}
 		}
-		System.out.println("Returning null");
 		return null;
 	}
 
