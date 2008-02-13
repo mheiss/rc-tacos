@@ -69,10 +69,8 @@
 					&nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
 					)</td>
-					<td width="33%" align="center">Tages&uuml;bersicht ihrer
-					Prim&auml;r-Dienststelle</td>
-					<td width="33%" align="right">Heute ist der <%=format.format(today)%>
-					</td>
+					<td width="33%" align="center">Tages&uuml;bersicht der Dienststelle: <%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></td>
+					<td width="33%" align="right">Heute ist der <%=format.format(today)%></td>
 					<td>
 				</tr>
 			</table>
