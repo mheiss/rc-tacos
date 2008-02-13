@@ -140,7 +140,7 @@ public class TimetableVertical
 						tabentry+= 		
 							"<div id='singleEntryDivCase' style='width:100%; padding-left:" + this.calculateStartForEntry(formatHour.format(new Date(entry.getPlannedStartOfWork()))) +
 							"%; ' >";
-						if(entry.getCreatedByUsername().equals(entry.getStaffMember().getUserName()) || currentUser.equals(entry.getStaffMember().getUserName()) || currentUser.equals(entry.getCreatedByUsername()))
+						if(currentUser.equals(entry.getStaffMember().getUserName()) || currentUser.equals(entry.getCreatedByUsername()))
 						{
 							tabentry+= 		
 								"<div id='singleEntryDiv' style='" + 
