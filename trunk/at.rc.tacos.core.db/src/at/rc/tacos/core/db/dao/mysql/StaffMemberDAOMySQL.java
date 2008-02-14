@@ -215,14 +215,19 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			//add or update the mobile phone list
 			for(MobilePhoneDetail detail:staffmember.getPhonelist())
 			{
+				System.out.println("phone:"+detail);
 				//add the phone when it is new
 				if(detail.getId() == -1)
 				{
+					System.out.println("adding mobile phone");
 					int phoneId = mobilePhoneDAO.addMobilePhone(detail);
 					detail.setId(phoneId);
 				}
 				else
+				{
+					System.out.println("Update phone");
 					mobilePhoneDAO.updateMobilePhone(detail);
+				}
 			}
 			
 			//update connection phonenumber - staffmember
@@ -279,6 +284,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			
 			for(MobilePhoneDetail detail:staff.getPhonelist())
 			{
+				System.out.println("update the phone");
 				//staffmember_ID, phonenumber_ID
 				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.Phonestaffmember"));
 				query1.setInt(1, staff.getStaffMemberId());

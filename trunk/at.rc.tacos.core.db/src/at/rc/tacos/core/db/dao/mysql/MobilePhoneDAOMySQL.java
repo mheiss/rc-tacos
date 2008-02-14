@@ -18,24 +18,20 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 	@Override
 	public int addMobilePhone(MobilePhoneDetail phone)
 	{
-		int phoneId = 0;
+		int phoneId = -1;
 		try
 		{	
 			// phonenumber_ID, phonenumber, phonename
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.phone"));
-			query.setInt(1, phone.getId());
+			query.setString(1, null);
 			query.setString(2, phone.getMobilePhoneNumber());
 			query.setString(3, phone.getMobilePhoneName());
 			query.executeUpdate();
-
-			// phonenumber, phonename
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.phoneID"));
-			query1.setString(1, phone.getMobilePhoneNumber());
-			query1.setString(2, phone.getMobilePhoneName());
-			final ResultSet rs = query1.executeQuery();
-
-			if(rs.first())
-				phoneId = rs.getInt("phonenumber_ID");
+			
+			//get the last inserted id
+			final ResultSet rs = query.getGeneratedKeys();
+		    if (rs.next()) 
+		        phoneId = rs.getInt(1);
 		}
 		catch (SQLException e)
 		{
