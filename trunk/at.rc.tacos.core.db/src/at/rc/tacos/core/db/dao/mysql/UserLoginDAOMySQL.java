@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.dao.MobilePhoneDAO;
+import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
@@ -19,6 +22,10 @@ import at.rc.tacos.util.MyUtils;
 public class UserLoginDAOMySQL implements UserLoginDAO
 {
 	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
+	
+	//the mobile phone dao and the competence dao
+	private final StaffMemberDAO staffDAO = DaoFactory.MYSQL.createStaffMemberDAO();
+	private final MobilePhoneDAO mobilePhoneDAO = DaoFactory.MYSQL.createMobilePhoneDAO();
 
 	@Override
 	public int checkLogin(String username, String pwdHash)
@@ -97,7 +104,8 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 					System.out.println("Adding competence: "+competence);
 				}
 			}
-			else return null;
+			else 
+				return null;
 
 			//ph.phonenumber, ph.phonenumber_ID
 			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
@@ -126,7 +134,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 	@Override
 	public int addLogin(Login login)
 	{
-		int staffMemberId = 0;
+		int staffMemberId = login.getUserInformation().getStaffMemberId();
 		try
 		{	
 			// username, pwd, authorization, isloggedin, locked
@@ -151,30 +159,24 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			query2.setString(9, login.getUserInformation().getCityname());
 			query2.setString(10, login.getUsername());
 			query2.executeUpdate();
-
-			for(Competence comp:login.getUserInformation().getCompetenceList())
-			{
-				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.competenceToStaffMember"));
-				query1.setInt(1, login.getUserInformation().getStaffMemberId());
-				query1.setInt(2, comp.getId());
-				query1.executeUpdate();
-			}
-
+			
+			//update the competences of this staff member
+			staffDAO.updateCompetenceList(login.getUserInformation());
+			
+			//add or update the mobile phone list
 			for(MobilePhoneDetail detail:login.getUserInformation().getPhonelist())
 			{
-				//staffmember_ID, phonenumber_ID
-				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.Phonestaffmember"));
-				query1.setInt(1, login.getUserInformation().getStaffMemberId());
-				query1.setInt(2, detail.getId());
-				query1.executeUpdate();
+				//add the phone when it is new
+				if(detail.getId() == -1)
+				{
+					int phoneId = mobilePhoneDAO.addMobilePhone(detail);
+					detail.setId(phoneId);
+				}
+				else
+					mobilePhoneDAO.updateMobilePhone(detail);
 			}
-
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(UserLoginDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.staffmemberId"));
-			query1.setString(1, login.getUsername());
-			final ResultSet rsStaffMemberId = query1.executeQuery();
-
-			if(rsStaffMemberId.first())
-				staffMemberId = rsStaffMemberId.getInt("staffmember_ID");
+			//assign the mobile phone to the staff member
+			staffDAO.updateMobilePhoneList(login.getUserInformation());
 		}
 		catch (SQLException e)
 		{
