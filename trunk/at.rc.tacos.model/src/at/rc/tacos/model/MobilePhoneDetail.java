@@ -22,6 +22,8 @@ public class MobilePhoneDetail extends AbstractMessage
     public MobilePhoneDetail() 
     { 
         super(ID);
+        //set the id to undefined
+        id = -1;
     }
     
     /**
@@ -32,6 +34,8 @@ public class MobilePhoneDetail extends AbstractMessage
     public MobilePhoneDetail(String mobilePhoneName,String mobilePhoneNumber) 
     {
         super(ID);
+        //id is undefined
+        id = -1;
         setMobilePhoneName(mobilePhoneName);
         setMobilePhoneNumber(mobilePhoneNumber);
     }

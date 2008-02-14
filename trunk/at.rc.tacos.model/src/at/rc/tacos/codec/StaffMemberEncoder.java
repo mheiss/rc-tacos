@@ -85,7 +85,7 @@ public class StaffMemberEncoder  implements MessageEncoder
             writer.writeEndElement();
         }
         //get the encoder for the phone and write the list
-        if(member.getPhonelist().isEmpty())
+        if(!member.getPhonelist().isEmpty())
         {
 	        encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
 	        for(MobilePhoneDetail detail:member.getPhonelist())
@@ -93,7 +93,7 @@ public class StaffMemberEncoder  implements MessageEncoder
         }
         
         //get the encoder for the competence and write the list
-        if(member.getCompetenceList().isEmpty())
+        if(!member.getCompetenceList().isEmpty())
         {
 	        encoder = ProtocolCodecFactory.getDefault().getEncoder(Competence.ID);
 	        for(Competence comp:member.getCompetenceList())
