@@ -23,6 +23,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
+import at.rc.tacos.client.controller.EditorNewStaffAction;
 import at.rc.tacos.client.editors.StaffMemberEditor;
 import at.rc.tacos.client.editors.StaffMemberEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -135,6 +136,9 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
         getViewSite().setSelectionProvider(viewer);
         form.setLayoutData(gd);
         
+        //add actions to the toolbar
+        createToolBarActions();
+        
         //set this table as a selection provider
         getViewSite().setSelectionProvider(viewer);
     }
@@ -143,7 +147,10 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
      * Passes the focus to the view
      */
     @Override
-    public void setFocus() { }
+    public void setFocus() 
+    { 
+    	form.setFocus();
+    }
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
@@ -157,5 +164,17 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
 			//just refresh the viewer
 			viewer.refresh();
 		}
+	}
+	
+	/**
+	 * Creates and adds the actions for the toolbar
+	 */
+	private void createToolBarActions()
+	{
+		//create the action
+		EditorNewStaffAction addAction = new EditorNewStaffAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		//add to the toolbar
+		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().update(true);
 	}
 }

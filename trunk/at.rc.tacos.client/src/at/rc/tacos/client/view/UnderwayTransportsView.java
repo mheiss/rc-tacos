@@ -123,7 +123,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getTransportList());
+		viewer.setInput(ModelFactory.getInstance().getTransportList().toArray());
 		viewer.getTable().setLinesVisible(true);
 		
 		viewer.refresh();

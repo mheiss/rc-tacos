@@ -358,16 +358,6 @@ public class InfoView extends ViewPart implements PropertyChangeListener
                 }
             });
         }
-        if("CONNECTION_LOST".equalsIgnoreCase(pce.getPropertyName()))
-        {
-            Display.getDefault().syncExec(new Runnable ()    
-            {
-                public void run ()       
-                {
-                	updateInfoSection();
-                }
-            });
-        }
         if("DAY_INFO_CHANGED".equalsIgnoreCase(pce.getPropertyName()))
         {
         	noteEditor.setEditable(false);

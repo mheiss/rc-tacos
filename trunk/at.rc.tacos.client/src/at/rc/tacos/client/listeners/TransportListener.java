@@ -23,7 +23,6 @@ public class TransportListener extends ClientListenerAdapter
 	@Override
 	public void update(AbstractMessage updateMessage) 
 	{
-		System.out.println("Updating the transport (in Listener): "+(Transport)updateMessage);
 		manager.update((Transport)updateMessage);
 	}
 	
@@ -36,8 +35,7 @@ public class TransportListener extends ClientListenerAdapter
 	@Override
     public void list(ArrayList<AbstractMessage> listMessage)
     {
-        manager.removeAllEntries();
-       
+        manager.removeAllEntries();  
         for(AbstractMessage msg:listMessage)
         {
             Transport transport = (Transport)msg;

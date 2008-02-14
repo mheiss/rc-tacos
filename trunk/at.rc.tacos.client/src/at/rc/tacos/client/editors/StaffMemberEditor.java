@@ -37,8 +37,9 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
-import at.rc.tacos.client.controller.CloseEditorAction;
-import at.rc.tacos.client.controller.SaveEditorAction;
+import at.rc.tacos.client.controller.EditorCloseAction;
+import at.rc.tacos.client.controller.EditorNewStaffAction;
+import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.CompetenceContentProvider;
 import at.rc.tacos.client.providers.CompetenceLabelProvider;
@@ -66,12 +67,13 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private ScrolledForm form;
 
 	//the values that can be changed
-	private Text fName,lName,street,cityname,eMail,dateOfBirth;
+	private Text staffId,fName,lName,street,cityname,eMail,dateOfBirth;
 	private Text uName,pwd,pwdRetype;
 	private TableViewer phoneViewer,competenceViewer;
 	private ComboViewer primaryLocationComboViewer,competenceComboViewer,authorisationComboViewer,sexComboViewer;
 	private Button locked;
 	private Hyperlink removePhone,addPhone,removeCompetence,addCompetence;
+	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
 
 	//indicates non-saved changes
 	protected boolean isDirty;
@@ -88,166 +90,21 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	{
 		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLoginList().addPropertyChangeListener(this);
+		//keep on track when new locations or competences are added,updated or removed
+		ModelFactory.getInstance().getCompetenceList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
 	}
 
 	/**
-	 * Clean up
+	 * Clean up and remove the listener 
 	 */
 	@Override
 	public void dispose()
 	{ 
 		ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getLoginList().removePropertyChangeListener(this);
-	}
-
-	@Override
-	public void doSave(IProgressMonitor monitor) 
-	{
-		//reset error message
-		form.setMessage(null, IMessageProvider.NONE);
-		
-		//save the input in the staff member
-		if(fName.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie einen Vornamen ein", IMessageProvider.ERROR);
-			return;
-		}
-		else
-			staffMember.setFirstName(fName.getText());
-		//Set the lastname
-		if(lName.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie einen Nachnamen ein", IMessageProvider.ERROR);
-			return;
-		}
-		else
-			staffMember.setLastName(lName.getText());
-		//Set the street
-		if(street.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie eine Straße ein", IMessageProvider.ERROR);
-			return;
-		}
-		else
-			staffMember.setStreetname(street.getText());
-		//get the city
-		if(cityname.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie eine PLZ und eine Stadt ein", IMessageProvider.ERROR);
-			return;
-		}
-		else
-			staffMember.setCityname(cityname.getText());
-		//the mail address
-		if(eMail.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine eMail Adresse an", IMessageProvider.ERROR);
-			return;
-		}
-		else
-			staffMember.setEMail(eMail.getText());
-		//date of birth
-		if(dateOfBirth.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie ein Geburtsdatum in der Form dd-mm-yyyy ein", IMessageProvider.ERROR);
-			return;
-		}
-		else
-		{
-			long date = MyUtils.stringToTimestamp(dateOfBirth.getText(), MyUtils.dateFormat);
-			if(date > 0)
-				staffMember.setBirthday(date);
-			else
-			{
-				form.getDisplay().beep();
-				form.setMessage("Bitte geben Sie ein gültiges Geburtsdatum ein", IMessageProvider.ERROR);
-				return;
-			}
-		}
-		//sex
-		int index = sexComboViewer.getCombo().getSelectionIndex();
-		String selectedSex = (String)sexComboViewer.getElementAt(index);
-		if(selectedSex.equalsIgnoreCase(StaffMember.STAFF_MALE))
-			staffMember.setMale(true);
-		else if(selectedSex.equalsIgnoreCase(StaffMember.STAFF_FEMALE))
-			staffMember.setMale(false);
-		else
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte wählen sie das Geschlecht aus", IMessageProvider.ERROR);
-			return;
-		}
-
-		//the location
-		index = primaryLocationComboViewer.getCombo().getSelectionIndex();
-		staffMember.setPrimaryLocation((Location)primaryLocationComboViewer.getElementAt(index));
-		
-		//phones are already assigned, so we dont't need to assign them :)
-		//Competences are already assigned, so we dont' have to assign them :)
-		
-		//the password
-		if(!pwd.getText().trim().isEmpty() |! pwdRetype.getText().trim().isEmpty())
-		{
-			//check if they are equal
-			if(pwd.getText().equals(pwdRetype.getText()))
-				loginInfo.setPassword(pwd.getText());
-			else
-			{
-				form.getDisplay().beep();
-				form.setMessage("Die eingegebenen Passwörter stimmen nicht überein", IMessageProvider.ERROR);
-				return;
-			}
-		}
-		//authorization
-		index = authorisationComboViewer.getCombo().getSelectionIndex();
-		if(index == -1)
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte wählen sie das die Berechtigungen des Benutzers aus", IMessageProvider.ERROR);
-			return;
-		}
-		else
-		{
-			loginInfo.setAuthorization((String)authorisationComboViewer.getElementAt(index));
-		}
-		//locked
-		loginInfo.setIslocked(locked.getSelection());
-		
-		//add or update the staff member and the login
-		if(isNew)
-		{
-			loginInfo.setUserInformation(staffMember);
-			NetWrapper.getDefault().sendAddMessage(Login.ID, loginInfo);
-		}
-		else
-		{
-			NetWrapper.getDefault().sendUpdateMessage(StaffMember.ID, staffMember);
-			NetWrapper.getDefault().sendUpdateMessage(Login.ID, loginInfo);
-		}
-	}
-
-	@Override
-	public boolean isSaveAsAllowed() 
-	{
-		return false;
-	}
-
-	@Override
-	public void doSaveAs() 
-	{
-		// don't support saving as
-	}
-
-	@Override
-	public boolean isDirty() 
-	{
-		return isDirty;
+		ModelFactory.getInstance().getCompetenceList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
 	}
 
 	@Override
@@ -288,7 +145,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		manage.getParent().setLayoutData(data);
 
 		//load the data
-		loadData();
+		if(!isNew)
+			loadData();
+		else
+			form.setText("Neuen Mitarbeiter anlegen");
 
 		//force redraw
 		form.pack(true);
@@ -300,7 +160,22 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private void loadData()
 	{
 		form.setText("Details des Mitarbeiters "+staffMember.getFirstName() + " "+staffMember.getLastName());
+		if(!isNew)
+		{
+			//adjust the links
+			saveHyperlink.setText("Änderungen speichern");
+			addHyperlink.setVisible(true);
+			//username is not editable
+			uName.setEditable(false);
+			uName.setBackground(CustomColors.GREY_COLOR);
+			uName.setToolTipText("Der Benutzername kann nicht verändert werden");
+			//personal numer is not changeable
+			//id is not changeable
+			staffId.setEditable(false);
+			staffId.setBackground(CustomColors.GREY_COLOR);
+		}
 		//set the data of the staff member
+		staffId.setText(String.valueOf(staffMember.getStaffMemberId()));
 		fName.setText(staffMember.getFirstName());
 		lName.setText(staffMember.getLastName());
 		street.setText(staffMember.getStreetname());
@@ -314,38 +189,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		else
 			sexComboViewer.setSelection(new StructuredSelection(StaffMember.STAFF_FEMALE));
 		primaryLocationComboViewer.setSelection(new StructuredSelection(staffMember.getPrimaryLocation()));
-		//set this staff members phone list as content provider
-		phoneViewer.setContentProvider(new IStructuredContentProvider()
-		{
-			@Override
-			public Object[] getElements(Object arg0) 
-			{
-				return staffMember.getPhonelist().toArray();
-			}
-
-			@Override
-			public void dispose() { }
-
-			@Override
-			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
-		});
-		phoneViewer.setInput(staffMember.getPhonelist().toArray());
-		//set this staff members competences as content provider
-		competenceViewer.setContentProvider(new IStructuredContentProvider()
-		{
-			@Override
-			public Object[] getElements(Object arg0) 
-			{
-				return staffMember.getCompetenceList().toArray();
-			}
-
-			@Override
-			public void dispose() { }
-
-			@Override
-			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
-		});
-		competenceViewer.setInput(staffMember.getCompetenceList().toArray());	
 		//update the login
 		uName.setText(loginInfo.getUsername());
 		locked.setSelection(loginInfo.isIslocked());
@@ -357,6 +200,189 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	 */
 	@Override
 	public void setFocus() {  }
+
+	@Override
+	public void doSave(IProgressMonitor monitor) 
+	{
+		//reset error message
+		form.setMessage(null, IMessageProvider.NONE);
+
+		//validate the staff id
+		String pattern = "5\\d{7}";
+		if(!staffId.getText().matches(pattern))
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie eine gültige Personalnummer in der Form 5xxxxxxx ein.", IMessageProvider.ERROR);
+			return;
+		}
+		staffMember.setStaffMemberId(Integer.parseInt(staffId.getText()));
+
+		//save the input in the staff member
+		if(fName.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie einen Vornamen ein", IMessageProvider.ERROR);
+			return;
+		}
+		staffMember.setFirstName(fName.getText());
+
+		//Set the lastname
+		if(lName.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie einen Nachnamen ein", IMessageProvider.ERROR);
+			return;
+		}
+		staffMember.setLastName(lName.getText());
+
+		//Set the street
+		if(street.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie eine Straße ein", IMessageProvider.ERROR);
+			return;
+		}
+		staffMember.setStreetname(street.getText());
+
+		//get the city
+		if(cityname.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie eine PLZ und eine Stadt ein", IMessageProvider.ERROR);
+			return;
+		}
+		staffMember.setCityname(cityname.getText());
+
+		//the mail address
+		if(eMail.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben sie eine eMail Adresse an", IMessageProvider.ERROR);
+			return;
+		}
+		staffMember.setEMail(eMail.getText());
+
+		//date of birth
+		if(dateOfBirth.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben sie ein Geburtsdatum in der Form dd-mm-yyyy ein", IMessageProvider.ERROR);
+			return;
+		}
+		else
+		{
+			long date = MyUtils.stringToTimestamp(dateOfBirth.getText(), MyUtils.dateFormat);
+			if(date > 0)
+				staffMember.setBirthday(date);
+			else
+			{
+				form.getDisplay().beep();
+				form.setMessage("Bitte geben Sie ein gültiges Geburtsdatum ein", IMessageProvider.ERROR);
+				return;
+			}
+		}
+		//sex
+		int index = sexComboViewer.getCombo().getSelectionIndex();
+		if(index == -1)
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte wählen sie das Geschlecht aus", IMessageProvider.ERROR);
+			return;
+		}
+		String selectedSex = (String)sexComboViewer.getElementAt(index);
+		if(selectedSex.equalsIgnoreCase(StaffMember.STAFF_MALE))
+			staffMember.setMale(true);
+		else
+			staffMember.setMale(false);
+
+		//the location
+		index = primaryLocationComboViewer.getCombo().getSelectionIndex();
+		if(index == -1)
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte wählen sie die primäre Dienstelle des Mitarbeiters aus", IMessageProvider.ERROR);
+			return;
+		}
+		staffMember.setPrimaryLocation((Location)primaryLocationComboViewer.getElementAt(index));
+
+		//phones are already assigned, so we dont't need to assign them :)
+		//Competences are already assigned, so we dont' have to assign them :)
+
+		//check the username
+		if(uName.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie einen Benutzernamen ein.", IMessageProvider.ERROR);
+			return;
+		}
+		loginInfo.setUsername(uName.getText());
+		staffMember.setUserName(uName.getText());
+
+		//a new entry must have a password
+		if(isNew & (pwd.getText().trim().isEmpty() || pwdRetype.getText().trim().isEmpty()))
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie ein Passwort ein.", IMessageProvider.ERROR);
+			return;
+		}
+
+		//the password
+		if(!pwd.getText().trim().isEmpty() |! pwdRetype.getText().trim().isEmpty())
+		{
+			//check if they are equal
+			if(pwd.getText().equals(pwdRetype.getText()))
+				loginInfo.setPassword(pwd.getText());
+			else
+			{
+				form.getDisplay().beep();
+				form.setMessage("Die eingegebenen Passwörter stimmen nicht überein", IMessageProvider.ERROR);
+				return;
+			}
+		}
+
+		//authorization
+		index = authorisationComboViewer.getCombo().getSelectionIndex();
+		if(index == -1)
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte wählen sie das die Berechtigungen des Benutzers aus", IMessageProvider.ERROR);
+			return;
+		}
+		loginInfo.setAuthorization((String)authorisationComboViewer.getElementAt(index));
+
+		//locked
+		loginInfo.setIslocked(locked.getSelection());
+
+		//add or update the staff member and the login
+		if(isNew)
+		{
+			loginInfo.setUserInformation(staffMember);
+			NetWrapper.getDefault().sendAddMessage(Login.ID, loginInfo);
+		}
+		else
+		{
+			NetWrapper.getDefault().sendUpdateMessage(StaffMember.ID, staffMember);
+			NetWrapper.getDefault().sendUpdateMessage(Login.ID, loginInfo);
+		}
+	}
+
+	@Override
+	public boolean isSaveAsAllowed() 
+	{
+		return false;
+	}
+
+	@Override
+	public void doSaveAs() 
+	{
+		// don't support saving as
+	}
+
+	@Override
+	public boolean isDirty() 
+	{
+		return isDirty;
+	}
 
 	/**
 	 * Creates the section to manage the changes
@@ -371,32 +397,49 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.info"));
 
 		//Create the hyperlink to save the changes
-		ImageHyperlink saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Änderungen speichern");
+		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
+		saveHyperlink.setText("Neuen Mitarbeiter anlegen");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
 			public void linkActivated(HyperlinkEvent e) 
 			{
-				SaveEditorAction saveAction = new SaveEditorAction();
+				EditorSaveAction saveAction = new EditorSaveAction();
 				saveAction.run();
 			}
 		});
 
 		//Create the hyperlink to close the window and revert the changes
-		ImageHyperlink closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		closeHyperlink.setText("Änderungen verwerfen und Fenster schließen");
+		closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
+		closeHyperlink.setText("Fenster schließen");
 		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.close"));
 		closeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
 			public void linkActivated(HyperlinkEvent e) 
 			{
-				CloseEditorAction closeAction = new CloseEditorAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
 		});
+
+		//create the hyperlink to add a new staff member
+		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
+		addHyperlink.setText("Mitarbeiter anlegen");
+		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.add"));
+		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
+		{
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+				EditorNewStaffAction newAction = new EditorNewStaffAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				newAction.run();
+			}
+		});
+		//show the hyperlink only when we edit a existing user
+		if(isNew)
+			addHyperlink.setVisible(false);
 
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
@@ -414,6 +457,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		Composite client = createSection(parent, "Allgemeine Daten");
 
 		//create the label and the input field
+		final Label labelStaffId = toolkit.createLabel(client,"Personalnummer");
+		staffId = toolkit.createText(client, "");
+
 		final Label labelFName = toolkit.createLabel(client, "Vorname: ");
 		fName = toolkit.createText(client, "");
 
@@ -516,9 +562,28 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//the viewer, should span over two columns
 		phoneViewer = new TableViewer(phoneSub,SWT.BORDER);
 		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
+		//set this staff members phone list as content provider
+		phoneViewer.setContentProvider(new IStructuredContentProvider()
+		{
+			@Override
+			public Object[] getElements(Object arg0) 
+			{
+				return staffMember.getPhonelist().toArray();
+			}
+
+			@Override
+			public void dispose() { }
+
+			@Override
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+		});
+		phoneViewer.setInput(staffMember.getPhonelist().toArray());	
 
 		//set the layout for the composites
 		GridData data = new GridData();
+		data.widthHint = 150;
+		labelStaffId.setLayoutData(data);
+		data = new GridData();
 		data.widthHint = 150;
 		labelFName.setLayoutData(data);
 		data = new GridData();
@@ -546,6 +611,8 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		labelPhone.setLayoutData(data);
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+		staffId.setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		fName.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		lName.setLayoutData(data2);
@@ -647,6 +714,22 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//create the table holding the competences
 		competenceViewer = new TableViewer(client,SWT.BORDER);
 		competenceViewer.setLabelProvider(new CompetenceLabelProvider());
+		//set this staff members competences as content provider
+		competenceViewer.setContentProvider(new IStructuredContentProvider()
+		{
+			@Override
+			public Object[] getElements(Object arg0) 
+			{
+				return staffMember.getCompetenceList().toArray();
+			}
+
+			@Override
+			public void dispose() { }
+
+			@Override
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+		});
+		competenceViewer.setInput(staffMember.getCompetenceList().toArray());
 
 		//layout the composites
 		GridData data = new GridData();
@@ -686,9 +769,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//create the label and the input field
 		final Label labelUsername = toolkit.createLabel(client, "Username: ");
 		uName = toolkit.createText(client, "");
-		uName.setEditable(false);
-		uName.setBackground(CustomColors.GREY_COLOR);
-		uName.setToolTipText("Der Benutzername kann nicht verändert werden");
+		uName.setToolTipText("Der Benutzername mit dem sich der Mitarbeiter am OnlineDienstplan und am Client anmelden kann");
 
 		final Label labelPwd = toolkit.createLabel(client, "Passwort: ");
 		pwd = toolkit.createText(client, "");
@@ -798,11 +879,14 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("STAFF_UPDATE".equals(evt.getPropertyName()) || "LOGIN_UPDATE".equals(evt.getPropertyName()))
+		if("STAFF_UPDATE".equals(evt.getPropertyName()) 
+				|| "LOGIN_UPDATE".equals(evt.getPropertyName())
+				|| "STAFF_ADD".equals(evt.getPropertyName())
+				|| "LOGIN_ADD".equals(evt.getPropertyName()))
 		{
 			StaffMember updateMember = null;
 			Login updateLogin = null;
-			
+
 			//get the new value
 			if(evt.getNewValue() instanceof StaffMember)
 			{
@@ -817,7 +901,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			//assert we have both values
 			if(updateLogin == null || updateMember == null)
 				return;
-			
+
 			//is this staff member the current edited member
 			if(updateMember.equals(staffMember))
 			{
@@ -826,9 +910,26 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				setPartName(updateMember.getLastName());
 				staffMember = updateMember;
 				loginInfo = updateLogin;
+				isNew = false;
 				//update the editor
 				loadData();
 			}
+		}
+		//refresh the comboview when locations are added,updated or removed
+		if("LOCATION_ADD".equalsIgnoreCase(evt.getPropertyName())
+				|| "LOCATION_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//just refresh the combo so that the new data is loaded
+			primaryLocationComboViewer.refresh(true);
+		}
+		//refresh the comboview when competences are added,updated or removed
+		if("COMPETENCE_ADD".equalsIgnoreCase(evt.getPropertyName())
+				|| "COMPETENCE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "COMPETENCE_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//just refresh the combo so that the new data is loaded
+			competenceComboViewer.refresh(true);
 		}
 	}
 }

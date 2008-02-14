@@ -1,8 +1,8 @@
 package at.rc.tacos.client.controller;
 
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
@@ -12,13 +12,17 @@ import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.factory.ImageFactory;
 
-public class SaveEditorAction extends Action implements IWorkbenchWindowActionDelegate
+public class EditorCloseAction extends Action implements IWorkbenchWindowActionDelegate 
 {
+	private IWorkbenchWindow window;
+	
 	/**
-     * Default class constructor for saving changes
+     * Default class constructor for discard changes and close the editor
      */
-    public SaveEditorAction() { }
-
+    public EditorCloseAction(IWorkbenchWindow window)
+	{
+		this.window = window;
+	}
 
     /**
      * Returns the tooltip text for the action
@@ -27,7 +31,7 @@ public class SaveEditorAction extends Action implements IWorkbenchWindowActionDe
     @Override
     public String getToolTipText() 
     {
-        return "Speichert alle Änderungen die vorgenommen worden sind.";
+        return "Schließt das aktuelle Fenster ohne die Änderungen zu speichern";
     }
 
     /**
@@ -37,7 +41,7 @@ public class SaveEditorAction extends Action implements IWorkbenchWindowActionDe
     @Override
     public String getText()
     {
-        return "Änderungen speichern";
+        return "Fenster schließen";
     }
 
     /**
@@ -47,7 +51,7 @@ public class SaveEditorAction extends Action implements IWorkbenchWindowActionDe
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("images.admin.save");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("images.admin.close");
     }
 
     /**
@@ -56,11 +60,18 @@ public class SaveEditorAction extends Action implements IWorkbenchWindowActionDe
     @Override
     public void run()
     {
-    	//get the active editor and run the save action
+    	//The active editor
 		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		editor.doSave(Job.getJobManager().createProgressGroup());
+		//close the editor
+		boolean result = MessageDialog.openConfirm(window.getShell(), 
+				"Schließen und nicht speichern", 
+				"Wollen Sie wirklich das Fenster " + editor.getTitle()+ " schließen?\n" +
+						"Alle nicht gespeicherten Änderungen gehen verloren");
+		//close the editor
+		if(result)
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditor(editor, true);
     }
-    
+
 	@Override
 	public void dispose() 
 	{
