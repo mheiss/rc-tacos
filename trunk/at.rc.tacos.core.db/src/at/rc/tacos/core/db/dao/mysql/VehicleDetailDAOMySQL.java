@@ -26,7 +26,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 	{
 		try
 		{	
-			//vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder
+			//vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.vehicle"));
 			query.setString(1, vehicle.getVehicleName());
 			if(vehicle.getDriver() == null)
@@ -57,6 +57,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			query.setString(9, vehicle.getVehicleNotes());
 			query.setBoolean(10, vehicle.isReadyForAction());
 			query.setBoolean(11, vehicle.isOutOfOrder());
+			query.setInt(12, vehicle.getTransportStatus());
 
 			query.executeUpdate();
 		}
@@ -79,7 +80,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			final ResultSet rs = query.executeQuery();
 
 			//v.vehicle_ID, v.medic1_ID, v.medic2_ID, v.driver_ID, v.currentLocation, v.primaryLocation, lo.locationname, lo.location_ID,
-			//v.vehicletype, v.readyForAction, v.outOfOrder, v.phonenumber_ID, pn.phonenumber, v.note
+			//v.vehicletype, v.readyForAction, v.outOfOrder, v.transportStatus, v.phonenumber_ID, pn.phonenumber, v.note
 			if(rs.first())
 			{
 				vehicle.setVehicleName(rs.getString("v.vehicle_ID"));
@@ -87,6 +88,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
 				vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
 				vehicle.setVehicleNotes(rs.getString("v.note"));
+				vehicle.setTransportStatus(rs.getInt("v.transportStatus"));
 
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("v.phonenumber_ID"));
@@ -147,6 +149,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
 				vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
 				vehicle.setVehicleNotes(rs.getString("v.note"));
+				vehicle.setTransportStatus(rs.getInt("v.transportStatus"));
 
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("v.phonenumber_ID"));
@@ -210,7 +213,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 		try
 		{
 			//driver_ID = ?, medic1_ID = ?, medic2_ID = ?, phonenumber_ID = ?, vehicletype = '?', currentLocation = ?,
-			//primaryLocation = ?, note = '?', readyForAction = ?, outOfOrder = ? where vehicle_ID = '?';
+			//primaryLocation = ?, note = '?', readyForAction = ?, outOfOrder = ?, transportStatus = ? where vehicle_ID = '?';
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.vehicle"));
 			//assert we have a driver
 			if(vehicle.getDriver() == null)
@@ -239,8 +242,10 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			query.setString(8, vehicle.getVehicleNotes());
 			query.setBoolean(9, vehicle.isReadyForAction());
 			query.setBoolean(10, vehicle.isOutOfOrder());
-			query.setString(11, vehicle.getVehicleName());
-
+			query.setInt(11, vehicle.getTransportStatus());
+			query.setString(12, vehicle.getVehicleName());
+			
+			System.out.println("VehicleDetailDAOMySQL, transportStatus: " +vehicle.getTransportStatus());
 			query.executeUpdate();
 		}
 		catch (SQLException e)
