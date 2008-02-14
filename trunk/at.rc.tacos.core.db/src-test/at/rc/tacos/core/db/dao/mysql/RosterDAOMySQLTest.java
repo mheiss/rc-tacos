@@ -123,6 +123,7 @@ public class RosterDAOMySQLTest extends DBTestBase
         deleteTable(CompetenceDAO.TABLE_DEPENDENT_NAME);
         deleteTable(JobDAO.TABLE_NAME);
         deleteTable(ServiceTypeDAO.TABLE_NAME);
+        deleteTable(RosterDAO.TABLE_NAME);
 	}
 	
 	@Test
