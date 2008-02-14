@@ -160,7 +160,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 
 			if(rs.first())
 			{
-				System.out.println("getStaffMemberByUsername");
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
 
 				Location station = new Location();
@@ -179,7 +178,6 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 
 				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
-				System.out.println(staff);
 				return staff;
 			}
 		}
@@ -209,18 +207,27 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			query1.setInt(9, staffmember.getStaffMemberId());
 			query1.executeUpdate();
 			
-			//resets all competenses to new value
+			//remove all competences from the staff member and assign them again
 			boolean result1 = updateCompetenceList(staffmember);
-			if(result1 == false)
+			if(!result1)
 				return false;
 			
-			//update phonenumber
+			//add or update the mobile phone list
 			for(MobilePhoneDetail detail:staffmember.getPhonelist())
-				mobilePhoneDAO.updateMobilePhone(detail);
+			{
+				//add the phone when it is new
+				if(detail.getId() == -1)
+				{
+					int phoneId = mobilePhoneDAO.addMobilePhone(detail);
+					detail.setId(phoneId);
+				}
+				else
+					mobilePhoneDAO.updateMobilePhone(detail);
+			}
 			
 			//update connection phonenumber - staffmember
 			boolean result2 = updateMobilePhoneList(staffmember);
-			if(result2 == false)
+			if(!result2)
 				return false;
 		}
 		catch (SQLException e)
