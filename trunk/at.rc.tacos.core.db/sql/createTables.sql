@@ -287,6 +287,7 @@ CREATE TABLE vehicles (
   vehicletype VARCHAR(30) NULL,
   readyForAction BIT NULL,
   outOfOrder BIT NULL,
+  transportStatus INTEGER UNSIGNED NULL,
   PRIMARY KEY(vehicle_ID),
   INDEX vehicles_FKIndex1(primaryLocation),
   INDEX vehicles_FKIndex2(phonenumber_ID),
