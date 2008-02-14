@@ -28,9 +28,9 @@ INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(3, '0664
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(4, '0361-12345678', 'privat');
 
 -- logins
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('walter', 'pwd', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('michael', 'pwd', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('ulrich', 'pwd', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.lohm', 'pwd', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('m.heiﬂ', 'pwd', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('u.nech', 'pwd', 'Administrator', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('user3', 'P@ssw0rd', 'Benutzer', false, false);
 
 -- notifiers
