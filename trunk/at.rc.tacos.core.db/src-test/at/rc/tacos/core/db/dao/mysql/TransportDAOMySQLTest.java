@@ -49,8 +49,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 	Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
 	Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
 
-	VehicleDetail veh1 = new VehicleDetail("veh1","vehicleType1",location1);
-	VehicleDetail veh2 = new VehicleDetail("veh2","vehicleType2",location2);
+	VehicleDetail veh1 = new VehicleDetail("KA01","KDO",location1);
+	VehicleDetail veh2 = new VehicleDetail("KA02","KTW",location2);
 
 	Competence comp1 = new Competence("comp1");
 	Competence comp2 = new Competence("comp2");
@@ -128,23 +128,17 @@ public class TransportDAOMySQLTest extends DBTestBase
 		System.out.println(tr2id);
 		
 		//vehicle
-		veh1.setBasicStation(location1);
 		veh1.setCurrentStation(location1);
 		veh1.setDriver(member1);
 		veh1.setMobilPhone(phone1);
 		veh1.setReadyForAction(true);
 		veh1.setTransportStatus(10);
-		veh1.setVehicleName("Bm09");
-		veh1.setVehicleType("KTW");
 		
-		veh2.setBasicStation(location1);
 		veh2.setCurrentStation(location1);
 		veh2.setDriver(member1);
 		veh2.setMobilPhone(phone1);
 		veh2.setReadyForAction(true);
 		veh2.setTransportStatus(10);
-		veh2.setVehicleName("Bm09");
-		veh2.setVehicleType("KTW");
 		
 		boolean checkVeh1 = vehicleDAO.addVehicle(veh1);
 		boolean checkVeh2 = vehicleDAO.addVehicle(veh2);
@@ -162,6 +156,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		deleteTable(UserLoginDAO.TABLE_NAME);
 		deleteTable(StaffMemberDAO.TABLE_NAME);
 		deleteTable(CompetenceDAO.TABLE_NAME);
+		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
@@ -239,6 +234,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals("C",transport4.getTransportPriority());
 		assertEquals(1,transport4.getProgramStatus());
 
+		System.out.println("TransportDAOMySQLTest, testInsertTransport, isAssistantPerson: " +transport4.isAssistantPerson());
 		assertTrue(transport4.isAssistantPerson());
 		assertTrue(transport4.isBackTransport());
 		assertTrue(transport4.isBlueLightToGoal());
@@ -532,7 +528,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			veh2.setMobilPhone(phone1);
 			veh2.setReadyForAction(true);
 			veh2.setTransportStatus(10);
-			veh2.setVehicleName("Bm09");
+			veh2.setVehicleName("Bm11");
 			veh2.setVehicleType("KTW");
 
 			Transport transportBack = transportDAO.getTransportById(trId3);
