@@ -747,7 +747,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	}
 
 	/**
-	 * inserts a new transportstate
+	 * inserts a new transportstate to the database
 	 * @param transportId
 	 * @param selectedId
 	 * @return true if insert was sucessful
@@ -773,7 +773,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	}
 
 	/**
-	 * first removes all old transportitems and sets all to the new value
+	 * first removes all old transport items and sets all to the new value in the database
 	 * @param transport
 	 * @return true if update was ok
 	 */
@@ -811,7 +811,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	}
 
 	/**
-	 * removes all selected items from a transport
+	 * removes all selected items from a transport in the database
 	 * @param transport
 	 * @return true if all items were removed
 	 */
@@ -868,7 +868,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
 	public Transport getTransportById(int id)
 	{
-		System.out.println("getTransportById - plannedLocation");
+		System.out.println("TransportDAOMySQL, getTransportById - plannedLocation");
 		Transport transport = new Transport();
 		try
 		{
@@ -1005,6 +1005,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setEmergencyPhone(false);
 				while(rs1.next())
 				{
+					System.out.println("TransportDAOMySQL, getTransportsByID, selected_ID: " +rs1.getInt("selected_ID"));
 					if(rs1.getInt("selected_ID") == 1)
 						transport.setEmergencyDoctorAlarming(true);
 
