@@ -190,42 +190,42 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerLeoben = new TableViewer(richtungLeobenGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerLeoben.setContentProvider(new PrebookingViewContentProvider());
 		viewerLeoben.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerLeoben.setInput(ModelFactory.getInstance().getTransportList());
+		viewerLeoben.setInput(ModelFactory.getInstance().getTransportList().toArray());
 		viewerLeoben.getTable().setLinesVisible(true);
 		
 		
 		viewerGraz = new TableViewer(richtungGrazGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerGraz.setContentProvider(new PrebookingViewContentProvider());
 		viewerGraz.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerGraz.setInput(ModelFactory.getInstance().getTransportList());
+		viewerGraz.setInput(ModelFactory.getInstance().getTransportList().toArray());
 		viewerGraz.getTable().setLinesVisible(true);
 		
 		
 		viewerKapfenberg = new TableViewer(richtungKapfenbergGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerKapfenberg.setContentProvider(new PrebookingViewContentProvider());
 		viewerKapfenberg.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerKapfenberg.setInput(ModelFactory.getInstance().getTransportList());
+		viewerKapfenberg.setInput(ModelFactory.getInstance().getTransportList().toArray());
 		viewerKapfenberg.getTable().setLinesVisible(true);
 		
 		
 		viewerBruck = new TableViewer(richtungBruckGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerBruck.setContentProvider(new PrebookingViewContentProvider());
 		viewerBruck.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerBruck.setInput(ModelFactory.getInstance().getTransportList());
+		viewerBruck.setInput(ModelFactory.getInstance().getTransportList().toArray());
 		viewerBruck.getTable().setLinesVisible(true);
 		
 		
 		viewerWien = new TableViewer(richtungWienGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerWien.setContentProvider(new PrebookingViewContentProvider());
 		viewerWien.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerWien.setInput(ModelFactory.getInstance().getTransportList());
+		viewerWien.setInput(ModelFactory.getInstance().getTransportList().toArray());
 		viewerWien.getTable().setLinesVisible(true);
 		
 		
 		viewerMariazell = new TableViewer(richtungMariazellGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerMariazell.setContentProvider(new PrebookingViewContentProvider());
 		viewerMariazell.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerMariazell.setInput(ModelFactory.getInstance().getTransportList());
+		viewerMariazell.setInput(ModelFactory.getInstance().getTransportList().toArray());
 		viewerMariazell.getTable().setLinesVisible(true);
 		
 		//set the tool tip
