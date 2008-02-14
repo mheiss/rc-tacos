@@ -193,6 +193,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		uName.setText(loginInfo.getUsername());
 		locked.setSelection(loginInfo.isIslocked());
 		authorisationComboViewer.setSelection(new StructuredSelection(loginInfo.getAuthorization()));
+		
+		//update the phone and competence view
+		phoneViewer.refresh(true);
+		competenceViewer.refresh(true);
 	}
 
 	/**
