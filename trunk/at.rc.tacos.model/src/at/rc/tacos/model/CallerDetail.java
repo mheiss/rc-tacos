@@ -23,6 +23,7 @@ public class CallerDetail extends AbstractMessage
     {
         super(ID);
         //set default values
+        callerId = -1;
         callerName = "";
         callerTelephoneNumber = "";
     }
