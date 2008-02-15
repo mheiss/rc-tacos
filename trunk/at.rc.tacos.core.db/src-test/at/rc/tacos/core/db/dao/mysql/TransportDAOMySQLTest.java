@@ -148,15 +148,15 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown()
 	{
-		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-		deleteTable(TransportDAO.TABLE_NAME);
-		deleteTable(MobilePhoneDAO.TABLE_NAME);
-		deleteTable(LocationDAO.TABLE_NAME);
-		deleteTable(CallerDAO.TABLE_NAME);
-		deleteTable(UserLoginDAO.TABLE_NAME);
-		deleteTable(StaffMemberDAO.TABLE_NAME);
-		deleteTable(CompetenceDAO.TABLE_NAME);
-		deleteTable(VehicleDAO.TABLE_NAME);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+//		deleteTable(TransportDAO.TABLE_NAME);
+//		deleteTable(MobilePhoneDAO.TABLE_NAME);
+//		deleteTable(LocationDAO.TABLE_NAME);
+//		deleteTable(CallerDAO.TABLE_NAME);
+//		deleteTable(UserLoginDAO.TABLE_NAME);
+//		deleteTable(StaffMemberDAO.TABLE_NAME);
+//		deleteTable(CompetenceDAO.TABLE_NAME);
+//		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
@@ -393,11 +393,40 @@ public class TransportDAOMySQLTest extends DBTestBase
 //	}
 
 
-//	@Test
-//	public void testGetNewTransportNrForLocation()
-//	{
-
-//	}
+	@Test
+	public void testGetNewTransportNrForLocation()
+	{
+		//a transport which needs a transport number must have a assigned vehicle
+		transport1.setVehicleDetail(veh1);
+		
+															System.out.println("üüü   transportnummer davor:::: " +transport1.getTransportNumber());//0
+		
+		transportDAO.updateTransport(transport1);
+															System.out.println("üüü   java!!! nummer nach dem update:::::::: " +transport1.getTransportNumber());//1
+		
+		//
+		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
+															System.out.println("üüü   db!!! nummer nach getTransportById: " +tr1new.getTransportNumber());//2
+		
+		int generatedTransportNumber1 = transportDAO.getNewTransportNrForLocation(location1.getLocationName());
+															System.out.println("üüü   generatedTransportNumber1 - after getnewTransportNrForLocation: " +generatedTransportNumber1);//3
+		assertEquals(1, generatedTransportNumber1);
+		transport1.setTransportNumber(generatedTransportNumber1);
+		transportDAO.updateTransport(transport1);
+		int generatedTransportNumber2 = transportDAO.getNewTransportNrForLocation(location1.getLocationName());
+		assertEquals(2, generatedTransportNumber2);
+		
+		
+//		System.out.println("TDAOMySQLTest, testGetNewTransportNrForLocation, TNr Basis: " +transport1.getTransportNumber());
+//		transport1.setVehicleDetail(veh1);
+//		transportDAO.updateTransport(transport1);
+//		transportDAO.assignVehicleToTransport(transport1);
+//		
+//		Transport transport1new = transportDAO.getTransportById(transport1.getTransportNumber());
+//		System.out.println("TDAOMST, testGetNewTransportNrForLocation, TNr 1new" +transport1new.getTransportNumber());
+//		assertNotSame(0,transport1new.getTransportNumber());
+		
+	}
 
 
 //	@Test
@@ -459,15 +488,9 @@ public class TransportDAOMySQLTest extends DBTestBase
 			
 			transportNew.setVehicleDetail(veh2);
 
-			int trNumber0 = transportDAO.assignVehicleToTransport(transportNew);
+			int trNumber0 = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transportNew);
 
 			Transport transport5 = transportDAO.getTransportById(trId3);
-
-			System.out.println("transportID (old)eins :..::::: " +trId3);
-
-			System.out.println("Transportnumber: öööööööööööööö " +transport5.getTransportNumber());
-			System.out.println("Transportnumber: öööööööööööööö " +trNumber0);
-			
 			
 			assertEquals(veh2,transport5.getVehicleDetail());
 			assertNotSame(0,trNumber0);
@@ -535,7 +558,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			
 			transportBack.setVehicleDetail(veh2);
 
-			int trNumber0 = transportDAO.assignVehicleToTransport(transportBack);
+			int trNumber0 = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transportBack);
 
 			Transport transport5 = transportDAO.getTransportById(trId3);
 
@@ -555,7 +578,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 	{
 		//assign a vehicle to the transport
 		transport1.setVehicleDetail(veh1);
-		int trNumber0 = transportDAO.assignVehicleToTransport(transport1);//DB
+		int trNumber0 = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);//DB
 		assertNotSame(0,trNumber0);
 		
 		//get the updated transport back from the db
