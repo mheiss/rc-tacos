@@ -311,10 +311,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	{
 		try
 		{
-			// wenn der transport in der db schon ein vehicle hat aber keine transportnummer, soll eine transportnummer generiert werden ---------
+			// wenn der transport in der db schon ein vehicle hat aber keine transportnummer, soll eine transportnummer 
+			//generiert werden und das vehicle auch in der db zugewiesen werden   ------------------------------------------------------
 			if(transport.getVehicleDetail() != null && transport.getTransportNumber() == 0 )
 			{
-				int number = this.getNewTransportNrForLocation(transport.getVehicleDetail().getVehicleName());
+				int number = this.assignVehicleToTransportAndGenerateTransportNumber(transport);
 				transport.setTransportNumber(number);
 			}
 			
@@ -323,34 +324,28 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			int callerId;
 			CallerDetail caller = new CallerDetail();
 			caller = transport.getCallerDetail();
-			if(transport.getCallerDetail().getCallerId() == 0)
+			if(transport.getCallerDetail() != null)
 			{
-				//add new Caller
-				callerId = callerDAO.addCaller(transport.getCallerDetail());
-				caller.setCallerId(callerId);
-				transport.setCallerDetail(caller);
+				if(transport.getCallerDetail().getCallerId() == -1)
+				{
+					//add new Caller
+					callerId = callerDAO.addCaller(transport.getCallerDetail());
+					caller.setCallerId(callerId);
+					transport.setCallerDetail(caller);
+				}
+				else
+					callerDAO.updateCaller(transport.getCallerDetail());
 			}
-			else
-				callerDAO.updateCaller(transport.getCallerDetail());
-			//assignVehicleToTransport(transport);
-			
-			
+				
 			/** execute the update query for the transport*/
 			this.executeTheTransportUpdateQuery(transport);
 
-			
 			/** execute the queries for the booleans*/
 			this.assignTransportItems(transport);
 			
 			//TODO:
 			/** update the status messages*/
 			//--------------------------------------------------------------------------
-				
-//			int result = 0;
-//			if(transport.getVehicleDetail() != null )//
-//				result = assignVehicleToTransportAndGenerateTransportNumber(transport);
-//			if(result == -1)
-//				return false;
 		}
 		catch (SQLException e)
 		{
