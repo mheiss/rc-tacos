@@ -61,7 +61,7 @@ public class TransportDAOMemory implements TransportDAO
 	}
 
 	@Override
-	public int assignVehicleToTransport(Transport transport) 
+	public int assignVehicleToTransportAndGenerateTransportNumber(Transport transport) 
 	{
 		Random r = new Random();
 		int randomTransportNumber = r.nextInt(9999);
@@ -166,5 +166,11 @@ public class TransportDAOMemory implements TransportDAO
 	public Transport getTransportById(int transportId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getNewTransportNrForLocation(String locationname) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
