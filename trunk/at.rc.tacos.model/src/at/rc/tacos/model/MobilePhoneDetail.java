@@ -22,8 +22,10 @@ public class MobilePhoneDetail extends AbstractMessage
 	public MobilePhoneDetail() 
 	{ 
 		super(ID);
-		//set the id to undefined
+		//set default values
 		id = -1;
+		mobilePhoneName = "";
+		mobilePhoneNumber = "";
 	}
 
 	/**
