@@ -45,7 +45,7 @@ INSERT INTO selected(selected_ID, name) VALUES(8, 'Hubschrauber');
 INSERT INTO selected(selected_ID, name) VALUES(9, 'Begleitperson');
 INSERT INTO selected(selected_ID, name) VALUES(10, 'Ruecktransport');
 INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
-INSERT INTO selected(selected_ID, name) VALUES(12, 'Notruf');
+INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
 
 --diseases
 INSERT INTO disease(disease_ID, disease) VALUES(1, 'Knochenbruch');
