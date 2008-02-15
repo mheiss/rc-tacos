@@ -140,6 +140,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					station.setId(rs.getInt("t.planned_location"));
 					station.setLocationName(rs.getString("lo.locationname"));
 					transport.setPlanedLocation(station);
+					System.out.println("TransportDAOMySQL, listTransports...., location: " +station.getLocationName());
 				}
 
 				if(rs.getInt("t.caller_ID") != 0)
@@ -345,11 +346,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			/** update the status messages*/
 			//--------------------------------------------------------------------------
 				
-			int result = 0;
-			if(transport.getVehicleDetail() != null )//
-				result = assignVehicleToTransportAndGenerateTransportNumber(transport);
-			if(result == -1)
-				return false;
+//			int result = 0;
+//			if(transport.getVehicleDetail() != null )//
+//				result = assignVehicleToTransportAndGenerateTransportNumber(transport);
+//			if(result == -1)
+//				return false;
 		}
 		catch (SQLException e)
 		{
