@@ -21,16 +21,16 @@ public interface TransportDAO
     /**
      * Assigns a transport to a vehicle and returns the transport number.
      * The returned transport number is not unique and individual for each location.
-     * The transport number is calculated by the current year and the highest not cancled transport number of a station.
+     * The transport number is calculated by the current year and the highest not canceled transport number of a station.
      * @param transport the transport to assign
      * @return the transport number.
      */
-    public int assignVehicleToTransport(Transport transport);
+    public int assignVehicleToTransportAndGenerateTransportNumber(Transport transport);
     
     /**
      * removes an assigned vehicle from a transport
      * @param transport
-     * @return true if everything was sucessful
+     * @return true if everything was successful
      */
     public boolean removeVehicleFromTransport(Transport transport);
     
@@ -46,14 +46,14 @@ public interface TransportDAO
      * Updates a given transport.<br>
      * This method updates every column of the transport table except the transport number.
      * @param transport the transport to update
-     * @return true if the update was successfull.
+     * @return true if the update was successful.
      */
     public boolean updateTransport(Transport transport);
     
     /**
      * Cancels the transport and stores the used transport number in the dummy table so that the transport number can be reused.
      * @param transportId the transport to cancel.
-     * @return true if the cancel was successfull.
+     * @return true if the cancel was successful.
      */
     public boolean cancelTransport(int transportId);
     
@@ -74,7 +74,7 @@ public interface TransportDAO
     public List<Transport> listArchivedTransports(long startdate, long enddate);
     
     /**
-     * Returns a list of all transports accociated with the given vehicle
+     * Returns a list of all transports associated with the given vehicle
      * and with the program status <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>
      * @param vehicleName the name of the vehicle to get the transports from
      * @return the list of transports
@@ -82,23 +82,23 @@ public interface TransportDAO
     public List<Transport> getTransportsFromVehicle(String vehicleName);
     
     /**
-     * Assigns a new transportstate to an existing transport
+     * Assigns a new transport state to an existing transport
      * @param transport
-     * @return boolean if insert was sucessful or not
+     * @return boolean if insert was successful or not
      */
     public boolean assignTransportstate(Transport transport);
     
     /**
-     * updates the time of an existing transportstate
+     * updates the time of an existing transport state
      * @param transport
-     * @return boolean if insert was sucessful or not
+     * @return boolean if insert was successful or not
      */
     public boolean updateTransportstate(Transport transport);
     
     /**
-     * removes an inserted transportstate
+     * removes an inserted transport state
      * @param transport
-     * @return boolean if remove was sucessful or not
+     * @return boolean if remove was successful or not
      */
     public boolean removeTransportstate(Transport transport);
     /**
@@ -107,4 +107,10 @@ public interface TransportDAO
      * @return transport
      */
     public Transport getTransportById(int transportId);
+    /**
+     * Returns the new transport number
+     * @param locationname
+     * @return transport number
+     */
+    public int getNewTransportNrForLocation(String locationname);
 }
