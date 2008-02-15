@@ -17,6 +17,9 @@ public class Disease extends AbstractMessage
     public Disease() 
     { 
     	super(ID);
+    	//set default values
+    	id = -1;
+    	diseaseName = "";
     }
     
     /**

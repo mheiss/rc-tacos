@@ -21,6 +21,9 @@ public class Job extends AbstractMessage
     public Job()
     {
         super(ID);
+        //set default values
+        id = -1;
+        jobName = "";
     }
     
     /**

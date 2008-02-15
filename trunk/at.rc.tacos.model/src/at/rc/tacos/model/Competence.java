@@ -21,6 +21,8 @@ public class Competence extends AbstractMessage
     public Competence()
     {
         super(ID);
+        //set default values
+        competenceName = "";
     }
     
     /**

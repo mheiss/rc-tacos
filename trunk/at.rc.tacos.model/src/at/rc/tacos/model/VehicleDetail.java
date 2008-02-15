@@ -41,6 +41,8 @@ public class VehicleDetail extends AbstractMessage
     public VehicleDetail()
     {
         super(ID);
+        vehicleName = "";
+        vehicleType = "";
     }
 
     /**
