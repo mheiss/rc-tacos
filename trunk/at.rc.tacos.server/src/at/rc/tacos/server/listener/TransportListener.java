@@ -99,7 +99,7 @@ public class TransportListener extends ServerListenerAdapter
         {
         	System.out.println("Assign car to transport, generating transport number");
         	transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
-        	int transportNr = transportDao.assignVehicleToTransport(transport);
+        	int transportNr = transportDao.assignVehicleToTransportAndGenerateTransportNumber(transport);
         	if (transportNr == -1)
         		throw new DAOException("TransportListener","Failed to generate a valid transport number for transport "+transport);
         	transport.setTransportNumber(transportNr);
