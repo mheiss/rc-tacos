@@ -148,15 +148,15 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown()
 	{
-//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-//		deleteTable(TransportDAO.TABLE_NAME);
-//		deleteTable(MobilePhoneDAO.TABLE_NAME);
-//		deleteTable(LocationDAO.TABLE_NAME);
-//		deleteTable(CallerDAO.TABLE_NAME);
-//		deleteTable(UserLoginDAO.TABLE_NAME);
-//		deleteTable(StaffMemberDAO.TABLE_NAME);
-//		deleteTable(CompetenceDAO.TABLE_NAME);
-//		deleteTable(VehicleDAO.TABLE_NAME);
+		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+		deleteTable(TransportDAO.TABLE_NAME);
+		deleteTable(MobilePhoneDAO.TABLE_NAME);
+		deleteTable(LocationDAO.TABLE_NAME);
+		deleteTable(CallerDAO.TABLE_NAME);
+		deleteTable(UserLoginDAO.TABLE_NAME);
+		deleteTable(StaffMemberDAO.TABLE_NAME);
+		deleteTable(CompetenceDAO.TABLE_NAME);
+		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
@@ -306,6 +306,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		List<Transport> list = new ArrayList<Transport>();
 		list = transportDAO.listTransportsByDateOfTransport(startTime, endTime);
 		Assert.assertEquals(2, list.size());
+		list.get(0).getPlanedLocation().getLocationName();
 	}
 
 
