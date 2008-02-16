@@ -576,34 +576,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		return true;
 	}
 
-//	@Override
-//	public boolean cancelTransport(int transportId)
-//	{
-//		try
-//		{
-//			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportById"));
-//			query.setInt(1, transportId);
-//			final ResultSet rs = query.executeQuery();
-//			if(rs.first())
-//			{
-//				boolean result = archiveTransportNumber(rs.getInt("t.transportNr"), rs.getString("av.locationname"));
-//				if(result == false)
-//					return false;
-//			}
-//
-//			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
-//			query2.setInt(1, 0);
-//			query2.setInt(1, transportId);
-//			query2.executeQuery();
-//		}
-//		catch (SQLException e)
-//		{
-//			e.printStackTrace();
-//			return false;
-//		}	
-//
-//		return true;
-//	}
 	
 	@Override
 	public boolean cancelTransport(Transport transport) throws SQLException
@@ -641,27 +613,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		}
 	}
 	
-//	@Override
-//	public boolean updateCaller(CallerDetail notifierDetail) throws SQLException
-//	{
-//		Connection connection = source.getConnection();
-//		try
-//		{
-//			// callername, caller_phonenumber where caller_ID
-//			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.caller"));
-//			query.setString(1, notifierDetail.getCallerName());
-//			query.setString(2, notifierDetail.getCallerTelephoneNumber());
-//			query.setInt(3, notifierDetail.getCallerId());
-//			//assert the update was successfully
-//			if(query.executeUpdate() == 0)
-//				return false;
-//			return true;
-//		}
-//		finally
-//		{
-//			connection.close();
-//		}
-//	}
 
 	@Override
 	public List<Transport> getTransportsFromVehicle(String vehicleName)
