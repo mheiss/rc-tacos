@@ -51,12 +51,17 @@ public class VehicleDetail extends AbstractMessage
      * @param vehicleType the type of the vehicle
      * @param basicStation the station where the vehicle is located
      */
-    public VehicleDetail(String vehicleName,String vehicleType,Location basicStation) 
+    public VehicleDetail(String vehicleName,String vehicleType,Location basicStation, Location currentStation, MobilePhoneDetail mobilePhone, String vehicleNotes, Boolean readyForAction, Boolean outOfOrder) 
     {
         super(ID);
         setVehicleName(vehicleName);
         setVehicleType(vehicleType);
         setBasicStation(basicStation);
+        setCurrentStation(currentStation);
+        setMobilPhone(mobilePhone);
+        setVehicleNotes(vehicleNotes);
+        setReadyForAction(readyForAction);
+        setOutOfOrder(outOfOrder);
     }
 
     /**
