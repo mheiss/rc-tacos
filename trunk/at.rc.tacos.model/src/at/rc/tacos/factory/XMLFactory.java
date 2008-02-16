@@ -6,6 +6,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
@@ -90,7 +91,7 @@ public class XMLFactory
      * @param messageList the objects to encode into xml
      * @return the serialized object list
      */
-    public String encode(ArrayList<AbstractMessage> messageList)
+    public String encode(List<AbstractMessage> messageList)
     {
         // Create an output factory
         XMLOutputFactory xmlof = XMLOutputFactory.newInstance();

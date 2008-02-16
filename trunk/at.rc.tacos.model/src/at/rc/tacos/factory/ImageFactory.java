@@ -5,7 +5,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
- * The image facotry manages all available images
+ * The image factory manages all available images.
  * @author Michael
  */
 public class ImageFactory
