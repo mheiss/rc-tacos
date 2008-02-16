@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -18,12 +19,13 @@ public class CompetenceDAOMySQLTest extends DBTestBase
     private CompetenceDAO compDao = DaoFactory.MYSQL.createCompetenceDAO();
     
     //test data
-    Competence comp1 = new Competence("comp1");
-    Competence comp2 = new Competence("comp2");
+    Competence comp1,comp2;
     
     @Before
-    public void setUp() 
+    public void setUp() throws SQLException
     {
+    	comp1 = new Competence("comp1");
+    	comp2 = new Competence("comp2");
         //insert test data
         int id1 = compDao.addCompetence(comp1);
         int id2 = compDao.addCompetence(comp2);
@@ -38,14 +40,14 @@ public class CompetenceDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testFindById()
+    public void testFindById() throws SQLException
     {
         Competence comp = compDao.getCompetenceById(comp1.getId());   
         Assert.assertEquals("comp1", comp.getCompetenceName());
     }
     
     @Test
-    public void testRemoveCompetence()
+    public void testRemoveCompetence() throws SQLException
     {
         compDao.removeCompetence(comp1.getId());
         //list all
@@ -54,14 +56,14 @@ public class CompetenceDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testListCompetence()
+    public void testListCompetence() throws SQLException
     {
         List<Competence> list = compDao.listCompetences();
         Assert.assertEquals(2, list.size());
     }
     
     @Test
-    public void testUpdateCompetence()
+    public void testUpdateCompetence() throws SQLException
     {
         //create two indivdual block
         {

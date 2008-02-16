@@ -1,5 +1,7 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.SQLException;
+
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -26,25 +28,30 @@ public class DayInfoDAOMySQLTest extends DBTestBase
 	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
 	private final CompetenceDAO competenceDAO = DaoFactory.MYSQL.createCompetenceDAO();
       
-    //prepare the test data
-    Login login1 = new Login("user1","password1",false);
-	Login login2 = new Login("user2","password2",false);
-	MobilePhoneDetail phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
-    MobilePhoneDetail phone2 = new MobilePhoneDetail("phone2","0664-987654321");
-    Competence comp1 = new Competence("comp1");
-    Competence comp2 = new Competence("comp2");
-    Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
-    Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-    StaffMember member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-    StaffMember member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
-	DayInfoMessage dayInfo1 = new DayInfoMessage("dayInfo1",MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),"user1");
-    DayInfoMessage dayInfo2 = new DayInfoMessage("dayInfo2",MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),"user2");
+    //the needed test data for the tests
+    Login login1,login2;
+	MobilePhoneDetail phone1,phone2;
+    Competence comp1, comp2;
+    Location location1,location2;
+    StaffMember member1,member2;
+	DayInfoMessage dayInfo1,dayInfo2;
     
     @Before
-    public void setUp() 
+    public void setUp() throws SQLException
     {
-        
-        //add the data
+    	//create the test data
+        login1 = new Login("user1","password1",false);
+    	login2 = new Login("user2","password2",false);
+    	phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
+        phone2 = new MobilePhoneDetail("phone2","0664-987654321");
+        comp1 = new Competence("comp1");
+        comp2 = new Competence("comp2");
+        location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
+        location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
+        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
+        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+    	dayInfo1 = new DayInfoMessage("dayInfo1",MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),"user1");
+        dayInfo2 = new DayInfoMessage("dayInfo2",MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),"user2");
         //insert the phones
         int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
         int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);
@@ -78,7 +85,7 @@ public class DayInfoDAOMySQLTest extends DBTestBase
     }
     
     @After
-    public void tearDown()
+    public void tearDown() throws SQLException
     {
         deleteTable(JobDAO.TABLE_NAME);
         deleteTable(UserLoginDAO.TABLE_NAME);
@@ -90,7 +97,7 @@ public class DayInfoDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testFindByDate()
+    public void testFindByDate() throws SQLException
     {
         DayInfoMessage dayInfoMessage = dayInfoDao.getDayInfoByDate(MyUtils.stringToTimestamp("27-01-2008", MyUtils.dateFormat));   
         Assert.assertEquals("dayInfo1", dayInfoMessage.getMessage());
@@ -98,7 +105,7 @@ public class DayInfoDAOMySQLTest extends DBTestBase
     }
         
     @Test
-    public void testUpdateDayInfo()
+    public void testUpdateDayInfo() throws SQLException
     {
         //create two indivdual block
         {

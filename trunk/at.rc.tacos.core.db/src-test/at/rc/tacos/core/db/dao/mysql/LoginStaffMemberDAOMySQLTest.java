@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -32,20 +33,25 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
 	private final CompetenceDAO competenceDAO = DaoFactory.MYSQL.createCompetenceDAO();
 	
 	//prepare the test data
-	Login login1 = new Login("user1","password1",false);
-	Login login2 = new Login("user2","password2",false);
-    MobilePhoneDetail phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
-    MobilePhoneDetail phone2 = new MobilePhoneDetail("phone2","0664-987654321");
-    Competence comp1 = new Competence("comp1");
-    Competence comp2 = new Competence("comp2");
-    Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
-    Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-    StaffMember member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-    StaffMember member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+	Login login1,login2;
+    MobilePhoneDetail phone1,phone2; 
+    Competence comp1,comp2;
+    Location location1,location2;
+    StaffMember member1,member2;
     
     @Before
-    public void setUp() 
+    public void setUp() throws SQLException
     {
+    	login1 = new Login("user1","password1",false);
+    	login2 = new Login("user2","password2",false);
+        phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
+        phone2 = new MobilePhoneDetail("phone2","0664-987654321");
+        comp1 = new Competence("comp1");
+        comp2 = new Competence("comp2");
+        location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
+        location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
+        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
+        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
         //insert the phones
         int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
         int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);
@@ -76,7 +82,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @After
-    public void tearDown()
+    public void tearDown() throws SQLException
     {
         deleteTable(UserLoginDAO.TABLE_NAME);
         deleteTable(StaffMemberDAO.TABLE_NAME);
@@ -88,7 +94,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testGetLoginAndStaffMember()
+    public void testGetLoginAndStaffMember() throws SQLException
     {
         Login login = loginDAO.getLoginAndStaffmember("user1");
         Assert.assertEquals("user1",login.getUsername());
@@ -98,28 +104,28 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testCheckLogin()
+    public void testCheckLogin() throws SQLException
     {
         int result = loginDAO.checkLogin("user1", "password1");
         Assert.assertEquals(UserLoginDAO.LOGIN_SUCCESSFULL, result);
     }
     
     @Test
-    public void testCheckWrongPassword()
+    public void testCheckWrongPassword() throws SQLException
     {
         int result = loginDAO.checkLogin("user1", "password2");
         Assert.assertEquals(UserLoginDAO.LOGIN_FAILED, result); 
     }
     
     @Test
-    public void testCheckLoginLocked()
+    public void testCheckLoginLocked() throws SQLException
     {
         int result = loginDAO.checkLogin("user2", "password2");
         Assert.assertEquals(UserLoginDAO.LOGIN_DENIED, result); 
     }
     
     @Test
-    public void testStaffMemberUpdate()
+    public void testStaffMemberUpdate() throws SQLException
     {
     	{
     		StaffMember staffMember = staffMemberDAO.getStaffMemberByUsername("user1");
@@ -147,7 +153,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testUpdateLogin()
+    public void testUpdateLogin() throws SQLException
     {
         {
             Login login = loginDAO.getLoginAndStaffmember("user1");
@@ -177,13 +183,13 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testRemoveLogin()
+    public void testRemoveLogin() throws SQLException
     {
         //TODO: Implement the test to chek whether the login is locked
     }
     
     @Test
-    public void testCompetenceList()
+    public void testCompetenceList() throws SQLException
     {
     	List<Competence> compList = competenceDAO.listCompetencesOfStaffMember(member1.getStaffMemberId());
     	Assert.assertEquals(1, compList.size());
@@ -191,7 +197,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testMobilePhoneList()
+    public void testMobilePhoneList() throws SQLException
     {
     	List<MobilePhoneDetail> phoneList = mobilePhoneDAO.listMobilePhonesOfStaffMember(member1.getStaffMemberId());
     	Assert.assertEquals(1, phoneList.size());
@@ -199,21 +205,21 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testListStaffMember()
+    public void testListStaffMember() throws SQLException
     {
         List<StaffMember> list = staffMemberDAO.getAllStaffMembers();
         Assert.assertEquals(2, list.size());
     }
     
     @Test
-    public void testListStaffMemberByLocation()
+    public void testListStaffMemberByLocation() throws SQLException
     {
         List<StaffMember> list = staffMemberDAO.getStaffMembersFromLocation(location1.getId());
         Assert.assertEquals(1, list.size()); 
     }
     
     @Test
-    public void testGetStaffMemberById()
+    public void testGetStaffMemberById() throws SQLException
     {
         StaffMember sm = staffMemberDAO.getStaffMemberByID(member1.getStaffMemberId());
         Assert.assertEquals(50100001, sm.getStaffMemberId());
@@ -233,7 +239,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testGetStaffMemberByUserName()
+    public void testGetStaffMemberByUserName() throws SQLException
     {
         StaffMember sm = staffMemberDAO.getStaffMemberByUsername("user1");
         Assert.assertEquals(member1.getStaffMemberId(), sm.getStaffMemberId());

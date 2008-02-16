@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -22,7 +23,7 @@ public class ServiceTypeDAOMySQLTest extends DBTestBase
     ServiceType serviceType2 = new ServiceType("serviceType2");
     
     @Before
-    public void setUp() 
+    public void setUp() throws SQLException
     {
         //insert test data
         int id1 = serviceTypeDao.addServiceType(serviceType1);
@@ -32,20 +33,20 @@ public class ServiceTypeDAOMySQLTest extends DBTestBase
     }
     
     @After
-    public void tearDown()
+    public void tearDown() throws SQLException
     {
         deleteTable(ServiceTypeDAO.TABLE_NAME);
     }
     
     @Test
-    public void testFindById()
+    public void testFindById() throws SQLException
     {
         ServiceType serviceType = serviceTypeDao.getServiceTypeId(serviceType1.getId());   
         Assert.assertEquals("serviceType1", serviceType.getServiceName());
     }
     
     @Test
-    public void testRemoveServiceType()
+    public void testRemoveServiceType() throws SQLException
     {
         serviceTypeDao.removeServiceType(serviceType1.getId());
         //list all
@@ -54,14 +55,14 @@ public class ServiceTypeDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testListServiceType()
+    public void testListServiceType() throws SQLException
     {
         List<ServiceType> list = serviceTypeDao.listServiceTypes();
         Assert.assertEquals(2, list.size());
     }
     
     @Test
-    public void testUpdateServiceType()
+    public void testUpdateServiceType() throws SQLException
     {
         //create two indivdual block
         {

@@ -1,5 +1,7 @@
 package at.rc.tacos.core.db.dao;
 
+import java.sql.SQLException;
+
 import at.rc.tacos.model.DayInfoMessage;
 
 public interface DayInfoDAO 
@@ -11,7 +13,7 @@ public interface DayInfoDAO
 	 * @param message the message to update
 	 * @return the a boolean value if update/insert was sucessful
 	 */
-	public boolean updateDayInfoMessage(DayInfoMessage message);
+	public boolean updateDayInfoMessage(DayInfoMessage message) throws SQLException;
 	
 	/**
 	 * Returns the day info message for a given date.
@@ -19,5 +21,5 @@ public interface DayInfoDAO
 	 * @param date the date to get the message
 	 * @return the day info message for the day
 	 */
-	public DayInfoMessage getDayInfoByDate(long date);
+	public DayInfoMessage getDayInfoByDate(long date) throws SQLException;
 }

@@ -1,36 +1,41 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
+import at.rc.tacos.core.db.dao.LocationDAO;
+import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DialysisPatient;
-import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.util.MyUtils;
 
 public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 {
-	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
-
+	//The data source to get the connection and the queries file
+	private final DataSource source = DataSource.getInstance();
+	private final Queries queries = Queries.getInstance();
+	//the location DAO
+	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
+	
 	@Override
-	public int addDialysisPatient(DialysisPatient patient) 
+	public int addDialysisPatient(DialysisPatient patient) throws SQLException
 	{
-		int dialysisId = -1;
+		Connection connection = source.getConnection();
 		try
 		{	
 			//firstname, lastname, stationname, plannedStartOfTransport, plannedTimeAtPatient, 
 			//appointmentTimeAdDialysis, plannedStartForBackTransport, readyTime, fromStreet, fromCity, toStreet, 
 			//toCity, insurance, stationary, kindOfTransport, assistant, monday, tuesday, wednesday, thursday, friday, saturday, sunday)
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DialysisPatientDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.DialysisPatient"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.DialysisPatient"));
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
-			query.setString(3, patient.getLocation().getLocationName());
+			query.setInt(3, patient.getLocation().getId());
 			query.setString(4, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
 			query.setString(5, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
 			query.setString(6, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.sqlDateTime));
@@ -51,52 +56,39 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 			query.setBoolean(21, patient.isFriday());
 			query.setBoolean(22, patient.isSaturday());
 			query.setBoolean(23, patient.isSunday());
-
 			query.executeUpdate();
-
 			//get the last inserted id
 			final ResultSet rs = query.getGeneratedKeys();
 		    if (rs.next()) 
-		        dialysisId = rs.getInt(1);
+		        return rs.getInt(1);
+		    return -1;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return -1;
+			connection.close();
 		}
-		return dialysisId;
 	}
 
 	@Override
-	public DialysisPatient getDialysisPatientById(int id)
+	public DialysisPatient getDialysisPatientById(int id) throws SQLException
 	{
-		DialysisPatient dialysis = new DialysisPatient();
-		Patient patient = new Patient();
-		Location location = new Location();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.dialysisByID"));
-			query1.setInt(1, id);
-			final ResultSet rs = query1.executeQuery();
-
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.dialysisByID"));
+			stmt.setInt(1, id);
+			final ResultSet rs = stmt.executeQuery();
 			if(rs.first())
 			{
+				DialysisPatient dialysis = new DialysisPatient();
+				dialysis.setId(rs.getInt("dialysis_ID"));
 				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlDateTime));
 				dialysis.setAssistantPerson(rs.getBoolean("assistant"));
 				dialysis.setFriday(rs.getBoolean("friday"));
 				dialysis.setFromCity(rs.getString("fromCity"));
 				dialysis.setFromStreet(rs.getString("fromStreet"));
-				dialysis.setId(rs.getInt("dialysis_ID"));
 				dialysis.setInsurance(rs.getString("insurance"));
 				dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
-				location.setLocationName(rs.getString("stationname"));
-				dialysis.setLocation(location);
-				dialysis.setMonday(rs.getBoolean("monday"));
-
-				patient.setFirstname(rs.getString("firstname"));
-				patient.setLastname(rs.getString("lastname"));
-				dialysis.setPatient(patient);
-
 				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlDateTime));
 				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlDateTime));
 				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlDateTime));
@@ -109,48 +101,47 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 				dialysis.setToStreet(rs.getString("toStreet"));
 				dialysis.setTuesday(rs.getBoolean("tuesday"));
 				dialysis.setWednesday(rs.getBoolean("wednesday"));
+				dialysis.setMonday(rs.getBoolean("monday"));
+				//the location
+				int locationId = rs.getInt("location");
+				dialysis.setLocation(locationDAO.getLocation(locationId));
+				//the patient for the dialysis
+				Patient patient = new Patient();
+				patient.setFirstname(rs.getString("firstname"));
+				patient.setLastname(rs.getString("lastname"));
+				dialysis.setPatient(patient);
+				//return the patient
+				return dialysis;
 			}
-			else 
-				return null;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			//no result set
 			return null;
 		}
-		return dialysis;
+		finally
+		{
+			connection.close();
+		}
 	}
 
 	@Override
-	public List<DialysisPatient> listDialysisPatient()
+	public List<DialysisPatient> listDialysisPatient() throws SQLException
 	{
-		DialysisPatient dialysis = new DialysisPatient();
-		List<DialysisPatient> dialysises = new ArrayList<DialysisPatient>();
-		Patient patient = new Patient();
-		Location location = new Location();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.dialysisPatients"));
-			final ResultSet rs = query1.executeQuery();
-
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.dialysisPatients"));
+			final ResultSet rs = stmt.executeQuery();
+			List<DialysisPatient> dialysises = new ArrayList<DialysisPatient>();
 			while(rs.next())
 			{
+				DialysisPatient dialysis = new DialysisPatient();
+				dialysis.setId(rs.getInt("dialysis_ID"));
 				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlDateTime));
 				dialysis.setAssistantPerson(rs.getBoolean("assistant"));
 				dialysis.setFriday(rs.getBoolean("friday"));
 				dialysis.setFromCity(rs.getString("fromCity"));
 				dialysis.setFromStreet(rs.getString("fromStreet"));
-				dialysis.setId(rs.getInt("dialysis_ID"));
 				dialysis.setInsurance(rs.getString("insurance"));
 				dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
-				location.setLocationName(rs.getString("stationname"));
-				dialysis.setLocation(location);
-				dialysis.setMonday(rs.getBoolean("monday"));
-
-				patient.setFirstname(rs.getString("firstname"));
-				patient.setLastname(rs.getString("lastname"));
-				dialysis.setPatient(patient);
-
 				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlDateTime));
 				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlDateTime));
 				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlDateTime));
@@ -163,48 +154,59 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 				dialysis.setToStreet(rs.getString("toStreet"));
 				dialysis.setTuesday(rs.getBoolean("tuesday"));
 				dialysis.setWednesday(rs.getBoolean("wednesday"));
-
+				dialysis.setMonday(rs.getBoolean("monday"));
+				//the location
+				int locationId = rs.getInt("location");
+				dialysis.setLocation(locationDAO.getLocation(locationId));
+				//the patient for the dialysis
+				Patient patient = new Patient();
+				patient.setFirstname(rs.getString("firstname"));
+				patient.setLastname(rs.getString("lastname"));
+				dialysis.setPatient(patient);
+				//add to the list
 				dialysises.add(dialysis);
 			}
+			//return the list
+			return dialysises;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
-		return dialysises;
 	}
 
 	@Override
-	public boolean removeDialysisPatient(int id)
+	public boolean removeDialysisPatient(int id) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.dialysis"));
-			query.setInt(1, id);
-
-			query.executeUpdate();
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("remove.dialysis"));
+			stmt.setInt(1, id);
+			//assert the patient is removed
+			if(stmt.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
 	@Override
-	public boolean updateDialysisPatient(DialysisPatient patient)
+	public boolean updateDialysisPatient(DialysisPatient patient) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
 			// firstname, lastname, stationname, plannedStartOfTransport, plannedTimeAtPatient, appointmentTimeAdDialysis,
 			// plannedStartForBackTransport, readyTime, fromStreet, fromCity, toStreet, toCity, insurance, stationary, 
 			//kindOfTransport, assistant, monday, tuesday, wednesday, thursday, friday, saturday, sunday, WHERE dialysis_ID;
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.dialysis"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.dialysis"));
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
-			query.setString(3, patient.getLocation().getLocationName());
+			query.setInt(3, patient.getLocation().getId());
 			query.setString(4, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
 			query.setString(5, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
 			query.setString(6, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.sqlDateTime));
@@ -226,13 +228,14 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 			query.setBoolean(22, patient.isSaturday());
 			query.setBoolean(23, patient.isSunday());
 			query.setInt(24, patient.getId());
-			query.executeUpdate();
+			//assert the update was successfully
+			if(query.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 }

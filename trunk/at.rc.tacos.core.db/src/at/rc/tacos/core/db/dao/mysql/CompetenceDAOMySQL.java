@@ -1,79 +1,82 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.model.Competence;
 
 public class CompetenceDAOMySQL implements CompetenceDAO
 {
-	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
+	//The data source to get the connection and the queries file
+	private final DataSource source = DataSource.getInstance();
+	private final Queries queries = Queries.getInstance();
 
 	@Override
-	public int addCompetence(Competence competence)
+	public int addCompetence(Competence competence) throws SQLException
 	{
-		int competenceId = -1;
+		Connection connection = source.getConnection();
 		try
 		{	
 			// competence_ID, competence
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.competence"));
-			query.setString(1, competence.getCompetenceName());
-			query.executeUpdate();
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("insert.competence"));
+			stmt.setString(1, competence.getCompetenceName());
+			stmt.executeUpdate();
 
 			//get the last inserted id
-			final ResultSet rs = query.getGeneratedKeys();
-		    if (rs.next()) 
-		        competenceId = rs.getInt(1);
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			final ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) 
+				return rs.getInt(1);
+			//no auto value generated
 			return -1;
 		}
-		return competenceId;
+		finally
+		{
+			connection.close();
+		}
 	}
 
 	@Override
-	public Competence getCompetenceById(int id)
+	public Competence getCompetenceById(int id) throws SQLException
 	{
-		Competence competence = new Competence();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.competenceByID"));
-			query1.setInt(1, id);
-			final ResultSet rs = query1.executeQuery();
-
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.competenceByID"));
+			stmt.setInt(1, id);
+			final ResultSet rs = stmt.executeQuery();
+			//assert we have a result set
 			if(rs.first())
 			{
+				Competence competence = new Competence();
 				competence.setCompetenceName(rs.getString("competence"));
 				competence.setId(id);
+				return competence;
 			}
-			else
-				return null;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			//no result set
 			return null;
 		}
-		return competence;
+		finally
+		{
+			connection.close();
+		}
 	}
 
 	@Override
-	public List<Competence> listCompetences()
+	public List<Competence> listCompetences() throws SQLException
 	{
-		List<Competence> competences = new ArrayList<Competence>();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.competences"));
-			final ResultSet rs = query1.executeQuery();
-
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.competences"));
+			final ResultSet rs = stmt.executeQuery();
+			List<Competence> competences = new ArrayList<Competence>();
+			//assert we have a result set
 			while(rs.next())
 			{
 				Competence competence = new Competence();
@@ -81,61 +84,66 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 				competence.setId(rs.getInt("competence_ID"));
 				competences.add(competence);
 			}
+			//return the list
+			return competences;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
-		return competences;
 	}
 
 	@Override
-	public boolean removeCompetence(int id)
+	public boolean removeCompetence(int id) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.competence"));
-			query.setInt(1, id);
-			query.executeUpdate();
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("remove.competence"));
+			stmt.setInt(1, id);
+			//assert the competence was removed
+			if(stmt.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
 	@Override
-	public boolean updateCompetence(Competence competence)
+	public boolean updateCompetence(Competence competence) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			// competence, competence_ID
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.competence"));
-			query.setString(1, competence.getCompetenceName());
-			query.setInt(2, competence.getId());
-			query.executeUpdate();
+			// competence where competence_ID
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("update.competence"));
+			stmt.setString(1, competence.getCompetenceName());
+			stmt.setInt(2, competence.getId());
+			//assert the update was successfully
+			if(stmt.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
 	@Override
-	public List<Competence> listCompetencesOfStaffMember(int id)
+	public List<Competence> listCompetencesOfStaffMember(int id) throws SQLException
 	{
-		List<Competence> competences = new ArrayList<Competence>();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.competenceOfStaffMember"));
-			query.setInt(1, id);
-			final ResultSet rs = query.executeQuery();
-
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.competenceOfStaffMember"));
+			stmt.setInt(1, id);
+			final ResultSet rs = stmt.executeQuery();
+			//create the returned result list and loop over the database result
+			List<Competence> competences = new ArrayList<Competence>();
 			while(rs.next())
 			{
 				Competence competence = new Competence();
@@ -143,12 +151,11 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 				competence.setId(rs.getInt("competence_ID"));
 				competences.add(competence);
 			}
+			return competences;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
-		return competences;
 	}
 }

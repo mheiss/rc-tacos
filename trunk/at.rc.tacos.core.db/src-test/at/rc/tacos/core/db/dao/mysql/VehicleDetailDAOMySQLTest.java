@@ -2,6 +2,7 @@ package at.rc.tacos.core.db.dao.mysql;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -39,27 +40,27 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
 	private final CompetenceDAO competenceDAO = DaoFactory.MYSQL.createCompetenceDAO();
 	
 	//prepare the test data for the unit tests
-    MobilePhoneDetail phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
-    MobilePhoneDetail phone2 = new MobilePhoneDetail("phone2","0664-987654321");
-    //locations
-    Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
-    Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-    //vehciles
-    VehicleDetail veh1 = new VehicleDetail("vehicle1","vehicleType1",location1);
-    VehicleDetail veh2 = new VehicleDetail("vehicle2","vehicleType2",location2);
-    //competences
-    Competence comp1 = new Competence("comp1");
-    Competence comp2 = new Competence("comp2");
-    //logins
-	Login login1 = new Login("user1","password1",false);
-	Login login2 = new Login("user2","password2",false);
-    //Staff members
-    StaffMember member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-    StaffMember member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
-      
+    MobilePhoneDetail phone1,phone2;
+    Location location1,location2;
+    VehicleDetail veh1,veh2;
+    Competence comp1,comp2;
+	Login login1,login2;
+    StaffMember member1,member2;
     @Before
-    public void setUp() 
+    public void setUp() throws SQLException
     {
+        phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
+        phone2 = new MobilePhoneDetail("phone2","0664-987654321");
+        location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
+        location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
+        veh1 = new VehicleDetail("vehicle1","vehicleType1",location1);
+        veh2 = new VehicleDetail("vehicle2","vehicleType2",location2);
+        comp1 = new Competence("comp1");
+        comp2 = new Competence("comp2");
+        login1 = new Login("user1","password1",false);
+    	login2 = new Login("user2","password2",false);
+        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
+        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
         //insert the phones
         int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
         int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);
@@ -99,7 +100,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @After
-    public void tearDown()
+    public void tearDown() throws SQLException
     {
     	deleteTable(MobilePhoneDAO.TABLE_NAME);
     	deleteTable(MobilePhoneDAO.TABLE_DEPENDENT_NAME);
@@ -112,7 +113,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testGetVehicleByName()
+    public void testGetVehicleByName() throws SQLException
     {
     	VehicleDetail vehNew = vehicleDAO.getVehicleByName(veh1.getVehicleName());
     	assertEquals(veh1.getVehicleName(),vehNew.getVehicleName());
@@ -120,14 +121,14 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testListVehicles()
+    public void testListVehicles() throws SQLException
     {
     	 List<VehicleDetail> list = vehicleDAO.listVehicles();
          Assert.assertEquals(2, list.size());
     }
     
     @Test
-    public void testRemoveVehicle()
+    public void testRemoveVehicle() throws SQLException
     {
     	 vehicleDAO.removeVehicle(veh1);
          //list all
@@ -136,7 +137,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testUpdateVehicle()
+    public void testUpdateVehicle() throws SQLException
     {
         {
         	VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
@@ -157,7 +158,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testAssignDriverTest()
+    public void testAssignDriverTest() throws SQLException
     {
     	{
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
@@ -174,7 +175,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testAssignPrimaryMedicTest()
+    public void testAssignPrimaryMedicTest() throws SQLException
     {
     	{
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
@@ -191,7 +192,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testAssignSecondaryMedicTest()
+    public void testAssignSecondaryMedicTest() throws SQLException
     {
     	{
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
@@ -208,7 +209,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testDetatchDriverTest()
+    public void testDetatchDriverTest() throws SQLException
     {
     	{
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
@@ -222,7 +223,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testDetatchPrimaryMedicTest()
+    public void testDetatchPrimaryMedicTest() throws SQLException
     {
     	{
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
@@ -236,7 +237,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testDetatchSecondaryMedicTest()
+    public void testDetatchSecondaryMedicTest() throws SQLException
     {
     	{
     		VehicleDetail vehicle = vehicleDAO.getVehicleByName("vehicle1");
