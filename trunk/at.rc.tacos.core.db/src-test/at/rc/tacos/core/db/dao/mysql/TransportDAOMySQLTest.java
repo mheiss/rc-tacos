@@ -65,8 +65,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		phone2 = new MobilePhoneDetail("phone2","0664-987654321");
 		location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
 		location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-		veh1 = new VehicleDetail("KA01","KDO",location1);
-		veh2 = new VehicleDetail("KA02","KTW",location2);
+		veh1 = new VehicleDetail("KA01","KDO",location1, location2, phone1, "vehicle notes...", true, false);
+		veh2 = new VehicleDetail("KA02","KTW",location2, location1, phone2, "vehicle notes...", false, true);
 		comp1 = new Competence("comp1");
 		comp2 = new Competence("comp2");
 		//logins and members
