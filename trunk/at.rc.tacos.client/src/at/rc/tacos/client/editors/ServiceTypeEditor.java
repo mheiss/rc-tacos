@@ -26,18 +26,17 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorNewMobilePhoneAction;
+import at.rc.tacos.client.controller.EditorNewServiceTypeAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.util.NumberValidator;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.ServiceType;;
 
-public class MobilePhoneEditor extends EditorPart implements PropertyChangeListener
+public class ServiceTypeEditor extends EditorPart implements PropertyChangeListener
 {
-	public static final String ID = "at.rc.tacos.client.editors.mobilePhoneEditor";
+	public static final String ID = "at.rc.tacos.client.editors.serviceTypeEditor";
 
 	//properties
 	boolean isDirty;
@@ -45,18 +44,18 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	private ScrolledForm form;
 	
 	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
-	private Text id,name,number;
+	private Text id,name;
 
 	//managed data
-	private MobilePhoneDetail detail;
+	private ServiceType serviceType;
 	private boolean isNew;
 	
 	/**
 	 * Default class constructor
 	 */
-	public MobilePhoneEditor()
+	public ServiceTypeEditor()
 	{
-		ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -65,7 +64,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -74,8 +73,8 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void createPartControl(final Composite parent) 
 	{	
-		detail = ((MobilePhoneEditorInput)getEditorInput()).getMobilePhone();
-		isNew = ((MobilePhoneEditorInput)getEditorInput()).isNew();
+		serviceType = ((ServiceTypeEditorInput)getEditorInput()).getServiceType();
+		isNew = ((ServiceTypeEditorInput)getEditorInput()).isNew();
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -83,8 +82,8 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-
-		//create the content
+		
+		//create the contence
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
 
@@ -92,7 +91,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		if(!isNew)
 			loadData();
 		else
-			form.setText("Neues Mobiltelefon anlegen");
+			form.setText("Neues Dienstverhältnis anlegen");
 
 		//force redraw
 		form.pack(true);
@@ -103,16 +102,16 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void createManageSection(Composite parent)
 	{
-		Composite client = createSection(parent, "Mobiltelefon verwalten");
+		Composite client = createSection(parent, "Dienstverhältnis verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
 		CLabel infoLabel = new CLabel(client,SWT.NONE);
-		infoLabel.setText("Hier können sie das aktuelle Mobiltelefon verwalten und die Änderungen speichern.");
+		infoLabel.setText("Hier können sie das aktuelle Dienstverhältnis verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.info"));
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Mobiltelefon anlegen");
+		saveHyperlink.setText("Neues Dienstverhältnis anlegen");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -138,20 +137,20 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 			}
 		});
 
-		//create the hyperlink to add a new mobile phone
+		//create the hyperlink to add a new staff member
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Mobiltelefon anlegen");
+		addHyperlink.setText("Dienstverhältnis anlegen");
 		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.add"));
 		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
 			public void linkActivated(HyperlinkEvent e) 
 			{
-				EditorNewMobilePhoneAction newAction = new EditorNewMobilePhoneAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				EditorNewServiceTypeAction newAction = new EditorNewServiceTypeAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing phone
+		//show the hyperlink only when we edit a existing user
 		if(isNew)
 			addHyperlink.setVisible(false);
 
@@ -160,45 +159,37 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
 	}
-
+	
 	/**
-	 * Creates the section containing the competence details
+	 * Creates the section containing the job details
 	 * @param parent the parent composite
 	 */
 	private void createDetailSection(Composite parent)
 	{
-		Composite client = createSection(parent, "Mobiltelefon Details");
-
+		Composite client = createSection(parent, "Dienstverhältnis Details");
+		
 		//label and the text field
-		final Label labelId = toolkit.createLabel(client, "Mobiltelefon ID");
+		final Label labelId = toolkit.createLabel(client, "Dienstverhältnis ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
 		id.setBackground(CustomColors.GREY_COLOR);
 		id.setToolTipText("Die ID wird automatisch generiert");
-
-		final Label labelPhoneName = toolkit.createLabel(client, "Bezeichnung");
+		
+		final Label labelCompName = toolkit.createLabel(client, "Dienstverhältnis");
 		name = toolkit.createText(client, "");
 		
-		final Label labelPhoneNumber = toolkit.createLabel(client, "Nummer");
-		number = toolkit.createText(client, "");
-
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
 		labelId.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
-		labelPhoneName.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelPhoneNumber.setLayoutData(data);
+		labelCompName.setLayoutData(data);
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		id.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		name.setLayoutData(data2);	
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		number.setLayoutData(data2);
 	}
 
 	/**
@@ -206,17 +197,15 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Mobiltelefons: " + detail.getMobilePhoneName() + " " + detail.getMobilePhoneNumber());
+		form.setText("Details des Dienstverhältnisses "+serviceType.getServiceName());
 		if(!isNew)
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
 			addHyperlink.setVisible(true);
 		}
-		//load the data
-		id.setText(String.valueOf(detail.getId()));
-		name.setText(detail.getMobilePhoneName());
-		number.setText(detail.getMobilePhoneNumber());
+		id.setText(String.valueOf(serviceType.getId()));
+		name.setText(serviceType.getServiceName());
 	}
 
 	@Override
@@ -229,34 +218,16 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		if(name.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Bezeichnung für das Mobiltelefon ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben sie eine Bezeichnung für das Dienstverhältnis an", IMessageProvider.ERROR);
 			return;
 		}
-		detail.setMobilePhoneName(name.getText());
+		serviceType.setServiceName(name.getText());
 		
-		//number must be provided
-		if(number.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Nummer für das Mobiltelefon ein", IMessageProvider.ERROR);
-			return;
-		}
-		//validate the number
-		NumberValidator validator = new NumberValidator();
-		String validatorResult = validator.isValid(number.getText());
-		if(validatorResult != null)
-		{
-			form.getDisplay().beep();
-			form.setMessage(validatorResult, IMessageProvider.ERROR);
-			return;
-		}
-		detail.setMobilePhoneNumber(number.getText());
-		
-		//add or update the phone
+		//add or update the service type
 		if(isNew)
-			NetWrapper.getDefault().sendAddMessage(MobilePhoneDetail.ID, detail);
+			NetWrapper.getDefault().sendAddMessage(ServiceType.ID, serviceType);
 		else
-			NetWrapper.getDefault().sendUpdateMessage(MobilePhoneDetail.ID, detail);
+			NetWrapper.getDefault().sendUpdateMessage(ServiceType.ID, serviceType);
 	}
 
 	@Override
@@ -295,25 +266,24 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("PHONE_UPDATE".equals(evt.getPropertyName())
-				|| "PHONE_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		if("SERVICETYPE_UPDATE".equals(evt.getPropertyName()))
 		{
-			MobilePhoneDetail updatePhone = null;
+			ServiceType updateService = null;
 			//get the new value
-			if(evt.getNewValue() instanceof MobilePhoneDetail)
-				updatePhone = (MobilePhoneDetail)evt.getNewValue();
+			if(evt.getNewValue() instanceof ServiceType)
+				updateService = (ServiceType)evt.getNewValue();
 
 			//assert we have a value
-			if(updatePhone == null)
+			if(updateService == null)
 				return;
 
-			//is this mobile phone is the current one -> update it
-			if(detail.equals(updatePhone))
+			//is this service type is the current -> update it
+			if(serviceType.equals(updateService))
 			{
-				//save the updated phone
-				setInput(new MobilePhoneEditorInput(updatePhone,false));
-				setPartName(updatePhone.getMobilePhoneName() + " "+ detail.getMobilePhoneNumber());
-				detail = updatePhone;
+				//save the updated service type
+				setInput(new ServiceTypeEditorInput(updateService,false));
+				setPartName(updateService.getServiceName());
+				serviceType = updateService;
 				isNew = false;
 				//update the editor
 				loadData();

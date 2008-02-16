@@ -190,7 +190,6 @@ public class SessionManager extends PropertyManager
 				System.out.println("connection lost");
 			}
 		});
-
 	}
 
 	public void fireTransferFailed(final String contentType,final String queryType,final AbstractMessage message)

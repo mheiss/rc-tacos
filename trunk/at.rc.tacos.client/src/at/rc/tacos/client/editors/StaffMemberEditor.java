@@ -203,7 +203,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	 * Passes the focus to the view
 	 */
 	@Override
-	public void setFocus() {  }
+	public void setFocus() 
+	{  
+		form.setFocus();
+	}
 
 	@Override
 	public void doSave(IProgressMonitor monitor) 
@@ -464,10 +467,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		final Label labelStaffId = toolkit.createLabel(client,"Personalnummer");
 		staffId = toolkit.createText(client, "");
 
-		final Label labelFName = toolkit.createLabel(client, "Vorname: ");
+		final Label labelFName = toolkit.createLabel(client, "Vorname");
 		fName = toolkit.createText(client, "");
 
-		final Label labelLName = toolkit.createLabel(client, "Nachname: ");
+		final Label labelLName = toolkit.createLabel(client, "Nachname");
 		lName = toolkit.createText(client, "");
 
 		final Label labelStreetName = toolkit.createLabel(client, "Straﬂe, Haus Nr.");
@@ -476,13 +479,13 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		final Label labelCity = toolkit.createLabel(client, "PLZ, Stadt");
 		cityname = toolkit.createText(client, "");
 
-		final Label labelEMail = toolkit.createLabel(client,"eMail: ");
+		final Label labelEMail = toolkit.createLabel(client,"eMail");
 		eMail = toolkit.createText(client, "");
 
-		final Label labelDateOfBirth = toolkit.createLabel(client, "Geburtsdatum: ");
+		final Label labelDateOfBirth = toolkit.createLabel(client, "Geburtsdatum");
 		dateOfBirth = toolkit.createText(client, "");
 
-		final Label labelSex = toolkit.createLabel(client, "Geschlecht :");
+		final Label labelSex = toolkit.createLabel(client, "Geschlecht");
 		Combo sexCombo = new Combo(client,SWT.READ_ONLY);
 		sexComboViewer = new ComboViewer(sexCombo);
 		sexComboViewer.setContentProvider(new IStructuredContentProvider()
@@ -502,7 +505,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		sexComboViewer.setInput(new String[] { StaffMember.STAFF_MALE, StaffMember.STAFF_FEMALE });
 
 		//phone list 
-		final Label labelPhone = toolkit.createLabel(client, "Telefonnummern: ",SWT.LEFT | SWT.TOP);
+		final Label labelPhone = toolkit.createLabel(client, "Telefonnummern",SWT.LEFT | SWT.TOP);
 
 		//make a subcomposite holding the Hyperlinks and the viewer
 		Composite phoneSub = makeComposite(client, 2);
@@ -835,51 +838,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		return client;
 	}
 
-	/**
-	 * Creates and returns a section and a composite with two colums
-	 * @param parent the parent composite
-	 * @param sectionName the title of the section
-	 * @return the created composite to hold the other widgets
-	 */
-	private Composite createSection(Composite parent,String sectionName)
-	{
-		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | Section.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText(sectionName);
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
-		section.setExpanded(true);
-		//composite to add the client area
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
-
-		//layout
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.makeColumnsEqualWidth = false;
-		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_BOTH);
-		client.setLayoutData(clientDataLayout);
-
-		return client;
-	}
-
-	/**
-	 * Helper method to create a composite
-	 * @param parent the parent control
-	 * @param col the number of cols
-	 * @return the returned composite
-	 */
-	private Composite makeComposite(Composite parent, int col) 
-	{
-		Composite nameValueComp = toolkit.createComposite(parent);
-		GridLayout layout = new GridLayout(col, false);
-		nameValueComp.setLayout(layout);
-		nameValueComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		return nameValueComp;
-	}
-
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
@@ -934,6 +892,52 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		{
 			//just refresh the combo so that the new data is loaded
 			competenceComboViewer.refresh(true);
+			competenceViewer.refresh(true);
 		}
+	}
+	
+	/**
+	 * Creates and returns a section and a composite with two colums
+	 * @param parent the parent composite
+	 * @param sectionName the title of the section
+	 * @return the created composite to hold the other widgets
+	 */
+	private Composite createSection(Composite parent,String sectionName)
+	{
+		//create the section
+		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+		toolkit.createCompositeSeparator(section);
+		section.setText(sectionName);
+		section.setLayout(new GridLayout());
+		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
+		section.setExpanded(true);
+		//composite to add the client area
+		Composite client = new Composite(section, SWT.NONE);
+		section.setClient(client);
+
+		//layout
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.makeColumnsEqualWidth = false;
+		client.setLayout(layout);
+		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_BOTH);
+		client.setLayoutData(clientDataLayout);
+
+		return client;
+	}
+
+	/**
+	 * Helper method to create a composite
+	 * @param parent the parent control
+	 * @param col the number of cols
+	 * @return the returned composite
+	 */
+	private Composite makeComposite(Composite parent, int col) 
+	{
+		Composite nameValueComp = toolkit.createComposite(parent);
+		GridLayout layout = new GridLayout(col, false);
+		nameValueComp.setLayout(layout);
+		nameValueComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		return nameValueComp;
 	}
 }

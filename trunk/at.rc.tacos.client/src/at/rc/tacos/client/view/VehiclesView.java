@@ -94,7 +94,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
             sectionList.add(section);           
         }
         //remove all locations
-        if("LOCATION_CLEAR".equalsIgnoreCase(evt.getPropertyName()))
+        if("LOCATION_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
         {
         	//loop and dispose all locations
         	for(int i=0;i<sectionList.size();i++)

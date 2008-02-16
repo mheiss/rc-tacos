@@ -26,18 +26,17 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorNewMobilePhoneAction;
+import at.rc.tacos.client.controller.EditorNewJobAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.util.NumberValidator;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.Job;
 
-public class MobilePhoneEditor extends EditorPart implements PropertyChangeListener
+public class JobEditor extends EditorPart implements PropertyChangeListener
 {
-	public static final String ID = "at.rc.tacos.client.editors.mobilePhoneEditor";
+	public static final String ID = "at.rc.tacos.client.editors.jobEditor";
 
 	//properties
 	boolean isDirty;
@@ -45,18 +44,18 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	private ScrolledForm form;
 	
 	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
-	private Text id,name,number;
+	private Text id,name;
 
 	//managed data
-	private MobilePhoneDetail detail;
+	private Job job;
 	private boolean isNew;
 	
 	/**
 	 * Default class constructor
 	 */
-	public MobilePhoneEditor()
+	public JobEditor()
 	{
-		ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -65,7 +64,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -74,8 +73,8 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void createPartControl(final Composite parent) 
 	{	
-		detail = ((MobilePhoneEditorInput)getEditorInput()).getMobilePhone();
-		isNew = ((MobilePhoneEditorInput)getEditorInput()).isNew();
+		job = ((JobEditorInput)getEditorInput()).getJob();
+		isNew = ((JobEditorInput)getEditorInput()).isNew();
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -83,7 +82,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-
+		
 		//create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
@@ -92,7 +91,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		if(!isNew)
 			loadData();
 		else
-			form.setText("Neues Mobiltelefon anlegen");
+			form.setText("Neue Verwendung anlegen");
 
 		//force redraw
 		form.pack(true);
@@ -103,16 +102,16 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void createManageSection(Composite parent)
 	{
-		Composite client = createSection(parent, "Mobiltelefon verwalten");
+		Composite client = createSection(parent, "Verwendung verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
 		CLabel infoLabel = new CLabel(client,SWT.NONE);
-		infoLabel.setText("Hier können sie das aktuelle Mobiltelefon verwalten und die Änderungen speichern.");
+		infoLabel.setText("Hier können sie die aktuelle Verwendung verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.info"));
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Mobiltelefon anlegen");
+		saveHyperlink.setText("Neue Verwendung anlegen");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -138,20 +137,20 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 			}
 		});
 
-		//create the hyperlink to add a new mobile phone
+		//create the hyperlink to add a new job
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Mobiltelefon anlegen");
+		addHyperlink.setText("Verwendung anlegen");
 		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.add"));
 		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
 			public void linkActivated(HyperlinkEvent e) 
 			{
-				EditorNewMobilePhoneAction newAction = new EditorNewMobilePhoneAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				EditorNewJobAction newAction = new EditorNewJobAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing phone
+		//show the hyperlink only when we edit a existing job
 		if(isNew)
 			addHyperlink.setVisible(false);
 
@@ -160,45 +159,37 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
 	}
-
+	
 	/**
-	 * Creates the section containing the competence details
+	 * Creates the section containing the job details
 	 * @param parent the parent composite
 	 */
 	private void createDetailSection(Composite parent)
 	{
-		Composite client = createSection(parent, "Mobiltelefon Details");
-
+		Composite client = createSection(parent, "Verwendungs Details");
+		
 		//label and the text field
-		final Label labelId = toolkit.createLabel(client, "Mobiltelefon ID");
+		final Label labelId = toolkit.createLabel(client, "Verwendungs ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
 		id.setBackground(CustomColors.GREY_COLOR);
 		id.setToolTipText("Die ID wird automatisch generiert");
-
-		final Label labelPhoneName = toolkit.createLabel(client, "Bezeichnung");
+		
+		final Label labelCompName = toolkit.createLabel(client, "Verwendungs Bezeichnung");
 		name = toolkit.createText(client, "");
 		
-		final Label labelPhoneNumber = toolkit.createLabel(client, "Nummer");
-		number = toolkit.createText(client, "");
-
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
 		labelId.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
-		labelPhoneName.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelPhoneNumber.setLayoutData(data);
+		labelCompName.setLayoutData(data);
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		id.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		name.setLayoutData(data2);	
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		number.setLayoutData(data2);
 	}
 
 	/**
@@ -206,17 +197,15 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Mobiltelefons: " + detail.getMobilePhoneName() + " " + detail.getMobilePhoneNumber());
+		form.setText("Details der Verwendung "+job.getJobName());
 		if(!isNew)
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
 			addHyperlink.setVisible(true);
 		}
-		//load the data
-		id.setText(String.valueOf(detail.getId()));
-		name.setText(detail.getMobilePhoneName());
-		number.setText(detail.getMobilePhoneNumber());
+		id.setText(String.valueOf(job.getId()));
+		name.setText(job.getJobName());
 	}
 
 	@Override
@@ -229,34 +218,16 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		if(name.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Bezeichnung für das Mobiltelefon ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben sie eine Bezeichnung für die Verwendung an", IMessageProvider.ERROR);
 			return;
 		}
-		detail.setMobilePhoneName(name.getText());
+		job.setJobName(name.getText());
 		
-		//number must be provided
-		if(number.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Nummer für das Mobiltelefon ein", IMessageProvider.ERROR);
-			return;
-		}
-		//validate the number
-		NumberValidator validator = new NumberValidator();
-		String validatorResult = validator.isValid(number.getText());
-		if(validatorResult != null)
-		{
-			form.getDisplay().beep();
-			form.setMessage(validatorResult, IMessageProvider.ERROR);
-			return;
-		}
-		detail.setMobilePhoneNumber(number.getText());
-		
-		//add or update the phone
+		//add or update the job
 		if(isNew)
-			NetWrapper.getDefault().sendAddMessage(MobilePhoneDetail.ID, detail);
+			NetWrapper.getDefault().sendAddMessage(Job.ID, job);
 		else
-			NetWrapper.getDefault().sendUpdateMessage(MobilePhoneDetail.ID, detail);
+			NetWrapper.getDefault().sendUpdateMessage(Job.ID, job);
 	}
 
 	@Override
@@ -295,25 +266,25 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("PHONE_UPDATE".equals(evt.getPropertyName())
-				|| "PHONE_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		if("JOB_UPDATE".equals(evt.getPropertyName())
+				|| "JOB_ADD".equalsIgnoreCase(evt.getPropertyName()))
 		{
-			MobilePhoneDetail updatePhone = null;
+			Job updateJob = null;
 			//get the new value
-			if(evt.getNewValue() instanceof MobilePhoneDetail)
-				updatePhone = (MobilePhoneDetail)evt.getNewValue();
+			if(evt.getNewValue() instanceof Job)
+				updateJob = (Job)evt.getNewValue();
 
 			//assert we have a value
-			if(updatePhone == null)
+			if(updateJob == null)
 				return;
 
-			//is this mobile phone is the current one -> update it
-			if(detail.equals(updatePhone))
+			//is this job the current -> update it
+			if(job.equals(updateJob))
 			{
-				//save the updated phone
-				setInput(new MobilePhoneEditorInput(updatePhone,false));
-				setPartName(updatePhone.getMobilePhoneName() + " "+ detail.getMobilePhoneNumber());
-				detail = updatePhone;
+				//save the updated job
+				setInput(new JobEditorInput(updateJob,false));
+				setPartName(updateJob.getJobName());
+				job = updateJob;
 				isNew = false;
 				//update the editor
 				loadData();

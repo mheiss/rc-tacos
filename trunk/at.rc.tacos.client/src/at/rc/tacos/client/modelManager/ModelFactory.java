@@ -26,7 +26,6 @@ import at.rc.tacos.model.VehicleDetail;
 /**
  * The model factory manages the lifecyle of all model managers.
  * Furthermore it provides methods to query the data from the server.
- * This class uses the singelton approach
  * @author Michael
  */
 public class ModelFactory

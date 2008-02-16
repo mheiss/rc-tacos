@@ -10,13 +10,15 @@ public class MobilePhoneEditorInput implements IEditorInput
 {
     //properties
     private MobilePhoneDetail mobilePhone;
+    private boolean isNew;
     
     /**
      * Default class constructor
      */
-    public MobilePhoneEditorInput(MobilePhoneDetail mobilePhone)
+    public MobilePhoneEditorInput(MobilePhoneDetail mobilePhone,boolean isNew)
     {
         this.mobilePhone = mobilePhone;
+        this.isNew = isNew;
     }
     
     @Override
@@ -34,7 +36,9 @@ public class MobilePhoneEditorInput implements IEditorInput
     @Override
     public String getName()
     {
-        return mobilePhone.getMobilePhoneName();
+    	if(isNew)
+    		return "Neues Mobiltelefon";
+        return mobilePhone.getMobilePhoneName() +" "+ mobilePhone.getMobilePhoneNumber();
     }
 
     @Override
@@ -62,8 +66,7 @@ public class MobilePhoneEditorInput implements IEditorInput
         if (other instanceof MobilePhoneEditorInput)
         {
             MobilePhoneEditorInput otherEditor = (MobilePhoneEditorInput)other;
-            if(mobilePhone.getMobilePhoneName().equals(otherEditor.getName()))
-                return true;
+            return mobilePhone.equals(otherEditor.getMobilePhone());
         }
         return false;
     }
@@ -72,5 +75,23 @@ public class MobilePhoneEditorInput implements IEditorInput
     public int hashCode()
     {
         return mobilePhone.hashCode();
+    }
+    
+    /**
+     * Returns the mobile phone managed by the editor
+     * @return the managed phone
+     */
+    public MobilePhoneDetail getMobilePhone()
+    {
+    	return mobilePhone;
+    }
+    
+    /**
+     * Returns whether or not the staff member is new.
+     * @return true if the staff member is created new
+     */
+    public boolean isNew()
+    {
+    	return isNew;
     }
 }

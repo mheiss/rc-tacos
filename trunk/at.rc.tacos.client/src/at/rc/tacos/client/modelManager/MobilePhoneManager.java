@@ -79,7 +79,7 @@ public class MobilePhoneManager extends PropertyManager
         {
             public void run ()       
             {
-                firePropertyChange("PHONE_CLEAR", null, null);
+                firePropertyChange("PHONE_CLEARED", null, null);
                 objectList.clear();
             }
         });

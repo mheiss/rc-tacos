@@ -10,13 +10,17 @@ public class VehicleDetailEditorInput implements IEditorInput
 {
     //properties
     private VehicleDetail vehicle;
+    private boolean isNew;
     
     /**
-     * Default class constructor
+     * Default class constructor.
+     * @param vehicle the vehicle to manage
+     * @param isNew true if the managed vehicle is created new
      */
-    public VehicleDetailEditorInput(VehicleDetail vehicle)
+    public VehicleDetailEditorInput(VehicleDetail vehicle,boolean isNew)
     {
         this.vehicle = vehicle;
+        this.isNew = isNew;
     }
     
     @Override
@@ -34,6 +38,8 @@ public class VehicleDetailEditorInput implements IEditorInput
     @Override
     public String getName()
     {
+    	if(isNew)
+    		return "Neues Fahrzeug";
         return vehicle.getVehicleType() + " " + vehicle.getVehicleName();
     }
 
@@ -62,8 +68,7 @@ public class VehicleDetailEditorInput implements IEditorInput
         if (other instanceof VehicleDetailEditorInput)
         {
             VehicleDetailEditorInput otherEditor = (VehicleDetailEditorInput)other;
-            if((vehicle.getVehicleType() + " " + vehicle.getVehicleName()).equals(otherEditor.getName()))
-                return true;
+            return vehicle.equals(otherEditor.getVehicle());
         }
         return false;
     }
@@ -73,5 +78,22 @@ public class VehicleDetailEditorInput implements IEditorInput
     {
         return vehicle.hashCode();
     }
-
+    
+    /**
+     * Returns the vehicle managed by the editor
+     * @return the managed vehicle
+     */
+    public VehicleDetail getVehicle()
+    {
+    	return vehicle;
+    }
+    
+    /**
+     * Returns whether or not the staff member is new.
+     * @return true if the staff member is created new
+     */
+    public boolean isNew()
+    {
+    	return isNew;
+    }
 }
