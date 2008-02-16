@@ -35,7 +35,7 @@ public class DayInfoListener extends ServerListenerAdapter
 				message.setTimestamp(date);
 				message.setMessage("");
 				message.setDirty(false);
-				message.setLastChangedBy("");
+				message.setLastChangedBy("<keine Änderung>");
 			}
 			list.add(message);
 		}
