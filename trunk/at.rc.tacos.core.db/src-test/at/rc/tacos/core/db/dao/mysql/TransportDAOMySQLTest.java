@@ -13,9 +13,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
+import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.VehicleDAO;
@@ -417,13 +419,13 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals(0,transport1.getTransportNumber());
 		
 		transportDAO.updateTransport(transport1);
-		assertEquals(1,transport1.getTransportNumber());//!!!!!!!!!!!
+		assertEquals(1,transport1.getTransportNumber());
 		
 		//
 		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
 		assertEquals(1,tr1new.getTransportNumber());
 		
-		//second transport - same vehicle/same location -->higher transport number
+		//second transport - same vehicle/different location -->new transport number
 		transport2.setVehicleDetail(veh2);
 		transportDAO.updateTransport(transport2);
 		Transport tr2new = transportDAO.getTransportById(transport2.getTransportId());
