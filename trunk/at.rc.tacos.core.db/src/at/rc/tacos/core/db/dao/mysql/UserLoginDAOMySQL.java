@@ -101,7 +101,6 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 					competence.setId(rs2.getInt("c.competence_ID"));
 					competence.setCompetenceName(rs2.getString("c.competence"));
 					staff.addCompetence(competence);
-					System.out.println("Adding competence: "+competence);
 				}
 			}
 			else 
@@ -119,7 +118,6 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 				phone.setMobilePhoneNumber(rs2.getString("ph.phonenumber"));
 				phone.setMobilePhoneName(rs2.getString("ph.phonename"));
 				staff.addMobilePhone(phone);
-				System.out.println("Adding phone: "+phone);
 			}
 			login.setUserInformation(staff);
 		}

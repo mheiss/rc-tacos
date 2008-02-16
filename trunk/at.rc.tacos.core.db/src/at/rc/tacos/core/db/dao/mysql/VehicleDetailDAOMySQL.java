@@ -30,7 +30,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.vehicle"));
 			query.setString(1, vehicle.getVehicleName());
 			query.setString(2, vehicle.getVehicleType());
-			query.setInt(8, vehicle.getBasicStation().getId());
+			query.setInt(3, vehicle.getBasicStation().getId());
 			query.executeUpdate();
 		}
 		catch (SQLException e)
@@ -87,8 +87,6 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 				StaffMember secondParamedic = new StaffMember();
 				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic2_ID"));
 				vehicle.setSecondParamedic(secondParamedic);
-				// TODO Transportstate is now in the transport object
-				//vehicle.setTransportStatus(transportStatus)
 			}
 			else return null;
 		}
