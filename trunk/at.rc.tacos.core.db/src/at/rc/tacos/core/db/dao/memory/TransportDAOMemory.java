@@ -70,15 +70,16 @@ public class TransportDAOMemory implements TransportDAO
 	}
 
 	@Override
-	public boolean cancelTransport(int transportId) 
+	public boolean cancelTransport(Transport transport) 
 	{
-		Transport transport = transportList.get(transportId);
-		if(transport != null)
-		{
-			transport.setTransportNumber(Transport.TRANSPORT_CANCLED);
-			return true;
-		}
-		//failed to update
+//		Transport transport = transportList.get(transportId);
+//		if(transport != null)
+//		{
+//			transport.setTransportNumber(Transport.TRANSPORT_CANCLED);
+//			return true;
+//		}
+//		//failed to update
+//		return false;
 		return false;
 	}
 
