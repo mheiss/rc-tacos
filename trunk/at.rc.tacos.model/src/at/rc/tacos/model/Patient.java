@@ -27,7 +27,7 @@ public class Patient extends AbstractMessage
 	{
 		super(ID);
 		//set default values
-		patientId = -1;
+		patientId = 0;
 		firstname = "";
 		lastname = "";
 	}
@@ -62,10 +62,13 @@ public class Patient extends AbstractMessage
 	 * @return the calculated hash code
 	 */
 	@Override
-	public int hashCode()
-	{
-		return 31  + (int) (patientId ^ (patientId >>> 32));
-	}   
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
+		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
+		return result;
+	}  
 
 	/**
 	 * Returns whether the objects are equal or not.<br>
@@ -73,8 +76,7 @@ public class Patient extends AbstractMessage
 	 * @return true if the id is the same otherwise false.
 	 */
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -82,7 +84,15 @@ public class Patient extends AbstractMessage
 		if (getClass() != obj.getClass())
 			return false;
 		final Patient other = (Patient) obj;
-		if (patientId != other.patientId)
+		if (firstname == null) {
+			if (other.firstname != null)
+				return false;
+		} else if (!firstname.equals(other.firstname))
+			return false;
+		if (lastname == null) {
+			if (other.lastname != null)
+				return false;
+		} else if (!lastname.equals(other.lastname))
 			return false;
 		return true;
 	}
