@@ -1,6 +1,8 @@
 package at.rc.tacos.server.listener;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.List;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IServerListener;
 import at.rc.tacos.model.DAOException;
@@ -18,7 +20,7 @@ public abstract class ServerListenerAdapter implements IServerListener
      * Handles login request
      */
     @Override
-    public AbstractMessage handleLoginRequest(AbstractMessage loginObject) throws DAOException
+    public AbstractMessage handleLoginRequest(AbstractMessage loginObject) throws DAOException,SQLException
     {
         return null;
     }
@@ -27,7 +29,7 @@ public abstract class ServerListenerAdapter implements IServerListener
      * Handles logout request
      */
     @Override
-    public AbstractMessage handleLogoutRequest(AbstractMessage logoutObject) throws DAOException
+    public AbstractMessage handleLogoutRequest(AbstractMessage logoutObject) throws DAOException,SQLException
     {
         return null;
     }
@@ -36,7 +38,7 @@ public abstract class ServerListenerAdapter implements IServerListener
     * Handles add requests
     */
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
     {
         return null;
     }
@@ -45,7 +47,7 @@ public abstract class ServerListenerAdapter implements IServerListener
     * Handles listing requests
     */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
+    public List<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
     {
         return null;
     }
@@ -54,7 +56,7 @@ public abstract class ServerListenerAdapter implements IServerListener
     * Handles remove requests
     */
     @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException,SQLException
     {
         return null;
     }
@@ -63,7 +65,7 @@ public abstract class ServerListenerAdapter implements IServerListener
      * Handles update requests
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
     {
         return null;
     }

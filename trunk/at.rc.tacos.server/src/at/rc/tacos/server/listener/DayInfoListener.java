@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
@@ -16,7 +17,7 @@ public class DayInfoListener extends ServerListenerAdapter
 	private DayInfoDAO dayInfoDao = DaoFactory.MYSQL.createDayInfoDAO();
 
 	@Override
-	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
+	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		//listing by date
@@ -43,7 +44,7 @@ public class DayInfoListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
 	{
 		DayInfoMessage dayInfo = (DayInfoMessage)updateObject;
 		//update the message on the server

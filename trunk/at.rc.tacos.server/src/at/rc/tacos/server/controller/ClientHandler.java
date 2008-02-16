@@ -1,6 +1,9 @@
 package at.rc.tacos.server.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import at.rc.tacos.core.net.event.INetListener;
 import at.rc.tacos.core.net.event.NetEvent;
 import at.rc.tacos.core.net.internal.MyClient;
@@ -113,7 +116,7 @@ public class ClientHandler implements INetListener
 			}
 			else if(IModelActions.LIST.equalsIgnoreCase(queryString))
 			{
-				ArrayList<AbstractMessage> resultMessageList = listener.handleListingRequest(queryFilter);
+				List<AbstractMessage> resultMessageList = listener.handleListingRequest(queryFilter);
 				//send the listing
 				server.sendMessage(session, contentType, queryString, resultMessageList);
 			}
@@ -123,6 +126,12 @@ public class ClientHandler implements INetListener
 				SystemMessage sysMes = new SystemMessage("No handler found for queryString: "+queryString,SystemMessage.TYPE_ERROR);
 				server.sendMessage(session,SystemMessage.ID,IModelActions.SYSTEM,sysMes);
 			}  
+		}
+		//catch all sql errors that occured during the operations with the listener classes
+		catch(SQLException sqle)
+		{
+			SystemMessage system = new SystemMessage("SQL-Error:"+sqle.getMessage(),SystemMessage.TYPE_ERROR);
+			server.sendMessage(session, SystemMessage.ID, IModelActions.SYSTEM, system);
 		}
 		//catch all error during the operations with the dao listener classes
 		catch(DAOException daoe)

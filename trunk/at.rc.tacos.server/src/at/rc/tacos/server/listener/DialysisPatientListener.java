@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	 * Add a roster entry
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
 	{
 		DialysisPatient patient = (DialysisPatient)addObject;
 		int id = dialysisDao.addDialysisPatient(patient);
@@ -35,7 +36,7 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	 * @throws ParseException 
 	 */
 	@Override
-	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
+	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		List<DialysisPatient> patientList = new ArrayList<DialysisPatient>();
@@ -69,7 +70,7 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	 * Remove a roster entry
 	 */
 	@Override
-	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
+	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException,SQLException
 	{
 		DialysisPatient patient = (DialysisPatient)removeObject;
 		if(!dialysisDao.removeDialysisPatient(patient.getId()))
@@ -81,7 +82,7 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	 * Update a roster entry
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
 	{
 		DialysisPatient patient = (DialysisPatient)updateObject;
 		if(!dialysisDao.updateDialysisPatient(patient))

@@ -144,7 +144,7 @@ public class ServerController
      *  @param queryString the type of the query
      *  @param objectList a list of objects to send
      */
-    public synchronized void sendMessage(ClientSession session,String contentType,String queryString, ArrayList<AbstractMessage> objectList)
+    public synchronized void sendMessage(ClientSession session,String contentType,String queryString, List<AbstractMessage> objectList)
     {
         MyClient connection = session.getConnection();
         String userId = session.getUsername();
