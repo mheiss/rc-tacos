@@ -606,12 +606,12 @@ public class TransportDAOMySQLTest extends DBTestBase
 	}
 
 
-//	@Test
-//	public void testCancelTransport()
-//	{
+	@Test
+	public void testCancelTransport()
+	{
+		
 
-
-//	}
+	}
 
 
 //	@Test
