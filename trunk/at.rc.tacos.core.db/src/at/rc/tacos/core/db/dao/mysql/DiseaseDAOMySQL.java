@@ -18,7 +18,6 @@ public class DiseaseDAOMySQL implements DiseaseDAO
 	@Override
 	public int addDisease(Disease disease) 
 	{
-		int diseaseId = 0;
 		try
 		{	
 			// disease name
@@ -26,19 +25,17 @@ public class DiseaseDAOMySQL implements DiseaseDAO
 			query.setString(1, disease.getDiseaseName());
 			query.executeUpdate();
 			
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DiseaseDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.diseaseID"));
-			query1.setString(1, disease.getDiseaseName());
-			final ResultSet rsDiseaseId = query1.executeQuery();
-			
-			rsDiseaseId.first();
-			diseaseId = rsDiseaseId.getInt("disease_ID");
+			//get the last inserted id
+			final ResultSet rs = query.getGeneratedKeys();
+		    if (rs.next()) 
+		        return rs.getInt(1);
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			return 0;
+			return -1;
 		}
-		return diseaseId;
+		return -1;
 	}
 
 	@Override
@@ -62,9 +59,11 @@ public class DiseaseDAOMySQL implements DiseaseDAO
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			return null;
+			return 
+				null;
 		}
-		return diseases;
+		return 
+			diseases;
 	}
 
 	@Override
@@ -74,15 +73,16 @@ public class DiseaseDAOMySQL implements DiseaseDAO
     	{
     		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DiseaseDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.disease"));
     		query.setInt(1, id);
-
     		query.executeUpdate();
     	}
     	catch (SQLException e)
     	{
     		e.printStackTrace();
-    		return false;
+    		return 
+    			false;
     	}
-    	return true;
+    	return 
+    		true;
 	}
 
 	@Override
@@ -93,14 +93,15 @@ public class DiseaseDAOMySQL implements DiseaseDAO
 	    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DiseaseDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.disease"));
 	    	query.setString(1,disease.getDiseaseName());
 	    	query.setInt(2, disease.getId());
-					
 			query.executeUpdate();
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			return false;
+			return 
+				false;
 		}
-		return true;	
+		return 
+			true;	
 	}
 }

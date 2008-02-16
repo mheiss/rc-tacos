@@ -16,7 +16,7 @@ public class CallerDAOMySQL implements CallerDAO
 	@Override
 	public int addCaller(CallerDetail notifierDetail)
 	{
-		int callerId = 0;
+		int callerId = -1;
 		try
 		{	
 			// callername, caller_phonenumber
@@ -25,13 +25,10 @@ public class CallerDAOMySQL implements CallerDAO
 			query.setString(2, notifierDetail.getCallerTelephoneNumber());
 			query.executeUpdate();
 
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.callerID"));
-			query1.setString(1, notifierDetail.getCallerName());
-			query1.setString(2, notifierDetail.getCallerTelephoneNumber());
-			final ResultSet rsCallerId = query1.executeQuery();
-
-			if(rsCallerId.first())
-				callerId = rsCallerId.getInt("caller_ID");
+			//get the last inserted id
+			final ResultSet rs = query.getGeneratedKeys();
+		    if (rs.next()) 
+		        callerId = rs.getInt(1);
 		}
 		catch (SQLException e)
 		{
@@ -53,8 +50,8 @@ public class CallerDAOMySQL implements CallerDAO
 
 			if(rs.first())
 			{
-			caller.setCallerName(rs.getString("callername"));
-			caller.setCallerName(rs.getString("caller_phonenumber"));
+				caller.setCallerName(rs.getString("callername"));
+				caller.setCallerName(rs.getString("caller_phonenumber"));
 			}
 			else
 				return null;
@@ -66,49 +63,6 @@ public class CallerDAOMySQL implements CallerDAO
 		}
 		return caller;
 	}
-
-//	@Override
-//	public List<CallerDetail> listCallers() throws SQLException
-//	{
-//	List<CallerDetail> callerList = new ArrayList<CallerDetail>();
-//	try
-//	{
-//	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.callers"));
-//	final ResultSet rs = query.executeQuery();
-
-//	while(rs.next())
-//	{
-//	CallerDetail caller = null;
-//	caller.setCallerName(rs.getString("callername"));
-//	caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
-//	callerList.add(caller);
-//	}
-//	}
-//	catch (SQLException e)
-//	{
-//	e.printStackTrace();
-//	return null;
-//	}
-//	return callerList;
-//	}
-
-//	@Override
-//	public boolean removeCaller(int id) throws SQLException
-//	{
-//	try
-//	{
-//	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.caller"));
-//	query.setInt(1, id);
-
-//	query.executeUpdate();
-//	}
-//	catch (SQLException e)
-//	{
-//	e.printStackTrace();
-//	return false;
-//	}
-//	return true;
-//	}
 
 	@Override
 	public boolean updateCaller(CallerDetail notifierDetail)

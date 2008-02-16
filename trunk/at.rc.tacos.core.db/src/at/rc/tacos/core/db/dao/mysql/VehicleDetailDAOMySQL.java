@@ -26,39 +26,11 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 	{
 		try
 		{	
-			//vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus
+			//vehicle_ID, vehicletype, primaryLocation
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.vehicle"));
 			query.setString(1, vehicle.getVehicleName());
-			if(vehicle.getDriver() == null)
-				query.setString(2,null);
-			else
-				query.setInt(2, vehicle.getDriver().getStaffMemberId());
-			if(vehicle.getFirstParamedic() == null)
-				query.setString(3,null);
-			else
-				query.setInt(3, vehicle.getFirstParamedic().getStaffMemberId());
-			if(vehicle.getSecondParamedic() == null)
-				query.setString(4,null);
-			else
-				query.setInt(4, vehicle.getSecondParamedic().getStaffMemberId());
-			if(vehicle.getMobilePhone() == null)
-				query.setString(5,null);
-			else
-				query.setInt(5, vehicle.getMobilePhone().getId());
-			query.setString(6, vehicle.getVehicleType());
-			if(vehicle.getCurrentStation() == null)
-				query.setString(7,null);
-			else
-				query.setInt(7, vehicle.getCurrentStation().getId());
-			if(vehicle.getBasicStation() == null)
-				query.setString(8,null);
-			else
-				query.setInt(8, vehicle.getBasicStation().getId());
-			query.setString(9, vehicle.getVehicleNotes());
-			query.setBoolean(10, vehicle.isReadyForAction());
-			query.setBoolean(11, vehicle.isOutOfOrder());
-			query.setInt(12, vehicle.getTransportStatus());
-
+			query.setString(2, vehicle.getVehicleType());
+			query.setInt(8, vehicle.getBasicStation().getId());
 			query.executeUpdate();
 		}
 		catch (SQLException e)
@@ -244,8 +216,6 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			query.setBoolean(10, vehicle.isOutOfOrder());
 			query.setInt(11, vehicle.getTransportStatus());
 			query.setString(12, vehicle.getVehicleName());
-			
-			System.out.println("VehicleDetailDAOMySQL, transportStatus: " +vehicle.getTransportStatus());
 			query.executeUpdate();
 		}
 		catch (SQLException e)
