@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 import at.rc.tacos.model.Transport;
 
@@ -52,10 +53,10 @@ public interface TransportDAO
     
     /**
      * Cancels the transport and stores the used transport number in the dummy table so that the transport number can be reused.
-     * @param transportId the transport to cancel.
+     * @param transport the transport to cancel.
      * @return true if the cancel was successful.
      */
-    public boolean cancelTransport(int transportId);
+    public boolean cancelTransport(Transport transport) throws SQLException;
     
     /**
      * Returns all transport in the given time interval.
