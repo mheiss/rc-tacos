@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class RosterDAOMySQLTest extends DBTestBase
     RosterEntry entry2 = new RosterEntry(member2,serviceType2,job2,location2,MyUtils.stringToTimestamp("28-01-2008 12:00", MyUtils.timeAndDateFormat),MyUtils.stringToTimestamp("28-01-2008 18:00", MyUtils.timeAndDateFormat));
     
 	@Before
-	public void setUp()
+	public void setUp() throws SQLException
 	{
 		//insert test data
         int serviceId1 = serviceTypeDao.addServiceType(serviceType1);

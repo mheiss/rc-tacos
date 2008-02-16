@@ -1,78 +1,81 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.ServiceTypeDAO;
 import at.rc.tacos.model.ServiceType;
 
 public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 {
-	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
-
+	//The data source to get the connection and the queries file
+	private final DataSource source = DataSource.getInstance();
+	private final Queries queries = Queries.getInstance();
+	
 	@Override
-	public int addServiceType(ServiceType serviceType)
+	public int addServiceType(ServiceType serviceType) throws SQLException
 	{
-		int servicetypeId = -1;
+		Connection connection = source.getConnection();
 		try
-		{	
-			// servicetype_ID, servicetype, note
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.servicetype"));
-			query.setString(1, serviceType.getServiceName());
-			query.executeUpdate();
-
-			//get the last inserted id
-			final ResultSet rs = query.getGeneratedKeys();
-			if (rs.next()) 
-				servicetypeId = rs.getInt(1);
-		}
-		catch (SQLException e)
 		{
-			e.printStackTrace();
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("insert.servicetype"));
+			stmt.setString(1, serviceType.getServiceName());
+			stmt.executeUpdate();
+			//get the last inserted id
+			final ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) 
+				return rs.getInt(1);
+			//no auto update
 			return -1;
 		}
-		return servicetypeId;
+		finally
+		{
+			connection.close();	
+		}
 	}
 
 	@Override
-	public ServiceType getServiceTypeId(int id)
+	public ServiceType getServiceTypeId(int id) throws SQLException
 	{
-		ServiceType servicetype = new ServiceType();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.servicetypeByID"));
-			query1.setInt(1, id);
-			final ResultSet rs = query1.executeQuery();
-
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.servicetypeByID"));
+			stmt.setInt(1, id);
+			final ResultSet rs = stmt.executeQuery();
+			
+			//assert we have a result
 			if(rs.first())
 			{
+				ServiceType servicetype = new ServiceType();
 				servicetype.setId(rs.getInt("servicetype_ID"));
 				servicetype.setServiceName(rs.getString("servicetype"));
+				return servicetype;
 			}
-			else return null;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			//no result 
 			return null;
 		}
-		return servicetype;
+		finally
+		{
+			connection.close();
+		}
 	}
 
 	@Override
-	public List<ServiceType> listServiceTypes()
+	public List<ServiceType> listServiceTypes() throws SQLException
 	{
-		List<ServiceType> servicetypes = new ArrayList<ServiceType>();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.servicetypes"));
-			final ResultSet rs = query1.executeQuery();
-
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.servicetypes"));
+			final ResultSet rs = stmt.executeQuery();
+			//create the result list and loop over the result set
+			List<ServiceType> servicetypes = new ArrayList<ServiceType>();
 			while(rs.next())
 			{
 				ServiceType servicetype = new ServiceType();
@@ -80,49 +83,51 @@ public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 				servicetype.setServiceName(rs.getString("servicetype"));
 				servicetypes.add(servicetype);
 			}
+			return servicetypes;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
-		return servicetypes;
 	}
 
 	@Override
-	public boolean removeServiceType(int id)
+	public boolean removeServiceType(int id) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.servicetype"));
-			query.setInt(1, id);
-
-			query.executeUpdate();
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("remove.servicetype"));
+			stmt.setInt(1, id);
+			//assert the service type is removed
+			if(stmt.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
 	@Override
-	public boolean updateServiceType(ServiceType serviceType)
+	public boolean updateServiceType(ServiceType serviceType) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			// servicetype, servicetype_ID
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.servicetype"));
-			query.setString(1, serviceType.getServiceName());
-			query.setInt(2, serviceType.getId());
-			query.executeUpdate();
+			// updates the servicetype where servicetype_ID
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("update.servicetype"));
+			stmt.setString(1, serviceType.getServiceName());
+			stmt.setInt(2, serviceType.getId());
+			//assert the servicetype is updated
+			if(stmt.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 }

@@ -75,7 +75,7 @@ CREATE TABLE dialysis (
   dialysis_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   firstname VARCHAR(30) NULL,
   lastname VARCHAR(30) NULL,
-  stationname VARCHAR(30) NULL,
+  location INTEGER UNSIGNED NOT NULL,
   plannedStartOfTransport DATETIME NULL,
   plannedTimeAtPatient DATETIME NULL,
   appointmentTimeAtDialysis DATETIME NULL,
@@ -96,7 +96,11 @@ CREATE TABLE dialysis (
   friday BIT NULL,
   saturday BIT NULL,
   sunday BIT NULL,
-  PRIMARY KEY(dialysis_ID)
+  PRIMARY KEY(dialysis_ID),
+  FOREIGN KEY(location)
+    REFERENCES location(location_ID)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
 )
 TYPE=InnoDB;
 

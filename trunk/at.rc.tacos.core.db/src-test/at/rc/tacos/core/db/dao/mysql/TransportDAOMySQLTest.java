@@ -2,6 +2,7 @@ package at.rc.tacos.core.db.dao.mysql;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -12,11 +13,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
-import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.VehicleDAO;
@@ -40,41 +39,41 @@ public class TransportDAOMySQLTest extends DBTestBase
 	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
 	private final TransportDAO transportDAO = DaoFactory.MYSQL.createTransportDAO();
 	private final UserLoginDAO loginDAO = DaoFactory.MYSQL.createUserDAO();
-	private final StaffMemberDAO staffDAO = DaoFactory.MYSQL.createStaffMemberDAO();
 	private final CompetenceDAO competenceDAO = DaoFactory.MYSQL.createCompetenceDAO();
 
-	MobilePhoneDetail phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
-	MobilePhoneDetail phone2 = new MobilePhoneDetail("phone2","0664-987654321");
-
-	Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
-	Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-
-	VehicleDetail veh1 = new VehicleDetail("KA01","KDO",location1);
-	VehicleDetail veh2 = new VehicleDetail("KA02","KTW",location2);
-
-	Competence comp1 = new Competence("comp1");
-	Competence comp2 = new Competence("comp2");
-
-	StaffMember member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-	StaffMember member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
-
-	//logins
-	Login login1 = new Login("user1","password1",false);
-	Login login2 = new Login("user2","password2",false);
-
-
-	Transport  transport1 = new Transport("vonStraﬂe1","vonStadt1",location1,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 12:00", MyUtils.timeAndDateFormat),"A",2);
-	Transport  transport2 = new Transport("vonStraﬂe2","vonStadt2",location2,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 14:00", MyUtils.timeAndDateFormat),"B",2);
-
-	CallerDetail caller1 = new CallerDetail("derCaller","0664-4143824");
-	
+	//the test data
+	MobilePhoneDetail phone1,phone2;
+	Location location1,location2;
+	VehicleDetail veh1,veh2;
+	Competence comp1,comp2;	
+	StaffMember member1,member2;
+	Login login1,login2;
+	Transport transport1,transport2;
+	CallerDetail caller1;
+	//other data
 	int tr1id;
 	int tr2id;
 
 	@Before
-	public void setUp() 
+	public void setUp() throws SQLException
 	{
-		System.out.println("setup von transportdaomysqltest");
+		phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
+		phone2 = new MobilePhoneDetail("phone2","0664-987654321");
+		location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
+		location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
+		veh1 = new VehicleDetail("KA01","KDO",location1);
+		veh2 = new VehicleDetail("KA02","KTW",location2);
+		comp1 = new Competence("comp1");
+		comp2 = new Competence("comp2");
+		//logins and members
+		member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
+		member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+		login1 = new Login("user1","password1",false);
+		login2 = new Login("user2","password2",false);
+		transport1 = new Transport("vonStraﬂe1","vonStadt1",location1,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 12:00", MyUtils.timeAndDateFormat),"A",2);
+		transport2 = new Transport("vonStraﬂe2","vonStadt2",location2,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 14:00", MyUtils.timeAndDateFormat),"B",2);
+		caller1 = new CallerDetail("derCaller","0664-4143824");
+		
 		//insert the phones
 		int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
 		int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);
@@ -141,13 +140,12 @@ public class TransportDAOMySQLTest extends DBTestBase
 		veh2.setReadyForAction(true);
 		veh2.setTransportStatus(10);
 		
-		boolean checkVeh1 = vehicleDAO.addVehicle(veh1);
-		boolean checkVeh2 = vehicleDAO.addVehicle(veh2);
-		
+		vehicleDAO.addVehicle(veh1);
+		vehicleDAO.addVehicle(veh2);	
 	}
 
 	@After
-	public void tearDown()
+	public void tearDown() throws SQLException
 	{
 //		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
 //		deleteTable(TransportDAO.TABLE_NAME);
@@ -162,7 +160,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 
 	@Test
-	public void testInsertTransport()
+	public void testInsertTransport() throws SQLException
 	{
 		//fromStreet, fromCity, plannedLocation, dateOfTransport, plannedStartOfTransport, transportPriority, direction
 		Transport  transport3 = new Transport("vonStraﬂe3","vonStadt3",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
@@ -296,7 +294,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 
 	@Test
-	public void testListTransports()
+	public void testListTransports() throws SQLException
 	{
 		long startTime = MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat);
 		//set the end date to date +1
@@ -312,7 +310,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 
 	@Test
-	public void testUpdateTranpsport()
+	public void testUpdateTranpsport() throws SQLException
 	{
 		{
 			Transport transport = transportDAO.getTransportById(transport1.getTransportId());
@@ -387,16 +385,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		}
 	}
 
-
-//	@Test
-//	public void testArchiveTransport()
-//	{
-
-//	}
-
-
 	@Test
-	public void testAssignVehicleAndGenerateTransportNumbersSameLocation()
+	public void testAssignVehicleAndGenerateTransportNumbersSameLocation() throws SQLException
 	{
 		
 		//a transport which needs a transport number must have a assigned vehicle
@@ -419,7 +409,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 	}
 	
 	@Test
-	public void testAssignVehicleAndGenerateTransportNumbersDifferentLocation()
+	public void testAssignVehicleAndGenerateTransportNumbersDifferentLocation() throws SQLException
 	{
 		//a transport which needs a transport number must have a assigned vehicle
 		//first transport
@@ -440,16 +430,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals(1,tr2new.getTransportNumber());
 	}
 
-
-//	@Test
-//	public void testArchiveTransportNumber()
-//	{
-
-//	}
-
-
 	@Test
-	public void testAssignVehicleToTransport()
+	public void testAssignVehicleToTransport() throws SQLException
 	{
 		{
 			Transport  transport3 = new Transport("vonStraﬂe3","vonStadt3",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
@@ -586,7 +568,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 	}
 
 	@Test
-	public void testRemoveVehicleFromTransport()
+	public void testRemoveVehicleFromTransport() throws SQLException
 	{
 		//assign a vehicle to the transport
 		transport1.setVehicleDetail(veh1);
