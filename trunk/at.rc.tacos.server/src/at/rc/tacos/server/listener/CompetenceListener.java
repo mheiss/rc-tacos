@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class CompetenceListener extends ServerListenerAdapter
 	private CompetenceDAO compDao = DaoFactory.MYSQL.createCompetenceDAO();
 	
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
     {
         Competence comp = (Competence)addObject;
         int id = compDao.addCompetence(comp);
@@ -28,7 +29,7 @@ public class CompetenceListener extends ServerListenerAdapter
     }
 
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
     {
     	ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
     	List<Competence> competenceList = compDao.listCompetences();
@@ -45,7 +46,7 @@ public class CompetenceListener extends ServerListenerAdapter
     }
 
     @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException,SQLException
     {
     	Competence comp = (Competence)removeObject;
     	if(!compDao.removeCompetence(comp.getId()))
@@ -54,7 +55,7 @@ public class CompetenceListener extends ServerListenerAdapter
     }
 
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
     {
     	Competence comp = (Competence)updateObject;
     	if(!compDao.updateCompetence(comp))
