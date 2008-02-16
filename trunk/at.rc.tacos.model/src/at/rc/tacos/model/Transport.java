@@ -490,8 +490,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 		return realLocation;
 	}
 
-
-
 	/**
 	 * @return the notes
 	 */
@@ -634,8 +632,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	 */
 	public void setTransportId(int transportId) 
 	{
-		if(transportId < 0)
-			throw new IllegalArgumentException("The id cannot be negative");
 		this.transportId = transportId;
 	}
 

@@ -145,8 +145,6 @@ public class StaffMember extends AbstractMessage
 	 */
 	public void setStaffMemberId(int staffMemberId) 
 	{
-		if(staffMemberId < 0)
-			throw new IllegalArgumentException("The id cannot be negative");
 		this.staffMemberId = staffMemberId;
 	}
 	
