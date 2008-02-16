@@ -397,7 +397,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals(0,transport1.getTransportNumber());
 		
 		transportDAO.updateTransport(transport1);
-		assertEquals(1,transport1.getTransportNumber());//!!!!!!!!!!!
+		assertEquals(1,transport1.getTransportNumber());
 		
 		//
 		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
@@ -585,7 +585,16 @@ public class TransportDAOMySQLTest extends DBTestBase
 		Transport transportBackFromDBAfterRemove = transportDAO.getTransportById(tr1id);
 		
 		//compare the transport number (should be 0)
-		assertEquals(0,transportBackFromDBAfterRemove.getTransportNumber());	
+		assertEquals(0,transportBackFromDBAfterRemove.getTransportNumber());
+		
+		
+		/**test assignVehicleAndGenerateTransportNumber - get transport number from tmptransports- table*/
+		//assign the vehicle again
+		transport1.setVehicleDetail(veh1);
+		transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);
+		Transport tr1new2 = transportDAO.getTransportById(transport1.getTransportId());
+		assertEquals(1,tr1new2.getTransportNumber());//should be the same number as bevore (now from tmp table)
+		
 	}
 
 
