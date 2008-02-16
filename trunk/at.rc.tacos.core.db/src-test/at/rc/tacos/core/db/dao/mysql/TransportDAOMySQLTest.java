@@ -44,8 +44,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 	private final CompetenceDAO competenceDAO = DaoFactory.MYSQL.createCompetenceDAO();
 
 	//the test data
-	MobilePhoneDetail phone1,phone2;
-	Location location1,location2;
+	MobilePhoneDetail phone1,phone2, phone3, phone4;
+	Location location1,location2, location3, location4;
 	VehicleDetail veh1,veh2;
 	Competence comp1,comp2;	
 	StaffMember member1,member2;
@@ -63,8 +63,12 @@ public class TransportDAOMySQLTest extends DBTestBase
 		
 		phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
 		phone2 = new MobilePhoneDetail("phone2","0664-987654321");
+		phone3 = new MobilePhoneDetail("phone3","0664-987345331");
+		phone4 = new MobilePhoneDetail("phone4","0664-987456461");
 		location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
 		location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
+		location3 = new Location("location3",phone3,"street3","number3",3,"city3","notes3");
+		location4 = new Location("location4",phone4,"street4","number4",4,"city4","notes4");
 		veh1 = new VehicleDetail("KA01","KDO",location1, location2, phone1, "vehicle notes...", true, false);
 		veh2 = new VehicleDetail("KA02","KTW",location2, location1, phone2, "vehicle notes...", false, true);
 		comp1 = new Competence("comp1");
@@ -160,6 +164,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		deleteTable(StaffMemberDAO.TABLE_NAME);
 		deleteTable(CompetenceDAO.TABLE_NAME);
 		deleteTable(VehicleDAO.TABLE_NAME);
+		//TODO die tmptransports tabelle löschen!
+		//deleteTable(TransportDAO.)
 	}
 
 
