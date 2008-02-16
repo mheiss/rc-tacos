@@ -43,8 +43,11 @@ import at.rc.tacos.client.providers.PersonalViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.PersonalTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.PersonalViewSorter;
+import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.ServiceType;
+import at.rc.tacos.model.StaffMember;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
@@ -74,6 +77,10 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
+		//listen to changes of jobs, serviceTypes and staff member updates
+		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -84,6 +91,10 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	{
 		ModelFactory.getInstance().getRosterEntryList().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
+		//remove again
+		ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -401,7 +412,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		}
 
 		//clear the locations
-		if("LOCATION_CLEAR".equalsIgnoreCase(evt.getPropertyName()))
+		if("LOCATION_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			//loop and remove all tabs
 			for(TabItem tabItem:tabFolder.getItems())
@@ -420,5 +431,37 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		// event on deletion --> also just refresh
 		if ("ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
 			viewer.refresh();
+		
+		//update the staff member when it is changed
+		if("STAFF_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+				|| "SERVICETYPE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+				|| "JOB_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//the three types
+			Object updatedObject = evt.getNewValue();
+			StaffMember updatedMember = null;
+			Job updatedJob = null;
+			ServiceType updatedService = null;
+			
+			//check the type
+			if(updatedObject instanceof StaffMember)
+				updatedMember = (StaffMember)updatedObject;
+			if(updatedObject instanceof Job)
+				updatedJob = (Job)updatedObject;
+			if(updatedObject instanceof ServiceType)
+				updatedService = (ServiceType)updatedObject;
+			//loop over each roster entry
+			for(RosterEntry entry:ModelFactory.getInstance().getRosterEntryList().getRosterList())
+			{
+				if(updatedMember!= null && entry.getStaffMember().equals(updatedMember))
+					entry.setStaffMember(updatedMember);
+				if(updatedJob != null && entry.getJob().equals(updatedJob))
+					entry.setJob(updatedJob);
+				if(updatedService != null && entry.getServicetype().equals(updatedService))
+					entry.setServicetype(updatedService);
+			}
+			//redraw the view
+			viewer.refresh();
+		}
 	}
 }

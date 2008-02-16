@@ -42,6 +42,8 @@ public class StaffMemberEditorInput implements IEditorInput
     @Override
     public String getName()
     {
+    	if(isNew)
+    		return "Neuer Mitarbeiter";
         return staffMember.getLastName();
     }
 
@@ -70,8 +72,7 @@ public class StaffMemberEditorInput implements IEditorInput
         if (other instanceof StaffMemberEditorInput)
         {
             StaffMemberEditorInput otherEditor = (StaffMemberEditorInput)other;
-            if(staffMember.getLastName().equals(otherEditor.getName()))
-                return true;
+            return staffMember.equals(otherEditor.getStaffMember());
         }
         return false;
     }
@@ -101,7 +102,7 @@ public class StaffMemberEditorInput implements IEditorInput
     }
     
     /**
-     * Returns whether or not the staff member is new or not.
+     * Returns whether or not the staff member is new.
      * @return true if the staff member is created new
      */
     public boolean isNew()

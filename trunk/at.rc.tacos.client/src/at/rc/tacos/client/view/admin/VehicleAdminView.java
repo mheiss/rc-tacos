@@ -13,9 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -23,6 +21,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
+import at.rc.tacos.client.controller.EditorNewVehicleAction;
 import at.rc.tacos.client.editors.VehicleDetailEditor;
 import at.rc.tacos.client.editors.VehicleDetailEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -49,7 +48,7 @@ public class VehicleAdminView extends ViewPart implements PropertyChangeListener
     }
     
     /**
-     * Cleanup
+     * Cleanup the view
      */
     @Override
     public void dispose()
@@ -62,81 +61,69 @@ public class VehicleAdminView extends ViewPart implements PropertyChangeListener
      */
     @Override
     public void createPartControl(final Composite parent) 
-    {
-        final Composite comp = new Composite(parent, SWT.NONE);
-
-        GridLayout layout = new GridLayout(1, false);
-        layout.horizontalSpacing = 0;
-        layout.verticalSpacing = 0;
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        comp.setLayout(layout);
-
-        toolkit = new FormToolkit(CustomColors.FORM_COLOR(comp.getDisplay()));
-        form = this.toolkit.createScrolledForm(comp);
-        layout = new GridLayout(1, false);
-        form.getBody().setLayout(layout);
-
+    { 	
+    	//the scrolled form
+        toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+        form = toolkit.createScrolledForm(parent);
         form.setText("Liste der Fahrzeuge"); 
-        toolkit.decorateFormHeading(this.form.getForm());
-     
-        GridData gd = new GridData(SWT.FILL, SWT.FILL, true ,true);
-
-        final Composite client = this.toolkit.createComposite(this.form.getBody(), SWT.WRAP);
-        layout = new GridLayout(1, false);
+        toolkit.decorateFormHeading(form.getForm());
+        GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;
         layout.verticalSpacing = 0;
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-        client.setLayout(layout);
-        client.setLayoutData(gd);
-        form.setLayout(layout);
+        form.getBody().setLayout(layout);
+        form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
         
-        final Table browseTree = new Table(client, SWT.V_SCROLL);
-        gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-        browseTree.setLayoutData(gd);
-        viewer = new TableViewer(browseTree);
-        viewer.setContentProvider(new VehicleContentProvider());
+        viewer = new TableViewer(form.getBody(), SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+        viewer.getTable().setLayout(new GridLayout());
+        viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
         viewer.addDoubleClickListener(new IDoubleClickListener()
         {
-			@Override
-			public void doubleClick(DoubleClickEvent dce) 
-			{
-			    ISelection selection = viewer.getSelection();
-		        Object obj = ((IStructuredSelection) selection).getFirstElement();
-		        VehicleDetail vehicle = (VehicleDetail)obj;
-		        VehicleDetailEditorInput input = new VehicleDetailEditorInput(vehicle);
-		        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		        try 
-		        {
-		            page.openEditor(input, VehicleDetailEditor.ID);
-                    IWorkbenchPart active = page.getActivePart();
-                    ((VehicleDetailEditor)active).selectionChanged(active, selection);
-		        } 
-		        catch (PartInitException e) 
-		        {
-		            Activator.getDefault().log("Failed to open the editor for the vehicle "+vehicle, IStatus.ERROR);
-		        }
-			}
+            @Override
+            public void doubleClick(DoubleClickEvent dce) 
+            {
+                ISelection selection = viewer.getSelection();
+                Object obj = ((IStructuredSelection) selection).getFirstElement();
+                VehicleDetail vehicle = (VehicleDetail)obj;
+                VehicleDetailEditorInput input = new VehicleDetailEditorInput(vehicle,false);
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try 
+                {
+                    page.openEditor(input, VehicleDetailEditor.ID);
+                } 
+                catch (PartInitException e) 
+                {
+                    Activator.getDefault().log("Failed to open the editor for the vehicle "+vehicle, IStatus.ERROR);
+                }
+            }
         });
+        viewer.setContentProvider(new VehicleContentProvider());
         viewer.setLabelProvider(new VehicleLabelProvider());
         viewer.setInput(ModelFactory.getInstance().getVehicleList().getVehicleList());
-        form.setLayoutData(gd);
+        getViewSite().setSelectionProvider(viewer);
+        
+        //add actions to the toolbar
+        createToolBarActions();
+        
         //set this table as a selection provider
-        getViewSite().setSelectionProvider(this.viewer);
+        getViewSite().setSelectionProvider(viewer);
     }
 
     /**
      * Passes the focus to the view
      */
     @Override
-    public void setFocus() { }
+    public void setFocus() 
+    { 
+    	form.setFocus();
+    }
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		String event = evt.getPropertyName();
-		if("VEHICLE_CLEAR".equalsIgnoreCase(event) ||
+		if("VEHICLE_CLEARED".equalsIgnoreCase(event) ||
 				"VEHICLE_UPDATE".equalsIgnoreCase(event) ||
 				"VEHICLE_REMOVE".equalsIgnoreCase(event) ||
 				"VEHICLE_ADD".equalsIgnoreCase(event))
@@ -144,5 +131,17 @@ public class VehicleAdminView extends ViewPart implements PropertyChangeListener
 			//just refresh the viewer
 			viewer.refresh();
 		}
+	}
+	
+	/**
+	 * Creates and adds the actions for the toolbar
+	 */
+	private void createToolBarActions()
+	{
+		//create the action
+		EditorNewVehicleAction addAction = new EditorNewVehicleAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		//add to the toolbar
+		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().update(true);
 	}
 }

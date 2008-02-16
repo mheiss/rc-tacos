@@ -14,7 +14,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -33,9 +32,9 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.StaffMember;
 
-public class StaffMemberView extends ViewPart implements PropertyChangeListener
+public class StaffMemberAdminView extends ViewPart implements PropertyChangeListener
 {
-    public static final String ID = "at.rc.tacos.client.view.admin.staffMemberView";  
+    public static final String ID = "at.rc.tacos.client.view.admin.staffMemberAdminView";  
     
     //properties
     private TableViewer viewer;
@@ -45,7 +44,7 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
     /**
      * Default class constructor
      */
-    public StaffMemberView()
+    public StaffMemberAdminView()
     {
     	ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
     }
@@ -64,41 +63,23 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
      */
     @Override
     public void createPartControl(final Composite parent) 
-    {
-        final Composite comp = new Composite(parent, SWT.NONE);
-
-        GridLayout layout = new GridLayout(1, false);
-        layout.horizontalSpacing = 0;
-        layout.verticalSpacing = 0;
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-
-        comp.setLayout(layout);
-
-        toolkit = new FormToolkit(CustomColors.FORM_COLOR(comp.getDisplay()));
-        form = this.toolkit.createScrolledForm(comp);
-        layout = new GridLayout(1, false);
-        form.getBody().setLayout(layout);
-
+    { 	
+    	//the scrolled form
+        toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+        form = toolkit.createScrolledForm(parent);
         form.setText("Liste der Mitarbeiter"); 
-        toolkit.decorateFormHeading(this.form.getForm());
-     
-        GridData gd = new GridData(SWT.FILL, SWT.FILL, true ,true);
-
-        final Composite client = this.toolkit.createComposite(this.form.getBody(), SWT.WRAP);
-        layout = new GridLayout(1, false);
+        toolkit.decorateFormHeading(form.getForm());
+        GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;
         layout.verticalSpacing = 0;
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-        client.setLayout(layout);
-        client.setLayoutData(gd);
-        form.setLayout(layout);
+        form.getBody().setLayout(layout);
+        form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
         
-        final Table browseTree = new Table(client, SWT.V_SCROLL);
-        gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-        browseTree.setLayoutData(gd);
-        viewer = new TableViewer(browseTree);
+        viewer = new TableViewer(form.getBody(), SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+        viewer.getTable().setLayout(new GridLayout());
+        viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
         viewer.addDoubleClickListener(new IDoubleClickListener()
         {
             @Override
@@ -134,7 +115,6 @@ public class StaffMemberView extends ViewPart implements PropertyChangeListener
         viewer.setLabelProvider(new StaffMemberLabelProvider());
         viewer.setInput(ModelFactory.getInstance().getStaffList().getStaffList());
         getViewSite().setSelectionProvider(viewer);
-        form.setLayoutData(gd);
         
         //add actions to the toolbar
         createToolBarActions();

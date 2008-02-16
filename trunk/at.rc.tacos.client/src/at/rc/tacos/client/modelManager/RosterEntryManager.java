@@ -98,5 +98,15 @@ public class RosterEntryManager extends PropertyManager
     {
         return objectList.toArray();
     }
+    
+    /**
+     * Returns all roster entries.
+     * @return all entries
+     */
+    public List<RosterEntry> getRosterList()
+    {
+    	return objectList;
+    }
 }
+
 

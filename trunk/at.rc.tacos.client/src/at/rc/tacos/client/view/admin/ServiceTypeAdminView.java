@@ -21,18 +21,18 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
-import at.rc.tacos.client.controller.EditorNewMobilePhoneAction;
-import at.rc.tacos.client.editors.MobilePhoneEditor;
-import at.rc.tacos.client.editors.MobilePhoneEditorInput;
+import at.rc.tacos.client.controller.EditorNewServiceTypeAction;
+import at.rc.tacos.client.editors.ServiceTypeEditor;
+import at.rc.tacos.client.editors.ServiceTypeEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.MobilePhoneContentProvider;
-import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
+import at.rc.tacos.client.providers.ServiceTypeContentProvider;
+import at.rc.tacos.client.providers.ServiceTypeLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.ServiceType;
 
-public class PhoneAdminView extends ViewPart implements PropertyChangeListener
+public class ServiceTypeAdminView extends ViewPart implements PropertyChangeListener
 {
-    public static final String ID = "at.rc.tacos.client.view.admin.phoneAdminView";  
+    public static final String ID = "at.rc.tacos.client.view.admin.serviceTypeAdminView";  
     
     //properties
     private TableViewer viewer;
@@ -42,9 +42,9 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
     /**
      * Default class constructor
      */
-    public PhoneAdminView()
+    public ServiceTypeAdminView()
     {
-    	ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
     }
     
     /**
@@ -53,7 +53,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
     }
 
     /**
@@ -65,7 +65,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
     	//the scrolled form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
-        form.setText("Liste der Mobiltelefone"); 
+        form.setText("Liste der Dienstverhältnisse"); 
         toolkit.decorateFormHeading(form.getForm());
         GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;
@@ -83,26 +83,26 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
             @Override
             public void doubleClick(DoubleClickEvent dce) 
             {
-            	//get the selected mobile phone
+            	//get the selected service type
                 ISelection selection = viewer.getSelection();
                 Object obj = ((IStructuredSelection) selection).getFirstElement();
-                MobilePhoneDetail phone = (MobilePhoneDetail)obj;
+                ServiceType serviceType = (ServiceType)obj;
                 //create the editor input and open
-                MobilePhoneEditorInput input = new MobilePhoneEditorInput(phone,false);
+                ServiceTypeEditorInput input = new ServiceTypeEditorInput(serviceType,false);
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try 
                 {
-                    page.openEditor(input, MobilePhoneEditor.ID);
+                    page.openEditor(input, ServiceTypeEditor.ID);
                 } 
                 catch (PartInitException e) 
                 {
-                    Activator.getDefault().log("Failed to open the editor for the mobile phone "+phone, IStatus.ERROR);
+                    Activator.getDefault().log("Failed to open the editor for the service type "+serviceType, IStatus.ERROR);
                 }
             }
         });
-        viewer.setContentProvider(new MobilePhoneContentProvider());
-        viewer.setLabelProvider(new MobilePhoneLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getPhoneList().toArray());
+        viewer.setContentProvider(new ServiceTypeContentProvider());
+        viewer.setLabelProvider(new ServiceTypeLabelProvider());
+        viewer.setInput(ModelFactory.getInstance().getServiceList().toArray());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar
@@ -125,11 +125,10 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		String event = evt.getPropertyName();
-		System.out.println(event);
-		if("PHONE_ADD".equalsIgnoreCase(event) ||
-				"PHONE_REMOVE".equalsIgnoreCase(event) ||
-				"PHONE_UPDATE".equalsIgnoreCase(event) ||
-				"PHONE_CLEARED".equalsIgnoreCase(event))
+		if("SERVICETYPE_ADD".equalsIgnoreCase(event) ||
+				"SERVICETYPE_REMOVE".equalsIgnoreCase(event) ||
+				"SERVICETYPE_UPDATE".equalsIgnoreCase(event) ||
+				"SERVICETYPE_CLEARED".equalsIgnoreCase(event))
 		{
 			//just refresh the viewer
 			viewer.refresh();
@@ -142,7 +141,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
 	private void createToolBarActions()
 	{
 		//create the action
-		EditorNewMobilePhoneAction addAction = new EditorNewMobilePhoneAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		EditorNewServiceTypeAction addAction = new EditorNewServiceTypeAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().update(true);

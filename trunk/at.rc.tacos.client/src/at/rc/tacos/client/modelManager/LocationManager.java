@@ -80,7 +80,7 @@ public class LocationManager extends PropertyManager
             public void run ()       
             {   
                 objectList.clear();
-                firePropertyChange("LOCATION_CLEAR",null,null);
+                firePropertyChange("LOCATION_CLEARED",null,null);
             }
         }); 
     }

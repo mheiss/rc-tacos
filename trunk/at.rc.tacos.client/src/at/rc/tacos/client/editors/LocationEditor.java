@@ -5,10 +5,15 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.TextViewer;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -26,18 +31,20 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorNewMobilePhoneAction;
+import at.rc.tacos.client.controller.EditorNewLocationAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.providers.MobilePhoneContentProvider;
+import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.util.NumberValidator;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
 
-public class MobilePhoneEditor extends EditorPart implements PropertyChangeListener
+public class LocationEditor extends EditorPart implements PropertyChangeListener
 {
-	public static final String ID = "at.rc.tacos.client.editors.mobilePhoneEditor";
+	public static final String ID = "at.rc.tacos.client.editors.locationEditor";
 
 	//properties
 	boolean isDirty;
@@ -45,17 +52,20 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	private ScrolledForm form;
 	
 	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
-	private Text id,name,number;
+	private Text locationName,street,streetNumber,zipCode,city;
+	private TextViewer notesViewer;
+	private ComboViewer phoneViewer;
 
 	//managed data
-	private MobilePhoneDetail detail;
+	private Location location;
 	private boolean isNew;
 	
 	/**
 	 * Default class constructor
 	 */
-	public MobilePhoneEditor()
+	public LocationEditor()
 	{
+		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
 	}
 	
@@ -65,6 +75,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void dispose()
 	{
+		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
 	}
 
@@ -74,8 +85,8 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void createPartControl(final Composite parent) 
 	{	
-		detail = ((MobilePhoneEditorInput)getEditorInput()).getMobilePhone();
-		isNew = ((MobilePhoneEditorInput)getEditorInput()).isNew();
+		location = ((LocationEditorInput)getEditorInput()).getLocation();
+		isNew = ((LocationEditorInput)getEditorInput()).isNew();
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -83,7 +94,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-
+		
 		//create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
@@ -92,7 +103,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		if(!isNew)
 			loadData();
 		else
-			form.setText("Neues Mobiltelefon anlegen");
+			form.setText("Neue Dienststelle anlegen");
 
 		//force redraw
 		form.pack(true);
@@ -103,16 +114,16 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void createManageSection(Composite parent)
 	{
-		Composite client = createSection(parent, "Mobiltelefon verwalten");
+		Composite client = createSection(parent, "Ortsstelle verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
 		CLabel infoLabel = new CLabel(client,SWT.NONE);
-		infoLabel.setText("Hier können sie das aktuelle Mobiltelefon verwalten und die Änderungen speichern.");
+		infoLabel.setText("Hier können sie die aktuelle Ortsstelle verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.info"));
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Mobiltelefon anlegen");
+		saveHyperlink.setText("Neue Ortsstelle anlegen");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -138,20 +149,20 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 			}
 		});
 
-		//create the hyperlink to add a new mobile phone
+		//create the hyperlink to add a new staff member
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Mobiltelefon anlegen");
+		addHyperlink.setText("Ortsstelle anlegen");
 		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.add"));
 		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
 			public void linkActivated(HyperlinkEvent e) 
 			{
-				EditorNewMobilePhoneAction newAction = new EditorNewMobilePhoneAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				EditorNewLocationAction newAction = new EditorNewLocationAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing phone
+		//show the hyperlink only when we edit a existing location
 		if(isNew)
 			addHyperlink.setVisible(false);
 
@@ -160,45 +171,79 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
 	}
-
+	
 	/**
-	 * Creates the section containing the competence details
+	 * Creates the section containing the job details
 	 * @param parent the parent composite
 	 */
 	private void createDetailSection(Composite parent)
 	{
-		Composite client = createSection(parent, "Mobiltelefon Details");
-
-		//label and the text field
-		final Label labelId = toolkit.createLabel(client, "Mobiltelefon ID");
-		id = toolkit.createText(client, "");
-		id.setEditable(false);
-		id.setBackground(CustomColors.GREY_COLOR);
-		id.setToolTipText("Die ID wird automatisch generiert");
-
-		final Label labelPhoneName = toolkit.createLabel(client, "Bezeichnung");
-		name = toolkit.createText(client, "");
+		Composite client = createSection(parent, "Dienststellen Details");
 		
-		final Label labelPhoneNumber = toolkit.createLabel(client, "Nummer");
-		number = toolkit.createText(client, "");
-
+		//label and the text field
+		final Label labelLocationName = toolkit.createLabel(client, "Name der Ortsstelle");
+		locationName = toolkit.createText(client, "");
+		final Label labelStreet = toolkit.createLabel(client, "Addresse");
+		street = toolkit.createText(client, "");
+		final Label labelStreetNumber = toolkit.createLabel(client, "Hausnummer");
+		streetNumber = toolkit.createText(client, "");
+		final Label labelZip = toolkit.createLabel(client, "Postleitzahl");
+		zipCode = toolkit.createText(client, "");
+		final Label labelCity = toolkit.createLabel(client, "Stadt");
+		city = toolkit.createText(client, "");
+		//the phone viewer
+		final Label labelPhone = toolkit.createLabel(client,"Telefon der Ortstelle");
+		Combo comboPhone = new Combo(client, SWT.READ_ONLY);
+		phoneViewer = new ComboViewer(comboPhone);
+		phoneViewer.setContentProvider(new MobilePhoneContentProvider());
+		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
+		phoneViewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
+		//the notes section
+		final Label labelNotes = toolkit.createLabel(client,"Notizen zur Ortsstelle");
+		notesViewer = new TextViewer(client, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		notesViewer.setDocument(new Document());
+		notesViewer.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		notesViewer.setEditable(true);
+		
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
-		labelId.setLayoutData(data);
+		labelLocationName.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
-		labelPhoneName.setLayoutData(data);
+		labelStreet.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
-		labelPhoneNumber.setLayoutData(data);
+		labelStreetNumber.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
+		labelZip.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
+		labelCity.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
+		labelPhone.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
+		labelNotes.setLayoutData(data);
+		
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
-		id.setLayoutData(data2);
+		locationName.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		name.setLayoutData(data2);	
+		street.setLayoutData(data2);	
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		number.setLayoutData(data2);
+		streetNumber.setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		zipCode.setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		city.setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		phoneViewer.getCombo().setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.heightHint = 100;
+		notesViewer.getTextWidget().setLayoutData(data2);
 	}
 
 	/**
@@ -206,17 +251,20 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Mobiltelefons: " + detail.getMobilePhoneName() + " " + detail.getMobilePhoneNumber());
+		form.setText("Details des Ortsstelle "+location.getLocationName());
 		if(!isNew)
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
 			addHyperlink.setVisible(true);
 		}
-		//load the data
-		id.setText(String.valueOf(detail.getId()));
-		name.setText(detail.getMobilePhoneName());
-		number.setText(detail.getMobilePhoneNumber());
+		locationName.setText(location.getLocationName());
+		street.setText(location.getStreet());
+		streetNumber.setText(location.getStreetNumber());
+		zipCode.setText(String.valueOf(location.getZipcode()));
+		city.setText(location.getCity());
+		notesViewer.getTextWidget().setText(location.getNotes());
+		phoneViewer.setSelection(new StructuredSelection(location.getPhone()));
 	}
 
 	@Override
@@ -225,38 +273,68 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
 		
-		//name must be provided
-		if(name.getText().trim().isEmpty())
+		//save the name
+		if(locationName.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Bezeichnung für das Mobiltelefon ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie die Bezeichnung der Ortsstelle ein", IMessageProvider.ERROR);
 			return;
 		}
-		detail.setMobilePhoneName(name.getText());
+		location.setLocationName(locationName.getText());
 		
-		//number must be provided
-		if(number.getText().trim().isEmpty())
+		//save the street
+		if(street.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Nummer für das Mobiltelefon ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie eine Straße ein", IMessageProvider.ERROR);
+			return;
+		}
+		location.setStreet(street.getText());
+		
+		//save the street number
+		if(streetNumber.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie eine Hausnummer ein", IMessageProvider.ERROR);
+			return;
+		}
+		location.setStreetNumber(streetNumber.getText());
+		
+		//save the city
+		if(zipCode.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie eine Postleitzahl ein", IMessageProvider.ERROR);
 			return;
 		}
 		//validate the number
-		NumberValidator validator = new NumberValidator();
-		String validatorResult = validator.isValid(number.getText());
-		if(validatorResult != null)
+		String pattern =  "\\d{4}";
+		if(!zipCode.getText().matches(pattern))
 		{
 			form.getDisplay().beep();
-			form.setMessage(validatorResult, IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie eine gültige Postleitzahl ein", IMessageProvider.ERROR);
 			return;
 		}
-		detail.setMobilePhoneNumber(number.getText());
+		location.setZipcode(Integer.valueOf(zipCode.getText()));
 		
-		//add or update the phone
+		//the notes can be empty
+		location.setNotes(notesViewer.getTextWidget().getText());
+		
+		int index = phoneViewer.getCombo().getSelectionIndex();
+		if(index == -1)
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte wählen Sie ein Telefon für die Ortsstelle aus.\n" +
+					"Neue Telefone können Sie im Administrationsbereich unter \"Mobiltelefone\" anlegen und dann der Ortsstelle zuweisen", IMessageProvider.ERROR);
+			return;
+		}
+		location.setPhone((MobilePhoneDetail)phoneViewer.getElementAt(index));
+		
+		//add or update the location
 		if(isNew)
-			NetWrapper.getDefault().sendAddMessage(MobilePhoneDetail.ID, detail);
+			NetWrapper.getDefault().sendAddMessage(Location.ID, location);
 		else
-			NetWrapper.getDefault().sendUpdateMessage(MobilePhoneDetail.ID, detail);
+			NetWrapper.getDefault().sendUpdateMessage(Location.ID, location);
 	}
 
 	@Override
@@ -295,29 +373,36 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("PHONE_UPDATE".equals(evt.getPropertyName())
-				|| "PHONE_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		if("LOCATION_UPDATE".equals(evt.getPropertyName())
+				|| "LOCATION_ADD".equalsIgnoreCase(evt.getPropertyName()))
 		{
-			MobilePhoneDetail updatePhone = null;
+			Location updateLocation = null;
 			//get the new value
-			if(evt.getNewValue() instanceof MobilePhoneDetail)
-				updatePhone = (MobilePhoneDetail)evt.getNewValue();
+			if(evt.getNewValue() instanceof Location)
+				updateLocation = (Location)evt.getNewValue();
 
 			//assert we have a value
-			if(updatePhone == null)
+			if(updateLocation == null)
 				return;
 
-			//is this mobile phone is the current one -> update it
-			if(detail.equals(updatePhone))
+			//is this location is the current -> update it
+			if(location.equals(updateLocation))
 			{
-				//save the updated phone
-				setInput(new MobilePhoneEditorInput(updatePhone,false));
-				setPartName(updatePhone.getMobilePhoneName() + " "+ detail.getMobilePhoneNumber());
-				detail = updatePhone;
+				//save the updated location
+				setInput(new LocationEditorInput(updateLocation,false));
+				setPartName(location.getLocationName());
+				location = updateLocation;
 				isNew = false;
 				//update the editor
 				loadData();
 			}
+		}
+		if("PHONE_ADD".equalsIgnoreCase(evt.getPropertyName())
+				|| "PHONE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+				|| "PHONE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//just refresh the viewer to update the combo
+			phoneViewer.refresh(true);
 		}
 	}
 	

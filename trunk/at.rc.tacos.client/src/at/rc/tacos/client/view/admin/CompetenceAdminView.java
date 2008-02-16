@@ -21,18 +21,18 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
-import at.rc.tacos.client.controller.EditorNewMobilePhoneAction;
-import at.rc.tacos.client.editors.MobilePhoneEditor;
-import at.rc.tacos.client.editors.MobilePhoneEditorInput;
+import at.rc.tacos.client.controller.EditorNewCompetenceAction;
+import at.rc.tacos.client.editors.CompetenceEditor;
+import at.rc.tacos.client.editors.CompetenceEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.MobilePhoneContentProvider;
-import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
+import at.rc.tacos.client.providers.CompetenceContentProvider;
+import at.rc.tacos.client.providers.CompetenceLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.Competence;
 
-public class PhoneAdminView extends ViewPart implements PropertyChangeListener
+public class CompetenceAdminView extends ViewPart implements PropertyChangeListener
 {
-    public static final String ID = "at.rc.tacos.client.view.admin.phoneAdminView";  
+    public static final String ID = "at.rc.tacos.client.view.admin.competenceAdminView";  
     
     //properties
     private TableViewer viewer;
@@ -42,9 +42,9 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
     /**
      * Default class constructor
      */
-    public PhoneAdminView()
+    public CompetenceAdminView()
     {
-    	ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getCompetenceList().addPropertyChangeListener(this);
     }
     
     /**
@@ -53,7 +53,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getCompetenceList().removePropertyChangeListener(this);
     }
 
     /**
@@ -65,7 +65,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
     	//the scrolled form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
-        form.setText("Liste der Mobiltelefone"); 
+        form.setText("Liste der Kompetenzen"); 
         toolkit.decorateFormHeading(form.getForm());
         GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;
@@ -83,26 +83,26 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
             @Override
             public void doubleClick(DoubleClickEvent dce) 
             {
-            	//get the selected mobile phone
+            	//get the selected competence
                 ISelection selection = viewer.getSelection();
                 Object obj = ((IStructuredSelection) selection).getFirstElement();
-                MobilePhoneDetail phone = (MobilePhoneDetail)obj;
+                Competence competence = (Competence)obj;
                 //create the editor input and open
-                MobilePhoneEditorInput input = new MobilePhoneEditorInput(phone,false);
+                CompetenceEditorInput input = new CompetenceEditorInput(competence,false);
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try 
                 {
-                    page.openEditor(input, MobilePhoneEditor.ID);
+                    page.openEditor(input, CompetenceEditor.ID);
                 } 
                 catch (PartInitException e) 
                 {
-                    Activator.getDefault().log("Failed to open the editor for the mobile phone "+phone, IStatus.ERROR);
+                    Activator.getDefault().log("Failed to open the editor for the competence "+competence, IStatus.ERROR);
                 }
             }
         });
-        viewer.setContentProvider(new MobilePhoneContentProvider());
-        viewer.setLabelProvider(new MobilePhoneLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getPhoneList().toArray());
+        viewer.setContentProvider(new CompetenceContentProvider());
+        viewer.setLabelProvider(new CompetenceLabelProvider());
+        viewer.setInput(ModelFactory.getInstance().getCompetenceList().toArray());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar
@@ -125,11 +125,10 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		String event = evt.getPropertyName();
-		System.out.println(event);
-		if("PHONE_ADD".equalsIgnoreCase(event) ||
-				"PHONE_REMOVE".equalsIgnoreCase(event) ||
-				"PHONE_UPDATE".equalsIgnoreCase(event) ||
-				"PHONE_CLEARED".equalsIgnoreCase(event))
+		if("COMPETENCE_ADD".equalsIgnoreCase(event) ||
+				"COMPETENCE_REMOVE".equalsIgnoreCase(event) ||
+				"COMPETENCE_UPDATE".equalsIgnoreCase(event) ||
+				"COMPETENCE_CLEARED".equalsIgnoreCase(event))
 		{
 			//just refresh the viewer
 			viewer.refresh();
@@ -142,7 +141,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
 	private void createToolBarActions()
 	{
 		//create the action
-		EditorNewMobilePhoneAction addAction = new EditorNewMobilePhoneAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		EditorNewCompetenceAction addAction = new EditorNewCompetenceAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().update(true);

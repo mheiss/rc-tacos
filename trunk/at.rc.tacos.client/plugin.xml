@@ -60,13 +60,13 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="RessourcesView"
+            name="Fahrzeugübersicht"
             allowMultiple="false"
             class="at.rc.tacos.client.view.VehiclesView"
             id="at.rc.tacos.client.view.ressources_view">
       </view>
       <view
-            name="PersonalView"
+            name="Personalübersicht"
             allowMultiple="false"
             class="at.rc.tacos.client.view.PersonalView"
             id="at.rc.tacos.client.view.personal_view">
@@ -75,31 +75,31 @@
             allowMultiple="false"
             class="at.rc.tacos.client.view.InfoView"
             id="at.rc.tacos.client.view.info"
-            name="InfoView">
+            name="Informationen">
       </view>
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.FilterView"
             id="at.rc.tacos.client.view.filter"
-            name="FilterView">
+            name="Transport Filter">
       </view>
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.view.admin.StaffMemberView"
-            id="at.rc.tacos.client.view.admin.staffMemberView"
-            name="StaffAdminView">
+            class="at.rc.tacos.client.view.admin.StaffMemberAdminView"
+            id="at.rc.tacos.client.view.admin.staffMemberAdminView"
+            name="Mitarbeiter">
       </view>
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.admin.VehicleAdminView"
             id="at.rc.tacos.client.view.admin.vehicleAdminView"
-            name="VehicleAdminView">
+            name="Fahrzeuge">
       </view>
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.admin.PhoneAdminView"
             id="at.rc.tacos.client.view.admin.phoneAdminView"
-            name="PhoneAdminView">
+            name="Mobiltelefone">
       </view>
       <view
             name="DispositionView"
@@ -114,7 +114,7 @@
             id="at.rc.tacos.client.view.outstandingTransports_view">
       </view>
       <view
-            name="JournalView"
+            name="Journal"
             allowMultiple="false"
             class="at.rc.tacos.client.view.JournalView"
             id="at.rc.tacos.client.view.journal_view">
@@ -126,7 +126,7 @@
             id="at.rc.tacos.client.view.prebooking_view">
       </view>
       <view
-            name="DialysisView"
+            name="Dialyse Patienten"
             allowMultiple="false"
             class="at.rc.tacos.client.view.DialysisView"
             id="at.rc.tacos.client.view.dialysis_view">
@@ -135,13 +135,43 @@
             allowMultiple="false"
             class="at.rc.tacos.client.view.NavigationView"
             id="at.rc.tacos.client.view.navigation"
-            name="NavigationView">
+            name="Navigation">
       </view>
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.LogHeaderView"
             id="at.rc.tacos.client.view.logHeader"
-            name="LogHeaderView">
+            name="Logging">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.CompetenceAdminView"
+            id="at.rc.tacos.client.view.admin.competenceAdminView"
+            name="Kompetenzen">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.JobAdminView"
+            id="at.rc.tacos.client.view.admin.jobAdminView"
+            name="Verwendungen">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.CompetenceAdminView"
+            id="at.rc.tacos.client.view.admin.competenceAdminView"
+            name="Kompetenzen">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.LocationAdminView"
+            id="at.rc.tacos.client.view.admin.locationAdminView"
+            name="Dienststellen">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.ServiceTypeAdminView"
+            id="at.rc.tacos.client.view.admin.serviceTypeAdminView"
+            name="Dienstverhältnisse">
       </view>
    </extension>
    <extension
@@ -160,20 +190,44 @@
       <editor
             class="at.rc.tacos.client.editors.MobilePhoneEditor"
             id="at.rc.tacos.client.editors.mobilePhoneEditor"
-            name="MobilePhone Editor"
+            name="Mobiltelefone"
             icon="icons/vehicle/handy.gif">
       </editor>
       <editor
             class="at.rc.tacos.client.editors.StaffMemberEditor"
             id="at.rc.tacos.client.editors.staffMemberEditor"
-            name="StaffMember Editor"
+            name="Mitarbeiter"
             icon="icons/personal/user.png">
       </editor>
       <editor
             class="at.rc.tacos.client.editors.VehicleDetailEditor"
             id="at.rc.tacos.client.editors.vehicleDetailEditor"
-            name="Vehicle Editor"
+            name="Fahrzeuge"
             icon="icons/personal/bereitschaft.png">
+      </editor>
+      <editor
+            class="at.rc.tacos.client.editors.CompetenceEditor"
+            icon="icons/personal/user.png"
+            id="at.rc.tacos.client.editors.competenceEditor"
+            name="Kompetenzen">
+      </editor>
+      <editor
+            class="at.rc.tacos.client.editors.JobEditor"
+            icon="icons/personal/user.png"
+            id="at.rc.tacos.client.editors.jobEditor"
+            name="Verwendungen">
+      </editor>
+      <editor
+            class="at.rc.tacos.client.editors.LocationEditor"
+            icon="icons/personal/user.png"
+            id="at.rc.tacos.client.editors.locationEditor"
+            name="Dienststellen">
+      </editor>
+      <editor
+            class="at.rc.tacos.client.editors.ServiceTypeEditor"
+            icon="icons/personal/user.png"
+            id="at.rc.tacos.client.editors.serviceTypeEditor"
+            name="Dienstverhältnisse">
       </editor>
    </extension>
 </plugin>
