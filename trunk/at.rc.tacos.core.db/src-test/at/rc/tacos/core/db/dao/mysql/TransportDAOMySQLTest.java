@@ -122,6 +122,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		tr2id = transportDAO.addTransport(transport2);
 		System.out.println("Transport1 id: " +tr1id);
 		System.out.println("Transport2 id: " +tr2id);
+		System.out.println("iiiiiii: " +tr1id);
 		transport1.setTransportId(tr1id);
 		transport2.setTransportId(tr2id); 
 		System.out.println(tr1id);
@@ -148,15 +149,15 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown()
 	{
-		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-		deleteTable(TransportDAO.TABLE_NAME);
-		deleteTable(MobilePhoneDAO.TABLE_NAME);
-		deleteTable(LocationDAO.TABLE_NAME);
-		deleteTable(CallerDAO.TABLE_NAME);
-		deleteTable(UserLoginDAO.TABLE_NAME);
-		deleteTable(StaffMemberDAO.TABLE_NAME);
-		deleteTable(CompetenceDAO.TABLE_NAME);
-		deleteTable(VehicleDAO.TABLE_NAME);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+//		deleteTable(TransportDAO.TABLE_NAME);
+//		deleteTable(MobilePhoneDAO.TABLE_NAME);
+//		deleteTable(LocationDAO.TABLE_NAME);
+//		deleteTable(CallerDAO.TABLE_NAME);
+//		deleteTable(UserLoginDAO.TABLE_NAME);
+//		deleteTable(StaffMemberDAO.TABLE_NAME);
+//		deleteTable(CompetenceDAO.TABLE_NAME);
+//		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
@@ -589,22 +590,18 @@ public class TransportDAOMySQLTest extends DBTestBase
 	{
 		//assign a vehicle to the transport
 		transport1.setVehicleDetail(veh1);
-		int trNumber0 = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);//DB
-		assertNotSame(0,trNumber0);
-		
-		//get the updated transport back from the db
-		Transport transportBackFromDB = transportDAO.getTransportById(tr1id);
-		
-		//remove the vehicle from the transport
-		assertTrue(transportDAO.removeVehicleFromTransport(transportBackFromDB));
+		transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);
+		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
+		assertEquals(1,tr1new.getTransportNumber());
 
+		//remove the vehicle from the transport
+		assertTrue(transportDAO.removeVehicleFromTransport(tr1new));
+		
 		//get the updated transport back from the db
 		Transport transportBackFromDBAfterRemove = transportDAO.getTransportById(tr1id);
 		
-		//compare the transort number (shoul be 0)
-		assertEquals(0,transportBackFromDBAfterRemove.getTransportNumber());//TODO- bug fixing?
-		//TODO abklären: wird das vehicle am client/server schon aus dem Transport gelöscht?
-		
+		//compare the transport number (should be 0)
+		assertEquals(0,transportBackFromDBAfterRemove.getTransportNumber());//TODO- bug fixing?		
 	}
 
 
