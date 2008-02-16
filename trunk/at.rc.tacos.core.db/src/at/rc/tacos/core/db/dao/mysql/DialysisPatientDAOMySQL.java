@@ -21,7 +21,7 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 	@Override
 	public int addDialysisPatient(DialysisPatient patient) 
 	{
-		Integer dialysisId = null;
+		int dialysisId = -1;
 		try
 		{	
 			//firstname, lastname, stationname, plannedStartOfTransport, plannedTimeAtPatient, 
@@ -54,16 +54,10 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 
 			query.executeUpdate();
 
-			//SELECT dialysis_ID FROM dialysis WHERE firstname = ? AND lastname = ? AND fromStreet = ?;
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(DialysisPatientDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.DialysisPatientId"));
-			query1.setString(1, patient.getPatient().getFirstname());
-			query1.setString(2, patient.getPatient().getLastname());
-			query1.setString(3, patient.getFromStreet());
-			final ResultSet rsDialysisPatientId = query1.executeQuery();
-
-			if(rsDialysisPatientId.next())
-				dialysisId = rsDialysisPatientId.getInt("dialysis_ID");
-			else return -1;
+			//get the last inserted id
+			final ResultSet rs = query.getGeneratedKeys();
+		    if (rs.next()) 
+		        dialysisId = rs.getInt(1);
 		}
 		catch (SQLException e)
 		{
@@ -116,7 +110,8 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 				dialysis.setTuesday(rs.getBoolean("tuesday"));
 				dialysis.setWednesday(rs.getBoolean("wednesday"));
 			}
-			else return null;
+			else 
+				return null;
 		}
 		catch (SQLException e)
 		{

@@ -18,21 +18,18 @@ public class JobDAOMySQL implements JobDAO
 	@Override
 	public int addJob(Job job)
 	{
-		int jobId = 0;
+		int jobId = -1;
 		try
 		{	
-			// job_ID, jobname
+			// jobname
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.job"));
-			query.setInt(1, job.getId());
-			query.setString(2, job.getJobName());
+			query.setString(1, job.getJobName());
 			query.executeUpdate();
 
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.jobID"));
-			query1.setString(1, job.getJobName());
-			final ResultSet rs = query1.executeQuery();
-
-			if(rs.first())
-				jobId = rs.getInt("job_ID");
+			//get the last inserted id
+			final ResultSet rs = query.getGeneratedKeys();
+			if (rs.next()) 
+				jobId = rs.getInt(1);
 		}
 		catch (SQLException e)
 		{
@@ -54,8 +51,8 @@ public class JobDAOMySQL implements JobDAO
 
 			if(rs.first())
 			{
-			job.setId(id);
-			job.setJobName(rs.getString("jobname"));
+				job.setId(id);
+				job.setJobName(rs.getString("jobname"));
 			}
 			else return null;
 		}
@@ -95,30 +92,30 @@ public class JobDAOMySQL implements JobDAO
 	@Override
 	public boolean removeJob(int id)
 	{
-    	try
-    	{
-    		final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.job"));
-    		query.setInt(1, id);
-    		query.executeUpdate();
-    	}
-    	catch (SQLException e)
-    	{
-    		e.printStackTrace();
-    		return false;
-    	}
-    	return true;
+		try
+		{
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.job"));
+			query.setInt(1, id);
+			query.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean updateJob(Job job)
 	{
-    	try
+		try
 		{
-    	// jobname, job_ID
-    	final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.job"));
-		query.setString(1, job.getJobName());
-		query.setInt(2, job.getId());		
-		query.executeUpdate();
+			// jobname, job_ID
+			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.job"));
+			query.setString(1, job.getJobName());
+			query.setInt(2, job.getId());		
+			query.executeUpdate();
 		}
 		catch (SQLException e)
 		{

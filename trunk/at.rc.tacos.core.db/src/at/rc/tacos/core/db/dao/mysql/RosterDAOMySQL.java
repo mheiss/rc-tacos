@@ -55,13 +55,10 @@ public class RosterDAOMySQL implements RosterDAO
 
 			query.executeUpdate();
 
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.RosterEntryId"));
-			query1.setInt(1, entry.getStaffMember().getStaffMemberId());
-			query1.setString(2, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.sqlDateTime));
-			final ResultSet rsRosterId = query1.executeQuery();
-
-			if(rsRosterId.next())
-				rosterId = rsRosterId.getInt("roster_ID");
+			//get the last inserted id
+			final ResultSet rs = query.getGeneratedKeys();
+		    if (rs.next()) 
+		        rosterId = rs.getInt(1);
 		}
 		catch (SQLException e)
 		{
@@ -183,10 +180,8 @@ public class RosterDAOMySQL implements RosterDAO
 				query2.setInt(1, rs.getInt("ro.staffmember_ID"));
 				final ResultSet rs2 = query2.executeQuery();
 
-				System.out.println("Request the staff member");
 				if(!rs2.first())
 					return null;
-				System.out.println("We have a staff member");
 
 				StaffMember staff = new StaffMember();
 				staff.setStaffMemberId(rs2.getInt("e.staffmember_ID"));

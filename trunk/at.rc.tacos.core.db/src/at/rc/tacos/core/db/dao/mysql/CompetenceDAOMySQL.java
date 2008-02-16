@@ -18,23 +18,18 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 	@Override
 	public int addCompetence(Competence competence)
 	{
-		int competenceId = 0;
+		int competenceId = -1;
 		try
 		{	
 			// competence_ID, competence
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.competence"));
-			query.setInt(1, competence.getId());
-			query.setString(2, competence.getCompetenceName());
+			query.setString(1, competence.getCompetenceName());
 			query.executeUpdate();
 
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.competenceID"));
-			query1.setString(1, competence.getCompetenceName());
-			final ResultSet rs = query1.executeQuery();
-
-			if(rs.first())
-				competenceId = rs.getInt("competence_ID");
-			else
-				return -1;
+			//get the last inserted id
+			final ResultSet rs = query.getGeneratedKeys();
+		    if (rs.next()) 
+		        competenceId = rs.getInt(1);
 		}
 		catch (SQLException e)
 		{
@@ -156,5 +151,4 @@ public class CompetenceDAOMySQL implements CompetenceDAO
 		}
 		return competences;
 	}
-
 }

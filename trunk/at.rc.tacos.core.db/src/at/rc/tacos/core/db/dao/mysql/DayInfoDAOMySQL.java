@@ -62,7 +62,6 @@ public class DayInfoDAOMySQL implements DayInfoDAO
 			}
 			else if (dayInfo == null)
 			{
-				System.out.println(MyUtils.timestampToString(message.getTimestamp(), MyUtils.sqlDate));
 				//username, date, message
 				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.dayInfo"));
 				query.setString(1, message.getLastChangedBy());

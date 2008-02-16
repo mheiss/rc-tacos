@@ -18,23 +18,18 @@ public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 	@Override
 	public int addServiceType(ServiceType serviceType)
 	{
-		int servicetypeId = 0;
+		int servicetypeId = -1;
 		try
 		{	
 			// servicetype_ID, servicetype, note
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.servicetype"));
-			query.setInt(1, serviceType.getId());
-			query.setString(2, serviceType.getServiceName());
+			query.setString(1, serviceType.getServiceName());
 			query.executeUpdate();
 
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.servicetypeID"));
-			query1.setString(1, serviceType.getServiceName());
-			final ResultSet rs = query1.executeQuery();
-
-			if(rs.first())
-				servicetypeId = rs.getInt("servicetype_ID");
-			else
-				return -1;
+			//get the last inserted id
+			final ResultSet rs = query.getGeneratedKeys();
+			if (rs.next()) 
+				servicetypeId = rs.getInt(1);
 		}
 		catch (SQLException e)
 		{
