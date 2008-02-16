@@ -59,7 +59,7 @@ VALUES(null, 'Herr Maier', '0342 - 12345');
 
 CREATE TABLE tmptransports (
   transportNr INTEGER UNSIGNED NOT NULL,
-  location INTEGER UNSIGNED NOT NULL,
+  location VARCHAR(50) NOT NULL,
   PRIMARY KEY(transportNr,location)
 )
 TYPE=InnoDB;
