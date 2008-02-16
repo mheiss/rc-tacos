@@ -168,8 +168,6 @@ public class RosterEntry extends AbstractMessage
 	 */
 	public void setRosterId(int rosterId) 
 	{
-		if(rosterId < 0)
-			throw new IllegalArgumentException("The id cannot be negative");
 		this.rosterId = rosterId;
 	}
 

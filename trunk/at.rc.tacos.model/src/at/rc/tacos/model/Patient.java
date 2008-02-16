@@ -140,8 +140,6 @@ public class Patient extends AbstractMessage
 	 */
 	public void setPatientId(long patientId) 
 	{
-		if(patientId < 0)
-			throw new IllegalArgumentException("The id cannot be negative");
 		this.patientId = patientId;
 	}
 
