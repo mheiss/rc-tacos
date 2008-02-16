@@ -585,7 +585,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		Transport transportBackFromDBAfterRemove = transportDAO.getTransportById(tr1id);
 		
 		//compare the transport number (should be 0)
-		assertEquals(0,transportBackFromDBAfterRemove.getTransportNumber());//TODO- bug fixing?		
+		assertEquals(0,transportBackFromDBAfterRemove.getTransportNumber());	
 	}
 
 
