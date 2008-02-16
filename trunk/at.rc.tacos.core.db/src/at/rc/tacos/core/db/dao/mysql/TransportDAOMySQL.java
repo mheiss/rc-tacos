@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Map.Entry;
 
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.db.DataSource;
@@ -855,39 +856,55 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	}
 
 	@Override
-	public boolean assignTransportstate(Transport transport)
-	{
-		// TODO remove transportstate
-		//removeTransportstate(transport);
-
-		return false;
-	}
-
-	@Override
-	public boolean removeTransportstate(Transport transport)
-	{
-		// TODO remove Transportstates !!!
-		try
-		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString(""));
-			query1.setInt(1, transport.getTransportId());
-			query1.executeUpdate();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			return false;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean updateTransportstate(Transport transport)
-	{
-		//boolean result = assignTransportstate(transport);
-		return false;
-	}
-
+	   	public boolean assignTransportstate(Transport transport)
+	   	{
+	   		removeTransportstate(transport);
+	   		try
+	   		{
+	   			for(Entry<Integer, Long> entry:transport.getStatusMessages().entrySet())
+	   			{
+	   				int state = entry.getKey();
+	   				long time = entry.getValue();
+	   
+	   				//transportstate, transport_ID, date
+	   				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.transportstate"));
+	   				query.setInt(1, state);
+	   				query.setInt(2, transport.getTransportId());
+	   				query.setString(3, MyUtils.timestampToString(time, MyUtils.sqlDateTime));
+	   				query.executeUpdate();
+	   			}
+	   		}
+	   		catch (SQLException e)
+	   		{
+	   			e.printStackTrace();
+	   			return false;
+	   		}
+	   		return true;
+	   	}
+	   
+	   	@Override
+	   	public boolean removeTransportstate(Transport transport)
+	   	{
+	   		try
+	   		{
+	   			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.transportstate"));
+	   			query1.setInt(1, transport.getTransportId());
+	   			query1.executeUpdate();
+	   		}
+	   		catch (SQLException e)
+	   		{
+	   			e.printStackTrace();
+	   			return false;
+	   		}
+	   		return true;
+	   	}
+	   
+	   	@Override
+	   	public boolean updateTransportstate(Transport transport)
+	   	{
+	   		//boolean result = assignTransportstate(transport);
+	   		return false;
+	   	}
 
 	public Transport getTransportById(int id)
 	{
