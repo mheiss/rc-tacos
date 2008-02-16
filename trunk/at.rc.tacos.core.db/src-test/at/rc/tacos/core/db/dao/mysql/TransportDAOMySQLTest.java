@@ -59,6 +59,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@Before
 	public void setUp() throws SQLException
 	{
+		tearDown();
+		
 		phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
 		phone2 = new MobilePhoneDetail("phone2","0664-987654321");
 		location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
@@ -149,15 +151,15 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown() throws SQLException
 	{
-//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-//		deleteTable(TransportDAO.TABLE_NAME);
-//		deleteTable(MobilePhoneDAO.TABLE_NAME);
-//		deleteTable(LocationDAO.TABLE_NAME);
-//		deleteTable(CallerDAO.TABLE_NAME);
-//		deleteTable(UserLoginDAO.TABLE_NAME);
-//		deleteTable(StaffMemberDAO.TABLE_NAME);
-//		deleteTable(CompetenceDAO.TABLE_NAME);
-//		deleteTable(VehicleDAO.TABLE_NAME);
+		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+		deleteTable(TransportDAO.TABLE_NAME);
+		deleteTable(MobilePhoneDAO.TABLE_NAME);
+		deleteTable(LocationDAO.TABLE_NAME);
+		deleteTable(CallerDAO.TABLE_NAME);
+		deleteTable(UserLoginDAO.TABLE_NAME);
+		deleteTable(StaffMemberDAO.TABLE_NAME);
+		deleteTable(CompetenceDAO.TABLE_NAME);
+		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
