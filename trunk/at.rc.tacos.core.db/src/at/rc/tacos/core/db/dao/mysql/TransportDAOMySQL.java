@@ -540,9 +540,25 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	{
 		try
 		{
+			int oldNumber = transport.getTransportNumber();
+			int transportId = transport.getTransportId();
+			String location = transport.getVehicleDetail().getCurrentStation().getLocationName();
+		
 			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.assignedVehicle"));
-			query.setInt(1, transport.getTransportId());
+			query.setInt(1, transportId);
 			query.executeUpdate();
+			
+			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
+			query2.setInt(1, 0);
+			query2.setInt(2, transportId);
+			query2.executeUpdate();
+			
+			this.archiveTransportNumber(oldNumber, location);
+			
+			
+			
+			//TODO
+			//write old transpport number and current location (AND YEAR) into tmpdb
 		}
 		catch (SQLException e)
 		{
@@ -568,7 +584,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			}
 
 			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
-			query2.setInt(1, -1);
+			query2.setInt(1, 0);
 			query2.setInt(1, transportId);
 			query2.executeQuery();
 		}
