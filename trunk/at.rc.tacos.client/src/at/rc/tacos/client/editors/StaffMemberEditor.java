@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -13,7 +12,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.GridData;
@@ -43,11 +41,11 @@ import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.CompetenceContentProvider;
 import at.rc.tacos.client.providers.CompetenceLabelProvider;
+import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.util.NumberValidator;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Competence;
@@ -70,9 +68,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private Text staffId,fName,lName,street,cityname,eMail,dateOfBirth;
 	private Text uName,pwd,pwdRetype;
 	private TableViewer phoneViewer,competenceViewer;
-	private ComboViewer primaryLocationComboViewer,competenceComboViewer,authorisationComboViewer,sexComboViewer;
+	private ComboViewer phoneComboViewer,primaryLocationComboViewer,competenceComboViewer,authorisationComboViewer,sexComboViewer;
 	private Button locked;
-	private Hyperlink removePhone,addPhone,removeCompetence,addCompetence;
+	private Hyperlink addPhone,removePhone,removeCompetence,addCompetence;
 	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
 
 	//indicates non-saved changes
@@ -193,7 +191,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		uName.setText(loginInfo.getUsername());
 		locked.setSelection(loginInfo.isIslocked());
 		authorisationComboViewer.setSelection(new StructuredSelection(loginInfo.getAuthorization()));
-		
+
 		//update the phone and competence view
 		phoneViewer.refresh(true);
 		competenceViewer.refresh(true);
@@ -363,8 +361,8 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//add or update the staff member and the login
 		if(isNew)
 		{
-			loginInfo.setUserInformation(staffMember);
 			NetWrapper.getDefault().sendAddMessage(Login.ID, loginInfo);
+			NetWrapper.getDefault().sendAddMessage(StaffMember.ID, staffMember);
 		}
 		else
 		{
@@ -508,37 +506,43 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		final Label labelPhone = toolkit.createLabel(client, "Telefonnummern",SWT.LEFT | SWT.TOP);
 
 		//make a subcomposite holding the Hyperlinks and the viewer
-		Composite phoneSub = makeComposite(client, 2);
+		Composite phoneSub = makeComposite(client, 3);
+
+		//create the viewer
+		Combo comboPhone = new Combo(phoneSub, SWT.READ_ONLY);
+		phoneComboViewer = new ComboViewer(comboPhone);
+		phoneComboViewer.setContentProvider(new MobilePhoneContentProvider());
+		phoneComboViewer.setLabelProvider(new MobilePhoneLabelProvider());
+		phoneComboViewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
 
 		addPhone = toolkit.createHyperlink(phoneSub, "Nummer hinzufügen", SWT.NONE);
-		addPhone.setToolTipText("Mit diesem Link kann eine neue Telefonnummer hinzugefügt werden");
+		addPhone.setToolTipText("Mit diesem Link kann dem Mitarbeiter eine Telefonnummer zugewiesen werden");
 		addPhone.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
 			public void linkActivated(HyperlinkEvent e) 
 			{
 				form.setMessage(null, IMessageProvider.NONE);
-				//show the input dialog
-				InputDialog dlg = new InputDialog(
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-						"Telefonnummer hinzufügen", 
-						"Bitte geben Sie eine Telefonnummer ein", 
-						"", new NumberValidator());
-				if (dlg.open() == Window.OK) 
+				//get the selected phone
+				ISelection selection = phoneComboViewer.getSelection();
+				if(selection.isEmpty())
 				{
-					//create and add the new phone
-					MobilePhoneDetail phone = new MobilePhoneDetail("privat",dlg.getValue());
-					if(staffMember.getPhonelist().contains(phone))
-					{
-						form.getShell().getDisplay().beep();
-						form.setMessage("Dem Mitarbeiter wurde diese Telefonnummer bereits zugewiesen.", IMessageProvider.ERROR);
-					}
-					else
-					{
-						staffMember.getPhonelist().add(phone);
-						phoneViewer.refresh();
-					}
+					form.getDisplay().beep();
+					form.setMessage("Bitte wählen Sie ein Mobiltelefon aus welches Sie dem Mitarbeiter zuweisen wollen", IMessageProvider.ERROR);
+					return;
 				}
+				//get the selected phone
+				StructuredSelection structuredSelection = (StructuredSelection)selection;
+				MobilePhoneDetail phone = (MobilePhoneDetail)structuredSelection.getFirstElement();
+				//check if this member has already the phone
+				if(staffMember.getPhonelist().contains(phone))
+				{
+					form.getShell().getDisplay().beep();
+					form.setMessage("Dem Mitarbeiter wurde diese Telefonnummer bereits zugewiesen.", IMessageProvider.ERROR);
+					return;
+				}
+				staffMember.getPhonelist().add(phone);
+				phoneViewer.refresh();
 			}
 		});
 		//hyperlink to remove a phone
@@ -895,7 +899,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			competenceViewer.refresh(true);
 		}
 	}
-	
+
 	/**
 	 * Creates and returns a section and a composite with two colums
 	 * @param parent the parent composite
