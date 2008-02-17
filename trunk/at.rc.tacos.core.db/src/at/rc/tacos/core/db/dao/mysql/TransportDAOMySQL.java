@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import at.rc.tacos.common.IProgramStatus;
@@ -25,34 +24,30 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
 	private final Queries queries = Queries.getInstance();
-	
-	
-	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
+	//dependend dao classes
 	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
 	private final StaffMemberDAO staffMemberDAO = DaoFactory.MYSQL.createStaffMemberDAO();
 	private final CallerDAO callerDAO = DaoFactory.MYSQL.createNotifierDAO();
 
 	@Override
-	public int addTransport(Transport transport)
+	public int addTransport(Transport transport) throws SQLException
 	{
-		CallerDetail caller = new CallerDetail();
+		Connection connection = source.getConnection();
 		try
 		{	
-			int callerId = 0;
 			if(transport.getCallerDetail() != null)
 			{
-				callerId = callerDAO.addCaller(transport.getCallerDetail());
+				int callerId = callerDAO.addCaller(transport.getCallerDetail());
+				//assert the add was successfully
 				if(callerId == -1)
-					return -1;
-				caller = transport.getCallerDetail();
-				caller.setCallerId(callerId);
-				transport.setCallerDetail(caller);
+					return Transport.TRANSPORT_ERROR;
+				transport.getCallerDetail().setCallerId(callerId);
 			}
 
 			//transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate,
 			//departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location,
 			//from_street, from_city, to_street, to_city, programstate, dateOfTransport
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(TransportDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.transport"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.transport"));
 			query.setString(1, null); //transport.getTransportId()
 			query.setInt(2, transport.getTransportNumber());
 			query.setInt(3, transport.getDirection());	
@@ -91,45 +86,33 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			query.setInt(22, transport.getProgramStatus());
 			query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
 			query.executeUpdate();
-
-
-			// t.creationDate, t.firstname, t.lastname, t.to_street, t.appointment = ?;
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportID"));
-			query1.setString(1, transport.getCreatedByUsername());
-			query1.setString(2, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlDateTime));
-			query1.setString(3, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
-			System.out.println(query1);
-			final ResultSet rsId = query1.executeQuery();
-
-			if(!rsId.first())
-				return -3;
-			int transportId = rsId.getInt(1);
-			transport.setTransportId(transportId);
+			//get the last inserted auto id
+			ResultSet rs = query.getGeneratedKeys();
+			if(!rs.first())
+				return Transport.TRANSPORT_ERROR;
+			transport.setTransportId(rs.getInt(1));
 			//assign the transport items!
 			assignTransportItems(transport);
 			return transport.getTransportId();
-
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return -2;
+			connection.close();
 		}
-
 	}
 
 	@Override
-	public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate)
+	public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		System.out.println("listTransportsByDateOfTransport: start: "+MyUtils.timestampToString(startdate, MyUtils.sqlDateTime)+" end: "+MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
-		List<Transport> transports = new ArrayList<Transport>();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.transportsByDateOfTransport"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.transportsByDateOfTransport"));
 			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDateTime));
 			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
 			final ResultSet rs = query.executeQuery();
-
+			List<Transport> transports = new ArrayList<Transport>();
 			while(rs.next())
 			{
 				Transport transport = new Transport();
@@ -215,9 +198,9 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
 				if(rs.getString("av.locationname") != null)
 				{
+					//get the location 
+					Location currentStation = locationDAO.getLocationByName(rs.getString("av.locationname"));
 					VehicleDetail vehicle = new VehicleDetail();
-					Location currentStation = new Location();
-					currentStation = locationDAO.getLocationByName(rs.getString("av.locationname"));
 					vehicle.setCurrentStation(currentStation);
 
 					vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
@@ -240,7 +223,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				}
 
 				// find the selected items (boolean values)
-				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.selectedTransportItems"));
+				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
 				query1.setInt(1, transport.getTransportId());
 				final ResultSet rs1 = query1.executeQuery();
 
@@ -299,10 +282,9 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			}
 			return transports;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
 	}
 
@@ -312,62 +294,46 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		wenn der transport kein vehicle hat dann werden einfach alle felder aktualisert
 		wenn der transport ein vehicle hat aber keine transportnummer -> transportnummer generieren und transport updaten
 		wenn der transport ein vehicle und a transportnummer hat dann kann ma auch einfach updaten
-
 	 */
 	@Override
-	public boolean updateTransport(Transport transport)
+	public boolean updateTransport(Transport transport) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			// wenn der transport in der db schon ein vehicle hat aber keine transportnummer, soll eine transportnummer 
-			//generiert werden und das vehicle auch in der db zugewiesen werden   ------------------------------------------------------
-			if(transport.getVehicleDetail() != null && transport.getTransportNumber() == 0 )
-			{
-				int number = this.assignVehicleToTransportAndGenerateTransportNumber(transport);
-				transport.setTransportNumber(number);
-			}
-			
-			//always--------------------------------------------------------------------
 			/** add or update the caller of the transport*/
-			int callerId;
-			CallerDetail caller = new CallerDetail();
-			caller = transport.getCallerDetail();
-			if(transport.getCallerDetail() != null)
+			if(transport.getCallerDetail() != null && transport.getCallerDetail().getCallerId() == -1)
 			{
-				if(transport.getCallerDetail().getCallerId() == -1)
-				{
-					//add new Caller
-					callerId = callerDAO.addCaller(transport.getCallerDetail());
-					caller.setCallerId(callerId);
-					transport.setCallerDetail(caller);
-				}
-				else
-					callerDAO.updateCaller(transport.getCallerDetail());
+				int callerId = callerDAO.addCaller(transport.getCallerDetail());
+				//assert the add was successfully
+				if(callerId == -1)
+					return false;
+				transport.getCallerDetail().setCallerId(callerId);
 			}
-				
+			else if(transport.getCallerDetail() != null)
+			{
+				if(!callerDAO.updateCaller(transport.getCallerDetail()))
+					return false;
+			}
+
 			/** execute the update query for the transport*/
-			this.executeTheTransportUpdateQuery(transport);
+			if(!executeTheTransportUpdateQuery(transport))
+				return false;
 
 			/** execute the queries for the booleans*/
-			this.assignTransportItems(transport);
-			
+			if(!assignTransportItems(transport))
+				return false;
+
 			//TODO:
 			/** update the status messages*/
 			//--------------------------------------------------------------------------
+			//everything is ok
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
-	}
-
-	@Override
-	public boolean archiveTransport(Transport transport)
-	{
-		// TODO Not needed any more!
-		return false;
 	}
 
 	/**
@@ -375,265 +341,263 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	 * @param locationname
 	 * @return locationnumber
 	 */
-	public int getNewTransportNrForLocation(String locationname)
+	public int getNewTransportNrForLocation(String locationname) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
 			//search through the tmp table whether tmp transportNumber exists or not
-			final PreparedStatement query4 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.tmpTransportNrFromLocation"));
+			final PreparedStatement query4 = connection.prepareStatement(queries.getStatment("get.tmpTransportNrFromLocation"));
 			query4.setString(1, locationname);
 			final ResultSet rs4 = query4.executeQuery();
 			if(rs4.first())
 				return rs4.getInt("transportNr");
-			else
-			{
-				//calculate new transport number from transports
-				final PreparedStatement query5 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.MaxTransportNr"));
-				query5.setString(1, locationname);
-				final ResultSet rs5 = query5.executeQuery();
-				if(rs5.first())
-				{
-					return rs5.getInt("max(t.transportNr)") +1;
-				}
-				return -1;
-			}
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			return -1;
-		}
-	}
 
-	private boolean archiveTransportNumber(int transportNr, String locationname)
-	{
-		try
-		{
-			//adds the old transportnumber to the tmp table
-			final PreparedStatement query3 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.tmpTransport"));
-			query3.setInt(1, transportNr);
-			query3.setString(2, locationname);
-			query3.executeUpdate();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public int assignVehicleToTransportAndGenerateTransportNumber(Transport transport)
-	{
-		try
-		{
-//			//select vehicle from transport
-//			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.vehicleFromTransport"));
-//			query1.setInt(1, transport.getTransportId());
-//			final ResultSet rs1 = query1.executeQuery();
-//
-//			/**
-//			 * checks if a vehicle already exists?  -- situation doesn't exist
-//			 */
-//			if(rs1.next())
-//			{
-//				/**
-//				 * checks if old and new vehicle are from the same location?
-//				 */
-//				if(transport.getVehicleDetail().getCurrentStation().getLocationName() == rs1.getString("locationname"))
-//				{
-//					/**
-//					 * Updates the existing Vehicle without changing the Transportnumber
-//					 */
-//					//vehicle_ID = ?, medic2_ID = ?, medic1_ID = ?, driver_ID = ?, locationname = ?, note = ?, vehicletype = ? WHERE transport_ID = ?;
-//					final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.assignedVehicle"));
-//					if(transport.getVehicleDetail() == null)
-//						query.setString(1, null);
-//					else
-//						query.setString(1, transport.getVehicleDetail().getVehicleName());
-//					query.setInt(2, transport.getVehicleDetail().getSecondParamedic().getStaffMemberId());
-//					query.setInt(3, transport.getVehicleDetail().getFirstParamedic().getStaffMemberId());
-//					query.setInt(4, transport.getVehicleDetail().getDriver().getStaffMemberId());
-//					query.setString(5, transport.getVehicleDetail().getCurrentStation().getLocationName());
-//					query.setString(6, transport.getVehicleDetail().getVehicleNotes());
-//					query.setString(7, transport.getVehicleDetail().getVehicleType());
-//					query.setInt(8, transport.getTransportId());
-//					query.executeUpdate();
-//					return transport.getTransportNumber();
-//				}
-//				else
-//				{
-//					/**
-//					 * Updates the existing Vehicle but has to generate a new transportNumber
-//					 */
-//					//select the old transport Number
-//					final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportNr"));
-//					query2.setInt(1, transport.getTransportId());
-//					final ResultSet rs2 = query2.executeQuery();
-//					if(rs2.first())
-//					{
-//						//archive transportnumber
-//						boolean result = archiveTransportNumber(rs2.getInt("transportNr"), transport.getVehicleDetail().getCurrentStation().getLocationName());
-//						if(result == false)
-//							return -1;
-//
-//						int transportNr = getNewTransportNrForLocation(transport.getVehicleDetail().getCurrentStation().getLocationName());
-//						if(transportNr == -1)
-//							return -1;
-//
-//						//insert new transportnumber to existing transport
-//						final PreparedStatement query6 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
-//						query6.setInt(1, transportNr);
-//						query6.setInt(2, transport.getTransportId());
-//						query6.executeUpdate();
-//						return transportNr;
-//					}
-//				}
-//				return -1;
-//			}
-			//----> ab hier relevant
-//			else
-//			{
-				/**
-				 * add new Vehicle to Transport
-				 */
-				//transport_ID, vehicle_ID, medic2_ID, medic1_ID, driver_ID, locationname, note, vehicletype
-				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.assignedVehicle"));
-				query.setInt(1, transport.getTransportId());
-				query.setString(2, transport.getVehicleDetail().getVehicleName());
-				if(transport.getVehicleDetail().getSecondParamedic() != null)
-					query.setInt(3, transport.getVehicleDetail().getSecondParamedic().getStaffMemberId());
-				else
-					query.setString(3, null);
-				if(transport.getVehicleDetail().getFirstParamedic() != null)
-					query.setInt(4, transport.getVehicleDetail().getFirstParamedic().getStaffMemberId());
-				else
-					query.setString(4, null);
-				if(transport.getVehicleDetail().getDriver() != null)
-					query.setInt(5, transport.getVehicleDetail().getDriver().getStaffMemberId());
-				else
-					query.setString(5, null);
-				if(transport.getVehicleDetail().getCurrentStation() != null)
-					query.setString(6, transport.getVehicleDetail().getCurrentStation().getLocationName());
-				else
-					query.setString(6, null);
-				query.setString(7, transport.getVehicleDetail().getVehicleNotes());
-				query.setString(8, transport.getVehicleDetail().getVehicleType());
-				query.executeUpdate();
-				
-				/** create a transport number*/
-				int transportNr=0;
-				if(transport.getVehicleDetail().getCurrentStation() != null)
-				{
-					transportNr = getNewTransportNrForLocation(transport.getVehicleDetail().getCurrentStation().getLocationName());
-					//insert new transport number to existing transport
-					final PreparedStatement query6 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
-					query6.setInt(1, transportNr);
-					query6.setInt(2, transport.getTransportId());
-					query6.executeUpdate();
-				}
-				return transportNr;
-//			}
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			return -1;
-		}	
-	}
-
-	@Override
-	public boolean removeVehicleFromTransport(Transport transport)
-	{
-		try
-		{
-			int oldNumber = transport.getTransportNumber();
-			int transportId = transport.getTransportId();
-			String location = transport.getVehicleDetail().getCurrentStation().getLocationName();
-		
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.assignedVehicle"));
-			query.setInt(1, transportId);
-			query.executeUpdate();
-			
-			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
-			query2.setInt(1, 0);
-			query2.setInt(2, transportId);
-			query2.executeUpdate();
-			
-			/**archive the old transport number */
-			this.archiveTransportNumber(oldNumber, location);
-			
-			
-			
-			//TODO
-			//write old transport number and current location (AND YEAR) into tmpdb
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			return false;
-		}	
-		return true;
-	}
-
-	
-	@Override
-	public boolean cancelTransport(Transport transport) throws SQLException
-	{
-		Connection connection = source.getConnection();
-		int transportId = transport.getTransportId();
-		try
-		{
-			/** archive the old transport number if there is one*/
-			if(transport.getTransportNumber() != 0)
-			{
-				boolean check = true;
-				check = this.archiveTransportNumber(transport.getTransportNumber(), transport.getVehicleDetail().getBasicStation().getLocationName());
-				return check;
-			}
-			
-			/**set the transport number to 'STORNO' (-1)*/
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.TransportNr"));
-			query.setInt(1, -1);//'-1' for STORNO
-			query.setInt(2, transportId);
-			query.executeUpdate();
-			if(query.executeUpdate() == 0)
-				return false;
-				
-					
-			/** set the program status to 'JOURNAL'*/
-			transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_JOURNAL);
-			boolean check = true;
-			check = this.executeTheTransportUpdateQuery(transport);
-				return check;		
+			//calculate new transport number from transports
+			final PreparedStatement query5 = connection.prepareStatement(queries.getStatment("get.MaxTransportNr"));
+			query5.setString(1, locationname);
+			final ResultSet rs5 = query5.executeQuery();
+			if(rs5.first())
+				return rs5.getInt("max(t.transportNr)") +1;
+			return Transport.TRANSPORT_ERROR;
 		}
 		finally
 		{
 			connection.close();
 		}
 	}
-	
+
+	private boolean archiveTransportNumber(int transportNr, String locationname) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			//adds the old transportnumber to the tmp table
+			final PreparedStatement query3 = connection.prepareStatement(queries.getStatment("add.tmpTransport"));
+			query3.setInt(1, transportNr);
+			query3.setString(2, locationname);
+			//assert the archive was successfully
+			if(query3.executeUpdate() == 0)
+				return false;
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
 
 	@Override
-	public List<Transport> getTransportsFromVehicle(String vehicleName)
+	public int assignVehicleToTransportAndGenerateTransportNumber(Transport transport) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+//			//select vehicle from transport
+//			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.vehicleFromTransport"));
+//			query1.setInt(1, transport.getTransportId());
+//			final ResultSet rs1 = query1.executeQuery();
+
+//			/**
+//			* checks if a vehicle already exists?  -- situation doesn't exist
+//			*/
+//			if(rs1.next())
+//			{
+//			/**
+//			* checks if old and new vehicle are from the same location?
+//			*/
+//			if(transport.getVehicleDetail().getCurrentStation().getLocationName() == rs1.getString("locationname"))
+//			{
+//			/**
+//			* Updates the existing Vehicle without changing the Transportnumber
+//			*/
+//			//vehicle_ID = ?, medic2_ID = ?, medic1_ID = ?, driver_ID = ?, locationname = ?, note = ?, vehicletype = ? WHERE transport_ID = ?;
+//			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.assignedVehicle"));
+//			if(transport.getVehicleDetail() == null)
+//			query.setString(1, null);
+//			else
+//			query.setString(1, transport.getVehicleDetail().getVehicleName());
+//			query.setInt(2, transport.getVehicleDetail().getSecondParamedic().getStaffMemberId());
+//			query.setInt(3, transport.getVehicleDetail().getFirstParamedic().getStaffMemberId());
+//			query.setInt(4, transport.getVehicleDetail().getDriver().getStaffMemberId());
+//			query.setString(5, transport.getVehicleDetail().getCurrentStation().getLocationName());
+//			query.setString(6, transport.getVehicleDetail().getVehicleNotes());
+//			query.setString(7, transport.getVehicleDetail().getVehicleType());
+//			query.setInt(8, transport.getTransportId());
+//			query.executeUpdate();
+//			return transport.getTransportNumber();
+//			}
+//			else
+//			{
+//			/**
+//			* Updates the existing Vehicle but has to generate a new transportNumber
+//			*/
+//			//select the old transport Number
+//			final PreparedStatement query2 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportNr"));
+//			query2.setInt(1, transport.getTransportId());
+//			final ResultSet rs2 = query2.executeQuery();
+//			if(rs2.first())
+//			{
+//			//archive transportnumber
+//			boolean result = archiveTransportNumber(rs2.getInt("transportNr"), transport.getVehicleDetail().getCurrentStation().getLocationName());
+//			if(result == false)
+//			return -1;
+
+//			int transportNr = getNewTransportNrForLocation(transport.getVehicleDetail().getCurrentStation().getLocationName());
+//			if(transportNr == -1)
+//			return -1;
+
+//			//insert new transportnumber to existing transport
+//			final PreparedStatement query6 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transportNr"));
+//			query6.setInt(1, transportNr);
+//			query6.setInt(2, transport.getTransportId());
+//			query6.executeUpdate();
+//			return transportNr;
+//			}
+//			}
+//			return -1;
+//			}
+			//----> ab hier relevant
+//			else
+//			{
+			/**
+			 * add new Vehicle to Transport
+			 */
+			//transport_ID, vehicle_ID, medic2_ID, medic1_ID, driver_ID, locationname, note, vehicletype
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.assignedVehicle"));
+			query.setInt(1, transport.getTransportId());
+			query.setString(2, transport.getVehicleDetail().getVehicleName());
+			if(transport.getVehicleDetail().getSecondParamedic() != null)
+				query.setInt(3, transport.getVehicleDetail().getSecondParamedic().getStaffMemberId());
+			else
+				query.setString(3, null);
+			if(transport.getVehicleDetail().getFirstParamedic() != null)
+				query.setInt(4, transport.getVehicleDetail().getFirstParamedic().getStaffMemberId());
+			else
+				query.setString(4, null);
+			if(transport.getVehicleDetail().getDriver() != null)
+				query.setInt(5, transport.getVehicleDetail().getDriver().getStaffMemberId());
+			else
+				query.setString(5, null);
+			if(transport.getVehicleDetail().getCurrentStation() != null)
+				query.setString(6, transport.getVehicleDetail().getCurrentStation().getLocationName());
+			else
+				query.setString(6, null);
+			query.setString(7, transport.getVehicleDetail().getVehicleNotes());
+			query.setString(8, transport.getVehicleDetail().getVehicleType());
+			query.executeUpdate();
+
+			/** create a transport number if we have a location*/
+			if(transport.getVehicleDetail().getCurrentStation() == null)
+				return Transport.TRANSPORT_ERROR;
+
+			int transportNr = getNewTransportNrForLocation(transport.getVehicleDetail().getCurrentStation().getLocationName());
+			//insert new transport number to existing transport
+			final PreparedStatement query6 = connection.prepareStatement(queries.getStatment("update.transportNr"));
+			query6.setInt(1, transportNr);
+			query6.setInt(2, transport.getTransportId());
+			//assert the update was successfully
+			if(query6.executeUpdate() == 0)
+				return Transport.TRANSPORT_ERROR;
+			return transportNr;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public boolean removeVehicleFromTransport(Transport transport) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			int oldNumber = transport.getTransportNumber();
+			int transportId = transport.getTransportId();
+			String location = transport.getVehicleDetail().getCurrentStation().getLocationName();
+
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("remove.assignedVehicle"));
+			query.setInt(1, transportId);
+			//assert the remove was successfully
+			if(query.executeUpdate() == 0)
+				return false;
+
+			final PreparedStatement query2 = connection.prepareStatement(queries.getStatment("update.transportNr"));
+			query2.setInt(1, 0);
+			query2.setInt(2, transportId);
+			//assert the update was successfully
+			if(query2.executeUpdate() == 0)
+				return false;
+
+			/**archive the old transport number */
+			if(!archiveTransportNumber(oldNumber, location))
+				return false;
+			//TODO
+			//write old transport number and current location (AND YEAR) into tmpdb
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+
+	@Override
+	public boolean cancelTransport(Transport transport) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			int transportId = transport.getTransportId();
+			/** archive the old transport number if there is one*/
+			if(transport.getTransportNumber() != 0)
+			{
+				if(!archiveTransportNumber(transport.getTransportNumber(), transport.getVehicleDetail().getBasicStation().getLocationName()))
+					return false;
+			}
+			/**set the transport number to 'STORNO' (-1)*/
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.TransportNr"));
+			query.setInt(1, -1);//'-1' for STORNO
+			query.setInt(2, transportId);
+			query.executeUpdate();
+			//assert the update was successfully
+			if(query.executeUpdate() == 0)
+				return false;
+
+			/** set the program status to 'JOURNAL'*/
+			transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_JOURNAL);
+			if(!executeTheTransportUpdateQuery(transport))
+				return false;
+			//cancle was successfully
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public List<Transport> getTransportsFromVehicle(String vehicleName) throws SQLException
 	{
 		// TODO ???
 		return null;
 	}
 
 	@Override
-	public List<Transport> listArchivedTransports(long startdate, long enddate)
+	public List<Transport> listArchivedTransports(long startdate, long enddate) throws SQLException
 	{
-		List<Transport> transports = null;
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.archivedTransports"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.archivedTransports"));
 			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDateTime));
 			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
 			query.setInt(3, PROGRAM_STATUS_JOURNAL);
 			final ResultSet rs = query.executeQuery();
-			
+			List<Transport> transports = new ArrayList<Transport>();
 			while(rs.next())
 			{
 				Transport transport = new Transport();
@@ -705,7 +669,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setVehicleDetail(vehicle);
 
 				// find the selected items (boolean values)
-				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.selectedTransportItems"));
+				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
 				query1.setInt(1, transport.getTransportId());
 				final ResultSet rs1 = query1.executeQuery();
 
@@ -761,13 +725,12 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				}
 				transports.add(transport);
 			}
+			return transports;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
-		return transports;
 	}
 
 	/**
@@ -776,24 +739,25 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	 * @param selectedId
 	 * @return true if insert was sucessful
 	 */
-	private boolean addTransportItem(int transportId, int selectedId)
+	private boolean addTransportItem(int transportId, int selectedId) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
 			System.out.println("addTransportItem");
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.selectedTransportItem"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.selectedTransportItem"));
 			System.out.println("selectedId: "+selectedId);
 			query.setInt(1, selectedId);
 			System.out.println("transportId: "+transportId);
 			query.setInt(2, transportId);			
-			query.executeUpdate();
+			if(query.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
-		}		
-		return true;
+			connection.close();
+		}
 	}
 
 	/**
@@ -801,10 +765,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	 * @param transport
 	 * @return true if update was ok
 	 */
-	private boolean assignTransportItems(Transport transport)
+	private boolean assignTransportItems(Transport transport) throws SQLException
 	{
 		//removes all selected transports for specific transportId
-		removeTransportItems(transport);
+		if(!removeTransportItems(transport))
+			return false;
 
 		if(transport.isEmergencyDoctorAlarming() == true)
 			addTransportItem(transport.getTransportId(), 1);
@@ -839,83 +804,89 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	 * @param transport
 	 * @return true if all items were removed
 	 */
-	private boolean removeTransportItems(Transport transport)
+	private boolean removeTransportItems(Transport transport) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.AllSelectedTransportItems"));
+			final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("remove.AllSelectedTransportItems"));
 			query1.setInt(1, transport.getTransportId());
-			query1.executeUpdate();
+			//assert the remove of the item was successfully
+			if(query1.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
 	@Override
-	   	public boolean assignTransportstate(Transport transport)
-	   	{
-	   		removeTransportstate(transport);
-	   		try
-	   		{
-	   			for(Entry<Integer, Long> entry:transport.getStatusMessages().entrySet())
-	   			{
-	   				int state = entry.getKey();
-	   				long time = entry.getValue();
-	   
-	   				//transportstate, transport_ID, date
-	   				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("add.transportstate"));
-	   				query.setInt(1, state);
-	   				query.setInt(2, transport.getTransportId());
-	   				query.setString(3, MyUtils.timestampToString(time, MyUtils.sqlDateTime));
-	   				query.executeUpdate();
-	   			}
-	   		}
-	   		catch (SQLException e)
-	   		{
-	   			e.printStackTrace();
-	   			return false;
-	   		}
-	   		return true;
-	   	}
-	   
-	   	@Override
-	   	public boolean removeTransportstate(Transport transport)
-	   	{
-	   		try
-	   		{
-	   			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.transportstate"));
-	   			query1.setInt(1, transport.getTransportId());
-	   			query1.executeUpdate();
-	   		}
-	   		catch (SQLException e)
-	   		{
-	   			e.printStackTrace();
-	   			return false;
-	   		}
-	   		return true;
-	   	}
-	   
-	   	@Override
-	   	public boolean updateTransportstate(Transport transport)
-	   	{
-	   		//boolean result = assignTransportstate(transport);
-	   		return false;
-	   	}
-
-	public Transport getTransportById(int id)
+	public boolean assignTransportstate(Transport transport) throws SQLException
 	{
-		System.out.println("TransportDAOMySQL, getTransportById - plannedLocation");
-		Transport transport = new Transport();
+		Connection connection = source.getConnection();
+		//remove all curren states to set them new
+		if(!removeTransportstate(transport))
+			return false;
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.transportById"));
+			for(Entry<Integer, Long> entry:transport.getStatusMessages().entrySet())
+			{
+				int state = entry.getKey();
+				long time = entry.getValue();
+
+				//transportstate, transport_ID, date
+				final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.transportstate"));
+				query.setInt(1, state);
+				query.setInt(2, transport.getTransportId());
+				query.setString(3, MyUtils.timestampToString(time, MyUtils.sqlDateTime));
+				if(query.executeUpdate() == 0)
+					return false;
+			}
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public boolean removeTransportstate(Transport transport) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("remove.transportstate"));
+			query1.setInt(1, transport.getTransportId());
+			//assert the remove was successfully
+			if(query1.executeUpdate() == 0)
+				return false;
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public boolean updateTransportstate(Transport transport) throws SQLException
+	{
+		//boolean result = assignTransportstate(transport);
+		return false;
+	}
+
+	public Transport getTransportById(int id) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		System.out.println("TransportDAOMySQL, getTransportById - plannedLocation");
+		try
+		{
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.transportById"));
 			query.setInt(1, id);
 			final ResultSet rs = query.executeQuery();
-
 			if(rs.first())
 			{
 				//t.transport_ID, t.transportNr, t.planned_location, lo.locationname, lo.location_ID, t.caller_ID, ca.callername,
@@ -923,7 +894,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				//t.appointmentPatient, t.disease, t.firstname, t.lastname, t.from_street, t.from_city, t.to_street, t.to_city,
 				//t.programstate, t.transporttype, t.priority, t.direction, t.dateOfTransport, av.vehicle_ID, av.driver_ID,
 				//av.medic1_ID, av.medic2_ID, av.locationname, av.note, av.vehicletype
-
+				Transport transport = new Transport();
 				transport.setTransportId(rs.getInt("t.transport_ID"));
 				transport.setTransportNumber(rs.getInt("t.transportNr"));
 
@@ -931,7 +902,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				System.out.println("plannedLocation name: "+rs.getString("lo.locationname"));
 				if(rs.getInt("t.planned_location") != 0)
 				{
-					
 					Location station = new Location();
 					station.setId(rs.getInt("t.planned_location"));
 					station.setLocationName(rs.getString("lo.locationname"));
@@ -1027,10 +997,10 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				}
 
 				// find the selected items (boolean values)
-				final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.selectedTransportItems"));
+				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
 				query1.setInt(1, transport.getTransportId());
 				final ResultSet rs1 = query1.executeQuery();
-				
+
 				transport.setEmergencyDoctorAlarming(false);
 				transport.setPoliceAlarming(false);
 				transport.setFirebrigadeAlarming(false);
@@ -1066,7 +1036,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
 					if(rs1.getInt("selected_ID") == 7)
 						transport.setBlueLightToGoal(true);
-					
+
 					if(rs1.getInt("selected_ID") == 8)
 						transport.setHelicopterAlarming(true);
 
@@ -1082,24 +1052,28 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					if(rs1.getInt("selected_ID") == 12)
 						transport.setEmergencyPhone(true);
 				}
+				return transport;
 			}
-			return transport;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			//nothin in the result set
 			return null;
 		}
+		finally
+		{
+			connection.close();
+		}
 	}
-	
+
 
 	private boolean executeTheTransportUpdateQuery(Transport transport) throws SQLException
 	{
+		Connection connection = source.getConnection();
+		try
+		{
 			// direction = ?, caller_ID = ?, note = ?, createdBy_user = ?, priority = ?, feedback = ?, creationDate = ?, 
 			//departure = ?, appointment = ?, appointmentPatient = ?, transporttype = ?, disease = ?, firstname = ?, lastname = ?, 
 			//planned_location = ?, from_street = ?, from_city = ?, to_street = ?, to_city = ?, programstate = ?, dateOfTransport = ?, transport_ID = ?;
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.transport"));
-			
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.transport"));
+
 			/** set the values for the ?*/
 			query.setInt(1, transport.getDirection());
 			if(transport.getCallerDetail() == null)
@@ -1139,16 +1113,13 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			query.setInt(22, transport.getTransportNumber());
 			query.setInt(23, transport.getTransportId());
 			/** execute the query*/
-			query.executeUpdate();
-			
 			if(query.executeUpdate() == 0)
 				return false;
 			return true;
-			
-		
-		
-		
-
-
+		}
+		finally
+		{
+			connection.close();
+		}
 	}
 }

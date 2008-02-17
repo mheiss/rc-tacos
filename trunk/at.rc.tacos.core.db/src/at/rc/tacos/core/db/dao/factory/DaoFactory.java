@@ -21,7 +21,6 @@ import at.rc.tacos.core.db.dao.VehicleDAO;
 public interface DaoFactory
 {
     //the provided factories
-    final DaoFactoryMemory TEST = new DaoFactoryMemory();
     final DaoFactoryMySql MYSQL = new DaoFactoryMySql();
 
     //the provided factory methods

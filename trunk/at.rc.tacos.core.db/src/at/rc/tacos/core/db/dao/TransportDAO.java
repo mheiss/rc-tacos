@@ -17,7 +17,7 @@ public interface TransportDAO
 	 * @param transport the transport to add
 	 * @return the unique transport id 
 	 */
-    public int addTransport(Transport transport);
+    public int addTransport(Transport transport) throws SQLException;
     
     /**
      * Assigns a transport to a vehicle and returns the transport number.
@@ -26,22 +26,22 @@ public interface TransportDAO
      * @param transport the transport to assign
      * @return the transport number.
      */
-    public int assignVehicleToTransportAndGenerateTransportNumber(Transport transport);
+    public int assignVehicleToTransportAndGenerateTransportNumber(Transport transport) throws SQLException;
     
     /**
      * removes an assigned vehicle from a transport
      * @param transport
      * @return true if everything was successful
      */
-    public boolean removeVehicleFromTransport(Transport transport);
+    public boolean removeVehicleFromTransport(Transport transport) throws SQLException;
     
-    /**
-     * Stores the actual transport in the log table and prevents modification of the transport in the future.
-     * This method deletes the current transportId out of the transport table and moves the transport to the log.
-     * @param transport the transport to archive
-     * @return true if the archive was successfully
-     */
-    public boolean archiveTransport(Transport transport);
+//    /**
+//     * Stores the actual transport in the log table and prevents modification of the transport in the future.
+//     * This method deletes the current transportId out of the transport table and moves the transport to the log.
+//     * @param transport the transport to archive
+//     * @return true if the archive was successfully
+//     */
+//    public boolean archiveTransport(Transport transport) throws SQLException;
     
     /**    
      * Updates a given transport.<br>
@@ -49,7 +49,7 @@ public interface TransportDAO
      * @param transport the transport to update
      * @return true if the update was successful.
      */
-    public boolean updateTransport(Transport transport);
+    public boolean updateTransport(Transport transport) throws SQLException;
     
     /**
      * Cancels the transport and stores the used transport number in the dummy table so that the transport number can be reused.
@@ -64,7 +64,7 @@ public interface TransportDAO
      * @param enddate the end date
      * @return the list of transports in the given interval.
      */
-    public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate);
+    public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate) throws SQLException;
     
     /**
      * Returns all archived transports in the given interval.
@@ -72,7 +72,7 @@ public interface TransportDAO
      * @param enddate the end date
      * @return the list of archived transports in the given interval.
      */
-    public List<Transport> listArchivedTransports(long startdate, long enddate);
+    public List<Transport> listArchivedTransports(long startdate, long enddate) throws SQLException;
     
     /**
      * Returns a list of all transports associated with the given vehicle
@@ -80,38 +80,38 @@ public interface TransportDAO
      * @param vehicleName the name of the vehicle to get the transports from
      * @return the list of transports
      */
-    public List<Transport> getTransportsFromVehicle(String vehicleName);
+    public List<Transport> getTransportsFromVehicle(String vehicleName) throws SQLException;
     
     /**
      * Assigns a new transport state to an existing transport
      * @param transport
      * @return boolean if insert was successful or not
      */
-    public boolean assignTransportstate(Transport transport);
+    public boolean assignTransportstate(Transport transport) throws SQLException;
     
     /**
      * updates the time of an existing transport state
      * @param transport
      * @return boolean if insert was successful or not
      */
-    public boolean updateTransportstate(Transport transport);
+    public boolean updateTransportstate(Transport transport) throws SQLException;
     
     /**
      * removes an inserted transport state
      * @param transport
      * @return boolean if remove was successful or not
      */
-    public boolean removeTransportstate(Transport transport);
+    public boolean removeTransportstate(Transport transport) throws SQLException;
     /**
      * Returns a transport searched by id
      * @param id the id of the transport
      * @return transport
      */
-    public Transport getTransportById(int transportId);
+    public Transport getTransportById(int transportId) throws SQLException;
     /**
      * Returns the new transport number
      * @param locationname
      * @return transport number
      */
-    public int getNewTransportNrForLocation(String locationname);
+    public int getNewTransportNrForLocation(String locationname) throws SQLException;
 }

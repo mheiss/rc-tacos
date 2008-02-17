@@ -1,81 +1,83 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.model.MobilePhoneDetail;
 
 public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 {
-	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
+	//The data source to get the connection and the queries file
+	private final DataSource source = DataSource.getInstance();
+	private final Queries queries = Queries.getInstance();
 
 	@Override
-	public int addMobilePhone(MobilePhoneDetail phone)
+	public int addMobilePhone(MobilePhoneDetail phone) throws SQLException
 	{
-		int phoneId = -1;
+		Connection connection = source.getConnection();
 		try
 		{	
 			// phonenumber_ID, phonenumber, phonename
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.phone"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.phone"));
 			query.setString(1, null);
 			query.setString(2, phone.getMobilePhoneNumber());
 			query.setString(3, phone.getMobilePhoneName());
 			query.executeUpdate();
-			
 			//get the last inserted id
 			final ResultSet rs = query.getGeneratedKeys();
-		    if (rs.next()) 
-		        phoneId = rs.getInt(1);
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			if (rs.next()) 
+				return rs.getInt(1);
 			return -1;
 		}
-		return phoneId;
+		finally
+		{
+			connection.close();
+		}
 	}
 
 	@Override
-	public MobilePhoneDetail getMobilePhoneByName(String mobilePhoneName)
+	public MobilePhoneDetail getMobilePhoneByName(String mobilePhoneName) throws SQLException
 	{
-		MobilePhoneDetail phone = new MobilePhoneDetail();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.phoneByName"));
-			query1.setString(1, mobilePhoneName);
-			final ResultSet rs = query1.executeQuery();
-
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.phoneByName"));
+			query.setString(1, mobilePhoneName);
+			final ResultSet rs = query.executeQuery();
+			//assert we have a result set
 			if(rs.first())
 			{
+				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("phonenumber_ID"));
 				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
 				phone.setMobilePhoneName(rs.getString("phonename"));
+				return phone;
 			}
-			else return null;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			//no result set
 			return null;
 		}
-		return phone;
+		finally
+		{
+			connection.close();
+		}
 	}
 
 	@Override
-	public List<MobilePhoneDetail> listMobilePhones()
+	public List<MobilePhoneDetail> listMobilePhones() throws SQLException
 	{
-		List<MobilePhoneDetail> phones = new ArrayList<MobilePhoneDetail>();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.phones"));
-			final ResultSet rs = query1.executeQuery();
-
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.phones"));
+			final ResultSet rs = query.executeQuery();
+			//create the result list and loop over the result
+			List<MobilePhoneDetail> phones = new ArrayList<MobilePhoneDetail>();
 			while(rs.next())
 			{
 				MobilePhoneDetail phone = new MobilePhoneDetail();
@@ -84,74 +86,66 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 				phone.setMobilePhoneName(rs.getString("phonename"));
 				phones.add(phone);
 			}
+			return phones;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
-		return phones;
 	}
 
 	@Override
-	public boolean removeMobilePhone(int id)
+	public boolean removeMobilePhone(int id) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("remove.phone"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("remove.phone"));
 			query.setInt(1, id);
-			query.executeUpdate();
+			//assert the phone was removed
+			if(query.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
 	@Override
-	public boolean updateMobilePhone(MobilePhoneDetail phone)
+	public boolean updateMobilePhone(MobilePhoneDetail phone) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			//check if phone exists
-			//phonenumber_ID =? AND phonenumber = ? AND phonename = ?
-			final PreparedStatement query1 = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("check.ifPhoneExists"));
-			query1.setInt(1, phone.getId());
-			query1.setString(2, phone.getMobilePhoneNumber());
-			query1.setString(3, phone.getMobilePhoneName());
-			final ResultSet rs = query1.executeQuery();
-
-			if(!rs.first())
-			{
-				// phonenumber, phonename, phonenumber_ID
-				final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.Phonenumber"));
-				query.setString(1, phone.getMobilePhoneNumber());
-				query.setString(2, phone.getMobilePhoneName());
-				query.setInt(3, phone.getId());
-
-				query.executeUpdate();
-			}
+			// phonenumber, phonename, phonenumber_ID
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.Phonenumber"));
+			query.setString(1, phone.getMobilePhoneNumber());
+			query.setString(2, phone.getMobilePhoneName());
+			query.setInt(3, phone.getId());
+			//check if the update was successfully
+			if(query.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
 	@Override
-	public List<MobilePhoneDetail> listMobilePhonesOfStaffMember(int id)
+	public List<MobilePhoneDetail> listMobilePhonesOfStaffMember(int id) throws SQLException
 	{
-		List<MobilePhoneDetail> phones = new ArrayList<MobilePhoneDetail>();
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.PhonenumbersOfMemberID"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.PhonenumbersOfMemberID"));
 			query.setInt(1, id);
 			final ResultSet rs = query.executeQuery();
-
+			//create a list and loop over the result
+			List<MobilePhoneDetail> phones = new ArrayList<MobilePhoneDetail>();
 			while(rs.next())
 			{
 				MobilePhoneDetail phone = new MobilePhoneDetail();
@@ -160,15 +154,11 @@ public class MobilePhoneDAOMySQL implements MobilePhoneDAO
 				phone.setMobilePhoneName(rs.getString("phonename"));
 				phones.add(phone);
 			}
+			return phones;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
-		return phones;
 	}
-
-
-
 }
