@@ -3,7 +3,6 @@ package at.rc.tacos.core.db.dao.mysql;
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
@@ -32,7 +30,6 @@ import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
-
 
 public class TransportDAOMySQLTest extends DBTestBase
 {
@@ -53,15 +50,10 @@ public class TransportDAOMySQLTest extends DBTestBase
 	Login login1,login2;
 	Transport transport1,transport2;
 	CallerDetail caller1;
-	//other data
-	int tr1id;
-	int tr2id;
 
 	@Before
 	public void setUp() throws SQLException
 	{
-		tearDown();
-		
 		phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
 		phone2 = new MobilePhoneDetail("phone2","0664-987654321");
 		phone3 = new MobilePhoneDetail("phone3","0664-987345331");
@@ -82,7 +74,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		transport1 = new Transport("vonStraﬂe1","vonStadt1",location1,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 12:00", MyUtils.timeAndDateFormat),"A",2);
 		transport2 = new Transport("vonStraﬂe2","vonStadt2",location2,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 14:00", MyUtils.timeAndDateFormat),"B",2);
 		caller1 = new CallerDetail("derCaller","0664-4143824");
-		
+
 		//insert the phones
 		int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
 		int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);
@@ -103,14 +95,14 @@ public class TransportDAOMySQLTest extends DBTestBase
 		//set the ids
 		location1.setId(id1);
 		location2.setId(id2);
-		
+
 		//logins 
 		loginDAO.addLogin(login1);
 		loginDAO.addLogin(login2);
 		//staff member
 		staffDAO.addStaffMember(member1);
 		staffDAO.addStaffMember(member2);
-		
+
 		//insert transports
 		transport1.setCreatedByUsername(login1.getUsername());
 		transport2.setCreatedByUsername(login2.getUsername());
@@ -121,30 +113,20 @@ public class TransportDAOMySQLTest extends DBTestBase
 		transport1.setPlanedLocation(location1);
 		transport2.setPlanedLocation(location2);
 
+		id1 = transportDAO.addTransport(transport1);
+		id2 = transportDAO.addTransport(transport2);
+		transport1.setTransportId(id1);
+		transport2.setTransportId(id2); 
 
-		tr1id = transportDAO.addTransport(transport1);
-		tr2id = transportDAO.addTransport(transport2);
-		System.out.println("Transport1 id: " +tr1id);
-		System.out.println("Transport2 id: " +tr2id);
-		System.out.println("iiiiiii: " +tr1id);
-		transport1.setTransportId(tr1id);
-		transport2.setTransportId(tr2id); 
-		System.out.println(tr1id);
-		System.out.println(tr2id);
-		
 		//vehicle
-		veh1.setCurrentStation(location1);
 		veh1.setDriver(member1);
-		veh1.setMobilPhone(phone1);
 		veh1.setReadyForAction(true);
 		veh1.setTransportStatus(10);
-		
-		veh2.setCurrentStation(location2);
+
 		veh2.setDriver(member1);
-		veh2.setMobilPhone(phone1);
 		veh2.setReadyForAction(true);
 		veh2.setTransportStatus(10);
-		
+
 		vehicleDAO.addVehicle(veh1);
 		vehicleDAO.addVehicle(veh2);	
 	}
@@ -152,151 +134,98 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown() throws SQLException
 	{
-		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
-		deleteTable(TransportDAO.TABLE_NAME);
-		deleteTable(MobilePhoneDAO.TABLE_NAME);
-		deleteTable(LocationDAO.TABLE_NAME);
-		deleteTable(CallerDAO.TABLE_NAME);
-		deleteTable(UserLoginDAO.TABLE_NAME);
-		deleteTable(StaffMemberDAO.TABLE_NAME);
-		deleteTable(CompetenceDAO.TABLE_NAME);
-		deleteTable(VehicleDAO.TABLE_NAME);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
+//		deleteTable(TransportDAO.TABLE_NAME);
+//		deleteTable(MobilePhoneDAO.TABLE_NAME);
+//		deleteTable(LocationDAO.TABLE_NAME);
+//		deleteTable(CallerDAO.TABLE_NAME);
+//		deleteTable(UserLoginDAO.TABLE_NAME);
+//		deleteTable(StaffMemberDAO.TABLE_NAME);
+//		deleteTable(CompetenceDAO.TABLE_NAME);
+//		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
 	@Test
 	public void testInsertTransport() throws SQLException
 	{
-		//fromStreet, fromCity, plannedLocation, dateOfTransport, plannedStartOfTransport, transportPriority, direction
-		Transport  transport3 = new Transport("vonStraﬂe3","vonStadt3",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
-
 		long dateTime1 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
 		long dateTime2 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
-
-		transport3.setCreationTime(dateTime1);
-		transport3.setAppointmentTimeAtDestination(dateTime2);
-		transport3.setAssistantPerson(true);
-		transport3.setBackTransport(true);
-		transport3.setBlueLightToGoal(true);
-		transport3.setBrkdtAlarming(true);
-		transport3.setCallerDetail(caller1);
-		transport3.setCreatedByUsername("user1");
-		transport3.setDfAlarming(true);
-		transport3.setDirection(2);
-		transport3.setEmergencyDoctorAlarming(true);
-		transport3.setEmergencyPhone(true);
-		transport3.setFeedback("feedbackNew");
-		transport3.setFirebrigadeAlarming(true);
-		transport3.setHelicopterAlarming(true);
-		transport3.setKindOfIllness("Schlaganfall");
-		transport3.setKindOfTransport("Tragsessel");
-		transport3.setLongDistanceTrip(true);
-		transport3.setMountainRescueServiceAlarming(true);
-		transport3.setNotes("thenotes");
-
-		Patient patient1 = new Patient("Muster","Max");
-		transport3.setPatient(patient1);
-
-		transport3.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
-		transport3.setPoliceAlarming(true);
-		transport3.setProgramStatus(1);
-		transport3.setToCity("toCity");
-		transport3.setToStreet("toStreet");
-		//set transport number not possible
-		transport3.setTransportPriority("C");
-		//set transport year not possible
-
-		//realLocation and vehicle is for a new transport not possible
-
+		int transportId;
 		//insert the transport
-		int trId3 = transportDAO.addTransport(transport3);
-		
-		System.out.println("iiiiiiiiiiiiiiiiiiiii transportid3: " +trId3);
-
-		Transport transport4 = transportDAO.getTransportById(trId3);
-
-		assertEquals(location1,transport4.getPlanedLocation());
-		assertEquals(dateTime1,transport4.getCreationTime());
-		assertEquals(dateTime2,transport4.getAppointmentTimeAtDestination());
-		assertEquals(caller1,transport4.getCallerDetail());
-		assertEquals("user1",transport4.getCreatedByUsername());
-		assertEquals(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),transport4.getDateOfTransport());
-		assertEquals(MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),transport4.getPlannedStartOfTransport());
-		assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport4.getPlannedTimeAtPatient());
-		assertEquals(2,transport4.getDirection());
-		assertEquals("feedbackNew",transport4.getFeedback());
-		assertEquals("vonStadt3",transport4.getFromCity());
-		assertEquals("vonStraﬂe3",transport4.getFromStreet());
-		assertEquals("Schlaganfall",transport4.getKindOfIllness());
-		assertEquals("Tragsessel",transport4.getKindOfTransport());
-		assertEquals("thenotes",transport4.getNotes());
-		assertEquals(patient1,transport4.getPatient());
-		assertEquals("toCity",transport4.getToCity());
-		assertEquals("toStreet",transport4.getToStreet());
-		assertEquals("C",transport4.getTransportPriority());
-		assertEquals(1,transport4.getProgramStatus());
-
-		System.out.println("TransportDAOMySQLTest, testInsertTransport, isAssistantPerson: " +transport4.isAssistantPerson());
-		assertTrue(transport4.isAssistantPerson());
-		assertTrue(transport4.isBackTransport());
-		assertTrue(transport4.isBlueLightToGoal());
-		assertTrue(transport4.isBrkdtAlarming());
-		assertTrue(transport4.isDfAlarming());
-		assertTrue(transport4.isEmergencyDoctorAlarming());
-		assertTrue(transport4.isEmergencyPhone());
-		assertTrue(transport4.isFirebrigadeAlarming());
-		assertTrue(transport4.isHelicopterAlarming());
-		assertTrue(transport4.isLongDistanceTrip());
-		assertTrue(transport4.isMountainRescueServiceAlarming());
-		assertTrue(transport4.isPoliceAlarming());
-		
-		
-		//add a second transport
-		Transport  transport7 = new Transport("vonStraﬂe2","vonStadt2",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
-
-		transport7.setCreationTime(dateTime1);
-		transport7.setAppointmentTimeAtDestination(dateTime2);
-		transport7.setAssistantPerson(true);
-		transport7.setBackTransport(true);
-		transport7.setBlueLightToGoal(true);
-		transport7.setBrkdtAlarming(true);
-		
-		transport7.setCallerDetail(caller1);
-		transport7.setCreatedByUsername("user2");
-		transport7.setDfAlarming(true);
-		transport7.setDirection(2);
-		transport7.setEmergencyDoctorAlarming(true);
-		transport7.setEmergencyPhone(true);
-		transport7.setFeedback("feedbackNew");
-		transport7.setFirebrigadeAlarming(true);
-		transport7.setHelicopterAlarming(true);
-		transport7.setKindOfIllness("Schlaganfall");
-		transport7.setKindOfTransport("Tragsessel");
-		transport7.setLongDistanceTrip(true);
-		transport7.setMountainRescueServiceAlarming(true);
-		transport7.setNotes("thenotes");
-		Patient patient2 = new Patient("Muster","Max");
-		transport7.setPatient(patient2);
-
-		transport7.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
-		transport7.setPoliceAlarming(true);
-		transport7.setProgramStatus(1);
-		transport7.setToCity("toCity");
-		transport7.setToStreet("toStreet");
-		//set transport number not possible
-		transport7.setTransportPriority("C");
-		//set transport year not possible
-
-		//realLocation and vehicle is for a new transport not possible
-
-		//insert the transport
-		int trId7 = transportDAO.addTransport(transport7);
-		System.out.println("iiiiiiiiiiiiiiiiiiiii transportid7: " +trId7);
+		{
+			Transport transport3 = new Transport("vonStraﬂe3","vonStadt3",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
+			transport3.setCreationTime(dateTime1);
+			transport3.setAppointmentTimeAtDestination(dateTime2);
+			transport3.setAssistantPerson(true);
+			transport3.setBackTransport(true);
+			transport3.setBlueLightToGoal(true);
+			transport3.setBrkdtAlarming(true);
+			transport3.setCallerDetail(caller1);
+			transport3.setCreatedByUsername("user1");
+			transport3.setDfAlarming(true);
+			transport3.setDirection(2);
+			transport3.setEmergencyDoctorAlarming(true);
+			transport3.setEmergencyPhone(true);
+			transport3.setFeedback("feedbackNew");
+			transport3.setFirebrigadeAlarming(true);
+			transport3.setHelicopterAlarming(true);
+			transport3.setKindOfIllness("Schlaganfall");
+			transport3.setKindOfTransport("Tragsessel");
+			transport3.setLongDistanceTrip(true);
+			transport3.setMountainRescueServiceAlarming(true);
+			transport3.setNotes("thenotes");
+			Patient patient1 = new Patient("Muster","Max");
+			transport3.setPatient(patient1);
+			transport3.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
+			transport3.setPoliceAlarming(true);
+			transport3.setProgramStatus(1);
+			transport3.setToCity("toCity");
+			transport3.setToStreet("toStreet");
+			transport3.setTransportPriority("C");
+			transportId = transportDAO.addTransport(transport3);
+		}
+		{
+			//insert the transport
+			Transport transport4 = transportDAO.getTransportById(transportId);
+			assertEquals(location1,transport4.getPlanedLocation());
+			assertEquals(dateTime1,transport4.getCreationTime());
+			assertEquals(dateTime2,transport4.getAppointmentTimeAtDestination());
+			assertEquals(caller1,transport4.getCallerDetail());
+			assertEquals("user1",transport4.getCreatedByUsername());
+			assertEquals(MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),transport4.getDateOfTransport());
+			assertEquals(MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),transport4.getPlannedStartOfTransport());
+			assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport4.getPlannedTimeAtPatient());
+			assertEquals(2,transport4.getDirection());
+			assertEquals("feedbackNew",transport4.getFeedback());
+			assertEquals("vonStadt3",transport4.getFromCity());
+			assertEquals("vonStraﬂe3",transport4.getFromStreet());
+			assertEquals("Schlaganfall",transport4.getKindOfIllness());
+			assertEquals("Tragsessel",transport4.getKindOfTransport());
+			assertEquals("thenotes",transport4.getNotes());
+			assertEquals("Muster",transport4.getPatient().getFirstname());
+			assertEquals("Max", transport4.getPatient().getLastname());
+			assertEquals("toCity",transport4.getToCity());
+			assertEquals("toStreet",transport4.getToStreet());
+			assertEquals("C",transport4.getTransportPriority());
+			assertEquals(1,transport4.getProgramStatus());
+			assertTrue(transport4.isAssistantPerson());
+			assertTrue(transport4.isBackTransport());
+			assertTrue(transport4.isBlueLightToGoal());
+			assertTrue(transport4.isBrkdtAlarming());
+			assertTrue(transport4.isDfAlarming());
+			assertTrue(transport4.isEmergencyDoctorAlarming());
+			assertTrue(transport4.isEmergencyPhone());
+			assertTrue(transport4.isFirebrigadeAlarming());
+			assertTrue(transport4.isHelicopterAlarming());
+			assertTrue(transport4.isLongDistanceTrip());
+			assertTrue(transport4.isMountainRescueServiceAlarming());
+			assertTrue(transport4.isPoliceAlarming());
+		}
 	}
-
 
 	@Test
 	public void testListTransports() throws SQLException
@@ -307,12 +236,10 @@ public class TransportDAOMySQLTest extends DBTestBase
 		cal.setTimeInMillis(MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat));
 		cal.add(Calendar.DAY_OF_MONTH, 1);
 		long endTime = cal.getTimeInMillis();
-		List<Transport> list = new ArrayList<Transport>();
-		list = transportDAO.listTransportsByDateOfTransport(startTime, endTime);
+		//request the listing
+		List<Transport> list = transportDAO.listTransports(startTime, endTime);
 		Assert.assertEquals(2, list.size());
-		System.out.println("......... testListTransports, location: " +list.get(0).getPlanedLocation().getLocationName());
 	}
-
 
 	@Test
 	public void testUpdateTranpsport() throws SQLException
@@ -391,264 +318,114 @@ public class TransportDAOMySQLTest extends DBTestBase
 	}
 
 	@Test
-	public void testAssignVehicleAndGenerateTransportNumbersSameLocation() throws SQLException
+	public void testGenerateTransportNumber() throws SQLException
 	{
-		//assign a vehicle and request a transport number
-		transport1.setVehicleDetail(veh1);
-		assertEquals(0,transport1.getTransportNumber());
+		//TODO: Generated transport numbers for the same locations are equal
+		//TODO: but they should not, cant find the mistake.
 		
-		//generate a transport number
-		int transportNr = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);
+		//generate a transport numberer
+		transport1.setVehicleDetail(veh1);
+		transport1.getVehicleDetail().setCurrentStation(location1);
+		int transportNr = transportDAO.generateTransportNumber(transport1);
 		transport1.setTransportNumber(transportNr);
 		System.out.println("Generated transport ID:"+transportNr);
 		//get the transport again and check the transport number
 		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
 		assertEquals(transportNr,tr1new.getTransportNumber());
-		
+
 		//second transport - same vehicle/same location -->higher transport number
 		transport2.setVehicleDetail(veh1);
-		transportNr = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport2);
+		transport2.getVehicleDetail().setCurrentStation(location1);
+		transportNr = transportDAO.generateTransportNumber(transport2);
 		System.out.println("Generated transport ID:"+transportNr);
 		transport2.setTransportNumber(transportNr);
 		//get the transport again and check the transport number
 		Transport tr2new = transportDAO.getTransportById(transport2.getTransportId());
 		assertEquals(transportNr,tr2new.getTransportNumber());
+		
+		//numbers must be different
+		Assert.assertTrue(tr2new.getTransportNumber() > tr1new.getTransportNumber());
 	}
-	
+
 	@Test
-	public void testAssignVehicleAndGenerateTransportNumbersDifferentLocation() throws SQLException
+	public void testGenerateTransportNumbersDifferentLocation() throws SQLException
 	{
 		//assign a vehicle and request a transport number
 		transport1.setVehicleDetail(veh1);
+		transport1.getVehicleDetail().setCurrentStation(location1);
 		assertEquals(0,transport1.getTransportNumber());
-		
-		int transportNr = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);
+
+		//generate a transport number
+		int transportNr = transportDAO.generateTransportNumber(transport1);
 		transport1.setTransportNumber(transportNr);
 		System.out.println("Generated transport ID:"+transportNr);
-		assertEquals(1,transport1.getTransportNumber());
 		//get the transport again and check the transport number
 		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
 		assertEquals(transportNr,tr1new.getTransportNumber());
-		
-		//second transport - same vehicle/different location -->new transport number
-		transport2.setVehicleDetail(veh2);
-		transportNr = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport2);
+
+		//second transport - same vehicle/different location 
+		transport2.setVehicleDetail(veh1);
+		transport2.getVehicleDetail().setCurrentStation(location2);
+		transportNr = transportDAO.generateTransportNumber(transport2);
+		System.out.println("Generated transport ID:"+transportNr);
 		transport2.setTransportNumber(transportNr);
-		System.out.println("Generated transport Nr:"+transportNr);
 		//get the transport again and check the transport number
 		Transport tr2new = transportDAO.getTransportById(transport2.getTransportId());
 		assertEquals(transportNr,tr2new.getTransportNumber());
-	}
-
-	@Test
-	public void testAssignVehicleToTransport() throws SQLException
-	{
-		{
-			Transport  transport3 = new Transport("vonStraﬂe3","vonStadt3",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
-
-			long dateTime1 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
-			long dateTime2 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
-
-			transport3.setCreationTime(dateTime1);
-			transport3.setAppointmentTimeAtDestination(dateTime2);
-			transport3.setAssistantPerson(true);
-			transport3.setBackTransport(true);
-			transport3.setBlueLightToGoal(true);
-			transport3.setBrkdtAlarming(true);
-
-			transport3.setCallerDetail(caller1);
-			transport3.setCreatedByUsername("user2");
-			transport3.setDfAlarming(true);
-			transport3.setDirection(2);
-			transport3.setEmergencyDoctorAlarming(true);
-			transport3.setEmergencyPhone(true);
-			transport3.setFeedback("feedbackNew");
-			transport3.setFirebrigadeAlarming(true);
-			transport3.setHelicopterAlarming(true);
-			transport3.setKindOfIllness("Schlaganfall");
-			transport3.setKindOfTransport("Tragsessel");
-			transport3.setLongDistanceTrip(true);
-			transport3.setMountainRescueServiceAlarming(true);
-			transport3.setNotes("thenotes");
-
-			Patient patient1 = new Patient("Muster","Max");
-			transport3.setPatient(patient1);
-
-			transport3.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
-			transport3.setPoliceAlarming(true);
-			transport3.setProgramStatus(1);
-			transport3.setToCity("toCity");
-			transport3.setToStreet("toStreet");
-			//set transport number not possible
-			transport3.setTransportPriority("C");
-			//set transport year not possible
-
-
-
-			//insert the transport
-			int trId3 = transportDAO.addTransport(transport3);
-
-			Transport transportNew = transportDAO.getTransportById(trId3);
-			
-			transportNew.setVehicleDetail(veh2);
-
-			int trNumber0 = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transportNew);
-
-			Transport transport5 = transportDAO.getTransportById(trId3);
-			
-			assertEquals(veh2,transport5.getVehicleDetail());
-			assertNotSame(0,trNumber0);
-			
-		}
-		
-		{
-			Transport  transport3 = new Transport("vonStraﬂe4","vonStadt4",location1,MyUtils.stringToTimestamp("29-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("29-01-2008 14:00", MyUtils.timeAndDateFormat),"C",2);
-
-			long dateTime1 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
-			long dateTime2 = MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat);
-
-			transport3.setCreationTime(dateTime1);
-			transport3.setAppointmentTimeAtDestination(dateTime2);
-			transport3.setAssistantPerson(true);
-			transport3.setBackTransport(true);
-			transport3.setBlueLightToGoal(true);
-			transport3.setBrkdtAlarming(true);
-
-			CallerDetail caller1Detail = new CallerDetail("anrufer1","0664-132435");
-			transport3.setCallerDetail(caller1Detail);
-			transport3.setCreatedByUsername("user1");//to differ between the two transports
-			transport3.setDfAlarming(true);
-			transport3.setDirection(2);
-			transport3.setEmergencyDoctorAlarming(true);
-			transport3.setEmergencyPhone(true);
-			transport3.setFeedback("feedbackNew");
-			transport3.setFirebrigadeAlarming(true);
-			transport3.setHelicopterAlarming(true);
-			transport3.setKindOfIllness("Schlaganfall");
-			transport3.setKindOfTransport("Tragsessel");
-			transport3.setLongDistanceTrip(true);
-			transport3.setMountainRescueServiceAlarming(true);
-			transport3.setNotes("thenotes");
-
-			Patient patient1 = new Patient("Muster","Max");
-			transport3.setPatient(patient1);
-
-			transport3.setPlannedTimeAtPatient(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
-			transport3.setPoliceAlarming(true);
-			transport3.setProgramStatus(1);
-			transport3.setToCity("toCity");
-			transport3.setToStreet("toStreet");
-			//set transport number not possible
-			transport3.setTransportPriority("C");
-			//set transport year not possible
-
-
-
-			//insert the transport
-			int trId3 = transportDAO.addTransport(transport3);
-
-			//assign the vehicle
-			VehicleDetail veh2 = new VehicleDetail();
-			veh2.setBasicStation(location1);
-			veh2.setCurrentStation(location1);//same location as first transport --> transport number +1
-			veh2.setDriver(member1);
-			veh2.setMobilPhone(phone1);
-			veh2.setReadyForAction(true);
-			veh2.setTransportStatus(10);
-			veh2.setVehicleName("Bm11");
-			veh2.setVehicleType("KTW");
-
-			Transport transportBack = transportDAO.getTransportById(trId3);
-			
-			transportBack.setVehicleDetail(veh2);
-
-			int trNumber0 = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transportBack);
-
-			Transport transport5 = transportDAO.getTransportById(trId3);
-
-			System.out.println("transportID (old) zwei :..::::: " +trId3);
-
-			System.out.println("Transportnumber: ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ " +transport5.getTransportNumber());
-			System.out.println("Transportnumber: ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ " +trNumber0);
-			
-			
-			assertEquals(veh2,transport5.getVehicleDetail());
-			assertNotSame(0,trNumber0);
-		}
 	}
 
 	@Test
 	public void testRemoveVehicleFromTransport() throws SQLException
 	{
-		//assign a vehicle to the transport
-		transport1.setVehicleDetail(veh1);
-		transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);
-		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
-		assertEquals(1,tr1new.getTransportNumber());
-
 		//remove the vehicle from the transport
-		assertTrue(transportDAO.removeVehicleFromTransport(tr1new));
-		
-		//get the updated transport back from the db
-		Transport transportBackFromDBAfterRemove = transportDAO.getTransportById(tr1id);
-		
-		//compare the transport number (should be 0)
-		assertEquals(0,transportBackFromDBAfterRemove.getTransportNumber());
-		
-		
-		/**test assignVehicleAndGenerateTransportNumber - get transport number from tmptransports- table*/
-		//assign the vehicle again
-		transport1.setVehicleDetail(veh1);
-		transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);
-		Transport tr1new2 = transportDAO.getTransportById(transport1.getTransportId());
-		assertEquals(1,tr1new2.getTransportNumber());//should be the same number as bevore (now from tmp table)
-		
+		transport1.clearVehicleDetail();
+		transport1.setTransportNumber(456);
+		transportDAO.removeVehicleFromTransport(transport1);
+		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
+		assertNull(tr1new.getVehicleDetail());
+		assertEquals(0,tr1new.getTransportNumber());
 	}
-
-
+	
 	@Test
-	public void testCancelTransport()
+	public void insertRemoveInsertTest() throws SQLException
 	{
+		//insert a new transport, location1
+		transport1.setVehicleDetail(veh1);
+		transport1.getVehicleDetail().setCurrentStation(location1);
+		int transportNr = transportDAO.generateTransportNumber(transport1);
+		transport1.setTransportNumber(transportNr);
 		
-
+		//remove the vehicle and archive the transport
+		transport1.clearVehicleDetail();
+		transportDAO.removeVehicleFromTransport(transport1);
+		
+		//add a new transport, same location -> must have the old ID
+		transport2.setVehicleDetail(veh1);
+		transport2.getVehicleDetail().setCurrentStation(location1);
+		int transportNr1 = transportDAO.generateTransportNumber(transport2);
+		
+		assertEquals(transportNr, transportNr1);
 	}
-
-
-//	@Test
-//	public void testGetTransportsFromVehicle()
-//	{
-
-//	}
-
-
-//	@Test
-//	public void testListArchivedTransports()
-//	{
-
-//	}
-
-//	@Test
-//	public void testAddTransportState()
-//	{
-
-//	}
-
-//	@Test
-//	public void testAssignTransportstate()
-//	{
-
-//	}
-
-//	@Test
-//	public void testRemoveTransportstate()
-//	{
-
-//	}
-
-//	@Test
-//	public void testUpdateTransportstate()
-//	{
-
-//	}
-
+	
+	@Test
+	public void insertCancleInsertTest() throws SQLException
+	{
+		//insert a new transport, location1
+		transport1.setVehicleDetail(veh1);
+		transport1.getVehicleDetail().setCurrentStation(location1);
+		int transportNr = transportDAO.generateTransportNumber(transport1);
+		System.out.println("TransportID: "+transportNr);
+		transport1.setTransportNumber(transportNr);
+		
+		//cancle the transport
+		transport1.setTransportNumber(Transport.TRANSPORT_CANCLED);
+		transportDAO.cancelTransport(transport1);
+		
+		//add a new transport, same location -> must have the old ID
+		transport2.setVehicleDetail(veh1);
+		transport2.getVehicleDetail().setCurrentStation(location1);
+		int transportNr1 = transportDAO.generateTransportNumber(transport2);
+		System.out.println("TransportID: "+transportNr1);
+		assertEquals(transportNr, transportNr1);
+	}
 }

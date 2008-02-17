@@ -2,6 +2,7 @@ package at.rc.tacos.core.db.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+
 import at.rc.tacos.model.Transport;
 
 public interface TransportDAO 
@@ -21,13 +22,13 @@ public interface TransportDAO
     public int addTransport(Transport transport) throws SQLException;
     
     /**
-     * Assigns a transport to a vehicle and returns the transport number.
-     * The returned transport number is not unique and individual for each location.
-     * The transport number is calculated by the current year and the highest not canceled transport number of a station.
+     * Assigns a vehicle to a transport and calculates the transport number.<br>
+     * The returned transport number is not unique and individual for each location.<br>
+     * Please see the <b>sql/calculateTransportNr.txt</b> for more details.
      * @param transport the transport to assign
      * @return the transport number.
      */
-    public int assignVehicleToTransportAndGenerateTransportNumber(Transport transport) throws SQLException;
+    public int generateTransportNumber(Transport transport) throws SQLException;
     
     /**
      * removes an assigned vehicle from a transport
@@ -35,14 +36,6 @@ public interface TransportDAO
      * @return true if everything was successful
      */
     public boolean removeVehicleFromTransport(Transport transport) throws SQLException;
-    
-//    /**
-//     * Stores the actual transport in the log table and prevents modification of the transport in the future.
-//     * This method deletes the current transportId out of the transport table and moves the transport to the log.
-//     * @param transport the transport to archive
-//     * @return true if the archive was successfully
-//     */
-//    public boolean archiveTransport(Transport transport) throws SQLException;
     
     /**    
      * Updates a given transport.<br>
@@ -53,7 +46,9 @@ public interface TransportDAO
     public boolean updateTransport(Transport transport) throws SQLException;
     
     /**
-     * Cancels the transport and stores the used transport number in the dummy table so that the transport number can be reused.
+     * Cancels the transport and stores the used transport number in the dummy table.<br>
+     * This method will either write <code>Transport.TRANSPORT_CANCLED</code> oder <code>Transport.TRANSPORT_FORWARD</code> into the databse.
+     * This is dependen onwich value is in the transportNr given to the method.
      * @param transport the transport to cancel.
      * @return true if the cancel was successful.
      */
@@ -65,15 +60,15 @@ public interface TransportDAO
      * @param enddate the end date
      * @return the list of transports in the given interval.
      */
-    public List<Transport> listTransportsByDateOfTransport(long startdate, long enddate) throws SQLException;
-    
+    public List<Transport> listTransports(long startdate, long enddate) throws SQLException;
+        
     /**
-     * Returns all archived transports in the given interval.
+     * Returns all transports in the given intervall with the status PROGRAM_STATUS_JOURNAL.
      * @param startdate the start date
      * @param enddate the end date
-     * @return the list of archived transports in the given interval.
+     * @return the list of archived transports
      */
-    public List<Transport> listArchivedTransports(long startdate, long enddate) throws SQLException;
+    public List<Transport> listArchivedTransports(long startdate,long enddate) throws SQLException;
     
     /**
      * Returns a list of all transports associated with the given vehicle
@@ -82,37 +77,11 @@ public interface TransportDAO
      * @return the list of transports
      */
     public List<Transport> getTransportsFromVehicle(String vehicleName) throws SQLException;
-    
-    /**
-     * Assigns a new transport state to an existing transport
-     * @param transport
-     * @return boolean if insert was successful or not
-     */
-    public boolean assignTransportstate(Transport transport) throws SQLException;
-    
-    /**
-     * updates the time of an existing transport state
-     * @param transport
-     * @return boolean if insert was successful or not
-     */
-    public boolean updateTransportstate(Transport transport) throws SQLException;
-    
-    /**
-     * removes an inserted transport state
-     * @param transport
-     * @return boolean if remove was successful or not
-     */
-    public boolean removeTransportstate(Transport transport) throws SQLException;
+ 
     /**
      * Returns a transport searched by id
      * @param id the id of the transport
      * @return transport
      */
     public Transport getTransportById(int transportId) throws SQLException;
-    /**
-     * Returns the new transport number
-     * @param locationname
-     * @return transport number
-     */
-    public int getNewTransportNrForLocation(String locationname) throws SQLException;
 }
