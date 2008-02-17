@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Vehicle added
      */
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
     {
         VehicleDetail vehicle = (VehicleDetail)addObject;
         if(!vehicleDao.addVehicle(vehicle))
@@ -34,7 +35,7 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Vehicle listing
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         List<VehicleDetail> vehicleList = vehicleDao.listVehicles();
@@ -48,7 +49,7 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Remove a vehicle
      */
     @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException,SQLException
     {
         VehicleDetail vehicle = (VehicleDetail)removeObject;
         if(!vehicleDao.removeVehicle(vehicle))
@@ -60,7 +61,7 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Updates a vehicle
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
     {
         VehicleDetail vehicle = (VehicleDetail)updateObject;
         if(!vehicleDao.updateVehicle(vehicle))

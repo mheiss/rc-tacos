@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class LocationListener extends ServerListenerAdapter
 	private LocationDAO locationDao = DaoFactory.MYSQL.createLocationDAO();
 	
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
     {
         Location location = (Location)addObject;
         //add the location
@@ -28,7 +29,7 @@ public class LocationListener extends ServerListenerAdapter
     }
 
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
     {
     	ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
     	List<Location> locationList = locationDao.listLocations();
@@ -39,7 +40,7 @@ public class LocationListener extends ServerListenerAdapter
     }
 
     @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException,SQLException
     {
     	Location location = (Location)removeObject;
     	if(!locationDao.removeLocation(location.getId()))
@@ -48,7 +49,7 @@ public class LocationListener extends ServerListenerAdapter
     }
 
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
     {
     	Location location = (Location)updateObject;
     	if(!locationDao.updateLocation(location))

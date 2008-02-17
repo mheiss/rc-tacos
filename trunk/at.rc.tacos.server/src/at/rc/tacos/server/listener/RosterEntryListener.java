@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,7 +26,7 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Add a roster entry
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
 	{
 		RosterEntry entry = (RosterEntry)addObject;
 		int id = rosterDao.addRosterEntry(entry);
@@ -39,7 +40,7 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Listing of all entries 
 	 */
 	@Override
-	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
+	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		List<RosterEntry> rosterList;
@@ -85,7 +86,7 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Remove a roster entry
 	 */
 	@Override
-	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException
+	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException,SQLException
 	{
 		RosterEntry entry = (RosterEntry)removeObject;
 		if(!rosterDao.removeRosterEntry(entry.getRosterId()))
@@ -97,7 +98,7 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Update a roster entry
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
 	{
 		RosterEntry entry = (RosterEntry)updateObject;
 		if(!rosterDao.updateRosterEntry(entry))

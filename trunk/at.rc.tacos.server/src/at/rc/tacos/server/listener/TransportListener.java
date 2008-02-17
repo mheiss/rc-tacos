@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -19,30 +20,30 @@ import at.rc.tacos.util.MyUtils;
  */
 public class TransportListener extends ServerListenerAdapter
 {
-    private TransportDAO transportDao = DaoFactory.MYSQL.createTransportDAO();
-    
-    /**
-     * Add a transport
-     */
-    @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
-    {
-        Transport transport = (Transport)addObject;
-        int id = transportDao.addTransport(transport);
-        if(id == -1)
-        	throw new DAOException("TransportListener","Failed to add the transport:"+transport);
-        transport.setTransportId(id);
-        return transport;
-    }
+	private TransportDAO transportDao = DaoFactory.MYSQL.createTransportDAO();
 
-    /**
-     * Transport listing
-     */
-    @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)  throws DAOException
-    {
-        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        List<Transport> transportList = null;
+	/**
+	 * Add a transport
+	 */
+	@Override
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+	{
+		Transport transport = (Transport)addObject;
+		int id = transportDao.addTransport(transport);
+		if(id == Transport.TRANSPORT_ERROR)
+			throw new DAOException("TransportListener","Failed to add the transport:"+transport);
+		transport.setTransportId(id);
+		return transport;
+	}
+
+	/**
+	 * Transport listing
+	 */
+	@Override
+	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)  throws DAOException,SQLException
+	{
+		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
+		List<Transport> transportList = null;
 		//if there is no filter -> request all
 		if(queryFilter == null || queryFilter.getFilterList().isEmpty())
 		{
@@ -75,41 +76,39 @@ public class TransportListener extends ServerListenerAdapter
 			list.addAll(transportList);
 		}
 		return list;
-    }
+	}
 
-    /**
-     * Remove a transport
-     */
-    @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)  throws DAOException
-    {
-    	System.out.println("WARNING: Removing of transports is not allowed.");
-    	throw new DAOException("TransportListener","Removing of transports is not allowed.");
-    }
+	/**
+	 * Remove a transport
+	 */
+	@Override
+	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)  throws DAOException,SQLException
+	{
+		System.out.println("WARNING: Removing of transports is not allowed.");
+		throw new DAOException("TransportListener","Removing of transports is not allowed.");
+	}
 
-    /**
-     *  Update a transport
-     */
-    @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException
-    {
-        Transport transport = (Transport)updateObject;
-        //update a transport
-        if(transport.getVehicleDetail() != null && transport.getTransportNumber() == 0)
-        {
-        	System.out.println("Assign car to transport, generating transport number");
-        	transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
-        	int transportNr = transportDao.assignVehicleToTransportAndGenerateTransportNumber(transport);
-        	if (transportNr == -1)
-        		throw new DAOException("TransportListener","Failed to generate a valid transport number for transport "+transport);
-        	transport.setTransportNumber(transportNr);
-        }
-        else
-        {
-        	//send a simple update request to the dao
-        	if(!transportDao.updateTransport(transport))
-        		throw new DAOException("TransportListener","Failed to update the transport: "+transport);
-        }
-        return transport;
-    }
+	/**
+	 *  Update a transport
+	 */
+	@Override
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException,SQLException
+	{
+		Transport transport = (Transport)updateObject;
+		//update a transport
+		if(transport.getVehicleDetail() != null && transport.getTransportNumber() == 0)
+		{
+			System.out.println("Assign car to transport, generating transport number");
+			transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
+			int transportNr = transportDao.assignVehicleToTransportAndGenerateTransportNumber(transport);
+			if (transportNr == Transport.TRANSPORT_ERROR)
+				throw new DAOException("TransportListener","Failed to generate a valid transport number for transport "+transport);
+			transport.setTransportNumber(transportNr);
+		}
+		//send a simple update request to the dao
+		if(!transportDao.updateTransport(transport))
+			throw new DAOException("TransportListener","Failed to update the transport: "+transport);
+
+		return transport;
+	}
 }
