@@ -92,7 +92,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				return Transport.TRANSPORT_ERROR;
 			transport.setTransportId(rs.getInt(1));
 			//assign the transport items!
-			assignTransportItems(transport);
+			if(!assignTransportItems(transport))
+				return Transport.TRANSPORT_ERROR;
 			return transport.getTransportId();
 		}
 		finally
@@ -744,11 +745,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		Connection connection = source.getConnection();
 		try
 		{
-			System.out.println("addTransportItem");
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.selectedTransportItem"));
-			System.out.println("selectedId: "+selectedId);
 			query.setInt(1, selectedId);
-			System.out.println("transportId: "+transportId);
 			query.setInt(2, transportId);			
 			if(query.executeUpdate() == 0)
 				return false;
@@ -769,7 +767,10 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	{
 		//removes all selected transports for specific transportId
 		if(!removeTransportItems(transport))
+		{
+			System.out.println("Failed to clear the selected transports");
 			return false;
+		}
 
 		if(transport.isEmergencyDoctorAlarming() == true)
 			addTransportItem(transport.getTransportId(), 1);
@@ -811,9 +812,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		{
 			final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("remove.AllSelectedTransportItems"));
 			query1.setInt(1, transport.getTransportId());
-			//assert the remove of the item was successfully
-			if(query1.executeUpdate() == 0)
-				return false;
+			query1.executeUpdate();
 			return true;
 		}
 		finally
@@ -860,9 +859,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		{
 			final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("remove.transportstate"));
 			query1.setInt(1, transport.getTransportId());
-			//assert the remove was successfully
-			if(query1.executeUpdate() == 0)
-				return false;
+			//remove the transport state
+			query1.executeUpdate();
 			return true;
 		}
 		finally
@@ -1000,19 +998,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
 				query1.setInt(1, transport.getTransportId());
 				final ResultSet rs1 = query1.executeQuery();
-
-				transport.setEmergencyDoctorAlarming(false);
-				transport.setPoliceAlarming(false);
-				transport.setFirebrigadeAlarming(false);
-				transport.setMountainRescueServiceAlarming(false);
-				transport.setDfAlarming(false);
-				transport.setBrkdtAlarming(false);
-				transport.setBlueLightToGoal(false);
-				transport.setHelicopterAlarming(false);
-				transport.setAssistantPerson(false);
-				transport.setBackTransport(false);
-				transport.setLongDistanceTrip(false);
-				transport.setEmergencyPhone(false);
 				while(rs1.next())
 				{
 					System.out.println("TransportDAOMySQL, getTransportsByID, selected_ID: " +rs1.getInt("selected_ID"));
@@ -1062,7 +1047,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-
 
 	private boolean executeTheTransportUpdateQuery(Transport transport) throws SQLException
 	{

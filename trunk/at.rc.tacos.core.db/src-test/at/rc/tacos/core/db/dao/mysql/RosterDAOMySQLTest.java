@@ -34,6 +34,7 @@ public class RosterDAOMySQLTest extends DBTestBase
 	//the dao class
 	private final RosterDAO rosterDao = DaoFactory.MYSQL.createRosterEntryDAO();
     private final UserLoginDAO loginDAO = DaoFactory.MYSQL.createUserDAO();
+    private final StaffMemberDAO staffDAO = DaoFactory.MYSQL.createStaffMemberDAO();
 	private final MobilePhoneDAO mobilePhoneDAO = DaoFactory.MYSQL.createMobilePhoneDAO();
 	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
 	private final CompetenceDAO competenceDAO = DaoFactory.MYSQL.createCompetenceDAO();
@@ -102,11 +103,12 @@ public class RosterDAOMySQLTest extends DBTestBase
         location1.setId(locId1);
         location2.setId(locId2);
         
-        //assign the logins to the staff members
-        login1.setUserInformation(member1);
-        login2.setUserInformation(member2);
+        //add the logins
         loginDAO.addLogin(login1);
         loginDAO.addLogin(login2);
+        //add the staff members
+        staffDAO.addStaffMember(member1);
+        staffDAO.addStaffMember(member2);
         
         //set the user who create the entry
         entry1.setCreatedByUsername("user1");

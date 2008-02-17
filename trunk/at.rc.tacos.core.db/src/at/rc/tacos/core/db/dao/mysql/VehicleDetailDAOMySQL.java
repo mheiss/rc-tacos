@@ -71,7 +71,6 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
 				vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
 				vehicle.setVehicleNotes(rs.getString("v.note"));
-				vehicle.setTransportStatus(rs.getInt("v.transportStatus"));
 				//the mobile phone for the vehicle
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("v.phonenumber_ID"));

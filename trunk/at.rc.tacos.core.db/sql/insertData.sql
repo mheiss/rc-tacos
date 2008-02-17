@@ -1,4 +1,6 @@
 -- Insert data scrip, version 1.5
+-- last changed:
+-- moved the transport states to the createTable script. 
 
 -- Sercive types
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(1, 'Hauptamtlich');
@@ -32,20 +34,6 @@ INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('m.heiß', 'pwd', 'Administrator', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('u.nech', 'pwd', 'Administrator', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('user3', 'P@ssw0rd', 'Benutzer', false, false);
-
--- notifiers
-INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');
-INSERT INTO selected(selected_ID, name) VALUES(2, 'Exekutive');
-INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
-INSERT INTO selected(selected_ID, name) VALUES(4, 'Bergrettung');
-INSERT INTO selected(selected_ID, name) VALUES(5, 'Dienstführender');
-INSERT INTO selected(selected_ID, name) VALUES(6, 'Bezirksrettungskommandant');
-INSERT INTO selected(selected_ID, name) VALUES(7, 'Blaufahrt');
-INSERT INTO selected(selected_ID, name) VALUES(8, 'Hubschrauber');
-INSERT INTO selected(selected_ID, name) VALUES(9, 'Begleitperson');
-INSERT INTO selected(selected_ID, name) VALUES(10, 'Ruecktransport');
-INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
-INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
 
 --diseases
 INSERT INTO disease(disease_ID, disease) VALUES(1, 'Knochenbruch');

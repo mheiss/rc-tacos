@@ -24,7 +24,7 @@ public class JobDAOMySQLTest extends DBTestBase
     @Before
     public void setUp() throws SQLException
     {
-    	job1 = new Job("job2");
+    	job1 = new Job("job1");
     	job2 = new Job("job2");
         //insert test data
         int id1 = jobDao.addJob(job1);
