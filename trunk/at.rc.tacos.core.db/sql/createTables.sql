@@ -1,6 +1,7 @@
 -- Create table script version 1.5, lastChanged: 17.02.2008
 -- last changed:
 -- inserted the transport states inserts in the script
+-- changed the locationame in the assigned_vehicles to location_id
 
 CREATE TABLE servicetype (
   servicetype_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -40,6 +41,7 @@ CREATE TABLE selected (
   PRIMARY KEY(selected_ID)
 )
 TYPE=InnoDB;
+
 -- Insert the possible values for the selected table
 -- Do NOT clear this table
 INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');
@@ -76,8 +78,8 @@ VALUES(null, 'Herr Maier', '0342 - 12345');
 
 CREATE TABLE tmptransports (
   transportNr INTEGER UNSIGNED NOT NULL,
-  location VARCHAR(50) NOT NULL,
-  PRIMARY KEY(transportNr,location)
+  location_ID INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(transportNr,location_ID)
 )
 TYPE=InnoDB;
 
@@ -362,7 +364,7 @@ CREATE TABLE assigned_vehicle (
   medic2_ID INTEGER UNSIGNED NULL,
   medic1_ID INTEGER UNSIGNED NULL,
   driver_ID INTEGER UNSIGNED NULL,
-  locationname VARCHAR(30) NULL,
+  location_ID INTEGER UNSIGNED NULL,
   note TEXT NULL,
   vehicletype VARCHAR(30) NULL,
   PRIMARY KEY(transport_ID),
