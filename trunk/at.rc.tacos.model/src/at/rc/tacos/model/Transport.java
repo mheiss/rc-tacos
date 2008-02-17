@@ -25,6 +25,11 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	//Transport stati
 	public final static int TRANSPORT_CANCLED = -1;
 	public final static int TRANSPORT_FORWARD = -2;
+	
+	/**
+	 * Indicates an error while operation with the transport DAO
+	 */
+	public final static int TRANSPORT_ERROR = -3;
 
 	//Type of transports to display
 	public final static String TRANSPORT_PROGRESS = "TRANSPORT_PROGRESS";
