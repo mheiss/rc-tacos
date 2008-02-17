@@ -63,7 +63,7 @@ public class TransportListener extends ServerListenerAdapter
 			long dateEnd = calEnd.getTimeInMillis();
 			//show current transports that are in progress
 			if(Transport.TRANSPORT_PROGRESS.equalsIgnoreCase(type))
-				transportList = transportDao.listTransportsByDateOfTransport(dateStart, dateEnd);
+				transportList = transportDao.listTransports(dateStart, dateEnd);
 			//show the transports in the journal
 			else if(Transport.TRANSPORT_JOURNAL.equalsIgnoreCase(type))
 				transportList = transportDao.listArchivedTransports(dateStart, dateEnd);
@@ -95,16 +95,34 @@ public class TransportListener extends ServerListenerAdapter
 	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException,SQLException
 	{
 		Transport transport = (Transport)updateObject;
-		//update a transport
+		//generate a transport id if we do not have one
 		if(transport.getVehicleDetail() != null && transport.getTransportNumber() == 0)
 		{
 			System.out.println("Assign car to transport, generating transport number");
 			transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
-			int transportNr = transportDao.assignVehicleToTransportAndGenerateTransportNumber(transport);
+			int transportNr = transportDao.generateTransportNumber(transport);
 			if (transportNr == Transport.TRANSPORT_ERROR)
 				throw new DAOException("TransportListener","Failed to generate a valid transport number for transport "+transport);
 			transport.setTransportNumber(transportNr);
 		}
+		
+		//STORNO OR FORWARD
+		if(transport.getTransportNumber() == Transport.TRANSPORT_CANCLED 
+				|| transport.getTransportNumber() == Transport.TRANSPORT_FORWARD)
+		{
+			System.out.println("CANCEL OR FORWARD TRANSPORT");
+			if(!transportDao.cancelTransport(transport))
+				throw new DAOException("TransportListner","Failed to cancle the transport "+transport);
+		}
+		
+		//Vehicle is removed but we have a transport number -> cancle
+		if(transport.getVehicleDetail() == null && transport.getTransportNumber() > 0)
+		{
+			System.out.println("vehicle removed, but transport number-> removeVehicle");
+			if(!transportDao.removeVehicleFromTransport(transport))
+				throw new DAOException("TransportListener","Failed to remove the transport from the vehicle");
+		}
+		
 		//send a simple update request to the dao
 		if(!transportDao.updateTransport(transport))
 			throw new DAOException("TransportListener","Failed to update the transport: "+transport);
