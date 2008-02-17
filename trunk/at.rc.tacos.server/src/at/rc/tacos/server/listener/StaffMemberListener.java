@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,24 +19,33 @@ import at.rc.tacos.model.StaffMember;
 public class StaffMemberListener extends ServerListenerAdapter
 {
     private StaffMemberDAO staffDao = DaoFactory.MYSQL.createStaffMemberDAO();
+    
+	@Override
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
+	{
+		StaffMember addMember = (StaffMember)addObject;
+		if(!staffDao.addStaffMember(addMember))
+			throw new DAOException("StaffMemberListener","Failed to add the staff member: "+addMember);
+		return addMember;
+	}
 
 	/**
 	 * Update of a staff member
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException 
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
 	{
-		StaffMember member = (StaffMember)updateObject;
-		if(!staffDao.updateStaffMember(member))
-			throw new DAOException("StaffMemberListener","Failed to update the staff member: "+member);
-		return member;
+		StaffMember updateMember = (StaffMember)updateObject;
+		if(!staffDao.updateStaffMember(updateMember))
+			throw new DAOException("StaffMemberListener","Failed to update the staff member: "+updateMember);
+		return updateMember;
 	}
     
     /**
      * Listing of all members
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         List<StaffMember> memberList;

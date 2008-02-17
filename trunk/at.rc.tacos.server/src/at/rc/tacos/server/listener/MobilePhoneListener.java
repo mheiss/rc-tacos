@@ -1,5 +1,6 @@
 package at.rc.tacos.server.listener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Add a mobile phone
      */    
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)addObject;
         int id = mobilePhoneDao.addMobilePhone(phone);
@@ -36,7 +37,7 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Listing of all mobile phones
      */
     @Override
-    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)  throws DAOException
+    public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)  throws DAOException,SQLException
     {
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         List<MobilePhoneDetail> phoneList = mobilePhoneDao.listMobilePhones();
@@ -50,7 +51,7 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Remove a mobile phone
      */
     @Override
-    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)  throws DAOException
+    public AbstractMessage handleRemoveRequest(AbstractMessage removeObject)  throws DAOException,SQLException
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)removeObject;
         if(!mobilePhoneDao.removeMobilePhone(phone.getId()))
@@ -62,7 +63,7 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Update a mobile phone
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException,SQLException
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)updateObject;
         if(!mobilePhoneDao.updateMobilePhone(phone))
