@@ -70,22 +70,22 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         //set the ids
         location1.setId(id1);
         location2.setId(id2);
-        //assign the logins to the staff members
-        login1.setUserInformation(member1);
+        //set the login test data
         login1.setIslocked(false);
         login1.setAuthorization("Administrator");
-        login2.setUserInformation(member2);
         login2.setIslocked(true);
-        login2.setAuthorization("User");
+        login2.setAuthorization("Benutzer");
         loginDAO.addLogin(login1);
         loginDAO.addLogin(login2);
+        staffMemberDAO.addStaffMember(member1);
+        staffMemberDAO.addStaffMember(member2);
     }
     
     @After
     public void tearDown() throws SQLException
     {
+    	deleteTable(StaffMemberDAO.TABLE_NAME);
         deleteTable(UserLoginDAO.TABLE_NAME);
-        deleteTable(StaffMemberDAO.TABLE_NAME);
         deleteTable(MobilePhoneDAO.TABLE_NAME);
         deleteTable(MobilePhoneDAO.TABLE_DEPENDENT_NAME);
         deleteTable(LocationDAO.TABLE_NAME);
@@ -159,8 +159,6 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
             Login login = loginDAO.getLoginAndStaffmember("user1");
             login.setAuthorization("newAdministrator");
             login.setIslocked(true);
-            login.setUserInformation(member2);
-            login.getUserInformation().setStaffMemberId(member1.getStaffMemberId());
             loginDAO.updateLogin(login);
         }
         {
@@ -168,17 +166,6 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
             Assert.assertEquals(login.getUsername(),"user1");
             Assert.assertEquals("newAdministrator", login.getAuthorization());
             Assert.assertEquals(true, login.isIslocked());
-            Assert.assertEquals("fname2", login.getUserInformation().getFirstName());
-            Assert.assertEquals("lname2", login.getUserInformation().getLastName());
-            Assert.assertEquals("user1", login.getUserInformation().getUserName());
-            Assert.assertEquals("street2", login.getUserInformation().getStreetname());
-            Assert.assertEquals("city2", login.getUserInformation().getCityname());
-            Assert.assertEquals(true, login.getUserInformation().isMale());
-            Assert.assertEquals("mail2",login.getUserInformation().getEMail());
-            Assert.assertEquals(location2, login.getUserInformation().getPrimaryLocation());
-            Assert.assertEquals(1, login.getUserInformation().getPhonelist().size());
-            Assert.assertEquals("phone2",login.getUserInformation().getPhonelist().get(0).getMobilePhoneName());
-            Assert.assertEquals("0664-987654321",login.getUserInformation().getPhonelist().get(0).getMobilePhoneNumber());
         }
     }
     

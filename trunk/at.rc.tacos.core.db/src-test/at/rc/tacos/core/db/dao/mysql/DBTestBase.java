@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
@@ -11,18 +12,21 @@ import at.rc.tacos.core.db.DataSource;
  */
 public class DBTestBase
 {
-    protected void deleteTable(String table)
+	//The data source to get the connection
+	private final DataSource source = DataSource.getInstance();
+	
+    protected void deleteTable(String table) throws SQLException
     {
+    	Connection connection = source.getConnection();
         final String SQL_DELETE = "DELETE FROM " + table;
         try
         {
-            PreparedStatement delteStatement = DataSource.getInstance().getConnection().prepareStatement(SQL_DELETE);
+            PreparedStatement delteStatement = connection.prepareStatement(SQL_DELETE);
             delteStatement.executeUpdate();
         }
-        catch (SQLException e)
+        finally
         {
-            e.printStackTrace();
-            System.out.println("Cannot delete from "+table);
+        	connection.close();
         }
     }
 }

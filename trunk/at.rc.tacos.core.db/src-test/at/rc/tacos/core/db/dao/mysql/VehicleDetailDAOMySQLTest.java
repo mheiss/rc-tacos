@@ -34,6 +34,7 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
 {
     //the dao class
     private final VehicleDAO vehicleDAO = DaoFactory.MYSQL.createVehicleDetailDAO();
+    private final StaffMemberDAO staffDAO = DaoFactory.MYSQL.createStaffMemberDAO();
     private final UserLoginDAO loginDAO = DaoFactory.MYSQL.createUserDAO();
 	private final MobilePhoneDAO mobilePhoneDAO = DaoFactory.MYSQL.createMobilePhoneDAO();
 	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
@@ -85,9 +86,12 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
         login1.setAuthorization("Administrator");
         login2.setUserInformation(member2);
         login2.setIslocked(true);
-        login2.setAuthorization("User");
+        login2.setAuthorization("Benutzer");
         loginDAO.addLogin(login1);
         loginDAO.addLogin(login2);
+        staffDAO.addStaffMember(member1);
+        staffDAO.addStaffMember(member2);
+        
         //insert vehicles
         veh1.setBasicStation(location1);
         veh2.setBasicStation(location2); 

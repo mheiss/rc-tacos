@@ -1,4 +1,7 @@
--- Create table script version 1.5, lastChanged: 28.01.2008
+-- Create table script version 1.5, lastChanged: 17.02.2008
+-- last changed:
+-- inserted the transport states inserts in the script
+
 CREATE TABLE servicetype (
   servicetype_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   servicetype VARCHAR(30) NOT NULL,
@@ -37,6 +40,20 @@ CREATE TABLE selected (
   PRIMARY KEY(selected_ID)
 )
 TYPE=InnoDB;
+-- Insert the possible values for the selected table
+-- Do NOT clear this table
+INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');
+INSERT INTO selected(selected_ID, name) VALUES(2, 'Exekutive');
+INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
+INSERT INTO selected(selected_ID, name) VALUES(4, 'Bergrettung');
+INSERT INTO selected(selected_ID, name) VALUES(5, 'Dienstführender');
+INSERT INTO selected(selected_ID, name) VALUES(6, 'Bezirksrettungskommandant');
+INSERT INTO selected(selected_ID, name) VALUES(7, 'Blaufahrt');
+INSERT INTO selected(selected_ID, name) VALUES(8, 'Hubschrauber');
+INSERT INTO selected(selected_ID, name) VALUES(9, 'Begleitperson');
+INSERT INTO selected(selected_ID, name) VALUES(10, 'Ruecktransport');
+INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
+INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
 
 CREATE TABLE disease (
   disease_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -68,6 +85,24 @@ CREATE TABLE competences (
   competence_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   competence VARCHAR(30) NOT NULL,
   PRIMARY KEY(competence_ID)
+)
+TYPE=InnoDB;
+
+CREATE TABLE location (
+  location_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  phonenumber_ID INTEGER UNSIGNED NOT NULL,
+  locationname VARCHAR(30) NULL,
+  street VARCHAR(30) NULL,
+  streetnumber VARCHAR(10) NULL,
+  zipcode INTEGER UNSIGNED NULL,
+  city VARCHAR(30) NULL,
+  note TEXT NULL,
+  PRIMARY KEY(location_ID),
+  INDEX location_FKIndex1(phonenumber_ID),
+  FOREIGN KEY(phonenumber_ID)
+    REFERENCES phonenumbers(phonenumber_ID)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
 )
 TYPE=InnoDB;
 
@@ -112,24 +147,6 @@ CREATE TABLE dayinfo (
   INDEX dayinfo_FKIndex1(username),
   FOREIGN KEY(username)
     REFERENCES userlogin(username)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE
-)
-TYPE=InnoDB;
-
-CREATE TABLE location (
-  location_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  phonenumber_ID INTEGER UNSIGNED NOT NULL,
-  locationname VARCHAR(30) NULL,
-  street VARCHAR(30) NULL,
-  streetnumber VARCHAR(10) NULL,
-  zipcode INTEGER UNSIGNED NULL,
-  city VARCHAR(30) NULL,
-  note TEXT NULL,
-  PRIMARY KEY(location_ID),
-  INDEX location_FKIndex1(phonenumber_ID),
-  FOREIGN KEY(phonenumber_ID)
-    REFERENCES phonenumbers(phonenumber_ID)
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )

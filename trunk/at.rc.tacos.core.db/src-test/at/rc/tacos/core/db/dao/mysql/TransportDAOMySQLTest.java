@@ -41,6 +41,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
 	private final TransportDAO transportDAO = DaoFactory.MYSQL.createTransportDAO();
 	private final UserLoginDAO loginDAO = DaoFactory.MYSQL.createUserDAO();
+	private final StaffMemberDAO staffDAO = DaoFactory.MYSQL.createStaffMemberDAO();
 	private final CompetenceDAO competenceDAO = DaoFactory.MYSQL.createCompetenceDAO();
 
 	//the test data
@@ -102,18 +103,14 @@ public class TransportDAOMySQLTest extends DBTestBase
 		//set the ids
 		location1.setId(id1);
 		location2.setId(id2);
-
-		//staff member
-
-		//login
-		login1.setUserInformation(member1);
-		login1.setIslocked(false);
-		login1.setAuthorization("Administrator");
-		login2.setUserInformation(member2);
-		login2.setIslocked(true);
-		login2.setAuthorization("User");
+		
+		//logins 
 		loginDAO.addLogin(login1);
 		loginDAO.addLogin(login2);
+		//staff member
+		staffDAO.addStaffMember(member1);
+		staffDAO.addStaffMember(member2);
+		
 		//insert transports
 		transport1.setCreatedByUsername(login1.getUsername());
 		transport2.setCreatedByUsername(login2.getUsername());
@@ -155,7 +152,10 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown() throws SQLException
 	{
+		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
 		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
+		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
 		deleteTable(TransportDAO.TABLE_NAME);
 		deleteTable(MobilePhoneDAO.TABLE_NAME);
 		deleteTable(LocationDAO.TABLE_NAME);
@@ -164,8 +164,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 		deleteTable(StaffMemberDAO.TABLE_NAME);
 		deleteTable(CompetenceDAO.TABLE_NAME);
 		deleteTable(VehicleDAO.TABLE_NAME);
-		//TODO die tmptransports tabelle löschen!
-		//deleteTable(TransportDAO.)
 	}
 
 
@@ -184,8 +182,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 		transport3.setBackTransport(true);
 		transport3.setBlueLightToGoal(true);
 		transport3.setBrkdtAlarming(true);
-
-		
 		transport3.setCallerDetail(caller1);
 		transport3.setCreatedByUsername("user1");
 		transport3.setDfAlarming(true);
@@ -299,7 +295,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 		//insert the transport
 		int trId7 = transportDAO.addTransport(transport7);
 		System.out.println("iiiiiiiiiiiiiiiiiiiii transportid7: " +trId7);
-		
 	}
 
 
@@ -398,46 +393,51 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@Test
 	public void testAssignVehicleAndGenerateTransportNumbersSameLocation() throws SQLException
 	{
-		
-		//a transport which needs a transport number must have a assigned vehicle
-		//first transport
+		//assign a vehicle and request a transport number
 		transport1.setVehicleDetail(veh1);
 		assertEquals(0,transport1.getTransportNumber());
 		
-		transportDAO.updateTransport(transport1);
-		assertEquals(1,transport1.getTransportNumber());
-		
-		//
+		//generate a transport number
+		int transportNr = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);
+		transport1.setTransportNumber(transportNr);
+		System.out.println("Generated transport ID:"+transportNr);
+		//get the transport again and check the transport number
 		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
-		assertEquals(1,tr1new.getTransportNumber());
+		assertEquals(transportNr,tr1new.getTransportNumber());
 		
 		//second transport - same vehicle/same location -->higher transport number
 		transport2.setVehicleDetail(veh1);
-		transportDAO.updateTransport(transport2);
+		transportNr = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport2);
+		System.out.println("Generated transport ID:"+transportNr);
+		transport2.setTransportNumber(transportNr);
+		//get the transport again and check the transport number
 		Transport tr2new = transportDAO.getTransportById(transport2.getTransportId());
-		assertEquals(2,tr2new.getTransportNumber());
+		assertEquals(transportNr,tr2new.getTransportNumber());
 	}
 	
 	@Test
 	public void testAssignVehicleAndGenerateTransportNumbersDifferentLocation() throws SQLException
 	{
-		//a transport which needs a transport number must have a assigned vehicle
-		//first transport
+		//assign a vehicle and request a transport number
 		transport1.setVehicleDetail(veh1);
 		assertEquals(0,transport1.getTransportNumber());
 		
-		transportDAO.updateTransport(transport1);
+		int transportNr = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport1);
+		transport1.setTransportNumber(transportNr);
+		System.out.println("Generated transport ID:"+transportNr);
 		assertEquals(1,transport1.getTransportNumber());
-		
-		//
+		//get the transport again and check the transport number
 		Transport tr1new = transportDAO.getTransportById(transport1.getTransportId());
-		assertEquals(1,tr1new.getTransportNumber());
+		assertEquals(transportNr,tr1new.getTransportNumber());
 		
 		//second transport - same vehicle/different location -->new transport number
 		transport2.setVehicleDetail(veh2);
-		transportDAO.updateTransport(transport2);
+		transportNr = transportDAO.assignVehicleToTransportAndGenerateTransportNumber(transport2);
+		transport2.setTransportNumber(transportNr);
+		System.out.println("Generated transport Nr:"+transportNr);
+		//get the transport again and check the transport number
 		Transport tr2new = transportDAO.getTransportById(transport2.getTransportId());
-		assertEquals(1,tr2new.getTransportNumber());
+		assertEquals(transportNr,tr2new.getTransportNumber());
 	}
 
 	@Test

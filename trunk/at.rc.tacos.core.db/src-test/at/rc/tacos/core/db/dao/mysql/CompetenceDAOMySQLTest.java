@@ -34,7 +34,7 @@ public class CompetenceDAOMySQLTest extends DBTestBase
     }
     
     @After
-    public void tearDown()
+    public void tearDown() throws SQLException
     {
         deleteTable(CompetenceDAO.TABLE_NAME);
     }
