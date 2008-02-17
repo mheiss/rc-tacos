@@ -12,8 +12,22 @@ import java.util.ResourceBundle;
 public class DataSource
 {
     public static final String DB_SETTINGS_BUNDLE_PATH = "at.rc.tacos.core.db.config.db";
-    
+    //the shared instance
     private static DataSource instance;
+    //the params of the config file
+    private String dbDriver,dbHost,dbUser,dbPwd;
+    
+    /**
+     * Default class constructor to load the settings from the file
+     */
+    private DataSource()
+    {
+        //load the settings from the file
+        dbDriver = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.driver");
+        dbHost = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.url");
+        dbUser = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.user");
+        dbPwd = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.pw");
+    }
     
     /**
      * Returns the instance of the database connection
@@ -32,13 +46,7 @@ public class DataSource
      * @return the database connection object
      */
     public Connection getConnection()
-    {
-        //load the settings from the file
-        String dbDriver = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.driver");
-        String dbHost = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.url");
-        String dbUser = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.user");
-        String dbPwd = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.pw");
-        
+    {        
         try
         {
             Class.forName(dbDriver).newInstance();

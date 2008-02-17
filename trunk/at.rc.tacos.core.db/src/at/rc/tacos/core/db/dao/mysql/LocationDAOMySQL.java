@@ -1,72 +1,74 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.model.*;
 
-
 public class LocationDAOMySQL implements LocationDAO
 {
-	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.queries";
+	//The data source to get the connection and the queries file
+	private final DataSource source = DataSource.getInstance();
+	private final Queries queries = Queries.getInstance();
 
 	@Override
-	public Location getLocation(int locationID)
+	public Location getLocation(int locationID) throws SQLException
 	{
-		Location location = new Location();
-		MobilePhoneDetail phone = new MobilePhoneDetail();
+		Connection connection = source.getConnection();
 		try
 		{
 			//lo.location_ID, lo.locationname, lo.street, lo. streetnumber, lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.LocationByID"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.LocationByID"));
 			query.setInt(1, locationID);
 			final ResultSet rs = query.executeQuery();
-
+			//assert we have a result
 			if(rs.first())
 			{
+				Location location = new Location();
 				location.setCity(rs.getString("lo.city"));
 				location.setId(rs.getInt("lo.location_ID"));
 				location.setLocationName(rs.getString("lo.locationname"));
 				location.setNotes(rs.getString("lo.note"));
+				location.setStreet(rs.getString("lo.street"));
+				location.setStreetNumber(rs.getString("lo.streetnumber"));
+				location.setZipcode(rs.getInt("lo.zipcode"));
 
+				//get the mobile phone
+				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
 				phone.setMobilePhoneName(rs.getString("pn.phonename"));
 				phone.setId(rs.getInt("lo.phonenumber_ID"));
 				location.setPhone(phone);
 
-				location.setStreet(rs.getString("lo.street"));
-				location.setStreetNumber(rs.getString("lo.streetnumber"));
-				location.setZipcode(rs.getInt("lo.zipcode"));
+				return location;
 			}
-			else return null;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			//no result
 			return null;
 		}
-		return location;
+		finally
+		{
+			connection.close();
+		}
 	}
 
 
 	@Override
-	public List<Location> listLocations()
+	public List<Location> listLocations() throws SQLException
 	{
-
-		List<Location> locations = new ArrayList<Location>();
-		MobilePhoneDetail phone = new MobilePhoneDetail();
+		Connection connection = source.getConnection();
 		try
 		{
 			//lo.location_ID, lo.locationname, lo.street, lo. streetnumber, lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("list.locations"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.locations"));
 			final ResultSet rs = query.executeQuery();
-
+			//assert we have a result
+			List<Location> locations = new ArrayList<Location>();
 			while(rs.next())
 			{
 				Location location = new Location();
@@ -74,7 +76,8 @@ public class LocationDAOMySQL implements LocationDAO
 				location.setId(rs.getInt("lo.location_ID"));
 				location.setLocationName(rs.getString("lo.locationname"));
 				location.setNotes(rs.getString("lo.note"));
-
+				//set the mobile phone
+				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("lo.phonenumber_ID"));
 				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
 				phone.setMobilePhoneName(rs.getString("pn.phonename"));
@@ -86,25 +89,23 @@ public class LocationDAOMySQL implements LocationDAO
 
 				locations.add(location);
 			}
-
+			return locations;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return null;
+			connection.close();
 		}
-		return locations;
 	}
 
 
 	@Override
-	public int addLocation(Location location)
+	public int addLocation(Location location) throws SQLException
 	{
-		int locationId = -1;
+		Connection connection = source.getConnection();
 		try
 		{	
 			// location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("insert.location"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.location"));
 			query.setString(1, location.getLocationName());
 			query.setString(2, location.getStreet());
 			query.setString(3, location.getStreetNumber());
@@ -116,43 +117,43 @@ public class LocationDAOMySQL implements LocationDAO
 
 			//get the last inserted id
 			final ResultSet rs = query.getGeneratedKeys();
-		    if (rs.next()) 
-		        locationId = rs.getInt(1);
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			if (rs.next()) 
+				return rs.getInt(1);
 			return -1;
 		}
-		return locationId;
+		finally
+		{
+			connection.close();
+		}
 	}
 
-
 	@Override
-	public boolean removeLocation(int id)
+	public boolean removeLocation(int id) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("delete.location"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("delete.location"));
 			query.setInt(1, id);
-			query.executeUpdate();
+			//assert the location removed was successfully
+			if(query.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
-
 	@Override
-	public boolean updateLocation(Location location)
+	public boolean updateLocation(Location location) throws SQLException
 	{
+		Connection connection = source.getConnection();
 		try
 		{
 			// locationname, street, streetnumber, zipcode, city, note, phonenumber_ID, location_ID
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("update.location"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.location"));
 			query.setString(1, location.getLocationName());
 			query.setString(2, location.getStreet());
 			query.setString(3, location.getStreetNumber());
@@ -161,52 +162,52 @@ public class LocationDAOMySQL implements LocationDAO
 			query.setString(6, location.getNotes());
 			query.setInt(7, location.getPhone().getId());
 			query.setInt(8, location.getId());
-
-			query.executeUpdate();
+			//assert the update was successfully
+			if(query.executeUpdate() == 0)
+				return false;
+			return true;
 		}
-		catch (SQLException e)
+		finally
 		{
-			e.printStackTrace();
-			return false;
+			connection.close();
 		}
-		return true;
 	}
 
 	@Override
-	public Location getLocationByName(String locationname)
+	public Location getLocationByName(String locationname) throws SQLException
 	{
-		Location location = new Location();
-		MobilePhoneDetail phone = new MobilePhoneDetail();
+		Connection connection = source.getConnection();
 		try
 		{
 			//lo.location_ID, lo.locationname, lo.street, lo. streetnumber, lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
-			final PreparedStatement query = DataSource.getInstance().getConnection().prepareStatement(ResourceBundle.getBundle(RosterDAOMySQL.QUERIES_BUNDLE_PATH).getString("get.locationByName"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.locationByName"));
 			query.setString(1, locationname);
 			final ResultSet rs = query.executeQuery();
-
+			//assert we have a result set
 			if(rs.first())
 			{
+				Location location = new Location();
 				location.setCity(rs.getString("lo.city"));
 				location.setId(rs.getInt("lo.location_ID"));
 				location.setLocationName(rs.getString("lo.locationname"));
 				location.setNotes(rs.getString("lo.note"));
-
+				//get the phone
+				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
 				phone.setMobilePhoneName(rs.getString("pn.phonename"));
 				phone.setId(rs.getInt("lo.phonenumber_ID"));
 				location.setPhone(phone);
-
 				location.setStreet(rs.getString("lo.street"));
 				location.setStreetNumber(rs.getString("lo.streetnumber"));
 				location.setZipcode(rs.getInt("lo.zipcode"));
+				return location;
 			}
-			else return null;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			//no result set
 			return null;
 		}
-		return location;
+		finally
+		{
+			connection.close();
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import at.rc.tacos.model.Login;
@@ -28,11 +29,13 @@ public interface UserLoginDAO
 	public final static int LOGIN_DENIED = -2;
 	
     /**
-     * Adds a new login to the database, the connected staff member will also be created.
+     * Adds a new login to the database. 
+     * his method will <b>NOT</b> create the staff member.
+     * Please use the <code>StaffMemberDAO.addStaffMember</code> to create a staff member for the login<br>
      * @param login the login object to create
-     * @return the id of the created staffmember
+     * @return true if the add was successfully
      */
-    public int addLogin(Login login);
+    public boolean addLogin(Login login) throws SQLException;
     
     /**
      * Updates a login information in the database. This method will <b>NOT</b> update the staff member.
@@ -41,7 +44,7 @@ public interface UserLoginDAO
      * @param login the login information to update
      * @return true if the login was successfully
      */
-    public boolean updateLogin(Login login);
+    public boolean updateLogin(Login login) throws SQLException;
     
     /**
      * Updates the password for the user in the database
@@ -49,12 +52,13 @@ public interface UserLoginDAO
      * @param newPwd the hash value of the new password
      * @return true if the update was successfully
      */
-    public boolean updatePassword(String username,String newPwd);
+    public boolean updatePassword(String username,String newPwd) throws SQLException;
     
     /**
      * Lists all logins stored in the database. The password filds are empty.
+     * @return the logins in the database
      */
-    public List<Login> listLogins();
+    public List<Login> listLogins() throws SQLException;
     
     /**
      * lockes a login
@@ -62,7 +66,7 @@ public interface UserLoginDAO
      * @param username
      * @return true if locking was successfull
      */
-    public boolean lockLogin(String username);
+    public boolean lockLogin(String username) throws SQLException;
 	
     /**
      * unlockes a login
@@ -70,7 +74,7 @@ public interface UserLoginDAO
      * @param username
      * @return true if unlocking was successfull
      */
-    public boolean unlockLogin(String username);
+    public boolean unlockLogin(String username) throws SQLException;
     
 	/**
 	 * Checks the username and the password hash agains the database.
@@ -80,12 +84,12 @@ public interface UserLoginDAO
 	 *  	   <code>UserDAOMemory.LOGIN_FAILED</code> if password or username was wrong
 	 *		   <code>UserDAOMemory.LOGIN_DENIED</code> if the user is locked
 	 */
-    public int checkLogin(String username,String pwdHash);
+    public int checkLogin(String username,String pwdHash) throws SQLException;
 
     /**
      * Returns the accociated login object identified by the username
      * @param username the username to get the login from
      * @return the login object
      */
-    public Login getLoginAndStaffmember(String username);
+    public Login getLoginAndStaffmember(String username) throws SQLException;
 }

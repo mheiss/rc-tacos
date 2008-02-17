@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.mysql;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -20,16 +21,19 @@ public class LocationDAOMySQLTest extends DBTestBase
     private LocationDAO locationDao = DaoFactory.MYSQL.createLocationDAO();
     private MobilePhoneDAO mobilePhoneDAO = DaoFactory.MYSQL.createMobilePhoneDAO(); 
     
-    //test phone for the locations
-    MobilePhoneDetail phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
-    MobilePhoneDetail phone2 = new MobilePhoneDetail("phone2","0664-987654321");
-    //test data
-    Location location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
-    Location location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
+    //the needed test data
+    MobilePhoneDetail phone1,phone2;
+    Location location1,location2;
     
     @Before
-    public void setUp() 
+    public void setUp() throws SQLException
     {
+        //test phone for the locations
+        phone1 = new MobilePhoneDetail("phone1","0664-123456789"); 
+        phone2 = new MobilePhoneDetail("phone2","0664-987654321");
+        //test data
+        location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
+        location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
         //create the phones
         int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
         int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);
@@ -46,14 +50,14 @@ public class LocationDAOMySQLTest extends DBTestBase
     }
     
     @After
-    public void tearDown()
+    public void tearDown() throws SQLException
     {
         deleteTable(LocationDAO.TABLE_NAME);
         deleteTable(MobilePhoneDAO.TABLE_NAME);
     }
     
     @Test
-    public void testFindById()
+    public void testFindById() throws SQLException
     {
         Location loc = locationDao.getLocation(location1.getId()); 
         Assert.assertEquals(location1.getId(), loc.getId());
@@ -67,7 +71,7 @@ public class LocationDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testFindByName()
+    public void testFindByName() throws SQLException
     {
         Location loc = locationDao.getLocationByName("location1");
         Assert.assertEquals(location1.getId(), loc.getId());
@@ -81,7 +85,7 @@ public class LocationDAOMySQLTest extends DBTestBase
     }
     
     @Test
-    public void testRemoveLocation()
+    public void testRemoveLocation() throws SQLException
     {
         locationDao.removeLocation(location1.getId());
         //list all
@@ -90,14 +94,14 @@ public class LocationDAOMySQLTest extends DBTestBase
     }
 
     @Test
-    public void testListLocation()
+    public void testListLocation() throws SQLException
     {
         List<Location> list = locationDao.listLocations();
         Assert.assertEquals(2, list.size());
     }
     
     @Test
-    public void testUpdateLocation()
+    public void testUpdateLocation() throws SQLException
     {
         //create two indivdual block
         {
