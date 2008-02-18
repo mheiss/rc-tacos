@@ -42,4 +42,4 @@ CLIENT: Das Fahrzeug vom Transport abziehen
 
 SERVER: Die aktuelle Transport nummer anhand der transport_ID abfragen
 die nummer und die planned location in tie tmptransports schreiben.
-den transportstatus auf TRANSPORT.TRANSPORT_OUTSTANDING setzen.
+den transport.programstatus auf IProgramStatus.PROGRAM_STATUS_OUTSTANDING  setzen.

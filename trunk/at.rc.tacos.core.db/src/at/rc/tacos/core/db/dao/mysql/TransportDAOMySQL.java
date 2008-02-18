@@ -308,7 +308,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			//assign the boolean values police,fire alarming, ...
 			if(!assignTransportItems(transport))
 				return false;
-			
+
 			//assign the transport states S1,S2,....
 			if(!assignTransportstate(transport))
 				return false;
@@ -330,7 +330,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			//assert that we have a current station and a vehicle
 			if(transport.getVehicleDetail() == null || transport.getVehicleDetail().getCurrentStation() == null)
 				return Transport.TRANSPORT_ERROR;
-			
+
 			int locationId = transport.getVehicleDetail().getCurrentStation().getId();
 
 			//STEP1: INSERT the vehicle in the assigned_vehicle table
@@ -346,11 +346,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					return Transport.TRANSPORT_ERROR;
 				return tmpNr;
 			}
-			
+
 			//check for errors
 			if(tmpNr == Transport.TRANSPORT_ERROR)
 				return Transport.TRANSPORT_ERROR;
-			
+
 			//get the highest number from the table and update the transport
 			tmpNr = getHighestTransportNumber(locationId, transport.getYear());
 			tmpNr++;
@@ -382,18 +382,19 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				return false;
 
 			//reset the transport number
-			transport.setTransportId(0);
-			final PreparedStatement query2 = connection.prepareStatement(queries.getStatment("update.transportNr"));
-			query2.setInt(1, transport.getTransportId());
-			query2.setInt(2, transportId);
-			//assert the update was successfully
-			if(query2.executeUpdate() == 0)
+			transport.setTransportNumber(0);
+			if(!updateTransportNr(transport.getTransportId(), transport.getTransportNumber()))
 				return false;
 
 			//store the number in the temp table
 			if(!archiveTransportNumber(oldNumber, locationId))
 				return false;
 			
+			//set the transport status to IProgramStatus.PROGRAM_STATUS_OUTSTANDING 
+			transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
+			if(!executeTheTransportUpdateQuery(transport))
+				return false;
+
 			return true;
 		}
 		finally
@@ -420,7 +421,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			//set the transport number to TRANSPORT_STORNO or TRANSPORT_FORWARD
 			if(!updateTransportNr(transportId, transport.getTransportNumber()))
 				return false;
-			
+
 			//set the program status to journal
 			transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_JOURNAL);
 			return true;
@@ -578,31 +579,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-
-	/**
-	 * inserts a new transportstate to the database
-	 * @param transportId
-	 * @param selectedId
-	 * @return true if insert was sucessful
-	 */
-	private boolean addTransportItem(int transportId, int selectedId) throws SQLException
-	{
-		Connection connection = source.getConnection();
-		try
-		{
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.selectedTransportItem"));
-			query.setInt(1, selectedId);
-			query.setInt(2, transportId);			
-			if(query.executeUpdate() == 0)
-				return false;
-			return true;
-		}
-		finally
-		{
-			connection.close();
-		}
-	}
-
+	
+	@Override
 	public Transport getTransportById(int id) throws SQLException
 	{
 		Connection connection = source.getConnection();
@@ -769,12 +747,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		Connection connection = source.getConnection();
 		try
 		{
-			// direction = ?, caller_ID = ?, note = ?, createdBy_user = ?, priority = ?, feedback = ?, creationDate = ?, 
-			//departure = ?, appointment = ?, appointmentPatient = ?, transporttype = ?, disease = ?, firstname = ?, lastname = ?, 
-			//planned_location = ?, from_street = ?, from_city = ?, to_street = ?, to_city = ?, programstate = ?, dateOfTransport = ?, transport_ID = ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.transport"));
-
-			/** set the values for the ?*/
 			query.setInt(1, transport.getDirection());
 			if(transport.getCallerDetail() == null)
 				query.setInt(2, 0);
@@ -812,7 +785,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			query.setString(21, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDate));
 			query.setInt(22, transport.getTransportNumber());
 			query.setInt(23, transport.getTransportId());
-			/** execute the query*/
+			//assert the update was successfull
 			if(query.executeUpdate() == 0)
 				return false;
 			return true;
@@ -822,11 +795,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/***********************************************
 	 * HELPER METHODS FOR THE TRANSPORT DAO        *
 	 * *********************************************/
-	
+
 	/**
 	 * Assigns the vehicle to the transport.
 	 * @param transport the transport to assign the vehicle to
@@ -868,7 +841,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
 	 * Searches for a canceled transport numer.
 	 * @param locationId the location to search the transport number
@@ -876,6 +849,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	 */
 	private int getTransportNrFromTemp(int locationId) throws SQLException
 	{
+		System.out.println("Get Transport nummber from tmp");
 		Connection connection = source.getConnection();
 		try
 		{
@@ -908,7 +882,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
 	 * Returns the highest transport number in the transport table for the given year and location.
 	 * If no transport number matches the criteria the method will return 0<br>
@@ -944,7 +918,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
 	 * Sets the transport number for the given transport
 	 * @param transportId the transport to set the number
@@ -971,7 +945,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
 	 * Returns the transport number identified by the transport id.
 	 * @param transportId the transport to get the number from
@@ -995,7 +969,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
 	 * Returns the location to which the vehicle of the given transport is assigned
 	 * @param transportId the id of the transport to get the location
@@ -1019,7 +993,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
 	 * Writes the current transport number in the tmp table so that it can be reused
 	 * @param transportNr the transport number
@@ -1045,12 +1019,12 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
-     * Assigns a new transport state to an existing transport
-     * @param transport
-     * @return boolean if insert was successful or not
-     */
+	 * Assigns a new transport state to an existing transport
+	 * @param transport
+	 * @return boolean if insert was successful or not
+	 */
 	private boolean assignTransportstate(Transport transport) throws SQLException
 	{
 		Connection connection = source.getConnection();
@@ -1080,6 +1054,28 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		}
 	}
 	
+	/**
+	 * Clears the transportstate table.
+	 * @param transport the transport to clear the state table
+	 * @return boolean if remove was successful or not
+	 */
+	private boolean removeTransportstate(Transport transport) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("remove.transportstate"));
+			query1.setInt(1, transport.getTransportId());
+			//remove the transport state
+			query1.executeUpdate();
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
 	/**
 	 * first removes all old transport items and sets all to the new value in the database
 	 * @param transport
@@ -1120,7 +1116,33 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			addTransportItem(transport.getTransportId(), 12);
 
 		return true;
-	}	/**
+	}	
+	
+	/**
+	 * inserts a new transportstate to the database
+	 * @param transportId
+	 * @param selectedId
+	 * @return true if insert was sucessful
+	 */
+	private boolean addTransportItem(int transportId, int selectedId) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.selectedTransportItem"));
+			query.setInt(1, selectedId);
+			query.setInt(2, transportId);			
+			if(query.executeUpdate() == 0)
+				return false;
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+	
+	/**
 	 * removes all selected items from a transport in the database
 	 * @param transport
 	 * @return true if all items were removed
@@ -1132,28 +1154,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		{
 			final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("remove.AllSelectedTransportItems"));
 			query1.setInt(1, transport.getTransportId());
-			query1.executeUpdate();
-			return true;
-		}
-		finally
-		{
-			connection.close();
-		}
-	}
-
-	/**
-     * Clears the transportstate table.
-     * @param transport the transport to clear the state table
-     * @return boolean if remove was successful or not
-     */
-	private boolean removeTransportstate(Transport transport) throws SQLException
-	{
-		Connection connection = source.getConnection();
-		try
-		{
-			final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("remove.transportstate"));
-			query1.setInt(1, transport.getTransportId());
-			//remove the transport state
 			query1.executeUpdate();
 			return true;
 		}
