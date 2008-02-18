@@ -99,6 +99,7 @@ public class TransportListener extends ServerListenerAdapter
 		if(transport.getVehicleDetail() != null && transport.getTransportNumber() == 0)
 		{
 			System.out.println("Assign car to transport, generating transport number");
+			//set the current year to generate a valid transport numer
 			transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
 			int transportNr = transportDao.generateTransportNumber(transport);
 			if (transportNr == Transport.TRANSPORT_ERROR)
