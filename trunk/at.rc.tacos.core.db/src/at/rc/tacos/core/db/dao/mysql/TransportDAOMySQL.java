@@ -694,7 +694,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				final ResultSet rs1 = query1.executeQuery();
 				while(rs1.next())
 				{
-					System.out.println("TransportDAOMySQL, getTransportsByID, selected_ID: " +rs1.getInt("selected_ID"));
 					if(rs1.getInt("selected_ID") == 1)
 						transport.setEmergencyDoctorAlarming(true);
 

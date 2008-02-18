@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
@@ -134,18 +135,18 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown() throws SQLException
 	{
-//		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
-//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-//		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
-//		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
-//		deleteTable(TransportDAO.TABLE_NAME);
-//		deleteTable(MobilePhoneDAO.TABLE_NAME);
-//		deleteTable(LocationDAO.TABLE_NAME);
-//		deleteTable(CallerDAO.TABLE_NAME);
-//		deleteTable(UserLoginDAO.TABLE_NAME);
-//		deleteTable(StaffMemberDAO.TABLE_NAME);
-//		deleteTable(CompetenceDAO.TABLE_NAME);
-//		deleteTable(VehicleDAO.TABLE_NAME);
+		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
+		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
+		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
+		deleteTable(TransportDAO.TABLE_NAME);
+		deleteTable(MobilePhoneDAO.TABLE_NAME);
+		deleteTable(LocationDAO.TABLE_NAME);
+		deleteTable(CallerDAO.TABLE_NAME);
+		deleteTable(UserLoginDAO.TABLE_NAME);
+		deleteTable(StaffMemberDAO.TABLE_NAME);
+		deleteTable(CompetenceDAO.TABLE_NAME);
+		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
@@ -320,11 +321,9 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@Test
 	public void testGenerateTransportNumber() throws SQLException
 	{
-		//TODO: Generated transport numbers for the same locations are equal
-		//TODO: but they should not, cant find the mistake.
-		
 		//generate a transport numberer
 		transport1.setVehicleDetail(veh1);
+		transport1.setYear(2008);
 		transport1.getVehicleDetail().setCurrentStation(location1);
 		int transportNr = transportDAO.generateTransportNumber(transport1);
 		transport1.setTransportNumber(transportNr);
@@ -334,6 +333,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals(transportNr,tr1new.getTransportNumber());
 
 		//second transport - same vehicle/same location -->higher transport number
+		transport2.setYear(2008);
 		transport2.setVehicleDetail(veh1);
 		transport2.getVehicleDetail().setCurrentStation(location1);
 		transportNr = transportDAO.generateTransportNumber(transport2);
@@ -349,13 +349,11 @@ public class TransportDAOMySQLTest extends DBTestBase
 
 	@Test
 	public void testGenerateTransportNumbersDifferentLocation() throws SQLException
-	{
-		//assign a vehicle and request a transport number
+	{	
+		//generate a transport number
+		transport1.setYear(2008);
 		transport1.setVehicleDetail(veh1);
 		transport1.getVehicleDetail().setCurrentStation(location1);
-		assertEquals(0,transport1.getTransportNumber());
-
-		//generate a transport number
 		int transportNr = transportDAO.generateTransportNumber(transport1);
 		transport1.setTransportNumber(transportNr);
 		System.out.println("Generated transport ID:"+transportNr);
@@ -364,6 +362,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 		assertEquals(transportNr,tr1new.getTransportNumber());
 
 		//second transport - same vehicle/different location 
+		transport2.setYear(2008);
 		transport2.setVehicleDetail(veh1);
 		transport2.getVehicleDetail().setCurrentStation(location2);
 		transportNr = transportDAO.generateTransportNumber(transport2);
@@ -372,6 +371,9 @@ public class TransportDAOMySQLTest extends DBTestBase
 		//get the transport again and check the transport number
 		Transport tr2new = transportDAO.getTransportById(transport2.getTransportId());
 		assertEquals(transportNr,tr2new.getTransportNumber());
+		
+		//the generated numbers must be the same
+		assertEquals(tr1new.getTransportNumber(), tr2new.getTransportNumber());
 	}
 
 	@Test
