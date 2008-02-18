@@ -12,20 +12,19 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.controller.PersonalNewEntryAction;
-import at.rc.tacos.client.controller.VehicleOpenAction;
 import at.rc.tacos.client.modelManager.MyToolbarManager;
-import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
+import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
+import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
 import at.rc.tacos.client.perspectives.SwitchToTransportPerspective;
 import at.rc.tacos.factory.ImageFactory;
 
 /**
- * The navigation on the top including the toolbar.
+ * The navigation on the top for the admin area
  * @author Michael
  */
-public class NavigationView extends ViewPart 
+public class NavigationAdminView extends ViewPart 
 {
-	public static final String ID = "at.rc.tacos.client.view.navigation"; 
+	public static final String ID = "at.rc.tacos.client.view.navigationAdmin"; 
 	
     //properties
     private static Image imageLogo = ImageFactory.getInstance().getRegisteredImage("toolbar.logo");
@@ -37,16 +36,24 @@ public class NavigationView extends ViewPart
 		GridLayout layout = new GridLayout(5,false);
 	    parent.setLayout(layout);
 	    parent.setBackground(white);
+	    
+//	    IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         
 	    //Create the toolbar
 	    final MyToolbarManager tbm = new MyToolbarManager(new ToolBar(parent, SWT.FLAT));
 	    tbm.getControl().setBackground(new Color(null,new RGB(255,255,255)));
 	    tbm.getControl().setLayoutData(new GridData(SWT.BEGINNING,SWT.BEGINNING,false,false));
 	    //add the actions
-	    tbm.add(new PersonalNewEntryAction());
-        tbm.add(new VehicleOpenAction());
+        tbm.add(new SwitchToClientPerspective());
         tbm.add(new SwitchToTransportPerspective());
-        tbm.add(new SwitchToAdminPerspective());
+        tbm.add(new SwitchToLogPerspective());
+//        tbm.add(new EditorNewStaffAction(window));
+//        tbm.add(new EditorNewLocationAction(window));
+//        tbm.add(new EditorNewVehicleAction(window));
+//        tbm.add(new EditorNewMobilePhoneAction(window));
+//        tbm.add(new EditorNewCompetenceAction(window));
+//        tbm.add(new EditorNewJobAction(window));
+//        tbm.add(new EditorNewServiceTypeAction(window));
         tbm.update(true);
 
 	    Composite comp1 = new Composite(parent,SWT.NONE);

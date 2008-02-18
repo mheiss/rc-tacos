@@ -4,6 +4,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import at.rc.tacos.client.view.NavigationAdminView;
 import at.rc.tacos.client.view.admin.CompetenceAdminView;
 import at.rc.tacos.client.view.admin.JobAdminView;
 import at.rc.tacos.client.view.admin.LocationAdminView;
@@ -29,6 +30,9 @@ public class AdminPerspective implements IPerspectiveFactory
         String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(true);
         layout.setFixed(true);
+        
+        //the main components
+        layout.addStandaloneView(NavigationAdminView.ID, false, IPageLayout.TOP, 0.12f, editorArea);
         
         //Create a folder on the left
         IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.26, editorArea);

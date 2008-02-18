@@ -73,21 +73,9 @@
       </view>
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.view.InfoView"
-            id="at.rc.tacos.client.view.info"
-            name="Informationen">
-      </view>
-      <view
-            allowMultiple="false"
             class="at.rc.tacos.client.view.FilterView"
             id="at.rc.tacos.client.view.filter"
             name="Transport Filter">
-      </view>
-      <view
-            allowMultiple="false"
-            class="at.rc.tacos.client.view.admin.StaffMemberAdminView"
-            id="at.rc.tacos.client.view.admin.staffMemberAdminView"
-            name="Mitarbeiter">
       </view>
       <view
             allowMultiple="false"
@@ -133,15 +121,27 @@
       </view>
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.view.NavigationView"
-            id="at.rc.tacos.client.view.navigation"
-            name="Navigation">
-      </view>
-      <view
-            allowMultiple="false"
             class="at.rc.tacos.client.view.LogHeaderView"
             id="at.rc.tacos.client.view.logHeader"
             name="Logging">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.ServiceTypeAdminView"
+            id="at.rc.tacos.client.view.admin.serviceTypeAdminView"
+            name="Dienstverhältnisse">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.LocationAdminView"
+            id="at.rc.tacos.client.view.admin.locationAdminView"
+            name="Dienststellen">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.StaffMemberAdminView"
+            id="at.rc.tacos.client.view.admin.staffMemberAdminView"
+            name="Mitarbeiter">
       </view>
       <view
             allowMultiple="false"
@@ -157,21 +157,27 @@
       </view>
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.view.admin.CompetenceAdminView"
-            id="at.rc.tacos.client.view.admin.competenceAdminView"
-            name="Kompetenzen">
+            class="at.rc.tacos.client.view.NavigationTransportView"
+            id="at.rc.tacos.client.view.navigationTransport"
+            name="Navigation Transport">
       </view>
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.view.admin.LocationAdminView"
-            id="at.rc.tacos.client.view.admin.locationAdminView"
-            name="Dienststellen">
+            class="at.rc.tacos.client.view.InfoView"
+            id="at.rc.tacos.client.view.info"
+            name="Informationen">
       </view>
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.view.admin.ServiceTypeAdminView"
-            id="at.rc.tacos.client.view.admin.serviceTypeAdminView"
-            name="Dienstverhältnisse">
+            class="at.rc.tacos.client.view.NavigationAdminView"
+            id="at.rc.tacos.client.view.navigationAdmin"
+            name="Navigation Admin">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.NavigationView"
+            id="at.rc.tacos.client.view.navigation"
+            name="Navigation">
       </view>
    </extension>
    <extension
