@@ -37,9 +37,7 @@ public class ForwardTransportAction extends Action implements ITransportStatus, 
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		transport.setTransportNumber(-2);//'Weiterleitung'
-		System.out.println("ForwardTransportAction - Transportnummer.......:" +transport.getTransportNumber());
-		
+		transport.setTransportNumber(Transport.TRANSPORT_FORWARD);
 		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}

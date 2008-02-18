@@ -39,7 +39,9 @@ public class MoveToOutstandingTransportsAction extends Action implements ITransp
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//change transport program status to 'outstanding'
 		transport.getStatusMessages().clear();
-		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);//TODO- clear the staff members, write the Transport number into the help table
+		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+		//remove the vehicle to release the transport number
+		transport.clearVehicleDetail();
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
