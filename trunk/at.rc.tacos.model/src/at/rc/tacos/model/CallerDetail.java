@@ -49,7 +49,7 @@ public class CallerDetail extends AbstractMessage
     @Override
     public String toString()
     {
-        return callerName+","+callerTelephoneNumber;
+        return callerId+":"+callerName+","+callerTelephoneNumber;
     }
     
     /**
@@ -121,7 +121,7 @@ public class CallerDetail extends AbstractMessage
     public void setCallerName(String callerName) 
     {
         if(callerName == null)
-            throw new IllegalArgumentException("Caller name cannot be null or empty");
+            throw new IllegalArgumentException("Caller name cannot be null");
         this.callerName = callerName.trim();
     }
 
@@ -142,7 +142,7 @@ public class CallerDetail extends AbstractMessage
     public void setCallerTelephoneNumber(String callerTelephoneNumber) 
     {
         if(callerTelephoneNumber == null)
-            throw new IllegalArgumentException("Telephone number cannot be null or emtpy");
+            throw new IllegalArgumentException("Telephone number cannot be null");
         this.callerTelephoneNumber = callerTelephoneNumber.trim();
     }
 }
