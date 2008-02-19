@@ -377,7 +377,7 @@ public class VehicleDetail extends AbstractMessage
         //assert valid
         if(mobilePhone == null)
         {
-            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone.na");
+            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("vehicle.phone.na");
             return;
         }
         //determine the image
@@ -385,9 +385,9 @@ public class VehicleDetail extends AbstractMessage
         if(mobilePhone == null)
             mobilePhoneImage = null;
         else if (!mobilePhone.getMobilePhoneName().equalsIgnoreCase(vehicleName))
-            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone");
+            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("vehicle.phone");
         else
-            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone.na");
+            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("vehicle.phone.na");
 
         firePropertyChange("mobilePhoneImage", oldImage, mobilePhoneImage);
     }
@@ -408,9 +408,9 @@ public class VehicleDetail extends AbstractMessage
     {
         Image oldImage = this.vehicleNotesImage;
         if (vehicleNotes == null || vehicleNotes.isEmpty())   
-            vehicleNotesImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.notes.na");
+            vehicleNotesImage = ImageFactory.getInstance().getRegisteredImage("vehicle.notes.na");
         else
-            vehicleNotesImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.notes"); 
+            vehicleNotesImage = ImageFactory.getInstance().getRegisteredImage("vehicle.notes"); 
         firePropertyChange("vehicleNotesImage", oldImage, vehicleNotesImage);
     }
 
@@ -431,15 +431,15 @@ public class VehicleDetail extends AbstractMessage
         //assert valid
         if(basicStation == null || currentStation == null)
         {
-            stationImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.house.na");
+            stationImage = ImageFactory.getInstance().getRegisteredImage("vehicle.house.na");
             return;
         }
         //determine the image
         Image oldImage = this.stationImage;
         if (!basicStation.getLocationName().equalsIgnoreCase(currentStation.getLocationName()))
-            stationImage =  ImageFactory.getInstance().getRegisteredImage("image.vehicle.house");
+            stationImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.house");
         else
-            stationImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.house.na");
+            stationImage = ImageFactory.getInstance().getRegisteredImage("vehicle.house.na");
         firePropertyChange("stationImage", oldImage, stationImage);
     }
 
@@ -460,9 +460,9 @@ public class VehicleDetail extends AbstractMessage
     {
         Image oldImage = this.readyForActionImage;
         if (readyForAction)
-            readyForActionImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.ready");
+            readyForActionImage = ImageFactory.getInstance().getRegisteredImage("vehicle.ready");
         else
-            readyForActionImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.ready.na");
+            readyForActionImage = ImageFactory.getInstance().getRegisteredImage("vehicle.ready.na");
         firePropertyChange("readyForActionImage", oldImage, readyForActionImage);
     }
 
@@ -482,9 +482,9 @@ public class VehicleDetail extends AbstractMessage
     {
         Image oldImage = this.outOfOrderImage;
         if (outOfOrder)
-            outOfOrderImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.repair");
+            outOfOrderImage = ImageFactory.getInstance().getRegisteredImage("vehicle.repair");
         else
-            outOfOrderImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.repair.na");	
+            outOfOrderImage = ImageFactory.getInstance().getRegisteredImage("vehicle.repair.na");	
         firePropertyChange("outOfOrderImage", oldImage, outOfOrderImage);
     }
 
@@ -510,19 +510,19 @@ public class VehicleDetail extends AbstractMessage
         case 0: 
         case 1:
         case 5:
-        case 6: transportStatusImage = ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.green"); 
+        case 6: transportStatusImage = ImageFactory.getInstance().getRegisteredImage("vehicle.status.green"); 
         break;
         //the yellow Image
         case 2:
         case 4:
-        case 9: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.yellow"); 
+        case 9: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.yellow"); 
         break;
         //the read Image 
         case 3:
-        case 7: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.red"); 
+        case 7: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.red"); 
         break;
         //out of range
-        default: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("image.vehicle.status.na"); 
+        default: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.na"); 
         }
         firePropertyChange("transportStatusImage", oldImage, transportStatusImage);
     }
