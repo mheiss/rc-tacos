@@ -127,10 +127,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				if(rs.getInt("t.caller_ID") != 0)
 				{
 					CallerDetail caller = new CallerDetail();
-					caller.setCallerId(rs.getInt("t.caller_ID"));
-					caller.setCallerName(rs.getString("ca.callername"));
-					caller.setCallerTelephoneNumber(rs.getString("ca.caller_phonenumber"));
+					caller.setCallerId(rs.getInt("caller_ID"));
+					caller.setCallerName(rs.getString("callername"));
+					caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 					transport.setCallerDetail(caller);
+					System.out.println("Setting caller to transport: "+caller);
 				}
 				transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
 				if(rs.getString("t.note") == null)
@@ -189,10 +190,9 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				if(rs.getString("av.location_ID") != null)
 				{
 					//get the location 
-					Location currentStation = locationDAO.getLocationByName(rs.getString("av.locationname"));
+					Location currentStation = locationDAO.getLocation(rs.getInt("av.location_ID"));
 					VehicleDetail vehicle = new VehicleDetail();
 					vehicle.setCurrentStation(currentStation);
-
 					vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
 
 					StaffMember driver = new StaffMember();
@@ -289,29 +289,45 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			/** add or update the caller of the transport*/
 			if(transport.getCallerDetail() != null && transport.getCallerDetail().getCallerId() == -1)
 			{
+				System.out.println("Adding caller");
 				int callerId = callerDAO.addCaller(transport.getCallerDetail());
 				//assert the add was successfully
 				if(callerId == -1)
+				{
+					System.out.println("Caller adding failed");
 					return false;
+				}
 				transport.getCallerDetail().setCallerId(callerId);
 			}
 			else if(transport.getCallerDetail() != null)
 			{
 				if(!callerDAO.updateCaller(transport.getCallerDetail()))
+				{
+					System.out.println("Caller update failed");
 					return false;
+				}
 			}
 
 			//update the transport
 			if(!executeTheTransportUpdateQuery(transport))
+			{
+				System.out.println("Transport update failed");
 				return false;
+			}
 
 			//assign the boolean values police,fire alarming, ...
 			if(!assignTransportItems(transport))
+			{
+				System.out.println("Assigning transport items failed");
 				return false;
+			}
 
 			//assign the transport states S1,S2,....
 			if(!assignTransportstate(transport))
+			{
+				System.out.println("Assigning transport state failed");
 				return false;
+			}
 			//everything is ok
 			return true;
 		}
@@ -488,27 +504,27 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setProgramStatus(rs.getInt("t.programstate"));
 				transport.setKindOfTransport(rs.getString("t.transporttype"));
 				transport.setTransportPriority(rs.getString("t.priority"));
-				transport.setDirection(rs.getInt("t.direction_ID"));
+				transport.setDirection(rs.getInt("t.direction"));
 				transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
 
 				VehicleDetail vehicle = new VehicleDetail();
 
 				Location currentStation = new Location();
-				currentStation = locationDAO.getLocationByName(rs.getString("av.locationname"));
+				currentStation = locationDAO.getLocation(rs.getInt("av.location_ID"));
 				vehicle.setCurrentStation(currentStation);
 
 				vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
 
 				StaffMember driver = new StaffMember();
-				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("v.driver_ID"));
+				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("av.driver_ID"));
 				vehicle.setDriver(driver);
 
 				StaffMember firstParamedic = new StaffMember();
-				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic1_ID"));
+				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("av.medic1_ID"));
 				vehicle.setFirstParamedic(firstParamedic);
 
 				StaffMember secondParamedic = new StaffMember();
-				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic2_ID"));
+				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("av.medic2_ID"));
 				vehicle.setSecondParamedic(secondParamedic);
 
 				vehicle.setVehicleNotes(rs.getString("av.note"));
