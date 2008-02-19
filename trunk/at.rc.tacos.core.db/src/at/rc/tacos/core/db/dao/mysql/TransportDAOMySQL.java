@@ -748,8 +748,9 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		{
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.transport"));
 			query.setInt(1, transport.getDirection());
+			//no caller, so set to null
 			if(transport.getCallerDetail() == null)
-				query.setInt(2, 0);
+				query.setString(2, null);
 			else
 				query.setInt(2, transport.getCallerDetail().getCallerId());
 			query.setString(3, transport.getNotes());
