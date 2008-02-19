@@ -22,6 +22,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewVehicleAction;
+import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.VehicleDetailEditor;
 import at.rc.tacos.client.editors.VehicleDetailEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -140,8 +141,10 @@ public class VehicleAdminView extends ViewPart implements PropertyChangeListener
 	{
 		//create the action
 		EditorNewVehicleAction addAction = new EditorNewVehicleAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		RefreshViewAction refreshView = new RefreshViewAction(VehicleDetail.ID);
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().add(refreshView);
 		form.getToolBarManager().update(true);
 	}
 }

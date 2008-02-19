@@ -22,6 +22,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewServiceTypeAction;
+import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.ServiceTypeEditor;
 import at.rc.tacos.client.editors.ServiceTypeEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -142,8 +143,10 @@ public class ServiceTypeAdminView extends ViewPart implements PropertyChangeList
 	{
 		//create the action
 		EditorNewServiceTypeAction addAction = new EditorNewServiceTypeAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		RefreshViewAction refreshView = new RefreshViewAction(ServiceType.ID);
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().add(refreshView);
 		form.getToolBarManager().update(true);
 	}
 }

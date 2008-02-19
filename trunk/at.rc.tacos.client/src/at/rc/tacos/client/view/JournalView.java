@@ -91,31 +91,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
-		//'Journalblatt'
-//		final Group group = new Group(composite, SWT.NONE);
-//		group.setLayout(new FillLayout());
-//		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-//		group.setText("Journalblatt");
-
-//		//tab folder 
-//		final TabFolder tabFolder = new TabFolder(group, SWT.NONE);
-//		tabFolder.addSelectionListener(new SelectionListener() 
-//		{
-//			public void widgetSelected(SelectionEvent e) 
-//			{
-//				//get the selected station
-//				String station = tabFolder.getItem(tabFolder.getSelectionIndex()).getText();
-//				//remove all filters and add the new
-//				viewer.resetFilters();
-//				viewer.addFilter(new PersonalViewFilter(station));
-//			}
-//			public void widgetDefaultSelected(SelectionEvent e) {
-//				widgetSelected(e);
-//			}
-//		});
-		
-		/** Selection listener? */
-		
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new JournalViewContentProvider());
 		viewer.setLabelProvider(new JournalViewLabelProvider());
@@ -139,7 +114,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 			}
 		});     
 		//sort the table by default
-		//TODO- bug fix: causes an error when the view gets updated--> only if the cells are empty	
 		viewer.setSorter(new TransportSorter(TransportSorter.TRANSPORT_FROM_SORTER,SWT.DOWN));
 
 		//create the table for the transports
@@ -147,8 +121,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		
-		
-
 		final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		lockColumn.setWidth(30);
@@ -237,8 +209,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		final TableColumn columnAnruferJournal = new TableColumn(table, SWT.NONE);
 		columnAnruferJournal.setWidth(23);
 		columnAnruferJournal.setText("Anrufer");
-
-
 
 		//make the columns sort able
 		Listener sortListener = new Listener() 

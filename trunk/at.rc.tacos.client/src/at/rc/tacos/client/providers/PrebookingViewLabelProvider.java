@@ -61,7 +61,7 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 		switch(columnIndex)
 		{
 		case COLUMN_LOCK: return null;
-		case COLUMN_RESP_STATION: return "station";//transport.getPlanedLocation().getLocationName();
+		case COLUMN_RESP_STATION: return transport.getPlanedLocation().getLocationName();
 		case COLUMN_ABF:
 			if (transport.getPlannedStartOfTransport() != 0)
 				return sdf.format(transport.getPlannedStartOfTransport());

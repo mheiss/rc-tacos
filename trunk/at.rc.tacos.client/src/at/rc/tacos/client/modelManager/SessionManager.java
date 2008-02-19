@@ -187,7 +187,6 @@ public class SessionManager extends PropertyManager
 				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				ConnectionWizardAction connectionWizard = new ConnectionWizardAction(window);
 				connectionWizard.run();
-				System.out.println("connection lost");
 			}
 		});
 	}

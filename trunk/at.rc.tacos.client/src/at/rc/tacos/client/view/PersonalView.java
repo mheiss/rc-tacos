@@ -420,18 +420,14 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		}
 
 		// the viewer represents simple model. refresh should be enough.
-		if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())) 
+		if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())
+				|| "ROSTERENTRY_REMOVE".equals(evt.getPropertyName())
+				|| "ROSTERENTRY_UPDATE".equals(evt.getPropertyName())
+				|| "ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
+		{
 			viewer.refresh();
-		// event on deletion --> also just refresh
-		if ("ROSTERENTRY_REMOVE".equals(evt.getPropertyName())) 
-			viewer.refresh();
-		// event on deletion --> also just refresh
-		if ("ROSTERENTRY_UPDATE".equals(evt.getPropertyName())) 
-			viewer.refresh();
-		// event on deletion --> also just refresh
-		if ("ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
-			viewer.refresh();
-		
+		}
+	
 		//update the staff member when it is changed
 		if("STAFF_UPDATE".equalsIgnoreCase(evt.getPropertyName())
 				|| "SERVICETYPE_UPDATE".equalsIgnoreCase(evt.getPropertyName())

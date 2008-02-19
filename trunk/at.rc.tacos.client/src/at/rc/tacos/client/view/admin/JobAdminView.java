@@ -22,6 +22,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewJobAction;
+import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.JobEditor;
 import at.rc.tacos.client.editors.JobEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -142,8 +143,10 @@ public class JobAdminView extends ViewPart implements PropertyChangeListener
 	{
 		//create the action
 		EditorNewJobAction addAction = new EditorNewJobAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		RefreshViewAction refreshAction = new RefreshViewAction(Job.ID);
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().add(refreshAction);
 		form.getToolBarManager().update(true);
 	}
 }
