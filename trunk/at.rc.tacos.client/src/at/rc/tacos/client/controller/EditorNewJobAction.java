@@ -56,7 +56,7 @@ public class EditorNewJobAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.create");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.jobAdd");
     }
 
     /**

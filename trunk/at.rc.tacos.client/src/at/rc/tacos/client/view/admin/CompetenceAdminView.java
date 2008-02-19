@@ -39,7 +39,7 @@ public class CompetenceAdminView extends ViewPart implements PropertyChangeListe
     private FormToolkit toolkit;
     private ScrolledForm form;
     
-    /**
+	/**
      * Default class constructor
      */
     public CompetenceAdminView()

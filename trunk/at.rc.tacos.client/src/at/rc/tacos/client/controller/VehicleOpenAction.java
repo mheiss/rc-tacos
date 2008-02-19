@@ -43,7 +43,7 @@ public class VehicleOpenAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.showVehicleList");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.manageVehicle");
     }
 
     /**

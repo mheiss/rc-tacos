@@ -132,12 +132,12 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		//create info label and hyperlinks to save and revert the changes
 		CLabel infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie das aktuelle Fahrzeug verwalten und die Änderungen speichern.");
-		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.info"));
+		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Neues Fahrzeug anlegen");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.save"));
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -151,7 +151,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		//Create the hyperlink to close the window and revert the changes
 		closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		closeHyperlink.setText("Fenster schließen");
-		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.close"));
+		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.vehicleRemove"));
 		closeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
@@ -165,7 +165,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		//create the hyperlink to add a new vehicle
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		addHyperlink.setText("Fahrzeug anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("image.admin.add"));
+		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.vehicleAdd"));
 		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override

@@ -114,7 +114,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
         
 			
         
-		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.transportShort");
+		Image image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
 			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
 			+transport.getToStreet() +"/" +transport.getToCity();
@@ -125,20 +125,20 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		//the notes
 		if(transport.hasNotes())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
+			image = ImageFactory.getInstance().getRegisteredImage("resource.user");
 			title = transport.getNotes();
 			addIconAndLabel(composite,image,title);
 		}
 		
 		//directness
-		image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.directness");
+		image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 		title = directness;
 		addIconAndLabel(composite,image,title);
 		
 		//caller
 		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.callerDetail");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.callerDetail");
 			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
 			addIconAndLabel(composite,image,title);
 		}
@@ -146,7 +146,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		//notified
 		if (!alarming.equalsIgnoreCase(""))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.exclamation");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.exclamation");
 			title = alarming;
 			addIconAndLabel(composite,image,title);
 		}
@@ -154,14 +154,14 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		//rufhilfe
 		if(transport.isEmergencyPhone())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.phone");
+			image = ImageFactory.getInstance().getRegisteredImage("resource.mobilePhone");
 			title = "Rufhilfepatient";
 			addIconAndLabel(composite,image,title);
 		}
 		
 		if(transport.isBackTransport())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.back");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.backtransport");
 			title = "Rücktransport möglich";
 			addIconAndLabel(composite,image,title);
 		}

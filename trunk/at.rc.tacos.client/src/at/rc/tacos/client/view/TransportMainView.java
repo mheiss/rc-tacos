@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.util.Util;
-import at.rc.tacos.factory.ImageFactory;
 
 /**
  * Main view, provides an overview about the transports

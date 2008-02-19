@@ -28,8 +28,6 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 {	
 	//properties
 	private Transport transport;
-	
-	private String backtransport = "";
 	private String police = "";
 	private String firebrigade = "";
 	private String brkdt = "";
@@ -77,10 +75,8 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		String plannedStartTime;
 		String plannedTimeAtPatient;
 		String term;
-		String received;
 		
 		//notifying
-		System.out.println("UnderwayTransportsTooltip, createToolTipContentArea, firebrigade: " +transport.isFirebrigadeAlarming());
 		if (transport.isFirebrigadeAlarming())
 			firebrigade = "Bergrettung";
 		if (transport.isBrkdtAlarming())
@@ -122,14 +118,11 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
         }
         else directness = "Bruck"; //default
         
-			
-        
-		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.transportShort");
+		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.directness");
 		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
 			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
 			+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
-		
 
 		//planned times
 		if(transport.getPlannedStartOfTransport()!= 0)
@@ -146,7 +139,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 			term = "";
 		if((!plannedStartTime.equalsIgnoreCase("") || !plannedTimeAtPatient.equalsIgnoreCase("") || !term.equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.late");
 			title = "Abfahrt: " +plannedStartTime
 			+" Bei Patient: " +plannedTimeAtPatient
 			+" Termin: " +term;
@@ -156,7 +149,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		//aufg
 		if(transport.getCreationTime() != 0)
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.late");
 			title = "Aufgenommen: " +sdf.format(transport.getCreationTime());
 			addIconAndLabel(composite,image,title);
 		}
@@ -164,7 +157,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		//the notes
 		if(transport.hasNotes())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
+			image = ImageFactory.getInstance().getRegisteredImage("resource.info");
 			title = transport.getNotes();
 			addIconAndLabel(composite,image,title);
 		}
@@ -172,20 +165,20 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		//feedback
 		if(transport.hasFeedback())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.feedback");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.feedback");
 			title = transport.getFeedback();
 			addIconAndLabel(composite,image,title);
 		}
 		
 		//directness
-		image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.directness");
+		image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 		title = directness;
 		addIconAndLabel(composite,image,title);
 		
 		//caller
 		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.callerDetail");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.callerDetail");
 			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
 			addIconAndLabel(composite,image,title);
 		}
@@ -194,21 +187,21 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
 				|| firebrigade.equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.exclamation");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.exclamation");
 			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
 			addIconAndLabel(composite,image,title);
 		}
 		
 		if(transport.isEmergencyPhone())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.phone");
+			image = ImageFactory.getInstance().getRegisteredImage("resource.mobilePhone");
 			title = emergencyPhone;
 			addIconAndLabel(composite,image,title);
 		}
 		
 		if(transport.getKindOfIllness()!="" & transport.getKindOfIllness() != null)
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.heart");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.heart");
 			title = transport.getKindOfIllness();
 			addIconAndLabel(composite,image,title);
 		}

@@ -56,7 +56,7 @@ public class EditorNewMobilePhoneAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("image.admin.create");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.mobilePhoneAdd");
     }
 
     /**

@@ -475,11 +475,9 @@ public class DialysisForm implements IKindOfTransport
 		okButton.setLayoutData(fd_okButton);
 		okButton.setText("OK");
 		okButton.addListener(SWT.Selection, new Listener()
-		{
-			
+		{	
 			String requiredFields;
-			
-			
+		
 			int hourStart;
 			int hourAtPatient;
 			int hourTerm;
@@ -503,10 +501,7 @@ public class DialysisForm implements IKindOfTransport
 			long startLong;
 			long abfRTLong;
 			long readyLong;
-			
-			boolean accompanyingPerson;
-			
-			
+
 			boolean montag;
 			boolean dienstag;
 			boolean mittwoch;
@@ -531,15 +526,9 @@ public class DialysisForm implements IKindOfTransport
 			boolean chair;
 			boolean moving;
 			
-			String theRespStation;
-			
+			String theRespStation;			
 			String formatOfTime;
-			
-			
-			
-			
-			
-			
+
 			public void handleEvent(Event event) 
 			{
 				String kindOfTransport;
@@ -687,13 +676,8 @@ public class DialysisForm implements IKindOfTransport
 					
 					UpdateDialysisTransportAction updateAction = new UpdateDialysisTransportAction(dia);
 					updateAction.run();
-					
-				
 				}
-				
 				shell.close();
-				
-				
 			}
 			
 			private void getContentOfAllFields()
@@ -715,7 +699,6 @@ public class DialysisForm implements IKindOfTransport
 				ready = textFertig.getText();
 				
 				theRespStation = comboZustOrtsstelle.getText();
-				accompanyingPerson = begleitpersonButton.getSelection();
 				
 				wheelChairButton = eigenerRollstuhlButton.getSelection();
 				gurney = krankentrageButton.getSelection();
@@ -728,19 +711,10 @@ public class DialysisForm implements IKindOfTransport
 				lastName = comboNachname.getText();
 				fromCommunity = comboVonOrt.getText();
 				fromStreet = comboVonStrasse.getText();
-				
-				
-				
-				
-				
-				
 			}
 			
 			private String checkRequiredFields()
 			{
-				//TODO
-				
-
 				if (fromStreet.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"von Straﬂe";
 				if (fromCommunity.equalsIgnoreCase(""))
@@ -1015,11 +989,7 @@ public class DialysisForm implements IKindOfTransport
 				}
 				
 			}
-			
-			
-			
-			
-			
+
 			private void displayMessageBox(Event event, String fields, String message)
 			{
 				 MessageBox mb = new MessageBox(shell, 0);
@@ -1030,16 +1000,7 @@ public class DialysisForm implements IKindOfTransport
 			}
 		
 		});
-		
-		
-		
-		
 		shell.setTabList(new Control[] {planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton});
-		//
-		
-		
-	}
-	
-	
 
+	}
 }

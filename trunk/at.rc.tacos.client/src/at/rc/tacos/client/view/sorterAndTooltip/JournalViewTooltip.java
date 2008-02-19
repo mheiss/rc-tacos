@@ -94,7 +94,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		if (transport.isPoliceAlarming())
 			police = "Polizei";
         
-		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.transportShort");
+		Image image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
 			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
 			+transport.getToStreet() +"/" +transport.getToCity();
@@ -102,7 +102,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		
 		if(transport.getKindOfTransport() != null)
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.qmark");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.qmark");
 			title = transport.getKindOfTransport();
 			addIconAndLabel(composite,image,title);
 		}
@@ -110,7 +110,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		//the notes
 		if(transport.hasNotes())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("image.personal.info");
+			image = ImageFactory.getInstance().getRegisteredImage("resource.user");
 			title = transport.getNotes();
 			addIconAndLabel(composite,image,title);
 		}
@@ -118,7 +118,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		//real station
 		if(transport.getRealLocation().getLocationName() != null)
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.station");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.stationary");
 			title = transport.getRealLocation().getLocationName();
 			addIconAndLabel(composite,image,title);
 		}
@@ -139,7 +139,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			term = "";
 		if((!plannedStartTime.equalsIgnoreCase("") || !plannedTimeAtPatient.equalsIgnoreCase("") || !term.equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.time");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.late");
 			title = "Abfahrt: " +plannedStartTime
 			+" Bei Patient: " +plannedTimeAtPatient
 			+" Termin: " +term;
@@ -149,7 +149,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		//feedback
 		if(transport.hasFeedback())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.feedback");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.feedback");
 			title = transport.getFeedback();
 			addIconAndLabel(composite,image,title);
 		}
@@ -158,7 +158,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		//caller detail
 		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.callerDetail");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.callerDetail");
 			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
 			addIconAndLabel(composite,image,title);
 		}
@@ -167,7 +167,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
 				|| firebrigade.equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("toolbar.icon.exclamation");
+			image = ImageFactory.getInstance().getRegisteredImage("transport.exclamation");
 			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
 			addIconAndLabel(composite,image,title);
 		}

@@ -5,23 +5,23 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import at.rc.tacos.factory.ImageFactory;
 
 /**
- * This is a workbench action to switch to the log perspective
+ * Switches to the journal perspective
  * @author Michael
  */
-public class SwitchToLogPerspective extends AbstractPerspectiveSwitcher
+public class SwitchToTransportJournalPerspective  extends AbstractPerspectiveSwitcher
 {
-	public SwitchToLogPerspective() 
-	{
-		super(LogPerspective.ID);
-	}
-	
+    public SwitchToTransportJournalPerspective() 
+    {
+        super(TransportJournalPerspective.ID);
+    }
+    
     /**
      * Returns the image for the perspective
      */
     @Override
     public ImageDescriptor getImageDescriptor()
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.log");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.transportJournal");
     }
 
    /**
@@ -30,7 +30,7 @@ public class SwitchToLogPerspective extends AbstractPerspectiveSwitcher
     @Override
     public String getText()
     {
-        return "Log";
+        return "Journal";
     }
 
    /**
@@ -39,6 +39,6 @@ public class SwitchToLogPerspective extends AbstractPerspectiveSwitcher
     @Override
     public String getToolTipText()
     {
-        return "Zeigt alle mitprotokollierten Meldungen und Fehler an.";
+        return "Zeigt das Transport Journalblatt an.";
     }
 }
