@@ -68,7 +68,16 @@ public class ServerController
         //get the user session
         ClientSession session = getSession(client);   
         System.out.println("Disconnect detected ( "+session+" ) ");
-        //check the pool
+        //close the connection if we have one
+        if(session.getConnection() != null)
+        {
+        	session.getConnection().removeAllNetListeners();
+        	session.getConnection().requestStop();
+        	//close the socket when it is open
+        	if(session.getConnection().getSocket() != null)
+        		session.getConnection().getSocket().cleanup();
+        }
+        //check the pool and remove the session
         if(connClientPool.contains(session))
         {
             connClientPool.remove(session);

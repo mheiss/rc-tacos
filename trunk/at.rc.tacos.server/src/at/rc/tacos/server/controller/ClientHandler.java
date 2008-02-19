@@ -82,6 +82,7 @@ public class ClientHandler implements INetListener
 				//remove the client form the list of authenticated clients if successfully
 				if(logoutResult.isLoggedOut())
 					session.setDeAuthenticated();
+				server.clientDisconnected(session.getConnection());
 				server.sendMessage(session, contentType, queryString, logoutResult);
 			}
 			//add request
