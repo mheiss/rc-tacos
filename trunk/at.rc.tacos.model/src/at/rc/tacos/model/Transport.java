@@ -31,11 +31,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	 */
 	public final static int TRANSPORT_ERROR = -3;
 
-	//Type of transports to display
-	public final static String TRANSPORT_PROGRESS = "TRANSPORT_PROGRESS";
-	//transports are in the journal and cannot be edited
-	public final static String TRANSPORT_JOURNAL = "TRANSPORT_JOURNAL";
-
 	// properties
 	private int transportId;
 	private int year;
@@ -71,7 +66,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
 	//general informations
 	private Location planedLocation;  
-	private Location realLocation;
 	private String notes;
 	private int programStatus;
 	private String createdByUser;
@@ -487,15 +481,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/**
-	 * Returns the real location who really execute the transport
-	 * @return the real location
-	 */
-	public Location getRealLocation() 
-	{
-		return realLocation;
-	}
-
-	/**
 	 * @return the notes
 	 */
 	public String getNotes() 
@@ -884,17 +869,6 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 		if(planedLocation == null)
 			throw new IllegalArgumentException("The planned location cannot be null");
 		this.planedLocation = planedLocation;
-	}
-
-
-	/**
-	 * Sets the real location of the transport.<br>
-	 * The real location which really execute the transport
-	 * @param realLocation the realLocation to set
-	 */
-	public void setRealLocation(Location realLocation) 
-	{
-		this.realLocation = realLocation;
 	}
 
 	/**

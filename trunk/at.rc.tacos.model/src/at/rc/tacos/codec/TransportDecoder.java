@@ -100,7 +100,7 @@ public class TransportDecoder implements MessageDecoder
 				{
 					//get the decoder for the Location
 					MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
-					transport.setRealLocation((Location)decoder.doDecode(reader));
+					transport.setPlanedLocation((Location)decoder.doDecode(reader));
 				}
 				if("notes".equalsIgnoreCase(startName))
 					transport.setNotes(reader.getElementText());

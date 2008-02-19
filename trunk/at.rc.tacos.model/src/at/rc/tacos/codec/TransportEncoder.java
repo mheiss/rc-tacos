@@ -156,11 +156,9 @@ public class TransportEncoder  implements MessageEncoder
 
         //next
         MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
-        encoder.doEncode(transport.getPlanedLocation(), writer);
-        if(transport.getRealLocation() != null)
-        {
-        	encoder.doEncode(transport.getRealLocation(), writer);
-        }
+        if(transport.getPlanedLocation() != null)
+        	encoder.doEncode(transport.getPlanedLocation(), writer);
+        
         if(transport.getNotes() != null)
         {
             writer.writeStartElement("notes");
