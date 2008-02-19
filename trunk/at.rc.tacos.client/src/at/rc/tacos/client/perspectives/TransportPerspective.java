@@ -6,6 +6,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 import at.rc.tacos.client.view.FilterView;
 import at.rc.tacos.client.view.NavigationView;
 import at.rc.tacos.client.view.OutstandingTransportsView;
+import at.rc.tacos.client.view.UnderwayTransportsView;
 
 /**
  * The perspective for the transport overview
@@ -27,6 +28,7 @@ public class TransportPerspective implements IPerspectiveFactory
         //the main components
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
         layout.addStandaloneView(FilterView.ID,false,IPageLayout.LEFT,0.18f,editorArea);
-        layout.addStandaloneView(OutstandingTransportsView.ID,false, IPageLayout.RIGHT, 0.45f, editorArea);
+        layout.addStandaloneView(UnderwayTransportsView.ID, false, IPageLayout.TOP, 0.45f, editorArea);
+        layout.addStandaloneView(OutstandingTransportsView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
     }
 }

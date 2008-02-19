@@ -339,8 +339,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         //sort by the station name
         if (column == RESP_STATION_SORTER) 
         {
-        	String st1 = transport1.getRealLocation().getLocationName();
-        	String st2 = transport2.getRealLocation().getLocationName();
+        	String st1 = transport1.getVehicleDetail().getCurrentStation().getLocationName();
+        	String st2 = transport2.getVehicleDetail().getCurrentStation().getLocationName();
         	returnValue = st1.compareTo(st2);
         }
         
@@ -372,9 +372,6 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
         	String n2 = transport2.getKindOfTransport();
         	returnValue = n1.compareTo(n2);
         }
-        
-        
-
         
         if (this.dir == SWT.DOWN) {
             returnValue = returnValue * -1;

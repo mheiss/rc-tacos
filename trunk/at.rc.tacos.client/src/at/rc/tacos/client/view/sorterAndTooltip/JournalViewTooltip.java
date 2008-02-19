@@ -36,7 +36,6 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 	private String emergencyDoctor = "";
 	private String helicopter= "";
 	private String mountainRescue = "";
-	private String emergencyPhone = "";
 	
 	
 	/**
@@ -87,8 +86,6 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			df = "Dienstführender";
 		if (transport.isEmergencyDoctorAlarming())
 			emergencyDoctor = "Notarzt";
-		if (transport.isEmergencyPhone())
-			emergencyPhone = "Rufhilfe";
 		if (transport.isHelicopterAlarming())
 			helicopter = "Notarzthubschrauber";
 		if (transport.isPoliceAlarming())
@@ -116,13 +113,12 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		}
 		
 		//real station
-		if(transport.getRealLocation().getLocationName() != null)
+		if(transport.getVehicleDetail() != null && transport.getVehicleDetail().getCurrentStation() != null)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("transport.stationary");
-			title = transport.getRealLocation().getLocationName();
+			title = transport.getVehicleDetail().getCurrentStation().getLocationName();
 			addIconAndLabel(composite,image,title);
 		}
-		
 		
 		//planned times
 		if(transport.getPlannedStartOfTransport()!= 0)
