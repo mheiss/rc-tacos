@@ -27,8 +27,6 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
     public static final int COLUMN_JOB = 8;
     public static final int COLUMN_STATION = 9;
     public static final int COLUMN_VEHICLE = 10;  
-    
-
 
     @Override
     public Image getColumnImage(Object element, int columnIndex) 

@@ -46,11 +46,11 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 	        case COLUMN_FROM:return null;
 	        case COLUMN_PATIENT:
 	        	if(transport.isAssistantPerson())
-	        		return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
+	        		return ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson");
 	        	else return null;
 	        case COLUMN_TO:
 	        	if(transport.isLongDistanceTrip())
-	        			return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.longtrip");
+	        			return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
 	        	else return null;
 	        case COLUMN_AUFG:return null;
 	        case COLUMN_T:return null;

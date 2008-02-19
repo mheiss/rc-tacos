@@ -86,7 +86,6 @@ public class ModelFactory
                 net.requestListing(VehicleDetail.ID, null);
                 net.requestListing(Login.ID, null);
                 net.requestListing(StaffMember.ID, null);
-                dateFilter.add(IFilterTypes.TYPE_FILTER, Transport.TRANSPORT_PROGRESS);
                 net.requestListing(Transport.ID, dateFilter);
                 net.requestListing(DialysisPatient.ID, null);
                 return Status.OK_STATUS;
