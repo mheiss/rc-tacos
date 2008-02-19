@@ -3,7 +3,6 @@ package at.rc.tacos.client.providers;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 
 /**

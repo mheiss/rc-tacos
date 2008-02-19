@@ -289,17 +289,15 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	}
 
 	
-	
 	/**
 	 * Creates the needed actions
 	 */
 	private void makeActions()
 	{
-		dialysisOpenNewFormAction = new DialysisOpenNewFormAction(this.viewer);
-		dialysisEditAction = new DialysisEditAction(this.viewer);
-		dialysisDeleteAction = new DialysisDeleteAction(this.viewer);
-		dialysisTransportNowAction = new DialysisTransportNowAction(this.viewer);
-	
+		dialysisOpenNewFormAction = new DialysisOpenNewFormAction();
+		dialysisEditAction = new DialysisEditAction(viewer);
+		dialysisDeleteAction = new DialysisDeleteAction(viewer);
+		dialysisTransportNowAction = new DialysisTransportNowAction(viewer);
 	}
 	
 	/**
@@ -349,22 +347,10 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		// the viewer represents simple model. refresh should be enough.
-		if ("DIALYSISTRANSPORT_ADD".equals(evt.getPropertyName())) 
-		{ 
-			this.viewer.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("DIALYSISTRANSPORT_REMOVE".equals(evt.getPropertyName())) 
-		{ 
-			this.viewer.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("DIALYSISTRANSPORT_UPDATE".equals(evt.getPropertyName())) 
-		{ 
-			this.viewer.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("DIALYSISTRANSPORT_CLEARED".equals(evt.getPropertyName())) 
+		if ("DIALYSISTRANSPORT_ADD".equals(evt.getPropertyName())
+		        || "DIALYSISTRANSPORT_REMOVE".equals(evt.getPropertyName()) 
+		        || "DIALYSISTRANSPORT_UPDATE".equals(evt.getPropertyName())
+		        || "DIALYSISTRANSPORT_CLEARED".equals(evt.getPropertyName()))
 		{ 
 			this.viewer.refresh();
 		}

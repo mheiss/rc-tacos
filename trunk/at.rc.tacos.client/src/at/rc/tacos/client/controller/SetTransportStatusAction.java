@@ -21,17 +21,6 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 	//properties
 	private TableViewer viewer;
 	private int status;
-	private String shownAs;
-	
-	/**
-	 * Default class constructor.
-	 * @param viewer the table viewer
-	 */
-	public SetTransportStatusAction(TableViewer viewer)
-	{
-		
-	}
-	
 	/** 
 	 * Constructor to set the given transport status
 	 * @param viewer the table viewer
@@ -41,7 +30,6 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 	{
 		this.viewer = viewer;
 		this.status = status;
-		this.shownAs = shownAs;
 		setText(shownAs);
 		setToolTipText("Setzt den Transportstatus " +" " +shownAs);
 	}

@@ -47,7 +47,7 @@ public class EditorSaveAction extends Action implements IWorkbenchWindowActionDe
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("images.admin.save");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.save");
     }
 
     /**

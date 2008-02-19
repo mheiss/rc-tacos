@@ -1,18 +1,11 @@
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.ui.PlatformUI;
-
 import at.rc.tacos.client.view.DialysisForm;
-import at.rc.tacos.client.view.TransportForm;
-import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.DialysisPatient;
-import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.Transport;
 
 /**
  * Opens the editor to edit the selected dialysis entry

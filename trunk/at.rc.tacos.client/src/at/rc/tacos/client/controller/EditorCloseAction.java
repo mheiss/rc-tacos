@@ -51,7 +51,7 @@ public class EditorCloseAction extends Action implements IWorkbenchWindowActionD
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("images.admin.close");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.remove");
     }
 
     /**

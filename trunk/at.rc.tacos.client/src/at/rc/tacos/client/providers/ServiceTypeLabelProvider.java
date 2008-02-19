@@ -16,7 +16,7 @@ public class ServiceTypeLabelProvider extends LabelProvider
     @Override
     public Image getImage(Object object)
     {
-        return ImageFactory.getInstance().getRegisteredImage("image.vehicle.house");
+        return ImageFactory.getInstance().getRegisteredImage("resource.serviceType");
     }
 
     /**

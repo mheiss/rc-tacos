@@ -46,7 +46,7 @@ public class VehiclesSelectForm extends TitleAreaDialog
         Control contents = super.createContents(parent);
         setTitle("Fahrzeugverwaltung");
         setMessage("Bitte wählen sie ein Fahrzeug aus", IMessageProvider.INFORMATION);
-        setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+        setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
         getShell().setSize(600, 400);
         
         return contents;

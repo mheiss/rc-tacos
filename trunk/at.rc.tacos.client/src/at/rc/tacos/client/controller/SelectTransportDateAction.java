@@ -8,9 +8,7 @@ import org.eclipse.jface.action.Action;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.QueryFilter;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 
 /**

@@ -7,11 +7,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.view.TransportForm;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.DialysisPatient;
-import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.Transport;
 
 /**
  * Opens a dialog to confirm and then delete the selected dialysis entry

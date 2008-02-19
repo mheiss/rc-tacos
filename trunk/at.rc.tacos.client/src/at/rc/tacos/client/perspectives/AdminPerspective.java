@@ -32,7 +32,7 @@ public class AdminPerspective implements IPerspectiveFactory
         layout.setFixed(true);
         
         //the main components
-        layout.addStandaloneView(NavigationAdminView.ID, false, IPageLayout.TOP, 0.12f, editorArea);
+        layout.addStandaloneView(NavigationAdminView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
         
         //Create a folder on the left
         IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.26, editorArea);

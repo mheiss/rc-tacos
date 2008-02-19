@@ -16,7 +16,7 @@ public class StaffMemberLabelProvider extends LabelProvider
     @Override
     public Image getImage(Object object)
     {
-        return ImageFactory.getInstance().getRegisteredImage("image.personal.user");
+        return ImageFactory.getInstance().getRegisteredImage("resource.user");
     }
 
     /**

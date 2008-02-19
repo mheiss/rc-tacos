@@ -39,7 +39,7 @@ public class JournalMoveToRunningTransportsAction extends Action implements ITra
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//change transport program status to 'underway'
 		transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
-		transport.getStatusMessages().clear();//TODOok? or better to clear only the status 5 (Ziel frei)
+		transport.getStatusMessages().clear();//TODO:ok? or better to clear only the status 5 (Ziel frei)
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

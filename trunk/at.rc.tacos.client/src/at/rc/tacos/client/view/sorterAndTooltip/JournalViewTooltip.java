@@ -93,8 +93,6 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			helicopter = "Notarzthubschrauber";
 		if (transport.isPoliceAlarming())
 			police = "Polizei";
-		
-			
         
 		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.transportShort");
 		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 

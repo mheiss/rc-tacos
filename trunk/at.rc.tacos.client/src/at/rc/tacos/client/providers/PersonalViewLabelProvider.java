@@ -42,21 +42,21 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         //show house symbol if the person is at home
         case COLUMN_STANDBY: 
             if(entry.getStandby())
-                return ImageFactory.getInstance().getRegisteredImage("image.personal.home");
+                return ImageFactory.getInstance().getRegisteredImage("resource.location");
             else
                 return null;
         //show info symbol if there are notes
         case COLUMN_NOTES: 
             if(entry.hasNotes())
-                return ImageFactory.getInstance().getRegisteredImage("image.personal.info");
+                return ImageFactory.getInstance().getRegisteredImage("resource.info");
             return null;
         //show a symbol in front of the name 
-        case COLUMN_NAME: return ImageFactory.getInstance().getRegisteredImage("image.personal.user");
+        case COLUMN_NAME: return ImageFactory.getInstance().getRegisteredImage("resource.user");
         case COLUMN_PLANED_WORK_TIME:
             if(entry.isSplitEntry())
-                return ImageFactory.getInstance().getRegisteredImage("image.personal.timesplit");
+                return ImageFactory.getInstance().getRegisteredImage("resource.timesplit");
             else
-                return ImageFactory.getInstance().getRegisteredImage("image.personal.time");
+                return ImageFactory.getInstance().getRegisteredImage("resource.time");
         
         //show a symbol if the planned time is not handled
         case COLUMN_CHECK_IN: 
@@ -64,7 +64,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
             if(entry.getRealStartOfWork() != 0)
             	return null;       
             if (entry.getPlannedStartOfWork() < new Date().getTime())
-            	return ImageFactory.getInstance().getRegisteredImage("image.personal.alert");
+            	return ImageFactory.getInstance().getRegisteredImage("resource.warning");
             else
             return null;
         case COLUMN_CHECK_OUT: 
@@ -72,7 +72,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
             if(entry.getRealEndOfWork() != 0)
             	return null;
             if(entry.getPlannedEndOfWork() < new Date().getTime())
-                return ImageFactory.getInstance().getRegisteredImage("image.personal.alert");
+                return ImageFactory.getInstance().getRegisteredImage("resource.warning");
             return null;
         default: return null;
         }
@@ -134,31 +134,13 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 	@Override
 	public Color getForeground(Object element, int columnIndex) 
 	{
-		boolean checkedIn = false;
-		boolean stillComming = false;
-		
 		RosterEntry entry = (RosterEntry)element;
         
 		if (entry.getRealStartOfWork() != 0 && entry.getRealEndOfWork() == 0)
-			checkedIn = true;
+		    return null;
 		if (entry.getRealStartOfWork() == 0 && entry.getRealEndOfWork() == 0)
-			stillComming = true;
-        
-        switch(columnIndex)
-        {
-	        case COLUMN_CHECK_IN: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_STANDBY: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_NOTES: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_NAME: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_PLANED_WORK_TIME: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_CHECK_OUT: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_SERVICE_TYPE: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_JOB: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_STATION: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        case COLUMN_VEHICLE: if (checkedIn)return null; else if (stillComming)return CustomColors.DARK_GREY_COLOR;
-	        default: return CustomColors.GREY_COLOR;
-        }
-        
-        
+		    return CustomColors.DARK_GREY_COLOR;
+		
+		return null;
 	}
 }

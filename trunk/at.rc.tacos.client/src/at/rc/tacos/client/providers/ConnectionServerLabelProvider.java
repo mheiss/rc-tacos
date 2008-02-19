@@ -23,7 +23,7 @@ public class ConnectionServerLabelProvider implements ITableLabelProvider
 		switch(columnIndex)
 		{
 		case COLUMN_SERVER: 
-			return ImageFactory.getInstance().getRegisteredImage("image.server");
+			return ImageFactory.getInstance().getRegisteredImage("wizard.server.server");
 		default: 
 			return null;
 		}

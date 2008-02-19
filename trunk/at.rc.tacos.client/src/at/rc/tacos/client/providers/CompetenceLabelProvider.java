@@ -16,7 +16,7 @@ public class CompetenceLabelProvider extends LabelProvider
     @Override
     public Image getImage(Object object)
     {
-        return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.yes");
+        return ImageFactory.getInstance().getRegisteredImage("resource.competence");
     }
 
     /**

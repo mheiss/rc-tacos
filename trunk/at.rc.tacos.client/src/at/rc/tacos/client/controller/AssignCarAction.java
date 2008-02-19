@@ -48,7 +48,6 @@ public class AssignCarAction extends Action implements IProgramStatus
 		long now = cal.getTimeInMillis();
 		transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
 		transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
-		//TODO assign transport number
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

@@ -116,7 +116,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		Control contents = super.createContents(parent);
 		setTitle("Dienstplaneintrag");
 		setMessage("Hier können Sie einen neuen Dienstplaneintrag anlegen", IMessageProvider.INFORMATION);
-		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 
 		contents.redraw();
 		Composite client = ((Composite)contents);

@@ -48,7 +48,7 @@ public class VehicleDetachAllStaffMembersAction extends Action
 	@Override
 	public ImageDescriptor getImageDescriptor() 
 	{
-		return ImageFactory.getInstance().getRegisteredImageDescriptor("image.personal.user");
+		return ImageFactory.getInstance().getRegisteredImageDescriptor("resource.userRemove");
 	}
 
 	/**

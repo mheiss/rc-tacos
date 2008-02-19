@@ -16,7 +16,7 @@ public class MobilePhoneLabelProvider  extends LabelProvider
     @Override
     public Image getImage(Object object)
     {
-        return ImageFactory.getInstance().getRegisteredImage("image.vehicle.phone");
+        return ImageFactory.getInstance().getRegisteredImage("resource.phone");
     }
 
     /**

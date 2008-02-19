@@ -30,7 +30,7 @@ public class VehicleEditAction extends Action
 	@Override
 	public String getToolTipText() 
 	{
-		return "Editiert ein vorhandenes Fahrzeut";
+		return "Editiert ein vorhandenes Fahrzeug";
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class VehicleEditAction extends Action
 	@Override
 	public ImageDescriptor getImageDescriptor() 
 	{
-		return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.carRed24");
+		return ImageFactory.getInstance().getRegisteredImageDescriptor("resource.vehicle");
 	}
 
 	/**
