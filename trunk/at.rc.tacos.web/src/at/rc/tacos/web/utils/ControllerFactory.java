@@ -77,7 +77,8 @@ public class ControllerFactory {
 		}
 		else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.statisticTransport")))
 		{
-			return new StatisticTransportController();
+			//return new StatisticTransportController();
+			return null;
 		}
 		else
 		{
