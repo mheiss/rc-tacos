@@ -150,8 +150,7 @@ public class MyClient implements Runnable,IConnectionStates
     }
 
     /**
-     * Creates and starts a thread to receive messages
-     * with this client
+     * Creates and starts a thread to receive messages with this client
      */
     private void start()
     {

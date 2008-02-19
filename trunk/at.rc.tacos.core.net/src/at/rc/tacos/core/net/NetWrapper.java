@@ -121,6 +121,23 @@ public class NetWrapper extends Plugin implements INetListener
 	{
 		return connected;
 	}
+	
+	/**
+	 * Closes the current connection and cleanup.
+	 */
+	public void closeConnection()
+	{
+		//get the client session
+		if(clientSession == null)
+			return;
+		//get the connection
+		MyClient connection = clientSession.getConnection();
+		//assert we have a connection
+		if(connection == null)
+			return;
+		//close
+		NetSource.getInstance().closeConnection(connection);
+	}
 
 	/**
 	 * Convenience method to registers the encoders and decoders.
@@ -172,7 +189,15 @@ public class NetWrapper extends Plugin implements INetListener
 	{
 		sendMessage(Login.ID, IModelActions.LOGIN, null, login);
 	}
-
+	
+	/**
+	 * Sends a request to the server to logout the user.
+	 * @param logout the logut message
+	 */
+	public void sendLogoutMessage(Logout logout)
+	{
+		sendMessage(Logout.ID, IModelActions.LOGOUT, null, logout);
+	}
 
 	/**
 	 * Sends a request to the server to add the object to the database.<br>
@@ -240,7 +265,6 @@ public class NetWrapper extends Plugin implements INetListener
 		{
 			System.out.println("Failed to send the message");
 			System.out.println("No client session available to send the message");
-			socketStatusChanged(null, IConnectionStates.STATE_DISCONNECTED);
 			return;
 		}
 		//check if we have a connection
@@ -248,7 +272,6 @@ public class NetWrapper extends Plugin implements INetListener
 		{
 			System.out.println("Failed to send the message");
 			System.out.println("No connection to a server available");
-			socketStatusChanged(null, IConnectionStates.STATE_DISCONNECTED);
 			return;
 		}
 		
