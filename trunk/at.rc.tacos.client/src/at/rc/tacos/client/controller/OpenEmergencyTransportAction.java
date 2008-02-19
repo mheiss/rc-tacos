@@ -15,7 +15,7 @@ public class OpenEmergencyTransportAction extends Action
     @Override
     public String getToolTipText() 
     {
-        return "Öffnet ein Fenster um einen neuen Einsatz zu erstellen";
+        return "Öffnet ein Fenster um einen neuen Notfall Transport zu erstellen";
     }
     
     /**
@@ -35,7 +35,7 @@ public class OpenEmergencyTransportAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.createTransportEmerge");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.createTransportEmergency");
     }
     
     /**

@@ -56,7 +56,7 @@ public class EditorNewVehicleAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.create");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.vehicleAdd");
     }
 
     /**

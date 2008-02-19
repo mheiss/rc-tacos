@@ -5,8 +5,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import at.rc.tacos.factory.ImageFactory;
 
 /**
- * This is a workbench action to switch the 
- * perspective
+ * This is a workbench action to switch the resource perspective
  * @author Michael
  */
 public class SwitchToClientPerspective extends AbstractPerspectiveSwitcher

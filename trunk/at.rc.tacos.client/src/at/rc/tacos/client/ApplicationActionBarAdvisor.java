@@ -11,7 +11,10 @@ import at.rc.tacos.client.controller.ConnectionWizardAction;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
 import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
 import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
+import at.rc.tacos.client.perspectives.SwitchToTransportDialysePerspective;
+import at.rc.tacos.client.perspectives.SwitchToTransportJournalPerspective;
 import at.rc.tacos.client.perspectives.SwitchToTransportPerspective;
+import at.rc.tacos.client.perspectives.SwitchToTransportPrebookingPerspective;
 
 /**
  * An action bar advisor is responsible for creating, adding, and disposing of the
@@ -25,8 +28,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	private IWorkbenchAction aboutAction;
 	private ConnectionWizardAction conWizard;
 	private SwitchToClientPerspective switchToClient;
-	private SwitchToAdminPerspective switchToAdmin;
 	private SwitchToTransportPerspective switchToTransport;
+	private SwitchToTransportDialysePerspective switchToDialyse;
+	private SwitchToTransportPrebookingPerspective switchToPrebooking;
+	private SwitchToTransportJournalPerspective switchToJournal;
+	private SwitchToAdminPerspective switchToAdmin;
 	private SwitchToLogPerspective switchToLog;
 
 	/**
@@ -49,6 +55,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		conWizard = new ConnectionWizardAction(window);
 		switchToClient = new SwitchToClientPerspective();
 		switchToTransport = new SwitchToTransportPerspective();
+		switchToPrebooking = new SwitchToTransportPrebookingPerspective();
+		switchToDialyse = new SwitchToTransportDialysePerspective();
+		switchToJournal = new SwitchToTransportJournalPerspective();
 		switchToAdmin = new SwitchToAdminPerspective();
 		switchToLog = new SwitchToLogPerspective();
 
@@ -66,12 +75,20 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
 		fileMenu.add(exitAction);
 		
+		//the admin sub menu
+		MenuManager adminMenu = new MenuManager("&Administation");
+		adminMenu.add(switchToLog);
+		adminMenu.add(switchToAdmin);
+		
 		//window menue
 		MenuManager windowMenu = new MenuManager("&Window");
+		windowMenu.add(adminMenu);
+		windowMenu.add(new Separator());
 		windowMenu.add(switchToClient);
 		windowMenu.add(switchToTransport);
-		windowMenu.add(switchToAdmin);
-		windowMenu.add(switchToLog);
+		windowMenu.add(switchToPrebooking);
+		windowMenu.add(switchToDialyse);
+		windowMenu.add(switchToJournal);
 
 		//help menu
 		MenuManager helpMenu = new MenuManager("&Help");

@@ -5,15 +5,11 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 import at.rc.tacos.client.view.FilterView;
 import at.rc.tacos.client.view.NavigationView;
-import at.rc.tacos.client.view.OutstandingTransportsView;
+import at.rc.tacos.client.view.PrebookingView;
 
-/**
- * The perspective for the transport overview
- * @author Michael
- */
-public class TransportPerspective implements IPerspectiveFactory 
+public class TransportPrebookingPerspective implements IPerspectiveFactory 
 {
-    public static final String ID = "at.rc.tacos.client.perspectives.transport";
+    public static final String ID = "at.rc.tacos.client.perspectives.transportPrebooking";
     
     /**
      * Set up the layout of the workbench
@@ -27,6 +23,6 @@ public class TransportPerspective implements IPerspectiveFactory
         //the main components
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
         layout.addStandaloneView(FilterView.ID,false,IPageLayout.LEFT,0.18f,editorArea);
-        layout.addStandaloneView(OutstandingTransportsView.ID,false, IPageLayout.RIGHT, 0.45f, editorArea);
+        layout.addStandaloneView(PrebookingView.ID,false, IPageLayout.RIGHT, 0.90f, editorArea);
     }
 }

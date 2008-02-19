@@ -12,11 +12,19 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.controller.OpenDialysisTransportAction;
+import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
+import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.controller.VehicleOpenAction;
 import at.rc.tacos.client.modelManager.MyToolbarManager;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
+import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
+import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
+import at.rc.tacos.client.perspectives.SwitchToTransportDialysePerspective;
+import at.rc.tacos.client.perspectives.SwitchToTransportJournalPerspective;
 import at.rc.tacos.client.perspectives.SwitchToTransportPerspective;
+import at.rc.tacos.client.perspectives.SwitchToTransportPrebookingPerspective;
 import at.rc.tacos.factory.ImageFactory;
 
 /**
@@ -45,7 +53,15 @@ public class NavigationView extends ViewPart
 	    //add the actions
 	    tbm.add(new PersonalNewEntryAction());
         tbm.add(new VehicleOpenAction());
+        tbm.add(new OpenTransportAction());
+        tbm.add(new OpenEmergencyTransportAction());
+        tbm.add(new OpenDialysisTransportAction());
+        tbm.add(new SwitchToClientPerspective());
         tbm.add(new SwitchToTransportPerspective());
+        tbm.add(new SwitchToTransportPrebookingPerspective());
+        tbm.add(new SwitchToTransportDialysePerspective());
+        tbm.add(new SwitchToTransportJournalPerspective());
+        tbm.add(new SwitchToLogPerspective());
         tbm.add(new SwitchToAdminPerspective());
         tbm.update(true);
 

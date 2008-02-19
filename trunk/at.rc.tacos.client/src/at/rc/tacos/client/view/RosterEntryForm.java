@@ -96,6 +96,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		this.rosterEntry = rosterEntry;
 		//bind the staff to this view
 		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -104,6 +107,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	public void dispose() 
 	{
 		ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -561,35 +567,35 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	public void propertyChange(PropertyChangeEvent evt)
 	{
 		// the viewer represents simple model. refresh should be enough.
-		if ("STAFF_ADD".equals(evt.getPropertyName())) 
+		if ("STAFF_ADD".equals(evt.getPropertyName())
+				|| "STAFF_REMOVE".equals(evt.getPropertyName()) 
+				|| "STAFF_UPDATE".equals(evt.getPropertyName())
+				||"STAFF_CLEARED".equals(evt.getPropertyName()))
 		{ 
 			employeenameCombo.refresh();
-			comboVerwendung.refresh();
-			comboOrtsstelle.refresh();
-			comboDienstverhaeltnis.refresh();
 		}
-		// event on deletion --> also just refresh
-		if ("STAFF_REMOVE".equals(evt.getPropertyName())) 
+		//keep on track on job changes
+		if ("JOB_ADD".equals(evt.getPropertyName())
+				|| "JOB_REMOVE".equals(evt.getPropertyName()) 
+				|| "JOB_UPDATE".equals(evt.getPropertyName())
+				||"KPB_CLEARED".equals(evt.getPropertyName()))
 		{ 
-			employeenameCombo.refresh();
 			comboVerwendung.refresh();
-			comboOrtsstelle.refresh();
-			comboDienstverhaeltnis.refresh();
 		}
-		// event on deletion --> also just refresh
-		if ("STAFF_UPDATE".equals(evt.getPropertyName())) 
+		//keep on track on location changes
+		if ("LOCATION_ADD".equals(evt.getPropertyName())
+				|| "LOCATION_REMOVE".equals(evt.getPropertyName()) 
+				|| "LOCATION_UPDATE".equals(evt.getPropertyName())
+				||"LOCATION_CLEARED".equals(evt.getPropertyName()))
 		{ 
-			employeenameCombo.refresh();
-			comboVerwendung.refresh();
 			comboOrtsstelle.refresh();
-			comboDienstverhaeltnis.refresh();
 		}
-		// event on deletion --> also just refresh
-		if ("STAFF_CLEARED".equals(evt.getPropertyName())) 
+		//keep on track on service type changes
+		if("SERVICETYPE_ADD".equals(evt.getPropertyName())
+				|| "SERVICETYPE_REMOVE".equals(evt.getPropertyName()) 
+				|| "SERVICETYPE_UPDATE".equals(evt.getPropertyName())
+				||"SERVICETYPE_CLEARED".equals(evt.getPropertyName()))
 		{ 
-			employeenameCombo.refresh();
-			comboVerwendung.refresh();
-			comboOrtsstelle.refresh();
 			comboDienstverhaeltnis.refresh();
 		}
 	}
