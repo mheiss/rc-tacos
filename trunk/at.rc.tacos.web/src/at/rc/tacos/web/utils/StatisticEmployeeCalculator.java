@@ -18,31 +18,8 @@ public class StatisticEmployeeCalculator {
 	public StatisticEmployeeCalculator() {
 	}	
 
-	private String GetStatData(List<RosterEntry> rosterList){
-		//the result listing, that should contain the week result 
-		List<AbstractMessage> resultList = new ArrayList<AbstractMessage>(); 
-		//the calendar instance with the current date 
-		Calendar cal = Calendar.getInstance(); 
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy"); 
-		
-		
-		//if we have no date, use the current date
-		//else take the request parameter "startDate"
-		if (startDate == null || startDate.trim().isEmpty()){
-			startDate = format.format(cal.getTime());
-			
-		}else{
-			splitedDate = startDate.split("-");
-			//cal.set(year, month, day)
-			cal.set(Integer.parseInt(splitedDate[2]), Integer.parseInt(splitedDate[1])-1, 1);		
-		}
-		
-		//get roster entries 
-		List<String> filterdByDate = new ArrayList<String>();
-		for(int i=1; i<=cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) 
-		{ 
-			
-		} 
+	public String GetRosterData(){
+
 		return null;
 	}
 	
