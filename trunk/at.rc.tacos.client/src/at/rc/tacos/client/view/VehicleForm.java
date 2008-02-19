@@ -99,7 +99,7 @@ public class VehicleForm extends TitleAreaDialog
 		Control contents = super.createContents(parent);
 		setTitle("Fahrzeugverwaltung");
 		setMessage(FORM_DESCRIPTION, IMessageProvider.INFORMATION);
-		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 		//drwa the content
 		contents.redraw();
 		Composite client = ((Composite)contents);
@@ -408,7 +408,7 @@ public class VehicleForm extends TitleAreaDialog
 		//create the hyperlink
 		ImageHyperlink removeDriver = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeDriver.setToolTipText("Zieht den aktuell zugewiesenen Fahrer vom Fahrzeug ab");
-		removeDriver.setImage(ImageFactory.getInstance().getRegisteredImage("image.vehicle.remove"));
+		removeDriver.setImage(ImageFactory.getInstance().getRegisteredImage("admin.remove"));
 		removeDriver.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
@@ -441,7 +441,7 @@ public class VehicleForm extends TitleAreaDialog
 		//create the hyperlink
 		ImageHyperlink removeMedic = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
-		removeMedic.setImage(ImageFactory.getInstance().getRegisteredImage("image.vehicle.remove"));
+		removeMedic.setImage(ImageFactory.getInstance().getRegisteredImage("admin.remove"));
 		removeMedic.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
@@ -474,7 +474,7 @@ public class VehicleForm extends TitleAreaDialog
 		//create the hyperlink
 		ImageHyperlink removeMedic2 = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic2.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
-		removeMedic2.setImage(ImageFactory.getInstance().getRegisteredImage("image.vehicle.remove"));
+		removeMedic2.setImage(ImageFactory.getInstance().getRegisteredImage("admin.remove"));
 		removeMedic2.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override

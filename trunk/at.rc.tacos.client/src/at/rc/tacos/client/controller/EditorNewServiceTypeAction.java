@@ -56,7 +56,7 @@ public class EditorNewServiceTypeAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("image.admin.add");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.create");
     }
 
     /**

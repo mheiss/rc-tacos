@@ -287,7 +287,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         
         //update button
         saveDayInfoLink = toolkit.createImageHyperlink(controlls,SWT.NONE);
-        saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save.na"));
+        saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("info.save.na"));
         saveDayInfoLink.addHyperlinkListener(new HyperlinkAdapter()
         {
 			@Override
@@ -307,7 +307,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         
         dayInfoMessage = new CLabel(controlls,SWT.LEFT);
         dayInfoMessage.setText("Zuletzt geändert von <nicht verfügbar>, <nicht verfügbar>");
-        dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.warning"));
+        dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
 
         noteEditor = new TextViewer(notesField, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
         noteEditor.setDocument(new Document());
@@ -367,8 +367,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         	noteEditor.setEditable(true);
         	//update the labels
         	saveDayInfoLink.setEnabled(false);
-        	saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save.na"));
-        	dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.ok"));
+        	saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("info.save.na"));
+        	dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
         	dayInfoMessage.setText("Zuletzt geändert von "+dayInfo.getLastChangedBy());
         	dayInfoSection.setText("Tagesinformationen für den "+MyUtils.timestampToString(dayInfo.getTimestamp(),MyUtils.dateFormat));
         	dayInfoSection.layout(true);
@@ -380,15 +380,15 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         	if(dayInfo.isDirty())
         	{
         		saveDayInfoLink.setEnabled(true);
-        		saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save"));
-        		dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.warning"));
+        		saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("info.save"));
+        		dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
         		dayInfoMessage.setText("Bitte speichern sie ihre lokalen Änderungen");
         	}
         	else
         	{
             	saveDayInfoLink.setEnabled(false);
-            	saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.save.na"));
-            	dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("image.info.ok"));
+            	saveDayInfoLink.setImage(ImageFactory.getInstance().getRegisteredImage("info.save.na"));
+            	dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
             	dayInfoMessage.setText("Zuletzt geändert von "+dayInfo.getLastChangedBy());
         	}
         }

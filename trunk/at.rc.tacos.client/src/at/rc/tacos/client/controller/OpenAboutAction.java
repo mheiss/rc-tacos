@@ -4,7 +4,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import at.rc.tacos.factory.ImageFactory;
 
 /**
  * This action opens the about dialog of the application
@@ -40,7 +39,7 @@ public class OpenAboutAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.about");
+        return null;
     }
     
     /**

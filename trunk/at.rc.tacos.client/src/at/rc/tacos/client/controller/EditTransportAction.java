@@ -37,7 +37,6 @@ public class EditTransportAction extends Action
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		System.out.println("......EditTransportAction, run() transport: "+transport);
 		//open the editor
 		TransportForm form = new TransportForm(transport,editingType);
 		form.open();

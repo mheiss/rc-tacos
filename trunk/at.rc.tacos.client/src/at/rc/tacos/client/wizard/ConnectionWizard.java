@@ -193,6 +193,9 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 	@Override
 	public boolean performCancel() 
 	{
+	    //Close the wizard if a connection is established
+	    if(NetWrapper.getDefault().isConnected())
+	        return true;
 		Display.getCurrent().beep();
 		MessageDialog.openError(
 				PlatformUI.getWorkbench().getDisplay().getActiveShell(),

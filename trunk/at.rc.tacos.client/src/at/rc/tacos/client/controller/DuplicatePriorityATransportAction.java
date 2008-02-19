@@ -1,7 +1,6 @@
 package at.rc.tacos.client.controller;
 
-import java.util.GregorianCalendar;
-
+import java.util.Calendar;
 import org.eclipse.jface.action.Action;
 
 import at.rc.tacos.common.IProgramStatus;
@@ -15,7 +14,7 @@ import at.rc.tacos.model.*;
  */
 public class DuplicatePriorityATransportAction extends Action implements IProgramStatus
 {
-    private Transport t1;
+    private Transport transport;
     
     /**
      * Creates a new TransportAction.
@@ -23,43 +22,17 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
      */
     public DuplicatePriorityATransportAction(Transport transport) 
     {
-        this.t1 = transport;
+        this.transport = transport;
     }
 
     public void run() 
     {
-    	Transport t2 = new Transport(t1.getFromStreet(),t1.getFromCity(),t1.getPlanedLocation(),t1.getDateOfTransport(),t1.getPlannedStartOfTransport(),t1.getTransportPriority(),t1.getDirection());
-		
-		t2.setBackTransport(t1.isBackTransport());  	
-    	t2.setPatient(t1.getPatient());
-    	t2.setAssistantPerson(t1.isAssistantPerson());
-    	t2.setAppointmentTimeAtDestination(t1.getAppointmentTimeAtDestination());
-    	t2.setBlueLightToGoal(t1.isBlueLightToGoal());
-    	t2.setBrkdtAlarming(t1.isBrkdtAlarming());
-    	t2.setCallerDetail(t1.getCallerDetail());
-    	t2.setDfAlarming(t1.isDfAlarming());
-    	t2.setNotes(t1.getNotes());
-    	t2.setEmergencyDoctorAlarming(t1.isEmergencyDoctorAlarming());
-    	t2.setEmergencyPhone(t1.isEmergencyPhone());
-    	t2.setFeedback(t1.getFeedback());
-    	t2.setFirebrigadeAlarming(t1.isFirebrigadeAlarming());
-    	t2.setHelicopterAlarming(t1.isHelicopterAlarming());
-    	t2.setKindOfIllness(t1.getKindOfIllness());
-    	t2.setKindOfTransport(t1.getKindOfTransport());
-    	t2.setLongDistanceTrip(t1.isLongDistanceTrip());
-    	t2.setMountainRescueServiceAlarming(t1.isMountainRescueServiceAlarming());
-    	t2.setPlannedTimeAtPatient(t1.getPlannedTimeAtPatient());
-    	t2.setPoliceAlarming(t1.isPoliceAlarming());
-    	GregorianCalendar gcal = new GregorianCalendar();
-    	long now = gcal.getTimeInMillis();
-    	t2.setCreationTime(now);
-    	t2.setToStreet(t1.getToStreet());
-    	t2.setToCity(t1.getToCity());
-    	
-    	t2.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
+        //duplicate the transport
+    	Transport newTransport = transport;
+    	newTransport.setTransportId(0);
+    	newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
+    	newTransport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
     	//TODO dieser Fahrt soll gleich direkt das NEF zugewiesen werden
-
-    	NetWrapper.getDefault().sendAddMessage(Transport.ID, t2);
-
+    	NetWrapper.getDefault().sendAddMessage(Transport.ID,newTransport);
     }
 }

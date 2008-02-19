@@ -1,6 +1,5 @@
 package at.rc.tacos.client.providers;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -36,9 +35,6 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     public static final int COLUMN_FZG = 15;
     public static final int COLUMN_T = 16;
     public static final int COLUMN_ERKR_VERL = 17;
-
-    
-
 
     @Override
     public Image getColumnImage(Object element, int columnIndex) 

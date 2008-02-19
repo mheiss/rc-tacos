@@ -42,7 +42,7 @@ public class EmptyTransportAction extends Action implements ITransportStatus, IP
 		//confirm the cancel
 		boolean cancelConfirmed = MessageDialog.openQuestion(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-				"Leerfahrt", "Soll die Fahrt (von: " +transport.getFromStreet()+"wirklich als Leerfahrt abgelegt werden? Die Transportnummer bleibt dabei erhalten.");
+				"Leerfahrt", "Soll die Fahrt (von: " +transport.getFromStreet()+") wirklich als Leerfahrt abgelegt werden? Die Transportnummer bleibt dabei erhalten.");
 		if (!cancelConfirmed) 
 			return;
 		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);

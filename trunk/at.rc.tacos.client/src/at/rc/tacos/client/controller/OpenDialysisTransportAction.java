@@ -35,7 +35,7 @@ public class OpenDialysisTransportAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.icon.folderwhite");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.createTransportDialyse");
     }
     
     /**

@@ -22,8 +22,6 @@ public class ConnectionInfoPage extends WizardPage
 	public ConnectionInfoPage()
 	{
 		super("");
-		setTitle("Verbindung zum Server unterbrochen");
-		setDescription("Mit diesem Assistenten können sie eine neue Verbindung aufbauen");
 	}
 
 	/**
@@ -43,17 +41,21 @@ public class ConnectionInfoPage extends WizardPage
 		//the image to display
 		if(NetWrapper.getDefault().isConnected())
 		{
+		    setTitle("Verbindung hergestellt");
+		    setDescription("Die Ausführung des Assistenten ist nicht notwendig");
 			//show true image
 			connectionStatus.setText("Es besteht bereits eine Verbindung zum Server.\n"+
 				"Die Ausführung des Assistenten is nicht nötig");
-			connectionStatus.setImage(ImageFactory.getInstance().getRegisteredImage("image.connected"));
+			connectionStatus.setImage(ImageFactory.getInstance().getRegisteredImage("wizars.server.connected"));
 		}
 		else
 		{
+		    setTitle("Verbindung zum Server unterbrochen");
+		    setDescription("Mit diesem Assistenten können sie eine neue Verbindung aufbauen");
 			//show true image
 			connectionStatus.setText("Verbindung zum Server wurde unterbrochen.\n" +
 				"Mit diesem Wizard kann die Verbindung zum Server wiederhergstellt werden");
-			connectionStatus.setImage(ImageFactory.getInstance().getRegisteredImage("image.disconnected"));
+			connectionStatus.setImage(ImageFactory.getInstance().getRegisteredImage("wizard.server.disconnected"));
 			
 			//the label
 			infoText = new CLabel(container,SWT.LEFT);

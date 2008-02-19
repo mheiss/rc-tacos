@@ -36,9 +36,7 @@ public class NavigationAdminView extends ViewPart
 		GridLayout layout = new GridLayout(5,false);
 	    parent.setLayout(layout);
 	    parent.setBackground(white);
-	    
-//	    IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        
+
 	    //Create the toolbar
 	    final MyToolbarManager tbm = new MyToolbarManager(new ToolBar(parent, SWT.FLAT));
 	    tbm.getControl().setBackground(new Color(null,new RGB(255,255,255)));
@@ -47,13 +45,6 @@ public class NavigationAdminView extends ViewPart
         tbm.add(new SwitchToClientPerspective());
         tbm.add(new SwitchToTransportPerspective());
         tbm.add(new SwitchToLogPerspective());
-//        tbm.add(new EditorNewStaffAction(window));
-//        tbm.add(new EditorNewLocationAction(window));
-//        tbm.add(new EditorNewVehicleAction(window));
-//        tbm.add(new EditorNewMobilePhoneAction(window));
-//        tbm.add(new EditorNewCompetenceAction(window));
-//        tbm.add(new EditorNewJobAction(window));
-//        tbm.add(new EditorNewServiceTypeAction(window));
         tbm.update(true);
 
 	    Composite comp1 = new Composite(parent,SWT.NONE);
