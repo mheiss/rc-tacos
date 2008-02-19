@@ -81,11 +81,13 @@ public class MyClient implements Runnable,IConnectionStates
             if (socket == null)
             {
                 System.out.println("No socket connection available");
+                fireSocketStatusChanged(this,IConnectionStates.STATE_DISCONNECTED);
                 return;
             }
             if (!socket.isConnected())
             {
                 System.out.println("Not connected to a server");
+                fireSocketStatusChanged(this,IConnectionStates.STATE_DISCONNECTED);
                 return;
             }
 

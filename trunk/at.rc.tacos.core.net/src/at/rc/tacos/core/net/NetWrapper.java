@@ -240,6 +240,7 @@ public class NetWrapper extends Plugin implements INetListener
 		{
 			System.out.println("Failed to send the message");
 			System.out.println("No client session available to send the message");
+			socketStatusChanged(null, IConnectionStates.STATE_DISCONNECTED);
 			return;
 		}
 		//check if we have a connection
@@ -247,6 +248,7 @@ public class NetWrapper extends Plugin implements INetListener
 		{
 			System.out.println("Failed to send the message");
 			System.out.println("No connection to a server available");
+			socketStatusChanged(null, IConnectionStates.STATE_DISCONNECTED);
 			return;
 		}
 		
