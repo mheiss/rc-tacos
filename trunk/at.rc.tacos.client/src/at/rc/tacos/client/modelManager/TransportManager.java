@@ -30,12 +30,6 @@ public class TransportManager extends PropertyManager
         {
             public void run ()       
             {
-            	System.out.println("Adding the transport: "+transport);
-            	if(transport.getPlanedLocation() != null)
-            	{
-	            	System.out.println("Location: "+transport.getPlanedLocation().getId());
-	            	System.out.println("Location: "+transport.getPlanedLocation().getId());
-            	}
                 //add the item
                 objectList.add(transport);
                 //notify the view

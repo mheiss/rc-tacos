@@ -112,6 +112,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         createInfoSection(form.getBody());
         createCalendarSection(form.getBody());
         createNotesSection(form.getBody());
+        
 
         //info should span over two
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
@@ -306,7 +307,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         });
         
         dayInfoMessage = new CLabel(controlls,SWT.LEFT);
-        dayInfoMessage.setText("Zuletzt geändert von <nicht verfügbar>, <nicht verfügbar>");
+        dayInfoMessage.setText("Zuletzt geändert von <nicht verfügbar>");
         dayInfoMessage.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
 
         noteEditor = new TextViewer(notesField, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);

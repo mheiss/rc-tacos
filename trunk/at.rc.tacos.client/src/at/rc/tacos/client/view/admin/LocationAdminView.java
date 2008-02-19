@@ -22,6 +22,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewLocationAction;
+import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.LocationEditor;
 import at.rc.tacos.client.editors.LocationEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -142,8 +143,10 @@ public class LocationAdminView extends ViewPart implements PropertyChangeListene
 	{
 		//create the action
 		EditorNewLocationAction addAction = new EditorNewLocationAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		RefreshViewAction viewAction = new RefreshViewAction(Location.ID);
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().add(viewAction);
 		form.getToolBarManager().update(true);
 	}
 }

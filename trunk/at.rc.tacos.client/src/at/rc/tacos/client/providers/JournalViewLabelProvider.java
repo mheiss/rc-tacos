@@ -55,11 +55,11 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		{
 		case COLUMN_PATIENT:
 			if(transport.isAssistantPerson())
-				return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.accPerson");
+				return ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson");
 			else return null;
 		case COLUMN_TRANSPORT_TO:
 			if(transport.isLongDistanceTrip())
-				return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.longtrip");
+				return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
 			else return null;
 		case COLUMN_TRANSPORT_FROM:
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))

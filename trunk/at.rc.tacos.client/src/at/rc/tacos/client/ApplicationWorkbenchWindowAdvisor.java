@@ -3,6 +3,11 @@ package at.rc.tacos.client;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.*;
 
+import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.model.Login;
+import at.rc.tacos.model.Logout;
+
 /**
  * This class is used to control the status line, toolbar, title, 
  * window size, and other things can be customize.
@@ -21,6 +26,25 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
     }
 
     /**
+     * Handles close events of the workbench window
+     */
+	@Override
+	public boolean preWindowShellClose() 
+	{
+		//check if we have a user info
+		Login login = SessionManager.getInstance().getLoginInformation();
+		if(login == null)
+			return true;
+		System.out.println("Sending logout request. Have a nice day :)");
+		//send a logout request to the server and close the connection
+		Logout logout = new Logout(login.getUsername());
+		NetWrapper.getDefault().sendLogoutMessage(logout);
+		//close the connection
+		NetWrapper.getDefault().closeConnection();
+		return true;	
+	}
+
+	/**
      * Creates the action bar.
      * @param configurer the configuration action bar information
      * @return the configuration information for a action bar

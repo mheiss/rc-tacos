@@ -56,7 +56,6 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	private OutstandingTransportsTooltip tooltip;
 	
 	//the actions for the context menu
-	private AssignCarAction assignCarAction;
 	private CopyTransportAction copyTransportAction;
 	private ForwardTransportAction forwardTransportAction;
 	private CancelTransportAction cancelTransportAction;

@@ -62,6 +62,9 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
         //create the composite
         super(parent,SWT.NONE);
         this.vehicle = vehicle;
+        
+        //store the vehicle
+        setData(vehicle);
 
         //initalize the components
         initialize();

@@ -118,7 +118,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
         }
         else directness = "Bruck"; //default
         
-		Image image = ImageFactory.getInstance().getRegisteredImage("toolbar.directness");
+		Image image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
 			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
 			+transport.getToStreet() +"/" +transport.getToCity();

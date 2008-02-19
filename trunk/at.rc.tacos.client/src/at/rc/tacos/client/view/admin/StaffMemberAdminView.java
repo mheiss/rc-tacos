@@ -23,6 +23,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewStaffAction;
+import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.StaffMemberEditor;
 import at.rc.tacos.client.editors.StaffMemberEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -153,8 +154,10 @@ public class StaffMemberAdminView extends ViewPart implements PropertyChangeList
 	{
 		//create the action
 		EditorNewStaffAction addAction = new EditorNewStaffAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		RefreshViewAction refreshView = new RefreshViewAction(StaffMember.ID);
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().add(refreshView);
 		form.getToolBarManager().update(true);
 	}
 }

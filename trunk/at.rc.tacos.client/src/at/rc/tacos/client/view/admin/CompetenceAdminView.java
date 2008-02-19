@@ -22,6 +22,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewCompetenceAction;
+import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.CompetenceEditor;
 import at.rc.tacos.client.editors.CompetenceEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -142,8 +143,10 @@ public class CompetenceAdminView extends ViewPart implements PropertyChangeListe
 	{
 		//create the action
 		EditorNewCompetenceAction addAction = new EditorNewCompetenceAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		RefreshViewAction viewAction = new RefreshViewAction(Competence.ID);
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().add(viewAction);
 		form.getToolBarManager().update(true);
 	}
 }

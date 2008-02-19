@@ -22,6 +22,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewMobilePhoneAction;
+import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.MobilePhoneEditor;
 import at.rc.tacos.client.editors.MobilePhoneEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -143,8 +144,10 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
 	{
 		//create the action
 		EditorNewMobilePhoneAction addAction = new EditorNewMobilePhoneAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		RefreshViewAction refreshView = new RefreshViewAction(MobilePhoneDetail.ID);
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
+		form.getToolBarManager().add(refreshView);
 		form.getToolBarManager().update(true);
 	}
 }

@@ -16,6 +16,10 @@ public class UpdateTransportAction extends Action
 	@Override
 	public void run()
 	{
+    	if(transport.getCallerDetail() != null)
+    	{
+        	System.out.println("Caller:" +transport.getCallerDetail());
+    	}
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }

@@ -243,9 +243,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         	gcal.setTimeInMillis(transport.getAppointmentTimeAtDestination());
         	String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
         	this.textTermin.setText(terminTime);
-        }
-        
-        
+        }  
         
         //transport stati
         if(transport.getStatusMessages() != null)
@@ -1519,13 +1517,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			personalAmFahrzeugGroup.setVisible(false);
 		}
 		
-		
-		
-		
-		
-		
-		
-		
 		//buttons
 		abbrechenButton = new Button(shell, SWT.NONE);
 		final FormData fd_abbrechenButton = new FormData();
@@ -1577,7 +1568,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			boolean toVienna;
 			boolean toLeoben;
 			boolean toGraz;
-			boolean toBruck;//default
 			boolean toKapfenberg;
 			
 			String term;
@@ -1613,8 +1603,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			String lastName;
 			String fromCommunity;
 			String fromStreet;
-			
-			String vehicle;
 			Location theRespStation;
 			long transportDate;
 			
@@ -1768,8 +1756,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                     	 DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
                          duplicateAction.run();
                     }
-                   //TODO solve the problem with the direction- get lost 
-                    System.out.println("TransportForm, Richtung.........................................." +transport.getDirection());
                 }
                 else
                 {
@@ -1783,13 +1769,29 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setDirection(directness);
                 	
                 	transport.setBackTransport(backTransportPossible);
-                	Patient patient = new Patient(lastName,firstName);//OK?
+                	//update the patient or create a new one if we do not have one
+                	Patient patient = transport.getPatient();
+                	if(patient != null)
+                	{
+                		patient.setLastname(lastName);
+                		patient.setFirstname(firstName);
+                	}
+                	else
+                		patient = new Patient(firstName,lastName);
                 	transport.setPatient(patient);
                 	transport.setAssistantPerson(accompanyingPerson);
                 	transport.setAppointmentTimeAtDestination(termLong);
                 	transport.setBlueLightToGoal(blueLight);
                 	transport.setBrkdtAlarming(brkdt);
-                	CallerDetail callerDetail = new CallerDetail(notifierName,numberNotifier);//OK?
+                	//update the caller or create a new one
+                	CallerDetail callerDetail = transport.getCallerDetail();
+                	if(callerDetail != null)
+                	{
+                		callerDetail.setCallerName(notifierName);
+                		callerDetail.setCallerTelephoneNumber(numberNotifier);
+                	}
+                	else
+                		callerDetail = new CallerDetail(notifierName,numberNotifier);
                 	transport.setCallerDetail(callerDetail);
                 	
                 	transport.setDfAlarming(df);
@@ -1805,22 +1807,20 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setMountainRescueServiceAlarming(mountainRescue);
                 	transport.setPlannedTimeAtPatient(atPatientLong);
                 	transport.setPoliceAlarming(police);
-//                	transport.setReceiveTime(receivingTime); not necessary because changing is not possible
                 	transport.setToStreet(toStreet);
                 	transport.setToCity(toCommunity);
+                	
+                	//update the vehicle if we have one
+                	if(transport.getVehicleDetail() != null)
+                	{
+                		//get the vehicle
+                		VehicleDetail detail = transport.getVehicleDetail();
+                		detail.setDriver(smDriver);
+                		detail.setFirstParamedic(smParamI);
+                		detail.setSecondParamedic(smParamII);
+                		transport.setVehicleDetail(detail);
+                	}
 
-                	//vehicleDetail
-                	VehicleDetail vehicleDetail = new VehicleDetail();
-                	vehicleDetail.setVehicleName(vehicle);
-                
-                	vehicleDetail.setDriver(smDriver);
-                	vehicleDetail.setFirstParamedic(smParamI);
-                	vehicleDetail.setSecondParamedic(smParamII);
-                	
-                	transport.setVehicleDetail(vehicleDetail);
-                	
-                	System.out.println("TransportForm, im createNew false vor update action, aeS0: " +aeS0);
-                	System.out.println("TransportForm, im createNew false vor update action, s1: " +s1);
                 	if(!aeS0.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_ORDER_PLACED, aeS0Long);
                 	if(!s1.equalsIgnoreCase(""))
@@ -1855,11 +1855,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                     UpdateTransportAction updateAction = new UpdateTransportAction(transport);
                     updateAction.run();
                 }
-           
                 shell.close();
-				System.out.println("Transport angelegt!");
-			
-				
 			}
 			
 			private void getContentOfAllFields()
@@ -1890,9 +1886,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				toVienna = wienButton.getSelection();
 				toLeoben = leobenButton.getSelection();
 				toGraz = grazButton.getSelection();
-				toBruck = bruckButton.getSelection();
 				toKapfenberg = kapfenbergButton.getSelection();
-				
 				
 				term = textTermin.getText();
 				atPatient = textBeiPat.getText();
@@ -1928,8 +1922,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				lastName = comboNachname.getText();
 				fromCommunity = comboVonOrt.getText();
 				fromStreet = comboVonStrasse.getText();
-				
-				vehicle = textFahrzeug.getText();
 			}
 			
 			private void setDirectness()
