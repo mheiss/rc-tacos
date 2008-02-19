@@ -122,6 +122,7 @@ public class AuthenticationListener extends ServerListenerAdapter
 	{
 		//convert to logout
 		Logout logout = (Logout)message;
+		System.out.println("Logout from user: "+logout.getUsername());
 		logout.setLoggedOut(true);
 		return logout;
 	}

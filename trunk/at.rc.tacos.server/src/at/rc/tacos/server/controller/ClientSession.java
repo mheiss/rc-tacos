@@ -34,6 +34,44 @@ public class ClientSession
     }
     
     /**
+	 * Returns the calculated hash code based on the connection.<br>
+	 * Two client session have the same hash code if the connection is the same.
+	 * @return the calculated hash code
+	 */
+	@Override
+	public int hashCode() 
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((connection == null) ? 0 : connection.hashCode());
+		return result;
+	}
+
+	/**
+	 * Returns whether the objects are equal or not.<br>
+	 * Two client session are equal if, and only if, the connection is the same.
+	 * @return true if the connection is the same otherwise false.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final ClientSession other = (ClientSession) obj;
+		if (connection == null) 
+		{
+			if (other.connection != null)
+				return false;
+		} 
+		else if (!connection.equals(other.connection))
+			return false;
+		return true;
+	}
+
+	/**
      * Helper method to determine wheter the client is logged in or not.
      * @return true if the client is logged in, otherwise false
      */
