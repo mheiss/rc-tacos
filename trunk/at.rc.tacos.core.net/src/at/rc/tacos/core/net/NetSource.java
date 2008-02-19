@@ -105,6 +105,23 @@ public class NetSource
     }
     
     /**
+     * Close the connection and cleanup
+     */
+    public void closeConnection(MyClient client)
+    {
+    	//assert valid
+    	if(client == null)
+    		return;
+    	client.removeAllNetListeners();
+    	client.requestStop();
+    	//the socket connection
+    	if(client.getSocket() == null)
+    		return;
+    	//close the socket and cleanup the streams
+    	client.getSocket().cleanup();
+    }
+    
+    /**
      * Helper method to get the server info by the id
      */
     public ServerInfo getServerInfoById(String id)
