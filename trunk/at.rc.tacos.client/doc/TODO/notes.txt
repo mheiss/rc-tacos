@@ -1,4 +1,0 @@
-Tagesinfo nicht mit new erstellen sonder ein gültiges objekt
---> message = ""
--> last chagen = ""
--> timestamp = "" datum das angefordert wurde

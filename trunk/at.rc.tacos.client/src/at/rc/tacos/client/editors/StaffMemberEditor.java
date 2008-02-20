@@ -35,7 +35,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
-import at.rc.tacos.client.controller.EditorCloseAction;
 import at.rc.tacos.client.controller.EditorNewStaffAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -71,7 +70,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private ComboViewer phoneComboViewer,primaryLocationComboViewer,competenceComboViewer,authorisationComboViewer,sexComboViewer;
 	private Button locked;
 	private Hyperlink addPhone,removePhone,removeCompetence,addCompetence;
-	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
+	private ImageHyperlink saveHyperlink,addHyperlink;
 
 	//indicates non-saved changes
 	protected boolean isDirty;
@@ -415,20 +414,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			}
 		});
 
-		//Create the hyperlink to close the window and revert the changes
-		closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		closeHyperlink.setText("Fenster schlieﬂen");
-		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.userRemove"));
-		closeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
-		});
-
 		//create the hyperlink to add a new staff member
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		addHyperlink.setText("Mitarbeiter anlegen");
@@ -442,14 +427,15 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing user
-		if(isNew)
-			addHyperlink.setVisible(false);
 
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
+		//save hyperlink should span over two
+		data = new GridData(GridData.FILL_BOTH);
+		data.horizontalSpan = 2;
+		saveHyperlink.setLayoutData(data);
 
 		return client;
 	}

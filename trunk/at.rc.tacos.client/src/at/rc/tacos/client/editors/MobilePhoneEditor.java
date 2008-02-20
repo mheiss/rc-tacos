@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.GridData;
@@ -26,6 +27,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
+import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorNewMobilePhoneAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -44,7 +46,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
+	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
 	private Text id,name,number;
 
 	//managed data
@@ -124,20 +126,6 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 			}
 		});
 
-		//Create the hyperlink to close the window and revert the changes
-		closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		closeHyperlink.setText("Fenster schließen");
-		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.mobilePhoneRemove"));
-		closeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
-		});
-
 		//create the hyperlink to add a new mobile phone
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		addHyperlink.setText("Mobiltelefon anlegen");
@@ -151,14 +139,34 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing phone
-		if(isNew)
-			addHyperlink.setVisible(false);
-
+		//Create the hyperlink to remove the competence
+		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
+		removeHyperlink.setText("Mobiltelefon löschen");
+		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.mobilePhoneRemove"));
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
+		{
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
+						"Löschen des Mobiltelefons bestätigen", 
+						"Möchten sie das Mobiltelefon " +detail.getMobilePhoneName() + "-"+detail.getMobilePhoneNumber()+" wirklich löschen?");
+				if(!result)
+					return;
+				//send the remove request
+				EditorDeleteAction deleteAction = new EditorDeleteAction(MobilePhoneDetail.ID,detail);
+				deleteAction.run();
+			}
+		});
+		
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
+		//save hyperlink should span over two
+		data = new GridData(GridData.FILL_BOTH);
+		data.horizontalSpan = 2;
+		saveHyperlink.setLayoutData(data);
 	}
 
 	/**
@@ -308,7 +316,9 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 				return;
 
 			//is this mobile phone is the current one -> update it
-			if(detail.equals(updatePhone))
+			if(detail.equals(updatePhone) 
+					|| (detail.getMobilePhoneName().equals(updatePhone.getMobilePhoneName())
+							&& detail.getMobilePhoneNumber().equals(updatePhone.getMobilePhoneNumber())))
 			{
 				//save the updated phone
 				setInput(new MobilePhoneEditorInput(updatePhone,false));
@@ -317,6 +327,20 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 				isNew = false;
 				//update the editor
 				loadData();
+			}
+		}
+		if("PHONE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the removed phone
+			MobilePhoneDetail removedPhone = (MobilePhoneDetail)evt.getOldValue();
+			//current edited?
+			if(detail.equals(removedPhone))
+			{
+				MessageDialog.openInformation(getSite().getShell(), 
+						"Mobiletelefon wurde gelöscht",
+						"Das Mobiltelefon, welches Sie gerade editieren, wurde gelöscht");
+				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				closeAction.run();
 			}
 		}
 	}

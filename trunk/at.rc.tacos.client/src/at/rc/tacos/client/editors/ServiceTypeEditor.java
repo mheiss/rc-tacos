@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.GridData;
@@ -26,6 +27,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
+import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorNewServiceTypeAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -43,7 +45,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
+	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
 	private Text id,name;
 
 	//managed data
@@ -122,21 +124,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 				saveAction.run();
 			}
 		});
-
-		//Create the hyperlink to close the window and revert the changes
-		closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		closeHyperlink.setText("Fenster schließen");
-		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.serviceTypeRemove"));
-		closeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
-		});
-
+		
 		//create the hyperlink to add a new staff member
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		addHyperlink.setText("Dienstverhältnis anlegen");
@@ -150,14 +138,34 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing user
-		if(isNew)
-			addHyperlink.setVisible(false);
+		//Create the hyperlink to remove the competence
+		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
+		removeHyperlink.setText("Dienstverhältnis löschen");
+		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.serviceTypeRemove"));
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
+		{
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
+						"Löschen des Dienstverhältnisses bestätigen", 
+						"Möchten sie das Dienstverhältnis " +serviceType.getServiceName()+" wirklich löschen?");
+				if(!result)
+					return;
+				//send the remoe request
+				EditorDeleteAction deleteAction = new EditorDeleteAction(ServiceType.ID,serviceType);
+				deleteAction.run();
+			}
+		});
 
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
+		//save hyperlink should span over two
+		data = new GridData(GridData.FILL_BOTH);
+		data.horizontalSpan = 2;
+		saveHyperlink.setLayoutData(data);
 	}
 	
 	/**
@@ -266,7 +274,8 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("SERVICETYPE_UPDATE".equals(evt.getPropertyName()))
+		if("SERVICETYPE_UPDATE".equals(evt.getPropertyName())
+				|| "SERVICETYPE_ADD".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			ServiceType updateService = null;
 			//get the new value
@@ -278,7 +287,8 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 				return;
 
 			//is this service type is the current -> update it
-			if(serviceType.equals(updateService))
+			if(serviceType.equals(updateService) 
+					|| serviceType.getServiceName().equals(updateService.getServiceName()))
 			{
 				//save the updated service type
 				setInput(new ServiceTypeEditorInput(updateService,false));
@@ -287,6 +297,20 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 				isNew = false;
 				//update the editor
 				loadData();
+			}
+		}
+		if("SERVICETYPE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the removed service type
+			ServiceType removedService = (ServiceType)evt.getOldValue();
+			//check the type
+			if(serviceType.equals(removedService))
+			{
+				MessageDialog.openInformation(getSite().getShell(), 
+						"Dienstverhältnis wurde gelöscht",
+						"Das Dienstverhältnis, welches Sie gerade editieren, wurde gelöscht");
+				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				closeAction.run();
 			}
 		}
 	}

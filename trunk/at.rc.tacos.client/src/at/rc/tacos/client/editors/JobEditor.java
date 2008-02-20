@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.GridData;
@@ -26,6 +27,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
+import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorNewJobAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -43,7 +45,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
+	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
 	private Text id,name;
 
 	//managed data
@@ -122,21 +124,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 				saveAction.run();
 			}
 		});
-
-		//Create the hyperlink to close the window and revert the changes
-		closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		closeHyperlink.setText("Fenster schließen");
-		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.jobRemove"));
-		closeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
-		});
-
+		
 		//create the hyperlink to add a new job
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		addHyperlink.setText("Verwendung anlegen");
@@ -150,14 +138,34 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing job
-		if(isNew)
-			addHyperlink.setVisible(false);
+		//Create the hyperlink to remove the competence
+		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
+		removeHyperlink.setText("Verwendung löschen");
+		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.jobRemove"));
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
+		{
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
+						"Löschen der Verwendung bestätigen", 
+						"Möchten sie die Verwendung " +job.getJobName()+" wirklich löschen?");
+				if(!result)
+					return;
+				//send the remove request
+				EditorDeleteAction deleteAction = new EditorDeleteAction(Job.ID,job);
+				deleteAction.run();
+			}
+		});
 
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
+		//save hyperlink should span over two
+		data = new GridData(GridData.FILL_BOTH);
+		data.horizontalSpan = 2;
+		saveHyperlink.setLayoutData(data);
 	}
 	
 	/**
@@ -279,7 +287,8 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 				return;
 
 			//is this job the current -> update it
-			if(job.equals(updateJob))
+			if(job.equals(updateJob)
+					|| job.getJobName().equals(updateJob.getJobName()))
 			{
 				//save the updated job
 				setInput(new JobEditorInput(updateJob,false));
@@ -288,6 +297,20 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 				isNew = false;
 				//update the editor
 				loadData();
+			}
+		}
+		if("JOB_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the removed job
+			Job removedJob = (Job)evt.getOldValue();
+			//current open
+			if(job.equals(removedJob))
+			{
+				MessageDialog.openInformation(getSite().getShell(), 
+						"Verwendung wurde gelöscht",
+						"Die Verwendung, welches Sie gerade editieren, wurde gelöscht");
+				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				closeAction.run();
 			}
 		}
 	}
