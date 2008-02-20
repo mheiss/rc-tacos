@@ -27,3 +27,12 @@ BUG FIXING:
 
 --> Datum Filter für Transport View --> geht über suchfunktion. Ist bei Outstanding und Underway nicht nötig, da Programm
 	status entscheidend ist.
+	
+--> @Transport: createdByUser wird nicht in die Datenbank geschrieben.
+	Folgefehler: die Transporte verschwinden
+
+--> @Dialyse: nocht zu implementieren. Dialysepatienten aufnehmen und in der DialysisView anzeigen. Icons (z.B. Häkchen) für die Darstellung der Wochentage implementieren.
+
+--> Transportstati verschwinden (auf der underway(disponierte Transporte View) ersichtlich). Werden in die Datenbank geschrieben, kommen nicht zum Client zurück.
+
+--> NEF: implementieren. Wenn Priorität A soll beim Zuweisen des Fahrzeuges automatisch der Transport verdoppelt und einem Transport das NEF zugewiesen werden.
