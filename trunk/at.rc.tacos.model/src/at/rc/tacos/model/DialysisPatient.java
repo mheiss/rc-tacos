@@ -46,6 +46,7 @@ public class DialysisPatient extends AbstractMessage
 		super(ID);
 		//set default values
 		id = -1;
+		insurance = "Versicherung unbekannt";
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class DialysisPatient extends AbstractMessage
 	public DialysisPatient(Patient patient, Location location, long plannedStartOfTransport,
 			long plannedTimeAtPatient, long appointmentTimeAtDialysis) 
 	{
-		super(ID);
+		this();
 		this.patient = patient;
 		this.location = location;
 		this.plannedStartOfTransport = plannedStartOfTransport;
