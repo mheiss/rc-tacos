@@ -131,6 +131,7 @@ public class ClientHandler implements INetListener
 		//catch all sql errors that occured during the operations with the listener classes
 		catch(SQLException sqle)
 		{
+			sqle.printStackTrace();
 			SystemMessage system = new SystemMessage("SQL-Error:"+sqle.getMessage(),SystemMessage.TYPE_ERROR);
 			server.sendMessage(session, SystemMessage.ID, IModelActions.SYSTEM, system);
 		}
