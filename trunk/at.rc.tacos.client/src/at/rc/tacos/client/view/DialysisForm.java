@@ -589,7 +589,7 @@ public class DialysisForm implements IKindOfTransport
 					
 					dia.setFromCity(fromCommunity);
 					dia.setFromStreet(fromStreet);
-					//dia.setInsurance(insurance); -- not implemented yet
+					dia.setInsurance("Versicherung unbekannt");
 					dia.setKindOfTransport(kindOfTransport);
 					
 					dia.setPlannedStartForBackTransport(abfRTLong);
@@ -609,14 +609,11 @@ public class DialysisForm implements IKindOfTransport
 					dia.setSaturday(samstag);
 					dia.setSunday(sonntag);
 					
-					
 					CreateDialysisTransportAction newAction = new CreateDialysisTransportAction(dia);
 					newAction.run();
-					
 				}
 				else
 				{
-					dia = new DialysisPatient();
 					dia.setAppointmentTimeAtDialysis(termLong);
 					
 					Patient patient = new Patient();
@@ -625,7 +622,6 @@ public class DialysisForm implements IKindOfTransport
 					
 					dia.setFromCity(fromCommunity);
 					dia.setFromStreet(fromStreet);
-					//dia.setInsurance(insurance); -- not implemented yet
 					dia.setKindOfTransport(kindOfTransport);
 					dia.setPlannedStartForBackTransport(abfRTLong);
 					dia.setPlannedStartOfTransport(startLong);
