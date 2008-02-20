@@ -29,9 +29,6 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 		Connection connection = source.getConnection();
 		try
 		{	
-			//firstname, lastname, stationname, plannedStartOfTransport, plannedTimeAtPatient, 
-			//appointmentTimeAdDialysis, plannedStartForBackTransport, readyTime, fromStreet, fromCity, toStreet, 
-			//toCity, insurance, stationary, kindOfTransport, assistant, monday, tuesday, wednesday, thursday, friday, saturday, sunday)
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.DialysisPatient"));
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
