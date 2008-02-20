@@ -25,6 +25,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import at.rc.tacos.client.view.DatePickerPanel.DateSelection;
 
 /**
+ * The date selection dialog from the clipse mylyn project.
+ * (c) is by the eclipse mylyn project
  * @author Ken Sueda
  * @author Mik Kersten
  * @author Rob Elves

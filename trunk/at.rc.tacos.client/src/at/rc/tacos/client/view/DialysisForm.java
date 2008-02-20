@@ -24,6 +24,7 @@ import at.rc.tacos.client.controller.UpdateDialysisTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IKindOfTransport;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Patient;
 
@@ -190,35 +191,6 @@ public class DialysisForm implements IKindOfTransport
         }
 		
 	}
-	
-
-//	/**
-//	 * Launch the application
-//	 * @param args
-//	 */
-//	public static void main(String[] args) {
-//		try {
-//			DialysisForm window = new DialysisForm();
-//			window.open();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-//	/**
-//	 * Open the window
-//	 */
-//	public void open() {
-//		final Display display = Display.getDefault();
-//		createContents();
-//		shell.open();
-//		shell.layout();
-//		while (!shell.isDisposed()) {
-//			if (!display.readAndDispatch())
-//				display.sleep();
-//		}
-//	}
-
 
 	/**
 	 * Create contents of the window
@@ -226,7 +198,7 @@ public class DialysisForm implements IKindOfTransport
 	protected void createContents() {
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
-//		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo.small"));
+		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 		shell.setSize(1083, 223);
 		shell.setText("Dialysetransport");
 
@@ -243,8 +215,6 @@ public class DialysisForm implements IKindOfTransport
 		vonLabel.setText("von:");
 		vonLabel.setBounds(10, 42, 25, 13);
 
-		
-		
 		comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		comboNachStrasse.setBounds(41, 66, 230, 21);
 

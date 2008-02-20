@@ -51,13 +51,12 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	private ScrolledForm form;
 	private TableViewer viewer;
 	private JournalViewTooltip tooltip;
-	
+
 	//the actions for the context menu
 	private EditTransportAction editTransportAction;
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsAction;
 	private JournalMoveToRunningTransportsAction moveToRunningTransportsAction;
 	private CreateBackTransportAction createBackTransportAction;
-	
 
 	/**
 	 * Constructs a new journal view.
@@ -67,7 +66,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup the view
 	 */
@@ -96,10 +95,10 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		viewer.setLabelProvider(new JournalViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportList());
 		viewer.getTable().setLinesVisible(true);
-		
+
 		//set the tooltip
 		tooltip = new JournalViewTooltip(viewer.getControl());
-		
+
 		//show the tooltip when the selection has changed
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
 		{
@@ -120,7 +119,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		
+
 		final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		lockColumn.setWidth(30);
@@ -131,7 +130,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnTNrJournal.setToolTipText("Transportnummer");
 		columnTNrJournal.setWidth(36);
 		columnTNrJournal.setText("TNr");
-		
+
 		final TableColumn columnPrioritaetJournal = new TableColumn(table, SWT.NONE);
 		columnPrioritaetJournal.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
 		columnPrioritaetJournal.setWidth(29);
@@ -154,12 +153,12 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		final TableColumn columnErkrVerlJournal = new TableColumn(table, SWT.NONE);
 		columnErkrVerlJournal.setWidth(23);
 		columnErkrVerlJournal.setText("Erkr/Verl");
-		
+
 		final TableColumn columnAEJournal = new TableColumn(table, SWT.NONE);
 		columnAEJournal.setToolTipText("Auftrag erteilt");
 		columnAEJournal.setWidth(39);
 		columnAEJournal.setText("AE");
-		
+
 		final TableColumn columnS1Journal = new TableColumn(table, SWT.NONE);
 		columnS1Journal.setToolTipText("Transportbeginn");
 		columnS1Journal.setWidth(36);
@@ -189,7 +188,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnS6Journal.setToolTipText("Fahrzeug eingerückt");
 		columnS6Journal.setWidth(36);
 		columnS6Journal.setText("S6");
-		
+
 		final TableColumn columnFzgJournal = new TableColumn(table, SWT.NONE);
 		columnFzgJournal.setWidth(52);
 		columnFzgJournal.setText("Fzg");
@@ -270,7 +269,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 					sortIdentifier = TransportSorter.PARAMEDIC_II_SORTER;
 				if(currentColumn == columnAnruferJournal)
 					sortIdentifier = TransportSorter.CALLER_SORTER;
-				
+
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
 				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
@@ -295,26 +294,27 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnSaniIJournal.addListener(SWT.Selection, sortListener);
 		columnSaniIIJournal.addListener(SWT.Selection, sortListener);
 		columnAnruferJournal.addListener(SWT.Selection, sortListener);
-		
+
 		//create the actions
 		makeActions();
 		hookContextMenu();
 
+		//show only transport with the status journal
 		viewer.addFilter(new TransportViewFilter(PROGRAM_STATUS_JOURNAL));
 		viewer.refresh();
 	}
-	
+
 	/**
 	 * Creates the needed actions
 	 */
 	private void makeActions()
 	{		
-		editTransportAction = new EditTransportAction(this.viewer, "journal");
-		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(this.viewer);
-		moveToRunningTransportsAction = new JournalMoveToRunningTransportsAction(this.viewer);
-		createBackTransportAction = new CreateBackTransportAction(this.viewer);
+		editTransportAction = new EditTransportAction(viewer, "journal");
+		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(viewer);
+		moveToRunningTransportsAction = new JournalMoveToRunningTransportsAction(viewer);
+		createBackTransportAction = new CreateBackTransportAction(viewer);
 	}
-	
+
 	/**
 	 * Creates the context menue 
 	 */
@@ -331,7 +331,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
-	
+
 	/**
 	 * Fills the context menu with the actions
 	 */
@@ -339,13 +339,13 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	{
 		//get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
+
 		//cast to a Transport
 		Transport transport = (Transport)firstSelectedObject;
-		
+
 		if(transport == null)
 			return;
-		
+
 		//add the actions
 		manager.add(editTransportAction);
 		manager.add(new Separator());
@@ -365,16 +365,12 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		// the viewer represents simple model. refresh should be enough.
-		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
+		if ("TRANSPORT_ADD".equals(evt.getPropertyName())
+				|| "TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
+				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
+		{
 			this.viewer.refresh();
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_REMOVE".equals(evt.getPropertyName())) 
-			this.viewer.refresh();
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_UPDATE".equals(evt.getPropertyName())) 
-			this.viewer.refresh();
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
-			this.viewer.refresh();
+		}	
 	}
 }

@@ -309,6 +309,15 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		location.setStreetNumber(streetNumber.getText());
 		
 		//save the city
+		if(city.getText().trim().isEmpty())
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie eine Stadt eine", IMessageProvider.ERROR);
+			return;
+		}
+		location.setCity(city.getText());
+		
+		//save the zip
 		if(zipCode.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();

@@ -66,16 +66,12 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		ModelFactory.getInstance().getDialyseList().removePropertyChangeListener(this);
 	}
 	
-	
-	
 	/**
 	 * Call back method to create the control and initialize them.
 	 * @param parent the parent composite to add
 	 */
 	public void createPartControl(final Composite parent) 
 	{
-		
-		System.out.println("DialysisView part control");
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
@@ -84,43 +80,14 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
-		
-		/** tabFolder Selection Listener not needed? */
-		
-		
-		
+
 		viewer= new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new DialysisTransportContentProvider());
 		viewer.setLabelProvider(new DialysisTransportLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getDialyseList());
 		viewer.getTable().setLinesVisible(true);
-		
 		viewer.refresh();
-		
-		/** tool tip*/
-//		tooltip = new OutstandingTransportsTooltip(viewer.getControl());//TODO- check OutstandingTransportsTooltip for dialysis!!!!!!!!
-		
-		
-		//show the tool tip when the selection has changed
-		
-//		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
-//		{
-//			public void selectionChanged(SelectionChangedEvent event) 
-//			{
-//				TableItem[] selection = viewer.getTable().getSelection();
-//				if (selection != null && selection.length > 0) 
-//				{
-//					Rectangle bounds = selection[0].getBounds();
-//					tooltip.show(new Point(bounds.x, bounds.y));
-//				}
-//			}
-//		});  
-//		
-		
-		/** default sorter*/
-//		viewer.setSorter(new TransportSorter(DialysisTransportSorter.ABF_SORTER,SWT.DOWN));
-		
-		
+
 		final Table table_2 = viewer.getTable();
 		table_2.setLinesVisible(true);
 		table_2.setHeaderVisible(true);
@@ -130,7 +97,6 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		lockColumn.setWidth(30);
 		lockColumn.setText("L");
 	
-
 		final TableColumn newColumnTableColumnAbfDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnAbfDialyse.setToolTipText("Geplante Abfahrt an Ortsstelle");
 		newColumnTableColumnAbfDialyse.setWidth(68);
@@ -210,9 +176,6 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnStationaer.setToolTipText("Patient wird derzeit nicht transportiert");
 		newColumnTableColumnStationaer.setWidth(49);
 		newColumnTableColumnStationaer.setText("Stat");
-
-		
-	
 	
 		/** make the columns sort able*/
 		Listener sortListener = new Listener() 
@@ -259,15 +222,11 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 					sortIdentifier = DialysisTransportSorter.READY_SORTER;
 				if(currentColumn == newColumnTableColumnTA)
 					sortIdentifier = DialysisTransportSorter.TA_SORTER;
-
-
-				
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
 				viewer.setSorter(new DialysisTransportSorter(sortIdentifier,dir));
 			}
 		};
-		
 		
 		//attach the listener
 		newColumnTableColumnStationDialyse.addListener(SWT.Selection, sortListener);
@@ -284,7 +243,6 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		makeActions();
 		hookContextMenu();
 		
-//		viewerOffTrans.resetFilters();
 		viewer.refresh();
 	}
 

@@ -179,113 +179,11 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	public Color getBackground(Object element, int columnIndex) 
 	{
 		Transport transport = (Transport)element;
-		 switch(columnIndex)
-	        {
-				case COLUMN_LOCK:return null;
-			    case COLUMN_PRIORITY:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_TRANSPORTNUMBER:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_TERM:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_TRANSPORT_FROM:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_PATIENT:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_TRANSPORT_TO:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_AE:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_S1:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_S2:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_S3: 
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_S4: 
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_S7: 
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_S8: 
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_S9:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_FZG: 
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;  	
-			    case COLUMN_T: 
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    case COLUMN_ERKR_VERL:
-			    	if(transport.getTransportPriority().equalsIgnoreCase("A"))
-	        			return CustomColors.BACKGROUND_RED;
-			    	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-	        			return CustomColors.BACKGROUND_BLUE;
-			    	else return null;
-			    default: return null;
-	        }
+		if(transport.getTransportPriority().equalsIgnoreCase("A"))
+			return CustomColors.BACKGROUND_RED;
+    	if(transport.getTransportPriority().equalsIgnoreCase("B"))
+			return CustomColors.BACKGROUND_BLUE;
+    	return null;
 	}
 
 	@Override
@@ -294,4 +192,3 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 		return null;
 	}
 }
-
