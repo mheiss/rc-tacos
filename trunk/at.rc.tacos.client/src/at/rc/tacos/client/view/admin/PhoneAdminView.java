@@ -126,7 +126,6 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		String event = evt.getPropertyName();
-		System.out.println(event);
 		if("PHONE_ADD".equalsIgnoreCase(event) ||
 				"PHONE_REMOVE".equalsIgnoreCase(event) ||
 				"PHONE_UPDATE".equalsIgnoreCase(event) ||

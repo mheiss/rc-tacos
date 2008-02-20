@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -31,6 +32,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
+import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorNewLocationAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -51,7 +53,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
+	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
 	private Text locationName,street,streetNumber,zipCode,city;
 	private TextViewer notesViewer;
 	private ComboViewer phoneViewer;
@@ -135,20 +137,6 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			}
 		});
 
-		//Create the hyperlink to close the window and revert the changes
-		closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		closeHyperlink.setText("Fenster schließen");
-		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.locationRemove"));
-		closeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
-		});
-
 		//create the hyperlink to add a new staff member
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		addHyperlink.setText("Ortsstelle anlegen");
@@ -162,14 +150,34 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing location
-		if(isNew)
-			addHyperlink.setVisible(false);
+		//Create the hyperlink to remove the competence
+		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
+		removeHyperlink.setText("Ortsstelle löschen");
+		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.locationRemove"));
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
+		{
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
+						"Löschen der Ortsstelle bestätigen", 
+						"Möchten sie die Ortsstelle " +location.getLocationName()+" wirklich löschen?");
+				if(!result)
+					return;
+				//send the remove request
+				EditorDeleteAction deleteAction = new EditorDeleteAction(Location.ID,location);
+				deleteAction.run();
+			}
+		});
 
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
+		//save hyperlink should span over two
+		data = new GridData(GridData.FILL_BOTH);
+		data.horizontalSpan = 2;
+		saveHyperlink.setLayoutData(data);
 	}
 	
 	/**
@@ -386,7 +394,8 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 				return;
 
 			//is this location is the current -> update it
-			if(location.equals(updateLocation))
+			if(location.equals(updateLocation) 
+					|| location.getLocationName().equals(updateLocation.getLocationName()))
 			{
 				//save the updated location
 				setInput(new LocationEditorInput(updateLocation,false));
@@ -395,6 +404,20 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 				isNew = false;
 				//update the editor
 				loadData();
+			}
+		}
+		if("LOCATION_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the removed location
+			Location removedLocation = (Location)evt.getOldValue();
+			//current open?
+			if(location.equals(removedLocation))
+			{
+				MessageDialog.openInformation(getSite().getShell(), 
+						"Ortsstelle wurde gelöscht",
+						"Die Ortsstelle, welches Sie gerade editieren, wurde gelöscht");
+				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				closeAction.run();
 			}
 		}
 		if("PHONE_ADD".equalsIgnoreCase(evt.getPropertyName())

@@ -100,9 +100,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 		if("LOCATION_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			//loop and dispose all locations
-			for(int i=0;i<sectionList.size();i++)
+			for(Section section:sectionList)
 			{
-				Section section = sectionList.get(i);
 				System.out.println("Removin section"+((Location)section.getData()).getLocationName());
 				//assert valid
 				if(!section.isDisposed())
@@ -118,10 +117,11 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 						if(!vehicle.isDisposed())
 							vehicle.dispose(); 
 					}
+					section.dispose();
 				}
-				section.dispose();
-				sectionList.remove(i);
 			}
+			//remove all location
+			sectionList.clear();
 		}
 		//update the location
 		if("LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))

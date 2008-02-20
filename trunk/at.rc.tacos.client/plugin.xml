@@ -243,7 +243,7 @@
       </editor>
       <editor
             class="at.rc.tacos.client.editors.CompetenceEditor"
-            icon="icons/resources/competences.png"
+            icon="icons/resources/competence.png"
             id="at.rc.tacos.client.editors.competenceEditor"
             name="Kompetenzen">
       </editor>

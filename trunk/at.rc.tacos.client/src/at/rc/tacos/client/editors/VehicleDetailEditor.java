@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -32,6 +33,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
+import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorNewVehicleAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -57,7 +59,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	private ScrolledForm form;
 
 	//changeable values
-	private ImageHyperlink saveHyperlink,addHyperlink,closeHyperlink;
+	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
 	private Text vehicleType,vehicleName;
 	private ComboViewer basicLocationViewer;
 	//read only values - are changed in the vehicleForm
@@ -147,21 +149,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 				saveAction.run();
 			}
 		});
-
-		//Create the hyperlink to close the window and revert the changes
-		closeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		closeHyperlink.setText("Fenster schließen");
-		closeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.vehicleRemove"));
-		closeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
-		});
-
+		
 		//create the hyperlink to add a new vehicle
 		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		addHyperlink.setText("Fahrzeug anlegen");
@@ -175,14 +163,34 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 				newAction.run();
 			}
 		});
-		//show the hyperlink only when we edit a existing vehicle
-		if(isNew)
-			addHyperlink.setVisible(false);
+		//Create the hyperlink to remove the competence
+		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
+		removeHyperlink.setText("Fahrzeug löschen");
+		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.vehicleRemove"));
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
+		{
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
+						"Löschen des Fahrzeuges bestätigen", 
+						"Möchten sie das Fahrzeug "+detail.getVehicleType()+"-"+detail.getVehicleName()+" wirklich löschen?");
+				if(!result)
+					return;
+				//send the remove request
+				EditorDeleteAction deleteAction = new EditorDeleteAction(VehicleDetail.ID,detail);
+				deleteAction.run();
+			}
+		});
 
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		infoLabel.setLayoutData(data);
+		//save hyperlink should span over two
+		data = new GridData(GridData.FILL_BOTH);
+		data.horizontalSpan = 2;
+		saveHyperlink.setLayoutData(data);
 	}
 
 	/**
@@ -462,8 +470,10 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 			if(updateVehicle == null)
 				return;
 
-			//is this competence is the current one -> update it
-			if(detail.equals(updateVehicle))
+			//is this vehicle is the current one -> update it
+			if(detail.equals(updateVehicle) || 
+					(detail.getVehicleName().equalsIgnoreCase(updateVehicle.getVehicleName())
+							&& detail.getVehicleType().equalsIgnoreCase(updateVehicle.getVehicleType())))
 			{
 				//save the updated competence
 				setInput(new VehicleDetailEditorInput(updateVehicle,false));
@@ -472,6 +482,20 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 				isNew = false;
 				//update the editor
 				loadData();
+			}
+		}
+		if("VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//the removed vehicle
+			VehicleDetail removedVehicle = (VehicleDetail)evt.getOldValue();
+			//the current edited
+			if(detail.equals(removedVehicle))
+			{
+				MessageDialog.openInformation(getSite().getShell(), 
+						"Fahrzeug wurde gelöscht",
+						"Das Fahrzeug welches Sie gerade editieren wurde gelöscht");
+				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				closeAction.run();
 			}
 		}
 		//keep on track on location changes

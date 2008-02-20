@@ -89,6 +89,14 @@ public class TransportManager extends PropertyManager
         
     }
     
+    /**
+     * Returns a list of all transports in the system.
+     * @return all managed transports
+     */
+    public List<Transport> getTransportList()
+    {
+    	return objectList;
+    }
 
     /**
      * Converts the list to an array
