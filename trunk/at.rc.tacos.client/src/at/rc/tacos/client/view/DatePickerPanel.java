@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 
 /**
+ * The DatePickerPanel from the eclipse mylin projekt.
  * @author Bahadir Yagan
  * @author Mik Kersten
  * @author Rob Elves

@@ -2,8 +2,6 @@ package at.rc.tacos.client.providers;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -14,7 +12,6 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
-
 
 public class JournalViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus
 {
@@ -43,13 +40,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	public Image getColumnImage(Object element, int columnIndex) 
 	{
 		Transport transport = (Transport)element;
-		
-		//calculate time window for a possible back transport
-		GregorianCalendar gcal = new GregorianCalendar();
-		gcal.set(GregorianCalendar.HOUR_OF_DAY, GregorianCalendar.HOUR_OF_DAY-4);
-		long before4Hours = gcal.getTimeInMillis();
-		
-		
+
 		//determine the colum and return a image if needed
 		switch(columnIndex)
 		{
@@ -62,18 +53,23 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
 			else return null;
 		case COLUMN_TRANSPORT_FROM:
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
-			{
-				if(transport.isBackTransport() && ((transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE) < before4Hours)))//bug fix- change from < to >
-				{
-					//icon soll angezeigt werden wenn der status s5 (ziel frei) des hintransportes nicht länger als 4 stunden zurückliegt
-					//TODO Problem: bug fix: this time is negative!!!
-					System.out.println("------- s5: " +transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE) );
-					System.out.println("----- before 4 hours: " +before4Hours);
-					return ImageFactory.getInstance().getRegisteredImage("toolbar.icon.back");
-				}
-			}
-			else return null;
+			//return when we do not have the status destination free
+			if(!transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
+				return null;
+			//display image only on a backtransport
+			if(!transport.isBackTransport())
+				return null;
+
+			//the time of the s5 status 
+			long s5Time = transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
+			//calculate time window for a possible back transport
+			Calendar befor4Hours = Calendar.getInstance();
+			befor4Hours.add(Calendar.HOUR_OF_DAY, -4);
+			if(befor4Hours.getTimeInMillis() >= s5Time)
+				return ImageFactory.getInstance().getRegisteredImage("transport.backtransport");
+			//no image
+			return null;
+			//default image -> none
 		default: return null;
 		}
 	}
@@ -97,12 +93,12 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
 			else return "";
 		case COLUMN_TRANSPORT_TO:
-        	String label="";
-        	if(transport.getToStreet() != null)
-        		label += transport.getToStreet();
-        	if(transport.getToCity() != null)
-        		label += " / "+ transport.getToCity();
-        	return label;
+			String label="";
+			if(transport.getToStreet() != null)
+				label += transport.getToStreet();
+			if(transport.getToCity() != null)
+				label += " / "+ transport.getToCity();
+			return label;
 		case COLUMN_ERKR_VERL:return transport.getKindOfIllness();
 		case COLUMN_AE:
 			//Status 0 
@@ -237,4 +233,3 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		return null;
 	}
 }
-

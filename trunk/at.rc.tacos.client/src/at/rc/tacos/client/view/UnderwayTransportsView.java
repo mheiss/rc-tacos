@@ -50,7 +50,6 @@ import at.rc.tacos.model.Transport;
  * Main view, provides an overview about the transports
  * @author b.thek
  */
-
 public class UnderwayTransportsView extends ViewPart implements PropertyChangeListener, ITransportStatus, IProgramStatus
 {
 	public static final String ID = "at.rc.tacos.client.view.disposition_view";
@@ -79,17 +78,15 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private CancelTransportAction cancelTransportAction;
 	private CopyTransportAction copyTransportAction;
 	private CopyTransportDetailsIntoClipboardAction copyTransportDetailsIntoClipboardAction;
-	
-	
 
-
-
+	/**
+	 * Defaul class constructor
+	 */
 	public UnderwayTransportsView()
 	{
 		//add listener to model to keep on track
 		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
-	
 	
 	/**
 	 * Cleanup the view
@@ -100,14 +97,12 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
 	}
 	
-	
 	/**
 	 * Call back method to create the control and initialize them
 	 * Create contents of the window
 	 */
 	public void createPartControl(final Composite parent) 
 	{
-		
 		//Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		formDisp = toolkit.createScrolledForm(parent);
@@ -116,10 +111,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		formDisp.getBody().setLayout(new FillLayout());
 		
 		final Composite composite = formDisp.getBody();
-		
-
-		/** tabFolder Selection Listener not needed? */
-		
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
@@ -128,10 +119,9 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		
 		viewer.refresh();
 		
-		/** Tool tip */
+		//create the tooltip text
 		tooltip = new UnderwayTransportsTooltip(viewer.getControl());
 		//show the tool tip when the selection has changed
-		
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
 		{
 			public void selectionChanged(SelectionChangedEvent event) 
@@ -144,23 +134,19 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 				}
 			}
 		});  
-		/** default Sorter */
+		//set a default sorter
 		viewer.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
 		
 		
 		final Table tableDisp = viewer.getTable();
 		tableDisp.setLinesVisible(true);
 		tableDisp.setHeaderVisible(true);
-		
-	
+			
 		final TableColumn lockColumn = new TableColumn(tableDisp, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		lockColumn.setWidth(30);
 		lockColumn.setText("L");
-		
-		
-//		table.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND));
-		
+	
 		//create the tab items for the disposition view
 		final TableColumn prioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		prioritaetDisponierteTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
@@ -384,19 +370,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
-		
-		
-//		SubMenuManager subMenuManager = new SubMenuManager(menuManager);
-//		subMenuManager.setRemoveAllWhenShown(true);
-//		subMenuManager.addMenuListener(new IMenuListener()
-//		{
-//			public void menuAboutToShow(IMenuManager manager)
-//			{
-////				fill
-//			}
-//		});
 	}
-	
 	
 	/**
 	 * Fills the context menu with the actions
@@ -442,23 +416,10 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		// the viewer represents simple model. refresh should be enough.
-		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
-		{ 
-			System.out.println("UnderwayTransportsView, propertyChange, TRANSPORT_ADD");
-			this.viewer.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_REMOVE".equals(evt.getPropertyName())) 
-		{ 
-			this.viewer.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_UPDATE".equals(evt.getPropertyName())) 
-		{ 
-			this.viewer.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
+		if ("TRANSPORT_ADD".equals(evt.getPropertyName())
+				|| "TRANSPORT_REMOVE".equals(evt.getPropertyName())
+				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
+				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{ 
 			this.viewer.refresh();
 		}

@@ -36,10 +36,10 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * The DatePick component from the mylyn project.
+ * (c) is by the eclipse mylyn project
  */
 public class DatePicker extends Composite 
 {
-
 	public final static String TITLE_DIALOG = "Datum auswählem";
 
 	public static final String LABEL_CHOOSE = "<Datum auswählen>";

@@ -1,5 +1,6 @@
 package at.rc.tacos.client.view;
 
+import java.util.List;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -95,11 +96,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
-		
-		/** tabFolder Selection Listener not needed? */
-		
-		
-		
+
 		viewerOffTrans = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerOffTrans.setContentProvider(new OutstandingTransportsViewContentProvider());
 		viewerOffTrans.setLabelProvider(new OutstandingTransportsViewLabelProvider());
@@ -125,10 +122,8 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 			}
 		});  
 		
-		
-		/** default sorter*/
+		//set the default sorter
 		viewerOffTrans.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
-		
 		
 		final Table tableOff = viewerOffTrans.getTable();
 		tableOff.setLinesVisible(true);
@@ -194,8 +189,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		anmerkungOffeneTransporte.setWidth(71);
 		anmerkungOffeneTransporte.setText("Anmerkung");
 	
-	
-		/** make the columns sort able*/
+		//make the columns sortable
 		Listener sortListener = new Listener() 
 		{
 			public void handleEvent(Event e) 
@@ -241,14 +235,11 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 					sortIdentifier = TransportSorter.TA_SORTER;
 				if(currentColumn == erkrankungVerletzungOffeneTransporte)
 					sortIdentifier = TransportSorter.KIND_OF_ILLNESS_SORTER;
-
-				
 				//apply the filter
 				viewerOffTrans.getTable().setSortDirection(dir);
 				viewerOffTrans.setSorter(new TransportSorter(sortIdentifier,dir));
 			}
 		};
-		
 		
 		//attach the listener
 		prioritaetOffeneTransporte.addListener(SWT.Selection, sortListener);
@@ -263,35 +254,32 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		tOffeneTransporte.addListener(SWT.Selection, sortListener);
 		erkrankungVerletzungOffeneTransporte.addListener(SWT.Selection, sortListener);
 		
-		
 		makeActions();
 		hookContextMenu();
 		
 		viewerOffTrans.resetFilters();
+		//apply the filter to show only outstanding transports
 		viewerOffTrans.addFilter(new TransportViewFilter(PROGRAM_STATUS_OUTSTANDING));
 		viewerOffTrans.refresh();
 	}
-
-	
 	
 	/**
 	 * Creates the needed actions
 	 */
 	private void makeActions()
 	{
-		forwardTransportAction = new ForwardTransportAction(this.viewerOffTrans);
-		editTransportAction = new EditTransportAction(this.viewerOffTrans, "outstanding");
-		cancelTransportAction = new CancelTransportAction(this.viewerOffTrans);
-		copyTransportAction = new CopyTransportAction(this.viewerOffTrans);
-
-		ArrayList<VehicleDetail> readyVehicles = (ArrayList<VehicleDetail>) ModelFactory.getInstance().getVehicleList().getReadyVehicleList();
-		
+		forwardTransportAction = new ForwardTransportAction(viewerOffTrans);
+		editTransportAction = new EditTransportAction(viewerOffTrans, "outstanding");
+		cancelTransportAction = new CancelTransportAction(viewerOffTrans);
+		copyTransportAction = new CopyTransportAction(viewerOffTrans);
+		//get the list of all vehicle with the status ready for action
+		List<VehicleDetail> readyVehicles = ModelFactory.getInstance().getVehicleList().getReadyVehicleList();
+		//loop and create the actions
 		for (VehicleDetail veh : readyVehicles)
 		{
-			AssignCarAction action = new AssignCarAction(this.viewerOffTrans, veh);
+			AssignCarAction action = new AssignCarAction(viewerOffTrans, veh);
 			actionList.add(action);
 		}
-		
 	}
 	
 	/**
@@ -309,10 +297,6 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		Menu menu = menuManager.createContextMenu(viewerOffTrans.getControl());
 		viewerOffTrans.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewerOffTrans);
-		
-		
-		
-		
 	}
 	
 	/**
@@ -331,10 +315,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		
 		//submenu for the available vehicles
 		MenuManager menuManagerSub = new MenuManager("Fahrzeug zuweisen");
-//		manager.add(menuManagersub);
-		
 		//add the actions
-		
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(menuManagerSub);
 		for(AssignCarAction ac : actionList)
@@ -356,26 +337,11 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		System.out.println("Change");
-		
 		// the viewer represents simple model. refresh should be enough.
-		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
-		{ 
-			System.out.println("OutstandingTransportsView, probertychange........ TRANSPORT_ADD");
-			this.viewerOffTrans.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_REMOVE".equals(evt.getPropertyName())) 
-		{ 
-			this.viewerOffTrans.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_UPDATE".equals(evt.getPropertyName())) 
-		{ 
-			this.viewerOffTrans.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
+		if ("TRANSPORT_ADD".equals(evt.getPropertyName())
+				|| "TRANSPORT_REMOVE".equals(evt.getPropertyName())
+				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
+				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{ 
 			this.viewerOffTrans.refresh();
 		}

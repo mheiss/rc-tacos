@@ -1,6 +1,7 @@
 package at.rc.tacos.client;
 
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.*;
 
 import at.rc.tacos.client.modelManager.SessionManager;
@@ -66,6 +67,18 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(true);
         configurer.setShowProgressIndicator(false);   
-        configurer.setShowPerspectiveBar(false); 
+        configurer.setShowPerspectiveBar(false);
     }
+
+	/**
+	 * Called after the window was created
+	 */
+	@Override
+	public void postWindowCreate() 
+	{
+        //start the application maximized
+		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+        IWorkbenchWindow window = configurer.getWindow();
+        window.getShell().setMaximized(true);
+	}
 }

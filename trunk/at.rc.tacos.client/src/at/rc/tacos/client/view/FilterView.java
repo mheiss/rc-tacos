@@ -40,8 +40,6 @@ public class FilterView extends ViewPart implements PropertyChangeListener
     //the main components
     private Section calendarSection;
 
-    //controls
-
     //labels for the view
     public final static String LABEL_NOTES = "Filterfunktion";
     public final static String LABEL_CALENDAR = "Kalender";
@@ -148,13 +146,12 @@ public class FilterView extends ViewPart implements PropertyChangeListener
         });
     }
 
-
     /**
-     * Listens to login events and updates the labels
+     * Listens to events
      */
     @Override
     public void propertyChange(PropertyChangeEvent pce)
     {    
-
+    	//not needed
     }
 }

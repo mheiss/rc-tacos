@@ -66,38 +66,37 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	private JournalViewTooltip tooltipMariazell;
 	private JournalViewTooltip tooltipWien;
 	private JournalViewTooltip tooltipKapfenberg;
-	
+
 	//the actions for the context menu
 	private EditTransportAction editTransportActionKapfenberg;
 	private CancelTransportAction cancelTransportActionKapfenberg;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionKapfenberg;
 	private CopyTransportAction copyTransportActionKapfenberg;
-	
+
 	private EditTransportAction editTransportActionBruck;
 	private CancelTransportAction cancelTransportActionBruck;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionBruck;
 	private CopyTransportAction copyTransportActionBruck;
-	
+
 	private EditTransportAction editTransportActionWien;
 	private CancelTransportAction cancelTransportActionWien;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionWien;
 	private CopyTransportAction copyTransportActionWien;
-	
+
 	private EditTransportAction editTransportActionLeoben;
 	private CancelTransportAction cancelTransportActionLeoben;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionLeoben;
 	private CopyTransportAction copyTransportActionLeoben;
-	
+
 	private EditTransportAction editTransportActionGraz;
 	private CancelTransportAction cancelTransportActionGraz;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionGraz;
 	private CopyTransportAction copyTransportActionGraz;
-	
+
 	private EditTransportAction editTransportActionMariazell;
 	private CancelTransportAction cancelTransportActionMariazell;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionMariazell;
 	private CopyTransportAction copyTransportActionMariazell;
-	
 
 	/**
 	 * Constructs a new journal view.
@@ -107,7 +106,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup the view
 	 */
@@ -131,191 +130,74 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
-	
-		
+
 		final Composite composite_1 = new Composite(composite, SWT.NONE);
-//		final GridLayout gridLayout_2 = new GridLayout();
-//		composite_1.setLayout(gridLayout_2);
-//		vormerkungTabItem.setControl(composite_1);
 		composite_1.setLayout(new FillLayout());
 
-		
-		
 		final Composite composite_3 = new Composite(composite_1, SWT.NONE);
 		composite_3.setLayout(new FillLayout());
 		final GridData gd_composite_3 = new GridData(SWT.FILL, SWT.FILL, false, true);
 		gd_composite_3.widthHint = 989;
 		composite_3.setLayoutData(gd_composite_3);
-		
+
 		//groups
 		final SashForm sashForm_8 = new SashForm(composite_3, SWT.VERTICAL);
-		
+
 		final Group richtungBruckGroup = new Group(sashForm_8, SWT.NONE);
 		richtungBruckGroup.setLayout(new FillLayout());
 		richtungBruckGroup.setForeground(CustomColors.RED_COLOR);
 		richtungBruckGroup.setText("Richtung Bruck");
-		
+
 		final SashForm sashForm_7 = new SashForm(sashForm_8, SWT.VERTICAL);
 
 		final Group richtungKapfenbergGroup = new Group(sashForm_7, SWT.NONE);
 		richtungKapfenbergGroup.setLayout(new FillLayout());
 		richtungKapfenbergGroup.setText("Richtung Kapfenberg");
-		
-		
+
 		final Group richtungMariazellGroup = new Group(sashForm_7, SWT.NONE);
 		richtungMariazellGroup.setLayout(new FillLayout());
 		richtungMariazellGroup.setText("Richtung Mariazell");
-		
+
 		final SashForm sashForm_9 = new SashForm(composite_3, SWT.VERTICAL);
-		
+
 		final Group richtungGrazGroup = new Group(sashForm_9, SWT.NONE);
 		richtungGrazGroup.setLayout(new FillLayout());
 		richtungGrazGroup.setText("Richtung Graz");
-		
+
 		final Group richtungLeobenGroup = new Group(sashForm_9, SWT.NONE);
 		richtungLeobenGroup.setLayout(new FillLayout());
 		richtungLeobenGroup.setText("Richtung Leoben");
-		
+
 		final SashForm sashForm_1 = new SashForm(sashForm_9, SWT.NONE);
 		sashForm_9.setWeights(new int[] {212, 167, 91 });
-		
+
 		final Group richtungWienGroup = new Group(sashForm_1, SWT.NONE);
 		richtungWienGroup.setLayout(new FillLayout());
 		richtungWienGroup.setText("Richtung Wien");
 
-
-		
-		
 		//viewers
-		viewerLeoben = new TableViewer(richtungLeobenGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerLeoben.setContentProvider(new PrebookingViewContentProvider());
-		viewerLeoben.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerLeoben.setInput(ModelFactory.getInstance().getTransportList().toArray());
-		viewerLeoben.getTable().setLinesVisible(true);
+		viewerLeoben = createTableViewer(richtungLeobenGroup);
+		viewerGraz = createTableViewer(richtungGrazGroup);
+		viewerKapfenberg = createTableViewer(richtungKapfenbergGroup);
+		viewerBruck = createTableViewer(richtungBruckGroup);
+		viewerWien = createTableViewer(richtungWienGroup);
+		viewerMariazell = createTableViewer(richtungMariazellGroup);
 		
-		
-		viewerGraz = new TableViewer(richtungGrazGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerGraz.setContentProvider(new PrebookingViewContentProvider());
-		viewerGraz.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerGraz.setInput(ModelFactory.getInstance().getTransportList().toArray());
-		viewerGraz.getTable().setLinesVisible(true);
-		
-		
-		viewerKapfenberg = new TableViewer(richtungKapfenbergGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerKapfenberg.setContentProvider(new PrebookingViewContentProvider());
-		viewerKapfenberg.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerKapfenberg.setInput(ModelFactory.getInstance().getTransportList().toArray());
-		viewerKapfenberg.getTable().setLinesVisible(true);
-		
-		
-		viewerBruck = new TableViewer(richtungBruckGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerBruck.setContentProvider(new PrebookingViewContentProvider());
-		viewerBruck.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerBruck.setInput(ModelFactory.getInstance().getTransportList().toArray());
-		viewerBruck.getTable().setLinesVisible(true);
-		
-		
-		viewerWien = new TableViewer(richtungWienGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerWien.setContentProvider(new PrebookingViewContentProvider());
-		viewerWien.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerWien.setInput(ModelFactory.getInstance().getTransportList().toArray());
-		viewerWien.getTable().setLinesVisible(true);
-		
-		
-		viewerMariazell = new TableViewer(richtungMariazellGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewerMariazell.setContentProvider(new PrebookingViewContentProvider());
-		viewerMariazell.setLabelProvider(new PrebookingViewLabelProvider());
-		viewerMariazell.setInput(ModelFactory.getInstance().getTransportList().toArray());
-		viewerMariazell.getTable().setLinesVisible(true);
-		
-		//set the tool tip
+		//create the tooltip
 		tooltipLeoben = new JournalViewTooltip(viewerLeoben.getControl());
 		tooltipGraz = new JournalViewTooltip(viewerGraz.getControl());
 		tooltipKapfenberg = new JournalViewTooltip(viewerKapfenberg.getControl());
 		tooltipBruck = new JournalViewTooltip(viewerBruck.getControl());
 		tooltipWien = new JournalViewTooltip(viewerWien.getControl());
 		tooltipMariazell = new JournalViewTooltip(viewerMariazell.getControl());
-		
-		
+
 		//show the tool tip when the selection has changed
-		viewerLeoben.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewerLeoben.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltipLeoben.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});     
-		
-		viewerGraz.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewerGraz.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltipGraz.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});    
-		
-		viewerKapfenberg.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewerKapfenberg.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltipKapfenberg.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});    
-		
-		viewerBruck.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewerBruck.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltipBruck.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});    
-		
-		viewerWien.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewerWien.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltipWien.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});    
-		
-		viewerMariazell.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewerMariazell.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltipMariazell.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});    
-		
+		viewerLeoben.addSelectionChangedListener(createTooltipListener(viewerLeoben, tooltipLeoben));     
+		viewerGraz.addSelectionChangedListener(createTooltipListener(viewerGraz, tooltipGraz));
+		viewerKapfenberg.addSelectionChangedListener(createTooltipListener(viewerKapfenberg, tooltipKapfenberg));
+		viewerBruck.addSelectionChangedListener(createTooltipListener(viewerBruck, tooltipBruck));
+		viewerWien.addSelectionChangedListener(createTooltipListener(viewerWien,tooltipWien));
+		viewerMariazell.addSelectionChangedListener(createTooltipListener(viewerMariazell, tooltipMariazell));
 
 		//sort the table by default
 		viewerLeoben.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
@@ -324,318 +206,391 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerBruck.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
 		viewerWien.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
 		viewerMariazell.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
-		
 
-	
+		makeActionsBruck(viewerBruck);
+		makeActionsKapfenberg(viewerKapfenberg);
+		makeActionsLeoben(viewerLeoben);
+		makeActionsMariazell(viewerMariazell);
+		makeActionsGraz(viewerGraz);
+		makeActionsWien(viewerWien);
 
-		
+		hookContextMenuLeoben(viewerLeoben);
+		hookContextMenuGraz(viewerGraz);
+		hookContextMenuWien(viewerWien);
+		hookContextMenuMariazell(viewerMariazell);
+		hookContextMenuBruck(viewerBruck);
+		hookContextMenuKapfenberg(viewerKapfenberg);
 
-		//Richtung Bruck
+		viewerBruck.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerGraz.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerWien.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerMariazell.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerKapfenberg.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerLeoben.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		//apply the filter for the tables
+		viewerBruck.addFilter(new TransportDirectnessFilter(TOWARDS_BRUCK));
+		viewerGraz.addFilter(new TransportDirectnessFilter(TOWARDS_GRAZ));
+		viewerWien.addFilter(new TransportDirectnessFilter(TOWARDS_VIENNA));
+		viewerMariazell.addFilter(new TransportDirectnessFilter(TOWARDS_MARIAZELL));
+		viewerKapfenberg.addFilter(new TransportDirectnessFilter(TOWARDS_KAPFENBERG));
+		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));		
+		//refresh the views
+		viewerBruck.refresh();
+		viewerGraz.refresh();
+		viewerKapfenberg.refresh();
+		viewerLeoben.refresh();
+		viewerMariazell.refresh();
+		viewerWien.refresh();
+	}
+
+	/**
+	 * Creates the needed actions
+	 */
+	private void makeActionsBruck(TableViewer viewer)
+	{		
+
+		editTransportActionBruck = new EditTransportAction(viewer, "prebooking");
+		moveToOutstandingTransportsActionBruck = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionBruck = new CancelTransportAction(viewer);
+		copyTransportActionBruck = new CopyTransportAction(viewer);
+	}
+	private void makeActionsKapfenberg(TableViewer viewer)
+	{		
+
+		editTransportActionKapfenberg = new EditTransportAction(viewer, "prebooking");
+		moveToOutstandingTransportsActionKapfenberg = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionKapfenberg = new CancelTransportAction(viewer);
+		copyTransportActionKapfenberg = new CopyTransportAction(viewer);
+	}
+	private void makeActionsLeoben(TableViewer viewer)
+	{		
+
+		editTransportActionLeoben = new EditTransportAction(viewer, "prebooking");
+		moveToOutstandingTransportsActionLeoben = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionLeoben = new CancelTransportAction(viewer);
+		copyTransportActionLeoben = new CopyTransportAction(viewer);
+	}
+	private void makeActionsMariazell(TableViewer viewer)
+	{		
+
+		editTransportActionMariazell = new EditTransportAction(viewer, "prebooking");
+		moveToOutstandingTransportsActionMariazell = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionMariazell = new CancelTransportAction(viewer);
+		copyTransportActionMariazell = new CopyTransportAction(viewer);
+	}
+	private void makeActionsGraz(TableViewer viewer)
+	{		
+		editTransportActionGraz = new EditTransportAction(viewer, "prebooking");
+		moveToOutstandingTransportsActionGraz = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionGraz = new CancelTransportAction(viewer);
+		copyTransportActionGraz = new CopyTransportAction(viewer);
+	}
+	private void makeActionsWien(TableViewer viewer)
+	{		
+		editTransportActionWien = new EditTransportAction(viewer, "prebooking");
+		moveToOutstandingTransportsActionWien = new MoveToOutstandingTransportsAction(viewer);
+		cancelTransportActionWien = new CancelTransportAction(viewer);
+		copyTransportActionWien = new CopyTransportAction(viewer);
+	}
+
+	/**
+	 * Creates the context menu 
+	 */
+	private void hookContextMenuBruck(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PrebookingBruckPopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuBruck(manager, viewer);
+			}
+		});
+
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuKapfenberg(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PrebookingKapfenbergPopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuKapfenberg(manager, viewer);
+			}
+		});
+
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuLeoben(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PrebookingLeobenPopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuLeoben(manager, viewer);
+			}
+		});
+
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuMariazell(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PrebookingMariazellPopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuMariazell(manager, viewer);
+			}
+		});
+
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuGraz(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PrebookingGrazPopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuGraz(manager, viewer);
+			}
+		});
+
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+	private void hookContextMenuWien(final TableViewer viewer) 
+	{
+		MenuManager menuManager = new MenuManager("#PrebookingWienPopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenuWien(manager, viewer);
+			}
+		});
+
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+
+	/**
+	 * Fills the context menu with the actions
+	 */
+	private void fillContextMenuBruck(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+
+		if(transport == null)
+			return;
+
+		//add the actions
+		manager.add(editTransportActionBruck);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionBruck);
+		manager.add(cancelTransportActionBruck);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionBruck);
+	}
+	private void fillContextMenuKapfenberg(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+
+		if(transport == null)
+			return;
+
+		//add the actions
+		manager.add(editTransportActionKapfenberg);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionKapfenberg);
+		manager.add(cancelTransportActionKapfenberg);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionKapfenberg);
+	}
+	private void fillContextMenuLeoben(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+
+		if(transport == null)
+			return;
+
+		//add the actions
+		manager.add(editTransportActionLeoben);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionLeoben);
+		manager.add(cancelTransportActionLeoben);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionLeoben);
+	}
+	private void fillContextMenuMariazell(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+
+		if(transport == null)
+			return;
+
+		//add the actions
+		manager.add(editTransportActionMariazell);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionMariazell);
+		manager.add(cancelTransportActionMariazell);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionMariazell);
+	}
+	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+
+		if(transport == null)
+			return;
+
+		//add the actions
+		manager.add(editTransportActionGraz);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionGraz);
+		manager.add(cancelTransportActionGraz);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionGraz);
+	}
+	private void fillContextMenuWien(IMenuManager manager, TableViewer viewer)
+	{
+		//get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+
+		//cast to a Transport
+		Transport transport = (Transport)firstSelectedObject;
+
+		if(transport == null)
+			return;
+
+		//add the actions
+		manager.add(editTransportActionWien);
+		manager.add(new Separator());
+		manager.add(moveToOutstandingTransportsActionWien);
+		manager.add(cancelTransportActionWien);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(copyTransportActionWien);
+	}
+
+	/**
+	 * Passing the focus request to the viewer's control.
+	 */
+	public void setFocus()  { }
+
+	public void propertyChange(PropertyChangeEvent evt) 
+	{
+		// the viewer represents simple model. refresh should be enough.
+		if ("TRANSPORT_ADD".equals(evt.getPropertyName())
+				|| "TRANSPORT_REMOVE".equals(evt.getPropertyName())
+				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
+				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
+		{
+			this.viewerLeoben.refresh();
+			this.viewerBruck.refresh();
+			this.viewerGraz.refresh();
+			this.viewerKapfenberg.refresh();
+			this.viewerMariazell.refresh();
+			this.viewerWien.refresh();
+		}
+	}
+
+	/***********************************
+	 * Helper methods to reduce the code
+	 **********************************/
+
+	/**
+	 * Creates and returns the table viewer.
+	 * @param parent the parent composite to insert
+	 * @return the created table
+	 */
+	private TableViewer createTableViewer(Composite parent)
+	{
+		final TableViewer viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		viewer.setContentProvider(new PrebookingViewContentProvider());
+		viewer.setLabelProvider(new PrebookingViewLabelProvider());
+		viewer.setInput(ModelFactory.getInstance().getTransportList().toArray());
+		viewer.getTable().setLinesVisible(true);
 		
-		//create the table for the transports
-		final Table tableBruck = viewerBruck.getTable();
-		tableBruck.setLinesVisible(true);
-		tableBruck.setHeaderVisible(true);
-		
-		final TableColumn blockColumn = new TableColumn(tableBruck, SWT.NONE);
+		final Table table = viewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+
+		final TableColumn blockColumn = new TableColumn(table, SWT.NONE);
 		blockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		blockColumn.setWidth(30);
 		blockColumn.setText("L");
 
-		final TableColumn bTableColumnOrtsstelle = new TableColumn(tableBruck, SWT.NONE);
+		final TableColumn bTableColumnOrtsstelle = new TableColumn(table, SWT.NONE);
 		bTableColumnOrtsstelle.setWidth(39);
 		bTableColumnOrtsstelle.setText("OS");
 
-		final TableColumn bTableColumnAbfahrt = new TableColumn(tableBruck, SWT.NONE);
+		final TableColumn bTableColumnAbfahrt = new TableColumn(table, SWT.NONE);
 		bTableColumnAbfahrt.setToolTipText("Geplante Abfahrt an der Ortsstelle");
 		bTableColumnAbfahrt.setWidth(41);
 		bTableColumnAbfahrt.setText("Abf");
 
-		final TableColumn bTableColumnAnkunft = new TableColumn(tableBruck, SWT.NONE);
+		final TableColumn bTableColumnAnkunft = new TableColumn(table, SWT.NONE);
 		bTableColumnAnkunft.setToolTipText("Geplante Ankunft beim Patienten");
 		bTableColumnAnkunft.setWidth(45);
 		bTableColumnAnkunft.setText("Ank");
 
-		final TableColumn bTableColumnTermin = new TableColumn(tableBruck, SWT.NONE);
+		final TableColumn bTableColumnTermin = new TableColumn(table, SWT.NONE);
 		bTableColumnTermin.setToolTipText("Termin am Zielort");
 		bTableColumnTermin.setWidth(49);
 		bTableColumnTermin.setText("Termin");
 
-		final TableColumn bTableColumnTransportVon = new TableColumn(tableBruck, SWT.NONE);
+		final TableColumn bTableColumnTransportVon = new TableColumn(table, SWT.NONE);
 		bTableColumnTransportVon.setWidth(100);
 		bTableColumnTransportVon.setText("Transport von");
 
-		final TableColumn bTtableColumnPatient = new TableColumn(tableBruck, SWT.NONE);
+		final TableColumn bTtableColumnPatient = new TableColumn(table, SWT.NONE);
 		bTtableColumnPatient.setWidth(100);
 		bTtableColumnPatient.setText("Patient");
 
-		final TableColumn bTableColumnTransportNach = new TableColumn(tableBruck, SWT.NONE);
+		final TableColumn bTableColumnTransportNach = new TableColumn(table, SWT.NONE);
 		bTableColumnTransportNach.setWidth(100);
 		bTableColumnTransportNach.setText("Transport nach");
 
-		final TableColumn bTableColumnTA = new TableColumn(tableBruck, SWT.NONE);
+		final TableColumn bTableColumnTA = new TableColumn(table, SWT.NONE);
 		bTableColumnTA.setToolTipText("Transportart");
 		bTableColumnTA.setWidth(33);
 		bTableColumnTA.setText("T");
-
-		//Richtung Kapfenberg
 		
-		final Table tableKapfenberg = viewerKapfenberg.getTable();
-		tableKapfenberg.setLinesVisible(true);
-		tableKapfenberg.setHeaderVisible(true);
-		
-		final TableColumn klockColumn = new TableColumn(tableKapfenberg, SWT.NONE);
-		klockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		klockColumn.setWidth(30);
-		klockColumn.setText("L");
-		
-
-		final TableColumn tableColumnOrtsstelle_2 = new TableColumn(tableKapfenberg, SWT.NONE);
-		tableColumnOrtsstelle_2.setWidth(39);
-		tableColumnOrtsstelle_2.setText("OS");
-
-		final TableColumn tableColumnAbfahrt_2 = new TableColumn(tableKapfenberg, SWT.NONE);
-		tableColumnAbfahrt_2.setToolTipText("Geplante Abfahrt an der Ortsstelle");
-		tableColumnAbfahrt_2.setWidth(41);
-		tableColumnAbfahrt_2.setText("Abf");
-
-		final TableColumn tableColumnAnkunft_2 = new TableColumn(tableKapfenberg, SWT.NONE);
-		tableColumnAnkunft_2.setToolTipText("Geplante Ankunft beim Patienten");
-		tableColumnAnkunft_2.setWidth(45);
-		tableColumnAnkunft_2.setText("Ank");
-
-		final TableColumn tableColumnTermin_2 = new TableColumn(tableKapfenberg, SWT.NONE);
-		tableColumnTermin_2.setToolTipText("Termin am Zielort");
-		tableColumnTermin_2.setWidth(49);
-		tableColumnTermin_2.setText("Termin");
-
-		final TableColumn tableColumnTransportVon_2 = new TableColumn(tableKapfenberg, SWT.NONE);
-		tableColumnTransportVon_2.setWidth(100);
-		tableColumnTransportVon_2.setText("Transport von");
-
-		final TableColumn tableColumnPatient_2 = new TableColumn(tableKapfenberg, SWT.NONE);
-		tableColumnPatient_2.setWidth(100);
-		tableColumnPatient_2.setText("Patient");
-
-		final TableColumn tableColumnTransportNach_2 = new TableColumn(tableKapfenberg, SWT.NONE);
-		tableColumnTransportNach_2.setWidth(100);
-		tableColumnTransportNach_2.setText("Transport nach");
-
-		final TableColumn tableColumnTA_2 = new TableColumn(tableKapfenberg, SWT.NONE);
-		tableColumnTA_2.setToolTipText("Transportart");
-		tableColumnTA_2.setWidth(33);
-		tableColumnTA_2.setText("T");
-
-		
-		//Richtung Mariazell
-		
-		final Table tableMariazell = viewerMariazell.getTable();
-		tableMariazell.setLinesVisible(true);
-		tableMariazell.setHeaderVisible(true);
-
-		final TableColumn mlockColumn = new TableColumn(tableMariazell, SWT.NONE);
-		mlockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		mlockColumn.setWidth(30);
-		mlockColumn.setText("L");
-
-		final TableColumn tableColumnOrtsstelle_3 = new TableColumn(tableMariazell, SWT.NONE);
-		tableColumnOrtsstelle_3.setWidth(39);
-		tableColumnOrtsstelle_3.setText("OS");
-
-		final TableColumn tableColumnAbfahrt_3 = new TableColumn(tableMariazell, SWT.NONE);
-		tableColumnAbfahrt_3.setToolTipText("Geplante Abfahrt an der Ortsstelle");
-		tableColumnAbfahrt_3.setWidth(41);
-		tableColumnAbfahrt_3.setText("Abf");
-
-		final TableColumn tableColumnAnkunft_3 = new TableColumn(tableMariazell, SWT.NONE);
-		tableColumnAnkunft_3.setToolTipText("Geplante Ankunft beim Patienten");
-		tableColumnAnkunft_3.setWidth(45);
-		tableColumnAnkunft_3.setText("Ank");
-
-		final TableColumn tableColumnTermin_3 = new TableColumn(tableMariazell, SWT.NONE);
-		tableColumnTermin_3.setToolTipText("Termin am Zielort");
-		tableColumnTermin_3.setWidth(49);
-		tableColumnTermin_3.setText("Termin");
-
-		final TableColumn tableColumnTransportVon_3 = new TableColumn(tableMariazell, SWT.NONE);
-		tableColumnTransportVon_3.setWidth(100);
-		tableColumnTransportVon_3.setText("Transport von");
-
-		final TableColumn tableColumnPatient_3 = new TableColumn(tableMariazell, SWT.NONE);
-		tableColumnPatient_3.setWidth(100);
-		tableColumnPatient_3.setText("Patient");
-
-		final TableColumn tableColumnTransportNach_3 = new TableColumn(tableMariazell, SWT.NONE);
-		tableColumnTransportNach_3.setWidth(100);
-		tableColumnTransportNach_3.setText("Transport nach");
-
-		final TableColumn tableColumnTA_3 = new TableColumn(tableMariazell, SWT.NONE);
-		tableColumnTA_3.setToolTipText("Transportart");
-		tableColumnTA_3.setWidth(33);
-		tableColumnTA_3.setText("T");
-
-		
-		sashForm_8.setWeights(new int[] {212, 261 });
-		sashForm_7.setWeights(new int[] {96, 51 });
-
-		
-
-		//Richtung Graz
-		final Table tableGraz= viewerGraz.getTable();
-		tableGraz.setLinesVisible(true);
-		tableGraz.setHeaderVisible(true);
-		
-		final TableColumn glockColumn = new TableColumn(tableGraz, SWT.NONE);
-		glockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		glockColumn.setWidth(30);
-		glockColumn.setText("L");
-
-		final TableColumn tableColumnOrtsstelle_4 = new TableColumn(tableGraz, SWT.NONE);
-		tableColumnOrtsstelle_4.setWidth(39);
-		tableColumnOrtsstelle_4.setText("OS");
-
-		final TableColumn tableColumnAbfahrt_4 = new TableColumn(tableGraz, SWT.NONE);
-		tableColumnAbfahrt_4.setToolTipText("Geplante Abfahrt an der Ortsstelle");
-		tableColumnAbfahrt_4.setWidth(41);
-		tableColumnAbfahrt_4.setText("Abf");
-
-		final TableColumn tableColumnAnkunft_4 = new TableColumn(tableGraz, SWT.NONE);
-		tableColumnAnkunft_4.setToolTipText("Geplante Ankunft beim Patienten");
-		tableColumnAnkunft_4.setWidth(45);
-		tableColumnAnkunft_4.setText("Ank");
-
-		final TableColumn tableColumnTermin_4 = new TableColumn(tableGraz, SWT.NONE);
-		tableColumnTermin_4.setToolTipText("Termin am Zielort");
-		tableColumnTermin_4.setWidth(49);
-		tableColumnTermin_4.setText("Termin");
-
-		final TableColumn tableColumnTransportVon_4 = new TableColumn(tableGraz, SWT.NONE);
-		tableColumnTransportVon_4.setWidth(100);
-		tableColumnTransportVon_4.setText("Transport von");
-
-		final TableColumn tableColumnPatient_4 = new TableColumn(tableGraz, SWT.NONE);
-		tableColumnPatient_4.setWidth(100);
-		tableColumnPatient_4.setText("Patient");
-
-		final TableColumn tableColumnTransportNach_4 = new TableColumn(tableGraz, SWT.NONE);
-		tableColumnTransportNach_4.setWidth(100);
-		tableColumnTransportNach_4.setText("Transport nach");
-
-		final TableColumn tableColumnTA_4 = new TableColumn(tableGraz, SWT.NONE);
-		tableColumnTA_4.setToolTipText("Transportart");
-		tableColumnTA_4.setWidth(33);
-		tableColumnTA_4.setText("T");
-
-		
-		//Richtung Leoben
-		final Table tableLeoben= viewerLeoben.getTable();
-		tableLeoben.setLinesVisible(true);
-		tableLeoben.setHeaderVisible(true);
-		
-		final TableColumn llockColumn = new TableColumn(tableLeoben, SWT.NONE);
-		llockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		llockColumn.setWidth(30);
-		llockColumn.setText("L");
-
-		final TableColumn tableColumnOrtsstelle_5 = new TableColumn(tableLeoben, SWT.NONE);
-		tableColumnOrtsstelle_5.setWidth(39);
-		tableColumnOrtsstelle_5.setText("OS");
-
-		final TableColumn tableColumnAbfahrt_5 = new TableColumn(tableLeoben, SWT.NONE);
-		tableColumnAbfahrt_5.setToolTipText("Geplante Abfahrt an der Ortsstelle");
-		tableColumnAbfahrt_5.setWidth(41);
-		tableColumnAbfahrt_5.setText("Abf");
-
-		final TableColumn tableColumnAnkunft_5 = new TableColumn(tableLeoben, SWT.NONE);
-		tableColumnAnkunft_5.setToolTipText("Geplante Ankunft beim Patienten");
-		tableColumnAnkunft_5.setWidth(45);
-		tableColumnAnkunft_5.setText("Ank");
-
-		final TableColumn tableColumnTermin_5 = new TableColumn(tableLeoben, SWT.NONE);
-		tableColumnTermin_5.setToolTipText("Termin am Zielort");
-		tableColumnTermin_5.setWidth(49);
-		tableColumnTermin_5.setText("Termin");
-
-		final TableColumn tableColumnTransportVon_5 = new TableColumn(tableLeoben, SWT.NONE);
-		tableColumnTransportVon_5.setWidth(100);
-		tableColumnTransportVon_5.setText("Transport von");
-
-		final TableColumn tableColumnPatient_5 = new TableColumn(tableLeoben, SWT.NONE);
-		tableColumnPatient_5.setWidth(100);
-		tableColumnPatient_5.setText("Patient");
-
-		final TableColumn tableColumnTransportNach_5 = new TableColumn(tableLeoben, SWT.NONE);
-		tableColumnTransportNach_5.setWidth(100);
-		tableColumnTransportNach_5.setText("Transport nach");
-
-		final TableColumn tableColumnTA_5 = new TableColumn(tableLeoben, SWT.NONE);
-		tableColumnTA_5.setToolTipText("Transportart");
-		tableColumnTA_5.setWidth(33);
-		tableColumnTA_5.setText("T");
-
-		
-
-	
-//		sashForm_1.setWeights(new int[] { 1 });
-
-		//Richtung Wien
-		final Table tableWien= viewerWien.getTable();
-		tableWien.setLinesVisible(true);
-		tableWien.setHeaderVisible(true);
-		
-		final TableColumn wlockColumn = new TableColumn(tableWien, SWT.NONE);
-		wlockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		wlockColumn.setWidth(30);
-		wlockColumn.setText("L");
-
-		final TableColumn tableColumnOrtsstelle_1 = new TableColumn(tableWien, SWT.NONE);
-		tableColumnOrtsstelle_1.setWidth(39);
-		tableColumnOrtsstelle_1.setText("OS");
-
-		final TableColumn tableColumnAbfahrt_1 = new TableColumn(tableWien, SWT.NONE);
-		tableColumnAbfahrt_1.setToolTipText("Geplante Abfahrt an der Ortsstelle");
-		tableColumnAbfahrt_1.setWidth(41);
-		tableColumnAbfahrt_1.setText("Abf");
-
-		final TableColumn tableColumnAnkunft_1 = new TableColumn(tableWien, SWT.NONE);
-		tableColumnAnkunft_1.setToolTipText("Geplante Ankunft beim Patienten");
-		tableColumnAnkunft_1.setWidth(45);
-		tableColumnAnkunft_1.setText("Ank");
-
-		final TableColumn tableColumnTermin_1 = new TableColumn(tableWien, SWT.NONE);
-		tableColumnTermin_1.setToolTipText("Termin am Zielort");
-		tableColumnTermin_1.setWidth(49);
-		tableColumnTermin_1.setText("Termin");
-
-		final TableColumn tableColumnTransportVon_1 = new TableColumn(tableWien, SWT.NONE);
-		tableColumnTransportVon_1.setWidth(100);
-		tableColumnTransportVon_1.setText("Transport von");
-
-		final TableColumn tableColumnPatient_1 = new TableColumn(tableWien, SWT.NONE);
-		tableColumnPatient_1.setWidth(100);
-		tableColumnPatient_1.setText("Patient");
-
-		final TableColumn tableColumnTransportNach_1 = new TableColumn(tableWien, SWT.NONE);
-		tableColumnTransportNach_1.setWidth(100);
-		tableColumnTransportNach_1.setText("Transport nach");
-
-		final TableColumn tableColumnTA_1 = new TableColumn(tableWien, SWT.NONE);
-		tableColumnTA_1.setToolTipText("Transportart");
-		tableColumnTA_1.setWidth(33);
-		tableColumnTA_1.setText("T");
-		
-		
-		
-		
-		/** make the columns sort able*/
-		Listener sortListenerLeoben = new Listener() 
+		Listener sortListener = new Listener() 
 		{
 			public void handleEvent(Event e) 
 			{
 				// determine new sort column and direction
-				TableColumn sortColumn = viewerLeoben.getTable().getSortColumn();
+				TableColumn sortColumn = viewer.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewerLeoben.getTable().getSortDirection();
+				int dir = viewer.getTable().getSortDirection();
 				//revert the sort order if the column is the same
 				if (sortColumn == currentColumn) 
 				{
@@ -646,183 +601,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 				} 
 				else 
 				{
-					viewerLeoben.getTable().setSortColumn(currentColumn);
-					dir = SWT.UP;
-				}
-				// sort the data based on column and direction
-				String sortIdentifier = null;
-				if (currentColumn == tableColumnOrtsstelle_5) 
-					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
-				if (currentColumn == tableColumnAbfahrt_5) 
-					sortIdentifier = TransportSorter.ABF_SORTER;
-				if (currentColumn == tableColumnAnkunft_5) 
-					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
-				if (currentColumn == tableColumnTermin_5)
-					sortIdentifier = TransportSorter.TERM_SORTER;
-				if (currentColumn == tableColumnTransportVon_5)
-					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == tableColumnPatient_5)
-					sortIdentifier = TransportSorter.PATIENT_SORTER;
-				if(currentColumn == tableColumnTransportNach_5)
-					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == tableColumnTA_5)
-					sortIdentifier = TransportSorter.TA_SORTER;
-				
-				//apply the filter
-				viewerLeoben.getTable().setSortDirection(dir);
-				viewerLeoben.setSorter(new TransportSorter(sortIdentifier,dir));
-			}
-		};
-		
-		//attach the listener
-		tableColumnOrtsstelle_5.addListener(SWT.Selection, sortListenerLeoben);
-		tableColumnAbfahrt_5.addListener(SWT.Selection, sortListenerLeoben);
-		tableColumnAnkunft_5.addListener(SWT.Selection, sortListenerLeoben);
-		tableColumnTermin_5.addListener(SWT.Selection, sortListenerLeoben);
-		tableColumnTransportVon_5.addListener(SWT.Selection, sortListenerLeoben);
-		tableColumnPatient_5.addListener(SWT.Selection, sortListenerLeoben);
-		tableColumnTransportNach_5.addListener(SWT.Selection, sortListenerLeoben);
-		tableColumnTA_5.addListener(SWT.Selection, sortListenerLeoben);
-		
-		
-		Listener sortListenerGraz = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
-				// determine new sort column and direction
-				TableColumn sortColumn = viewerGraz.getTable().getSortColumn();
-				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewerGraz.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
-						dir = SWT.DOWN;
-					else
-						dir = SWT.UP;
-				} 
-				else 
-				{
-					viewerGraz.getTable().setSortColumn(currentColumn);
-					dir = SWT.UP;
-				}
-				// sort the data based on column and direction
-				String sortIdentifier = null;
-				if (currentColumn == tableColumnOrtsstelle_4) 
-					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
-				if (currentColumn == tableColumnAbfahrt_4) 
-					sortIdentifier = TransportSorter.ABF_SORTER;
-				if (currentColumn == tableColumnAnkunft_4) 
-					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
-				if (currentColumn == tableColumnTermin_4)
-					sortIdentifier = TransportSorter.TERM_SORTER;
-				if (currentColumn == tableColumnTransportVon_4)
-					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == tableColumnPatient_4)
-					sortIdentifier = TransportSorter.PATIENT_SORTER;
-				if(currentColumn == tableColumnTransportNach_4)
-					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == tableColumnTA_4)
-					sortIdentifier = TransportSorter.TA_SORTER;
-
-
-				
-				//apply the filter
-				viewerGraz.getTable().setSortDirection(dir);
-				viewerGraz.setSorter(new TransportSorter(sortIdentifier,dir));
-			}
-		};
-		
-		//attach the listener
-		tableColumnOrtsstelle_4.addListener(SWT.Selection, sortListenerGraz);
-		tableColumnAbfahrt_4.addListener(SWT.Selection, sortListenerGraz);
-		tableColumnAnkunft_4.addListener(SWT.Selection, sortListenerGraz);
-		tableColumnTermin_4.addListener(SWT.Selection, sortListenerGraz);
-		tableColumnTransportVon_4.addListener(SWT.Selection, sortListenerGraz);
-		tableColumnPatient_4.addListener(SWT.Selection, sortListenerGraz);
-		tableColumnTransportNach_4.addListener(SWT.Selection, sortListenerGraz);
-		tableColumnTA_4.addListener(SWT.Selection, sortListenerGraz);
-		
-		
-		
-		Listener sortListenerWien = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
-				// determine new sort column and direction
-				TableColumn sortColumn = viewerWien.getTable().getSortColumn();
-				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewerWien.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
-						dir = SWT.DOWN;
-					else
-						dir = SWT.UP;
-				} 
-				else 
-				{
-					viewerGraz.getTable().setSortColumn(currentColumn);
-					dir = SWT.UP;
-				}
-				// sort the data based on column and direction
-				String sortIdentifier = null;
-				if (currentColumn == tableColumnOrtsstelle_1) 
-					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
-				if (currentColumn == tableColumnAbfahrt_1) 
-					sortIdentifier = TransportSorter.ABF_SORTER;
-				if (currentColumn == tableColumnAnkunft_1) 
-					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
-				if (currentColumn == tableColumnTermin_1)
-					sortIdentifier = TransportSorter.TERM_SORTER;
-				if (currentColumn == tableColumnTransportVon_1)
-					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == tableColumnPatient_1)
-					sortIdentifier = TransportSorter.PATIENT_SORTER;
-				if(currentColumn == tableColumnTransportNach_1)
-					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == tableColumnTA_1)
-					sortIdentifier = TransportSorter.TA_SORTER;
-
-
-				
-				//apply the filter
-				viewerWien.getTable().setSortDirection(dir);
-				viewerWien.setSorter(new TransportSorter(sortIdentifier,dir));
-			}
-		};
-		
-		//attach the listener
-		tableColumnOrtsstelle_1.addListener(SWT.Selection, sortListenerWien);
-		tableColumnAbfahrt_1.addListener(SWT.Selection, sortListenerWien);
-		tableColumnAnkunft_1.addListener(SWT.Selection, sortListenerWien);
-		tableColumnTermin_1.addListener(SWT.Selection, sortListenerWien);
-		tableColumnTransportVon_1.addListener(SWT.Selection, sortListenerWien);
-		tableColumnPatient_1.addListener(SWT.Selection, sortListenerWien);
-		tableColumnTransportNach_1.addListener(SWT.Selection, sortListenerWien);
-		tableColumnTA_1.addListener(SWT.Selection, sortListenerWien);
-		
-		
-		Listener sortListenerBruck = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
-				// determine new sort column and direction
-				TableColumn sortColumn = viewerBruck.getTable().getSortColumn();
-				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewerBruck.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
-						dir = SWT.DOWN;
-					else
-						dir = SWT.UP;
-				} 
-				else 
-				{
-					viewerBruck.getTable().setSortColumn(currentColumn);
+					viewer.getTable().setSortColumn(currentColumn);
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
@@ -843,489 +622,44 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
 				if(currentColumn == bTableColumnTA)
 					sortIdentifier = TransportSorter.TA_SORTER;
-
-
-				
 				//apply the filter
-				viewerBruck.getTable().setSortDirection(dir);
-				viewerBruck.setSorter(new TransportSorter(sortIdentifier,dir));
+				viewer.getTable().setSortDirection(dir);
+				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
 			}
 		};
-		
+
 		//attach the listener
-		 bTableColumnOrtsstelle.addListener(SWT.Selection, sortListenerBruck);
-		 bTableColumnAbfahrt.addListener(SWT.Selection, sortListenerBruck);
-		 bTableColumnAnkunft.addListener(SWT.Selection, sortListenerBruck);
-		 bTableColumnTermin.addListener(SWT.Selection, sortListenerBruck);
-		 bTableColumnTransportVon.addListener(SWT.Selection, sortListenerBruck);
-		 bTtableColumnPatient.addListener(SWT.Selection, sortListenerBruck);
-		 bTableColumnTransportNach.addListener(SWT.Selection, sortListenerBruck);
-		 bTableColumnTA.addListener(SWT.Selection, sortListenerBruck);
-		 
-		 
-		Listener sortListenerKapfenberg = new Listener() 
+		bTableColumnOrtsstelle.addListener(SWT.Selection, sortListener);
+		bTableColumnAbfahrt.addListener(SWT.Selection, sortListener);
+		bTableColumnAnkunft.addListener(SWT.Selection, sortListener);
+		bTableColumnTermin.addListener(SWT.Selection, sortListener);
+		bTableColumnTransportVon.addListener(SWT.Selection, sortListener);
+		bTtableColumnPatient.addListener(SWT.Selection, sortListener);
+		bTableColumnTransportNach.addListener(SWT.Selection, sortListener);
+		bTableColumnTA.addListener(SWT.Selection, sortListener);
+
+		return viewer;
+	}
+	
+	/**
+	 * Creates the selection listener to show the tooltip.
+	 * @param viewer the viewer to listet to changes
+	 * @param tooltip the tooltip to show
+	 * @return the created listener
+	 */
+	private ISelectionChangedListener createTooltipListener(final TableViewer viewer,final JournalViewTooltip tooltip)
+	{
+		return new ISelectionChangedListener() 
 		{
-			public void handleEvent(Event e) 
+			public void selectionChanged(SelectionChangedEvent event) 
 			{
-				// determine new sort column and direction
-				TableColumn sortColumn = viewerKapfenberg.getTable().getSortColumn();
-				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewerKapfenberg.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
+				TableItem[] selection = viewer.getTable().getSelection();
+				if (selection != null && selection.length > 0) 
 				{
-					if(dir == SWT.UP)
-						dir = SWT.DOWN;
-					else
-						dir = SWT.UP;
-				} 
-				else 
-				{
-					viewerKapfenberg.getTable().setSortColumn(currentColumn);
-					dir = SWT.UP;
+					Rectangle bounds = selection[0].getBounds();
+					tooltip.show(new Point(bounds.x, bounds.y));
 				}
-				// sort the data based on column and direction
-				String sortIdentifier = null;
-				if (currentColumn == tableColumnOrtsstelle_2) 
-					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
-				if (currentColumn == tableColumnAbfahrt_2) 
-					sortIdentifier = TransportSorter.ABF_SORTER;
-				if (currentColumn == tableColumnAnkunft_2) 
-					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
-				if (currentColumn == tableColumnTermin_2)
-					sortIdentifier = TransportSorter.TERM_SORTER;
-				if (currentColumn == tableColumnTransportVon_2)
-					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == tableColumnPatient_2)
-					sortIdentifier = TransportSorter.PATIENT_SORTER;
-				if(currentColumn == tableColumnTransportNach_2)
-					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == tableColumnTA_2)
-					sortIdentifier = TransportSorter.TA_SORTER;
-
-
-				
-				//apply the filter
-				viewerKapfenberg.getTable().setSortDirection(dir);
-				viewerKapfenberg.setSorter(new TransportSorter(sortIdentifier,dir));
 			}
 		};
-		
-		//attach the listener
-		tableColumnOrtsstelle_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		tableColumnAbfahrt_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		tableColumnAnkunft_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		tableColumnAnkunft_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		tableColumnTermin_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		tableColumnTransportVon_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		tableColumnPatient_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		tableColumnTransportNach_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		tableColumnTA_2.addListener(SWT.Selection, sortListenerKapfenberg);
-		
-		
-		Listener sortListenerMariazell = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
-				// determine new sort column and direction
-				TableColumn sortColumn = viewerMariazell.getTable().getSortColumn();
-				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewerMariazell.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
-						dir = SWT.DOWN;
-					else
-						dir = SWT.UP;
-				} 
-				else 
-				{
-					viewerMariazell.getTable().setSortColumn(currentColumn);
-					dir = SWT.UP;
-				}
-				// sort the data based on column and direction
-				String sortIdentifier = null;
-				if (currentColumn == tableColumnOrtsstelle_3) 
-					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
-				if (currentColumn == tableColumnAbfahrt_3) 
-					sortIdentifier = TransportSorter.ABF_SORTER;
-				if (currentColumn == tableColumnAnkunft_3) 
-					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
-				if (currentColumn == tableColumnTermin_3)
-					sortIdentifier = TransportSorter.TERM_SORTER;
-				if (currentColumn == tableColumnTransportVon_3)
-					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == tableColumnPatient_3)
-					sortIdentifier = TransportSorter.PATIENT_SORTER;
-				if(currentColumn == tableColumnTransportNach_3)
-					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == tableColumnTA_3)
-					sortIdentifier = TransportSorter.TA_SORTER;
-
-
-				
-				//apply the filter
-				viewerMariazell.getTable().setSortDirection(dir);
-				viewerMariazell.setSorter(new TransportSorter(sortIdentifier,dir));
-			}
-		};
-		
-		//attach the listener
-		tableColumnOrtsstelle_3.addListener(SWT.Selection, sortListenerMariazell);
-		tableColumnAbfahrt_3.addListener(SWT.Selection, sortListenerMariazell);
-		tableColumnAnkunft_3.addListener(SWT.Selection, sortListenerMariazell);
-		tableColumnTermin_3.addListener(SWT.Selection, sortListenerMariazell);
-		tableColumnTransportVon_3.addListener(SWT.Selection, sortListenerMariazell);
-		tableColumnPatient_3.addListener(SWT.Selection, sortListenerMariazell);
-		tableColumnTransportNach_3.addListener(SWT.Selection, sortListenerMariazell);
-		tableColumnTA_3.addListener(SWT.Selection, sortListenerMariazell);
-		
-		
-		
-		
-		makeActionsBruck(viewerBruck);
-		makeActionsKapfenberg(viewerKapfenberg);
-		makeActionsLeoben(viewerLeoben);
-		makeActionsMariazell(viewerMariazell);
-		makeActionsGraz(viewerGraz);
-		makeActionsWien(viewerWien);
-		
-		
-		hookContextMenuLeoben(viewerLeoben);
-		hookContextMenuGraz(viewerGraz);
-		hookContextMenuWien(viewerWien);
-		hookContextMenuMariazell(viewerMariazell);
-		hookContextMenuBruck(viewerBruck);
-		hookContextMenuKapfenberg(viewerKapfenberg);
-		
-		viewerBruck.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerGraz.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerWien.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerMariazell.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerKapfenberg.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerLeoben.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		
-		viewerBruck.addFilter(new TransportDirectnessFilter(TOWARDS_BRUCK));
-		viewerGraz.addFilter(new TransportDirectnessFilter(TOWARDS_GRAZ));
-		viewerWien.addFilter(new TransportDirectnessFilter(TOWARDS_VIENNA));
-		viewerMariazell.addFilter(new TransportDirectnessFilter(TOWARDS_MARIAZELL));
-		viewerKapfenberg.addFilter(new TransportDirectnessFilter(TOWARDS_KAPFENBERG));
-		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));		
-		
-		viewerBruck.refresh();
-		viewerGraz.refresh();
-		viewerKapfenberg.refresh();
-		viewerLeoben.refresh();
-		viewerMariazell.refresh();
-		viewerWien.refresh();
-		
-	}
-	
-	/**
-	 * Creates the needed actions
-	 */
-	private void makeActionsBruck(TableViewer viewer)
-	{		
-		
-		editTransportActionBruck = new EditTransportAction(viewer, "prebooking");
-		moveToOutstandingTransportsActionBruck = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionBruck = new CancelTransportAction(viewer);
-		copyTransportActionBruck = new CopyTransportAction(viewer);
-	}
-	private void makeActionsKapfenberg(TableViewer viewer)
-	{		
-		
-		editTransportActionKapfenberg = new EditTransportAction(viewer, "prebooking");
-		moveToOutstandingTransportsActionKapfenberg = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionKapfenberg = new CancelTransportAction(viewer);
-		copyTransportActionKapfenberg = new CopyTransportAction(viewer);
-	}
-	private void makeActionsLeoben(TableViewer viewer)
-	{		
-		
-		editTransportActionLeoben = new EditTransportAction(viewer, "prebooking");
-		moveToOutstandingTransportsActionLeoben = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionLeoben = new CancelTransportAction(viewer);
-		copyTransportActionLeoben = new CopyTransportAction(viewer);
-	}
-	private void makeActionsMariazell(TableViewer viewer)
-	{		
-		
-		editTransportActionMariazell = new EditTransportAction(viewer, "prebooking");
-		moveToOutstandingTransportsActionMariazell = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionMariazell = new CancelTransportAction(viewer);
-		copyTransportActionMariazell = new CopyTransportAction(viewer);
-	}
-	private void makeActionsGraz(TableViewer viewer)
-	{		
-		
-		editTransportActionGraz = new EditTransportAction(viewer, "prebooking");
-		moveToOutstandingTransportsActionGraz = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionGraz = new CancelTransportAction(viewer);
-		copyTransportActionGraz = new CopyTransportAction(viewer);
-	}
-	private void makeActionsWien(TableViewer viewer)
-	{		
-		
-		editTransportActionWien = new EditTransportAction(viewer, "prebooking");
-		moveToOutstandingTransportsActionWien = new MoveToOutstandingTransportsAction(viewer);
-		cancelTransportActionWien = new CancelTransportAction(viewer);
-		copyTransportActionWien = new CopyTransportAction(viewer);
-	}
-	
-	/**
-	 * Creates the context menu 
-	 */
-	private void hookContextMenuBruck(final TableViewer viewer) 
-	{
-		MenuManager menuManager = new MenuManager("#PrebookingBruckPopupMenu");
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenuBruck(manager, viewer);
-			}
-		});
-		
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
-	}
-	private void hookContextMenuKapfenberg(final TableViewer viewer) 
-	{
-		MenuManager menuManager = new MenuManager("#PrebookingKapfenbergPopupMenu");
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenuKapfenberg(manager, viewer);
-			}
-		});
-		
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
-	}
-	private void hookContextMenuLeoben(final TableViewer viewer) 
-	{
-		MenuManager menuManager = new MenuManager("#PrebookingLeobenPopupMenu");
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenuLeoben(manager, viewer);
-			}
-		});
-		
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
-	}
-	private void hookContextMenuMariazell(final TableViewer viewer) 
-	{
-		MenuManager menuManager = new MenuManager("#PrebookingMariazellPopupMenu");
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenuMariazell(manager, viewer);
-			}
-		});
-		
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
-	}
-	private void hookContextMenuGraz(final TableViewer viewer) 
-	{
-		MenuManager menuManager = new MenuManager("#PrebookingGrazPopupMenu");
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenuGraz(manager, viewer);
-			}
-		});
-		
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
-	}
-	private void hookContextMenuWien(final TableViewer viewer) 
-	{
-		MenuManager menuManager = new MenuManager("#PrebookingWienPopupMenu");
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenuWien(manager, viewer);
-			}
-		});
-		
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
-	}
-	
-	/**
-	 * Fills the context menu with the actions
-	 */
-	private void fillContextMenuBruck(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
-		
-		if(transport == null)
-			return;
-		
-		//add the actions
-		manager.add(editTransportActionBruck);
-		manager.add(new Separator());
-		manager.add(moveToOutstandingTransportsActionBruck);
-		manager.add(cancelTransportActionBruck);
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		manager.add(copyTransportActionBruck);
-	}
-	private void fillContextMenuKapfenberg(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
-		
-		if(transport == null)
-			return;
-		
-		//add the actions
-		manager.add(editTransportActionKapfenberg);
-		manager.add(new Separator());
-		manager.add(moveToOutstandingTransportsActionKapfenberg);
-		manager.add(cancelTransportActionKapfenberg);
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		manager.add(copyTransportActionKapfenberg);
-	}
-	private void fillContextMenuLeoben(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
-		
-		if(transport == null)
-			return;
-		
-		//add the actions
-		manager.add(editTransportActionLeoben);
-		manager.add(new Separator());
-		manager.add(moveToOutstandingTransportsActionLeoben);
-		manager.add(cancelTransportActionLeoben);
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		manager.add(copyTransportActionLeoben);
-	}
-	private void fillContextMenuMariazell(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
-		
-		if(transport == null)
-			return;
-		
-		//add the actions
-		manager.add(editTransportActionMariazell);
-		manager.add(new Separator());
-		manager.add(moveToOutstandingTransportsActionMariazell);
-		manager.add(cancelTransportActionMariazell);
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		manager.add(copyTransportActionMariazell);
-	}
-	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
-		
-		if(transport == null)
-			return;
-		
-		//add the actions
-		manager.add(editTransportActionGraz);
-		manager.add(new Separator());
-		manager.add(moveToOutstandingTransportsActionGraz);
-		manager.add(cancelTransportActionGraz);
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		manager.add(copyTransportActionGraz);
-	}
-	private void fillContextMenuWien(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
-		
-		if(transport == null)
-			return;
-		
-		//add the actions
-		manager.add(editTransportActionWien);
-		manager.add(new Separator());
-		manager.add(moveToOutstandingTransportsActionWien);
-		manager.add(cancelTransportActionWien);
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		manager.add(copyTransportActionWien);
-	}
-	
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
-	public void setFocus()  { }
-
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		// the viewer represents simple model. refresh should be enough.
-		if ("TRANSPORT_ADD".equals(evt.getPropertyName())) 
-		{
-			this.viewerLeoben.refresh();
-			this.viewerBruck.refresh();
-			this.viewerGraz.refresh();
-			this.viewerKapfenberg.refresh();
-			this.viewerMariazell.refresh();
-			this.viewerWien.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_REMOVE".equals(evt.getPropertyName())) 
-		{
-			this.viewerLeoben.refresh();
-			this.viewerBruck.refresh();
-			this.viewerGraz.refresh();
-			this.viewerKapfenberg.refresh();
-			this.viewerMariazell.refresh();
-			this.viewerWien.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_UPDATE".equals(evt.getPropertyName())) 
-		{
-			this.viewerLeoben.refresh();
-			this.viewerBruck.refresh();
-			this.viewerGraz.refresh();
-			this.viewerKapfenberg.refresh();
-			this.viewerMariazell.refresh();
-			this.viewerWien.refresh();
-		}
-		// event on deletion --> also just refresh
-		if ("TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
-		{
-			this.viewerLeoben.refresh();
-			this.viewerBruck.refresh();
-			this.viewerGraz.refresh();
-			this.viewerKapfenberg.refresh();
-			this.viewerMariazell.refresh();
-			this.viewerWien.refresh();
-		}
 	}
 }
