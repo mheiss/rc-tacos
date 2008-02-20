@@ -124,10 +124,10 @@ INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(3, 1, 2008
 INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(5, 2, 20080123140000);
 
 --assign vehicles to transport
-INSERT INTO assigned_vehicle(transport_ID, vehicle_ID, driver_ID, medic1_ID, medic2_ID, locationname, note, vehicletype)
-VALUES(1, 'BM01', 50100001, 50100002, null, 'BM', 'bla bla...', 'RTW(1)');
-INSERT INTO assigned_vehicle(transport_ID, vehicle_ID, driver_ID, medic1_ID, medic2_ID, locationname, note, vehicletype) 
-VALUES(2, 'BM02', 50100003, 50100002, null, 'BM', 'bla bla...', 'RTW(2)');
+INSERT INTO assigned_vehicle(transport_ID, vehicle_ID, driver_ID, medic1_ID, medic2_ID, location_ID, note, vehicletype)
+VALUES(1, 'BM01', 50100001, 50100002, null, 1, 'bla bla...', 'RTW(1)');
+INSERT INTO assigned_vehicle(transport_ID, vehicle_ID, driver_ID, medic1_ID, medic2_ID, location_ID, note, vehicletype) 
+VALUES(2, 'BM02', 50100003, 50100002, null, 1, 'bla bla...', 'RTW(2)');
 
 --transports
 INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 1);
@@ -135,3 +135,23 @@ INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 2);
 INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 5);
 INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(2, 2);
 INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(2, 7);
+
+
+-- Insert the possible values for the selected table
+-- Do NOT clear this table
+INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');
+INSERT INTO selected(selected_ID, name) VALUES(2, 'Exekutive');
+INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
+INSERT INTO selected(selected_ID, name) VALUES(4, 'Bergrettung');
+INSERT INTO selected(selected_ID, name) VALUES(5, 'Dienstführender');
+INSERT INTO selected(selected_ID, name) VALUES(6, 'Bezirksrettungskommandant');
+INSERT INTO selected(selected_ID, name) VALUES(7, 'Blaufahrt');
+INSERT INTO selected(selected_ID, name) VALUES(8, 'Hubschrauber');
+INSERT INTO selected(selected_ID, name) VALUES(9, 'Begleitperson');
+INSERT INTO selected(selected_ID, name) VALUES(10, 'Ruecktransport');
+INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
+INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
+
+
+INSERT INTO caller(caller_ID, callername, caller_phonenumber)
+VALUES(null, 'Herr Maier', '0342 - 12345');
