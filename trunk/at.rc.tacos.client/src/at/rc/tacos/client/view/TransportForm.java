@@ -34,6 +34,7 @@ import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
@@ -1714,6 +1715,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
     				long receivingTime = cal.getTimeInMillis();
     				
                 	transport = new Transport(fromStreet,fromCommunity,theRespStation,transportDate,startLong,priority,directness);
+                	transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
                 	transport.setBackTransport(backTransportPossible);
                 	
                 	Patient patient = new Patient(lastName,firstName);
@@ -1760,6 +1762,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 else
                 {
                     // set the needed values
+                	transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
                 	transport.setFromStreet(fromStreet);
                 	transport.setFromCity(fromCommunity);
                 	transport.setPlanedLocation(theRespStation);
