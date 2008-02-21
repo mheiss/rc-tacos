@@ -58,18 +58,26 @@ public class TransportListener extends ServerListenerAdapter
 			calEnd.setTimeInMillis(dateStart);
 			calEnd.add(Calendar.DAY_OF_MONTH, 1);
 			long dateEnd = calEnd.getTimeInMillis();
+			
+			//show the prebooked transports
+			List<Transport> prebookedList = transportDao.listPrebookedTransports();
 			//show current transports that are in progress
-			List<Transport> transportList = transportDao.listTransports(dateStart, dateEnd);
+			List<Transport> transportList = transportDao.listRunningTransports();
 			//show the transports in the journal
 			List<Transport> journalList = transportDao.listArchivedTransports(dateStart, dateEnd);
-			//check
+			//check the prebooked
+			if(prebookedList == null)
+			{
+				throw new DAOException("TransportListener","Failed to list the prebooked transports");
+			}
+			list.addAll(prebookedList);
+			//check the running
 			if(transportList == null)
 			{
-				String time = MyUtils.timestampToString(dateStart, MyUtils.dateFormat) +" bis " +MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
-				throw new DAOException("TransportListener","Failed to list the transports by date from "+time);
+				throw new DAOException("TransportListener","Failed to list the running and open transports");
 			}
 			list.addAll(transportList);
-			//check
+			//check archived
 			if(journalList == null)
 			{
 				String time = MyUtils.timestampToString(dateStart, MyUtils.dateFormat) +" bis " +MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
