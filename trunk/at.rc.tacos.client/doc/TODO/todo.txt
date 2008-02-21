@@ -30,3 +30,12 @@ BUG FIXING:
 --> @Dialyse: Icons (z.B. Häkchen) für die Darstellung der Wochentage implementieren.
 
 --> NEF: implementieren. Wenn Priorität A soll beim Zuweisen des Fahrzeuges automatisch der Transport verdoppelt und einem Transport das NEF zugewiesen werden.
+
+--> dialysetransporte können nicht bearbeitet werden (kontextmenü transport bearbeiten)
+
+--> Updateproblem beim Ändern von Transportdetails - konkret: Begleitperson beim als 2. gestarten Client ergänzt, am zuerst gestarteten nicht übernommen.
+	Scheint nur bei einem Transport zu passieren (Sepp Maier) - er hat als einziger Tranpsort einen Caller.
+
+--> zuständige Ortsstelle: wenn man im Formular "St. Marein" auswählt, wird auf der View "Thörl" draus. Neuerliches Öffnen des Formulars: St. Marein - also passt.
+
+--> Vorname und Nachname werden verdreht - Transportformular Eingabe, dann Transport bearbeiten- verdreht.
