@@ -42,6 +42,22 @@ CREATE TABLE selected (
 )
 TYPE=InnoDB;
 
+-- Insert the possible values for the selected table
+-- Do NOT clear this table
+-- This MUST be done in the createTables script
+INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');
+INSERT INTO selected(selected_ID, name) VALUES(2, 'Exekutive');
+INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
+INSERT INTO selected(selected_ID, name) VALUES(4, 'Bergrettung');
+INSERT INTO selected(selected_ID, name) VALUES(5, 'Dienstführender');
+INSERT INTO selected(selected_ID, name) VALUES(6, 'Bezirksrettungskommandant');
+INSERT INTO selected(selected_ID, name) VALUES(7, 'Blaufahrt');
+INSERT INTO selected(selected_ID, name) VALUES(8, 'Hubschrauber');
+INSERT INTO selected(selected_ID, name) VALUES(9, 'Begleitperson');
+INSERT INTO selected(selected_ID, name) VALUES(10, 'Ruecktransport');
+INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
+INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
+
 CREATE TABLE disease (
   disease_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   disease VARCHAR(30) NOT NULL,
