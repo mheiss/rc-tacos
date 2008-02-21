@@ -2,6 +2,8 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Calendar;
+
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -37,6 +39,7 @@ import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.PrebookingViewContentProvider;
 import at.rc.tacos.client.providers.PrebookingViewLabelProvider;
+import at.rc.tacos.client.providers.TransportDateFilter;
 import at.rc.tacos.client.providers.TransportDirectnessFilter;
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
@@ -221,19 +224,9 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		hookContextMenuBruck(viewerBruck);
 		hookContextMenuKapfenberg(viewerKapfenberg);
 
-		viewerBruck.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerGraz.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerWien.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerMariazell.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerKapfenberg.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerLeoben.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		//apply the filter for the tables
-		viewerBruck.addFilter(new TransportDirectnessFilter(TOWARDS_BRUCK));
-		viewerGraz.addFilter(new TransportDirectnessFilter(TOWARDS_GRAZ));
-		viewerWien.addFilter(new TransportDirectnessFilter(TOWARDS_VIENNA));
-		viewerMariazell.addFilter(new TransportDirectnessFilter(TOWARDS_MARIAZELL));
-		viewerKapfenberg.addFilter(new TransportDirectnessFilter(TOWARDS_KAPFENBERG));
-		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));		
+		//apply the filters
+		applyFilters(Calendar.getInstance());
+		
 		//refresh the views
 		viewerBruck.refresh();
 		viewerGraz.refresh();
@@ -512,12 +505,20 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
 				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{
-			this.viewerLeoben.refresh();
-			this.viewerBruck.refresh();
-			this.viewerGraz.refresh();
-			this.viewerKapfenberg.refresh();
-			this.viewerMariazell.refresh();
-			this.viewerWien.refresh();
+			viewerLeoben.refresh();
+			viewerBruck.refresh();
+			viewerGraz.refresh();
+			viewerKapfenberg.refresh();
+			viewerMariazell.refresh();
+			viewerWien.refresh();
+		}
+		//listen to changes of the date to set up the filter
+		if("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the new value
+			Calendar filterCal = (Calendar)evt.getNewValue();
+			//set up the new view filter
+			applyFilters(filterCal);
 		}
 	}
 
@@ -661,5 +662,43 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 				}
 			}
 		};
+	}
+	
+	/**
+	 * Removes all filters from the views and sets them new
+	 * @param date the date of the transports to render
+	 */
+	private void applyFilters(Calendar date)
+	{
+		//remove all filters
+		viewerBruck.resetFilters();
+		viewerGraz.resetFilters();
+		viewerWien.resetFilters();
+		viewerMariazell.resetFilters();
+		viewerKapfenberg.resetFilters();
+		viewerLeoben.resetFilters();
+		//set up the filters for the view
+		viewerBruck.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerGraz.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerWien.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerMariazell.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerKapfenberg.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerLeoben.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		//apply the filter for the tables
+		viewerBruck.addFilter(new TransportDirectnessFilter(TOWARDS_BRUCK));
+		viewerGraz.addFilter(new TransportDirectnessFilter(TOWARDS_GRAZ));
+		viewerWien.addFilter(new TransportDirectnessFilter(TOWARDS_VIENNA));
+		viewerMariazell.addFilter(new TransportDirectnessFilter(TOWARDS_MARIAZELL));
+		viewerKapfenberg.addFilter(new TransportDirectnessFilter(TOWARDS_KAPFENBERG));
+		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));		
+		//show only transports from today
+		TransportDateFilter dateFilter = new TransportDateFilter(date);
+		//set it new
+		viewerBruck.addFilter(dateFilter);
+		viewerGraz.addFilter(dateFilter);
+		viewerWien.addFilter(dateFilter);
+		viewerMariazell.addFilter(dateFilter);
+		viewerKapfenberg.addFilter(dateFilter);
+		viewerLeoben.addFilter(dateFilter);
 	}
 }

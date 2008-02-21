@@ -131,7 +131,7 @@ public class FilterView extends ViewPart implements PropertyChangeListener
 
         //Calendar field
         dateTime = new DateTime(calendar, SWT.CALENDAR);
-        dateTime.setToolTipText("Datum der anzuzeigenden Dienstplanübersicht auswählen");
+        dateTime.setToolTipText("Datum der anzuzeigenden Transporte auswählen");
         dateTime.addSelectionListener (new SelectionAdapter () 
         {
             public void widgetSelected (SelectionEvent e) 
@@ -140,7 +140,8 @@ public class FilterView extends ViewPart implements PropertyChangeListener
                 cal.set(Calendar.YEAR, dateTime.getYear());
                 cal.set(Calendar.MONTH, dateTime.getMonth());
                 cal.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
-                SelectTransportDateAction selectAction = new SelectTransportDateAction(cal.getTime());
+                //run the action to query the transports for the selected date
+                SelectTransportDateAction selectAction = new SelectTransportDateAction(cal);
                 selectAction.run();
             }
         });

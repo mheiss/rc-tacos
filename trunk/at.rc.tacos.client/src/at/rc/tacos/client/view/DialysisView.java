@@ -25,6 +25,7 @@ import at.rc.tacos.client.controller.DialysisDeleteAction;
 import at.rc.tacos.client.controller.DialysisEditAction;
 import at.rc.tacos.client.controller.DialysisOpenNewFormAction;
 import at.rc.tacos.client.controller.DialysisTransportNowAction;
+import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.DialysisTransportContentProvider;
@@ -242,6 +243,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		
 		makeActions();
 		hookContextMenu();
+		createToolBarActions();
 		
 		viewer.refresh();
 	}
@@ -305,12 +307,24 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		// the viewer represents simple model. refresh should be enough.
-		if ("DIALYSISTRANSPORT_ADD".equals(evt.getPropertyName())
-		        || "DIALYSISTRANSPORT_REMOVE".equals(evt.getPropertyName()) 
-		        || "DIALYSISTRANSPORT_UPDATE".equals(evt.getPropertyName())
-		        || "DIALYSISTRANSPORT_CLEARED".equals(evt.getPropertyName()))
+		if ("DIALYSISPATIENT_ADD".equals(evt.getPropertyName())
+		        || "DIALYSISPATIENT_REMOVE".equals(evt.getPropertyName()) 
+		        || "DIALYSISPATIENT_UPDATE".equals(evt.getPropertyName())
+		        || "DIALYSISPATIENT_CLEARED".equals(evt.getPropertyName()))
 		{ 
-			this.viewer.refresh();
+			viewer.refresh();
 		}
+	}
+	
+	/**
+	 * Creates and adds the actions for the toolbar
+	 */
+	private void createToolBarActions()
+	{
+		//create the action
+		RefreshViewAction viewAction = new RefreshViewAction(DialysisPatient.ID);
+		//add to the toolbar
+		form.getToolBarManager().add(viewAction);
+		form.getToolBarManager().update(true);
 	}
 }

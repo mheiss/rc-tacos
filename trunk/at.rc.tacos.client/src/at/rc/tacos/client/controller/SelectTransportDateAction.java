@@ -1,11 +1,10 @@
 package at.rc.tacos.client.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import java.util.Calendar;
 import org.eclipse.jface.action.Action;
 
-import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.QueryFilter;
@@ -18,27 +17,27 @@ import at.rc.tacos.model.Transport;
  */
 public class SelectTransportDateAction extends Action
 {
-    private Date date;
+    private Calendar cal;
 
     /**
      * Default class constructor for an action.
      * @param date the date to switch to
      */
-    public SelectTransportDateAction(Date date)
+    public SelectTransportDateAction(Calendar cal)
     {
         //mask the unused fields
-        this.date = date;
+        this.cal = cal;
     }
 
     @Override
     public void run()
-    {
-    	//save the date
-    	SessionManager.getInstance().setDisplayedDate(date.getTime());
+    {    	
+    	//Notify the listeners that the date changed and the view filters must be updated
+    	ModelFactory.getInstance().getTransportList().fireTransportViewFilterChanged(cal);
     	
         //format the date
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String strDate = sdf.format(date);
+        String strDate = sdf.format(cal.getTime());
         
         //set up the filter and query the server
         QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,strDate);

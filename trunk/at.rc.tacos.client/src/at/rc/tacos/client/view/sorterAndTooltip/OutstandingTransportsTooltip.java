@@ -26,8 +26,8 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 {	
 	//properties
 	private Transport transport;
-	
-	
+
+
 	/**
 	 * Creates a new tool tip for the outstanding transport
 	 * @param control the control for the tool tip to show
@@ -37,8 +37,8 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		super(control);
 		setShift(new Point(1, 1));
 	}
-	
-	
+
+
 	/**
 	 * Returns whether or not the tooltip should be created.
 	 * @param event the triggered event
@@ -56,19 +56,19 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		//no valid element selected
 		return false;
 	}
-	
-	
-	
+
+
+
 
 	@Override
 	protected Composite createToolTipContentArea(Event event, Composite parent) 
 	{		
 		//get the selected transport
 		Composite composite = createToolTipContentAreaComposite(parent);	
-	
+
 		String alarming = "";
-		
-		
+
+
 		//notifying
 		System.out.println("++++++++++++++OutstandingTransportsTooltip,, createToolTipContentArea, police: " +transport.isPoliceAlarming());
 		if (transport.isFirebrigadeAlarming())
@@ -85,43 +85,43 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			alarming = alarming +" Notarzthubschrauber";
 		if (transport.isPoliceAlarming())
 			alarming = alarming +" Polizei";
-		
-		
+
+
 		//directness
-        int direction = transport.getDirection();
-        String directness;
-        if (TOWARDS_KAPFENBERG == direction)
-        {
-        	directness = "Kapfenberg";
-        }
-        else if (TOWARDS_GRAZ == direction)
-        {
-        	directness = "Graz";
-        }
-        else if (TOWARDS_LEOBEN == direction)
-        {
-        	directness = "Leoben";
-        }
-        else if (TOWARDS_MARIAZELL== direction)
-        {
-        	directness = "Mariazell";
-        }
-        else if (TOWARDS_VIENNA == direction)
-        {
-        	directness = "Wien";
-        }
-        else directness = "Bruck"; //default
-        
-			
-        
+		int direction = transport.getDirection();
+		String directness;
+		if (TOWARDS_KAPFENBERG == direction)
+		{
+			directness = "Kapfenberg";
+		}
+		else if (TOWARDS_GRAZ == direction)
+		{
+			directness = "Graz";
+		}
+		else if (TOWARDS_LEOBEN == direction)
+		{
+			directness = "Leoben";
+		}
+		else if (TOWARDS_MARIAZELL== direction)
+		{
+			directness = "Mariazell";
+		}
+		else if (TOWARDS_VIENNA == direction)
+		{
+			directness = "Wien";
+		}
+		else directness = "Bruck"; //default
+
+
+
 		Image image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
-			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
-			+transport.getToStreet() +"/" +transport.getToCity();
+		+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
+		+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
-		
 
-		
+
+
 		//the notes
 		if(transport.hasNotes())
 		{
@@ -129,20 +129,20 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			title = transport.getNotes();
 			addIconAndLabel(composite,image,title);
 		}
-		
+
 		//directness
 		image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 		title = directness;
 		addIconAndLabel(composite,image,title);
-		
+
 		//caller
-		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
+		if (transport.getCallerDetail() != null)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("transport.callerDetail");
 			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
 			addIconAndLabel(composite,image,title);
 		}
-		
+
 		//notified
 		if (!alarming.equalsIgnoreCase(""))
 		{
@@ -150,7 +150,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			title = alarming;
 			addIconAndLabel(composite,image,title);
 		}
-		
+
 		//rufhilfe
 		if(transport.isEmergencyPhone())
 		{
@@ -158,7 +158,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			title = "Rufhilfepatient";
 			addIconAndLabel(composite,image,title);
 		}
-		
+
 		if(transport.isBackTransport())
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("transport.backtransport");
@@ -168,7 +168,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 
 		return composite;
 	}  
-	
+
 	protected void addIconAndLabel(Composite parent, Image image, String text) 
 	{
 		Label imageLabel = new Label(parent, SWT.NONE);
@@ -183,7 +183,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
 		textLabel.setText(text);
 	}
-	
+
 	/**
 	 * Creates the tool tip content area for the tool tip
 	 * @param parent the parent window
@@ -200,7 +200,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		composite.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 		return composite;
 	}
-	
+
 	/**
 	 * Returns the widget source for this tool tip
 	 * @param event the event triggered
@@ -210,7 +210,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 	{
 		Point widgetPosition = new Point(event.x, event.y);
 		Widget widget = event.widget;
-		
+
 		if (widget instanceof Table) 
 		{
 			Table w = (Table) widget;
@@ -219,7 +219,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 
 		return widget;
 	}
-	
+
 	/**
 	 * Returns the element for this tool tip
 	 * @param hoverObject the object under hover
@@ -237,7 +237,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Hides the tool tip window
 	 */

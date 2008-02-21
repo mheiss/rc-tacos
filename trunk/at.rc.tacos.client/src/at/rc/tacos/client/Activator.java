@@ -187,21 +187,62 @@ public class Activator extends AbstractUIPlugin
 			{
 				try 
 				{
+					//the current time minus 2 hours
+					Calendar current = Calendar.getInstance();
+					current.add(Calendar.HOUR_OF_DAY, +2);
+					//check the transports
 					for(Transport transport:ModelFactory.getInstance().getTransportList().getTransportList())
 					{
 						//check the status
 						if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_PREBOOKING)
 							continue;
-						//the current time minus 2 hours
-						Calendar current = Calendar.getInstance();
-						current.add(Calendar.HOUR_OF_DAY, +2);
 						//check the time
 						if(current.getTimeInMillis() > transport.getPlannedStartOfTransport())
 						{	
 							transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 							NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+							
+							//log
+							log("Automatically moved the transport "+ transport+" to the outstanding transports",IStatus.INFO);
 						}
+						if (monitor.isCanceled()) 
+							return Status.CANCEL_STATUS;
+					}
+					//check the dialysis patients
+					for(DialysisPatient patient:ModelFactory.getInstance().getDialyseList().getDialysisList())
+					{
+						//check the time
+						if(current.getTimeInMillis() < patient.getPlannedStartOfTransport())
+							continue;
 						
+						//create a new transport for the dialysis patient if the planed times is within the next 2 hours
+						Transport newTransport = new Transport();
+						newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
+						newTransport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
+						//the date time of the transport is the planed start of the transport
+						newTransport.setDateOfTransport(patient.getPlannedStartOfTransport());
+						newTransport.setTransportPriority("C");
+						//set the known fields of the dialyis patient
+						newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
+						newTransport.setFromStreet(patient.getFromStreet());
+						newTransport.setFromCity(patient.getFromCity());
+						newTransport.setToCity(patient.getToCity());
+						newTransport.setToStreet(patient.getToStreet());
+						newTransport.setPlannedStartOfTransport(patient.getPlannedStartOfTransport());
+						newTransport.setPlannedTimeAtPatient(patient.getPlannedTimeAtPatient());
+						newTransport.setAppointmentTimeAtDestination(patient.getAppointmentTimeAtDialysis());
+						newTransport.setAssistantPerson(patient.isAssistantPerson());
+						newTransport.setBackTransport(false);
+						newTransport.setPatient(patient.getPatient());
+						newTransport.setPlanedLocation(patient.getLocation());
+						newTransport.setKindOfIllness("Dialyse");
+						newTransport.setKindOfTransport(patient.getKindOfTransport());
+						//add the transport to the database
+						NetWrapper.getDefault().sendAddMessage(Transport.ID, newTransport);
+						
+						//log
+						log("Automatically generated a transport "+newTransport+" for the dialyse patient "+patient,IStatus.INFO);
+
 						if (monitor.isCanceled()) 
 							return Status.CANCEL_STATUS;
 					}
