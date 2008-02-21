@@ -1,4 +1,4 @@
--- Insert data scrip, version 1.5
+-- Insert data scrip, version 1.5 lastChanged 20.02.2008
 -- last changed:
 -- moved the transport states to the createTable script. 
 
@@ -91,15 +91,19 @@ INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(5010000
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,1);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,2);
 
+--create dummy caller
+INSERT INTO caller(caller_ID, callername, caller_phonenumber)
+VALUES(1, 'Herr Maier', '0342 - 12345');
+
 --create dummy transports
 INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 3, 1, 1, 'note ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'liegend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '20080215215400');
+VALUES(null, 0, 1, 1, 'note ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'liegend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '20080215215400');
 INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 4, 2, 1, 'note ...', 'u.nech', 'C', 'wie vermutet oder so', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'Tragsessel', 'v.a. Herzinfarkt', 'Sonja', 'Müller', 2, 'Wienerstr. 54', 'Kapfenberg', 'BKH', 'Bruck', 0, '20080215215400');
+VALUES(null, 0, 2, 1, 'note ...', 'u.nech', 'C', 'wie vermutet oder so', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'Tragsessel', 'v.a. Herzinfarkt', 'Sonja', 'Müller', 2, 'Wienerstr. 54', 'Kapfenberg', 'BKH', 'Bruck', 0, '20080215215400');
 INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport) 
-VALUES(null, 1, 3, 1, 'note ...', 'w.lohm', 'E', 'Polizei nachfordern', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'gehend', 'v.a. Epianfall........', 'Hans', 'Hofer', 3, 'Wienerstr. 54', 'Kapfenberg', 'BKH', 'Bruck', 0, '20080215215400');
+VALUES(null, 0, 3, 1, 'note ...', 'w.lohm', 'E', 'Polizei nachfordern', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'gehend', 'v.a. Epianfall........', 'Hans', 'Hofer', 3, 'Wienerstr. 54', 'Kapfenberg', 'BKH', 'Bruck', 0, '20080215215400');
 INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport) 
-VALUES(null, 2, 4, 1, 'note ...', 'm.heiß', 'B', 'drei Leichtverletzte', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'liegend', 'Lumbago ............', 'Max', 'Huber', 1, 'Wienerstr. 54', 'Kapfenberg', 'BKH', 'Bruck', 0, '20080215215400');
+VALUES(null, 0, 4, 1, 'note ...', 'm.heiß', 'B', 'drei Leichtverletzte', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'liegend', 'Lumbago ............', 'Max', 'Huber', 1, 'Wienerstr. 54', 'Kapfenberg', 'BKH', 'Bruck', 0, '20080215215400');
 
 --create dummy roster entries
 INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
@@ -151,7 +155,3 @@ INSERT INTO selected(selected_ID, name) VALUES(9, 'Begleitperson');
 INSERT INTO selected(selected_ID, name) VALUES(10, 'Ruecktransport');
 INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
 INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
-
-
-INSERT INTO caller(caller_ID, callername, caller_phonenumber)
-VALUES(null, 'Herr Maier', '0342 - 12345');

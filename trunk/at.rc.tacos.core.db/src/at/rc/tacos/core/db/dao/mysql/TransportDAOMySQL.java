@@ -87,9 +87,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			if(!rs.first())
 				return Transport.TRANSPORT_ERROR;
 			transport.setTransportId(rs.getInt(1));
+			
 			//assign the transport items!
 			if(!assignTransportItems(transport))
 				return Transport.TRANSPORT_ERROR;
+			
 			return transport.getTransportId();
 		}
 		finally
@@ -131,7 +133,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					caller.setCallerName(rs.getString("callername"));
 					caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 					transport.setCallerDetail(caller);
-					System.out.println("Setting caller to transport: "+caller);
 				}
 				transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
 				if(rs.getString("t.note") == null)
@@ -210,6 +211,16 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					vehicle.setVehicleNotes(rs.getString("av.note"));
 					vehicle.setVehicleType(rs.getString("av.vehicletype"));
 					transport.setVehicleDetail(vehicle);
+				}
+				
+				//get the transport states
+				final PreparedStatement stateQuery = connection.prepareStatement(queries.getStatment("list.transportstates"));
+				stateQuery.setInt(1, transport.getTransportId());
+				final ResultSet stateResult = stateQuery.executeQuery();
+				//loop over the result set
+				while(stateResult.next())
+				{
+					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
 				}
 
 				// find the selected items (boolean values)
@@ -449,7 +460,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	}
 
 	@Override
-	public List<Transport> getTransportsFromVehicle(String vehicleName) throws SQLException
+	public List<Transport> getTransportsFromVehicle(int vehicleId) throws SQLException
 	{
 		// TODO ???
 		return null;
@@ -530,6 +541,16 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				vehicle.setVehicleNotes(rs.getString("av.note"));
 				vehicle.setVehicleType(rs.getString("av.vehicletype"));
 				transport.setVehicleDetail(vehicle);
+				
+				//get the transport states
+				final PreparedStatement stateQuery = connection.prepareStatement(queries.getStatment("list.transportstates"));
+				stateQuery.setInt(1, transport.getTransportId());
+				final ResultSet stateResult = stateQuery.executeQuery();
+				//loop over the result set
+				while(stateResult.next())
+				{
+					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
+				}
 
 				// find the selected items (boolean values)
 				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
@@ -703,6 +724,16 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					vehicle.setVehicleType(rs.getString("av.vehicletype"));
 					transport.setVehicleDetail(vehicle);
 				}
+				
+				//get the transport states
+				final PreparedStatement stateQuery = connection.prepareStatement(queries.getStatment("list.transportstates"));
+				stateQuery.setInt(1, transport.getTransportId());
+				final ResultSet stateResult = stateQuery.executeQuery();
+				//loop over the result set
+				while(stateResult.next())
+				{
+					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
+				}
 
 				// find the selected items (boolean values)
 				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
@@ -748,7 +779,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				}
 				return transport;
 			}
-			//nothin in the result set
+			//nothing in the result set
 			return null;
 		}
 		finally

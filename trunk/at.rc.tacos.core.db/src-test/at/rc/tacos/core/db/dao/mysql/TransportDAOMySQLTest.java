@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
@@ -247,7 +248,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 	{
 		{
 			Transport transport = transportDAO.getTransportById(transport1.getTransportId());
-			System.out.println("test transportid: "+transport.getTransportId());
 			transport.setCreationTime(Calendar.getInstance().getTimeInMillis());
 			transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat));
 			transport.setAssistantPerson(true);
@@ -429,5 +429,23 @@ public class TransportDAOMySQLTest extends DBTestBase
 		int transportNr1 = transportDAO.generateTransportNumber(transport2);
 		System.out.println("TransportID: "+transportNr1);
 		assertEquals(transportNr, transportNr1);
+	}
+	
+	@Test
+	public void testTransportStati() throws SQLException
+	{
+		{
+			//get the transport and update some values
+			Transport tr1 = transportDAO.getTransportById(transport1.getTransportId());
+			tr1.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT, Calendar.getInstance().getTimeInMillis());
+			tr1.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, Calendar.getInstance().getTimeInMillis());
+			transportDAO.updateTransport(tr1);
+		}
+		{
+			//now check that the params are set correct
+			Transport tr1 = transportDAO.getTransportById(transport1.getTransportId());
+			Assert.assertTrue(tr1.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
+			Assert.assertTrue(tr1.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));	
+		}
 	}
 }

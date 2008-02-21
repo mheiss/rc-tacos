@@ -29,7 +29,7 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 		Connection connection = source.getConnection();
 		try
 		{	
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.DialysisPatient"));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.dialysisPatient"));
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
 			query.setInt(3, patient.getLocation().getId());
@@ -59,6 +59,11 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 		    if (rs.next()) 
 		        return rs.getInt(1);
 		    return -1;
+		}
+		catch(NullPointerException nle)
+		{
+			nle.printStackTrace();
+			return -1;
 		}
 		finally
 		{
