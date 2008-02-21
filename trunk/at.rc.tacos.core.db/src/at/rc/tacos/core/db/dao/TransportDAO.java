@@ -55,28 +55,26 @@ public interface TransportDAO
     public boolean cancelTransport(Transport transport) throws SQLException;
     
     /**
-     * Returns all transport in the given time interval.
-     * @param startdate the start date
-     * @param enddate the end date
-     * @return the list of transports in the given interval.
+     * Returns all running transports that are currently in progress. Running transports are identified by the
+     * status <code>IProgramStatus.PROGRAM_STATUS_OUTSTANDING</code> or <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>.
+     * The transports are independend from the current date.
+     * @return the list of all running transports in the database
      */
-    public List<Transport> listTransports(long startdate, long enddate) throws SQLException;
+    public List<Transport> listRunningTransports() throws SQLException;
+    
+    /**
+     * Returns all predbooked transports with the status <code>IProgramStatus.PROGRAM_STATUS_PREBOOKING</code>.
+     * @return the list of all prebooked transports in the database
+     */
+    public List<Transport> listPrebookedTransports() throws SQLException;
         
     /**
-     * Returns all transports in the given intervall with the status PROGRAM_STATUS_JOURNAL.
+     * Returns all transports in the given intervall with the status <code>IProgramStatus.PROGRAM_STATUS_JOURNAL</code>.
      * @param startdate the start date
      * @param enddate the end date
      * @return the list of archived transports
      */
     public List<Transport> listArchivedTransports(long startdate,long enddate) throws SQLException;
-    
-    /**
-     * Returns a list of all transports associated with the given vehicle
-     * and with the program status <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>
-     * @param vehicleId the unique identification of the vehicle
-     * @return the list of transports
-     */
-    public List<Transport> getTransportsFromVehicle(int vehicleId) throws SQLException;
  
     /**
      * Returns a transport searched by id

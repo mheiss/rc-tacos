@@ -87,11 +87,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			if(!rs.first())
 				return Transport.TRANSPORT_ERROR;
 			transport.setTransportId(rs.getInt(1));
-			
+
 			//assign the transport items!
 			if(!assignTransportItems(transport))
 				return Transport.TRANSPORT_ERROR;
-			
+
 			return transport.getTransportId();
 		}
 		finally
@@ -101,18 +101,19 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	}
 
 	@Override
-	public List<Transport> listTransports(long startdate, long enddate) throws SQLException
+	public List<Transport> listRunningTransports() throws SQLException
 	{
 		Connection connection = source.getConnection();
 		try
 		{
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.transportsByDateOfTransport"));
-			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDateTime));
-			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.runningTransports"));
+			query.setInt(1, IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
+			query.setInt(2, IProgramStatus.PROGRAM_STATUS_UNDERWAY);
 			final ResultSet rs = query.executeQuery();
 			List<Transport> transports = new ArrayList<Transport>();
 			while(rs.next())
 			{
+				//create the new transport
 				Transport transport = new Transport();
 
 				transport.setTransportId(rs.getInt("t.transport_ID"));
@@ -151,18 +152,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					transport.setKindOfIllness("");
 				else
 					transport.setKindOfIllness(rs.getString("t.disease"));
-
-				Patient patient = new Patient();
-				if(rs.getString("t.firstname") == null)
-					patient.setFirstname("");
-				else
-					patient.setFirstname(rs.getString("t.firstname"));
-				if(rs.getString("t.lastname") == null)
-					patient.setLastname("");
-				else
-					patient.setLastname(rs.getString("t.lastname"));
-				transport.setPatient(patient);
-
 				if(rs.getString("t.from_street") == null)
 					transport.setFromStreet("");
 				else
@@ -187,7 +176,20 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setTransportPriority(rs.getString("t.priority"));
 				transport.setDirection(rs.getInt("t.direction"));
 				transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
-
+				
+				//The patient of the transport
+				Patient patient = new Patient();
+				if(rs.getString("t.firstname") == null)
+					patient.setFirstname("");
+				else
+					patient.setFirstname(rs.getString("t.firstname"));
+				if(rs.getString("t.lastname") == null)
+					patient.setLastname("");
+				else
+					patient.setLastname(rs.getString("t.lastname"));
+				transport.setPatient(patient);
+				
+				//The assigned vehicle of the transport
 				if(rs.getString("av.location_ID") != null)
 				{
 					//get the location 
@@ -212,16 +214,14 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					vehicle.setVehicleType(rs.getString("av.vehicletype"));
 					transport.setVehicleDetail(vehicle);
 				}
-				
+
 				//get the transport states
 				final PreparedStatement stateQuery = connection.prepareStatement(queries.getStatment("list.transportstates"));
 				stateQuery.setInt(1, transport.getTransportId());
 				final ResultSet stateResult = stateQuery.executeQuery();
 				//loop over the result set
 				while(stateResult.next())
-				{
 					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
-				}
 
 				// find the selected items (boolean values)
 				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
@@ -232,52 +232,438 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				{
 					if(rs1.getInt("selected_ID") == 1)
 						transport.setEmergencyDoctorAlarming(true);
-					else transport.setEmergencyDoctorAlarming(false);
+					else 
+						transport.setEmergencyDoctorAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 2)
 						transport.setPoliceAlarming(true);
-					else transport.setPoliceAlarming(false);
+					else 
+						transport.setPoliceAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 3)
 						transport.setFirebrigadeAlarming(true);
-					else transport.setFirebrigadeAlarming(false);
+					else 
+						transport.setFirebrigadeAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 4)
 						transport.setMountainRescueServiceAlarming(true);
-					else transport.setMountainRescueServiceAlarming(false);
+					else 
+						transport.setMountainRescueServiceAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 5)
 						transport.setDfAlarming(true);
-					else transport.setDfAlarming(false);
+					else 
+						transport.setDfAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 6)
 						transport.setBrkdtAlarming(true);
-					else transport.setBrkdtAlarming(false);
+					else 
+						transport.setBrkdtAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 7)
 						transport.setBlueLightToGoal(true);
-					else transport.setBlueLightToGoal(false);
+					else 
+						transport.setBlueLightToGoal(false);
 
 					if(rs1.getInt("selected_ID") == 8)
 						transport.setHelicopterAlarming(true);
-					else transport.setHelicopterAlarming(false);
+					else 
+						transport.setHelicopterAlarming(false);
 
 					if(rs1.getInt("selected_ID") == 9)
 						transport.setAssistantPerson(true);
-					else transport.setAssistantPerson(false);
+					else 
+						transport.setAssistantPerson(false);
 
 					if(rs1.getInt("selected_ID") == 10)
 						transport.setBackTransport(true);
-					else transport.setBackTransport(false);
+					else 
+						transport.setBackTransport(false);
 
 					if(rs1.getInt("selected_ID") == 11)
 						transport.setLongDistanceTrip(true);
-					else transport.setLongDistanceTrip(false);
+					else 
+						transport.setLongDistanceTrip(false);
 
 					if(rs1.getInt("selected_ID") == 12)
 						transport.setEmergencyPhone(true);
-					else transport.setEmergencyPhone(false);
+					else 
+						transport.setEmergencyPhone(false);
 				}
+				
+				//add the transport to the list
+				transports.add(transport);
+			}
+			//return the listed transports
+			return transports;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public List<Transport> listPrebookedTransports() throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.prebookedTransports"));
+			query.setInt(1, IProgramStatus.PROGRAM_STATUS_PREBOOKING);
+			final ResultSet rs = query.executeQuery();
+			List<Transport> transports = new ArrayList<Transport>();
+			while(rs.next())
+			{
+				//create the new transport
+				Transport transport = new Transport();
+
+				transport.setTransportId(rs.getInt("t.transport_ID"));
+				transport.setTransportNumber(rs.getInt("t.transportNr"));
+
+				if(rs.getInt("t.planned_location") != 0)
+				{
+					Location station = new Location();
+					station.setId(rs.getInt("t.planned_location"));
+					station.setLocationName(rs.getString("lo.locationname"));
+					transport.setPlanedLocation(station);
+				}
+
+				if(rs.getInt("t.caller_ID") != 0)
+				{
+					CallerDetail caller = new CallerDetail();
+					caller.setCallerId(rs.getInt("caller_ID"));
+					caller.setCallerName(rs.getString("callername"));
+					caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
+					transport.setCallerDetail(caller);
+				}
+				transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
+				if(rs.getString("t.note") == null)
+					transport.setNotes("");
+				else
+					transport.setNotes(rs.getString("t.note"));
+				if(rs.getString("t.feedback") == null)
+					transport.setFeedback("");
+				else
+					transport.setFeedback(rs.getString("t.feedback"));
+				transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
+				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
+				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
+				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+				if(rs.getString("t.disease") == null)
+					transport.setKindOfIllness("");
+				else
+					transport.setKindOfIllness(rs.getString("t.disease"));
+				if(rs.getString("t.from_street") == null)
+					transport.setFromStreet("");
+				else
+					transport.setFromStreet(rs.getString("t.from_street"));
+				if(rs.getString("t.from_city") == null)
+					transport.setFromCity("");
+				else
+					transport.setFromCity(rs.getString("t.from_city"));
+				if(rs.getString("t.to_street") == null)
+					transport.setToStreet("");
+				else
+					transport.setToStreet(rs.getString("t.to_street"));
+				if(rs.getString("t.to_city") == null)
+					transport.setToCity("");
+				else
+					transport.setToCity(rs.getString("t.to_city"));
+				transport.setProgramStatus(rs.getInt("t.programstate"));
+				if(rs.getString("t.transporttype") == null)
+					transport.setKindOfTransport("");
+				else
+					transport.setKindOfTransport(rs.getString("t.transporttype"));
+				transport.setTransportPriority(rs.getString("t.priority"));
+				transport.setDirection(rs.getInt("t.direction"));
+				transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
+				
+				//The patient of the transport
+				Patient patient = new Patient();
+				if(rs.getString("t.firstname") == null)
+					patient.setFirstname("");
+				else
+					patient.setFirstname(rs.getString("t.firstname"));
+				if(rs.getString("t.lastname") == null)
+					patient.setLastname("");
+				else
+					patient.setLastname(rs.getString("t.lastname"));
+				transport.setPatient(patient);
+				
+				// find the selected items (boolean values)
+				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
+				query1.setInt(1, transport.getTransportId());
+				final ResultSet rs1 = query1.executeQuery();
+
+				while(rs1.next())
+				{
+					if(rs1.getInt("selected_ID") == 1)
+						transport.setEmergencyDoctorAlarming(true);
+					else 
+						transport.setEmergencyDoctorAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 2)
+						transport.setPoliceAlarming(true);
+					else 
+						transport.setPoliceAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 3)
+						transport.setFirebrigadeAlarming(true);
+					else 
+						transport.setFirebrigadeAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 4)
+						transport.setMountainRescueServiceAlarming(true);
+					else 
+						transport.setMountainRescueServiceAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 5)
+						transport.setDfAlarming(true);
+					else 
+						transport.setDfAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 6)
+						transport.setBrkdtAlarming(true);
+					else 
+						transport.setBrkdtAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 7)
+						transport.setBlueLightToGoal(true);
+					else 
+						transport.setBlueLightToGoal(false);
+
+					if(rs1.getInt("selected_ID") == 8)
+						transport.setHelicopterAlarming(true);
+					else 
+						transport.setHelicopterAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 9)
+						transport.setAssistantPerson(true);
+					else 
+						transport.setAssistantPerson(false);
+
+					if(rs1.getInt("selected_ID") == 10)
+						transport.setBackTransport(true);
+					else 
+						transport.setBackTransport(false);
+
+					if(rs1.getInt("selected_ID") == 11)
+						transport.setLongDistanceTrip(true);
+					else 
+						transport.setLongDistanceTrip(false);
+
+					if(rs1.getInt("selected_ID") == 12)
+						transport.setEmergencyPhone(true);
+					else 
+						transport.setEmergencyPhone(false);
+				}
+				
+				//add the transport to the list
+				transports.add(transport);
+			}
+			//return the listed transports
+			return transports;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public List<Transport> listArchivedTransports(long startdate, long enddate) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.archivedTransports"));
+			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDateTime));
+			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
+			query.setInt(3, PROGRAM_STATUS_JOURNAL);
+			final ResultSet rs = query.executeQuery();
+			List<Transport> transports = new ArrayList<Transport>();
+			while(rs.next())
+			{
+				//create the new transport
+				Transport transport = new Transport();
+
+				transport.setTransportId(rs.getInt("t.transport_ID"));
+				transport.setTransportNumber(rs.getInt("t.transportNr"));
+
+				if(rs.getInt("t.planned_location") != 0)
+				{
+					Location station = new Location();
+					station.setId(rs.getInt("t.planned_location"));
+					station.setLocationName(rs.getString("lo.locationname"));
+					transport.setPlanedLocation(station);
+				}
+
+				if(rs.getInt("t.caller_ID") != 0)
+				{
+					CallerDetail caller = new CallerDetail();
+					caller.setCallerId(rs.getInt("caller_ID"));
+					caller.setCallerName(rs.getString("callername"));
+					caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
+					transport.setCallerDetail(caller);
+				}
+				transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
+				if(rs.getString("t.note") == null)
+					transport.setNotes("");
+				else
+					transport.setNotes(rs.getString("t.note"));
+				if(rs.getString("t.feedback") == null)
+					transport.setFeedback("");
+				else
+					transport.setFeedback(rs.getString("t.feedback"));
+				transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
+				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
+				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
+				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+				if(rs.getString("t.disease") == null)
+					transport.setKindOfIllness("");
+				else
+					transport.setKindOfIllness(rs.getString("t.disease"));
+				if(rs.getString("t.from_street") == null)
+					transport.setFromStreet("");
+				else
+					transport.setFromStreet(rs.getString("t.from_street"));
+				if(rs.getString("t.from_city") == null)
+					transport.setFromCity("");
+				else
+					transport.setFromCity(rs.getString("t.from_city"));
+				if(rs.getString("t.to_street") == null)
+					transport.setToStreet("");
+				else
+					transport.setToStreet(rs.getString("t.to_street"));
+				if(rs.getString("t.to_city") == null)
+					transport.setToCity("");
+				else
+					transport.setToCity(rs.getString("t.to_city"));
+				transport.setProgramStatus(rs.getInt("t.programstate"));
+				if(rs.getString("t.transporttype") == null)
+					transport.setKindOfTransport("");
+				else
+					transport.setKindOfTransport(rs.getString("t.transporttype"));
+				transport.setTransportPriority(rs.getString("t.priority"));
+				transport.setDirection(rs.getInt("t.direction"));
+				transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
+				
+				//The patient of the transport
+				Patient patient = new Patient();
+				if(rs.getString("t.firstname") == null)
+					patient.setFirstname("");
+				else
+					patient.setFirstname(rs.getString("t.firstname"));
+				if(rs.getString("t.lastname") == null)
+					patient.setLastname("");
+				else
+					patient.setLastname(rs.getString("t.lastname"));
+				transport.setPatient(patient);
+				
+				//The assigned vehicle of the transport
+				if(rs.getString("av.location_ID") != null)
+				{
+					//get the location 
+					Location currentStation = locationDAO.getLocation(rs.getInt("av.location_ID"));
+					VehicleDetail vehicle = new VehicleDetail();
+					vehicle.setCurrentStation(currentStation);
+					vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
+
+					StaffMember driver = new StaffMember();
+					driver = staffMemberDAO.getStaffMemberByID(rs.getInt("av.driver_ID"));
+					vehicle.setDriver(driver);
+
+					StaffMember firstParamedic = new StaffMember();
+					firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("av.medic1_ID"));
+					vehicle.setFirstParamedic(firstParamedic);
+
+					StaffMember secondParamedic = new StaffMember();
+					secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("av.medic2_ID"));
+					vehicle.setSecondParamedic(secondParamedic);
+
+					vehicle.setVehicleNotes(rs.getString("av.note"));
+					vehicle.setVehicleType(rs.getString("av.vehicletype"));
+					transport.setVehicleDetail(vehicle);
+				}
+
+				//get the transport states
+				final PreparedStatement stateQuery = connection.prepareStatement(queries.getStatment("list.transportstates"));
+				stateQuery.setInt(1, transport.getTransportId());
+				final ResultSet stateResult = stateQuery.executeQuery();
+				//loop over the result set
+				while(stateResult.next())
+					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
+
+				// find the selected items (boolean values)
+				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
+				query1.setInt(1, transport.getTransportId());
+				final ResultSet rs1 = query1.executeQuery();
+
+				while(rs1.next())
+				{
+					if(rs1.getInt("selected_ID") == 1)
+						transport.setEmergencyDoctorAlarming(true);
+					else 
+						transport.setEmergencyDoctorAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 2)
+						transport.setPoliceAlarming(true);
+					else 
+						transport.setPoliceAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 3)
+						transport.setFirebrigadeAlarming(true);
+					else 
+						transport.setFirebrigadeAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 4)
+						transport.setMountainRescueServiceAlarming(true);
+					else 
+						transport.setMountainRescueServiceAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 5)
+						transport.setDfAlarming(true);
+					else 
+						transport.setDfAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 6)
+						transport.setBrkdtAlarming(true);
+					else 
+						transport.setBrkdtAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 7)
+						transport.setBlueLightToGoal(true);
+					else 
+						transport.setBlueLightToGoal(false);
+
+					if(rs1.getInt("selected_ID") == 8)
+						transport.setHelicopterAlarming(true);
+					else 
+						transport.setHelicopterAlarming(false);
+
+					if(rs1.getInt("selected_ID") == 9)
+						transport.setAssistantPerson(true);
+					else 
+						transport.setAssistantPerson(false);
+
+					if(rs1.getInt("selected_ID") == 10)
+						transport.setBackTransport(true);
+					else 
+						transport.setBackTransport(false);
+
+					if(rs1.getInt("selected_ID") == 11)
+						transport.setLongDistanceTrip(true);
+					else 
+						transport.setLongDistanceTrip(false);
+
+					if(rs1.getInt("selected_ID") == 12)
+						transport.setEmergencyPhone(true);
+					else 
+						transport.setEmergencyPhone(false);
+				}
+				
+				//add the transport to the list
 				transports.add(transport);
 			}
 			return transports;
@@ -416,7 +802,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			//store the number in the temp table
 			if(!archiveTransportNumber(oldNumber, locationId))
 				return false;
-			
+
 			//set the transport status to IProgramStatus.PROGRAM_STATUS_OUTSTANDING 
 			transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 			if(!executeTheTransportUpdateQuery(transport))
@@ -459,164 +845,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		}
 	}
 
-	@Override
-	public List<Transport> getTransportsFromVehicle(int vehicleId) throws SQLException
-	{
-		// TODO ???
-		return null;
-	}
-
-	@Override
-	public List<Transport> listArchivedTransports(long startdate, long enddate) throws SQLException
-	{
-		Connection connection = source.getConnection();
-		try
-		{
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.archivedTransports"));
-			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDateTime));
-			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
-			query.setInt(3, PROGRAM_STATUS_JOURNAL);
-			final ResultSet rs = query.executeQuery();
-			List<Transport> transports = new ArrayList<Transport>();
-			while(rs.next())
-			{
-				Transport transport = new Transport();
-				transport.setTransportId(rs.getInt("t.transport_ID"));
-				transport.setTransportNumber(rs.getInt("t.transportNr"));
-
-				Location station = new Location();
-				station.setId(rs.getInt("t.planned_location"));
-				station.setLocationName(rs.getString("lo.locationname"));
-				transport.setPlanedLocation(station);
-
-				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("t.caller_ID"));
-				caller.setCallerName(rs.getString("ca.callername"));
-				caller.setCallerTelephoneNumber(rs.getString("ca.caller_phonenumber"));
-				transport.setCallerDetail(caller);
-				transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
-				transport.setNotes(rs.getString("t.note"));
-				transport.setFeedback(rs.getString("t.feedback"));
-				transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
-				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
-				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
-				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
-				transport.setKindOfIllness(rs.getString("t.disease"));
-
-				Patient patient = new Patient();
-				patient.setFirstname(rs.getString("t.firstname"));
-				patient.setLastname(rs.getString("t.lastname"));
-				transport.setPatient(patient);
-
-				transport.setFromStreet(rs.getString("t.from_street"));
-				transport.setFromCity(rs.getString("t.from_city"));
-				transport.setToStreet(rs.getString("t.to_street"));
-				transport.setToCity(rs.getString("t.to_city"));
-				transport.setProgramStatus(rs.getInt("t.programstate"));
-				transport.setKindOfTransport(rs.getString("t.transporttype"));
-				transport.setTransportPriority(rs.getString("t.priority"));
-				transport.setDirection(rs.getInt("t.direction"));
-				transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
-
-				VehicleDetail vehicle = new VehicleDetail();
-
-				Location currentStation = new Location();
-				currentStation = locationDAO.getLocation(rs.getInt("av.location_ID"));
-				vehicle.setCurrentStation(currentStation);
-
-				vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
-
-				StaffMember driver = new StaffMember();
-				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("av.driver_ID"));
-				vehicle.setDriver(driver);
-
-				StaffMember firstParamedic = new StaffMember();
-				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("av.medic1_ID"));
-				vehicle.setFirstParamedic(firstParamedic);
-
-				StaffMember secondParamedic = new StaffMember();
-				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("av.medic2_ID"));
-				vehicle.setSecondParamedic(secondParamedic);
-
-				vehicle.setVehicleNotes(rs.getString("av.note"));
-				vehicle.setVehicleType(rs.getString("av.vehicletype"));
-				transport.setVehicleDetail(vehicle);
-				
-				//get the transport states
-				final PreparedStatement stateQuery = connection.prepareStatement(queries.getStatment("list.transportstates"));
-				stateQuery.setInt(1, transport.getTransportId());
-				final ResultSet stateResult = stateQuery.executeQuery();
-				//loop over the result set
-				while(stateResult.next())
-				{
-					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
-				}
-
-				// find the selected items (boolean values)
-				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
-				query1.setInt(1, transport.getTransportId());
-				final ResultSet rs1 = query1.executeQuery();
-
-				while(rs1.next())
-				{
-					if(rs1.getInt("selected_ID") == 1)
-						transport.setEmergencyDoctorAlarming(true);
-					else transport.setEmergencyDoctorAlarming(false);
-
-					if(rs1.getInt("selected_ID") == 2)
-						transport.setPoliceAlarming(true);
-					else transport.setPoliceAlarming(false);
-
-					if(rs1.getInt("selected_ID") == 3)
-						transport.setFirebrigadeAlarming(true);
-					else transport.setFirebrigadeAlarming(false);
-
-					if(rs1.getInt("selected_ID") == 4)
-						transport.setMountainRescueServiceAlarming(true);
-					else transport.setMountainRescueServiceAlarming(false);
-
-					if(rs1.getInt("selected_ID") == 5)
-						transport.setDfAlarming(true);
-					else transport.setDfAlarming(false);
-
-					if(rs1.getInt("selected_ID") == 6)
-						transport.setBrkdtAlarming(true);
-					else transport.setBrkdtAlarming(false);
-
-					if(rs1.getInt("selected_ID") == 7)
-						transport.setBlueLightToGoal(true);
-					else transport.setBlueLightToGoal(false);
-
-					if(rs1.getInt("selected_ID") == 8)
-						transport.setHelicopterAlarming(true);
-					else transport.setHelicopterAlarming(false);
-
-					if(rs1.getInt("selected_ID") == 9)
-						transport.setAssistantPerson(true);
-					else transport.setAssistantPerson(false);
-
-					if(rs1.getInt("selected_ID") == 10)
-						transport.setBackTransport(true);
-					else transport.setBackTransport(false);
-
-					if(rs1.getInt("selected_ID") == 11)
-						transport.setLongDistanceTrip(true);
-					else transport.setLongDistanceTrip(false);
-
-					if(rs1.getInt("selected_ID") == 12)
-						transport.setEmergencyPhone(true);
-					else transport.setEmergencyPhone(false);
-				}
-				transports.add(transport);
-			}
-			return transports;
-		}
-		finally
-		{
-			connection.close();
-		}
-	}
-	
 	@Override
 	public Transport getTransportById(int id) throws SQLException
 	{
@@ -724,7 +952,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 					vehicle.setVehicleType(rs.getString("av.vehicletype"));
 					transport.setVehicleDetail(vehicle);
 				}
-				
+
 				//get the transport states
 				final PreparedStatement stateQuery = connection.prepareStatement(queries.getStatment("list.transportstates"));
 				stateQuery.setInt(1, transport.getTransportId());
@@ -846,7 +1074,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	/***********************************************
 	 * HELPER METHODS FOR THE TRANSPORT DAO        *
 	 * *********************************************/
-
 	/**
 	 * Assigns the vehicle to the transport.
 	 * @param transport the transport to assign the vehicle to
@@ -1100,7 +1327,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
 	 * Clears the transportstate table.
 	 * @param transport the transport to clear the state table
@@ -1164,7 +1391,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
 		return true;
 	}	
-	
+
 	/**
 	 * inserts a new transportstate to the database
 	 * @param transportId
@@ -1188,7 +1415,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			connection.close();
 		}
 	}
-	
+
 	/**
 	 * removes all selected items from a transport in the database
 	 * @param transport
