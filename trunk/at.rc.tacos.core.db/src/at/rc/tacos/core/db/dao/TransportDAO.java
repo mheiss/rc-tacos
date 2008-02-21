@@ -73,10 +73,10 @@ public interface TransportDAO
     /**
      * Returns a list of all transports associated with the given vehicle
      * and with the program status <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>
-     * @param vehicleName the name of the vehicle to get the transports from
+     * @param vehicleId the unique identification of the vehicle
      * @return the list of transports
      */
-    public List<Transport> getTransportsFromVehicle(String vehicleName) throws SQLException;
+    public List<Transport> getTransportsFromVehicle(int vehicleId) throws SQLException;
  
     /**
      * Returns a transport searched by id
