@@ -586,6 +586,7 @@ public class DialysisForm implements IKindOfTransport
 					Patient patient = new Patient();
 					patient.setFirstname(firstName);
 					patient.setLastname(lastName);
+					dia.setPatient(patient);
 					
 					dia.setFromCity(fromCommunity);
 					dia.setFromStreet(fromStreet);
@@ -619,7 +620,7 @@ public class DialysisForm implements IKindOfTransport
 					Patient patient = new Patient();
 					patient.setFirstname(firstName);
 					patient.setLastname(lastName);
-					
+					dia.setPatient(patient);
 					dia.setFromCity(fromCommunity);
 					dia.setFromStreet(fromStreet);
 					dia.setKindOfTransport(kindOfTransport);

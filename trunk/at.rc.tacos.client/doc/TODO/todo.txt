@@ -16,8 +16,7 @@ BUG FIXING:
 --> TransportViews: Verhalten, wenn Priorität A - NEF- Verwaltung --> zum Teil implementiert. Offen ist: wie kann ich
 	das Vehicle NEF direkt (automatisch in der action) zuweisen?
 
---> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???) --> funktioniert nicht, weil der long der Zeit negativ ist
-	(nur Zeit gespeichert, Datum nicht?)
+--> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???) 
 
 --> Druckfunktion
 
@@ -27,12 +26,7 @@ BUG FIXING:
 
 --> Datum Filter für Transport View --> geht über suchfunktion. Ist bei Outstanding und Underway nicht nötig, da Programm
 	status entscheidend ist.
-	
---> @Transport: createdByUser wird nicht in die Datenbank geschrieben.
-	Folgefehler: die Transporte verschwinden
 
---> @Dialyse: nocht zu implementieren. Dialysepatienten aufnehmen und in der DialysisView anzeigen. Icons (z.B. Häkchen) für die Darstellung der Wochentage implementieren.
-
---> Transportstati verschwinden (auf der underway(disponierte Transporte View) ersichtlich). Werden in die Datenbank geschrieben, kommen nicht zum Client zurück.
+--> @Dialyse: Icons (z.B. Häkchen) für die Darstellung der Wochentage implementieren.
 
 --> NEF: implementieren. Wenn Priorität A soll beim Zuweisen des Fahrzeuges automatisch der Transport verdoppelt und einem Transport das NEF zugewiesen werden.
