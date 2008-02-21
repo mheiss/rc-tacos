@@ -1,6 +1,10 @@
 package at.rc.tacos.client.listeners;
 
 import java.util.ArrayList;
+
+import org.eclipse.core.runtime.IStatus;
+
+import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.TransportManager;
 import at.rc.tacos.common.AbstractMessage;
@@ -36,6 +40,9 @@ public class TransportListener extends ClientListenerAdapter
     public void list(ArrayList<AbstractMessage> listMessage)
     {
         manager.removeAllEntries();  
+        //log
+        Activator.getDefault().log("Received "+listMessage.size()+ " of transports", IStatus.INFO);
+        //add all
         for(AbstractMessage msg:listMessage)
         {
             Transport transport = (Transport)msg;

@@ -255,6 +255,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
                 cal.set(Calendar.YEAR, dateTime.getYear());
                 cal.set(Calendar.MONTH, dateTime.getMonth());
                 cal.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+                //run the change action to query the roster entries for the given date
                 SelectRosterDateAction selectAction = new SelectRosterDateAction(cal.getTime());
                 selectAction.run();
             }

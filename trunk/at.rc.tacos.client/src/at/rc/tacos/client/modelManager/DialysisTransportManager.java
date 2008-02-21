@@ -90,6 +90,15 @@ public class DialysisTransportManager extends PropertyManager
             }
         }); 
     }
+    
+    /**
+     * Returns a list of all dialysis patients
+     * @return all patients managed
+     */
+    public List<DialysisPatient> getDialysisList()
+    {
+    	return objectList;
+    }
 
     /**
      * Converts the list to an array

@@ -1,6 +1,7 @@
 package at.rc.tacos.client.modelManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
 import at.rc.tacos.model.*;
@@ -106,7 +107,16 @@ public class TransportManager extends PropertyManager
     {
         return objectList.toArray();
     }
-
+    
+	/**
+	 * Informs the views that the selected date in the transport view filter has changed.
+	 * @param newDate the newDate to display
+	 */
+	public void fireTransportViewFilterChanged(Calendar newDate)
+	{
+		//fire a property change event to notify the viewers that the date changed
+        firePropertyChange("TRANSPORT_DATE_CHANGED",null,newDate);
+	}
 }
 
 
