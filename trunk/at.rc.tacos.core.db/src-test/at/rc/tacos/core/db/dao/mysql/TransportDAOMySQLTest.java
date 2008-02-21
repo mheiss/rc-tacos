@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
@@ -230,17 +231,67 @@ public class TransportDAOMySQLTest extends DBTestBase
 	}
 
 	@Test
-	public void testListTransports() throws SQLException
+	public void testListRunningTransports() throws SQLException
 	{
-		long startTime = MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat);
-		//set the end date to date +1
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat));
-		cal.add(Calendar.DAY_OF_MONTH, 1);
-		long endTime = cal.getTimeInMillis();
-		//request the listing
-		List<Transport> list = transportDAO.listTransports(startTime, endTime);
-		Assert.assertEquals(2, list.size());
+		//first update the transport state
+		{
+			Transport t1 = transportDAO.getTransportById(transport1.getTransportId());
+			t1.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
+			Transport t2 = transportDAO.getTransportById(transport2.getTransportId());
+			t2.setProgramStatus(IProgramStatus.PROGRAM_STATUS_UNDERWAY);
+			//update them
+			transportDAO.updateTransport(t1);
+			transportDAO.updateTransport(t2);
+		}
+		{
+			//request the listing
+			List<Transport> list = transportDAO.listRunningTransports();
+			Assert.assertEquals(2, list.size());
+		}
+	}
+	
+	public void testListPrebookedTransports() throws SQLException
+	{
+		//first update the transport state
+		{
+			Transport t1 = transportDAO.getTransportById(transport1.getTransportId());
+			t1.setProgramStatus(IProgramStatus.PROGRAM_STATUS_PREBOOKING);
+			Transport t2 = transportDAO.getTransportById(transport2.getTransportId());
+			t2.setProgramStatus(IProgramStatus.PROGRAM_STATUS_PREBOOKING);
+			//update them
+			transportDAO.updateTransport(t1);
+			transportDAO.updateTransport(t2);
+		}
+		{
+			//request the listing
+			List<Transport> list = transportDAO.listPrebookedTransports();
+			Assert.assertEquals(2, list.size());
+		}
+	}
+	
+	public void testListArchivedTransports() throws SQLException
+	{
+		//first update the transport state
+		{
+			Transport t1 = transportDAO.getTransportById(transport1.getTransportId());
+			t1.setProgramStatus(IProgramStatus.PROGRAM_STATUS_JOURNAL);
+			Transport t2 = transportDAO.getTransportById(transport2.getTransportId());
+			t2.setProgramStatus(IProgramStatus.PROGRAM_STATUS_JOURNAL);
+			//update them
+			transportDAO.updateTransport(t1);
+			transportDAO.updateTransport(t2);
+		}
+		{
+			long startTime = MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat);
+			//set the end date to date +1
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat));
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			long endTime = cal.getTimeInMillis();
+			//request the listing
+			List<Transport> list = transportDAO.listArchivedTransports(startTime, endTime);
+			Assert.assertEquals(2, list.size());
+		}
 	}
 
 	@Test
@@ -300,7 +351,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 			assertEquals(MyUtils.stringToTimestamp("29-01-2008 16:00", MyUtils.timeAndDateFormat),transport.getAppointmentTimeAtDestination());
 			assertEquals("derCaller",transport.getCallerDetail().getCallerName());
 			assertEquals("user2",transport.getCreatedByUsername());
-//			assertEquals(cal2,transport.getDateOfTransport());//TODO????
 			assertEquals(2,transport.getDirection());
 			assertEquals("feedbackNew",transport.getFeedback());
 			assertEquals("fromCity1",transport.getFromCity());
@@ -311,7 +361,6 @@ public class TransportDAOMySQLTest extends DBTestBase
 			assertEquals("Max",transport.getPatient().getFirstname());
 			assertEquals("Muster",transport.getPatient().getLastname());
 			assertEquals("location2",transport.getPlanedLocation().getLocationName());
-			//assertEquals("location1",transport.getRealLocation().getLocationName());
 			assertEquals("toCity",transport.getToCity());
 			assertEquals("toStreet",transport.getToStreet());
 			assertEquals("C",transport.getTransportPriority());
