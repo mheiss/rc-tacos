@@ -1,21 +1,26 @@
 package at.rc.tacos.client.modelManager;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
  * This class manages the vehicles.
  * @author Michael
  */
-public class VehicleManager extends PropertyManager 
+public class VehicleManager extends PropertyManager implements PropertyChangeListener
 {
     //the item list
     private List<VehicleDetail> objectList = new ArrayList<VehicleDetail>();
+    //the transport manager
+    private final TransportManager transportManager = ModelFactory.getInstance().getTransportList();
 
     /**
      * Default class constructor
@@ -23,6 +28,8 @@ public class VehicleManager extends PropertyManager
     public VehicleManager()
     {
         objectList = new ArrayList<VehicleDetail>();
+        //listen to updates from transports to chagen the most important transport status
+        transportManager.addPropertyChangeListener(this);
     }
 
     /**
@@ -149,4 +156,37 @@ public class VehicleManager extends PropertyManager
         }
         return filteredList;
     }
+
+    /**
+     * Loops over the vehicles and updates the most important transport status 
+     * based on the assigned transports of the vehicle.<br>
+     * This method is triggered each time a transport is updated.
+     */
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) 
+	{
+		if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()) 
+				|| "TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "TRANSPORT_ADD".equalsIgnoreCase(evt.getPropertyName())
+				|| "TRANSPORT_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//loop over each vehicle
+	    	for(VehicleDetail detail:objectList)
+	    	{
+	    		//get the list of transports
+	    		List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
+	    		//simplest calculation comes first ;)
+	    		if(transportList.isEmpty())
+	    		{
+	    			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+	    			continue;
+	    		}
+	    		//do something
+	    		for(Transport transport:transportList)
+	    		{
+	    			//ahahahha
+	    		}
+	    	}		
+		}	
+	}
 }
