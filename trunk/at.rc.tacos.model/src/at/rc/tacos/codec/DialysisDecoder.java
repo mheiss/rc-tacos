@@ -85,6 +85,10 @@ public class DialysisDecoder implements MessageDecoder
                     dia.setSunday(Boolean.valueOf(reader.getElementText()));
                 if("stationary".equalsIgnoreCase(startName))
                     dia.setStationary(Boolean.valueOf(reader.getElementText())); 
+                if("lastTransportDate".equalsIgnoreCase(startName))
+                	dia.setLastTransportDate(Long.valueOf(reader.getElementText()));
+                if("lastBackTransportDate".equalsIgnoreCase(startName))
+                	dia.setLastBackTransportDate(Long.valueOf(reader.getElementText()));
             }
             //check for the end element, and return the object
             if(event.isEndElement())
