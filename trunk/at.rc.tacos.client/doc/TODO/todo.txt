@@ -1,8 +1,6 @@
 BUG FIXING:
 --> Suchfunktion für Transport Views einbauen
 
---> VehicleComposite: Kontextmenü ergänzen einsatzbereit und außer Dienst setzen
-
 --> Sperren von Einträgen die bearbeitet werden
 
 --> Server: Implementierung von Loggern (log4j)

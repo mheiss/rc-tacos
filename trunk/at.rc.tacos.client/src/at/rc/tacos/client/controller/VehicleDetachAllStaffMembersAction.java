@@ -52,7 +52,7 @@ public class VehicleDetachAllStaffMembersAction extends Action
 	}
 
 	/**
-	 * Shows the view to edit a vehicle
+	 * Detaches all assigned staff members from the vehicle and updates it
 	 */
 	@Override
 	public void run()
