@@ -23,6 +23,8 @@ DELETE FROM dayinfo;
 
 DELETE FROM dialysis;
 
+DELETE FROM dialysis_transport;
+
 DELETE FROM competences;
 
 DELETE FROM tmptransports;

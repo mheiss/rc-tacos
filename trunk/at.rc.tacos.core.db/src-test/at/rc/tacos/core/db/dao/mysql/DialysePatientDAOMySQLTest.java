@@ -18,6 +18,7 @@ import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.Patient;
+import at.rc.tacos.util.MyUtils;
 
 public class DialysePatientDAOMySQLTest extends DBTestBase
 {
@@ -92,6 +93,7 @@ public class DialysePatientDAOMySQLTest extends DBTestBase
 	public void tearDown() throws SQLException
 	{
 		deleteTable(DialysisPatientDAO.TABLE_NAME);
+		deleteTable(DialysisPatientDAO.TABLE_DEPENDENT);
 		deleteTable(MobilePhoneDAO.TABLE_NAME);
 		deleteTable(LocationDAO.TABLE_NAME);
 	}
@@ -136,6 +138,21 @@ public class DialysePatientDAOMySQLTest extends DBTestBase
 		{
 			List<DialysisPatient> list = dialyseDAO.listDialysisPatient();
 			Assert.assertEquals(1, list.size());
+		}
+	}
+	
+	@Test
+	public void testSetLastTransport() throws SQLException
+	{
+		{
+			DialysisPatient patient = dialyseDAO.getDialysisPatientById(patient1.getId());
+			patient.setLastTransportDate(MyUtils.stringToTimestamp("22-02-2008",MyUtils.dateFormat));
+			dialyseDAO.updateDialysisPatient(patient);
+		}
+		{
+			DialysisPatient patient = dialyseDAO.getDialysisPatientById(patient1.getId());
+			Assert.assertEquals(patient1.getId(),patient.getId());
+			Assert.assertEquals("22-02-2008", MyUtils.timestampToString(patient.getLastTransportDate(), MyUtils.dateFormat));
 		}
 	}
 }

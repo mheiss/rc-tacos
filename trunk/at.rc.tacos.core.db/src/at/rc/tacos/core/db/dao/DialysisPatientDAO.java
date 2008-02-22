@@ -8,6 +8,7 @@ import at.rc.tacos.model.DialysisPatient;
 public interface DialysisPatientDAO 
 {
     public static final String TABLE_NAME = "dialysis";
+    public static final String TABLE_DEPENDENT = "dialysis_transport";
     
 	/**
 	 * Adds a new dialyse patient to the database and returns the unique id.
