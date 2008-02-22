@@ -176,7 +176,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		addIconAndLabel(composite,image,title);
 		
 		//caller
-		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
+		if (transport.getCallerDetail() != null)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("transport.callerDetail");
 			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();

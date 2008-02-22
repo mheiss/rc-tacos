@@ -152,7 +152,7 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 
 		
 		//caller detail
-		if (!(transport.getCallerDetail().getCallerName().equalsIgnoreCase("") && transport.getCallerDetail().getCallerTelephoneNumber().equalsIgnoreCase("")))
+		if (transport.getCallerDetail() != null)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("transport.callerDetail");
 			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
@@ -173,6 +173,10 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 	
 	protected void addIconAndLabel(Composite parent, Image image, String text) 
 	{
+		//check if we have something to display
+		if(text.trim().isEmpty())
+			return;
+		
 		Label imageLabel = new Label(parent, SWT.NONE);
 		imageLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 		imageLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
