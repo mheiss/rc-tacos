@@ -34,7 +34,6 @@ public class DialysisPatientListener extends ClientListenerAdapter
     {
     	//reset the list
         manager.removeAllEntries();
-        System.out.println("we have "+listMessage.size());
         //add the entries
         for(AbstractMessage msg:listMessage)
 	        manager.add((DialysisPatient)msg);

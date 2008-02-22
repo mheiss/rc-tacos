@@ -16,20 +16,23 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
 	//define the columns
 	public static final int COLUMN_LOCK = 0;
 	public static final int COLUMN_ABF = 1;
-	public static final int COLUMN_AT_PATIENT = 2;
-	public static final int COLUMN_TERM = 3;
-	public static final int COLUMN_ABF_RT = 4;
-	public static final int COLUMN_READY_FOR_BACKTRANSPORT =5;
-	public static final int COLUMN_FROM = 6;
-	public static final int COLUMN_PATIENT = 7;
-	public static final int COLUMN_MO = 8;
-	public static final int COLUMN_DI = 9;
-	public static final int COLUMN_MI = 10;
-	public static final int COLUMN_DO = 11;
-	public static final int COLUMN_FR = 12;
-	public static final int COLUMN_SA = 13;
-	public static final int COLUMN_SO = 14;
-	public static final int COLUMN_STAT = 15;
+	public static final int COLUMN_STATION = 2;
+	public static final int COLUMN_AT_PATIENT = 3;
+	public static final int COLUMN_TERM = 4;
+	public static final int COLUMN_ABF_RT = 5;
+	public static final int COLUMN_READY_FOR_BACKTRANSPORT =6;
+	public static final int COLUMN_FROM = 7;
+	public static final int COLUMN_PATIENT = 8;
+	public static final int COLUMN_TO = 9;
+	public static final int COLUMN_MO = 10;
+	public static final int COLUMN_DI = 11;
+	public static final int COLUMN_MI = 12;
+	public static final int COLUMN_DO = 13;
+	public static final int COLUMN_FR = 14;
+	public static final int COLUMN_SA = 15;
+	public static final int COLUMN_SO = 16;
+	public static final int COLUMN_TA = 17;
+	public static final int COLUMN_STAT = 18;
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) 
@@ -85,7 +88,7 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
 		switch(columnIndex)
 		{
 		case COLUMN_LOCK: return null;
-
+		case COLUMN_STATION: return dia.getLocation().getLocationName();
 		case COLUMN_ABF:
 			if (dia.getPlannedStartOfTransport() != 0)
 				return sdf.format(dia.getPlannedStartOfTransport());
@@ -104,16 +107,16 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
 			if (dia.getPlannedStartOfTransport() != 0)
 				return sdf.format(dia.getPlannedStartForBackTransport());
 			else return "";
-
 		case COLUMN_READY_FOR_BACKTRANSPORT:
 			if (dia.getReadyTime() != 0)
 				return sdf.format(dia.getReadyTime());
 			else return "";
-		case COLUMN_FROM:return dia.getFromStreet() +"/" +dia.getFromCity();
+		case COLUMN_FROM: return dia.getFromStreet() +"/" +dia.getFromCity();
 		case COLUMN_PATIENT:
 			if(dia.getPatient() != null)
 				return dia.getPatient().getLastname() +" " +dia.getPatient().getFirstname();
 			else return "";
+		case COLUMN_TO: return dia.getToStreet() + "/"+ dia.getToCity();
 		case COLUMN_STAT:
 			return null;
 		default: return null;
