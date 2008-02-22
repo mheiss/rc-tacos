@@ -19,6 +19,7 @@ public class MyUtils
     public final static SimpleDateFormat timeAndDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     
     //sql date
+    public final static SimpleDateFormat sqlTime = new SimpleDateFormat("HH:mm:ss");
     public final static SimpleDateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
     public final static SimpleDateFormat sqlDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -144,7 +145,6 @@ public class MyUtils
     	
         //set up the parser
         DateFormat formatter = dateFormat;
-        formatter.setLenient(true);
         //try to parse
         try
         {

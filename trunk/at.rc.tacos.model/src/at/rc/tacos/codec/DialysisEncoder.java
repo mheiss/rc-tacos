@@ -153,6 +153,15 @@ public class DialysisEncoder  implements MessageEncoder
         writer.writeStartElement("sunday");
         writer.writeCharacters(String.valueOf(dia.isSunday()));
         writer.writeEndElement();
+        //write the elements
+        writer.writeStartElement("lastTransportDate");
+        writer.writeCharacters(String.valueOf(dia.getLastTransportDate()));
+        writer.writeEndElement();
+        //write the eleents
+        writer.writeStartElement("lastBackTransportDate");
+        writer.writeCharacters(String.valueOf(dia.getLastBackTransporDate()));
+        writer.writeEndElement();
+        
         //end
         writer.writeEndElement();
     }

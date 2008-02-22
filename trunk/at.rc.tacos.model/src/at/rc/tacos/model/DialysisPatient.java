@@ -37,6 +37,11 @@ public class DialysisPatient extends AbstractMessage
 	private boolean friday;
 	private boolean saturday;
 	private boolean sunday;
+	//this values are needed to automatically generated transports for dialysis patients
+	//they store the last automatically generated transport date so that for one
+	//day only one transport is generated (per direction)
+	private long lastTransportDate;
+	private long lastBackTransportDate;
 
 	/**
 	 * Default class constructor
@@ -67,8 +72,7 @@ public class DialysisPatient extends AbstractMessage
 		this.plannedTimeAtPatient = plannedTimeAtPatient;
 		this.appointmentTimeAtDialysis = appointmentTimeAtDialysis;
 	}
-
-	//METHODS
+	
 	/**
 	 * Returns a string based description of the object.<br>
 	 * The returned values are patientId,firstname,lastname.
@@ -320,6 +324,24 @@ public class DialysisPatient extends AbstractMessage
 	{
 		return sunday;
 	}
+	
+	/**
+	 * Returns the date when the last transport was generated for this patient.
+	 * @return the date of the last transport
+	 */
+	public long getLastTransportDate()
+	{
+		return lastTransportDate;
+	}
+	
+	/**
+	 * Returns the date when the last backtransport was generated for this patient.
+	 * @return the date of the last backtransport
+	 */
+	public long getLastBackTransporDate()
+	{
+		return lastBackTransportDate;
+	}
 
 	/**
 	 * Sets the internal unique number for the dialyse patient transport.<br>
@@ -555,5 +577,25 @@ public class DialysisPatient extends AbstractMessage
 	public void setSunday(boolean sunday) 
 	{
 		this.sunday = sunday;
+	}
+	
+	/**
+	 * Sets the date when the last transport was generated for this dialyse patient.<br>
+	 * This date is important so that only one transport per day is generated.
+	 * @param lastTransportDate the date of the last transport
+	 */
+	public void setLastTransportDate(long lastTransportDate)
+	{
+		this.lastTransportDate = lastTransportDate;
+	}
+	
+	/**
+	 * Sets the date when the last backtransport was generated for this dialyse patient.<br>
+	 * This date is important so that only one backtransport per day is generated.
+	 * @param lastBackTransportDate the date of the last backtransport
+	 */
+	public void setLastBackTransportDate(long lastBackTransportDate)
+	{
+		this.lastBackTransportDate = lastBackTransportDate;
 	}
 }
