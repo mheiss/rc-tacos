@@ -9,8 +9,6 @@ BUG FIXING:
 
 --> Doku: welcher Leitstellendisponent hat Aktion (alles was gespeichert wird) durchgeführt? 
 
---> Sorter: gehören getestet. Probleme, wenn Zellen leer
-
 --> Gesamt: Zugriffsberechtigungen implementieren. Nur Admins für Adminperspektive. User mit nur Lesezugriff ermöglichen.
 
 --> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???) 
