@@ -155,51 +155,51 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 		if (statusMessages.containsKey(TRANSPORT_STATUS_OTHER))
 			return TRANSPORT_STATUS_OTHER;
 		//S8
-		else if (statusMessages.containsKey(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+		if (statusMessages.containsKey(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
 		{
 			//S4
 			if (statusMessages.containsKey(TRANSPORT_STATUS_AT_DESTINATION))
 				return TRANSPORT_STATUS_AT_DESTINATION;
 			//S3
-			else if (statusMessages.containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
+			if (statusMessages.containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
 				return TRANSPORT_STATUS_START_WITH_PATIENT;
 			//S2
-			else if (statusMessages.containsKey(TRANSPORT_STATUS_AT_PATIENT))
+			if (statusMessages.containsKey(TRANSPORT_STATUS_AT_PATIENT))
 				return TRANSPORT_STATUS_AT_PATIENT;
 			//S1
-			else if (statusMessages.containsKey(TRANSPORT_STATUS_ON_THE_WAY))
+			if (statusMessages.containsKey(TRANSPORT_STATUS_ON_THE_WAY))
 				return TRANSPORT_STATUS_ON_THE_WAY;
 			//S0
-			else if (statusMessages.containsKey(TRANSPORT_STATUS_ORDER_PLACED))
+			if (statusMessages.containsKey(TRANSPORT_STATUS_ORDER_PLACED))
 				return TRANSPORT_STATUS_ORDER_PLACED;
-			else return -2;
+			return -2;
 		}
 		//S7
-		else if (statusMessages.containsKey(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+		if (statusMessages.containsKey(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
 			return TRANSPORT_STATUS_OUT_OF_OPERATION_AREA;
 		//S6
-		else if (statusMessages.containsKey(TRANSPORT_STATUS_CAR_IN_STATION))
+		if (statusMessages.containsKey(TRANSPORT_STATUS_CAR_IN_STATION))
 			return TRANSPORT_STATUS_CAR_IN_STATION;
 		//S5
-		else if(statusMessages.containsKey(TRANSPORT_STATUS_DESTINATION_FREE))
+		if(statusMessages.containsKey(TRANSPORT_STATUS_DESTINATION_FREE))
 			return TRANSPORT_STATUS_DESTINATION_FREE;
 		//S4
-		else if (statusMessages.containsKey(TRANSPORT_STATUS_AT_DESTINATION))
+		if (statusMessages.containsKey(TRANSPORT_STATUS_AT_DESTINATION))
 			return TRANSPORT_STATUS_AT_DESTINATION;
 		//S3
-		else if (statusMessages.containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
+		if (statusMessages.containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
 			return TRANSPORT_STATUS_START_WITH_PATIENT;
 		//S2
-		else if (statusMessages.containsKey(TRANSPORT_STATUS_AT_PATIENT))
+		if (statusMessages.containsKey(TRANSPORT_STATUS_AT_PATIENT))
 			return TRANSPORT_STATUS_AT_PATIENT;
 		//S1
-		else if (statusMessages.containsKey(TRANSPORT_STATUS_ON_THE_WAY))
+		if (statusMessages.containsKey(TRANSPORT_STATUS_ON_THE_WAY))
 			return TRANSPORT_STATUS_ON_THE_WAY;
 		//S0
-		else if (statusMessages.containsKey(TRANSPORT_STATUS_ORDER_PLACED))
+		if (statusMessages.containsKey(TRANSPORT_STATUS_ORDER_PLACED))
 			return TRANSPORT_STATUS_ORDER_PLACED;
 
-		else return -1;
+		return -1;
 	}
 
 	/**

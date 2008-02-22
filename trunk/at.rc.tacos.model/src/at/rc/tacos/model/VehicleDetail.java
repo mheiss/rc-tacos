@@ -34,6 +34,11 @@ public class VehicleDetail extends AbstractMessage
     private Image readyForActionImage;
     private Image outOfOrderImage;
     private Image transportStatusImage;
+    
+    //the transport status
+    public final static int TRANSPORT_STATUS_GREEN = 30;
+    public final static int TRANSPORT_STATUS_YELLOW = 20;
+    public final static int TRANSPROT_STATUS_RED = 10;
 
     /**
      * Default class constructor
@@ -506,20 +511,14 @@ public class VehicleDetail extends AbstractMessage
         //determine the Image
         switch(transportStatus)
         {
-        //the green Image
-        case 0: 
-        case 1:
-        case 5:
-        case 6: transportStatusImage = ImageFactory.getInstance().getRegisteredImage("vehicle.status.green"); 
+        //the red Image
+        case 10: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.red"); 
         break;
         //the yellow Image
-        case 2:
-        case 4:
-        case 9: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.yellow"); 
+        case 20: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.yellow"); 
         break;
-        //the read Image 
-        case 3:
-        case 7: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.red"); 
+        //the green Image 
+        case 30: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.green");  
         break;
         //out of range
         default: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.na"); 
