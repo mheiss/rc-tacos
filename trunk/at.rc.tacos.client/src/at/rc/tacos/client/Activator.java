@@ -1,6 +1,7 @@
 package at.rc.tacos.client;
 
 import java.util.Calendar;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -12,6 +13,8 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import at.rc.tacos.client.controller.CreateTransportFromDialysis;
 import at.rc.tacos.client.listeners.*;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
@@ -34,6 +37,7 @@ import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.util.MyUtils;
 
 
 /**
@@ -180,11 +184,13 @@ public class Activator extends AbstractUIPlugin
 	 */
 	protected void backgroundTransportJob()
 	{
+		final Random rand = new Random(Calendar.getInstance().getTimeInMillis());
 		//Start a new job
 		final Job job = new Job("TransportMonitor") 
 		{
 			protected IStatus run(IProgressMonitor monitor)
 			{
+				System.out.println("Running: "+MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(), MyUtils.dateFormat));
 				try 
 				{
 					//the current time minus 2 hours
@@ -201,56 +207,71 @@ public class Activator extends AbstractUIPlugin
 						{	
 							transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 							NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
-							
-							//log
 							log("Automatically moved the transport "+ transport+" to the outstanding transports",IStatus.INFO);
 						}
-						if (monitor.isCanceled()) 
-							return Status.CANCEL_STATUS;
 					}
 					//check the dialysis patients
 					for(DialysisPatient patient:ModelFactory.getInstance().getDialyseList().getDialysisList())
 					{
-						//check the time
-						if(current.getTimeInMillis() < patient.getPlannedStartOfTransport())
+						//first check: do we have already generated a transport for today?
+						if(MyUtils.isEqualDate(patient.getLastTransportDate(),current.getTimeInMillis()))
 							continue;
 						
-						//create a new transport for the dialysis patient if the planed times is within the next 2 hours
-						Transport newTransport = new Transport();
-						newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
-						newTransport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
-						//the date time of the transport is the planed start of the transport
-						newTransport.setDateOfTransport(patient.getPlannedStartOfTransport());
-						newTransport.setTransportPriority("C");
-						//set the known fields of the dialyis patient
-						newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
-						newTransport.setFromStreet(patient.getFromStreet());
-						newTransport.setFromCity(patient.getFromCity());
-						newTransport.setToCity(patient.getToCity());
-						newTransport.setToStreet(patient.getToStreet());
-						newTransport.setPlannedStartOfTransport(patient.getPlannedStartOfTransport());
-						newTransport.setPlannedTimeAtPatient(patient.getPlannedTimeAtPatient());
-						newTransport.setAppointmentTimeAtDestination(patient.getAppointmentTimeAtDialysis());
-						newTransport.setAssistantPerson(patient.isAssistantPerson());
-						newTransport.setBackTransport(false);
-						newTransport.setPatient(patient.getPatient());
-						newTransport.setPlanedLocation(patient.getLocation());
-						newTransport.setKindOfIllness("Dialyse");
-						newTransport.setKindOfTransport(patient.getKindOfTransport());
-						//add the transport to the database
-						NetWrapper.getDefault().sendAddMessage(Transport.ID, newTransport);
+						//second check: is the day correct?
+						int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+						switch(day)
+						{
+						case Calendar.MONDAY: 
+							if(!patient.isMonday())
+								continue;
+							break;
+						case Calendar.TUESDAY:
+							if(!patient.isTuesday())
+								continue;
+							break;
+						case Calendar.WEDNESDAY:
+							if(!patient.isWednesday())
+								continue;
+							break;
+						case Calendar.FRIDAY:
+							if(!patient.isFriday())
+								continue;
+							break;
+						case Calendar.SATURDAY:
+							if(!patient.isSaturday())
+								continue;
+							break;
+						case Calendar.SUNDAY:
+							if(!patient.isSunday())
+								break;
+						default:
+							continue;
+						}
+						//construct a calendar object with the start time (HH:mm)
+						Calendar patientCal = Calendar.getInstance();
+						patientCal.setTimeInMillis(patient.getPlannedStartOfTransport());
+						//now add the current year,month and day
+						patientCal.set(Calendar.YEAR, current.get(Calendar.YEAR));
+						patientCal.set(Calendar.MONTH, current.get(Calendar.MONTH));
+						patientCal.set(Calendar.DAY_OF_MONTH, current.get(Calendar.DAY_OF_MONTH));
 						
-						//log
-						log("Automatically generated a transport "+newTransport+" for the dialyse patient "+patient,IStatus.INFO);
-
-						if (monitor.isCanceled()) 
-							return Status.CANCEL_STATUS;
+						//third check: is within the next two hour?
+						if(current.getTimeInMillis() > patientCal.getTimeInMillis())
+						{
+							//set the last generated transport date to now
+							patient.setLastTransportDate(Calendar.getInstance().getTimeInMillis());
+							NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, patient);
+							//create and run the action
+							CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,current);
+							createAction.run();
+						}
 					}
 					return Status.OK_STATUS;
 				} 
 				finally 
 				{
-					schedule(60000); // start again in a minutes
+					// start again in a minute plus a random time so that different clients use different times
+					schedule(60000+rand.nextInt(30000)); 
 				}
 			}
 		};
@@ -263,6 +284,7 @@ public class Activator extends AbstractUIPlugin
 			}
 		});
 		job.setSystem(true);
-		job.schedule(); // start as soon as possible
+		// start after a random time
+		job.schedule(rand.nextInt(30000)); 
 	}
 }

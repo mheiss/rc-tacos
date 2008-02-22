@@ -13,9 +13,6 @@ BUG FIXING:
 
 --> Gesamt: Zugriffsberechtigungen implementieren. Nur Admins für Adminperspektive. User mit nur Lesezugriff ermöglichen.
 
---> TransportViews: Verhalten, wenn Priorität A - NEF- Verwaltung --> zum Teil implementiert. Offen ist: wie kann ich
-	das Vehicle NEF direkt (automatisch in der action) zuweisen?
-
 --> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???) 
 
 --> Druckfunktion
@@ -23,11 +20,6 @@ BUG FIXING:
 --> Installanleitung
 
 --> User Manual
-
---> Datum Filter für Transport View --> geht über suchfunktion. Ist bei Outstanding und Underway nicht nötig, da Programm
-	status entscheidend ist.
-
---> @Dialyse: Icons (z.B. Häkchen) für die Darstellung der Wochentage implementieren.
 
 --> NEF: implementieren. Wenn Priorität A soll beim Zuweisen des Fahrzeuges automatisch der Transport verdoppelt und einem Transport das NEF zugewiesen werden.
 

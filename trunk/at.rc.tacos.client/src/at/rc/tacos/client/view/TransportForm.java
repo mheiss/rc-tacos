@@ -367,10 +367,9 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         {
 	        if(transport.getCallerDetail().getCallerName() != null)
 	        	this.textAnrufer.setText(transport.getCallerDetail().getCallerName());
+	        if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
+	        	this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
         }
-        
-        if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
-        	this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
         
         if(transport.getPlanedLocation().getLocationName() != null)
         	this.textOrtsstelle.setText(transport.getPlanedLocation().getLocationName());
@@ -1774,28 +1773,34 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setBackTransport(backTransportPossible);
                 	//update the patient or create a new one if we do not have one
                 	Patient patient = transport.getPatient();
+                	//if the transpot has already a patient -> update it
                 	if(patient != null)
                 	{
                 		patient.setLastname(lastName);
                 		patient.setFirstname(firstName);
                 	}
-                	else
+                	else if(!firstName.trim().isEmpty() |! lastName.trim().isEmpty())
+                	{
                 		patient = new Patient(firstName,lastName);
-                	transport.setPatient(patient);
+                		transport.setPatient(patient);
+                	}
                 	transport.setAssistantPerson(accompanyingPerson);
                 	transport.setAppointmentTimeAtDestination(termLong);
                 	transport.setBlueLightToGoal(blueLight);
                 	transport.setBrkdtAlarming(brkdt);
                 	//update the caller or create a new one
                 	CallerDetail callerDetail = transport.getCallerDetail();
+                	System.out.println("Caller detail");
                 	if(callerDetail != null)
                 	{
                 		callerDetail.setCallerName(notifierName);
                 		callerDetail.setCallerTelephoneNumber(numberNotifier);
                 	}
-                	else
+                	else if(!notifierName.trim().isEmpty() |! numberNotifier.trim().isEmpty())
+                	{
                 		callerDetail = new CallerDetail(notifierName,numberNotifier);
-                	transport.setCallerDetail(callerDetail);
+                		transport.setCallerDetail(callerDetail);
+                	}
                 	
                 	transport.setDfAlarming(df);
                 	transport.setNotes(notes);
