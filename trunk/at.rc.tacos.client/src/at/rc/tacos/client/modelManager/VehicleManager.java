@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -15,7 +16,7 @@ import at.rc.tacos.model.VehicleDetail;
  * This class manages the vehicles.
  * @author Michael
  */
-public class VehicleManager extends PropertyManager implements PropertyChangeListener
+public class VehicleManager extends PropertyManager implements PropertyChangeListener, ITransportStatus
 {
     //the item list
     private List<VehicleDetail> objectList = new ArrayList<VehicleDetail>();
@@ -173,6 +174,8 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 			//loop over each vehicle
 	    	for(VehicleDetail detail:objectList)
 	    	{
+	    		ArrayList<Integer> list = new ArrayList<Integer>();
+	    		
 	    		//get the list of transports
 	    		List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
 	    		//simplest calculation comes first ;)
@@ -181,11 +184,22 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 	    			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 	    			continue;
 	    		}
-	    		//do something
+	    		//get the most important status of each transport
 	    		for(Transport transport:transportList)
 	    		{
-	    			//ahahahha
+	    			int mostImportantStatus = transport.getMostImportantStatusMessageOfOneTransport();
+	    			list.add(mostImportantStatus);
 	    		}
+	    		
+	    		//get most important status of one vehicle (from the list)
+    			//for a 'red' status
+    			if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+    				detail.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
+    			//for a 'yellow' status
+    			else 
+    				detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
+	    			
+	    		//green (30) is for a 'underway'(program status) vehicle not possible	
 	    	}		
 		}	
 	}
