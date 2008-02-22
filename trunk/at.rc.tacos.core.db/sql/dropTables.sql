@@ -22,6 +22,8 @@ DROP TABLE IF EXISTS dayinfo;
 
 DROP TABLE IF EXISTS dialysis;
 
+DROP TABLE IF EXISTS dialysis_transport;
+
 DROP TABLE IF EXISTS location;
 
 DROP TABLE IF EXISTS competences;

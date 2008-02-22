@@ -91,6 +91,13 @@ INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(5010000
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,1);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,2);
 
+-- create dummy dialyse patients
+INSERT INTO dialysis(dialysis_ID, firstname, lastname, location, plannedStartOfTransport, plannedTimeAtPatient, appointmentTimeAtDialysis, plannedStartForBackTransport, readyTime, fromStreet, fromCity, toStreet, toCity, insurance, stationary, kindOfTransport, assistant, monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES(1, 'max', 'muster', 1, '08:20', '09:00', '10:00', '14:00', '15:00', 'fromStreet1', 'fromCity1', 'toStreet1', 'toCity1', 'keine', false, 'liegend', false, true, false, false, true, false, true, true);
+INSERT INTO dialysis(dialysis_ID, firstname, lastname, location, plannedStartOfTransport, plannedTimeAtPatient, appointmentTimeAtDialysis, plannedStartForBackTransport, readyTime, fromStreet, fromCity, toStreet, toCity, insurance, stationary, kindOfTransport, assistant, monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES(2, 'frau', 'musterin', 1, '12:30', '13:00', '14:00', '15:00', '18:00', 'fromStreet2', 'fromCity2', 'toStreet2', 'toCity2', 'keine', false, 'liegend', false, false, false, true, true, false, false, true);
+-- create the entries int the dialysis transport table
+INSERT INTO dialysis_transport(dialysis_ID,transport_date,return_date) values(1,null,null);
+INSERT INTO dialysis_transport(dialysis_ID,transport_date,return_date) values(2,null,null);
+
 --create dummy caller
 INSERT INTO caller(caller_ID, callername, caller_phonenumber)
 VALUES(1, 'Herr Maier', '0342 - 12345');

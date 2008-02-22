@@ -1,5 +1,6 @@
--- Create table script version 1.5, lastChanged: 17.02.2008
+-- Create table script version 1.5, lastChanged: 21.02.2008
 -- last changed:
+-- inserted a additional table for the dialysiy patient
 -- inserted the transport states inserts in the script
 -- changed the locationame in the assigned_vehicles to location_id
 
@@ -110,11 +111,11 @@ CREATE TABLE dialysis (
   firstname VARCHAR(30) NULL,
   lastname VARCHAR(30) NULL,
   location INTEGER UNSIGNED NOT NULL,
-  plannedStartOfTransport DATETIME NULL,
-  plannedTimeAtPatient DATETIME NULL,
-  appointmentTimeAtDialysis DATETIME NULL,
-  plannedStartForBackTransport DATETIME NULL,
-  readyTime DATETIME NULL,
+  plannedStartOfTransport TIME NULL,
+  plannedTimeAtPatient TIME NULL,
+  appointmentTimeAtDialysis TIME NULL,
+  plannedStartForBackTransport TIME NULL,
+  readyTime TIME NULL,
   fromStreet VARCHAR(50) NULL,
   fromCity VARCHAR(50) NULL,
   toStreet VARCHAR(50) NULL,
@@ -135,6 +136,18 @@ CREATE TABLE dialysis (
     REFERENCES location(location_ID)
       ON DELETE CASCADE
       ON UPDATE CASCADE
+)
+TYPE=InnoDB;
+
+CREATE TABLE dialysis_transport (
+	dialysis_ID INTEGER UNSIGNED NOT NULL,
+	PRIMARY KEY(dialysis_ID),
+ 	transport_date DATE NULL,
+ 	return_date DATE NULL,
+ 	FOREIGN KEY(dialysis_ID)
+    	REFERENCES dialysis(dialysis_ID)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 )
 TYPE=InnoDB;
 
