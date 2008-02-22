@@ -8,6 +8,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -18,9 +19,12 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.controller.VehicleDetachAllStaffMembersAction;
 import at.rc.tacos.client.controller.VehicleEditAction;
+import at.rc.tacos.client.controller.VehicleSetReadyAction;
+import at.rc.tacos.client.controller.VehicleSetRepairStatus;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.model.VehicleDetail;
@@ -50,7 +54,8 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
     //the actions
     private VehicleEditAction editAction;
     private VehicleDetachAllStaffMembersAction detachAction;
-
+    private VehicleSetReadyAction readyStatus;
+    private VehicleSetRepairStatus repairStatus;
 
     /**
      * Default constructor creating a new car composite
@@ -180,6 +185,8 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
     {
         editAction = new VehicleEditAction(vehicle);
         detachAction = new VehicleDetachAllStaffMembersAction(vehicle);
+        readyStatus = new VehicleSetReadyAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
+        repairStatus = new VehicleSetRepairStatus(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
     }
 
     /**
@@ -204,6 +211,19 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
     {
         manager.add(editAction);
         manager.add(detachAction);
+        manager.add(new Separator());
+        manager.add(readyStatus);
+        manager.add(repairStatus);
+        
+        //enable or disable the actions
+        if(vehicle.isReadyForAction())
+            readyStatus.setEnabled(false);
+        else
+            readyStatus.setEnabled(true);
+        if(vehicle.isOutOfOrder())
+            repairStatus.setEnabled(false);
+        else 
+            repairStatus.setEnabled(true);
     }
 
     /**
