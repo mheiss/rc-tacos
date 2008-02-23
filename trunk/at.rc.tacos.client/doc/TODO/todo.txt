@@ -1,3 +1,7 @@
+siehe Formular "Offene Anforderungen und Bugs"
+
+
+
 BUG FIXING:
 --> Suchfunktion für Transport Views einbauen
 
