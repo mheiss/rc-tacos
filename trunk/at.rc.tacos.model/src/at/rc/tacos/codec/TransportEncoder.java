@@ -42,12 +42,12 @@ public class TransportEncoder  implements MessageEncoder
 	        writer.writeCharacters(String.valueOf(transport.getYear()));
 	        writer.writeEndElement();
         }
-        if(transport.getTransportNumber() > 0)
-        {
-	        writer.writeStartElement("transportNumber");
-	        writer.writeCharacters(String.valueOf(transport.getTransportNumber()));
-	        writer.writeEndElement();
-        }
+   
+        //next
+	    writer.writeStartElement("transportNumber");
+	    writer.writeCharacters(String.valueOf(transport.getTransportNumber()));
+	    writer.writeEndElement();
+        
 
         //next
         if(transport.getCallerDetail() != null)
