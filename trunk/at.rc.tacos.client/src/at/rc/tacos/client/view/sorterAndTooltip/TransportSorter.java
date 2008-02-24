@@ -108,13 +108,13 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 		if(column == TRANSPORT_FROM_SORTER)
 		{
 			//assert valid
-			if(transport1.getFromCity() == null)
+			if(transport1.getFromStreet() == null)
 				return -1 * sortDir;
-			if(transport2.getFromCity() == null)
+			if(transport2.getFromStreet() == null)
 				return 1 * sortDir;
 			//now compare
-			String from1 = transport1.getFromCity();
-			String from2 = transport2.getFromCity();
+			String from1 = transport1.getFromStreet();
+			String from2 = transport2.getFromStreet();
 			return from1.compareTo(from2) * sortDir;
 		}
 		//sort by the patient last name
@@ -139,13 +139,13 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 		if(column == TRANSPORT_TO_SORTER)
 		{
 			//assert valid
-			if(transport1.getToCity() == null)
+			if(transport1.getToStreet() == null)
 				return -1 * sortDir;
-			if(transport2.getToCity() == null)
+			if(transport2.getToStreet() == null)
 				return 1 * sortDir;
 			//now compare
-			String to1 = transport1.getToCity();
-			String to2 = transport2.getToCity();
+			String to1 = transport1.getToStreet();
+			String to2 = transport2.getToStreet();
 			return to1.compareTo(to2) * sortDir;
 		}
 
@@ -419,18 +419,18 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 		if (column == RESP_STATION_SORTER) 
 		{
 			//assert valid
-			if(transport1.getVehicleDetail() == null)
+			if(transport1.getPlanedLocation() == null)
 				return -1 * sortDir;
-			if(transport1.getVehicleDetail().getCurrentStation() == null)
+			if(transport1.getPlanedLocation() == null)
 				return -1 * sortDir;
 			//assert valid 
-			if(transport2.getVehicleDetail() == null)
+			if(transport2.getPlanedLocation() == null)
 				return 1 * sortDir;
-			if(transport2.getVehicleDetail().getCurrentStation() == null)
+			if(transport2.getPlanedLocation() == null)
 				return 1 * sortDir;
 			//now compare
-			String st1 = transport1.getVehicleDetail().getCurrentStation().getLocationName();
-			String st2 = transport2.getVehicleDetail().getCurrentStation().getLocationName();
+			String st1 = transport1.getPlanedLocation().getLocationName();
+			String st2 = transport2.getPlanedLocation().getLocationName();
 			return st1.compareTo(st2) * sortDir;
 		}
 
