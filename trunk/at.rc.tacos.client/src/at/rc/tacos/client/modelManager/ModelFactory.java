@@ -12,6 +12,7 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
@@ -35,16 +36,18 @@ public class ModelFactory
 
     //the model manager to handle
     private final RosterEntryManager rosterEntryList = new RosterEntryManager();
+    private final TransportManager transportList = new TransportManager();
     private final VehicleManager vehicleList = new VehicleManager();
     private final StaffManager staffList = new StaffManager();
     private final LoginManager loginList = new LoginManager();
-    private final TransportManager transportList = new TransportManager();
     private final DialysisTransportManager dialyseList = new DialysisTransportManager();
     private final MobilePhoneManager phoneList = new MobilePhoneManager();
     private final JobManager jobList = new JobManager();
     private final CompetenceManager competenceList = new CompetenceManager();
     private final LocationManager locationList = new LocationManager();
     private final ServiceTypeManager serviceList = new ServiceTypeManager();
+    private final DiseaseManager diseaseList = new DiseaseManager();
+    private final AddressManager addressList = new AddressManager();
 
     /**
      * Private class constructor.
@@ -65,8 +68,10 @@ public class ModelFactory
     /**
      *  Queries the server sequentially for all needed data.
      */
-    public void queryInitData()
+    public void initalizeModel()
     {
+    	//add the listeners
+    	vehicleList.init();
         //get the client connection
         org.eclipse.core.runtime.jobs.Job job = new org.eclipse.core.runtime.jobs.Job("Request data listing") 
         {
@@ -85,6 +90,7 @@ public class ModelFactory
                 net.requestListing(DayInfoMessage.ID, dateFilter);
                 net.requestListing(VehicleDetail.ID, null);
                 net.requestListing(Login.ID, null);
+                net.requestListing(Disease.ID, null);
                 net.requestListing(StaffMember.ID, null);
                 net.requestListing(Transport.ID, dateFilter);
                 net.requestListing(DialysisPatient.ID, null);
@@ -150,5 +156,15 @@ public class ModelFactory
     public final ServiceTypeManager getServiceList()
     {
         return serviceList;
+    }
+    
+    public final DiseaseManager getDiseaseList()
+    {
+    	return diseaseList;
+    }
+    
+    public final AddressManager getAddressList()
+    {
+    	return addressList;
     }
 }

@@ -187,6 +187,20 @@
       </view>
       <view
             allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.AddressAdminView"
+            icon="icons/resources/address.png"
+            id="at.rc.tacos.client.view.admin.addressAdminView"
+            name="Adressen">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.DiseaseAdminView"
+            icon="icons/resources/disease.png"
+            id="at.rc.tacos.client.view.admin.diseaseAdminView"
+            name="Erkrankungen">
+      </view>
+      <view
+            allowMultiple="false"
             class="at.rc.tacos.client.view.NavigationTransportView"
             id="at.rc.tacos.client.view.navigationTransport"
             name="Navigation Transport">
@@ -264,6 +278,18 @@
             icon="icons/resources/serviceType.png"
             id="at.rc.tacos.client.editors.serviceTypeEditor"
             name="Dienstverhältnisse">
+      </editor>
+      <editor
+            class="at.rc.tacos.client.editors.AddressEditor"
+            icon="icons/resources/address.png"
+            id="at.rc.tacos.client.editors.addressEditor"
+            name="Addressen">
+      </editor>
+      <editor
+            class="at.rc.tacos.client.editors.DiseaseEditor"
+            icon="icons/resources/disease.png"
+            id="at.rc.tacos.client.editors.diseaseEditor"
+            name="Erkrankungen">
       </editor>
    </extension>
 </plugin>

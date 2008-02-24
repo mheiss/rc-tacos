@@ -22,10 +22,12 @@ import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.factory.ListenerFactory;
+import at.rc.tacos.model.Address;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
@@ -131,6 +133,8 @@ public class Activator extends AbstractUIPlugin
 		factory.registerListener(at.rc.tacos.model.Job.ID,new JobListener());
 		factory.registerListener(Location.ID, new LocationListener());
 		factory.registerListener(ServiceType.ID, new ServiceTypeListener());
+		factory.registerListener(Disease.ID, new DiseaseListener());
+		factory.registerListener(Address.ID, new AddressListener());
 	}
 
 	/**

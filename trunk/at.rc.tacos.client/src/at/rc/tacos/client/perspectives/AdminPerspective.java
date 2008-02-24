@@ -5,7 +5,9 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 import at.rc.tacos.client.view.NavigationView;
+import at.rc.tacos.client.view.admin.AddressAdminView;
 import at.rc.tacos.client.view.admin.CompetenceAdminView;
+import at.rc.tacos.client.view.admin.DiseaseAdminView;
 import at.rc.tacos.client.view.admin.JobAdminView;
 import at.rc.tacos.client.view.admin.LocationAdminView;
 import at.rc.tacos.client.view.admin.PhoneAdminView;
@@ -43,5 +45,7 @@ public class AdminPerspective implements IPerspectiveFactory
         left.addView(CompetenceAdminView.ID);
         left.addView(JobAdminView.ID);
         left.addView(ServiceTypeAdminView.ID);
+        left.addView(AddressAdminView.ID);
+        left.addView(DiseaseAdminView.ID);
     }
 }

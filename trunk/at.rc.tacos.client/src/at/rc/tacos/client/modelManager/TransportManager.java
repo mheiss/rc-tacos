@@ -2,12 +2,14 @@ package at.rc.tacos.client.modelManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.*;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * All transports
@@ -35,8 +37,9 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		{
 			public void run ()       
 			{
-				//add the item
-				objectList.add(transport);
+				//add the item if we do not have it
+				if(!objectList.contains(transport))
+					objectList.add(transport);
 				//notify the view
 				firePropertyChange("TRANSPORT_ADD", null, transport);
 			}
@@ -79,7 +82,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	}
 
 	/**
-	 * Removes all elements form the list
+	 * Removes all elements from the list EXCEPT the transports from the current day.
 	 */
 	public void removeAllEntries()
 	{
@@ -87,11 +90,22 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		{
 			public void run ()       
 			{   
+				//keep all transports form the current day
+				Iterator<Transport> iter = objectList.iterator();
+				while(iter.hasNext())
+				{
+					Transport transport = iter.next();
+					//check the date
+					if(!MyUtils.isEqualDate(transport.getDateOfTransport(),Calendar.getInstance().getTimeInMillis()))
+					{
+						//savely remove the element from the iterator
+						iter.remove();
+					}
+				}
 				objectList.clear();
 				firePropertyChange("TRANSPORT_CLEARED",null,null);
 			}
 		}); 
-
 	}
 
 	/**

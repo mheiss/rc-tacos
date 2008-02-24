@@ -42,6 +42,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
     {
         super.initialize(configurer);
         //load the model
-        ModelFactory.getInstance().queryInitData();
+        ModelFactory.getInstance().initalizeModel();  
     } 
 }
