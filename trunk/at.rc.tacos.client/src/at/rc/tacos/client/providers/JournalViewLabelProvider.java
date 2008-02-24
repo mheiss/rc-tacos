@@ -85,7 +85,15 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		{
 		//define the columns
 		case COLUMN_LOCK: return null;
-		case COLUMN_TRANSPORT_NUMBER: return String.valueOf(transport.getTransportNumber());
+		case COLUMN_TRANSPORT_NUMBER: 
+			if(transport.getTransportNumber()== Transport.TRANSPORT_CANCLED)
+				return "STORNO";
+			else if(transport.getTransportNumber() == Transport.TRANSPORT_FORWARD)
+				return "WTGL";
+			else if(transport.getTransportNumber() == Transport.TRANSPORT_NEF)
+				return "NEF";
+			else
+					return String.valueOf(transport.getTransportNumber());
 		case COLUMN_PRIORITY: return transport.getTransportPriority();
 		case COLUMN_TRANSPORT_FROM: return transport.getFromStreet() +"/" +transport.getFromCity();
 		case COLUMN_PATIENT:
