@@ -5,13 +5,15 @@ import java.util.Calendar;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
+import at.rc.tacos.common.IProgramStatus;
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.*;
 
 /**
  * All transports
  * @author b.thek
  */
-public class TransportManager extends PropertyManager 
+public class TransportManager extends PropertyManager implements ITransportStatus, IProgramStatus
 {
 	//the item list
 	private List<Transport> objectList = new ArrayList<Transport>();
@@ -150,6 +152,35 @@ public class TransportManager extends PropertyManager
 			//check the vehicle
 			if(assignedVehicle.getVehicleName().equals(vehicleName))
 				filteredList.add(transport);
+		}
+		return filteredList;
+	}
+	
+	/**
+	 * Returns a list of the transports with the program status 'journal' which are assigned
+	 * to this vehicle and have no set transport status S6 yet.
+	 * @param vehicleName the name of the vehicle to list the transports
+	 * @return transort list filtered by vehicle, program status 'journal' and without transport status S6
+	 */
+	public List<Transport> getJournalTransportsByVehicleAndStatusSix(String vehicleName)
+	{
+		//the result list
+		List<Transport> filteredList = new ArrayList<Transport>();
+		System.out.println("TransportManager, getJournalTransportsBy......, objectlist size: " +objectList.size());
+		//loop
+		for(Transport transport:objectList)
+		{
+			//get the vehicle
+			VehicleDetail vehicle = transport.getVehicleDetail();
+			int programStatus = transport.getProgramStatus();
+			//assert valid
+			if(vehicle == null)
+				continue;
+			//check the vehicle
+			if(vehicle.getVehicleName().equalsIgnoreCase(vehicleName) && programStatus == PROGRAM_STATUS_JOURNAL )
+			{
+				filteredList.add(transport);
+			}
 		}
 		return filteredList;
 	}
