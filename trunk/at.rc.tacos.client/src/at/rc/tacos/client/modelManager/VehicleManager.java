@@ -158,6 +158,21 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         }
         return filteredList;
     }
+    
+    /**
+     * Returns the NEF- Vehicle
+     * @return NEF- vehicle detail
+     */
+    public VehicleDetail getNEFVehicle()
+    {
+    	VehicleDetail nef = new VehicleDetail();
+    	for(VehicleDetail detail : objectList)
+    	{
+    		if(detail.getVehicleName().equalsIgnoreCase("NEF"))
+    			nef = detail;
+    	}
+    	return nef;
+    }
 
     /**
      * Loops over the vehicles and updates the most important transport status 
