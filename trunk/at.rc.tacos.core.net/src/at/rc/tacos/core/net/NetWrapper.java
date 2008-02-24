@@ -178,6 +178,10 @@ public class NetWrapper extends Plugin implements INetListener
         protFactory.registerEncoder(Competence.ID, new CompetenceEncoder());
         protFactory.registerDecoder(ServiceType.ID, new ServiceTypeDecoder());
         protFactory.registerEncoder(ServiceType.ID, new ServiceTypeEncoder());
+        protFactory.registerDecoder(Disease.ID,new DiseaseDecoder());
+        protFactory.registerEncoder(Disease.ID, new DiseaseEncoder());
+        protFactory.registerDecoder(Address.ID, new AddressDecoder());
+        protFactory.registerEncoder(Address.ID, new AddressEncoder());
 	}
 
 	// METHODS TO SEND MESSAGES
@@ -187,7 +191,7 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendLoginMessage(Login login)
 	{
-		sendMessage(Login.ID, IModelActions.LOGIN, null, login);
+		sendMessage(Login.ID, IModelActions.LOGIN, login);
 	}
 	
 	/**
@@ -196,7 +200,7 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendLogoutMessage(Logout logout)
 	{
-		sendMessage(Logout.ID, IModelActions.LOGOUT, null, logout);
+		sendMessage(Logout.ID, IModelActions.LOGOUT, logout);
 	}
 
 	/**
@@ -209,7 +213,12 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendAddMessage(String contentType,AbstractMessage addMessage)
 	{
-		sendMessage(contentType,IModelActions.ADD,null,addMessage);
+		sendMessage(contentType,IModelActions.ADD,addMessage);
+	}
+	
+	public void sendAddAllMessage(String contentType,List<AbstractMessage> addList)
+	{
+		sendMessage(contentType,IModelActions.ADD_ALL,null,addList);
 	}
 
 	/**
@@ -222,7 +231,7 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendRemoveMessage(String contentType,AbstractMessage removeMessage)
 	{
-		sendMessage(contentType,IModelActions.REMOVE,null,removeMessage);
+		sendMessage(contentType,IModelActions.REMOVE,removeMessage);
 	}
 
 	/**
@@ -235,7 +244,7 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendUpdateMessage(String contentType,AbstractMessage updateMessage)
 	{
-		sendMessage(contentType,IModelActions.UPDATE,null,updateMessage);
+		sendMessage(contentType,IModelActions.UPDATE,updateMessage);
 	}
 
 	/**
@@ -258,7 +267,23 @@ public class NetWrapper extends Plugin implements INetListener
 	 * @param queryFilter the filter to apply
 	 * @param message the message to send
 	 */
-	private void sendMessage(String contentType,String queryString,QueryFilter queryFilter,AbstractMessage message)
+	private void sendMessage(String contentType,String queryString,AbstractMessage message)
+	{
+		//create a new list
+		List<AbstractMessage> messageList = new ArrayList<AbstractMessage>();
+		messageList.add(message);
+		sendMessage(contentType, queryString, null, messageList);
+	}
+	
+	/**
+	 * Convenience method to send the message to the server.<br />
+	 * ASSERT: The messages in the list MUST have the same type!.
+	 * @param contentType the type of the content.
+	 * @param queryString the type of the query
+	 * @param queryFilter the filter to apply
+	 * @param messageList the messages to send
+	 */
+	private void sendMessage(String contentType,String queryString,QueryFilter queryFilter,List<AbstractMessage> messageList)
 	{
 		//check if we have a session
 		if(clientSession == null)
@@ -282,15 +307,11 @@ public class NetWrapper extends Plugin implements INetListener
 				contentType, 
 				queryString);
 		System.out.println("Send: "+clientSession.getUsername()+","+contentType+","+queryString);
-		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		//appply filter if we have one
 		if(queryFilter != null)
 			factory.setFilter(queryFilter);
-		//wrapp into a list
-		if(message != null)
-			list.add(message);
 		//encode the message
-		String xmlMessage = factory.encode(list);
+		String xmlMessage = factory.encode(messageList);
 		
 		//replace all new lines
 		xmlMessage = xmlMessage.replaceAll("\\s\\s+|\\n|\\r", "<![CDATA[<br/>]]>");
@@ -328,6 +349,8 @@ public class NetWrapper extends Plugin implements INetListener
 			//now pass the message to the listener
 			if(IModelActions.ADD.equalsIgnoreCase(queryString))
 				listener.add(objects.get(0));
+			if(IModelActions.ADD_ALL.endsWith(queryString))
+				listener.addAll(objects);
 			if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
 				listener.remove(objects.get(0));
 			if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
