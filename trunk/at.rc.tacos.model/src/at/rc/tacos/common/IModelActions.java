@@ -16,6 +16,9 @@ public interface IModelActions
     
     /** Add message */
     public final static String ADD = "message.add";
+    /** Add message */
+    public final static String ADD_ALL = "message.addAll";
+    
     /** Remove message */
     public final static String REMOVE = "message.remove";
     /** List message */

@@ -21,6 +21,13 @@ public interface IServerListener
     public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException;
     
     /**
+     * Add request from the client to handle.
+     * @param addList the list of object to add
+     * @return the response from the server
+     */    
+    public List<AbstractMessage> handleAddAllRequest(List<AbstractMessage> addList) throws DAOException,SQLException;
+    
+    /**
      * Remove request from the client to handle
      * @param removeObject the object to remove
      * @return the response from the server
