@@ -820,21 +820,28 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 	public boolean cancelTransport(Transport transport) throws SQLException
 	{
 		Connection connection = source.getConnection();
+		int locationId = 0;
 		try
 		{
 			int transportId = transport.getTransportId();
 			int oldNumber = getTransportNrById(transport.getTransportId());
-			int locationId = transport.getVehicleDetail().getCurrentStation().getId();
+			if(transport.getVehicleDetail() != null)
+			{
+				locationId = transport.getVehicleDetail().getCurrentStation().getId();
+			}
 			//archive the transport number if we have one
-			if(oldNumber != 0)
+			if(oldNumber > 0)
 			{
 				if(!archiveTransportNumber(oldNumber, locationId))
+				{
 					return false;
+				}
 			}
 			//set the transport number to TRANSPORT_STORNO or TRANSPORT_FORWARD
 			if(!updateTransportNr(transportId, transport.getTransportNumber()))
+			{
 				return false;
-
+			}
 			//set the program status to journal
 			transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_JOURNAL);
 			return true;
@@ -1060,6 +1067,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			query.setString(21, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDate));
 			query.setInt(22, transport.getTransportNumber());
 			query.setInt(23, transport.getTransportId());
+			System.out.println("++++++++TransportDAOMySQL, transport number: " +transport.getTransportNumber());
 			//assert the update was successfull
 			if(query.executeUpdate() == 0)
 				return false;
