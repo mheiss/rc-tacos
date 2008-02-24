@@ -221,7 +221,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				final ResultSet stateResult = stateQuery.executeQuery();
 				//loop over the result set
 				while(stateResult.next())
-					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
+					transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlDateTime));
 
 				// find the selected items (boolean values)
 				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
@@ -593,7 +593,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				final ResultSet stateResult = stateQuery.executeQuery();
 				//loop over the result set
 				while(stateResult.next())
-					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
+					transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlDateTime));
 
 				// find the selected items (boolean values)
 				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
@@ -960,7 +960,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				//loop over the result set
 				while(stateResult.next())
 				{
-					transport.addStatus(stateResult.getInt("transportstate"), stateResult.getLong("date"));
+					transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlDateTime));
 				}
 
 				// find the selected items (boolean values)
