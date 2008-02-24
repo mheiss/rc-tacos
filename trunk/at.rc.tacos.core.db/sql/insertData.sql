@@ -150,9 +150,9 @@ VALUES('Bm09', 50100001, 50100002, null, 2, 'KTW(2)', 2, 2, null, true, false, 3
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
 VALUES('Bm10', 50100001, 50100002, null, 2, 'BKTW(0)', 2, 2, null, true, false, 30);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm14', 50100001, 50100002, null, 2, 'LKW(0)', 2, 2, null, true, false, 30);
+VALUES('Bm14', 50100001, 50100002, null, 2, 'LKW(0)', 1, 1, null, true, false, 30);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm15', 50100001, 50100002, null, 2, 'SFZ(0)', 2, 2, null, true, false, 30);
+VALUES('Bm15', 50100001, 50100002, null, 2, 'SFZ(0)', 1, 1, null, true, false, 30);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
 VALUES('Bm16', 50100001, 50100002, null, 2, 'BKTW(2)', 2, 2, null, true, false, 30);
 
