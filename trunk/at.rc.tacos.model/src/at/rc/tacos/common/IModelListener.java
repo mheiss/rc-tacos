@@ -1,6 +1,7 @@
 package at.rc.tacos.common;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This interface describes methods that the UI listeners must provide to
@@ -14,6 +15,12 @@ public interface IModelListener
      *  @param addMessage the object to add
      */
     public void add(AbstractMessage addMessage);
+    
+    /**
+     *  Notification about a new message list to add.
+     *  @param addMessage the object to add
+     */
+    public void addAll(List<AbstractMessage> addMessage);
     
     /**
      * Notification about a message to delete.

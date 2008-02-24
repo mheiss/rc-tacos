@@ -6,7 +6,7 @@ import javax.xml.stream.XMLStreamWriter;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.CallerDetail;
 
-public class CallerEncoder  implements MessageEncoder
+public class CallerEncoder implements MessageEncoder
 {
     @Override
     public void doEncode(AbstractMessage message, XMLStreamWriter writer) throws XMLStreamException
