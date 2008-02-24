@@ -50,6 +50,7 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 			return;
 		//request to cancel (storno)	
 		transport.setTransportNumber(Transport.TRANSPORT_CANCLED);
+		System.out.println("--------- CancelTransportAction, transport number nach set: " +transport.getTransportNumber());
 		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
