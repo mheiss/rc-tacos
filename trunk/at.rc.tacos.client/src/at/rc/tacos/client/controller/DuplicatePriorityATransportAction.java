@@ -3,6 +3,7 @@ package at.rc.tacos.client.controller;
 import java.util.Calendar;
 import org.eclipse.jface.action.Action;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.*;
@@ -32,7 +33,12 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
     	newTransport.setTransportId(0);
     	newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
     	newTransport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
-    	//TODO dieser Fahrt soll gleich direkt das NEF zugewiesen werden
+    	//assig nef vehicle
+    	VehicleDetail nef = ModelFactory.getInstance().getVehicleList().getNEFVehicle();
+    	transport.setVehicleDetail(nef);
+    	//mark transport number (no number for the nef)
+    	transport.setTransportNumber(-3);
     	NetWrapper.getDefault().sendAddMessage(Transport.ID,newTransport);
+    	//TODO???? update vehicle???????
     }
 }
