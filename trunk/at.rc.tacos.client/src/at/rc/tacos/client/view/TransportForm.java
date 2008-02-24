@@ -143,6 +143,13 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	
 	private String[] prebookingPriorities = {"C", "D", "E", "F"};
 	private String[] emergencyAndTransportPriorities = {"A", "B", "C", "D", "E", "F", "G"};
+	//A: NEF + RTW
+	//B: BD1
+	//C: normaler Transport
+	//D: Rücktransport
+	//E: Heimtransport
+	//F: Sonstiges
+	//G: NEF für extern
 
 	
 	//determine whether to update or to create a new entry
