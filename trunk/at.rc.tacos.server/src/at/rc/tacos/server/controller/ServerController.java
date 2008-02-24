@@ -110,7 +110,7 @@ public class ServerController
      *  @param queryString the type of the query
      *  @param objectList a list of objects to send
      */
-    public synchronized void brodcastMessage(String userId,String contentType,String queryString, ArrayList<AbstractMessage> objectList)
+    public synchronized void brodcastMessage(String userId,String contentType,String queryString, List<AbstractMessage> objectList)
     {
         //set up the factory
         XMLFactory factory = new XMLFactory();
@@ -218,6 +218,10 @@ public class ServerController
         protFactory.registerEncoder(Competence.ID, new CompetenceEncoder());
         protFactory.registerDecoder(ServiceType.ID, new ServiceTypeDecoder());
         protFactory.registerEncoder(ServiceType.ID, new ServiceTypeEncoder());
+        protFactory.registerDecoder(Disease.ID, new DiseaseDecoder());
+        protFactory.registerEncoder(Disease.ID, new DiseaseEncoder());
+        protFactory.registerDecoder(Address.ID, new AddressDecoder());
+        protFactory.registerEncoder(Address.ID, new AddressEncoder());
         //system events
         protFactory.registerDecoder(Login.ID, new LoginDecoder());
         protFactory.registerEncoder(Login.ID, new LoginEncoder());
@@ -249,5 +253,7 @@ public class ServerController
         factory.registerModelListener(Location.ID, new LocationListener());
         factory.registerModelListener(Competence.ID, new CompetenceListener());
         factory.registerModelListener(ServiceType.ID, new ServiceTypeListener());
+        factory.registerModelListener(Address.ID, new AddressListener());
+        factory.registerModelListener(Disease.ID, new DiseaseListener());
     }
 }

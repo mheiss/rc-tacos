@@ -95,6 +95,16 @@ public class ClientHandler implements INetListener
 				if(session.isWebClient())
 					server.sendMessage(session, contentType, queryString, resultAddMessage); 
 			}
+			//add all request
+			else if(IModelActions.ADD_ALL.equalsIgnoreCase(queryString))
+			{
+				List<AbstractMessage> resultAddList = listener.handleAddAllRequest(objects);
+				//send the added item to all connected clients
+				server.brodcastMessage(userId, contentType, queryString, resultAddList);
+				//if we have a web client -> send the request back
+				if(session.isWebClient())
+					server.sendMessage(session, contentType, queryString, resultAddList); 
+			}
 			//remove request
 			else if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
 			{
