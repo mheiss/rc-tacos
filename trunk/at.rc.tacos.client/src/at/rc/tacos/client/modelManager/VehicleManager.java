@@ -8,6 +8,7 @@ import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -194,6 +195,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 			//loop over each vehicle
 	    	for(VehicleDetail detail:objectList)
 	    	{
+	    		System.out.println("iiiiiimvvvvvvvVehicleManager, propertyChange");
 	    		ArrayList<Integer> list = new ArrayList<Integer>();
 	    		
 	    		//get the list of transports
@@ -201,12 +203,14 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 	    		//simplest calculation comes first ;)
 	    		if(transportList.isEmpty())
 	    		{
+	    			System.out.println("VVVVVVVehicleManager, propertychange, im if tranpsortList.isEmpty, vehDetail: " + detail.getVehicleName());
 	    			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 	    			continue;
 	    		}
 	    		//get the most important status of each transport
 	    		for(Transport transport:transportList)
 	    		{
+	    			System.out.println("iiiiiiiiiiiiiiiiimForTransport : transportlist, transport.fromStreet: " +transport.getFromStreet());
 	    			int mostImportantStatus = transport.getMostImportantStatusMessageOfOneTransport();
 	    			list.add(mostImportantStatus);
 	    		}
@@ -220,6 +224,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     				detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
 	    			
 	    		//green (30) is for a 'underway'(program status) vehicle not possible	
+    			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
 	    	}		
 		}	
 	}
