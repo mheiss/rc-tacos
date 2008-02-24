@@ -171,9 +171,9 @@ VALUES('Ma14', 50100003, 50100002, 50100001, 1, 'RTW(2)', 7, 7, null, true, fals
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
 VALUES('Ma15', 50100001, 50100002, null, 2, 'RTW(1)', 7, 7, null, true, false, 30);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
-VALUES('NEF', null, null, null, 2, 'NEF', 1, 1, null, false, false, 30);
+VALUES('NEF', null, null, null, 2, 'NEF', 1, 1, null, true, false, 30);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
-VALUES('KDO', null, null, null, 2, 'KDO', 1, 1, null, false, false, 30);
+VALUES('KDO', null, null, null, 2, 'KDO', 1, 1, null, true, false, 30);
 
 
 --transport stati
