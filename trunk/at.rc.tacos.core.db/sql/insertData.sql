@@ -129,16 +129,16 @@ INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID
 VALUES('MA02', null, null, null, 2, 'RTW(1)', 7, 7, 'notizen zum Fahrzeug', false, false, 30);
 
 --transport stati
-INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(1, 1, 20080125220000);
-INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(2, 1, 20080125223000);
-INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(3, 1, 20080125230000);
-INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(5, 2, 20080123140000);
+--INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(1, 1, 20080125220000);
+--INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(2, 1, 20080125223000);
+--INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(3, 1, 20080125230000);
+--INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(5, 2, 20080123140000);
 
 --assign vehicles to transport
-INSERT INTO assigned_vehicle(transport_ID, vehicle_ID, driver_ID, medic1_ID, medic2_ID, location_ID, note, vehicletype)
-VALUES(1, 'BM01', 50100001, 50100002, null, 1, 'bla bla...', 'RTW(1)');
-INSERT INTO assigned_vehicle(transport_ID, vehicle_ID, driver_ID, medic1_ID, medic2_ID, location_ID, note, vehicletype) 
-VALUES(2, 'BM02', 50100003, 50100002, null, 1, 'bla bla...', 'RTW(2)');
+--INSERT INTO assigned_vehicle(transport_ID, vehicle_ID, driver_ID, medic1_ID, medic2_ID, location_ID, note, vehicletype)
+--VALUES(1, 'BM01', 50100001, 50100002, null, 1, 'bla bla...', 'RTW(1)');
+--INSERT INTO assigned_vehicle(transport_ID, vehicle_ID, driver_ID, medic1_ID, medic2_ID, location_ID, note, vehicletype) 
+--VALUES(2, 'BM02', 50100003, 50100002, null, 1, 'bla bla...', 'RTW(2)');
 
 --transports
 INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 1);
