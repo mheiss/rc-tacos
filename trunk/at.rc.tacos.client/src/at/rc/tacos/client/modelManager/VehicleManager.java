@@ -21,16 +21,17 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     //the item list
     private List<VehicleDetail> objectList = new ArrayList<VehicleDetail>();
     //the transport manager
-    private final TransportManager transportManager = ModelFactory.getInstance().getTransportList();
+//    private TransportManager transportManager; // = ModelFactory.getInstance().getTransportList();
 
     /**
      * Default class constructor
      */
     public VehicleManager()
     {
+//    	transportManager = ModelFactory.getInstance().getTransportList();
         objectList = new ArrayList<VehicleDetail>();
         //listen to updates from transports to chagen the most important transport status
-        transportManager.addPropertyChangeListener(this);
+//        transportManager.addPropertyChangeListener(this);
     }
 
     /**
@@ -165,42 +166,42 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
      */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()) 
-				|| "TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName())
-				|| "TRANSPORT_ADD".equalsIgnoreCase(evt.getPropertyName())
-				|| "TRANSPORT_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//loop over each vehicle
-	    	for(VehicleDetail detail:objectList)
-	    	{
-	    		ArrayList<Integer> list = new ArrayList<Integer>();
-	    		
-	    		//get the list of transports
-	    		List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
-	    		//simplest calculation comes first ;)
-	    		if(transportList.isEmpty())
-	    		{
-	    			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
-	    			continue;
-	    		}
-	    		//get the most important status of each transport
-	    		for(Transport transport:transportList)
-	    		{
-	    			int mostImportantStatus = transport.getMostImportantStatusMessageOfOneTransport();
-	    			list.add(mostImportantStatus);
-	    		}
-	    		
-	    		//get most important status of one vehicle (from the list)
-    			//for a 'red' status
-    			if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
-    				detail.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
-    			//for a 'yellow' status
-    			else 
-    				detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
-	    			
-	    		//green (30) is for a 'underway'(program status) vehicle not possible	
-	    	}		
-		}	
+	{		 
+//		if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()) 
+//				|| "TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+//				|| "TRANSPORT_ADD".equalsIgnoreCase(evt.getPropertyName())
+//				|| "TRANSPORT_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
+//		{
+//			//loop over each vehicle
+//	    	for(VehicleDetail detail:objectList)
+//	    	{
+//	    		ArrayList<Integer> list = new ArrayList<Integer>();
+//	    		
+//	    		//get the list of transports
+//	    		List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
+//	    		//simplest calculation comes first ;)
+//	    		if(transportList.isEmpty())
+//	    		{
+//	    			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+//	    			continue;
+//	    		}
+//	    		//get the most important status of each transport
+//	    		for(Transport transport:transportList)
+//	    		{
+//	    			int mostImportantStatus = transport.getMostImportantStatusMessageOfOneTransport();
+//	    			list.add(mostImportantStatus);
+//	    		}
+//	    		
+//	    		//get most important status of one vehicle (from the list)
+//    			//for a 'red' status
+//    			if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+//    				detail.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
+//    			//for a 'yellow' status
+//    			else 
+//    				detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
+//	    			
+//	    		//green (30) is for a 'underway'(program status) vehicle not possible	
+//	    	}		
+//		}	
 	}
 }
