@@ -4,6 +4,7 @@ import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.DayInfoDAO;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
+import at.rc.tacos.core.db.dao.DiseaseDAO;
 import at.rc.tacos.core.db.dao.JobDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
@@ -97,5 +98,11 @@ public class DaoFactoryMySql implements DaoFactory
 	public ServiceTypeDAO createServiceTypeDAO() 
 	{
 		return new ServiceTypeDAOMySQL();
+	}
+
+	@Override
+	public DiseaseDAO createDiseaseDAO() 
+	{
+		return new DiseaseDAOMySQL();
 	}
 }
