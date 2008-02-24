@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -137,18 +138,18 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown() throws SQLException
 	{
-		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
-		deleteTable(TransportDAO.TABLE_NAME);
-		deleteTable(MobilePhoneDAO.TABLE_NAME);
-		deleteTable(LocationDAO.TABLE_NAME);
-		deleteTable(CallerDAO.TABLE_NAME);
-		deleteTable(UserLoginDAO.TABLE_NAME);
-		deleteTable(StaffMemberDAO.TABLE_NAME);
-		deleteTable(CompetenceDAO.TABLE_NAME);
-		deleteTable(VehicleDAO.TABLE_NAME);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
+//		deleteTable(TransportDAO.TABLE_NAME);
+//		deleteTable(MobilePhoneDAO.TABLE_NAME);
+//		deleteTable(LocationDAO.TABLE_NAME);
+//		deleteTable(CallerDAO.TABLE_NAME);
+//		deleteTable(UserLoginDAO.TABLE_NAME);
+//		deleteTable(StaffMemberDAO.TABLE_NAME);
+//		deleteTable(CompetenceDAO.TABLE_NAME);
+//		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
@@ -239,6 +240,9 @@ public class TransportDAOMySQLTest extends DBTestBase
 			t1.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 			Transport t2 = transportDAO.getTransportById(transport2.getTransportId());
 			t2.setProgramStatus(IProgramStatus.PROGRAM_STATUS_UNDERWAY);
+			GregorianCalendar cal = new GregorianCalendar();
+			long time = cal.getTimeInMillis();
+			t2.addStatus(1, time);
 			//update them
 			transportDAO.updateTransport(t1);
 			transportDAO.updateTransport(t2);
