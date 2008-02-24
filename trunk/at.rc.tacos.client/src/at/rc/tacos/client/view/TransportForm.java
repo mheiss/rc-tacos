@@ -1715,7 +1715,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
                 	transport.setBackTransport(backTransportPossible);
                 	
-                	Patient patient = new Patient(lastName,firstName);
+                	Patient patient = new Patient(firstName,lastName);
                 	transport.setPatient(patient);
                 	
                 	transport.setAssistantPerson(accompanyingPerson);
