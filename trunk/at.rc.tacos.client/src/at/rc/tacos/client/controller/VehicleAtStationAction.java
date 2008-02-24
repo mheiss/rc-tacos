@@ -9,6 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.TransportManager;
 import at.rc.tacos.client.view.VehicleForm;
 import at.rc.tacos.common.IProgramStatus;
@@ -70,18 +71,18 @@ public class VehicleAtStationAction extends Action implements ITransportStatus, 
 	@Override
 	public void run()
 	{	
-		TransportManager transportManager = new TransportManager();
-		objectList = transportManager.getJournalTransportsByVehicleAndStatusSix(detail.getVehicleName());
-		System.out.println(".:.:.:.:.:VehicleAtStationAction, objectlist(0)-from city in run(): " +objectList.get(0).getFromStreet());
-		//create a timestamp
+		objectList = ModelFactory.getInstance().getTransportList().getJournalTransportsByVehicleAndStatusSix(detail.getVehicleName());
+		//create a timestamp for the transport state S6
 		GregorianCalendar gcal = new GregorianCalendar();
 		long timestamp = gcal.getTimeInMillis();
+		//set the transport status S6 for each to the list given transport and update the transport
 		for(Transport transport : objectList)
 		{
 			transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, timestamp );
 			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 		}
 		
+		//set the vehicle status to green and update the vehicle
 		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
 	}
