@@ -42,6 +42,15 @@ public abstract class ServerListenerAdapter implements IServerListener
     {
         return null;
     }
+    
+    /**
+     * Handles add request for multiple items
+     */
+    @Override
+    public List<AbstractMessage> handleAddAllRequest(List<AbstractMessage> addList) throws DAOException,SQLException
+    {
+    	return null;
+    }
 
    /**
     * Handles listing requests
