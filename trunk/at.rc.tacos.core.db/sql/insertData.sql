@@ -122,11 +122,59 @@ VALUES(null, 2, 50100003, 1, 1, '20071215190000', '20081216070000', null, null, 
 
 --create vehicles
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('BM01', 50100001, 50100002, null, 2, 'RTW(1)', 2, 2, 'notizen zum Fahrzeug', true, false, 10);
+VALUES('Bm02', 50100001, 50100002, null, 2, 'RTW(1)', 2, 2, 'notizen zum Fahrzeug', true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm03', 50100001, 50100002, null, 2, 'RTW(2)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm04', 50100001, 50100002, null, 2, 'KTW(2)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm05', 50100001, 50100002, null, 2, 'RTW(2)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm06', 50100001, 50100002, null, 2, 'RTW(2)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Br07', null, null, null, 2, 'RTW(1)', 6, 6, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm08', 50100001, 50100002, null, 2, 'BKTW(2)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm09', 50100001, 50100002, null, 2, 'KTW(2)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm10', 50100001, 50100002, null, 2, 'BKTW(0)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm14', 50100001, 50100002, null, 2, 'LKW(0)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm15', 50100001, 50100002, null, 2, 'SFZ(0)', 2, 2, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Bm16', 50100001, 50100002, null, 2, 'BKTW(2)', 2, 2, null, true, false, 30);
+
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ka02', 50100001, 50100002, null, 2, 'KTW(2)', 3, 3, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ka04', 50100001, 50100002, null, 2, 'RTW(2)', 3, 3, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ka05', 50100001, 50100002, null, 2, 'RTW(2)', 3, 3, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ka06', 50100001, 50100002, null, 2, 'KTW(2)', 3, 3, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ka07', 50100001, 50100002, null, 2, 'RTW(1)', 3, 3, null, true, false, 30);
+
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Th16', 50100001, 50100002, null, 2, 'RTW(1)', 4, 4, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Th17', 50100001, 50100002, null, 2, 'BKTW(0)', 4, 4, null, true, false, 30);
+
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Tu18', 50100001, 50100002, null, 2, 'RTW(1)', 5, 5, null, true, false, 30);
+
+
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
-VALUES('KA03', 50100003, 50100002, 50100001, 1, 'KTW', 3, 3, 'notizen zum Fahrzeug', true, false, 20);
+VALUES('Ma14', 50100003, 50100002, 50100001, 1, 'RTW(2)', 7, 7, null, true, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ma15', 50100001, 50100002, null, 2, 'RTW(1)', 7, 7, null, true, false, 30);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
-VALUES('MA02', null, null, null, 2, 'RTW(1)', 7, 7, 'notizen zum Fahrzeug', false, false, 30);
+VALUES('NEF', null, null, null, 2, 'NEF', 1, 1, null, false, false, 30);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
+VALUES('KDO', null, null, null, 2, 'KDO', 1, 1, null, false, false, 30);
+
 
 --transport stati
 --INSERT INTO transportstate(transportstate, transport_ID, date) VALUES(1, 1, 20080125220000);
