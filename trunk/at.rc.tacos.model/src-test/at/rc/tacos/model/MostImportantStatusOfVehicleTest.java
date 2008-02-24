@@ -112,7 +112,7 @@ public class MostImportantStatusOfVehicleTest implements IProgramStatus, ITransp
 		if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT))
 				return 10;
 		else if(list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
-			return TRANSPORT_STATUS_OUT_OF_OPERATION_AREA;
+			return 10;
 		//for a 'yellow' status
 		else return 20;
 		
