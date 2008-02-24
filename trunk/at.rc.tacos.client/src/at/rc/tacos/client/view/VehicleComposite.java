@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.client.controller.VehicleAtStationAction;
 import at.rc.tacos.client.controller.VehicleDetachAllStaffMembersAction;
 import at.rc.tacos.client.controller.VehicleEditAction;
 import at.rc.tacos.client.controller.VehicleSetReadyAction;
@@ -56,6 +57,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
     private VehicleDetachAllStaffMembersAction detachAction;
     private VehicleSetReadyAction readyStatus;
     private VehicleSetRepairStatus repairStatus;
+    private VehicleAtStationAction vehicleAtStationAction;
 
     /**
      * Default constructor creating a new car composite
@@ -187,6 +189,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
         detachAction = new VehicleDetachAllStaffMembersAction(vehicle);
         readyStatus = new VehicleSetReadyAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
         repairStatus = new VehicleSetRepairStatus(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
+        vehicleAtStationAction = new VehicleAtStationAction(vehicle);
     }
 
     /**
@@ -211,6 +214,8 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
     {
         manager.add(editAction);
         manager.add(detachAction);
+        manager.add(new Separator());
+        manager.add(vehicleAtStationAction);
         manager.add(new Separator());
         manager.add(readyStatus);
         manager.add(repairStatus);
