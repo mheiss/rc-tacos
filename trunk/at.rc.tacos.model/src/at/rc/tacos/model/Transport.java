@@ -22,9 +22,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	//unique identification string
 	public final static String ID = "transport";
 
-	//Transport stati
+	//Transport numbers
 	public final static int TRANSPORT_CANCLED = -1;
 	public final static int TRANSPORT_FORWARD = -2;
+	public final static int TRANSPORT_NEF = -4;
 	
 	/**
 	 * Indicates an error while operation with the transport DAO
