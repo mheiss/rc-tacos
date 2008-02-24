@@ -1,6 +1,7 @@
 package at.rc.tacos.client.listeners;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelListener;
@@ -20,6 +21,15 @@ public abstract class ClientListenerAdapter implements IModelListener
     public void add(AbstractMessage addMessage)
     {
                 
+    }
+    
+    /**
+     * Add request containint more elements
+     */
+    @Override
+    public void addAll(List<AbstractMessage> addList)
+    {
+    	
     }
 
     /**

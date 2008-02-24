@@ -185,7 +185,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 					"Login Erfolgreich",
 					"Sie haben erfolgreich eine Verbindung zum Server hergestellt");
 			//request data from server
-			ModelFactory.getInstance().queryInitData();
+			ModelFactory.getInstance().initalizeModel();
 			return true;
 		}
 	} 

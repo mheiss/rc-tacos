@@ -21,19 +21,19 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.Activator;
-import at.rc.tacos.client.controller.EditorNewJobAction;
+import at.rc.tacos.client.controller.EditorNewDiseaseAction;
 import at.rc.tacos.client.controller.RefreshViewAction;
-import at.rc.tacos.client.editors.JobEditor;
-import at.rc.tacos.client.editors.JobEditorInput;
+import at.rc.tacos.client.editors.DiseaseEditor;
+import at.rc.tacos.client.editors.DiseaseEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.JobContentProvider;
-import at.rc.tacos.client.providers.JobLabelProvider;
+import at.rc.tacos.client.providers.DiseaseContentProvider;
+import at.rc.tacos.client.providers.DiseaseLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Disease;
 
-public class JobAdminView extends ViewPart implements PropertyChangeListener
+public class DiseaseAdminView extends ViewPart implements PropertyChangeListener
 {
-    public static final String ID = "at.rc.tacos.client.view.admin.jobAdminView";  
+    public static final String ID = "at.rc.tacos.client.view.admin.diseaseAdminView";  
     
     //properties
     private TableViewer viewer;
@@ -43,9 +43,9 @@ public class JobAdminView extends ViewPart implements PropertyChangeListener
     /**
      * Default class constructor
      */
-    public JobAdminView()
+    public DiseaseAdminView()
     {
-    	ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getDiseaseList().addPropertyChangeListener(this);
     }
     
     /**
@@ -54,7 +54,7 @@ public class JobAdminView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this);
     }
 
     /**
@@ -66,7 +66,7 @@ public class JobAdminView extends ViewPart implements PropertyChangeListener
     	//the scrolled form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
-        form.setText("Liste der Verwendungen"); 
+        form.setText("Liste der Erkrankungen"); 
         toolkit.decorateFormHeading(form.getForm());
         GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;
@@ -84,26 +84,26 @@ public class JobAdminView extends ViewPart implements PropertyChangeListener
             @Override
             public void doubleClick(DoubleClickEvent dce) 
             {
-            	//get the selected job
+            	//get the selected disease
                 ISelection selection = viewer.getSelection();
                 Object obj = ((IStructuredSelection) selection).getFirstElement();
-                Job job = (Job)obj;
+                Disease disease = (Disease)obj;
                 //create the editor input and open
-                JobEditorInput input = new JobEditorInput(job,false);
+                DiseaseEditorInput input = new DiseaseEditorInput(disease,false);
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try 
                 {
-                    page.openEditor(input, JobEditor.ID);
+                    page.openEditor(input, DiseaseEditor.ID);
                 } 
                 catch (PartInitException e) 
                 {
-                    Activator.getDefault().log("Failed to open the editor for the job "+job, IStatus.ERROR);
+                    Activator.getDefault().log("Failed to open the editor for the disease "+disease, IStatus.ERROR);
                 }
             }
         });
-        viewer.setContentProvider(new JobContentProvider());
-        viewer.setLabelProvider(new JobLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getJobList().toArray());
+        viewer.setContentProvider(new DiseaseContentProvider());
+        viewer.setLabelProvider(new DiseaseLabelProvider());
+        viewer.setInput(ModelFactory.getInstance().getDiseaseList());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar
@@ -126,10 +126,10 @@ public class JobAdminView extends ViewPart implements PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
 		String event = evt.getPropertyName();
-		if("JOB_ADD".equalsIgnoreCase(event) ||
-				"JOB_REMOVE".equalsIgnoreCase(event) ||
-				"JOB_UPDATE".equalsIgnoreCase(event) ||
-				"JOB_CLEARED".equalsIgnoreCase(event))
+		if("DISEASE_ADD".equalsIgnoreCase(event) ||
+				"DISEASE_REMOVE".equalsIgnoreCase(event) ||
+				"DISEASE_UPDATE".equalsIgnoreCase(event) ||
+				"DISEASE_CLEARED".equalsIgnoreCase(event))
 		{
 			//just refresh the viewer
 			viewer.refresh();
@@ -142,8 +142,8 @@ public class JobAdminView extends ViewPart implements PropertyChangeListener
 	private void createToolBarActions()
 	{
 		//create the action
-		EditorNewJobAction addAction = new EditorNewJobAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
-		RefreshViewAction refreshAction = new RefreshViewAction(Job.ID);
+		EditorNewDiseaseAction addAction = new EditorNewDiseaseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
+		RefreshViewAction refreshAction = new RefreshViewAction(Disease.ID);
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().add(refreshAction);

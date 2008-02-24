@@ -89,8 +89,8 @@ public class CompetenceEditorInput implements IEditorInput
 	}
 
 	/**
-	 * Returns whether or not the job is new.
-	 * @return true if the job is created new
+	 * Returns whether or not the competence is new.
+	 * @return true if the competence is created new
 	 */
 	public boolean isNew()
 	{
