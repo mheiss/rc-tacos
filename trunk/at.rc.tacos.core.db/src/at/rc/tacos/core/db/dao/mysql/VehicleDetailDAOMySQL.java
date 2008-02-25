@@ -71,6 +71,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
 				vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
 				vehicle.setVehicleNotes(rs.getString("v.note"));
+				vehicle.setTransportStatus(rs.getInt("v.transportStatus"));
 				//the mobile phone for the vehicle
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("v.phonenumber_ID"));
@@ -127,6 +128,7 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
 				vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
 				vehicle.setVehicleNotes(rs.getString("v.note"));
+				vehicle.setTransportStatus(rs.getInt("v.transportStatus"));
 
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("v.phonenumber_ID"));
@@ -218,7 +220,8 @@ public class VehicleDetailDAOMySQL implements VehicleDAO
 			query.setString(8, vehicle.getVehicleNotes());
 			query.setBoolean(9, vehicle.isReadyForAction());
 			query.setBoolean(10, vehicle.isOutOfOrder());
-			query.setString(11, vehicle.getVehicleName());
+			query.setInt(11, vehicle.getTransportStatus());
+			query.setString(12, vehicle.getVehicleName());
 			if(query.executeUpdate() == 0)
 				return false;
 			return true;
