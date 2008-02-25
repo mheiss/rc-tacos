@@ -65,6 +65,8 @@ public class TransportListener extends ServerListenerAdapter
 			List<Transport> transportList = transportDao.listRunningTransports();
 			//show the transports in the journal
 			List<Transport> journalList = transportDao.listArchivedTransports(dateStart, dateEnd);
+			System.out.println(MyUtils.timestampToString(dateStart, MyUtils.dateFormat));
+			System.out.println(MyUtils.timestampToString(dateEnd, MyUtils.dateFormat));
 			//check the prebooked
 			if(prebookedList == null)
 			{
