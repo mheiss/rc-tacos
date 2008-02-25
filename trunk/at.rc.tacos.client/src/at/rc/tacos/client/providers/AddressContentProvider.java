@@ -3,7 +3,7 @@ package at.rc.tacos.client.providers;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import at.rc.tacos.model.Address;
+import at.rc.tacos.client.modelManager.ModelFactory;
 
 /**
  * We use the lazy content provider to handle large amount of data.
@@ -11,21 +11,15 @@ import at.rc.tacos.model.Address;
  */
 public class AddressContentProvider implements IStructuredContentProvider
 {
-	//properties
-	private Address[] elements;
+    @Override
+    public Object[] getElements(Object arg0)
+    {
+        return ModelFactory.getInstance().getAddressList().toArray();
+    }
 
-	@Override
-	public Object[] getElements(Object arg0) 
-	{
-		return elements;
-	}
+    @Override
+    public void dispose() { }
 
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) 
-	{
-		this.elements = (Address[]) newInput;
-	}
-	
-	@Override
-	public void dispose() {}
+    @Override
+    public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
 }

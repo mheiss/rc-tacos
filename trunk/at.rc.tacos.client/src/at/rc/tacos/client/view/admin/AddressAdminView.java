@@ -3,30 +3,39 @@ package at.rc.tacos.client.view.admin;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
-
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewAddressAction;
 import at.rc.tacos.client.controller.ImportAddressAction;
@@ -38,6 +47,8 @@ import at.rc.tacos.client.providers.AddressAdminViewFilter;
 import at.rc.tacos.client.providers.AddressContentProvider;
 import at.rc.tacos.client.providers.AddressLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.view.sorterAndTooltip.AddressViewSorter;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Address;
 
 public class AddressAdminView  extends ViewPart implements PropertyChangeListener
@@ -50,6 +61,9 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	private ScrolledForm form;
 	//text fields for the filter
 	private Text zip,city,street;
+	
+	//to apply the filter
+	private ImageHyperlink applyFilter,resetFilter;
 
 	/**
 	 * Default class constructor
@@ -93,47 +107,50 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		//create the input fields
 		final Label labelStreet = toolkit.createLabel(filter, "Straﬂe");
 		street = toolkit.createText(filter, "");
-		street.addModifyListener(new ModifyListener()
-		{
-			@Override
-			public void modifyText(ModifyEvent arg0) 
-			{
-				inputChanged();
-				System.out.println("Change street");
-			}
-		});
 		
 		//the city
 		final Label labelCity = toolkit.createLabel(filter, "Stadt");
 		city = toolkit.createText(filter, "");
-		city.addModifyListener(new ModifyListener()
-		{
-			@Override
-			public void modifyText(ModifyEvent arg0) 
-			{
-				inputChanged();
-				System.out.println("Change city");
-			}
-		});
 
 		//the zip code
 		final Label labelZip = toolkit.createLabel(filter, "GKZ");
 		zip = toolkit.createText(filter, "");
-		zip.addModifyListener(new ModifyListener()
+		
+		//Create the hyperlink to import the data
+		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
+		applyFilter.setText("Adresstabelle filtern");
+		applyFilter.setImage(ImageFactory.getInstance().getRegisteredImage("resource.import"));
+		applyFilter.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
-			public void modifyText(ModifyEvent arg0) 
+			public void linkActivated(HyperlinkEvent e) 
 			{
 				inputChanged();
-				System.out.println("Change zip");
+			}
+		});
+
+		//create the hyperlink to add a new job
+		resetFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
+		resetFilter.setText("Einschr‰nkungen entfernen");
+		resetFilter.setImage(ImageFactory.getInstance().getRegisteredImage("admin.addressAdd"));
+		resetFilter.addHyperlinkListener(new HyperlinkAdapter()
+		{
+			@Override
+			public void linkActivated(HyperlinkEvent e) 
+			{
+				//reset the fields
+				street.setText("");
+				city.setText("");
+				zip.setText("");
+				//apply the filter
+				inputChanged();
 			}
 		});
 
 		//create the section to hold the table
 		Composite tableComp = createSection(form.getBody(), "Filter") ;
-		Table table = new Table(tableComp, SWT.VIRTUAL | SWT.SINGLE | SWT.BORDER);
+		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER);
 		viewer = new TableViewer(table);
-		viewer.setItemCount(1000);
 		viewer.setUseHashlookup(true);
 		viewer.getTable().setLayout(new GridLayout());
 		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -163,7 +180,70 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		viewer.setLabelProvider(new AddressLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getAddressList().toArray());
 		viewer.getTable().setLinesVisible(true);
+		viewer.getTable().setHeaderVisible(true);
 		getViewSite().setSelectionProvider(viewer);
+		
+		//create the columns
+		final TableColumn imageColumn = new TableColumn(table, SWT.NONE);
+		imageColumn.setToolTipText("");
+		imageColumn.setWidth(30);
+		imageColumn.setText("");
+		
+		final TableColumn zipColumn = new TableColumn(table, SWT.NONE);
+		zipColumn.setToolTipText("Gemeindekennzeichen");
+		zipColumn.setWidth(60);
+		zipColumn.setText("GKZ");
+
+		final TableColumn cityColumn = new TableColumn(table, SWT.NONE);
+		cityColumn.setToolTipText("Name der Stadt");
+		cityColumn.setWidth(180);
+		cityColumn.setText("Stadt");
+
+		final TableColumn streetColumn = new TableColumn(table, SWT.NONE);
+		streetColumn.setToolTipText("Name der Straﬂe");
+		streetColumn.setWidth(180);
+		streetColumn.setText("Straﬂe");
+		
+		//make the columns sortable
+		Listener sortListener = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewer.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewer.getTable().getSortDirection();
+				//revert the sortorder if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewer.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == zipColumn) 
+					sortIdentifier = AddressViewSorter.ZIP_SORTER;
+				if (currentColumn == cityColumn) 
+					sortIdentifier = AddressViewSorter.CITY_SORTER;
+				if (currentColumn == streetColumn) 
+					sortIdentifier = AddressViewSorter.STREET_SORTER;
+				//apply the filter
+				viewer.getTable().setSortDirection(dir);
+				viewer.setSorter(new AddressViewSorter(sortIdentifier,dir));
+			}
+		};
+
+		//attach the listener
+		zipColumn.addListener(SWT.Selection, sortListener);
+		cityColumn.addListener(SWT.Selection, sortListener);
+		streetColumn.addListener(SWT.Selection, sortListener);
 
 		//add actions to the toolbar
 		createToolBarActions();
@@ -221,7 +301,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 				"ADDRESS_ADD_ALL".equalsIgnoreCase(event))
 		{
 			//just refresh the viewer
-			viewer.getInput();
+			viewer.refresh();
 		}
 	}
 
@@ -277,13 +357,28 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	 */
 	public void inputChanged()
 	{
-		//get the values and create the filter
-		viewer.getTable().setRedraw(false);
-		viewer.resetFilters();
-		//create new filter
-		AddressAdminViewFilter filter = new AddressAdminViewFilter(street.getText(),city.getText(),zip.getText());
-		//apply
-		viewer.addFilter(filter);
-		viewer.getTable().setRedraw(true);
+		WorkspaceJob job = new WorkspaceJob("AddressMonitor")
+		{
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor arg0) throws CoreException 
+			{
+				//get the values and create the filter
+				viewer.resetFilters();
+				//create new filter and apply
+				AddressAdminViewFilter filter = new AddressAdminViewFilter(street.getText(),city.getText(),zip.getText());
+				viewer.addFilter(filter);
+				return Status.OK_STATUS;
+			}
+		};
+		job.addJobChangeListener(new JobChangeAdapter() 
+		{
+			public void done(IJobChangeEvent event) 
+			{
+				if (!event.getResult().isOK())
+					Activator.getDefault().log("Failed to filter the addresses",IStatus.ERROR);
+			}
+		});
+		job.setUser(true);
+		job.schedule();
 	}
 }

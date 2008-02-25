@@ -39,7 +39,9 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 			{
 				//add the item if we do not have it
 				if(!objectList.contains(transport))
+				{
 					objectList.add(transport);
+				}
 				//notify the view
 				firePropertyChange("TRANSPORT_ADD", null, transport);
 			}
@@ -102,7 +104,6 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 						iter.remove();
 					}
 				}
-				objectList.clear();
 				firePropertyChange("TRANSPORT_CLEARED",null,null);
 			}
 		}); 
@@ -145,7 +146,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	{
 		return displayedDate;
 	}
-	
+
 	/**
 	 * Returns a list of all transports that are assigned to this vehicle.
 	 * @param vehicleName the name of the vehicle to list the transports
@@ -157,7 +158,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		List<Transport> filteredList = new ArrayList<Transport>();
 		//loop
 		for(Transport transport:objectList)
-		{
+		{			
 			//get the vehicle
 			VehicleDetail assignedVehicle = transport.getVehicleDetail();
 			//assert valid
@@ -169,7 +170,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		}
 		return filteredList;
 	}
-	
+
 	/**
 	 * Returns a list of the transports with the program status 'journal' which are assigned
 	 * to this vehicle and have no set transport status S6 yet.
@@ -180,7 +181,6 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	{
 		//the result list
 		List<Transport> filteredList = new ArrayList<Transport>();
-		System.out.println("TransportManager, getJournalTransportsBy......, objectlist size: " +objectList.size());
 		//loop
 		for(Transport transport:objectList)
 		{
@@ -199,5 +199,3 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		return filteredList;
 	}
 }
-
-

@@ -20,9 +20,3 @@ BUG FIXING:
 --> Installanleitung
 
 --> User Manual
-
---> NEF: implementieren. Wenn Priorität A soll beim Zuweisen des Fahrzeuges automatisch der Transport verdoppelt und einem Transport das NEF zugewiesen werden.
-
---> zuständige Ortsstelle: wenn man im Formular "St. Marein" auswählt, wird auf der View "Thörl" draus. Neuerliches Öffnen des Formulars: St. Marein - also passt.
-
---> Vorname und Nachname werden verdreht - Transportformular Eingabe, dann Transport bearbeiten- verdreht.

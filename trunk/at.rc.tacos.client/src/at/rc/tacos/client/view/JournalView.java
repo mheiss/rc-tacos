@@ -2,6 +2,8 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Calendar;
+
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -34,6 +36,7 @@ import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
+import at.rc.tacos.client.providers.TransportDateFilter;
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
@@ -41,6 +44,7 @@ import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.common.IProgramStatus;
 
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.util.MyUtils;
 
 public class JournalView extends ViewPart implements PropertyChangeListener, IProgramStatus
 {
@@ -372,5 +376,16 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		{
 			this.viewer.refresh();
 		}	
+		//listen to changes of the date to set up the filter
+		if("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the new value
+			Calendar filterCal = (Calendar)evt.getNewValue();
+			viewer.resetFilters();
+			viewer.addFilter(new TransportViewFilter(PROGRAM_STATUS_JOURNAL));
+			viewer.addFilter(new TransportDateFilter(filterCal));
+			viewer.refresh();
+			System.out.println("Change date to: "+MyUtils.timestampToString(filterCal.getTimeInMillis(), MyUtils.dateFormat));
+		}
 	}
 }
