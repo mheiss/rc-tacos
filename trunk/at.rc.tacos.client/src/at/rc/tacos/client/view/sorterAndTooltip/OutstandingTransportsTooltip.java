@@ -67,10 +67,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		Composite composite = createToolTipContentAreaComposite(parent);	
 
 		String alarming = "";
-
-
-		//notifying
-		System.out.println("++++++++++++++OutstandingTransportsTooltip,, createToolTipContentArea, police: " +transport.isPoliceAlarming());
+		
 		if (transport.isFirebrigadeAlarming())
 			alarming = "Bergrettung";
 		if (transport.isBrkdtAlarming())
@@ -85,7 +82,6 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 			alarming = alarming +" Notarzthubschrauber";
 		if (transport.isPoliceAlarming())
 			alarming = alarming +" Polizei";
-
 
 		//directness
 		int direction = transport.getDirection();
@@ -112,15 +108,11 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		}
 		else directness = "Bruck"; //default
 
-
-
 		Image image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
 		+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
 		+transport.getToStreet() +"/" +transport.getToCity();
 		addIconAndLabel(composite, image, title);
-
-
 
 		//the notes
 		if(transport.hasNotes())

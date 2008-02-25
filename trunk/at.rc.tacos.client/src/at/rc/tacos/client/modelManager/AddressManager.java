@@ -1,10 +1,18 @@
 package at.rc.tacos.client.modelManager;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.client.Activator;
 import at.rc.tacos.model.Address;
 
 /**
@@ -46,9 +54,14 @@ public class AddressManager extends PropertyManager
      * Loads the current list of all addresses from the file
      */
     private void doLoad()
-    {
+    {	
+    	//cleare the list
     	removeAllElements();
-    	//TODO: load the list
+    	//load the file
+    	URL fullPathString = FileLocator.find(Platform.getBundle(Activator.PLUGIN_ID), new Path("data/addressData.csv"),null);
+    	
+    	System.out.println(fullPathString.getFile());
+    	Activator.getDefault().log("File: "+fullPathString.getFile(), IStatus.INFO);
     }
     
     /**
@@ -75,7 +88,7 @@ public class AddressManager extends PropertyManager
      */
     public void addAll(final List<Address> addressList)
     {
-    	Display.getDefault().syncExec(new Runnable ()    
+    	Display.getDefault().asyncExec(new Runnable()
         {
             public void run ()       
             {

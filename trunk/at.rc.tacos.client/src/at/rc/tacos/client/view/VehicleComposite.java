@@ -36,277 +36,285 @@ import at.rc.tacos.model.VehicleDetail;
  */
 public class VehicleComposite extends Composite implements PropertyChangeListener
 {
-    //the parent composite
-    private VehicleDetail vehicle;
+	//the parent composite
+	private VehicleDetail vehicle;
 
-    //the labels to display
-    private Label vehicleNameLabel;
-    private Label vehicleTypeLabel;
-    private Label driverLabel;
-    private Label medicILabel;
-    private Label medicIILabel;
-    private Label mobilePhoneLabel;
-    private Label notesLabel;
-    private Label stationLabel;
-    private Label readyLabel;
-    private Label repairLabel;
-    private Label statusLabel;
+	//the labels to display
+	private Label vehicleNameLabel;
+	private Label vehicleTypeLabel;
+	private Label driverLabel;
+	private Label medicILabel;
+	private Label medicIILabel;
+	private Label mobilePhoneLabel;
+	private Label notesLabel;
+	private Label stationLabel;
+	private Label readyLabel;
+	private Label repairLabel;
+	private Label statusLabel;
 
-    //the actions
-    private VehicleEditAction editAction;
-    private VehicleDetachAllStaffMembersAction detachAction;
-    private VehicleSetReadyAction readyStatus;
-    private VehicleSetRepairStatus repairStatus;
-    private VehicleAtStationAction vehicleAtStationAction;
+	//the actions
+	private VehicleEditAction editAction;
+	private VehicleDetachAllStaffMembersAction detachAction;
+	private VehicleSetReadyAction readyStatus;
+	private VehicleSetRepairStatus repairStatus;
+	private VehicleAtStationAction vehicleAtStationAction;
 
-    /**
-     * Default constructor creating a new car composite
-     * @param parent the parent control 
-     * @param vehicle the vehicle data to use
-     */
-    public VehicleComposite(Composite parent, VehicleDetail vehicle)
-    {
-        //create the composite
-        super(parent,SWT.NONE);
-        this.vehicle = vehicle;
-        
-        //store the vehicle
-        setData(vehicle);
+	/**
+	 * Default constructor creating a new car composite
+	 * @param parent the parent control 
+	 * @param vehicle the vehicle data to use
+	 */
+	public VehicleComposite(Composite parent, VehicleDetail vehicle)
+	{
+		//create the composite
+		super(parent,SWT.NONE);
+		this.vehicle = vehicle;
 
-        //initalize the components
-        initialize();
+		//store the vehicle
+		setData(vehicle);
 
-        vehicle.updateImages();
-        bindValues();
+		//initalize the components
+		initialize();
 
-        //context menue
-        makeActions();
-        hookContextMenu();
+		vehicle.updateImages();
+		bindValues();
 
-        ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
-    }
+		//context menue
+		makeActions();
+		hookContextMenu();
 
-    /**
-     * Cleanup
-     */
-    @Override
-    public void dispose()
-    {
-        super.dispose();
-        ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
-    }
+		ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
+	}
 
-    /**
-     * Creates and initializes the components
-     */
-    private void initialize()
-    {
-        //the layout for the composite
-        setLayout(new FillLayout(SWT.VERTICAL));
+	/**
+	 * Cleanup
+	 */
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
+	}
 
-        //top composite (name of the ambulance, type of the ambulance)
-        final Composite compositeCarTop = new Composite(this,SWT.NONE);
-        compositeCarTop.setLayout(new FillLayout());
-        // .. name of the ambulance
-        vehicleNameLabel = new Label(compositeCarTop, SWT.NONE);
-        vehicleNameLabel.setForeground(Util.getColor(0, 0, 128));
-        vehicleNameLabel.setFont(new Font(null,"Arial", 18, SWT.BOLD));
-        vehicleNameLabel.setBackground(Util.getColor(209, 229, 249));
+	/**
+	 * Creates and initializes the components
+	 */
+	private void initialize()
+	{
+		//the layout for the composite
+		setLayout(new FillLayout(SWT.VERTICAL));
 
-        // .. type of the ambulance
-        final Composite compositeCarType = new Composite(compositeCarTop, SWT.NONE);
-        compositeCarType.setLayout(new FormLayout());
-        compositeCarType.setBackground(Util.getColor(209, 229, 249));
+		//top composite (name of the ambulance, type of the ambulance)
+		final Composite compositeCarTop = new Composite(this,SWT.NONE);
+		compositeCarTop.setLayout(new FillLayout());
+		// .. name of the ambulance
+		vehicleNameLabel = new Label(compositeCarTop, SWT.NONE);
+		vehicleNameLabel.setForeground(Util.getColor(0, 0, 128));
+		vehicleNameLabel.setFont(new Font(null,"Arial", 18, SWT.BOLD));
+		vehicleNameLabel.setBackground(Util.getColor(209, 229, 249));
 
-        vehicleTypeLabel = new Label(compositeCarType, SWT.CENTER);
+		// .. type of the ambulance
+		final Composite compositeCarType = new Composite(compositeCarTop, SWT.NONE);
+		compositeCarType.setLayout(new FormLayout());
+		compositeCarType.setBackground(Util.getColor(209, 229, 249));
 
-        final FormData fd_label = new FormData();
-        fd_label.bottom = new FormAttachment(0, 15);
-        fd_label.top = new FormAttachment(0, 0);
-        fd_label.right = new FormAttachment(0, 68);
-        fd_label.left = new FormAttachment(0, 15);
-        vehicleTypeLabel.setLayoutData(fd_label);
-        vehicleTypeLabel.setForeground(Util.getColor(255, 255, 255));
-        vehicleTypeLabel.setFont(new Font(null,"Arial", 10, SWT.BOLD));
-        vehicleTypeLabel.setBackground(Util.getColor(228, 236, 238));
+		vehicleTypeLabel = new Label(compositeCarType, SWT.CENTER);
 
-        //bottom composite (icons, staff of the ambulance)
-        final Composite compositeCarBottom = new Composite(this, SWT.NONE);
-        compositeCarBottom.setLayout(new FillLayout(SWT.VERTICAL));
+		final FormData fd_label = new FormData();
+		fd_label.bottom = new FormAttachment(0, 15);
+		fd_label.top = new FormAttachment(0, 0);
+		fd_label.right = new FormAttachment(0, 68);
+		fd_label.left = new FormAttachment(0, 15);
+		vehicleTypeLabel.setLayoutData(fd_label);
+		vehicleTypeLabel.setForeground(Util.getColor(255, 255, 255));
+		vehicleTypeLabel.setFont(new Font(null,"Arial", 10, SWT.BOLD));
+		vehicleTypeLabel.setBackground(Util.getColor(228, 236, 238));
 
-        final Composite compositeCarIcons = new Composite(compositeCarBottom, SWT.NONE);
-        compositeCarIcons.setLayout(new FillLayout());
+		//bottom composite (icons, staff of the ambulance)
+		final Composite compositeCarBottom = new Composite(this, SWT.NONE);
+		compositeCarBottom.setLayout(new FillLayout(SWT.VERTICAL));
 
-        // .. icons
-        readyLabel = new Label(compositeCarIcons, SWT.NONE);
-        readyLabel.setBackground(Util.getColor(209, 229, 249));
+		final Composite compositeCarIcons = new Composite(compositeCarBottom, SWT.NONE);
+		compositeCarIcons.setLayout(new FillLayout());
 
-        mobilePhoneLabel = new Label(compositeCarIcons, SWT.NONE);
-        mobilePhoneLabel.setBackground(Util.getColor(209, 229, 249));
+		// .. icons
+		readyLabel = new Label(compositeCarIcons, SWT.NONE);
+		readyLabel.setBackground(Util.getColor(209, 229, 249));
 
-        stationLabel = new Label(compositeCarIcons, SWT.NONE);
-        stationLabel.setBackground(Util.getColor(209, 229, 249));
+		mobilePhoneLabel = new Label(compositeCarIcons, SWT.NONE);
+		mobilePhoneLabel.setBackground(Util.getColor(209, 229, 249));
 
-        repairLabel = new Label(compositeCarIcons, SWT.NONE);
-        repairLabel.setBackground(Util.getColor(209, 229, 249));
+		stationLabel = new Label(compositeCarIcons, SWT.NONE);
+		stationLabel.setBackground(Util.getColor(209, 229, 249));
 
-        notesLabel = new Label(compositeCarIcons, SWT.NONE);
-        notesLabel.setBackground(Util.getColor(209, 229, 249));
+		repairLabel = new Label(compositeCarIcons, SWT.NONE);
+		repairLabel.setBackground(Util.getColor(209, 229, 249));
 
-        statusLabel = new Label(compositeCarIcons, SWT.NONE);
-        statusLabel.setBackground(Util.getColor(209, 229, 249));
+		notesLabel = new Label(compositeCarIcons, SWT.NONE);
+		notesLabel.setBackground(Util.getColor(209, 229, 249));
 
-        // .. staff
-        final Composite compositeCarStaff = new Composite(compositeCarBottom, SWT.NONE);
-        compositeCarStaff.setLayout(new FillLayout());
+		statusLabel = new Label(compositeCarIcons, SWT.NONE);
+		statusLabel.setBackground(Util.getColor(209, 229, 249));
 
-        driverLabel = new Label(compositeCarStaff, SWT.NONE);
-        driverLabel.setForeground(Util.getColor(0, 0, 102));
-        driverLabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
-        driverLabel.setBackground(Util.getColor(209, 229, 249));
+		// .. staff
+		final Composite compositeCarStaff = new Composite(compositeCarBottom, SWT.NONE);
+		compositeCarStaff.setLayout(new FillLayout());
 
-        medicILabel = new Label(compositeCarStaff, SWT.NONE);
-        medicILabel.setForeground(Util.getColor(0, 0, 102));
-        medicILabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
-        medicILabel.setBackground(Util.getColor(209, 229, 249));
+		driverLabel = new Label(compositeCarStaff, SWT.NONE);
+		driverLabel.setForeground(Util.getColor(0, 0, 102));
+		driverLabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
+		driverLabel.setBackground(Util.getColor(209, 229, 249));
 
-        medicIILabel = new Label(compositeCarStaff, SWT.NONE);
-        medicIILabel.setForeground(Util.getColor(0, 0, 102));
-        medicIILabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
-        medicIILabel.setBackground(Util.getColor(209, 229, 249));
+		medicILabel = new Label(compositeCarStaff, SWT.NONE);
+		medicILabel.setForeground(Util.getColor(0, 0, 102));
+		medicILabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
+		medicILabel.setBackground(Util.getColor(209, 229, 249));
 
-        //create the actions
-        makeActions();
-        hookContextMenu();
-    }
+		medicIILabel = new Label(compositeCarStaff, SWT.NONE);
+		medicIILabel.setForeground(Util.getColor(0, 0, 102));
+		medicIILabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
+		medicIILabel.setBackground(Util.getColor(209, 229, 249));
 
-    /**
-     * Creats and initializes all actions
-     */
-    private void makeActions()
-    {
-        editAction = new VehicleEditAction(vehicle);
-        detachAction = new VehicleDetachAllStaffMembersAction(vehicle);
-        readyStatus = new VehicleSetReadyAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
-        repairStatus = new VehicleSetRepairStatus(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
-        vehicleAtStationAction = new VehicleAtStationAction(vehicle);
-    }
+		//create the actions
+		makeActions();
+		hookContextMenu();
+	}
 
-    /**
-     * Creates and hooks the context menue
-     */
-    private void hookContextMenu()
-    {
-        MenuManager menuManager = new MenuManager("#PopupMenu");
-        menuManager.setRemoveAllWhenShown(true);
-        menuManager.addMenuListener(new IMenuListener() 
-        {
-            public void menuAboutToShow(IMenuManager manager) 
-            {
-                fillContextMenu(manager);
-            }
-        });
-        Menu menu = menuManager.createContextMenu(vehicleNameLabel);
-        vehicleNameLabel.setMenu(menu);
-    }
+	/**
+	 * Creats and initializes all actions
+	 */
+	private void makeActions()
+	{
+		editAction = new VehicleEditAction(vehicle);
+		detachAction = new VehicleDetachAllStaffMembersAction(vehicle);
+		readyStatus = new VehicleSetReadyAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
+		repairStatus = new VehicleSetRepairStatus(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
+		vehicleAtStationAction = new VehicleAtStationAction(vehicle);
+	}
 
-    private void fillContextMenu(IMenuManager manager)
-    {
-        manager.add(editAction);
-        manager.add(detachAction);
-        manager.add(new Separator());
-        manager.add(vehicleAtStationAction);
-        manager.add(new Separator());
-        manager.add(readyStatus);
-        manager.add(repairStatus);
-        
-        //enable or disable the actions
-        if(vehicle.isReadyForAction())
-            readyStatus.setEnabled(false);
-        else
-            readyStatus.setEnabled(true);
-        if(vehicle.isOutOfOrder())
-            repairStatus.setEnabled(false);
-        else 
-            repairStatus.setEnabled(true);
-    }
+	/**
+	 * Creates and hooks the context menue
+	 */
+	private void hookContextMenu()
+	{
+		MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() 
+		{
+			public void menuAboutToShow(IMenuManager manager) 
+			{
+				fillContextMenu(manager);
+			}
+		});
+		Menu menu = menuManager.createContextMenu(vehicleNameLabel);
+		vehicleNameLabel.setMenu(menu);
+	}
 
-    /**
-     * Binds the values form the model to the labels and text fields.
-     */
-    private void bindValues()
-    {
-        //create a new databinding context
-        DataBindingContext bindingContext = new DataBindingContext();
+	private void fillContextMenu(IMenuManager manager)
+	{
+		manager.add(editAction);
+		manager.add(detachAction);
+		manager.add(new Separator());
+		manager.add(vehicleAtStationAction);
+		manager.add(new Separator());
+		manager.add(readyStatus);
+		manager.add(repairStatus);
 
-        //bind the name of the vehicle
-        bindingContext.bindValue(
-                SWTObservables.observeText(vehicleNameLabel), 
-                BeansObservables.observeValue(vehicle, "vehicleName"), null, null);
-        //bind the type of the vehicle
-        bindingContext.bindValue(
-                SWTObservables.observeText(vehicleTypeLabel), 
-                BeansObservables.observeValue(vehicle, "vehicleType"), null, null);
-        //bind the name of the driver
-        if(vehicle.getDriver() != null)
-        {
-            bindingContext.bindValue(
-                    SWTObservables.observeText(driverLabel), 
-                    BeansObservables.observeValue(vehicle.getDriver(), "userName"), null, null);
-        }
-        else
-            driverLabel.setText("");
-        //bind the name of the medic
-        if(vehicle.getFirstParamedic() != null)
-        {
-            bindingContext.bindValue(
-                    SWTObservables.observeText(medicILabel), 
-                    BeansObservables.observeValue(vehicle.getFirstParamedic(), "userName"), null, null);
-        }
-        else
-            medicILabel.setText("");
-        //bind the name of the second medic
-        if(vehicle.getSecondParamedic() != null)
-        {
-            bindingContext.bindValue(
-                    SWTObservables.observeText(medicIILabel), 
-                    BeansObservables.observeValue(vehicle.getSecondParamedic(), "userName"), null, null);
-        }
-        else
-            medicIILabel.setText("");
-        //bind the notes image label
-        bindingContext.bindValue(
-                new MyImageLabelObserver(notesLabel), 
-                BeansObservables.observeValue(vehicle, "vehicleNotesImage"), null, null);
-        //bind the images
-        bindingContext.bindValue(
-                new MyImageLabelObserver(mobilePhoneLabel), 
-                BeansObservables.observeValue(vehicle, "mobilePhoneImage"), null, null);
-        //bind the images
-        bindingContext.bindValue(
-                new MyImageLabelObserver(stationLabel), 
-                BeansObservables.observeValue(vehicle, "stationImage"), null, null);
-        //bind the images
-        bindingContext.bindValue(
-                new MyImageLabelObserver(readyLabel), 
-                BeansObservables.observeValue(vehicle, "readyForActionImage"), null, null);
-        //bind the images
-        bindingContext.bindValue(
-                new MyImageLabelObserver(repairLabel), 
-                BeansObservables.observeValue(vehicle, "outOfOrderImage"), null, null);
-        //bind the images
-        bindingContext.bindValue(
-                new MyImageLabelObserver(statusLabel), 
-                BeansObservables.observeValue(vehicle, "transportStatusImage"), null, null);
-    }
+		//enable or disable the actions
+		if(vehicle.isReadyForAction())
+			readyStatus.setEnabled(false);
+		else
+			readyStatus.setEnabled(true);
+		if(vehicle.isOutOfOrder())
+			repairStatus.setEnabled(false);
+		else 
+			repairStatus.setEnabled(true);
+	}
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) 
-    {        
-        if("VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
-        {
-            vehicle.updateImages();
-            bindValues();
-        }
-    }
+	/**
+	 * Binds the values form the model to the labels and text fields.
+	 */
+	private void bindValues()
+	{
+		//create a new databinding context
+		DataBindingContext bindingContext = new DataBindingContext();
+
+		//bind the name of the vehicle
+		bindingContext.bindValue(
+				SWTObservables.observeText(vehicleNameLabel), 
+				BeansObservables.observeValue(vehicle, "vehicleName"), null, null);
+		//bind the type of the vehicle
+		bindingContext.bindValue(
+				SWTObservables.observeText(vehicleTypeLabel), 
+				BeansObservables.observeValue(vehicle, "vehicleType"), null, null);
+		//bind the name of the driver
+		if(vehicle.getDriver() != null)
+		{
+			bindingContext.bindValue(
+					SWTObservables.observeText(driverLabel), 
+					BeansObservables.observeValue(vehicle.getDriver(), "userName"), null, null);
+		}
+		else
+			driverLabel.setText("");
+		//bind the name of the medic
+		if(vehicle.getFirstParamedic() != null)
+		{
+			bindingContext.bindValue(
+					SWTObservables.observeText(medicILabel), 
+					BeansObservables.observeValue(vehicle.getFirstParamedic(), "userName"), null, null);
+		}
+		else
+			medicILabel.setText("");
+		//bind the name of the second medic
+		if(vehicle.getSecondParamedic() != null)
+		{
+			bindingContext.bindValue(
+					SWTObservables.observeText(medicIILabel), 
+					BeansObservables.observeValue(vehicle.getSecondParamedic(), "userName"), null, null);
+		}
+		else
+			medicIILabel.setText("");
+		//bind the notes image label
+		bindingContext.bindValue(
+				new MyImageLabelObserver(notesLabel), 
+				BeansObservables.observeValue(vehicle, "vehicleNotesImage"), null, null);
+		//bind the images
+		bindingContext.bindValue(
+				new MyImageLabelObserver(mobilePhoneLabel), 
+				BeansObservables.observeValue(vehicle, "mobilePhoneImage"), null, null);
+		//bind the images
+		bindingContext.bindValue(
+				new MyImageLabelObserver(stationLabel), 
+				BeansObservables.observeValue(vehicle, "stationImage"), null, null);
+		//bind the images
+		bindingContext.bindValue(
+				new MyImageLabelObserver(readyLabel), 
+				BeansObservables.observeValue(vehicle, "readyForActionImage"), null, null);
+		//bind the images
+		bindingContext.bindValue(
+				new MyImageLabelObserver(repairLabel), 
+				BeansObservables.observeValue(vehicle, "outOfOrderImage"), null, null);
+		//bind the images
+		bindingContext.bindValue(
+				new MyImageLabelObserver(statusLabel), 
+				BeansObservables.observeValue(vehicle, "transportStatusImage"), null, null);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) 
+	{        
+		if("VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the updated vehicle
+			VehicleDetail updatedVehicle = (VehicleDetail)evt.getNewValue();
+			//check the vehicle
+			if(vehicle.equals(updatedVehicle))
+			{
+				this.vehicle = updatedVehicle;
+				vehicle.updateImages();
+				bindValues();  
+			}
+
+		}
+	}
 }

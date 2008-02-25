@@ -257,13 +257,13 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 		section.setDescription(description);
 		section.setExpanded(false);
 		section.setLayout(new GridLayout());
-		GridData data = new GridData();
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = GridData.GRAB_HORIZONTAL;
 		section.setLayoutData(data);
 		//the content of the section
 		Composite client = toolkit.createComposite(section,SWT.WRAP);
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 4;
+		layout.numColumns = 5;
 		client.setLayout(layout);
 		//add the client to the section
 		section.setClient(client);

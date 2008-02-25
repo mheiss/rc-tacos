@@ -39,12 +39,13 @@ public class PersonalViewSorter extends ViewerSorter
     
     /**
      * Compares the given object and returns the result of the comparator
-     * @param viewer the viewer containg the data
+     * @param viewer the viewer containing the data
      * @param object1 the first object to compare
-     * @param object2 the second object to compare+
+     * @param object2 the second object to compare
      * @return the result of the comparation 
      */
-    public int compare(Viewer viewer, Object object1, Object object2) {
+    public int compare(Viewer viewer, Object object1, Object object2) 
+    {
         int returnValue = 0;
         
         //cast to a roster entry
