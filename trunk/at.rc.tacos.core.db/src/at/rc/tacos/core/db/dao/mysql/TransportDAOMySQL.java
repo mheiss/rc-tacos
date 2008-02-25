@@ -478,8 +478,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		try
 		{
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.archivedTransports"));
-			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDateTime));
-			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDateTime));
+			query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDate));
+			query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDate));
 			query.setInt(3, PROGRAM_STATUS_JOURNAL);
 			final ResultSet rs = query.executeQuery();
 			List<Transport> transports = new ArrayList<Transport>();
