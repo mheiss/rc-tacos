@@ -58,10 +58,6 @@ public class AddressManager extends PropertyManager
     	//cleare the list
     	removeAllElements();
     	//load the file
-    	URL fullPathString = FileLocator.find(Platform.getBundle(Activator.PLUGIN_ID), new Path("data/addressData.csv"),null);
-    	
-    	System.out.println(fullPathString.getFile());
-    	Activator.getDefault().log("File: "+fullPathString.getFile(), IStatus.INFO);
     }
     
     /**
