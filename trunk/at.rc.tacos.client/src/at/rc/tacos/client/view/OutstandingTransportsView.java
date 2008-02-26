@@ -343,6 +343,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
 				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{ 
+			this.hookContextMenu();
 			this.viewerOffTrans.refresh();
 		}
 	}
