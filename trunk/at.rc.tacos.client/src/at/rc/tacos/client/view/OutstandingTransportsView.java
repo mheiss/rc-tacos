@@ -111,6 +111,8 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		
 		viewerOffTrans.addSelectionChangedListener(new ISelectionChangedListener() 
 		{
+			
+			
 			public void selectionChanged(SelectionChangedEvent event) 
 			{
 				TableItem[] selection = viewerOffTrans.getTable().getSelection();
@@ -119,6 +121,79 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 					Rectangle bounds = selection[0].getBounds();
 					tooltip.show(new Point(bounds.x, bounds.y));
 				}
+				
+				//TODO
+				this.makeActions();
+				this.hookContextMenu();
+			}
+			/**
+			 * Creates the needed actions
+			 */
+			public void makeActions()
+			{
+				forwardTransportAction = new ForwardTransportAction(viewerOffTrans);
+				editTransportAction = new EditTransportAction(viewerOffTrans, "outstanding");
+				cancelTransportAction = new CancelTransportAction(viewerOffTrans);
+				copyTransportAction = new CopyTransportAction(viewerOffTrans);
+				//get the list of all vehicle with the status ready for action
+				List<VehicleDetail> readyVehicles = ModelFactory.getInstance().getVehicleList().getReadyVehicleList();
+				//loop and create the actions
+				actionList.clear();
+				for (VehicleDetail veh : readyVehicles)
+				{
+					AssignCarAction action = new AssignCarAction(viewerOffTrans, veh);
+					actionList.add(action);
+				}
+			}
+			
+			/**
+			 * Creates the context menu
+			 */
+			private void hookContextMenu() 
+			{
+				MenuManager menuManager = new MenuManager("#OutstandingPopupMenu");
+				menuManager.setRemoveAllWhenShown(true);
+				menuManager.addMenuListener(new IMenuListener() {
+					public void menuAboutToShow(IMenuManager manager) {
+						fillContextMenu(manager);
+					}
+				});
+				Menu menu = menuManager.createContextMenu(viewerOffTrans.getControl());
+				viewerOffTrans.getControl().setMenu(menu);
+				getSite().registerContextMenu(menuManager, viewerOffTrans);
+			}
+			
+			/**
+			 * Fills the context menu with the actions
+			 */
+			private void fillContextMenu(IMenuManager manager)
+			{
+				//get the selected object
+				final Object firstSelectedObject = ((IStructuredSelection) viewerOffTrans.getSelection()).getFirstElement();
+					
+				//cast to a RosterEntry
+				Transport transport = (Transport)firstSelectedObject;
+				
+				if(transport == null)
+					return;
+				
+				//submenu for the available vehicles
+				MenuManager menuManagerSub = new MenuManager("Fahrzeug zuweisen");
+
+				//add the actions
+				manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+				manager.add(menuManagerSub);
+				for(AssignCarAction ac : actionList)
+				{
+					menuManagerSub.add(ac);
+				}
+				
+				manager.add(new Separator());
+				manager.add(editTransportAction);
+				manager.add(cancelTransportAction);
+				manager.add(new Separator());
+				manager.add(forwardTransportAction);
+				manager.add(copyTransportAction);
 			}
 		});  
 		
@@ -254,82 +329,12 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		tOffeneTransporte.addListener(SWT.Selection, sortListener);
 		erkrankungVerletzungOffeneTransporte.addListener(SWT.Selection, sortListener);
 		
-		makeActions();
-		hookContextMenu();
-		
 		viewerOffTrans.resetFilters();
 		//apply the filter to show only outstanding transports
 		viewerOffTrans.addFilter(new TransportViewFilter(PROGRAM_STATUS_OUTSTANDING));
 		viewerOffTrans.refresh();
 	}
-	
-	/**
-	 * Creates the needed actions
-	 */
-	private void makeActions()
-	{
-		forwardTransportAction = new ForwardTransportAction(viewerOffTrans);
-		editTransportAction = new EditTransportAction(viewerOffTrans, "outstanding");
-		cancelTransportAction = new CancelTransportAction(viewerOffTrans);
-		copyTransportAction = new CopyTransportAction(viewerOffTrans);
-		//get the list of all vehicle with the status ready for action
-		List<VehicleDetail> readyVehicles = ModelFactory.getInstance().getVehicleList().getReadyVehicleList();
-		//loop and create the actions
-		for (VehicleDetail veh : readyVehicles)
-		{
-			AssignCarAction action = new AssignCarAction(viewerOffTrans, veh);
-			actionList.add(action);
-		}
-	}
-	
-	/**
-	 * Creates the context menu
-	 */
-	private void hookContextMenu() 
-	{
-		MenuManager menuManager = new MenuManager("#OutstandingPopupMenu");
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenu(manager);
-			}
-		});
-		Menu menu = menuManager.createContextMenu(viewerOffTrans.getControl());
-		viewerOffTrans.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewerOffTrans);
-	}
-	
-	/**
-	 * Fills the context menu with the actions
-	 */
-	private void fillContextMenu(IMenuManager manager)
-	{
-		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewerOffTrans.getSelection()).getFirstElement();
-			
-		//cast to a RosterEntry
-		Transport transport = (Transport)firstSelectedObject;
-		
-		if(transport == null)
-			return;
-		
-		//submenu for the available vehicles
-		MenuManager menuManagerSub = new MenuManager("Fahrzeug zuweisen");
-		//add the actions
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		manager.add(menuManagerSub);
-		for(AssignCarAction ac : actionList)
-		{
-			menuManagerSub.add(ac);
-		}
-		manager.add(new Separator());
-		manager.add(editTransportAction);
-		manager.add(cancelTransportAction);
-		manager.add(new Separator());
-		manager.add(forwardTransportAction);
-		manager.add(copyTransportAction);
-		
-	}
+
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
@@ -343,7 +348,6 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
 				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{ 
-			this.hookContextMenu();
 			this.viewerOffTrans.refresh();
 		}
 	}
