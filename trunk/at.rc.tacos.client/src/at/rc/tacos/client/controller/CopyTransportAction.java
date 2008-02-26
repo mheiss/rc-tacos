@@ -42,7 +42,17 @@ public class CopyTransportAction extends Action implements IProgramStatus
 		t2.setCreationTime(Calendar.getInstance().getTimeInMillis());
     	
     	if(t1.getProgramStatus()== PROGRAM_STATUS_UNDERWAY)
-    		t2.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+    	{
+    		System.out.println("CopyTransportAction, im if, program status of t1: " +t1.getProgramStatus());
+    		System.out.println("CopyTransportAction, im if, program status of t2: " +t2.getProgramStatus());
+    	}
+    		
+    		
+    	t2.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+    	
+    	System.out.println("CopyTransportAction, danaaaaaach, program status of t1: " +t1.getProgramStatus());
+		System.out.println("CopyTransportAction, danaaaaaach, program status of t2: " +t2.getProgramStatus());
+    	
     	//add the transport
     	NetWrapper.getDefault().sendAddMessage(Transport.ID, t2);
 	}
