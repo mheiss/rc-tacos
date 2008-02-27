@@ -39,6 +39,7 @@ public class VehicleDetail extends AbstractMessage
     public final static int TRANSPORT_STATUS_GREEN = 30;
     public final static int TRANSPORT_STATUS_YELLOW = 20;
     public final static int TRANSPROT_STATUS_RED = 10;
+    public final static int TRANSPORT_STATUS_NA = 0;
 
     /**
      * Default class constructor

@@ -979,5 +979,4 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 			throw new IllegalArgumentException("The vehicle detail cannot be null");
 		this.vehicleDetail = vehicleDetail;
 	}
-
 }
