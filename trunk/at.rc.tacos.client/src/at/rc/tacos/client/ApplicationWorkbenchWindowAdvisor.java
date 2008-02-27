@@ -1,7 +1,9 @@
 package at.rc.tacos.client;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.*;
 
 import at.rc.tacos.client.modelManager.SessionManager;
@@ -32,6 +34,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 	@Override
 	public boolean preWindowShellClose() 
 	{
+	    //confirm quit
+	    boolean confirm = MessageDialog.openConfirm(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+	            "Schlieﬂen best‰tigen",
+	            "Wollen Sie das Leitstellenprogramm wirklich beenden?");
+	    if(!confirm)
+	        return false;
 		//check if we have a user info
 		Login login = SessionManager.getInstance().getLoginInformation();
 		if(login == null)

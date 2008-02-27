@@ -28,7 +28,6 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
-import at.rc.tacos.client.controller.VehicleUpdateAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
@@ -39,6 +38,7 @@ import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
@@ -184,17 +184,23 @@ public class VehicleForm extends TitleAreaDialog
 		vehicleDetail.setVehicleNotes(noteEditor.getTextWidget().getText());
 		//status
 		vehicleDetail.setOutOfOrder(outOfOrder.getSelection());
+		if(vehicleDetail.isOutOfOrder())
+		    vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		vehicleDetail.setReadyForAction(readyButton.getSelection());
+		//if the vehicle was out of order -> set the vehicle image to green
+		if(vehicleDetail.isReadyForAction() && vehicleDetail.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_NA)
+		    vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 		//phone
 		index = mobilePhoneComboViewer.getCombo().getSelectionIndex();
 		vehicleDetail.setMobilPhone((MobilePhoneDetail)mobilePhoneComboViewer.getElementAt(index));
 		//station
 		index = stationComboViewer.getCombo().getSelectionIndex();
 		vehicleDetail.setCurrentStation((Location)stationComboViewer.getElementAt(index));
+		
+		System.out.println(vehicleDetail.getTransportStatus());
 
 		//Send the update message
-		VehicleUpdateAction updateAction = new VehicleUpdateAction(vehicleDetail);
-		updateAction.run();
+		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
 		super.okPressed();
 	}
 

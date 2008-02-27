@@ -12,6 +12,9 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
+
+import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
 
@@ -23,6 +26,8 @@ public class PersonalTooltip extends ToolTip
 {	
 	//properties
 	private RosterEntry rosterEntry;
+    //the vehicle manager
+    private VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList(); 
 	
 	/**
 	 * Creates a new tooltip for the personal view
@@ -68,6 +73,13 @@ public class PersonalTooltip extends ToolTip
 			image = ImageFactory.getInstance().getRegisteredImage("resource.info");
 			title = rosterEntry.getRosterNotes();
 			addIconAndLabel(composite,image,title);
+		}
+		String assignedVehicle = vehicleManager.getVehicleOfStaff(rosterEntry.getStaffMember().getStaffMemberId());
+		if(assignedVehicle != null)
+		{
+		    image = ImageFactory.getInstance().getRegisteredImage("resource.userVehicle");
+            title = "Ist dem Fahrzeug "+assignedVehicle+" als "+rosterEntry.getJob().getJobName() +" zugewiesen"; 
+            addIconAndLabel(composite,image,title);
 		}
 
 		return composite;

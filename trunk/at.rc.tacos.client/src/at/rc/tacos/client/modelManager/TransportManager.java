@@ -164,6 +164,8 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 			//assert valid
 			if(assignedVehicle == null)
 				continue;
+			if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_UNDERWAY)
+			    continue;
 			//check the vehicle
 			if(assignedVehicle.getVehicleName().equals(vehicleName))
 				filteredList.add(transport);
