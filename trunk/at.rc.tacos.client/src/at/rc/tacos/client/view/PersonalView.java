@@ -51,413 +51,421 @@ import at.rc.tacos.model.StaffMember;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
-	public static final String ID = "at.rc.tacos.client.view.personal_view";
+    public static final String ID = "at.rc.tacos.client.view.personal_view";
 
-	//the toolkit to use
-	private FormToolkit toolkit;
-	private ScrolledForm form;
-	private TableViewer viewer;
-	private PersonalTooltip tooltip;
-	//the tab folder
-	private TabFolder tabFolder;
+    //the toolkit to use
+    private FormToolkit toolkit;
+    private ScrolledForm form;
+    private TableViewer viewer;
+    private PersonalTooltip tooltip;
+    //the tab folder
+    private TabFolder tabFolder;
 
-	//the actions for the context menu
-	private PersonalCancelSignInAction cancelSignInAction;
-	private PersonalCancelSignOutAction cancelSignOutAction;
-	private PersonalSignInAction signInAction;
-	private PersonalSignOutAction signOutAction;
-	private PersonalEditEntryAction editEntryAction;
-	private PersonalDeleteEntryAction deleteEntryAction;
+    //the actions for the context menu
+    private PersonalCancelSignInAction cancelSignInAction;
+    private PersonalCancelSignOutAction cancelSignOutAction;
+    private PersonalSignInAction signInAction;
+    private PersonalSignOutAction signOutAction;
+    private PersonalEditEntryAction editEntryAction;
+    private PersonalDeleteEntryAction deleteEntryAction;
 
-	/**
-	 * Constructs a new persoal view.
-	 */
-	public PersonalView()
-	{
-		// add listener to model to keep on track. 
-		ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
-		//listen to changes of jobs, serviceTypes and staff member updates
-		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
-	}
+    /**
+     * Constructs a new persoal view.
+     */
+    public PersonalView()
+    {
+        // add listener to model to keep on track. 
+        ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
+        //listen to changes of jobs, serviceTypes and staff member updates
+        ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
+    }
 
-	/**
-	 * Cleanup the view
-	 */
-	@Override
-	public void dispose() 
-	{
-		ModelFactory.getInstance().getRosterEntryList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
-		//remove again
-		ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
-	}
+    /**
+     * Cleanup the view
+     */
+    @Override
+    public void dispose() 
+    {
+        ModelFactory.getInstance().getRosterEntryList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
+        //remove again
+        ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
+    }
 
-	/**
-	 * Callback method to create the control and initalize them.
-	 * @param parent the parent composite to add
-	 */
-	public void createPartControl(final Composite parent) 
-	{
-		// Create the scrolled parent component
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-		form = toolkit.createScrolledForm(parent);
-		form.setText("Personalübersicht");
-		toolkit.decorateFormHeading(form.getForm());
-		form.getBody().setLayout(new FillLayout());
+    /**
+     * Callback method to create the control and initalize them.
+     * @param parent the parent composite to add
+     */
+    public void createPartControl(final Composite parent) 
+    {
+        // Create the scrolled parent component
+        toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+        form = toolkit.createScrolledForm(parent);
+        form.setText("Personalübersicht");
+        toolkit.decorateFormHeading(form.getForm());
+        form.getBody().setLayout(new FillLayout());
 
-		final Composite composite = form.getBody();
+        final Composite composite = form.getBody();
 
-		//tab folder "Bruck - Kapfenberg"
-		tabFolder = new TabFolder(composite, SWT.NONE);
-		tabFolder.addSelectionListener(new SelectionListener() 
-		{
-			public void widgetSelected(SelectionEvent e) 
-			{
-				//get the selected station
-				TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
-				//remove all filters and add the new
-				viewer.resetFilters();
-				viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});
+        //tab folder
+        tabFolder = new TabFolder(composite, SWT.NONE);
+        tabFolder.addSelectionListener(new SelectionListener() 
+        {
+            public void widgetSelected(SelectionEvent e) 
+            {
+                //get the selected station
+                TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
+                //remove all filters and add the new
+                viewer.resetFilters();
+                viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
+            }
+            public void widgetDefaultSelected(SelectionEvent e) 
+            {
+                widgetSelected(e);
+            }
+        });
 
-		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-		viewer.setContentProvider(new PersonalViewContentProvider());
-		viewer.setLabelProvider(new PersonalViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getRosterEntryList());
-		viewer.getTable().setLinesVisible(true);
+        viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+        viewer.setContentProvider(new PersonalViewContentProvider());
+        viewer.setLabelProvider(new PersonalViewLabelProvider());
+        viewer.setInput(ModelFactory.getInstance().getRosterEntryList());
+        viewer.getTable().setLinesVisible(true);
 
-		viewer.resetFilters();
+        //set the tooltip
+        tooltip = new PersonalTooltip(viewer.getControl());
+        //show the tooltip when the selection has changed
+        viewer.addSelectionChangedListener(new ISelectionChangedListener() 
+        {
+            public void selectionChanged(SelectionChangedEvent event) 
+            {
+                TableItem[] selection = viewer.getTable().getSelection();
+                if (selection != null && selection.length > 0) 
+                {
+                    Rectangle bounds = selection[0].getBounds();
+                    tooltip.show(new Point(bounds.x, bounds.y));
+                }
+            }
+        });     
+        //sort the table by default
+        viewer.setSorter(new PersonalViewSorter(PersonalViewSorter.WORKTIME_SORTER,SWT.DOWN));
 
-		//set the tooltip
-		tooltip = new PersonalTooltip(viewer.getControl());
-		//show the tooltip when the selection has changed
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewer.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltip.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});     
-		//sort the table by default
-		viewer.setSorter(new PersonalViewSorter(PersonalViewSorter.WORKTIME_SORTER,SWT.DOWN));
+        //create the table for the roster entries 
+        final Table table = viewer.getTable();
+        table.setLinesVisible(true);
+        table.setHeaderVisible(true);
 
-		//create the table for the roster entries 
-		final Table table = viewer.getTable();
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
+        final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
+        lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
+        lockColumn.setWidth(30);
+        lockColumn.setText("L");
 
-		final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
-		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(30);
-		lockColumn.setText("L");
+        final TableColumn columnStandby = new TableColumn(table, SWT.NONE);
+        columnStandby.setToolTipText("Mitarbeiter auf Bereitschaft (Symbol, wenn der Fall)");
+        columnStandby.setWidth(30);
+        columnStandby.setText("B");
 
-		final TableColumn columnStandby = new TableColumn(table, SWT.NONE);
-		columnStandby.setToolTipText("Mitarbeiter auf Bereitschaft (Symbol, wenn der Fall)");
-		columnStandby.setWidth(30);
-		columnStandby.setText("B");
+        final TableColumn columnNotes = new TableColumn(table, SWT.NONE);
+        columnNotes.setToolTipText("Anmerkung (Symbol, wenn Anmerkung vorhanden)");
+        columnNotes.setWidth(30);
+        columnNotes.setText("A");
 
-		final TableColumn columnNotes = new TableColumn(table, SWT.NONE);
-		columnNotes.setToolTipText("Anmerkung (Symbol, wenn Anmerkung vorhanden)");
-		columnNotes.setWidth(30);
-		columnNotes.setText("A");
+        final TableColumn columnStaffName = new TableColumn(table, SWT.NONE);
+        columnStaffName.setWidth(130);
+        columnStaffName.setText("Name");
 
-		final TableColumn columnStaffName = new TableColumn(table, SWT.NONE);
-		columnStaffName.setWidth(130);
-		columnStaffName.setText("Name");
+        final TableColumn columnWorkTime = new TableColumn(table, SWT.NONE);
+        columnWorkTime.setToolTipText("Dienst lt. Dienstplan");
+        columnWorkTime.setWidth(120);
+        columnWorkTime.setText("Dienst");
 
-		final TableColumn columnWorkTime = new TableColumn(table, SWT.NONE);
-		columnWorkTime.setToolTipText("Dienst lt. Dienstplan");
-		columnWorkTime.setWidth(120);
-		columnWorkTime.setText("Dienst");
+        final TableColumn columnCheckin = new TableColumn(table, SWT.NONE);
+        columnCheckin.setToolTipText("Zeit der tatsächlichen Anmeldung");
+        columnCheckin.setWidth(70);
+        columnCheckin.setText("Anm");
 
-		final TableColumn columnCheckin = new TableColumn(table, SWT.NONE);
-		columnCheckin.setToolTipText("Zeit der tatsächlichen Anmeldung");
-		columnCheckin.setWidth(70);
-		columnCheckin.setText("Anm");
+        final TableColumn columnCheckout = new TableColumn(table, SWT.NONE);
+        columnCheckout.setToolTipText("Zeit der tatsächlichen Abmeldung");
+        columnCheckout.setWidth(70);
+        columnCheckout.setText("Abm");
 
-		final TableColumn columnCheckout = new TableColumn(table, SWT.NONE);
-		columnCheckout.setToolTipText("Zeit der tatsächlichen Abmeldung");
-		columnCheckout.setWidth(70);
-		columnCheckout.setText("Abm");
+        final TableColumn columnService = new TableColumn(table, SWT.NONE);
+        columnService.setToolTipText("Dienstverhältnis");
+        columnService.setWidth(90);
+        columnService.setText("DV");
 
-		final TableColumn columnService = new TableColumn(table, SWT.NONE);
-		columnService.setToolTipText("Dienstverhältnis");
-		columnService.setWidth(75);
-		columnService.setText("DV");
+        final TableColumn columnJob = new TableColumn(table, SWT.NONE);
+        columnJob.setToolTipText("Verwendung");
+        columnJob.setWidth(80);
+        columnJob.setText("V");
 
-		final TableColumn columnJob = new TableColumn(table, SWT.NONE);
-		columnJob.setToolTipText("Verwendung");
-		columnJob.setWidth(65);
-		columnJob.setText("V");
+        final TableColumn columnVehicle = new TableColumn(table, SWT.NONE);
+        columnVehicle.setToolTipText("Fahrzeug, dem der Mitarbeiter zugewiesen ist");
+        columnVehicle.setWidth(80);
+        columnVehicle.setText("Fzg");
 
-		final TableColumn columnStation = new TableColumn(table, SWT.NONE);
-		columnStation.setToolTipText("Ortsstelle, an der der Mitarbeiter Dienst macht");
-		columnStation.setWidth(75);
-		columnStation.setText("OS");
+        //make the columns sortable
+        Listener sortListener = new Listener() 
+        {
+            public void handleEvent(Event e) 
+            {
+                // determine new sort column and direction
+                TableColumn sortColumn = viewer.getTable().getSortColumn();
+                TableColumn currentColumn = (TableColumn) e.widget;
+                int dir = viewer.getTable().getSortDirection();
+                //revert the sortorder if the column is the same
+                if (sortColumn == currentColumn) 
+                {
+                    if(dir == SWT.UP)
+                        dir = SWT.DOWN;
+                    else
+                        dir = SWT.UP;
+                } 
+                else 
+                {
+                    viewer.getTable().setSortColumn(currentColumn);
+                    dir = SWT.UP;
+                }
+                // sort the data based on column and direction
+                String sortIdentifier = null;
+                if (currentColumn == columnStaffName) 
+                    sortIdentifier = PersonalViewSorter.NAME_SORTER;
+                if (currentColumn == columnWorkTime) 
+                    sortIdentifier = PersonalViewSorter.WORKTIME_SORTER;
+                if (currentColumn == columnCheckin) 
+                    sortIdentifier = PersonalViewSorter.CHECKIN_SORTER;
+                if (currentColumn == columnCheckout) 
+                    sortIdentifier = PersonalViewSorter.CHECKOUT_SORTER;
+                if (currentColumn == columnService)
+                    sortIdentifier = PersonalViewSorter.SERVICE_SORTER;
+                if (currentColumn == columnJob)
+                    sortIdentifier = PersonalViewSorter.JOB_SORTER;
+                //apply the filter
+                viewer.getTable().setSortDirection(dir);
+                viewer.setSorter(new PersonalViewSorter(sortIdentifier,dir));
+            }
+        };
 
-		final TableColumn columnVehicle = new TableColumn(table, SWT.NONE);
-		columnVehicle.setToolTipText("Fahrzeug, dem der Mitarbeiter zugewiesen ist");
-		columnVehicle.setWidth(40);
-		columnVehicle.setText("Fzg");
+        //attach the listener
+        columnStaffName.addListener(SWT.Selection, sortListener);
+        columnWorkTime.addListener(SWT.Selection, sortListener);
+        columnCheckin.addListener(SWT.Selection, sortListener);
+        columnCheckout.addListener(SWT.Selection, sortListener);
+        columnService.addListener(SWT.Selection, sortListener);
+        columnJob.addListener(SWT.Selection, sortListener);
 
-		//make the columns sortable
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
-				// determine new sort column and direction
-				TableColumn sortColumn = viewer.getTable().getSortColumn();
-				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewer.getTable().getSortDirection();
-				//revert the sortorder if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
-						dir = SWT.DOWN;
-					else
-						dir = SWT.UP;
-				} 
-				else 
-				{
-					viewer.getTable().setSortColumn(currentColumn);
-					dir = SWT.UP;
-				}
-				// sort the data based on column and direction
-				String sortIdentifier = null;
-				if (currentColumn == columnStaffName) 
-					sortIdentifier = PersonalViewSorter.NAME_SORTER;
-				if (currentColumn == columnWorkTime) 
-					sortIdentifier = PersonalViewSorter.WORKTIME_SORTER;
-				if (currentColumn == columnCheckin) 
-					sortIdentifier = PersonalViewSorter.CHECKIN_SORTER;
-				if (currentColumn == columnCheckout) 
-					sortIdentifier = PersonalViewSorter.CHECKOUT_SORTER;
-				if (currentColumn == columnService)
-					sortIdentifier = PersonalViewSorter.SERVICE_SORTER;
-				if (currentColumn == columnJob)
-					sortIdentifier = PersonalViewSorter.JOB_SORTER;
-				if(currentColumn == columnStation)
-					sortIdentifier = PersonalViewSorter.STATION_SORTER;
-				//apply the filter
-				viewer.getTable().setSortDirection(dir);
-				viewer.setSorter(new PersonalViewSorter(sortIdentifier,dir));
-			}
-		};
+        //create the actions
+        makeActions();
+        hookContextMenu();
+    }
 
-		//attach the listener
-		columnStaffName.addListener(SWT.Selection, sortListener);
-		columnWorkTime.addListener(SWT.Selection, sortListener);
-		columnCheckin.addListener(SWT.Selection, sortListener);
-		columnCheckout.addListener(SWT.Selection, sortListener);
-		columnService.addListener(SWT.Selection, sortListener);
-		columnJob.addListener(SWT.Selection, sortListener);
-		columnStation.addListener(SWT.Selection, sortListener);
+    /**
+     * Creates the needed actions
+     */
+    private void makeActions()
+    {
+        cancelSignInAction = new PersonalCancelSignInAction(this.viewer);
+        cancelSignOutAction = new PersonalCancelSignOutAction(this.viewer);
+        signInAction = new PersonalSignInAction(this.viewer);
+        signOutAction = new PersonalSignOutAction(this.viewer);
+        editEntryAction = new PersonalEditEntryAction(this.viewer);
+        deleteEntryAction = new PersonalDeleteEntryAction(this.viewer);
+    }
 
-		//create the actions
-		makeActions();
-		hookContextMenu();
+    /**
+     * Creates the context menue 
+     */
+    private void hookContextMenu() 
+    {
+        MenuManager menuManager = new MenuManager("#PersonalPopupMenu");
+        menuManager.setRemoveAllWhenShown(true);
+        menuManager.addMenuListener(new IMenuListener() {
+            public void menuAboutToShow(IMenuManager manager) {
+                fillContextMenu(manager);
+            }
+        });
+        Menu menu = menuManager.createContextMenu(viewer.getControl());
+        viewer.getControl().setMenu(menu);
+        getSite().registerContextMenu(menuManager, viewer);
+    }
 
-		viewer.resetFilters();
-	}
+    /**
+     * Fills the context menu with the actions
+     */
+    private void fillContextMenu(IMenuManager manager)
+    {
+        //get the selected object
+        final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-	/**
-	 * Creates the needed actions
-	 */
-	private void makeActions()
-	{
-		cancelSignInAction = new PersonalCancelSignInAction(this.viewer);
-		cancelSignOutAction = new PersonalCancelSignOutAction(this.viewer);
-		signInAction = new PersonalSignInAction(this.viewer);
-		signOutAction = new PersonalSignOutAction(this.viewer);
-		editEntryAction = new PersonalEditEntryAction(this.viewer);
-		deleteEntryAction = new PersonalDeleteEntryAction(this.viewer);
-	}
+        //cast to a RosterEntry
+        RosterEntry entry = (RosterEntry)firstSelectedObject;
 
-	/**
-	 * Creates the context menue 
-	 */
-	private void hookContextMenu() 
-	{
-		MenuManager menuManager = new MenuManager("#PersonalPopupMenu");
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenu(manager);
-			}
-		});
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
-	}
+        if(entry == null)
+            return;
 
-	/**
-	 * Fills the context menu with the actions
-	 */
-	private void fillContextMenu(IMenuManager manager)
-	{
-		//get the selected object
-		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+        //add the actions
+        manager.add(signInAction);
+        manager.add(signOutAction);
+        manager.add(new Separator());
+        manager.add(editEntryAction);
+        manager.add(deleteEntryAction);
+        manager.add(new Separator());
+        manager.add(cancelSignInAction);
+        manager.add(cancelSignOutAction);
+        manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
-		//cast to a RosterEntry
-		RosterEntry entry = (RosterEntry)firstSelectedObject;
+        //enable or disable the actions
+        if(entry.getRealStartOfWork() > 0)
+        {
+            signInAction.setEnabled(false);
+            cancelSignInAction.setEnabled(true);
+        }
+        else
+        {
+            signInAction.setEnabled(true);
+            cancelSignInAction.setEnabled(false);
+        }
+        if(entry.getRealEndOfWork() > 0)
+        {
+            signOutAction.setEnabled(false);
+            cancelSignOutAction.setEnabled(true);
+        }
+        else
+        {
+            signOutAction.setEnabled(true);
+            cancelSignOutAction.setEnabled(false);
+        }
+    }
 
-		if(entry == null)
-			return;
+    /**
+     * Passing the focus request to the viewer's control.
+     */
+    public void setFocus()  { }
 
-		//add the actions
-		manager.add(signInAction);
-		manager.add(signOutAction);
-		manager.add(new Separator());
-		manager.add(editEntryAction);
-		manager.add(deleteEntryAction);
-		manager.add(new Separator());
-		manager.add(cancelSignInAction);
-		manager.add(cancelSignOutAction);
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+    public void propertyChange(PropertyChangeEvent evt) 
+    {
+        //add a new tab item to the TabFolder
+        if("LOCATION_ADD".equalsIgnoreCase(evt.getPropertyName()))
+        {
+            //get the new location
+            Location location = (Location)evt.getNewValue();
+            //create a new tab item
+            TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+            tabItem.setText(location.getLocationName());
+            //Store the location
+            tabItem.setData(location);
+            tabItem.setControl(viewer.getTable());
+            //set the first tabfoler as selected
+            tabFolder.setSelection(1);
+            tabFolder.setSelection(0);
+        }
+        //update the TabItem
+        if("LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+        {
+            //the updated location
+            Location updatedLocation = (Location)evt.getNewValue();
 
-		//enable or disable the actions
-		if(entry.getRealStartOfWork() > 0)
-		{
-			signInAction.setEnabled(false);
-			cancelSignInAction.setEnabled(true);
-		}
-		else
-		{
-			signInAction.setEnabled(true);
-			cancelSignInAction.setEnabled(false);
-		}
-		if(entry.getRealEndOfWork() > 0)
-		{
-			signOutAction.setEnabled(false);
-			cancelSignOutAction.setEnabled(true);
-		}
-		else
-		{
-			signOutAction.setEnabled(true);
-			cancelSignOutAction.setEnabled(false);
-		}
-	}
+            //loop and update the location in the tab folder
+            for(TabItem tabItem:tabFolder.getItems())
+            {
+                //get the location out of the tab
+                Location tabLocation = (Location)tabItem.getData();
+                //check if we have the location
+                if(tabLocation.equals(updatedLocation))
+                {
+                    //store the new location in the data and update the tab text
+                    tabItem.setData(updatedLocation);
+                    tabItem.setText(updatedLocation.getLocationName());
+                }
+            }
+        }
+        //remove a specific location
+        if("LOCATION_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+        {
+            //get the removed location
+            Location removedLocation = (Location)evt.getOldValue();
 
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
-	public void setFocus()  { }
+            //loop and remove the location
+            for(TabItem tabItem:tabFolder.getItems())
+            {
+                //get the location out of the tab
+                Location tabLocation = (Location)tabItem.getData();
+                //check if we have the tab and dispose it
+                if(tabLocation.equals(removedLocation))
+                    tabItem.dispose();	
+            }
+        }
 
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		//add a new tab item to the TabFolder
-		if("LOCATION_ADD".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the new location
-			Location location = (Location)evt.getNewValue();
-			//create a new tab item
-			TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-			tabItem.setText(location.getLocationName());
-			//Store the location
-			tabItem.setData(location);
-			tabItem.setControl(viewer.getTable());
-			//set the first tabfoler as selected
-			tabFolder.setSelection(tabItem);
-			tabFolder.setSelection(0);
-		}
-		//update the TabItem
-		if("LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//the updated location
-			Location updatedLocation = (Location)evt.getNewValue();
+        //clear the locations
+        if("LOCATION_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
+        {
+            //loop and remove all tabs
+            for(TabItem tabItem:tabFolder.getItems())
+                tabItem.dispose();
+        }
 
-			//loop and update the location in the tab folder
-			for(TabItem tabItem:tabFolder.getItems())
-			{
-				//get the location out of the tab
-				Location tabLocation = (Location)tabItem.getData();
-				//check if we have the location
-				if(tabLocation.equals(updatedLocation))
-				{
-					//store the new location in the data and update the tab text
-					tabItem.setData(updatedLocation);
-					tabItem.setText(updatedLocation.getLocationName());
-				}
-			}
-		}
-		//remove a specific location
-		if("LOCATION_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the removed location
-			Location removedLocation = (Location)evt.getOldValue();
+        // the viewer represents simple model. refresh should be enough.
+        if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())
+                || "ROSTERENTRY_REMOVE".equals(evt.getPropertyName())
+                || "ROSTERENTRY_UPDATE".equals(evt.getPropertyName())
+                || "ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
+        {
+            viewer.refresh();
+            //show entries on program start
+            if(tabFolder.getSelectionIndex() == 0)
+            {
+                //get the selected station
+                TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
+                //remove all filters and add the new
+                viewer.resetFilters();
+                viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
+            }
+        }
 
-			//loop and remove the location
-			for(TabItem tabItem:tabFolder.getItems())
-			{
-				//get the location out of the tab
-				Location tabLocation = (Location)tabItem.getData();
-				//check if we have the tab and dispose it
-				if(tabLocation.equals(removedLocation))
-					tabItem.dispose();	
-			}
-		}
+        //update the staff member when it is changed
+        if("STAFF_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+                || "SERVICETYPE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+                || "JOB_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+        {
+            //the three types
+            Object updatedObject = evt.getNewValue();
+            StaffMember updatedMember = null;
+            Job updatedJob = null;
+            ServiceType updatedService = null;
 
-		//clear the locations
-		if("LOCATION_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//loop and remove all tabs
-			for(TabItem tabItem:tabFolder.getItems())
-				tabItem.dispose();
-		}
-
-		// the viewer represents simple model. refresh should be enough.
-		if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())
-				|| "ROSTERENTRY_REMOVE".equals(evt.getPropertyName())
-				|| "ROSTERENTRY_UPDATE".equals(evt.getPropertyName())
-				|| "ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
-		{
-			viewer.refresh();
-		}
-	
-		//update the staff member when it is changed
-		if("STAFF_UPDATE".equalsIgnoreCase(evt.getPropertyName())
-				|| "SERVICETYPE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
-				|| "JOB_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//the three types
-			Object updatedObject = evt.getNewValue();
-			StaffMember updatedMember = null;
-			Job updatedJob = null;
-			ServiceType updatedService = null;
-			
-			//check the type
-			if(updatedObject instanceof StaffMember)
-				updatedMember = (StaffMember)updatedObject;
-			if(updatedObject instanceof Job)
-				updatedJob = (Job)updatedObject;
-			if(updatedObject instanceof ServiceType)
-				updatedService = (ServiceType)updatedObject;
-			//loop over each roster entry
-			for(RosterEntry entry:ModelFactory.getInstance().getRosterEntryList().getRosterList())
-			{
-				if(updatedMember!= null && entry.getStaffMember().equals(updatedMember))
-					entry.setStaffMember(updatedMember);
-				if(updatedJob != null && entry.getJob().equals(updatedJob))
-					entry.setJob(updatedJob);
-				if(updatedService != null && entry.getServicetype().equals(updatedService))
-					entry.setServicetype(updatedService);
-			}
-			//redraw the view
-			viewer.refresh();
-		}
-	}
+            //check the type
+            if(updatedObject instanceof StaffMember)
+                updatedMember = (StaffMember)updatedObject;
+            if(updatedObject instanceof Job)
+                updatedJob = (Job)updatedObject;
+            if(updatedObject instanceof ServiceType)
+                updatedService = (ServiceType)updatedObject;
+            //loop over each roster entry
+            for(RosterEntry entry:ModelFactory.getInstance().getRosterEntryList().getRosterList())
+            {
+                if(updatedMember!= null && entry.getStaffMember().equals(updatedMember))
+                    entry.setStaffMember(updatedMember);
+                if(updatedJob != null && entry.getJob().equals(updatedJob))
+                    entry.setJob(updatedJob);
+                if(updatedService != null && entry.getServicetype().equals(updatedService))
+                    entry.setServicetype(updatedService);
+            }
+            //redraw the view
+            viewer.refresh();
+        }
+        //update the assigned vehicle of the staff member
+        if("VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName())
+                || "VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+                || "VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName())
+                || "VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+        {
+            viewer.refresh();
+        }
+    }
 }

@@ -11,6 +11,8 @@ import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.client.util.CustomColors;
 
 public class PersonalViewLabelProvider implements ITableLabelProvider, ITableColorProvider
@@ -25,8 +27,10 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
     public static final int COLUMN_CHECK_OUT = 6;
     public static final int COLUMN_SERVICE_TYPE = 7;
     public static final int COLUMN_JOB = 8;
-    public static final int COLUMN_STATION = 9;
-    public static final int COLUMN_VEHICLE = 10;  
+    public static final int COLUMN_VEHICLE = 9;  
+    
+    //the vehicle manager
+    private VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList(); 
 
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
@@ -49,7 +53,11 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
                 return ImageFactory.getInstance().getRegisteredImage("resource.info");
             return null;
         //show a symbol in front of the name 
-        case COLUMN_NAME: return ImageFactory.getInstance().getRegisteredImage("resource.user");
+        case COLUMN_NAME: 
+            if(vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId()) == null)
+                return ImageFactory.getInstance().getRegisteredImage("resource.user");
+            else
+                return ImageFactory.getInstance().getRegisteredImage("resource.userVehicle");
         case COLUMN_PLANED_WORK_TIME:
             if(entry.isSplitEntry())
                 return ImageFactory.getInstance().getRegisteredImage("resource.timesplit");
@@ -101,8 +109,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         		return "";
         case COLUMN_SERVICE_TYPE: return entry.getServicetype().getServiceName();
         case COLUMN_JOB: return entry.getJob().getJobName();
-        case COLUMN_STATION: return entry.getStation().getLocationName();
-        case COLUMN_VEHICLE: return "Auto";
+        case COLUMN_VEHICLE: return vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId());
         default: return null;
         }
         
@@ -138,6 +145,8 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 		    return null;
 		if (entry.getRealStartOfWork() == 0 && entry.getRealEndOfWork() == 0)
 		    return CustomColors.DARK_GREY_COLOR;
+		if(vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId()) != null)
+		    return CustomColors.BACKGROUND_BLUE;
 		
 		return null;
 	}

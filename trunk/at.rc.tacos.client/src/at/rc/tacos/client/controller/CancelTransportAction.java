@@ -40,8 +40,7 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		
-		
+
 		//confirm the cancel
 		boolean cancelConfirmed = MessageDialog.openQuestion(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 

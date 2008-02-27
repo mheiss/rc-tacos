@@ -48,6 +48,8 @@ public class VehicleSetReadyAction extends Action
         //reset the status
         detail.setOutOfOrder(false);
         detail.setReadyForAction(true);
+        if(detail.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_NA)
+            detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
         NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
     }
     

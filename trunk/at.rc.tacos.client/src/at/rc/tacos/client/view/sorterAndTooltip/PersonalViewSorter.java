@@ -18,7 +18,6 @@ public class PersonalViewSorter extends ViewerSorter
 	public final static String CHECKOUT_SORTER = "checkout";
 	public final static String SERVICE_SORTER = "service";
 	public final static String JOB_SORTER = "job";
-	public final static String STATION_SORTER = "station";
 	public final static String VEHICLE_SORTER = "vehicle";
 	
 	//column to sort
@@ -101,9 +100,6 @@ public class PersonalViewSorter extends ViewerSorter
         //sort by the job
         if(column == JOB_SORTER)
         	returnValue = entry1.getJob().getJobName().compareTo(entry2.getJob().getJobName());
-        //sort by the station
-        if(column == STATION_SORTER)
-        	returnValue = entry1.getStation().getLocationName().compareTo(entry2.getStation().getLocationName());
         if (this.dir == SWT.DOWN) {
             returnValue = returnValue * -1;
         }

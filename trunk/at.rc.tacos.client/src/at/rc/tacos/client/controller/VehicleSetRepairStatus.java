@@ -45,6 +45,7 @@ public class VehicleSetRepairStatus extends Action
         //set the status
         detail.setReadyForAction(false);
         detail.setOutOfOrder(true);
+        detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
         //send update request
         NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
     }
