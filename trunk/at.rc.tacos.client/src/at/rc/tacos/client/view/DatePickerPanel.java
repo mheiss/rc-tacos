@@ -94,11 +94,21 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 		Calendar tempCalendar = Calendar.getInstance();
 		tempCalendar.set(Calendar.MINUTE, 0);
 		tempCalendar.set(Calendar.SECOND, 0);
-		String[] times = new String[24];
-		for (int x = 0; x < 24; x++) {
+		String[] times = new String[48];
+		int pos = 0;
+		for (int x = 0; x < 24; x++) 
+		{
+			//hour
+			tempCalendar.set(Calendar.MINUTE, 0);
 			tempCalendar.set(Calendar.HOUR_OF_DAY, x);
-			String timeString = dateFormat.format(tempCalendar.getTime());
-			times[x] = timeString;
+			times[pos] = dateFormat.format(tempCalendar.getTime());
+			//count up the position for the minute
+			pos++;
+			//minute
+			tempCalendar.set(Calendar.MINUTE, 30);
+			times[pos] = dateFormat.format(tempCalendar.getTime());
+			//count up the position for the hour
+			pos++;
 		}
 
 		ListViewer listViewer = new ListViewer(composite);
@@ -110,18 +120,34 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 
 		listViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
-			public void selectionChanged(SelectionChangedEvent event) {
-				date.set(Calendar.HOUR_OF_DAY, timeList.getSelectionIndex());
-				date.set(Calendar.MINUTE, 0);
+			public void selectionChanged(SelectionChangedEvent event) 
+			{
+				//even index -> just hour
+				if(timeList.getSelectionIndex() %2 == 0)
+				{
+					date.set(Calendar.HOUR_OF_DAY,timeList.getSelectionIndex()/2);
+					date.set(Calendar.MINUTE, 0);
+				}
+				else
+				{
+					date.set(Calendar.HOUR_OF_DAY,timeList.getSelectionIndex()/2);
+					date.set(Calendar.MINUTE, 30);
+				}
 				setSelection(new DateSelection(date));
 				notifyListeners(new SelectionChangedEvent(DatePickerPanel.this, getSelection()));
 			}
 		});
 
 		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, 150).grab(false, true).applyTo(timeList);
-		if (date != null) {
-			listViewer.setSelection(new StructuredSelection(times[date.get(Calendar.HOUR_OF_DAY)]), true);
-		} else {
+		if (date != null) 
+		{
+			//if we have a minute -> select it
+			if(date.get(Calendar.MINUTE) > 0)
+				listViewer.setSelection(new StructuredSelection(times[date.get(Calendar.HOUR_OF_DAY)+1]), true);
+			else
+				listViewer.setSelection(new StructuredSelection(times[date.get(Calendar.HOUR_OF_DAY)]), true);
+		} 
+		else {
 			listViewer.setSelection(new StructuredSelection(times[8]), true);
 		}
 		timeList.addKeyListener(this);

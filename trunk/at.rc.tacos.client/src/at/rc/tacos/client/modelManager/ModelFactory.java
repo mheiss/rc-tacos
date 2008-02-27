@@ -35,10 +35,12 @@ public class ModelFactory
     private static ModelFactory instance;
 
     //the model manager to handle
+    
     private final VehicleManager vehicleList = new VehicleManager();
+    private final StaffManager staffList = new StaffManager();
     private final RosterEntryManager rosterEntryList = new RosterEntryManager();
     private final TransportManager transportList = new TransportManager();
-    private final StaffManager staffList = new StaffManager();
+   
     private final LoginManager loginList = new LoginManager();
     private final DialysisTransportManager dialyseList = new DialysisTransportManager();
     private final MobilePhoneManager phoneList = new MobilePhoneManager();

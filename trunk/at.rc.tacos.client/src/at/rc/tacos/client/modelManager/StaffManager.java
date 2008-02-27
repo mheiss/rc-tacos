@@ -101,6 +101,24 @@ public class StaffManager extends PropertyManager
     }
     
     /**
+     * Returns a list of all staff members that are not assigned to a vehicle
+     * @return list of staff members with no vehicle
+     */
+    public List<StaffMember> getUnassignedStaffList()
+    {
+    	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList();
+    	List<StaffMember> filteredList = new ArrayList<StaffMember>();
+    	for(StaffMember member:objectList)
+    	{
+    		//check if a vehicle is assigned
+    		if(vehicleManager.getVehicleOfStaff(member.getStaffMemberId()) != null)
+    			continue;
+    		filteredList.add(member);
+    	}
+    	return filteredList;
+    }
+    
+    /**
      * Returns the staff member accociated with this username
      * @param username the username to get the staff member
      */

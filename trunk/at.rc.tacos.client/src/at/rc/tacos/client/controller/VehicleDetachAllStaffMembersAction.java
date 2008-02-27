@@ -59,6 +59,7 @@ public class VehicleDetachAllStaffMembersAction extends Action
 	{
 		//vehicle is not ready for action any more
 		detail.setReadyForAction(false);
+		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 	    //detach the staff
 		detail.setDriver(null);
 		detail.setFirstParamedic(null);
