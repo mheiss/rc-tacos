@@ -1,18 +1,9 @@
 package at.rc.tacos.client.modelManager;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-
-import at.rc.tacos.client.Activator;
 import at.rc.tacos.model.Address;
 
 /**

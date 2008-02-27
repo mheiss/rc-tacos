@@ -188,7 +188,7 @@ public class VehicleForm extends TitleAreaDialog
 		    vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		vehicleDetail.setReadyForAction(readyButton.getSelection());
 		//if the vehicle was out of order -> set the vehicle image to green
-		if(vehicleDetail.isReadyForAction() && vehicleDetail.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_NA)
+		if(vehicleDetail.isReadyForAction())
 		    vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 		//phone
 		index = mobilePhoneComboViewer.getCombo().getSelectionIndex();
@@ -196,8 +196,6 @@ public class VehicleForm extends TitleAreaDialog
 		//station
 		index = stationComboViewer.getCombo().getSelectionIndex();
 		vehicleDetail.setCurrentStation((Location)stationComboViewer.getElementAt(index));
-		
-		System.out.println(vehicleDetail.getTransportStatus());
 
 		//Send the update message
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
@@ -577,12 +575,12 @@ public class VehicleForm extends TitleAreaDialog
 		}
 		if(medic1ComboViewer.getSelection().isEmpty())
 		{
-			setErrorMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.");
+			setMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.",IMessageProvider.WARNING);
 			return false;
 		}
 		if(medic2ComboViewer.getSelection().isEmpty())
 		{
-			setErrorMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.");
+			setMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.",IMessageProvider.WARNING);
 			return false;
 		}
 		return true;

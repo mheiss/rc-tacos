@@ -3,13 +3,7 @@ package at.rc.tacos.client.view.admin;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -19,6 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -61,7 +56,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	private ScrolledForm form;
 	//text fields for the filter
 	private Text zip,city,street;
-	
+
 	//to apply the filter
 	private ImageHyperlink applyFilter,resetFilter;
 
@@ -107,7 +102,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		//create the input fields
 		final Label labelStreet = toolkit.createLabel(filter, "Straﬂe");
 		street = toolkit.createText(filter, "");
-		
+
 		//the city
 		final Label labelCity = toolkit.createLabel(filter, "Stadt");
 		city = toolkit.createText(filter, "");
@@ -115,7 +110,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		//the zip code
 		final Label labelZip = toolkit.createLabel(filter, "GKZ");
 		zip = toolkit.createText(filter, "");
-		
+
 		//Create the hyperlink to import the data
 		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
 		applyFilter.setText("Adresstabelle filtern");
@@ -182,13 +177,13 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
 		getViewSite().setSelectionProvider(viewer);
-		
+
 		//create the columns
 		final TableColumn imageColumn = new TableColumn(table, SWT.NONE);
 		imageColumn.setToolTipText("");
 		imageColumn.setWidth(30);
 		imageColumn.setText("");
-		
+
 		final TableColumn zipColumn = new TableColumn(table, SWT.NONE);
 		zipColumn.setToolTipText("Gemeindekennzeichen");
 		zipColumn.setWidth(60);
@@ -203,7 +198,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		streetColumn.setToolTipText("Name der Straﬂe");
 		streetColumn.setWidth(180);
 		streetColumn.setText("Straﬂe");
-		
+
 		//make the columns sortable
 		Listener sortListener = new Listener() 
 		{
@@ -275,7 +270,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		data2 = new GridData(GridData.FILL_BOTH);
 		Section tableSection = (Section)tableComp.getParent();
 		tableSection.setLayoutData(data2);
-		
+
 		//reflow
 		form.reflow(true);
 		form.update();
@@ -357,28 +352,23 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	 */
 	public void inputChanged()
 	{
-		WorkspaceJob job = new WorkspaceJob("AddressMonitor")
+		//get the values
+		final String strStreet = street.getText();
+		final String strCity = city.getText();
+		final String strZip = zip.getText();
+		//filter the values
+		viewer.getTable().setRedraw(false);
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
-			@Override
-			public IStatus runInWorkspace(IProgressMonitor arg0) throws CoreException 
+			public void run ()       
 			{
 				//get the values and create the filter
 				viewer.resetFilters();
 				//create new filter and apply
-				AddressAdminViewFilter filter = new AddressAdminViewFilter(street.getText(),city.getText(),zip.getText());
+				AddressAdminViewFilter filter = new AddressAdminViewFilter(strStreet,strCity,strZip);
 				viewer.addFilter(filter);
-				return Status.OK_STATUS;
-			}
-		};
-		job.addJobChangeListener(new JobChangeAdapter() 
-		{
-			public void done(IJobChangeEvent event) 
-			{
-				if (!event.getResult().isOK())
-					Activator.getDefault().log("Failed to filter the addresses",IStatus.ERROR);
 			}
 		});
-		job.setUser(true);
-		job.schedule();
+		viewer.getTable().setRedraw(true);
 	}
 }

@@ -243,8 +243,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 
             //simplest calculation comes first ;)
             //green (30) is for a 'underway'(program status) vehicle not possible
-            System.out.println("list:"+transportList.size());
-            System.out.println("stat: "+transport.getProgramStatus());
             if(transportList.isEmpty())
             {
                 detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);

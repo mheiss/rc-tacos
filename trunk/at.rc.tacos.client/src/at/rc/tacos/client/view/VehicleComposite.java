@@ -11,6 +11,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -40,6 +41,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	private VehicleDetail vehicle;
 
 	//the labels to display
+	private Composite compositeCarType;
 	private Label vehicleNameLabel;
 	private Label vehicleTypeLabel;
 	private Label driverLabel;
@@ -58,6 +60,12 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	private VehicleSetReadyAction readyStatus;
 	private VehicleSetRepairStatus repairStatus;
 	private VehicleAtStationAction vehicleAtStationAction;
+	
+	//the colors
+	public final static Color COLOR_BLUE = Util.getColor(209, 229, 249);
+	public final static Color COLOR_GRAY =  Util.getColor(228, 236, 238);
+	public final static Color COLOR_DARK = Util.getColor(0, 0, 128);
+	public final static Color COLOR_WHITE = Util.getColor(128, 128, 128);
 
 	/**
 	 * Default constructor creating a new car composite
@@ -78,6 +86,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 
 		vehicle.updateImages();
 		bindValues();
+		updateColors();
 
 		//context menue
 		makeActions();
@@ -105,18 +114,18 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		setLayout(new FillLayout(SWT.VERTICAL));
 
 		//top composite (name of the ambulance, type of the ambulance)
-		final Composite compositeCarTop = new Composite(this,SWT.NONE);
+		Composite compositeCarTop = new Composite(this,SWT.NONE);
 		compositeCarTop.setLayout(new FillLayout());
 		// .. name of the ambulance
 		vehicleNameLabel = new Label(compositeCarTop, SWT.NONE);
-		vehicleNameLabel.setForeground(Util.getColor(0, 0, 128));
+		vehicleNameLabel.setForeground(COLOR_DARK);
 		vehicleNameLabel.setFont(new Font(null,"Arial", 18, SWT.BOLD));
-		vehicleNameLabel.setBackground(Util.getColor(209, 229, 249));
+		vehicleNameLabel.setBackground(COLOR_BLUE);
 
 		// .. type of the ambulance
-		final Composite compositeCarType = new Composite(compositeCarTop, SWT.NONE);
+		compositeCarType = new Composite(compositeCarTop, SWT.NONE);
 		compositeCarType.setLayout(new FormLayout());
-		compositeCarType.setBackground(Util.getColor(209, 229, 249));
+		compositeCarType.setBackground(COLOR_BLUE);
 
 		vehicleTypeLabel = new Label(compositeCarType, SWT.CENTER);
 
@@ -128,7 +137,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		vehicleTypeLabel.setLayoutData(fd_label);
 		vehicleTypeLabel.setForeground(Util.getColor(255, 255, 255));
 		vehicleTypeLabel.setFont(new Font(null,"Arial", 10, SWT.BOLD));
-		vehicleTypeLabel.setBackground(Util.getColor(228, 236, 238));
+		vehicleTypeLabel.setBackground(COLOR_GRAY);
 
 		//bottom composite (icons, staff of the ambulance)
 		final Composite compositeCarBottom = new Composite(this, SWT.NONE);
@@ -139,22 +148,22 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 
 		// .. icons
 		readyLabel = new Label(compositeCarIcons, SWT.NONE);
-		readyLabel.setBackground(Util.getColor(209, 229, 249));
+		readyLabel.setBackground(COLOR_BLUE);
 
 		mobilePhoneLabel = new Label(compositeCarIcons, SWT.NONE);
-		mobilePhoneLabel.setBackground(Util.getColor(209, 229, 249));
+		mobilePhoneLabel.setBackground(COLOR_BLUE);
 
 		stationLabel = new Label(compositeCarIcons, SWT.NONE);
-		stationLabel.setBackground(Util.getColor(209, 229, 249));
+		stationLabel.setBackground(COLOR_BLUE);
 
 		repairLabel = new Label(compositeCarIcons, SWT.NONE);
-		repairLabel.setBackground(Util.getColor(209, 229, 249));
+		repairLabel.setBackground(COLOR_BLUE);
 
 		notesLabel = new Label(compositeCarIcons, SWT.NONE);
-		notesLabel.setBackground(Util.getColor(209, 229, 249));
+		notesLabel.setBackground(COLOR_BLUE);
 
 		statusLabel = new Label(compositeCarIcons, SWT.NONE);
-		statusLabel.setBackground(Util.getColor(209, 229, 249));
+		statusLabel.setBackground(COLOR_BLUE);
 
 		// .. staff
 		final Composite compositeCarStaff = new Composite(compositeCarBottom, SWT.NONE);
@@ -163,17 +172,17 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		driverLabel = new Label(compositeCarStaff, SWT.NONE);
 		driverLabel.setForeground(Util.getColor(0, 0, 102));
 		driverLabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
-		driverLabel.setBackground(Util.getColor(209, 229, 249));
+		driverLabel.setBackground(COLOR_BLUE);
 
 		medicILabel = new Label(compositeCarStaff, SWT.NONE);
 		medicILabel.setForeground(Util.getColor(0, 0, 102));
 		medicILabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
-		medicILabel.setBackground(Util.getColor(209, 229, 249));
+		medicILabel.setBackground(COLOR_BLUE);
 
 		medicIILabel = new Label(compositeCarStaff, SWT.NONE);
 		medicIILabel.setForeground(Util.getColor(0, 0, 102));
 		medicIILabel.setFont(new Font(null,"Arial", 8, SWT.NONE));
-		medicIILabel.setBackground(Util.getColor(209, 229, 249));
+		medicIILabel.setBackground(COLOR_BLUE);
 
 		//create the actions
 		makeActions();
@@ -299,6 +308,53 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 				new MyImageLabelObserver(statusLabel), 
 				BeansObservables.observeValue(vehicle, "transportStatusImage"), null, null);
 	}
+	
+	/**
+	 * Updates the colors of the vehicle
+	 */
+	private void updateColors()
+	{
+		//change the background color
+		if(vehicle.getDriver() == null)
+		{
+			compositeCarType.setBackground(COLOR_GRAY);
+			vehicleNameLabel.setBackground(COLOR_GRAY);
+			vehicleTypeLabel.setBackground(COLOR_GRAY);
+			driverLabel.setBackground(COLOR_GRAY);
+			medicILabel.setBackground(COLOR_GRAY);
+			medicIILabel.setBackground(COLOR_GRAY);
+			mobilePhoneLabel.setBackground(COLOR_GRAY);
+			notesLabel.setBackground(COLOR_GRAY);
+			stationLabel.setBackground(COLOR_GRAY);
+			readyLabel.setBackground(COLOR_GRAY);
+			repairLabel.setBackground(COLOR_GRAY);
+			statusLabel.setBackground(COLOR_GRAY);
+		}
+		else
+		{
+			compositeCarType.setBackground(COLOR_BLUE);
+			vehicleNameLabel.setBackground(COLOR_BLUE);
+			vehicleTypeLabel.setBackground(COLOR_BLUE);
+			driverLabel.setBackground(COLOR_BLUE);
+			medicILabel.setBackground(COLOR_BLUE);
+			medicIILabel.setBackground(COLOR_BLUE);
+			mobilePhoneLabel.setBackground(COLOR_BLUE);
+			notesLabel.setBackground(COLOR_BLUE);
+			stationLabel.setBackground(COLOR_BLUE);
+			readyLabel.setBackground(COLOR_BLUE);
+			repairLabel.setBackground(COLOR_BLUE);
+			statusLabel.setBackground(COLOR_BLUE);
+		}
+		//change the forground color
+		if(vehicle.isOutOfOrder())
+			vehicleNameLabel.setForeground(COLOR_WHITE);
+		else
+			vehicleNameLabel.setForeground(COLOR_DARK);
+		//redraw the composite
+		redraw();
+		update();
+		layout(true);
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
@@ -313,6 +369,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 				this.vehicle = updatedVehicle;
 				vehicle.updateImages();
 				bindValues();  
+				updateColors();
 			}
 
 		}
