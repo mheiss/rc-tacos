@@ -70,7 +70,8 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 			toCity = transport.getToCity();
 		to = toStreet +"/" +toCity;
 		
-		kindOfIllness = transport.getKindOfIllness();
+		if(transport.getKindOfIllness() != null)
+			kindOfIllness = transport.getKindOfIllness().getDiseaseName();
 		
 		if(transport.getNotes() != null)
 			notes = transport.getNotes();
