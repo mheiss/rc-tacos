@@ -38,6 +38,10 @@ public class AssignCarAction extends Action implements IProgramStatus
 	@Override
 	public void run()
 	{
+		//copy the details to the clipboard
+		CopyTransportDetailsIntoClipboardAction clipboardAction = new CopyTransportDetailsIntoClipboardAction(viewer);
+		clipboardAction.run();
+		
 		//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
@@ -49,5 +53,6 @@ public class AssignCarAction extends Action implements IProgramStatus
 		transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
 		transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		
 	}
 }
