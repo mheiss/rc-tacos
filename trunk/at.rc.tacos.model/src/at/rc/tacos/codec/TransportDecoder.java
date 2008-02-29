@@ -9,6 +9,7 @@ import javax.xml.stream.events.XMLEvent;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.CallerDetail;
+import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.Transport;
@@ -74,8 +75,13 @@ public class TransportDecoder implements MessageDecoder
 					transport.setDirection(Integer.valueOf(reader.getElementText()));
 
 				//next
-				if("kindOfIllness".equalsIgnoreCase(startName))
-					transport.setKindOfIllness(reader.getElementText());
+				if(Disease.ID.equalsIgnoreCase(startName))
+				{
+					//get the decoder for the disease
+					MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Disease.ID);
+					transport.setKindOfIllness((Disease)decoder.doDecode(reader));
+				}
+
 				if("backTransport".equalsIgnoreCase(startName))
 					transport.setBackTransport(Boolean.valueOf(reader.getElementText()));
 				if("assistantPerson".equalsIgnoreCase(startName))
