@@ -199,10 +199,10 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 			addIconAndLabel(composite,image,title);
 		}
 		
-		if(transport.getKindOfIllness()!="" & transport.getKindOfIllness() != null)
+		if(transport.getKindOfIllness() != null)
 		{
 			image = ImageFactory.getInstance().getRegisteredImage("transport.heart");
-			title = transport.getKindOfIllness();
+			title = transport.getKindOfIllness().getDiseaseName();
 			addIconAndLabel(composite,image,title);
 		}
 
