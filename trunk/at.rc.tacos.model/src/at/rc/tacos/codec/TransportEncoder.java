@@ -8,6 +8,7 @@ import javax.xml.stream.XMLStreamWriter;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.CallerDetail;
+import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.Transport;
@@ -102,10 +103,16 @@ public class TransportEncoder  implements MessageEncoder
         //next
         if(transport.getKindOfIllness() != null)
         {
-            writer.writeStartElement("kindOfIllness");
-            writer.writeCharacters(transport.getKindOfIllness());
-            writer.writeEndElement();
+        	encoder = ProtocolCodecFactory.getDefault().getEncoder(Disease.ID);
+        	encoder.doEncode(transport.getKindOfIllness(), writer);
         }
+        
+//      //vehicle
+//        if(transport.getVehicleDetail() != null)
+//        {
+//            encoder = ProtocolCodecFactory.getDefault().getEncoder(VehicleDetail.ID);
+//            encoder.doEncode(transport.getVehicleDetail(), writer);
+//        }
         writer.writeStartElement("backTransport");
         writer.writeCharacters(String.valueOf(transport.isBackTransport()));
         writer.writeEndElement();
