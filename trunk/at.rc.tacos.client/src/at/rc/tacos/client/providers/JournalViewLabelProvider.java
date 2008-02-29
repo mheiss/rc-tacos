@@ -107,7 +107,10 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 			if(transport.getToCity() != null)
 				label += " / "+ transport.getToCity();
 			return label;
-		case COLUMN_ERKR_VERL:return transport.getKindOfIllness();
+		case COLUMN_ERKR_VERL:
+			if(transport.getKindOfIllness() != null)
+				return transport.getKindOfIllness().getDiseaseName();
+			else return "";
 		case COLUMN_AE:
 			//Status 0 
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
