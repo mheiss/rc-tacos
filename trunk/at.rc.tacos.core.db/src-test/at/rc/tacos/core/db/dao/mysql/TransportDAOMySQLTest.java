@@ -177,7 +177,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport3.setFeedback("feedbackNew");
 			transport3.setFirebrigadeAlarming(true);
 			transport3.setHelicopterAlarming(true);
-			transport3.setKindOfIllness("Schlaganfall");
+//			transport3.setKindOfIllness("Schlaganfall");
 			transport3.setKindOfTransport("Tragsessel");
 			transport3.setLongDistanceTrip(true);
 			transport3.setMountainRescueServiceAlarming(true);
@@ -322,7 +322,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport.setFromCity("fromCity1");
 			transport.setFromStreet("fromStreet1");
 			transport.setHelicopterAlarming(true);
-			transport.setKindOfIllness("Schlaganfall");
+//			transport.setKindOfIllness("Schlaganfall");
 			transport.setKindOfTransport("mobil");
 			transport.setLongDistanceTrip(true);
 			transport.setMountainRescueServiceAlarming(true);
