@@ -60,7 +60,10 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			query.setString(11, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
 			query.setString(12, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
 			query.setString(13, transport.getKindOfTransport());
-			query.setString(14, transport.getKindOfIllness());
+			if(transport.getKindOfIllness() == null)
+				query.setString(14, null);
+			else
+				query.setString(14, transport.getKindOfIllness().getDiseaseName());
 			if(transport.getPatient() == null)
 			{
 				query.setString(15,null);
@@ -148,10 +151,12 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
 				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
 				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+				Disease disease = new Disease();
 				if(rs.getString("t.disease") == null)
-					transport.setKindOfIllness("");
+					disease.setDiseaseName("");
 				else
-					transport.setKindOfIllness(rs.getString("t.disease"));
+					disease.setDiseaseName(rs.getString("t.disease"));
+				transport.setKindOfIllness(disease);
 				if(rs.getString("t.from_street") == null)
 					transport.setFromStreet("");
 				else
@@ -350,10 +355,12 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
 				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
 				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+				Disease disease = new Disease();
 				if(rs.getString("t.disease") == null)
-					transport.setKindOfIllness("");
+					disease.setDiseaseName("");
 				else
-					transport.setKindOfIllness(rs.getString("t.disease"));
+					disease.setDiseaseName(rs.getString("t.disease"));
+				transport.setKindOfIllness(disease);
 				if(rs.getString("t.from_street") == null)
 					transport.setFromStreet("");
 				else
@@ -520,10 +527,12 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
 				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
 				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+				Disease disease = new Disease();
 				if(rs.getString("t.disease") == null)
-					transport.setKindOfIllness("");
+					disease.setDiseaseName("");
 				else
-					transport.setKindOfIllness(rs.getString("t.disease"));
+					disease.setDiseaseName(rs.getString("t.disease"));
+				transport.setKindOfIllness(disease);
 				if(rs.getString("t.from_street") == null)
 					transport.setFromStreet("");
 				else
@@ -893,10 +902,13 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
 				transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
 				transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+				
+				Disease disease = new Disease();
 				if(rs.getString("t.disease") == null)
-					transport.setKindOfIllness("");
+					disease.setDiseaseName("");
 				else
-					transport.setKindOfIllness(rs.getString("t.disease"));
+					disease.setDiseaseName(rs.getString("t.disease"));
+				transport.setKindOfIllness(disease);
 
 				Patient patient = new Patient();
 				if(rs.getString("t.firstname") == null)
@@ -1044,7 +1056,10 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			query.setString(9, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
 			query.setString(10, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
 			query.setString(11, transport.getKindOfTransport());
-			query.setString(12, transport.getKindOfIllness());
+			if(transport.getKindOfIllness() == null)
+				query.setString(12, null);
+			else
+				query.setString(12, transport.getKindOfIllness().getDiseaseName());
 			if (transport.getPatient() == null)
 			{
 				query.setString(13, null);
