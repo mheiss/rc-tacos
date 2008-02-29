@@ -156,8 +156,8 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return -1 * sortDir;
 			if(transport2.getKindOfIllness() == null)
 				return 1 * sortDir;
-			String kind1 = transport1.getKindOfIllness();
-			String kind2 = transport2.getKindOfIllness();
+			String kind1 = transport1.getKindOfIllness().getDiseaseName();
+			String kind2 = transport2.getKindOfIllness().getDiseaseName();
 			return kind1.compareTo(kind2) * sortDir;
 		}
 
