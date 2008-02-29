@@ -35,6 +35,8 @@ import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.client.providers.DiseaseContentProvider;
+import at.rc.tacos.client.providers.DiseaseLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
@@ -49,6 +51,7 @@ import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
+import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
@@ -140,6 +143,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	private ComboViewer setTextFahrer;
 	private ComboViewer setTextSaniI;
 	private ComboViewer setTextSaniII;
+	
+	private ComboViewer setErkrVerl;
 	
 	private String[] prebookingPriorities = {"C", "D", "E", "F"};
 	private String[] emergencyAndTransportPriorities = {"A", "B", "C", "D", "E", "F", "G"};
@@ -329,9 +334,11 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         this.brkdtButton.setSelection(transport.isBrkdtAlarming());
 
        
-        if(transport.getKindOfIllness()!= null)
-        	this.comboErkrankungVerletzung.setText(transport.getKindOfIllness());
+//        if(tindOfIllness()!= null)
+        if(transport.getKindOfIllness() != null)
+        	this.setErkrVerl.setSelection(new StructuredSelection(transport.getKindOfIllness()));
         
+//        	String s = transport.getKindOfIllness();
         if(transport.getPatient().getLastname() != null)
         	this.comboNachname.setText(transport.getPatient().getLastname());
         
@@ -914,8 +921,26 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_comboErkrankungVerletzung.right = new FormAttachment(0, 289);
 		fd_comboErkrankungVerletzung.left = new FormAttachment(0, 7);
 		comboErkrankungVerletzung.setLayoutData(fd_comboErkrankungVerletzung);
-		comboErkrankungVerletzung.setItems(new String[] {"Schlaganfall", "Herzinfarkt", "Atemnot", "Pseudokrupp"});//TODO get form db
+		setErkrVerl = new ComboViewer(comboErkrankungVerletzung);
+		setErkrVerl.setContentProvider(new DiseaseContentProvider());
+		setErkrVerl.setLabelProvider(new DiseaseLabelProvider());
+		setErkrVerl.setInput(ModelFactory.getInstance().getDialyseList());
+		
+//		comboErkrankungVerletzung.setItems(new String[] {"Schlaganfall", "Herzinfarkt", "Atemnot", "Pseudokrupp"});//TODO get form db
 
+		
+//		Combo textFahrer = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
+//		final FormData fd_textFahrer = new FormData();
+//		fd_textFahrer.bottom = new FormAttachment(0, 32);
+//		fd_textFahrer.top = new FormAttachment(0, 11);
+//		fd_textFahrer.right = new FormAttachment(0, 276);
+//		fd_textFahrer.left = new FormAttachment(0, 73);
+//		textFahrer.setLayoutData(fd_textFahrer);
+//		setTextFahrer = new ComboViewer(textFahrer);
+//		setTextFahrer.setContentProvider(new StaffMemberContentProvider());
+//		setTextFahrer.setLabelProvider(new StaffMemberLabelProvider());
+//		setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+		
 		textAnmerkungen = new Text(patientenzustandGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_textAnmerkungen = new FormData();
 		fd_textAnmerkungen.bottom = new FormAttachment(0, 159);
@@ -999,7 +1024,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		label_4.setLayoutData(fd_label_4);
 		label_4.setForeground(Util.getColor(128, 128, 128));
 		label_4.setText("Priorität:");
-		patientenzustandGroup.setTabList(new Control[] {comboErkrankungVerletzung, comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
+		patientenzustandGroup.setTabList(new Control[] {setErkrVerl.getControl(), comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
 
 		//group 'Alarmierung'
 		planungGroup_1 = new Group(shell, SWT.NONE);
@@ -1189,6 +1214,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		personalAmFahrzeugGroup.setLayoutData(fd_personalAmFahrzeugGroup);
 		personalAmFahrzeugGroup.setText("Personal am Fahrzeug");
 
+		//TODO
+		//TODO
 		Combo textFahrer = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textFahrer = new FormData();
 		fd_textFahrer.bottom = new FormAttachment(0, 32);
@@ -1565,7 +1592,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			String feedback;
 			String notes;
 			String priority;
-			String kindOfIllness;
+			Disease kindOfIllness;
 			
 			boolean longDistanceTrip;
 			
@@ -1740,6 +1767,9 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setFeedback(feedback);
                 	transport.setFirebrigadeAlarming(fireBrigade);
                 	transport.setHelicopterAlarming(rth);
+
+//   
+                	if(kindOfIllness != null)
                 	transport.setKindOfIllness(kindOfIllness);
                 	transport.setKindOfTransport(kindOfTransport);
                 	transport.setLongDistanceTrip(longDistanceTrip);
@@ -1814,7 +1844,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 	transport.setFeedback(feedback);
                 	transport.setFirebrigadeAlarming(fireBrigade);
                 	transport.setHelicopterAlarming(rth);
-                	transport.setKindOfIllness(kindOfIllness);
+                	if(kindOfIllness != null)
+                		transport.setKindOfIllness(kindOfIllness);
                 	transport.setKindOfTransport(kindOfTransport);
                 	transport.setLongDistanceTrip(longDistanceTrip);
                 	transport.setMountainRescueServiceAlarming(mountainRescue);
@@ -1893,7 +1924,10 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				feedback = textRueckmeldung.getText();
 				notes = textAnmerkungen.getText();
 				priority = comboPrioritaet.getText();
-				kindOfIllness = comboErkrankungVerletzung.getText();
+				
+				int indexErkrVerl = setErkrVerl.getCombo().getSelectionIndex();
+				kindOfIllness = (Disease)setErkrVerl.getElementAt(indexErkrVerl);
+				
 				longDistanceTrip = fernfahrtButton.getSelection();
 				toMariazell = mariazellButton.getSelection();
 				toVienna = wienButton.getSelection();
