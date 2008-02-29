@@ -52,7 +52,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	private int direction;
 
 	// patient infos
-	private String kindOfIllness;
+	private Disease kindOfIllness;
 	private boolean backTransport;
 	private boolean assistantPerson;
 	private boolean emergencyPhone;
@@ -373,7 +373,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	/**
 	 * @return the kindOfIllness
 	 */
-	public String getKindOfIllness() 
+	public Disease getKindOfIllness() 
 	{
 		return kindOfIllness;
 	}
@@ -760,7 +760,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	/**
 	 * @param kindOfIllness the kindOfIllness to set
 	 */
-	public void setKindOfIllness(String kindOfIllness) 
+	public void setKindOfIllness(Disease kindOfIllness) 
 	{
 		if(kindOfIllness == null)
 			throw new IllegalArgumentException("The kind of illness cannot be null");
