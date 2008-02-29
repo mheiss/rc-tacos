@@ -153,7 +153,10 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        	}
 	        	else return "";
 	        case COLUMN_T: return transport.getKindOfTransport();
-	        case COLUMN_ERKR_VERL:return transport.getKindOfIllness();
+	        case COLUMN_ERKR_VERL:
+	        	if(transport.getKindOfIllness() != null)
+					return transport.getKindOfIllness().getDiseaseName();
+				else return "";
         }
         
         return null;
