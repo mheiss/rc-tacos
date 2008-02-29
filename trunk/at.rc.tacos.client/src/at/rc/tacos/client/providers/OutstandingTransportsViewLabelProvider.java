@@ -105,7 +105,10 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 				return sdf.format(transport.getCreationTime());
 			else return "";
 		case COLUMN_T:return transport.getKindOfTransport();
-		case COLUMN_ERKR_VERL:return transport.getKindOfIllness();
+		case COLUMN_ERKR_VERL:
+			if(transport.getKindOfIllness() != null)
+				return transport.getKindOfIllness().getDiseaseName();
+			else return "";
 		case COLUMN_NOTES:return transport.getNotes();
 		default: return null;
 		}
