@@ -10,6 +10,7 @@ import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Transport;
 
 /**
@@ -79,7 +80,8 @@ public class CreateTransportFromDialysis extends Action
 		newTransport.setBackTransport(false);
 		newTransport.setPatient(patient.getPatient());
 		newTransport.setPlanedLocation(patient.getLocation());
-		newTransport.setKindOfIllness("Dialyse");
+		Disease disease = new Disease("Dialyse");
+		newTransport.setKindOfIllness(disease);
 		newTransport.setKindOfTransport(patient.getKindOfTransport());
 		//add the transport to the database
 		NetWrapper.getDefault().sendAddMessage(Transport.ID, newTransport);
