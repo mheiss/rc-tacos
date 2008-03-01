@@ -49,7 +49,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 		    	else return null;
 		    case COLUMN_TRANSPORT_TO:
 		    	if(transport.isLongDistanceTrip())
-		    			return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt ");
+		    			return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
 		    	else return null;
 		       
 		    default: return null;
