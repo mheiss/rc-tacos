@@ -137,6 +137,12 @@
             id="at.rc.tacos.client.view.prebooking_view">
       </view>
       <view
+            name="SearchView"
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.SearchView"
+            id="at.rc.tacos.client.view.searchView">
+      </view>      
+      <view
             name="Dialyse Patienten"
             allowMultiple="false"
             class="at.rc.tacos.client.view.DialysisView"
