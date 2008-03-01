@@ -106,13 +106,7 @@ public class TransportEncoder  implements MessageEncoder
         	encoder = ProtocolCodecFactory.getDefault().getEncoder(Disease.ID);
         	encoder.doEncode(transport.getKindOfIllness(), writer);
         }
-        
-//      //vehicle
-//        if(transport.getVehicleDetail() != null)
-//        {
-//            encoder = ProtocolCodecFactory.getDefault().getEncoder(VehicleDetail.ID);
-//            encoder.doEncode(transport.getVehicleDetail(), writer);
-//        }
+   
         writer.writeStartElement("backTransport");
         writer.writeCharacters(String.valueOf(transport.isBackTransport()));
         writer.writeEndElement();
