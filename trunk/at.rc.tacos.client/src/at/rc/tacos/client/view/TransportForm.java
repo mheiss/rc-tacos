@@ -1888,16 +1888,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
                 		transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
                 	if(!s9.equalsIgnoreCase(""))
                 		transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
-                	
-                	if(transportType.equalsIgnoreCase("prebooking"))
-    				{
-    					transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
-    				}
-    				if(transportType.equalsIgnoreCase("emergencyTransport"))
-    				{
-    					transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
-    				}
-                	              	
+
                     //create and run the update action
                     UpdateTransportAction updateAction = new UpdateTransportAction(transport);
                     updateAction.run();
