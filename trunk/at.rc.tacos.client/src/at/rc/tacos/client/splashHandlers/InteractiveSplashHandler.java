@@ -20,7 +20,7 @@ import at.rc.tacos.model.Login;
  * splash screen is shown.
  * @since 3.3
  */
-public class InteractiveSplashHandler extends AbstractSplashHandler implements PropertyChangeListener
+public class InteractiveSplashHandler extends AbstractSplashHandler implements PropertyChangeListener, KeyListener
 {
 	//the components
 	private Text fTextUsername;
@@ -90,6 +90,8 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		// Keep the splash screen visible and prevent the RCP application from 
 		// loading until the close button is clicked.
 		doEventLoop();
+		//listen to key events
+		splash.addKeyListener(this);
 	}
 
 	/**
@@ -176,6 +178,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 				handleButtonOKWidgetSelected();
 			}
 		}); 
+		fButtonOK.addKeyListener(this);
 	}
 
 	/**
@@ -349,4 +352,19 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 				loginStatus = 3;
 		}
 	}
+
+	@Override
+	public void keyPressed(KeyEvent ke) 
+	{
+		System.out.println(ke.keyCode);
+		//listent to return key events
+		if(ke.keyCode == SWT.CR)
+		{
+			handleButtonOKWidgetSelected();
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent ke) { }
 }

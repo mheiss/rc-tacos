@@ -2,16 +2,18 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -20,19 +22,19 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
+import at.rc.tacos.client.modelManager.AddressManager;
+import at.rc.tacos.client.modelManager.DiseaseManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.DiseaseContentProvider;
@@ -42,8 +44,6 @@ import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.util.TimeValidator;
-import at.rc.tacos.client.util.TransformTimeToLong;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
@@ -54,9 +54,7 @@ import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
-import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.model.VehicleDetail;
 
 /**
  * GUI (form) to manage the transport details
@@ -64,8 +62,13 @@ import at.rc.tacos.model.VehicleDetail;
  * @author b.thek
  *
  */
-public class TransportForm implements IDirectness, IKindOfTransport, ITransportStatus,IProgramStatus,PropertyChangeListener
+public class TransportForm extends TitleAreaDialog implements IDirectness, IKindOfTransport, ITransportStatus,IProgramStatus,PropertyChangeListener
 {
+	//The managed streets
+	private AddressManager addressManager = ModelFactory.getInstance().getAddressList();
+	private DiseaseManager diseaseManager = ModelFactory.getInstance().getDiseaseList();
+
+	//properties
 	private Group transportdetailsGroup;
 	private Button bergrettungButton;
 	private Button polizeiButton;
@@ -98,12 +101,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	private Button eigenerRollstuhlButton;
 	private Button krankentrageButton;
 	private Button tragsesselButton;
-	private Combo comboNachOrt;
-	private Combo comboNachStrasse;
 	private Combo comboVorname;
 	private Combo comboNachname;
-	private Combo comboVonOrt;
-	private Combo comboVonStrasse;
 	private Text textFahrzeug;
 	private Text textOrtsstelle;
 	private Text textTransportNummer;
@@ -111,8 +110,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	private Button buttonVormerkung;
 	private Button buttonAlles;
 	private Button buttonNotfall;
-	private Button okButton;
-	private Button abbrechenButton;
 	private Group statusmeldungenGroup;
 	private Group personalAmFahrzeugGroup;
 	private Group planungGroup_1;
@@ -122,30 +119,19 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	private DateTime dateTime;
 	private Button gehendButton;
 	protected Shell shell;
-	
+
 	private Text textAufgen;
 	private Text textAE;
-	
-	private Text textS1;
-	private Text textS2;
-	private Text textS3;
-	private Text textS4;
-	private Text textS5;
-	private Text textS6;
-	private Text textS7;
-	private Text textS8;
-	private Text textS9;
-	
-	
-	private Listener exitListener;
+
+	//the stati
+	private Text textS1,textS2,textS3,textS4,textS5,textS6,textS7,textS8,textS9;
+
 	private Transport transport;
-	
-	private ComboViewer setTextFahrer;
-	private ComboViewer setTextSaniI;
-	private ComboViewer setTextSaniII;
-	
+
+	private ComboViewer viewerFromStreet,viewerToStreet,viewerFromCity,viewerToCity;
+	private ComboViewer setTextFahrer,setTextSaniI,setTextSaniII;
 	private ComboViewer setErkrVerl;
-	
+
 	private String[] prebookingPriorities = {"C", "D", "E", "F"};
 	private String[] emergencyAndTransportPriorities = {"A", "B", "C", "D", "E", "F", "G"};
 	//A: NEF + RTW
@@ -156,345 +142,682 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	//F: Sonstiges
 	//G: NEF für extern
 
-	
+
 	//determine whether to update or to create a new entry
-    private boolean createNew;
-    /**
-     * possible editingTypes: journal (the "AllesButton" should be visible), prebooking, outstanding, underway
-     */
-    private String editingType;
-    
-    /**
-     * transport type used to differ between a normal and an emergency transport
-     * possible values: prebooking, emergencyTransport, ?wholeTransportDetails?- possible?
-     */
-    private String transportType;
-	
+	private boolean createNew;
 	/**
-     * Default class constructor used to create
-     * a new transport entry.
-     */
-    public TransportForm()
-    {
-        createNew = true;
-        this.transport = new Transport();
-        //set up the filds
-        createContents();
-    }
-    
-    /**
-     * constructor used to create a 
-     * a new transport entry.
-     */
-    public TransportForm(String transportType)
-    {
-        createNew = true;
-        this.transportType = transportType;
-        this.transport = new Transport();
-        //set up the filds
-        createContents();
-    }
-    
-    
-    /**
-     * Open the window
-     */
-    public void open() 
-    {
-        shell.open();
-    }
-    
-    /**
-     * used to edit a transport
-     * @param transport the transport to edit
-     */
-    public TransportForm(Transport transport, String editingType)
-    {
-        //update an entry
-        createNew = false;
-        this.transport = transport;
-        this.editingType = editingType;
-        transportType = "both";
+	 * possible editingTypes: journal (the "AllesButton" should be visible), prebooking, outstanding, underway
+	 */
+	private String editingType;
 
-       
-        //create the fields
-        createContents();
+	/**
+	 * transport type used to differ between a normal and an emergency transport
+	 * possible values: prebooking, emergencyTransport, ?wholeTransportDetails?- possible?
+	 */
+	private String transportType;
 
-        //set field contents
-        GregorianCalendar gcal = new GregorianCalendar();
-        gcal.setTimeZone(TimeZone.getDefault());
-        //formatter for the date and time
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        Calendar cal = Calendar.getInstance();
-        
-        //date of transport
-        System.out.println("RosterEntryForm: transport: " +transport.getFromStreet());
-        gcal.setTimeInMillis(transport.getDateOfTransport());
-        this.dateTime.setDay(gcal.get(GregorianCalendar.DATE));
-        this.dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
-        this.dateTime.setYear(gcal.get(GregorianCalendar.YEAR));
-        
-        //planned start of transport
-        if(transport.getPlannedStartOfTransport() != 0)
-        {
-        	gcal.setTimeInMillis(transport.getPlannedStartOfTransport());
-        	String abfahrtTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-        	this.textAbf.setText(abfahrtTime);
-        }
-        
-        //time at patient
-        if (transport.getPlannedTimeAtPatient() != 0)
-        {
-        	gcal.setTimeInMillis(transport.getPlannedTimeAtPatient());
-        	String beiPatientTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-        	this.textBeiPat.setText(beiPatientTime);
-        }
-        
-        //time at destination
-        if (transport.getAppointmentTimeAtDestination() != 0)
-        {
-        	gcal.setTimeInMillis(transport.getAppointmentTimeAtDestination());
-        	String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
-        	this.textTermin.setText(terminTime);
-        }  
-        
-        //transport stati
-        if(transport.getStatusMessages() != null)
-        {
-        	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));
-				this.textAE.setText(sdf.format(cal.getTime()));
-			}
-			//Status 0 
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
-				textS1.setText(sdf.format(cal.getTime()));
-			}
-			//Status 2
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
-				textS2.setText(sdf.format(cal.getTime()));
-			}       
-			//Status 3
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT));
-				textS3.setText(sdf.format(cal.getTime()));
-			}
-			//Status 4 
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
-				textS4.setText(sdf.format(cal.getTime()));
-			}
-        	//Status 5
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE));
-				textS5.setText(sdf.format(cal.getTime()));
-			}
-        	//Status 6
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION));
-				textS6.setText(sdf.format(cal.getTime()));
-			}
-        	//Status 7
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA));
-				textS7.setText(sdf.format(cal.getTime()));
-			}
-        	//Status 8
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
-				textS8.setText(sdf.format(cal.getTime()));
-			}
-        	//Status 9
-			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
-			{
-				cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OTHER));
-				textS9.setText(sdf.format(cal.getTime()));
-			} 
-        }
+	/**
+	 * Default class constructor used to create a new Transport.
+	 * @param parentShell the parent shell
+	 */
+	public TransportForm(Shell parentShell)
+	{
+		super(parentShell);
+		createNew = true;
+		transport = new Transport();
+		//bind the staff to this view
+		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getAddressList().addPropertyChangeListener(this);
+	}
 
-        if(transport.getCreationTime() != 0)
-        {
-        	cal.setTimeInMillis(transport.getCreationTime());
-        	textAufgen.setText(sdf.format(cal.getTime()));
-        }
-        	
-        //other fields
-        this.begleitpersonButton.setSelection(transport.isAssistantPerson());
-        this.bergrettungButton.setSelection(transport.isMountainRescueServiceAlarming());
-        this.brkdtButton.setSelection(transport.isBrkdtAlarming());
+	/**
+	 * Default class constructor to create a new transport and set the layout.
+	 * @param parentShell the parent shell
+	 * @param transportType the type of the transport
+	 */
+	public TransportForm(Shell parentShell,String transportType)
+	{
+		super(parentShell);
+		createNew = true;
+		this.transportType = transportType;
+		this.transport = new Transport();
+		//bind the staff to this view
+		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getDiseaseList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getAddressList().addPropertyChangeListener(this);
+	}
 
-       
-//        if(tindOfIllness()!= null)
-        if(transport.getKindOfIllness() != null)
-        	this.setErkrVerl.setSelection(new StructuredSelection(transport.getKindOfIllness()));
-        
-//        	String s = transport.getKindOfIllness();
-        if(transport.getPatient().getLastname() != null)
-        	this.comboNachname.setText(transport.getPatient().getLastname());
-        
-        if(transport.getToCity() != null)
-        	this.comboNachOrt.setText(transport.getToCity());
-        
-        if(transport.getToCity() != null)
-        this.comboNachStrasse.setText(transport.getToStreet());
-        
-        //mandatory fields
-        this.comboPrioritaet.setText(transport.getTransportPriority());
-        this.comboVonStrasse.setText(transport.getFromStreet());
-        
-        if(transport.getPlanedLocation() != null)
-        this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(transport.getPlanedLocation()));//mandatory!! default: Bezirk
-        
-        if(transport.getFromCity() != null)
-        	this.comboVonOrt.setText(transport.getFromCity());
-        
-        if(transport.getPatient().getFirstname() != null)
-        	this.comboVorname.setText(transport.getPatient().getFirstname());
-        
-        
-        this.dfButton.setSelection(transport.isDfAlarming());
-        this.fernfahrtButton.setSelection(transport.isLongDistanceTrip());
-        this.feuerwehrButton.setSelection(transport.isFirebrigadeAlarming());
-        this.notarztButton.setSelection(transport.isEmergencyDoctorAlarming());
-        this.polizeiButton.setSelection(transport.isPoliceAlarming());
-        this.rthButton.setSelection(transport.isHelicopterAlarming());
-        this.ruecktransportMoeglichButton.setSelection(transport.isBackTransport());
-        this.rufhilfepatientButton.setSelection(transport.isEmergencyPhone());
-        this.bd2Button.setSelection(transport.isBlueLightToGoal());
-        
-        
-        if(transport.getNotes() != null)
-        {
-        	this.textAnmerkungen.setText(transport.getNotes());
-        }
-        
-        if(transport.getCallerDetail() != null)
-        {
-	        if(transport.getCallerDetail().getCallerName() != null)
-	        	this.textAnrufer.setText(transport.getCallerDetail().getCallerName());
-	        if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
-	        	this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
-        }
-        
-        if(transport.getPlanedLocation().getLocationName() != null)
-        	this.textOrtsstelle.setText(transport.getPlanedLocation().getLocationName());
-        
-        if(transport.getFeedback() != null)
-        	this.textRueckmeldung.setText(transport.getFeedback());
+	/**
+	 * Default class constructor to edit a existing transport
+	 * @param parentShell the parent shell
+	 * @param transport the transport to edit
+	 * @param editingType the layout of the form to show
+	 */
+	public TransportForm(Shell parentShell,Transport transport, String editingType)
+	{
+		super(parentShell);
+		//update an entry
+		createNew = false;
+		this.transport = transport;
+		this.editingType = editingType;
+		transportType = "both";
+		//bind the staff to this view
+		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getDiseaseList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getAddressList().addPropertyChangeListener(this);
+	}
 
-        if(transport.getTransportNumber() != 0)
-        	this.textTransportNummer.setText(String.valueOf(transport.getTransportNumber()));
-        
-        //kind of transport
-        String kindOfTransport = transport.getKindOfTransport();
-        if(TRANSPORT_KIND_GEHEND.equalsIgnoreCase(kindOfTransport))
-        {
-        	this.gehendButton.setSelection(true);
-        }
-        else if (TRANSPORT_KIND_TRAGSESSEL.equalsIgnoreCase(kindOfTransport))
-        {
-        	this.tragsesselButton.setSelection(true);
-        }
-        else if (TRANSPORT_KIND_KRANKENTRAGE.equalsIgnoreCase(kindOfTransport))
-        {
-        	this.krankentrageButton.setSelection(true);
-        }
-        else if (TRANSPORT_KIND_ROLLSTUHL.equalsIgnoreCase(kindOfTransport))
-        {
-        	this.eigenerRollstuhlButton.setSelection(true);
-        }
+	/**
+	 * Cleanup and remove the listeners
+	 */
+	public void dispose()
+	{
+		ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getAddressList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this);
+	}
+	
 
-        //directness
-        int direction = transport.getDirection();
-        if (TOWARDS_BRUCK == direction)
-        {
-        	this.bruckButton.setSelection(true);
-        }
-        if (TOWARDS_GRAZ == direction)
-        {
-        	this.grazButton.setSelection(true);
-        }
-        if (TOWARDS_LEOBEN == direction)
-        {
-        	this.leobenButton.setSelection(true);
-        }
-        if (TOWARDS_MARIAZELL== direction)
-        {
-        	this.mariazellButton.setSelection(true);
-        }
-        if (TOWARDS_VIENNA == direction)
-        {
-        	this.wienButton.setSelection(true);
-        }
-        if (TOWARDS_KAPFENBERG == direction)
-        {
-        	this.kapfenbergButton.setSelection(true);
-        }
-        
-  
-        if(transport.getVehicleDetail() != null)
-        {
-	        if(transport.getVehicleDetail().getDriver() != null)
-	        {
-	        	this.setTextFahrer.setSelection(new StructuredSelection(transport.getVehicleDetail().getDriver()));
-	        }
-	        if(transport.getVehicleDetail().getFirstParamedic() != null)
-	        {
-	        	this.setTextSaniI.setSelection(new StructuredSelection(transport.getVehicleDetail().getFirstParamedic()));
-	        }
-	        if(transport.getVehicleDetail().getSecondParamedic() != null)
-	        {
-	        	this.setTextSaniII.setSelection(new StructuredSelection(transport.getVehicleDetail().getSecondParamedic()));
-	        }
-	        
-	        textFahrzeug.setText(transport.getVehicleDetail().getVehicleName());
-        }
-        
-        
-    }
+	@Override
+	public boolean close() 
+	{
+		cancelPressed();
+		dispose();
+		return super.close();
+	}
+
+	/**
+	 * Creates the dialog's contents
+	 * @param parent the parent composite
+	 * @return Control
+	 */
+	protected Control createContents(Composite parent) 
+	{
+		Control contents = super.createContents(parent);
+		setTitle("Transport");
+		setMessage("Hier können Sie einen neuen Transport anlegen", IMessageProvider.INFORMATION);
+		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
+		//draw the content
+		contents.redraw();
+		Composite client = ((Composite)contents);
+		client.layout(true);
+		return contents;
+	}
 
 	/**
 	 * Create contents of the window
 	 */
-	protected void createContents() 
+	@Override
+	protected Control createDialogArea(Composite parent)
 	{
-		 //bind the staff to this view
-        ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-                
-		shell = new Shell();
-		shell.setLayout(new FormLayout());
-		shell.setRegion(null);
-		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		shell.setSize(1075, 545);
-		shell.setText("Transport");
-	
-		//listener
-		exitListener = new Listener() {
-			public void handleEvent(Event e) 
+		//setup the composite
+		Composite composite = (Composite) super.createDialogArea(parent);
+
+		//Create the content of the dialog
+		createTransportSection(composite);
+
+		//init data
+		if(!createNew)
+		{
+			//set field contents
+			GregorianCalendar gcal = new GregorianCalendar();
+			gcal.setTimeZone(TimeZone.getDefault());
+			//formatter for the date and time
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+			Calendar cal = Calendar.getInstance();
+
+			//date of transport
+			gcal.setTimeInMillis(transport.getDateOfTransport());
+			this.dateTime.setDay(gcal.get(GregorianCalendar.DATE));
+			this.dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
+			this.dateTime.setYear(gcal.get(GregorianCalendar.YEAR));
+
+			//planned start of transport
+			if(transport.getPlannedStartOfTransport() != 0)
 			{
-				MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-				dialog.setText("Abbrechen");
-				dialog.setMessage("Wollen Sie wirklich abbrechen?");
-				if (e.type == SWT.Close) 
-					e.doit = false;
-				if (dialog.open() != SWT.YES) 
-					return;
-				shell.dispose();
+				gcal.setTimeInMillis(transport.getPlannedStartOfTransport());
+				String abfahrtTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+				this.textAbf.setText(abfahrtTime);
 			}
-		};
+
+			//time at patient
+			if (transport.getPlannedTimeAtPatient() != 0)
+			{
+				gcal.setTimeInMillis(transport.getPlannedTimeAtPatient());
+				String beiPatientTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+				this.textBeiPat.setText(beiPatientTime);
+			}
+
+			//time at destination
+			if (transport.getAppointmentTimeAtDestination() != 0)
+			{
+				gcal.setTimeInMillis(transport.getAppointmentTimeAtDestination());
+				String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+				this.textTermin.setText(terminTime);
+			}  
+
+			//transport stati
+			if(transport.getStatusMessages() != null)
+			{
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));
+					this.textAE.setText(sdf.format(cal.getTime()));
+				}
+				//Status 0 
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
+					textS1.setText(sdf.format(cal.getTime()));
+				}
+				//Status 2
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
+					textS2.setText(sdf.format(cal.getTime()));
+				}       
+				//Status 3
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT));
+					textS3.setText(sdf.format(cal.getTime()));
+				}
+				//Status 4 
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
+					textS4.setText(sdf.format(cal.getTime()));
+				}
+				//Status 5
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE));
+					textS5.setText(sdf.format(cal.getTime()));
+				}
+				//Status 6
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION));
+					textS6.setText(sdf.format(cal.getTime()));
+				}
+				//Status 7
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA));
+					textS7.setText(sdf.format(cal.getTime()));
+				}
+				//Status 8
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
+					textS8.setText(sdf.format(cal.getTime()));
+				}
+				//Status 9
+				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
+				{
+					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OTHER));
+					textS9.setText(sdf.format(cal.getTime()));
+				} 
+			}
+
+			if(transport.getCreationTime() != 0)
+			{
+				cal.setTimeInMillis(transport.getCreationTime());
+				textAufgen.setText(sdf.format(cal.getTime()));
+			}
+
+			//other fields
+			this.begleitpersonButton.setSelection(transport.isAssistantPerson());
+			this.bergrettungButton.setSelection(transport.isMountainRescueServiceAlarming());
+			this.brkdtButton.setSelection(transport.isBrkdtAlarming());
+			
+			//the disease
+			if(transport.getKindOfIllness() != null)
+			{
+				//the returned disease has no id so we query the managed diseases and try to get the complete object :)
+				String name = transport.getKindOfIllness().getDiseaseName();
+				Disease disease = diseaseManager.getDiseaseByName(name);
+				if(disease != null)
+				{
+					transport.setKindOfIllness(disease);
+					setErkrVerl.setSelection(new StructuredSelection(disease));
+				}
+			}
+
+			if(transport.getPatient() != null)
+			{
+				this.comboNachname.setText(transport.getPatient().getLastname());
+				this.comboVorname.setText(transport.getPatient().getFirstname());
+			}
+
+			if(transport.getToCity() != null)
+				viewerToCity.getCombo().setText(transport.getToCity());
+
+			if(transport.getToStreet() != null)
+				viewerToStreet.getCombo().setText(transport.getToStreet());
+
+			//mandatory fields
+			if(transport.getTransportPriority() != null)
+				comboPrioritaet.setText(transport.getTransportPriority());
+			
+			viewerFromStreet.getCombo().setText(transport.getFromStreet());
+
+			if(transport.getPlanedLocation() != null)
+				this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(transport.getPlanedLocation()));//mandatory!! default: Bezirk
+
+			if(transport.getFromCity() != null)
+				viewerFromCity.getCombo().setText(transport.getFromCity());
+
+			this.dfButton.setSelection(transport.isDfAlarming());
+			this.fernfahrtButton.setSelection(transport.isLongDistanceTrip());
+			this.feuerwehrButton.setSelection(transport.isFirebrigadeAlarming());
+			this.notarztButton.setSelection(transport.isEmergencyDoctorAlarming());
+			this.polizeiButton.setSelection(transport.isPoliceAlarming());
+			this.rthButton.setSelection(transport.isHelicopterAlarming());
+			this.ruecktransportMoeglichButton.setSelection(transport.isBackTransport());
+			this.rufhilfepatientButton.setSelection(transport.isEmergencyPhone());
+			this.bd2Button.setSelection(transport.isBlueLightToGoal());
+
+			if(transport.getNotes() != null)
+			{
+				this.textAnmerkungen.setText(transport.getNotes());
+			}
+
+			if(transport.getCallerDetail() != null)
+			{
+				if(transport.getCallerDetail().getCallerName() != null)
+					this.textAnrufer.setText(transport.getCallerDetail().getCallerName());
+				if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
+					this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
+			}
+
+			if(transport.getPlanedLocation().getLocationName() != null)
+				this.textOrtsstelle.setText(transport.getPlanedLocation().getLocationName());
+
+			if(transport.getFeedback() != null)
+				this.textRueckmeldung.setText(transport.getFeedback());
+
+			if(transport.getTransportNumber() != 0)
+				this.textTransportNummer.setText(String.valueOf(transport.getTransportNumber()));
+
+			//kind of transport
+			String kindOfTransport = transport.getKindOfTransport();
+			if(TRANSPORT_KIND_GEHEND.equalsIgnoreCase(kindOfTransport))
+			{
+				this.gehendButton.setSelection(true);
+			}
+			else if (TRANSPORT_KIND_TRAGSESSEL.equalsIgnoreCase(kindOfTransport))
+			{
+				this.tragsesselButton.setSelection(true);
+			}
+			else if (TRANSPORT_KIND_KRANKENTRAGE.equalsIgnoreCase(kindOfTransport))
+			{
+				this.krankentrageButton.setSelection(true);
+			}
+			else if (TRANSPORT_KIND_ROLLSTUHL.equalsIgnoreCase(kindOfTransport))
+			{
+				this.eigenerRollstuhlButton.setSelection(true);
+			}
+
+			//directness
+			int direction = transport.getDirection();
+			if (TOWARDS_BRUCK == direction)
+			{
+				this.bruckButton.setSelection(true);
+			}
+			if (TOWARDS_GRAZ == direction)
+			{
+				this.grazButton.setSelection(true);
+			}
+			if (TOWARDS_LEOBEN == direction)
+			{
+				this.leobenButton.setSelection(true);
+			}
+			if (TOWARDS_MARIAZELL== direction)
+			{
+				this.mariazellButton.setSelection(true);
+			}
+			if (TOWARDS_VIENNA == direction)
+			{
+				this.wienButton.setSelection(true);
+			}
+			if (TOWARDS_KAPFENBERG == direction)
+			{
+				this.kapfenbergButton.setSelection(true);
+			}
+
+			if(transport.getVehicleDetail() != null)
+			{
+				if(transport.getVehicleDetail().getDriver() != null)
+				{
+					this.setTextFahrer.setSelection(new StructuredSelection(transport.getVehicleDetail().getDriver()));
+				}
+				if(transport.getVehicleDetail().getFirstParamedic() != null)
+				{
+					this.setTextSaniI.setSelection(new StructuredSelection(transport.getVehicleDetail().getFirstParamedic()));
+				}
+				if(transport.getVehicleDetail().getSecondParamedic() != null)
+				{
+					this.setTextSaniII.setSelection(new StructuredSelection(transport.getVehicleDetail().getSecondParamedic()));
+				}
+
+				textFahrzeug.setText(transport.getVehicleDetail().getVehicleName());
+			}
+		}
+
+		//force redraw
+		composite.redraw();
+		composite.layout(true);
+		return composite;
+	}
+
+	/**
+	 * The user pressed the cancel button
+	 */
+	@Override
+	protected void cancelPressed()
+	{
+		MessageBox dialog = new MessageBox(getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+		dialog.setText("Abbrechen");
+		dialog.setMessage("Wollen Sie wirklich abbrechen?");
+		//check the result
+		if (dialog.open() != SWT.NO)
+		{
+			dispose();
+			super.close();
+		}
+	}
+
+	/**
+	 * The user pressed the ok button
+	 */
+	@Override
+	protected void okPressed()
+	{
+		//reset the error messages
+		setMessage("Hier können Sie einen neuen Transport anlegen");
 		
+		//the street
+		if (viewerFromStreet.getCombo().getText().trim().isEmpty())
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben sie die Straße ein von dem der Transport gestartet wird");
+			return;
+		}
+		transport.setFromStreet(viewerFromStreet.getCombo().getText());
+
+		//the city
+		if (viewerFromCity.getCombo().getText().trim().isEmpty())
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben sie die Stadt ein von dem der Transport gestartet wird");
+			return;
+		}
+		transport.setFromCity(viewerFromCity.getCombo().getText());
+		
+		//validate the patient
+		if(comboNachname.getText().trim().isEmpty())
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben sie den Nachnamen des Patientent ein");
+			return;
+		}
+		
+		//validate the patient
+		if(comboVorname.getText().trim().isEmpty())
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben sie den Vornamen des Patienten");
+			return;
+		}
+		
+		//traget street
+		if (viewerToStreet.getCombo().getText().trim().isEmpty())
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben Sie den Straßennamen des Transportziels ein");
+			return;
+		}
+		transport.setToStreet(viewerToStreet.getCombo().getText());
+
+		//target city --> can be empty if the street is LKH or PH
+		if (viewerToCity.getCombo().getText().trim().isEmpty() &! 
+				(transport.getToStreet().equalsIgnoreCase("LKH")
+						|| transport.getToStreet().equalsIgnoreCase("PH")))
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben Sie den Ortsnamen des Transportziels ein.");
+			return;
+		}
+		transport.setToCity(viewerFromCity.getCombo().getText());
+
+		//the planned location
+		int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
+		if (index == -1)
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben sie die zuständige Ortsstelle ein");
+			return;
+		}
+		transport.setPlanedLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
+
+		//the transport priority
+		index = comboPrioritaet.getSelectionIndex();
+		if (index == -1)
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben sie die Priorität des Transports ein");
+			return;
+		}
+		transport.setTransportPriority(comboPrioritaet.getItem(index));
+		
+		//convert the start time --> no validation when an emergency transport
+		Calendar startTime = convertStringToDate(textAbf.getText());
+		if(startTime == null &! transportType.equalsIgnoreCase("emergencyTransport"))
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben Sie eine gültige Abfahrtszeit in der Form HH:mm oder HHmm ein");
+			return;
+		}
+		else
+			startTime = Calendar.getInstance();
+		
+		//set the other fields 
+		startTime.set(Calendar.YEAR, dateTime.getYear());
+		startTime.set(Calendar.MONTH, dateTime.getMonth());
+		startTime.set(Calendar.DAY_OF_MONTH,dateTime.getDay());
+		transport.setPlannedStartOfTransport(startTime.getTimeInMillis());
+		
+		//time at patient  --> no validation when an emergency transport
+		Calendar patientTime = convertStringToDate(textBeiPat.getText());
+		if(patientTime == null &! transportType.equalsIgnoreCase("emergencyTransport"))
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben Sie eine gültigen Zeit beim Patienten in der Form HH:mm oder HHmm ein");
+			return;
+
+		}
+		else
+			patientTime = Calendar.getInstance();
+		
+		//set the other fields
+		patientTime.set(Calendar.YEAR, dateTime.getYear());
+		patientTime.set(Calendar.MONTH, dateTime.getMonth());
+		patientTime.set(Calendar.DAY_OF_MONTH,dateTime.getDay());
+		transport.setPlannedTimeAtPatient(patientTime.getTimeInMillis());
+
+		//check the time  --> no validation when an emergency transport
+		Calendar appointmentTime = convertStringToDate(textTermin.getText());
+		if(appointmentTime == null &! transportType.equalsIgnoreCase("emergencyTransport"))
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte geben Sie eine gültigen Termin in der Form HH:mm oder HHmm ein");
+			return;
+		}
+		else
+			appointmentTime = Calendar.getInstance();
+		
+		//set the other fields
+		appointmentTime.set(Calendar.YEAR, dateTime.getYear());
+		appointmentTime.set(Calendar.MONTH, dateTime.getMonth());
+		appointmentTime.set(Calendar.DAY_OF_MONTH,dateTime.getDay());
+		transport.setAppointmentTimeAtDestination(appointmentTime.getTimeInMillis());
+
+		//validate: start before atPatient
+		if(transport.getPlannedTimeAtPatient() < transport.getPlannedStartOfTransport())
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen.");
+			return;
+		}				
+
+		//validate: atPatient before term
+		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedTimeAtPatient())
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Termin kann nicht vor Ankunft bei Patient sein");
+			return;
+		}
+
+		//validate: start before term
+		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedStartOfTransport())
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen");
+			return;
+		}
+
+		//kind of illness
+		index = setErkrVerl.getCombo().getSelectionIndex();
+		if(index == -1)
+		{
+			getShell().getDisplay().beep();
+			setErrorMessage("Bitte wählen sie eine Erkrankung aus");
+			return;
+		}
+		transport.setKindOfIllness((Disease)setErkrVerl.getElementAt(index));
+
+		//set the fields that do not have to be validated
+		transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
+		transport.setBackTransport(ruecktransportMoeglichButton.getSelection());
+
+		//the kind of transport
+		if(eigenerRollstuhlButton.getSelection())
+			transport.setKindOfTransport(TRANSPORT_KIND_ROLLSTUHL);
+		else if(krankentrageButton.getSelection())
+			transport.setKindOfTransport(TRANSPORT_KIND_KRANKENTRAGE);
+		else if (tragsesselButton.getSelection())
+			transport.setKindOfTransport(TRANSPORT_KIND_TRAGSESSEL);
+		else if (gehendButton.getSelection())
+			transport.setKindOfTransport(TRANSPORT_KIND_GEHEND);
+		else
+			transport.setKindOfTransport("<keine Angabe>");
+
+		//if we have a patient just update it
+		if(transport.getPatient() == null)
+		{
+			Patient patient = new Patient(comboVorname.getText(),comboNachname.getText());
+			transport.setPatient(patient);
+		}
+		else
+		{
+			transport.getPatient().setFirstname(comboVorname.getText());
+			transport.getPatient().setLastname(comboNachname.getText());
+		}
+
+		//if we have a caller, just update it
+		if(transport.getCallerDetail() == null)
+		{
+			CallerDetail caller = new CallerDetail(textAnrufer.getText(),textTelefonAnrufer.getText());
+			transport.setCallerDetail(caller);
+		}
+		else
+		{
+			transport.getCallerDetail().setCallerName(textAnrufer.getText());
+			transport.getCallerDetail().setCallerTelephoneNumber(textTelefonAnrufer.getText());
+		}
+
+		//notes and feedback
+		transport.setNotes(textAnmerkungen.getText());
+		transport.setFeedback(textRueckmeldung.getText());
+
+		//the destination
+		transport.setToStreet(viewerToStreet.getCombo().getText());
+		transport.setToCity(viewerToCity.getCombo().getText());
+
+		//the boolean values
+		transport.setAssistantPerson(begleitpersonButton.getSelection());
+		transport.setBlueLightToGoal(bd2Button.getSelection());
+		transport.setBrkdtAlarming(brkdtButton.getSelection());
+		transport.setDfAlarming(dfButton.getSelection());
+		transport.setEmergencyDoctorAlarming(notarztButton.getSelection());
+		transport.setEmergencyPhone(rufhilfepatientButton.getSelection());
+		transport.setFirebrigadeAlarming(feuerwehrButton.getSelection());
+		transport.setHelicopterAlarming(rthButton.getSelection());
+		transport.setLongDistanceTrip(fernfahrtButton.getSelection());
+		transport.setMountainRescueServiceAlarming(bergrettungButton.getSelection());
+		transport.setPoliceAlarming(polizeiButton.getSelection());
+
+		//set the type of the transport
+		if(transportType.equalsIgnoreCase("prebooking"))
+			transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
+		if(transportType.equalsIgnoreCase("emergencyTransport"))
+			transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+
+		if (mariazellButton.getSelection())
+			transport.setDirection(TOWARDS_MARIAZELL);
+		else if (wienButton.getSelection())
+			transport.setDirection(TOWARDS_VIENNA);
+		else if (leobenButton.getSelection())
+			transport.setDirection(TOWARDS_LEOBEN);
+		else if (grazButton.getSelection())
+			transport.setDirection(TOWARDS_GRAZ);
+		else if (kapfenbergButton.getSelection())
+			transport.setDirection(TOWARDS_KAPFENBERG);
+		else
+			transport.setDirection(TOWARDS_BRUCK);
+
+		if(createNew)
+		{
+			//created time
+			transport.setCreationTime(Calendar.getInstance().getTimeInMillis());
+			
+			//transport date 
+			Calendar transportDate = Calendar.getInstance();
+			transportDate.set(Calendar.YEAR, dateTime.getYear());
+			transportDate.set(Calendar.MONTH, dateTime.getMonth());
+			transportDate.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+			transport.setDateOfTransport(transportDate.getTimeInMillis());
+			//create and run the add action
+			CreateTransportAction newAction = new CreateTransportAction(transport);
+			newAction.run();
+			if(transport.getTransportPriority().equalsIgnoreCase("A"))
+			{
+				DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
+				duplicateAction.run();
+			}
+		}
+		else
+		{
+			//create and run the update action
+			UpdateTransportAction updateAction = new UpdateTransportAction(transport);
+			updateAction.run();
+		}
+		
+		//cleanup
+		dispose();
+		super.close();
+	}
+
+	/**
+	 * Creates the planing section
+	 */
+	private void createTransportSection(Composite parent)
+	{
+		Composite client = new Composite(parent,SWT.NONE);
+		client.setLayout(new FormLayout());
 		//calendar
-		dateTime = new DateTime(shell, SWT.CALENDAR);
+		dateTime = new DateTime(client, SWT.CALENDAR);
 		final FormData fd_dateTime = new FormData();
 		fd_dateTime.bottom = new FormAttachment(0, 160);
 		fd_dateTime.top = new FormAttachment(0, 10);
@@ -503,7 +826,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		dateTime.setLayoutData(fd_dateTime);
 
 		//group 'Transportdaten'
-		transportdatenGroup = new Group(shell, SWT.NONE);
+		transportdatenGroup = new Group(client, SWT.NONE);
 		transportdatenGroup.setLayout(new FormLayout());
 		final FormData fd_transportdatenGroup = new FormData();
 		fd_transportdatenGroup.bottom = new FormAttachment(0, 160);
@@ -526,23 +849,53 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		vonLabel.setForeground(Util.getColor(128, 128, 128));
 		vonLabel.setText("von:");
 
-		comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
+		Combo comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachStrasse = new FormData();
 		fd_comboNachStrasse.right = new FormAttachment(0, 260);
 		fd_comboNachStrasse.bottom = new FormAttachment(0, 74);
 		fd_comboNachStrasse.top = new FormAttachment(0, 53);
 		fd_comboNachStrasse.left = new FormAttachment(0, 38);
 		comboNachStrasse.setLayoutData(fd_comboNachStrasse);
-		comboNachStrasse.setItems(new String[] {"Leobnerstraße", "Mariazellerstraße", "Am Hang", "Wienerstraße"});//TODO get from db
+		viewerToStreet = new ComboViewer(comboNachStrasse);
+		viewerToStreet.setContentProvider(new IStructuredContentProvider()
+		{
+			@Override
+			public Object[] getElements(Object arg0)
+			{
+				return addressManager.toStreetArray();
+			}
 
-		comboVonStrasse = new Combo(transportdatenGroup, SWT.NONE);
+			@Override
+			public void dispose() { }
+
+			@Override
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+		});
+		viewerToStreet.setInput(addressManager.toStreetArray());
+
+		Combo comboVonStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonStrasse = new FormData();
 		fd_comboVonStrasse.right = new FormAttachment(0, 260);
 		fd_comboVonStrasse.bottom = new FormAttachment(0, 47);
 		fd_comboVonStrasse.top = new FormAttachment(0, 26);
 		fd_comboVonStrasse.left = new FormAttachment(0, 38);
 		comboVonStrasse.setLayoutData(fd_comboVonStrasse);
-		comboVonStrasse.setItems(new String[] {"Leobnerstraße", "Mariazellerstraße", "Am Hang", "Wienerstraße"});//TODO get from db
+		viewerFromStreet = new ComboViewer(comboVonStrasse);
+		viewerFromStreet.setContentProvider(new IStructuredContentProvider()
+		{
+			@Override
+			public Object[] getElements(Object arg0)
+			{
+				return addressManager.toStreetArray();
+			}
+
+			@Override
+			public void dispose() { }
+
+			@Override
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+		});
+		viewerFromStreet.setInput(addressManager.toStreetArray());
 
 		final Label nachLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_nachLabel = new FormData();
@@ -564,23 +917,54 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		label.setForeground(Util.getColor(128, 128, 128));
 		label.setText("Straße");
 
-		comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
+		Combo comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonOrt = new FormData();
 		fd_comboVonOrt.left = new FormAttachment(0, 274);
 		fd_comboVonOrt.bottom = new FormAttachment(0, 47);
 		fd_comboVonOrt.top = new FormAttachment(0, 26);
 		fd_comboVonOrt.right = new FormAttachment(0, 430);
 		comboVonOrt.setLayoutData(fd_comboVonOrt);
-		comboVonOrt.setItems(new String[] {"Bruck an der Mur", "Oberaich", "Pernegg", "Turnau", "Kapfenberg"});//TODO get form db
+		viewerFromCity = new ComboViewer(comboVonOrt);
+		viewerFromCity.setContentProvider(new IStructuredContentProvider()
+		{
+			@Override
+			public Object[] getElements(Object arg0)
+			{
+				return addressManager.toCityArray();
+			}
 
-		comboNachOrt = new Combo(transportdatenGroup, SWT.NONE);
+			@Override
+			public void dispose() { }
+
+			@Override
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+		});
+		viewerFromCity.setInput(addressManager.toCityArray());
+
+		Combo comboNachOrt = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachOrt = new FormData();
 		fd_comboNachOrt.left = new FormAttachment(0, 274);
 		fd_comboNachOrt.bottom = new FormAttachment(0, 74);
 		fd_comboNachOrt.top = new FormAttachment(0, 53);
 		fd_comboNachOrt.right = new FormAttachment(0, 430);
 		comboNachOrt.setLayoutData(fd_comboNachOrt);
-		comboNachOrt.setItems(new String[] {"Bruck an der Mur", "Oberaich", "Pernegg", "Turnau", "Kapfenberg"});//TODO get form db
+		viewerToCity = new ComboViewer(comboNachOrt);
+		viewerToCity.setContentProvider(new IStructuredContentProvider()
+		{
+			@Override
+			public Object[] getElements(Object arg0)
+			{
+				return addressManager.toCityArray();
+			}
+
+			@Override
+			public void dispose() { }
+
+			@Override
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+		});
+		viewerToCity.setInput(addressManager.toCityArray());
+
 
 		final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_ortLabel = new FormData();
@@ -681,10 +1065,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_begleitpersonButton.left = new FormAttachment(0, 462);
 		begleitpersonButton.setLayoutData(fd_begleitpersonButton);
 		begleitpersonButton.setToolTipText("Begleitperson");
-		begleitpersonButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-			}
-		});
 		begleitpersonButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson"));
 
 		ruecktransportMoeglichButton = new Button(transportdatenGroup, SWT.CHECK);
@@ -747,17 +1127,17 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		zustaendigeOrtsstelle.setContentProvider(new StationContentProvider());
 		zustaendigeOrtsstelle.setLabelProvider(new StationLabelProvider());
 		zustaendigeOrtsstelle.setInput(ModelFactory.getInstance().getLocationList());
-		
+
 		final FormData fd_comboZustaendigeOrtsstelle = new FormData();
 		fd_comboZustaendigeOrtsstelle.bottom = new FormAttachment(0, 121);
 		fd_comboZustaendigeOrtsstelle.top = new FormAttachment(0, 100);
 		fd_comboZustaendigeOrtsstelle.right = new FormAttachment(0, 431);
 		fd_comboZustaendigeOrtsstelle.left = new FormAttachment(0, 319);
 		comboZustaendigeOrtsstelle.setLayoutData(fd_comboZustaendigeOrtsstelle);
-		
+
 		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, ruecktransportMoeglichButton, comboZustaendigeOrtsstelle, begleitpersonButton, textAnrufer, textTelefonAnrufer});
 
-		planungGroup = new Group(shell, SWT.NONE);
+		planungGroup = new Group(client, SWT.NONE);
 		planungGroup.setLayout(new FormLayout());
 		final FormData fd_planungGroup = new FormData();
 		fd_planungGroup.bottom = new FormAttachment(0, 348);
@@ -867,7 +1247,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		final FormData fd_bruckButton = new FormData();
 		bruckButton.setLayoutData(fd_bruckButton);
 		bruckButton.setText("Bruck");
-		
+
 		kapfenbergButton = new Button(planungGroup, SWT.RADIO);
 		fd_grazButton.bottom = new FormAttachment(kapfenbergButton, 16, SWT.BOTTOM);
 		fd_grazButton.top = new FormAttachment(kapfenbergButton, 0, SWT.BOTTOM);
@@ -880,7 +1260,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_kapfenbergButton.left = new FormAttachment(0, 95);
 		kapfenbergButton.setLayoutData(fd_bezirkButton);
 		kapfenbergButton.setText("Kapfenberg");
-		
+
 		Label label_2;
 		label_2 = new Label(planungGroup, SWT.SEPARATOR);
 		fd_bruckButton.bottom = new FormAttachment(label_2, 16, SWT.TOP);
@@ -901,18 +1281,17 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_fernfahrtButton.right = new FormAttachment(0, 80);
 		fd_fernfahrtButton.left = new FormAttachment(0, 7);
 		fernfahrtButton.setLayoutData(fd_fernfahrtButton);
-		fernfahrtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt" +
-				""));
+		fernfahrtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt"));
 		fernfahrtButton.setToolTipText("Fernfahrten sind lt. RKT deklariert");
 		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, fernfahrtButton, bruckButton, kapfenbergButton, grazButton, leobenButton, wienButton, mariazellButton});
 
 		//group 'Patientenzustand'
-		patientenzustandGroup = new Group(shell, SWT.NONE);
+		patientenzustandGroup = new Group(client, SWT.NONE);
 		patientenzustandGroup.setLayout(new FormLayout());
 		final FormData fd_patientenzustandGroup = new FormData();
 		fd_patientenzustandGroup.bottom = new FormAttachment(0, 348);
 		fd_patientenzustandGroup.top = new FormAttachment(0, 166);
-		fd_patientenzustandGroup.right = new FormAttachment(0, 920);//TODO
+		fd_patientenzustandGroup.right = new FormAttachment(0, 920);
 		fd_patientenzustandGroup.left = new FormAttachment(0, 194);
 		patientenzustandGroup.setLayoutData(fd_patientenzustandGroup);
 		patientenzustandGroup.setText("Patientenzustand");
@@ -928,22 +1307,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		setErkrVerl.setContentProvider(new DiseaseContentProvider());
 		setErkrVerl.setLabelProvider(new DiseaseLabelProvider());
 		setErkrVerl.setInput(ModelFactory.getInstance().getDialyseList());
-		
-//		comboErkrankungVerletzung.setItems(new String[] {"Schlaganfall", "Herzinfarkt", "Atemnot", "Pseudokrupp"});//TODO get form db
 
-		
-//		Combo textFahrer = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
-//		final FormData fd_textFahrer = new FormData();
-//		fd_textFahrer.bottom = new FormAttachment(0, 32);
-//		fd_textFahrer.top = new FormAttachment(0, 11);
-//		fd_textFahrer.right = new FormAttachment(0, 276);
-//		fd_textFahrer.left = new FormAttachment(0, 73);
-//		textFahrer.setLayoutData(fd_textFahrer);
-//		setTextFahrer = new ComboViewer(textFahrer);
-//		setTextFahrer.setContentProvider(new StaffMemberContentProvider());
-//		setTextFahrer.setLabelProvider(new StaffMemberLabelProvider());
-//		setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
-		
 		textAnmerkungen = new Text(patientenzustandGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_textAnmerkungen = new FormData();
 		fd_textAnmerkungen.bottom = new FormAttachment(0, 159);
@@ -990,7 +1354,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		label_3.setForeground(Util.getColor(128, 128, 128));
 		label_3.setText("Rückmeldung");
 
-
 		bd2Button = new Button(patientenzustandGroup, SWT.CHECK);
 		final FormData fd_bd2Button = new FormData();
 		fd_bd2Button.bottom = new FormAttachment(0, 25);
@@ -1003,7 +1366,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 
 		comboPrioritaet = new Combo(patientenzustandGroup, SWT.READ_ONLY);
 		comboPrioritaet.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), G (NEF extern)");
-		
+
 		//set possible priorities
 		if(transportType.equalsIgnoreCase("prebooking"))
 			comboPrioritaet.setItems(prebookingPriorities);
@@ -1030,7 +1393,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		patientenzustandGroup.setTabList(new Control[] {setErkrVerl.getControl(), comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
 
 		//group 'Alarmierung'
-		planungGroup_1 = new Group(shell, SWT.NONE);
+		planungGroup_1 = new Group(client, SWT.NONE);
 		planungGroup_1.setLayout(new FormLayout());
 		final FormData fd_planungGroup_1 = new FormData();
 		fd_planungGroup_1.bottom = new FormAttachment(0, 348);
@@ -1089,12 +1452,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		feuerwehrButton.setLayoutData(fd_feuerwehrButton);
 		feuerwehrButton.setToolTipText("Feuerwehr");
 		feuerwehrButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.feuerwehr"));
-		feuerwehrButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-			}
-		});
 
-		
 		rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
 		final FormData fd_rufhilfepatientButton = new FormData();
 		fd_rufhilfepatientButton.bottom = new FormAttachment(0, 96);
@@ -1103,8 +1461,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_rufhilfepatientButton.left = new FormAttachment(0, 462);
 		rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
 		rufhilfepatientButton.setText("Rufhilfepatient");
-		  
-		  
+
+
 		polizeiButton = new Button(planungGroup_1, SWT.CHECK);
 		final FormData fd_polizeiButton = new FormData();
 		fd_polizeiButton.bottom = new FormAttachment(0, 137);
@@ -1124,14 +1482,10 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		bergrettungButton.setLayoutData(fd_bergrettungButton);
 		bergrettungButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.bergrettung"));
 		bergrettungButton.setToolTipText("Bergrettung");
-		bergrettungButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-			}
-		});
 
 		planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton});
 
-		final Label label_5 = new Label(shell, SWT.SEPARATOR | SWT.HORIZONTAL);
+		final Label label_5 = new Label(client, SWT.SEPARATOR | SWT.HORIZONTAL);
 		final FormData fd_label_5 = new FormData();
 		fd_label_5.bottom = new FormAttachment(0, 367);
 		fd_label_5.top = new FormAttachment(0, 354);
@@ -1140,7 +1494,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		label_5.setLayoutData(fd_label_5);
 
 		//group 'Transportdetails'
-		transportdetailsGroup = new Group(shell, SWT.NONE);
+		transportdetailsGroup = new Group(client, SWT.NONE);
 		transportdetailsGroup.setLayout(new FormLayout());
 		final FormData fd_transportdetailsGroup = new FormData();
 		fd_transportdetailsGroup.bottom = new FormAttachment(0, 501);
@@ -1205,9 +1559,9 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		farzeugLabel.setText("Fahrzeug:");
 		transportdetailsGroup.setTabList(new Control[] {textTransportNummer, textOrtsstelle, textFahrzeug});
 
-		
+
 		//group 'Personal am Fahrzeug'
-		personalAmFahrzeugGroup = new Group(shell, SWT.NONE);
+		personalAmFahrzeugGroup = new Group(client, SWT.NONE);
 		personalAmFahrzeugGroup.setLayout(new FormLayout());
 		final FormData fd_personalAmFahrzeugGroup = new FormData();
 		fd_personalAmFahrzeugGroup.bottom = new FormAttachment(0, 501);
@@ -1217,8 +1571,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		personalAmFahrzeugGroup.setLayoutData(fd_personalAmFahrzeugGroup);
 		personalAmFahrzeugGroup.setText("Personal am Fahrzeug");
 
-		//TODO
-		//TODO
 		Combo textFahrer = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textFahrer = new FormData();
 		fd_textFahrer.bottom = new FormAttachment(0, 32);
@@ -1230,7 +1582,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		setTextFahrer.setContentProvider(new StaffMemberContentProvider());
 		setTextFahrer.setLabelProvider(new StaffMemberLabelProvider());
 		setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
-		
+
 		Combo textSaniI = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textSnaniI = new FormData();
 		fd_textSnaniI.bottom = new FormAttachment(0, 59);
@@ -1242,7 +1594,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		setTextSaniI.setContentProvider(new StaffMemberContentProvider());
 		setTextSaniI.setLabelProvider(new StaffMemberLabelProvider());
 		setTextSaniI.setInput(ModelFactory.getInstance().getStaffList());
-		
+
 		Combo textSaniII = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
 		final FormData fd_textSaniII = new FormData();
 		fd_textSaniII.bottom = new FormAttachment(0, 86);
@@ -1286,9 +1638,9 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		paramedicIILabel.setText("Sanitäter II:");
 		personalAmFahrzeugGroup.setTabList(new Control[] {textFahrer, textSaniI, textSaniII});
 
-		
+
 		//group 'Statusmeldungen'
-		statusmeldungenGroup = new Group(shell, SWT.NONE);
+		statusmeldungenGroup = new Group(client, SWT.NONE);
 		statusmeldungenGroup.setLayout(new FormLayout());
 		final FormData fd_statusmeldungenGroup = new FormData();
 		fd_statusmeldungenGroup.bottom = new FormAttachment(0, 501);
@@ -1305,7 +1657,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textAufgen.right = new FormAttachment(0, 85);
 		fd_textAufgen.left = new FormAttachment(0, 44);
 		textAufgen.setLayoutData(fd_textAufgen);
-		
+
 		textAufgen.setEditable(false);
 
 		final Label aufgLabel = new Label(statusmeldungenGroup, SWT.NONE);
@@ -1318,7 +1670,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		aufgLabel.setForeground(Util.getColor(128, 128, 128));
 		aufgLabel.setText("Aufg.:");
 
-		
+
 		textAE = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textAE = new FormData();
 		fd_textAE.bottom = new FormAttachment(0, 59);
@@ -1337,7 +1689,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		aeLabel.setForeground(Util.getColor(128, 128, 128));
 		aeLabel.setText("AE:");
 
-		
+
 		textS1 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS1 = new FormData();
 		fd_textS1.bottom = new FormAttachment(0, 32);
@@ -1356,7 +1708,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts1Label.setForeground(Util.getColor(128, 128, 128));
 		ts1Label.setText("S1:");
 
-		
+
 		textS2 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS2 = new FormData();
 		fd_textS2.bottom = new FormAttachment(0, 59);
@@ -1364,7 +1716,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textS2.right = new FormAttachment(0, 173);
 		fd_textS2.left = new FormAttachment(0, 132);
 		textS2.setLayoutData(fd_textS2);
-		
+
 		final Label ts2Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts2Label = new FormData();
 		fd_ts2Label.bottom = new FormAttachment(0, 59);
@@ -1375,7 +1727,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts2Label.setForeground(Util.getColor(128, 128, 128));
 		ts2Label.setText("S2:");
 
-		
+
 		textS3 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS3 = new FormData();
 		fd_textS3.bottom = new FormAttachment(0, 86);
@@ -1394,7 +1746,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts3Label.setForeground(Util.getColor(128, 128, 128));
 		ts3Label.setText("S3:");
 
-		
+
 		textS4 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS4 = new FormData();
 		fd_textS4.bottom = new FormAttachment(0, 32);
@@ -1402,7 +1754,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textS4.right = new FormAttachment(0, 255);
 		fd_textS4.left = new FormAttachment(0, 214);
 		textS4.setLayoutData(fd_textS4);
-		
+
 		final Label ts4Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts4Label = new FormData();
 		fd_ts4Label.bottom = new FormAttachment(0, 27);
@@ -1413,7 +1765,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts4Label.setForeground(Util.getColor(128, 128, 128));
 		ts4Label.setText("S4:");
 
-		
+
 		textS5 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS5 = new FormData();
 		fd_textS5.bottom = new FormAttachment(0, 59);
@@ -1421,7 +1773,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textS5.right = new FormAttachment(0, 255);
 		fd_textS5.left = new FormAttachment(0, 214);
 		textS5.setLayoutData(fd_textS5);
-		
+
 		final Label ts5Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts5Label = new FormData();
 		fd_ts5Label.bottom = new FormAttachment(0, 54);
@@ -1432,7 +1784,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts5Label.setForeground(Util.getColor(128, 128, 128));
 		ts5Label.setText("S5:");
 
-		
+
 		textS6 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS6 = new FormData();
 		fd_textS6.bottom = new FormAttachment(0, 86);
@@ -1451,7 +1803,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts6Label.setForeground(Util.getColor(128, 128, 128));
 		ts6Label.setText("S6:");
 
-		
+
 		textS7 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS7 = new FormData();
 		fd_textS7.bottom = new FormAttachment(0, 32);
@@ -1459,7 +1811,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textS7.right = new FormAttachment(0, 339);
 		fd_textS7.left = new FormAttachment(0, 298);
 		textS7.setLayoutData(fd_textS7);
-		
+
 		final Label ts7Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts7Label = new FormData();
 		fd_ts7Label.bottom = new FormAttachment(0, 27);
@@ -1469,8 +1821,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts7Label.setLayoutData(fd_ts7Label);
 		ts7Label.setForeground(Util.getColor(128, 128, 128));
 		ts7Label.setText("S7:");
-		
-		
+
+
 		textS8 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS8 = new FormData();
 		fd_textS8.bottom = new FormAttachment(0, 59);
@@ -1478,7 +1830,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_textS8.right = new FormAttachment(0, 339);
 		fd_textS8.left = new FormAttachment(0, 298);
 		textS8.setLayoutData(fd_textS8);
-		
+
 		final Label ts8Label = new Label(statusmeldungenGroup, SWT.NONE);
 		final FormData fd_ts8Label = new FormData();
 		fd_ts8Label.bottom = new FormAttachment(0, 54);
@@ -1489,7 +1841,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts8Label.setForeground(Util.getColor(128, 128, 128));
 		ts8Label.setText("S8:");
 
-		
+
 		textS9 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS9 = new FormData();
 		fd_textS9.bottom = new FormAttachment(0, 86);
@@ -1508,8 +1860,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		ts9Label.setForeground(Util.getColor(128, 128, 128));
 		ts9Label.setText("S9:");
 
-		
-		
 		//set uninteresting groups invisible
 		if ("prebooking".equalsIgnoreCase(transportType))
 		{
@@ -1518,7 +1868,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			personalAmFahrzeugGroup.setVisible(false);
 			planungGroup_1.setVisible(false);
 		}
-		
+
 		if ("emergencyTransport".equalsIgnoreCase(transportType))
 		{
 			transportdetailsGroup.setVisible(false);
@@ -1526,10 +1876,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			personalAmFahrzeugGroup.setVisible(false);
 			planungGroup.setVisible(false);
 		}
-		
-		
-		
-		
+
 		if("journal".equalsIgnoreCase(editingType))
 		{
 			transportdetailsGroup.setVisible(true);
@@ -1541,7 +1888,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			transportdetailsGroup.setVisible(false);
 			statusmeldungenGroup.setVisible(false);
 			personalAmFahrzeugGroup.setVisible(false);
-			
+
 			planungGroup.setVisible(true);
 			planungGroup_1.setVisible(true);
 		}
@@ -1551,767 +1898,9 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			statusmeldungenGroup.setVisible(false);
 			personalAmFahrzeugGroup.setVisible(false);
 		}
-		
-		//buttons
-		abbrechenButton = new Button(shell, SWT.NONE);
-		final FormData fd_abbrechenButton = new FormData();
-		fd_abbrechenButton.bottom = new FormAttachment(0, 501);
-		fd_abbrechenButton.top = new FormAttachment(0, 478);
-		fd_abbrechenButton.right = new FormAttachment(0, 1056);
-		fd_abbrechenButton.left = new FormAttachment(0, 960);
-		abbrechenButton.setLayoutData(fd_abbrechenButton);
-		abbrechenButton.setImage(ImageFactory.getInstance().getRegisteredImage("admin.remove"));
-		abbrechenButton.setText("Abbrechen");
-		abbrechenButton.addListener(SWT.Selection, exitListener);
-		
-		
-		okButton = new Button(shell, SWT.NONE);
-		final FormData fd_okButton = new FormData();
-		fd_okButton.bottom = new FormAttachment(0, 501);
-		fd_okButton.top = new FormAttachment(0, 478);
-		fd_okButton.right = new FormAttachment(0, 954);
-		fd_okButton.left = new FormAttachment(0, 858);
-		okButton.setLayoutData(fd_okButton);
-		okButton.setText("OK");
-		okButton.addListener(SWT.Selection, new Listener()
-		{
-			String requiredFields;//contains the names of the required fields that have no content		
-			int hourStart;
-			int hourAtPatient;
-			int hourTerm;
-			int minutesStart;
-			int minutesAtPatient;
-			int minutesTerm;
-			
-			boolean mountainRescue;
-			boolean police;
-			boolean fireBrigade;
-			boolean brkdt;
-			boolean df;
-			boolean rth;
-			boolean emergencyDoctor;
-			boolean blueLight;
-			
-			String feedback;
-			String notes;
-			String priority;
-			Disease kindOfIllness;
-			
-			boolean longDistanceTrip;
-			
-			boolean toMariazell;
-			boolean toVienna;
-			boolean toLeoben;
-			boolean toGraz;
-			boolean toKapfenberg;
-			
-			String term;
-			String atPatient;
-			String start;
-			
-			String aeS0;
-			String s1;
-			String s2;
-			String s3;
-			String s4;
-			String s5;
-			String s6;
-			String s7;
-			String s8;
-			String s9;
-			
-			String numberNotifier;
-			String notifierName;
-			
-			boolean backTransportPossible;
-			boolean accompanyingPerson;
-			boolean rufhilfepatient;
-				
-			boolean wheelChairButton;
-			boolean gurney;
-			boolean chair;
-			boolean moving;
-			
-			String toCommunity;
-			String toStreet;
-			String firstName;
-			String lastName;
-			String fromCommunity;
-			String fromStreet;
-			Location theRespStation;
-			long transportDate;
-			
-			long termLong;
-			long atPatientLong;
-			long startLong;
-			
-			long aeS0Long;
-			long s1Long;
-			long s2Long;
-			long s3Long;
-			long s4Long;
-			long s5Long;
-			long s6Long;
-			long s7Long;
-			long s8Long;
-			long s9Long;			
-			
-			int directness;
-			
-			String formatOfTime;
-			String formatOfTransportStati = "";		
-			
-			Calendar cal = Calendar.getInstance();
-			
-			StaffMember smDriver;
-			StaffMember smParamI;
-			StaffMember smParamII;		
-			
-			public void handleEvent(Event event) 
-			{
-				
-				String kindOfTransport;
-				requiredFields = "";
-				hourStart = -1;
-				hourAtPatient = -1;
-				minutesStart = -1;
-				minutesAtPatient = -1;
-				hourTerm = -1;
-				minutesTerm = -1;
-				
-				
-				formatOfTime = "";
-				
-				//get content of all fields
-				this.getContentOfAllFields();
-				this.setDirectness();
-				
-				//check required Fields
-				if (!this.checkRequiredFields().equalsIgnoreCase(""))
-				{
-					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen:");
-					return;
-				}
-				
-				//validating
-				if(!this.checkFormatOfTimeFields().equalsIgnoreCase(""))
-				{
-					this.displayMessageBox(event,formatOfTime, "Format von Transportzeiten falsch: ");	
-					return;
-				}
 
-				if(!this.checkFormatOfTransportStatusTimeFields().trim().equalsIgnoreCase(""))
-				{
-					this.displayMessageBox(event,formatOfTime, "Format von Statuszeiten falsch: ");	
-					return;
-				}
-				
-				this.transformToLong();//set planned work time
-				this.transformTransportStatiToLong();
-				//validate: start before atPatient
-				if(atPatientLong<startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))
-				{
-					this.displayMessageBox(event, "Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
-					return;
-				}				
-				
-				//validate: atPatient before term
-				if((termLong<atPatientLong && !term.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase("")))
-				{
-					this.displayMessageBox(event, "Termin kann nicht vor Ankunft bei Patient sein", "Fehler (Zeit)");
-					return;
-				}
-				
-				//validate: start before term
-				if(termLong<startLong && !term.equalsIgnoreCase("") && !start.equalsIgnoreCase(""))
-				{
-					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
-					return;
-				}
-								
-				//set the kind of transport
-				if(wheelChairButton)
-					kindOfTransport = TRANSPORT_KIND_ROLLSTUHL;
-				else if(gurney)
-					kindOfTransport = TRANSPORT_KIND_KRANKENTRAGE;
-				else if(chair)
-					kindOfTransport = TRANSPORT_KIND_TRAGSESSEL;
-				else if(moving)
-					kindOfTransport = TRANSPORT_KIND_GEHEND;
-				else
-					kindOfTransport = "";
-							
-				//create a new entry
-                if(createNew)
-                {              	
-                	//set the receiving time
-    				Calendar cal = Calendar.getInstance();
-    				long receivingTime = cal.getTimeInMillis();
-    				
-                	transport = new Transport(fromStreet,fromCommunity,theRespStation,transportDate,startLong,priority,directness);
-                	transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
-                	transport.setBackTransport(backTransportPossible);
-                	
-                	Patient patient = new Patient(firstName,lastName);
-                	transport.setPatient(patient);
-                	
-                	transport.setAssistantPerson(accompanyingPerson);
-                	transport.setAppointmentTimeAtDestination(termLong);
-                	transport.setBlueLightToGoal(blueLight);
-                	transport.setBrkdtAlarming(brkdt);
-                	
-                	CallerDetail callerDetail = new CallerDetail(notifierName,numberNotifier);
-                	transport.setCallerDetail(callerDetail);
-                	
-                	transport.setDfAlarming(df);
-                	transport.setNotes(notes);
-                	transport.setEmergencyDoctorAlarming(emergencyDoctor);
-                	transport.setEmergencyPhone(rufhilfepatient);
-                	transport.setFeedback(feedback);
-                	transport.setFirebrigadeAlarming(fireBrigade);
-                	transport.setHelicopterAlarming(rth);
-
-//   
-                	if(kindOfIllness != null)
-                	transport.setKindOfIllness(kindOfIllness);
-                	transport.setKindOfTransport(kindOfTransport);
-                	transport.setLongDistanceTrip(longDistanceTrip);
-                	transport.setMountainRescueServiceAlarming(mountainRescue);
-                	transport.setPlannedTimeAtPatient(atPatientLong);
-                	transport.setPoliceAlarming(police);
-                	transport.setCreationTime(receivingTime);
-                	transport.setToStreet(toStreet);
-                	transport.setToCity(toCommunity);
-                	if(transportType.equalsIgnoreCase("prebooking"))
-                		transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
-                	if(transportType.equalsIgnoreCase("emergencyTransport"))
-                		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
-                	
-                    //create and run the add action
-                    CreateTransportAction newAction = new CreateTransportAction(transport);
-                    newAction.run();
-                    if(transport.getTransportPriority().equalsIgnoreCase("A"))
-                    {
-                    	 DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
-                         duplicateAction.run();
-                    }
-                }
-                else
-                {
-                    // set the needed values
-                	transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
-                	transport.setFromStreet(fromStreet);
-                	transport.setFromCity(fromCommunity);
-                	transport.setPlanedLocation(theRespStation);
-                	transport.setDateOfTransport(transportDate);
-                	transport.setPlannedStartOfTransport(startLong);
-                	transport.setTransportPriority(priority);
-                	transport.setDirection(directness);
-                	
-                	transport.setBackTransport(backTransportPossible);
-                	//update the patient or create a new one if we do not have one
-                	Patient patient = transport.getPatient();
-                	//if the transpot has already a patient -> update it
-                	if(patient != null)
-                	{
-                		patient.setLastname(lastName);
-                		patient.setFirstname(firstName);
-                	}
-                	else if(!firstName.trim().isEmpty() |! lastName.trim().isEmpty())
-                	{
-                		patient = new Patient(firstName,lastName);
-                		transport.setPatient(patient);
-                	}
-                	transport.setAssistantPerson(accompanyingPerson);
-                	transport.setAppointmentTimeAtDestination(termLong);
-                	transport.setBlueLightToGoal(blueLight);
-                	transport.setBrkdtAlarming(brkdt);
-                	//update the caller or create a new one
-                	CallerDetail callerDetail = transport.getCallerDetail();
-                	System.out.println("Caller detail");
-                	if(callerDetail != null)
-                	{
-                		callerDetail.setCallerName(notifierName);
-                		callerDetail.setCallerTelephoneNumber(numberNotifier);
-                	}
-                	else if(!notifierName.trim().isEmpty() |! numberNotifier.trim().isEmpty())
-                	{
-                		callerDetail = new CallerDetail(notifierName,numberNotifier);
-                		transport.setCallerDetail(callerDetail);
-                	}
-                	
-                	transport.setDfAlarming(df);
-                	transport.setNotes(notes);
-                	transport.setEmergencyDoctorAlarming(emergencyDoctor);
-                	transport.setEmergencyPhone(rufhilfepatient);
-                	transport.setFeedback(feedback);
-                	transport.setFirebrigadeAlarming(fireBrigade);
-                	transport.setHelicopterAlarming(rth);
-                	if(kindOfIllness != null)
-                		transport.setKindOfIllness(kindOfIllness);
-                	transport.setKindOfTransport(kindOfTransport);
-                	transport.setLongDistanceTrip(longDistanceTrip);
-                	transport.setMountainRescueServiceAlarming(mountainRescue);
-                	transport.setPlannedTimeAtPatient(atPatientLong);
-                	transport.setPoliceAlarming(police);
-                	transport.setToStreet(toStreet);
-                	transport.setToCity(toCommunity);
-                	
-                	//update the vehicle if we have one
-                	if(transport.getVehicleDetail() != null)
-                	{
-                		//get the vehicle
-                		VehicleDetail detail = transport.getVehicleDetail();
-                		detail.setDriver(smDriver);
-                		detail.setFirstParamedic(smParamI);
-                		detail.setSecondParamedic(smParamII);
-                		transport.setVehicleDetail(detail);
-                	}
-
-                	if(!aeS0.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_ORDER_PLACED, aeS0Long);
-                	if(!s1.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
-                	if(!s2.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
-                	if(!s3.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
-                	if(!s4.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
-                	if(!s5.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE,s5Long);
-                	if(!s6.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, s6Long);
-                	if(!s7.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA,s7Long);
-                	if(!s8.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
-                	if(!s9.equalsIgnoreCase(""))
-                		transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
-
-                    //create and run the update action
-                    UpdateTransportAction updateAction = new UpdateTransportAction(transport);
-                    updateAction.run();
-                }
-                shell.close();
-			}
-			
-			private void getContentOfAllFields()
-			{		
-				int indexDriver = (setTextFahrer.getCombo().getSelectionIndex());
-				smDriver = (StaffMember)setTextFahrer.getElementAt(indexDriver);
-				
-				int indexParamI = (setTextSaniI.getCombo().getSelectionIndex());
-				smParamI = (StaffMember)setTextSaniI.getElementAt(indexParamI);
-				
-				int indexParamII = (setTextSaniII.getCombo().getSelectionIndex());
-				smParamII = (StaffMember)setTextSaniII.getElementAt(indexParamII);
-				
-				mountainRescue = bergrettungButton.getSelection();
-				police = polizeiButton.getSelection();
-				fireBrigade = feuerwehrButton.getSelection();
-				brkdt = brkdtButton.getSelection();
-				df = dfButton.getSelection();
-				rth = rthButton.getSelection();
-				emergencyDoctor = notarztButton.getSelection();
-				blueLight = bd2Button.getSelection();
-				feedback = textRueckmeldung.getText();
-				notes = textAnmerkungen.getText();
-				priority = comboPrioritaet.getText();
-				
-				int indexErkrVerl = setErkrVerl.getCombo().getSelectionIndex();
-				kindOfIllness = (Disease)setErkrVerl.getElementAt(indexErkrVerl);
-				
-				longDistanceTrip = fernfahrtButton.getSelection();
-				toMariazell = mariazellButton.getSelection();
-				toVienna = wienButton.getSelection();
-				toLeoben = leobenButton.getSelection();
-				toGraz = grazButton.getSelection();
-				toKapfenberg = kapfenbergButton.getSelection();
-				
-				term = textTermin.getText();
-				atPatient = textBeiPat.getText();
-				start = textAbf.getText();
-				
-				aeS0 = textAE.getText();
-				s1 = textS1.getText();
-				s2 = textS2.getText();
-				s3 = textS3.getText();
-				s4 = textS4.getText();
-				s5 = textS5.getText();
-				s6 = textS6.getText();
-				s7 = textS7.getText();
-				s8 = textS8.getText();
-				s9 = textS9.getText();
-				
-		        int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
-				theRespStation = (Location)zustaendigeOrtsstelle.getElementAt(index);
-				
-				numberNotifier = textTelefonAnrufer.getText();
-				notifierName = textAnrufer.getText();
-				backTransportPossible = ruecktransportMoeglichButton.getSelection();
-				accompanyingPerson = begleitpersonButton.getSelection();
-				rufhilfepatient = rufhilfepatientButton.getSelection();
-				wheelChairButton = eigenerRollstuhlButton.getSelection();
-				gurney = krankentrageButton.getSelection();
-				chair = tragsesselButton.getSelection();
-				moving = gehendButton.getSelection();
-				
-				toCommunity = comboNachOrt.getText();
-				toStreet = comboNachStrasse.getText();
-				firstName = comboVorname.getText();
-				lastName = comboNachname.getText();
-				fromCommunity = comboVonOrt.getText();
-				fromStreet = comboVonStrasse.getText();
-			}
-			
-			private void setDirectness()
-			{
-				if (toMariazell)
-					directness = TOWARDS_MARIAZELL;
-				else if (toVienna)
-					directness = TOWARDS_VIENNA;
-				else if (toLeoben)
-					directness = TOWARDS_LEOBEN;
-				else if (toGraz)
-					directness = TOWARDS_GRAZ;
-				else if (toKapfenberg)
-					directness = TOWARDS_KAPFENBERG;
-				else
-					directness = TOWARDS_BRUCK;
-			}
-			private String checkRequiredFields()
-			{
-				//TODO
-				/*TRANSPORT - the required fields
-				- fromStreet ist muss. Wenn da nicht die Substrings "LKH" oder "PH" vorkommen, dann müssen zusätzlich auch die Felder
-				- from City ausgefüllt sein.
-				*/
-				if (fromStreet.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"von Straße";
-				if (fromCommunity.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"von Ort";
-				if (theRespStation == null)
-					requiredFields = requiredFields +" " +"zuständige Ortsstelle";
-				if (priority.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"Priorität";
-				if (start.equalsIgnoreCase(""))
-					this.setStartTimeDefault();
-				if (transportType.equalsIgnoreCase("prebooking"))
-				{
-					if(start.equals(""))
-							requiredFields = requiredFields +" " +"Abfahrtszeit";
-					if(atPatient.equals(""))
-						requiredFields = requiredFields +" " +"Zeit bei Patient";
-					if(term.equals(""))
-						requiredFields = requiredFields +" " +"Terminzeit";
-					
-				}
-				return requiredFields;
-			}
-			
-			
-			private void setStartTimeDefault()
-			{
-				Date time = new Date();
-				startLong = time.getTime();
-			}
-			private String checkFormatOfTimeFields()
-			{
-				Pattern p4 = Pattern.compile("(\\d{2})(\\d{2})");//if content is e.g. 1234
-				Pattern p5 = Pattern.compile("(\\d{2}):(\\d{2})");//if content is e.g. 12:34
-				
-				//check in
-				if(!start.equalsIgnoreCase(""))
-				{
-					Matcher m41= p4.matcher(start);
-					Matcher m51= p5.matcher(start);
-						if(m41.matches())
-						{
-							hourStart = Integer.parseInt(m41.group(1));
-							minutesStart = Integer.parseInt(m41.group(2));
-							
-							if(hourStart >= 0 && hourStart <=23 && minutesStart >= 0 && minutesStart <=59)
-							{
-								start = hourStart + ":" +minutesStart;//for the splitter
-							}
-							else
-							{
-								formatOfTime = " - Abfahrtszeit";
-							}
-						}
-						else if(m51.matches())
-						{
-								hourStart = Integer.parseInt(m51.group(1));
-								minutesStart = Integer.parseInt(m51.group(2));
-							
-							if(!(hourStart >= 0 && hourStart <=23 && minutesStart >= 0 && minutesStart <=59))
-							{
-								formatOfTime = " - Abfahrtszeit";
-							}
-						}
-						else
-						{
-							formatOfTime = " - Abfahrtszeit";
-						}
-				}
-				
-				//at patient
-				if (!atPatient.equalsIgnoreCase(""))
-				{
-					Matcher m42= p4.matcher(atPatient);
-					Matcher m52= p5.matcher(atPatient);
-					if(m42.matches())
-					{
-						hourAtPatient = Integer.parseInt(m42.group(1));
-						minutesAtPatient = Integer.parseInt(m42.group(2));
-						
-						if(hourAtPatient >= 0 && hourAtPatient <=23 && minutesAtPatient >= 0 && minutesAtPatient <=59)
-						{
-							atPatient = hourAtPatient +":" +minutesAtPatient;
-						}
-						else
-						{
-							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
-						}
-					}
-					else if(m52.matches())
-					{
-						hourAtPatient = Integer.parseInt(m52.group(1));
-						minutesAtPatient = Integer.parseInt(m52.group(2));
-						
-						if(!(hourAtPatient >= 0 && hourAtPatient <=23 && minutesAtPatient >= 0 && minutesAtPatient <=59))
-						{
-							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
-						}
-					}
-					else
-					{
-						formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
-					}
-				}
-				
-				//term
-				if (!term.equalsIgnoreCase(""))
-				{
-					Matcher m42= p4.matcher(term);
-					Matcher m52= p5.matcher(term);
-					if(m42.matches())
-					{
-						hourTerm = Integer.parseInt(m42.group(1));
-						minutesTerm = Integer.parseInt(m42.group(2));
-						
-						if(hourTerm >= 0 && hourTerm <=23 && minutesTerm >= 0 && minutesTerm <=59)
-						{
-							term = hourTerm +":" +minutesTerm;
-						}
-						else
-						{
-							formatOfTime = formatOfTime +"Terminzeit";
-						}
-					}
-					else if(m52.matches())
-					{
-						hourTerm = Integer.parseInt(m52.group(1));
-						minutesTerm = Integer.parseInt(m52.group(2));
-						
-						if(!(hourTerm >= 0 && hourTerm <=23 && minutesTerm >= 0 && minutesTerm <=59))
-						{
-							formatOfTime = formatOfTime +"Terminzeit";
-						}
-					}
-					else
-					{
-						formatOfTime = formatOfTime +"Terminzeit";
-					}
-				}
-				return formatOfTime;
-			}
-			
-			//checks the time against a valid format, returns a String with the not valid times and the ":" if needed (1234 --> 12:34)
-			private String checkFormatOfTransportStatusTimeFields()
-			{
-				TimeValidator tv = new TimeValidator();
-				
-				if(aeS0 != null)
-				{
-					tv.checkTime(aeS0,"AE (S0)");
-					formatOfTransportStati = tv.getCheckStatus();
-					aeS0 = tv.getTime();
-				}
-				
-				if(s1 != null)
-				{
-					tv.checkTime(s1,"S1");
-					formatOfTransportStati = tv.getCheckStatus();
-					s1 = tv.getTime();
-					System.out.println("TransportForm, checkFormatOfTransportStatusTimeFields- die zurückgegebene Zeit für s1 über tv.getTime(): " +tv.getTime());
-					System.out.println("TransportForm, checkFormatOfTransportStatusTimeFields- die zurückgegebene Zeit für s1: " +s1);
-				}
-				
-				if(s2 != null)
-				{
-					tv.checkTime(s2,"S2");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s2 = tv.getTime();
-				}
-				
-				if(s3 != null)
-				{
-					tv.checkTime(s3,"S3");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s3 = tv.getTime();
-				}
-				
-				if(s4 != null)
-				{
-					tv.checkTime(s4,"S4");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s4 = tv.getTime();
-				}
-				
-				if(s5 != null)
-				{
-					tv.checkTime(s5,"S5");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s5 = tv.getTime();
-				}
-				
-				if(s6 != null)
-				{
-					tv.checkTime(s6,"S6");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s6 = tv.getTime();
-				}
-				
-				if(s7 != null)
-				{
-					tv.checkTime(s7,"S7");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s7 = tv.getTime();
-				}
-				
-				if(s8 != null)
-				{
-					tv.checkTime(s8,"S8");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s8 = tv.getTime();
-				}
-				
-				if(s9 != null)
-				{
-					tv.checkTime(s9,"S9");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s9 = tv.getTime();	
-				}
-				
-				return formatOfTransportStati;
-			}
-
-			
-			private void transformToLong()
-			{
-				//get a new instance of the calendar
-				cal = Calendar.getInstance();
-				
-				//date of the transport
-				int yearTransportDate = dateTime.getYear();
-				int monthTransportDate = dateTime.getMonth();
-				int dayTransportDate = dateTime.getDay();
-				cal.set(yearTransportDate, monthTransportDate, dayTransportDate);
-				transportDate = cal.getTimeInMillis();
-				
-				
-				if (!term.equalsIgnoreCase(""))
-				{
-					String[] theTerm = term.split(":");
-					
-					int hoursTerm = Integer.valueOf(theTerm[0]).intValue();
-					int minutesTerm = Integer.valueOf(theTerm[1]).intValue();
-					cal.set(yearTransportDate, monthTransportDate, dayTransportDate,hoursTerm,minutesTerm);
-					termLong = cal.getTimeInMillis();
-				}
-				
-				if (!atPatient.equalsIgnoreCase(""))
-				{
-					String[] theTimeAtPatient = atPatient.split(":");
-					int hourstheTimeAtPatient = Integer.valueOf(theTimeAtPatient[0]).intValue();
-					int minutestheTimeAtPatient = Integer.valueOf(theTimeAtPatient[1]).intValue();
-					cal.set(yearTransportDate, monthTransportDate, dayTransportDate,hourstheTimeAtPatient,minutestheTimeAtPatient);
-					atPatientLong = cal.getTimeInMillis();
-				}
-				
-				if (!start.equalsIgnoreCase(""))
-				{
-					String[] theStartTime = start.split(":");
-					int hourstheStartTime = Integer.valueOf(theStartTime[0]).intValue();
-					int minutestheStartTime = Integer.valueOf(theStartTime[1]).intValue();
-					cal.set(yearTransportDate, monthTransportDate, dayTransportDate,hourstheStartTime,minutestheStartTime);
-					startLong = cal.getTimeInMillis();
-				}
-				
-			}
-			
-			private void transformTransportStatiToLong()
-			{
-				TransformTimeToLong tttl = new TransformTimeToLong();
-				System.out.println("TransportForm............. aeS0 in transformTransportStatiToLong: "+aeS0);
-				System.out.println("TransportForm............. s1 in transformTransportStatiToLong: "+s1);
-				if(aeS0 != null)
-				{
-					aeS0Long = tttl.transform(aeS0);
-				}
-				if(s1 != null)
-				{
-					s1Long = tttl.transform(s1);
-				}
-				if(s2 != null)
-				{
-					s2Long = tttl.transform(s2);
-				}
-				if(s3 != null)
-				{
-					s3Long = tttl.transform(s3);
-				}
-				if(s4 != null)
-				{
-					s4Long = tttl.transform(s4);
-				}
-				if(s5 != null)
-				{
-					s5Long = tttl.transform(s5);
-				}
-				if(s6 != null)
-				{
-					s6Long = tttl.transform(s6);
-				}
-				if(s7 != null)
-				{
-					s7Long = tttl.transform(s7);
-				}
-				if(s8 != null)
-				{
-					s8Long = tttl.transform(s8);
-				}
-				if(s9 != null)
-				{
-					s9Long = tttl.transform(s9);
-				}
-			}
-			
-			
-			private void displayMessageBox(Event event, String fields, String message)
-			{
-				 MessageBox mb = new MessageBox(shell, 0);
-			     mb.setText(message);
-			     mb.setMessage(fields);
-			     mb.open();
-			     if(event.type == SWT.Close) event.doit = false;
-			}
-		});
-		
 		//transport type selection buttons
-		group = new Group(shell, SWT.NONE);
+		group = new Group(client, SWT.NONE);
 		group.setLayout(new FormLayout());
 		final FormData fd_group = new FormData();
 		fd_group.bottom = new FormAttachment(0, 472);
@@ -2338,22 +1927,18 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				transportdetailsGroup.setVisible(false);
 				statusmeldungenGroup.setVisible(false);
 				personalAmFahrzeugGroup.setVisible(false);
-				
+
 				transportType = "emergencyTransport";
-				
+
 				//set possible priorities
 				if(transportType.equalsIgnoreCase("prebooking"))
 					comboPrioritaet.setItems(prebookingPriorities);
 				if(transportType.equalsIgnoreCase("emergencyTransport"))
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 			}
-			
-			 
 		});
 		buttonNotfall.setText("Transport/Einsatz");
 
-		
-	
 		buttonVormerkung = new Button(group, SWT.TOGGLE);
 		final FormData fd_buttonVormerkung = new FormData();
 		fd_buttonVormerkung.bottom = new FormAttachment(0, 49);
@@ -2372,9 +1957,9 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 				transportdetailsGroup.setVisible(false);
 				statusmeldungenGroup.setVisible(false);
 				personalAmFahrzeugGroup.setVisible(false);
-				
+
 				transportType = "prebooking";
-				
+
 				//set possible priorities
 				if(transportType.equalsIgnoreCase("prebooking"))
 				{
@@ -2385,11 +1970,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 				}
 			}
-			
+
 		});
-		
-		
-		
 
 		buttonAlles = new Button(group, SWT.TOGGLE);
 		final FormData fd_buttonAlles = new FormData();
@@ -2415,7 +1997,6 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 			buttonAlles.setVisible(true);
 		else
 			buttonAlles.setVisible(false);
-		
 
 		final Label label_7 = new Label(group, SWT.NONE);
 		final FormData fd_label_7 = new FormData();
@@ -2424,46 +2005,71 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		fd_label_7.right = new FormAttachment(0, 88);
 		fd_label_7.left = new FormAttachment(0, 5);
 		label_7.setLayoutData(fd_label_7);
-		
-		
-		shell.setTabList(new Control[] {dateTime, transportdatenGroup, planungGroup, patientenzustandGroup, planungGroup_1, transportdetailsGroup, personalAmFahrzeugGroup, statusmeldungenGroup, okButton, abbrechenButton, group});
-		//
 	}
-	
-	 @Override
-	    public void propertyChange(PropertyChangeEvent evt)
-	    {
-	        // the viewer represents simple model. refresh should be enough.
-	        if ("STAFF_ADD".equals(evt.getPropertyName())) 
-	        { 
-	            setTextFahrer.refresh();
-	            setTextSaniI.refresh();
-	            setTextSaniII.refresh();
-	            setErkrVerl.refresh();
-	        }
-	        // event on deletion --> also just refresh
-	        if ("STAFF_REMOVE".equals(evt.getPropertyName())) 
-	        { 
-	            setTextFahrer.refresh();
-	            setTextSaniI.refresh();
-	            setTextSaniII.refresh();
-	            setErkrVerl.refresh();
-	        }
-	        // event on deletion --> also just refresh
-	        if ("STAFF_UPDATE".equals(evt.getPropertyName())) 
-	        { 
-	            setTextFahrer.refresh();
-	            setTextSaniI.refresh();
-	            setTextSaniII.refresh();
-	            setErkrVerl.refresh();
-	        }
-	        // event on deletion --> also just refresh
-	        if ("STAFF_CLEARED".equals(evt.getPropertyName())) 
-	        { 
-	            setTextFahrer.refresh();
-	            setTextSaniI.refresh();
-	            setTextSaniII.refresh();
-	            setErkrVerl.refresh();
-	        }
-	    }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt)
+	{
+		// the viewer represents simple model. refresh should be enough.
+		if ("STAFF_ADD".equals(evt.getPropertyName())
+				|| "STAFF_REMOVE".equals(evt.getPropertyName())
+				|| "STAFF_UPDATE".equals(evt.getPropertyName())
+				|| "STAFF_CLEARED".equals(evt.getPropertyName()))
+		{ 
+			setTextFahrer.refresh();
+			setTextSaniI.refresh();
+			setTextSaniII.refresh();
+		}
+		// update the viewer when a disease has changed
+		if ("DISEASE_ADD".equals(evt.getPropertyName())
+				|| "DISEASE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "DISEASE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+				|| "DISEASE_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
+		{ 
+			setErkrVerl.refresh();
+		}
+		//update the view when a address has changed
+		if ("ADDRESS_ADD".equals(evt.getPropertyName())
+				|| "ADDRESS_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "ADDRESS_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+				|| "ADDRESS_CLEARED".equalsIgnoreCase(evt.getPropertyName())
+				|| "ADDRESS_ADD_ALL".equalsIgnoreCase(evt.getPropertyName()))
+		{ 
+			//update the address data
+			viewerFromCity.refresh();
+			viewerToCity.refresh();
+			viewerToStreet.refresh();
+			viewerFromStreet.refresh();
+		}
+	}
+
+	/**
+	 * Converts and returns the given time string to a calendar.<br>
+	 * The provided time string must have either the format HHmm or HH:mm.
+	 * @return the date entered or null if the time is not valid
+	 */
+	private Calendar convertStringToDate(final String dateString)
+	{
+		//the date formatter
+		DateFormat formatter;
+
+		//the types of the accepted strings
+		if(dateString.contains(":"))
+			formatter = new SimpleDateFormat("HH:mm");
+		else
+			formatter = new SimpleDateFormat("HHmm");
+
+		//try and parse the string
+		try
+		{
+			long timestamp = formatter.parse(dateString).getTime();
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(timestamp);
+			return cal;
+		}
+		catch(ParseException pe)
+		{
+			return null;
+		}
+	}
 }

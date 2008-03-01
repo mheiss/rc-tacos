@@ -100,7 +100,7 @@ public class VehicleForm extends TitleAreaDialog
 		setTitle("Fahrzeugverwaltung");
 		setMessage(FORM_DESCRIPTION, IMessageProvider.INFORMATION);
 		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		//drwa the content
+		//draw the content
 		contents.redraw();
 		Composite client = ((Composite)contents);
 		client.layout(true);
@@ -200,6 +200,8 @@ public class VehicleForm extends TitleAreaDialog
 		//Send the update message
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
 		super.okPressed();
+		getShell().dispose();
+		getShell().close();
 	}
 
 	/**

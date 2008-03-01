@@ -73,8 +73,8 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	private boolean createNew;
 
 	/**
-	 * Default class constructor used to create
-	 * a new roster entry.
+	 * Default class constructor used to create a new roster entry.
+	 * @param shell the parent shell
 	 */
 	public RosterEntryForm(Shell parentShell)
 	{
@@ -82,10 +82,14 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		createNew = true;
 		//bind the staff to this view
 		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
 	}
 
 	/**
-	 * used to edit an roster entry
+	 * Default class constructor to edit an existing entry
+	 * @param shell the parent shell
 	 * @param rosterEntry the roster entry to edit
 	 */
 	public RosterEntryForm(Shell parentShell,RosterEntry rosterEntry)
@@ -99,7 +103,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
-	}
+	}	
 
 	/**
 	 * Cleanup and deregister the listener
@@ -124,10 +128,8 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		setMessage("Hier können Sie einen neuen Dienstplaneintrag anlegen", IMessageProvider.INFORMATION);
 		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 
-		contents.redraw();
 		Composite client = ((Composite)contents);
 		client.layout(true);
-		client.pack();
 
 		getShell().pack();
 
