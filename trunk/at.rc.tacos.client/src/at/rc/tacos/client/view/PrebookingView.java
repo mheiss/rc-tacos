@@ -41,6 +41,7 @@ import at.rc.tacos.client.providers.PrebookingViewContentProvider;
 import at.rc.tacos.client.providers.PrebookingViewLabelProvider;
 import at.rc.tacos.client.providers.TransportDateFilter;
 import at.rc.tacos.client.providers.TransportDirectnessFilter;
+import at.rc.tacos.client.providers.TransportStateViewFilter;
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
@@ -100,6 +101,9 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	private CancelTransportAction cancelTransportActionMariazell;//!!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionMariazell;
 	private CopyTransportAction copyTransportActionMariazell;
+
+	//the currently filtered date
+	private Calendar filteredDate = Calendar.getInstance();
 
 	/**
 	 * Constructs a new journal view.
@@ -185,7 +189,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerBruck = createTableViewer(richtungBruckGroup);
 		viewerWien = createTableViewer(richtungWienGroup);
 		viewerMariazell = createTableViewer(richtungMariazellGroup);
-		
+
 		//create the tooltip
 		tooltipLeoben = new JournalViewTooltip(viewerLeoben.getControl());
 		tooltipGraz = new JournalViewTooltip(viewerGraz.getControl());
@@ -226,7 +230,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 		//apply the filters
 		applyFilters(Calendar.getInstance());
-		
+
 		//refresh the views
 		viewerBruck.refresh();
 		viewerGraz.refresh();
@@ -516,9 +520,21 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		if("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			//get the new value
-			Calendar filterCal = (Calendar)evt.getNewValue();
+			this.filteredDate = (Calendar)evt.getNewValue();
 			//set up the new view filter
-			applyFilters(filterCal);
+			resetFilters();
+			applyFilters(filteredDate);
+		}
+
+		//listen to filter events
+		if("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the new filter
+			TransportViewFilter filter = (TransportViewFilter)evt.getNewValue();
+			//remove all filters and apply the new
+			resetFilters();
+			applyFilters(filteredDate);
+			applySearchFilter(filter);
 		}
 	}
 
@@ -538,7 +554,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewer.setLabelProvider(new PrebookingViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportList().toArray());
 		viewer.getTable().setLinesVisible(true);
-		
+
 		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -583,7 +599,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		bTableColumnTA.setToolTipText("Transportart");
 		bTableColumnTA.setWidth(33);
 		bTableColumnTA.setText("T");
-		
+
 		Listener sortListener = new Listener() 
 		{
 			public void handleEvent(Event e) 
@@ -641,7 +657,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 		return viewer;
 	}
-	
+
 	/**
 	 * Creates the selection listener to show the tooltip.
 	 * @param viewer the viewer to listet to changes
@@ -663,12 +679,11 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			}
 		};
 	}
-	
+
 	/**
-	 * Removes all filters from the views and sets them new
-	 * @param date the date of the transports to render
+	 * Removes all the filters from the table
 	 */
-	private void applyFilters(Calendar date)
+	public void resetFilters()
 	{
 		//remove all filters
 		viewerBruck.resetFilters();
@@ -677,13 +692,21 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerMariazell.resetFilters();
 		viewerKapfenberg.resetFilters();
 		viewerLeoben.resetFilters();
+	}
+
+	/**
+	 * Sets the filter for the dialysis transports 
+	 * @param date the date of the transports to render
+	 */
+	private void applyFilters(Calendar date)
+	{
 		//set up the filters for the view
-		viewerBruck.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerGraz.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerWien.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerMariazell.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerKapfenberg.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
-		viewerLeoben.addFilter(new TransportViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerBruck.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerGraz.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerWien.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerMariazell.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerKapfenberg.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
+		viewerLeoben.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
 		//apply the filter for the tables
 		viewerBruck.addFilter(new TransportDirectnessFilter(TOWARDS_BRUCK));
 		viewerGraz.addFilter(new TransportDirectnessFilter(TOWARDS_GRAZ));
@@ -700,5 +723,19 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerMariazell.addFilter(dateFilter);
 		viewerKapfenberg.addFilter(dateFilter);
 		viewerLeoben.addFilter(dateFilter);
+	}
+
+	/**
+	 * Sets the filter when transport is searched
+	 * @param filter the filter to apply
+	 */
+	public void applySearchFilter(TransportViewFilter searchFilter)
+	{
+		viewerBruck.addFilter(searchFilter);
+		viewerGraz.addFilter(searchFilter);
+		viewerWien.addFilter(searchFilter);
+		viewerMariazell.addFilter(searchFilter);
+		viewerKapfenberg.addFilter(searchFilter);
+		viewerLeoben.addFilter(searchFilter);
 	}
 }

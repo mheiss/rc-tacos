@@ -36,7 +36,7 @@ import at.rc.tacos.client.controller.EditTransportStatusAction;
 import at.rc.tacos.client.controller.EmptyTransportAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.TransportViewFilter;
+import at.rc.tacos.client.providers.TransportStateViewFilter;
 import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -322,7 +322,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		makeActions();
 		hookContextMenu();
 		
-		viewer.addFilter(new TransportViewFilter(PROGRAM_STATUS_UNDERWAY));
+		viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_UNDERWAY));
 		
 		viewer.refresh();
 	}

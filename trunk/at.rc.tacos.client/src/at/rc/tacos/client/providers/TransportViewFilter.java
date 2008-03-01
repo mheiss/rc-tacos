@@ -5,23 +5,22 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 import at.rc.tacos.model.Transport;
 
-/**
- * Transport views filter for the tables <br>
- * The table shows only the transports that applied to the filter
- * @author b.thek
- */
-public class TransportViewFilter extends ViewerFilter
+public class TransportViewFilter  extends ViewerFilter
 {
-	//properties
-	private int programStatus;
+	//the criteria to filter
+	private String from;
+	private String patient;
+	private String to;
 
 	/**
-	 * Create a new ViewFilter object and pass the programStatus to filter
-	 * @param programStatus the programStatus to show
+	 * Default class constructor for the address filter.
+	 * @param value the street or the city to filter
 	 */
-	public TransportViewFilter(int programStatus)
+	public TransportViewFilter(String from,String patient,String to)
 	{
-		this.programStatus = programStatus;
+		this.from = from;
+		this.patient = patient;
+		this.to = to;
 	}
 
 	/**
@@ -33,12 +32,29 @@ public class TransportViewFilter extends ViewerFilter
 	@Override
 	public boolean select(Viewer arg0, Object parentElement, Object element) 
 	{
-		//cast the element
+		//cast to a transport
 		Transport transport = (Transport)element;
-		//check the transport
-		if(transport.getProgramStatus() == programStatus)
-			return true;
-		//filter the element out
-		return false;
+
+		//check the from field
+		if(from != null &! from.trim().isEmpty())
+		{
+			//check the street name
+			if(!transport.getFromCity().contains(from) &! transport.getFromStreet().startsWith(from))
+				return false;
+		}
+		//check the patient
+		if(patient != null &! patient.trim().isEmpty())
+		{
+			//check the patient last name
+			if(!transport.getPatient().getLastname().contains(patient) &! transport.getPatient().getLastname().startsWith(patient))
+				return false;
+		}
+		if(to != null &! to.trim().isEmpty())
+		{
+			if(!transport.getToStreet().contains(to) &! transport.getToStreet().startsWith(to))
+				return false;
+		}
+		//nothing matched
+		return true;
 	}
 }

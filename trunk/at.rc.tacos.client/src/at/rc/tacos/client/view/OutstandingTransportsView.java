@@ -37,7 +37,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
 import at.rc.tacos.client.providers.OutstandingTransportsViewLabelProvider;
-import at.rc.tacos.client.providers.TransportViewFilter;
+import at.rc.tacos.client.providers.TransportStateViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
@@ -331,7 +331,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		
 		viewerOffTrans.resetFilters();
 		//apply the filter to show only outstanding transports
-		viewerOffTrans.addFilter(new TransportViewFilter(PROGRAM_STATUS_OUTSTANDING));
+		viewerOffTrans.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_OUTSTANDING));
 		viewerOffTrans.refresh();
 	}
 
