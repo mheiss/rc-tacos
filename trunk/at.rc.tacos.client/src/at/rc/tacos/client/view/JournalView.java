@@ -37,6 +37,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
 import at.rc.tacos.client.providers.TransportDateFilter;
+import at.rc.tacos.client.providers.TransportStateViewFilter;
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
@@ -44,7 +45,6 @@ import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.common.IProgramStatus;
 
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.util.MyUtils;
 
 public class JournalView extends ViewPart implements PropertyChangeListener, IProgramStatus
 {
@@ -62,6 +62,9 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	private JournalMoveToRunningTransportsAction moveToRunningTransportsAction;
 	private CreateBackTransportAction createBackTransportAction;
 
+	//the currently filtered date
+	private Calendar filteredDate = Calendar.getInstance();
+	
 	/**
 	 * Constructs a new journal view.
 	 */
@@ -304,7 +307,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		hookContextMenu();
 
 		//show only transport with the status journal
-		viewer.addFilter(new TransportViewFilter(PROGRAM_STATUS_JOURNAL));
+		viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
 		viewer.refresh();
 	}
 
@@ -380,12 +383,25 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		if("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			//get the new value
-			Calendar filterCal = (Calendar)evt.getNewValue();
+			this.filteredDate = (Calendar)evt.getNewValue();
 			viewer.resetFilters();
-			viewer.addFilter(new TransportViewFilter(PROGRAM_STATUS_JOURNAL));
-			viewer.addFilter(new TransportDateFilter(filterCal));
+			viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
+			viewer.addFilter(new TransportDateFilter(filteredDate));
 			viewer.refresh();
-			System.out.println("Change date to: "+MyUtils.timestampToString(filterCal.getTimeInMillis(), MyUtils.dateFormat));
+		}
+		//listen to filter events
+		if("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the new filter
+			TransportViewFilter searchFilter = (TransportViewFilter)evt.getNewValue();
+			//remove all filters and apply the new
+			viewer.resetFilters();
+			viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
+			viewer.addFilter(new TransportDateFilter(filteredDate));
+			if(searchFilter != null)
+			{
+				viewer.addFilter(searchFilter);
+			}	
 		}
 	}
 }

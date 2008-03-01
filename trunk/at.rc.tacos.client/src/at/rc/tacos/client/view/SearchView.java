@@ -1,14 +1,9 @@
 package at.rc.tacos.client.view;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -22,17 +17,17 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.PrebookingViewFilter;
+import at.rc.tacos.client.modelManager.TransportManager;
+import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.factory.ImageFactory;
 
 
-public class SearchView  extends ViewPart implements PropertyChangeListener
+public class SearchView extends ViewPart
 {
 	public static final String ID = "at.rc.tacos.client.view.searchView";  
 
 	//properties
-	private TableViewer viewer;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	//text fields for the filter
@@ -46,16 +41,6 @@ public class SearchView  extends ViewPart implements PropertyChangeListener
 	 */
 	public SearchView()
 	{
-		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
-	}
-
-	/**
-	 * Cleanup the view
-	 */
-	@Override
-	public void dispose()
-	{
-		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -75,11 +60,10 @@ public class SearchView  extends ViewPart implements PropertyChangeListener
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		form.getBody().setLayout(layout);
-		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
+		form.getBody().setLayoutData(new GridData());
 
 		//create the section to hold the filter
 		Composite filter = createSection(form.getBody(), "Filter") ;
-		
 
 		//create the input fields, from street
 		final Label labelFrom = toolkit.createLabel(filter, "von");
@@ -95,7 +79,7 @@ public class SearchView  extends ViewPart implements PropertyChangeListener
 
 		//Create the hyperlink to import the data
 		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
-		applyFilter.setText("Vormerkungen filtern");
+		applyFilter.setText("Transporte filtern");
 		applyFilter.setImage(ImageFactory.getInstance().getRegisteredImage("resource.import"));
 		applyFilter.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -124,113 +108,6 @@ public class SearchView  extends ViewPart implements PropertyChangeListener
 			}
 		});
 
-		//create the section to hold the table
-//		Composite tableComp = createSection(form.getBody(), "Filter2") ;
-//		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER);
-//		viewer = new TableViewer(table);
-//		viewer.setUseHashlookup(true);
-//		viewer.getTable().setLayout(new GridLayout());
-//		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
-//		viewer.addDoubleClickListener(new IDoubleClickListener()
-//		{
-//			@Override
-//			public void doubleClick(DoubleClickEvent dce) 
-//			{
-//				//get the selected disease
-//				ISelection selection = viewer.getSelection();
-//				Object obj = ((IStructuredSelection) selection).getFirstElement();
-//				Address address = (Address)obj;
-//				//create the editor input and open
-//				AddressEditorInput input = new AddressEditorInput(address,false);
-//				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-//				try 
-//				{
-//					page.openEditor(input, AddressEditor.ID);
-//				} 
-//				catch (PartInitException e) 
-//				{
-//					Activator.getDefault().log("Failed to open the editor for the address "+address, IStatus.ERROR);
-//				}
-//			}
-//		});
-//		viewer.setContentProvider(new AddressContentProvider());
-//		viewer.setLabelProvider(new AddressLabelProvider());
-//		viewer.setInput(ModelFactory.getInstance().getAddressList().toArray());
-//		viewer.getTable().setLinesVisible(true);
-//		viewer.getTable().setHeaderVisible(true);
-		
-		
-//		getViewSite().setSelectionProvider(viewer);
-
-		
-//		//create the columns
-//		final TableColumn imageColumn = new TableColumn(table, SWT.NONE);
-//		imageColumn.setToolTipText("");
-//		imageColumn.setWidth(30);
-//		imageColumn.setText("");
-//
-//		final TableColumn zipColumn = new TableColumn(table, SWT.NONE);
-//		zipColumn.setToolTipText("Gemeindekennzeichen");
-//		zipColumn.setWidth(60);
-//		zipColumn.setText("GKZ");
-//
-//		final TableColumn cityColumn = new TableColumn(table, SWT.NONE);
-//		cityColumn.setToolTipText("Name der Stadt");
-//		cityColumn.setWidth(180);
-//		cityColumn.setText("Stadt");
-//
-//		final TableColumn streetColumn = new TableColumn(table, SWT.NONE);
-//		streetColumn.setToolTipText("Name der Straﬂe");
-//		streetColumn.setWidth(180);
-//		streetColumn.setText("Straﬂe");
-
-//		//make the columns sortable
-//		Listener sortListener = new Listener() 
-//		{
-//			public void handleEvent(Event e) 
-//			{
-//				// determine new sort column and direction
-//				TableColumn sortColumn = viewer.getTable().getSortColumn();
-//				TableColumn currentColumn = (TableColumn) e.widget;
-//				int dir = viewer.getTable().getSortDirection();
-//				//revert the sortorder if the column is the same
-//				if (sortColumn == currentColumn) 
-//				{
-//					if(dir == SWT.UP)
-//						dir = SWT.DOWN;
-//					else
-//						dir = SWT.UP;
-//				} 
-//				else 
-//				{
-//					viewer.getTable().setSortColumn(currentColumn);
-//					dir = SWT.UP;
-//				}
-//				// sort the data based on column and direction
-//				String sortIdentifier = null;
-//				if (currentColumn == zipColumn) 
-//					sortIdentifier = AddressViewSorter.ZIP_SORTER;
-//				if (currentColumn == cityColumn) 
-//					sortIdentifier = AddressViewSorter.CITY_SORTER;
-//				if (currentColumn == streetColumn) 
-//					sortIdentifier = AddressViewSorter.STREET_SORTER;
-//				//apply the filter
-//				viewer.getTable().setSortDirection(dir);
-//				viewer.setSorter(new AddressViewSorter(sortIdentifier,dir));
-//			}
-//		};
-
-//		//attach the listener
-//		zipColumn.addListener(SWT.Selection, sortListener);
-//		cityColumn.addListener(SWT.Selection, sortListener);
-//		streetColumn.addListener(SWT.Selection, sortListener);
-
-		//add actions to the toolbar
-//		createToolBarActions();
-
-		//set this table as a selection provider
-//		getViewSite().setSelectionProvider(viewer);
-
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 80;
@@ -243,21 +120,15 @@ public class SearchView  extends ViewPart implements PropertyChangeListener
 		labelPatient.setLayoutData(data);
 		data.widthHint = 80;
 		//layout for the text fields
-		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+		GridData data2 = new GridData();
+		data2.widthHint = 150;
 		from.setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2 = new GridData();
+		data2.widthHint = 150;
 		patient.setLayoutData(data2);	
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2 = new GridData();
+		data2.widthHint = 150;
 		to.setLayoutData(data2);	
-//		data2 = new GridData(GridData.FILL_BOTH);
-//		viewer.getTable().setLayoutData(data2);
-//		//the section of the table
-//		data2 = new GridData(GridData.FILL_BOTH);
-//		Section tableSection = (Section)tableComp.getParent();
-//		tableSection.setLayoutData(data2);
-
-//		viewer.refresh();
-		
 		//reflow
 		form.reflow(true);
 		form.update();
@@ -271,37 +142,6 @@ public class SearchView  extends ViewPart implements PropertyChangeListener
 	{ 
 		form.setFocus();
 	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		String event = evt.getPropertyName();
-		if("ADDRESS_ADD".equalsIgnoreCase(event) ||
-				"ADDRESS_REMOVE".equalsIgnoreCase(event) ||
-				"ADDRESS_UPDATE".equalsIgnoreCase(event) ||
-				"ADDRESS_CLEARED".equalsIgnoreCase(event) ||
-				"ADDRESS_ADD_ALL".equalsIgnoreCase(event))
-		{
-			//just refresh the viewer
-			viewer.refresh();
-		}
-	}
-
-//	/**
-//	 * Creates and adds the actions for the toolbar
-//	 */
-//	private void createToolBarActions()
-//	{
-//		//create the action
-//		EditorNewAddressAction addAction = new EditorNewAddressAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
-//		RefreshViewAction refreshAction = new RefreshViewAction(Address.ID);
-//		ImportAddressAction importAction = new ImportAddressAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());	
-//		//add to the toolbar
-//		form.getToolBarManager().add(addAction);
-//		form.getToolBarManager().add(refreshAction);
-//		form.getToolBarManager().add(importAction);
-//		form.getToolBarManager().update(true);
-//	}
 
 	//Helper methods
 	/**
@@ -317,7 +157,7 @@ public class SearchView  extends ViewPart implements PropertyChangeListener
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
+		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
 		section.setExpanded(true);
 		//composite to add the client area
 		Composite client = new Composite(section, SWT.NONE);
@@ -339,23 +179,12 @@ public class SearchView  extends ViewPart implements PropertyChangeListener
 	 */
 	public void inputChanged()
 	{
+		TransportManager manager = ModelFactory.getInstance().getTransportList();
 		//get the values
 		final String strFrom = from.getText();
 		final String strPat = patient.getText();
 		final String strTo = to.getText();
-		//filter the values
-		viewer.getTable().setRedraw(false);
-		Display.getDefault().asyncExec(new Runnable ()    
-		{
-			public void run ()       
-			{
-				//get the values and create the filter
-				viewer.resetFilters();
-				//create new filter and apply
-				PrebookingViewFilter filter = new PrebookingViewFilter(strFrom,strPat,strTo);
-				viewer.addFilter(filter);
-			}
-		});
-		viewer.getTable().setRedraw(true);
+		//inform the viewer
+		manager.fireTransportFilterChanged(new TransportViewFilter(strFrom,strPat,strTo));
 	}
 }

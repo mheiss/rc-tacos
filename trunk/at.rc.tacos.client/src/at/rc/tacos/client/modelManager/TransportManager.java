@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
+import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.*;
@@ -131,11 +132,32 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	 * Informs the views that the selected date in the transport view filter has changed.
 	 * @param newDate the newDate to display
 	 */
-	public void fireTransportViewFilterChanged(Calendar newDate)
+	public void fireTransportViewFilterChanged(final Calendar newDate)
 	{
 		this.displayedDate = newDate;
-		//fire a property change event to notify the viewers that the date changed
-		firePropertyChange("TRANSPORT_DATE_CHANGED",null,newDate);
+		Display.getDefault().syncExec(new Runnable ()    
+		{
+			public void run ()       
+			{
+				//fire a property change event to notify the viewers that the date changed
+				firePropertyChange("TRANSPORT_DATE_CHANGED",null,newDate);
+			}
+		});
+	}
+
+	/**
+	 * Informs the views that the filter for the transport has changed
+	 */
+	public void fireTransportFilterChanged(final TransportViewFilter newFilter)
+	{
+		//notify the listeners
+		Display.getDefault().syncExec(new Runnable ()    
+		{
+			public void run ()       
+			{
+				firePropertyChange("TRANSPORT_FILTER_CHANGED", null, newFilter);
+			}
+		});
 	}
 
 	/**
@@ -165,7 +187,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 			if(assignedVehicle == null)
 				continue;
 			if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_UNDERWAY)
-			    continue;
+				continue;
 			//check the vehicle
 			if(assignedVehicle.getVehicleName().equals(vehicleName))
 				filteredList.add(transport);
