@@ -114,6 +114,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			query.setInt(2, IProgramStatus.PROGRAM_STATUS_UNDERWAY);
 			final ResultSet rs = query.executeQuery();
 			List<Transport> transports = new ArrayList<Transport>();
+
 			while(rs.next())
 			{
 				//create the new transport
@@ -232,68 +233,58 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
 				query1.setInt(1, transport.getTransportId());
 				final ResultSet rs1 = query1.executeQuery();
+				
+				transport.setEmergencyDoctorAlarming(false);
+				transport.setPoliceAlarming(false);
+				transport.setFirebrigadeAlarming(false);
+				transport.setMountainRescueServiceAlarming(false);
+				transport.setDfAlarming(false);
+				transport.setBrkdtAlarming(false);
+				transport.setBlueLightToGoal(false);
+				transport.setBrkdtAlarming(false);
+				transport.setHelicopterAlarming(false);
+				transport.setBackTransport(false);
+				transport.setAssistantPerson(false);
+				transport.setLongDistanceTrip(false);
+				transport.setEmergencyPhone(false);
 
 				while(rs1.next())
 				{
 					if(rs1.getInt("selected_ID") == 1)
 						transport.setEmergencyDoctorAlarming(true);
-					else 
-						transport.setEmergencyDoctorAlarming(false);
-
+										
 					if(rs1.getInt("selected_ID") == 2)
 						transport.setPoliceAlarming(true);
-					else 
-						transport.setPoliceAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 3)
 						transport.setFirebrigadeAlarming(true);
-					else 
-						transport.setFirebrigadeAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 4)
 						transport.setMountainRescueServiceAlarming(true);
-					else 
-						transport.setMountainRescueServiceAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 5)
 						transport.setDfAlarming(true);
-					else 
-						transport.setDfAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 6)
 						transport.setBrkdtAlarming(true);
-					else 
-						transport.setBrkdtAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 7)
 						transport.setBlueLightToGoal(true);
-					else 
-						transport.setBlueLightToGoal(false);
-
+					
 					if(rs1.getInt("selected_ID") == 8)
 						transport.setHelicopterAlarming(true);
-					else 
-						transport.setHelicopterAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 9)
 						transport.setAssistantPerson(true);
-					else 
-						transport.setAssistantPerson(false);
-
+					
 					if(rs1.getInt("selected_ID") == 10)
 						transport.setBackTransport(true);
-					else 
-						transport.setBackTransport(false);
-
+					
 					if(rs1.getInt("selected_ID") == 11)
 						transport.setLongDistanceTrip(true);
-					else 
-						transport.setLongDistanceTrip(false);
-
+					
 					if(rs1.getInt("selected_ID") == 12)
 						transport.setEmergencyPhone(true);
-					else 
-						transport.setEmergencyPhone(false);
 				}
 				
 				//add the transport to the list
@@ -403,67 +394,57 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				query1.setInt(1, transport.getTransportId());
 				final ResultSet rs1 = query1.executeQuery();
 
+				transport.setEmergencyDoctorAlarming(false);
+				transport.setPoliceAlarming(false);
+				transport.setFirebrigadeAlarming(false);
+				transport.setMountainRescueServiceAlarming(false);
+				transport.setDfAlarming(false);
+				transport.setBrkdtAlarming(false);
+				transport.setBlueLightToGoal(false);
+				transport.setBrkdtAlarming(false);
+				transport.setHelicopterAlarming(false);
+				transport.setBackTransport(false);
+				transport.setAssistantPerson(false);
+				transport.setLongDistanceTrip(false);
+				transport.setEmergencyPhone(false);
+
 				while(rs1.next())
 				{
 					if(rs1.getInt("selected_ID") == 1)
 						transport.setEmergencyDoctorAlarming(true);
-					else 
-						transport.setEmergencyDoctorAlarming(false);
-
+										
 					if(rs1.getInt("selected_ID") == 2)
 						transport.setPoliceAlarming(true);
-					else 
-						transport.setPoliceAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 3)
 						transport.setFirebrigadeAlarming(true);
-					else 
-						transport.setFirebrigadeAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 4)
 						transport.setMountainRescueServiceAlarming(true);
-					else 
-						transport.setMountainRescueServiceAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 5)
 						transport.setDfAlarming(true);
-					else 
-						transport.setDfAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 6)
 						transport.setBrkdtAlarming(true);
-					else 
-						transport.setBrkdtAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 7)
 						transport.setBlueLightToGoal(true);
-					else 
-						transport.setBlueLightToGoal(false);
-
+					
 					if(rs1.getInt("selected_ID") == 8)
 						transport.setHelicopterAlarming(true);
-					else 
-						transport.setHelicopterAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 9)
 						transport.setAssistantPerson(true);
-					else 
-						transport.setAssistantPerson(false);
-
+					
 					if(rs1.getInt("selected_ID") == 10)
 						transport.setBackTransport(true);
-					else 
-						transport.setBackTransport(false);
-
+					
 					if(rs1.getInt("selected_ID") == 11)
 						transport.setLongDistanceTrip(true);
-					else 
-						transport.setLongDistanceTrip(false);
-
+					
 					if(rs1.getInt("selected_ID") == 12)
 						transport.setEmergencyPhone(true);
-					else 
-						transport.setEmergencyPhone(false);
 				}
 				
 				//add the transport to the list
@@ -609,67 +590,57 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 				query1.setInt(1, transport.getTransportId());
 				final ResultSet rs1 = query1.executeQuery();
 
+				transport.setEmergencyDoctorAlarming(false);
+				transport.setPoliceAlarming(false);
+				transport.setFirebrigadeAlarming(false);
+				transport.setMountainRescueServiceAlarming(false);
+				transport.setDfAlarming(false);
+				transport.setBrkdtAlarming(false);
+				transport.setBlueLightToGoal(false);
+				transport.setBrkdtAlarming(false);
+				transport.setHelicopterAlarming(false);
+				transport.setBackTransport(false);
+				transport.setAssistantPerson(false);
+				transport.setLongDistanceTrip(false);
+				transport.setEmergencyPhone(false);
+
 				while(rs1.next())
 				{
 					if(rs1.getInt("selected_ID") == 1)
 						transport.setEmergencyDoctorAlarming(true);
-					else 
-						transport.setEmergencyDoctorAlarming(false);
-
+										
 					if(rs1.getInt("selected_ID") == 2)
 						transport.setPoliceAlarming(true);
-					else 
-						transport.setPoliceAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 3)
 						transport.setFirebrigadeAlarming(true);
-					else 
-						transport.setFirebrigadeAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 4)
 						transport.setMountainRescueServiceAlarming(true);
-					else 
-						transport.setMountainRescueServiceAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 5)
 						transport.setDfAlarming(true);
-					else 
-						transport.setDfAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 6)
 						transport.setBrkdtAlarming(true);
-					else 
-						transport.setBrkdtAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 7)
 						transport.setBlueLightToGoal(true);
-					else 
-						transport.setBlueLightToGoal(false);
-
+					
 					if(rs1.getInt("selected_ID") == 8)
 						transport.setHelicopterAlarming(true);
-					else 
-						transport.setHelicopterAlarming(false);
-
+					
 					if(rs1.getInt("selected_ID") == 9)
 						transport.setAssistantPerson(true);
-					else 
-						transport.setAssistantPerson(false);
-
+					
 					if(rs1.getInt("selected_ID") == 10)
 						transport.setBackTransport(true);
-					else 
-						transport.setBackTransport(false);
-
+					
 					if(rs1.getInt("selected_ID") == 11)
 						transport.setLongDistanceTrip(true);
-					else 
-						transport.setLongDistanceTrip(false);
-
+					
 					if(rs1.getInt("selected_ID") == 12)
 						transport.setEmergencyPhone(true);
-					else 
-						transport.setEmergencyPhone(false);
 				}
 				
 				//add the transport to the list
@@ -1387,6 +1358,13 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			return false;
 		}
 
+		System.out.println("TTTTTTTTTTTTTTTTTTransportDAOMySQL, assignTranpsortItems, Anfang");
+		System.out.println(".....Notarzt" +transport.isEmergencyDoctorAlarming());
+		System.out.println("..... Polizei" +transport.isPoliceAlarming());
+		System.out.println(".....Begleitperson" +transport.isAssistantPerson());
+		System.out.println(".....Rücktransport" +transport.isBackTransport());
+		System.out.println(".....Fernfahrt" +transport.isLongDistanceTrip());
+		System.out.println(".....Rufhilfe" +transport.isEmergencyPhone());
 		if(transport.isEmergencyDoctorAlarming() == true)
 			addTransportItem(transport.getTransportId(), 1);
 		if(transport.isPoliceAlarming() == true)
@@ -1411,7 +1389,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			addTransportItem(transport.getTransportId(), 11);
 		if(transport.isEmergencyPhone() == true)
 			addTransportItem(transport.getTransportId(), 12);
-
+		System.out.println("TTTTTTTTTTTTTTTTTTransportDAOMySQL, assignTranpsortItems, Ende");
 		return true;
 	}	
 
