@@ -170,6 +170,8 @@ public class DialysisForm implements IKindOfTransport
         this.samstagButton.setSelection(dia.isSaturday());
         this.sonntagButton.setSelection(dia.isSunday());
         
+        this.button_stationary.setSelection(dia.isStationary());
+        
 
         //kind of transport
         String kindOfTransport = dia.getKindOfTransport();
@@ -480,6 +482,8 @@ public class DialysisForm implements IKindOfTransport
 			boolean samstag;
 			boolean sonntag;
 			
+			boolean assistant;
+			
 			boolean stationary;
 			
 			String toCommunity;
@@ -610,6 +614,8 @@ public class DialysisForm implements IKindOfTransport
 					dia.setSaturday(samstag);
 					dia.setSunday(sonntag);
 					
+					dia.setAssistantPerson(assistant);
+					
 					CreateDialysisTransportAction newAction = new CreateDialysisTransportAction(dia);
 					newAction.run();
 				}
@@ -641,6 +647,8 @@ public class DialysisForm implements IKindOfTransport
 					dia.setSaturday(samstag);
 					dia.setSunday(sonntag);
 					
+					dia.setAssistantPerson(assistant);
+					
 					UpdateDialysisTransportAction updateAction = new UpdateDialysisTransportAction(dia);
 					updateAction.run();
 				}
@@ -656,6 +664,8 @@ public class DialysisForm implements IKindOfTransport
 				freitag = freitagButton.getSelection();
 				samstag = samstagButton.getSelection();
 				sonntag = sonntagButton.getSelection();
+				
+				assistant = begleitpersonButton.getSelection();
 				
 				stationary = button_stationary.getSelection();
 				
