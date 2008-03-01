@@ -24,7 +24,7 @@ public class TransportPrebookingPerspective implements IPerspectiveFactory
         //the main components
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
         layout.addStandaloneView(PrebookingView.ID,false, IPageLayout.RIGHT, 0.90f, editorArea);
-        layout.addStandaloneView(SearchView.ID, false, IPageLayout.BOTTOM, 0.90f, editorArea);
+        layout.addStandaloneView(SearchView.ID, false, IPageLayout.BOTTOM, 0.30f, editorArea);
         layout.addStandaloneView(FilterView.ID,false,IPageLayout.LEFT,0.18f,editorArea);
         
     }
