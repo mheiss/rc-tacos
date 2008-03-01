@@ -6,12 +6,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.modelManager.TransportManager;
-import at.rc.tacos.client.view.VehicleForm;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
