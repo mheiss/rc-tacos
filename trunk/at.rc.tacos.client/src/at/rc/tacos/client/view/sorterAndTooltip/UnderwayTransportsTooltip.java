@@ -194,7 +194,7 @@ public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
 		
 		if(transport.isEmergencyPhone())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("resource.mobilePhone");
+			image = ImageFactory.getInstance().getRegisteredImage("resource.phone");
 			title = emergencyPhone;
 			addIconAndLabel(composite,image,title);
 		}
