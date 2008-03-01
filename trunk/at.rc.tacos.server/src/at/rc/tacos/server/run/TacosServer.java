@@ -52,7 +52,7 @@ public class TacosServer
             //parse
             port = Integer.parseInt(strPort);
             //start the server
-            System.out.println("TACOS-Server Build: 24.02.2008"); 
+            System.out.println("TACOS-Server Build: 01.03.2008"); 
             System.out.println("-------------------------------------------");
             System.out.println("Open a connection to the database server");
             //try to get a connection to the database
