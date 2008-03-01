@@ -370,6 +370,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
         this.rthButton.setSelection(transport.isHelicopterAlarming());
         this.ruecktransportMoeglichButton.setSelection(transport.isBackTransport());
         this.rufhilfepatientButton.setSelection(transport.isEmergencyPhone());
+        this.bd2Button.setSelection(transport.isBlueLightToGoal());
         
         
         if(transport.getNotes() != null)
@@ -458,6 +459,8 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	        
 	        textFahrzeug.setText(transport.getVehicleDetail().getVehicleName());
         }
+        
+        
     }
 
 	/**
@@ -739,7 +742,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		label_6.setForeground(Util.getColor(128, 128, 128));
 		label_6.setText("Zuständige Ortsstelle:");
 
-		Combo comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.NONE);
+		Combo comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.READ_ONLY);
 		zustaendigeOrtsstelle = new ComboViewer(comboZustaendigeOrtsstelle);
 		zustaendigeOrtsstelle.setContentProvider(new StationContentProvider());
 		zustaendigeOrtsstelle.setLabelProvider(new StationLabelProvider());
@@ -914,7 +917,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		patientenzustandGroup.setLayoutData(fd_patientenzustandGroup);
 		patientenzustandGroup.setText("Patientenzustand");
 
-		comboErkrankungVerletzung = new Combo(patientenzustandGroup, SWT.NONE);
+		comboErkrankungVerletzung = new Combo(patientenzustandGroup, SWT.READ_ONLY);
 		final FormData fd_comboErkrankungVerletzung = new FormData();
 		fd_comboErkrankungVerletzung.bottom = new FormAttachment(0, 50);
 		fd_comboErkrankungVerletzung.top = new FormAttachment(0, 29);
@@ -998,7 +1001,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 		bd2Button.setToolTipText("Sondersignal auf dem Weg zum Transportziel");
 		bd2Button.setText("BD 2");
 
-		comboPrioritaet = new Combo(patientenzustandGroup, SWT.NONE);
+		comboPrioritaet = new Combo(patientenzustandGroup, SWT.READ_ONLY);
 		comboPrioritaet.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), G (NEF extern)");
 		
 		//set possible priorities
@@ -2445,6 +2448,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	            setTextFahrer.refresh();
 	            setTextSaniI.refresh();
 	            setTextSaniII.refresh();
+	            setErkrVerl.refresh();
 	        }
 	        // event on deletion --> also just refresh
 	        if ("STAFF_REMOVE".equals(evt.getPropertyName())) 
@@ -2452,6 +2456,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	            setTextFahrer.refresh();
 	            setTextSaniI.refresh();
 	            setTextSaniII.refresh();
+	            setErkrVerl.refresh();
 	        }
 	        // event on deletion --> also just refresh
 	        if ("STAFF_UPDATE".equals(evt.getPropertyName())) 
@@ -2459,6 +2464,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	            setTextFahrer.refresh();
 	            setTextSaniI.refresh();
 	            setTextSaniII.refresh();
+	            setErkrVerl.refresh();
 	        }
 	        // event on deletion --> also just refresh
 	        if ("STAFF_CLEARED".equals(evt.getPropertyName())) 
@@ -2466,6 +2472,7 @@ public class TransportForm implements IDirectness, IKindOfTransport, ITransportS
 	            setTextFahrer.refresh();
 	            setTextSaniI.refresh();
 	            setTextSaniII.refresh();
+	            setErkrVerl.refresh();
 	        }
 	    }
 }
