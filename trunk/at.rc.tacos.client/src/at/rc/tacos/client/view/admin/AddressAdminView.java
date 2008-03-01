@@ -271,6 +271,8 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		Section tableSection = (Section)tableComp.getParent();
 		tableSection.setLayoutData(data2);
 
+		viewer.refresh();
+		
 		//reflow
 		form.reflow(true);
 		form.update();

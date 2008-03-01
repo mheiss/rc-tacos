@@ -1,9 +1,18 @@
 package at.rc.tacos.client.modelManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.widgets.Display;
+import at.rc.tacos.client.Activator;
+import at.rc.tacos.factory.CSVParser;
 import at.rc.tacos.model.Address;
 
 /**
@@ -49,6 +58,41 @@ public class AddressManager extends PropertyManager
 		//cleare the list
 		removeAllElements();
 		//load the file
+		URL url = FileLocator.find(Activator.getDefault().getBundle(), new Path("doc/addressData.csv"), null);
+		if(url == null)
+		{
+			Activator.getDefault().log("Failed to locate the addressData.csv file", IStatus.ERROR);
+			return;
+		}
+		
+		//parse the file
+		CSVParser parser = CSVParser.getInstance();
+		try
+		{
+			String path = FileLocator.toFileURL(url).getPath();
+			//parse the given file
+			final List<Map<String, Object>> elementList = parser.parseCSV(new File(path));
+			//loop an import
+			for(int i = 0; i<elementList.size(); i++)
+			{
+				Map<String, Object> line = elementList.get(i);			
+				//access every element of the line			
+				int gkz = Integer.parseInt((String)line.get("GKZ"));
+				String city = (String)line.get("Gemeindename");
+				String street = (String)line.get("BEZEICHNUNG");
+				//create the address and add to the list
+				objectList.add(new Address(gkz,city,street));
+			}
+		}
+		catch(IOException ioe)
+		{
+			Activator.getDefault().log("Failed to locate the addressData.csv file", IStatus.ERROR);
+			return;
+		}
+		catch(Exception ex)
+		{
+			Activator.getDefault().log("Failed to parse the addressData.csv file", IStatus.ERROR);
+		}
 	}
 
 	/**
@@ -158,6 +202,7 @@ public class AddressManager extends PropertyManager
 		//loop and add the streets
 		for(Address add:objectList)
 			streets.add(add.getStreet());
+		System.out.println("zahl:"+streets.size());
 		return streets.toArray();
 	}
 
@@ -175,6 +220,7 @@ public class AddressManager extends PropertyManager
 				continue;
 			cities.add(add.getCity());
 		}
+		System.out.println("cities:"+cities.size());
 		return cities.toArray();
 	}
 }
