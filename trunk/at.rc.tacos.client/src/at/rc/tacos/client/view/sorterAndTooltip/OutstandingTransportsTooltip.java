@@ -146,7 +146,7 @@ public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 		//rufhilfe
 		if(transport.isEmergencyPhone())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("resource.mobilePhone");
+			image = ImageFactory.getInstance().getRegisteredImage("resource.phone");
 			title = "Rufhilfepatient";
 			addIconAndLabel(composite,image,title);
 		}
