@@ -106,6 +106,7 @@ public class StaffManager extends PropertyManager
      */
     public List<StaffMember> getUnassignedStaffList()
     {
+    	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList");
     	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList();
     	List<StaffMember> filteredList = new ArrayList<StaffMember>();
     	for(StaffMember member:objectList)
@@ -115,6 +116,7 @@ public class StaffManager extends PropertyManager
     			continue;
     		filteredList.add(member);
     	}
+    	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList, size: " +filteredList.size());
     	return filteredList;
     }
     
