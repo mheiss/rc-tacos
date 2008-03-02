@@ -6,11 +6,24 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.StaffMember;
 
 public class StaffMemberVehicleContentProvider implements IStructuredContentProvider
 {
-    private StaffMember staffMember;
+	private StaffMember staffMember;
+	private Location location;
+	
+	public StaffMemberVehicleContentProvider(StaffMember staffMember, Location location)
+	{
+		this.staffMember = staffMember;
+		this.location = location;
+	}
+	
+	public StaffMemberVehicleContentProvider(Location location)
+	{
+		this.location = location;
+	}
 
     /**
      * Default class constructor for a vontent provider
@@ -31,7 +44,8 @@ public class StaffMemberVehicleContentProvider implements IStructuredContentProv
     @Override
     public Object[] getElements(Object arg0)
     {
-        List<StaffMember> list = ModelFactory.getInstance().getStaffList().getUnassignedStaffList();
+    	List<StaffMember> list = ModelFactory.getInstance().getStaffList().getUnassignedCheckedInStaffListByLocation(location);
+
         if(staffMember != null &! list.contains(staffMember))
             list.add(staffMember);
         return list.toArray();
