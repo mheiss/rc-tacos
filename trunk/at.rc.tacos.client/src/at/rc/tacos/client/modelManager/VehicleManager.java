@@ -129,7 +129,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     /**
      * Returns the vehicle id if the requested staff is assigned to a vehicle.
      * @param staffId the id of the staff to check
-     * @return the vehicle id or null
+     * @return the vehicle id or null(if the staff member is not assigned to a vehicle)
      */
     public String getVehicleOfStaff(int staffId)
     {
