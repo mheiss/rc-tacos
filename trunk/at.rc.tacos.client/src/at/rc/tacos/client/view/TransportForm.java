@@ -1875,8 +1875,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					comboPrioritaet.setItems(prebookingPriorities);
 				if(transportType.equalsIgnoreCase("emergencyTransport"))
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
-				
-				System.out.println("TTTTTTTransportForm, buttonNotfall, transportType: " +transportType);
 			}
 		});
 		buttonNotfall.setText("Transport/Einsatz");
@@ -1911,8 +1909,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				{
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 				}
-				
-				System.out.println("TTTTTTTransportForm, buttonVormerkung, transportType: " +transportType);
+
 			}
 
 		});
