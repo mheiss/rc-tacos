@@ -588,21 +588,37 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			return;
 		}
 		if(startTime != null)
+		{
+			startTime.set(Calendar.YEAR, dateTime.getYear());
+			startTime.set(Calendar.MONTH, dateTime.getMonth());
+			startTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+  
 			transport.setPlannedStartOfTransport(startTime.getTimeInMillis());
+		}
 		else
 			transport.setPlannedStartOfTransport(0);
 		
 		//time at patient  --> no validation 
 		Calendar patientTime = convertStringToDate(textBeiPat.getText());
 		if(patientTime != null)
+		{
+			patientTime.set(Calendar.YEAR, dateTime.getYear());
+			patientTime.set(Calendar.MONTH, dateTime.getMonth());
+			patientTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
 			transport.setPlannedTimeAtPatient(patientTime.getTimeInMillis());
+		}
 		else
 			transport.setPlannedTimeAtPatient(0);
 		
 		//check the time  --> no validation 
 		Calendar appointmentTime = convertStringToDate(textTermin.getText());
 		if(appointmentTime != null)
+		{
+			appointmentTime.set(Calendar.YEAR, dateTime.getYear());
+			appointmentTime.set(Calendar.MONTH, dateTime.getMonth());
+			appointmentTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
 			transport.setAppointmentTimeAtDestination(appointmentTime.getTimeInMillis());
+		}
 		else
 			transport.setAppointmentTimeAtDestination(0);
 
