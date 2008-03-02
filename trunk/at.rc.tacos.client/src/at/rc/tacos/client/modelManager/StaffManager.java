@@ -3,6 +3,9 @@ package at.rc.tacos.client.modelManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
+
+import at.rc.tacos.model.Location;
+import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 
 /**
@@ -114,7 +117,7 @@ public class StaffManager extends PropertyManager
     		//check if a vehicle is assigned
     		if(vehicleManager.getVehicleOfStaff(member.getStaffMemberId()) != null)
     			continue;
-    		filteredList.add(member);
+    		filteredList.add(member);//add if the staffMember is not assigned to a vehicle
     	}
     	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList, size: " +filteredList.size());
     	return filteredList;
@@ -133,5 +136,37 @@ public class StaffManager extends PropertyManager
     	}
     	//Nothing found
     	return null;
+    }
+    
+    /**
+     * Returns a list of all staff members that are not assigned to a vehicle an checked in by location
+     * @return list of staff members with no vehicle
+     */
+    public List<StaffMember> getUnassignedCheckedInStaffListByLocation(Location location)
+    {
+    	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList");
+    	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList();
+    	List<StaffMember> filteredList = new ArrayList<StaffMember>();
+    	RosterEntryManager rosterManager = ModelFactory.getInstance().getRosterEntryList();
+    	rosterManager.getCheckedInRosterEntriesByLocation(location);
+    	List<StaffMember> staffMemberList = new ArrayList<StaffMember>();
+    	for(StaffMember member:objectList)
+    	{
+    		for(RosterEntry entry : rosterManager.getCheckedInRosterEntriesByLocation(location))
+    		{
+    			if (entry.getStaffMember().getStaffMemberId() == member.getStaffMemberId())
+    			staffMemberList.add(member);
+    		}
+    	}
+    	System.out.println("SSSSSSSSSSSSSSSSSSSSSSSStaffManager, in getUnassignedCheckedInStaffListByLocation, size of the list: " +staffMemberList.size());
+    	for(StaffMember member:staffMemberList)
+    	{
+    		//check if a vehicle is assigned
+    		if(vehicleManager.getVehicleOfStaff(member.getStaffMemberId()) != null)
+    			continue;
+    		filteredList.add(member);//add if the staffMember is not assigned to a vehicle
+    	}
+    	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList, size: " +filteredList.size());
+    	return filteredList;
     }
 }
