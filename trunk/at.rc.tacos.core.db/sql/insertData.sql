@@ -25,9 +25,32 @@ INSERT INTO job(job_ID, jobname) VALUES(12, 'Sonstiges');
 
 -- Mobile phones
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(1, '0699-11321018', 'BM01');
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(2, '0699-10342965', 'BM02');
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(3, '0664-12345678', 'privat');
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(4, '0361-12345678', 'privat');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(2, '0664-9615263', 'BM02');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(3, '0664-8218004', 'BM03');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(4, '0664-8218005', 'BM04');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(5, '0664-8218006', 'BM05');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(6, '0664-8218028', 'BM06');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(7, '0664-2516087', 'BR07');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(8, '0664-9615263', 'BM08');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(9, '0664-8218009', 'BM09');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(10, '0664-8218011', 'BM010');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(11, '0664-9615264', 'BM016');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(12, '0664-9615251', 'KA02');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(13, '0664-9615252', 'KA03');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(14, '0664-9615253', 'KA04');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(15, '0664-9615254', 'KA05');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(16, '0664-9615255', 'KA06');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(17, '0664-9615256', 'KA07');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(18, '0664-9615257', 'KA08');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(19, '0664-9615258', 'MA14');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(20, '0664-9615259', 'MA15');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(21, '0664-9615260', 'TH16');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(22, '0664-9615261', 'TH17');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(23, '0664-9615262', 'TU18');
+
+
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(24, '0664-12345678', 'privat');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(25, '0361-12345678', 'privat');
 
 -- logins
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.lohm', 'pwd', 'Administrator', false, false);
@@ -104,24 +127,24 @@ VALUES(1, 'Herr Maier', '0342 - 12345');
 
 --create dummy transports
 INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 0, 1, 1, 'anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'gehend', 'abcv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'abcKrottendorf 827', 'Kapfenberg', 'abcLKH', 'Graz', 0, '20080215215400');
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 0, 2, 1, 'bnote ...', 'u.nech', 'C', 'wie vermutet oder so', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'Tragsessel', 'bcdv.a. Herzinfarkt', 'Sonja', 'Müller', 2, 'bcdWienerstr. 54', 'Kapfenberg', 'bcdBKH', 'Bruck', 0, '20080215215400');
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport) 
-VALUES(null, 0, 3, 1, 'cnote ...', 'w.lohm', 'E', 'Polizei nachfordern', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'Krankentrage', 'cdev.a. Epianfall........', 'Hans', 'Hofer', 3, 'cdeWienerstr. 54', 'Kapfenberg', 'cdeBKH', 'Bruck', 0, '20080215215400');
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport) 
-VALUES(null, 0, 4, 1, 'dnote ...', 'm.heiß', 'B', 'drei Leichtverletzte', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'Krankentrage', 'defLumbago ............', 'Max', 'Huber', 1, 'ABCDWienerstr. 54', 'Kapfenberg', 'defBKH', 'Bruck', 0, '20080215215400');
+VALUES(null, 0, 1, 1, 'anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '20080215215400');
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
+--VALUES(null, 0, 2, 1, 'bnote ...', 'u.nech', 'C', 'wie vermutet oder so', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'Tragsessel', 'bcdv.a. Herzinfarkt', 'Sonja', 'Müller', 2, 'bcdWienerstr. 54', 'Kapfenberg', 'bcdBKH', 'Bruck', 0, '20080215215400');
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport) 
+--VALUES(null, 0, 3, 1, 'cnote ...', 'w.lohm', 'E', 'Polizei nachfordern', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'Krankentrage', 'cdev.a. Epianfall........', 'Hans', 'Hofer', 3, 'cdeWienerstr. 54', 'Kapfenberg', 'cdeBKH', 'Bruck', 0, '20080215215400');
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport) 
+--VALUES(null, 0, 4, 1, 'dnote ...', 'm.heiß', 'B', 'drei Leichtverletzte', '20080103215400', '20080103215400', '20080103215400', '20080103215400', 'Krankentrage', 'defLumbago ............', 'Max', 'Huber', 1, 'ABCDWienerstr. 54', 'Kapfenberg', 'defBKH', 'Bruck', 0, '20080215215400');
 
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 0, 1, 1, 'Anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'Krankentrage', 'efgv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'defKrottendorf 827', 'Kapfenberg', 'ABCLKH', 'Graz', 0, '20080215215400');
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 0, 1, 1, 'Bnote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215300', 'Krankentrage', 'fghv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'ghiKrottendorf 827', 'Kapfenberg', 'CDELKH', 'Graz', 0, '20080215215400');
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 0, 1, 1, 'Cnote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215200', 'Krankentrage', 'ABDv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'hijKrottendorf 827', 'Kapfenberg', 'JKLLKH', 'Graz', 0, '20080215215400');
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 0, 1, 1, 'Dnote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215100', 'Krankentrage', 'BCDv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'ijkKrottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '20080215215400');
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
-VALUES(null, 0, 1, 1, 'Enote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215000', 'Krankentrage', 'CDEv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'BCDKrottendorf 827', 'Kapfenberg', 'efLKH', 'Graz', 0, '20080215215400');
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
+--VALUES(null, 0, 1, 1, 'Anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'Krankentrage', 'efgv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'defKrottendorf 827', 'Kapfenberg', 'ABCLKH', 'Graz', 0, '20080215215400');
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
+--VALUES(null, 0, 1, 1, 'Bnote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215300', 'Krankentrage', 'fghv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'ghiKrottendorf 827', 'Kapfenberg', 'CDELKH', 'Graz', 0, '20080215215400');
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
+--VALUES(null, 0, 1, 1, 'Cnote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215200', 'Krankentrage', 'ABDv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'hijKrottendorf 827', 'Kapfenberg', 'JKLLKH', 'Graz', 0, '20080215215400');
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
+--VALUES(null, 0, 1, 1, 'Dnote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215100', 'Krankentrage', 'BCDv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'ijkKrottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '20080215215400');
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
+--VALUES(null, 0, 1, 1, 'Enote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215000', 'Krankentrage', 'CDEv.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'BCDKrottendorf 827', 'Kapfenberg', 'efLKH', 'Graz', 0, '20080215215400');
 --create dummy roster entries
 INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
 VALUES(null, 1, 50100001, 3, 2, '20071215070000', '20081215190000', null, null, 'Die erste fahrt in der Steiermark!', false, 'w.lohm');
@@ -132,58 +155,64 @@ VALUES(null, 2, 50100003, 1, 1, '20071215190000', '20081216070000', null, null, 
 
 --create vehicles
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm02', 50100001, 50100002, null, 2, 'RTW(1)', 2, 2, 'notizen zum Fahrzeug', false, false, 0);
+VALUES('Bm02', null, null, null, 2, 'RTW(1)', 2, 2, 'notizen zum Fahrzeug', false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm03', 50100001, 50100002, null, 2, 'RTW(2)', 2, 2, null, false, false, 0);
+VALUES('Bm03', null, null, null, 2, 'RTW(2)', 2, 2, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm04', 50100001, 50100002, null, 2, 'KTW(2)', 2, 2, null, false, false, 0);
+VALUES('Bm04', null, null, null, 2, 'KTW(2)', 2, 2, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm05', 50100001, 50100002, null, 2, 'RTW(2)', 2, 2, null, false, false, 0);
+VALUES('Bm05', null, null, null, 2, 'RTW(2)', 2, 2, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm06', 50100001, 50100002, null, 2, 'RTW(2)', 2, 2, null, false, false, 0);
+VALUES('Bm06', null, null, null, 2, 'RTW(2)', 2, 2, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
 VALUES('Br07', null, null, null, 2, 'RTW(1)', 6, 6, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm08', 50100001, 50100002, null, 2, 'BKTW(2)', 2, 2, null, false, false, 0);
+VALUES('Bm08', null, null, null, 2, 'BKTW(2)', 2, 2, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm09', 50100001, 50100002, null, 2, 'KTW(2)', 2, 2, null, false, false, 0);
+VALUES('Bm09', null, null, null, 2, 'KTW(2)', 2, 2, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm10', 50100001, 50100002, null, 2, 'BKTW(0)', 2, 2, null, false, false, 0);
+VALUES('Bm10', null, null, null, 2, 'PKW(0)', 2, 2, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm14', 50100001, 50100002, null, 2, 'LKW(0)', 1, 1, null, false, false, 0);
+VALUES('Bm14', null, null, null, 2, 'LKW(0)', 1, 1, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm15', 50100001, 50100002, null, 2, 'SFZ(0)', 1, 1, null, false, false, 0);
+VALUES('Bm15', null, null, null, 2, 'SFZ(0)', 1, 1, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Bm16', 50100001, 50100002, null, 2, 'BKTW(2)', 2, 2, null, false, false, 0);
+VALUES('Bm16', null, null, null, 2, 'BKTW(2)', 2, 2, null, false, false, 0);
 
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Ka02', 50100001, 50100002, null, 2, 'KTW(2)', 3, 3, null, false, false, 0);
+VALUES('Ka02', null, null, null, 2, 'BKTW(1)', 3, 3, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Ka04', 50100001, 50100002, null, 2, 'RTW(2)', 3, 3, null, false, false, 0);
+VALUES('Ka03', null, null, null, 2, 'PKW(0)', 3, 3, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Ka05', 50100001, 50100002, null, 2, 'RTW(2)', 3, 3, null, false, false, 0);
+VALUES('Ka04', null, null, null, 2, 'RTW(2)', 3, 3, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Ka06', 50100001, 50100002, null, 2, 'KTW(2)', 3, 3, null, false, false, 0);
+VALUES('Ka05', null, null, null, 2, 'RTW(2)', 3, 3, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Ka07', 50100001, 50100002, null, 2, 'RTW(1)', 3, 3, null, false, false, 0);
+VALUES('Ka06', null, null, null, 2, 'KTW(2)', 3, 3, null, false, false, 0);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ka07', null, null, null, 2, 'RTW(1)', 3, 3, null, false, false, 0);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ka08', null, null, null, 2, 'PKW(0)', 3, 3, null, false, false, 0);
+INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
+VALUES('Ka19', null, null, null, 2, 'SZF(0)', 1, 1, null, false, false, 0);
 
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Th16', 50100001, 50100002, null, 2, 'RTW(1)', 4, 4, null, false, false, 0);
+VALUES('Th16', null, null, null, 2, 'RTW(2)', 4, 4, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Th17', 50100001, 50100002, null, 2, 'BKTW(0)', 4, 4, null, false, false, 0);
+VALUES('Th17', null, null, null, 2, 'PKW(0)', 4, 4, null, false, false, 0);
 
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Tu18', 50100001, 50100002, null, 2, 'RTW(1)', 5, 5, null, false, false, 0);
+VALUES('Tu18', null, null, null, 2, 'RTW(2)', 5, 5, null, false, false, 0);
 
 
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
-VALUES('Ma14', 50100003, 50100002, 50100001, 1, 'RTW(2)', 7, 7, null, false, false, 0);
+VALUES('Ma14', null, null, null, 1, 'RTW(2)', 7, 7, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
-VALUES('Ma15', 50100001, 50100002, null, 2, 'RTW(1)', 7, 7, null, false, false, 0);
+VALUES('Ma15', null, null, null, 2, 'RTW(2)', 7, 7, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
-VALUES('NEF', null, null, null, 2, 'NEF', 1, 1, null, false, false, 0);
+VALUES('NEF', null, null, null, 2, 'NEF(0)', 1, 1, null, false, false, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
-VALUES('KDO', null, null, null, 2, 'KDO', 1, 1, null, false, false, 0);
+VALUES('KDO', null, null, null, 2, 'KDO(0)', 1, 1, null, false, false, 0);
 
 
 --transport stati
@@ -199,8 +228,8 @@ VALUES('KDO', null, null, null, 2, 'KDO', 1, 1, null, false, false, 0);
 --VALUES(2, 'BM02', 50100003, 50100002, null, 1, 'bla bla...', 'RTW(2)');
 
 --transports
-INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 1);
-INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 2);
-INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 5);
-INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(2, 2);
-INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(2, 7);
+--INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 1);
+--INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 2);
+--INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(1, 5);
+--INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(2, 2);
+--INSERT INTO transport_selected(transport_ID, selected_ID) VALUES(2, 7);
