@@ -126,5 +126,3 @@ public class RosterEntryManager extends PropertyManager
     	return filteredList;
     }
 }
-
-
