@@ -36,6 +36,7 @@ import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
+import at.rc.tacos.client.providers.StaffMemberVehicleContentProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleContentProvider;
@@ -138,6 +139,7 @@ public class VehicleForm extends TitleAreaDialog
 			stationComboViewer.setSelection(new StructuredSelection(vehicleDetail.getCurrentStation()));
 			if(vehicleDetail.getDriver() != null)
 				driverComboViewer.setSelection(new StructuredSelection(vehicleDetail.getDriver()));
+			System.out.println("VVVVVVVVVVVVVvehicleFFFFFFFFFForm, firstParamedic: " +vehicleDetail.getFirstParamedic());
 			if(vehicleDetail.getFirstParamedic() != null)
 				medic1ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getFirstParamedic()));
 			if(vehicleDetail.getSecondParamedic() != null)
@@ -414,18 +416,13 @@ public class VehicleForm extends TitleAreaDialog
 				checkRequiredFields();
 			}
 		});
-		driverComboViewer.setContentProvider(new StaffMemberContentProvider());
+		if(vehicleDetail.getDriver() != null)
+			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getDriver()));
+		else
+			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider());
 		driverComboViewer.setLabelProvider(new StaffMemberLabelProvider());
+		driverComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
 				
-		List<StaffMember> memberList = new ArrayList<StaffMember>();
-		for(RosterEntry entry : ModelFactory.getInstance().getRosterEntryList().getCheckedInRosterEntriesByLocation(vehicleDetail.getCurrentStation()))
-		{
-			memberList.add(entry.getStaffMember());
-			System.out.println("---------" +entry.getStaffMember().getLastName());
-		}
-		//TODO: make working!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		driverComboViewer.setInput(memberList);
-		
 		//create the hyperlink
 		ImageHyperlink removeDriver = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeDriver.setToolTipText("Zieht den aktuell zugewiesenen Fahrer vom Fahrzeug ab");
@@ -456,9 +453,12 @@ public class VehicleForm extends TitleAreaDialog
 				checkRequiredFields();
 			}
 		});
-		medic1ComboViewer.setContentProvider(new StaffMemberContentProvider());
+		if(vehicleDetail.getFirstParamedic() != null)
+			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getFirstParamedic()));//TODO here!
+		else
+			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider());
 		medic1ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		medic1ComboViewer.setInput(memberList);
+		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
 		//create the hyperlink
 		ImageHyperlink removeMedic = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
@@ -489,9 +489,13 @@ public class VehicleForm extends TitleAreaDialog
 				checkRequiredFields();
 			}
 		});
-		medic2ComboViewer.setContentProvider(new StaffMemberContentProvider());
+		if(vehicleDetail.getSecondParamedic() != null)
+			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getSecondParamedic()));
+		else
+			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider());
 		medic2ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		medic2ComboViewer.setInput(memberList);
+		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
+
 		//create the hyperlink
 		ImageHyperlink removeMedic2 = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic2.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
