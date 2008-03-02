@@ -1,5 +1,3 @@
-
-
 package at.rc.tacos.client.providers;
 
 import java.util.List;
@@ -12,26 +10,31 @@ import at.rc.tacos.model.StaffMember;
 
 public class StaffMemberVehicleContentProvider implements IStructuredContentProvider
 {
-	private StaffMember staffMember;
-	
-	public StaffMemberVehicleContentProvider(StaffMember staffMember)
-	{
-		this.staffMember = staffMember;
-	}
-	
-	public StaffMemberVehicleContentProvider()
-	{
-		
-	}
+    private StaffMember staffMember;
+
+    /**
+     * Default class constructor for a vontent provider
+     */
+    public StaffMemberVehicleContentProvider()
+    {
+    }
+
+    /**
+     * Default class constructor specifying the staff member that must be in the content 
+     * @param staffMember
+     */
+    public StaffMemberVehicleContentProvider(StaffMember staffMember)
+    {
+        this.staffMember = staffMember;
+    }
+
     @Override
     public Object[] getElements(Object arg0)
     {
-    	List<StaffMember> list = ModelFactory.getInstance().getStaffList().getUnassignedStaffList();
-    	if(staffMember != null)
-    		list.add(staffMember);
-    	Object[] o = list.toArray();
-    	
-        return o;
+        List<StaffMember> list = ModelFactory.getInstance().getStaffList().getUnassignedStaffList();
+        if(staffMember != null &! list.contains(staffMember))
+            list.add(staffMember);
+        return list.toArray();
     }
 
     @Override
