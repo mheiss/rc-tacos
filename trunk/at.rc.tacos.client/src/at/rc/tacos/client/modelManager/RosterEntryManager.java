@@ -113,6 +113,7 @@ public class RosterEntryManager extends PropertyManager
      */
     public List<RosterEntry> getCheckedInRosterEntriesByLocation(Location location)
     {   	
+    	System.out.println("RRRRRRRRRRRRrrosterEntryManager, getCheckedIn.., location: " +location.getLocationName());
     	List<RosterEntry> filteredList = new ArrayList<RosterEntry>();
     	for(RosterEntry entry : objectList)
     	{
@@ -121,6 +122,7 @@ public class RosterEntryManager extends PropertyManager
     			filteredList.add(entry);
     		}
     	}
+    	System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRrosterEntryManager, getCheckedin..., filteredList, size::: " +filteredList.size());
     	return filteredList;
     }
 }
