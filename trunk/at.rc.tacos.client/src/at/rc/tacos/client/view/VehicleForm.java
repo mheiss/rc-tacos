@@ -1,8 +1,5 @@
 package at.rc.tacos.client.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.Document;
@@ -34,7 +31,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
-import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberVehicleContentProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
@@ -46,7 +42,6 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -70,8 +65,6 @@ public class VehicleForm extends TitleAreaDialog
 
 	//the vehicle
 	private VehicleDetail vehicleDetail;
-	
-	private int index1;
 	
 	// description text
 	public final static String FORM_DESCRIPTION = "Hier können Sie Fahrzeug und dessen Besatzung verwalten";
