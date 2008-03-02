@@ -42,7 +42,7 @@ public class FilterView extends ViewPart
 	private ScrolledForm form;
 
 	//text fields for the filter
-	private Text from,patient,to;
+	private Text from,patient,to,location;
 	//to apply the filter
 	private ImageHyperlink applyFilter,resetFilter;
 
@@ -171,6 +171,10 @@ public class FilterView extends ViewPart
 		//the to street
 		final Label labelTo = toolkit.createLabel(filter, "nach");
 		to = toolkit.createText(filter, "");
+		
+		//the location
+		final Label labelLocation = toolkit.createLabel(filter, "Ortsstelle");
+		location = toolkit.createText(filter, "");
 
 		//Create the hyperlink to import the data
 		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
@@ -198,6 +202,7 @@ public class FilterView extends ViewPart
 				from.setText("");
 				patient.setText("");
 				to.setText("");
+				location.setText("");
 				//apply the filter
 				inputChanged();
 			}
@@ -205,25 +210,30 @@ public class FilterView extends ViewPart
 
 		//set the layout for the composites
 		GridData data = new GridData();
-		data.widthHint = 80;
+		data.widthHint = 50;
 		labelFrom.setLayoutData(data);
 		data = new GridData();
-		data.widthHint = 80;
+		data.widthHint = 50;
 		labelPatient.setLayoutData(data);
-		data.widthHint = 80;
+		data.widthHint = 50;
 		labelTo.setLayoutData(data);
 		labelPatient.setLayoutData(data);
-		data.widthHint = 80;
+		data.widthHint = 50;
+		labelLocation.setLayoutData(data);
+		data.widthHint = 50;
 		//layout for the text fields
 		GridData data2 = new GridData();
-		data2.widthHint = 150;
+		data2.widthHint = 120;
 		from.setLayoutData(data2);
 		data2 = new GridData();
-		data2.widthHint = 150;
+		data2.widthHint = 120;
 		patient.setLayoutData(data2);	
 		data2 = new GridData();
-		data2.widthHint = 150;
+		data2.widthHint = 120;
 		to.setLayoutData(data2);	
+		data2 = new GridData();
+		data2.widthHint = 120;
+		location.setLayoutData(data2);
 	}
 
 	//Helper methods
@@ -248,7 +258,7 @@ public class FilterView extends ViewPart
 
 		//layout
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = 1;
 		layout.makeColumnsEqualWidth = false;
 		client.setLayout(layout);
 		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING);
@@ -267,7 +277,8 @@ public class FilterView extends ViewPart
 		final String strFrom = from.getText();
 		final String strPat = patient.getText();
 		final String strTo = to.getText();
+		final String strLocation = location.getText();
 		//inform the viewer
-		manager.fireTransportFilterChanged(new TransportViewFilter(strFrom,strPat,strTo));
+		manager.fireTransportFilterChanged(new TransportViewFilter(strFrom,strPat,strTo,strLocation));
 	}
 }
