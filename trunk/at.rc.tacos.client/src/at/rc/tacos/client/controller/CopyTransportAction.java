@@ -46,7 +46,10 @@ public class CopyTransportAction extends Action implements IProgramStatus
         t2.setTransportNumber(0);
         t2.clearVehicleDetail();
         t2.setCreationTime(Calendar.getInstance().getTimeInMillis());
-        t2.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+        if(t1.getProgramStatus() == PROGRAM_STATUS_PREBOOKING)
+        	t2.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
+        if(t1.getProgramStatus() == PROGRAM_STATUS_OUTSTANDING || t1.getProgramStatus() == PROGRAM_STATUS_UNDERWAY)
+        	t2.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
         t2.setTransportPriority(t1.getTransportPriority());
         t2.getStatusMessages().clear();
         //date and time
