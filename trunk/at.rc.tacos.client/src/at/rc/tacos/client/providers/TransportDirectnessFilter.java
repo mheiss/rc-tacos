@@ -35,7 +35,6 @@ public class TransportDirectnessFilter extends ViewerFilter
 	{
 		//cast the element
 		Transport transport = (Transport)element;
-		System.out.println("TransportrDirectnessFilter, Richtung:::::::::::::::::::::::::::::::::::::::::::::" +transport.getDirection());
 		//check the transport
 		if(transport.getDirection() == directness)
 			return true;
