@@ -1,5 +1,8 @@
 package at.rc.tacos.client.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.Document;
@@ -42,6 +45,7 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -66,8 +70,10 @@ public class VehicleForm extends TitleAreaDialog
 	//the vehicle
 	private VehicleDetail vehicleDetail;
 	
+	private int index1;
+	
 	// description text
-	public final static String FORM_DESCRIPTION = "Hier können Sie Fahrzeug und deren Besatzung verwalten";
+	public final static String FORM_DESCRIPTION = "Hier können Sie Fahrzeug und dessen Besatzung verwalten";
 
 	/**
 	 * Default class constructor for the vehicle form
@@ -410,7 +416,16 @@ public class VehicleForm extends TitleAreaDialog
 		});
 		driverComboViewer.setContentProvider(new StaffMemberContentProvider());
 		driverComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		driverComboViewer.setInput(ModelFactory.getInstance().getStaffList());
+				
+		List<StaffMember> memberList = new ArrayList<StaffMember>();
+		for(RosterEntry entry : ModelFactory.getInstance().getRosterEntryList().getCheckedInRosterEntriesByLocation(vehicleDetail.getCurrentStation()))
+		{
+			memberList.add(entry.getStaffMember());
+			System.out.println("---------" +entry.getStaffMember().getLastName());
+		}
+		//TODO: make working!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		driverComboViewer.setInput(memberList);
+		
 		//create the hyperlink
 		ImageHyperlink removeDriver = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeDriver.setToolTipText("Zieht den aktuell zugewiesenen Fahrer vom Fahrzeug ab");
@@ -443,7 +458,7 @@ public class VehicleForm extends TitleAreaDialog
 		});
 		medic1ComboViewer.setContentProvider(new StaffMemberContentProvider());
 		medic1ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffList());
+		medic1ComboViewer.setInput(memberList);
 		//create the hyperlink
 		ImageHyperlink removeMedic = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
@@ -476,7 +491,7 @@ public class VehicleForm extends TitleAreaDialog
 		});
 		medic2ComboViewer.setContentProvider(new StaffMemberContentProvider());
 		medic2ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffList());
+		medic2ComboViewer.setInput(memberList);
 		//create the hyperlink
 		ImageHyperlink removeMedic2 = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic2.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
