@@ -107,6 +107,22 @@ public class RosterEntryManager extends PropertyManager
     {
     	return objectList;
     }
+    
+    /** Returns a list of all checked in roster entries by location
+     * @param location the location to filter
+     */
+    public List<RosterEntry> getCheckedInRosterEntriesByLocation(Location location)
+    {   	
+    	List<RosterEntry> filteredList = new ArrayList<RosterEntry>();
+    	for(RosterEntry entry : objectList)
+    	{
+    		if(entry.getRealStartOfWork()!=0 && entry.getRealEndOfWork() == 0 && entry.getStation().getId() == location.getId())
+    		{
+    			filteredList.add(entry);
+    		}
+    	}
+    	return filteredList;
+    }
 }
 
 
