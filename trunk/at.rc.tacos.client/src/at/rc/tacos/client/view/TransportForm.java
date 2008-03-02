@@ -546,13 +546,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		}
 		transport.setFromStreet(viewerFromStreet.getCombo().getText());
 
-		//the city
-		if (viewerFromCity.getCombo().getText().trim().isEmpty())
+		//the city--> can be empty if the street is LKH or PH
+		if (viewerFromCity.getCombo().getText().trim().isEmpty() &!
+				(transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")
+						|| transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")))
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie die Stadt ein, von der der Transport gestartet wird");
 			return;
 		}
+		
 		transport.setFromCity(viewerFromCity.getCombo().getText());
 
 		transport.setToStreet(viewerToStreet.getCombo().getText());
