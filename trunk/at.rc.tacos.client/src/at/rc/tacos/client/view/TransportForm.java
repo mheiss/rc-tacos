@@ -541,7 +541,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if (viewerFromStreet.getCombo().getText().trim().isEmpty())
 		{
 			getShell().getDisplay().beep();
-			setErrorMessage("Bitte geben sie die Straße ein von dem der Transport gestartet wird");
+			setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
 			return;
 		}
 		transport.setFromStreet(viewerFromStreet.getCombo().getText());
@@ -550,45 +550,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if (viewerFromCity.getCombo().getText().trim().isEmpty())
 		{
 			getShell().getDisplay().beep();
-			setErrorMessage("Bitte geben sie die Stadt ein von dem der Transport gestartet wird");
+			setErrorMessage("Bitte geben Sie die Stadt ein, von der der Transport gestartet wird");
 			return;
 		}
 		transport.setFromCity(viewerFromCity.getCombo().getText());
-		
-		//validate the patient
-		if(comboNachname.getText().trim().isEmpty())
-		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Bitte geben sie den Nachnamen des Patientent ein");
-			return;
-		}
-		
-		//validate the patient
-		if(comboVorname.getText().trim().isEmpty())
-		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Bitte geben sie den Vornamen des Patienten");
-			return;
-		}
-		
-		//traget street
-		if (viewerToStreet.getCombo().getText().trim().isEmpty())
-		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Bitte geben Sie den Straßennamen des Transportziels ein");
-			return;
-		}
+
 		transport.setToStreet(viewerToStreet.getCombo().getText());
 
-		//target city --> can be empty if the street is LKH or PH
-		if (viewerToCity.getCombo().getText().trim().isEmpty() &! 
-				(transport.getToStreet().equalsIgnoreCase("LKH")
-						|| transport.getToStreet().equalsIgnoreCase("PH")))
-		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Bitte geben Sie den Ortsnamen des Transportziels ein.");
-			return;
-		}
 		transport.setToCity(viewerFromCity.getCombo().getText());
 
 		//the planned location
@@ -619,52 +587,27 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			setErrorMessage("Bitte geben Sie eine gültige Abfahrtszeit in der Form HH:mm oder HHmm ein");
 			return;
 		}
+		if(startTime != null)
+			transport.setPlannedStartOfTransport(startTime.getTimeInMillis());
 		else
-			startTime = Calendar.getInstance();
+			transport.setPlannedStartOfTransport(0);
 		
-		//set the other fields 
-		startTime.set(Calendar.YEAR, dateTime.getYear());
-		startTime.set(Calendar.MONTH, dateTime.getMonth());
-		startTime.set(Calendar.DAY_OF_MONTH,dateTime.getDay());
-		transport.setPlannedStartOfTransport(startTime.getTimeInMillis());
-		
-		//time at patient  --> no validation when an emergency transport
+		//time at patient  --> no validation 
 		Calendar patientTime = convertStringToDate(textBeiPat.getText());
-		if(patientTime == null &! transportType.equalsIgnoreCase("emergencyTransport"))
-		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Bitte geben Sie eine gültigen Zeit beim Patienten in der Form HH:mm oder HHmm ein");
-			return;
-
-		}
+		if(patientTime != null)
+			transport.setPlannedTimeAtPatient(patientTime.getTimeInMillis());
 		else
-			patientTime = Calendar.getInstance();
+			transport.setPlannedTimeAtPatient(0);
 		
-		//set the other fields
-		patientTime.set(Calendar.YEAR, dateTime.getYear());
-		patientTime.set(Calendar.MONTH, dateTime.getMonth());
-		patientTime.set(Calendar.DAY_OF_MONTH,dateTime.getDay());
-		transport.setPlannedTimeAtPatient(patientTime.getTimeInMillis());
-
-		//check the time  --> no validation when an emergency transport
+		//check the time  --> no validation 
 		Calendar appointmentTime = convertStringToDate(textTermin.getText());
-		if(appointmentTime == null &! transportType.equalsIgnoreCase("emergencyTransport"))
-		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Bitte geben Sie eine gültigen Termin in der Form HH:mm oder HHmm ein");
-			return;
-		}
+		if(appointmentTime != null)
+			transport.setAppointmentTimeAtDestination(appointmentTime.getTimeInMillis());
 		else
-			appointmentTime = Calendar.getInstance();
-		
-		//set the other fields
-		appointmentTime.set(Calendar.YEAR, dateTime.getYear());
-		appointmentTime.set(Calendar.MONTH, dateTime.getMonth());
-		appointmentTime.set(Calendar.DAY_OF_MONTH,dateTime.getDay());
-		transport.setAppointmentTimeAtDestination(appointmentTime.getTimeInMillis());
+			transport.setAppointmentTimeAtDestination(0);
 
 		//validate: start before atPatient
-		if(transport.getPlannedTimeAtPatient() < transport.getPlannedStartOfTransport())
+		if(transport.getPlannedTimeAtPatient() < transport.getPlannedStartOfTransport() &!(transport.getPlannedTimeAtPatient()==0))
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen.");
@@ -672,7 +615,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		}				
 
 		//validate: atPatient before term
-		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedTimeAtPatient())
+		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedTimeAtPatient() &!(transport.getAppointmentTimeAtDestination()==0)&!(transport.getPlannedTimeAtPatient()==0))
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Termin kann nicht vor Ankunft bei Patient sein");
@@ -680,7 +623,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		}
 
 		//validate: start before term
-		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedStartOfTransport())
+		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedStartOfTransport() &!(transport.getAppointmentTimeAtDestination() ==0))
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen");
@@ -689,14 +632,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		//kind of illness
 		index = setErkrVerl.getCombo().getSelectionIndex();
-		if(index == -1)
+		if(index != -1)
 		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Bitte wählen sie eine Erkrankung aus");
-			return;
+			transport.setKindOfIllness((Disease)setErkrVerl.getElementAt(index));
 		}
-		transport.setKindOfIllness((Disease)setErkrVerl.getElementAt(index));
-
+		
 		//set the fields that do not have to be validated
 		transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
 		transport.setBackTransport(ruecktransportMoeglichButton.getSelection());
@@ -1935,6 +1875,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					comboPrioritaet.setItems(prebookingPriorities);
 				if(transportType.equalsIgnoreCase("emergencyTransport"))
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
+				
+				System.out.println("TTTTTTTransportForm, buttonNotfall, transportType: " +transportType);
 			}
 		});
 		buttonNotfall.setText("Transport/Einsatz");
@@ -1969,6 +1911,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				{
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 				}
+				
+				System.out.println("TTTTTTTransportForm, buttonVormerkung, transportType: " +transportType);
 			}
 
 		});
