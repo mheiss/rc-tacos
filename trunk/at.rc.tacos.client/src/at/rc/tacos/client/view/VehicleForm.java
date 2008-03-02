@@ -410,9 +410,9 @@ public class VehicleForm extends TitleAreaDialog
 			}
 		});
 		if(vehicleDetail.getDriver() != null)
-			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getDriver()));
+			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getDriver(),vehicleDetail.getCurrentStation()));
 		else
-			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider());
+			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
 		driverComboViewer.setLabelProvider(new StaffMemberLabelProvider());
 		driverComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
 				
@@ -447,9 +447,9 @@ public class VehicleForm extends TitleAreaDialog
 			}
 		});
 		if(vehicleDetail.getFirstParamedic() != null)
-			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getFirstParamedic()));//TODO here!
+			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getFirstParamedic(),vehicleDetail.getCurrentStation()));//TODO here!
 		else
-			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider());
+			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
 		medic1ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
 		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
 		//create the hyperlink
@@ -483,9 +483,9 @@ public class VehicleForm extends TitleAreaDialog
 			}
 		});
 		if(vehicleDetail.getSecondParamedic() != null)
-			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getSecondParamedic()));
+			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getSecondParamedic(),vehicleDetail.getCurrentStation()));
 		else
-			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider());
+			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
 		medic2ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
 		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
 
