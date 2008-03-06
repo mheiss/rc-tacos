@@ -1,0 +1,45 @@
+Transport braucht eine Transportnummer:
+--------------------------------------
+CLIENT: Dem Transport ein vehicle zuweisen, die TransportNr ist 0
+
+SERVER:
+Vehicle in die Tabelle assigned transports schreiben.
+tmptransports durchsuchen ob eine _stornierte Nummer_ in der Tabelle für die _currentLocation_ steht.
+Wenn ja -> niedrigste nummer verwenden
+	gefundene Nummer aus der Tabelle löschen
+	Nummer dem Transport zuweisen
+	Transport Nr zurückgeben.
+	ENDE
+Aus der Transport(dateOfTransport) und der assigned_vehicles(locationname) die maximale transportnummer selektieren.
+die gefundene nummer um eines erhöhen
+Nummer dem transport zuweisen
+Transport Nr zurückgeben.
+
+
+Transport wird storniert:
+-------------------------
+CLIENT: Am Client wird als TransportNr STORNO gesetzt und ein update and den Server gesendet
+
+SERVER:
+die aktuelle Transportnummer anhand der transport_ID abfragen
+die nummer und die planned location in die tmptransports schreiben.
+die transportnummer in der tabelle transports auf STORNO setzen.
+
+
+Transport wird weitergeleitet:
+-----------------------------
+CLIENT: Am Client wird als TransportNr FORWARD gesetzt und ein update an den Server gesendet
+
+SERVER:
+die aktuelle Transportnummer anhand der transport_ID abfragen
+die nummer und die planned location in die tmptransports schreiben.
+die transportnummer in der tabelle transports auf FORWARD setzen.
+
+
+Fahrzeug wird abgezogen, hat aber bereits eine Transportnummer
+---------------------------------------------------------------
+CLIENT: Das Fahrzeug vom Transport abziehen
+
+SERVER: Die aktuelle Transport nummer anhand der transport_ID abfragen
+die nummer und die planned location in tie tmptransports schreiben.
+den transport.programstatus auf IProgramStatus.PROGRAM_STATUS_OUTSTANDING  setzen.
