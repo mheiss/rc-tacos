@@ -1,0 +1,475 @@
+/* CSS Document */
+
+body {
+    margin:0;
+    padding:0;
+	font-family: Verdana;
+	font-size: 10px;
+	color:#333333;
+	background-color:#ffffff; 
+
+}
+a {
+	font-family: Verdana;
+	font-size: 10px;
+	text-decoration:none;
+	color:#be0107;
+}
+a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a:active {
+	text-decoration:none;
+}
+
+.hidefocus { 
+	outline:0; -moz-outline:0; border:0; 
+}
+
+
+#mainTabLogDate {
+	margin-top:10%;
+	font-size:10px;
+}
+
+#mainTabLog {
+	margin-top:2px;
+/*	
+	border-width:1px;
+	border-style:solid;
+	border-color:#be0107
+	*/
+}
+#leftLogSite {
+	background-image:url(../image/tacos_logo_8.jpg);
+	background-repeat:no-repeat;
+	background-position:bottom left;	
+	width:370px;
+	height:377px;
+	padding-left:5px;
+
+}
+#rightLogSite {
+	background-image:url(../image/right_login_bg.jpg);
+	background-repeat:no-repeat;
+	background-position:bottom left;
+}
+
+
+#MainTab {
+	/* max-width:1421px; */ 
+	overflow:hidden;
+	
+
+  	
+}
+#MainBodyContent {
+	width:100%;
+	/* max-width:1600px; */
+	padding-left:5px;
+}
+
+#LeftContainerPanel {
+	width:15%;
+	padding-left:5px;
+	
+}
+	
+#ContentContainer {
+	width:65%;
+}
+
+#RightContainerPanel {
+	width:20%;
+}
+
+#Block {
+	border-left-width:1px;
+	border-left-style:solid;
+	border-left-color:#B5B5B5;
+	
+	border-right-width:1px;
+	border-right-style:solid;
+	border-right-color:#B5B5B5;
+	
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	border-bottom-color:#B5B5B5;	
+	
+	margin-top:5px;	
+}
+#BlockHeadBlack {
+    background-image: url('../image/blockheadBlack.jpg');
+    background-repeat:repeat-x;
+    background-position:top left;
+    padding-left:16px;
+    height:15px;	
+    color:white;
+    font-style: italic;
+}
+#BlockHead {
+		
+	background-image: url('../image/blockhead.jpg');
+	background-repeat:repeat-x;
+	background-position:top left;
+	padding-left:16px;
+	height:15px;
+}
+
+#BlockContent {
+	padding:2px;	
+	width:100%;
+}
+
+#BlockContentNav {
+    vertical-align:middle;
+    text-align:left;
+    padding:2px;
+    width:100%;
+    font-size: 150%;
+}
+
+#navIcon {
+	vertical-align:middle;
+    text-align:left;
+    padding:2px;
+}
+
+/*
+	Kalender Style
+*/
+#weekday {
+	text-align:center;
+
+}
+#weekdayTimetable {
+	border-left-width:1px;
+	border-left-style:solid;
+	border-left-color:#B5B5B5;
+	
+	border-right-width:1px;
+	border-right-style:solid;
+	border-right-color:#B5B5B5;
+	
+	width:14%;
+}
+#weekdayTimetableZ {
+	border-left-width:1px;
+	border-left-style:solid;
+	border-left-color:#B5B5B5;
+	
+	border-right-width:1px;
+	border-right-style:solid;
+	border-right-color:#B5B5B5;
+	
+	width:6px;
+}
+weekdayZ {
+	border-left-width:1px;
+	border-left-style:solid;
+	border-left-color:#B5B5B5;
+	
+	border-right-width:1px;
+	border-right-style:solid;
+	border-right-color:#B5B5B5;
+	
+	width:6px;
+}
+
+#userInfo {
+	width:100%;
+	
+	border-top-width:1px;
+	border-top-style:solid;
+	border-top-color:#B5B5B5;
+	
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	border-bottom-color:#B5B5B5;		
+}
+
+#buttonLogout {
+	background-image:url(../image/logout.jpg);
+	
+	background-repeat:no-repeat;	
+	width:29px;
+	height:10px;
+	border-width:0px;
+	background-color:#000000;
+	color:#000000;
+}
+
+#submitButton {
+	/*
+    background-image:url(../image/anmelden.jpg);
+    background-position:center;
+    background-repeat:no-repeat;
+*/
+    color:black	;
+    width:200px;
+    height:26px;
+    vertical-align:middle;
+    text-align:center;   
+    background-color:white;
+    font-weight:bold;
+    /*
+    border-width:2px;
+    border-color:#be0107;
+    border-style:solid;
+    */
+    margin:3px;
+}
+
+#navRegTab {
+	text-align:center;
+	width:14%;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	border-bottom-color:#B5B5B5;
+
+}
+#navRegTab1 {
+	text-align:center;
+	border-width:1px;
+	border-style:solid;
+	border-color:#B5B5B5;
+	width:14%;
+	
+
+}
+#navRegTab2 {
+	text-align:center;
+	text-align:center;
+	
+	border-width:1px;
+	border-style:solid;
+	border-color:#B5B5B5;
+	
+	width:14%;
+}
+#navRegTab3 {
+	text-align:center;
+	text-align:center;
+	border-width:1px;
+	border-style:solid;
+	border-color:#B5B5B5;
+	width:14%;
+	background-color:#E0E0E0;
+}
+#monthDayBox {
+    margin:2px;
+    width:14.2%;
+    height:70px;
+    background-color:#E2DCE2;
+    border-width:1px;
+    border-style:solid;
+    border-color:black;
+    float:left;
+    vertical-align:top;
+
+}
+#monthDayBoxGreen {
+    margin:2px;
+    width:14.2%;
+    height:70px;
+    background-color:#00D900;
+    border-width:1px;
+    border-style:solid;
+    border-color:black;
+    float:left;
+    vertical-align:top;
+}
+
+#rosterViewDayHeadSelbox {
+    width:300px;
+    padding:3px;
+    font-size:13px;
+}
+#rosterViewDayHeadSelboxTime {
+    width:50px;
+    padding:1px;
+    font-size:13px;   	
+}
+
+#rosterViewDayHeadline{
+    text-align:right;
+    font-size:13px;
+}
+
+#timeList{
+    height:15px; 
+    width:4%;
+    float:left;
+    vertical-align: middle;
+    text-align: center;
+    background-color: #DBDBDB;
+}
+#mainDayContainer {
+    
+    border-top-width:1px; border-top-style:solid; border-top-color:red;
+	width:100%; 
+	background-image: url('../image/bgTimeTable.jpg');
+    background-repeat: repeat;
+}
+
+#MainDivDay {
+
+}
+
+#mainDayTab {
+    background-position: top left;  
+    width:100%; text-align:left; vertical-align:middle; padding-left:10px; font-size:14px;
+}
+#mainDayContainerTL {
+    width:100%;
+    height:15px;
+}
+
+#singleEntryDiv {
+    height:14px;   	
+    cursor:pointer;
+    vertical-align: middle;
+    text-align: left;
+    margin-top:2px;
+}
+#singleEntryDivCase{
+	vertical-align: top;
+    text-align: left;
+}
+#singleEntryDiv a {
+	color:black;
+	text-decoration:none;
+	display:block;
+
+}
+
+#singleEntryDiv a:hover {
+	color:black;
+	background:#ddd8b7;
+}
+
+#singleEntryDiv a span  {
+	display:none; vertical-align:top; text-align:left;
+}
+
+#singleEntryDiv a:hover span {
+	
+	position:absolute; z-index:3; /* top:10px; right:10px; */
+	display:block;
+	width:350px;
+	color:black;
+	background:#E0E0E0;
+	font:normal 16px courier, sans-serif;
+	border:1px solid black;
+	padding:10px;
+}
+
+#homeOverview {
+    float:left;
+    height:150px;
+    width:40%;
+    padding:5px;
+    margin:20px;
+    text-align:center;
+    vertical-align:middle;
+    background-color:#E8EAEA;
+    
+    border-width:1px;
+    border-style:solid;
+    border-color:#b1b1b1;
+}
+
+#homeOverview a{
+	float:left;
+    height:150px;
+    width:40%;
+    padding:4px;
+    margin:2px;
+    text-align:center;
+    vertical-align:middle;
+    
+    
+    border-width:2px;
+    border-style:solid;
+    border-color:#ffffff;
+}
+#homeOverview a:hover{
+    float:left;
+    height:150px;
+    width:40%;
+    padding:4px;
+    margin:2px;
+    text-align:center;
+    vertical-align:middle;
+    background-color:#ffffff;
+    
+    
+    border-width:2px;
+    border-style:solid;
+    border-color:#b1b1b1;
+
+}
+
+#calDay{
+	cursor: pointer;
+	width:100%;
+	height:100%;
+}
+#calDay:hover{
+    cursor: pointer;
+    font-weight: bold;
+    width:100%;
+    height:100%;
+}
+#calDay:hover span{
+    cursor: pointer;
+    background-color:red;
+}
+
+#calTabMain{
+    border-width:0px;
+    border-style:solid;
+    border-color:#FFB2B1;	
+    margin-top:10px;
+    width:300px;
+    height:150px;
+}
+#calDaysSuSo{
+    background-color:#F7DFE0;	
+}
+
+#calTabWeekDays{
+    border-top-width:1px;
+    border-top-style:solid;
+    border-top-color:#FFB2B1;  
+    
+    border-bottom-width:1px;
+    border-bottom-style:solid;
+    border-bottom-color:#FFB2B1;  
+    
+    background-color:#FFB2B1;
+    
+    padding:2px;
+}
+#calMonthYearInfo{
+	background-color:#FFB2B1;
+}
+#selDateView{ 
+	color:black; text-align:center; vertical-align: middle; font-weight: bold; background-color: white;
+    border-color:#A31111; border-style:solid; border-width:1px;
+    background-image: url("../image/dateTimeIcon.jpg");
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+
+#timeTabRosterEntry{
+    border-width:1px;
+    border-style:dotted;
+    border-color:#666666;
+}
