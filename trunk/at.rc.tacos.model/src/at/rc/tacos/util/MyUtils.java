@@ -6,9 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
 /**
- * Convinient helper methods for common use
+ * Convenient helper methods for common use
  * @author Michael
  */
 public class MyUtils 
@@ -47,7 +46,7 @@ public class MyUtils
     }
 
     /**
-     * Convinience helper method to ensure a given integer value is a valid year
+     * Convenience helper method to ensure a given integer value is a valid year
      * @param year the value to test
      * @return true if the year is valid, otherwise false
      */
@@ -63,7 +62,7 @@ public class MyUtils
     }
 
     /**
-     * Returns weth the two given timestamps have the same day,month and year.
+     * Returns whether the two given timestamps have the same day,month and year.
      * @param time1 the first timestamp
      * @param time2 the second timestamp to compare
      * @return true if the day month and year is equal, otherwise false
@@ -88,7 +87,7 @@ public class MyUtils
     }
 
     /**
-     * Returns wheter or not the given string timevalues have the same day,year,month.
+     * Returns whether or not the given string timevalues have the same day,year,month.
      * The format should be dd-MM-yyyy otherwise the method will always return false.
      * @param strTime1 the first time as string
      * @param strTime2 the second time as string
