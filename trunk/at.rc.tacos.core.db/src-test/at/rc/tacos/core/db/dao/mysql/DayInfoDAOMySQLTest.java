@@ -104,7 +104,7 @@ public class DayInfoDAOMySQLTest extends DBTestBase
         Assert.assertEquals("user1", dayInfoMessage.getLastChangedBy());
     }
         
-    @Test
+    @Test(expected=SQLException.class)
     public void testUpdateDayInfo() throws SQLException
     {
         //create two indivdual block
