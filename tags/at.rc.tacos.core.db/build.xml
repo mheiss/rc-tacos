@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!-- ============================================================== -->
+<!-- DO NOT TOUCH THIS -->
+<!-- ============================================================== -->
+<project name="Project-TACOS" basedir="." >
+	<property file="src/at/rc/tacos/core/db/config/db.properties" />
+	<property name="src.dir" value="src" />
+	<property name="src.tests.dir" value="src-test" />
+	<property name="reports.tests.dir" value="tests" />
+	<property name="sql.dir" value="sql" />
+	<property name="db.createTables.script" value="${sql.dir}/createTables.sql" />
+	<property name="db.insertData.script" value="${sql.dir}/insertData.sql" />
+	<property name="db.clearData.script" value="${sql.dir}/clearData.sql" />
+	<property name="db.dropTables.script" value="${sql.dir}/dropTables.sql" />
+
+	<!-- The classpath including the needed libraries for the database -->
+	<path id="master-classpath">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<!-- ============================================================== -->
+	<!-- Database Tasks                                                 -->
+	<!-- ============================================================== -->
+	<target name="createTables">
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+		<sql driver="${db.driver}"
+             url="${db.url}"
+             userid="${db.user}"
+             password="${db.pw}"
+        	 src="${db.createTables.script}">
+			<classpath refid="master-classpath"/>
+		</sql>
+	</target>
+
+	<target name="insertData">
+		<echo message="INSERT DATA USING: ${db.driver} ${db.url}"/>
+		<sql driver="${db.driver}"
+             url="${db.url}"
+             userid="${db.user}"
+             password="${db.pw}"
+        	 src="${db.insertData.script}"
+			 print="true">
+			<classpath refid="master-classpath"/>
+		</sql>
+	</target>
+
+	<target name="clearData">
+		<echo message="CLEAR DATA USING: ${db.driver} ${db.url}"/>
+		<sql driver="${db.driver}"
+             url="${db.url}"
+             userid="${db.user}"
+             password="${db.pw}"
+        	 src="${db.clearData.script}">
+			<classpath refid="master-classpath"/>
+		</sql>
+	</target>
+
+	<target name="dropTables">
+		<echo message="DROP TABLES USING: ${db.driver} ${db.url}"/>
+		<sql driver="${db.driver}"
+             url="${db.url}"
+             userid="${db.user}"
+             password="${db.pw}"
+        	 src="${db.dropTables.script}">
+			<classpath refid="master-classpath"/>
+		</sql>
+	</target>
+</project>
