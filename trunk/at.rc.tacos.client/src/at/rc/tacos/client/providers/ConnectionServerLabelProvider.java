@@ -1,14 +1,14 @@
 package at.rc.tacos.client.providers;
 
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.core.net.internal.IServerInfo;
 import at.rc.tacos.core.net.internal.ServerInfo;
 import at.rc.tacos.factory.ImageFactory;
 
-public class ConnectionServerLabelProvider implements ITableLabelProvider
+public class ConnectionServerLabelProvider extends LabelProvider implements ITableLabelProvider
 {
     //define the columns
     public static final int COLUMN_SERVER = 0;
@@ -48,25 +48,5 @@ public class ConnectionServerLabelProvider implements ITableLabelProvider
 		default: 
 			return "";
 		}
-	}
-
-	public void addListener(ILabelProviderListener listener) 
-	{
-		//ignored
-	}
-
-	public void dispose() 
-	{
-		//ignored
-	}
-
-	public boolean isLabelProperty(Object arg0, String arg1) 
-	{
-		return false;
-	}
-
-	public void removeListener(ILabelProviderListener arg0) 
-	{
-		//ignored
 	}
 }
