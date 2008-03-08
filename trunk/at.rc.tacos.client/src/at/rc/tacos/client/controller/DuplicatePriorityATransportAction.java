@@ -39,7 +39,8 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setTransportNumber(Transport.TRANSPORT_NEF);
         //assig nef vehicle
         VehicleDetail nef = ModelFactory.getInstance().getVehicleList().getNEFVehicle();
-        transport.setVehicleDetail(nef);
+        System.out.println("..............DuplicatePriorityA..., NEF: " +nef);
+        newTransport.setVehicleDetail(nef);
         newTransport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
         newTransport.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_EMERGENCY_DOCTOR_INTERNAL);
         newTransport.getStatusMessages().clear();
