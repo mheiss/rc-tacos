@@ -25,7 +25,7 @@ public class OpenDialysisTransportAction extends Action
     @Override
     public String getText()
     {
-        return "Dialysetransport";
+        return "Dialyse";
     }
     
     /**
