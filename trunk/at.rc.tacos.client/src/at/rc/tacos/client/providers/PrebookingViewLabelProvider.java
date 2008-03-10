@@ -10,8 +10,9 @@ import org.eclipse.swt.graphics.Image;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.common.IKindOfTransport;
 
-public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableColorProvider
+public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableColorProvider, IKindOfTransport
 {
 	//define the columns
 	public static final int COLUMN_LOCK = 0;
@@ -54,7 +55,22 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 		switch(columnIndex)
 		{
 		case COLUMN_LOCK: return null;
-		case COLUMN_RESP_STATION: return transport.getPlanedLocation().getLocationName();
+		case COLUMN_RESP_STATION: 
+			if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Kapfenberg"))
+				return "KA";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Bruck an der Mur"))
+				return "BM";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("St. Marein"))
+				return "MA";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Breitenau"))
+				return "BR";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Thörl"))
+				return "TH";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Turnau"))
+				return "TU";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Bezirk: Bruck - Kapfenberg"))
+				return "BE";
+			else return null;
 		case COLUMN_ABF:
 			if (transport.getPlannedStartOfTransport() != 0)
 				return sdf.format(transport.getPlannedStartOfTransport());
@@ -82,7 +98,16 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 				city = "";
 			else city = transport.getToCity();
 			return street +"/" +city;
-		case COLUMN_T:return transport.getKindOfTransport();
+		case COLUMN_T:
+			if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_TRAGSESSEL))
+			return "S";
+			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_KRANKENTRAGE))
+				return "L";
+			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_GEHEND))
+				return "G";
+			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_ROLLSTUHL))
+				return "R";
+			else return "";
 		default: return null;
 		}
 
