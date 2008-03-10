@@ -30,7 +30,7 @@ public class SwitchToClientPerspective extends AbstractPerspectiveSwitcher
     @Override
     public String getText()
     {
-        return "Resourcen";
+        return "Ressourcen";
     }
 
    /**
