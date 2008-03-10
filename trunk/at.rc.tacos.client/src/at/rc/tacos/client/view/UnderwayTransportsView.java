@@ -144,54 +144,54 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 			
 		final TableColumn lockColumn = new TableColumn(tableDisp, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(30);
+		lockColumn.setWidth(0);
 		lockColumn.setText("L");
 	
 		//create the tab items for the disposition view
 		final TableColumn prioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		prioritaetDisponierteTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
-		prioritaetDisponierteTransporte.setWidth(36);
+		prioritaetDisponierteTransporte.setWidth(20);
 		prioritaetDisponierteTransporte.setText("Pr");
 
 		final TableColumn transportNummerDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		transportNummerDisponierteTransporte.setToolTipText("Ortsstellenabhängige Transportnummer");
 		transportNummerDisponierteTransporte.setMoveable(true);
-		transportNummerDisponierteTransporte.setWidth(54);
+		transportNummerDisponierteTransporte.setWidth(70);
 		transportNummerDisponierteTransporte.setText("TNr");
 
 		final TableColumn terminDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		terminDisponierteTransporte.setToolTipText("Termin am Zielort");
 		terminDisponierteTransporte.setMoveable(true);
-		terminDisponierteTransporte.setWidth(48);
+		terminDisponierteTransporte.setWidth(40);
 		terminDisponierteTransporte.setText("Termin");
 
 		final TableColumn transportVonDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		transportVonDisponierteTransporte.setMoveable(true);
-		transportVonDisponierteTransporte.setWidth(118);
+		transportVonDisponierteTransporte.setWidth(250);
 		transportVonDisponierteTransporte.setText("Transport von");
 
 		final TableColumn patientDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		patientDisponierteTransporte.setMoveable(true);
-		patientDisponierteTransporte.setWidth(100);
+		patientDisponierteTransporte.setWidth(200);
 		patientDisponierteTransporte.setText("Patient");
 
 		final TableColumn transportNachDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		transportNachDisponierteTransporte.setWidth(100);
+		transportNachDisponierteTransporte.setWidth(250);
 		transportNachDisponierteTransporte.setText("Transport nach");
 
 		final TableColumn aeDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		aeDisponierteTransporte.setToolTipText("Auftrag erteilt");
-		aeDisponierteTransporte.setWidth(39);
+		aeDisponierteTransporte.setWidth(40);
 		aeDisponierteTransporte.setText("AE");
 
 		final TableColumn s1DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s1DisponierteTransporte.setToolTipText("Transportbeginn");
-		s1DisponierteTransporte.setWidth(36);
+		s1DisponierteTransporte.setWidth(40);
 		s1DisponierteTransporte.setText("S1");
 
 		final TableColumn s2DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s2DisponierteTransporte.setToolTipText("Ankunft bei Patient");
-		s2DisponierteTransporte.setWidth(38);
+		s2DisponierteTransporte.setWidth(40);
 		s2DisponierteTransporte.setText("S2");
 
 		final TableColumn s3DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -201,7 +201,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 
 		final TableColumn s4DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s4DisponierteTransporte.setToolTipText("Ankunft Ziel");
-		s4DisponierteTransporte.setWidth(36);
+		s4DisponierteTransporte.setWidth(40);
 		s4DisponierteTransporte.setText("S4");
 
 		final TableColumn s7DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -211,26 +211,26 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 
 		final TableColumn s8DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s8DisponierteTransporte.setToolTipText("Zurück im Einsatzgebiet");
-		s8DisponierteTransporte.setWidth(34);
+		s8DisponierteTransporte.setWidth(40);
 		s8DisponierteTransporte.setText("S8");
 
 		final TableColumn s9DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s9DisponierteTransporte.setToolTipText("Sonderstatus");
-		s9DisponierteTransporte.setWidth(34);
+		s9DisponierteTransporte.setWidth(40);
 		s9DisponierteTransporte.setText("S9");
 
 		final TableColumn fzgDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		fzgDisponierteTransporte.setToolTipText("Fahrzeugkennzeichnung");
-		fzgDisponierteTransporte.setWidth(52);
+		fzgDisponierteTransporte.setWidth(60);
 		fzgDisponierteTransporte.setText("Fzg");
 
 		final TableColumn taDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		taDisponierteTransporte.setToolTipText("Transportart");
-		taDisponierteTransporte.setWidth(53);
+		taDisponierteTransporte.setWidth(20);
 		taDisponierteTransporte.setText("T");
 		
 		final TableColumn erkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		erkrankungVerletzungDisponierteTransporte.setWidth(146);
+		erkrankungVerletzungDisponierteTransporte.setWidth(150);
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 		
 		
