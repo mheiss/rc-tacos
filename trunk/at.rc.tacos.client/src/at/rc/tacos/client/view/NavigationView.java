@@ -43,6 +43,7 @@ public class NavigationView extends ViewPart
 	public void createPartControl(Composite parent) 
 	{
 		Color white = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
+		Color black = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 		GridLayout layout = new GridLayout(5,false);
 	    parent.setLayout(layout);
 	    parent.setBackground(white);
@@ -63,17 +64,16 @@ public class NavigationView extends ViewPart
 	    tbmView.add(new SwitchToTransportPrebookingPerspective());
 	    tbmView.add(new SwitchToTransportDialysePerspective());
 	    tbmView.add(new SwitchToTransportJournalPerspective());
-	    tbmView.add(new SwitchToLogPerspective());
-	    tbmView.add(new SwitchToAdminPerspective());
 	    tbmView.update(true);
+	    
 	    
 	    //create a group for the perspective switch
 		final Group createGroup = new Group(parent, SWT.NONE);
 		createGroup.setLayout(new GridLayout());
-		//some space on the left side
-	    GridData data = new GridData(GridData.BEGINNING | GridData.FILL_HORIZONTAL);
-	    data.horizontalIndent = 40;
-		createGroup.setLayoutData(data);
+//		//some space on the left side
+//	    GridData data = new GridData(GridData.BEGINNING | GridData.FILL_HORIZONTAL);
+//	    data.horizontalIndent = 40;
+		createGroup.setLayoutData(new GridData());
 		createGroup.setBackground(new Color(null,new RGB(255,255,255)));
 		createGroup.setText("Neue Einträge");
 	    
@@ -83,22 +83,37 @@ public class NavigationView extends ViewPart
 	    tbmCreate.getControl().setLayout(new GridLayout());
 	    tbmCreate.getControl().setLayoutData(new GridData());
 	    tbmCreate.add(new PersonalNewEntryAction());
-	    tbmCreate.add(new VehicleOpenAction());
-	    tbmCreate.add(new OpenTransportAction());
 	    tbmCreate.add(new OpenEmergencyTransportAction());
+	    tbmCreate.add(new OpenTransportAction());
 	    tbmCreate.add(new OpenDialysisTransportAction());
 	    tbmCreate.update(true);
+	    
+	    //creat ea group for other
+		final Group otherGroup = new Group(parent, SWT.NONE);
+		otherGroup.setLayout(new GridLayout());
+		otherGroup.setLayoutData(new GridData());
+		otherGroup.setBackground(new Color(null,new RGB(255,255,255)));
+		otherGroup.setText("Sonstiges");
+		
+		final MyToolbarManager othView = new MyToolbarManager(new ToolBar(otherGroup,SWT.FLAT));
+		othView.getControl().setBackground(new Color(null,new RGB(255,255,255)));
+		othView.getControl().setLayoutData(new GridData(SWT.BEGINNING,SWT.BEGINNING,false,false));
+		othView.add(new SwitchToLogPerspective());
+		othView.add(new SwitchToAdminPerspective());
+		othView.add(new VehicleOpenAction());
+		othView.update(true);
 
 	    Composite comp1 = new Composite(parent,SWT.NONE);
 	    comp1.setBackground(white);
 	    GridData gd = new GridData(SWT.BEGINNING,SWT.BEGINNING, false,false);
-	    gd.widthHint = 20;
+	    gd.widthHint = 490;
 	    comp1.setLayoutData(gd);
+
 	    
-	    Composite comp2 = new Composite(parent,SWT.NONE);
-	    comp2.setBackground(white);
-	    gd = new GridData(SWT.FILL,SWT.BEGINNING, true,false);
-	    comp2.setLayoutData(gd);
+//	    Composite comp2 = new Composite(parent,SWT.NONE);
+//	    comp2.setBackground(white);
+//	    gd = new GridData(SWT.FILL,SWT.BEGINNING, true,false);
+//	    comp2.setLayoutData(gd);
 	    
 	    Label headerImageLabel = new Label(parent,SWT.NONE);
 	    headerImageLabel.setImage(imageLogo);
