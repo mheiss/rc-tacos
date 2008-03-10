@@ -216,7 +216,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 		final TableColumn respOSOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		respOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
-		respOSOffeneTransporte.setWidth(25);
+		respOSOffeneTransporte.setWidth(27);
 		respOSOffeneTransporte.setText("OS");
 	
 		final TableColumn abfOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
