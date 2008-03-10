@@ -10,11 +10,12 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
-public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus
+public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus, IKindOfTransport
 {
     //define the columns
     public static final int COLUMN_LOCK = 0;
@@ -152,7 +153,16 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        		return transport.getVehicleDetail().getVehicleName();
 	        	}
 	        	else return "";
-	        case COLUMN_T: return transport.getKindOfTransport();
+	        case COLUMN_T:
+	        	if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_TRAGSESSEL))
+	    			return "S";
+	    		else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_KRANKENTRAGE))
+	    			return "L";
+	    		else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_GEHEND))
+	    			return "G";
+	    		else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_ROLLSTUHL))
+	    			return "R";
+	    		else return "";
 	        case COLUMN_ERKR_VERL:
 	        	if(transport.getKindOfIllness() != null)
 					return transport.getKindOfIllness().getDiseaseName();
