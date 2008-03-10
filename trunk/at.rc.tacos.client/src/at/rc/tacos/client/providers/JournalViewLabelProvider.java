@@ -17,24 +17,25 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 {
 	//define the columns
 	public static final int COLUMN_LOCK = 0;
-	public static final int COLUMN_TRANSPORT_NUMBER = 1;
-	public static final int COLUMN_PRIORITY = 2;
-	public static final int COLUMN_TRANSPORT_FROM = 3;
-	public static final int COLUMN_PATIENT = 4;
-	public static final int COLUMN_TRANSPORT_TO = 5;
-	public static final int COLUMN_ERKR_VERL = 6;
-	public static final int COLUMN_AE = 7;
-	public static final int COLUMN_S1 = 8;
-	public static final int COLUMN_S2 = 9;
-	public static final int COLUMN_S3 = 10;
-	public static final int COLUMN_S4 = 11; 
-	public static final int COLUMN_S5 = 12;  
-	public static final int COLUMN_S6 = 13;
-	public static final int COLUMN_FZG = 14;
-	public static final int COLUMN_DRIVER = 15;
-	public static final int COLUMN_PARAMEDIC_I = 16;
-	public static final int COLUMN_PARAMEDIC_II = 17;
-	public static final int COLUMN_CALLER_NAME = 18;
+	public static final int COlUMN_OS = 1;
+	public static final int COLUMN_TRANSPORT_NUMBER = 2;
+	public static final int COLUMN_PRIORITY = 3;
+	public static final int COLUMN_TRANSPORT_FROM = 4;
+	public static final int COLUMN_PATIENT = 5;
+	public static final int COLUMN_TRANSPORT_TO = 6;
+	public static final int COLUMN_ERKR_VERL = 7;
+	public static final int COLUMN_AE = 8;
+	public static final int COLUMN_S1 = 9;
+	public static final int COLUMN_S2 = 10;
+	public static final int COLUMN_S3 = 11;
+	public static final int COLUMN_S4 = 12; 
+	public static final int COLUMN_S5 = 13;  
+	public static final int COLUMN_S6 = 14;
+	public static final int COLUMN_FZG = 15;
+	public static final int COLUMN_DRIVER = 16;
+	public static final int COLUMN_PARAMEDIC_I = 17;
+	public static final int COLUMN_PARAMEDIC_II = 18;
+	public static final int COLUMN_CALLER_NAME = 19;
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) 
@@ -85,6 +86,22 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		{
 		//define the columns
 		case COLUMN_LOCK: return null;
+		case COlUMN_OS: 
+			if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Kapfenberg"))
+				return "KA";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Bruck an der Mur"))
+				return "BM";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("St. Marein"))
+				return "MA";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Breitenau"))
+				return "BR";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Thörl"))
+				return "TH";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Turnau"))
+				return "TU";
+			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Bezirk: Bruck - Kapfenberg"))
+				return "BE";
+			else return null;
 		case COLUMN_TRANSPORT_NUMBER: 
 			if(transport.getTransportNumber()== Transport.TRANSPORT_CANCLED)
 				return "STORNO";
@@ -93,7 +110,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 			else if(transport.getTransportNumber() == Transport.TRANSPORT_NEF)
 				return "NEF";
 			else
-					return String.valueOf(transport.getTransportNumber());
+				return String.valueOf(transport.getTransportNumber());
 		case COLUMN_PRIORITY: return transport.getTransportPriority();
 		case COLUMN_TRANSPORT_FROM: return transport.getFromStreet() +"/" +transport.getFromCity();
 		case COLUMN_PATIENT:
