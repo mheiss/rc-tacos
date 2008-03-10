@@ -59,11 +59,12 @@ public class NavigationView extends ViewPart
 	    final MyToolbarManager tbmView = new MyToolbarManager(new ToolBar(perspectiveGroup,SWT.FLAT));
 	    tbmView.getControl().setBackground(new Color(null,new RGB(255,255,255)));
 	    tbmView.getControl().setLayoutData(new GridData(SWT.BEGINNING,SWT.BEGINNING,false,false));
-	    tbmView.add(new SwitchToClientPerspective());
-	    tbmView.add(new SwitchToTransportPerspective());
 	    tbmView.add(new SwitchToTransportPrebookingPerspective());
-	    tbmView.add(new SwitchToTransportDialysePerspective());
+	    tbmView.add(new SwitchToTransportPerspective());
 	    tbmView.add(new SwitchToTransportJournalPerspective());
+	    tbmView.add(new SwitchToTransportDialysePerspective());
+	    tbmView.add(new SwitchToClientPerspective());
+	    
 	    tbmView.update(true);
 	    
 	    
