@@ -134,7 +134,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		
 		final TableColumn respOSOffeneTransporte = new TableColumn(table, SWT.NONE);
 		respOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
-		respOSOffeneTransporte.setWidth(0);
+		respOSOffeneTransporte.setWidth(27);
 		respOSOffeneTransporte.setText("OS");
 
 		final TableColumn columnTNrJournal = new TableColumn(table, SWT.NONE);
