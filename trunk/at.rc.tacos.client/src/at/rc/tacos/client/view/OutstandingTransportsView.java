@@ -206,62 +206,62 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 		final TableColumn lockColumn = new TableColumn(tableOff, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(30);
+		lockColumn.setWidth(0);
 		lockColumn.setText("L");
 	
 		final TableColumn prioritaetOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		prioritaetOffeneTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
-		prioritaetOffeneTransporte.setWidth(31);
+		prioritaetOffeneTransporte.setWidth(20);
 		prioritaetOffeneTransporte.setText("Pr");
 	
 		final TableColumn respOSOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		respOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
-		respOSOffeneTransporte.setWidth(49);
+		respOSOffeneTransporte.setWidth(25);
 		respOSOffeneTransporte.setText("OS");
 	
 		final TableColumn abfOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		abfOffeneTransporte.setToolTipText("Abfahrt auf der Dienststelle");
-		abfOffeneTransporte.setWidth(54);
+		abfOffeneTransporte.setWidth(40);
 		abfOffeneTransporte.setText("Abf");
 	
 		final TableColumn ankOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		ankOffeneTransporte.setToolTipText("Ankunft beim Patienten");
-		ankOffeneTransporte.setWidth(53);
+		ankOffeneTransporte.setWidth(40);
 		ankOffeneTransporte.setText("Ank.");
 	
 		final TableColumn terminOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		terminOffeneTransporte.setToolTipText("Terminzeit am Zielort");
-		terminOffeneTransporte.setWidth(57);
+		terminOffeneTransporte.setWidth(40);
 		terminOffeneTransporte.setText("Termin");
 	
 		final TableColumn transportVonOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		transportVonOffeneTransporte.setWidth(102);
+		transportVonOffeneTransporte.setWidth(250);
 		transportVonOffeneTransporte.setText("Transport von");
 	
 		final TableColumn patientOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		patientOffeneTransporte.setWidth(100);
+		patientOffeneTransporte.setWidth(200);
 		patientOffeneTransporte.setText("Patient");
 	
 		final TableColumn transportNachOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		transportNachOffeneTransporte.setWidth(100);
+		transportNachOffeneTransporte.setWidth(250);
 		transportNachOffeneTransporte.setText("Transport nach");
 	
 		final TableColumn aufgOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		aufgOffeneTransporte.setToolTipText("Zeit zu der der Transport aufgenommen wurde");
-		aufgOffeneTransporte.setWidth(100);
+		aufgOffeneTransporte.setWidth(40);
 		aufgOffeneTransporte.setText("Aufg");
 	
 		final TableColumn tOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		tOffeneTransporte.setToolTipText("Transportart");
-		tOffeneTransporte.setWidth(100);
+		tOffeneTransporte.setWidth(20);
 		tOffeneTransporte.setText("T");
 	
 		final TableColumn erkrankungVerletzungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		erkrankungVerletzungOffeneTransporte.setWidth(74);
+		erkrankungVerletzungOffeneTransporte.setWidth(150);
 		erkrankungVerletzungOffeneTransporte.setText("Erkrankung/Verletzung");
 	
 		final TableColumn anmerkungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		anmerkungOffeneTransporte.setWidth(71);
+		anmerkungOffeneTransporte.setWidth(595);
 		anmerkungOffeneTransporte.setText("Anmerkung");
 	
 		//make the columns sortable
