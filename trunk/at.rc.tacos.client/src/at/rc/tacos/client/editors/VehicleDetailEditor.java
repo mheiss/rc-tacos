@@ -47,6 +47,7 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.VehicleDetail;
 
 public class VehicleDetailEditor extends EditorPart implements PropertyChangeListener
@@ -214,6 +215,22 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		basicLocationViewer.setContentProvider(new StationContentProvider());
 		basicLocationViewer.setLabelProvider(new StationLabelProvider());
 		basicLocationViewer.setInput(ModelFactory.getInstance().getLocationList());
+		
+		//mobile phone
+		final Label labelPhone = toolkit.createLabel(client, "Mobiltelefon");
+		Combo phoneCombo = new Combo(client,SWT.READ_ONLY);
+		phoneViewer = new ComboViewer(phoneCombo);
+		phoneViewer.setContentProvider(new MobilePhoneContentProvider());
+		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
+		phoneViewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
+		
+		//current location
+		final Label locationLabel = toolkit.createLabel(client, "Aktuelle Ortsstelle");
+		Combo currentLocationCombo = new Combo(client, SWT.READ_ONLY);
+		currentLocationViewer = new ComboViewer(currentLocationCombo);
+		currentLocationViewer.setContentProvider(new StationContentProvider());
+		currentLocationViewer.setLabelProvider(new StationLabelProvider());
+		currentLocationViewer.setInput(ModelFactory.getInstance().getLocationList());
 
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -225,6 +242,13 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		data = new GridData();
 		data.widthHint = 150;
 		labelBasicLoaction.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
+		labelPhone.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
+		locationLabel.setLayoutData(data);
+		
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		vehicleName.setLayoutData(data2);
@@ -232,6 +256,12 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		vehicleType.setLayoutData(data2);	
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		basicLocationViewer.getCombo().setLayoutData(data2);
+		phoneViewer.getCombo().setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		currentLocationViewer.getCombo().setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.heightHint = 100;
+		
 	}
 
 	/**
@@ -262,26 +292,14 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		secondParamedicViewer.setContentProvider(new StaffMemberContentProvider());
 		secondParamedicViewer.setLabelProvider(new StaffMemberLabelProvider());
 		secondParamedicViewer.setInput(ModelFactory.getInstance().getStaffList().getStaffList());
-		//mobile phone
-		final Label labelPhone = toolkit.createLabel(client, "Mobiltelefon");
-		Combo phoneCombo = new Combo(client,SWT.READ_ONLY);
-		phoneViewer = new ComboViewer(phoneCombo);
-		phoneViewer.setContentProvider(new MobilePhoneContentProvider());
-		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		phoneViewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
-		//create the label and the dropdown field
-		final Label locationLabel = toolkit.createLabel(client, "Aktuelle Ortsstelle");
-		Combo currentLocationCombo = new Combo(client, SWT.READ_ONLY);
-		currentLocationViewer = new ComboViewer(currentLocationCombo);
-		currentLocationViewer.setContentProvider(new StationContentProvider());
-		currentLocationViewer.setLabelProvider(new StationLabelProvider());
-		currentLocationViewer.setInput(ModelFactory.getInstance().getLocationList());
+		
 		//the notes section
 		final Label labelNotes = toolkit.createLabel(client,"Notizen zum Fahrzeug");
 		notesViewer = new TextViewer(client, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 		notesViewer.setDocument(new Document());
 		notesViewer.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		notesViewer.setEditable(true);
+		
 		//status of the vehicle
 		final Label labelAction = toolkit.createLabel(client, "Einsatzbereit");
 		readyForAction = toolkit.createButton(client, "", SWT.CHECK);
@@ -295,12 +313,9 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		firstParamedicViewer.getCombo().setBackground(CustomColors.GREY_COLOR);
 		secondParamedicViewer.getCombo().setEnabled(false);
 		secondParamedicViewer.getCombo().setBackground(CustomColors.GREY_COLOR);
-		phoneViewer.getCombo().setEnabled(false);
-		phoneViewer.getCombo().setBackground(CustomColors.GREY_COLOR);
-		currentLocationViewer.getCombo().setEnabled(false);
-		currentLocationViewer.getCombo().setBackground(CustomColors.GREY_COLOR);
 		notesViewer.getTextWidget().setEditable(false);
 		notesViewer.getTextWidget().setBackground(CustomColors.GREY_COLOR);
+		
 		readyForAction.setEnabled(false);
 		outOfOrder.setEnabled(false);
 
@@ -316,19 +331,13 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		labelSecondParamedic.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
-		labelPhone.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		locationLabel.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelNotes.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
 		labelAction.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
 		labelRepair.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
+		labelNotes.setLayoutData(data);
 		//the input fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		driverViewer.getCombo().setLayoutData(data2);
@@ -337,11 +346,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		secondParamedicViewer.getCombo().setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		phoneViewer.getCombo().setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		currentLocationViewer.getCombo().setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		data2.heightHint = 100;
 		notesViewer.getTextWidget().setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		readyForAction.setLayoutData(data2);
@@ -376,7 +380,8 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 			phoneViewer.setSelection(new StructuredSelection(detail.getMobilePhone()));
 		if(detail.getCurrentStation() != null)
 			currentLocationViewer.setSelection(new StructuredSelection(detail.getCurrentStation()));
-		notesViewer.getTextWidget().setText(detail.getVehicleNotes());
+		if(detail.getVehicleNotes() != null)
+			notesViewer.getTextWidget().setText(detail.getVehicleNotes());
 		readyForAction.setSelection(detail.isReadyForAction());
 		outOfOrder.setSelection(detail.isOutOfOrder());
 	}
@@ -415,6 +420,28 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		}
 		detail.setBasicStation((Location)basicLocationViewer.getElementAt(index));
 
+		
+		//mobile phone
+		int index2 = phoneViewer.getCombo().getSelectionIndex();
+		if(index2 == -1)
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte ordnen Sie diesem Fahrzeug eine Handynummer zu", IMessageProvider.ERROR);
+			return;
+		}
+		detail.setMobilPhone((MobilePhoneDetail)phoneViewer.getElementAt(index2));
+		
+		
+		//current location
+		int index3 = currentLocationViewer.getCombo().getSelectionIndex();
+		if(index3 == -1)
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte ordnen Sie diesem Fahrzeug eine aktuelle Ortsstelle zu", IMessageProvider.ERROR);
+		}
+		detail.setCurrentStation((Location)currentLocationViewer.getElementAt(index3));
+		
+		
 		//the other fields are read only and must not be set explicite
 		if(isNew)
 			NetWrapper.getDefault().sendAddMessage(VehicleDetail.ID, detail);
