@@ -561,43 +561,44 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 		final TableColumn blockColumn = new TableColumn(table, SWT.NONE);
 		blockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		blockColumn.setWidth(30);
+		blockColumn.setWidth(0);
 		blockColumn.setText("L");
+	
 
 		final TableColumn bTableColumnOrtsstelle = new TableColumn(table, SWT.NONE);
-		bTableColumnOrtsstelle.setWidth(39);
+		bTableColumnOrtsstelle.setWidth(25);
 		bTableColumnOrtsstelle.setText("OS");
 
 		final TableColumn bTableColumnAbfahrt = new TableColumn(table, SWT.NONE);
 		bTableColumnAbfahrt.setToolTipText("Geplante Abfahrt an der Ortsstelle");
-		bTableColumnAbfahrt.setWidth(41);
+		bTableColumnAbfahrt.setWidth(40);
 		bTableColumnAbfahrt.setText("Abf");
 
 		final TableColumn bTableColumnAnkunft = new TableColumn(table, SWT.NONE);
 		bTableColumnAnkunft.setToolTipText("Geplante Ankunft beim Patienten");
-		bTableColumnAnkunft.setWidth(45);
+		bTableColumnAnkunft.setWidth(40);
 		bTableColumnAnkunft.setText("Ank");
 
 		final TableColumn bTableColumnTermin = new TableColumn(table, SWT.NONE);
 		bTableColumnTermin.setToolTipText("Termin am Zielort");
-		bTableColumnTermin.setWidth(49);
+		bTableColumnTermin.setWidth(40);
 		bTableColumnTermin.setText("Termin");
 
 		final TableColumn bTableColumnTransportVon = new TableColumn(table, SWT.NONE);
-		bTableColumnTransportVon.setWidth(100);
+		bTableColumnTransportVon.setWidth(190);
 		bTableColumnTransportVon.setText("Transport von");
 
 		final TableColumn bTtableColumnPatient = new TableColumn(table, SWT.NONE);
-		bTtableColumnPatient.setWidth(100);
+		bTtableColumnPatient.setWidth(160);
 		bTtableColumnPatient.setText("Patient");
 
 		final TableColumn bTableColumnTransportNach = new TableColumn(table, SWT.NONE);
-		bTableColumnTransportNach.setWidth(100);
+		bTableColumnTransportNach.setWidth(190);
 		bTableColumnTransportNach.setText("Transport nach");
 
 		final TableColumn bTableColumnTA = new TableColumn(table, SWT.NONE);
 		bTableColumnTA.setToolTipText("Transportart");
-		bTableColumnTA.setWidth(33);
+		bTableColumnTA.setWidth(20);
 		bTableColumnTA.setText("T");
 
 		Listener sortListener = new Listener() 
