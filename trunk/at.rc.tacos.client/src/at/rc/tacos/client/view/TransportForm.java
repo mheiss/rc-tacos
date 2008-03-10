@@ -549,7 +549,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//the city--> can be empty if the street is LKH or PH
 		if (viewerFromCity.getCombo().getText().trim().isEmpty() &!
 				(transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")
-						|| transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")))
+						|| transport.getFromStreet().contains("PH") || transport.getFromStreet().startsWith("PH") ))
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie die Stadt ein, von der der Transport gestartet wird");
@@ -805,7 +805,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_vonLabel.left = new FormAttachment(0, 7);
 
 		vonLabel.setLayoutData(fd_vonLabel);
-		vonLabel.setForeground(Util.getColor(128, 128, 128));
+		vonLabel.setForeground(Util.getColor(25, 25, 112));
 		vonLabel.setText("von:");
 
 		Combo comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
@@ -1072,13 +1072,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		textTelefonAnrufer.setLayoutData(fd_textTelefonAnrufer);
 
 		final Label label_6 = new Label(transportdatenGroup, SWT.NONE);
+		label_6.setFont(CustomColors.SUBHEADER_FONT);
 		final FormData fd_label_6 = new FormData();
 		fd_label_6.bottom = new FormAttachment(0, 118);
 		fd_label_6.top = new FormAttachment(0, 105);
 		fd_label_6.right = new FormAttachment(0, 313);
-		fd_label_6.left = new FormAttachment(0, 202);
+		fd_label_6.left = new FormAttachment(0, 150);
 		label_6.setLayoutData(fd_label_6);
-		label_6.setForeground(Util.getColor(128, 128, 128));
+		label_6.setForeground(Util.getColor(25, 25, 112));
 		label_6.setText("Zuständige Ortsstelle:");
 
 		Combo comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.READ_ONLY);
@@ -1108,13 +1109,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		//group 'Zeiten/Richtung' 
 		final Label abfLabel = new Label(planungGroup, SWT.NONE);
+		abfLabel.setFont(CustomColors.SUBHEADER_FONT);
 		final FormData fd_abfLabel = new FormData();
 		fd_abfLabel.bottom = new FormAttachment(0, 37);
 		fd_abfLabel.top = new FormAttachment(0, 24);
 		fd_abfLabel.right = new FormAttachment(0, 32);
 		fd_abfLabel.left = new FormAttachment(0, 7);
 		abfLabel.setLayoutData(fd_abfLabel);
-		abfLabel.setForeground(Util.getColor(128, 128, 128));
+		abfLabel.setForeground(Util.getColor(25, 25, 112));
 		abfLabel.setText("Abf:");
 
 		final Label beiPatLabel = new Label(planungGroup, SWT.NONE);
@@ -1347,7 +1349,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_label_4.top = new FormAttachment(0, 56);
 		fd_label_4.right = new FormAttachment(0, 220);
 		label_4.setLayoutData(fd_label_4);
-		label_4.setForeground(Util.getColor(128, 128, 128));
+		label_4.setForeground(Util.getColor(25, 25, 112));
 		label_4.setText("Priorität:");
 		patientenzustandGroup.setTabList(new Control[] {setErkrVerl.getControl(), comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
 
@@ -1488,7 +1490,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_ortsstelleLabel.right = new FormAttachment(0, 57);
 		fd_ortsstelleLabel.left = new FormAttachment(0, 7);
 		ortsstelleLabel.setLayoutData(fd_ortsstelleLabel);
-		ortsstelleLabel.setForeground(Util.getColor(128, 128, 128));
+		ortsstelleLabel.setForeground(Util.getColor(25, 25, 112));
 		ortsstelleLabel.setText("Ortsstelle:");
 
 		textOrtsstelle = new Text(transportdetailsGroup, SWT.BORDER);
