@@ -566,7 +566,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	
 
 		final TableColumn bTableColumnOrtsstelle = new TableColumn(table, SWT.NONE);
-		bTableColumnOrtsstelle.setWidth(25);
+		bTableColumnOrtsstelle.setWidth(27);
 		bTableColumnOrtsstelle.setText("OS");
 
 		final TableColumn bTableColumnAbfahrt = new TableColumn(table, SWT.NONE);
