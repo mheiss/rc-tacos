@@ -38,6 +38,7 @@ import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Location;
@@ -132,7 +133,6 @@ public class VehicleForm extends TitleAreaDialog
 			stationComboViewer.setSelection(new StructuredSelection(vehicleDetail.getCurrentStation()));
 			if(vehicleDetail.getDriver() != null)
 				driverComboViewer.setSelection(new StructuredSelection(vehicleDetail.getDriver()));
-			System.out.println("VVVVVVVVVVVVVvehicleFFFFFFFFFForm, firstParamedic: " +vehicleDetail.getFirstParamedic());
 			if(vehicleDetail.getFirstParamedic() != null)
 				medic1ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getFirstParamedic()));
 			if(vehicleDetail.getSecondParamedic() != null)
@@ -198,6 +198,12 @@ public class VehicleForm extends TitleAreaDialog
 		index = stationComboViewer.getCombo().getSelectionIndex();
 		vehicleDetail.setCurrentStation((Location)stationComboViewer.getElementAt(index));
 
+		//check the status of the vehicle (red,yellow, green)
+		System.out.println("--------------------------: " +medic1ComboViewer.getCombo().getSelectionIndex());
+		if(driverComboViewer.getCombo().getSelectionIndex() == -1 &&
+				medic1ComboViewer.getCombo().getSelectionIndex() == -1 &&
+				medic2ComboViewer.getCombo().getSelectionIndex() == -1)
+			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		//Send the update message
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
 		super.okPressed();
