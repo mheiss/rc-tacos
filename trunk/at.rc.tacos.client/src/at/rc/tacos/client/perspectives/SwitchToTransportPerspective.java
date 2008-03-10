@@ -30,7 +30,7 @@ public class SwitchToTransportPerspective extends AbstractPerspectiveSwitcher
     @Override
     public String getText()
     {
-        return "Transport";
+        return "Disposition";
     }
 
    /**
