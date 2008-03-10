@@ -182,6 +182,34 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 			if(!added)
 				Activator.getDefault().log("Failed to add vehicle to non existing station: " + basicStation,IStatus.ERROR);
 		}
+		if("VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//the list of new vehicles
+			List<?> vehicleList = (List<?>)evt.getNewValue();
+			for(Object object:vehicleList)
+			{
+				boolean added = false;
+				//cast to a vehicle
+				VehicleDetail detail = (VehicleDetail)object;
+				//get the station to categorize the vehicle
+				final String basicStation = detail.getBasicStation().getLocationName();
+				//loop and try to get the section to insert the vehicle
+				for(Section section:sectionList)
+				{
+					//get the location from the section
+					Location location = (Location)section.getData();
+					//add the vehicle to the station
+					if(location.equals(detail.getBasicStation()))
+					{
+						addVehicleToStation((Composite)section.getClient(), detail);
+						updateSection(section);
+						added = true;
+					}
+				}
+				if(!added)
+					Activator.getDefault().log("Failed to add vehicle to non existing station: " + basicStation,IStatus.ERROR);
+			}
+		}
 		//remove all children of the sections
 		if("VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName()))
 		{
@@ -305,12 +333,6 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 		//update the description
 		section.setText(location.getLocationName() +" - ("+ vehicleList.size() +" / "+numOfVehicles+")");
 		section.setDescription("Zur Zeit sind in "+location.getLocationName() +" "+ vehicleList.size() +" Fahrzeuge einsatzbereit von insgesammt "+numOfVehicles);
-
-		//expand if we have at least one
-		if(numOfVehicles > 0)
-			section.setExpanded(true);
-		else
-			section.setExpanded(false);
 	}
 
 	/**
