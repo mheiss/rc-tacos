@@ -1,6 +1,7 @@
 package at.rc.tacos.client.listeners;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.VehicleManager;
@@ -45,12 +46,10 @@ public class VehicleDetailListener extends ClientListenerAdapter
     {
     	//remove all stored vehicles
     	manager.resetVehicles();
-        //loop and add all vehicles
-        for(AbstractMessage detailObject:listMessage)
-        {
-        	//cast to a vehicle and add it
-            VehicleDetail detail = (VehicleDetail)detailObject;
-            manager.add(detail);
-        }
+    	//conert to a list of vehicles
+    	List<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>();
+    	for(AbstractMessage object:listMessage)
+    		vehicleList.add((VehicleDetail)object);
+        manager.addAll(vehicleList);
     }
 }

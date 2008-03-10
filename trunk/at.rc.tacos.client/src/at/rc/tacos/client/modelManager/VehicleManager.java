@@ -57,6 +57,23 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             }
         }); 
     }    
+    
+    /**
+     * Adds all vehicle to the vehicle manager and sends notifies the listeners.
+     * @param vehicleList the list of vehicles to add
+     */
+    public void addAll(final List<VehicleDetail> vehicleList)
+    {
+    	Display.getDefault().syncExec(new Runnable()
+    	{
+    		public void run()
+    		{
+    			for(VehicleDetail detail:vehicleList)
+    				objectList.add(detail);
+				firePropertyChange("VEHICLE_ADD_ALL", null, vehicleList);
+    		}
+    	});	
+    }
 
     /**
      * Removes the vehicle from the list

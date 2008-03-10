@@ -22,7 +22,7 @@ public class TransportJournalPerspective implements IPerspectiveFactory
         layout.setFixed(true);
         //the main components
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
-        layout.addStandaloneView(JournalView.ID,false, IPageLayout.RIGHT, 0.25f, editorArea);
-        layout.addStandaloneView(FilterView.ID, false, IPageLayout.LEFT, 0.75f, editorArea);
+        layout.addStandaloneView(JournalView.ID,false, IPageLayout.RIGHT, 0.15f, editorArea);
+        layout.addStandaloneView(FilterView.ID, false, IPageLayout.LEFT, 0.85f, editorArea);
     }
 }

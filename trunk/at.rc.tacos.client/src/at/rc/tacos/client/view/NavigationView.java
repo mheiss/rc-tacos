@@ -8,6 +8,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.ViewPart;
@@ -45,25 +46,48 @@ public class NavigationView extends ViewPart
 		GridLayout layout = new GridLayout(5,false);
 	    parent.setLayout(layout);
 	    parent.setBackground(white);
-        
+	    
+	    //create a group for the perspective switch
+		final Group perspectiveGroup = new Group(parent, SWT.NONE);
+		perspectiveGroup.setLayout(new GridLayout());
+		perspectiveGroup.setLayoutData(new GridData());
+		perspectiveGroup.setBackground(new Color(null,new RGB(255,255,255)));
+		perspectiveGroup.setText("Ansichten");
+	    
+	    //the toolbar to switch the views
+	    final MyToolbarManager tbmView = new MyToolbarManager(new ToolBar(perspectiveGroup,SWT.FLAT));
+	    tbmView.getControl().setBackground(new Color(null,new RGB(255,255,255)));
+	    tbmView.getControl().setLayoutData(new GridData(SWT.BEGINNING,SWT.BEGINNING,false,false));
+	    tbmView.add(new SwitchToClientPerspective());
+	    tbmView.add(new SwitchToTransportPerspective());
+	    tbmView.add(new SwitchToTransportPrebookingPerspective());
+	    tbmView.add(new SwitchToTransportDialysePerspective());
+	    tbmView.add(new SwitchToTransportJournalPerspective());
+	    tbmView.add(new SwitchToLogPerspective());
+	    tbmView.add(new SwitchToAdminPerspective());
+	    tbmView.update(true);
+	    
+	    //create a group for the perspective switch
+		final Group createGroup = new Group(parent, SWT.NONE);
+		createGroup.setLayout(new GridLayout());
+		//some space on the left side
+	    GridData data = new GridData(GridData.BEGINNING | GridData.FILL_HORIZONTAL);
+	    data.horizontalIndent = 40;
+		createGroup.setLayoutData(data);
+		createGroup.setBackground(new Color(null,new RGB(255,255,255)));
+		createGroup.setText("Neue Einträge");
+	    
 	    //Create the toolbar
-	    final MyToolbarManager tbm = new MyToolbarManager(new ToolBar(parent, SWT.FLAT));
-	    tbm.getControl().setBackground(new Color(null,new RGB(255,255,255)));
-	    tbm.getControl().setLayoutData(new GridData(SWT.BEGINNING,SWT.BEGINNING,false,false));
-	    //add the actions
-	    tbm.add(new PersonalNewEntryAction());
-        tbm.add(new VehicleOpenAction());
-        tbm.add(new OpenTransportAction());
-        tbm.add(new OpenEmergencyTransportAction());
-        tbm.add(new OpenDialysisTransportAction());
-        tbm.add(new SwitchToClientPerspective());
-        tbm.add(new SwitchToTransportPerspective());
-        tbm.add(new SwitchToTransportPrebookingPerspective());
-        tbm.add(new SwitchToTransportDialysePerspective());
-        tbm.add(new SwitchToTransportJournalPerspective());
-        tbm.add(new SwitchToLogPerspective());
-        tbm.add(new SwitchToAdminPerspective());
-        tbm.update(true);
+	    final MyToolbarManager tbmCreate = new MyToolbarManager(new ToolBar(createGroup, SWT.FLAT));
+	    tbmCreate.getControl().setBackground(new Color(null,new RGB(255,255,255)));
+	    tbmCreate.getControl().setLayout(new GridLayout());
+	    tbmCreate.getControl().setLayoutData(new GridData());
+	    tbmCreate.add(new PersonalNewEntryAction());
+	    tbmCreate.add(new VehicleOpenAction());
+	    tbmCreate.add(new OpenTransportAction());
+	    tbmCreate.add(new OpenEmergencyTransportAction());
+	    tbmCreate.add(new OpenDialysisTransportAction());
+	    tbmCreate.update(true);
 
 	    Composite comp1 = new Composite(parent,SWT.NONE);
 	    comp1.setBackground(white);
