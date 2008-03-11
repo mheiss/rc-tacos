@@ -1,144 +1,519 @@
 GKZ;Gemeindename;BEZEICHNUNG
+60209;Kapfenberg;12.-Februar-Straße
+60210;Mariazell;Abt Otker-Gasse
+60210;Mariazell;Abt Severin-Gasse
+60209;Kapfenberg;Adalbert-Stifter-Straße
+60213;Pernegg an der Mur;Adam Mölck-Weg
+60212;Parschlug;Adamerweg
+60209;Kapfenberg;Adolf-Loos-Weg
 60201;Aflenz Kurort;Aflenz Kurort
 60201;Aflenz Kurort;Aflenz Kurort Fölz
-60201;Aflenz Kurort;Bürgeralm
-60202;Aflenz Land;Bergerbauer
-60202;Aflenz Land;Döllach
-60202;Aflenz Land;Dörflach
-60202;Aflenz Land;Draiach
-60202;Aflenz Land;Feistring
-60202;Aflenz Land;Graßnitz
-60202;Aflenz Land;Jauring
-60202;Aflenz Land;Oischingalm
-60202;Aflenz Land;Schießlingalm-Boden
-60202;Aflenz Land;Schießlingalm-Riegel
-60202;Aflenz Land;Seebach
-60202;Aflenz Land;Thullin
-60202;Aflenz Land;Tutschach
-60202;Aflenz Land;Zöbriach
-60203;Breitenau am Hochlantsch;Alois-Schwach-Siedlung
-60203;Breitenau am Hochlantsch;Am Eibegg
-60203;Breitenau am Hochlantsch;Am Leitnergrund
-60203;Breitenau am Hochlantsch;Am Straßegg
-60203;Breitenau am Hochlantsch;Bahngasse
-60203;Breitenau am Hochlantsch;Breitenauer Straße
-60203;Breitenau am Hochlantsch;Eibeggsiedlung
-60203;Breitenau am Hochlantsch;Erhardstraße
-60203;Breitenau am Hochlantsch;Hubertusweg
-60203;Breitenau am Hochlantsch;Klammgraben
-60203;Breitenau am Hochlantsch;Knollgraben
-60203;Breitenau am Hochlantsch;Lantsch
-60203;Breitenau am Hochlantsch;Magnesitstraße
-60203;Breitenau am Hochlantsch;Rassgraben
-60203;Breitenau am Hochlantsch;Sankt Erhard
-60203;Breitenau am Hochlantsch;Sankt Jakob
-60203;Breitenau am Hochlantsch;Schlaggraben
-60203;Breitenau am Hochlantsch;Sonnleiten
-60203;Breitenau am Hochlantsch;Steindlweg
-60203;Breitenau am Hochlantsch;Strasseggerweg
-60203;Breitenau am Hochlantsch;Tiefenbachgraben
-60203;Breitenau am Hochlantsch;Zintonergraben
+60211;Oberaich;Aichberghöhe
+60211;Oberaich;Aichbergstraße
 60204;Bruck an der Mur;Akazienweg
+60212;Parschlug;Alaungrubenweg
+60209;Kapfenberg;Albert-Böhler-Gasse
+60212;Parschlug;Alexander-Silveri-Straße
+60209;Kapfenberg;Alfons-Petzold-Gasse
+60213;Pernegg an der Mur;Allee
+60209;Kapfenberg;Alois-Lafer-Gasse
+60203;Breitenau am Hochlantsch;Alois-Schwach-Siedlung
 60204;Bruck an der Mur;Alte Wehrstraße
+60207;Gußwerk;Alter Bad-Weg
 60204;Bruck an der Mur;Altersheimgasse
+60216;Sankt Lorenzen im Mürztal;Alt-Hadersdorf
+60211;Oberaich;Alt-Mitteraich
+60211;Oberaich;Am Aichberg
+60212;Parschlug;Am Anger
+60211;Oberaich;Am Bach
+60218;Sankt Sebastian;Am Buchenkogel
+60203;Breitenau am Hochlantsch;Am Eibegg
+60212;Parschlug;Am Flöz
+60218;Sankt Sebastian;Am Fluder
+60218;Sankt Sebastian;Am Föhrenberg
 60204;Bruck an der Mur;Am Grazer Tor
 60204;Bruck an der Mur;Am Hang
+60213;Pernegg an der Mur;Am Hang
+60218;Sankt Sebastian;Am Hechtensee
 60204;Bruck an der Mur;Am Hochanger
+60213;Pernegg an der Mur;Am Hofacker
+60209;Kapfenberg;Am Höllhammer
+60213;Pernegg an der Mur;Am Kaserbach
+60213;Pernegg an der Mur;Am Kirchkogel
+60213;Pernegg an der Mur;Am Klammweg
+60218;Sankt Sebastian;Am Köckensattel
+60212;Parschlug;Am Kreuzacker
+60210;Mariazell;Am Kreuzberg
 60204;Bruck an der Mur;Am Kruckenfeld
+60203;Breitenau am Hochlantsch;Am Leitnergrund
+60212;Parschlug;Am Moos
+60216;Sankt Lorenzen im Mürztal;Am Moos
+60217;Sankt Marein im Mürztal;Am Mühlberg
+60213;Pernegg an der Mur;Am Murfeld
+60209;Kapfenberg;Am Pichl
+60207;Gußwerk;Am Postplatzl
+60217;Sankt Marein im Mürztal;Am Ried
+60209;Kapfenberg;Am Sagacker
 60204;Bruck an der Mur;Am Schiffertor
+60218;Sankt Sebastian;Am Sonnenhang
+60213;Pernegg an der Mur;Am Stausee
+60216;Sankt Lorenzen im Mürztal;Am Stollingbach
+60217;Sankt Marein im Mürztal;Am Stollingbach
+60203;Breitenau am Hochlantsch;Am Straßegg
+60216;Sankt Lorenzen im Mürztal;Am Straßenfeld
+60212;Parschlug;Am Tauchnergrund
+60213;Pernegg an der Mur;Am Teichbach
+60216;Sankt Lorenzen im Mürztal;Am Weinberg
 60204;Bruck an der Mur;Am Wiener Tor
+60213;Pernegg an der Mur;Am Wiesengrund
+60207;Gußwerk;Am Wiesenweg
+60218;Sankt Sebastian;Am Zellerrain
+60209;Kapfenberg;Amselweg
+60211;Oberaich;Amselweg
+60218;Sankt Sebastian;An der Forststraße
+60218;Sankt Sebastian;An der Museumsbahn
 60204;Bruck an der Mur;An der Postwiese
+60217;Sankt Marein im Mürztal;Andreas-Hofer-Straße
+60210;Mariazell;Annaburg
+60210;Mariazell;Anton Bruckner-Gasse
+60216;Sankt Lorenzen im Mürztal;Anton Pirchegger-Weg
+60209;Kapfenberg;Anton-Afritsch-Weg
+60209;Kapfenberg;Anton-Bruckner-Straße
+60209;Kapfenberg;Anton-Buchalka-Straße
+60213;Pernegg an der Mur;Antoniaweg
+60211;Oberaich;Antonistraße
+60209;Kapfenberg;Anton-Mühlbacher-Straße
+60209;Kapfenberg;Anton-Paar-Siedlung
 60204;Bruck an der Mur;Anzengrubergasse
+60217;Sankt Marein im Mürztal;Anzengrubergasse
 60204;Bruck an der Mur;Apfelgasse
+60209;Kapfenberg;Arndorf
+60209;Kapfenberg;Arndorfer Leiten
 60204;Bruck an der Mur;Arndorfer Straße
+60209;Kapfenberg;Arndorfer Weg
+60218;Sankt Sebastian;Arnstorfer Bühel
+60210;Mariazell;Arthur Krupp-Platz
+60207;Gußwerk;Aschbach
+60221;Turnau;Au bei Turnau
+60209;Kapfenberg;Auer-von-Welsbach-Weg
 60204;Bruck an der Mur;Auf der Schweizeben
 60204;Bruck an der Mur;Auf der Sonnwiese
+60212;Parschlug;Auf der Weide
+60216;Sankt Lorenzen im Mürztal;August Musger-Weg
+60209;Kapfenberg;Auweg
+60213;Pernegg an der Mur;Auweg
+60217;Sankt Marein im Mürztal;Auweg
 60204;Bruck an der Mur;Bachgasse
+60209;Kapfenberg;Bachgasse
+60213;Pernegg an der Mur;Bachweg
+60216;Sankt Lorenzen im Mürztal;Bachweg
+60218;Sankt Sebastian;Bachweg
+60217;Sankt Marein im Mürztal;Bäckergasse
+60213;Pernegg an der Mur;Badgasse
+60203;Breitenau am Hochlantsch;Bahngasse
 60204;Bruck an der Mur;Bahnhofstraße
+60207;Gußwerk;Bahnhofstraße
+60217;Sankt Marein im Mürztal;Bahnhofstraße
+60218;Sankt Sebastian;Bahnhofstraße
+60218;Sankt Sebastian;Bahnpromenade
+60209;Kapfenberg;Bahnstraße
+60213;Pernegg an der Mur;Bahnstraße
 60204;Bruck an der Mur;Bahnweg
+60212;Parschlug;Barbarastraße
 60204;Bruck an der Mur;Barbaraweg
+60213;Pernegg an der Mur;Bärenschütz
 60204;Bruck an der Mur;Baumschulgasse
 60204;Bruck an der Mur;Bayerhofstraße
+60209;Kapfenberg;Beethovenstraße
 60204;Bruck an der Mur;Beethovenweg
 60204;Bruck an der Mur;Bergbaustraße
+60202;Aflenz Land;Bergerbauer
+60209;Kapfenberg;Berggasse
+60218;Sankt Sebastian;Berggasse
+60212;Parschlug;Bergsiedlung
 60204;Bruck an der Mur;Bergstraße
+60217;Sankt Marein im Mürztal;Bergweg
+60212;Parschlug;Bernerweg
+60216;Sankt Lorenzen im Mürztal;Beuttnerweg
+60210;Mariazell;Bibergasse
 60204;Bruck an der Mur;Bienengasse
 60204;Bruck an der Mur;Bienensteinstraße
+60210;Mariazell;Bilgeriweg
+60217;Sankt Marein im Mürztal;Bindergasse
+60213;Pernegg an der Mur;Biogasse
 60204;Bruck an der Mur;Birkengasse
+60209;Kapfenberg;Birkensiedlung
+60213;Pernegg an der Mur;Birkenweg
 60204;Bruck an der Mur;Blumengasse
+60213;Pernegg an der Mur;Blumengasse
+60211;Oberaich;Blütenweg
+60211;Oberaich;Bodenwiese
+60209;Kapfenberg;Böhlerdurplatz
+60217;Sankt Marein im Mürztal;Böhlerstraße
+60209;Kapfenberg;Böhler-Welding-Straße
+60207;Gußwerk;Bohrwerk
+60212;Parschlug;Brachäckerweg
 60204;Bruck an der Mur;Brahmsgasse
+60209;Kapfenberg;Brahmsgasse
+60217;Sankt Marein im Mürztal;Brahmsgasse
+60207;Gußwerk;Brandhof
 60204;Bruck an der Mur;Brandstetterstraße
+60208;Halltal;Braschlweg
+60209;Kapfenberg;Bräuerleiten
+60209;Kapfenberg;Brauhausgasse
 60204;Bruck an der Mur;Braunschmiedgasse
+60203;Breitenau am Hochlantsch;Breitenauer Straße
+60213;Pernegg an der Mur;Breitlerweg
+60209;Kapfenberg;Breitnergasse
 60204;Bruck an der Mur;Brückengasse
+60209;Kapfenberg;Brückengasse
+60217;Sankt Marein im Mürztal;Brückengasse
+60213;Pernegg an der Mur;Brückenweg
+60211;Oberaich;Brucker Straße
+60213;Pernegg an der Mur;Brucker Straße
 60204;Bruck an der Mur;Brucknergasse
+60209;Kapfenberg;Brunnengasse
+60213;Pernegg an der Mur;Brunnengasse
+60217;Sankt Marein im Mürztal;Brunnenweg
+60212;Parschlug;Brunnerweg
+60210;Mariazell;Brünnerweg
 60204;Bruck an der Mur;Buchenweg
+60213;Pernegg an der Mur;Buchenweg
+60209;Kapfenberg;Buchmoarweg
+60213;Pernegg an der Mur;Bundesstraße
+60216;Sankt Lorenzen im Mürztal;Bundesstraße
+60218;Sankt Sebastian;Bundesstraße
+60201;Aflenz Kurort;Bürgeralm
+60210;Mariazell;Bürgeralpe
 60204;Bruck an der Mur;Burggasse
+60213;Pernegg an der Mur;Burgstall
+60209;Kapfenberg;Burgstallweg
 60204;Bruck an der Mur;Carl-Morre-Gasse
+60209;Kapfenberg;Carl-Morre-Straße
+60209;Kapfenberg;Dammweg
+60209;Kapfenberg;DDr.-Alfred-Schachner-Hof
 60204;Bruck an der Mur;Demarstraße
+60209;Kapfenberg;Deuchendorf
+60210;Mariazell;Deutschmeisterweg
+60209;Kapfenberg;DI.-Karl-Waldbrunner-Hof
+60209;Kapfenberg;Diemlacher Weg
+60209;Kapfenberg;Dohlengasse
+60202;Aflenz Land;Döllach
+60213;Pernegg an der Mur;Dörfl
+60202;Aflenz Land;Dörflach
+60211;Oberaich;Dorfweg
+60210;Mariazell;Dr. Karl Lueger-Gasse
+60210;Mariazell;Dr. Ludwig Leber-Straße
+60216;Sankt Lorenzen im Mürztal;Dr. Reinhard Machold-Straße
+60210;Mariazell;Dr. Rudolf Griß Weg
+60209;Kapfenberg;Dr.-Alfons-Gorbach-Hof
+60212;Parschlug;Dr.-Franz-Unger-Siedlung
+60209;Kapfenberg;Dr.-h.c.-Reinhard-Machold-Hof
+60209;Kapfenberg;Dr.-Josef-Sperl-Straße
 60204;Bruck an der Mur;Dr.-Karl-Renner-Straße
+60217;Sankt Marein im Mürztal;Dr.-Karl-Renner-Straße
+60209;Kapfenberg;Dr.-Kloepfer-Weg
 60204;Bruck an der Mur;Dr.-Lueger-Straße
 60204;Bruck an der Mur;Dr.-Theodor-Körner-Straße
 60204;Bruck an der Mur;Drahtgasse
+60202;Aflenz Land;Draiach
+60209;Kapfenberg;Drosselgasse
+60216;Sankt Lorenzen im Mürztal;Dunklweg
+60207;Gußwerk;Dürradmer
 60204;Bruck an der Mur;Dürrnbergweg
+60210;Mariazell;E. Rohrbacher-Gasse
+60216;Sankt Lorenzen im Mürztal;Edelackerstraße
+60212;Parschlug;Edelmannweg
+60203;Breitenau am Hochlantsch;Eibeggsiedlung
+60209;Kapfenberg;Eichensiedlung
+60213;Pernegg an der Mur;Eichenweg
+60216;Sankt Lorenzen im Mürztal;Eichenweg
 60204;Bruck an der Mur;Einöd
 60204;Bruck an der Mur;Einödfeld
 60204;Bruck an der Mur;Einödgasse
+60213;Pernegg an der Mur;Eisenpaßstraße
 60204;Bruck an der Mur;Eisenwerkgasse
+60209;Kapfenberg;Emberg bei Kapfenberg
+60209;Kapfenberg;Emberg-Nord
+60209;Kapfenberg;Embergsiedlung
+60209;Kapfenberg;Emberg-Süd
+60209;Kapfenberg;Enge Gasse
+60217;Sankt Marein im Mürztal;Eppensteinerweg
+60203;Breitenau am Hochlantsch;Erhardstraße
 60204;Bruck an der Mur;Erich-Schmid-Straße
+60218;Sankt Sebastian;Erlaufseestraße
 60204;Bruck an der Mur;Erlenweg
+60216;Sankt Lorenzen im Mürztal;Erlenweg
+60218;Sankt Sebastian;Erlenweg
+60210;Mariazell;Erzherzog Johann-Weg
+60216;Sankt Lorenzen im Mürztal;Erzherzog Johann-Weg
 60204;Bruck an der Mur;Erzherzog-Johann-Gasse
+60217;Sankt Marein im Mürztal;Erzherzog-Johann-Straße
+60205;Etmißl;Etmißl
 60204;Bruck an der Mur;Etzersteig
 60204;Bruck an der Mur;E-Werkstraße
+60213;Pernegg an der Mur;E-Werkstraße
 60204;Bruck an der Mur;Fabriksgasse
+60209;Kapfenberg;Falkengasse
+60207;Gußwerk;Fallenstein
+60209;Kapfenberg;Fehrenbergweg
+60210;Mariazell;Feichteggerwiese
+60213;Pernegg an der Mur;Feisterergraben
+60202;Aflenz Land;Feistring
+60218;Sankt Sebastian;Feldbauerweg
 60204;Bruck an der Mur;Feldgasse
+60209;Kapfenberg;Feldgasse
+60218;Sankt Sebastian;Feldgasse
+60207;Gußwerk;Feldspitz
+60212;Parschlug;Feldweg
+60213;Pernegg an der Mur;Feldweg
+60209;Kapfenberg;Ferdinand-Hanusch-Gasse
+60217;Sankt Marein im Mürztal;Ferdinand-Raimund-Weg
+60216;Sankt Lorenzen im Mürztal;Festwiesenweg
+60213;Pernegg an der Mur;Fichtengasse
+60211;Oberaich;Fichtenweg
+60209;Kapfenberg;Finkenweg
+60210;Mariazell;Fischer von Erlach-Weg
 60204;Bruck an der Mur;Fleischhackeralm
+60218;Sankt Sebastian;Fleschweg
+60213;Pernegg an der Mur;Fliedergasse
+60209;Kapfenberg;Floning
+60211;Oberaich;Florianiweg
 60204;Bruck an der Mur;Flurgasse
+60209;Kapfenberg;Flurgasse
+60216;Sankt Lorenzen im Mürztal;Flurgasse
+60213;Pernegg an der Mur;Flurweg
+60211;Oberaich;Föhrenweg
+60219;Thörl;Fölz
+60211;Oberaich;Forstwald
+60211;Oberaich;Forstwaldstraße
+60211;Oberaich;Forstweg
+60210;Mariazell;Franz Schubert-Gasse
+60209;Kapfenberg;Franz-Domes-Gasse
+60209;Kapfenberg;Franz-Eibel-Straße
+60213;Pernegg an der Mur;Franzensweg
+60209;Kapfenberg;Franz-Liszt-Straße
 60204;Bruck an der Mur;Franz-Liszt-Weg
+60209;Kapfenberg;Franz-Nabl-Weg
+60206;Frauenberg;Frauenberg
+60209;Kapfenberg;Frauenriegelgasse
+60209;Kapfenberg;Frauenwiese
 60204;Bruck an der Mur;Fraunedergasse
+60208;Halltal;Freingraben
+60207;Gußwerk;Freistättersiedlung
 60204;Bruck an der Mur;Fridrichallee
 60204;Bruck an der Mur;Fridrichplatzl
+60210;Mariazell;Friedhofgasse
+60209;Kapfenberg;Friedhofweg
+60209;Kapfenberg;Friedlwiese
+60209;Kapfenberg;Friedrich-Böhler-Straße
 60204;Bruck an der Mur;Friedrich-Ludwig-Jahn-Straße
+60216;Sankt Lorenzen im Mürztal;Fuscht
 60204;Bruck an der Mur;Gabelsbergergasse
+60213;Pernegg an der Mur;Gabraun
 60204;Bruck an der Mur;Gallerbergweg
 60204;Bruck an der Mur;Gartengasse
+60209;Kapfenberg;Gartengasse
+60218;Sankt Sebastian;Gartengasse
+60213;Pernegg an der Mur;Gartenweg
 60204;Bruck an der Mur;Gärtnereiweg
+60209;Kapfenberg;Gärtnergasse
+60216;Sankt Lorenzen im Mürztal;Gärtnerweg
+60217;Sankt Marein im Mürztal;Gärtnerweg
+60216;Sankt Lorenzen im Mürztal;Gassing
 60204;Bruck an der Mur;Genossenschaftsweg
+60209;Kapfenberg;Gewerbestraße
+60213;Pernegg an der Mur;Gewerbestraße
+60217;Sankt Marein im Mürztal;Gewerbestraße
+60209;Kapfenberg;Geyereckgasse
+60207;Gußwerk;Gleißnerhof
 60204;Bruck an der Mur;Gloriettsiedlung
 60204;Bruck an der Mur;Gloriettweg
+60213;Pernegg an der Mur;Göberlmoar
+60209;Kapfenberg;Goethegasse
 60204;Bruck an der Mur;Goethestraße
+60207;Gußwerk;Gollrad
+60221;Turnau;Göriach
+60212;Parschlug;Göritz
+60212;Parschlug;Göritzer Straße
+60218;Sankt Sebastian;Göschlhofweg
+60212;Parschlug;Gösslweg
 60204;Bruck an der Mur;Grabenfeldstraße
+60209;Kapfenberg;Grabengasse
+60208;Halltal;Gracherhof
+60206;Frauenberg;Graschnitzgraben
+60217;Sankt Marein im Mürztal;Graschnitzstraße
+60209;Kapfenberg;Graschnitzweg
+60202;Aflenz Land;Graßnitz
 60204;Bruck an der Mur;Grazer Straße
+60209;Kapfenberg;Grazer Straße
+60210;Mariazell;Grazer Straße
+60213;Pernegg an der Mur;Grazer Straße
+60207;Gußwerk;Greith
+60216;Sankt Lorenzen im Mürztal;Grenzstraße
+60217;Sankt Marein im Mürztal;Grenzstraße
 60204;Bruck an der Mur;Grillparzerstraße
+60209;Kapfenberg;Grillparzerstraße
+60217;Sankt Marein im Mürztal;Grimmstraße
+60211;Oberaich;Gröbl-Platz
+60218;Sankt Sebastian;Grünauer Straße
+60207;Gußwerk;Grüner Baum
 60204;Bruck an der Mur;Grünfeldgasse
+60213;Pernegg an der Mur;Gscheidbacherweg
+60207;Gußwerk;Gschöder
+60209;Kapfenberg;Gugga
+60209;Kapfenberg;Guggasiedlung
+60209;Kapfenberg;Gustav-Kramer-Straße
+60209;Kapfenberg;Gustav-Mahler-Weg
+60218;Sankt Sebastian;Habertheuerstraße
+60209;Kapfenberg;Hafendorf
+60209;Kapfenberg;Hainweg
+60208;Halltal;Halltal
+60211;Oberaich;Hangweg
+60218;Sankt Sebastian;Hangweg
+60216;Sankt Lorenzen im Mürztal;Hans Kloepfer-Gasse
+60210;Mariazell;Hans Laufenstein-Weg
+60210;Mariazell;Hans Wertanek-Promenade
 60204;Bruck an der Mur;Hans-Prasser-Gasse
+60209;Kapfenberg;Hans-Resel-Gasse
+60209;Kapfenberg;Hans-Roch-Weg
+60212;Parschlug;Haritzmeierstraße
+60207;Gußwerk;Härtehammer
+60210;Mariazell;Hauptplatz
+60217;Sankt Marein im Mürztal;Hauptplatz
+60210;Mariazell;Hauptplatz-Laden
+60207;Gußwerk;Hauptstraße
+60216;Sankt Lorenzen im Mürztal;Hauptstraße
+60217;Sankt Marein im Mürztal;Hauptstraße
 60204;Bruck an der Mur;Haydngasse
+60209;Kapfenberg;Haydngasse
+60213;Pernegg an der Mur;Haydngasse
+60216;Sankt Lorenzen im Mürztal;Haydngasse
 60204;Bruck an der Mur;Heberplatzl
+60210;Mariazell;Heiligen Brunn-Gasse
+60210;Mariazell;Heiligenbrunngasse-Laden
 60204;Bruck an der Mur;Heimbauweg
+60209;Kapfenberg;Heimgasse
+60209;Kapfenberg;Heimsiedlung
+60216;Sankt Lorenzen im Mürztal;Heimsiedlung
+60209;Kapfenberg;Heimsiedlungsgasse
+60218;Sankt Sebastian;Heimweg
+60209;Kapfenberg;Heinrich-Scheibengraf-Straße
+60213;Pernegg an der Mur;Heitzerweg
+60210;Mariazell;Helleportweg
 60204;Bruck an der Mur;Hermann-Löns-Gasse
+60209;Kapfenberg;Hermann-Löns-Straße
+60216;Sankt Lorenzen im Mürztal;Herrenbergweg
 60204;Bruck an der Mur;Herzog-Ernst-Gasse
+60211;Oberaich;Heuberg
 60204;Bruck an der Mur;Heubergstraße
+60213;Pernegg an der Mur;Heubergstraße
+60219;Thörl;Hinterberg
 60204;Bruck an der Mur;Hochfeldgasse
+60207;Gußwerk;Hochschwabstraße
+60213;Pernegg an der Mur;Hofackerstraße
+60216;Sankt Lorenzen im Mürztal;Hofäckerweg
+60217;Sankt Marein im Mürztal;Hofweg
 60204;Bruck an der Mur;Hoher Markt
+60207;Gußwerk;Höll
 60204;Bruck an der Mur;Höllhammerweg
 60204;Bruck an der Mur;Hubertusstraße
+60203;Breitenau am Hochlantsch;Hubertusweg
+60216;Sankt Lorenzen im Mürztal;Hugo Wolf-Straße
+60209;Kapfenberg;Hugo-v.-Hofmannsthal-Weg
 60204;Bruck an der Mur;Hugo-von-Montfort-Gasse
+60209;Kapfenberg;Hugo-Wolf-Straße
+60215;Sankt Katharein an der Laming;Hüttengraben
+60209;Kapfenberg;Ignaz-Semmelweis-Weg
+60209;Kapfenberg;Igo-Etrich-Straße
 60204;Bruck an der Mur;Im Glanzgraben
+60212;Parschlug;In der Grube
+60218;Sankt Sebastian;In der Grünau
 60204;Bruck an der Mur;Industriegasse
+60209;Kapfenberg;Industriepark
+60213;Pernegg an der Mur;Industriestraße
+60217;Sankt Marein im Mürztal;Industriestraße
+60209;Kapfenberg;Industriestraße Ost
+60209;Kapfenberg;Industriestraße West
 60204;Bruck an der Mur;Jägergasse
+60217;Sankt Marein im Mürztal;Jägergasse
+60202;Aflenz Land;Jauring
+60216;Sankt Lorenzen im Mürztal;Jaxstraße
+60213;Pernegg an der Mur;Jobstmanngasse
+60212;Parschlug;Johann Graf-Gasse
+60209;Kapfenberg;Johann-Böhm-Straße
+60209;Kapfenberg;Johann-Brandl-Gasse
+60209;Kapfenberg;Johannes-Kepler-Weg
+60207;Gußwerk;Johannesplatz
+60216;Sankt Lorenzen im Mürztal;Johannesweg
 60204;Bruck an der Mur;Johann-Fux-Straße
+60209;Kapfenberg;Johann-Josef-Fux-Straße
+60209;Kapfenberg;Johann-Nestroy-Straße
 60204;Bruck an der Mur;Johann-Strauß-Gasse
+60209;Kapfenberg;Johann-Strauß-Gasse
+60217;Sankt Marein im Mürztal;Johann-Strauß-Weg
 60204;Bruck an der Mur;Josef-Graf-Gasse
+60209;Kapfenberg;Josefine-Kettler-Gasse
+60209;Kapfenberg;Josef-Madersperger-Weg
+60209;Kapfenberg;Josef-Scheu-Straße
+60209;Kapfenberg;Josef-Stanek-Gasse
+60210;Mariazell;Joseph Haydn-Gasse
+60216;Sankt Lorenzen im Mürztal;Joseph Ressel-Weg
+60210;Mariazell;K.E.Tisserant-Platz
+60212;Parschlug;Käferweg
 60204;Bruck an der Mur;Kaltbach
 60204;Bruck an der Mur;Kaltbachsiedlung
 60204;Bruck an der Mur;Kaltbachstraße
 60204;Bruck an der Mur;Kaltschmidstraße
+60210;Mariazell;Kalvarienberg
 60204;Bruck an der Mur;Kalvarienbergweg
+60218;Sankt Sebastian;Kapellerweg
+60210;Mariazell;Karl Heinschild-Weg
+60216;Sankt Lorenzen im Mürztal;Karl Morre-Straße
+60209;Kapfenberg;Karl-Heinrich-Waggerl-Weg
+60209;Kapfenberg;Karl-Maisel-Hof
+60209;Kapfenberg;Karl-Schöberl-Hof
+60209;Kapfenberg;Karl-Seitz-Gasse
+60210;Mariazell;Karmelweg
+60213;Pernegg an der Mur;Karnerberg
+60216;Sankt Lorenzen im Mürztal;Kastenfeldweg
+60209;Kapfenberg;Kehr
+60209;Kapfenberg;Kendlbachstraße
 60204;Bruck an der Mur;Keplerstraße
+60207;Gußwerk;Kernboden
+60209;Kapfenberg;Kernstockgasse
+60212;Parschlug;Kieneggerweg
+60213;Pernegg an der Mur;Kirchdorf
+60218;Sankt Sebastian;Kirchenweg
 60204;Bruck an der Mur;Kirchplatz
+60207;Gußwerk;Kirchplatz
+60217;Sankt Marein im Mürztal;Kirchweg
+60203;Breitenau am Hochlantsch;Klammgraben
+60213;Pernegg an der Mur;Klammweg
+60212;Parschlug;Klaworaweg
+60216;Sankt Lorenzen im Mürztal;Klosterweg
+60207;Gußwerk;Knappengraben
+60212;Parschlug;Knappenweg
+60203;Breitenau am Hochlantsch;Knollgraben
 60204;Bruck an der Mur;Knottingerstraße
+60213;Pernegg an der Mur;Köllersdorf
+60209;Kapfenberg;Koloman-Wallisch-Gasse
 60204;Bruck an der Mur;Koloman-Wallisch-Platz
+60209;Kapfenberg;Koloman-Wallisch-Platz
+60210;Mariazell;König Ludwig-Gasse
+60209;Kapfenberg;Konrad-Kainz-Straße
+60213;Pernegg an der Mur;Kötscherstraße
+60211;Oberaich;Kotzgraben
 60204;Bruck an der Mur;Kreckerstraße
+60216;Sankt Lorenzen im Mürztal;Kreuzstraße
+60211;Oberaich;Kreuzweg
+60209;Kapfenberg;Kronawettersiedlung
+60209;Kapfenberg;Krottendorf
+60209;Kapfenberg;Krottendorfer Straße
 60204;Bruck an der Mur;Kupferschmiedgasse
+60209;Kapfenberg;Lagergasse
+60217;Sankt Marein im Mürztal;Lambrechtstraße
+60209;Kapfenberg;Lamingbachweg
 60204;Bruck an der Mur;Lamingfeldsiedlung A
 60204;Bruck an der Mur;Lamingfeldsiedlung B
 60204;Bruck an der Mur;Lamingfeldsiedlung C
@@ -148,492 +523,174 @@ GKZ;Gemeindename;BEZEICHNUNG
 60204;Bruck an der Mur;Lamingfeldsiedlung G
 60204;Bruck an der Mur;Laminggasse
 60204;Bruck an der Mur;Landskrongasse
-60204;Bruck an der Mur;Lastenstraße
-60204;Bruck an der Mur;Laubengasse
-60204;Bruck an der Mur;Leharstraße
-60204;Bruck an der Mur;Lehmgasse
-60204;Bruck an der Mur;Leobner Straße
-60204;Bruck an der Mur;Lerchenweg
-60204;Bruck an der Mur;Lessingstraße
-60204;Bruck an der Mur;Lichtensteinstraße
-60204;Bruck an der Mur;Madereckweg
-60204;Bruck an der Mur;Marburger Straße
-60204;Bruck an der Mur;Martin-Luther-Straße
-60204;Bruck an der Mur;Maurergasse
-60204;Bruck an der Mur;Max-Mell-Straße
-60204;Bruck an der Mur;Minoritenplatz
-60204;Bruck an der Mur;Mittergasse
-60204;Bruck an der Mur;Moosweg
-60204;Bruck an der Mur;Mozartgasse
-60204;Bruck an der Mur;Murinsel
-60204;Bruck an der Mur;Murinselallee
-60204;Bruck an der Mur;Murpark
-60204;Bruck an der Mur;Murstraße
-60204;Bruck an der Mur;Mürzgasse
-60204;Bruck an der Mur;Nagelschmiedgasse
-60204;Bruck an der Mur;Nelkengasse
-60204;Bruck an der Mur;Neubaugasse
-60204;Bruck an der Mur;Neue Gasse
-60204;Bruck an der Mur;Neue-Welt-Gasse
-60204;Bruck an der Mur;Nikolausweg
-60204;Bruck an der Mur;Oberdorfer Straße
-60204;Bruck an der Mur;Oberdorfer Straße-Feltensiedlung
-60204;Bruck an der Mur;Obere Siedlungsgasse
-60204;Bruck an der Mur;Oberer Höhenweg
-60204;Bruck an der Mur;Ostring
-60204;Bruck an der Mur;Ottokar-Kernstock-Straße
-60204;Bruck an der Mur;Parkgasse
-60204;Bruck an der Mur;Paulahofer Siedlungsstraße
-60204;Bruck an der Mur;Petzoldgasse
-60204;Bruck an der Mur;Pischkalm
-60204;Bruck an der Mur;Pischkberg
-60204;Bruck an der Mur;Pischker Straße
-60204;Bruck an der Mur;Piusallee
-60204;Bruck an der Mur;Platz der Menschenrechte
-60204;Bruck an der Mur;Pögl-Hof
-60204;Bruck an der Mur;Primbschweg
-60204;Bruck an der Mur;Propsteigasse
-60204;Bruck an der Mur;Propst-Weinberger-Straße
-60204;Bruck an der Mur;Raiffeisenstraße
-60204;Bruck an der Mur;Rennfeld
-60204;Bruck an der Mur;Rennfeldweg
-60204;Bruck an der Mur;Richard-Wagner-Straße
-60204;Bruck an der Mur;Ringelschmiedgasse
-60204;Bruck an der Mur;Ritting
-60204;Bruck an der Mur;Robert-Stolz-Weg
-60204;Bruck an der Mur;Roseggerstraße
-60204;Bruck an der Mur;Sackgasse
-60204;Bruck an der Mur;Sandstraße
-60204;Bruck an der Mur;Sankt-Ruprecht-Straße
-60204;Bruck an der Mur;Schiffgasse
-60204;Bruck an der Mur;Schiffländ
-60204;Bruck an der Mur;Schillerstraße
-60204;Bruck an der Mur;Schleppbahngasse
-60204;Bruck an der Mur;Schloßbergsteig
-60204;Bruck an der Mur;Schubertgasse
-60204;Bruck an der Mur;Sebald-Pögl-Weg
-60204;Bruck an der Mur;Seifensiedergasse
-60204;Bruck an der Mur;Siedlung Westend
-60204;Bruck an der Mur;Sonnengasse
-60204;Bruck an der Mur;Stadionstraße
-60204;Bruck an der Mur;Stadtwaldstraße
-60204;Bruck an der Mur;Stadtwerkestraße
-60204;Bruck an der Mur;Stegg
-60204;Bruck an der Mur;Steinbruchweg
-60204;Bruck an der Mur;Südtiroler Straße
-60204;Bruck an der Mur;Tanzbergweg
-60204;Bruck an der Mur;Tragösser Straße
-60204;Bruck an der Mur;Übelstein
-60204;Bruck an der Mur;Übelsteiner Straße
-60204;Bruck an der Mur;Umspannwerkgasse
-60204;Bruck an der Mur;Untere Siedlungsgasse
-60204;Bruck an der Mur;Unterer Höhenweg
-60204;Bruck an der Mur;Viktor-Kaplan-Gasse
-60204;Bruck an der Mur;Vinzenz-Till-Gasse
-60204;Bruck an der Mur;Waldrandsiedlung
-60204;Bruck an der Mur;Waldweg
-60204;Bruck an der Mur;Wiener Straße
-60204;Bruck an der Mur;Wiesenweg
-60204;Bruck an der Mur;Wüstenroter Straße
-60204;Bruck an der Mur;Ziegeleiweg
-60204;Bruck an der Mur;Ziegelofenweg
-60205;Etmißl;Etmißl
-60205;Etmißl;Lonschitz
-60205;Etmißl;Oisching
-60206;Frauenberg;Frauenberg
-60206;Frauenberg;Graschnitzgraben
-60207;Gußwerk;Alter Bad-Weg
-60207;Gußwerk;Am Postplatzl
-60207;Gußwerk;Am Wiesenweg
-60207;Gußwerk;Aschbach
-60207;Gußwerk;Bahnhofstraße
-60207;Gußwerk;Bohrwerk
-60207;Gußwerk;Brandhof
-60207;Gußwerk;Dürradmer
-60207;Gußwerk;Fallenstein
-60207;Gußwerk;Feldspitz
-60207;Gußwerk;Freistättersiedlung
-60207;Gußwerk;Gleißnerhof
-60207;Gußwerk;Gollrad
-60207;Gußwerk;Greith
-60207;Gußwerk;Grüner Baum
-60207;Gußwerk;Gschöder
-60207;Gußwerk;Härtehammer
-60207;Gußwerk;Hauptstraße
-60207;Gußwerk;Hochschwabstraße
-60207;Gußwerk;Höll
-60207;Gußwerk;Johannesplatz
-60207;Gußwerk;Kernboden
-60207;Gußwerk;Kirchplatz
-60207;Gußwerk;Knappengraben
-60207;Gußwerk;Lärchkogelstraße
-60207;Gußwerk;Leitnerweg
-60207;Gußwerk;Lendstraße
-60207;Gußwerk;Lieglergraben
-60207;Gußwerk;Moosbach
-60207;Gußwerk;Niederalpl
-60207;Gußwerk;Oberkogelbauerweg
-60207;Gußwerk;Oberwegscheid
-60207;Gußwerk;Oisching
-60207;Gußwerk;Pfannhammer
-60207;Gußwerk;Prescenyklause
-60207;Gußwerk;Ramsau
-60207;Gußwerk;Rosenhügel
-60207;Gußwerk;Rotmoos
-60207;Gußwerk;Rotsohl
-60207;Gußwerk;Sägestraße
-60207;Gußwerk;Salzahammer
-60207;Gußwerk;Salzaklamm
-60207;Gußwerk;Salzatal
-60207;Gußwerk;Sauwandweg
-60207;Gußwerk;Schießgrabenweg
-60207;Gußwerk;Seebergstraße
-60207;Gußwerk;Steinschale
-60207;Gußwerk;Tribeinsiedlung
-60207;Gußwerk;Waldau
-60207;Gußwerk;Waldsiedel
-60207;Gußwerk;Wegscheid
-60207;Gußwerk;Weichselboden
-60207;Gußwerk;Zur Waldpromenade
-60208;Halltal;Braschlweg
-60208;Halltal;Freingraben
-60208;Halltal;Gracherhof
-60208;Halltal;Halltal
-60208;Halltal;Mooshuben
-60208;Halltal;Rechengraben
-60208;Halltal;Schöneben
-60208;Halltal;Walstern
-60209;Kapfenberg;12.-Februar-Straße
-60209;Kapfenberg;Adalbert-Stifter-Straße
-60209;Kapfenberg;Adolf-Loos-Weg
-60209;Kapfenberg;Albert-Böhler-Gasse
-60209;Kapfenberg;Alfons-Petzold-Gasse
-60209;Kapfenberg;Alois-Lafer-Gasse
-60209;Kapfenberg;Am Höllhammer
-60209;Kapfenberg;Am Pichl
-60209;Kapfenberg;Am Sagacker
-60209;Kapfenberg;Amselweg
-60209;Kapfenberg;Anton-Afritsch-Weg
-60209;Kapfenberg;Anton-Bruckner-Straße
-60209;Kapfenberg;Anton-Buchalka-Straße
-60209;Kapfenberg;Anton-Mühlbacher-Straße
-60209;Kapfenberg;Anton-Paar-Siedlung
-60209;Kapfenberg;Arndorf
-60209;Kapfenberg;Arndorfer Leiten
-60209;Kapfenberg;Arndorfer Weg
-60209;Kapfenberg;Auer-von-Welsbach-Weg
-60209;Kapfenberg;Auweg
-60209;Kapfenberg;Bachgasse
-60209;Kapfenberg;Bahnstraße
-60209;Kapfenberg;Beethovenstraße
-60209;Kapfenberg;Berggasse
-60209;Kapfenberg;Birkensiedlung
-60209;Kapfenberg;Böhlerdurplatz
-60209;Kapfenberg;Böhler-Welding-Straße
-60209;Kapfenberg;Brahmsgasse
-60209;Kapfenberg;Bräuerleiten
-60209;Kapfenberg;Brauhausgasse
-60209;Kapfenberg;Breitnergasse
-60209;Kapfenberg;Brückengasse
-60209;Kapfenberg;Brunnengasse
-60209;Kapfenberg;Buchmoarweg
-60209;Kapfenberg;Burgstallweg
-60209;Kapfenberg;Carl-Morre-Straße
-60209;Kapfenberg;Dammweg
-60209;Kapfenberg;DDr.-Alfred-Schachner-Hof
-60209;Kapfenberg;Deuchendorf
-60209;Kapfenberg;DI.-Karl-Waldbrunner-Hof
-60209;Kapfenberg;Diemlacher Weg
-60209;Kapfenberg;Dohlengasse
-60209;Kapfenberg;Dr.-Alfons-Gorbach-Hof
-60209;Kapfenberg;Dr.-h.c.-Reinhard-Machold-Hof
-60209;Kapfenberg;Dr.-Josef-Sperl-Straße
-60209;Kapfenberg;Dr.-Kloepfer-Weg
-60209;Kapfenberg;Drosselgasse
-60209;Kapfenberg;Eichensiedlung
-60209;Kapfenberg;Emberg bei Kapfenberg
-60209;Kapfenberg;Emberg-Nord
-60209;Kapfenberg;Embergsiedlung
-60209;Kapfenberg;Emberg-Süd
-60209;Kapfenberg;Enge Gasse
-60209;Kapfenberg;Falkengasse
-60209;Kapfenberg;Fehrenbergweg
-60209;Kapfenberg;Feldgasse
-60209;Kapfenberg;Ferdinand-Hanusch-Gasse
-60209;Kapfenberg;Finkenweg
-60209;Kapfenberg;Floning
-60209;Kapfenberg;Flurgasse
-60209;Kapfenberg;Franz-Domes-Gasse
-60209;Kapfenberg;Franz-Eibel-Straße
-60209;Kapfenberg;Franz-Liszt-Straße
-60209;Kapfenberg;Franz-Nabl-Weg
-60209;Kapfenberg;Frauenriegelgasse
-60209;Kapfenberg;Frauenwiese
-60209;Kapfenberg;Friedhofweg
-60209;Kapfenberg;Friedlwiese
-60209;Kapfenberg;Friedrich-Böhler-Straße
-60209;Kapfenberg;Gartengasse
-60209;Kapfenberg;Gärtnergasse
-60209;Kapfenberg;Gewerbestraße
-60209;Kapfenberg;Geyereckgasse
-60209;Kapfenberg;Goethegasse
-60209;Kapfenberg;Grabengasse
-60209;Kapfenberg;Graschnitzweg
-60209;Kapfenberg;Grazer Straße
-60209;Kapfenberg;Grillparzerstraße
-60209;Kapfenberg;Gugga
-60209;Kapfenberg;Guggasiedlung
-60209;Kapfenberg;Gustav-Kramer-Straße
-60209;Kapfenberg;Gustav-Mahler-Weg
-60209;Kapfenberg;Hafendorf
-60209;Kapfenberg;Hainweg
-60209;Kapfenberg;Hans-Resel-Gasse
-60209;Kapfenberg;Hans-Roch-Weg
-60209;Kapfenberg;Haydngasse
-60209;Kapfenberg;Heimgasse
-60209;Kapfenberg;Heimsiedlung
-60209;Kapfenberg;Heimsiedlungsgasse
-60209;Kapfenberg;Heinrich-Scheibengraf-Straße
-60209;Kapfenberg;Hermann-Löns-Straße
-60209;Kapfenberg;Hugo-v.-Hofmannsthal-Weg
-60209;Kapfenberg;Hugo-Wolf-Straße
-60209;Kapfenberg;Ignaz-Semmelweis-Weg
-60209;Kapfenberg;Igo-Etrich-Straße
-60209;Kapfenberg;Industriepark
-60209;Kapfenberg;Industriestraße Ost
-60209;Kapfenberg;Industriestraße West
-60209;Kapfenberg;Johann-Böhm-Straße
-60209;Kapfenberg;Johann-Brandl-Gasse
-60209;Kapfenberg;Johannes-Kepler-Weg
-60209;Kapfenberg;Johann-Josef-Fux-Straße
-60209;Kapfenberg;Johann-Nestroy-Straße
-60209;Kapfenberg;Johann-Strauß-Gasse
-60209;Kapfenberg;Josefine-Kettler-Gasse
-60209;Kapfenberg;Josef-Madersperger-Weg
-60209;Kapfenberg;Josef-Scheu-Straße
-60209;Kapfenberg;Josef-Stanek-Gasse
-60209;Kapfenberg;Karl-Heinrich-Waggerl-Weg
-60209;Kapfenberg;Karl-Maisel-Hof
-60209;Kapfenberg;Karl-Schöberl-Hof
-60209;Kapfenberg;Karl-Seitz-Gasse
-60209;Kapfenberg;Kehr
-60209;Kapfenberg;Kendlbachstraße
-60209;Kapfenberg;Kernstockgasse
-60209;Kapfenberg;Koloman-Wallisch-Gasse
-60209;Kapfenberg;Koloman-Wallisch-Platz
-60209;Kapfenberg;Konrad-Kainz-Straße
-60209;Kapfenberg;Kronawettersiedlung
-60209;Kapfenberg;Krottendorf
-60209;Kapfenberg;Krottendorfer Straße
-60209;Kapfenberg;Lagergasse
-60209;Kapfenberg;Lamingbachweg
+60211;Oberaich;Landskronstraße
+60217;Sankt Marein im Mürztal;Landstraße
 60209;Kapfenberg;Lannergasse
+60203;Breitenau am Hochlantsch;Lantsch
 60209;Kapfenberg;Lanzgraben
+60213;Pernegg an der Mur;Lärchenweg
+60207;Gußwerk;Lärchkogelstraße
+60204;Bruck an der Mur;Lastenstraße
 60209;Kapfenberg;Lastenstraße
+60204;Bruck an der Mur;Laubengasse
 60209;Kapfenberg;Laubengasse
 60209;Kapfenberg;Laubtalweg
+60204;Bruck an der Mur;Leharstraße
 60209;Kapfenberg;Leharweg
+60204;Bruck an der Mur;Lehmgasse
 60209;Kapfenberg;Leingraben
 60209;Kapfenberg;Leingrabenweg
 60209;Kapfenberg;Leitenweg
+60213;Pernegg an der Mur;Leitnergasse
+60207;Gußwerk;Leitnerweg
 60209;Kapfenberg;Lenaugasse
+60207;Gußwerk;Lendstraße
+60218;Sankt Sebastian;Lenzbauerweg
+60204;Bruck an der Mur;Leobner Straße
+60212;Parschlug;Leopold von Leonstein Siedlung
 60209;Kapfenberg;Lerchengasse
+60204;Bruck an der Mur;Lerchenweg
+60216;Sankt Lorenzen im Mürztal;Lesing
+60216;Sankt Lorenzen im Mürztal;Lesingerweg
+60204;Bruck an der Mur;Lessingstraße
 60209;Kapfenberg;Lessingstraße
+60204;Bruck an der Mur;Lichtensteinstraße
+60216;Sankt Lorenzen im Mürztal;Lichtenweg
+60207;Gußwerk;Lieglergraben
+60213;Pernegg an der Mur;Liliengasse
+60217;Sankt Marein im Mürztal;Lindengasse
 60209;Kapfenberg;Lindenplatz
+60213;Pernegg an der Mur;Lindenplatz
+60211;Oberaich;Lindenweg
+60213;Pernegg an der Mur;Lindenweg
 60209;Kapfenberg;Linke Mürzzeile
+60205;Etmißl;Lonschitz
 60209;Kapfenberg;Lorenziweg
 60209;Kapfenberg;Ludwig-Anzengruber-Weg
 60209;Kapfenberg;Ludwig-Boltzmann-Weg
 60209;Kapfenberg;Ludwig-Brandner-Gasse
 60209;Kapfenberg;Ludwig-Tuller-Gasse
+60218;Sankt Sebastian;Lurg
 60209;Kapfenberg;M.v.-Ebner-Eschenbach-Siedlung
+60204;Bruck an der Mur;Madereckweg
+60203;Breitenau am Hochlantsch;Magnesitstraße
+60210;Mariazell;Mahrfeldweg
 60209;Kapfenberg;Maigasse
+60204;Bruck an der Mur;Marburger Straße
+60210;Mariazell;Maria Theresien-Gasse
 60209;Kapfenberg;Mariazeller Straße
 60209;Kapfenberg;Marie-Jahoda-Gasse
+60211;Oberaich;Marienweg
+60217;Sankt Marein im Mürztal;Marienweg
+60211;Oberaich;Maringhof
+60210;Mariazell;Markgraf Heinrich-Gasse
 60209;Kapfenberg;Martin-Luther-Platz
+60204;Bruck an der Mur;Martin-Luther-Straße
+60217;Sankt Marein im Mürztal;Mattnerstraße
+60211;Oberaich;Matzlstraße
+60204;Bruck an der Mur;Maurergasse
+60213;Pernegg an der Mur;Mautstatt
+60213;Pernegg an der Mur;Max Mell-Weg
+60204;Bruck an der Mur;Max-Mell-Straße
 60209;Kapfenberg;Max-Mell-Weg
+60217;Sankt Marein im Mürztal;Max-Mell-Weg
 60209;Kapfenberg;Meierhofleiten
 60209;Kapfenberg;Meierhofstraße
-60209;Kapfenberg;Mozartgasse
-60209;Kapfenberg;Mühlwiesenweg
-60209;Kapfenberg;Mürzbogen
-60209;Kapfenberg;Mürzgasse
-60209;Kapfenberg;Nelkengasse
-60209;Kapfenberg;Nierhammerweg
-60209;Kapfenberg;Otto-Hauberger-Straße
-60209;Kapfenberg;Parschluger Straße
-60209;Kapfenberg;Paula Wallisch-Platz
-60209;Kapfenberg;Pestalozzistraße
-60209;Kapfenberg;Peter-Tunner-Gasse
-60209;Kapfenberg;Pogierweg
-60209;Kapfenberg;Pötschachgasse
-60209;Kapfenberg;Pötschen
-60209;Kapfenberg;Pötschenweg
-60209;Kapfenberg;Quellengasse
-60209;Kapfenberg;Quergasse
-60209;Kapfenberg;Raiffeisenweg
-60209;Kapfenberg;Raimundgasse
-60209;Kapfenberg;Rainer-Maria-Rilke-Weg
-60209;Kapfenberg;Rainweg-Süd
-60209;Kapfenberg;Rathausgasse
-60209;Kapfenberg;Rechte Mürzzeile
-60209;Kapfenberg;Redfeldgasse
-60209;Kapfenberg;Reinholzgasse
-60209;Kapfenberg;Reiserstraße
-60209;Kapfenberg;Reitergasse
-60209;Kapfenberg;Rettengraben
-60209;Kapfenberg;Richard-Wagner-Gasse
-60209;Kapfenberg;Robert-Hamerling-Gasse
-60209;Kapfenberg;Robert-Musil-Straße
-60209;Kapfenberg;Robert-Schumann-Straße
-60209;Kapfenberg;Roseggergasse
-60209;Kapfenberg;Rosengasse
-60209;Kapfenberg;Sackgasse
-60209;Kapfenberg;Schillerstraße
-60209;Kapfenberg;Schimpelhofgasse
-60209;Kapfenberg;Schinitzgasse
-60209;Kapfenberg;Schinitzhof
-60209;Kapfenberg;Schirmitzbühelstraße
-60209;Kapfenberg;Schloßberg
-60209;Kapfenberg;Schloßbergweg
-60209;Kapfenberg;Schmiedgasse
-60209;Kapfenberg;Schörgendorf
-60209;Kapfenberg;Schubertgasse
-60209;Kapfenberg;Schulgasse
-60209;Kapfenberg;Schwalbengasse
-60209;Kapfenberg;Schweighardtweg
-60209;Kapfenberg;Seilbahngasse
-60209;Kapfenberg;Siebenbrünn-Gasse
-60209;Kapfenberg;Siedlerweg
-60209;Kapfenberg;Siegfried-Marcus-Straße
-60209;Kapfenberg;Sonnenhangsiedlung
-60209;Kapfenberg;St.-Martin-Weg
-60209;Kapfenberg;Stadtwerkestraße
-60209;Kapfenberg;Stefan-Jäger-Straße
-60209;Kapfenberg;Stegg
-60209;Kapfenberg;Steinerhofallee
-60209;Kapfenberg;Stubenberggasse
-60209;Kapfenberg;Teichgasse
-60209;Kapfenberg;Thomas-Wölbitsch-Gasse
-60209;Kapfenberg;Töllergraben
-60209;Kapfenberg;Töllermayrgasse
-60209;Kapfenberg;Tragösser Straße
-60209;Kapfenberg;Uhlandgasse
-60209;Kapfenberg;Untere Neusiedlung
-60209;Kapfenberg;Viktor-Adler-Straße
-60209;Kapfenberg;Viktor-Kaplan-Straße
-60209;Kapfenberg;Waldemargasse
-60209;Kapfenberg;Waldgasse
-60209;Kapfenberg;Walfersamgasse
-60209;Kapfenberg;Walther-v.-d.-Vogelweide-Straße
-60209;Kapfenberg;Werk Deuchendorf
-60209;Kapfenberg;Werk-VI-Straße
-60209;Kapfenberg;Wiener Straße
-60209;Kapfenberg;Wiesenweg
-60209;Kapfenberg;Winkler Siedlung
-60209;Kapfenberg;Winkler Straße
-60209;Kapfenberg;Winkler Weg
-60209;Kapfenberg;Zapfstraße
-60209;Kapfenberg;Zöllgrabenweg
-60210;Mariazell;Abt Otker-Gasse
-60210;Mariazell;Abt Severin-Gasse
-60210;Mariazell;Am Kreuzberg
-60210;Mariazell;Annaburg
-60210;Mariazell;Anton Bruckner-Gasse
-60210;Mariazell;Arthur Krupp-Platz
-60210;Mariazell;Bibergasse
-60210;Mariazell;Bilgeriweg
-60210;Mariazell;Brünnerweg
-60210;Mariazell;Bürgeralpe
-60210;Mariazell;Deutschmeisterweg
-60210;Mariazell;Dr. Karl Lueger-Gasse
-60210;Mariazell;Dr. Ludwig Leber-Straße
-60210;Mariazell;Dr. Rudolf Griß Weg
-60210;Mariazell;E. Rohrbacher-Gasse
-60210;Mariazell;Erzherzog Johann-Weg
-60210;Mariazell;Feichteggerwiese
-60210;Mariazell;Fischer von Erlach-Weg
-60210;Mariazell;Franz Schubert-Gasse
-60210;Mariazell;Friedhofgasse
-60210;Mariazell;Grazer Straße
-60210;Mariazell;Hans Laufenstein-Weg
-60210;Mariazell;Hans Wertanek-Promenade
-60210;Mariazell;Hauptplatz
-60210;Mariazell;Hauptplatz-Laden
-60210;Mariazell;Heiligen Brunn-Gasse
-60210;Mariazell;Heiligenbrunngasse-Laden
-60210;Mariazell;Helleportweg
-60210;Mariazell;Joseph Haydn-Gasse
-60210;Mariazell;K.E.Tisserant-Platz
-60210;Mariazell;Kalvarienberg
-60210;Mariazell;Karl Heinschild-Weg
-60210;Mariazell;Karmelweg
-60210;Mariazell;König Ludwig-Gasse
-60210;Mariazell;Mahrfeldweg
-60210;Mariazell;Maria Theresien-Gasse
-60210;Mariazell;Markgraf Heinrich-Gasse
-60210;Mariazell;Morzingasse
-60210;Mariazell;Neukoglerweg
-60210;Mariazell;Ottokar Kernstock-Gasse
-60210;Mariazell;Pater Heinrich Abel-Platz
-60210;Mariazell;Pater Hermann Geist-Platz
-60210;Mariazell;Pater Othmar Wonisch-Weg
-60210;Mariazell;Peter Rosegger-Gasse
-60210;Mariazell;Radkersburgerplatz
-60210;Mariazell;Rasing
-60210;Mariazell;Riedheimerweg
-60210;Mariazell;Sandbühel
-60210;Mariazell;Schießstattgasse
-60210;Mariazell;Sonnenwiese
-60210;Mariazell;Steinbruchweg
-60210;Mariazell;Ungarnstraße
-60210;Mariazell;Viktor Lang-Gasse
-60210;Mariazell;Wertheimweg
-60210;Mariazell;Widerhoferweg
-60210;Mariazell;Wiener Neustädter Straße
-60210;Mariazell;Wiener Straße
-60211;Oberaich;Aichberghöhe
-60211;Oberaich;Aichbergstraße
-60211;Oberaich;Alt-Mitteraich
-60211;Oberaich;Am Aichberg
-60211;Oberaich;Am Bach
-60211;Oberaich;Amselweg
-60211;Oberaich;Antonistraße
-60211;Oberaich;Blütenweg
-60211;Oberaich;Bodenwiese
-60211;Oberaich;Brucker Straße
-60211;Oberaich;Dorfweg
-60211;Oberaich;Fichtenweg
-60211;Oberaich;Florianiweg
-60211;Oberaich;Föhrenweg
-60211;Oberaich;Forstwald
-60211;Oberaich;Forstwaldstraße
-60211;Oberaich;Forstweg
-60211;Oberaich;Gröbl-Platz
-60211;Oberaich;Hangweg
-60211;Oberaich;Heuberg
-60211;Oberaich;Kotzgraben
-60211;Oberaich;Kreuzweg
-60211;Oberaich;Landskronstraße
-60211;Oberaich;Lindenweg
-60211;Oberaich;Marienweg
-60211;Oberaich;Maringhof
-60211;Oberaich;Matzlstraße
+60213;Pernegg an der Mur;Mendelgasse
+60204;Bruck an der Mur;Minoritenplatz
+60213;Pernegg an der Mur;Mittelweg
 60211;Oberaich;Mitteraich
 60211;Oberaich;Mitteraichstraße
+60204;Bruck an der Mur;Mittergasse
 60211;Oberaich;Mittlerer Pichelweg
+60216;Sankt Lorenzen im Mürztal;Mittlerer Siedlungsweg
+60213;Pernegg an der Mur;Mixnitz
+60216;Sankt Lorenzen im Mürztal;Mödersdorf
+60207;Gußwerk;Moosbach
+60208;Halltal;Mooshuben
+60204;Bruck an der Mur;Moosweg
+60216;Sankt Lorenzen im Mürztal;Moosweg
+60210;Mariazell;Morzingasse
+60213;Pernegg an der Mur;Moscherweg
 60211;Oberaich;Mötschlach
 60211;Oberaich;Mötschlachstraße
+60204;Bruck an der Mur;Mozartgasse
+60209;Kapfenberg;Mozartgasse
+60213;Pernegg an der Mur;Mozartgasse
+60217;Sankt Marein im Mürztal;Mozartstraße
+60216;Sankt Lorenzen im Mürztal;Mühlweg
+60218;Sankt Sebastian;Mühlweg
+60209;Kapfenberg;Mühlwiesenweg
+60204;Bruck an der Mur;Murinsel
 60211;Oberaich;Murinsel
+60204;Bruck an der Mur;Murinselallee
+60204;Bruck an der Mur;Murpark
+60204;Bruck an der Mur;Murstraße
 60211;Oberaich;Murweg
+60213;Pernegg an der Mur;Murweg
+60209;Kapfenberg;Mürzbogen
+60204;Bruck an der Mur;Mürzgasse
+60209;Kapfenberg;Mürzgasse
+60216;Sankt Lorenzen im Mürztal;Mürzgraben
+60216;Sankt Lorenzen im Mürztal;Mürzgrabenstraße
+60217;Sankt Marein im Mürztal;Mürzstraße
+60217;Sankt Marein im Mürztal;Mürzzeile
+60204;Bruck an der Mur;Nagelschmiedgasse
 60211;Oberaich;Narzissenweg
+60218;Sankt Sebastian;Nazbauerweg
+60216;Sankt Lorenzen im Mürztal;Nechelheim
+60204;Bruck an der Mur;Nelkengasse
+60209;Kapfenberg;Nelkengasse
+60213;Pernegg an der Mur;Nelkengasse
+60216;Sankt Lorenzen im Mürztal;Nestroyweg
+60204;Bruck an der Mur;Neubaugasse
+60213;Pernegg an der Mur;Neubaugasse
+60217;Sankt Marein im Mürztal;Neubaugasse
+60204;Bruck an der Mur;Neue Gasse
+60213;Pernegg an der Mur;Neue Welt
+60204;Bruck an der Mur;Neue-Welt-Gasse
+60210;Mariazell;Neukoglerweg
+60218;Sankt Sebastian;Neukoglerweg
+60207;Gußwerk;Niederalpl
+60215;Sankt Katharein an der Laming;Niederdorf
+60209;Kapfenberg;Nierhammerweg
+60204;Bruck an der Mur;Nikolausweg
 60211;Oberaich;Oberaich
 60211;Oberaich;Oberaichstraße
 60211;Oberaich;Oberdorf
+60215;Sankt Katharein an der Laming;Oberdorf
+60204;Bruck an der Mur;Oberdorfer Straße
+60204;Bruck an der Mur;Oberdorfer Straße-Feltensiedlung
+60204;Bruck an der Mur;Obere Siedlungsgasse
+60204;Bruck an der Mur;Oberer Höhenweg
 60211;Oberaich;Oberer Panoramaweg
 60211;Oberaich;Oberer Pichelweg
+60216;Sankt Lorenzen im Mürztal;Oberer Siedlungsweg
 60211;Oberaich;Oberes Kirchenviertel
+60207;Gußwerk;Oberkogelbauerweg
+60220;Tragöß;Oberort
+60215;Sankt Katharein an der Laming;Obertal
+60207;Gußwerk;Oberwegscheid
+60205;Etmißl;Oisching
+60207;Gußwerk;Oisching
+60202;Aflenz Land;Oischingalm
+60204;Bruck an der Mur;Ostring
+60209;Kapfenberg;Otto-Hauberger-Straße
+60210;Mariazell;Ottokar Kernstock-Gasse
+60216;Sankt Lorenzen im Mürztal;Ottokar Kernstock-Straße
+60204;Bruck an der Mur;Ottokar-Kernstock-Straße
+60219;Thörl;Palbersdorf
 60211;Oberaich;Panoramaweg
+60204;Bruck an der Mur;Parkgasse
+60217;Sankt Marein im Mürztal;Parkstraße
+60212;Parschlug;Parschlug Hauptstraße
+60209;Kapfenberg;Parschluger Straße
+60210;Mariazell;Pater Heinrich Abel-Platz
+60210;Mariazell;Pater Hermann Geist-Platz
+60210;Mariazell;Pater Othmar Wonisch-Weg
+60209;Kapfenberg;Paula Wallisch-Platz
+60217;Sankt Marein im Mürztal;Paula-Grogger-Straße
+60204;Bruck an der Mur;Paulahofer Siedlungsstraße
 60211;Oberaich;Paulahofsiedlung
 60211;Oberaich;Paulahofsiedlungsstraße
 60211;Oberaich;Paulahofsiedlungsstraße A
@@ -644,379 +701,322 @@ GKZ;Gemeindename;BEZEICHNUNG
 60211;Oberaich;Paulahofsiedlungsstraße F
 60211;Oberaich;Paulahofsiedlungsstraße G
 60211;Oberaich;Paulahofsiedlungsstraße H
+60213;Pernegg an der Mur;Pernegg
+60209;Kapfenberg;Pestalozzistraße
+60210;Mariazell;Peter Rosegger-Gasse
+60212;Parschlug;Peter-Rosegger-Siedlung
+60213;Pernegg an der Mur;Petersweg
+60209;Kapfenberg;Peter-Tunner-Gasse
+60204;Bruck an der Mur;Petzoldgasse
+60216;Sankt Lorenzen im Mürztal;Petzoldstraße
+60217;Sankt Marein im Mürztal;Petzoldstraße
+60217;Sankt Marein im Mürztal;Pfaffendorfer Weg
+60207;Gußwerk;Pfannhammer
+60213;Pernegg an der Mur;Pfarrweg
 60211;Oberaich;Picheldorf
+60220;Tragöß;Pichl-Großdorf
+60204;Bruck an der Mur;Pischkalm
+60204;Bruck an der Mur;Pischkberg
+60204;Bruck an der Mur;Pischker Straße
+60204;Bruck an der Mur;Piusallee
+60204;Bruck an der Mur;Platz der Menschenrechte
+60212;Parschlug;Pogier Hauptstraße
+60216;Sankt Lorenzen im Mürztal;Pogierstraße
+60209;Kapfenberg;Pogierweg
+60204;Bruck an der Mur;Pögl-Hof
+60216;Sankt Lorenzen im Mürztal;Pogusch
+60216;Sankt Lorenzen im Mürztal;Poguschstraße
+60218;Sankt Sebastian;Poldlbauerweg
 60211;Oberaich;Pöllweg
+60212;Parschlug;Pönegg
+60217;Sankt Marein im Mürztal;Poschweg
+60216;Sankt Lorenzen im Mürztal;Poststraße
+60209;Kapfenberg;Pötschachgasse
+60209;Kapfenberg;Pötschen
+60209;Kapfenberg;Pötschenweg
+60207;Gußwerk;Prescenyklause
+60213;Pernegg an der Mur;Pretschgraben
+60204;Bruck an der Mur;Primbschweg
 60211;Oberaich;Primelweg
+60204;Bruck an der Mur;Propsteigasse
+60204;Bruck an der Mur;Propst-Weinberger-Straße
+60209;Kapfenberg;Quellengasse
 60211;Oberaich;Quellenweg
+60213;Pernegg an der Mur;Quellenweg
+60218;Sankt Sebastian;Quellenweg
+60209;Kapfenberg;Quergasse
+60216;Sankt Lorenzen im Mürztal;Quergasse
+60210;Mariazell;Radkersburgerplatz
+60204;Bruck an der Mur;Raiffeisenstraße
+60209;Kapfenberg;Raiffeisenweg
+60209;Kapfenberg;Raimundgasse
+60212;Parschlug;Rainäckerweg
+60209;Kapfenberg;Rainer-Maria-Rilke-Weg
+60216;Sankt Lorenzen im Mürztal;Rainweg
+60209;Kapfenberg;Rainweg-Süd
+60216;Sankt Lorenzen im Mürztal;Rammersdorferstraße
+60207;Gußwerk;Ramsau
 60211;Oberaich;Ranchweg
+60212;Parschlug;Randweg
+60213;Pernegg an der Mur;Rannerweg
 60211;Oberaich;Raschbach
 60211;Oberaich;Raschbachstraße
+60210;Mariazell;Rasing
+60203;Breitenau am Hochlantsch;Rassgraben
+60215;Sankt Katharein an der Laming;Rastal
+60209;Kapfenberg;Rathausgasse
 60211;Oberaich;Rebenweg
+60208;Halltal;Rechengraben
+60209;Kapfenberg;Rechte Mürzzeile
+60209;Kapfenberg;Redfeldgasse
+60209;Kapfenberg;Reinholzgasse
+60209;Kapfenberg;Reiserstraße
+60209;Kapfenberg;Reitergasse
+60204;Bruck an der Mur;Rennfeld
+60204;Bruck an der Mur;Rennfeldweg
+60209;Kapfenberg;Rettengraben
 60211;Oberaich;Retzweg
+60209;Kapfenberg;Richard-Wagner-Gasse
+60204;Bruck an der Mur;Richard-Wagner-Straße
+60210;Mariazell;Riedheimerweg
+60212;Parschlug;Riedmoor
+60204;Bruck an der Mur;Ringelschmiedgasse
+60216;Sankt Lorenzen im Mürztal;Ritter von Ghega-Weg
+60204;Bruck an der Mur;Ritting
+60218;Sankt Sebastian;Ritzhofstraße
+60209;Kapfenberg;Robert-Hamerling-Gasse
+60209;Kapfenberg;Robert-Musil-Straße
+60209;Kapfenberg;Robert-Schumann-Straße
+60204;Bruck an der Mur;Robert-Stolz-Weg
 60211;Oberaich;Römerweg
+60209;Kapfenberg;Roseggergasse
+60204;Bruck an der Mur;Roseggerstraße
+60213;Pernegg an der Mur;Roseggerstraße
+60216;Sankt Lorenzen im Mürztal;Roseggerstraße
+60209;Kapfenberg;Rosengasse
+60213;Pernegg an der Mur;Rosengasse
+60207;Gußwerk;Rosenhügel
 60211;Oberaich;Rosenweg
+60213;Pernegg an der Mur;Roßgraben
+60207;Gußwerk;Rotmoos
+60207;Gußwerk;Rotsohl
+60218;Sankt Sebastian;Rudolfshöhe
+60213;Pernegg an der Mur;Rudorferweg
+60204;Bruck an der Mur;Sackgasse
+60209;Kapfenberg;Sackgasse
+60216;Sankt Lorenzen im Mürztal;Sackgasse
+60207;Gußwerk;Sägestraße
+60207;Gußwerk;Salzahammer
+60207;Gußwerk;Salzaklamm
+60207;Gußwerk;Salzatal
+60210;Mariazell;Sandbühel
+60204;Bruck an der Mur;Sandstraße
 60211;Oberaich;Sankt Dionysen
 60211;Oberaich;Sankt Dionysenstraße
+60203;Breitenau am Hochlantsch;Sankt Erhard
+60203;Breitenau am Hochlantsch;Sankt Jakob
 60211;Oberaich;Sankt Ulrichstraße
+60204;Bruck an der Mur;Sankt-Ruprecht-Straße
+60207;Gußwerk;Sauwandweg
+60213;Pernegg an der Mur;Schafferwerke
+60217;Sankt Marein im Mürztal;Schaldorferstraße
+60220;Tragöß;Schattenberg
+60212;Parschlug;Schattleitenweg
+60216;Sankt Lorenzen im Mürztal;Scheuchenegg
+60207;Gußwerk;Schießgrabenweg
+60202;Aflenz Land;Schießlingalm-Boden
+60202;Aflenz Land;Schießlingalm-Riegel
+60210;Mariazell;Schießstattgasse
+60204;Bruck an der Mur;Schiffgasse
+60204;Bruck an der Mur;Schiffländ
+60204;Bruck an der Mur;Schillerstraße
+60209;Kapfenberg;Schillerstraße
+60209;Kapfenberg;Schimpelhofgasse
+60216;Sankt Lorenzen im Mürztal;Schimplhofstraße
+60209;Kapfenberg;Schinitzgasse
+60209;Kapfenberg;Schinitzhof
+60209;Kapfenberg;Schirmitzbühelstraße
+60203;Breitenau am Hochlantsch;Schlaggraben
+60204;Bruck an der Mur;Schleppbahngasse
+60209;Kapfenberg;Schloßberg
+60213;Pernegg an der Mur;Schloßberg
+60204;Bruck an der Mur;Schloßbergsteig
+60209;Kapfenberg;Schloßbergweg
+60213;Pernegg an der Mur;Schloßstraße
+60216;Sankt Lorenzen im Mürztal;Schloßweg
+60217;Sankt Marein im Mürztal;Schloßweg
+60218;Sankt Sebastian;Schmelzerweg
+60209;Kapfenberg;Schmiedgasse
+60216;Sankt Lorenzen im Mürztal;Schmiedgasse
+60216;Sankt Lorenzen im Mürztal;Schmölzergasse
+60217;Sankt Marein im Mürztal;Schmölzergasse
+60208;Halltal;Schöneben
+60209;Kapfenberg;Schörgendorf
+60218;Sankt Sebastian;Schrottenreith
+60204;Bruck an der Mur;Schubertgasse
+60209;Kapfenberg;Schubertgasse
+60213;Pernegg an der Mur;Schubertgasse
+60217;Sankt Marein im Mürztal;Schubertstraße
+60209;Kapfenberg;Schulgasse
 60211;Oberaich;Schulsiedlung
+60218;Sankt Sebastian;Schusterbauerweg
+60209;Kapfenberg;Schwalbengasse
+60209;Kapfenberg;Schweighardtweg
+60204;Bruck an der Mur;Sebald-Pögl-Weg
+60202;Aflenz Land;Seebach
+60213;Pernegg an der Mur;Seebachstraße
+60207;Gußwerk;Seebergstraße
+60221;Turnau;Seewiesen
+60218;Sankt Sebastian;Seewirtsiedlung
+60204;Bruck an der Mur;Seifensiedergasse
+60209;Kapfenberg;Seilbahngasse
+60209;Kapfenberg;Siebenbrünn-Gasse
+60209;Kapfenberg;Siedlerweg
+60204;Bruck an der Mur;Siedlung Westend
+60209;Kapfenberg;Siegfried-Marcus-Straße
+60218;Sankt Sebastian;Sigmundsberg
+60217;Sankt Marein im Mürztal;Sölsnitzstraße
+60218;Sankt Sebastian;Sommerau
+60220;Tragöß;Sonnberg
+60212;Parschlug;Sonnbergweg
 60211;Oberaich;Sonneck
+60204;Bruck an der Mur;Sonnengasse
+60209;Kapfenberg;Sonnenhangsiedlung
+60213;Pernegg an der Mur;Sonnenweg
+60216;Sankt Lorenzen im Mürztal;Sonnenweg
+60218;Sankt Sebastian;Sonnenweg
+60210;Mariazell;Sonnenwiese
 60211;Oberaich;Sonnkogel
+60203;Breitenau am Hochlantsch;Sonnleiten
+60217;Sankt Marein im Mürztal;Sonnleiten
+60212;Parschlug;Sonnleitenstraße
+60216;Sankt Lorenzen im Mürztal;Späthöhweg
+60216;Sankt Lorenzen im Mürztal;Spiegelfeldstraße
+60218;Sankt Sebastian;Spitalgasse
+60213;Pernegg an der Mur;Sportplatzgasse
+60217;Sankt Marein im Mürztal;Sportplatzweg
+60214;Sankt Ilgen;St. Ilgen
+60215;Sankt Katharein an der Laming;St. Katharein an der Laming
+60209;Kapfenberg;St.-Martin-Weg
+60204;Bruck an der Mur;Stadionstraße
+60204;Bruck an der Mur;Stadtwaldstraße
+60204;Bruck an der Mur;Stadtwerkestraße
+60209;Kapfenberg;Stadtwerkestraße
+60209;Kapfenberg;Stefan-Jäger-Straße
+60204;Bruck an der Mur;Stegg
+60209;Kapfenberg;Stegg
+60204;Bruck an der Mur;Steinbruchweg
+60210;Mariazell;Steinbruchweg
+60203;Breitenau am Hochlantsch;Steindlweg
+60209;Kapfenberg;Steinerhofallee
+60212;Parschlug;Steinlaubweg
+60207;Gußwerk;Steinschale
+60218;Sankt Sebastian;Steirerweg
 60211;Oberaich;Sternenweg
+60203;Breitenau am Hochlantsch;Strasseggerweg
 60211;Oberaich;Streitgarn
 60211;Oberaich;Streitgarnstraße
+60209;Kapfenberg;Stubenberggasse
+60221;Turnau;Stübming
+60204;Bruck an der Mur;Südtiroler Straße
+60220;Tragöß;Tal
 60211;Oberaich;Tannenweg
+60204;Bruck an der Mur;Tanzbergweg
+60218;Sankt Sebastian;Teichbauerweg
+60209;Kapfenberg;Teichgasse
+60218;Sankt Sebastian;Teichmühle
+60217;Sankt Marein im Mürztal;Teichwaldsiedlung
 60211;Oberaich;Terrassenweg
+60221;Turnau;Thal
+60209;Kapfenberg;Thomas-Wölbitsch-Gasse
+60219;Thörl;Thörl
+60202;Aflenz Land;Thullin
+60203;Breitenau am Hochlantsch;Tiefenbachgraben
+60209;Kapfenberg;Töllergraben
+60209;Kapfenberg;Töllermayrgasse
+60213;Pernegg an der Mur;Traföß
+60204;Bruck an der Mur;Tragösser Straße
+60209;Kapfenberg;Tragösser Straße
+60207;Gußwerk;Tribeinsiedlung
+60213;Pernegg an der Mur;Tulpengasse
 60211;Oberaich;Tulpenweg
+60218;Sankt Sebastian;Türkengrabenweg
+60221;Turnau;Turnau
+60202;Aflenz Land;Tutschach
+60204;Bruck an der Mur;Übelstein
+60204;Bruck an der Mur;Übelsteiner Straße
+60209;Kapfenberg;Uhlandgasse
+60204;Bruck an der Mur;Umspannwerkgasse
+60210;Mariazell;Ungarnstraße
 60211;Oberaich;Unteraich
+60209;Kapfenberg;Untere Neusiedlung
+60204;Bruck an der Mur;Untere Siedlungsgasse
+60204;Bruck an der Mur;Unterer Höhenweg
 60211;Oberaich;Unterer Pichelweg
 60211;Oberaich;Unteres Kirchenviertel
+60220;Tragöß;Unterort
+60215;Sankt Katharein an der Laming;Untertal
 60211;Oberaich;Urgental
 60211;Oberaich;Utschgraben
 60211;Oberaich;Utschmoarweg
 60211;Oberaich;Utschtal
-60211;Oberaich;Wogamoarweg
-60211;Oberaich;Zum Madereck
-60212;Parschlug;Adamerweg
-60212;Parschlug;Alaungrubenweg
-60212;Parschlug;Alexander-Silveri-Straße
-60212;Parschlug;Am Anger
-60212;Parschlug;Am Flöz
-60212;Parschlug;Am Kreuzacker
-60212;Parschlug;Am Moos
-60212;Parschlug;Am Tauchnergrund
-60212;Parschlug;Auf der Weide
-60212;Parschlug;Barbarastraße
-60212;Parschlug;Bergsiedlung
-60212;Parschlug;Bernerweg
-60212;Parschlug;Brachäckerweg
-60212;Parschlug;Brunnerweg
-60212;Parschlug;Dr.-Franz-Unger-Siedlung
-60212;Parschlug;Edelmannweg
-60212;Parschlug;Feldweg
-60212;Parschlug;Göritz
-60212;Parschlug;Göritzer Straße
-60212;Parschlug;Gösslweg
-60212;Parschlug;Haritzmeierstraße
-60212;Parschlug;In der Grube
-60212;Parschlug;Johann Graf-Gasse
-60212;Parschlug;Käferweg
-60212;Parschlug;Kieneggerweg
-60212;Parschlug;Klaworaweg
-60212;Parschlug;Knappenweg
-60212;Parschlug;Leopold von Leonstein Siedlung
-60212;Parschlug;Parschlug Hauptstraße
-60212;Parschlug;Peter-Rosegger-Siedlung
-60212;Parschlug;Pogier Hauptstraße
-60212;Parschlug;Pönegg
-60212;Parschlug;Rainäckerweg
-60212;Parschlug;Randweg
-60212;Parschlug;Riedmoor
-60212;Parschlug;Schattleitenweg
-60212;Parschlug;Sonnbergweg
-60212;Parschlug;Sonnleitenstraße
-60212;Parschlug;Steinlaubweg
+60216;Sankt Lorenzen im Mürztal;Viktor Kaplan-Weg
+60210;Mariazell;Viktor Lang-Gasse
+60209;Kapfenberg;Viktor-Adler-Straße
+60204;Bruck an der Mur;Viktor-Kaplan-Gasse
+60209;Kapfenberg;Viktor-Kaplan-Straße
 60212;Parschlug;Viktringer Gassl
+60217;Sankt Marein im Mürztal;Villenweg
+60204;Bruck an der Mur;Vinzenz-Till-Gasse
+60207;Gußwerk;Waldau
+60209;Kapfenberg;Waldemargasse
+60209;Kapfenberg;Waldgasse
+60218;Sankt Sebastian;Waldpromenade
+60204;Bruck an der Mur;Waldrandsiedlung
+60218;Sankt Sebastian;Waldrandsiedlung
+60207;Gußwerk;Waldsiedel
+60204;Bruck an der Mur;Waldweg
 60212;Parschlug;Waldweg
+60213;Pernegg an der Mur;Waldweg
+60216;Sankt Lorenzen im Mürztal;Waldweg
+60217;Sankt Marein im Mürztal;Waldweg
+60209;Kapfenberg;Walfersamgasse
+60208;Halltal;Walstern
+60209;Kapfenberg;Walther-v.-d.-Vogelweide-Straße
+60207;Gußwerk;Wegscheid
+60207;Gußwerk;Weichselboden
+60213;Pernegg an der Mur;Weidenweg
+60216;Sankt Lorenzen im Mürztal;Weinbergsiedlung
 60212;Parschlug;Weinbergweg
 60212;Parschlug;Weinkorbweg
-60213;Pernegg an der Mur;Adam Mölck-Weg
-60213;Pernegg an der Mur;Allee
-60213;Pernegg an der Mur;Am Hang
-60213;Pernegg an der Mur;Am Hofacker
-60213;Pernegg an der Mur;Am Kaserbach
-60213;Pernegg an der Mur;Am Kirchkogel
-60213;Pernegg an der Mur;Am Klammweg
-60213;Pernegg an der Mur;Am Murfeld
-60213;Pernegg an der Mur;Am Stausee
-60213;Pernegg an der Mur;Am Teichbach
-60213;Pernegg an der Mur;Am Wiesengrund
-60213;Pernegg an der Mur;Antoniaweg
-60213;Pernegg an der Mur;Auweg
-60213;Pernegg an der Mur;Bachweg
-60213;Pernegg an der Mur;Badgasse
-60213;Pernegg an der Mur;Bahnstraße
-60213;Pernegg an der Mur;Bärenschütz
-60213;Pernegg an der Mur;Biogasse
-60213;Pernegg an der Mur;Birkenweg
-60213;Pernegg an der Mur;Blumengasse
-60213;Pernegg an der Mur;Breitlerweg
-60213;Pernegg an der Mur;Brückenweg
-60213;Pernegg an der Mur;Brucker Straße
-60213;Pernegg an der Mur;Brunnengasse
-60213;Pernegg an der Mur;Buchenweg
-60213;Pernegg an der Mur;Bundesstraße
-60213;Pernegg an der Mur;Burgstall
-60213;Pernegg an der Mur;Dörfl
-60213;Pernegg an der Mur;Eichenweg
-60213;Pernegg an der Mur;Eisenpaßstraße
-60213;Pernegg an der Mur;E-Werkstraße
-60213;Pernegg an der Mur;Feisterergraben
-60213;Pernegg an der Mur;Feldweg
-60213;Pernegg an der Mur;Fichtengasse
-60213;Pernegg an der Mur;Fliedergasse
-60213;Pernegg an der Mur;Flurweg
-60213;Pernegg an der Mur;Franzensweg
-60213;Pernegg an der Mur;Gabraun
-60213;Pernegg an der Mur;Gartenweg
-60213;Pernegg an der Mur;Gewerbestraße
-60213;Pernegg an der Mur;Göberlmoar
-60213;Pernegg an der Mur;Grazer Straße
-60213;Pernegg an der Mur;Gscheidbacherweg
-60213;Pernegg an der Mur;Haydngasse
-60213;Pernegg an der Mur;Heitzerweg
-60213;Pernegg an der Mur;Heubergstraße
-60213;Pernegg an der Mur;Hofackerstraße
-60213;Pernegg an der Mur;Industriestraße
-60213;Pernegg an der Mur;Jobstmanngasse
-60213;Pernegg an der Mur;Karnerberg
-60213;Pernegg an der Mur;Kirchdorf
-60213;Pernegg an der Mur;Klammweg
-60213;Pernegg an der Mur;Köllersdorf
-60213;Pernegg an der Mur;Kötscherstraße
-60213;Pernegg an der Mur;Lärchenweg
-60213;Pernegg an der Mur;Leitnergasse
-60213;Pernegg an der Mur;Liliengasse
-60213;Pernegg an der Mur;Lindenplatz
-60213;Pernegg an der Mur;Lindenweg
-60213;Pernegg an der Mur;Mautstatt
-60213;Pernegg an der Mur;Max Mell-Weg
-60213;Pernegg an der Mur;Mendelgasse
-60213;Pernegg an der Mur;Mittelweg
-60213;Pernegg an der Mur;Mixnitz
-60213;Pernegg an der Mur;Moscherweg
-60213;Pernegg an der Mur;Mozartgasse
-60213;Pernegg an der Mur;Murweg
-60213;Pernegg an der Mur;Nelkengasse
-60213;Pernegg an der Mur;Neubaugasse
-60213;Pernegg an der Mur;Neue Welt
-60213;Pernegg an der Mur;Pernegg
-60213;Pernegg an der Mur;Petersweg
-60213;Pernegg an der Mur;Pfarrweg
-60213;Pernegg an der Mur;Pretschgraben
-60213;Pernegg an der Mur;Quellenweg
-60213;Pernegg an der Mur;Rannerweg
-60213;Pernegg an der Mur;Roseggerstraße
-60213;Pernegg an der Mur;Rosengasse
-60213;Pernegg an der Mur;Roßgraben
-60213;Pernegg an der Mur;Rudorferweg
-60213;Pernegg an der Mur;Schafferwerke
-60213;Pernegg an der Mur;Schloßberg
-60213;Pernegg an der Mur;Schloßstraße
-60213;Pernegg an der Mur;Schubertgasse
-60213;Pernegg an der Mur;Seebachstraße
-60213;Pernegg an der Mur;Sonnenweg
-60213;Pernegg an der Mur;Sportplatzgasse
-60213;Pernegg an der Mur;Traföß
-60213;Pernegg an der Mur;Tulpengasse
-60213;Pernegg an der Mur;Waldweg
-60213;Pernegg an der Mur;Weidenweg
-60213;Pernegg an der Mur;Wiesenweg
-60213;Pernegg an der Mur;Zatsch
-60213;Pernegg an der Mur;Zlatten
-60214;Sankt Ilgen;St. Ilgen
-60215;Sankt Katharein an der Laming;Hüttengraben
-60215;Sankt Katharein an der Laming;Niederdorf
-60215;Sankt Katharein an der Laming;Oberdorf
-60215;Sankt Katharein an der Laming;Obertal
-60215;Sankt Katharein an der Laming;Rastal
-60215;Sankt Katharein an der Laming;St. Katharein an der Laming
-60215;Sankt Katharein an der Laming;Untertal
-60216;Sankt Lorenzen im Mürztal;Alt-Hadersdorf
-60216;Sankt Lorenzen im Mürztal;Am Moos
-60216;Sankt Lorenzen im Mürztal;Am Stollingbach
-60216;Sankt Lorenzen im Mürztal;Am Straßenfeld
-60216;Sankt Lorenzen im Mürztal;Am Weinberg
-60216;Sankt Lorenzen im Mürztal;Anton Pirchegger-Weg
-60216;Sankt Lorenzen im Mürztal;August Musger-Weg
-60216;Sankt Lorenzen im Mürztal;Bachweg
-60216;Sankt Lorenzen im Mürztal;Beuttnerweg
-60216;Sankt Lorenzen im Mürztal;Bundesstraße
-60216;Sankt Lorenzen im Mürztal;Dr. Reinhard Machold-Straße
-60216;Sankt Lorenzen im Mürztal;Dunklweg
-60216;Sankt Lorenzen im Mürztal;Edelackerstraße
-60216;Sankt Lorenzen im Mürztal;Eichenweg
-60216;Sankt Lorenzen im Mürztal;Erlenweg
-60216;Sankt Lorenzen im Mürztal;Erzherzog Johann-Weg
-60216;Sankt Lorenzen im Mürztal;Festwiesenweg
-60216;Sankt Lorenzen im Mürztal;Flurgasse
-60216;Sankt Lorenzen im Mürztal;Fuscht
-60216;Sankt Lorenzen im Mürztal;Gärtnerweg
-60216;Sankt Lorenzen im Mürztal;Gassing
-60216;Sankt Lorenzen im Mürztal;Grenzstraße
-60216;Sankt Lorenzen im Mürztal;Hans Kloepfer-Gasse
-60216;Sankt Lorenzen im Mürztal;Hauptstraße
-60216;Sankt Lorenzen im Mürztal;Haydngasse
-60216;Sankt Lorenzen im Mürztal;Heimsiedlung
-60216;Sankt Lorenzen im Mürztal;Herrenbergweg
-60216;Sankt Lorenzen im Mürztal;Hofäckerweg
-60216;Sankt Lorenzen im Mürztal;Hugo Wolf-Straße
-60216;Sankt Lorenzen im Mürztal;Jaxstraße
-60216;Sankt Lorenzen im Mürztal;Johannesweg
-60216;Sankt Lorenzen im Mürztal;Joseph Ressel-Weg
-60216;Sankt Lorenzen im Mürztal;Karl Morre-Straße
-60216;Sankt Lorenzen im Mürztal;Kastenfeldweg
-60216;Sankt Lorenzen im Mürztal;Klosterweg
-60216;Sankt Lorenzen im Mürztal;Kreuzstraße
-60216;Sankt Lorenzen im Mürztal;Lesing
-60216;Sankt Lorenzen im Mürztal;Lesingerweg
-60216;Sankt Lorenzen im Mürztal;Lichtenweg
-60216;Sankt Lorenzen im Mürztal;Mittlerer Siedlungsweg
-60216;Sankt Lorenzen im Mürztal;Mödersdorf
-60216;Sankt Lorenzen im Mürztal;Moosweg
-60216;Sankt Lorenzen im Mürztal;Mühlweg
-60216;Sankt Lorenzen im Mürztal;Mürzgraben
-60216;Sankt Lorenzen im Mürztal;Mürzgrabenstraße
-60216;Sankt Lorenzen im Mürztal;Nechelheim
-60216;Sankt Lorenzen im Mürztal;Nestroyweg
-60216;Sankt Lorenzen im Mürztal;Oberer Siedlungsweg
-60216;Sankt Lorenzen im Mürztal;Ottokar Kernstock-Straße
-60216;Sankt Lorenzen im Mürztal;Petzoldstraße
-60216;Sankt Lorenzen im Mürztal;Pogierstraße
-60216;Sankt Lorenzen im Mürztal;Pogusch
-60216;Sankt Lorenzen im Mürztal;Poguschstraße
-60216;Sankt Lorenzen im Mürztal;Poststraße
-60216;Sankt Lorenzen im Mürztal;Quergasse
-60216;Sankt Lorenzen im Mürztal;Rainweg
-60216;Sankt Lorenzen im Mürztal;Rammersdorferstraße
-60216;Sankt Lorenzen im Mürztal;Ritter von Ghega-Weg
-60216;Sankt Lorenzen im Mürztal;Roseggerstraße
-60216;Sankt Lorenzen im Mürztal;Sackgasse
-60216;Sankt Lorenzen im Mürztal;Scheuchenegg
-60216;Sankt Lorenzen im Mürztal;Schimplhofstraße
-60216;Sankt Lorenzen im Mürztal;Schloßweg
-60216;Sankt Lorenzen im Mürztal;Schmiedgasse
-60216;Sankt Lorenzen im Mürztal;Schmölzergasse
-60216;Sankt Lorenzen im Mürztal;Sonnenweg
-60216;Sankt Lorenzen im Mürztal;Späthöhweg
-60216;Sankt Lorenzen im Mürztal;Spiegelfeldstraße
-60216;Sankt Lorenzen im Mürztal;Viktor Kaplan-Weg
-60216;Sankt Lorenzen im Mürztal;Waldweg
-60216;Sankt Lorenzen im Mürztal;Weinbergsiedlung
-60216;Sankt Lorenzen im Mürztal;Wiedenbergweg
-60216;Sankt Lorenzen im Mürztal;Winkelweg
-60217;Sankt Marein im Mürztal;Am Mühlberg
-60217;Sankt Marein im Mürztal;Am Ried
-60217;Sankt Marein im Mürztal;Am Stollingbach
-60217;Sankt Marein im Mürztal;Andreas-Hofer-Straße
-60217;Sankt Marein im Mürztal;Anzengrubergasse
-60217;Sankt Marein im Mürztal;Auweg
-60217;Sankt Marein im Mürztal;Bäckergasse
-60217;Sankt Marein im Mürztal;Bahnhofstraße
-60217;Sankt Marein im Mürztal;Bergweg
-60217;Sankt Marein im Mürztal;Bindergasse
-60217;Sankt Marein im Mürztal;Böhlerstraße
-60217;Sankt Marein im Mürztal;Brahmsgasse
-60217;Sankt Marein im Mürztal;Brückengasse
-60217;Sankt Marein im Mürztal;Brunnenweg
-60217;Sankt Marein im Mürztal;Dr.-Karl-Renner-Straße
-60217;Sankt Marein im Mürztal;Eppensteinerweg
-60217;Sankt Marein im Mürztal;Erzherzog-Johann-Straße
-60217;Sankt Marein im Mürztal;Ferdinand-Raimund-Weg
-60217;Sankt Marein im Mürztal;Gärtnerweg
-60217;Sankt Marein im Mürztal;Gewerbestraße
-60217;Sankt Marein im Mürztal;Graschnitzstraße
-60217;Sankt Marein im Mürztal;Grenzstraße
-60217;Sankt Marein im Mürztal;Grimmstraße
-60217;Sankt Marein im Mürztal;Hauptplatz
-60217;Sankt Marein im Mürztal;Hauptstraße
-60217;Sankt Marein im Mürztal;Hofweg
-60217;Sankt Marein im Mürztal;Industriestraße
-60217;Sankt Marein im Mürztal;Jägergasse
-60217;Sankt Marein im Mürztal;Johann-Strauß-Weg
-60217;Sankt Marein im Mürztal;Kirchweg
-60217;Sankt Marein im Mürztal;Lambrechtstraße
-60217;Sankt Marein im Mürztal;Landstraße
-60217;Sankt Marein im Mürztal;Lindengasse
-60217;Sankt Marein im Mürztal;Marienweg
-60217;Sankt Marein im Mürztal;Mattnerstraße
-60217;Sankt Marein im Mürztal;Max-Mell-Weg
-60217;Sankt Marein im Mürztal;Mozartstraße
-60217;Sankt Marein im Mürztal;Mürzstraße
-60217;Sankt Marein im Mürztal;Mürzzeile
-60217;Sankt Marein im Mürztal;Neubaugasse
-60217;Sankt Marein im Mürztal;Parkstraße
-60217;Sankt Marein im Mürztal;Paula-Grogger-Straße
-60217;Sankt Marein im Mürztal;Petzoldstraße
-60217;Sankt Marein im Mürztal;Pfaffendorfer Weg
-60217;Sankt Marein im Mürztal;Poschweg
-60217;Sankt Marein im Mürztal;Schaldorferstraße
-60217;Sankt Marein im Mürztal;Schloßweg
-60217;Sankt Marein im Mürztal;Schmölzergasse
-60217;Sankt Marein im Mürztal;Schubertstraße
-60217;Sankt Marein im Mürztal;Sölsnitzstraße
-60217;Sankt Marein im Mürztal;Sonnleiten
-60217;Sankt Marein im Mürztal;Sportplatzweg
-60217;Sankt Marein im Mürztal;Teichwaldsiedlung
-60217;Sankt Marein im Mürztal;Villenweg
-60217;Sankt Marein im Mürztal;Waldweg
+60209;Kapfenberg;Werk Deuchendorf
+60209;Kapfenberg;Werk-VI-Straße
 60217;Sankt Marein im Mürztal;Werk-VI-Straße
-60217;Sankt Marein im Mürztal;Zeppelinweg
-60218;Sankt Sebastian;Am Buchenkogel
-60218;Sankt Sebastian;Am Fluder
-60218;Sankt Sebastian;Am Föhrenberg
-60218;Sankt Sebastian;Am Hechtensee
-60218;Sankt Sebastian;Am Köckensattel
-60218;Sankt Sebastian;Am Sonnenhang
-60218;Sankt Sebastian;Am Zellerrain
-60218;Sankt Sebastian;An der Forststraße
-60218;Sankt Sebastian;An der Museumsbahn
-60218;Sankt Sebastian;Arnstorfer Bühel
-60218;Sankt Sebastian;Bachweg
-60218;Sankt Sebastian;Bahnhofstraße
-60218;Sankt Sebastian;Bahnpromenade
-60218;Sankt Sebastian;Berggasse
-60218;Sankt Sebastian;Bundesstraße
-60218;Sankt Sebastian;Erlaufseestraße
-60218;Sankt Sebastian;Erlenweg
-60218;Sankt Sebastian;Feldbauerweg
-60218;Sankt Sebastian;Feldgasse
-60218;Sankt Sebastian;Fleschweg
-60218;Sankt Sebastian;Gartengasse
-60218;Sankt Sebastian;Göschlhofweg
-60218;Sankt Sebastian;Grünauer Straße
-60218;Sankt Sebastian;Habertheuerstraße
-60218;Sankt Sebastian;Hangweg
-60218;Sankt Sebastian;Heimweg
-60218;Sankt Sebastian;In der Grünau
-60218;Sankt Sebastian;Kapellerweg
-60218;Sankt Sebastian;Kirchenweg
-60218;Sankt Sebastian;Lenzbauerweg
-60218;Sankt Sebastian;Lurg
-60218;Sankt Sebastian;Mühlweg
-60218;Sankt Sebastian;Nazbauerweg
-60218;Sankt Sebastian;Neukoglerweg
-60218;Sankt Sebastian;Poldlbauerweg
-60218;Sankt Sebastian;Quellenweg
-60218;Sankt Sebastian;Ritzhofstraße
-60218;Sankt Sebastian;Rudolfshöhe
-60218;Sankt Sebastian;Schmelzerweg
-60218;Sankt Sebastian;Schrottenreith
-60218;Sankt Sebastian;Schusterbauerweg
-60218;Sankt Sebastian;Seewirtsiedlung
-60218;Sankt Sebastian;Sigmundsberg
-60218;Sankt Sebastian;Sommerau
-60218;Sankt Sebastian;Sonnenweg
-60218;Sankt Sebastian;Spitalgasse
-60218;Sankt Sebastian;Steirerweg
-60218;Sankt Sebastian;Teichbauerweg
-60218;Sankt Sebastian;Teichmühle
-60218;Sankt Sebastian;Türkengrabenweg
-60218;Sankt Sebastian;Waldpromenade
-60218;Sankt Sebastian;Waldrandsiedlung
+60210;Mariazell;Wertheimweg
+60210;Mariazell;Widerhoferweg
+60216;Sankt Lorenzen im Mürztal;Wiedenbergweg
+60210;Mariazell;Wiener Neustädter Straße
+60204;Bruck an der Mur;Wiener Straße
+60209;Kapfenberg;Wiener Straße
+60210;Mariazell;Wiener Straße
+60204;Bruck an der Mur;Wiesenweg
+60209;Kapfenberg;Wiesenweg
+60213;Pernegg an der Mur;Wiesenweg
 60218;Sankt Sebastian;Wiesenweg
-60219;Thörl;Fölz
-60219;Thörl;Hinterberg
-60219;Thörl;Palbersdorf
-60219;Thörl;Thörl
-60220;Tragöß;Oberort
-60220;Tragöß;Pichl-Großdorf
-60220;Tragöß;Schattenberg
-60220;Tragöß;Sonnberg
-60220;Tragöß;Tal
-60220;Tragöß;Unterort
-60221;Turnau;Au bei Turnau
-60221;Turnau;Göriach
-60221;Turnau;Seewiesen
-60221;Turnau;Stübming
-60221;Turnau;Thal
-60221;Turnau;Turnau
+60216;Sankt Lorenzen im Mürztal;Winkelweg
+60209;Kapfenberg;Winkler Siedlung
+60209;Kapfenberg;Winkler Straße
+60209;Kapfenberg;Winkler Weg
+60211;Oberaich;Wogamoarweg
+60204;Bruck an der Mur;Wüstenroter Straße
+60209;Kapfenberg;Zapfstraße
+60213;Pernegg an der Mur;Zatsch
+60217;Sankt Marein im Mürztal;Zeppelinweg
+60204;Bruck an der Mur;Ziegeleiweg
+60204;Bruck an der Mur;Ziegelofenweg
+60203;Breitenau am Hochlantsch;Zintonergraben
+60213;Pernegg an der Mur;Zlatten
+60202;Aflenz Land;Zöbriach
+60209;Kapfenberg;Zöllgrabenweg
+60211;Oberaich;Zum Madereck
+60207;Gußwerk;Zur Waldpromenade
