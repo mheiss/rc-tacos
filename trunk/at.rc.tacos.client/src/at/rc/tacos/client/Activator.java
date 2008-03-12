@@ -149,7 +149,6 @@ public class Activator extends AbstractUIPlugin
 		{
 			//the factory to register the images
 			ImageFactory f = ImageFactory.getInstance();
-
 			//open the properties file
 			ResourceBundle imageBundle = ResourceBundle.getBundle(Activator.IMAGE_CLIENT_CONFIG_PATH);
 			//loop and register all images
@@ -166,6 +165,7 @@ public class Activator extends AbstractUIPlugin
 			Activator.getDefault().log("Please check the images and the properties file", IStatus.ERROR);
 			System.out.println("Failed to load the images files");
 			System.out.println("Please check the images and the properties file");
+			npe.printStackTrace();
 		}
 	}
 
