@@ -1,8 +1,9 @@
 package at.rc.tacos.factory;
 
-import java.util.HashMap;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 
 /**
  * The image factory manages all available images.
@@ -14,14 +15,14 @@ public class ImageFactory
     private static ImageFactory instance;
     
     /** List of all images */
-    private HashMap<String, ImageDescriptor> images;
+    private ImageRegistry imageRegistry;
     
     /**
      * Default private constructor
      */
     private ImageFactory() 
     {
-        images = new HashMap<String, ImageDescriptor>();
+        imageRegistry = new ImageRegistry(Display.getDefault());
     }
     
     /**
@@ -44,7 +45,7 @@ public class ImageFactory
      */
     public void registerImage(String imageID,ImageDescriptor imageDescriptor)
     {
-        images.put(imageID,imageDescriptor);
+        imageRegistry.put(imageID, imageDescriptor);
     }
     
     /**
@@ -55,17 +56,12 @@ public class ImageFactory
      */
     public Image getRegisteredImage(String imageId)
     {
-    	if(!images.containsKey(imageId))
-    	{
-    		System.out.println("The image for the key: "+imageId +" cannot be found");
-    		throw new IllegalArgumentException("The image for the key: "+imageId +" cannot be found");
-    	}
-    	if(images.get(imageId) == null)
-    	{
-    		System.out.println("The image file for the key: "+ imageId +" cannot be found");
-    		throw new IllegalArgumentException("The image file for the key: "+ imageId +" cannot be found");
-    	}
-        return images.get(imageId).createImage();
+        if(imageRegistry.get(imageId) == null)
+        {
+            System.out.println("The image for the key: "+imageId +" cannot be found");
+            throw new IllegalArgumentException("The image for the key: "+imageId +" cannot be found");
+        }
+        return imageRegistry.get(imageId);
     }
     
     /**
@@ -76,16 +72,11 @@ public class ImageFactory
      */
     public ImageDescriptor getRegisteredImageDescriptor(String imageId)
     {
-    	if(!images.containsKey(imageId))
-    	{
-    		System.out.println("The image description for the key: "+imageId +" cannot be found");
-    		throw new IllegalArgumentException("The image description for the key: "+imageId +" cannot be found");
-    	}
-    	if(images.get(imageId) == null)
-    	{
-    		System.out.println("The image file for the key:"+ imageId +" cannot be found");
-    		throw new IllegalArgumentException("The image file for the key:"+ imageId +" cannot be found");
-    	}
-        return images.get(imageId);
+        if(imageRegistry.getDescriptor(imageId) == null)
+        {
+            System.out.println("The image description for the key: "+imageId +" cannot be found");
+            throw new IllegalArgumentException("The image description for the key: "+imageId +" cannot be found");
+        }
+        return imageRegistry.getDescriptor(imageId);
     }
 }
