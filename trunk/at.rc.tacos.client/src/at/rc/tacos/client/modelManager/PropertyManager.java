@@ -24,7 +24,6 @@ public abstract class PropertyManager extends PlatformObject
         if (listener == null) 
             throw new IllegalArgumentException();
         listeners.addPropertyChangeListener(listener);
-        System.out.println("(add)listeners: "+listeners.getPropertyChangeListeners().length);
     }
 
     /**
@@ -34,7 +33,6 @@ public abstract class PropertyManager extends PlatformObject
     public void removePropertyChangeListener(PropertyChangeListener listener)
     {
         listeners.removePropertyChangeListener(listener);
-        System.out.println("(remove)listeners: "+listeners.getPropertyChangeListeners().length);
     }
     
     /**
