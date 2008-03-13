@@ -67,7 +67,11 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
         {
 	        case COLUMN_LOCK:return null;
 	        case COLUMN_PRIORITY: return transport.getTransportPriority();
-	        case COLUMN_TRANSPORTNUMBER:return String.valueOf(transport.getTransportNumber());
+	        case COLUMN_TRANSPORTNUMBER:
+	        	if(transport.getTransportNumber() == Transport.TRANSPORT_NEF)
+	        		return "NEF";
+	        	else
+	        		return String.valueOf(transport.getTransportNumber());
 	        case COLUMN_TERM:if (transport.getAppointmentTimeAtDestination() != 0)
         		return sdf.format(transport.getAppointmentTimeAtDestination());
         	else return "";
