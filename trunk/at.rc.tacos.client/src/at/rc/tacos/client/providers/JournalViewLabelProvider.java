@@ -87,20 +87,24 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		//define the columns
 		case COLUMN_LOCK: return null;
 		case COlUMN_OS: 
-			if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Kapfenberg"))
-				return "KA";
-			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Bruck an der Mur"))
-				return "BM";
-			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("St. Marein"))
-				return "MA";
-			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Breitenau"))
-				return "BR";
-			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Thörl"))
-				return "TH";
-			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Turnau"))
-				return "TU";
-			else if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Bezirk: Bruck - Kapfenberg"))
-				return "BE";
+			//return the current station of the vehicle if there is one assigned
+			if(transport.getVehicleDetail() != null)
+			{
+				if(transport.getVehicleDetail().getCurrentStation().getLocationName().equalsIgnoreCase("Kapfenberg"))
+					return "KA";
+				else if(transport.getVehicleDetail().getCurrentStation().getLocationName().equalsIgnoreCase("Bruck an der Mur"))
+					return "BM";
+				else if(transport.getVehicleDetail().getCurrentStation().getLocationName().equalsIgnoreCase("St. Marein"))
+					return "MA";
+				else if(transport.getVehicleDetail().getCurrentStation().getLocationName().equalsIgnoreCase("Breitenau"))
+					return "BR";
+				else if(transport.getVehicleDetail().getCurrentStation().getLocationName().equalsIgnoreCase("Thörl") || transport.getVehicleDetail().getCurrentStation().getLocationName().equalsIgnoreCase("Th?rl"))
+					return "TH";
+				else if(transport.getVehicleDetail().getCurrentStation().getLocationName().equalsIgnoreCase("Turnau"))
+					return "TU";
+				else if(transport.getVehicleDetail().getCurrentStation().getLocationName().equalsIgnoreCase("Bezirk: Bruck - Kapfenberg"))
+					return "BE";
+			}
 			else return null;
 		case COLUMN_TRANSPORT_NUMBER: 
 			if(transport.getTransportNumber()== Transport.TRANSPORT_CANCLED)
