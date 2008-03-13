@@ -38,7 +38,6 @@ import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Location;
@@ -86,7 +85,6 @@ public class VehicleForm extends TitleAreaDialog
 	public VehicleForm(Shell parentShell,VehicleDetail vehicle)
 	{
 		super(parentShell);
-		//save
 		this.vehicleDetail = vehicle;
 	}
 
@@ -101,11 +99,9 @@ public class VehicleForm extends TitleAreaDialog
 		setTitle("Fahrzeugverwaltung");
 		setMessage(FORM_DESCRIPTION, IMessageProvider.INFORMATION);
 		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		//draw the content
-		contents.redraw();
-		Composite client = ((Composite)contents);
-		client.layout(true);
+        //force a redraw
 		getShell().setSize(500, 600);
+        getShell().pack(true);
 		return contents;
 	}
 
@@ -142,10 +138,6 @@ public class VehicleForm extends TitleAreaDialog
 			noteEditor.getDocument().set(vehicleDetail.getVehicleNotes());
 		}
 		checkRequiredFields();
-
-		//force redraw
-		composite.redraw();
-		composite.layout(true);
 		return composite;
 	}
 
@@ -363,7 +355,6 @@ public class VehicleForm extends TitleAreaDialog
 			}
 		});
 		readyButton.setText("Einsatzbereit");
-
 
 		//Out of Order
 		outOfOrder = new Button(client, SWT.CHECK); 
