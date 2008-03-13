@@ -731,18 +731,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     @Override
     public boolean close()
     {
-        boolean result = MessageDialog.openConfirm(getShell(), "Abbrechen", "Wollen Sie wirklich abbrechen?");
-        //check the result
-        if (result)
-        {
-            ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
-            ModelFactory.getInstance().getAddressList().removePropertyChangeListener(this);
-            ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this);  
-            super.close();
-            return true;
-        }
-        System.out.println("no exit");
-        return false;
+
+        ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getAddressList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this);  
+        super.close();
+        return true;
     }
 
     /**
@@ -751,7 +745,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     @Override
     protected void cancelPressed()
     {
-        getShell().close();
+    	boolean result = MessageDialog.openConfirm(getShell(), "Abbrechen", "Wollen Sie wirklich abbrechen?"); 
+        //check the result
+    	if(result)
+    	{
+    		getShell().close();
+    	}
     }
 
     /**
