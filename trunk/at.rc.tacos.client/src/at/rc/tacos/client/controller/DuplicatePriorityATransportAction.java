@@ -65,7 +65,8 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setLongDistanceTrip(transport.isLongDistanceTrip());
         newTransport.setMountainRescueServiceAlarming(transport.isMountainRescueServiceAlarming());
         //assert valid
-        newTransport.setKindOfIllness(transport.getKindOfIllness());
+        if(transport.getKindOfIllness() != null)
+        	newTransport.setKindOfIllness(transport.getKindOfIllness());
         newTransport.setKindOfTransport(transport.getKindOfTransport());
         if(transport.getCallerDetail() != null)
             newTransport.setCallerDetail(transport.getCallerDetail());
