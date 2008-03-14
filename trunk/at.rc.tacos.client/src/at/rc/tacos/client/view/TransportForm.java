@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Text;
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
+import at.rc.tacos.client.controller.VehicleUpdateAction;
 import at.rc.tacos.client.modelManager.AddressManager;
 import at.rc.tacos.client.modelManager.DiseaseManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -50,12 +51,15 @@ import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 
 /**
  * GUI (form) to manage the transport details
@@ -190,7 +194,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     }
 
     /**
-     * Default class constructor to edit a existing transport
+     * Default class constructor to edit an existing transport
      * @param parentShell the parent shell
      * @param transport the transport to edit
      * @param editingType the layout of the form to show
@@ -419,7 +423,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 this.textRueckmeldung.setText(transport.getFeedback());
 
             if(transport.getTransportNumber() != 0)
-                this.textTransportNummer.setText(String.valueOf(transport.getTransportNumber()));
+            	if(transport.getTransportNumber() == -1)
+            		this.textTransportNummer.setText("STORNO");
+            	else if(transport.getTransportNumber() == -2)
+            		this.textTransportNummer.setText("WTGL");
+            	else if(transport.getTransportNumber() == -4)
+            		this.textTransportNummer.setText("NEF");
+            	else if(transport.getTransportNumber() != 0)
+            		this.textTransportNummer.setText(String.valueOf(transport.getTransportNumber()));
 
             //kind of transport
             String kindOfTransport = transport.getKindOfTransport();
@@ -544,7 +555,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
         //convert the start time --> no validation when an emergency transport
         Calendar startTime = convertStringToDate(textAbf.getText());
-        if(startTime == null &! transportType.equalsIgnoreCase("emergencyTransport"))
+        if(startTime == null &! transportType.equalsIgnoreCase("emergencyTransport") && createNew)
         {
             getShell().getDisplay().beep();
             setErrorMessage("Bitte geben Sie eine gültige Abfahrtszeit in der Form HH:mm oder HHmm ein");
@@ -695,6 +706,19 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             transport.setDirection(TOWARDS_KAPFENBERG);
         else
             transport.setDirection(TOWARDS_BRUCK);
+        
+        
+        //set the staff of the vehicle of the transport
+//        index = medic1ComboViewer.getCombo().getSelectionIndex();
+//		vehicleDetail.setFirstParamedic((StaffMember)medic1ComboViewer.getElementAt(index));
+		//medic1
+		int index1 = setTextFahrer.getCombo().getSelectionIndex();
+		transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index1));
+		System.out.println("-------------" +transport.getVehicleDetail().getDriver().getUserName());
+		
+//        if(setTextFahrer.getCombo().getSelectionIndex() != -1)
+//        if(transport.getVehicleDetail() != null)
+//        	    transport.getVehicleDetail().getDriver();
 
         if(createNew)
         {
@@ -719,8 +743,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         else
         {
             //create and run the update action
+//        	NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, transport.getVehicleDetail());
+        	//VehicleUpdateAction updateVehAction = new VehicleUpdateAction(transport.getVehicleDetail());
+           // updateVehAction.run();
             UpdateTransportAction updateAction = new UpdateTransportAction(transport);
             updateAction.run();
+            
         }
         getShell().close();
     }
@@ -1467,6 +1495,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_textTransportNummer.right = new FormAttachment(0, 158);
         fd_textTransportNummer.left = new FormAttachment(0, 60);
         textTransportNummer.setLayoutData(fd_textTransportNummer);
+        textTransportNummer.setEditable(false);
 
         final Label ortsstelleLabel = new Label(transportdetailsGroup, SWT.NONE);
         final FormData fd_ortsstelleLabel = new FormData();
