@@ -1,0 +1,2201 @@
+!SESSION 2008-03-14 00:17:52.950 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 00:17:56.497
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 00:17:59.809
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 00:22:08.294
+!MESSAGE Client null disconnected
+
+!ENTRY org.eclipse.ui.workbench 4 0 2008-03-14 00:28:39.341
+!MESSAGE Unable to create view ID at.rc.tacos.client.view.admin.staffMemberAdminView: null argument:
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.ColumnViewer.getRawChildren(ColumnViewer.java:693)
+	at org.eclipse.jface.viewers.AbstractTableViewer.getRawChildren(AbstractTableViewer.java:1071)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefreshAll(AbstractTableViewer.java:685)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefresh(AbstractTableViewer.java:633)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefresh(AbstractTableViewer.java:620)
+	at org.eclipse.jface.viewers.AbstractTableViewer$2.run(AbstractTableViewer.java:576)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1368)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1330)
+	at org.eclipse.jface.viewers.AbstractTableViewer.inputChanged(AbstractTableViewer.java:574)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.admin.StaffMemberAdminView.createPartControl(StaffMemberAdminView.java:117)
+	at org.eclipse.ui.internal.ViewReference.createPartHelper(ViewReference.java:370)
+	at org.eclipse.ui.internal.ViewReference.createPart(ViewReference.java:227)
+	at org.eclipse.ui.internal.WorkbenchPartReference.getPart(WorkbenchPartReference.java:592)
+	at org.eclipse.ui.internal.PartPane.setVisible(PartPane.java:299)
+	at org.eclipse.ui.internal.ViewPane.setVisible(ViewPane.java:531)
+	at org.eclipse.ui.internal.presentations.PresentablePart.setVisible(PresentablePart.java:179)
+	at org.eclipse.ui.internal.presentations.util.PresentablePartFolder.select(PresentablePartFolder.java:268)
+	at org.eclipse.ui.internal.presentations.util.LeftToRightTabOrder.select(LeftToRightTabOrder.java:65)
+	at org.eclipse.ui.internal.presentations.util.TabbedStackPresentation.selectPart(TabbedStackPresentation.java:400)
+	at org.eclipse.ui.internal.PartStack.refreshPresentationSelection(PartStack.java:1256)
+	at org.eclipse.ui.internal.PartStack.setSelection(PartStack.java:1209)
+	at org.eclipse.ui.internal.PartStack.showPart(PartStack.java:1604)
+	at org.eclipse.ui.internal.PartStack.createControl(PartStack.java:649)
+	at org.eclipse.ui.internal.PartStack.createControl(PartStack.java:576)
+	at org.eclipse.ui.internal.PartSashContainer.createControl(PartSashContainer.java:564)
+	at org.eclipse.ui.internal.PerspectiveHelper.activate(PerspectiveHelper.java:270)
+	at org.eclipse.ui.internal.Perspective.onActivate(Perspective.java:931)
+	at org.eclipse.ui.internal.WorkbenchPage.setPerspective(WorkbenchPage.java:3479)
+	at org.eclipse.ui.internal.WorkbenchPage.busySetPerspective(WorkbenchPage.java:997)
+	at org.eclipse.ui.internal.WorkbenchPage.access$18(WorkbenchPage.java:981)
+	at org.eclipse.ui.internal.WorkbenchPage$18.run(WorkbenchPage.java:3578)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:67)
+	at org.eclipse.ui.internal.WorkbenchPage.setPerspective(WorkbenchPage.java:3576)
+	at at.rc.tacos.client.perspectives.AbstractPerspectiveSwitcher.run(AbstractPerspectiveSwitcher.java:31)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui.workbench 4 2 2008-03-14 00:28:45.388
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.workbench".
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.ui.internal.ViewReference.doDisposePart(ViewReference.java:120)
+	at org.eclipse.ui.internal.WorkbenchPartReference.dispose(WorkbenchPartReference.java:671)
+	at org.eclipse.ui.internal.WorkbenchPage.disposePart(WorkbenchPage.java:1604)
+	at org.eclipse.ui.internal.WorkbenchPage.partRemoved(WorkbenchPage.java:1596)
+	at org.eclipse.ui.internal.ViewFactory.releaseView(ViewFactory.java:255)
+	at org.eclipse.ui.internal.Perspective.dispose(Perspective.java:279)
+	at org.eclipse.ui.internal.WorkbenchPage.dispose(WorkbenchPage.java:1675)
+	at org.eclipse.ui.internal.WorkbenchWindow.closeAllPages(WorkbenchWindow.java:825)
+	at org.eclipse.ui.internal.WorkbenchWindow.hardClose(WorkbenchWindow.java:1559)
+	at org.eclipse.ui.internal.WorkbenchWindow.busyClose(WorkbenchWindow.java:699)
+	at org.eclipse.ui.internal.WorkbenchWindow.access$0(WorkbenchWindow.java:675)
+	at org.eclipse.ui.internal.WorkbenchWindow$2.run(WorkbenchWindow.java:790)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:67)
+	at org.eclipse.ui.internal.WorkbenchWindow.close(WorkbenchWindow.java:788)
+	at org.eclipse.jface.window.WindowManager.close(WindowManager.java:109)
+	at org.eclipse.ui.internal.Workbench$15.run(Workbench.java:908)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.ui.internal.Workbench.busyClose(Workbench.java:905)
+	at org.eclipse.ui.internal.Workbench.access$15(Workbench.java:834)
+	at org.eclipse.ui.internal.Workbench$22.run(Workbench.java:1078)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:67)
+	at org.eclipse.ui.internal.Workbench.close(Workbench.java:1076)
+	at org.eclipse.ui.internal.Workbench.close(Workbench.java:1048)
+	at org.eclipse.ui.internal.WorkbenchWindow.busyClose(WorkbenchWindow.java:696)
+	at org.eclipse.ui.internal.WorkbenchWindow.access$0(WorkbenchWindow.java:675)
+	at org.eclipse.ui.internal.WorkbenchWindow$2.run(WorkbenchWindow.java:790)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:67)
+	at org.eclipse.ui.internal.WorkbenchWindow.close(WorkbenchWindow.java:788)
+	at org.eclipse.jface.window.Window.handleShellCloseEvent(Window.java:736)
+	at org.eclipse.jface.window.Window$3.shellClosed(Window.java:682)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:91)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:962)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:947)
+	at org.eclipse.swt.widgets.Decorations.closeWidget(Decorations.java:301)
+	at org.eclipse.swt.widgets.Decorations.WM_CLOSE(Decorations.java:1621)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:3674)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:291)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1554)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:1753)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4351)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProcW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProc(OS.java:2260)
+	at org.eclipse.swt.widgets.Shell.callWindowProc(Shell.java:456)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:3760)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:291)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1554)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:1753)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4351)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProcW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProc(OS.java:2260)
+	at org.eclipse.swt.widgets.Shell.callWindowProc(Shell.java:456)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:3760)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:291)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1554)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:1753)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4351)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessageW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(OS.java:2265)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3291)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+!SESSION 2008-03-14 00:28:47.106 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 00:28:48.919
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 00:28:51.997
+!MESSAGE Received 10 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 00:47:03.577
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (org.eclipse.core.runtime.AssertionFailedException: null argument:)
+	at org.eclipse.swt.SWT.error(SWT.java:3563)
+	at org.eclipse.swt.SWT.error(SWT.java:3481)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:126)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+Caused by: org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.ColumnViewer.getRawChildren(ColumnViewer.java:693)
+	at org.eclipse.jface.viewers.AbstractTableViewer.getRawChildren(AbstractTableViewer.java:1071)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefreshAll(AbstractTableViewer.java:685)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefresh(AbstractTableViewer.java:633)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefresh(AbstractTableViewer.java:620)
+	at org.eclipse.jface.viewers.StructuredViewer$7.run(StructuredViewer.java:1433)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1368)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1330)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1431)
+	at org.eclipse.jface.viewers.ColumnViewer.refresh(ColumnViewer.java:536)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1390)
+	at at.rc.tacos.client.view.admin.StaffMemberAdminView.propertyChange(StaffMemberAdminView.java:146)
+	at java.beans.PropertyChangeSupport.firePropertyChange(Unknown Source)
+	at java.beans.PropertyChangeSupport.firePropertyChange(Unknown Source)
+	at at.rc.tacos.client.modelManager.PropertyManager.firePropertyChange(PropertyManager.java:47)
+	at at.rc.tacos.client.modelManager.StaffManager$1.run(StaffManager.java:33)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	... 22 more
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 01:04:27.422
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.modelManager.StaffManager.getUnassignedStaffList(StaffManager.java:118)
+	at at.rc.tacos.client.view.VehicleForm.createCrewSection(VehicleForm.java:414)
+	at at.rc.tacos.client.view.VehicleForm.createDialogArea(VehicleForm.java:121)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.VehicleForm.createContents(VehicleForm.java:98)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.VehicleEditAction.run(VehicleEditAction.java:65)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 01:04:29.158
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.modelManager.StaffManager.getUnassignedStaffList(StaffManager.java:118)
+	at at.rc.tacos.client.view.VehicleForm.createCrewSection(VehicleForm.java:414)
+	at at.rc.tacos.client.view.VehicleForm.createDialogArea(VehicleForm.java:121)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.VehicleForm.createContents(VehicleForm.java:98)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.VehicleEditAction.run(VehicleEditAction.java:65)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 01:04:30.971
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.modelManager.StaffManager.getUnassignedStaffList(StaffManager.java:118)
+	at at.rc.tacos.client.view.VehicleForm.createCrewSection(VehicleForm.java:414)
+	at at.rc.tacos.client.view.VehicleForm.createDialogArea(VehicleForm.java:121)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.VehicleForm.createContents(VehicleForm.java:98)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.VehicleEditAction.run(VehicleEditAction.java:65)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+!SESSION 2008-03-14 01:04:37.115 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 01:05:25.954
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:05:29.190
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:22:25.805
+!MESSAGE Received 11 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:24:26.047
+!MESSAGE Received 11 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:26:25.993
+!MESSAGE Received 11 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:28:26.065
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:30:26.088
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:32:26.107
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:34:26.124
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:36:26.229
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:38:26.247
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:40:26.171
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:42:26.148
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:44:26.150
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:46:26.135
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:48:26.225
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:50:25.684
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:52:25.205
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:54:24.850
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:56:24.620
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:58:24.375
+!MESSAGE Received 12 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:58:54.262
+!MESSAGE Received 9 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:58:55.261
+!MESSAGE Received 13 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:58:59.364
+!MESSAGE Received 9 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:59:10.643
+!MESSAGE Received 13 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 01:59:31.142
+!MESSAGE Received 9 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:00:13.404
+!MESSAGE Received 9 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:00:14.746
+!MESSAGE Received 9 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:00:17.258
+!MESSAGE Received 9 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:00:18.256
+!MESSAGE Received 9 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:00:23.935
+!MESSAGE Received 9 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:01:03.404
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:01:04.808
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:01:07.460
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:01:08.974
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:02:23.763
+!MESSAGE Received 10 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 02:03:44.515
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:251)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.EditTransportAction.run(EditTransportAction.java:45)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:04:23.588
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:06:23.672
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:08:23.986
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:10:24.295
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:12:24.344
+!MESSAGE Received 10 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:12:41.720
+!MESSAGE Received 15 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:14:24.800
+!MESSAGE Received 15 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:16:24.983
+!MESSAGE Received 16 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 02:18:11.267
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.IllegalArgumentException: The kind of illness cannot be null
+	at at.rc.tacos.model.Transport.setKindOfIllness(Transport.java:766)
+	at at.rc.tacos.client.controller.CopyTransportAction.run(CopyTransportAction.java:75)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 02:18:19.020
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.IllegalArgumentException: The kind of illness cannot be null
+	at at.rc.tacos.model.Transport.setKindOfIllness(Transport.java:766)
+	at at.rc.tacos.client.controller.CopyTransportAction.run(CopyTransportAction.java:75)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:18:24.944
+!MESSAGE Received 16 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:20:24.998
+!MESSAGE Received 16 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:22:25.089
+!MESSAGE Received 16 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:24:25.130
+!MESSAGE Received 16 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:26:25.202
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:28:25.177
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:30:25.195
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:32:25.182
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:34:25.245
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:36:25.182
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:38:22.072
+!MESSAGE Client null disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:38:25.150
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:40:25.141
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:42:25.070
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:44:24.968
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:46:24.895
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:48:24.856
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:50:24.884
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:52:24.887
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:54:24.687
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:56:24.679
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 02:58:24.702
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:00:24.679
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:02:24.517
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:04:24.510
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:06:24.536
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:08:24.530
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:10:24.524
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:12:24.394
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:14:24.410
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:16:24.721
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:18:24.907
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:20:25.014
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:22:25.222
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:24:25.310
+!MESSAGE Received 18 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 03:25:00.696
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (org.eclipse.core.runtime.AssertionFailedException: null argument:)
+	at org.eclipse.swt.SWT.error(SWT.java:3563)
+	at org.eclipse.swt.SWT.error(SWT.java:3481)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:126)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:820)
+	at org.eclipse.jface.window.Window.open(Window.java:796)
+	at at.rc.tacos.client.controller.OpenEmergencyTransportAction.run(OpenEmergencyTransportAction.java:51)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+Caused by: org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.internalRefresh(AbstractListViewer.java:372)
+	at org.eclipse.jface.viewers.StructuredViewer$7.run(StructuredViewer.java:1433)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1368)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1330)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1431)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1390)
+	at at.rc.tacos.client.view.TransportForm.propertyChange(TransportForm.java:1966)
+	at java.beans.PropertyChangeSupport.firePropertyChange(Unknown Source)
+	at java.beans.PropertyChangeSupport.firePropertyChange(Unknown Source)
+	at at.rc.tacos.client.modelManager.PropertyManager.firePropertyChange(PropertyManager.java:47)
+	at at.rc.tacos.client.modelManager.StaffManager$1.run(StaffManager.java:33)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	... 33 more
+!SESSION 2008-03-14 03:48:45.920 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 03:53:37.470
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 03:53:40.621
+!MESSAGE Received 18 of transports
+
+!ENTRY org.eclipse.ui 4 4 2008-03-14 04:31:18.836
+!MESSAGE Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'. (menu ids = [at.rc.tacos.client.view.disposition_view])  part id = at.rc.tacos.client.view.disposition_view)
+
+!ENTRY org.eclipse.ui 4 4 2008-03-14 04:31:19.446
+!MESSAGE Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'. (menu ids = [at.rc.tacos.client.view.disposition_view])  part id = at.rc.tacos.client.view.disposition_view)
+
+!ENTRY org.eclipse.ui 4 4 2008-03-14 04:31:19.665
+!MESSAGE Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'. (menu ids = [at.rc.tacos.client.view.disposition_view])  part id = at.rc.tacos.client.view.disposition_view)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:33:23.337
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:35:23.310
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:37:23.433
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:39:23.362
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:41:23.417
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:43:23.589
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:45:23.540
+!MESSAGE Received 18 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:47:23.584
+!MESSAGE Received 21 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:49:23.813
+!MESSAGE Received 22 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:51:23.980
+!MESSAGE Received 22 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:53:23.942
+!MESSAGE Received 22 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:55:23.997
+!MESSAGE Received 22 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:57:23.938
+!MESSAGE Received 22 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 04:59:23.533
+!MESSAGE Received 22 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 05:00:23.970
+!MESSAGE Automatically moved the transport 179,Grazerstr.7b,Bruck,Karl,Haas,LKH Leoben URO, to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 05:00:55.724
+!MESSAGE Client null disconnected
+!SESSION 2008-03-14 07:00:09.605 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 07:00:11.620
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:00:14.964
+!MESSAGE Received 22 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:08:16.487
+!MESSAGE Client null disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:20:20.504
+!MESSAGE Automatically moved the transport 248,Parschluger Straße 15,Parschlug,Johann,Weran,LKH Bruck Neuro Amb.,Bruck an der Mur to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:28:52.308
+!MESSAGE Received 36 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:30:12.077
+!MESSAGE Automatically moved the transport 181,Streitgarn 31,Oberaich,Emilie,Raster,Dr.Einspieler,Kindberg to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:30:12.077
+!MESSAGE Automatically moved the transport 242,LKH Bruck Unfall A,Bruck an der Mur,,Wieser,Dörfl 63,Aflenz Kurort to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:30:12.077
+!MESSAGE Automatically moved the transport 249,Rammersdorferstraße 9a,Sankt Marein im Mürztal,Veronika,Leitner ,LKH Graz Strahlen,Graz to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:30:52.345
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:32:52.366
+!MESSAGE Received 38 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:01.181
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.OpenTransportAction.run(OpenTransportAction.java:51)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:01.291
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.OpenTransportAction.run(OpenTransportAction.java:51)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:02.322
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.OpenTransportAction.run(OpenTransportAction.java:51)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:34:52.293
+!MESSAGE Received 38 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 07:35:07.356
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.OpenEmergencyTransportAction.run(OpenEmergencyTransportAction.java:51)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 07:35:07.919
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.OpenEmergencyTransportAction.run(OpenEmergencyTransportAction.java:51)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 07:35:08.059
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.OpenEmergencyTransportAction.run(OpenEmergencyTransportAction.java:51)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 07:35:08.184
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.OpenEmergencyTransportAction.run(OpenEmergencyTransportAction.java:51)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:35:11.341
+!MESSAGE Client null disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:36:52.283
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:38:52.382
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:40:52.403
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:42:52.533
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:44:52.554
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:46:52.541
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:48:52.402
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:50:52.482
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:52:52.393
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:54:52.335
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:56:52.246
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 07:58:52.263
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:00:46.702
+!MESSAGE Automatically moved the transport 173,Knottingerstr. 12,Bruck,Robert,Reinspach,NTK,Kapfenberg to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:00:46.702
+!MESSAGE Automatically moved the transport 180,Magnesitstr. 12,Breitenau,Edith,Haberl,LKH Bruck gefäß, to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:00:46.702
+!MESSAGE Automatically moved the transport 243,PH Altersheimgasse ,Bruck an der Mur,,Fr. Stadlbauer,Dr. Schöllauf,Bruck an der Mur to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:00:46.702
+!MESSAGE Automatically moved the transport 244,LKH Bruck NeuroB,Bruck an der Mur,Karl,Hollerer,LKH Leoben ZRI,Kapfenberg to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:00:52.264
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:02:52.330
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:04:52.320
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:06:52.216
+!MESSAGE Received 38 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:08:52.348
+!MESSAGE Received 40 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:10:45.667
+!MESSAGE Automatically moved the transport 245,Bergstraße 24,Bruck an der Mur,,Divicek,LKH Bruck/Mur ,Bruck an der Mur to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:10:52.307
+!MESSAGE Received 41 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:12:52.267
+!MESSAGE Received 41 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 08:14:48.151
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.EditTransportAction.run(EditTransportAction.java:45)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:14:52.291
+!MESSAGE Received 41 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 08:14:54.525
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractListViewer.inputChanged(AbstractListViewer.java:337)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at at.rc.tacos.client.view.TransportForm.createTransportSection(TransportForm.java:1530)
+	at at.rc.tacos.client.view.TransportForm.createDialogArea(TransportForm.java:238)
+	at org.eclipse.jface.dialogs.TitleAreaDialog.createContents(TitleAreaDialog.java:147)
+	at at.rc.tacos.client.view.TransportForm.createContents(TransportForm.java:219)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at at.rc.tacos.client.controller.EditTransportAction.run(EditTransportAction.java:45)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:16:52.268
+!MESSAGE Received 41 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:18:52.354
+!MESSAGE Received 41 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:20:52.487
+!MESSAGE Received 41 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:22:52.495
+!MESSAGE Received 41 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:24:52.534
+!MESSAGE Received 41 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:26:57.807
+!MESSAGE Received 104 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:27:03.650
+!MESSAGE Received 104 of transports
+!SESSION 2008-03-14 08:29:05.705 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 08:29:12.283
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:29:17.611
+!MESSAGE Client user3 disconnected
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 08:29:17.626
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (java.lang.ArrayIndexOutOfBoundsException: -1)
+	at org.eclipse.swt.SWT.error(SWT.java:3563)
+	at org.eclipse.swt.SWT.error(SWT.java:3481)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:126)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: -1
+	at java.util.ArrayList.set(Unknown Source)
+	at at.rc.tacos.client.modelManager.VehicleManager$4.run(VehicleManager.java:106)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	... 22 more
+!SESSION 2008-03-14 08:29:34.235 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 08:29:36.641
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:29:41.734
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:31:45.601
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:33:45.547
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:35:45.586
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:37:45.500
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:39:45.570
+!MESSAGE Received 50 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 08:40:49.379
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.view.VehicleForm.okPressed(VehicleForm.java:202)
+	at org.eclipse.jface.dialogs.Dialog.buttonPressed(Dialog.java:464)
+	at org.eclipse.jface.dialogs.Dialog$2.widgetSelected(Dialog.java:616)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:227)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:820)
+	at org.eclipse.jface.window.Window.open(Window.java:796)
+	at at.rc.tacos.client.controller.VehicleEditAction.run(VehicleEditAction.java:65)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 08:41:08.237
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.view.VehicleForm.okPressed(VehicleForm.java:202)
+	at org.eclipse.jface.dialogs.Dialog.buttonPressed(Dialog.java:464)
+	at org.eclipse.jface.dialogs.Dialog$2.widgetSelected(Dialog.java:616)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:227)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:820)
+	at org.eclipse.jface.window.Window.open(Window.java:796)
+	at at.rc.tacos.client.controller.VehicleEditAction.run(VehicleEditAction.java:65)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:41:46.344
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:43:46.227
+!MESSAGE Received 50 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 08:44:43.770
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (org.eclipse.core.runtime.AssertionFailedException: null argument:)
+	at org.eclipse.swt.SWT.error(SWT.java:3563)
+	at org.eclipse.swt.SWT.error(SWT.java:3481)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:126)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+Caused by: org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:84)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:72)
+	at org.eclipse.jface.viewers.StructuredViewer.assertElementsNotNull(StructuredViewer.java:580)
+	at org.eclipse.jface.viewers.StructuredViewer.getRawChildren(StructuredViewer.java:938)
+	at org.eclipse.jface.viewers.ColumnViewer.getRawChildren(ColumnViewer.java:693)
+	at org.eclipse.jface.viewers.AbstractTableViewer.getRawChildren(AbstractTableViewer.java:1071)
+	at org.eclipse.jface.viewers.StructuredViewer.getFilteredChildren(StructuredViewer.java:871)
+	at org.eclipse.jface.viewers.StructuredViewer.getSortedChildren(StructuredViewer.java:994)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefreshAll(AbstractTableViewer.java:685)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefresh(AbstractTableViewer.java:633)
+	at org.eclipse.jface.viewers.AbstractTableViewer.internalRefresh(AbstractTableViewer.java:620)
+	at org.eclipse.jface.viewers.StructuredViewer$7.run(StructuredViewer.java:1433)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1368)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1330)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1431)
+	at org.eclipse.jface.viewers.ColumnViewer.refresh(ColumnViewer.java:536)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1390)
+	at at.rc.tacos.client.view.admin.StaffMemberAdminView.propertyChange(StaffMemberAdminView.java:146)
+	at java.beans.PropertyChangeSupport.firePropertyChange(Unknown Source)
+	at java.beans.PropertyChangeSupport.firePropertyChange(Unknown Source)
+	at at.rc.tacos.client.modelManager.PropertyManager.firePropertyChange(PropertyManager.java:47)
+	at at.rc.tacos.client.modelManager.StaffManager$1.run(StaffManager.java:33)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	... 22 more
+!SESSION 2008-03-14 08:50:07.234 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 08:50:12.858
+!MESSAGE Successfully authenticated user3
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 08:50:19.545
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (java.lang.ArrayIndexOutOfBoundsException: -1)
+	at org.eclipse.swt.SWT.error(SWT.java:3563)
+	at org.eclipse.swt.SWT.error(SWT.java:3481)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:126)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: -1
+	at java.util.ArrayList.set(Unknown Source)
+	at at.rc.tacos.client.modelManager.VehicleManager$4.run(VehicleManager.java:106)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	... 22 more
+!SESSION 2008-03-14 08:52:21.006 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 08:52:23.178
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:52:29.131
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:54:33.826
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:56:33.949
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 08:58:33.954
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:00:34.142
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:02:33.990
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:04:34.088
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:06:34.117
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:08:34.126
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:10:34.010
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:12:34.108
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:14:34.207
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:16:34.132
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:18:34.135
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:20:34.060
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:22:34.156
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:24:34.283
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:26:34.067
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:28:34.038
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:30:34.056
+!MESSAGE Received 50 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:30:57.009
+!MESSAGE Automatically generated the transport 0,PH Tatzl,Oberaich,Kurt,Haber,LKH Bruck, for the dialyse patient 8,Kurt,Haber
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:30:57.009
+!MESSAGE Automatically generated the transport 0,Schinitzhof 1,Kapfenberg,Maria,Müller ,LKH Bruck,Bruck for the dialyse patient 9,Maria,Müller 
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:32:34.199
+!MESSAGE Received 52 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:34:34.076
+!MESSAGE Received 52 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:36:34.344
+!MESSAGE Received 52 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:38:34.065
+!MESSAGE Received 52 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:40:34.099
+!MESSAGE Received 52 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:42:34.413
+!MESSAGE Received 54 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:44:34.431
+!MESSAGE Received 55 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:46:34.356
+!MESSAGE Received 55 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:48:36.045
+!MESSAGE Received 56 of transports
+!SESSION 2008-03-14 09:50:21.141 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 09:50:23.797
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:50:30.016
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:50:33.219
+!MESSAGE Client user3 disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:50:38.048
+!MESSAGE Automatically moved the transport 247,LKH Bruck Med B,Bruck an der Mur,,Kernn,PH Turnau,Turnau to the outstanding transports
+!SESSION 2008-03-14 09:53:18.910 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 09:53:20.738
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:53:26.785
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:53:32.942
+!MESSAGE Automatically moved the transport 247,LKH Bruck Med B,Bruck an der Mur,,Kernn,PH Turnau,Turnau to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:55:30.616
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:57:30.681
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-14 09:58:43.463
+!MESSAGE DAOError occured in TransportListener: Failed to update the transport: 274,Oberdorferstr. 12,Bruck,Sonja,Marche,LKH Bruck,Bruck
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 09:59:30.933
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-14 09:59:54.746
+!MESSAGE DAOError occured in TransportListener: Failed to update the transport: 274,Oberdorferstr. 12,Bruck,Sonja,Marche,LKH Bruck,Bruck
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-14 10:00:03.184
+!MESSAGE SQL-Error:Duplicate entry '274' for key 1
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-14 10:00:07.496
+!MESSAGE SQL-Error:Duplicate entry '274' for key 1
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-14 10:01:03.622
+!MESSAGE SQL-Error:Duplicate entry '274' for key 1
+!SESSION 2008-03-14 10:01:09.200 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 10:01:11.701
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:01:17.951
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:03:21.327
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:05:21.175
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:07:21.023
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:09:21.180
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:11:21.146
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:13:20.893
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:15:24.164
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:17:16.108
+!MESSAGE Client user3 disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:17:20.967
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:17:26.638
+!MESSAGE Client user3 disconnected
+!SESSION 2008-03-14 10:22:08.822 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 10:22:19.133
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:22:33.999
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:24:39.108
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:26:39.049
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:30:27.681
+!MESSAGE Automatically generated the transport 0,fromStreet2,fromCity2,frau,musterin,toStreet2,toCity2 for the dialyse patient 2,frau,musterin
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:38:10.323
+!MESSAGE Client user3 disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:38:13.760
+!MESSAGE Received 56 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:38:17.900
+!MESSAGE Received 57 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:38:22.087
+!MESSAGE Received 57 of transports
+!SESSION 2008-03-14 10:41:09.225 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 10:41:11.615
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:41:18.240
+!MESSAGE Received 57 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:44:17.553
+!MESSAGE Received 70 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:46:06.515
+!MESSAGE Received 80 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:48:06.477
+!MESSAGE Received 80 of transports
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-14 10:49:54.519
+!MESSAGE SQL-Error:Duplicate entry '278' for key 1
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:50:06.644
+!MESSAGE Received 80 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:52:07.811
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:54:08.197
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:56:08.450
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 10:58:08.423
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:00:08.427
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:00:27.020
+!MESSAGE Automatically moved the transport 251,Neubaugasse 4,Sankt Marein im Mürztal,Gustav,Preinsberger,LKH Graz Strahlen,Graz to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:02:08.443
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:04:08.459
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:06:08.256
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:08:08.209
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:10:08.303
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:12:08.380
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:14:08.408
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:15:38.421
+!MESSAGE Automatically moved the transport 252,Dienststelle,Kapfenberg,,,Hotel Böhlerstern,Kapfenberg to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:16:08.374
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:18:08.356
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:20:08.603
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:22:09.039
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:24:09.584
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:26:11.864
+!MESSAGE Received 83 of transports
+!SESSION 2008-03-14 11:30:43.844 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 11:30:46.469
+!MESSAGE Successfully authenticated user3
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 11:30:47.922
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (java.lang.ArrayIndexOutOfBoundsException: -1)
+	at org.eclipse.swt.SWT.error(SWT.java:3563)
+	at org.eclipse.swt.SWT.error(SWT.java:3481)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:126)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: -1
+	at java.util.ArrayList.set(Unknown Source)
+	at at.rc.tacos.client.modelManager.VehicleManager$4.run(VehicleManager.java:106)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	... 22 more
+!SESSION 2008-03-14 11:31:54.217 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 11:31:57.233
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:32:05.608
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:32:40.420
+!MESSAGE Client user3 disconnected
+
+!ENTRY at.rc.tacos.client 2 0 2008-03-14 11:33:28.012
+!MESSAGE Failed to authenticate taco
+!SESSION 2008-03-14 11:34:45.355 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 11:34:51.370
+!MESSAGE Successfully authenticated user3
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 11:34:59.058
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (java.lang.ArrayIndexOutOfBoundsException: -1)
+	at org.eclipse.swt.SWT.error(SWT.java:3563)
+	at org.eclipse.swt.SWT.error(SWT.java:3481)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:126)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: -1
+	at java.util.ArrayList.set(Unknown Source)
+	at at.rc.tacos.client.modelManager.VehicleManager$4.run(VehicleManager.java:106)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	... 22 more
+!SESSION 2008-03-14 11:35:26.620 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 2008-03-14 11:35:28.776
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:35:37.307
+!MESSAGE Received 83 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 11:50:33.494
+!MESSAGE Automatically moved the transport 253,Ludwig-Tuller-Gasse 32,Kapfenberg,,Edlinger,TZ,Kapfenberg to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 12:09:31.420
+!MESSAGE Client null disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 13:48:42.141
+!MESSAGE Client null disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-14 14:00:50.644
+!MESSAGE Automatically moved the transport 254,Hauptstraße 9,Parschlug,,Patzelt,Werk-VI-Straße 6,Kapfenberg to the outstanding transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-14 14:41:19.723
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (java.lang.ArrayIndexOutOfBoundsException: -1)
+	at org.eclipse.swt.SWT.error(SWT.java:3563)
+	at org.eclipse.swt.SWT.error(SWT.java:3481)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:126)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: -1
+	at java.util.ArrayList.set(Unknown Source)
+	at at.rc.tacos.client.modelManager.RosterEntryManager$3.run(RosterEntryManager.java:71)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	... 22 more
