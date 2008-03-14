@@ -1,0 +1,405 @@
+!SESSION 2008-03-13 09:14:36.880 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-13 09:14:38.240
+!MESSAGE Failed to locate the addressData.csv file
+
+!ENTRY at.rc.tacos.client 2008-03-13 09:14:39.958
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 09:14:43.115
+!MESSAGE Received 25 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 09:15:04.052
+!MESSAGE Client null disconnected
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 09:30:39.172
+!MESSAGE Automatically moved the transport 184,Lessingstr.5,Bruck,Herbert,hauer,LKH Bruck neuro, to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 10:30:25.467
+!MESSAGE Automatically moved the transport 186,Wienerstr. 56,Kapfenberg,Herta,Lauch,LKH Leoben Gyn, to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 10:30:25.467
+!MESSAGE Automatically moved the transport 201,NTK 2.St.,Kapfenberg,Walter,Ferstl,PH Sonnenhof,Leibnitz to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 10:45:08.305
+!MESSAGE Automatically moved the transport 199,LKH Bruck Gefäß,,Adolf,Brunner,LKH Eisenerz, to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 10:50:15.648
+!MESSAGE Automatically moved the transport 203,Th.Körnerstr.5,Bruck,Karl,Prutsch,LKH Bruck neuro, to the outstanding transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 11:27:20.421
+!MESSAGE Client null disconnected
+
+!ENTRY org.eclipse.ui 4 0 2008-03-13 14:09:08.298
+!MESSAGE Unhandled event loop exception
+
+!ENTRY org.eclipse.ui 4 0 2008-03-13 14:09:11.361
+!MESSAGE Unhandled event loop exception
+
+!ENTRY org.eclipse.ui 4 0 2008-03-13 14:09:17.986
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.OutOfMemoryError: Java heap space
+!SESSION 2008-03-13 14:12:06.627 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-13 14:12:07.517
+!MESSAGE Failed to locate the addressData.csv file
+
+!ENTRY at.rc.tacos.client 2008-03-13 14:12:10.361
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 14:12:16.767
+!MESSAGE Received 58 of transports
+!SESSION 2008-03-13 15:02:59.033 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-13 15:02:59.752
+!MESSAGE Failed to locate the addressData.csv file
+
+!ENTRY at.rc.tacos.client 2008-03-13 15:03:00.939
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:03:07.642
+!MESSAGE Received 58 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:10:21.168
+!MESSAGE Received 62 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:12:21.151
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:14:21.290
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:16:21.164
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:18:21.131
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:20:21.176
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:22:21.096
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:24:21.111
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:26:21.281
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:28:21.248
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:30:21.168
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:32:21.214
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:34:21.322
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:36:21.148
+!MESSAGE Received 63 of transports
+!SESSION 2008-03-13 15:37:37.257 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY at.rc.tacos.client 4 0 2008-03-13 15:37:37.975
+!MESSAGE Failed to locate the addressData.csv file
+
+!ENTRY at.rc.tacos.client 2008-03-13 15:37:38.850
+!MESSAGE Successfully authenticated user3
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:37:45.663
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:42:07.862
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:44:07.658
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:46:07.766
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:48:07.748
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:50:08.153
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:52:07.745
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:54:07.603
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:56:07.758
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 15:58:07.835
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:00:07.755
+!MESSAGE Received 63 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-13 16:01:09.098
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.view.VehicleForm.okPressed(VehicleForm.java:210)
+	at org.eclipse.jface.dialogs.Dialog.buttonPressed(Dialog.java:464)
+	at org.eclipse.jface.dialogs.Dialog$2.widgetSelected(Dialog.java:616)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:227)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:820)
+	at org.eclipse.jface.window.Window.open(Window.java:796)
+	at at.rc.tacos.client.controller.VehicleEditAction.run(VehicleEditAction.java:65)
+	at at.rc.tacos.client.view.VehiclesSelectForm.okPressed(VehiclesSelectForm.java:110)
+	at org.eclipse.jface.dialogs.Dialog.buttonPressed(Dialog.java:464)
+	at org.eclipse.jface.dialogs.Dialog$2.widgetSelected(Dialog.java:616)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:227)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:820)
+	at org.eclipse.jface.window.Window.open(Window.java:796)
+	at at.rc.tacos.client.controller.VehicleOpenAction.run(VehicleOpenAction.java:58)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-13 16:01:09.285
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.view.VehiclesSelectForm.okPressed(VehiclesSelectForm.java:114)
+	at org.eclipse.jface.dialogs.Dialog.buttonPressed(Dialog.java:464)
+	at org.eclipse.jface.dialogs.Dialog$2.widgetSelected(Dialog.java:616)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:227)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:820)
+	at org.eclipse.jface.window.Window.open(Window.java:796)
+	at at.rc.tacos.client.controller.VehicleOpenAction.run(VehicleOpenAction.java:58)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:443)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:02:07.738
+!MESSAGE Received 63 of transports
+
+!ENTRY org.eclipse.ui 4 0 2008-03-13 16:02:12.988
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.view.VehicleForm.okPressed(VehicleForm.java:210)
+	at org.eclipse.jface.dialogs.Dialog.buttonPressed(Dialog.java:464)
+	at org.eclipse.jface.dialogs.Dialog$2.widgetSelected(Dialog.java:616)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:227)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:820)
+	at org.eclipse.jface.window.Window.open(Window.java:796)
+	at at.rc.tacos.client.controller.VehicleEditAction.run(VehicleEditAction.java:65)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY org.eclipse.ui 4 0 2008-03-13 16:02:34.066
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at at.rc.tacos.client.view.VehicleForm.okPressed(VehicleForm.java:210)
+	at org.eclipse.jface.dialogs.Dialog.buttonPressed(Dialog.java:464)
+	at org.eclipse.jface.dialogs.Dialog$2.widgetSelected(Dialog.java:616)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:227)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:820)
+	at org.eclipse.jface.window.Window.open(Window.java:796)
+	at at.rc.tacos.client.controller.VehicleEditAction.run(VehicleEditAction.java:65)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at at.rc.tacos.client.Application.start(Application.java:62)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:04:07.705
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:06:07.625
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:08:07.749
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:10:07.825
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:12:07.636
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:14:07.775
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:16:07.649
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:18:07.632
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:20:07.693
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:22:07.926
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:24:07.674
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:26:07.641
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:28:07.608
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:30:07.685
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:32:07.652
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:34:07.744
+!MESSAGE Received 63 of transports
+
+!ENTRY at.rc.tacos.client 1 0 2008-03-13 16:36:07.852
+!MESSAGE Received 63 of transports
