@@ -711,6 +711,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         else
             transport.setDirection(TOWARDS_BRUCK);
         
+        //transport date 
+        Calendar transportDate = Calendar.getInstance();
+        transportDate.set(Calendar.YEAR, dateTime.getYear());
+        transportDate.set(Calendar.MONTH, dateTime.getMonth());
+        transportDate.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+        transport.setDateOfTransport(transportDate.getTimeInMillis());
+        
         
 //        int index1;
 //        if(transport.getVehicleDetail() != null)
@@ -726,12 +733,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             //created time
             transport.setCreationTime(Calendar.getInstance().getTimeInMillis());
 
-            //transport date 
-            Calendar transportDate = Calendar.getInstance();
-            transportDate.set(Calendar.YEAR, dateTime.getYear());
-            transportDate.set(Calendar.MONTH, dateTime.getMonth());
-            transportDate.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
-            transport.setDateOfTransport(transportDate.getTimeInMillis());
+            
             //create and run the add action
             CreateTransportAction newAction = new CreateTransportAction(transport);
             newAction.run();
