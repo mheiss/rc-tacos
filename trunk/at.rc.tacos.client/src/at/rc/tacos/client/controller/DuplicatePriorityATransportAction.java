@@ -1,12 +1,15 @@
 package at.rc.tacos.client.controller;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.eclipse.jface.action.Action;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportPriority;
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.*;
 
@@ -41,9 +44,15 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         VehicleDetail nef = ModelFactory.getInstance().getVehicleList().getNEFVehicle();
         System.out.println("..............DuplicatePriorityA..., NEF: " +nef);
         newTransport.setVehicleDetail(nef);
+        
+        GregorianCalendar cal = new GregorianCalendar();
+		
         newTransport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
         newTransport.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_EMERGENCY_DOCTOR_INTERNAL);
         newTransport.getStatusMessages().clear();
+        //set the transport status time for "AE" (order placed)
+        long now = cal.getTimeInMillis();
+		newTransport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
         //date and time
         newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
         newTransport.setYear(Calendar.getInstance().get(Calendar.YEAR));
