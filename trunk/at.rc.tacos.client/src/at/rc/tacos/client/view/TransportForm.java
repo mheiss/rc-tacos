@@ -416,8 +416,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                     this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
             }
 
-            if(transport.getPlanedLocation().getLocationName() != null)
-                this.textOrtsstelle.setText(transport.getPlanedLocation().getLocationName());
+            //the real station which did the transport
+            if(transport.getVehicleDetail() != null)
+            {
+            	
+                this.textOrtsstelle.setText(transport.getVehicleDetail().getCurrentStation().getLocationName());
+            }
 
             if(transport.getFeedback() != null)
                 this.textRueckmeldung.setText(transport.getFeedback());
@@ -708,17 +712,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             transport.setDirection(TOWARDS_BRUCK);
         
         
-        //set the staff of the vehicle of the transport
-//        index = medic1ComboViewer.getCombo().getSelectionIndex();
-//		vehicleDetail.setFirstParamedic((StaffMember)medic1ComboViewer.getElementAt(index));
-		//medic1
-		int index1 = setTextFahrer.getCombo().getSelectionIndex();
-		transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index1));
-		System.out.println("-------------" +transport.getVehicleDetail().getDriver().getUserName());
-		
-//        if(setTextFahrer.getCombo().getSelectionIndex() != -1)
+//        int index1;
 //        if(transport.getVehicleDetail() != null)
-//        	    transport.getVehicleDetail().getDriver();
+//        {
+//        	index1 = setTextFahrer.getCombo().getSelectionIndex();
+//			transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index1));
+//        }
+		
+//     TODO set content for paramedic 1 and paramedic 2
 
         if(createNew)
         {
