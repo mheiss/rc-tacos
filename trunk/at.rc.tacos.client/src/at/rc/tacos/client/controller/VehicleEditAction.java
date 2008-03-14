@@ -40,7 +40,7 @@ public class VehicleEditAction extends Action
 	@Override
 	public String getText()
 	{
-		return "Fahrzeug besetzen";
+		return "Fahrzeug bearbeiten";
 	}
 
 	/**
