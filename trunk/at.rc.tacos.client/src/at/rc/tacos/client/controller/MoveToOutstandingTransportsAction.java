@@ -33,15 +33,22 @@ public class MoveToOutstandingTransportsAction extends Action implements ITransp
 	@Override
 	public void run()
 	{
+		System.out.println("......in run von MoveToOutstandingTransportsAction.........");
 		//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
+		System.out.println("........der transport(from street) in der run(): " +transport.getFromStreet());
 		//change transport program status to 'outstanding'
 		transport.getStatusMessages().clear();
+		System.out.println(".... nach dem clear der StatusMessages");
 		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+		if(transport.getTransportNumber() <0 )
+			transport.setTransportNumber(0);
+		System.out.println(".....nach dem setProgramStatus (outstanding) fromstreet und der Programstatus: " +transport.getFromStreet() +" " +transport.getProgramStatus());
 		//remove the vehicle to release the transport number
 		transport.clearVehicleDetail();
+		System.out.println(".... nach dem clearVehicleDetail.....fromstreet und der Programstatus: " +transport.getFromStreet() +" " +transport.getProgramStatus());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
