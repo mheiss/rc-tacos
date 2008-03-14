@@ -72,7 +72,8 @@ public class CopyTransportAction extends Action implements IProgramStatus
         t2.setLongDistanceTrip(t1.isLongDistanceTrip());
         t2.setMountainRescueServiceAlarming(t1.isMountainRescueServiceAlarming());
         //assert valid
-        t2.setKindOfIllness(t1.getKindOfIllness());
+        if(t1.getKindOfIllness() != null)
+        	t2.setKindOfIllness(t1.getKindOfIllness());
         t2.setKindOfTransport(t1.getKindOfTransport());
         if(t1.getCallerDetail() != null)
             t2.setCallerDetail(t1.getCallerDetail());
