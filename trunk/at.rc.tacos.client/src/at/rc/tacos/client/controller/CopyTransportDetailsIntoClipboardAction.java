@@ -92,11 +92,14 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 			al = al + "Hubschrauber";	
 		if(transport.isMountainRescueServiceAlarming())
 			al = al + "Bergrettung";
-		transport.isPoliceAlarming();
+		if(transport.isPoliceAlarming())
 			al = al + "Polizei";
 		
+		String textAlarming = "";
+		if(!al.equalsIgnoreCase(""))
+			textAlarming = "alarmiert: ";
 		smsData = "TNr: " +transportNumber +";" +"Pr: " +priority +";" +"von: " +from +";" +"Patient: " +patient +";" +"nach: " +to +";"
-		+"Anm: " +notes +";" +"Erk/Verl: " +kindOfIllness +";" +"alarmiert: " +al;
+		+"Anm: " +notes +";" +"Erk/Verl: " +kindOfIllness +";" +textAlarming +al;
 		if(transport.isLongDistanceTrip())
 			smsData = smsData + " Fernfahrt";
 		if(transport.isEmergencyPhone())
