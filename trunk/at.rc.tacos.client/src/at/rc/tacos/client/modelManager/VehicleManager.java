@@ -7,9 +7,11 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -36,6 +38,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     protected void init()
     {
         ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
     }
 
     /**
@@ -174,6 +177,69 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         //no assigned vehicle
         return null;
     }
+    
+    
+    /**
+     * Returns the VehicleDetail if the requested staff is assigned to a vehicle as a driver.
+     * @param staffId the id of the staff to check
+     * @return the VehicleDetail or null(if the staff member is not assigned to a vehicle as driver)
+     */
+    public VehicleDetail getVehicleDetailOfDriver(int staffId)
+    {
+        for(VehicleDetail detail:objectList)
+        {
+            //assert valid
+            if(detail.getDriver() != null)
+            {
+                if(detail.getDriver().getStaffMemberId() == staffId)
+                    return detail;
+            }
+        }
+        //no assigned vehicle
+        return null;
+    }
+    
+    /**
+     * Returns the VehicleDetail if the requested staff is assigned to a vehicle as the first paramedic.
+     * @param staffId the id of the staff to check
+     * @return the VehicleDetail or null(if the staff member is not assigned to a vehicle as first paramedic)
+     */
+    public VehicleDetail getVehicleDetailOfFirstParamedic(int staffId)
+    {
+        for(VehicleDetail detail:objectList)
+        {
+            //assert valid
+            if(detail.getFirstParamedic() != null)
+            {
+                if(detail.getFirstParamedic().getStaffMemberId() == staffId)
+                    return detail;
+            }
+        }
+        //no assigned vehicle
+        return null;
+    }
+    
+    /**
+     * Returns the VehicleDetail if the requested staff is assigned to a vehicle as the second paramedic.
+     * @param staffId the id of the staff to check
+     * @return the VehicleDetail or null(if the staff member is not assigned to a vehicle as second paramedic)
+     */
+    public VehicleDetail getVehicleDetailOfSecondParamedic(int staffId)
+    {
+        for(VehicleDetail detail:objectList)
+        {
+            //assert valid
+            if(detail.getSecondParamedic() != null)
+            {
+                if(detail.getSecondParamedic().getStaffMemberId() == staffId)
+                    return detail;
+            }
+        }
+        //no assigned vehicle
+        return null;
+    }
+    
+    
 
     /**
      * Returns a list of all vehicles which have NOT the status <code>VehicleDetail.outOfOrder</code><br>
@@ -252,6 +318,10 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             if(transport.getVehicleDetail() == null)
                 return;
 
+            //only underway transports are important
+            if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_UNDERWAY)
+            return;
+            
             int index = objectList.indexOf(transport.getVehicleDetail());
             VehicleDetail detail = objectList.get(index);
 
@@ -289,6 +359,53 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             //for a 'yellow' status
             detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
             NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);	
+        }
+        
+        if("ROSTERENTRY_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+        {	
+  
+        	//the roster entry manager
+            RosterEntryManager rosterManager = ModelFactory.getInstance().getRosterEntryList();
+            //the updated entry
+            RosterEntry entry = (RosterEntry)evt.getNewValue();
+            //assert valid
+            if(entry == null)
+                return;
+            
+            if(getVehicleOfStaff(entry.getStaffMember().getStaffMemberId()) == null)
+            	return;
+           
+            if(entry.getRealEndOfWork()==0 && entry.getRealStartOfWork() != 0)
+            	return;
+            
+            if(getVehicleDetailOfDriver(entry.getStaffMember().getStaffMemberId()) != null)
+            {
+            	VehicleDetail vehicle = getVehicleDetailOfDriver(entry.getStaffMember().getStaffMemberId());
+            	vehicle.setReadyForAction(false);
+            	vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+            	vehicle.setDriver(null);
+            	NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
+            }
+
+            //check driver fields of the vehicles
+            if(getVehicleDetailOfFirstParamedic(entry.getStaffMember().getStaffMemberId()) != null)
+            {
+            	VehicleDetail vehicle = getVehicleDetailOfFirstParamedic(entry.getStaffMember().getStaffMemberId());
+            	vehicle.setReadyForAction(false);
+            	vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+            	vehicle.setFirstParamedic(null);
+            	NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
+            }
+            
+            //check driver fields of the vehicles
+            if(getVehicleDetailOfSecondParamedic(entry.getStaffMember().getStaffMemberId()) != null)
+            {
+            	VehicleDetail vehicle = getVehicleDetailOfSecondParamedic(entry.getStaffMember().getStaffMemberId());
+            	vehicle.setReadyForAction(false);
+            	vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+            	vehicle.setSecondParamedic(null);
+            	NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
+            }          
         }
     }		
 }	
