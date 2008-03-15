@@ -3,8 +3,6 @@ package at.rc.tacos.client.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Calendar;
-import java.util.Date;
-
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.TextEvent;
@@ -32,7 +30,6 @@ import at.rc.tacos.client.controller.SelectRosterDateAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.util.Util;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.StaffMember;
@@ -134,11 +131,9 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         StaffMember loginInfo = SessionManager.getInstance().getLoginInformation().getUserInformation();
         
         user.setText(loginInfo.getFirstName() + " "+loginInfo.getLastName());
-        date.setText(Util.formatTimeAndDate(new Date().getTime()));
+        date.setText(MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(),MyUtils.timeAndDateFormat));
         
         //redraw
-        info.redraw();
-        info.update();
         info.layout(true);
       }
     

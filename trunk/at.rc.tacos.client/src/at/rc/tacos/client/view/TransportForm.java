@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -34,7 +33,6 @@ import org.eclipse.swt.widgets.Text;
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
-import at.rc.tacos.client.controller.VehicleUpdateAction;
 import at.rc.tacos.client.modelManager.AddressManager;
 import at.rc.tacos.client.modelManager.DiseaseManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -51,15 +49,12 @@ import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
-import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.model.VehicleDetail;
 
 /**
  * GUI (form) to manage the transport details
@@ -755,19 +750,17 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         }
         getShell().close();
     }
-
+    
     /**
-     * Cleanup and deregister the listener
+     * Cleanup the dialog
      */
     @Override
-    public boolean close()
+    protected void handleShellCloseEvent()
     {
-
         ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
         ModelFactory.getInstance().getAddressList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this);  
-        super.close();
-        return true;
+        ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this); 
+        super.handleShellCloseEvent();
     }
 
     /**
@@ -779,9 +772,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     	boolean result = MessageDialog.openConfirm(getShell(), "Abbrechen", "Wollen Sie wirklich abbrechen?"); 
         //check the result
     	if(result)
-    	{
     		getShell().close();
-    	}
     }
 
     /**

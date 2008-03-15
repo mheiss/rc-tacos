@@ -66,11 +66,10 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	private Calendar filteredDate = Calendar.getInstance();
 	
 	/**
-	 * Constructs a new journal view.
+	 * Constructs a new journal view and adds listeners 
 	 */
 	public JournalView()
 	{
-		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
 

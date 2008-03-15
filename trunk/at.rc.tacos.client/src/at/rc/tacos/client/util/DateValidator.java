@@ -2,6 +2,8 @@ package at.rc.tacos.client.util;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 
+import at.rc.tacos.util.MyUtils;
+
 
 /**
  * This class validates a date. It makes sure that the given string
@@ -17,7 +19,7 @@ public class DateValidator implements IInputValidator
 	 */
 	public String isValid(String newDate) 
 	{
-		if(Util.getTimestampFromTime(newDate) == -1)
+		if(MyUtils.stringToTimestamp(newDate,MyUtils.timeFormat) == -1)
 			return "Dies ist keine gültige Uhrzeit\n" +
 					"Bitte im Format hh:mm eingeben";
 

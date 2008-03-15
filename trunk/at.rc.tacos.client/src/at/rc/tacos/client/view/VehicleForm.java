@@ -152,10 +152,7 @@ public class VehicleForm extends TitleAreaDialog
 		dialog.setMessage("Wollen Sie wirklich abbrechen?");
 		//check the result
 		if (dialog.open() != SWT.NO)
-		{
-			getShell().dispose();
-			super.cancelPressed();
-		}
+		    getShell().close();
 	}
 
 	/**
@@ -198,8 +195,6 @@ public class VehicleForm extends TitleAreaDialog
 			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		//Send the update message
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
-		super.okPressed();
-		getShell().dispose();
 		getShell().close();
 	}
 

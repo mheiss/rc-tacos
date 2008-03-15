@@ -104,6 +104,19 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
         ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
     }	
+    
+    /**
+     * Cleanup the dialog when it is closed
+     */
+    @Override
+    public boolean close()
+    {
+        ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
+        return super.close();
+    }
 
     /**
      * Creates the dialog's contents
@@ -243,22 +256,10 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
                 updateAction.run();
             }
             getShell().close();
+            return;
         }
         //beep
         getShell().getDisplay().beep();
-    }
-
-    /**
-     * Cleanup and deregister the listener
-     */
-    @Override
-    protected void handleShellCloseEvent()
-    {
-        ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
-        super.handleShellCloseEvent();
     }
 
     /**

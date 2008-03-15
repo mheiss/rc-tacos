@@ -7,10 +7,12 @@ Bundle-Activator: at.rc.tacos.client.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.forms,
  org.eclipse.core.runtime,
+ org.eclipse.pde.runtime,
  org.eclipse.core.databinding,
  org.eclipse.jface.databinding,
  org.eclipse.core.databinding.beans,
  org.eclipse.jface.text,
  at.rc.tacos.core.net
 Eclipse-LazyStart: true
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/sleak.jar

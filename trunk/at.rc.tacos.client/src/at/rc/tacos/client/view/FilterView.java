@@ -57,7 +57,6 @@ public class FilterView extends ViewPart
 	 */
 	public FilterView()
 	{
-
 	}
 
 	/**

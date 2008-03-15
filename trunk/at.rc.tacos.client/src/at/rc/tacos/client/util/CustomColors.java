@@ -15,6 +15,9 @@ public final class CustomColors
 { 
     /** Set the default font */
     public static final Font SUBHEADER_FONT = new Font(null,"Arial", 10, SWT.BOLD);
+    public static final Font VEHICLE_NAME = new Font(null,"Arial", 18, SWT.BOLD);
+    public static final Font VEHICLE_TEXT = new Font(null,"Arial", 10, SWT.BOLD);
+    
     /** Set the main color scheme */
     public static final Color RED_COLOR = new Color(null,186,15,23);
     public static final Color GREY_COLOR = new Color(null,192,192,192);
@@ -23,6 +26,12 @@ public final class CustomColors
     public static final Color DARK_GREY_COLOR = new Color(null,128,128,128);
     public static final Color BACKGROUND_RED = new Color(null,250,128,114);
     public static final Color BACKGROUND_BLUE = new Color(null,102,153,255);
+    /** The color for the vehicle composites */
+    public static final Color COLOR_BLUE = Util.getColor(209, 229, 249);
+    public static final Color COLOR_GRAY =  Util.getColor(228, 236, 238);
+    public static final Color COLOR_DARK = Util.getColor(0, 0, 128);
+    public static final Color COLOR_NAME = Util.getColor(0, 0, 102);
+    public static final Color COLOR_WHITE = Util.getColor(128, 128, 128);
     
     private static FormColors formColors;
     
