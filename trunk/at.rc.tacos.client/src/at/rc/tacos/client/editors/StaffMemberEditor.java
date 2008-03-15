@@ -222,52 +222,53 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		staffMember.setStaffMemberId(Integer.parseInt(staffId.getText()));
 
 		//save the input in the staff member
-		if(fName.getText().trim().isEmpty())
+		if(fName.getText().length() >30 || fName.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie einen Vornamen ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie einen gültigen Vornamen ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		staffMember.setFirstName(fName.getText());
 
 		//Set the lastname
-		if(lName.getText().trim().isEmpty())
+		if(lName.getText().length() >30 || lName.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie einen Nachnamen ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie einen gültigen Nachnamen ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		staffMember.setLastName(lName.getText());
 
 		//Set the street
-		if(street.getText().trim().isEmpty())
+		if(street.getText().length() >50 || street.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie eine Straße ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie eine gültige Straße ein(max. 50 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		staffMember.setStreetname(street.getText());
 
 		//get the city
-		if(cityname.getText().trim().isEmpty())
+		if(cityname.getText().length() >50 || cityname.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie eine PLZ und eine Stadt ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie eine gültige PLZ und eine Stadt ein(max. 50 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		staffMember.setCityname(cityname.getText());
 
 		//the mail address
-		if(eMail.getText().trim().isEmpty())
+		if(eMail.getText().length() >100 || eMail.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine eMail Adresse an", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben sie eine gültige eMail Adresse an(max. 100 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		staffMember.setEMail(eMail.getText());
 
 		//date of birth
-		if(dateOfBirth.getText().trim().isEmpty())
+		String patternDate = "\\d{2}\\-\\d{2}-\\d{4}";
+		if(dateOfBirth.getText().trim().isEmpty() |! dateOfBirth.getText().matches(patternDate))
 		{
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben sie ein Geburtsdatum in der Form dd-mm-yyyy ein", IMessageProvider.ERROR);
@@ -276,15 +277,14 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		else
 		{
 			long date = MyUtils.stringToTimestamp(dateOfBirth.getText(), MyUtils.dateFormat);
-			if(date > 0)
+			if(MyUtils.isValidDate(date))
 				staffMember.setBirthday(date);
 			else
 			{
 				form.getDisplay().beep();
-				form.setMessage("Bitte geben Sie ein gültiges Geburtsdatum ein", IMessageProvider.ERROR);
-				return;
+				form.setMessage("Bitte geben sie ein Geburtsdatum in der Form dd-mm-yyyy ein", IMessageProvider.ERROR);
 			}
-		}
+			}
 		//sex
 		int index = sexComboViewer.getCombo().getSelectionIndex();
 		if(index == -1)
@@ -313,10 +313,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//Competences are already assigned, so we dont' have to assign them :)
 
 		//check the username
-		if(uName.getText().trim().isEmpty())
+		if(uName.getText().length() >30 || uName.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie einen Benutzernamen ein.", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie einen gültigen Benutzernamen ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		loginInfo.setUsername(uName.getText());
@@ -349,7 +349,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		if(index == -1)
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte wählen sie das die Berechtigungen des Benutzers aus", IMessageProvider.ERROR);
+			form.setMessage("Bitte wählen sie die Berechtigungen des Benutzers aus", IMessageProvider.ERROR);
 			return;
 		}
 		loginInfo.setAuthorization((String)authorisationComboViewer.getElementAt(index));
