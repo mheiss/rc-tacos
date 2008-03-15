@@ -68,8 +68,8 @@ TYPE=InnoDB;
 
 CREATE TABLE caller (
   caller_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  callername VARCHAR(50) NULL,
-  caller_phonenumber VARCHAR(30) NULL,
+  callername VARCHAR(150) NULL,
+  caller_phonenumber VARCHAR(60) NULL,
   PRIMARY KEY(caller_ID)
 )
 TYPE=InnoDB;
