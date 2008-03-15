@@ -41,7 +41,6 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	 */
 	public VehiclesView()
 	{
-		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
 		//create the list for the sections
@@ -54,7 +53,6 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	@Override 
 	public void dispose()
 	{
-		//remove the listener again
 		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
 	}

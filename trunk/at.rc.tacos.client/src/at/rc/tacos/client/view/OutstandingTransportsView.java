@@ -69,7 +69,6 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	 */
 	public OutstandingTransportsView()
 	{
-		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
 	}
 	
@@ -102,17 +101,12 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		viewerOffTrans.setLabelProvider(new OutstandingTransportsViewLabelProvider());
 		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportList());
 		viewerOffTrans.getTable().setLinesVisible(true);
-		
 		viewerOffTrans.refresh();
-		
-		/** tool tip*/
+
 		tooltip = new OutstandingTransportsTooltip(viewerOffTrans.getControl());
 		//show the tool tip when the selection has changed
-		
 		viewerOffTrans.addSelectionChangedListener(new ISelectionChangedListener() 
 		{
-			
-			
 			public void selectionChanged(SelectionChangedEvent event) 
 			{
 				TableItem[] selection = viewerOffTrans.getTable().getSelection();
@@ -122,7 +116,6 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 					tooltip.show(new Point(bounds.x, bounds.y));
 				}
 				
-				//TODO
 				this.makeActions();
 				this.hookContextMenu();
 			}

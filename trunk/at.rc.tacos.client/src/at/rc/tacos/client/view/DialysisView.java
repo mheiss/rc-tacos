@@ -50,11 +50,10 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	private DialysisTransportNowAction dialysisTransportNowAction;
 
 	/**
-	 * Constructs a new outstanding transports view.
+	 * Constructs a new outstanding transports view adds listeners.
 	 */
 	public DialysisView()
 	{
-		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getDialyseList().addPropertyChangeListener(this);
 	}
 	

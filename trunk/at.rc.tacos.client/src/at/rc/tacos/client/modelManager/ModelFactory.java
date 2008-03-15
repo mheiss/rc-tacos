@@ -6,7 +6,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Competence;
@@ -23,6 +22,7 @@ import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * The model factory manages the lifecyle of all model managers.
@@ -80,9 +80,10 @@ public class ModelFactory
             protected IStatus run(IProgressMonitor monitor) 
             {
                 NetWrapper net = NetWrapper.getDefault();
+                String now = MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(),MyUtils.timeAndDateFormat);
                 //Set up a filter for the current day
                 QueryFilter dateFilter = new QueryFilter();
-                dateFilter.add(IFilterTypes.DATE_FILTER, Util.formatDate(Calendar.getInstance().getTimeInMillis()));
+                dateFilter.add(IFilterTypes.DATE_FILTER, now);
                 net.requestListing(Location.ID, null);
                 net.requestListing(Job.ID, null);
                 net.requestListing(ServiceType.ID, null);

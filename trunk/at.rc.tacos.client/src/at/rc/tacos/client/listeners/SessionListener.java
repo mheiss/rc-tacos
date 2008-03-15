@@ -8,7 +8,6 @@ import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.LoginManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
-import at.rc.tacos.client.modelManager.StaffManager;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IConnectionStates;
 import at.rc.tacos.model.DayInfoMessage;
@@ -20,7 +19,6 @@ public class SessionListener extends ClientListenerAdapter
 {
 	protected SessionManager session = SessionManager.getInstance();
 	protected LoginManager manager = ModelFactory.getInstance().getLoginList();
-	protected StaffManager staff = ModelFactory.getInstance().getStaffList();
 	
 	@Override
 	public void add(AbstractMessage addMessage) 
@@ -29,8 +27,6 @@ public class SessionListener extends ClientListenerAdapter
 		{
 			Login addLogin = (Login)addMessage;
 			manager.add(addLogin);
-			//also update the staff
-			staff.add(addLogin.getUserInformation());
 		}
 	}
 

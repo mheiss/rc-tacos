@@ -90,10 +90,7 @@ public class VehiclesSelectForm extends TitleAreaDialog
         dialog.setMessage("Wollen Sie wirklich abbrechen?");
         //check the result
         if (dialog.open() != SWT.NO)
-        {
-            getShell().dispose();
-            super.cancelPressed();
-        }
+            getShell().close();
     }
 
     /**
@@ -108,7 +105,8 @@ public class VehiclesSelectForm extends TitleAreaDialog
             //Open the vehicle form
             VehicleEditAction action = new VehicleEditAction(vehicleDetail);
             action.run();
-            super.okPressed();
+            getShell().close();
+            return;
         }
         //indicate a error
         getShell().getDisplay().beep();

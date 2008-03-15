@@ -17,8 +17,9 @@ public class LogPerspective implements IPerspectiveFactory
     {
     	String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(false);
-        layout.setFixed(true);
+        layout.setFixed(false);
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
+//        layout.addStandaloneView("org.eclipse.swt.sleak.views.SleakView",false,IPageLayout.BOTTOM, 0.8f, editorArea);
         layout.addStandaloneView("org.eclipse.pde.runtime.LogView", false,IPageLayout.BOTTOM, 0.8f, editorArea);
     }
 }

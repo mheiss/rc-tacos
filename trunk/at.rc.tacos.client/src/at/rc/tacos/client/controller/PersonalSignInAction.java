@@ -12,9 +12,9 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.util.DateValidator;
-import at.rc.tacos.client.util.Util;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.util.MyUtils;
 
 public class PersonalSignInAction extends Action
 {
@@ -44,11 +44,12 @@ public class PersonalSignInAction extends Action
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 				"Anmeldezeit", 
 				"Bitte geben Sie die Anmeldezeit ein", 
-				Util.formatTime(new Date().getTime()), new DateValidator());
+				MyUtils.timestampToString(new Date().getTime(),MyUtils.timeFormat), 
+				new DateValidator());
 		if (dlg.open() == Window.OK) 
 		{
 		    //get the hour and the minutes
-		    long time = Util.getTimestampFromTime(dlg.getValue());
+		    long time = MyUtils.stringToTimestamp(dlg.getValue(),MyUtils.timeFormat);
 			Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(time);
 			//the hour and the minutes
