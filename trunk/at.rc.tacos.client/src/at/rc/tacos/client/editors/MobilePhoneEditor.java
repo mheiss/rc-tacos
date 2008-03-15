@@ -234,19 +234,19 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		form.setMessage(null, IMessageProvider.NONE);
 		
 		//name must be provided
-		if(name.getText().trim().isEmpty())
+		if(name.getText().length() >30 || name.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Bezeichnung für das Mobiltelefon ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben sie eine gültige Bezeichnung für das Mobiltelefon ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		detail.setMobilePhoneName(name.getText());
 		
 		//number must be provided
-		if(number.getText().trim().isEmpty())
+		if(number.getText().length() > 30 || number.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Nummer für das Mobiltelefon ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben sie eine gültige Nummer für das Mobiltelefon ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		//validate the number
