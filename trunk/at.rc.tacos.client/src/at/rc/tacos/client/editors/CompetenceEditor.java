@@ -223,11 +223,11 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
 
-		//name must be provided
-		if(name.getText().trim().isEmpty())
+		//name must be provided and because of the varchar(30) in the database, mustn't have a length more than 30 characters
+		if(name.getText().length() >30 || name.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Bezeichnung für die Kompetenz ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben sie eine gültige Bezeichnung für die Kompetenz ein (max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		competence.setCompetenceName(name.getText());
