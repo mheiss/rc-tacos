@@ -11,9 +11,12 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.client.util.DateValidator;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
 
 public class PersonalSignOutAction extends Action
