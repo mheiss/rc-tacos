@@ -222,10 +222,10 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		form.setMessage(null, IMessageProvider.NONE);
 		
 		//name must be provided
-		if(name.getText().trim().isEmpty())
+		if(name.getText().length() > 30 || name.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Bezeichnung für die Erkrankung an", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben sie eine gültige Bezeichnung für die Erkrankung an (max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		disease.setDiseaseName(name.getText());
