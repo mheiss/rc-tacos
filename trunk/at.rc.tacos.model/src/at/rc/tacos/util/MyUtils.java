@@ -140,7 +140,7 @@ public class MyUtils
     public final static long stringToTimestamp(String time,SimpleDateFormat dateFormat)
     {
     	if(time == null)
-    		return 0;
+    		return -1;
     	
         //set up the parser
         DateFormat formatter = dateFormat;
