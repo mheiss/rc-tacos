@@ -223,10 +223,10 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 		form.setMessage(null, IMessageProvider.NONE);
 		
 		//name must be provided
-		if(name.getText().trim().isEmpty())
+		if(name.getText().length() >30 || name.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine Bezeichnung für die Verwendung an", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben sie eine gültige Bezeichnung für die Verwendung an(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		job.setJobName(name.getText());
