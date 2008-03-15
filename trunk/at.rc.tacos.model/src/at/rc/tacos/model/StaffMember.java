@@ -268,7 +268,7 @@ public class StaffMember extends AbstractMessage
 	
     /**
      * Returns the birthday of the patient
-     * @return the date of birht
+     * @return the date of birth
      */
     public long getBirthday()
     {
