@@ -282,16 +282,16 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		form.setMessage(null, IMessageProvider.NONE);
 		
 		//save the name
-		if(locationName.getText().trim().isEmpty())
+		if(locationName.getText().length() > 30 || locationName.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie die Bezeichnung der Ortsstelle ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie eine gültige Bezeichnung für die Ortsstelle ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		location.setLocationName(locationName.getText());
 		
 		//save the street
-		if(street.getText().trim().isEmpty())
+		if(street.getText().length() > 30 || street.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben Sie eine Straße ein", IMessageProvider.ERROR);
@@ -300,10 +300,10 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		location.setStreet(street.getText());
 		
 		//save the street number
-		if(streetNumber.getText().trim().isEmpty())
+		if(streetNumber.getText().length() >10 || streetNumber.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie eine Hausnummer ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie eine gültige Hausnummer ein(max. 10 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		location.setStreetNumber(streetNumber.getText());
@@ -312,7 +312,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		if(city.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie eine Stadt eine", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie eine gültige Stadt ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		location.setCity(city.getText());
