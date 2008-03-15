@@ -74,12 +74,19 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
             t2.setCallerDetail(t1.getCallerDetail());
         if(t1.getFeedback() != null)
             t2.setFeedback(t1.getFeedback());
-        //destionation and target
+        //destination and target
         t2.setPlanedLocation(t1.getPlanedLocation());
         t2.setPatient(t1.getPatient());
         //switch the address for the back transport
-        t2.setFromStreet(t1.getToStreet()); 
-        t2.setFromCity(t1.getToCity());      
+        if(t1.getToStreet() != null &! t1.getToStreet().trim().equalsIgnoreCase(""))
+        	t2.setFromStreet(t1.getToStreet());
+        else
+        	t2.setFromStreet("kein Eintrag");
+        if(t1.getToCity() != null &! t1.getToCity().trim().equalsIgnoreCase(""))
+        	t2.setFromCity(t1.getToCity()); 
+        else
+        	t2.setFromCity("kein Eintrag");
+        
         t2.setToStreet(t1.getFromStreet()); 
         t2.setToCity(t1.getFromCity()); 
 
