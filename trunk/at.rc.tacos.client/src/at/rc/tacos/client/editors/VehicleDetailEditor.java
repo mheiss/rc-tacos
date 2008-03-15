@@ -405,7 +405,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		if(vehicleName.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie einen Fahrzeugname ein", IMessageProvider.ERROR);
+			form.setMessage("Bitte geben Sie einen Fahrzeugnamen ein", IMessageProvider.ERROR);
 			return;
 		}
 		detail.setVehicleName(vehicleName.getText());
@@ -415,7 +415,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		if(index == -1)
 		{
 			form.getDisplay().beep();
-			form.setMessage("Bitte ordnen Sie diesem Fahrzeug eine basis Ortsstelle zu", IMessageProvider.ERROR);
+			form.setMessage("Bitte ordnen Sie diesem Fahrzeug eine Basis Ortsstelle zu", IMessageProvider.ERROR);
 			return;
 		}
 		detail.setBasicStation((Location)basicLocationViewer.getElementAt(index));
