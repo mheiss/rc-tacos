@@ -188,7 +188,6 @@ public class VehicleForm extends TitleAreaDialog
 		vehicleDetail.setCurrentStation((Location)stationComboViewer.getElementAt(index));
 
 		//check the status of the vehicle (red,yellow, green)
-		System.out.println("--------------------------: " +medic1ComboViewer.getCombo().getSelectionIndex());
 		if(driverComboViewer.getCombo().getSelectionIndex() == -1 &&
 				medic1ComboViewer.getCombo().getSelectionIndex() == -1 &&
 				medic2ComboViewer.getCombo().getSelectionIndex() == -1)
