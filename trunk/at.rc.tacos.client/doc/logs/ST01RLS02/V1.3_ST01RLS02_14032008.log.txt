@@ -861,8 +861,9 @@ java.lang.NullPointerException
 
 *******************************************************************************************************************************
 SQL ERROR!!!!
-Die Datenbank erlaubt 30 Zeichen, ab 31 gibts den Error
-
+Die Datenbank erlaubt für die Competence 30 Zeichen, ab 31 gibts den Error
+Für Admin Editors Überprüfung implementiert.
+Für Forms (Transport, RosterEntry, ...) noch ausständig.
 *******************************************************************************************************************************
 !ENTRY at.rc.tacos.client 4 0 2008-03-14 02:35:48.808
 !MESSAGE SQL-Error:Data truncation: Data too long for column 'competence' at row 1
@@ -873,6 +874,10 @@ Die Datenbank erlaubt 30 Zeichen, ab 31 gibts den Error
 !ENTRY at.rc.tacos.client 4 0 2008-03-14 02:35:56.087
 !MESSAGE SQL-Error:Data truncation: Data too long for column 'competence' at row 1
 
+*******************************************************************************************************************************
+SQL ERROR!!!!
+???
+*******************************************************************************************************************************
 !ENTRY at.rc.tacos.client 4 0 2008-03-14 02:38:12.903
 !MESSAGE DAOError occured in VehicleDetailListener: Failed to update the vehicle Kapfenberg02,BKTW(1)
 
@@ -897,6 +902,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 02:38:28.804
 !MESSAGE Received 18 of transports
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 02:40:17.363
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -941,6 +949,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 02:41:58.034
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -985,6 +996,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 02:42:02.032
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1029,6 +1043,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 02:42:59.358
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1073,6 +1090,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:19:49.244
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1117,6 +1137,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:20:58.162
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1161,6 +1184,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:21:10.253
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1205,6 +1231,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:21:16.751
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1249,6 +1278,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:21:21.422
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1293,6 +1325,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:21:30.076
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1337,6 +1372,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:21:38.995
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1381,6 +1419,11 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+ Zeile 180: 		dateOfBirth.setText(MyUtils.timestampToString(staffMember.getBirthday(), MyUtils.dateFormat));
+Passiert bei mir, wenn ein Geburtsdatum null ist. In der Testumgebung sind aber keine null Einträge beim Geburtsdatum vorhanden
+???????????????
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:22:52.676
 !MESSAGE Unable to create editor ID at.rc.tacos.client.editors.staffMemberEditor: Argument cannot be null
 !STACK 0
@@ -1458,6 +1501,9 @@ java.lang.IllegalArgumentException: Argument cannot be null
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+**********************************************************************************************************************************
+bekannt: StaffMemberAdminView.java:146
+**********************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:25:00.011
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1529,6 +1575,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 03:48:42.106
 !MESSAGE Received 18 of transports
 
+**********************************************************************************************************************************
+wie oben- Geburtsdatum?
+**********************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:49:04.245
 !MESSAGE Unable to create editor ID at.rc.tacos.client.editors.staffMemberEditor: Argument cannot be null
 !STACK 0
@@ -1589,6 +1638,9 @@ java.lang.IllegalArgumentException: Argument cannot be null
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:50:12.494
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1632,7 +1684,14 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+*******************************************************************************************************************************
+entry.setRealEndOfWork(0); --> wie kann der entry null sein? nichts selectiert - dann ist doch auch kein Kontextmenü möglich????
 
+Beim Herumklicken auf der Personal View (Roster Entries)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:
+
+!ENTRY org.eclipse.ui 4 4 2008-03-15 03:36:25.640
+!MESSAGE Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'. (menu ids = [at.rc.tacos.client.view.personal_view])  part id = at.rc.tacos.client.view.personal_view)
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:50:43.139
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1667,6 +1726,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:52:01.987
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1711,6 +1773,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:52:31.896
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1755,6 +1821,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 03:52:39.604
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1847,6 +1917,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 07:08:22.699
 !MESSAGE Received 23 of transports
 
+*******************************************************************************************************************************
+bekannt - neue StaffMembers anlegen
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:32:46.854
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1903,6 +1976,10 @@ Caused by: org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
 	... 22 more
 
+*******************************************************************************************************************************
+eile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????  ---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:43.194
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -1953,6 +2030,10 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:45.185
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2003,6 +2084,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:45.875
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2053,6 +2139,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:46.032
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2103,6 +2194,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:49.999
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2153,6 +2249,10 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:52.915
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2203,6 +2303,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:53.511
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2253,6 +2358,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:54.028
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2303,6 +2413,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:54.405
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2353,6 +2468,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:54.561
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2403,6 +2523,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:54.703
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2453,6 +2578,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:56.443
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2503,6 +2633,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:57.729
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2553,6 +2688,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:58.356
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2603,6 +2743,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:58.857
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2653,6 +2798,10 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:34:59.233
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2703,6 +2852,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:35:03.817
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2753,6 +2907,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:35:04.271
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2803,6 +2962,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:35:04.490
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2853,6 +3017,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????---> diesen Fehler gibt es auch auf dem zweiten Rechner. Server?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 07:35:04.647
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2927,6 +3096,10 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 08:11:07.796
 !MESSAGE Received 41 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:11:34.164
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -2983,6 +3156,10 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 08:19:08.049
 !MESSAGE Received 41 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:19:38.028
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3027,6 +3204,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:20:35.125
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3074,6 +3255,10 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 08:21:08.480
 !MESSAGE Received 41 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:21:30.565
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3118,6 +3303,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:22:39.573
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3165,6 +3354,10 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 08:23:08.567
 !MESSAGE Received 41 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:23:21.321
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3209,6 +3402,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:24:07.758
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3253,6 +3450,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:24:20.434
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3297,6 +3498,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:24:30.797
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3341,6 +3546,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:24:36.252
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3421,6 +3630,10 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 08:43:58.286
 !MESSAGE Received 50 of transports
 
+
+*******************************************************************************************************************************
+bekannt - neue StaffMembers
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:44:44.315
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3477,6 +3690,11 @@ Caused by: org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
 	... 22 more
 
+*******************************************************************************************************************************
+ employeenameCombo.setInput(ModelFactory.getInstance().getStaffList());
+ ????????
+*******************************************************************************************************************************
+ 
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:48:59.204
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3527,6 +3745,11 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Zeile 1530 im TransportForm: setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+Beim Öffnen von einem Transportformulars????????????????
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 08:49:00.765
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3673,6 +3896,10 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 09:31:55.841
 !MESSAGE Received 52 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:31:58.730
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3723,6 +3950,10 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 09:35:55.506
 !MESSAGE Received 52 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:37:08.309
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3778,6 +4009,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:37:08.418
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3822,6 +4057,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:37:26.427
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3877,6 +4116,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:37:26.443
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -3924,6 +4167,10 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 09:37:55.339
 !MESSAGE Received 52 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:38:44.384
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4007,6 +4254,11 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 2008-03-14 09:50:25.871
 !MESSAGE Successfully authenticated user3
 
+
+*******************************************************************************************************************************
+!!!!!!!!! wir ein Vehicle update gemacht, obwohl es das vehicle nicht gibt?
+wo wurde dieses update aufgerufen???
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:50:30.411
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4043,12 +4295,21 @@ Caused by: java.lang.ArrayIndexOutOfBoundsException: -1
 	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
 	... 22 more
 
+
+*******************************************************************************************************************************
+passt zu diesem Feedback: 09:49 LS02 von Disposition auf Vormerkung --> keine Reaktion
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 4 2008-03-14 09:50:48.506
 !MESSAGE Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'. (menu ids = [at.rc.tacos.client.view.disposition_view])  part id = at.rc.tacos.client.view.disposition_view)
 
 !ENTRY org.eclipse.ui 4 4 2008-03-14 09:51:08.120
 !MESSAGE Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'. (menu ids = [at.rc.tacos.client.view.journal_view])  part id = at.rc.tacos.client.view.journal_view)
 
+
+*******************************************************************************************************************************
+Feedback: 09:52 LS01 und LS02 Verbindung zum Server unterbrochen
+?? Info View????
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:52:27.115
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4102,6 +4363,11 @@ java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+Feedback: 09:52 LS01 und LS02 Verbindung zum Server unterbrochen
+?? jetzt aber FilterView und SelectTransportDAteAction!!!
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:52:30.383
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4212,6 +4478,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 10:25:32.901
 !MESSAGE Received 56 of transports
 
+*******************************************************************************************************************************
+bekannt- neue StaffMembers
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:26:34.099
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4280,6 +4549,13 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 2008-03-14 10:38:14.491
 !MESSAGE Successfully authenticated user3
 
+*******************************************************************************************************************************
+Dialyse?????????
+
+72: int id = objectList.indexOf(dialysisPatient);
+73: objectList.set(id, dialysisPatient);
+wie vorher oben beim vehicle?
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:38:15.866
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4337,6 +4613,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 10:43:56.184
 !MESSAGE Received 226 of transports
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:44:59.508
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4381,6 +4660,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+wie oben
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:45:10.523
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4418,6 +4700,9 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 10:45:54.504
 !MESSAGE Received 238 of transports
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:45:55.395
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4462,6 +4747,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:46:30.783
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4506,6 +4794,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:47:07.734
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4550,6 +4841,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:47:20.843
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4594,6 +4888,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:47:30.420
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4641,6 +4938,9 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 10:47:54.560
 !MESSAGE Received 238 of transports
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:48:15.559
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4685,6 +4985,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:48:39.605
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4729,6 +5033,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:48:50.527
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4773,6 +5080,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:48:58.777
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4817,6 +5128,10 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 10:49:29.010
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -4906,6 +5221,9 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 11:13:51.513
 !MESSAGE Received 83 of transports
 
+*******************************************************************************************************************************
+wie oben
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 11:14:59.452
 !MESSAGE Unable to create editor ID at.rc.tacos.client.editors.staffMemberEditor: Argument cannot be null
 !STACK 0
@@ -4984,6 +5302,10 @@ java.lang.IllegalArgumentException: Argument cannot be null
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 11:25:59.529
 !MESSAGE Received 83 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 11:29:31.087
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -5040,6 +5362,10 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 11:30:46.517
 !MESSAGE Received 83 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 11:31:34.356
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -5354,6 +5680,10 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 14:25:56.125
 !MESSAGE Received 91 of transports
 
+
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 14:41:09.791
 !MESSAGE Unhandled event loop exception
 !STACK 0
