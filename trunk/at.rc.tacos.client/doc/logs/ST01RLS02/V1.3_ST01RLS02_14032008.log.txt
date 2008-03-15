@@ -11,6 +11,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 00:19:33.693
 !MESSAGE Received 10 of transports
 
+**********************************************************************************************************************************
+bekannt: StaffMemberAdminView.java:146
+**********************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 00:22:03.179
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -82,6 +85,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 00:28:45.025
 !MESSAGE Client null disconnected
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 00:38:32.238
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -126,6 +132,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+**********************************************************************************************************************************
+bekannt: StaffMemberAdminView.java:146
+**********************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 00:47:04.573
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -194,6 +203,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 00:47:15.370
 !MESSAGE Received 10 of transports
 
+**********************************************************************************************************************************
+bekannt: StaffMemberAdminView.java:146
+**********************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 00:48:40.401
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -262,6 +274,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 00:48:49.198
 !MESSAGE Received 10 of transports
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 00:50:21.291
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -306,6 +321,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 00:51:47.509
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -353,6 +371,9 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 00:52:36.899
 !MESSAGE Received 10 of transports
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 00:53:33.336
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -397,6 +418,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 00:54:11.163
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -444,6 +468,9 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 00:54:36.913
 !MESSAGE Received 10 of transports
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 01:02:23.176
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -488,6 +515,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 01:02:28.817
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -532,6 +562,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 01:02:34.521
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -576,6 +609,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 01:03:20.428
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -620,6 +656,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 01:03:45.023
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -679,6 +718,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 01:04:38.821
 !MESSAGE Received 10 of transports
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 01:05:00.994
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -723,6 +765,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 01:05:15.541
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -767,6 +812,9 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+bekannt (bei RosterEntryForm, VehiclesSelectForm, VehicleDetailForm), scheinbar egal
+*******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 02:34:17.931
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -811,6 +859,11 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
 
+*******************************************************************************************************************************
+SQL ERROR!!!!
+Die Datenbank erlaubt 30 Zeichen, ab 31 gibts den Error
+
+*******************************************************************************************************************************
 !ENTRY at.rc.tacos.client 4 0 2008-03-14 02:35:48.808
 !MESSAGE SQL-Error:Data truncation: Data too long for column 'competence' at row 1
 
