@@ -109,7 +109,6 @@ public class StaffManager extends PropertyManager
      */
     public List<StaffMember> getUnassignedStaffList()
     {
-    	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList");
     	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList();
     	List<StaffMember> filteredList = new ArrayList<StaffMember>();
     	for(StaffMember member:objectList)
@@ -119,7 +118,6 @@ public class StaffManager extends PropertyManager
     			continue;
     		filteredList.add(member);//add if the staffMember is not assigned to a vehicle
     	}
-    	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList, size: " +filteredList.size());
     	return filteredList;
     }
     
@@ -139,12 +137,11 @@ public class StaffManager extends PropertyManager
     }
     
     /**
-     * Returns a list of all staff members that are not assigned to a vehicle an checked in by location
+     * Returns a list of all staff members that are not assigned to a vehicle and checked in by location
      * @return list of staff members with no vehicle
      */
     public List<StaffMember> getUnassignedCheckedInStaffListByLocation(Location location)
     {
-    	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList");
     	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList();
     	List<StaffMember> filteredList = new ArrayList<StaffMember>();
     	RosterEntryManager rosterManager = ModelFactory.getInstance().getRosterEntryList();
@@ -158,7 +155,6 @@ public class StaffManager extends PropertyManager
     			staffMemberList.add(member);
     		}
     	}
-    	System.out.println("SSSSSSSSSSSSSSSSSSSSSSSStaffManager, in getUnassignedCheckedInStaffListByLocation, size of the list: " +staffMemberList.size());
     	for(StaffMember member:staffMemberList)
     	{
     		//check if a vehicle is assigned
@@ -166,7 +162,6 @@ public class StaffManager extends PropertyManager
     			continue;
     		filteredList.add(member);//add if the staffMember is not assigned to a vehicle
     	}
-    	System.out.println("SSSSSSStaffManager, in getUnassignedStaffList, size: " +filteredList.size());
     	return filteredList;
     }
 }
