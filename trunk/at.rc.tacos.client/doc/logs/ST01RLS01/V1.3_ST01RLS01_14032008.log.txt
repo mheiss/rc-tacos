@@ -88,7 +88,9 @@ org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
-
+******************************************************************************************************************************************
+??
+****************************************************************************************************************************************
 !ENTRY org.eclipse.ui.workbench 4 2 2008-03-14 00:28:45.388
 !MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.workbench".
 !STACK 0
@@ -243,6 +245,11 @@ Caused by: org.eclipse.core.runtime.AssertionFailedException: null argument:
 	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
 	... 22 more
 
+
+******************************************************************************************************************************************
+??
+118: if(vehicleManager.getVehicleOfStaff(member.getStaffMemberId()) != null)
+****************************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 01:04:27.422
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -483,6 +490,10 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 02:02:23.763
 !MESSAGE Received 10 of transports
 
+******************************************************************************************************************************************
+ 251:  gcal.setTimeInMillis(transport.getDateOfTransport());
+ für cal wird davor getInstance() aufgerufen --> gcal statt cal?
+******************************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 02:03:44.515
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -547,6 +558,10 @@ java.lang.NullPointerException
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 02:16:24.983
 !MESSAGE Received 16 of transports
 
+
+******************************************************************************************************************************************
+erledigt!
+******************************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 02:18:11.267
 !MESSAGE Unhandled event loop exception
 !STACK 0
@@ -795,6 +810,11 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 
 !ENTRY at.rc.tacos.client 1 0 2008-03-14 03:53:40.621
 !MESSAGE Received 18 of transports
+
+
+******************************************************************************************************************************************
+!!
+******************************************************************************************************************************************
 
 !ENTRY org.eclipse.ui 4 4 2008-03-14 04:31:18.836
 !MESSAGE Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'. (menu ids = [at.rc.tacos.client.view.disposition_view])  part id = at.rc.tacos.client.view.disposition_view)
@@ -1860,6 +1880,17 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 
 !ENTRY at.rc.tacos.client 4 0 2008-03-14 09:59:54.746
 !MESSAGE DAOError occured in TransportListener: Failed to update the transport: 274,Oberdorferstr. 12,Bruck,Sonja,Marche,LKH Bruck,Bruck
+
+
+******************************************************************************************************************************************
+Feedback dazu: 10:00 LS02 offene Transporte zuweisung --> keine Reaktion
+--> aber da steht es war am 2er Rechner und dieses LogFile gehört zum 1er Rechner
+
+In der Testdatenbank gibt es über 274 Transporte und über 274 Caller.
+Bei den Transporten ist der Transport 273 ein Dialysetransport- könnten daher die Probleme kommen?
+
+
+*******************************************************************************************************************************************
 
 !ENTRY at.rc.tacos.client 4 0 2008-03-14 10:00:03.184
 !MESSAGE SQL-Error:Duplicate entry '274' for key 1
