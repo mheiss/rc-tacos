@@ -1,10 +1,12 @@
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.common.IProgramStatus;
@@ -34,19 +36,23 @@ public class EmptyTransportAction extends Action implements ITransportStatus, IP
 	
 	@Override
 	public void run()
-	{
+	{	
 		//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
+
 		//confirm the cancel
-		boolean cancelConfirmed = MessageDialog.openQuestion(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-				"Leerfahrt", "Soll die Fahrt (von: " +transport.getFromStreet()+") wirklich als Leerfahrt abgelegt werden? Die Transportnummer bleibt dabei erhalten.");
-		if (!cancelConfirmed) 
-			return;
-		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-		transport.setNotes(transport.getNotes() + "/" +"Leerfahrt!");
-		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		InputDialog dlg = new InputDialog(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				"Leerfahrt", 
+				"Bitte geben Sie Informationen zur Leerfahrt ein", 
+				null,null);
+		if (dlg.open() == Window.OK) 
+		{
+			transport.setNotes(transport.getNotes() +" Leerfahrtinformation: " +dlg.getValue());
+			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
+			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		}
 	}
 }
