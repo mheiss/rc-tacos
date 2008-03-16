@@ -1,9 +1,12 @@
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.window.Window;
+import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
@@ -33,12 +36,24 @@ public class ForwardTransportAction extends Action implements ITransportStatus, 
 	@Override
 	public void run()
 	{
+		
 		//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		transport.setTransportNumber(Transport.TRANSPORT_FORWARD);
-		transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+
+		//confirm the cancel
+		InputDialog dlg = new InputDialog(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				"Weiterleitung", 
+				"Bitte geben Sie Informationen zur Weiterleitung ein", 
+				null,null);
+		if (dlg.open() == Window.OK) 
+		{
+			transport.setNotes(transport.getNotes() +" Weiterleitungsinformation: " +dlg.getValue());
+			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
+			transport.setTransportNumber(Transport.TRANSPORT_FORWARD);
+			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		}
 	}
 }
