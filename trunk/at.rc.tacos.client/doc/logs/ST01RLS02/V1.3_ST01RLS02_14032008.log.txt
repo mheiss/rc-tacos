@@ -875,7 +875,7 @@ Für Forms (Transport, RosterEntry, ...) noch ausständig.
 !MESSAGE SQL-Error:Data truncation: Data too long for column 'competence' at row 1
 
 *******************************************************************************************************************************
-SQL ERROR!!!!
+DAO ERROR!!!!
 ???
 *******************************************************************************************************************************
 !ENTRY at.rc.tacos.client 4 0 2008-03-14 02:38:12.903
@@ -1687,7 +1687,7 @@ java.lang.NullPointerException
 *******************************************************************************************************************************
 entry.setRealEndOfWork(0); --> wie kann der entry null sein? nichts selectiert - dann ist doch auch kein Kontextmenü möglich????
 
-Beim Herumklicken auf der Personal View (Roster Entries)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:
+Beim Herumklicken auf der Personal View (Roster Entries)passiert!!!!:
 
 !ENTRY org.eclipse.ui 4 4 2008-03-15 03:36:25.640
 !MESSAGE Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'. (menu ids = [at.rc.tacos.client.view.personal_view])  part id = at.rc.tacos.client.view.personal_view)
@@ -4256,7 +4256,7 @@ Command-line arguments:  -os win32 -ws win32 -arch x86
 
 
 *******************************************************************************************************************************
-!!!!!!!!! wir ein Vehicle update gemacht, obwohl es das vehicle nicht gibt?
+!!!!!!!!! wird ein Vehicle update gemacht, obwohl es das vehicle nicht gibt?
 wo wurde dieses update aufgerufen???
 *******************************************************************************************************************************
 !ENTRY org.eclipse.ui 4 0 2008-03-14 09:50:30.411
