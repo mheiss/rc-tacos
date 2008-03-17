@@ -208,21 +208,32 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                     vehicle.setVehicleType(rs.getString("av.vehicletype"));
 
                     //the staff of the vehicle
-                    StaffMember driver = new StaffMember();
-                    driver.setStaffMemberId(rs.getInt("av.driver_ID"));
-                    driver.setLastName(rs.getString("av.driver_lastname"));
-                    driver.setFirstName(rs.getString("av.driver_firstname"));
-                    vehicle.setDriver(driver);
-                    StaffMember medic1 = new StaffMember();
-                    medic1.setStaffMemberId(rs.getInt("av.medic1_ID"));
-                    medic1.setLastName(rs.getString("av.medic1_lastname"));
-                    medic1.setFirstName(rs.getString("av.medic1_firstname"));
-                    vehicle.setFirstParamedic(medic1);
-                    StaffMember medic2 = new StaffMember();
-                    medic2.setStaffMemberId(rs.getInt("av.medic2_ID"));
-                    medic2.setLastName(rs.getString("av.medic2_lastname"));
-                    medic2.setFirstName(rs.getString("av.medic2_firstname"));
-                    vehicle.setSecondParamedic(medic1);
+                    if(rs.getString("av.driver_ID") != null)
+                    {
+	                    StaffMember driver = new StaffMember();
+	                    driver.setStaffMemberId(rs.getInt("av.driver_ID"));
+	                    driver.setLastName(rs.getString("av.driver_lastname"));
+	                    driver.setFirstName(rs.getString("av.driver_firstname"));
+	                    vehicle.setDriver(driver);
+                    }
+                    //test the first medic
+                    if(rs.getString("av.medic1_ID") != null)
+                    {
+	                    StaffMember medic1 = new StaffMember();
+	                    medic1.setStaffMemberId(rs.getInt("av.medic1_ID"));
+	                    medic1.setLastName(rs.getString("av.medic1_lastname"));
+	                    medic1.setFirstName(rs.getString("av.medic1_firstname"));
+	                    vehicle.setFirstParamedic(medic1);
+                    }
+                    //test the second medic
+                    if(rs.getString("av.medic2_ID") != null)
+                    {
+	                    StaffMember medic2 = new StaffMember();
+	                    medic2.setStaffMemberId(rs.getInt("av.medic2_ID"));
+	                    medic2.setLastName(rs.getString("av.medic2_lastname"));
+	                    medic2.setFirstName(rs.getString("av.medic2_firstname"));
+	                    vehicle.setSecondParamedic(medic2);
+                    }
                     transport.setVehicleDetail(vehicle);
                 }
 
@@ -542,21 +553,32 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                     vehicle.setVehicleType(rs.getString("av.vehicletype"));
 
                     //the staff of the vehicle
-                    StaffMember driver = new StaffMember();
-                    driver.setStaffMemberId(rs.getInt("av.driver_ID"));
-                    driver.setLastName(rs.getString("av.driver_lastname"));
-                    driver.setFirstName(rs.getString("av.driver_firstname"));
-                    vehicle.setDriver(driver);
-                    StaffMember medic1 = new StaffMember();
-                    medic1.setStaffMemberId(rs.getInt("av.medic1_ID"));
-                    medic1.setLastName(rs.getString("av.medic1_lastname"));
-                    medic1.setFirstName(rs.getString("av.medic1_firstname"));
-                    vehicle.setFirstParamedic(medic1);
-                    StaffMember medic2 = new StaffMember();
-                    medic2.setStaffMemberId(rs.getInt("av.medic2_ID"));
-                    medic2.setLastName(rs.getString("av.medic2_lastname"));
-                    medic2.setFirstName(rs.getString("av.medic2_firstname"));
-                    vehicle.setSecondParamedic(medic1);
+                    if(rs.getString("av.driver_ID") != null)
+                    {
+	                    StaffMember driver = new StaffMember();
+	                    driver.setStaffMemberId(rs.getInt("av.driver_ID"));
+	                    driver.setLastName(rs.getString("av.driver_lastname"));
+	                    driver.setFirstName(rs.getString("av.driver_firstname"));
+	                    vehicle.setDriver(driver);
+                    }
+                    //test the first medic
+                    if(rs.getString("av.medic1_ID") != null)
+                    {
+	                    StaffMember medic1 = new StaffMember();
+	                    medic1.setStaffMemberId(rs.getInt("av.medic1_ID"));
+	                    medic1.setLastName(rs.getString("av.medic1_lastname"));
+	                    medic1.setFirstName(rs.getString("av.medic1_firstname"));
+	                    vehicle.setFirstParamedic(medic1);
+                    }
+                    //test the second medic
+                    if(rs.getString("av.medic2_ID") != null)
+                    {
+	                    StaffMember medic2 = new StaffMember();
+	                    medic2.setStaffMemberId(rs.getInt("av.medic2_ID"));
+	                    medic2.setLastName(rs.getString("av.medic2_lastname"));
+	                    medic2.setFirstName(rs.getString("av.medic2_firstname"));
+	                    vehicle.setSecondParamedic(medic2);
+                    }
                     transport.setVehicleDetail(vehicle);
                 }
 
