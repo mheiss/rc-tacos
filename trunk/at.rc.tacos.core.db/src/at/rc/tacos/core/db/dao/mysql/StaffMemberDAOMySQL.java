@@ -11,7 +11,6 @@ import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.*;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
-import at.rc.tacos.util.MyUtils;
 
 public class StaffMemberDAOMySQL implements StaffMemberDAO
 {
@@ -35,7 +34,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			query.setString(3, staffMember.getFirstName());
 			query.setString(4, staffMember.getLastName());
 			query.setBoolean(5, staffMember.isMale());
-			query.setString(6, MyUtils.timestampToString(staffMember.getBirthday(), MyUtils.sqlDate));
+			query.setString(6, staffMember.getBirthday());
 			query.setString(7, staffMember.getEMail());
 			query.setString(8, staffMember.getStreetname());
 			query.setString(9, staffMember.getCityname());
@@ -69,7 +68,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			query1.setString(2, staffmember.getFirstName());
 			query1.setString(3, staffmember.getLastName());
 			query1.setBoolean(4, staffmember.isMale());
-			query1.setString(5, MyUtils.timestampToString(staffmember.getBirthday(), MyUtils.sqlDate));
+			query1.setString(5, staffmember.getBirthday());
 			query1.setString(6, staffmember.getEMail());
 			query1.setString(7, staffmember.getStreetname());
 			query1.setString(8, staffmember.getCityname());
@@ -114,7 +113,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
+				staff.setBirthday(rs.getString("e.birthday"));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 				//query and set the location, phone and competence
@@ -153,7 +152,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
+				staff.setBirthday(rs.getString("e.birthday"));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 				//query and set the location, phone and competence
@@ -191,7 +190,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
+				staff.setBirthday(rs.getString("e.birthday"));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 				//query and set the location, phone and competence
@@ -229,7 +228,7 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("e.street"));
 				staff.setCityname(rs.getString("e.city"));
 				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(MyUtils.stringToTimestamp(rs.getString("e.birthday"), MyUtils.sqlDate));
+				staff.setBirthday(rs.getString("e.birthday"));
 				staff.setEMail(rs.getString("e.email"));
 				staff.setUserName(rs.getString("u.username"));
 				//query and set the location, phone and competence

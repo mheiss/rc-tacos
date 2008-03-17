@@ -48,8 +48,8 @@ public class DayInfoDAOMySQLTest extends DBTestBase
         comp2 = new Competence("comp2");
         location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
         location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,"27-01-2008",phone1,comp1,"mail1",location1);
+        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,"28-01-2008",phone2,comp2,"mail2",location2);
     	dayInfo1 = new DayInfoMessage("dayInfo1",MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),"user1");
         dayInfo2 = new DayInfoMessage("dayInfo2",MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),"user2");
         //insert the phones
@@ -104,7 +104,7 @@ public class DayInfoDAOMySQLTest extends DBTestBase
         Assert.assertEquals("user1", dayInfoMessage.getLastChangedBy());
     }
         
-    @Test(expected=SQLException.class)
+    @Test
     public void testUpdateDayInfo() throws SQLException
     {
         //create two indivdual block

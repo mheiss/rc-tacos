@@ -5,6 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import org.apache.commons.dbcp.ConnectionFactory;
+import org.apache.commons.dbcp.DriverManagerConnectionFactory;
+import org.apache.commons.dbcp.PoolableConnectionFactory;
+import org.apache.commons.dbcp.PoolingDriver;
+import org.apache.commons.pool.impl.GenericObjectPool;
+
 /**
  * The database source to connect to a mysql database
  * @author Michael
@@ -22,11 +28,28 @@ public class DataSource
      */
     private DataSource()
     {
-        //load the settings from the file
-        dbDriver = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.driver");
-        dbHost = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.url");
-        dbUser = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.user");
-        dbPwd = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.pw");
+        try
+        {
+            //load the settings from the file
+            dbDriver = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.driver");
+            dbHost = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.url");
+            dbUser = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.user");
+            dbPwd = ResourceBundle.getBundle(DataSource.DB_SETTINGS_BUNDLE_PATH).getString("db.pw");
+            
+            //load the mysql driver
+            Class.forName(dbDriver);
+            
+            //create and initialize the connection pool
+            GenericObjectPool connectionPool = new GenericObjectPool(null);
+            ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(dbHost, dbUser, dbPwd);
+            new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
+            PoolingDriver driver = new PoolingDriver();
+            driver.registerPool("tacos-pool",connectionPool);               
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Failed to initialize the connection pool");
+        }
     }
     
     /**
@@ -49,8 +72,9 @@ public class DataSource
     {        
         try
         {
-            Class.forName(dbDriver).newInstance();
-            return DriverManager.getConnection(dbHost,dbUser,dbPwd);
+        	Connection connection = DriverManager.getConnection("jdbc:apache:commons:dbcp:tacos-pool");
+        	return connection;
+            
         } 
         catch (SQLException e)
         {

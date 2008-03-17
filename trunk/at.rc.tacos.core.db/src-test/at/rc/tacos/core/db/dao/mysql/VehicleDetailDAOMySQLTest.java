@@ -24,7 +24,6 @@ import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.util.MyUtils;
 
 /**
  * This is a test class to test the functionality of the vehicle detail 
@@ -60,8 +59,8 @@ public class VehicleDetailDAOMySQLTest extends DBTestBase
         comp2 = new Competence("comp2");
         login1 = new Login("user1","password1",false);
     	login2 = new Login("user2","password2",false);
-        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,"27-01-2008",phone1,comp1,"mail1",location1);
+        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,"28-01-2008",phone2,comp2,"mail2",location2);
         //insert the phones
         int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
         int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);

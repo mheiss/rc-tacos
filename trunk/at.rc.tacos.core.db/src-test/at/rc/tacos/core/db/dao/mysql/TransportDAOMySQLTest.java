@@ -26,6 +26,7 @@ import at.rc.tacos.core.db.dao.VehicleDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
@@ -71,8 +72,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 		comp1 = new Competence("comp1");
 		comp2 = new Competence("comp2");
 		//logins and members
-		member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-		member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+		member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,"27-01-2008",phone1,comp1,"mail1",location1);
+		member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,"28-01-2008",phone2,comp2,"mail2",location2);
 		login1 = new Login("user1","password1",false);
 		login2 = new Login("user2","password2",false);
 		transport1 = new Transport("vonStraﬂe1","vonStadt1",location1,MyUtils.stringToTimestamp("28-01-2008", MyUtils.dateFormat),MyUtils.stringToTimestamp("28-01-2008 12:00", MyUtils.timeAndDateFormat),"A",2);
@@ -177,7 +178,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport3.setFeedback("feedbackNew");
 			transport3.setFirebrigadeAlarming(true);
 			transport3.setHelicopterAlarming(true);
-//			transport3.setKindOfIllness("Schlaganfall");
+			transport3.setKindOfIllness(new Disease("Schlaganfall"));
 			transport3.setKindOfTransport("Tragsessel");
 			transport3.setLongDistanceTrip(true);
 			transport3.setMountainRescueServiceAlarming(true);
@@ -207,7 +208,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			assertEquals("feedbackNew",transport4.getFeedback());
 			assertEquals("vonStadt3",transport4.getFromCity());
 			assertEquals("vonStraﬂe3",transport4.getFromStreet());
-			assertEquals("Schlaganfall",transport4.getKindOfIllness());
+			assertEquals("Schlaganfall",transport4.getKindOfIllness().getDiseaseName());
 			assertEquals("Tragsessel",transport4.getKindOfTransport());
 			assertEquals("thenotes",transport4.getNotes());
 			assertEquals("Muster",transport4.getPatient().getFirstname());
@@ -322,7 +323,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			transport.setFromCity("fromCity1");
 			transport.setFromStreet("fromStreet1");
 			transport.setHelicopterAlarming(true);
-//			transport.setKindOfIllness("Schlaganfall");
+			transport.setKindOfIllness(new Disease("Schlaganfall"));
 			transport.setKindOfTransport("mobil");
 			transport.setLongDistanceTrip(true);
 			transport.setMountainRescueServiceAlarming(true);
@@ -359,7 +360,7 @@ public class TransportDAOMySQLTest extends DBTestBase
 			assertEquals("feedbackNew",transport.getFeedback());
 			assertEquals("fromCity1",transport.getFromCity());
 			assertEquals("fromStreet1",transport.getFromStreet());
-			assertEquals("Schlaganfall",transport.getKindOfIllness());
+			assertEquals("Schlaganfall",transport.getKindOfIllness().getDiseaseName());
 			assertEquals("mobil",transport.getKindOfTransport());
 			assertEquals("thenotes",transport.getNotes());
 			assertEquals("Max",transport.getPatient().getFirstname());
