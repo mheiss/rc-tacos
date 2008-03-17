@@ -1,7 +1,6 @@
 <%@page import="at.rc.tacos.common.Constants"%>
-<%@page import="at.rc.tacos.util.MyUtils"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
-<%@ page import="java.text.*"%>
+<%@page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
@@ -93,7 +92,7 @@
 												</tr>
 												<tr>
 													<td>Geburtsdatum:</td>
-													<td><input type="text" name="birthday" id="textfield12" value="<%=MyUtils.timestampToString(userSession.getStaffMember().getBirthday(),MyUtils.dateFormat)%>" /></td>
+													<td><input type="text" name="birthday" id="textfield12" value="<%=userSession.getStaffMember().getBirthday()%>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>

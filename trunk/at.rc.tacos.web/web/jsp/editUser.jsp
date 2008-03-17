@@ -2,8 +2,6 @@
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
-<%@page import="at.rc.tacos.util.MyUtils"%>
-<%@page import="at.rc.tacos.common.Constants"%>
 <%@page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%@page import="at.rc.tacos.model.MobilePhoneDetail"%>
@@ -116,7 +114,7 @@
 													<td>Geburtsdatum:</td>
 													<td><input type="text" name="birthday"
 														id="textfield12"
-														value="<%=MyUtils.timestampToString(editStaffMember.getBirthday(),MyUtils.dateFormat)%>" /></td>
+														value="<%=editStaffMember.getBirthday()%>" /></td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
 													<td>&nbsp;</td>
