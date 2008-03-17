@@ -241,7 +241,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	@Override
 	public int hashCode()
 	{
-		return 31  + (int) (transportId ^ (transportId >>> 32));
+		return 31  + (transportId ^ (transportId >>> 32));
 	} 
 
 	//GETTERS AND SETTERS
