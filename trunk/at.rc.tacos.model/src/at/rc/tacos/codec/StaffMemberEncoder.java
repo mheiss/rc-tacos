@@ -38,8 +38,11 @@ public class StaffMemberEncoder  implements MessageEncoder
         writer.writeCharacters(String.valueOf(member.getStaffMemberId()));
         writer.writeEndElement();
         //get the encoder for the location
-        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
-        encoder.doEncode(member.getPrimaryLocation(), writer);
+        if(member.getPrimaryLocation() != null)
+        {
+	        MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Location.ID);
+	        encoder.doEncode(member.getPrimaryLocation(), writer);
+        }
         //write the elements and attributes
         writer.writeStartElement("lastName");
         writer.writeCharacters(member.getLastName());
@@ -49,9 +52,12 @@ public class StaffMemberEncoder  implements MessageEncoder
         writer.writeCharacters(member.getFirstName());
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("userName");
-        writer.writeCharacters(member.getUserName());
-        writer.writeEndElement();
+        if(member.getUserName() != null)
+        {
+	        writer.writeStartElement("userName");
+	        writer.writeCharacters(member.getUserName());
+	        writer.writeEndElement();
+        }
         //write the elements and attributes
         if(member.getStreetname() != null)
         {
@@ -78,13 +84,16 @@ public class StaffMemberEncoder  implements MessageEncoder
         writer.writeCharacters(String.valueOf(member.isMale()));
         writer.writeEndElement();
         //write the elements and attributes
-        writer.writeStartElement("birthday");
-        writer.writeCharacters(member.getBirthday());
-        writer.writeEndElement();
+        if(member.getBirthday() != null)
+        {
+	        writer.writeStartElement("birthday");
+	        writer.writeCharacters(member.getBirthday());
+	        writer.writeEndElement();
+        }
         //get the encoder for the phone and write the list
         if(!member.getPhonelist().isEmpty())
         {
-	        encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
+        	MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(MobilePhoneDetail.ID);
 	        for(MobilePhoneDetail detail:member.getPhonelist())
 	            encoder.doEncode(detail, writer);
         }
@@ -92,7 +101,7 @@ public class StaffMemberEncoder  implements MessageEncoder
         //get the encoder for the competence and write the list
         if(!member.getCompetenceList().isEmpty())
         {
-	        encoder = ProtocolCodecFactory.getDefault().getEncoder(Competence.ID);
+        	MessageEncoder encoder = ProtocolCodecFactory.getDefault().getEncoder(Competence.ID);
 	        for(Competence comp:member.getCompetenceList())
 	            encoder.doEncode(comp, writer);
         }
