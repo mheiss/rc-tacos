@@ -373,7 +373,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	private Composite createSection(Composite parent,String sectionName)
 	{
 		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());

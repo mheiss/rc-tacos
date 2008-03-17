@@ -58,7 +58,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
      * @param configurer the configuration action bar information
      * @return the configuration information for a action bar
      */
-    public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) 
+    @Override
+	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) 
     {
         return new ApplicationActionBarAdvisor(configurer);
     }
@@ -66,7 +67,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
     /**
      * Called in the constructor of the workbench window
      */
-    public void preWindowOpen() 
+    @Override
+	public void preWindowOpen() 
     {        
         //get access to the configuration interface
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();

@@ -49,7 +49,8 @@ public class DialysisTransportSorter extends ViewerSorter
      * @param object2 the second object to compare+
      * @return the result of the comparation 
      */
-    public int compare(Viewer viewer, Object object1, Object object2) {
+    @Override
+	public int compare(Viewer viewer, Object object1, Object object2) {
         int returnValue = 0;
         
         //cast to a roster entry

@@ -105,6 +105,7 @@ public class ImportAddressAction extends Action
 			//Start a new job
 			final Job job = new Job("AddressMonitor") 
 			{
+				@Override
 				protected IStatus run(IProgressMonitor monitor)
 				{
 					try
@@ -141,6 +142,7 @@ public class ImportAddressAction extends Action
 			};
 			job.addJobChangeListener(new JobChangeAdapter() 
 			{
+				@Override
 				public void done(IJobChangeEvent event) 
 				{
 					if (!event.getResult().isOK())

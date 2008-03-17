@@ -31,7 +31,8 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         this.transport = transport;
     }
 
-    public void run() 
+    @Override
+	public void run() 
     {
         //copy the transport
         Transport newTransport = new Transport();

@@ -65,6 +65,7 @@ public class Activator extends AbstractUIPlugin
 	 * @param context lifecyle informations
 	 * @throws Exception when a error occures during startup
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception 
 	{
 		super.start(context);
@@ -82,6 +83,7 @@ public class Activator extends AbstractUIPlugin
 	 * @param context lifecyle informations
 	 * @throws Exception when a error occures during shutdown
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception 
 	{
 		plugin = null;
@@ -192,6 +194,7 @@ public class Activator extends AbstractUIPlugin
 		//Start a new job
 		final Job job = new Job("TransportMonitor") 
 		{
+			@Override
 			protected IStatus run(IProgressMonitor monitor)
 			{
 				System.out.println("Running: "+MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(), MyUtils.dateFormat));
@@ -281,6 +284,7 @@ public class Activator extends AbstractUIPlugin
 		};
 		job.addJobChangeListener(new JobChangeAdapter() 
 		{
+			@Override
 			public void done(IJobChangeEvent event) 
 			{
 				if (!event.getResult().isOK())

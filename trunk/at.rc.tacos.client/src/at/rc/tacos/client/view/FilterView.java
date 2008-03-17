@@ -72,6 +72,7 @@ public class FilterView extends ViewPart
 	 * Creates the view.
 	 * @param parent the parent frame to insert the new content
 	 */
+	@Override
 	public void createPartControl(Composite parent) 
 	{
 		//the scrolled form
@@ -102,6 +103,7 @@ public class FilterView extends ViewPart
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() 
 	{ 
 		form.setFocus();
@@ -138,6 +140,7 @@ public class FilterView extends ViewPart
 		dateTime.setToolTipText("Datum der anzuzeigenden Transporte auswählen");
 		dateTime.addSelectionListener (new SelectionAdapter () 
 		{
+			@Override
 			public void widgetSelected (SelectionEvent e) 
 			{
 				Calendar cal = Calendar.getInstance();
@@ -245,7 +248,7 @@ public class FilterView extends ViewPart
 	private Composite createSection(Composite parent,String sectionName)
 	{
 		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());

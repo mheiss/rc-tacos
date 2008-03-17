@@ -61,6 +61,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	 * Create contents of the window.
 	 * @param parent the parent frame to insert the controlls
 	 */
+	@Override
 	public void createPartControl(Composite parent) 
 	{
 		// Create the scrolled parent component
@@ -275,8 +276,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	private Section createSection(ScrolledForm form,FormToolkit toolkit,String title,String description)
 	{
 		// Create the section
-		Section section = toolkit.createSection(form.getBody(), Section.TWISTIE
-				| Section.TITLE_BAR | Section.DESCRIPTION | Section.EXPANDED);
+		Section section = toolkit.createSection(form.getBody(), ExpandableComposite.TWISTIE
+				| ExpandableComposite.TITLE_BAR | Section.DESCRIPTION | ExpandableComposite.EXPANDED);
 		toolkit.createCompositeSeparator(section);
 		// Add the title and the description
 		section.setText(title);

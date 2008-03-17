@@ -48,6 +48,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	/**
 	 * Called to create the actions used in the fill methods.
 	 */
+	@Override
 	protected void makeActions(final IWorkbenchWindow window) 
 	{
 		// Creates the actions and registers them.
@@ -70,6 +71,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	/**
 	 *  Called to fill the menu bar with the main menus for the window.
 	 */
+	@Override
 	protected void fillMenuBar(IMenuManager menuBar) 
 	{
 		//the file menu
@@ -107,6 +109,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	/**
 	 *  Called to fill the cool bar with the main toolbars for the window.
 	 */
+	@Override
 	protected void fillCoolBar(ICoolBarManager coolBar) 
 	{
 		IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);

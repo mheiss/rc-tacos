@@ -103,7 +103,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
      * Callback method to create the control and initalize them.
      * @param parent the parent composite to add
      */
-    public void createPartControl(final Composite parent) 
+    @Override
+	public void createPartControl(final Composite parent) 
     {
         // Create the scrolled parent component
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -346,7 +347,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     /**
      * Passing the focus request to the viewer's control.
      */
-    public void setFocus()  { }
+    @Override
+	public void setFocus()  { }
 
     public void propertyChange(PropertyChangeEvent evt) 
     {

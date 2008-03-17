@@ -21,7 +21,8 @@ public class PersonalCreateEntryAction extends Action
         this.entry = entry;
     }
 
-    public void run() 
+    @Override
+	public void run() 
     {
         //send the entry
         NetWrapper.getDefault().sendAddMessage(RosterEntry.ID,entry);

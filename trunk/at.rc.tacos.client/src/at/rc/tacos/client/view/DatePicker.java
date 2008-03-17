@@ -122,7 +122,7 @@ public class DatePicker extends Composite
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				Calendar newCalendar = GregorianCalendar.getInstance();
+				Calendar newCalendar = Calendar.getInstance();
 				newCalendar.set(Calendar.HOUR_OF_DAY, 0);
 				newCalendar.set(Calendar.MINUTE, 0);
 				newCalendar.set(Calendar.SECOND, 0);

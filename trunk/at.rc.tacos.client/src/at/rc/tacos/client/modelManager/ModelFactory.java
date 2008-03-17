@@ -77,7 +77,8 @@ public class ModelFactory
         //get the client connection
         org.eclipse.core.runtime.jobs.Job job = new org.eclipse.core.runtime.jobs.Job("Request data listing") 
         {
-            protected IStatus run(IProgressMonitor monitor) 
+            @Override
+			protected IStatus run(IProgressMonitor monitor) 
             {
                 NetWrapper net = NetWrapper.getDefault();
                 String now = MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(),MyUtils.timeAndDateFormat);

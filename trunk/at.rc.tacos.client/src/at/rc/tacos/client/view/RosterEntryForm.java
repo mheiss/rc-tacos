@@ -267,7 +267,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
      */
     private void createGeneralSection(Composite parent)
     {
-        Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+        Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
         toolkit.createCompositeSeparator(section);
         section.setText("Allgemeine Daten");
         section.setLayout(new GridLayout());
@@ -393,7 +393,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
     private void createPlaningSection(Composite parent)
     {
         //create the section
-        Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+        Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
         toolkit.createCompositeSeparator(section);
         section.setText("Dienstzeiten");
         section.setLayout(new GridLayout());
@@ -452,7 +452,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
     private void createSignSection(Composite parent)
     {
         //create the section
-        Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+        Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
         toolkit.createCompositeSeparator(section);
         section.setText("Anmeldung zum Dienst / Abmeldung vom Dienst");
         section.setLayout(new GridLayout());

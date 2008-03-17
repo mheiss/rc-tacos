@@ -37,12 +37,12 @@ public class DateSelectionDialog extends Dialog
 
 	private String title = "Date Selection";
 
-	private Calendar initialCalendar = GregorianCalendar.getInstance();
+	private Calendar initialCalendar = Calendar.getInstance();
 
 	private FormToolkit toolkit;
 
 	public DateSelectionDialog(Shell parentShell, String title) {
-		this(parentShell, GregorianCalendar.getInstance(), title);
+		this(parentShell, Calendar.getInstance(), title);
 	}
 
 	public DateSelectionDialog(Shell parentShell, Calendar initialDate, String title) {

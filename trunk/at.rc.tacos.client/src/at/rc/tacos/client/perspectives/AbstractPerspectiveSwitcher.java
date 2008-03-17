@@ -25,7 +25,8 @@ public class AbstractPerspectiveSwitcher extends Action implements IPerspectiveL
     /**
      * Sets the perspective
      */
-    public void run() 
+    @Override
+	public void run() 
     {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         page.setPerspective(PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(getId()));

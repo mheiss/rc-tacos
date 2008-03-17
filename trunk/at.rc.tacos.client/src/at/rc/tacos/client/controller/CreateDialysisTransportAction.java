@@ -23,7 +23,8 @@ public class CreateDialysisTransportAction extends Action
         this.dia = dia;
     }
 
-    public void run() 
+    @Override
+	public void run() 
     {
         //send the transport
         NetWrapper.getDefault().sendAddMessage(DialysisPatient.ID, dia);
