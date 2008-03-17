@@ -317,6 +317,10 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             //assert valid
             if(transport.getVehicleDetail() == null)
                 return;
+            
+            //only underway transports are important
+            if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_UNDERWAY)
+                return;
 
             //only underway transports are important
             if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_UNDERWAY)

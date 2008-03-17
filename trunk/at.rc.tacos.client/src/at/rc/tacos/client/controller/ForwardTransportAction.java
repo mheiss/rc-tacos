@@ -36,7 +36,6 @@ public class ForwardTransportAction extends Action implements ITransportStatus, 
 	@Override
 	public void run()
 	{
-		
 		//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected transport

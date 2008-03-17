@@ -13,6 +13,10 @@ Time and Configuration Management
    <configIni use="default"/>
 
    <launcherArgs>
+      <vmArgs>-Xms256m 
+-Xmx512m 
+-Xgenconfig:64m,64m,semispaces:64m,512m,markcompact 
+-Xoptimize</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
@@ -30,7 +34,6 @@ Time and Configuration Management
             winLargeHigh="/at.rc.tacos.client/icons/launcher/launcher_48.bmp"/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>

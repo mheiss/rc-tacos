@@ -73,8 +73,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         configurer.setInitialSize(new Point(1024, 768));
         configurer.setTitle("Time and Coordination System");
         configurer.setShowCoolBar(false);
-        configurer.setShowStatusLine(true);
-        configurer.setShowProgressIndicator(true);   
+        configurer.setShowStatusLine(false);
+        configurer.setShowProgressIndicator(false);   
         configurer.setShowPerspectiveBar(false);
     }
 

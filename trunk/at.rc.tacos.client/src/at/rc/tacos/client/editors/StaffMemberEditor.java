@@ -52,7 +52,6 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.util.MyUtils;
 
 public class StaffMemberEditor extends EditorPart implements PropertyChangeListener
 {
@@ -177,7 +176,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		lName.setText(staffMember.getLastName());
 		street.setText(staffMember.getStreetname());
 		cityname.setText(staffMember.getCityname());
-		dateOfBirth.setText(MyUtils.timestampToString(staffMember.getBirthday(), MyUtils.dateFormat));
+		dateOfBirth.setText(staffMember.getBirthday());
 		for(MobilePhoneDetail detail:staffMember.getPhonelist())
 			phoneViewer.add(detail);
 		eMail.setText(staffMember.getEMail());
@@ -274,17 +273,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			form.setMessage("Bitte geben sie ein Geburtsdatum in der Form dd-mm-yyyy ein", IMessageProvider.ERROR);
 			return;
 		}
-		else
-		{
-			long date = MyUtils.stringToTimestamp(dateOfBirth.getText(), MyUtils.dateFormat);
-			if(MyUtils.isValidDate(date))
-				staffMember.setBirthday(date);
-			else
-			{
-				form.getDisplay().beep();
-				form.setMessage("Bitte geben sie ein Geburtsdatum in der Form dd-mm-yyyy ein", IMessageProvider.ERROR);
-			}
-			}
+		staffMember.setBirthday(dateOfBirth.getText());
 		//sex
 		int index = sexComboViewer.getCombo().getSelectionIndex();
 		if(index == -1)
