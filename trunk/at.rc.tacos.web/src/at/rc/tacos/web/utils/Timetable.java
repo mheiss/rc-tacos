@@ -13,8 +13,6 @@ import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.web.web.UserSession;
 
 public class Timetable 
 {

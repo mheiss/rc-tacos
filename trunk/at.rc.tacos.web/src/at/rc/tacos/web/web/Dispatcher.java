@@ -19,6 +19,7 @@ public class Dispatcher extends HttpServlet
 	/**
 	 * Initializes servlet context.
 	 */
+	@Override
 	public void init() throws ServletException
 	{
 		super.init();
@@ -27,6 +28,7 @@ public class Dispatcher extends HttpServlet
 	/**
 	 * Calls doPost.
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException
 	{
 		doPost(request, response);
@@ -35,6 +37,7 @@ public class Dispatcher extends HttpServlet
 	/**
 	 * Does Dispatching. Checks relative URL. Gets controller. Forwards to View.
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		// Assert we have a valid session.
