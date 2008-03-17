@@ -10,7 +10,7 @@ import at.rc.tacos.model.ServiceType;
 public class ServiceTypeListener extends ClientListenerAdapter
 {
 	//the serviceType manager
-	ServiceTypeManager manager = ModelFactory.getInstance().getServiceList();
+	ServiceTypeManager manager = ModelFactory.getInstance().getServiceManager();
 	
 	@Override
 	public void add(AbstractMessage addMessage)

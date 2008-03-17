@@ -10,7 +10,7 @@ import at.rc.tacos.model.Location;
 public class LocationListener extends ClientListenerAdapter
 {
 	//the location manager
-	LocationManager manager = ModelFactory.getInstance().getLocationList();
+	LocationManager manager = ModelFactory.getInstance().getLocationManager();
 	
 	@Override
 	public void add(AbstractMessage addMessage)

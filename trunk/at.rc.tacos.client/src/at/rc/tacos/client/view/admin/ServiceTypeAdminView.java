@@ -45,7 +45,7 @@ public class ServiceTypeAdminView extends ViewPart implements PropertyChangeList
      */
     public ServiceTypeAdminView()
     {
-    	ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
     }
     
     /**
@@ -54,7 +54,7 @@ public class ServiceTypeAdminView extends ViewPart implements PropertyChangeList
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
     }
 
     /**
@@ -103,7 +103,7 @@ public class ServiceTypeAdminView extends ViewPart implements PropertyChangeList
         });
         viewer.setContentProvider(new ServiceTypeContentProvider());
         viewer.setLabelProvider(new ServiceTypeLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getServiceList().toArray());
+        viewer.setInput(ModelFactory.getInstance().getServiceManager().toArray());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar

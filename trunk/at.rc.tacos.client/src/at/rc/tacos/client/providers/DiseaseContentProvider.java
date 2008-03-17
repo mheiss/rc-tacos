@@ -10,7 +10,7 @@ public class DiseaseContentProvider implements IStructuredContentProvider
 	@Override
 	public Object[] getElements(Object arg0)
 	{
-		return ModelFactory.getInstance().getDiseaseList().toArray();
+		return ModelFactory.getInstance().getDiseaseManager().toArray();
 	}
 
 	@Override

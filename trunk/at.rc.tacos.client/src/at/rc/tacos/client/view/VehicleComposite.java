@@ -84,7 +84,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		makeActions();
 		hookContextMenu();
 
-		ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	public void dispose()
 	{
 		super.dispose();
-		ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
 	}
 
 	/**

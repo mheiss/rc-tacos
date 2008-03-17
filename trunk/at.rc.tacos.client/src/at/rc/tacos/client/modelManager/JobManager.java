@@ -62,6 +62,9 @@ public class JobManager extends PropertyManager
         {
             public void run ()       
             {   
+            	//assert we have this job
+            	if(!objectList.contains(job))
+            		return;
                 //get the position of the entry
                 int id = objectList.indexOf(job);
                 objectList.set(id, job);

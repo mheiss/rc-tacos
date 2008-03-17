@@ -45,7 +45,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
      */
     public PhoneAdminView()
     {
-    	ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
     }
     
     /**
@@ -54,7 +54,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getPhoneManager().removePropertyChangeListener(this);
     }
 
     /**
@@ -103,7 +103,7 @@ public class PhoneAdminView extends ViewPart implements PropertyChangeListener
         });
         viewer.setContentProvider(new MobilePhoneContentProvider());
         viewer.setLabelProvider(new MobilePhoneLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getPhoneList().toArray());
+        viewer.setInput(ModelFactory.getInstance().getPhoneManager().toArray());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar

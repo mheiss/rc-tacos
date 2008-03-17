@@ -81,10 +81,10 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         super(parentShell);
         createNew = true;
         //bind the staff to this view
-        ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
         ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
     }
 
     /**
@@ -99,10 +99,10 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         createNew = false;
         this.rosterEntry = rosterEntry;
         //bind the staff to this view
-        ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
         ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
     }	
     
     /**
@@ -111,10 +111,10 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
     @Override
     public boolean close()
     {
-        ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
         ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
         return super.close();
     }
 
@@ -300,7 +300,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         employeenameCombo = new ComboViewer(combo);
         employeenameCombo.setContentProvider(new StaffMemberContentProvider());
         employeenameCombo.setLabelProvider(new StaffMemberLabelProvider());
-        employeenameCombo.setInput(ModelFactory.getInstance().getStaffList());
+        employeenameCombo.setInput(ModelFactory.getInstance().getStaffManager());
 
         final Label labelStation = new Label(client, SWT.NONE);
         labelStation.setText("Ortsstelle:");
@@ -334,7 +334,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         comboDienstverhaeltnis = new ComboViewer(comboDienstv);
         comboDienstverhaeltnis.setContentProvider(new ServiceTypeContentProvider());
         comboDienstverhaeltnis.setLabelProvider(new ServiceTypeLabelProvider());
-        comboDienstverhaeltnis.setInput(ModelFactory.getInstance().getServiceList());
+        comboDienstverhaeltnis.setInput(ModelFactory.getInstance().getServiceManager());
 
         //create the section
         Section dayInfoSection = toolkit.createSection(client, ExpandableComposite.TITLE_BAR);

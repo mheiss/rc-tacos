@@ -20,7 +20,7 @@ public class PrebookingViewContentProvider implements IStructuredContentProvider
 
 	public Object[] getElements(Object parent) 
 	{
-		TransportManager manager = ModelFactory.getInstance().getTransportList();
+		TransportManager manager = ModelFactory.getInstance().getTransportManager();
 		//return the elements
 		return manager.toArray();
 	}

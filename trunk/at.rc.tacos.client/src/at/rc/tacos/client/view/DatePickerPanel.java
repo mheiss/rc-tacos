@@ -11,7 +11,6 @@ package at.rc.tacos.client.view;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;

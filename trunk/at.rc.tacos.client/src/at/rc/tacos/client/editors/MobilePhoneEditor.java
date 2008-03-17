@@ -58,7 +58,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	 */
 	public MobilePhoneEditor()
 	{
-		ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getPhoneManager().removePropertyChangeListener(this);
 	}
 
 	/**

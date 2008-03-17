@@ -10,8 +10,6 @@ package at.rc.tacos.client.view;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionChangedListener;

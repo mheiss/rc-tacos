@@ -67,8 +67,8 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	 */
 	public LocationEditor()
 	{
-		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -77,8 +77,8 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getPhoneManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		phoneViewer = new ComboViewer(comboPhone);
 		phoneViewer.setContentProvider(new MobilePhoneContentProvider());
 		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		phoneViewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
+		phoneViewer.setInput(ModelFactory.getInstance().getPhoneManager().getMobilePhoneList());
 		//the notes section
 		final Label labelNotes = toolkit.createLabel(client,"Notizen zur Ortsstelle");
 		notesViewer = new TextViewer(client, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);

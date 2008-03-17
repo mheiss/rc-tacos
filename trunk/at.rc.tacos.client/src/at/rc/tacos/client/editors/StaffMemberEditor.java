@@ -84,11 +84,11 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	 */
 	public StaffMemberEditor()
 	{
-		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getLoginList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLoginManager().addPropertyChangeListener(this);
 		//keep on track when new locations or competences are added,updated or removed
-		ModelFactory.getInstance().getCompetenceList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getCompetenceManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -97,10 +97,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void dispose()
 	{ 
-		ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getLoginList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getCompetenceList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLoginManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getCompetenceManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
 	}
 
 	@Override
@@ -488,7 +488,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		phoneComboViewer = new ComboViewer(comboPhone);
 		phoneComboViewer.setContentProvider(new MobilePhoneContentProvider());
 		phoneComboViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		phoneComboViewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
+		phoneComboViewer.setInput(ModelFactory.getInstance().getPhoneManager().getMobilePhoneList());
 
 		addPhone = toolkit.createHyperlink(phoneSub, "Nummer hinzufügen", SWT.NONE);
 		addPhone.setToolTipText("Mit diesem Link kann dem Mitarbeiter eine Telefonnummer zugewiesen werden");
@@ -634,7 +634,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		primaryLocationComboViewer = new ComboViewer(stationCombo);
 		primaryLocationComboViewer.setContentProvider(new StationContentProvider());
 		primaryLocationComboViewer.setLabelProvider(new StationLabelProvider());
-		primaryLocationComboViewer.setInput(ModelFactory.getInstance().getLocationList());
+		primaryLocationComboViewer.setInput(ModelFactory.getInstance().getLocationManager());
 
 		//phone list 
 		final Label labelCompetence = toolkit.createLabel(client, "Verfügbare Kompetenzen: ");
@@ -646,7 +646,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		competenceComboViewer = new ComboViewer(comboVerw);
 		competenceComboViewer.setContentProvider(new CompetenceContentProvider());
 		competenceComboViewer.setLabelProvider(new CompetenceLabelProvider());
-		competenceComboViewer.setInput(ModelFactory.getInstance().getCompetenceList().toArray());
+		competenceComboViewer.setInput(ModelFactory.getInstance().getCompetenceManager().toArray());
 
 		addCompetence = toolkit.createHyperlink(compManage, "hinzufügen", SWT.NONE);
 		addCompetence.setToolTipText("Die gewählte Kompetenz dem Mitarbeiter zuweisen.");
@@ -832,12 +832,12 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			if(evt.getNewValue() instanceof StaffMember)
 			{
 				updateMember = (StaffMember)evt.getNewValue();
-				updateLogin = ModelFactory.getInstance().getLoginList().getLoginByUsername(updateMember.getUserName());
+				updateLogin = ModelFactory.getInstance().getLoginManager().getLoginByUsername(updateMember.getUserName());
 			}
 			if(evt.getNewValue() instanceof Login)
 			{
 				updateLogin = (Login)evt.getNewValue();
-				updateMember = ModelFactory.getInstance().getStaffList().getStaffMemberByUsername(updateLogin.getUsername());
+				updateMember = ModelFactory.getInstance().getStaffManager().getStaffMemberByUsername(updateLogin.getUsername());
 			}
 			//assert we have both values
 			if(updateLogin == null || updateMember == null)

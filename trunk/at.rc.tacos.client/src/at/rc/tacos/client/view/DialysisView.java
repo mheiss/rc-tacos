@@ -54,7 +54,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	 */
 	public DialysisView()
 	{
-		ModelFactory.getInstance().getDialyseList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getDialyseManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getDialyseList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getDialyseManager().removePropertyChangeListener(this);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		viewer= new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new DialysisTransportContentProvider());
 		viewer.setLabelProvider(new DialysisTransportLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getDialyseList());
+		viewer.setInput(ModelFactory.getInstance().getDialyseManager());
 		viewer.getTable().setLinesVisible(true);
 		viewer.refresh();
 

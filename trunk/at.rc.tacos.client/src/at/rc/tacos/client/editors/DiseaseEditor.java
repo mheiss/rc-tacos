@@ -57,7 +57,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 	 */
 	public DiseaseEditor()
 	{
-		ModelFactory.getInstance().getDiseaseList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getDiseaseManager().removePropertyChangeListener(this);
 	}
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize it.

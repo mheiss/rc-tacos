@@ -62,6 +62,9 @@ public class DiseaseManager extends PropertyManager
         {
             public void run ()       
             {   
+            	//assert we have this disease
+            	if(!objectList.contains(disease))
+            		return;
                 //get the position of the entry
                 int id = objectList.indexOf(disease);
                 objectList.set(id, disease);

@@ -58,7 +58,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	 */
 	public AddressEditor()
 	{
-		ModelFactory.getInstance().getAddressList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getAddressList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getAddressManager().removePropertyChangeListener(this);
 	}
 
 	/**

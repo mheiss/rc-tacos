@@ -45,7 +45,7 @@ public class VehicleAdminView extends ViewPart implements PropertyChangeListener
      */
     public VehicleAdminView()
     {
-    	ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
     }
     
     /**
@@ -54,7 +54,7 @@ public class VehicleAdminView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
     }
 
     /**
@@ -101,7 +101,7 @@ public class VehicleAdminView extends ViewPart implements PropertyChangeListener
         });
         viewer.setContentProvider(new VehicleContentProvider());
         viewer.setLabelProvider(new VehicleLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getVehicleList().getVehicleList());
+        viewer.setInput(ModelFactory.getInstance().getVehicleManager().getVehicleList());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar

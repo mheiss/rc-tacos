@@ -68,6 +68,9 @@ public class DialysisTransportManager extends PropertyManager
         {
             public void run ()       
             {  	
+            	//assert we have this dialysis
+            	if(!objectList.contains(dialysisPatient))
+            		return;
             	//get the position of the entry
             	int id = objectList.indexOf(dialysisPatient);
             	objectList.set(id, dialysisPatient);

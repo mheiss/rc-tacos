@@ -41,8 +41,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	 */
 	public VehiclesView()
 	{
-		ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 		//create the list for the sections
 		sectionList = new ArrayList<Section>();
 	}
@@ -53,8 +53,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	@Override 
 	public void dispose()
 	{
-		ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -327,7 +327,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 		int numOfVehicles = client.getChildren().length;
 
 		//get the list of vehicles that are ready for action
-		List<VehicleDetail> vehicleList = ModelFactory.getInstance().getVehicleList().getReadyVehicleListbyLocation(location);
+		List<VehicleDetail> vehicleList = ModelFactory.getInstance().getVehicleManager().getReadyVehicleListbyLocation(location);
 
 		//update the description
 		section.setText(location.getLocationName() +" - ("+ vehicleList.size() +" / "+numOfVehicles+")");

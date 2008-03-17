@@ -226,7 +226,7 @@ public class VehicleForm extends TitleAreaDialog
 		vehicleComboViewer = new ComboViewer(vehicleCombo);
 		vehicleComboViewer.setContentProvider(new VehicleContentProvider());
 		vehicleComboViewer.setLabelProvider(new VehicleLabelProvider());
-		vehicleComboViewer.setInput(ModelFactory.getInstance().getVehicleList());
+		vehicleComboViewer.setInput(ModelFactory.getInstance().getVehicleManager());
 
 		//Mobile Phone
 		final Label labelPhone = new Label(client, SWT.NONE);
@@ -236,7 +236,7 @@ public class VehicleForm extends TitleAreaDialog
 		mobilePhoneComboViewer = new ComboViewer(mobilePhoneCombo);
 		mobilePhoneComboViewer.setContentProvider(new MobilePhoneContentProvider());
 		mobilePhoneComboViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		mobilePhoneComboViewer.setInput(ModelFactory.getInstance().getPhoneList());
+		mobilePhoneComboViewer.setInput(ModelFactory.getInstance().getPhoneManager());
 
 		//Station
 		final Label labelStation = new Label(client, SWT.NONE);
@@ -247,7 +247,7 @@ public class VehicleForm extends TitleAreaDialog
 		stationComboViewer = new ComboViewer(stationCombo);
 		stationComboViewer.setContentProvider(new StationContentProvider());
 		stationComboViewer.setLabelProvider(new StationLabelProvider());
-		stationComboViewer.setInput(ModelFactory.getInstance().getLocationList());
+		stationComboViewer.setInput(ModelFactory.getInstance().getLocationManager());
 
 		//layout for the labels
 		GridData data = new GridData();
@@ -406,7 +406,7 @@ public class VehicleForm extends TitleAreaDialog
 		else
 			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
 		driverComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		driverComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
+		driverComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
 				
 		//create the hyperlink
 		ImageHyperlink removeDriver = toolkit.createImageHyperlink(comp, SWT.NONE);
@@ -443,7 +443,7 @@ public class VehicleForm extends TitleAreaDialog
 		else
 			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
 		medic1ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
+		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
 		//create the hyperlink
 		ImageHyperlink removeMedic = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeMedic.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
@@ -479,7 +479,7 @@ public class VehicleForm extends TitleAreaDialog
 		else
 			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
 		medic2ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
-		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffList().getUnassignedStaffList());
+		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
 
 		//create the hyperlink
 		ImageHyperlink removeMedic2 = toolkit.createImageHyperlink(comp, SWT.NONE);

@@ -78,9 +78,9 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	 */
 	public VehicleDetailEditor()
 	{
-		ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getPhoneList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -89,9 +89,9 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getPhoneList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getPhoneManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		basicLocationViewer = new ComboViewer(stationCombo);
 		basicLocationViewer.setContentProvider(new StationContentProvider());
 		basicLocationViewer.setLabelProvider(new StationLabelProvider());
-		basicLocationViewer.setInput(ModelFactory.getInstance().getLocationList());
+		basicLocationViewer.setInput(ModelFactory.getInstance().getLocationManager());
 		
 		//mobile phone
 		final Label labelPhone = toolkit.createLabel(client, "Mobiltelefon");
@@ -222,7 +222,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		phoneViewer = new ComboViewer(phoneCombo);
 		phoneViewer.setContentProvider(new MobilePhoneContentProvider());
 		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		phoneViewer.setInput(ModelFactory.getInstance().getPhoneList().getMobilePhoneList());
+		phoneViewer.setInput(ModelFactory.getInstance().getPhoneManager().getMobilePhoneList());
 		
 		//current location
 		final Label locationLabel = toolkit.createLabel(client, "Aktuelle Ortsstelle");
@@ -230,7 +230,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		currentLocationViewer = new ComboViewer(currentLocationCombo);
 		currentLocationViewer.setContentProvider(new StationContentProvider());
 		currentLocationViewer.setLabelProvider(new StationLabelProvider());
-		currentLocationViewer.setInput(ModelFactory.getInstance().getLocationList());
+		currentLocationViewer.setInput(ModelFactory.getInstance().getLocationManager());
 
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -277,21 +277,21 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		driverViewer = new ComboViewer(driverCombo);
 		driverViewer.setContentProvider(new StaffMemberContentProvider());
 		driverViewer.setLabelProvider(new StaffMemberLabelProvider());
-		driverViewer.setInput(ModelFactory.getInstance().getStaffList().getStaffList());
+		driverViewer.setInput(ModelFactory.getInstance().getStaffManager().getStaffList());
 		//medic
 		final Label labelFirstParamedic = toolkit.createLabel(client, "Sanitäter");
 		Combo firstParamedicCombo = new Combo(client, SWT.READ_ONLY);
 		firstParamedicViewer = new ComboViewer(firstParamedicCombo);
 		firstParamedicViewer.setContentProvider(new StaffMemberContentProvider());
 		firstParamedicViewer.setLabelProvider(new StaffMemberLabelProvider());
-		firstParamedicViewer.setInput(ModelFactory.getInstance().getStaffList().getStaffList());
+		firstParamedicViewer.setInput(ModelFactory.getInstance().getStaffManager().getStaffList());
 		//medic
 		final Label labelSecondParamedic = toolkit.createLabel(client, "Sanitäter");
 		Combo secondParamedicCombo = new Combo(client, SWT.READ_ONLY);
 		secondParamedicViewer = new ComboViewer(secondParamedicCombo);
 		secondParamedicViewer.setContentProvider(new StaffMemberContentProvider());
 		secondParamedicViewer.setLabelProvider(new StaffMemberLabelProvider());
-		secondParamedicViewer.setInput(ModelFactory.getInstance().getStaffList().getStaffList());
+		secondParamedicViewer.setInput(ModelFactory.getInstance().getStaffManager().getStaffList());
 		
 		//the notes section
 		final Label labelNotes = toolkit.createLabel(client,"Notizen zum Fahrzeug");

@@ -10,7 +10,7 @@ public class CompetenceContentProvider implements IStructuredContentProvider
     @Override
     public Object[] getElements(Object arg0)
     {
-        return ModelFactory.getInstance().getCompetenceList().toArray();
+        return ModelFactory.getInstance().getCompetenceManager().toArray();
     }
 
     @Override

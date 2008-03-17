@@ -15,7 +15,7 @@ import at.rc.tacos.model.Disease;
 public class DiseaseListener extends ClientListenerAdapter
 {
 	//the disease manager
-	private DiseaseManager manager = ModelFactory.getInstance().getDiseaseList();
+	private DiseaseManager manager = ModelFactory.getInstance().getDiseaseManager();
 
 	@Override
 	public void add(AbstractMessage addMessage) 

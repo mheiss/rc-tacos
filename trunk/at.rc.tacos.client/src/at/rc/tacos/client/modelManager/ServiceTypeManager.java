@@ -9,7 +9,6 @@ import at.rc.tacos.model.ServiceType;
 
 public class ServiceTypeManager extends PropertyManager 
 {
-    //the list
     private List<ServiceType> objectList = new ArrayList<ServiceType>();
 
     /**
@@ -27,9 +26,7 @@ public class ServiceTypeManager extends PropertyManager
         {
             public void run ()       
             {
-                //add the item
                 objectList.add(serviceType);
-                //notify the view
                 firePropertyChange("SERVICETYPE_ADD", null, serviceType);
             }
         }); 
@@ -62,7 +59,10 @@ public class ServiceTypeManager extends PropertyManager
         {
             public void run ()       
             {   
-                //get the position of the entry
+            	//assert we have this service type
+            	if(!objectList.contains(serviceType))
+            		return;
+                //get the position of the entry and update it
                 int id = objectList.indexOf(serviceType);
                 objectList.set(id, serviceType);
                 firePropertyChange("SERVICETYPE_UPDATE", null, serviceType); 

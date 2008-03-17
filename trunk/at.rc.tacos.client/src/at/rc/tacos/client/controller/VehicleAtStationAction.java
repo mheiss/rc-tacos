@@ -66,7 +66,7 @@ public class VehicleAtStationAction extends Action implements ITransportStatus, 
 	@Override
 	public void run()
 	{	
-		objectList = ModelFactory.getInstance().getTransportList().getJournalTransportsByVehicleAndStatusSix(detail.getVehicleName());
+		objectList = ModelFactory.getInstance().getTransportManager().getJournalTransportsByVehicleAndStatusSix(detail.getVehicleName());
 		//create a timestamp for the transport state S6
 		GregorianCalendar gcal = new GregorianCalendar();
 		long timestamp = gcal.getTimeInMillis();

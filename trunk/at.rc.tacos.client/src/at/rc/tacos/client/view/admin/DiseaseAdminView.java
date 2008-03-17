@@ -45,7 +45,7 @@ public class DiseaseAdminView extends ViewPart implements PropertyChangeListener
      */
     public DiseaseAdminView()
     {
-    	ModelFactory.getInstance().getDiseaseList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
     }
     
     /**
@@ -54,7 +54,7 @@ public class DiseaseAdminView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getDiseaseManager().removePropertyChangeListener(this);
     }
 
     /**
@@ -103,7 +103,7 @@ public class DiseaseAdminView extends ViewPart implements PropertyChangeListener
         });
         viewer.setContentProvider(new DiseaseContentProvider());
         viewer.setLabelProvider(new DiseaseLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getDiseaseList());
+        viewer.setInput(ModelFactory.getInstance().getDiseaseManager());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar

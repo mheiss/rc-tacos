@@ -10,7 +10,7 @@ public class MobilePhoneContentProvider implements IStructuredContentProvider
     @Override
     public Object[] getElements(Object arg0)
     {
-        return ModelFactory.getInstance().getPhoneList().toArray();
+        return ModelFactory.getInstance().getPhoneManager().toArray();
     }
 
     @Override

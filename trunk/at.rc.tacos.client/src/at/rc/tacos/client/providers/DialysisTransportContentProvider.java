@@ -21,7 +21,7 @@ public class DialysisTransportContentProvider implements IStructuredContentProvi
 
 	public Object[] getElements(Object parent) 
 	{
-		DialysisTransportManager manager = ModelFactory.getInstance().getDialyseList();
+		DialysisTransportManager manager = ModelFactory.getInstance().getDialyseManager();
 		//return the elements
 		return manager.toArray();
 	}

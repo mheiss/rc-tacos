@@ -42,7 +42,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         //mark transport number (no number for the nef)
         newTransport.setTransportNumber(Transport.TRANSPORT_NEF);
         //assig nef vehicle
-        VehicleDetail nef = ModelFactory.getInstance().getVehicleList().getNEFVehicle();
+        VehicleDetail nef = ModelFactory.getInstance().getVehicleManager().getNEFVehicle();
         System.out.println("..............DuplicatePriorityA..., NEF: " +nef);
         newTransport.setVehicleDetail(nef);
         

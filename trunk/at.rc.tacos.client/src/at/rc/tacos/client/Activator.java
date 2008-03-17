@@ -204,7 +204,7 @@ public class Activator extends AbstractUIPlugin
 					Calendar current = Calendar.getInstance();
 					current.add(Calendar.HOUR_OF_DAY, +2);
 					//check the transports
-					for(Transport transport:ModelFactory.getInstance().getTransportList().getTransportList())
+					for(Transport transport:ModelFactory.getInstance().getTransportManager().getTransportList())
 					{
 						//check the status
 						if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_PREBOOKING)
@@ -218,7 +218,7 @@ public class Activator extends AbstractUIPlugin
 						}
 					}
 					//check the dialysis patients
-					for(DialysisPatient patient:ModelFactory.getInstance().getDialyseList().getDialysisList())
+					for(DialysisPatient patient:ModelFactory.getInstance().getDialyseManager().getDialysisList())
 					{
 						//first check: do we have already generated a transport for today?
 						if(MyUtils.isEqualDate(patient.getLastTransportDate(),current.getTimeInMillis()))

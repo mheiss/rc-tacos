@@ -16,7 +16,7 @@ import at.rc.tacos.model.Transport;
  */
 public class TransportListener extends ClientListenerAdapter
 {
-    TransportManager manager = ModelFactory.getInstance().getTransportList();
+    TransportManager manager = ModelFactory.getInstance().getTransportManager();
     
     @Override
     public void add(AbstractMessage addMessage)
@@ -40,7 +40,6 @@ public class TransportListener extends ClientListenerAdapter
     public void list(ArrayList<AbstractMessage> listMessage)
     {
         manager.removeAllEntries();  
-        //log
         Activator.getDefault().log("Received "+listMessage.size()+ " of transports", IStatus.INFO);
         //add all
         for(AbstractMessage msg:listMessage)

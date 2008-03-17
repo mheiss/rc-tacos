@@ -57,7 +57,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	 */
 	public ServiceTypeEditor()
 	{
-		ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
 	}
 
 	/**

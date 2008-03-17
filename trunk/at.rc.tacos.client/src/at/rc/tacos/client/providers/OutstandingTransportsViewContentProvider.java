@@ -20,7 +20,7 @@ public class OutstandingTransportsViewContentProvider implements IStructuredCont
 
 	public Object[] getElements(Object parent) 
 	{
-		TransportManager manager = ModelFactory.getInstance().getTransportList();
+		TransportManager manager = ModelFactory.getInstance().getTransportManager();
 		//return the elements
 		return manager.toArray();
 	}

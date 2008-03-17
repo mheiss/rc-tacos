@@ -15,25 +15,25 @@ public class RosterEntryListener extends ClientListenerAdapter
     @Override
     public void add(AbstractMessage addMessage)
     {
-        ModelFactory.getInstance().getRosterEntryList().add((RosterEntry)addMessage);
+        ModelFactory.getInstance().getRosterEntryManager().add((RosterEntry)addMessage);
     }
     
 	@Override
 	public void update(AbstractMessage updateMessage) 
 	{
-		ModelFactory.getInstance().getRosterEntryList().update((RosterEntry)updateMessage);
+		ModelFactory.getInstance().getRosterEntryManager().update((RosterEntry)updateMessage);
 	}
 	
 	@Override
 	public void remove(AbstractMessage removeMessage)
 	{
-	    ModelFactory.getInstance().getRosterEntryList().remove((RosterEntry)removeMessage);
+	    ModelFactory.getInstance().getRosterEntryManager().remove((RosterEntry)removeMessage);
 	}
 
 	@Override
     public void list(ArrayList<AbstractMessage> listMessage)
     {
-        RosterEntryManager manager = ModelFactory.getInstance().getRosterEntryList();
+        RosterEntryManager manager = ModelFactory.getInstance().getRosterEntryManager();
         manager.removeAllEntries();
        
         for(AbstractMessage msg:listMessage)

@@ -11,7 +11,7 @@ import at.rc.tacos.model.Address;
 public class AddressListener extends ClientListenerAdapter
 {
 	//the disease manager
-	private AddressManager manager = ModelFactory.getInstance().getAddressList();
+	private AddressManager manager = ModelFactory.getInstance().getAddressManager();
 
 	@Override
 	public void add(AbstractMessage addMessage) 

@@ -18,7 +18,7 @@ import at.rc.tacos.model.SystemMessage;
 public class SessionListener extends ClientListenerAdapter
 {
 	protected SessionManager session = SessionManager.getInstance();
-	protected LoginManager manager = ModelFactory.getInstance().getLoginList();
+	protected LoginManager manager = ModelFactory.getInstance().getLoginManager();
 	
 	@Override
 	public void add(AbstractMessage addMessage) 

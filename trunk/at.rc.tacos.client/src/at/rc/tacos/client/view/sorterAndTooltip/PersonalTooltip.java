@@ -27,7 +27,7 @@ public class PersonalTooltip extends ToolTip
 	//properties
 	private RosterEntry rosterEntry;
     //the vehicle manager
-    private VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList(); 
+    private VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleManager(); 
 	
 	/**
 	 * Creates a new tooltip for the personal view

@@ -57,7 +57,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	 */
 	public CompetenceEditor()
 	{
-		ModelFactory.getInstance().getCompetenceList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getCompetenceManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getCompetenceList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getCompetenceManager().removePropertyChangeListener(this);
 	}
 
 	/**

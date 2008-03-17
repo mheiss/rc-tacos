@@ -33,7 +33,7 @@ public class SelectTransportDateAction extends Action
     public void run()
     {    	
     	//Notify the listeners that the date changed and the view filters must be updated
-    	ModelFactory.getInstance().getTransportList().fireTransportViewFilterChanged(cal);
+    	ModelFactory.getInstance().getTransportManager().fireTransportViewFilterChanged(cal);
     	
         //format the date
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");

@@ -12,7 +12,7 @@ public class StaffMemberContentProvider implements IStructuredContentProvider
     @Override
     public Object[] getElements(Object arg0)
     {
-        return ModelFactory.getInstance().getStaffList().toArray();
+        return ModelFactory.getInstance().getStaffManager().toArray();
     }
 
     @Override

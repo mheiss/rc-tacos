@@ -30,9 +30,7 @@ public class RosterEntryManager extends PropertyManager
         {
             public void run ()       
             {
-                //add the item
                 objectList.add(rosterEntry);
-                //notify the view
                 firePropertyChange("ROSTERENTRY_ADD", null, rosterEntry);
             }
         }); 
@@ -65,9 +63,11 @@ public class RosterEntryManager extends PropertyManager
         {
             public void run ()       
             {  	
-            	//get the position of the entry
+            	//assert we have this roster entry
+            	if(!objectList.contains(rosterEntry))
+            		return;
+            	//get the position of the entry and update it
             	int index = objectList.indexOf(rosterEntry);
-            	//replace by the new
             	objectList.set(index, rosterEntry);
                 firePropertyChange("ROSTERENTRY_UPDATE", null, rosterEntry); 
             }

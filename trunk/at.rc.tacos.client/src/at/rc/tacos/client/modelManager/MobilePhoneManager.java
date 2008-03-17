@@ -8,7 +8,7 @@ import at.rc.tacos.model.MobilePhoneDetail;
 
 public class MobilePhoneManager extends PropertyManager 
 {
-//  the item list
+	//  the phone list list
     private List<MobilePhoneDetail> objectList = new ArrayList<MobilePhoneDetail>();
 
     /**
@@ -29,9 +29,7 @@ public class MobilePhoneManager extends PropertyManager
         {
             public void run ()       
             {
-                //add the item
                 objectList.add(phone);
-                //notify the view
                 firePropertyChange("PHONE_ADD", null, phone);
             }
         }); 
@@ -62,7 +60,10 @@ public class MobilePhoneManager extends PropertyManager
         {
             public void run ()       
             { 
-                //get the position of the entry
+            	//assert we have this phone
+            	if(!objectList.contains(phone))
+            		return;
+                //get the position of the entry and update it
                 int id = objectList.indexOf(phone);
                 objectList.set(id, phone);
                 firePropertyChange("PHONE_UPDATE", null, phone); 

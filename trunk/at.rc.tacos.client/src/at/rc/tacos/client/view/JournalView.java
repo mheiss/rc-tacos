@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -28,6 +29,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
+import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.CreateBackTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.JournalMoveToRunningTransportsAction;
@@ -64,13 +66,13 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 
 	//the currently filtered date
 	private Calendar filteredDate = Calendar.getInstance();
-	
+
 	/**
 	 * Constructs a new journal view and adds listeners 
 	 */
 	public JournalView()
 	{
-		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -79,7 +81,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -100,7 +102,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new JournalViewContentProvider());
 		viewer.setLabelProvider(new JournalViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getTransportList());
+		viewer.setInput(ModelFactory.getInstance().getTransportManager());
 		viewer.getTable().setLinesVisible(true);
 
 		//set the tooltip
@@ -131,7 +133,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		lockColumn.setWidth(0);
 		lockColumn.setText("L");
-		
+
 		final TableColumn realOSJournal = new TableColumn(table, SWT.NONE);
 		realOSJournal.setToolTipText("Ortsstelle, die den Transport durchgeführt hat");
 		realOSJournal.setWidth(27);
@@ -377,13 +379,45 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		// the viewer represents simple model. refresh should be enough.
-		if ("TRANSPORT_ADD".equals(evt.getPropertyName())
-				|| "TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName())
-				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
-				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
+		//add the new element
+		if ("TRANSPORT_ADD".equals(evt.getPropertyName()))
 		{
-			this.viewer.refresh();
+			Transport added = (Transport)evt.getNewValue();
+			//assert valid
+			if(added == null)
+			{
+				Activator.getDefault().log("JournalView - property change event for add contains no valid transport", IStatus.ERROR);
+				return;
+			}
+			//redraw this element
+			viewer.add(added);
+		}
+		//update the new element
+		if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			Transport updated = (Transport)evt.getNewValue();
+			//assert valid
+			if(updated == null)
+			{
+				Activator.getDefault().log("JournalView - property change event for update contains no valid transport", IStatus.ERROR);
+				return;
+			}
+			//redraw this element
+			viewer.refresh(updated, true);
+		}
+		//remove the removed element from the view
+		if("TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			viewer.refresh();
+			Transport removed = (Transport)evt.getOldValue();
+			//assert valid
+			if(removed == null)
+			{
+				Activator.getDefault().log("JournalView - property change event for remove contains no valid transport", IStatus.ERROR);
+				return;
+			}
+			//remove this element form the table
+			viewer.remove(removed);
 		}	
 		//listen to changes of the date to set up the filter
 		if("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
