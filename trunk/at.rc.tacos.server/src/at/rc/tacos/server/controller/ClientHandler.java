@@ -1,8 +1,12 @@
 package at.rc.tacos.server.controller;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import at.rc.tacos.core.net.event.INetListener;
 import at.rc.tacos.core.net.event.NetEvent;
@@ -13,6 +17,7 @@ import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.SystemMessage;
+import at.rc.tacos.util.MyUtils;
 import at.rc.tacos.common.*;
 
 /**
@@ -21,6 +26,9 @@ import at.rc.tacos.common.*;
  */
 public class ClientHandler implements INetListener
 {
+    //the logger
+    private static Logger logger = Logger.getLogger(ClientHandler.class);
+	
 	@Override
 	public synchronized void dataReceived(NetEvent ne)
 	{
@@ -42,12 +50,13 @@ public class ClientHandler implements INetListener
 
 		//the client connection
 		final ClientSession session = server.getSession(ne.getClient());
-		System.out.println("Got a new request from "+userId+" to handle: "+contentType + "->"+queryString);  
+
+		logger.debug("QUERY from "+userId+": "+contentType+"->"+queryString);
 
 		//the client is not authenticated, no login request -> not accepted
 		if(!session.isAuthenticated() &! Login.ID.equalsIgnoreCase(contentType))
 		{
-			System.out.println("Client not authenticated, login first");
+			logger.warn("Client not authenticated, login first");
 			SystemMessage system = new SystemMessage("Client not authenticated, login first",SystemMessage.TYPE_INFO);
 			server.sendMessage(session,SystemMessage.ID,IModelActions.SYSTEM,system);
 			return;
@@ -56,7 +65,7 @@ public class ClientHandler implements INetListener
 		//do we have a handler?
 		if(listener == null)
 		{
-			System.out.println("No listener found for the message type: "+contentType);
+			logger.error("No listener found for the message type: "+contentType);
 			//notify the sender
 			SystemMessage sysMess = new SystemMessage("No listener found for the message type: "+contentType,SystemMessage.TYPE_INFO);
 			server.sendMessage(session,SystemMessage.ID,IModelActions.SYSTEM,sysMess);
@@ -127,13 +136,16 @@ public class ClientHandler implements INetListener
 			}
 			else if(IModelActions.LIST.equalsIgnoreCase(queryString))
 			{
+				long startQuery = Calendar.getInstance().getTimeInMillis();
 				List<AbstractMessage> resultMessageList = listener.handleListingRequest(queryFilter);
+				long endQuery = Calendar.getInstance().getTimeInMillis();
+				logger.info("OPERATION TIME for "+contentType +" listing: "+MyUtils.timestampToString(endQuery-startQuery, new SimpleDateFormat("mm:ss"))+ "("+(endQuery-startQuery)+"ms)");
 				//send the listing
 				server.sendMessage(session, contentType, queryString, resultMessageList);
 			}
 			else
 			{   
-				System.out.println("No handler found for queryString: "+queryString);
+				logger.error("No handler found for queryString: "+queryString);
 				SystemMessage sysMes = new SystemMessage("No handler found for queryString: "+queryString,SystemMessage.TYPE_ERROR);
 				server.sendMessage(session,SystemMessage.ID,IModelActions.SYSTEM,sysMes);
 			}  
@@ -141,13 +153,14 @@ public class ClientHandler implements INetListener
 		//catch all sql errors that occured during the operations with the listener classes
 		catch(SQLException sqle)
 		{
-			sqle.printStackTrace();
+			logger.error("SQL-Error: "+sqle.getMessage(),sqle);
 			SystemMessage system = new SystemMessage("SQL-Error:"+sqle.getMessage(),SystemMessage.TYPE_ERROR);
 			server.sendMessage(session, SystemMessage.ID, IModelActions.SYSTEM, system);
 		}
 		//catch all error during the operations with the dao listener classes
 		catch(DAOException daoe)
 		{
+			logger.error("DAO-Exception: "+daoe.getMessage(),daoe);
 			SystemMessage system = new SystemMessage(daoe.getMessage(),SystemMessage.TYPE_ERROR);
 			server.sendMessage(session, SystemMessage.ID, IModelActions.SYSTEM, system);  
 		}
@@ -156,9 +169,7 @@ public class ClientHandler implements INetListener
 	@Override
 	public synchronized void dataTransferFailed(NetEvent ne)
 	{
-		System.out.println("Failed to send the message to the client");
-		System.out.println("Message: "+ne.getMessage());
-		System.out.println("Client: "+ne.getClient());
+		logger.error("Failed to send the message to the client: "+ne.getClient());
 	}
 
 	@Override
