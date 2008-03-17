@@ -1,6 +1,9 @@
 package at.rc.tacos.server.controller;
 
 import java.util.*;
+
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.core.net.internal.*;
@@ -16,6 +19,9 @@ public class ServerController
 
     //this pool contains all client connections form the application
     private List<ClientSession> connClientPool;
+    
+    //the logger
+    private static Logger logger = Logger.getLogger(ServerController.class);
 
     /**
      * Default private class constructor.<br>
@@ -51,7 +57,7 @@ public class ServerController
      */
     public void clientConnected(MyClient client)
     {
-        System.out.println("Creating new session");
+    	logger.info("Creating new session for client: "+client.getSocket().getInetAddress());
         ClientSession session = new ClientSession(client);
         connClientPool.add(session);
     }
@@ -67,7 +73,7 @@ public class ServerController
     { 
         //get the user session
         ClientSession session = getSession(client);   
-        System.out.println("Disconnect detected ( "+session+" ) ");
+        logger.info("Disconnect detected ( "+session+" ) ");
         //close the connection if we have one
         if(session.getConnection() != null)
         {
@@ -124,7 +130,7 @@ public class ServerController
             {
                 MyClient client = session.getConnection();
                 client.sendMessage(message);
-                System.out.println("Sending reply to "+session.getUsername()+" -> "+userId+" : "+contentType+"->"+queryString);
+                logger.debug("REPLY to "+session.getUsername()+" -> "+userId+" : "+contentType+"->"+queryString);
             }
         }
     }
@@ -166,7 +172,7 @@ public class ServerController
         String xml = factory.encode(objectList);
         //encode and send
         connection.sendMessage(xml);
-        System.out.println("Sending reply "+userId+" : "+contentType+"->"+queryString);
+        logger.debug("Sending reply "+userId+" : "+contentType+"->"+queryString);
     }
 
     /**

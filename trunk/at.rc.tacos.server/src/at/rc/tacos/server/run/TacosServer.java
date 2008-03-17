@@ -3,6 +3,9 @@ package at.rc.tacos.server.run;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.net.internal.MyServer;
 import at.rc.tacos.server.controller.ClientHandler;
@@ -16,6 +19,8 @@ public class TacosServer
 {
     //path for the properties file
     public final static String SERVER_CONFIG = "at.rc.tacos.server.config.server";
+    //the logging instance
+    private static Logger logger = Logger.getRootLogger();
 
     //the server object
     private MyServer myServer = null;
@@ -46,42 +51,41 @@ public class TacosServer
     {  
         try
         {
+        	PropertyConfigurator.configureAndWatch("conf/log4j.properties", 60*1000 );
             //load the settings from the file
             String strPort = ResourceBundle.getBundle(SERVER_CONFIG).getString("server.port");
             int port = -1;
             //parse
             port = Integer.parseInt(strPort);
             //start the server
-            System.out.println("TACOS-Server Build: 01.03.2008"); 
-            System.out.println("-------------------------------------------");
-            System.out.println("Open a connection to the database server");
+            logger.info("TACOS-Server Build: 16.03.2008"); 
+            logger.info("Open a connection to the database server");
             //try to get a connection to the database
             if(DataSource.getInstance().getConnection() == null)
             {
-                System.out.println("Failed to connect to the database");
-                System.out.println("Shuting down the server");
+            	logger.error("Failed to connect to the database");
+            	logger.error("Shuting down the server");
                 System.exit(1);
             }
-            System.out.println("-------------------------------------------");
-            System.out.println("Listening for client request at port: "+port);
+            logger.info("Listening for client request at port: "+port);
             TacosServer server = new TacosServer(port);
             server.startServer();
             
         }
         catch(MissingResourceException mre)
         {
-            System.out.println("Missing resource, cannot init startup server");
-            System.out.println(mre.getMessage());
+        	logger.error("Missing resource, cannot init startup server");
+        	logger.error(mre.getMessage());
         }
         catch(NumberFormatException nfe)
         {
-            System.out.println("Port number must be a integer");
-            System.out.println(nfe.getMessage());
+        	logger.info("Port number must be a integer");
+        	logger.info(nfe.getMessage());
         }
         catch(NullPointerException npe)
         {
-            System.out.println("Configuration file for the server is missing");
-            System.out.println(npe.getMessage());
+        	logger.info("Configuration file for the server is missing");
+        	logger.info(npe.getMessage());
             npe.printStackTrace();
         }
     }
