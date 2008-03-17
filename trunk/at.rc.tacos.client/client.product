@@ -15,7 +15,6 @@ Time and Configuration Management
    <launcherArgs>
       <vmArgs>-Xms256m 
 -Xmx512m 
--Xgenconfig:64m,64m,semispaces:64m,512m,markcompact 
 -Xoptimize</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
