@@ -132,7 +132,7 @@ public class RosterEntry extends AbstractMessage
 	@Override
 	public int hashCode()
 	{
-		return 31  + (int) (rosterId ^ (rosterId >>> 32));
+		return 31  + (rosterId ^ (rosterId >>> 32));
 	} 
 
 	/**

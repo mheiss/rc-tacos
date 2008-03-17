@@ -92,7 +92,7 @@ public class DialysisPatient extends AbstractMessage
 	@Override
 	public int hashCode()
 	{
-		return 31  + (int) id;
+		return 31  + id;
 	}   
 
 	/**
