@@ -13,7 +13,7 @@ import at.rc.tacos.model.StaffMember;
  */
 public class StaffMemberListener extends ClientListenerAdapter
 {
-    StaffManager manager = ModelFactory.getInstance().getStaffList();
+    StaffManager manager = ModelFactory.getInstance().getStaffManager();
     
     @Override
     public void add(AbstractMessage addMessage)

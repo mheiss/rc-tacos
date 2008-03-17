@@ -45,7 +45,7 @@ public class CompetenceAdminView extends ViewPart implements PropertyChangeListe
      */
     public CompetenceAdminView()
     {
-    	ModelFactory.getInstance().getCompetenceList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getCompetenceManager().addPropertyChangeListener(this);
     }
     
     /**
@@ -54,7 +54,7 @@ public class CompetenceAdminView extends ViewPart implements PropertyChangeListe
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getCompetenceList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getCompetenceManager().removePropertyChangeListener(this);
     }
 
     /**
@@ -103,7 +103,7 @@ public class CompetenceAdminView extends ViewPart implements PropertyChangeListe
         });
         viewer.setContentProvider(new CompetenceContentProvider());
         viewer.setLabelProvider(new CompetenceLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getCompetenceList().toArray());
+        viewer.setInput(ModelFactory.getInstance().getCompetenceManager().toArray());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar

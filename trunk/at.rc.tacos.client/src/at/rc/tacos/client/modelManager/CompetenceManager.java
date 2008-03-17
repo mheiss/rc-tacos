@@ -27,9 +27,7 @@ public class CompetenceManager extends PropertyManager
         {
             public void run ()       
             {
-                //add the item
                 objectList.add(competence);
-                //notify the view
                 firePropertyChange("COMPETENCE_ADD", null, competence);
             }
         }); 
@@ -62,6 +60,9 @@ public class CompetenceManager extends PropertyManager
         {
             public void run ()       
             {   
+            	//assert we have this competence
+            	if(!objectList.contains(competence))
+            		return;
                 //get the position of the entry
                 int id = objectList.indexOf(competence);
                 objectList.set(id, competence);

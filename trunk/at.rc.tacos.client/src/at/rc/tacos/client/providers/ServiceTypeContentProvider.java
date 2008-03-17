@@ -10,7 +10,7 @@ public class ServiceTypeContentProvider implements IStructuredContentProvider
     @Override
     public Object[] getElements(Object arg0)
     {
-        return ModelFactory.getInstance().getServiceList().toArray();
+        return ModelFactory.getInstance().getServiceManager().toArray();
     }
 
     @Override

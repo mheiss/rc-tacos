@@ -274,7 +274,7 @@ public class FilterView extends ViewPart
 	 */
 	private void inputChanged()
 	{
-		TransportManager manager = ModelFactory.getInstance().getTransportList();
+		TransportManager manager = ModelFactory.getInstance().getTransportManager();
 		//get the values
 		final String strFrom = from.getText();
 		final String strPat = patient.getText();

@@ -65,7 +65,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	 */
 	public AddressAdminView()
 	{
-		ModelFactory.getInstance().getAddressList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	@Override
 	public void dispose()
 	{
-		ModelFactory.getInstance().getAddressList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getAddressManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		});
 		viewer.setContentProvider(new AddressContentProvider());
 		viewer.setLabelProvider(new AddressLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getAddressList().toArray());
+		viewer.setInput(ModelFactory.getInstance().getAddressManager().toArray());
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
 		getViewSite().setSelectionProvider(viewer);

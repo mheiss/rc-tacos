@@ -44,7 +44,7 @@ public class StaffMemberVehicleContentProvider implements IStructuredContentProv
     @Override
     public Object[] getElements(Object arg0)
     {
-    	List<StaffMember> list = ModelFactory.getInstance().getStaffList().getUnassignedCheckedInStaffListByLocation(location);
+    	List<StaffMember> list = ModelFactory.getInstance().getStaffManager().getUnassignedCheckedInStaffListByLocation(location);
 
         if(staffMember != null &! list.contains(staffMember))
             list.add(staffMember);

@@ -111,7 +111,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	public PrebookingView()
 	{
 		// add listener to model to keep on track. 
-		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -554,7 +554,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		final TableViewer viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new PrebookingViewContentProvider());
 		viewer.setLabelProvider(new PrebookingViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getTransportList().toArray());
+		viewer.setInput(ModelFactory.getInstance().getTransportManager().toArray());
 		viewer.getTable().setLinesVisible(true);
 
 		final Table table = viewer.getTable();

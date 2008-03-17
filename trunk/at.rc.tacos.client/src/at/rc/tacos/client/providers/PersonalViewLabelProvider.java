@@ -30,7 +30,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
     public static final int COLUMN_VEHICLE = 9;  
     
     //the vehicle manager
-    private VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList(); 
+    private VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleManager(); 
 
     @Override
     public Image getColumnImage(Object element, int columnIndex) 

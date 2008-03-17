@@ -69,7 +69,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	 */
 	public OutstandingTransportsView()
 	{
-		ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	@Override
 	public void dispose() 
 	{
-		ModelFactory.getInstance().getTransportList().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		viewerOffTrans = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewerOffTrans.setContentProvider(new OutstandingTransportsViewContentProvider());
 		viewerOffTrans.setLabelProvider(new OutstandingTransportsViewLabelProvider());
-		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportList());
+		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerOffTrans.getTable().setLinesVisible(true);
 		viewerOffTrans.refresh();
 
@@ -130,7 +130,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 				cancelTransportAction = new CancelTransportAction(viewerOffTrans);
 				copyTransportAction = new CopyTransportAction(viewerOffTrans);
 				//get the list of all vehicle with the status ready for action
-				List<VehicleDetail> readyVehicles = ModelFactory.getInstance().getVehicleList().getReadyVehicleList();
+				List<VehicleDetail> readyVehicles = ModelFactory.getInstance().getVehicleManager().getReadyVehicleList();
 				//loop and create the actions
 				actionList.clear();
 				for (VehicleDetail veh : readyVehicles)

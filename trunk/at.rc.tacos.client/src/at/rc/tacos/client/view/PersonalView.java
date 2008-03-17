@@ -75,12 +75,12 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     public PersonalView()
     {
         // add listener to model to keep on track. 
-        ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getVehicleList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getRosterEntryManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
         //listen to changes of jobs, serviceTypes and staff member updates
-        ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getServiceList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
         ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
     }
 
@@ -90,12 +90,12 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose() 
     {
-        ModelFactory.getInstance().getRosterEntryList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getVehicleList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getRosterEntryManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
         //remove again
-        ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getServiceList().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
         ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
     }
 
@@ -136,7 +136,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
         viewer.setContentProvider(new PersonalViewContentProvider());
         viewer.setLabelProvider(new PersonalViewLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getRosterEntryList());
+        viewer.setInput(ModelFactory.getInstance().getRosterEntryManager());
         viewer.getTable().setLinesVisible(true);
 
         //set the tooltip
@@ -449,7 +449,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
             if(updatedObject instanceof ServiceType)
                 updatedService = (ServiceType)updatedObject;
             //loop over each roster entry
-            for(RosterEntry entry:ModelFactory.getInstance().getRosterEntryList().getRosterList())
+            for(RosterEntry entry:ModelFactory.getInstance().getRosterEntryManager().getRosterList())
             {
                 if(updatedMember!= null && entry.getStaffMember().equals(updatedMember))
                     entry.setStaffMember(updatedMember);

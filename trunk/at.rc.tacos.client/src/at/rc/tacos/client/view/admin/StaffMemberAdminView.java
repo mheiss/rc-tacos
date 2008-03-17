@@ -47,7 +47,7 @@ public class StaffMemberAdminView extends ViewPart implements PropertyChangeList
      */
     public StaffMemberAdminView()
     {
-    	ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
     }
     
     /**
@@ -56,7 +56,7 @@ public class StaffMemberAdminView extends ViewPart implements PropertyChangeList
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
     }
 
     /**
@@ -89,7 +89,7 @@ public class StaffMemberAdminView extends ViewPart implements PropertyChangeList
                 ISelection selection = viewer.getSelection();
                 Object obj = ((IStructuredSelection) selection).getFirstElement();
                 StaffMember member = (StaffMember)obj;
-                Login login = ModelFactory.getInstance().getLoginList().getLoginByUsername(member.getUserName());
+                Login login = ModelFactory.getInstance().getLoginManager().getLoginByUsername(member.getUserName());
                 //assert valid
                 if(login == null)
                 {
@@ -114,7 +114,7 @@ public class StaffMemberAdminView extends ViewPart implements PropertyChangeList
         });
         viewer.setContentProvider(new StaffMemberContentProvider());
         viewer.setLabelProvider(new StaffMemberLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getStaffList().getStaffList());
+        viewer.setInput(ModelFactory.getInstance().getStaffManager().getStaffList());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar

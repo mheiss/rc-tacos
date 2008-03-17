@@ -75,7 +75,7 @@ public class VehiclesSelectForm extends TitleAreaDialog
         viewer = new TableViewer(parent, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         viewer.setContentProvider(new VehicleContentProvider());
         viewer.setLabelProvider(new VehicleLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getVehicleList());
+        viewer.setInput(ModelFactory.getInstance().getVehicleManager());
         viewer.getTable().setLayout(new GridLayout());
         viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
     }

@@ -65,8 +65,8 @@ import at.rc.tacos.model.Transport;
 public class TransportForm extends TitleAreaDialog implements IDirectness, IKindOfTransport, ITransportStatus,IProgramStatus,PropertyChangeListener
 {
     //The managed streets
-    private AddressManager addressManager = ModelFactory.getInstance().getAddressList();
-    private DiseaseManager diseaseManager = ModelFactory.getInstance().getDiseaseList();
+    private AddressManager addressManager = ModelFactory.getInstance().getAddressManager();
+    private DiseaseManager diseaseManager = ModelFactory.getInstance().getDiseaseManager();
 
     //properties
     private Group transportdetailsGroup;
@@ -166,9 +166,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         createNew = true;
         transport = new Transport();
         //bind the staff to this view
-        ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getAddressList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getDiseaseList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
     }
 
     /**
@@ -183,9 +183,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         this.transportType = transportType;
         this.transport = new Transport();
         //bind the staff to this view
-        ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getDiseaseList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getAddressList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
     }
 
     /**
@@ -203,9 +203,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         this.editingType = editingType;
         transportType = "both";
         //bind the staff to this view
-        ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getDiseaseList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getAddressList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
     }
 
     /**
@@ -757,9 +757,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     @Override
     protected void handleShellCloseEvent()
     {
-        ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getAddressList().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getDiseaseList().removePropertyChangeListener(this); 
+        ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getAddressManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getDiseaseManager().removePropertyChangeListener(this); 
         super.handleShellCloseEvent();
     }
 
@@ -1093,7 +1093,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         zustaendigeOrtsstelle = new ComboViewer(comboZustaendigeOrtsstelle);
         zustaendigeOrtsstelle.setContentProvider(new StationContentProvider());
         zustaendigeOrtsstelle.setLabelProvider(new StationLabelProvider());
-        zustaendigeOrtsstelle.setInput(ModelFactory.getInstance().getLocationList());
+        zustaendigeOrtsstelle.setInput(ModelFactory.getInstance().getLocationManager());
 
         final FormData fd_comboZustaendigeOrtsstelle = new FormData();
         fd_comboZustaendigeOrtsstelle.bottom = new FormAttachment(0, 121);
@@ -1274,7 +1274,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         setErkrVerl = new ComboViewer(comboErkrankungVerletzung);
         setErkrVerl.setContentProvider(new DiseaseContentProvider());
         setErkrVerl.setLabelProvider(new DiseaseLabelProvider());
-        setErkrVerl.setInput(ModelFactory.getInstance().getDialyseList());
+        setErkrVerl.setInput(ModelFactory.getInstance().getDialyseManager());
 
         textAnmerkungen = new Text(patientenzustandGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
         final FormData fd_textAnmerkungen = new FormData();
@@ -1550,7 +1550,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         setTextFahrer = new ComboViewer(textFahrer);
         setTextFahrer.setContentProvider(new StaffMemberContentProvider());
         setTextFahrer.setLabelProvider(new StaffMemberLabelProvider());
-        setTextFahrer.setInput(ModelFactory.getInstance().getStaffList());
+        setTextFahrer.setInput(ModelFactory.getInstance().getStaffManager());
 
         Combo textSaniI = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
         final FormData fd_textSnaniI = new FormData();
@@ -1562,7 +1562,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         setTextSaniI = new ComboViewer(textSaniI);
         setTextSaniI.setContentProvider(new StaffMemberContentProvider());
         setTextSaniI.setLabelProvider(new StaffMemberLabelProvider());
-        setTextSaniI.setInput(ModelFactory.getInstance().getStaffList());
+        setTextSaniI.setInput(ModelFactory.getInstance().getStaffManager());
 
         Combo textSaniII = new Combo(personalAmFahrzeugGroup, SWT.BORDER);
         final FormData fd_textSaniII = new FormData();
@@ -1574,7 +1574,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         setTextSaniII = new ComboViewer(textSaniII);
         setTextSaniII.setContentProvider(new StaffMemberContentProvider());
         setTextSaniII.setLabelProvider(new StaffMemberLabelProvider());
-        setTextSaniII.setInput(ModelFactory.getInstance().getServiceList());
+        setTextSaniII.setInput(ModelFactory.getInstance().getServiceManager());
 
         final Label driverLabel = new Label(personalAmFahrzeugGroup, SWT.NONE);
         final FormData fd_driverLabel = new FormData();

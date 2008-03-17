@@ -67,6 +67,9 @@ public class LoginManager extends PropertyManager
         {
             public void run ()       
             {   
+            	//assert we have this login
+            	if(!objectList.contains(login))
+            		return;
                 //get the position of the entry
                 int id = objectList.indexOf(login);
                 objectList.set(id, login);

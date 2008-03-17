@@ -10,7 +10,7 @@ public class StationContentProvider implements IStructuredContentProvider
     @Override
     public Object[] getElements(Object arg0)
     {
-        return ModelFactory.getInstance().getLocationList().toArray();
+        return ModelFactory.getInstance().getLocationManager().toArray();
     }
 
     @Override

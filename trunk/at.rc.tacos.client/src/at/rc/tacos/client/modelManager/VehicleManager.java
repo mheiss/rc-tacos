@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
-import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Location;
@@ -37,8 +36,8 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
      */
     protected void init()
     {
-        ModelFactory.getInstance().getTransportList().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getRosterEntryList().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getRosterEntryManager().addPropertyChangeListener(this);
     }
 
     /**
@@ -53,9 +52,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         {
             public void run ()       
             {
-                //add the item
                 objectList.add(vehicle);
-                //notify the view
                 firePropertyChange("VEHICLE_ADD", null, vehicle);
             }
         }); 
@@ -103,11 +100,12 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         {
             public void run ()       
             {   
+            	//assert we have this vehicle
+            	if(!objectList.contains(vehicle))
+            		return;
                 //get the position of the entry
                 int index = objectList.indexOf(vehicle);
-                //replace by the new
                 objectList.set(index, vehicle);
-                //update the data binding
                 firePropertyChange("VEHICLE_UPDATE",null,vehicle);
             }
         });
@@ -303,7 +301,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	
             //the transport manager
-            TransportManager transportManager = ModelFactory.getInstance().getTransportList();
+            TransportManager transportManager = ModelFactory.getInstance().getTransportManager();
 
             //the updated transport
             Transport transport = (Transport)evt.getNewValue();
@@ -313,10 +311,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 
             //assert valid
             if(transport.getVehicleDetail() == null)
-                return;
-            
-            //only underway transports are important
-            if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_UNDERWAY)
                 return;
             
             int index = objectList.indexOf(transport.getVehicleDetail());

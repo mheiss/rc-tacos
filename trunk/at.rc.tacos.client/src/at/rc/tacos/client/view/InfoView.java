@@ -75,7 +75,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
      */
     public InfoView()
     {
-    	ModelFactory.getInstance().getStaffList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
         SessionManager.getInstance().addPropertyChangeListener(this);
     }
 
@@ -85,7 +85,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
     @Override
     public void dispose() 
     {
-    	ModelFactory.getInstance().getStaffList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
         SessionManager.getInstance().removePropertyChangeListener(this);
         super.dispose();
     }

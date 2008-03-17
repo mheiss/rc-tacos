@@ -105,9 +105,7 @@ public class AddressManager extends PropertyManager
 		{
 			public void run ()       
 			{
-				//add the item
 				objectList.add(address);
-				//notify the view
 				firePropertyChange("ADDRESS_ADD", null, address);
 			}
 		}); 
@@ -123,9 +121,7 @@ public class AddressManager extends PropertyManager
 		{
 			public void run ()       
 			{
-				//add the item
 				objectList.addAll(addressList);
-				//notify the view
 				firePropertyChange("ADDRESS_ADD_ALL", null, addressList);
 			}
 		}); 
@@ -157,7 +153,10 @@ public class AddressManager extends PropertyManager
 		{
 			public void run ()       
 			{   
-				//get the position of the entry
+				//assert we have this address
+				if(!objectList.contains(address))
+					return;
+				//get the position of the entry and update it
 				int id = objectList.indexOf(address);
 				objectList.set(id, address);
 				firePropertyChange("ADDRESS_UPDATE", null, address); 

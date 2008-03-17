@@ -10,7 +10,7 @@ import at.rc.tacos.model.Competence;
 public class CompetenceListener extends ClientListenerAdapter
 {
 	//the competence manager
-	protected CompetenceManager manager = ModelFactory.getInstance().getCompetenceList();
+	protected CompetenceManager manager = ModelFactory.getInstance().getCompetenceManager();
 	
 	@Override
 	public void add(AbstractMessage addMessage)

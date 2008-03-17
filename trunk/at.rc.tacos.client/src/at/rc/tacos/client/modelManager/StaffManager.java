@@ -27,9 +27,7 @@ public class StaffManager extends PropertyManager
         {
             public void run ()       
             {
-                //add the item
                 objectList.add(staffMember);
-                //notify the view
                 firePropertyChange("STAFF_ADD", null, staffMember);
             }
         }); 
@@ -62,6 +60,9 @@ public class StaffManager extends PropertyManager
         {
             public void run ()       
             {   
+            	//assert we have this staff member
+            	if(!objectList.contains(staffMember))
+            		return;
                 //get the position of the entry
                 int id = objectList.indexOf(staffMember);
                 objectList.set(id, staffMember);
@@ -109,7 +110,7 @@ public class StaffManager extends PropertyManager
      */
     public List<StaffMember> getUnassignedStaffList()
     {
-    	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList();
+    	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleManager();
     	List<StaffMember> filteredList = new ArrayList<StaffMember>();
     	for(StaffMember member:objectList)
     	{
@@ -142,9 +143,9 @@ public class StaffManager extends PropertyManager
      */
     public List<StaffMember> getUnassignedCheckedInStaffListByLocation(Location location)
     {
-    	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleList();
+    	VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleManager();
     	List<StaffMember> filteredList = new ArrayList<StaffMember>();
-    	RosterEntryManager rosterManager = ModelFactory.getInstance().getRosterEntryList();
+    	RosterEntryManager rosterManager = ModelFactory.getInstance().getRosterEntryManager();
     	rosterManager.getCheckedInRosterEntriesByLocation(location);
     	List<StaffMember> staffMemberList = new ArrayList<StaffMember>();
     	for(StaffMember member:objectList)

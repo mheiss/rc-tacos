@@ -35,21 +35,19 @@ public class ModelFactory
     private static ModelFactory instance;
 
     //the model manager to handle
-    
-    private final VehicleManager vehicleList = new VehicleManager();
-    private final StaffManager staffList = new StaffManager();
-    private final RosterEntryManager rosterEntryList = new RosterEntryManager();
-    private final TransportManager transportList = new TransportManager();
-   
-    private final LoginManager loginList = new LoginManager();
-    private final DialysisTransportManager dialyseList = new DialysisTransportManager();
-    private final MobilePhoneManager phoneList = new MobilePhoneManager();
-    private final JobManager jobList = new JobManager();
-    private final CompetenceManager competenceList = new CompetenceManager();
-    private final LocationManager locationList = new LocationManager();
-    private final ServiceTypeManager serviceList = new ServiceTypeManager();
-    private final DiseaseManager diseaseList = new DiseaseManager();
-    private final AddressManager addressList = new AddressManager();
+    private final VehicleManager vehicleManager = new VehicleManager();
+    private final StaffManager staffManager = new StaffManager();
+    private final RosterEntryManager rosterEntryManager = new RosterEntryManager();
+    private final TransportManager transportManager = new TransportManager();
+    private final LoginManager loginManager = new LoginManager();
+    private final DialysisTransportManager dialyseManager = new DialysisTransportManager();
+    private final MobilePhoneManager phoneManager = new MobilePhoneManager();
+    private final JobManager jobManager = new JobManager();
+    private final CompetenceManager competenceManager = new CompetenceManager();
+    private final LocationManager locationManager = new LocationManager();
+    private final ServiceTypeManager serviceManager = new ServiceTypeManager();
+    private final DiseaseManager diseaseManager = new DiseaseManager();
+    private final AddressManager addressManager = new AddressManager();
 
     /**
      * Private class constructor.
@@ -73,7 +71,7 @@ public class ModelFactory
     public void initalizeModel()
     {
     	//add the listeners
-    	vehicleList.init();
+    	vehicleManager.init();
         //get the client connection
         org.eclipse.core.runtime.jobs.Job job = new org.eclipse.core.runtime.jobs.Job("Request data listing") 
         {
@@ -107,68 +105,68 @@ public class ModelFactory
     }
 
     //GETTERS FOR THE MANAGER
-    public final RosterEntryManager getRosterEntryList()
+    public final RosterEntryManager getRosterEntryManager()
     {
-        return rosterEntryList;
+        return rosterEntryManager;
     }
 
-    public final VehicleManager getVehicleList()
+    public final VehicleManager getVehicleManager()
     {
-        return vehicleList;
+        return vehicleManager;
     }
 
-    public final StaffManager getStaffList()
+    public final StaffManager getStaffManager()
     {
-        return staffList;
+        return staffManager;
     }
     
-    public final LoginManager getLoginList()
+    public final LoginManager getLoginManager()
     {
-    	return loginList;
+    	return loginManager;
     }
 
-    public final TransportManager getTransportList()
+    public final TransportManager getTransportManager()
     {
-        return transportList;
+        return transportManager;
     }
 
-    public final DialysisTransportManager getDialyseList()
+    public final DialysisTransportManager getDialyseManager()
     {
-        return dialyseList;
+        return dialyseManager;
     }
 
-    public final MobilePhoneManager getPhoneList()
+    public final MobilePhoneManager getPhoneManager()
     {
-        return phoneList;
+        return phoneManager;
     }
 
     public final JobManager getJobList()
     {
-        return jobList;
+        return jobManager;
     }
 
-    public final CompetenceManager getCompetenceList()
+    public final CompetenceManager getCompetenceManager()
     {
-        return competenceList;
+        return competenceManager;
     }
 
-    public final LocationManager getLocationList()
+    public final LocationManager getLocationManager()
     {
-        return locationList;
+        return locationManager;
     }
 
-    public final ServiceTypeManager getServiceList()
+    public final ServiceTypeManager getServiceManager()
     {
-        return serviceList;
+        return serviceManager;
     }
     
-    public final DiseaseManager getDiseaseList()
+    public final DiseaseManager getDiseaseManager()
     {
-    	return diseaseList;
+    	return diseaseManager;
     }
     
-    public final AddressManager getAddressList()
+    public final AddressManager getAddressManager()
     {
-    	return addressList;
+    	return addressManager;
     }
 }

@@ -601,7 +601,7 @@ public class DialysisForm implements IKindOfTransport
 					dia.setPlannedStartOfTransport(startLong);
 					dia.setPlannedTimeAtPatient(atPatientLong);
 					dia.setReadyTime(readyLong);
-					dia.setLocation(ModelFactory.getInstance().getLocationList().getLocationByName(theRespStation));
+					dia.setLocation(ModelFactory.getInstance().getLocationManager().getLocationByName(theRespStation));
 					dia.setStationary(stationary);
 					dia.setToCity(toCommunity);
 					dia.setToStreet(toStreet);
@@ -634,7 +634,7 @@ public class DialysisForm implements IKindOfTransport
 					dia.setPlannedStartOfTransport(startLong);
 					dia.setPlannedTimeAtPatient(atPatientLong);
 					dia.setReadyTime(readyLong);
-					dia.setLocation(ModelFactory.getInstance().getLocationList().getLocationByName(theRespStation));
+					dia.setLocation(ModelFactory.getInstance().getLocationManager().getLocationByName(theRespStation));
 					dia.setStationary(stationary);
 					dia.setToCity(toCommunity);
 					dia.setToStreet(toStreet);

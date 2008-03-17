@@ -42,9 +42,8 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 				if(!objectList.contains(transport))
 				{
 					objectList.add(transport);
+					firePropertyChange("TRANSPORT_ADD", null, transport);
 				}
-				//notify the view
-				firePropertyChange("TRANSPORT_ADD", null, transport);
 			}
 		}); 
 	}    
@@ -76,6 +75,9 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		{
 			public void run ()       
 			{  	
+				//assert we have this transport
+				if(!objectList.contains(transport))
+					return;
 				//get the position of the entry
 				int id = objectList.indexOf(transport);
 				objectList.set(id, transport);
@@ -216,9 +218,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 				continue;
 			//check the vehicle
 			if(vehicle.getVehicleName().equalsIgnoreCase(vehicleName) && programStatus == PROGRAM_STATUS_JOURNAL )
-			{
 				filteredList.add(transport);
-			}
 		}
 		return filteredList;
 	}

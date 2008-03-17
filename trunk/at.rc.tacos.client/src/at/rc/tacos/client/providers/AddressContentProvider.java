@@ -14,7 +14,7 @@ public class AddressContentProvider implements IStructuredContentProvider
     @Override
     public Object[] getElements(Object arg0)
     {
-        return ModelFactory.getInstance().getAddressList().toArray();
+        return ModelFactory.getInstance().getAddressManager().toArray();
     }
 
     @Override

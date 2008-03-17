@@ -62,6 +62,9 @@ public class LocationManager extends PropertyManager
         {
             public void run ()       
             {   
+            	//assert we have this location
+            	if(!objectList.contains(location))
+            		return;
                 //get the position of the entry
                 int id = objectList.indexOf(location);
                 objectList.set(id, location);

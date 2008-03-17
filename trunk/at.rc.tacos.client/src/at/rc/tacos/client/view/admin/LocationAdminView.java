@@ -45,7 +45,7 @@ public class LocationAdminView extends ViewPart implements PropertyChangeListene
      */
     public LocationAdminView()
     {
-    	ModelFactory.getInstance().getLocationList().addPropertyChangeListener(this);
+    	ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
     }
     
     /**
@@ -54,7 +54,7 @@ public class LocationAdminView extends ViewPart implements PropertyChangeListene
     @Override
     public void dispose()
     {
-    	ModelFactory.getInstance().getLocationList().removePropertyChangeListener(this);
+    	ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
     }
 
     /**
@@ -103,7 +103,7 @@ public class LocationAdminView extends ViewPart implements PropertyChangeListene
         });
         viewer.setContentProvider(new StationContentProvider());
         viewer.setLabelProvider(new StationLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getLocationList().toArray());
+        viewer.setInput(ModelFactory.getInstance().getLocationManager().toArray());
         getViewSite().setSelectionProvider(viewer);
         
         //add actions to the toolbar

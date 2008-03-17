@@ -17,13 +17,13 @@ public class MobilePhoneListener extends ClientListenerAdapter
     @Override
     public void add(AbstractMessage addMessage)
     {
-        ModelFactory.getInstance().getPhoneList().add((MobilePhoneDetail)addMessage);
+        ModelFactory.getInstance().getPhoneManager().add((MobilePhoneDetail)addMessage);
     }
 
     @Override
     public void list(ArrayList<AbstractMessage> listMessage)
     {
-        MobilePhoneManager manager = ModelFactory.getInstance().getPhoneList();
+        MobilePhoneManager manager = ModelFactory.getInstance().getPhoneManager();
         manager.resetPhones();
         for(AbstractMessage msg:listMessage)
         {
@@ -35,12 +35,12 @@ public class MobilePhoneListener extends ClientListenerAdapter
     @Override
     public void remove(AbstractMessage removeMessage)
     {
-        ModelFactory.getInstance().getPhoneList().remove((MobilePhoneDetail)removeMessage);
+        ModelFactory.getInstance().getPhoneManager().remove((MobilePhoneDetail)removeMessage);
     }
 
     @Override
     public void update(AbstractMessage updateMessage)
     {
-        ModelFactory.getInstance().getPhoneList().update((MobilePhoneDetail)updateMessage);
+        ModelFactory.getInstance().getPhoneManager().update((MobilePhoneDetail)updateMessage);
     }
 }
