@@ -3,6 +3,7 @@ package at.rc.tacos.client;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.sleak.views.Sleak;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -23,6 +24,8 @@ public class Application implements IApplication
     public Object start(IApplicationContext context) 
     {
         Display display = PlatformUI.createDisplay();
+//        Sleak sleak = new Sleak();
+//        sleak.open();
         //connect to the server
         NetWrapper.getDefault().connectNetwork(IServerInfo.PRIMARY_SERVER);
         //get the network status
