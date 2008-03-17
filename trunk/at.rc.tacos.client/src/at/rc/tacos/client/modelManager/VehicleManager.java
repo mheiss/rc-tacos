@@ -300,10 +300,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     @Override
     public void propertyChange(PropertyChangeEvent evt) 
     {		
-        if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()) 
-                || "TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName())
-                || "TRANSPORT_ADD".equalsIgnoreCase(evt.getPropertyName())
-                || "TRANSPORT_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
+        if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	
             //the transport manager
             TransportManager transportManager = ModelFactory.getInstance().getTransportList();
@@ -321,10 +318,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             //only underway transports are important
             if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_UNDERWAY)
                 return;
-
-            //only underway transports are important
-            if(transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_UNDERWAY)
-            return;
             
             int index = objectList.indexOf(transport.getVehicleDetail());
             VehicleDetail detail = objectList.get(index);
@@ -367,9 +360,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         
         if("ROSTERENTRY_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	
-  
-        	//the roster entry manager
-            RosterEntryManager rosterManager = ModelFactory.getInstance().getRosterEntryList();
             //the updated entry
             RosterEntry entry = (RosterEntry)evt.getNewValue();
             //assert valid
