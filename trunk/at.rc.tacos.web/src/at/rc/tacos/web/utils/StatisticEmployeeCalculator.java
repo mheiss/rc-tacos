@@ -1,15 +1,5 @@
 package at.rc.tacos.web.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.model.QueryFilter;
-import at.rc.tacos.model.RosterEntry;
-
 public class StatisticEmployeeCalculator {
 
 	private String startDate = null;
