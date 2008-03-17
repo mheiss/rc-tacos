@@ -1,7 +1,6 @@
 package at.rc.tacos.server.listener;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -59,9 +58,6 @@ public class TransportListener extends ServerListenerAdapter
 			calEnd.setTimeInMillis(dateStart);
 			calEnd.add(Calendar.DAY_OF_MONTH, 1);
 			long dateEnd = calEnd.getTimeInMillis();
-			
-			Calendar startTime = Calendar.getInstance();
-			
 			//show the prebooked transports
 			List<Transport> prebookedList = transportDao.listPrebookedTransports();
 			//show current transports that are in progress
@@ -87,11 +83,6 @@ public class TransportListener extends ServerListenerAdapter
 				throw new DAOException("TransportListener","Failed to list the archived transports by date from "+time);
 			}
 			list.addAll(journalList);
-			Calendar endTime = Calendar.getInstance();
-			System.out.println("--------------------");
-			System.out.println(endTime.getTimeInMillis()-startTime.getTimeInMillis());
-			System.out.println(MyUtils.timestampToString(endTime.getTimeInMillis()-startTime.getTimeInMillis(), new SimpleDateFormat("HH:mm:ss")));
-			System.out.println("---------------------");
 		}
 		return list;
 	}
