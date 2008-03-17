@@ -34,6 +34,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	private SwitchToTransportJournalPerspective switchToJournal;
 	private SwitchToAdminPerspective switchToAdmin;
 	private SwitchToLogPerspective switchToLog;
+	private IContributionItem viewList;
 
 	/**
 	 * Default class constructor.
@@ -60,7 +61,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		switchToJournal = new SwitchToTransportJournalPerspective();
 		switchToAdmin = new SwitchToAdminPerspective();
 		switchToLog = new SwitchToLogPerspective();
-
+		viewList = ContributionItemFactory.VIEWS_SHORTLIST.create(window); 
 		register(aboutAction);
 		register(exitAction);
 		register(conWizard);
@@ -79,6 +80,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		MenuManager adminMenu = new MenuManager("&Administation");
 		adminMenu.add(switchToLog);
 		adminMenu.add(switchToAdmin);
+		adminMenu.add(viewList);
 		
 		//window menue
 		MenuManager windowMenu = new MenuManager("&Window");
@@ -109,13 +111,5 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	{
 		IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
 		coolBar.add(new ToolBarContributionItem(toolbar, "main"));  
-	}
-
-	/**
-	 * Called to fill the status line with the main status line contributions for the window
-	 */
-	protected void fillStatusLine(IStatusLineManager statusLine)
-	{
-		super.fillStatusLine(statusLine);
 	}
 }

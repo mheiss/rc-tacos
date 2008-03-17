@@ -1,25 +1,17 @@
 package at.rc.tacos.client.controller;
 
-
-import java.util.Calendar;
-import java.util.Date;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.util.DateValidator;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.util.MyUtils;
 
 /**
  * Opens the editor to edit the selected entry (stornieren)
