@@ -79,7 +79,7 @@ public class StaffMemberEncoder  implements MessageEncoder
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("birthday");
-        writer.writeCharacters(Long.toString(member.getBirthday()));
+        writer.writeCharacters(member.getBirthday());
         writer.writeEndElement();
         //get the encoder for the phone and write the list
         if(!member.getPhonelist().isEmpty())

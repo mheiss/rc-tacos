@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.util.MyUtils;
 
 /**
  * Represents a staff member (there are several kinds: regular staff member, civil server, volunteer)
@@ -23,7 +22,7 @@ public class StaffMember extends AbstractMessage
 	private String streetname;
 	private String cityname;
 	private boolean sex;
-	private long birthday;
+	private String birthday;
 	private List<MobilePhoneDetail> phonelist;
 	private List<Competence> competenceList;
 	private String eMail;
@@ -69,7 +68,7 @@ public class StaffMember extends AbstractMessage
 	 * Class constructor for a complete staff member
 	 */
 	public StaffMember(int staffId,String firstName, String lastName, String userName,
-	        String streetname,String cityname,boolean sex,long birthday,
+	        String streetname,String cityname,boolean sex,String birthday,
 	        MobilePhoneDetail phone,Competence competence,String eMail,Location primaryLocation)
 	{
 	    this();
@@ -270,7 +269,7 @@ public class StaffMember extends AbstractMessage
      * Returns the birthday of the patient
      * @return the date of birth
      */
-    public long getBirthday()
+    public String getBirthday()
     {
         return birthday;
     }
@@ -279,10 +278,10 @@ public class StaffMember extends AbstractMessage
      * Sets the date of the birthday of this patient
      * @param sex the date of birth
      */
-    public void setBirthday(long birhtday)
+    public void setBirthday(String birhtday)
     {
-        if(!MyUtils.isValidDate(birthday))
-            throw new IllegalArgumentException("This is not a valid birthday");
+        if(birhtday == null)
+            throw new IllegalArgumentException("The birthday cannot be null");
         this.birthday = birhtday;
     }
     

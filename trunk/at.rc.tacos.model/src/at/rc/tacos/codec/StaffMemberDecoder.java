@@ -54,7 +54,7 @@ public class StaffMemberDecoder implements MessageDecoder
                 if("eMail".equalsIgnoreCase(startName))
                     member.setEMail(reader.getElementText());
                 if("birthday".equalsIgnoreCase(startName))
-                	member.setBirthday(Long.valueOf(reader.getElementText()));
+                	member.setBirthday(reader.getElementText());
                 if("sex".equalsIgnoreCase(startName))
                 	member.setMale(Boolean.valueOf(reader.getElementText()));
                 //decode the list of phones
