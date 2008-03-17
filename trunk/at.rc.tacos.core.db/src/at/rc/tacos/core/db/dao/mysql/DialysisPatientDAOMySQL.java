@@ -150,6 +150,7 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 			{
 				DialysisPatient dialysis = new DialysisPatient();
 				dialysis.setId(rs.getInt("dialysis_ID"));
+				System.out.println(rs.getString("appointmentTimeAtDialysis"));
 				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlTime));
 				dialysis.setAssistantPerson(rs.getBoolean("assistant"));
 				dialysis.setFriday(rs.getBoolean("friday"));

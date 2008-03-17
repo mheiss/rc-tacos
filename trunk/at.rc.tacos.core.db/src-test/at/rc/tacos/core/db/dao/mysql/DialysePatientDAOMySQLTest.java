@@ -92,10 +92,10 @@ public class DialysePatientDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown() throws SQLException
 	{
-		deleteTable(DialysisPatientDAO.TABLE_NAME);
-		deleteTable(DialysisPatientDAO.TABLE_DEPENDENT);
-		deleteTable(MobilePhoneDAO.TABLE_NAME);
-		deleteTable(LocationDAO.TABLE_NAME);
+//		deleteTable(DialysisPatientDAO.TABLE_NAME);
+//		deleteTable(DialysisPatientDAO.TABLE_DEPENDENT);
+//		deleteTable(MobilePhoneDAO.TABLE_NAME);
+//		deleteTable(LocationDAO.TABLE_NAME);
 	}
 	
 	@Test
