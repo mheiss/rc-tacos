@@ -16,7 +16,6 @@ import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
-import at.rc.tacos.util.MyUtils;
 
 /**
  * This is a test class to test the functionality of the staffMember and the login class.
@@ -50,8 +49,8 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         comp2 = new Competence("comp2");
         location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
         location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+        member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,"27-01-2008",phone1,comp1,"mail1",location1);
+        member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,"28-01-2008",phone2,comp2,"mail2",location2);
         //insert the phones
         int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
         int phoneId2 = mobilePhoneDAO.addMobilePhone(phone2);
@@ -136,7 +135,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     		staffMember.setEMail("newEMail");
     		staffMember.setPrimaryLocation(location2);
     		staffMember.setMale(true);
-    		staffMember.setBirthday(MyUtils.stringToTimestamp("27-01-2008", MyUtils.dateFormat));
+    		staffMember.setBirthday("27-01-2008");
     		staffMemberDAO.updateStaffMember(staffMember);
     	}
     	{
@@ -216,7 +215,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         Assert.assertEquals("street1", sm.getStreetname());
         Assert.assertEquals("city1", sm.getCityname());
         Assert.assertEquals(false, sm.isMale());
-        Assert.assertEquals(MyUtils.stringToTimestamp("27-01-2008", MyUtils.dateFormat), sm.getBirthday());
+        Assert.assertEquals("27-01-2008", sm.getBirthday());
         Assert.assertEquals(1, sm.getPhonelist().size());
         Assert.assertEquals(phone1, sm.getPhonelist().get(0));
         Assert.assertEquals(1, sm.getCompetenceList().size());
@@ -236,7 +235,7 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
         Assert.assertEquals("street1", sm.getStreetname());
         Assert.assertEquals("city1", sm.getCityname());
         Assert.assertEquals(false, sm.isMale());
-        Assert.assertEquals(MyUtils.stringToTimestamp("27-01-2008", MyUtils.dateFormat), sm.getBirthday());
+        Assert.assertEquals("27-01-2008", sm.getBirthday());
         Assert.assertEquals(1, sm.getPhonelist().size());
         Assert.assertEquals(phone1, sm.getPhonelist().get(0));
         Assert.assertEquals(1, sm.getCompetenceList().size());

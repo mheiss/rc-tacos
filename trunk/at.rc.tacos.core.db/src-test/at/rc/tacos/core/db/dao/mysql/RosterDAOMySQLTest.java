@@ -66,8 +66,8 @@ public class RosterDAOMySQLTest extends DBTestBase
 	    serviceType2 = new ServiceType("serviceType2");
 	    location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
 	    location2 = new Location("location2",phone2,"street2","number2",2,"city2","notes2");
-	    member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,MyUtils.stringToTimestamp("27-01-2008",MyUtils.dateFormat),phone1,comp1,"mail1",location1);
-	    member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,MyUtils.stringToTimestamp("28-01-2008",MyUtils.dateFormat),phone2,comp2,"mail2",location2);
+	    member1 = new StaffMember(50100001,"fname1","lname1","user1","street1","city1",false,"27-01-2008",phone1,comp1,"mail1",location1);
+	    member2 = new StaffMember(50100002,"fname2","lname2","user2","street2","city2",true,"28-01-2008",phone2,comp2,"mail2",location2);
 	    entry1 = new RosterEntry(member1,serviceType1,job1,location1,MyUtils.stringToTimestamp("28-01-2008 10:00", MyUtils.timeAndDateFormat),MyUtils.stringToTimestamp("28-01-2008 15:00", MyUtils.timeAndDateFormat));
 	    entry2 = new RosterEntry(member2,serviceType2,job2,location2,MyUtils.stringToTimestamp("28-01-2008 12:00", MyUtils.timeAndDateFormat),MyUtils.stringToTimestamp("28-01-2008 18:00", MyUtils.timeAndDateFormat));
 		//insert test data
