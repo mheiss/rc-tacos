@@ -403,6 +403,7 @@ public class DialysisPatient extends AbstractMessage
 	 */
 	public void setAppointmentTimeAtDialysis(long appointmentTimeAtDialysis) 
 	{
+		System.out.println(appointmentTimeAtDialysis);
 		if(appointmentTimeAtDialysis < 0)
 			throw new IllegalArgumentException("Date cannot be negative");
 		if(!MyUtils.isValidDate(appointmentTimeAtDialysis))
