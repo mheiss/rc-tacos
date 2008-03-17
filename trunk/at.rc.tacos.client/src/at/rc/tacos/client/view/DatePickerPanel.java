@@ -59,7 +59,7 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 
 	private void initialize() {
 		if (date == null) {
-			date = GregorianCalendar.getInstance();
+			date = Calendar.getInstance();
 			date.set(Calendar.HOUR_OF_DAY, 0);
 			date.set(Calendar.MINUTE, 0);
 			date.set(Calendar.SECOND, 0);

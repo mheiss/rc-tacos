@@ -86,6 +86,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	 * Callback method to create the control and initialize them.
 	 * @param parent the parent composite to add
 	 */
+	@Override
 	public void createPartControl(final Composite parent) 
 	{
 		// Create the scrolled parent component
@@ -371,6 +372,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus()  { }
 
 	public void propertyChange(PropertyChangeEvent evt) 

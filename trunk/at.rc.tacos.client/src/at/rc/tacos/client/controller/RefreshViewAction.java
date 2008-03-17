@@ -41,6 +41,7 @@ public class RefreshViewAction  extends Action
 	/**
 	 * Runs the action
 	 */
+	@Override
 	public void run()
 	{
 		//filtered by date?

@@ -39,6 +39,7 @@ public class ConnectionWizardAction extends Action
 	/**
 	 * Callback method to run the wizzard
 	 */
+	@Override
 	public void run() 
 	{
 		//Create the wizzard and open the window

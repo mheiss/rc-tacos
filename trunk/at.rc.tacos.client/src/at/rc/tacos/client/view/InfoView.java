@@ -94,7 +94,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
      * Creates the view.
      * @param parent the parent frame to insert the new content
      */
-    public void createPartControl(Composite parent) 
+    @Override
+	public void createPartControl(Composite parent) 
     {
         //setup the form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -120,7 +121,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
     /**
      * Passing the focus request to the viewer's control.
      */
-    public void setFocus() { }
+    @Override
+	public void setFocus() { }
     
     /**
      * Updates the info section
@@ -181,7 +183,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         logoutLink.setFont(userFont);
         logoutLink.addHyperlinkListener(new HyperlinkAdapter() 
         {
-            public void linkActivated(HyperlinkEvent e) 
+            @Override
+			public void linkActivated(HyperlinkEvent e) 
             {
                 MessageBox dialog = new MessageBox(getSite().getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
                 dialog.setText("Abmelden");
@@ -244,7 +247,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         dateTime.setToolTipText("Datum der anzuzeigenden Dienstplanübersicht auswählen");
         dateTime.addSelectionListener (new SelectionAdapter () 
         {
-            public void widgetSelected (SelectionEvent e) 
+            @Override
+			public void widgetSelected (SelectionEvent e) 
             {
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.YEAR, dateTime.getYear());

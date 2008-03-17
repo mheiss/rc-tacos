@@ -101,6 +101,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	 * Call back method to create the control and initialize them
 	 * Create contents of the window
 	 */
+	@Override
 	public void createPartControl(final Composite parent) 
 	{
 		//Create the scrolled parent component
@@ -411,6 +412,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus()  { }
 
 	public void propertyChange(PropertyChangeEvent evt) 

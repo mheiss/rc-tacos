@@ -74,6 +74,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	 * Initialize the splash window and create the ui.
 	 * @param splash the shell to creat the splash screen
 	 */
+	@Override
 	public void init(final Shell splash) 
 	{
 		// Store the shell
@@ -165,6 +166,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		// Create the cancel button listeners
 		fButtonCancel.addSelectionListener(new SelectionAdapter() 
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
 				handleButtonCancelWidgetSelected();
@@ -173,6 +175,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		// Create the OK button listeners
 		fButtonOK.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
 				handleButtonOKWidgetSelected();

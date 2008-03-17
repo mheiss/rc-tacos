@@ -42,7 +42,8 @@ public class MyToolbarManager extends ToolBarManager
      * @param action the action to add
      */
 
-    public void add(IAction action) 
+    @Override
+	public void add(IAction action) 
     {
         ActionContributionItem contributionItem  = new ActionContributionItem(action);
         contributionItem.setMode(ActionContributionItem.MODE_FORCE_TEXT);

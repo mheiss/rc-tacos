@@ -136,7 +136,7 @@ public class SessionListener extends ClientListenerAdapter
 		AbstractMessage listObject = listMessage.get(0);
 		if(listObject instanceof DayInfoMessage)
 		{
-			update((DayInfoMessage)listObject);
+			update(listObject);
 		}
 		if(listObject instanceof Login)
 		{

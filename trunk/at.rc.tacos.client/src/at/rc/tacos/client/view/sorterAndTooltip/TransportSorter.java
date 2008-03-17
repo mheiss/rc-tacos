@@ -68,6 +68,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 	 * @param object2 the second object to compare+
 	 * @return the result of the comparation 
 	 */
+	@Override
 	public int compare(Viewer viewer, Object object1, Object object2) 
 	{
 		//cast to a transport

@@ -19,7 +19,8 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
      * @param configurer the configuring workbench information
      * @return the configuration information for a workbench window
      */
-    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) 
+    @Override
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) 
     {
         return new ApplicationWorkbenchWindowAdvisor(configurer);
     }
@@ -28,6 +29,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
      * Return the initial perspective used for new workbench windows.
      * @return the idenitfication of the perspective
      */
+	@Override
 	public String getInitialWindowPerspectiveId() 
 	{
 		return PERSPECTIVE_ID;

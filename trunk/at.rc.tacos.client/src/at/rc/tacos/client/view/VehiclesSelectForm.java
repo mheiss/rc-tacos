@@ -41,7 +41,8 @@ public class VehiclesSelectForm extends TitleAreaDialog
      * @param parent the parent composite
      * @return Control
      */
-    protected Control createContents(Composite parent) 
+    @Override
+	protected Control createContents(Composite parent) 
     {
         Control contents = super.createContents(parent);
         setTitle("Fahrzeugverwaltung");

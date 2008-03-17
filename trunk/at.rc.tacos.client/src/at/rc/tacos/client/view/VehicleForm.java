@@ -93,6 +93,7 @@ public class VehicleForm extends TitleAreaDialog
 	 * @param parent the parent composite
 	 * @return Control
 	 */
+	@Override
 	protected Control createContents(Composite parent) 
 	{
 		Control contents = super.createContents(parent);
@@ -203,7 +204,7 @@ public class VehicleForm extends TitleAreaDialog
 	 */
 	private void createDetailSection(Composite parent)
 	{
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText("Fahrzeugdetails");
 		section.setLayout(new GridLayout());
@@ -277,7 +278,7 @@ public class VehicleForm extends TitleAreaDialog
 	private void createStatusSection(Composite parent)
 	{
 		//create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText("Einsatzstatus");
 		section.setDescription("Der aktuelle Einsatzstatus des Fahrzeuges");
@@ -363,7 +364,7 @@ public class VehicleForm extends TitleAreaDialog
 	private void createCrewSection(Composite parent)
 	{
 		//create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | Section.TWISTIE);
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText("Fahrzeugbesatzung");
 		section.setLayout(new GridLayout());

@@ -37,7 +37,7 @@ public class AdminPerspective implements IPerspectiveFactory
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
         
         //Create a folder on the left
-        IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, (float) 0.32f, editorArea);
+        IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, 0.32f, editorArea);
         left.addView(StaffMemberAdminView.ID);
         left.addView(VehicleAdminView.ID);
         left.addView(LocationAdminView.ID);
