@@ -43,7 +43,6 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setTransportNumber(Transport.TRANSPORT_NEF);
         //assig nef vehicle
         VehicleDetail nef = ModelFactory.getInstance().getVehicleManager().getNEFVehicle();
-        System.out.println("..............DuplicatePriorityA..., NEF: " +nef);
         newTransport.setVehicleDetail(nef);
         
         GregorianCalendar cal = new GregorianCalendar();
