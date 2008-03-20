@@ -5,12 +5,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -145,11 +146,11 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     }
 
     /**
-     * Returns the vehicle id if the requested staff is assigned to a vehicle.
+     * Returns the vehicle to which the staff member is currently assigned to
      * @param staffId the id of the staff to check
-     * @return the vehicle id or null(if the staff member is not assigned to a vehicle)
+     * @return the vehicle or null if the staff member is not assigned to a vehicle
      */
-    public String getVehicleOfStaff(int staffId)
+    public VehicleDetail getVehicleOfStaff(int staffId)
     {
         for(VehicleDetail detail:objectList)
         {
@@ -157,19 +158,19 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             if(detail.getDriver() != null)
             {
                 if(detail.getDriver().getStaffMemberId() == staffId)
-                    return detail.getVehicleName();
+                    return detail;
             }
             //assert valid
             if(detail.getFirstParamedic() != null)
             {
                 if(detail.getFirstParamedic().getStaffMemberId() == staffId)
-                    return detail.getVehicleName();
+                    return detail;
             }
             //assert valid
             if(detail.getSecondParamedic() != null)
             {
                 if(detail.getSecondParamedic().getStaffMemberId() == staffId)
-                    return detail.getVehicleName();
+                    return detail;
             }
         }
         //no assigned vehicle
@@ -353,47 +354,47 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         }
         
         if("ROSTERENTRY_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
-        {	
+        {	        	        	
             //the updated entry
             RosterEntry entry = (RosterEntry)evt.getNewValue();
             //assert valid
             if(entry == null)
                 return;
             
-            if(getVehicleOfStaff(entry.getStaffMember().getStaffMemberId()) == null)
+            //get the staff
+            StaffMember member = entry.getStaffMember();
+            if(member == null)
+            	return;
+            
+            //check if we have a vehicle for this member
+            VehicleDetail detail = getVehicleOfStaff(member.getStaffMemberId());
+            if(detail == null)
             	return;
            
-            if(entry.getRealEndOfWork()==0 && entry.getRealStartOfWork() != 0)
+            //we need only to check staff members who signed out
+            if(entry.getRealEndOfWork() == 0)
             	return;
             
-            if(getVehicleDetailOfDriver(entry.getStaffMember().getStaffMemberId()) != null)
-            {
-            	VehicleDetail vehicle = getVehicleDetailOfDriver(entry.getStaffMember().getStaffMemberId());
-            	vehicle.setReadyForAction(false);
-            	vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
-            	vehicle.setDriver(null);
-            	NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
-            }
-
-            //check driver fields of the vehicles
-            if(getVehicleDetailOfFirstParamedic(entry.getStaffMember().getStaffMemberId()) != null)
-            {
-            	VehicleDetail vehicle = getVehicleDetailOfFirstParamedic(entry.getStaffMember().getStaffMemberId());
-            	vehicle.setReadyForAction(false);
-            	vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
-            	vehicle.setFirstParamedic(null);
-            	NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
-            }
+            //driver?
+            if(member.equals(detail.getDriver()))
+            	detail.setDriver(null);
+            //paramedic
+            if(member.equals(detail.getFirstParamedic()))
+            	detail.setFirstParamedic(null);
+            //paramedic
+            if(member.equals(detail.getSecondParamedic()))
+            	detail.setSecondParamedic(null);
             
-            //check driver fields of the vehicles
-            if(getVehicleDetailOfSecondParamedic(entry.getStaffMember().getStaffMemberId()) != null)
-            {
-            	VehicleDetail vehicle = getVehicleDetailOfSecondParamedic(entry.getStaffMember().getStaffMemberId());
-            	vehicle.setReadyForAction(false);
-            	vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
-            	vehicle.setSecondParamedic(null);
-            	NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
-            }          
+            //adjust the status
+            detail.setReadyForAction(false);
+            detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+            NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);  
+            
+            //show a message box
+            MessageDialog.openInformation(Display.getDefault().getActiveShell(),
+            		"Information",
+            		"Der Mitarbeiter "+member.getFirstName() + " " +member.getLastName()+ " hat sich abgemeldet.\n" +
+            		"Er wurde vom Fahrzeug "+detail.getVehicleName() +" abgezogen");
         }
     }		
 }	
