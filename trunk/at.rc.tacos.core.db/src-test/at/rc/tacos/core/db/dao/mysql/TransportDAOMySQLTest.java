@@ -502,4 +502,29 @@ public class TransportDAOMySQLTest extends DBTestBase
 			Assert.assertTrue(tr1.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));	
 		}
 	}
+	
+	@Test
+	public void testUpdateAssignedTransport() throws SQLException
+	{
+		//veh2 = new VehicleDetail("KA02","KTW",location2, location1, phone2, "vehicle notes...", false, true);
+		transport1.setVehicleDetail(veh2);
+		transport1.setYear(2008);
+		transport1.getVehicleDetail().setCurrentStation(location1);
+		transportDAO.generateTransportNumber(transport1);
+		
+		{
+			Transport transport = transportDAO.getTransportById(transport1.getTransportId());
+			VehicleDetail vehicle = transport.getVehicleDetail();
+			vehicle.setDriver(member2);
+			vehicle.setFirstParamedic(member2);
+			vehicle.setSecondParamedic(member2);
+			vehicle.setVehicleNotes("the new notes");
+			transportDAO.updateTransport(transport);
+		}
+		Transport transport = transportDAO.getTransportById(transport1.getTransportId());
+		Assert.assertEquals(transport.getVehicleDetail().getDriver().getLastName(),member2.getLastName());
+		Assert.assertEquals(transport.getVehicleDetail().getFirstParamedic().getLastName(),member2.getLastName());
+		Assert.assertEquals(transport.getVehicleDetail().getSecondParamedic().getLastName(),member2.getLastName());
+		
+	}
 }
