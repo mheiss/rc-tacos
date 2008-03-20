@@ -678,7 +678,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                 }
             }
             
-            /** update the vehicle of the transport*///TODO
+            /** update the vehicle of the transport*/
             if(transport.getVehicleDetail() != null)
             {
             	if(!updateAssignedVehicleOfTransport(transport.getVehicleDetail(), transport.getTransportId()))
@@ -688,7 +688,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             	}
             }
             
-
             //update the transport
             if(!executeTheTransportUpdateQuery(transport))
             {
@@ -1229,6 +1228,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			}
 			query.setString(14, vehicle.getVehicleNotes());
 			query.setInt(15, transportId);
+			System.out.println("..............................11111111111111111111.......................");
 			if(query.executeUpdate() == 0)
 			{
 				return false;
