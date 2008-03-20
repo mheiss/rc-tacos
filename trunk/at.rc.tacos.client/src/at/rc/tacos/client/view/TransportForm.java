@@ -758,7 +758,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY, s.getTimeInMillis());
             }
             //S2
-            if(!textS5.getText().isEmpty())
+            if(!textS2.getText().isEmpty())
             {
 	            s = convertStringToDate(textS2.getText());
 	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT, s.getTimeInMillis());
