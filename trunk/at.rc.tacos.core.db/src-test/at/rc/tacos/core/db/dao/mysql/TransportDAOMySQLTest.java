@@ -139,18 +139,18 @@ public class TransportDAOMySQLTest extends DBTestBase
 	@After
 	public void tearDown() throws SQLException
 	{
-		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
-		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
-		deleteTable(TransportDAO.TABLE_NAME);
-		deleteTable(MobilePhoneDAO.TABLE_NAME);
-		deleteTable(LocationDAO.TABLE_NAME);
-		deleteTable(CallerDAO.TABLE_NAME);
-		deleteTable(UserLoginDAO.TABLE_NAME);
-		deleteTable(StaffMemberDAO.TABLE_NAME);
-		deleteTable(CompetenceDAO.TABLE_NAME);
-		deleteTable(VehicleDAO.TABLE_NAME);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_TMP);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_ASSIGNED_VEHICLES);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_STATE);
+//		deleteTable(TransportDAO.TABLE_DEPENDENT_SELECTED);
+//		deleteTable(TransportDAO.TABLE_NAME);
+//		deleteTable(MobilePhoneDAO.TABLE_NAME);
+//		deleteTable(LocationDAO.TABLE_NAME);
+//		deleteTable(CallerDAO.TABLE_NAME);
+//		deleteTable(UserLoginDAO.TABLE_NAME);
+//		deleteTable(StaffMemberDAO.TABLE_NAME);
+//		deleteTable(CompetenceDAO.TABLE_NAME);
+//		deleteTable(VehicleDAO.TABLE_NAME);
 	}
 
 
@@ -345,7 +345,8 @@ public class TransportDAOMySQLTest extends DBTestBase
 			//set transport number not possible
 			transport.setTransportPriority("C");
 
-			transport.setVehicleDetail(veh1);
+			//transport.setVehicleDetail(veh1); --> to set a vehicle is only possible in combination with generating
+			//a transport number (there the vehicle is written into the database
 			//set transport year not possible
 
 			transportDAO.updateTransport(transport);
