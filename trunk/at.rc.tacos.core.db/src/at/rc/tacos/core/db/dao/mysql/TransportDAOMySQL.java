@@ -1165,6 +1165,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
     
 	public boolean updateAssignedVehicleOfTransport(VehicleDetail vehicle, int transportId) throws SQLException
 	{
+		System.out.println("........vehicle: " +vehicle.getVehicleName());
 		Connection connection = source.getConnection();
 		try
 		{
@@ -1198,7 +1199,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			}
 			else
 			{
-				
 				query.setInt(6, vehicle.getFirstParamedic().getStaffMemberId());
 				query.setString(7, vehicle.getFirstParamedic().getLastName());
 				query.setString(8, vehicle.getFirstParamedic().getLastName());
@@ -1228,7 +1228,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 			}
 			query.setString(14, vehicle.getVehicleNotes());
 			query.setInt(15, transportId);
-			System.out.println("..............................11111111111111111111.......................");
 			if(query.executeUpdate() == 0)
 			{
 				return false;
