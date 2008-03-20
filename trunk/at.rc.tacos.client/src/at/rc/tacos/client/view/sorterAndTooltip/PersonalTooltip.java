@@ -17,6 +17,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.VehicleDetail;
 
 /**
  * This shows the tooltip for a roster entry.
@@ -74,11 +75,11 @@ public class PersonalTooltip extends ToolTip
 			title = rosterEntry.getRosterNotes();
 			addIconAndLabel(composite,image,title);
 		}
-		String assignedVehicle = vehicleManager.getVehicleOfStaff(rosterEntry.getStaffMember().getStaffMemberId());
+		VehicleDetail assignedVehicle = vehicleManager.getVehicleOfStaff(rosterEntry.getStaffMember().getStaffMemberId());
 		if(assignedVehicle != null)
 		{
 		    image = ImageFactory.getInstance().getRegisteredImage("resource.userVehicle");
-            title = "Ist dem Fahrzeug "+assignedVehicle+" als "+rosterEntry.getJob().getJobName() +" zugewiesen"; 
+            title = "Ist dem Fahrzeug "+assignedVehicle.getVehicleName()+" als "+rosterEntry.getJob().getJobName() +" zugewiesen"; 
             addIconAndLabel(composite,image,title);
 		}
 

@@ -11,6 +11,7 @@ import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.client.util.CustomColors;
@@ -109,7 +110,12 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         		return "";
         case COLUMN_SERVICE_TYPE: return entry.getServicetype().getServiceName();
         case COLUMN_JOB: return entry.getJob().getJobName();
-        case COLUMN_VEHICLE: return vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId());
+        case COLUMN_VEHICLE: 
+        	VehicleDetail detail = vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId());
+        	//assert valid
+        	if(detail != null)
+        		return detail.getVehicleName();
+        	return null;
         default: return null;
         }
         
