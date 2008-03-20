@@ -54,6 +54,7 @@ import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 
 /**
@@ -712,16 +713,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         transportDate.set(Calendar.MONTH, dateTime.getMonth());
         transportDate.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
         transport.setDateOfTransport(transportDate.getTimeInMillis());
-        
-        
-//        int index1;
-//        if(transport.getVehicleDetail() != null)
-//        {
-//        	index1 = setTextFahrer.getCombo().getSelectionIndex();
-//			transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index1));
-//        }
-		
-//     TODO set content for paramedic 1 and paramedic 2
 
         if(createNew)
         {
@@ -740,13 +731,82 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         }
         else
         {
-            //create and run the update action
-//        	NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, transport.getVehicleDetail());
-        	//VehicleUpdateAction updateVehAction = new VehicleUpdateAction(transport.getVehicleDetail());
-           // updateVehAction.run();
+            index = setTextFahrer.getCombo().getSelectionIndex();
+            if(index != -1)
+            	transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index));
+            
+            index = setTextSaniI.getCombo().getSelectionIndex();
+            if(index != -1)
+            	transport.getVehicleDetail().setFirstParamedic((StaffMember)setTextSaniI.getElementAt(index));
+            
+            index = setTextSaniII.getCombo().getSelectionIndex();
+            if(index != -1)
+            	transport.getVehicleDetail().setSecondParamedic((StaffMember)setTextSaniII.getElementAt(index));
+            
+
+            Calendar s;
+            //S0
+            if(!textAE.getText().isEmpty())
+            {
+	            s = convertStringToDate(textAE.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, s.getTimeInMillis());
+            }
+            //S1
+            if(!textS1.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS1.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY, s.getTimeInMillis());
+            }
+            //S2
+            if(!textS5.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS2.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT, s.getTimeInMillis());
+            }
+            //S3
+            if(!textS3.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS3.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT, s.getTimeInMillis());
+            }
+            //S4
+            if(!textS4.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS4.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION, s.getTimeInMillis());
+            }
+            //S5
+            if(!textS5.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS5.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE, s.getTimeInMillis());
+            }
+            //S6
+            if(!textS6.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS6.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION, s.getTimeInMillis());
+            }
+            //S7
+            if(!textS7.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS7.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, s.getTimeInMillis());
+            }
+            //S8
+            if(!textS8.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS8.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, s.getTimeInMillis());
+            }
+            //S9
+            if(!textS9.getText().isEmpty())
+            {
+	            s = convertStringToDate(textS9.getText());
+	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OTHER, s.getTimeInMillis());
+            }
             UpdateTransportAction updateAction = new UpdateTransportAction(transport);
             updateAction.run();
-            
         }
         getShell().close();
     }
@@ -1508,6 +1568,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_textOrtsstelle.right = new FormAttachment(0, 158);
         fd_textOrtsstelle.left = new FormAttachment(0, 60);
         textOrtsstelle.setLayoutData(fd_textOrtsstelle);
+        textOrtsstelle.setEditable(false);
 
         textFahrzeug = new Text(transportdetailsGroup, SWT.BORDER);
         final FormData fd_textFahrzeug = new FormData();
@@ -1516,6 +1577,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_textFahrzeug.right = new FormAttachment(0, 158);
         fd_textFahrzeug.left = new FormAttachment(0, 60);
         textFahrzeug.setLayoutData(fd_textFahrzeug);
+        textFahrzeug.setEditable(false);
 
         final Label farzeugLabel = new Label(transportdetailsGroup, SWT.NONE);
         final FormData fd_farzeugLabel = new FormData();
