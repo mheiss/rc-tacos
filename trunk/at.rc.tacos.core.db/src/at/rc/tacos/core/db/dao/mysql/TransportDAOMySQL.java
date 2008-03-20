@@ -14,6 +14,7 @@ import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
+import at.rc.tacos.core.db.dao.VehicleDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
 import at.rc.tacos.util.MyUtils;
@@ -26,6 +27,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
     //dependend dao classes
     private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
     private final CallerDAO callerDAO = DaoFactory.MYSQL.createNotifierDAO();
+    private final VehicleDAO vehicleDAO = DaoFactory.MYSQL.createVehicleDetailDAO();
 
     @Override
     public int addTransport(Transport transport) throws SQLException
@@ -675,6 +677,17 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                     return false;
                 }
             }
+            
+            /** update the vehicle of the transport*///TODO
+            if(transport.getVehicleDetail() != null)
+            {
+            	if(!updateAssignedVehicleOfTransport(transport.getVehicleDetail(), transport.getTransportId()))
+            	{
+            		System.out.println("Vehicle update failed");
+            		return false;
+            	}
+            }
+            
 
             //update the transport
             if(!executeTheTransportUpdateQuery(transport))
@@ -1150,6 +1163,84 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             connection.close();
         }
     }
+    
+	public boolean updateAssignedVehicleOfTransport(VehicleDetail vehicle, int transportId) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			//UPDATE assigned_vehicle SET vehicle_ID = ?, vehicletype = ?, 
+			//driver_ID = ?, driver_lastname = ?, driver_firstname = ?, 
+			//medic1_ID = ?, medic1_lastname = ?,medic1_firstname = ?, 
+			//medic2_ID = ? , medic2_lastname = ?, medic2_firstname = ?, 
+			//location_ID = ?, location_name = ?, note = ? WHERE transport_ID = ?;
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.assignedVehicle"));
+			query.setString(1, vehicle.getVehicleName());
+			query.setString(2, vehicle.getVehicleType());
+			//assert we have a driver
+			if(vehicle.getDriver() == null)
+			{
+				query.setString(3,null);
+				query.setString(4, null);
+				query.setString(5, null);
+			}
+			else
+			{
+				query.setInt(3, vehicle.getDriver().getStaffMemberId());
+				query.setString(4, vehicle.getDriver().getLastName());
+				query.setString(5, vehicle.getDriver().getFirstName());
+			}
+			//assert we have a first medic
+			if(vehicle.getFirstParamedic() == null)
+			{
+				query.setString(6, null);
+				query.setString(7, null);
+				query.setString(8, null);
+			}
+			else
+			{
+				
+				query.setInt(6, vehicle.getFirstParamedic().getStaffMemberId());
+				query.setString(7, vehicle.getFirstParamedic().getLastName());
+				query.setString(8, vehicle.getFirstParamedic().getLastName());
+			}
+			//assert we have a secondary medic
+			if(vehicle.getSecondParamedic() == null)
+			{
+				query.setString(9, null);
+				query.setString(10, null);
+				query.setString(11, null);
+			}
+			else
+			{
+				query.setInt(9, vehicle.getSecondParamedic().getStaffMemberId());
+				query.setString(10, vehicle.getSecondParamedic().getLastName());
+				query.setString(11, vehicle.getSecondParamedic().getFirstName());
+			}
+			if(vehicle.getCurrentStation() == null)
+			{
+				query.setString(12, null);
+				query.setString(13, null);
+			}
+			else
+			{
+				query.setInt(12, vehicle.getCurrentStation().getId());
+				query.setString(13, vehicle.getCurrentStation().getLocationName());
+			}
+			query.setString(14, vehicle.getVehicleNotes());
+			query.setInt(15, transportId);
+			if(query.executeUpdate() == 0)
+			{
+				return false;
+			}
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+    
 
     /**
      * Searches for a canceled transport numer.
