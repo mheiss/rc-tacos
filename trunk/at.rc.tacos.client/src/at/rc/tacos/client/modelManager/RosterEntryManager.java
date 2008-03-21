@@ -1,10 +1,12 @@
 package at.rc.tacos.client.modelManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.model.*;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * All roster entries
@@ -116,10 +118,22 @@ public class RosterEntryManager extends PropertyManager
     	List<RosterEntry> filteredList = new ArrayList<RosterEntry>();
     	for(RosterEntry entry : objectList)
     	{
-    		if(entry.getRealStartOfWork()!=0 && entry.getRealEndOfWork() == 0 && entry.getStation().getId() == location.getId())
-    		{
+    		//check the location
+    		if(!entry.getStation().equals(location))
+    			continue;
+    		//check if the staff has signed in
+    		if(entry.getRealStartOfWork() == 0 || entry.getRealEndOfWork() != 0)
+    			continue;
+    		
+    		//check if the entry is for today
+    		if(MyUtils.isEqualDate(Calendar.getInstance().getTimeInMillis(), entry.getRealStartOfWork()))
+    				filteredList.add(entry);
+    		
+    		Calendar bevor = Calendar.getInstance();
+    		bevor.add(Calendar.DAY_OF_MONTH, -1);		
+    		//if the entry is split up we must look at the day bevor also
+    		if(entry.isSplitEntry() && MyUtils.isEqualDate(bevor.getTimeInMillis(), entry.getRealStartOfWork()))
     			filteredList.add(entry);
-    		}
     	}
     	return filteredList;
     }
