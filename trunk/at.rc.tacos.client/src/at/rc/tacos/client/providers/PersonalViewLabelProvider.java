@@ -146,9 +146,6 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 	public Color getForeground(Object element, int columnIndex) 
 	{
 		RosterEntry entry = (RosterEntry)element;
-		System.out.println("staffMember: " +entry.getStaffMember().getUserName());
-        System.out.println("PersonalViewLabelProvider, RealStartOfWork: " +entry.getRealStartOfWork());
-        System.out.println("PersonalViewLabelProvider, RealEndofWork: " +entry.getRealEndOfWork());
         if (entry.getRealStartOfWork() != 0 && entry.getRealEndOfWork() == 0 && vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId()) == null)
 		    return null;//black
 		if (entry.getRealStartOfWork() == 0 && entry.getRealEndOfWork() == 0)

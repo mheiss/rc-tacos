@@ -65,7 +65,7 @@ public class VehicleForm extends TitleAreaDialog
 
 	//the vehicle
 	private VehicleDetail vehicleDetail;
-	
+
 	// description text
 	public final static String FORM_DESCRIPTION = "Hier können Sie Fahrzeug und dessen Besatzung verwalten";
 
@@ -100,9 +100,9 @@ public class VehicleForm extends TitleAreaDialog
 		setTitle("Fahrzeugverwaltung");
 		setMessage(FORM_DESCRIPTION, IMessageProvider.INFORMATION);
 		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-        //force a redraw
+		//force a redraw
 		getShell().setSize(500, 600);
-        getShell().pack(true);
+		getShell().pack(true);
 		return contents;
 	}
 
@@ -153,7 +153,7 @@ public class VehicleForm extends TitleAreaDialog
 		dialog.setMessage("Wollen Sie wirklich abbrechen?");
 		//check the result
 		if (dialog.open() != SWT.NO)
-		    getShell().close();
+			getShell().close();
 	}
 
 	/**
@@ -176,11 +176,11 @@ public class VehicleForm extends TitleAreaDialog
 		//status
 		vehicleDetail.setOutOfOrder(outOfOrder.getSelection());
 		if(vehicleDetail.isOutOfOrder())
-		    vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		vehicleDetail.setReadyForAction(readyButton.getSelection());
 		//if the vehicle was out of order -> set the vehicle image to green
 		if(vehicleDetail.isReadyForAction())
-		    vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 		//phone
 		index = mobilePhoneComboViewer.getCombo().getSelectionIndex();
 		vehicleDetail.setMobilPhone((MobilePhoneDetail)mobilePhoneComboViewer.getElementAt(index));
@@ -220,7 +220,7 @@ public class VehicleForm extends TitleAreaDialog
 
 		final Label labelStaff = new Label(client, SWT.NONE);
 		labelStaff.setText("Fahrzeug:");
-		
+
 		Combo vehicleCombo = new Combo(client, SWT.READ_ONLY);
 		vehicleCombo.setEnabled(false);
 		vehicleComboViewer = new ComboViewer(vehicleCombo);
@@ -387,7 +387,7 @@ public class VehicleForm extends TitleAreaDialog
 		//driver
 		final Label labelDriver = new Label(client, SWT.NONE);
 		labelDriver.setText("Fahrer :");
-		
+
 		//create composite for the combo and the image
 		Composite comp = makeComposite(client, 2);
 
@@ -401,13 +401,10 @@ public class VehicleForm extends TitleAreaDialog
 				checkRequiredFields();
 			}
 		});
-		if(vehicleDetail.getDriver() != null)
-			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getDriver(),vehicleDetail.getCurrentStation()));
-		else
-			driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
+		driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));
 		driverComboViewer.setLabelProvider(new StaffMemberLabelProvider());
 		driverComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
-				
+
 		//create the hyperlink
 		ImageHyperlink removeDriver = toolkit.createImageHyperlink(comp, SWT.NONE);
 		removeDriver.setToolTipText("Zieht den aktuell zugewiesenen Fahrer vom Fahrzeug ab");
@@ -424,7 +421,7 @@ public class VehicleForm extends TitleAreaDialog
 		//medic1
 		final Label labelMedic1 = new Label(client, SWT.NONE);
 		labelMedic1.setText("Sanitäter :");
-		
+
 		//create composite for the combo and the image
 		comp = makeComposite(client, 2);
 
@@ -437,11 +434,8 @@ public class VehicleForm extends TitleAreaDialog
 			{
 				checkRequiredFields();
 			}
-		});
-		if(vehicleDetail.getFirstParamedic() != null)
-			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getFirstParamedic(),vehicleDetail.getCurrentStation()));//TODO here!
-		else
-			medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
+		});	
+		medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));
 		medic1ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
 		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
 		//create the hyperlink
@@ -460,7 +454,7 @@ public class VehicleForm extends TitleAreaDialog
 		//medic2
 		final Label labelMedic2 = new Label(client, SWT.NONE);
 		labelMedic2.setText("Sanitäter :");
-		
+
 		//create composite for the combo and the image
 		comp = makeComposite(client, 2);
 
@@ -474,10 +468,7 @@ public class VehicleForm extends TitleAreaDialog
 				checkRequiredFields();
 			}
 		});
-		if(vehicleDetail.getSecondParamedic() != null)
-			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getSecondParamedic(),vehicleDetail.getCurrentStation()));
-		else
-			medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail.getCurrentStation()));
+		medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));
 		medic2ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
 		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
 
@@ -546,22 +537,22 @@ public class VehicleForm extends TitleAreaDialog
 		noteEditor.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		noteEditor.setEditable(true);
 	}
-	
-    /**
-     * Helper method to create a composite
-     * @param parent the parent control
-     * @param col the number of cols
-     * @return the returned composite
-     */
-    public Composite makeComposite(Composite parent, int col) 
-    {
-        Composite nameValueComp = toolkit.createComposite(parent);
-        GridLayout layout = new GridLayout(col, false);
-        layout.marginHeight = 3;
-        nameValueComp.setLayout(layout);
-        nameValueComp.setLayoutData(new GridData(GridData.FILL_BOTH));
-        return nameValueComp;
-    }
+
+	/**
+	 * Helper method to create a composite
+	 * @param parent the parent control
+	 * @param col the number of cols
+	 * @return the returned composite
+	 */
+	public Composite makeComposite(Composite parent, int col) 
+	{
+		Composite nameValueComp = toolkit.createComposite(parent);
+		GridLayout layout = new GridLayout(col, false);
+		layout.marginHeight = 3;
+		nameValueComp.setLayout(layout);
+		nameValueComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+		return nameValueComp;
+	}
 
 	/**
 	 * Helper method to determine wheter all fields are valid

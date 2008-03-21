@@ -176,69 +176,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         //no assigned vehicle
         return null;
     }
-    
-    
-    /**
-     * Returns the VehicleDetail if the requested staff is assigned to a vehicle as a driver.
-     * @param staffId the id of the staff to check
-     * @return the VehicleDetail or null(if the staff member is not assigned to a vehicle as driver)
-     */
-    public VehicleDetail getVehicleDetailOfDriver(int staffId)
-    {
-        for(VehicleDetail detail:objectList)
-        {
-            //assert valid
-            if(detail.getDriver() != null)
-            {
-                if(detail.getDriver().getStaffMemberId() == staffId)
-                    return detail;
-            }
-        }
-        //no assigned vehicle
-        return null;
-    }
-    
-    /**
-     * Returns the VehicleDetail if the requested staff is assigned to a vehicle as the first paramedic.
-     * @param staffId the id of the staff to check
-     * @return the VehicleDetail or null(if the staff member is not assigned to a vehicle as first paramedic)
-     */
-    public VehicleDetail getVehicleDetailOfFirstParamedic(int staffId)
-    {
-        for(VehicleDetail detail:objectList)
-        {
-            //assert valid
-            if(detail.getFirstParamedic() != null)
-            {
-                if(detail.getFirstParamedic().getStaffMemberId() == staffId)
-                    return detail;
-            }
-        }
-        //no assigned vehicle
-        return null;
-    }
-    
-    /**
-     * Returns the VehicleDetail if the requested staff is assigned to a vehicle as the second paramedic.
-     * @param staffId the id of the staff to check
-     * @return the VehicleDetail or null(if the staff member is not assigned to a vehicle as second paramedic)
-     */
-    public VehicleDetail getVehicleDetailOfSecondParamedic(int staffId)
-    {
-        for(VehicleDetail detail:objectList)
-        {
-            //assert valid
-            if(detail.getSecondParamedic() != null)
-            {
-                if(detail.getSecondParamedic().getStaffMemberId() == staffId)
-                    return detail;
-            }
-        }
-        //no assigned vehicle
-        return null;
-    }
-    
-    
 
     /**
      * Returns a list of all vehicles which have NOT the status <code>VehicleDetail.outOfOrder</code><br>
