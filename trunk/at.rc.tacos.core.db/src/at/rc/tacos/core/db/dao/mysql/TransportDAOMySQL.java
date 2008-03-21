@@ -14,7 +14,6 @@ import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
-import at.rc.tacos.core.db.dao.VehicleDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
 import at.rc.tacos.util.MyUtils;
@@ -27,7 +26,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
     //dependend dao classes
     private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
     private final CallerDAO callerDAO = DaoFactory.MYSQL.createNotifierDAO();
-    private final VehicleDAO vehicleDAO = DaoFactory.MYSQL.createVehicleDetailDAO();
 
     @Override
     public int addTransport(Transport transport) throws SQLException
