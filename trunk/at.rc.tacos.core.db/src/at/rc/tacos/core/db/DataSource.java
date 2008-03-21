@@ -22,6 +22,7 @@ public class DataSource
     private static DataSource instance;
     //the params of the config file
     private String dbDriver,dbHost,dbUser,dbPwd;
+    private GenericObjectPool connectionPool;
     
     /**
      * Default class constructor to load the settings from the file
@@ -40,11 +41,21 @@ public class DataSource
             Class.forName(dbDriver);
             
             //create and initialize the connection pool
-            GenericObjectPool connectionPool = new GenericObjectPool(null);
+            connectionPool = new GenericObjectPool(null);
+            connectionPool.setMaxIdle(15);	 						// Maximum idle connections.
+            connectionPool.setMinIdle(10);							// Minimum idle connections.
+            connectionPool.setMinEvictableIdleTimeMillis(30000); 	//Evictor runs every 30 secs.
+            connectionPool.setTimeBetweenEvictionRunsMillis(10000);
+            connectionPool.setTestOnBorrow(true);					// Check if the connection is still valid.
             ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(dbHost, dbUser, dbPwd);
-            new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
+            PoolableConnectionFactory factory = new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
+            factory.setValidationQuery("select 1");
             PoolingDriver driver = new PoolingDriver();
-            driver.registerPool("tacos-pool",connectionPool);               
+            driver.registerPool("tacos-pool",connectionPool);       
+            
+            //add some connections
+            for(int i = 0; i < 15; i++) 
+                connectionPool.addObject();
         }
         catch(Exception ex)
         {
@@ -72,6 +83,7 @@ public class DataSource
     {        
         try
         {
+        	//System.out.println("Active: " + connectionPool.getNumActive() + ", Idle: " + connectionPool.getNumIdle());
         	Connection connection = DriverManager.getConnection("jdbc:apache:commons:dbcp:tacos-pool");
         	return connection;
             
