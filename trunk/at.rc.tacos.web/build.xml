@@ -7,12 +7,15 @@
 	
 	<property name="src.dir" value="src" />
 	<property name="web.dir" value="web" />
+	<property name="lib.dir" value="${web.dir}/WEB-INF/lib" />
 	<property name="build.dir" value="${web.dir}/WEB-INF/classes" />
 	<property name="dist.dir" value="dist" />
 	<property name="name" value="tacos" />
+	<property name="at.rc.tacos.core.net" value="../at.rc.tacos.core.net/bin" />
+	<property name="at.rc.tacos.model" value="../at.rc.tacos.model/bin" />
 
 	<path id="master-classpath">
-		<fileset dir="${web.dir}/WEB-INF/lib">
+		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="${appserver.home}/lib">
@@ -21,7 +24,12 @@
 		<fileset dir="${appserver.home}/bin">
 			<include name="*.jar" />
 		</fileset>
-		<pathelement path="${build.dir}" />
+	    <dirset dir="${at.rc.tacos.core.net}">
+		  <include name="**"/>
+	    </dirset>
+	    <dirset dir="${at.rc.tacos.model}">
+	      <include name="**"/>
+	    </dirset>
 	</path>
 
 	<target name="clean" description="Clean the build and dist directories">
@@ -48,24 +56,24 @@
 	<target name="compile-deploy-reload" depends="compile,deploy,reload" description="Compile, deploy and reload application" />
 
 	<target name="deploy" description="Deploy application as a WAR file">
-		<mkdir dir="${deploy.path}" />
-		<war destfile="${deploy.path}/${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+		<mkdir dir="${deploy.path}/${name}"/>
+		<copy verbose="true" todir="${deploy.path}/${name}">
 			<fileset dir="${web.dir}">
 				<include name="**/*.*" />
 			</fileset>
-		</war>
+		</copy>
+		<mkdir dir="${deploy.path}/${name}/WEB-INF/lib"/>
+		<jar destfile="${deploy.path}/${name}/WEB-INF/lib/at.rc.tacos.core.net.jar">
+		    <fileset dir="${at.rc.tacos.core.net}">
+				<include name="**/*.*"/>
+		    </fileset>
+		</jar>
+		<jar destfile="${deploy.path}/${name}/WEB-INF/lib/at.rc.tacos.model.jar">
+		    <fileset dir="${at.rc.tacos.model}">
+		    	<include name="**/*.*"/>
+		    </fileset>
+		</jar>
 	</target>
-
-	<target name="dist" description="Distribute application as a WAR file">
-		<mkdir dir="${dist.dir}" />
-		<war destfile="${dist.dir}/${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
-			<fileset dir="${web.dir}">
-				<include name="**/*.*" />
-			</fileset>
-		</war>
-	</target>
-
-	<target name="compile-dist" depends="compile,dist" description="Compile and distribute application as a WAR file" />
 
 	<target name="clean-compile-deploy" depends="clean,compile,deploy" description="Clean, compile and deploy the application" />
 
