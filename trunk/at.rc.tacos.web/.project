@@ -3,6 +3,8 @@
 	<name>at.rc.tacos.web</name>
 	<comment></comment>
 	<projects>
+		<project>at.rc.tacos.model</project>
+		<project>at.rc.tacos.core.net</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
