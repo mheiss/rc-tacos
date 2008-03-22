@@ -9,10 +9,9 @@
 	<property name="web.dir" value="web" />
 	<property name="lib.dir" value="${web.dir}/WEB-INF/lib" />
 	<property name="build.dir" value="${web.dir}/WEB-INF/classes" />
-	<property name="dist.dir" value="dist" />
 	<property name="name" value="tacos" />
-	<property name="at.rc.tacos.core.net" value="../at.rc.tacos.core.net/bin" />
-	<property name="at.rc.tacos.model" value="../at.rc.tacos.model/bin" />
+	<property name="at.rc.tacos.core.net.classes" value="../at.rc.tacos.core.net/bin" />
+	<property name="at.rc.tacos.model.classes" value="../at.rc.tacos.model/bin" />
 
 	<path id="master-classpath">
 		<fileset dir="${lib.dir}">
@@ -24,10 +23,10 @@
 		<fileset dir="${appserver.home}/bin">
 			<include name="*.jar" />
 		</fileset>
-	    <dirset dir="${at.rc.tacos.core.net}">
+	    <dirset dir="${at.rc.tacos.core.net.classes}">
 		  <include name="**"/>
 	    </dirset>
-	    <dirset dir="${at.rc.tacos.model}">
+	    <dirset dir="${at.rc.tacos.model.classes}">
 	      <include name="**"/>
 	    </dirset>
 	</path>
@@ -35,7 +34,6 @@
 	<target name="clean" description="Clean the build and dist directories">
 		<delete dir="${build.dir}" />
 		<delete dir="${deploy.path}/${name}" />
-		<delete dir="${dist.dir}" />
 	</target>
 
 	<target name="compile" description="Compile the application">
@@ -53,8 +51,6 @@
 
 	<target name="compile-deploy" depends="compile,deploy" description="Compile and deploy the application" />
 
-	<target name="compile-deploy-reload" depends="compile,deploy,reload" description="Compile, deploy and reload application" />
-
 	<target name="deploy" description="Deploy application as a WAR file">
 		<mkdir dir="${deploy.path}/${name}"/>
 		<copy verbose="true" todir="${deploy.path}/${name}">
@@ -64,68 +60,17 @@
 		</copy>
 		<mkdir dir="${deploy.path}/${name}/WEB-INF/lib"/>
 		<jar destfile="${deploy.path}/${name}/WEB-INF/lib/at.rc.tacos.core.net.jar">
-		    <fileset dir="${at.rc.tacos.core.net}">
+		    <fileset dir="${at.rc.tacos.model.classes}">
 				<include name="**/*.*"/>
 		    </fileset>
 		</jar>
 		<jar destfile="${deploy.path}/${name}/WEB-INF/lib/at.rc.tacos.model.jar">
-		    <fileset dir="${at.rc.tacos.model}">
+		    <fileset dir="${at.rc.tacos.model.classes}">
 		    	<include name="**/*.*"/>
 		    </fileset>
 		</jar>
 	</target>
 
 	<target name="clean-compile-deploy" depends="clean,compile,deploy" description="Clean, compile and deploy the application" />
-
-	<target name="clean-compile-deploy-reload" depends="clean,compile,deploy,reload" description="Clean, compile, deploy and reload the application" />
 	
-	<!-- ============================================================== -->
-	<!-- Tomcat tasks - remove these if you don't have Tomcat installed -->
-	<!-- ============================================================== -->
-	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
-		<classpath>
-			<path location="${appserver.home}/lib/catalina-ant.jar" />
-		</classpath>
-	</taskdef>
-	<taskdef name="list" classname="org.apache.catalina.ant.ListTask">
-		<classpath>
-			<path location="${appserver.home}/lib/catalina-ant.jar" />
-		</classpath>
-	</taskdef>
-	<taskdef name="start" classname="org.apache.catalina.ant.StartTask">
-		<classpath>
-			<path location="${appserver.home}/lib/catalina-ant.jar" />
-		</classpath>
-	</taskdef>
-	<taskdef name="stop" classname="org.apache.catalina.ant.StopTask">
-		<classpath>
-			<path location="${appserver.home}/lib/catalina-ant.jar" />
-		</classpath>
-	</taskdef>
-	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask">
-		<classpath>
-			<path location="${appserver.home}/lib/catalina-ant.jar" />
-		</classpath>
-	</taskdef>
-
-	<target name="reload" description="Reload application in Tomcat">
-		<reload url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
-	</target>
-
-	<target name="start" description="Start Tomcat application">
-		<start url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
-	</target>
-
-	<target name="stop" description="Stop Tomcat application">
-		<stop url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
-	</target>
-
-	<target name="list" description="List Tomcat applications">
-		<list url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" />
-	</target>
-
-	<target name="undeploy" description="Remove application from servlet container">
-		<undeploy url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="/${name}" />
-	</target>
-	<!-- End Tomcat tasks -->
 </project>
