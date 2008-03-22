@@ -3,6 +3,12 @@
     <wb-module deploy-name="at.rc.tacos.web">
         <wb-resource deploy-path="/" source-path="/web"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/at.rc.tacos.model/at.rc.tacos.model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/at.rc.tacos.core.net/at.rc.tacos.core.net">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="at.rc.tacos.web"/>
         <property name="java-output-path" value="build/classes"/>
     </wb-module>

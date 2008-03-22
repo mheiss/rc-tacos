@@ -76,7 +76,7 @@ public class RosterWeekController  implements Controller
 					}
                     else 
                     { 
-                        //try to convert the station to a integer vale 
+                        //try to convert the station to a integer value 
                         try 
                         { 
                             int id = Integer.parseInt(station); 
