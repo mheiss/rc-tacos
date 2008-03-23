@@ -135,6 +135,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
     private String[] prebookingPriorities = {"C", "D", "E", "F"};
     private String[] emergencyAndTransportPriorities = {"A", "B", "C", "D", "E", "F", "G"};
+    /**if the old priority is not A but the new is A-> DuplicatePriorityATransportAction necessary**/
+    private String oldPriority;
     //A: NEF + RTW
     //B: BD1
     //C: normaler Transport
@@ -379,7 +381,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
             //mandatory fields
             if(transport.getTransportPriority() != null)
+            {
+            	oldPriority = transport.getTransportPriority();
                 comboPrioritaet.setText(transport.getTransportPriority());
+            }
 
             viewerFromStreet.getCombo().setText(transport.getFromStreet());
 
@@ -880,8 +885,15 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             }
             if(s9 != null)
            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OTHER, s9.getTimeInMillis());
-           else
+            else
            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_OTHER);
+            
+            /**duplicate the transport if the priority is changed to A*/
+            if(!oldPriority.equalsIgnoreCase("A") && transport.getTransportPriority().equalsIgnoreCase("A"))
+            {
+              DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
+              duplicateAction.run();
+          }
             
             UpdateTransportAction updateAction = new UpdateTransportAction(transport);
             updateAction.run();
