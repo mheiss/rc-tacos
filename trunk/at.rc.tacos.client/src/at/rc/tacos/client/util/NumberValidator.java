@@ -12,8 +12,9 @@ public class NumberValidator implements IInputValidator
 	public String isValid(String input) 
 	{
 		//validate the phone number
-		String pattern = "\\d{4,5}-\\d{4,8}";
-		if(input.matches(pattern))
+		String pattern1 = "\\d{4,5}-\\d{4,8}";
+		String pattern2 = "\\d{4,5}-\\d{4,9}";
+		if(input.matches(pattern1) || input.matches(pattern2))
 		{
 			return null;
 		}
