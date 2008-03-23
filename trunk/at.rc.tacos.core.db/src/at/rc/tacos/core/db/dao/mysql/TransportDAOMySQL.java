@@ -92,6 +92,29 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             //assign the transport items!
             if(!assignTransportItems(transport))
                 return Transport.TRANSPORT_ERROR;
+            
+            //if the new transport is a nef transort (from DuplicatePriorityATransportAction) the
+            //vehicle and the status messages (S0 = AE) must be set
+            if(transport.getTransportNumber() == Transport.TRANSPORT_NEF && transport.getVehicleDetail() != null)
+            {
+            	System.out.println("im if der add der TransportDAOMySQL");
+            	
+            	//TODO assign vehicle, assign transport items, assign transportstate
+            	
+            	 if(!assignVehicle(transport))
+            	 {
+            		 System.out.println("Assigning vehicle (NEF) failed");
+                     return Transport.TRANSPORT_ERROR;
+            	 }
+            	
+
+                //assign the transport states S1,S2,....
+                if(!assignTransportstate(transport))
+                {
+                    System.out.println("Assigning transport state failed");
+                    return Transport.TRANSPORT_ERROR;
+                }
+            }
 
             return transport.getTransportId();
         }
@@ -1163,7 +1186,6 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
     
 	public boolean updateAssignedVehicleOfTransport(VehicleDetail vehicle, int transportId) throws SQLException
 	{
-		System.out.println("........vehicle: " +vehicle.getVehicleName());
 		Connection connection = source.getConnection();
 		try
 		{
