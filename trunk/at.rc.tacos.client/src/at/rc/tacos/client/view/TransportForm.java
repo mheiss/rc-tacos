@@ -572,8 +572,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         else
             transport.setPlannedStartOfTransport(0);
 
-        //time at patient  --> no validation 
+        //time at patient  --> validation if the field is not empty 
         Calendar patientTime = convertStringToDate(textBeiPat.getText());
+        if(!textBeiPat.getText().trim().isEmpty() && patientTime == null)
+        {
+        		getShell().getDisplay().beep();
+        		setErrorMessage("Bitte geben Sie eine gültige Zeit (bei Patient) in der Form HH:mm oder HHmm ein");
+        		return;
+        }
         if(patientTime != null)
         {
             patientTime.set(Calendar.YEAR, dateTime.getYear());
@@ -584,8 +590,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         else
             transport.setPlannedTimeAtPatient(0);
 
-        //check the time  --> no validation 
+        //check the time  --> validation if the field is not empty
         Calendar appointmentTime = convertStringToDate(textTermin.getText());
+        if(!textTermin.getText().trim().isEmpty() && appointmentTime == null)
+        {
+        	getShell().getDisplay().beep();
+    		setErrorMessage("Bitte geben Sie eine gültige Zeit für den Termin in der Form HH:mm oder HHmm ein");
+    		return;
+        }
         if(appointmentTime != null)
         {
             appointmentTime.set(Calendar.YEAR, dateTime.getYear());
@@ -731,6 +743,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         }
         else
         {
+        	//staff
             index = setTextFahrer.getCombo().getSelectionIndex();
             if(index != -1)
             	transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index));
@@ -743,68 +756,133 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             if(index != -1)
             	transport.getVehicleDetail().setSecondParamedic((StaffMember)setTextSaniII.getElementAt(index));
             
-
-            Calendar s;
+            //transport stati
             //S0
-            if(!textAE.getText().isEmpty())
+            Calendar s0 = convertStringToDate(textAE.getText());
+            if(!textAE.getText().trim().isEmpty() && s0 == null)
             {
-	            s = convertStringToDate(textAE.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status AE (Auftrag erteilt) in der Form HHmm oder HH:mm ein");
+	            return;	           
             }
+            if(s0 != null)
+            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, s0.getTimeInMillis());
+            else
+            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED);
+            
+            
             //S1
-            if(!textS1.getText().isEmpty())
+            Calendar s1 = convertStringToDate(textS1.getText());
+            if(!textS1.getText().trim().isEmpty() && s1 == null)
             {
-	            s = convertStringToDate(textS1.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S1 in der Form HHmm oder HH:mm ein");
+	            return;	  
             }
+            if(s1 != null)
+            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY, s1.getTimeInMillis());
+            else
+            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY);
+            
+            
             //S2
-            if(!textS2.getText().isEmpty())
+            Calendar s2 = convertStringToDate(textS2.getText());
+            if(!textS2.getText().trim().isEmpty() && s2 == null)
             {
-	            s = convertStringToDate(textS2.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S2 in der Form HHmm oder HH:mm ein");
+	            return;	 
             }
+            if(s2 != null)
+            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT, s2.getTimeInMillis());
+            else
+            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT);
+            	
             //S3
-            if(!textS3.getText().isEmpty())
+            Calendar s3 = convertStringToDate(textS3.getText());
+            if(!textS3.getText().trim().isEmpty() && s3 == null)
             {
-	            s = convertStringToDate(textS3.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S3 in der Form HHmm oder HH:mm ein");
+	            return;	 
             }
+            if(s3 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT, s3.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT);
             //S4
-            if(!textS4.getText().isEmpty())
+            Calendar s4 = convertStringToDate(textS4.getText());
+            if(!textS4.getText().trim().isEmpty() && s4 == null)
             {
-	            s = convertStringToDate(textS4.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S4 in der Form HHmm oder HH:mm ein");
+	            return;	 
             }
+            if(s4 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION, s4.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
             //S5
-            if(!textS5.getText().isEmpty())
+            Calendar s5 = convertStringToDate(textS5.getText());
+            if(!textS5.getText().trim().isEmpty() && s5 == null)
             {
-	            s = convertStringToDate(textS5.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S5 in der Form HHmm oder HH:mm ein");
+	            return;
             }
+            if(s5 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE, s5.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
             //S6
-            if(!textS6.getText().isEmpty())
+            Calendar s6 = convertStringToDate(textS6.getText());
+            if(!textS6.getText().trim().isEmpty() && s6 == null)
             {
-	            s = convertStringToDate(textS6.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S6 in der Form HHmm oder HH:mm ein");
+	            return;	 
             }
+            if(s6 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION, s6.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION);
             //S7
-            if(!textS7.getText().isEmpty())
+            Calendar s7 = convertStringToDate(textS7.getText());
+            if(!textS7.getText().trim().isEmpty() && s7 == null)
             {
-	            s = convertStringToDate(textS7.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S7 in der Form HHmm oder HH:mm ein");
+	            return;	 
             }
+            if(s7 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, s7.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA);
             //S8
-            if(!textS8.getText().isEmpty())
+            Calendar s8 = convertStringToDate(textS8.getText());
+            if(!textS8.getText().trim().isEmpty() && s8 == null)
             {
-	            s = convertStringToDate(textS8.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S8 in der Form HHmm oder HH:mm ein");
+	            return;	 
             }
+            if(s8 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, s8.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA);
             //S9
-            if(!textS9.getText().isEmpty())
+            Calendar s9 = convertStringToDate(textS9.getText());
+            if(!textS9.getText().trim().isEmpty() && s9 == null)
             {
-	            s = convertStringToDate(textS9.getText());
-	            transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OTHER, s.getTimeInMillis());
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S9 in der Form HHmm oder HH:mm ein");
+	            return;	 
             }
+            if(s9 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OTHER, s9.getTimeInMillis());
+           else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_OTHER);
+            
             UpdateTransportAction updateAction = new UpdateTransportAction(transport);
             updateAction.run();
         }
@@ -2094,6 +2172,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         //try and parse the string
         try
         {
+        	formatter.setLenient(false);
             long timestamp = formatter.parse(dateString).getTime();
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(timestamp);
