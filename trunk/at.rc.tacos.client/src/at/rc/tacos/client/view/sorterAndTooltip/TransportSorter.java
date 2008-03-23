@@ -103,7 +103,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 			//now compare
 			String priority1 = transport1.getTransportPriority();
 			String priority2 = transport2.getTransportPriority();
-			return priority1.compareTo(priority2) * sortDir;
+			return priority2.compareTo(priority1) * sortDir;
 		}
 		//sort by the transport from column
 		if(column == TRANSPORT_FROM_SORTER)
@@ -116,7 +116,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 			//now compare
 			String from1 = transport1.getFromStreet();
 			String from2 = transport2.getFromStreet();
-			return from1.compareTo(from2) * sortDir;
+			return from2.compareTo(from1) * sortDir;
 		}
 		//sort by the patient last name
 		if(column == PATIENT_SORTER)
@@ -133,7 +133,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 			//now compare
 			String patient1 = transport1.getPatient().getLastname();
 			String patient2 = transport2.getPatient().getLastname();
-			return patient1.compareTo(patient2) * sortDir;
+			return patient2.compareTo(patient1) * sortDir;
 		}
 
 		//sort by the transport to column
@@ -147,7 +147,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 			//now compare
 			String to1 = transport1.getToStreet();
 			String to2 = transport2.getToStreet();
-			return to1.compareTo(to2) * sortDir;
+			return to2.compareTo(to1) * sortDir;
 		}
 
 		//sort by the kind of illness
@@ -159,7 +159,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return 1 * sortDir;
 			String kind1 = transport1.getKindOfIllness().getDiseaseName();
 			String kind2 = transport2.getKindOfIllness().getDiseaseName();
-			return kind1.compareTo(kind2) * sortDir;
+			return kind2.compareTo(kind1) * sortDir;
 		}
 
 		//sort by the time of the 'AE' field
@@ -179,17 +179,6 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 			if (statustime1 == statustime2)
 			return 0 * sortDir;
 		}
-//		if(column == AE_SORTER)
-//		{
-//			long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED);
-//			long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_ORDER_PLACED);
-//			if(statustime1 > statustime2)
-//				return  -1 * sortDir;
-//			if(statustime1 < statustime2)
-//				return  1 * sortDir;
-//			if (statustime1 == statustime2)
-//				return  0 * sortDir;
-//		}
 
 		//sort by the time of the 'S1' field
 		if(column == S1_SORTER)
@@ -354,7 +343,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return 1 * sortDir;
 			String v1 = transport1.getVehicleDetail().getVehicleName();
 			String v2 = transport2.getVehicleDetail().getVehicleName();
-			return v1.compareTo(v2) * sortDir;
+			return v2.compareTo(v1) * sortDir;
 		}
 
 		//sort by the driver name
@@ -372,7 +361,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return 1 * sortDir;
 			String d1 = transport1.getVehicleDetail().getDriver().getLastName();
 			String d2 = transport2.getVehicleDetail().getDriver().getLastName();
-			return d1.compareTo(d2) * sortDir;
+			return d2.compareTo(d1) * sortDir;
 		}
 
 		//sort by the paramedic I name
@@ -390,7 +379,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return 1 * sortDir;
 			String p1 = transport1.getVehicleDetail().getFirstParamedic().getLastName();
 			String p2 = transport2.getVehicleDetail().getFirstParamedic().getLastName();
-			return p1.compareTo(p2) * sortDir;
+			return p2.compareTo(p1) * sortDir;
 		}
 
 		//sort by the paramedic II name
@@ -408,7 +397,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return 1 * sortDir;
 			String p1 = transport1.getVehicleDetail().getSecondParamedic().getLastName();
 			String p2 = transport2.getVehicleDetail().getSecondParamedic().getLastName();
-			return p1.compareTo(p2) * sortDir;
+			return p2.compareTo(p1) * sortDir;
 		}
 
 		//sort by the caller name
@@ -426,7 +415,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return 1 * sortDir;
 			String c1 = transport1.getCallerDetail().getCallerName();
 			String c2 = transport2.getCallerDetail().getCallerName();
-			return c1.compareTo(c2) * sortDir;
+			return c2.compareTo(c1) * sortDir;
 		}
 
 		//sort by the start time of the transport
@@ -509,7 +498,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return 1 * sortDir;
 			String ta1 = transport1.getKindOfTransport();
 			String ta2 = transport2.getKindOfTransport();
-			return  ta1.compareTo(ta2) * sortDir;
+			return  ta2.compareTo(ta1) * sortDir;
 		}
 
 		return 0;
