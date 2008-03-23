@@ -26,7 +26,7 @@ public class VehicleLabelProvider extends LabelProvider
     public String getText(Object object)
     {
         VehicleDetail detail = (VehicleDetail)object;
-        return detail.getVehicleType() + " " + detail.getVehicleName();
+        return detail.getVehicleName() + " " + detail.getVehicleType();
     }
 
 }
