@@ -391,6 +391,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 			}
 			//redraw this element
 			viewer.add(added);
+			viewer.refresh();
 		}
 		//update the new element
 		if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
@@ -404,6 +405,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 			}
 			//redraw this element
 			viewer.refresh(updated, true);
+			viewer.refresh();
 		}
 		//remove the removed element from the view
 		if("TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
@@ -418,6 +420,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 			}
 			//remove this element form the table
 			viewer.remove(removed);
+			viewer.refresh();
 		}	
 		//listen to changes of the date to set up the filter
 		if("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
