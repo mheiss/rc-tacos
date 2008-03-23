@@ -192,7 +192,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		});  
 		
 		//set the default sorter
-		viewerOffTrans.setSorter(new TransportSorter(TransportSorter.PRIORITY_SORTER,SWT.DOWN));
+		viewerOffTrans.setSorter(new TransportSorter(TransportSorter.PRIORITY_SORTER,SWT.UP));
 		
 		final Table tableOff = viewerOffTrans.getTable();
 		tableOff.setLinesVisible(true);
