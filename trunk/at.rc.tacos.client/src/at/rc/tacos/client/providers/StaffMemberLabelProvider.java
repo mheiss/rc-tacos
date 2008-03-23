@@ -26,6 +26,6 @@ public class StaffMemberLabelProvider extends LabelProvider
     public String getText(Object object)
     {
         StaffMember member = (StaffMember)object;
-        return member.getFirstName() + " " + member.getLastName();
+        return member.getLastName() + " " + member.getFirstName();
     }
 }
