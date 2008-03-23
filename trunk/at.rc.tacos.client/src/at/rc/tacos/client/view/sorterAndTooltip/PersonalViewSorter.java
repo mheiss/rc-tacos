@@ -57,7 +57,7 @@ public class PersonalViewSorter extends ViewerSorter
         {
         	String name1 = entry1.getStaffMember().getLastName();
         	String name2 = entry2.getStaffMember().getLastName();
-        	returnValue = name1.compareTo(name2);
+        	returnValue = name2.compareTo(name1);
         }
         //sort by the start time of work
         if (column == WORKTIME_SORTER) 
