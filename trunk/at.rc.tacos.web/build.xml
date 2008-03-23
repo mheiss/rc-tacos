@@ -2,7 +2,7 @@
 <!-- ============================================================== -->
 <!-- ANT Configuration file for the tacos web project               -->
 <!-- ============================================================== -->
-<project name="ProjectTacosOnline" basedir="." default="clean-compile-deploy">
+<project name="ProjectTacosOnline" basedir="." default="clean-compile-productiondeploy">
 	<property file="build.properties" />
 	
 	<property name="src.dir" value="src" />
@@ -49,9 +49,9 @@
 		</copy>
 	</target>
 
-	<target name="compile-deploy" depends="compile,deploy" description="Compile and deploy the application" />
+	<target name="compile-deploy" depends="compile,productiondeploy" description="Compile and deploy the application" />
 
-	<target name="deploy" description="Deploy application as a WAR file">
+	<target name="productiondeploy" description="Deploy application as a WAR file">
 		<mkdir dir="${deploy.path}/${name}"/>
 		<copy verbose="true" todir="${deploy.path}/${name}">
 			<fileset dir="${web.dir}">
@@ -71,6 +71,6 @@
 		</jar>
 	</target>
 
-	<target name="clean-compile-deploy" depends="clean,compile,deploy" description="Clean, compile and deploy the application" />
+	<target name="clean-compile-productiondeploy" depends="clean,compile,productiondeploy" description="Clean, compile and deploy the application" />
 	
 </project>
