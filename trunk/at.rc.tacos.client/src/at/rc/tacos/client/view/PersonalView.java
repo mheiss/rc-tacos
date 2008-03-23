@@ -155,7 +155,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
             }
         });     
         //sort the table by default
-        viewer.setSorter(new PersonalViewSorter(PersonalViewSorter.NAME_SORTER,SWT.DOWN));
+        viewer.setSorter(new PersonalViewSorter(PersonalViewSorter.NAME_SORTER,SWT.UP));
 
         //create the table for the roster entries 
         final Table table = viewer.getTable();
