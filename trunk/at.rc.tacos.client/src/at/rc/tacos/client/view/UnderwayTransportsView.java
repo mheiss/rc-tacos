@@ -136,7 +136,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 			}
 		});  
 		//set a default sorter
-		viewer.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
+		viewer.setSorter(new TransportSorter(TransportSorter.PRIORITY_SORTER,SWT.UP));
 		
 		
 		final Table tableDisp = viewer.getTable();
