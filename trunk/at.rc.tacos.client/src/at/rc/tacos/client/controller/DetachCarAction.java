@@ -1,10 +1,12 @@
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.common.IProgramStatus;
@@ -38,17 +40,20 @@ public class DetachCarAction extends Action implements IProgramStatus
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		
 		//confirm the cancel
-		boolean cancelConfirmed = MessageDialog.openQuestion(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-				"Fahrzeug abziehen", "Möchten Sie das Fahrzeug wirklich vom Transport (" +transport.getFromStreet()+") abziehen?");
-		if (!cancelConfirmed) 
-			return;
-	
-		transport.getStatusMessages().clear();
-		transport.clearVehicleDetail();
-		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
-		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		InputDialog dlg = new InputDialog(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				"Transport Stornierung", 
+				"Bitte geben Sie eine Begründung für das Abziehen des Fahrzeuges" +" " +transport.getVehicleDetail().getVehicleName() +" ein", 
+				null,null);
+		if (dlg.open() == Window.OK) 
+		//confirm the cancel
+		{
+			transport.getStatusMessages().clear();
+			transport.clearVehicleDetail();
+			transport.setNotes(transport.getNotes() +"Fahrzeugabzug: " +dlg.getValue());
+			transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		}
 	}
 }
