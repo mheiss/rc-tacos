@@ -136,6 +136,15 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 			throw new IllegalArgumentException("The given date for the transport status is not valid");
 		statusMessages.put(statusId, timestamp);
 	}  
+	
+	/**
+	 * Helper method to remove a status for a transport
+	 * @param statusId the status identification
+	 */
+	public void removeStatus(int statusId)
+	{
+		statusMessages.remove(statusId);
+	}
 
 	/**
 	 * clears the vehicle (detach car from the transport)
