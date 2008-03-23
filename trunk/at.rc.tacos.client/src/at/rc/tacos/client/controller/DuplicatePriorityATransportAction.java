@@ -38,21 +38,10 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         Transport newTransport = new Transport();
         //reset the values for the second transport
         newTransport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
-        newTransport.setTransportId(0);
-        //mark transport number (no number for the nef)
-        newTransport.setTransportNumber(Transport.TRANSPORT_NEF);
-        //assig nef vehicle
-        VehicleDetail nef = ModelFactory.getInstance().getVehicleManager().getNEFVehicle();
-        newTransport.setVehicleDetail(nef);
-        
-        GregorianCalendar cal = new GregorianCalendar();
-		
-        newTransport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
+        newTransport.setTransportId(0);      
         newTransport.setTransportPriority(ITransportPriority.TRANSPORT_PRIORITY_EMERGENCY_DOCTOR_INTERNAL);
         newTransport.getStatusMessages().clear();
-        //set the transport status time for "AE" (order placed)
-        long now = cal.getTimeInMillis();
-		newTransport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
+      
         //date and time
         newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
         newTransport.setYear(Calendar.getInstance().get(Calendar.YEAR));
@@ -79,8 +68,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setKindOfTransport(transport.getKindOfTransport());
         if(transport.getCallerDetail() != null)
             newTransport.setCallerDetail(transport.getCallerDetail());
-        if(transport.getFeedback() != null)
-            newTransport.setFeedback(transport.getFeedback());
+       
         //destionation and target
         newTransport.setPlanedLocation(transport.getPlanedLocation());
         newTransport.setPatient(transport.getPatient());
@@ -89,6 +77,19 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setFromStreet(transport.getFromStreet());
         newTransport.setToCity(transport.getToCity());
         newTransport.setToStreet(transport.getToStreet());
+        
+        //assig nef vehicle
+        VehicleDetail nef = ModelFactory.getInstance().getVehicleManager().getNEFVehicle();
+        newTransport.setVehicleDetail(nef);
+        //mark transport number (no number for the nef)
+        newTransport.setTransportNumber(Transport.TRANSPORT_NEF);
+  
+        //stati
+		GregorianCalendar cal1 = new GregorianCalendar();
+		long now = cal1.getTimeInMillis();
+		newTransport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
+		newTransport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
+	
         //add the new transport
         NetWrapper.getDefault().sendAddMessage(Transport.ID,newTransport);
     }
