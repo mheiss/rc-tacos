@@ -641,8 +641,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	 */
 	public void setYear(int year)
 	{
-		if(year < Calendar.getInstance().get(Calendar.YEAR))
-			throw new IllegalArgumentException("Cannot set a date in the past");
+//		if(year < Calendar.getInstance().get(Calendar.YEAR))
+//			throw new IllegalArgumentException("Cannot set a date in the past");
 		this.year = year;
 	}
 
