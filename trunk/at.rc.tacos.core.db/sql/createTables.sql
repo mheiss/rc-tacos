@@ -3,6 +3,7 @@
 -- inserted a additional table for the dialysiy patient
 -- inserted the transport states inserts in the script
 -- changed the locationame in the assigned_vehicles to location_id
+-- date for the tmptransports table added
 
 CREATE TABLE servicetype (
   servicetype_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -77,6 +78,8 @@ TYPE=InnoDB;
 CREATE TABLE tmptransports (
   transportNr INTEGER UNSIGNED NOT NULL,
   location_ID INTEGER UNSIGNED NOT NULL,
+  actualYear VARCHAR(39) NULL,
+
   PRIMARY KEY(transportNr,location_ID)
 )
 TYPE=InnoDB;
@@ -226,6 +229,7 @@ TYPE=InnoDB;
 CREATE TABLE transports (
   transport_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   transportNr BIGINT NOT NULL,
+  year VARCHAR(39) NULL,
   planned_location INTEGER UNSIGNED NULL,
   caller_ID INTEGER UNSIGNED NULL,
   CreatedBy_user VARCHAR(30) NOT NULL,
