@@ -4,6 +4,7 @@
 -- inserted the transport states inserts in the script
 -- changed the locationame in the assigned_vehicles to location_id
 -- date for the tmptransports table added
+-- year for the transports added (needed for the transport numbers)
 
 CREATE TABLE servicetype (
   servicetype_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
