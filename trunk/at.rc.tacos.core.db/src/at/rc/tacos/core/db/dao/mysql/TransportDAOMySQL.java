@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -755,11 +756,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                 return Transport.TRANSPORT_ERROR;
 
             //STEP2: Query the tmptransport
-            int tmpNr = getTransportNrFromTemp(locationId);
+            int tmpNr = getTransportNrFromTemp(locationId, Calendar.getInstance().get(Calendar.YEAR));
             //transport number valid, so return it
             if(tmpNr > 0)
             {
-                if(!updateTransportNr(transport.getTransportId(),tmpNr))
+                if(!updateTransportNr(transport.getTransportId(),tmpNr, Calendar.getInstance().get(Calendar.YEAR)))
                     return Transport.TRANSPORT_ERROR;
                 return tmpNr;
             }
@@ -769,9 +770,9 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                 return Transport.TRANSPORT_ERROR;
 
             //get the highest number from the table and update the transport
-            tmpNr = getHighestTransportNumber(locationId, transport.getYear());
+            tmpNr = getHighestTransportNumber(locationId, Calendar.getInstance().get(Calendar.YEAR));//TODO
             tmpNr++;
-            if(!updateTransportNr(transport.getTransportId(), tmpNr))
+            if(!updateTransportNr(transport.getTransportId(), tmpNr, Calendar.getInstance().get(Calendar.YEAR)))
                 return Transport.TRANSPORT_ERROR;
             return tmpNr;
         }
@@ -790,7 +791,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             int oldNumber = getTransportNrById(transport.getTransportId());
             int transportId = transport.getTransportId();
             int locationId = getLocationOfTransport(transport.getTransportId());
-
+            int actualYear = Calendar.getInstance().get(Calendar.YEAR);
+            
             //remove the vehicle from the transport
             final PreparedStatement query = connection.prepareStatement(queries.getStatment("remove.assignedVehicle"));
             query.setInt(1, transportId);
@@ -800,11 +802,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
             //reset the transport number
             transport.setTransportNumber(0);
-            if(!updateTransportNr(transport.getTransportId(), transport.getTransportNumber()))
+            if(!updateTransportNr(transport.getTransportId(), transport.getTransportNumber(),Calendar.getInstance().get(Calendar.YEAR)))
                 return false;
 
             //store the number in the temp table
-            if(!archiveTransportNumber(oldNumber, locationId))
+            if(!archiveTransportNumber(oldNumber, locationId, actualYear))
                 return false;
 
             //set the transport status to IProgramStatus.PROGRAM_STATUS_OUTSTANDING 
@@ -829,6 +831,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
         {
             int transportId = transport.getTransportId();
             int oldNumber = getTransportNrById(transport.getTransportId());
+            int actualYear = Calendar.getInstance().get(Calendar.YEAR);
             if(transport.getVehicleDetail() != null)
             {
                 locationId = transport.getVehicleDetail().getCurrentStation().getId();
@@ -836,13 +839,13 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             //archive the transport number if we have one
             if(oldNumber > 0)
             {
-                if(!archiveTransportNumber(oldNumber, locationId))
+                if(!archiveTransportNumber(oldNumber, locationId, actualYear))
                 {
                     return false;
                 }
             }
             //set the transport number to TRANSPORT_STORNO or TRANSPORT_FORWARD
-            if(!updateTransportNr(transportId, transport.getTransportNumber()))
+            if(!updateTransportNr(transportId, transport.getTransportNumber(), Calendar.getInstance().get(Calendar.YEAR)))
             {
                 return false;
             }
@@ -1266,7 +1269,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
      * @param locationId the location to search the transport number
      * @return the canceled transport number, -1 if nothing found or -3 if an error occured
      */
-    private int getTransportNrFromTemp(int locationId) throws SQLException
+    private int getTransportNrFromTemp(int locationId, int year) throws SQLException
     {
         Connection connection = source.getConnection();
         try
@@ -1274,6 +1277,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             //search through the tmp table whether tmp transportNumber exists or not
             final PreparedStatement queryStmt = connection.prepareStatement(queries.getStatment("get.tmpTransportNr"));
             queryStmt.setInt(1, locationId);
+            queryStmt.setInt(2, year);
             final ResultSet rs = queryStmt.executeQuery();
             //return the transport number and remove the value from the table
             if(rs.first())
@@ -1285,6 +1289,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                 final PreparedStatement removeStmt = connection.prepareStatement(queries.getStatment("remove.tmpTransportNr"));
                 removeStmt.setInt(1, locationId);
                 removeStmt.setInt(2, transportNr);
+                removeStmt.setInt(3, year);
                 //assert the remove was successfully
                 if(removeStmt.executeUpdate() == 0)
                     return Transport.TRANSPORT_ERROR;
@@ -1317,7 +1322,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             //calculate new transport number from transports
             final PreparedStatement queryStmt = connection.prepareStatement(queries.getStatment("get.MaxTransportNr"));
             queryStmt.setInt(1, locationId);
-            queryStmt.setInt(2,year);
+            queryStmt.setString(2,new Integer(year).toString());
             final ResultSet rs = queryStmt.executeQuery();
             //assert we have a result
             if(rs.first())
@@ -1340,14 +1345,15 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
      * @param transportNr the number to set
      * @return true if the update was successfully
      */
-    private boolean updateTransportNr(int transportId,int transportNr) throws SQLException
+    private boolean updateTransportNr(int transportId,int transportNr, int year) throws SQLException
     {
         Connection connection = source.getConnection();
         try
         {
             PreparedStatement updateStmt = connection.prepareStatement(queries.getStatment("update.transportNr"));
             updateStmt.setInt(1, transportNr);
-            updateStmt.setInt(2, transportId);
+            updateStmt.setString(2, new Integer(year).toString());
+            updateStmt.setInt(3, transportId);
             //assert the transport is updated
             if(updateStmt.executeUpdate() == 0)
                 return false;
@@ -1413,15 +1419,17 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
      * @param locationId the location id
      * @return if the archive was successfull
      */
-    private boolean archiveTransportNumber(int transportNr, int locationId) throws SQLException
+    private boolean archiveTransportNumber(int transportNr, int locationId, int actualYear) throws SQLException
     {
         Connection connection = source.getConnection();
         try
         {
+        	System.out.println("actualYear ------- von integer to string: " +new Integer(actualYear).toString());
             //adds the old transportnumber to the tmp table
             final PreparedStatement query3 = connection.prepareStatement(queries.getStatment("add.tmpTransport"));
             query3.setInt(1, transportNr);
             query3.setInt(2, locationId);
+            query3.setString(3, new Integer(actualYear).toString());
             //assert the archive was successfully
             if(query3.executeUpdate() == 0)
                 return false;
