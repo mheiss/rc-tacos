@@ -100,7 +100,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             {
             	System.out.println("im if der add der TransportDAOMySQL");
             	
-            	//TODO assign vehicle, assign transport items, assign transportstate
+            	//assign vehicle, assign transport items, assign transportstate
             	
             	 if(!assignVehicle(transport))
             	 {
@@ -770,7 +770,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                 return Transport.TRANSPORT_ERROR;
 
             //get the highest number from the table and update the transport
-            tmpNr = getHighestTransportNumber(locationId, Calendar.getInstance().get(Calendar.YEAR));//TODO
+            tmpNr = getHighestTransportNumber(locationId, Calendar.getInstance().get(Calendar.YEAR));
             tmpNr++;
             if(!updateTransportNr(transport.getTransportId(), tmpNr, Calendar.getInstance().get(Calendar.YEAR)))
                 return Transport.TRANSPORT_ERROR;
