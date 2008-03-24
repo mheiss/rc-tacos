@@ -11,8 +11,11 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -102,6 +105,19 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		viewerOffTrans.setLabelProvider(new OutstandingTransportsViewLabelProvider());
 		viewerOffTrans.setInput(ModelFactory.getInstance().getTransportManager());
 		viewerOffTrans.getTable().setLinesVisible(true);
+		
+		viewerOffTrans.getTable().addMouseListener(new MouseAdapter() 
+		{
+			public void mouseDown(MouseEvent e) 
+			{
+				if( viewerOffTrans.getTable().getItem(new Point(e.x,e.y))==null ) 
+				{
+					viewerOffTrans.setSelection(new StructuredSelection());
+				}
+			}
+		});
+		
+		
 		viewerOffTrans.refresh();
 
 		tooltip = new OutstandingTransportsTooltip(viewerOffTrans.getControl());
