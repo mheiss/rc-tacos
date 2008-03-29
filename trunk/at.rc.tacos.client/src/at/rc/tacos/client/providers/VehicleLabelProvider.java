@@ -16,7 +16,7 @@ public class VehicleLabelProvider extends LabelProvider
     @Override
     public Image getImage(Object object)
     {
-        return ImageFactory.getInstance().getRegisteredImage("resource.vehicle");
+        return null;
     }
 
     /**
