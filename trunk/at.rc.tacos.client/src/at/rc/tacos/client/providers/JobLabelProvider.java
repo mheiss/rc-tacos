@@ -16,7 +16,7 @@ public class JobLabelProvider extends LabelProvider
     @Override
     public Image getImage(Object object)
     {
-        return ImageFactory.getInstance().getRegisteredImage("resource.job");
+        return null;
     }
 
     /**
