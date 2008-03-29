@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
 
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
 /**
