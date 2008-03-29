@@ -91,33 +91,30 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		if (transport.isPoliceAlarming())
 			police = "Polizei";
         
-		Image image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
-		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
+		String text = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
 			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
 			+transport.getToStreet() +"/" +transport.getToCity();
-		addIconAndLabel(composite, image, title);
+		addTitleAndLabel(composite, "Transport: ", text);
 		
 		if(transport.getKindOfTransport() != null)
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("transport.qmark");
-			title = transport.getKindOfTransport();
-			addIconAndLabel(composite,image,title);
+			text = transport.getKindOfTransport();
+			addTitleAndLabel(composite,"Transportart: ",text);
 		}
 		
 		//the notes
 		if(transport.hasNotes())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("resource.user");
-			title = transport.getNotes();
-			addIconAndLabel(composite,image,title);
+			text = transport.getNotes();
+			addTitleAndLabel(composite,"Anmerkungen: ",text);
+			
 		}
 		
 		//real station
 		if(transport.getVehicleDetail() != null && transport.getVehicleDetail().getCurrentStation() != null)
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("transport.stationary");
-			title = transport.getVehicleDetail().getCurrentStation().getLocationName();
-			addIconAndLabel(composite,image,title);
+			text = transport.getVehicleDetail().getCurrentStation().getLocationName();
+			addTitleAndLabel(composite,"OS: ",text);
 		}
 		
 		//planned times
@@ -135,42 +132,59 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			term = "";
 		if((!plannedStartTime.equalsIgnoreCase("") || !plannedTimeAtPatient.equalsIgnoreCase("") || !term.equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("transport.late");
-			title = "Abfahrt: " +plannedStartTime
+			text = "Abfahrt: " +plannedStartTime
 			+" Bei Patient: " +plannedTimeAtPatient
 			+" Termin: " +term;
-			addIconAndLabel(composite,image,title);
+			addTitleAndLabel(composite,"Zeiten: ",text);
 		}
 		
 		//feedback
 		if(transport.hasFeedback())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("transport.feedback");
-			title = transport.getFeedback();
-			addIconAndLabel(composite,image,title);
+			text = transport.getFeedback();
+			addTitleAndLabel(composite,"Rückmeldung: ",text);
 		}
 
 		
 		//caller detail
 		if (transport.getCallerDetail() != null)
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("transport.callerDetail");
-			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
-			addIconAndLabel(composite,image,title);
+			text = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
+			addTitleAndLabel(composite,"Anrufer: ",text);
 		}
 		
 		//notified
 		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
 				|| firebrigade.equalsIgnoreCase("")))
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("transport.exclamation");
-			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
-			addIconAndLabel(composite,image,title);
+			text = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
+			addTitleAndLabel(composite,"Alarmierung: ",text);
 		}
 
 		return composite;
 	}  
 	
+	protected void addTitleAndLabel(Composite parent, String titel, String text)
+	{
+		if(text.trim().isEmpty())
+			return;
+		
+		//Titel
+		Label titelLabel = new Label(parent, SWT.NONE);
+		titelLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+		titelLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		titelLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
+		titelLabel.setText(titel);
+		
+		//Text
+		Label textLabel = new Label(parent, SWT.NONE);
+		textLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+		textLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
+		textLabel.setText(text);
+		
+		
+	}
 	protected void addIconAndLabel(Composite parent, Image image, String text) 
 	{
 		//check if we have something to display
