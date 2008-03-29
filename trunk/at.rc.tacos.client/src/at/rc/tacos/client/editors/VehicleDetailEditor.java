@@ -60,7 +60,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	private ScrolledForm form;
 
 	//changeable values
-	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
+	private ImageHyperlink saveHyperlink, removeHyperlink;
 	private Text vehicleType,vehicleName;
 	private ComboViewer basicLocationViewer;
 	//read only values - are changed in the vehicleForm
@@ -139,7 +139,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Fahrzeug anlegen");
+		saveHyperlink.setText("Neues Fahrzeug speichern");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -151,19 +151,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 			}
 		});
 		
-		//create the hyperlink to add a new vehicle
-		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Fahrzeug anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.vehicleAdd"));
-		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorNewVehicleAction newAction = new EditorNewVehicleAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				newAction.run();
-			}
-		});
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Fahrzeug löschen");
@@ -363,7 +350,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-			addHyperlink.setVisible(true);
 		}
 		//load all the data
 		vehicleName.setText(detail.getVehicleName());
