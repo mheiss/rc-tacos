@@ -28,7 +28,6 @@ import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
 import at.rc.tacos.client.controller.EditorDeleteAction;
-import at.rc.tacos.client.controller.EditorNewServiceTypeAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
