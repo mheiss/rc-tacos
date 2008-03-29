@@ -46,7 +46,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
-	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink,importHyperlink;
+	private ImageHyperlink saveHyperlink,removeHyperlink,importHyperlink;
 	private Text zip,city,street;
 
 	//managed data
@@ -114,7 +114,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neue Adresse anlegen");
+		saveHyperlink.setText("Neue Adresse speichern");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -140,19 +140,6 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 			}
 		});
 
-		//create the hyperlink to add a new job
-		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Adresse anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.addressAdd"));
-		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorNewAddressAction newAction = new EditorNewAddressAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				newAction.run();
-			}
-		});
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Adresse löschen");
@@ -226,7 +213,6 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-			addHyperlink.setVisible(true);
 		}
 		street.setText(address.getStreet());
 		city.setText(address.getCity());
