@@ -47,7 +47,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         //show house symbol if the person is at home
         case COLUMN_STANDBY: 
             if(entry.getStandby())
-                return ImageFactory.getInstance().getRegisteredImage("resource.location");
+                return ImageFactory.getInstance().getRegisteredImage("resource.yes");
             else
                 return null;
         //show info symbol if there are notes
