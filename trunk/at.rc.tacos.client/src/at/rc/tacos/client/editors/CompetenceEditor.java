@@ -45,7 +45,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
-	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
+	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name;
 
 	//managed data
@@ -113,7 +113,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neue Kompetenz anlegen");
+		saveHyperlink.setText("Neue Kompetenz speichern");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -125,19 +125,6 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 			}
 		});
 
-		//create the hyperlink to add a new competence
-		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Kompetenz anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.competenceAdd"));
-		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorNewCompetenceAction newAction = new EditorNewCompetenceAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				newAction.run();
-			}
-		});
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Kompetenz löschen");
@@ -210,7 +197,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-			addHyperlink.setVisible(true);
+//			addHyperlink.setVisible(true);
 		}
 		//load the data
 		id.setText(String.valueOf(competence.getId()));
@@ -309,7 +296,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Kompetenz wurde gelöscht",
-						"Die Kompetenz, welches Sie gerade editieren, wurde gelöscht");
+						"Die Kompetenz, welche Sie gerade editieren, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
