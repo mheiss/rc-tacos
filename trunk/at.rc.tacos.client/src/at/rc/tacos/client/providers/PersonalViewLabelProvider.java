@@ -13,6 +13,7 @@ import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.client.util.CustomColors;
 
@@ -32,6 +33,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
     
     //the vehicle manager
     private VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleManager(); 
+    
 
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
@@ -90,37 +92,47 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
     {
         RosterEntry entry = (RosterEntry)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        long displayedDate = SessionManager.getInstance().getDisplayedDate();
+        String plannedStart;
+        String plannedEnd;
         
         switch(columnIndex)
         {
-        case COLUMN_LOCK: return null;
-        case COLUMN_STANDBY: return null;
-        case COLUMN_NOTES: return null;
-        case COLUMN_NAME: return entry.getStaffMember().getLastName()+ " " + entry.getStaffMember().getFirstName();
-        
-        case COLUMN_PLANED_WORK_TIME: return sdf.format(entry.getPlannedStartOfWork()) + " - " + sdf.format(entry.getPlannedEndOfWork());
-        case COLUMN_CHECK_IN: 
-        	if (entry.getRealStartOfWork()!= 0)
-        		return sdf.format(entry.getRealStartOfWork());
-        	else 
-        		return "";
-        case COLUMN_CHECK_OUT: 
-        	if (entry.getRealEndOfWork() != 0)
-        		return sdf.format(entry.getRealEndOfWork());
-        	else
-        		return "";
-        case COLUMN_SERVICE_TYPE: return entry.getServicetype().getServiceName();
-        case COLUMN_JOB: return entry.getJob().getJobName();
-        case COLUMN_VEHICLE: 
-        	VehicleDetail detail = vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId());
-        	//assert valid
-        	if(detail != null)
-        		return detail.getVehicleName();
-        	return null;
-        default: return null;
-        }
-        
-        
+	        case COLUMN_LOCK: return null;
+	        case COLUMN_STANDBY: return null;
+	        case COLUMN_NOTES: return null;
+	        case COLUMN_NAME: return entry.getStaffMember().getLastName()+ " " + entry.getStaffMember().getFirstName();
+	        
+	        case COLUMN_PLANED_WORK_TIME: 
+	        	if(entry.getPlannedStartOfWork() <displayedDate)
+	        		plannedStart = "00:00";
+	        	else 
+	        		plannedStart = sdf.format(entry.getPlannedStartOfWork());
+	        	if(entry.getPlannedEndOfWork() > displayedDate)
+	        		plannedEnd = "00:00";
+	        	else
+	        		plannedEnd = sdf.format(entry.getPlannedEndOfWork());
+	        	return plannedStart +" - " +plannedEnd;
+	        case COLUMN_CHECK_IN: 
+	        	if (entry.getRealStartOfWork()!= 0)
+	        		return sdf.format(entry.getRealStartOfWork());
+	        	else 
+	        		return "";
+	        case COLUMN_CHECK_OUT: 
+	        	if (entry.getRealEndOfWork() != 0)
+	        		return sdf.format(entry.getRealEndOfWork());
+	        	else
+	        		return "";
+	        case COLUMN_SERVICE_TYPE: return entry.getServicetype().getServiceName();
+	        case COLUMN_JOB: return entry.getJob().getJobName();
+	        case COLUMN_VEHICLE: 
+	        	VehicleDetail detail = vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId());
+	        	//assert valid
+	        	if(detail != null)
+	        		return detail.getVehicleName();
+	        	return null;
+	        default: return null;
+        }   
     }
 
     @Override
