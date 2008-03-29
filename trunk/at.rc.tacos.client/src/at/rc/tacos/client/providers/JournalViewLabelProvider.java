@@ -2,7 +2,6 @@ package at.rc.tacos.client.providers;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
@@ -14,7 +13,6 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.util.MyUtils;
 
 public class JournalViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus
 {

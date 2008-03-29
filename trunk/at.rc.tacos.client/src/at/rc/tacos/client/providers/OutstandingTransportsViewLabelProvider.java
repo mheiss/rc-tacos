@@ -7,7 +7,6 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
-import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.IKindOfTransport;
