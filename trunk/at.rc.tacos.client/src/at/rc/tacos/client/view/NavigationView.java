@@ -14,7 +14,6 @@ import at.rc.tacos.client.controller.OpenDialysisTransportAction;
 import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
 import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.controller.PersonalNewEntryAction;
-import at.rc.tacos.client.controller.VehicleOpenAction;
 import at.rc.tacos.client.modelManager.MyToolbarManager;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
 import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
@@ -92,7 +91,6 @@ public class NavigationView extends ViewPart
 		othView.getControl().setLayoutData(new GridData(SWT.BEGINNING,SWT.BEGINNING,false,false));
 		othView.add(new SwitchToLogPerspective());
 		othView.add(new SwitchToAdminPerspective());
-		othView.add(new VehicleOpenAction());
 		othView.update(true);
 
 	    Composite comp1 = new Composite(parent,SWT.NONE);
