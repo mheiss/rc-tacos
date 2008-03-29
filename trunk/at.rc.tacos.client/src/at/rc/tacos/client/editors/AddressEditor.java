@@ -28,7 +28,6 @@ import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
 import at.rc.tacos.client.controller.EditorDeleteAction;
-import at.rc.tacos.client.controller.EditorNewAddressAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.controller.ImportAddressAction;
 import at.rc.tacos.client.modelManager.ModelFactory;

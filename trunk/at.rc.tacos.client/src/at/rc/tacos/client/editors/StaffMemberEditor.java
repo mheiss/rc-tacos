@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -35,7 +34,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
-import at.rc.tacos.client.controller.EditorNewStaffAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.CompetenceContentProvider;
