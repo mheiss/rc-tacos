@@ -1400,9 +1400,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_fernfahrtButton.right = new FormAttachment(0, 80);
         fd_fernfahrtButton.left = new FormAttachment(0, 7);
         fernfahrtButton.setLayoutData(fd_fernfahrtButton);
-        //TODO
         fernfahrtButton.setText("Fernfahrt");
-//        fernfahrtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt"));
         fernfahrtButton.setToolTipText("Fernfahrten sind lt. RKT deklariert");
         planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, fernfahrtButton, bruckButton, kapfenbergButton, grazButton, leobenButton, wienButton, mariazellButton});
 
@@ -2006,6 +2004,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             statusmeldungenGroup.setVisible(false);
             personalAmFahrzeugGroup.setVisible(false);
             planungGroup.setVisible(false);
+            //set dateTime to default and disable editing
+            GregorianCalendar gcal = new GregorianCalendar();
+            dateTime.setDay(gcal.get(GregorianCalendar.DATE));
+            dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
+            dateTime.setYear(gcal.get(GregorianCalendar.YEAR));
+            dateTime.setEnabled(false);
         }
 
         if("journal".equalsIgnoreCase(editingType))
@@ -2058,6 +2062,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 transportdetailsGroup.setVisible(false);
                 statusmeldungenGroup.setVisible(false);
                 personalAmFahrzeugGroup.setVisible(false);
+                //set dateTime to default and disable editing
+                GregorianCalendar gcal = new GregorianCalendar();
+                dateTime.setDay(gcal.get(GregorianCalendar.DATE));
+                dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
+                dateTime.setYear(gcal.get(GregorianCalendar.YEAR));
+                dateTime.setEnabled(false);
 
                 transportType = "emergencyTransport";
 
@@ -2088,6 +2098,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 transportdetailsGroup.setVisible(false);
                 statusmeldungenGroup.setVisible(false);
                 personalAmFahrzeugGroup.setVisible(false);
+                dateTime.setEnabled(true);
 
                 transportType = "prebooking";
 
@@ -2100,9 +2111,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 {
                     comboPrioritaet.setItems(emergencyAndTransportPriorities);
                 }
-
             }
-
         });
 
         buttonAlles = new Button(group, SWT.TOGGLE);
