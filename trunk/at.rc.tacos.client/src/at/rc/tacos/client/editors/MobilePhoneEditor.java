@@ -46,7 +46,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
+	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name,number;
 
 	//managed data
@@ -114,7 +114,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Mobiltelefon anlegen");
+		saveHyperlink.setText("Neues Mobiltelefon speichern");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -126,19 +126,6 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 			}
 		});
 
-		//create the hyperlink to add a new mobile phone
-		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Mobiltelefon anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.mobilePhoneAdd"));
-		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorNewMobilePhoneAction newAction = new EditorNewMobilePhoneAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				newAction.run();
-			}
-		});
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Mobiltelefon löschen");
@@ -219,7 +206,6 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-			addHyperlink.setVisible(true);
 		}
 		//load the data
 		id.setText(String.valueOf(detail.getId()));
