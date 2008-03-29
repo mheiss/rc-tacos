@@ -234,10 +234,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnSaniIIJournal.setWidth(70);
 		columnSaniIIJournal.setText("Sanitäter II");
 
-		final TableColumn columnAnruferJournal = new TableColumn(table, SWT.NONE);
-		columnAnruferJournal.setWidth(70);
-		columnAnruferJournal.setText("Anrufer");
-
 		//make the columns sort able
 		Listener sortListener = new Listener() 
 		{
@@ -296,8 +292,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 					sortIdentifier = TransportSorter.PARAMEDIC_I_SORTER;
 				if(currentColumn == columnSaniIIJournal)
 					sortIdentifier = TransportSorter.PARAMEDIC_II_SORTER;
-				if(currentColumn == columnAnruferJournal)
-					sortIdentifier = TransportSorter.CALLER_SORTER;
+			
 
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
@@ -322,8 +317,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnFzgJournal.addListener(SWT.Selection, sortListener);
 		columnSaniIJournal.addListener(SWT.Selection, sortListener);
 		columnSaniIIJournal.addListener(SWT.Selection, sortListener);
-		columnAnruferJournal.addListener(SWT.Selection, sortListener);
-
+	
 		//create the actions
 		makeActions();
 		hookContextMenu();
