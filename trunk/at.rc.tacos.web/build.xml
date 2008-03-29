@@ -87,4 +87,23 @@
 		</exec>
 	</target>
 	
+	<target name="ssl-genkey-jsse">
+		<property name="ssl.key.id" value="-keystore .keystore -alias tomcat -storepass ${ssl.key.pass} -keypass ${ssl.key.pass}"/>
+		<exec executable="${java.home}/bin/keytool" dir="${appserver.home}/conf" failonerror="false">
+			<arg line="-delete"/>
+			<arg line="${ssl.key.id}"/>
+		</exec>
+		<exec executable="${java.home}/bin/keytool" dir="${appserver.home}/conf" failonerror="true">
+			<arg line="-genkey -dname &quot;${ssl.key.dname.jsse}&quot;"/>
+			<arg line="-keyalg RSA"/>
+			<arg line="-validity ${ssl.key.validity}"/>
+			<arg line="${ssl.key.id}"/>
+		</exec>
+		<exec executable="${java.home}/bin/keytool" dir="${appserver.home}/conf">
+			<arg line="-export"/>
+			<arg line="-file server.key"/>
+			<arg line="${ssl.key.id}"/>
+		</exec>
+	</target>
+	
 </project>
