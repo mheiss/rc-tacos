@@ -69,7 +69,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private ComboViewer phoneComboViewer,primaryLocationComboViewer,competenceComboViewer,authorisationComboViewer,sexComboViewer;
 	private Button locked;
 	private Hyperlink addPhone,removePhone,removeCompetence,addCompetence;
-	private ImageHyperlink saveHyperlink,addHyperlink;
+	private ImageHyperlink saveHyperlink;
 
 	//indicates non-saved changes
 	protected boolean isDirty;
@@ -160,7 +160,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-			addHyperlink.setVisible(true);
 			//username is not editable
 			uName.setEditable(false);
 			uName.setBackground(CustomColors.GREY_COLOR);
@@ -391,7 +390,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neuen Mitarbeiter anlegen");
+		saveHyperlink.setText("Neuen Mitarbeiter speichern");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -400,20 +399,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			{
 				EditorSaveAction saveAction = new EditorSaveAction();
 				saveAction.run();
-			}
-		});
-
-		//create the hyperlink to add a new staff member
-		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Mitarbeiter anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.userAdd"));
-		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorNewStaffAction newAction = new EditorNewStaffAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				newAction.run();
 			}
 		});
 
