@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Widget;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.VehicleManager;
-import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.VehicleDetail;
 
