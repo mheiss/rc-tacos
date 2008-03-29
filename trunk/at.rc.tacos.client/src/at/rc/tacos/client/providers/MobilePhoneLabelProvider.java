@@ -3,7 +3,6 @@ package at.rc.tacos.client.providers;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.MobilePhoneDetail;
 
 public class MobilePhoneLabelProvider  extends LabelProvider 
