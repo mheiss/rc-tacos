@@ -45,7 +45,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
+	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name;
 	
 	//managed data
@@ -112,7 +112,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neue Erkrankung anlegen");
+		saveHyperlink.setText("Neue Erkrankung speichern");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -123,20 +123,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 				saveAction.run();
 			}
 		});
-		
-		//create the hyperlink to add a new job
-		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Erkrankung anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.diseaseAdd"));
-		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorNewDiseaseAction newAction = new EditorNewDiseaseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				newAction.run();
-			}
-		});
+			
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Erkrankung löschen");
@@ -209,7 +196,6 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-			addHyperlink.setVisible(true);
 		}
 		id.setText(String.valueOf(disease.getId()));
 		name.setText(disease.getDiseaseName());
