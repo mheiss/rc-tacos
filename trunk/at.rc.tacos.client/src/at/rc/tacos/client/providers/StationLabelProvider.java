@@ -16,7 +16,7 @@ public class StationLabelProvider extends LabelProvider
     @Override
     public Image getImage(Object object)
     {
-        return ImageFactory.getInstance().getRegisteredImage("resource.location");
+        return null;
     }
 
     /**
