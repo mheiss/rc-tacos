@@ -45,7 +45,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
+	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name;
 
 	//managed data
@@ -113,7 +113,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Dienstverhältnis anlegen");
+		saveHyperlink.setText("Neues Dienstverhältnis speichern");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -125,19 +125,6 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 			}
 		});
 		
-		//create the hyperlink to add a new staff member
-		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Dienstverhältnis anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.serviceTypeAdd"));
-		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorNewServiceTypeAction newAction = new EditorNewServiceTypeAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				newAction.run();
-			}
-		});
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Dienstverhältnis löschen");
@@ -210,7 +197,6 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-			addHyperlink.setVisible(true);
 		}
 		id.setText(String.valueOf(serviceType.getId()));
 		name.setText(serviceType.getServiceName());
