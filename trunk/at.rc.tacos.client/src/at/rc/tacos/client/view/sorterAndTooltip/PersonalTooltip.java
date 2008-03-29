@@ -65,22 +65,19 @@ public class PersonalTooltip extends ToolTip
 		Composite composite = createToolTipContentAreaComposite(parent);	
 		
 		//the name of the staff member
-		Image image = ImageFactory.getInstance().getRegisteredImage("resource.user");
-		String title = rosterEntry.getStaffMember().getFirstName() + " " + rosterEntry.getStaffMember().getLastName();
-		addIconAndLabel(composite, image, title);
+		String text = rosterEntry.getStaffMember().getFirstName() + " " + rosterEntry.getStaffMember().getLastName();
+		addTitleAndLabel(composite, "Name: ", text);
 		//the notes
 		if(rosterEntry.hasNotes())
 		{
-			image = ImageFactory.getInstance().getRegisteredImage("resource.info");
-			title = rosterEntry.getRosterNotes();
-			addIconAndLabel(composite,image,title);
+			text = rosterEntry.getRosterNotes();
+			addTitleAndLabel(composite,"Anmerkungen: ",text);
 		}
 		VehicleDetail assignedVehicle = vehicleManager.getVehicleOfStaff(rosterEntry.getStaffMember().getStaffMemberId());
 		if(assignedVehicle != null)
 		{
-		    image = ImageFactory.getInstance().getRegisteredImage("resource.userVehicle");
-            title = "Ist dem Fahrzeug "+assignedVehicle.getVehicleName()+" als "+rosterEntry.getJob().getJobName() +" zugewiesen"; 
-            addIconAndLabel(composite,image,title);
+            text = assignedVehicle.getVehicleName()+" als "+rosterEntry.getJob().getJobName(); 
+            addTitleAndLabel(composite,"Zugewiesenes Fahrzeug: ",text);
 		}
 
 		return composite;
@@ -99,6 +96,28 @@ public class PersonalTooltip extends ToolTip
 		textLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
 		textLabel.setText(text);
+	}
+	
+	protected void addTitleAndLabel(Composite parent, String titel, String text)
+	{
+		if(text.trim().isEmpty())
+			return;
+		
+		//Titel
+		Label titelLabel = new Label(parent, SWT.NONE);
+		titelLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+		titelLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		titelLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
+		titelLabel.setText(titel);
+		
+		//Text
+		Label textLabel = new Label(parent, SWT.NONE);
+		textLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+		textLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
+		textLabel.setText(text);
+		
+		
 	}
 	
 	/**
