@@ -42,7 +42,7 @@ import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
 import at.rc.tacos.client.providers.OutstandingTransportsViewLabelProvider;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
+//import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.model.Transport;
@@ -57,7 +57,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private TableViewer viewerOffTrans;
-	private OutstandingTransportsTooltip tooltip;
+//	private OutstandingTransportsTooltip tooltip;
 	
 	//the actions for the context menu
 	private CopyTransportAction copyTransportAction;
@@ -120,18 +120,19 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		
 		viewerOffTrans.refresh();
 
-		tooltip = new OutstandingTransportsTooltip(viewerOffTrans.getControl());
+//		tooltip = new OutstandingTransportsTooltip(viewerOffTrans.getControl());
 		//show the tool tip when the selection has changed
+		//make the actions for the context menu when selection has changed
 		viewerOffTrans.addSelectionChangedListener(new ISelectionChangedListener() 
 		{
 			public void selectionChanged(SelectionChangedEvent event) 
 			{
 				TableItem[] selection = viewerOffTrans.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltip.show(new Point(bounds.x, bounds.y));
-				}
+//				if (selection != null && selection.length > 0) 
+//				{
+//					Rectangle bounds = selection[0].getBounds();
+//					tooltip.show(new Point(bounds.x, bounds.y));
+//				}
 				
 				this.makeActions();
 				this.hookContextMenu();
