@@ -127,7 +127,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		{
 			public void selectionChanged(SelectionChangedEvent event) 
 			{
-				TableItem[] selection = viewerOffTrans.getTable().getSelection();
+//				TableItem[] selection = viewerOffTrans.getTable().getSelection();
 //				if (selection != null && selection.length > 0) 
 //				{
 //					Rectangle bounds = selection[0].getBounds();
