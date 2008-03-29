@@ -1181,7 +1181,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_begleitpersonButton.left = new FormAttachment(0, 462);
         begleitpersonButton.setLayoutData(fd_begleitpersonButton);
         begleitpersonButton.setToolTipText("Begleitperson");
-        begleitpersonButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson"));
+        begleitpersonButton.setText("Begleitperson");
+//        begleitpersonButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson"));
 
         ruecktransportMoeglichButton = new Button(transportdatenGroup, SWT.CHECK);
         final FormData fd_button_1 = new FormData();
@@ -1399,7 +1400,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_fernfahrtButton.right = new FormAttachment(0, 80);
         fd_fernfahrtButton.left = new FormAttachment(0, 7);
         fernfahrtButton.setLayoutData(fd_fernfahrtButton);
-        fernfahrtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt"));
+        //TODO
+        fernfahrtButton.setText("Fernfahrt");
+//        fernfahrtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt"));
         fernfahrtButton.setToolTipText("Fernfahrten sind lt. RKT deklariert");
         planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, fernfahrtButton, bruckButton, kapfenbergButton, grazButton, leobenButton, wienButton, mariazellButton});
 
@@ -1528,7 +1531,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_notarztButton.right = new FormAttachment(0, 92);
         fd_notarztButton.left = new FormAttachment(0, 7);
         notarztButton.setLayoutData(fd_notarztButton);
-        notarztButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.notarzt"));
+//        notarztButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.notarzt"));
+        notarztButton.setText("NA extern");
         notarztButton.setToolTipText("Externer! Notarzt für diesen Transport alarmiert");
 
         rthButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1539,7 +1543,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_rthButton.left = new FormAttachment(0, 7);
         rthButton.setLayoutData(fd_rthButton);
         rthButton.setToolTipText("Hubschrauber");
-        rthButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.hubschrauber"));
+//        rthButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.hubschrauber"));
+        rthButton.setText("RTH");
 
         dfButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_dfButton = new FormData();
@@ -1548,8 +1553,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_dfButton.right = new FormAttachment(0, 80);
         fd_dfButton.left = new FormAttachment(0, 7);
         dfButton.setLayoutData(fd_dfButton);
+        dfButton.setText("DF/Inspektion");
         dfButton.setToolTipText("DF/Inspektionsdienst");
-        dfButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.rotlicht"));
+//        dfButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.rotlicht"));
 
         brkdtButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_brkdtButton = new FormData();
@@ -1559,7 +1565,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_brkdtButton.left = new FormAttachment(0, 7);
         brkdtButton.setLayoutData(fd_brkdtButton);
         brkdtButton.setToolTipText("Bezirksrettungskommandant");
-        brkdtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.rotlicht"));
+        brkdtButton.setText("BRKDT");
+//        brkdtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.rotlicht"));
 
         feuerwehrButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_feuerwehrButton = new FormData();
@@ -1569,7 +1576,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_feuerwehrButton.left = new FormAttachment(0, 7);
         feuerwehrButton.setLayoutData(fd_feuerwehrButton);
         feuerwehrButton.setToolTipText("Feuerwehr");
-        feuerwehrButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.feuerwehr"));
+        feuerwehrButton.setText("FW");
+//        feuerwehrButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.feuerwehr"));
 
         rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
         final FormData fd_rufhilfepatientButton = new FormData();
@@ -1589,7 +1597,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_polizeiButton.left = new FormAttachment(0, 7);
         polizeiButton.setLayoutData(fd_polizeiButton);
         polizeiButton.setToolTipText("Polizei");
-        polizeiButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.polizei"));
+        polizeiButton.setText("Polizei");
+//        polizeiButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.polizei"));
 
         bergrettungButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_bergrettungButton = new FormData();
@@ -1598,7 +1607,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_bergrettungButton.right = new FormAttachment(0, 92);
         fd_bergrettungButton.left = new FormAttachment(0, 7);
         bergrettungButton.setLayoutData(fd_bergrettungButton);
-        bergrettungButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.bergrettung"));
+        bergrettungButton.setText("Bergrettung");
+//        bergrettungButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.bergrettung"));
         bergrettungButton.setToolTipText("Bergrettung");
 
         planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton});
