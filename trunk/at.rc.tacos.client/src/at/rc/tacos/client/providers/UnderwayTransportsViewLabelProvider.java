@@ -40,21 +40,22 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
-    	Transport transport = (Transport)element;
-        //determine the colum and return a image if needed
-        switch(columnIndex)
-        {
-		    case COLUMN_PATIENT:
-		    	if(transport.isAssistantPerson())
-		    		return ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson");
-		    	else return null;
-		    case COLUMN_TRANSPORT_TO:
-		    	if(transport.isLongDistanceTrip())
-		    			return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
-		    	else return null;
-		       
-		    default: return null;
-        }     
+    	return null;
+//    	Transport transport = (Transport)element;
+//        //determine the colum and return a image if needed
+//        switch(columnIndex)
+//        {
+//		    case COLUMN_PATIENT:
+//		    	if(transport.isAssistantPerson())
+//		    		return ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson");
+//		    	else return null;
+//		    case COLUMN_TRANSPORT_TO:
+//		    	if(transport.isLongDistanceTrip())
+//		    			return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
+//		    	else return null;
+//		       
+//		    default: return null;
+//        }     
     }
 
     @Override
@@ -63,6 +64,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     	Transport transport = (Transport)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Calendar cal = Calendar.getInstance();
+        String patient = "";
         switch(columnIndex)
         {
 	        case COLUMN_LOCK:return null;
@@ -77,9 +79,11 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
         	else return "";
 	        case COLUMN_TRANSPORT_FROM:return transport.getFromStreet() +"/" +transport.getFromCity();
 	        case COLUMN_PATIENT:
+	        	if(transport.isAssistantPerson())
+	        		patient = "+";
 	        	if(transport.getPatient() != null)
-        			return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
-        	else return "";
+        			return patient + " " +transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
+        	else return patient;
 	        case COLUMN_TRANSPORT_TO:
 	        	String label="";
 	        	if(transport.getToStreet() != null)
