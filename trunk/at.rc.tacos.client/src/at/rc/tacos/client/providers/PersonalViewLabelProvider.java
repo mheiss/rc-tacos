@@ -54,19 +54,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         case COLUMN_NOTES: 
             if(entry.hasNotes())
                 return ImageFactory.getInstance().getRegisteredImage("resource.info");
-            return null;
-        //show a symbol in front of the name 
-        case COLUMN_NAME: 
-            if(vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId()) == null)
-                return ImageFactory.getInstance().getRegisteredImage("resource.user");
-            else
-                return ImageFactory.getInstance().getRegisteredImage("resource.userVehicle");
-        case COLUMN_PLANED_WORK_TIME:
-            if(entry.isSplitEntry())
-                return ImageFactory.getInstance().getRegisteredImage("resource.timesplit");
-            else
-                return ImageFactory.getInstance().getRegisteredImage("resource.time");
-        
+            return null;       
         //show a symbol if the planned time is not handled
         case COLUMN_CHECK_IN: 
             //user is not cheked in but he should
@@ -77,7 +65,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
             else
             return null;
         case COLUMN_CHECK_OUT: 
-            //user is not cheked out but he should
+            //user is not checked out but he should
             if(entry.getRealEndOfWork() != 0)
             	return null;
             if(entry.getPlannedEndOfWork() < new Date().getTime())
