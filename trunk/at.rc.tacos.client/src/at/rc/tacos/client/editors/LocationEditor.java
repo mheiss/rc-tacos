@@ -53,7 +53,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private ImageHyperlink saveHyperlink,addHyperlink,removeHyperlink;
+	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text locationName,street,streetNumber,zipCode,city;
 	private TextViewer notesViewer;
 	private ComboViewer phoneViewer;
@@ -125,7 +125,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neue Ortsstelle anlegen");
+		saveHyperlink.setText("Neue Ortsstelle speichern");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
@@ -137,19 +137,6 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			}
 		});
 
-		//create the hyperlink to add a new staff member
-		addHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		addHyperlink.setText("Ortsstelle anlegen");
-		addHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.locationAdd"));
-		addHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				EditorNewLocationAction newAction = new EditorNewLocationAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				newAction.run();
-			}
-		});
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Ortsstelle löschen");
@@ -264,7 +251,6 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-			addHyperlink.setVisible(true);
 		}
 		locationName.setText(location.getLocationName());
 		street.setText(location.getStreet());
