@@ -1,0 +1,53 @@
+TODO: update this for use with Eclipse "Servers"
+------------------------------------------------
+
+To set up Tomcat, SSL and Eclipse for Joanna do the following:
+
+1. If you use the Sysdeo Tomcat Plugin for Eclipse, do the following in Eclipse:
+   in Window / Preferences / Tomcat set tomcat home to e.g. D:\Devel\tomcat-6.0.10
+   
+   Then add the following JVM parameter in Window / Preferences / Tomcat / JVM Settings:
+   -Djava.library.path=D:\Devel\tomcat-6.0.10\bin
+
+2. Check that tomcat.home property in build.properties has the proper value.
+
+
+If APR is used with Tomcat (it's used when tcnative-1.dll is in tomcat-6.0.10\bin) then
+you should use OpenSSL with Tomcat instead of the standard java security tools (JSSE).
+So you will need to:
+
+3a. Install OpenSSL
+   to e.g. C:\Tools\OpenSSL
+   (download it from http://www.openssl.org/related/binaries.html) 
+
+4a. Set openssl.bin in build.properties
+
+5a. Run ssl-genkey-openssl Ant build task.
+
+6a. Make sure the HTTPS connector in server.xml looks like the following (the port
+    number can vary):
+
+    <Connector port="443" protocol="HTTP/1.1" SSLEnabled="true" 
+               maxThreads="150" scheme="https" secure="true" 
+               clientAuth="false" sslProtocol="TLS"
+               SSLCertificateFile="D:/Devel/tomcat-6.0.10/conf/server.crt" 
+               SSLCertificateKeyFile="D:/Devel/tomcat-6.0.10/conf/server.key"
+               />
+
+
+
+Otherwise if the standard java security libs are used then you will have to do
+the following: 
+
+3b. Make sure that tcnative-1.dll is NOT in the tomcat-6.0.10\bin directory,
+    otherwise SSLEngine won't work.
+
+4b. Run ssl-genkey-jsse Ant build task.
+
+5b. Make sure the HTTPS connector in server.xml looks like the following:
+
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+               maxThreads="150" scheme="https" secure="true" 
+               clientAuth="false" sslProtocol="TLS"
+               keystoreFile="conf/.keystore" keystorePass="xu7nrAv"
+               />
