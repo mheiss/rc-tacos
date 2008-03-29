@@ -44,7 +44,7 @@ import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
-import at.rc.tacos.client.view.sorterAndTooltip.UnderwayTransportsTooltip;
+//import at.rc.tacos.client.view.sorterAndTooltip.UnderwayTransportsTooltip;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.Transport;
@@ -60,7 +60,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private FormToolkit toolkit;
 	private ScrolledForm formDisp;
 	private TableViewer viewer;
-	private UnderwayTransportsTooltip tooltip;
+//	private UnderwayTransportsTooltip tooltip;
 	
 	//the actions for the context menu
 	private SetTransportStatusAction setTransportStatusS1Action;
@@ -123,21 +123,21 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		
 		viewer.refresh();
 		
-		//create the tooltip text
-		tooltip = new UnderwayTransportsTooltip(viewer.getControl());
-		//show the tool tip when the selection has changed
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				TableItem[] selection = viewer.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
-					Rectangle bounds = selection[0].getBounds();
-					tooltip.show(new Point(bounds.x, bounds.y));
-				}
-			}
-		});  
+//		//create the tooltip text
+//		tooltip = new UnderwayTransportsTooltip(viewer.getControl());
+//		//show the tool tip when the selection has changed
+//		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
+//		{
+//			public void selectionChanged(SelectionChangedEvent event) 
+//			{
+//				TableItem[] selection = viewer.getTable().getSelection();
+//				if (selection != null && selection.length > 0) 
+//				{
+//					Rectangle bounds = selection[0].getBounds();
+//					tooltip.show(new Point(bounds.x, bounds.y));
+//				}
+//			}
+//		});  
 		
 		viewer.getTable().addMouseListener(new MouseAdapter() 
 		{
