@@ -224,13 +224,6 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				}
 				else return "";
 			}
-		case COLUMN_CALLER_NAME:
-			if(transport.getCallerDetail() != null)
-			{
-				return transport.getCallerDetail().getCallerName();
-			}
-			else return "";
-
 		default: return null;
 		}
 	}
