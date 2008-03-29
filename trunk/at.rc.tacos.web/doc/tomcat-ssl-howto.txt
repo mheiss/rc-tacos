@@ -27,7 +27,7 @@ So you will need to:
 6a. Make sure the HTTPS connector in server.xml looks like the following (the port
     number can vary):
 
-    <Connector port="443" protocol="HTTP/1.1" SSLEnabled="true" 
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
                SSLCertificateFile="D:/Devel/tomcat-6.0.10/conf/server.crt" 
