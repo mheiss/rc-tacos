@@ -2,6 +2,8 @@ package at.rc.tacos.client.providers;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -12,6 +14,7 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.util.MyUtils;
 
 public class JournalViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus
 {
@@ -45,33 +48,30 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		//determine the colum and return a image if needed
 		switch(columnIndex)
 		{
-		case COLUMN_PATIENT:
-			if(transport.isAssistantPerson())
-				return ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson");
-			else return null;
-		case COLUMN_TRANSPORT_TO:
-			if(transport.isLongDistanceTrip())
-				return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
-			else return null;
-		case COLUMN_TRANSPORT_FROM:
-			//return when we do not have the status destination free
-			if(!transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
+			case COLUMN_TRANSPORT_FROM:
+				//return when we do not have the status destination free
+				if(!transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
+					return null;
+				//display image only on a backtransport
+				if(!transport.isBackTransport())
+					return null;
+	
+				//the time of the s5 status 
+				long s5Time = transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
+				Calendar cal5 = Calendar.getInstance();
+				cal5.setTimeInMillis(s5Time);
+				cal5.set(1970, 01, 01);//necessary because of the different year/month/day format in the database
+				//calculate time window for a possible back transport
+				Calendar cal4 = Calendar.getInstance();
+				cal4.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
+				cal4.set(1970, 01, 01);
+				cal4.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY) -4);//show all possible back transports within 4 hours by an arrow
+				if(cal5.getTimeInMillis() >cal4.getTimeInMillis())
+					return ImageFactory.getInstance().getRegisteredImage("transport.backtransport");
+				//no image
 				return null;
-			//display image only on a backtransport
-			if(!transport.isBackTransport())
-				return null;
-
-			//the time of the s5 status 
-			long s5Time = transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
-			//calculate time window for a possible back transport
-			Calendar befor4Hours = Calendar.getInstance();
-			befor4Hours.add(Calendar.HOUR_OF_DAY, -4);
-			if(befor4Hours.getTimeInMillis() >= s5Time)
-				return ImageFactory.getInstance().getRegisteredImage("transport.backtransport");
-			//no image
-			return null;
-			//default image -> none
-		default: return null;
+				//default image -> none
+			default: return null;
 		}
 	}
 
@@ -81,6 +81,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		Transport transport = (Transport)element;
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		Calendar cal = Calendar.getInstance();
+		String patient = "";
 
 		switch(columnIndex)
 		{
@@ -118,9 +119,11 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		case COLUMN_PRIORITY: return transport.getTransportPriority();
 		case COLUMN_TRANSPORT_FROM: return transport.getFromStreet() +"/" +transport.getFromCity();
 		case COLUMN_PATIENT:
+			if(transport.isAssistantPerson())
+				patient = "+";
 			if(transport.getPatient() != null)
-				return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
-			else return "";
+				return patient +" " +transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
+			else return patient;
 		case COLUMN_TRANSPORT_TO:
 			String label="";
 			if(transport.getToStreet() != null)
