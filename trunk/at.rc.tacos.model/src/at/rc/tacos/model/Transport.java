@@ -1,6 +1,5 @@
 package at.rc.tacos.model;
 
-import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
 
