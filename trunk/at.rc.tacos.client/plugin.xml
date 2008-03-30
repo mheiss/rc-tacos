@@ -81,6 +81,15 @@
             icon="icons/resources/vehicle.png"
             id="at.rc.tacos.client.view.ressources_view">
       </view>
+      
+      <view
+            name="Fahrzeugübersicht-Tabelle"
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.VehiclesViewTable"
+            icon="icons/resources/vehicle.png"
+            id="at.rc.tacos.client.view.vehiclestable_view">
+      </view>
+      
       <view
             name="Personalübersicht"
             allowMultiple="false"
