@@ -30,8 +30,8 @@ So you will need to:
     <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
-               SSLCertificateFile="D:/Devel/tomcat-6.0.10/conf/server.crt" 
-               SSLCertificateKeyFile="D:/Devel/tomcat-6.0.10/conf/server.key"
+               SSLCertificateFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/server.crt" 
+               SSLCertificateKeyFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/server.key"
                />
 
 
