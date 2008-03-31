@@ -310,6 +310,13 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
                     if(rs1.getInt("selected_ID") == 12)
                         transport.setEmergencyPhone(true);
+                    
+                    if(rs1.getInt("selected_ID") == 13)
+                        transport.setKITAlarming(true);
+                    
+                    if(rs1.getInt("selected_ID") == 14)
+                        transport.setBlueLight1(true);
+                    
                 }
 
                 //add the transport to the list
@@ -456,6 +463,14 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
                     if(rs1.getInt("selected_ID") == 12)
                         transport.setEmergencyPhone(true);
+                    
+                    if(rs1.getInt("selected_ID") == 13)
+                        transport.setKITAlarming(true);
+                    
+                    if(rs1.getInt("selected_ID") == 14)
+                        transport.setBlueLight1(true);
+                    
+                    
                 }
 
                 //add the transport to the list
@@ -656,6 +671,12 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
                     if(rs1.getInt("selected_ID") == 12)
                         transport.setEmergencyPhone(true);
+                    
+                    if(rs1.getInt("selected_ID") == 13)
+                        transport.setKITAlarming(true);
+                    
+                    if(rs1.getInt("selected_ID") == 14)
+                        transport.setBlueLight1(true);
                 }
 
                 //add the transport to the list
@@ -1038,6 +1059,12 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
                     if(rs1.getInt("selected_ID") == 12)
                         transport.setEmergencyPhone(true);
+                    
+                    if(rs1.getInt("selected_ID") == 13)
+                        transport.setKITAlarming(true);
+                    
+                    if(rs1.getInt("selected_ID") == 14)
+                        transport.setBlueLight1(true);
                 }
                 return transport;
             }
@@ -1534,6 +1561,11 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             addTransportItem(transport.getTransportId(), 11);
         if(transport.isEmergencyPhone() == true)
             addTransportItem(transport.getTransportId(), 12);
+        if(transport.isKITAlarming() == true)
+            addTransportItem(transport.getTransportId(), 13);
+        if(transport.isBlueLight1() == true)
+            addTransportItem(transport.getTransportId(), 14);
+        //TODO
         return true;
     }	
 
