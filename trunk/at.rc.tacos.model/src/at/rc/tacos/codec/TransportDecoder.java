@@ -122,6 +122,8 @@ public class TransportDecoder implements MessageDecoder
 					transport.setHelicopterAlarming(Boolean.valueOf(reader.getElementText()));
 				if("blueLightToGoal".equalsIgnoreCase(startName))
 					transport.setBlueLightToGoal(Boolean.valueOf(reader.getElementText()));
+				if("blueLight1".equalsIgnoreCase(startName))
+					transport.setBlueLight1(Boolean.valueOf(reader.getElementText()));
 				if("dfAlarming".equalsIgnoreCase(startName))
 					transport.setDfAlarming(Boolean.valueOf(reader.getElementText()));
 				if("brkdtAlarming".equalsIgnoreCase(startName))
@@ -132,6 +134,8 @@ public class TransportDecoder implements MessageDecoder
 					transport.setMountainRescueServiceAlarming(Boolean.valueOf(reader.getElementText()));
 				if("policeAlarming".equalsIgnoreCase(startName))
 					transport.setPoliceAlarming(Boolean.valueOf(reader.getElementText()));
+				if("KITAlarming".equalsIgnoreCase(startName))
+					transport.setKITAlarming(Boolean.valueOf(reader.getElementText()));
 
 				//next
 				if(VehicleDetail.ID.equalsIgnoreCase(startName))
