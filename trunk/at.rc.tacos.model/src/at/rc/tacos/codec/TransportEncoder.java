@@ -216,7 +216,55 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeStartElement("KITAlarming");
         writer.writeCharacters(Boolean.toString(transport.isKITAlarming()));
         writer.writeEndElement();
-        
+        //alarming timestamps
+        if(transport.getTimestampNA() >0)
+        {
+            writer.writeStartElement("timestampNA");
+            writer.writeCharacters(Long.toString(transport.getTimestampNA()));
+            writer.writeEndElement();
+        }
+        if(transport.getTimestampRTH() >0)
+        {
+            writer.writeStartElement("timestampRTH");
+            writer.writeCharacters(Long.toString(transport.getTimestampRTH()));
+            writer.writeEndElement();
+        }
+        if(transport.getTimestampDF() >0)
+        {
+            writer.writeStartElement("timestampDF");
+            writer.writeCharacters(Long.toString(transport.getTimestampDF()));
+            writer.writeEndElement();
+        }
+        if(transport.getTimestampBRKDT() >0)
+        {
+            writer.writeStartElement("timestampBRKDT");
+            writer.writeCharacters(Long.toString(transport.getTimestampBRKDT()));
+            writer.writeEndElement();
+        }
+        if(transport.getTimestampFW() >0)
+        {
+            writer.writeStartElement("timestampFW");
+            writer.writeCharacters(Long.toString(transport.getTimestampFW()));
+            writer.writeEndElement();
+        }
+        if(transport.getTimestampPolizei() >0)
+        {
+            writer.writeStartElement("timestampPolizei");
+            writer.writeCharacters(Long.toString(transport.getTimestampPolizei()));
+            writer.writeEndElement();
+        }
+        if(transport.getTimestampBergrettung() >0)
+        {
+            writer.writeStartElement("timestampBergrettung");
+            writer.writeCharacters(Long.toString(transport.getTimestampBergrettung()));
+            writer.writeEndElement();
+        }
+        if(transport.getTimestampKIT() >0)
+        {
+            writer.writeStartElement("timestampKIT");
+            writer.writeCharacters(Long.toString(transport.getTimestampKIT()));
+            writer.writeEndElement();
+        }        
         //vehicle
         if(transport.getVehicleDetail() != null)
         {
