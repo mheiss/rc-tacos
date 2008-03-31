@@ -14,7 +14,9 @@ import at.rc.tacos.web.utils.ControllerFactory;
 public class Dispatcher extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
-	public static final String URLS_BUNDLE_PATH = "at.rc.tacos.web.web.urls";	
+	public static final String URLS_BUNDLE_PATH = "at.rc.tacos.web.web.urls";
+	private static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.web.server";
+	private static final String HTTPS_PREFIX = "https://";
 
 	/**
 	 * Initializes servlet context.
@@ -40,32 +42,37 @@ public class Dispatcher extends HttpServlet
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		// Assert we have a valid session.
+		ResourceBundle urls = ResourceBundle.getBundle(URLS_BUNDLE_PATH);
+		ResourceBundle server = ResourceBundle.getBundle(SERVER_BUNDLE_PATH);
+		
+		//Assert we have a valid session.
 		final HttpSession session = request.getSession(true);
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
 
-		// Assert we have a valid user session.
+		//Assert we have a valid user session.
 		if (userSession == null)
 		{
 			userSession = new UserSession();
 			request.getSession().setAttribute("userSession", userSession);
 		}
 
-		// Get the relative Path from request URI.	
+		//Get the relative Path from request URI.	
 		final String relativePath = request.getRequestURI().replaceAll(request.getContextPath(), "").replaceFirst("/Dispatcher/", "").replaceFirst("/Dispatcher", "");
 		System.out.println("relativePath: " + relativePath);
 
-		ResourceBundle urls = ResourceBundle.getBundle(URLS_BUNDLE_PATH);
-
 		final Controller controller = ControllerFactory.getController(relativePath);
 
-		// If no URL is specified send redirect to home.do.
-		if (relativePath.equals("") || relativePath.equals("/"))
+		//Redirect if request is not send over SSL connection
+		/*if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
+			response.sendRedirect(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath());
+		}
+		//If no URL is specified send redirect to home.do.
+		else*/ if (relativePath.equals("") || relativePath.equals("/"))
 			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" +  urls.getString("url.rosterDay"));
-		// If no controller is found redirect to notFound.do.
+		//If no controller is found redirect to notFound.do.
 		else if (controller == null){
 			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" + urls.getString("url.notFound")); 
-			// If user isn't logged in redirect to login.do.
+			//If user isn't logged in redirect to login.do.
 		}else if (!userSession.getLoggedIn()
 				&& !relativePath.equals(urls.getString("url.login"))
 				&& !relativePath.equals(urls.getString("url.error"))
