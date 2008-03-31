@@ -56,6 +56,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * GUI (form) to manage the transport details
@@ -126,6 +127,15 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
     private Text textAufgen;
     private Text textAE;
+    
+    private Text timestampNA;
+    private Text timestampRTH;
+    private Text timestampDF;
+    private Text timestampBRKDT;
+    private Text timestampFW;
+    private Text timestampPolizei;
+    private Text timestampBergrettung;
+    private Text timestampKIT;
 
     //the stati
     private Text textS1,textS2,textS3,textS4,textS5,textS6,textS7,textS8,textS9;
@@ -241,6 +251,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
         //Create the content of the dialog
         createTransportSection(composite);
+        
+        //Simple date format for the alarming timestamps
+        SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 
         //init data
         if(!createNew)
@@ -351,7 +364,49 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 cal.setTimeInMillis(transport.getCreationTime());
                 textAufgen.setText(sdf.format(cal.getTime()));
             }
-
+            
+            //alarming timestamps TODO----------------------------------------------------------------------
+            if(transport.getTimestampNA() != 0)
+            {
+            	cal.setTimeInMillis(transport.getTimestampNA());
+            	timestampNA.setText(sdf_dateTime.format(cal.getTime()));
+            }
+            if(transport.getTimestampRTH() != 0)
+            {
+            	cal.setTimeInMillis(transport.getTimestampRTH());
+            	timestampRTH.setText(sdf_dateTime.format(cal.getTime()));
+            }
+            if(transport.getTimestampDF() != 0)
+            {
+            	cal.setTimeInMillis(transport.getTimestampDF());
+            	timestampDF.setText(sdf_dateTime.format(cal.getTime()));
+            }
+            if(transport.getTimestampBRKDT() != 0)
+            {
+            	cal.setTimeInMillis(transport.getTimestampBRKDT());
+            	timestampBRKDT.setText(sdf_dateTime.format(cal.getTime()));
+            }
+            if(transport.getTimestampFW() != 0)
+            {
+            	cal.setTimeInMillis(transport.getTimestampFW());
+            	timestampFW.setText(sdf_dateTime.format(cal.getTime()));
+            }
+            if(transport.getTimestampPolizei() != 0)
+            {
+            	cal.setTimeInMillis(transport.getTimestampPolizei());
+            	timestampPolizei.setText(sdf_dateTime.format(cal.getTime()));
+            }
+            if(transport.getTimestampBergrettung() != 0)
+            {
+            	cal.setTimeInMillis(transport.getTimestampBergrettung());
+            	timestampBergrettung.setText(sdf_dateTime.format(cal.getTime()));
+            }
+            if(transport.getTimestampKIT() != 0)
+            {
+            	cal.setTimeInMillis(transport.getTimestampKIT());
+            	timestampKIT.setText(sdf_dateTime.format(cal.getTime()));
+            }
+           
             //other fields
             this.begleitpersonButton.setSelection(transport.isAssistantPerson());
             this.bergrettungButton.setSelection(transport.isMountainRescueServiceAlarming());
@@ -712,6 +767,28 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         transport.setMountainRescueServiceAlarming(bergrettungButton.getSelection());
         transport.setPoliceAlarming(polizeiButton.getSelection());
         transport.setKITAlarming(KITButton.getSelection());
+        
+        //the timestamps for the alarming fields TODO
+        if(!timestampNA.getText().equalsIgnoreCase(""))
+        	transport.settimestampNA(MyUtils.stringToTimestamp(timestampNA.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampRTH.getText().equalsIgnoreCase(""))
+            transport.settimestampRTH(MyUtils.stringToTimestamp(timestampRTH.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampDF.getText().equalsIgnoreCase(""))
+            transport.settimestampDF(MyUtils.stringToTimestamp(timestampDF.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampBRKDT.getText().equalsIgnoreCase(""))
+            transport.settimestampBRKDT(MyUtils.stringToTimestamp(timestampBRKDT.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampFW.getText().equalsIgnoreCase(""))
+            transport.settimestampFW(MyUtils.stringToTimestamp(timestampFW.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampPolizei.getText().equalsIgnoreCase(""))
+            transport.settimestampPolizei(MyUtils.stringToTimestamp(timestampPolizei.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampBergrettung.getText().equalsIgnoreCase(""))
+            transport.settimestampBergrettung(MyUtils.stringToTimestamp(timestampBergrettung.getText(), MyUtils.timeAndDateFormatShort));
+        
+        System.out.println("Transportform, ................Bergrettung Timestamp: " +transport.getTimestampBergrettung());
+        
+        if(!timestampKIT.getText().equalsIgnoreCase(""))
+            transport.settimestampKIT(MyUtils.stringToTimestamp(timestampKIT.getText(), MyUtils.timeAndDateFormatShort));
+        
 
         //set the type of the transport
         if(transportType.equalsIgnoreCase("prebooking"))
@@ -1418,7 +1495,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         final FormData fd_patientenzustandGroup = new FormData();
         fd_patientenzustandGroup.bottom = new FormAttachment(0, 348);
         fd_patientenzustandGroup.top = new FormAttachment(0, 166);
-        fd_patientenzustandGroup.right = new FormAttachment(0, 920);
+        fd_patientenzustandGroup.right = new FormAttachment(0, 870);
         fd_patientenzustandGroup.left = new FormAttachment(0, 194);
         patientenzustandGroup.setLayoutData(fd_patientenzustandGroup);
         patientenzustandGroup.setText("Patientenzustand");
@@ -1495,7 +1572,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         final FormData fd_bd1Button = new FormData();
         fd_bd1Button.bottom = new FormAttachment(0, 25);
         fd_bd1Button.top = new FormAttachment(0, 9);
-        fd_bd1Button.right = new FormAttachment(0, 1036);
+        fd_bd1Button.right = new FormAttachment(0, 500);
         fd_bd1Button.left = new FormAttachment(0, 253);
         bd1Button.setLayoutData(fd_bd1Button);
         bd1Button.setToolTipText("Sondersignal auf dem Weg zum Einsatzort");
@@ -1536,7 +1613,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_planungGroup_1.bottom = new FormAttachment(0, 348);
         fd_planungGroup_1.top = new FormAttachment(0, 166);
         fd_planungGroup_1.right = new FormAttachment(0, 1056);
-        fd_planungGroup_1.left = new FormAttachment(0, 927);
+        fd_planungGroup_1.left = new FormAttachment(0, 875);
         planungGroup_1.setLayoutData(fd_planungGroup_1);
         planungGroup_1.setText("Alarmierung");
 
@@ -1544,56 +1621,116 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         final FormData fd_notarztButton = new FormData();
         fd_notarztButton.bottom = new FormAttachment(0, 19);
         fd_notarztButton.top = new FormAttachment(0, 3);
-        fd_notarztButton.right = new FormAttachment(0, 92);
-        fd_notarztButton.left = new FormAttachment(0, 7);
+        fd_notarztButton.right = new FormAttachment(0, 88);
+        fd_notarztButton.left = new FormAttachment(0, 5);
         notarztButton.setLayoutData(fd_notarztButton);
 //        notarztButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.notarzt"));
         notarztButton.setText("NA extern");
         notarztButton.setToolTipText("Externer! Notarzt für diesen Transport alarmiert");
+        notarztButton.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
+            	Calendar cal = Calendar.getInstance();
+            	if(notarztButton.getSelection())
+            		timestampNA.setText(sdf_dateTime.format(cal.getTime()));
+            	else
+            		timestampNA.setText("");
+            } 
+        });
 
         rthButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_rthButton = new FormData();
         fd_rthButton.bottom = new FormAttachment(0, 40);
         fd_rthButton.top = new FormAttachment(0, 24);
-        fd_rthButton.right = new FormAttachment(0, 92);
-        fd_rthButton.left = new FormAttachment(0, 7);
+        fd_rthButton.right = new FormAttachment(0, 88);
+        fd_rthButton.left = new FormAttachment(0, 5);
         rthButton.setLayoutData(fd_rthButton);
         rthButton.setToolTipText("Hubschrauber");
 //        rthButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.hubschrauber"));
         rthButton.setText("RTH");
+        rthButton.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
+            	Calendar cal = Calendar.getInstance();
+            	if(rthButton.getSelection())
+            		timestampRTH.setText(sdf_dateTime.format(cal.getTime()));
+            	else
+            		timestampRTH.setText("");
+            } 
+        });
 
         dfButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_dfButton = new FormData();
         fd_dfButton.bottom = new FormAttachment(0, 61);
         fd_dfButton.top = new FormAttachment(0, 45);
-        fd_dfButton.right = new FormAttachment(0, 100);
-        fd_dfButton.left = new FormAttachment(0, 7);
+        fd_dfButton.right = new FormAttachment(0, 88);
+        fd_dfButton.left = new FormAttachment(0, 5);
         dfButton.setLayoutData(fd_dfButton);
         dfButton.setText("DF/Inspektion");
         dfButton.setToolTipText("DF/Inspektionsdienst");
 //        dfButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.rotlicht"));
+        dfButton.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
+            	Calendar cal = Calendar.getInstance();
+            	if(dfButton.getSelection())
+            		timestampDF.setText(sdf_dateTime.format(cal.getTime()));
+            	else
+            		timestampDF.setText("");
+            } 
+        });
 
         brkdtButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_brkdtButton = new FormData();
         fd_brkdtButton.bottom = new FormAttachment(0, 82);
         fd_brkdtButton.top = new FormAttachment(0, 66);
-        fd_brkdtButton.right = new FormAttachment(0, 92);
-        fd_brkdtButton.left = new FormAttachment(0, 7);
+        fd_brkdtButton.right = new FormAttachment(0, 88);
+        fd_brkdtButton.left = new FormAttachment(0, 5);
         brkdtButton.setLayoutData(fd_brkdtButton);
         brkdtButton.setToolTipText("Bezirksrettungskommandant");
         brkdtButton.setText("BRKDT");
 //        brkdtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.rotlicht"));
+        brkdtButton.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
+            	Calendar cal = Calendar.getInstance();
+            	if(brkdtButton.getSelection())
+            		timestampBRKDT.setText(sdf_dateTime.format(cal.getTime()));
+            	else
+            		timestampBRKDT.setText("");
+            } 
+        });
 
         feuerwehrButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_feuerwehrButton = new FormData();
         fd_feuerwehrButton.bottom = new FormAttachment(0, 103);
         fd_feuerwehrButton.top = new FormAttachment(0, 87);
-        fd_feuerwehrButton.right = new FormAttachment(0, 80);
-        fd_feuerwehrButton.left = new FormAttachment(0, 7);
+        fd_feuerwehrButton.right = new FormAttachment(0, 88);
+        fd_feuerwehrButton.left = new FormAttachment(0, 5);
         feuerwehrButton.setLayoutData(fd_feuerwehrButton);
         feuerwehrButton.setToolTipText("Feuerwehr");
         feuerwehrButton.setText("FW");
 //        feuerwehrButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.feuerwehr"));
+        feuerwehrButton.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
+            	Calendar cal = Calendar.getInstance();
+            	if(feuerwehrButton.getSelection())
+            		timestampFW.setText(sdf_dateTime.format(cal.getTime()));
+            	else
+            		timestampFW.setText("");
+            } 
+        });
 
         rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
         final FormData fd_rufhilfepatientButton = new FormData();
@@ -1604,39 +1741,157 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
         rufhilfepatientButton.setText("Rufhilfepatient");
 
-
         polizeiButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_polizeiButton = new FormData();
         fd_polizeiButton.bottom = new FormAttachment(0, 124);
         fd_polizeiButton.top = new FormAttachment(0, 108);
-        fd_polizeiButton.right = new FormAttachment(0, 92);
-        fd_polizeiButton.left = new FormAttachment(0, 7);
+        fd_polizeiButton.right = new FormAttachment(0, 88);
+        fd_polizeiButton.left = new FormAttachment(0, 5);
         polizeiButton.setLayoutData(fd_polizeiButton);
         polizeiButton.setToolTipText("Polizei");
         polizeiButton.setText("Polizei");
 //        polizeiButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.polizei"));
+        polizeiButton.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
+            	Calendar cal = Calendar.getInstance();
+            	if(polizeiButton.getSelection())
+            		timestampPolizei.setText(sdf_dateTime.format(cal.getTime()));
+            	else
+            		timestampPolizei.setText("");
+            } 
+        });
         
         KITButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_KITButton = new FormData();
         fd_KITButton.bottom = new FormAttachment(0, 166);
         fd_KITButton.top = new FormAttachment(0, 150);
-        fd_KITButton.right = new FormAttachment(0, 92);
-        fd_KITButton.left = new FormAttachment(0, 7);
+        fd_KITButton.right = new FormAttachment(0, 88);
+        fd_KITButton.left = new FormAttachment(0, 5);
         KITButton.setLayoutData(fd_KITButton);
         KITButton.setToolTipText("Kriseninterventionsteam");
         KITButton.setText("KIT");
+        KITButton.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
+            	Calendar cal = Calendar.getInstance();
+            	if(KITButton.getSelection())
+            		timestampKIT.setText(sdf_dateTime.format(cal.getTime()));
+            	else
+            		timestampKIT.setText("");
+            } 
+        });
 
         bergrettungButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_bergrettungButton = new FormData();
         fd_bergrettungButton.bottom = new FormAttachment(0, 145);
         fd_bergrettungButton.top = new FormAttachment(0, 129);
-        fd_bergrettungButton.right = new FormAttachment(0, 92);
-        fd_bergrettungButton.left = new FormAttachment(0, 7);
+        fd_bergrettungButton.right = new FormAttachment(0, 88);
+        fd_bergrettungButton.left = new FormAttachment(0, 5);
         bergrettungButton.setLayoutData(fd_bergrettungButton);
         bergrettungButton.setText("Bergrettung");
 //        bergrettungButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.bergrettung"));
         bergrettungButton.setToolTipText("Bergrettung");
+        bergrettungButton.addSelectionListener(new SelectionAdapter() 
+        {
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
+            	Calendar cal = Calendar.getInstance();
+            	if(bergrettungButton.getSelection())
+            		timestampBergrettung.setText(sdf_dateTime.format(cal.getTime()));
+            	else
+            		timestampBergrettung.setText("");
+            } 
+        });
 
+        //alarming timestamp text fields-------------------------------------------------------------
+        timestampNA = new Text(planungGroup_1, SWT.BORDER);
+        final FormData fd_timestampNA = new FormData();
+        fd_timestampNA.bottom = new FormAttachment(0, 19);
+        fd_timestampNA.top = new FormAttachment(0, 3);
+        fd_timestampNA.right = new FormAttachment(0, 175);
+        fd_timestampNA.left = new FormAttachment(0, 89);
+        timestampNA.setLayoutData(fd_timestampNA);
+        timestampNA.setToolTipText("Zeitpunkt des letzten Anhakens des Notarzt-Häkchens");
+        
+        timestampRTH = new Text(planungGroup_1, SWT.BORDER);
+        final FormData fd_timestampRTH = new FormData();
+        fd_timestampRTH.bottom = new FormAttachment(0, 40);
+        fd_timestampRTH.top = new FormAttachment(0, 24);
+        fd_timestampRTH.right = new FormAttachment(0, 175);
+        fd_timestampRTH.left = new FormAttachment(0, 89);
+        timestampRTH.setLayoutData(fd_timestampRTH);
+        timestampRTH.setToolTipText("Zeitpunkt des letzten Anhakens des Hubschrauber-Häkchens");
+        
+        timestampDF = new Text(planungGroup_1, SWT.BORDER);
+        final FormData fd_timestampDF = new FormData();
+        fd_timestampDF.bottom = new FormAttachment(0, 61);
+        fd_timestampDF.top = new FormAttachment(0, 45);
+        fd_timestampDF.right = new FormAttachment(0, 175);
+        fd_timestampDF.left = new FormAttachment(0, 89);
+        timestampDF.setLayoutData(fd_timestampDF);
+        timestampDF.setToolTipText("Zeitpunkt des letzten Anhakens des Dienstführenden/Insp.-Häkchens");
+        
+        timestampBRKDT = new Text(planungGroup_1, SWT.BORDER);
+        final FormData fd_timestampBRKDT = new FormData();
+        fd_timestampBRKDT.bottom = new FormAttachment(0, 82);
+        fd_timestampBRKDT.top = new FormAttachment(0, 66);
+        fd_timestampBRKDT.right = new FormAttachment(0, 175);
+        fd_timestampBRKDT.left = new FormAttachment(0, 89);
+        timestampBRKDT.setLayoutData(fd_timestampBRKDT);
+        timestampBRKDT.setToolTipText("Zeitpunkt des letzten Anhakens des Bezirksrettungskommandanten-Häkchens");
+        
+        timestampFW = new Text(planungGroup_1, SWT.BORDER);
+        final FormData fd_timestampFW = new FormData();
+        fd_timestampFW.bottom = new FormAttachment(0, 103);
+        fd_timestampFW.top = new FormAttachment(0, 87);
+        fd_timestampFW.right = new FormAttachment(0, 175);
+        fd_timestampFW.left = new FormAttachment(0, 89);
+        timestampFW.setLayoutData(fd_timestampFW);
+        timestampFW.setToolTipText("Zeitpunkt des letzten Anhakens des Feuerwehr-Häkchens");
+        
+        timestampPolizei = new Text(planungGroup_1, SWT.BORDER);
+        final FormData fd_timestampPolizei = new FormData();
+        fd_timestampPolizei.bottom = new FormAttachment(0, 124);
+        fd_timestampPolizei.top = new FormAttachment(0, 108);
+        fd_timestampPolizei.right = new FormAttachment(0, 175);
+        fd_timestampPolizei.left = new FormAttachment(0, 89);
+        timestampPolizei.setLayoutData(fd_timestampPolizei);
+        timestampPolizei.setToolTipText("Zeitpunkt des letzten Anhakens des Polizei-Häkchens");
+        
+        timestampBergrettung = new Text(planungGroup_1, SWT.BORDER);
+        final FormData fd_timestampBergrettung = new FormData();
+        fd_timestampBergrettung.bottom = new FormAttachment(0, 145);
+        fd_timestampBergrettung.top = new FormAttachment(0, 129);
+        fd_timestampBergrettung.right = new FormAttachment(0, 175);
+        fd_timestampBergrettung.left = new FormAttachment(0, 89);
+        timestampBergrettung.setLayoutData(fd_timestampBergrettung);
+        timestampBergrettung.setToolTipText("Zeitpunkt des letzten Anhakens des Bergrettung-Häkchens");
+        
+        timestampKIT = new Text(planungGroup_1, SWT.BORDER);
+        final FormData fd_timestampKIT = new FormData();
+        fd_timestampKIT.bottom = new FormAttachment(0, 166);
+        fd_timestampKIT.top = new FormAttachment(0, 150);
+        fd_timestampKIT.right = new FormAttachment(0, 175);
+        fd_timestampKIT.left = new FormAttachment(0, 89);
+        timestampKIT.setLayoutData(fd_timestampKIT);
+        timestampKIT.setToolTipText("Zeitpunkt des letzten Anhakens des KIT-Häkchens");
+        
+        timestampNA.setEditable(false);
+        timestampRTH.setEditable(false);
+        timestampDF.setEditable(false);
+        timestampBRKDT.setEditable(false);
+        timestampFW.setEditable(false);
+        timestampPolizei.setEditable(false);
+        timestampBergrettung.setEditable(false);
+        timestampKIT.setEditable(false);
+        
+        //-------------------------------------------------------------------------------------------
         planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton});
 
         final Label label_5 = new Label(client, SWT.SEPARATOR | SWT.HORIZONTAL);
