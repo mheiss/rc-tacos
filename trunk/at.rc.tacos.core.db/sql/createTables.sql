@@ -403,6 +403,7 @@ TYPE=InnoDB;
 CREATE TABLE transport_selected (
   selected_ID INTEGER UNSIGNED NOT NULL,
   transport_ID INTEGER UNSIGNED NOT NULL,
+  alarmingDateTime DATETIME NULL,
   PRIMARY KEY(selected_ID, transport_ID),
   INDEX notyfied_has_transports_FKIndex1(selected_ID),
   INDEX notyfied_has_transports_FKIndex2(transport_ID),
