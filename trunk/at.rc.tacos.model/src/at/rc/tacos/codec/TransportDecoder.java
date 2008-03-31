@@ -137,6 +137,24 @@ public class TransportDecoder implements MessageDecoder
 				if("KITAlarming".equalsIgnoreCase(startName))
 					transport.setKITAlarming(Boolean.valueOf(reader.getElementText()));
 
+				//alarming timestamps
+				if("timestampNA".equals(startName))
+					transport.settimestampNA(Long.valueOf(reader.getElementText()));
+				if("timestampRTH".equals(startName))
+					transport.settimestampRTH(Long.valueOf(reader.getElementText()));
+				if("timestampDF".equals(startName))
+					transport.settimestampDF(Long.valueOf(reader.getElementText()));
+				if("timestampBRKDT".equals(startName))
+					transport.settimestampBRKDT(Long.valueOf(reader.getElementText()));
+				if("timestampFW".equals(startName))
+					transport.settimestampFW(Long.valueOf(reader.getElementText()));
+				if("timestampPolizei".equals(startName))
+					transport.settimestampPolizei(Long.valueOf(reader.getElementText()));
+				if("timestampBergrettung".equals(startName))
+					transport.settimestampBergrettung(Long.valueOf(reader.getElementText()));
+				if("timestampKIT".equals(startName))
+					transport.settimestampKIT(Long.valueOf(reader.getElementText()));
+				
 				//next
 				if(VehicleDetail.ID.equalsIgnoreCase(startName))
 				{
