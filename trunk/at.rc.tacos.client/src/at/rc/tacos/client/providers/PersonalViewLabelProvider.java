@@ -1,6 +1,7 @@
 package at.rc.tacos.client.providers;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -81,8 +82,10 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         RosterEntry entry = (RosterEntry)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         long displayedDate = SessionManager.getInstance().getDisplayedDate();
+        long nextDay;
         String plannedStart;
         String plannedEnd;
+        
         
         switch(columnIndex)
         {
@@ -92,11 +95,16 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 	        case COLUMN_NAME: return entry.getStaffMember().getLastName()+ " " + entry.getStaffMember().getFirstName();
 	        
 	        case COLUMN_PLANED_WORK_TIME: 
+	        	Calendar cal = Calendar.getInstance();
+	        	cal.setTimeInMillis(displayedDate);
+	        	cal.set(Calendar.HOUR_OF_DAY, 24);
+	        	nextDay = cal.getTimeInMillis();
+	        	
 	        	if(entry.getPlannedStartOfWork() <displayedDate)
 	        		plannedStart = "00:00";
 	        	else 
 	        		plannedStart = sdf.format(entry.getPlannedStartOfWork());
-	        	if(entry.getPlannedEndOfWork() > displayedDate)
+	        	if(entry.getPlannedEndOfWork() > nextDay)
 	        		plannedEnd = "00:00";
 	        	else
 	        		plannedEnd = sdf.format(entry.getPlannedEndOfWork());
