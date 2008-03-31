@@ -33,6 +33,7 @@ import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberVehicleContentProvider;
+import at.rc.tacos.client.providers.StaffMemberVehicleLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleContentProvider;
@@ -402,7 +403,7 @@ public class VehicleForm extends TitleAreaDialog
 			}
 		});
 		driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));
-		driverComboViewer.setLabelProvider(new StaffMemberLabelProvider());
+		driverComboViewer.setLabelProvider(new StaffMemberVehicleLabelProvider());
 		driverComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
 
 		//create the hyperlink
