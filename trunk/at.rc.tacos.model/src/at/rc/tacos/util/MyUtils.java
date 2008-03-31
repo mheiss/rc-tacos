@@ -16,6 +16,7 @@ public class MyUtils
     public final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
     public final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     public final static SimpleDateFormat timeAndDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    public final static SimpleDateFormat timeAndDateFormatShort = new SimpleDateFormat("dd.MM.yy HH:mm");
     
     //sql date
     public final static SimpleDateFormat sqlTime = new SimpleDateFormat("HH:mm:ss");
