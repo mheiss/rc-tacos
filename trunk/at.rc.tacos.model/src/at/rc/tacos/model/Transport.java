@@ -81,6 +81,17 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	private boolean mountainRescueServiceAlarming;
 	private boolean policeAlarming;
 	private boolean KITAlarming;
+	
+	//notification timestamps
+	private long timestampNA;
+	private long timestampRTH;
+	private long timestampDF;
+	private long timestampBRKDT;
+	private long timestampFW;
+	private long timestampPolizei;
+	private long timestampBergrettung;
+	private long timestampKIT;
+	
 
 	//vehicle and staff assigned 
 	private VehicleDetail vehicleDetail;
@@ -478,6 +489,82 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	{
 		return appointmentTimeAtDestination;
 	}
+	
+	/* ------------------------------------------
+	 * alamring timestamps
+	 * --------------------------------------------*/
+	/**
+	 * Returns the timestamp when the NA button was selected
+	 * @return the selection timestamp
+	 */
+	public long getTimestampNA() 
+	{
+		return timestampNA;
+	}
+	
+	/**
+	 * Returns the timestamp when the RTH button was selected
+	 * @return the selection timestamp
+	 */
+	public long getTimestampRTH() 
+	{
+		return timestampRTH;
+	}
+	
+	/**
+	 * Returns the timestamp when the DF button was selected
+	 * @return the selection timestamp
+	 */
+	public long getTimestampDF() 
+	{
+		return timestampDF;
+	}
+	
+	/**
+	 * Returns the timestamp when the BRKDT button was selected
+	 * @return the selection timestamp
+	 */
+	public long getTimestampBRKDT() 
+	{
+		return timestampBRKDT;
+	}
+	
+	/**
+	 * Returns the timestamp when the FW button was selected
+	 * @return the selection timestamp
+	 */
+	public long getTimestampFW() 
+	{
+		return timestampFW;
+	}
+	
+	/**
+	 * Returns the timestamp when the Polizei button was selected
+	 * @return the selection timestamp
+	 */
+	public long getTimestampPolizei() 
+	{
+		return timestampPolizei;
+	}
+	
+	/**
+	 * Returns the timestamp when the Bergrettung button was selected
+	 * @return the selection timestamp
+	 */
+	public long getTimestampBergrettung() 
+	{
+		return timestampBergrettung;
+	}
+	
+	/**
+	 * Returns the timestamp when the KIT button was selected
+	 * @return the selection timestamp
+	 */
+	public long getTimestampKIT() 
+	{
+		return timestampKIT;
+	}
+
 
 	/* ------------------------------------------
 	 * general informations
@@ -883,6 +970,81 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 		if(!MyUtils.isValidDate(appointmentTimeAtDestination))
 			throw new IllegalArgumentException("The given appointmentTimeAtDestination is not a valid date");
 		this.appointmentTimeAtDestination = appointmentTimeAtDestination;
+	}
+	
+	/* ------------------------------------------
+	 * alarming timestamps
+	 * --------------------------------------------*/
+	/**
+	 * Sets the timestamp when the NA button was selected
+	 * @param timestampNA the selection time
+	 */
+	public void settimestampNA(long timestampNA) 
+	{
+		this.timestampNA = timestampNA;
+	}
+	
+	/**
+	 * Sets the timestamp when the RTH button was selected
+	 * @param timestampRTH the selection time
+	 */
+	public void settimestampRTH(long timestampRTH) 
+	{
+		this.timestampRTH = timestampRTH;
+	}
+	
+	/**
+	 * Sets the timestamp when the DF button was selected
+	 * @param timestampDF the selection time
+	 */
+	public void settimestampDF(long timestampDF) 
+	{
+		this.timestampDF = timestampDF;
+	}
+	
+	/**
+	 * Sets the timestamp when the BRKDT button was selected
+	 * @param timestampBRKDT the selection time
+	 */
+	public void settimestampBRKDT(long timestampBRKDT) 
+	{
+		this.timestampBRKDT = timestampBRKDT;
+	}
+	
+	/**
+	 * Sets the timestamp when the FW button was selected
+	 * @param timestampFW the selection time
+	 */
+	public void settimestampFW(long timestampFW) 
+	{
+		this.timestampFW = timestampFW;
+	}
+	
+	/**
+	 * Sets the timestamp when the Polizei button was selected
+	 * @param timestampPolizei the selection time
+	 */
+	public void settimestampPolizei(long timestampPolizei) 
+	{
+		this.timestampPolizei = timestampPolizei;
+	}
+	
+	/**
+	 * Sets the timestamp when the Bergrettung button was selected
+	* @param timestampBergrettung the selection time
+	 */
+	public void settimestampBergrettung(long timestampBergrettung) 
+	{
+		this.timestampBergrettung = timestampBergrettung;
+	}
+	
+	/**
+	 * Sets the timestamp when the KIT button was selected
+	 * @param timestampKIT the selection time
+	 */
+	public void settimestampKIT(long timestampKIT) 
+	{
+		this.timestampKIT = timestampKIT;
 	}
 
 	/* ------------------------------------------
