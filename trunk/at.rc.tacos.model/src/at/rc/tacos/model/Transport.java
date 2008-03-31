@@ -74,11 +74,13 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	private boolean emergencyDoctorAlarming;
 	private boolean helicopterAlarming;
 	private boolean blueLightToGoal;
+	private boolean blueLight1;
 	private boolean dfAlarming;
 	private boolean brkdtAlarming;
 	private boolean firebrigadeAlarming;
 	private boolean mountainRescueServiceAlarming;
 	private boolean policeAlarming;
+	private boolean KITAlarming;
 
 	//vehicle and staff assigned 
 	private VehicleDetail vehicleDetail;
@@ -555,6 +557,15 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	{
 		return blueLightToGoal;
 	}
+	
+	
+	/**
+	 * @return the blueLight1
+	 */
+	public boolean isBlueLight1() 
+	{
+		return blueLight1;
+	}
 
 	/**
 	 * df = 'Dienstführender'
@@ -596,6 +607,14 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	public boolean isPoliceAlarming() 
 	{
 		return policeAlarming;
+	}
+	
+	/**
+	 * @return the KITAlarming
+	 */
+	public boolean isKITAlarming() 
+	{
+		return KITAlarming;
 	}
 
 	/* ------------------------------------------
@@ -935,6 +954,14 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	{
 		this.blueLightToGoal = blueLightToGoal;
 	}
+	
+	/**
+	 * @param blueLight1 the blueLight1 to set
+	 */
+	public void setBlueLight1(boolean blueLight1) 
+	{
+		this.blueLight1 = blueLight1;
+	}
 
 	/**
 	 * @param dfAlarming the dfAlarming to set
@@ -974,6 +1001,14 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	public void setPoliceAlarming(boolean policeAlarming) 
 	{
 		this.policeAlarming = policeAlarming;
+	}
+	
+	/**
+	 * @param KITAlarming the KITAlarming to set
+	 */
+	public void setKITAlarming(boolean KITAlarming) 
+	{
+		this.KITAlarming = KITAlarming;
 	}
 
 	/* ------------------------------------------
