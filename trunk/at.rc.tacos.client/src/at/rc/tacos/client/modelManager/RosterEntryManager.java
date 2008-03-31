@@ -137,4 +137,19 @@ public class RosterEntryManager extends PropertyManager
     	}
     	return filteredList;
     }
+    
+    /**
+     * Returns the roster entry for the given StaffMember or null if there is no entry for the staffMemberId
+     * @param staffMember the staffMember to filter
+     */
+    public RosterEntry getRosterEntryByStaffId(int staffId)
+    {
+    	for(RosterEntry entry : objectList)
+    	{
+    		if(entry.getStaffMember().getStaffMemberId() == staffId)
+    			return entry;
+    	}
+    	return null;
+    }
+    
 }
