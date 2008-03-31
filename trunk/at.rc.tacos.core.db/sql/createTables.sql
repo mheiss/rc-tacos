@@ -54,12 +54,14 @@ INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
 INSERT INTO selected(selected_ID, name) VALUES(4, 'Bergrettung');
 INSERT INTO selected(selected_ID, name) VALUES(5, 'Dienstführender');
 INSERT INTO selected(selected_ID, name) VALUES(6, 'Bezirksrettungskommandant');
-INSERT INTO selected(selected_ID, name) VALUES(7, 'Blaufahrt');
+INSERT INTO selected(selected_ID, name) VALUES(7, 'BD2');
 INSERT INTO selected(selected_ID, name) VALUES(8, 'Hubschrauber');
 INSERT INTO selected(selected_ID, name) VALUES(9, 'Begleitperson');
 INSERT INTO selected(selected_ID, name) VALUES(10, 'Ruecktransport');
 INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
 INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
+INSERT INTO selected(selected_ID, name) VALUES(13, 'KIT');
+INSERT INTO selected(selected_ID, name) VALUES(14, 'BD1');
 
 CREATE TABLE disease (
   disease_ID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
