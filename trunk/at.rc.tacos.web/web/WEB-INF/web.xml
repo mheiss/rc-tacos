@@ -24,7 +24,7 @@
 
 	<servlet>
 		<servlet-name>loginView</servlet-name>
-		<jsp-file>/jsp/login.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/login.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -34,7 +34,7 @@
 
 	<servlet>
 		<servlet-name>notFoundView</servlet-name>
-		<jsp-file>/jsp/notFound.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/notFound.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -44,7 +44,7 @@
 
 	<servlet>
 		<servlet-name>errorView</servlet-name>
-		<jsp-file>/jsp/error.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/error.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -54,7 +54,7 @@
 
 	<servlet>
 		<servlet-name>rosterDayView</servlet-name>
-		<jsp-file>/jsp/rosterDay.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/rosterDay.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -64,7 +64,7 @@
 
 	<servlet>
 		<servlet-name>rosterWeekView</servlet-name>
-		<jsp-file>/jsp/rosterWeek.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/rosterWeek.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -74,7 +74,7 @@
 
 	<servlet>
 		<servlet-name>rosterEntryView</servlet-name>
-		<jsp-file>/jsp/rosterEntry.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/rosterEntry.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -84,7 +84,7 @@
 
 	<servlet>
 		<servlet-name>stationWeekView</servlet-name>
-		<jsp-file>/jsp/stationWeek.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/stationWeek.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -94,7 +94,7 @@
 
 	<servlet>
 		<servlet-name>editProfileView</servlet-name>
-		<jsp-file>/jsp/editProfile.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/editProfile.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -104,7 +104,7 @@
 
 	<servlet>
 		<servlet-name>addUserView</servlet-name>
-		<jsp-file>/jsp/addUser.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/addUser.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -114,7 +114,7 @@
 	
 	<servlet>
 		<servlet-name>editUserView</servlet-name>
-		<jsp-file>/jsp/editUser.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/editUser.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -124,7 +124,7 @@
 	
 	<servlet>
 		<servlet-name>printRosterView</servlet-name>
-		<jsp-file>/jsp/printRoster.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/printRoster.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -134,7 +134,7 @@
 	
 	<servlet>
 		<servlet-name>lockUserView</servlet-name>
-		<jsp-file>/jsp/lockUser.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/lockUser.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -144,7 +144,7 @@
 	
 	<servlet>
 		<servlet-name>listUserView</servlet-name>
-		<jsp-file>/jsp/listUser.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/listUser.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -154,7 +154,7 @@
 	
 	<servlet>
 		<servlet-name>updateEntryView</servlet-name>
-		<jsp-file>/jsp/updateEntry.jsp</jsp-file>
+		<jsp-file>/WEB-INF/jsp/updateEntry.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -164,7 +164,7 @@
 
     <servlet>
         <servlet-name>statisticEmployeeView</servlet-name>
-        <jsp-file>/jsp/statisticEmployee.jsp</jsp-file>
+        <jsp-file>/WEB-INF/jsp/statisticEmployee.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
@@ -174,7 +174,7 @@
  
      <servlet>
         <servlet-name>statisticTransportView</servlet-name>
-        <jsp-file>/jsp/statisticTransport.jsp</jsp-file>
+        <jsp-file>/WEB-INF/jsp/statisticTransport.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
