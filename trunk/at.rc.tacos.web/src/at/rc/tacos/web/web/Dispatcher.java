@@ -16,7 +16,6 @@ public class Dispatcher extends HttpServlet
 	private static final long serialVersionUID = 1L;
 	public static final String URLS_BUNDLE_PATH = "at.rc.tacos.web.web.urls";
 	private static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.web.server";
-	private static final String HTTPS_PREFIX = "https://";
 
 	/**
 	 * Initializes servlet context.
@@ -63,11 +62,11 @@ public class Dispatcher extends HttpServlet
 		final Controller controller = ControllerFactory.getController(relativePath);
 
 		//Redirect if request is not send over SSL connection
-		/*if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
+		if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
 			response.sendRedirect(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath());
 		}
 		//If no URL is specified send redirect to home.do.
-		else*/ if (relativePath.equals("") || relativePath.equals("/"))
+		else if (relativePath.equals("") || relativePath.equals("/"))
 			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" +  urls.getString("url.rosterDay"));
 		//If no controller is found redirect to notFound.do.
 		else if (controller == null){
