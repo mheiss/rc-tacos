@@ -110,6 +110,7 @@
 	</target>
 	
 	<target name="production-ssl-genkey-openssl" description="Generates server certificate for SSL with OpenSSL for production system">
+		<mkdir dir="${production.appserver.home}/conf"/>
 		<exec executable="${openssl.bin}/openssl" dir="${production.appserver.home}/conf" failonerror="true">
 			<arg line="genrsa -out server.key 1024 -passout pass:${ssl.key.pass}"/>
 		</exec>
@@ -125,6 +126,7 @@
 	
 	<target name="production-ssl-genkey-jsse" description="Generate server certificate for SSL with Java Keytool for production system">
 		<property name="ssl.key.id" value="-keystore .keystore -alias tomcat -storepass ${ssl.key.pass} -keypass ${ssl.key.pass}"/>
+		<mkdir dir="${production.appserver.home}/conf"/>
 		<exec executable="${java.home}/bin/keytool" dir="${production.appserver.home}/conf" failonerror="false">
 			<arg line="-delete"/>
 			<arg line="${ssl.key.id}"/>
