@@ -275,48 +275,82 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                 final ResultSet rs1 = query1.executeQuery();
                 while(rs1.next())
                 {
-                    if(rs1.getInt("selected_ID") == 1)
+                	if(rs1.getInt("selected_ID") == 1)
+                    {
                         transport.setEmergencyDoctorAlarming(true);
-
+                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
                     if(rs1.getInt("selected_ID") == 2)
+                    {
                         transport.setPoliceAlarming(true);
+                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 3)
+                    {
                         transport.setFirebrigadeAlarming(true);
+                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 4)
+                    {
                         transport.setMountainRescueServiceAlarming(true);
+                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 5)
+                    {
                         transport.setDfAlarming(true);
+                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 6)
+                    {
                         transport.setBrkdtAlarming(true);
+                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 7)
+                    {
                         transport.setBlueLightToGoal(true);
+                    }
 
                     if(rs1.getInt("selected_ID") == 8)
+                    {
                         transport.setHelicopterAlarming(true);
+                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 9)
+                    {
                         transport.setAssistantPerson(true);
+                    }
 
                     if(rs1.getInt("selected_ID") == 10)
-                        transport.setBackTransport(true);
+                    {
+                        transport.setBackTransport(true); 
+                    }
 
                     if(rs1.getInt("selected_ID") == 11)
-                        transport.setLongDistanceTrip(true);
+                    {
+                        transport.setLongDistanceTrip(true); 
+                    }
 
                     if(rs1.getInt("selected_ID") == 12)
+                    {
                         transport.setEmergencyPhone(true);
+                    }
                     
                     if(rs1.getInt("selected_ID") == 13)
+                    {
                         transport.setKITAlarming(true);
+                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
                     
                     if(rs1.getInt("selected_ID") == 14)
+                    {
                         transport.setBlueLight1(true);
-                    
+                    }                    
                 }
 
                 //add the transport to the list
@@ -428,49 +462,82 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
                 while(rs1.next())
                 {
-                    if(rs1.getInt("selected_ID") == 1)
+                	if(rs1.getInt("selected_ID") == 1)
+                    {
                         transport.setEmergencyDoctorAlarming(true);
-
+                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
                     if(rs1.getInt("selected_ID") == 2)
+                    {
                         transport.setPoliceAlarming(true);
+                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 3)
+                    {
                         transport.setFirebrigadeAlarming(true);
+                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 4)
+                    {
                         transport.setMountainRescueServiceAlarming(true);
+                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 5)
+                    {
                         transport.setDfAlarming(true);
+                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 6)
+                    {
                         transport.setBrkdtAlarming(true);
+                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 7)
+                    {
                         transport.setBlueLightToGoal(true);
+                    }
 
                     if(rs1.getInt("selected_ID") == 8)
+                    {
                         transport.setHelicopterAlarming(true);
+                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 9)
+                    {
                         transport.setAssistantPerson(true);
+                    }
 
                     if(rs1.getInt("selected_ID") == 10)
-                        transport.setBackTransport(true);
+                    {
+                        transport.setBackTransport(true); 
+                    }
 
                     if(rs1.getInt("selected_ID") == 11)
-                        transport.setLongDistanceTrip(true);
+                    {
+                        transport.setLongDistanceTrip(true); 
+                    }
 
                     if(rs1.getInt("selected_ID") == 12)
+                    {
                         transport.setEmergencyPhone(true);
+                    }
                     
                     if(rs1.getInt("selected_ID") == 13)
+                    {
                         transport.setKITAlarming(true);
+                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
                     
                     if(rs1.getInt("selected_ID") == 14)
+                    {
                         transport.setBlueLight1(true);
-                    
-                    
+                    }
                 }
 
                 //add the transport to the list
@@ -636,47 +703,82 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 
                 while(rs1.next())
                 {
-                    if(rs1.getInt("selected_ID") == 1)
+                	if(rs1.getInt("selected_ID") == 1)
+                    {
                         transport.setEmergencyDoctorAlarming(true);
-
+                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
                     if(rs1.getInt("selected_ID") == 2)
+                    {
                         transport.setPoliceAlarming(true);
+                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 3)
+                    {
                         transport.setFirebrigadeAlarming(true);
+                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 4)
+                    {
                         transport.setMountainRescueServiceAlarming(true);
+                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 5)
+                    {
                         transport.setDfAlarming(true);
+                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 6)
+                    {
                         transport.setBrkdtAlarming(true);
+                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 7)
+                    {
                         transport.setBlueLightToGoal(true);
+                    }
 
                     if(rs1.getInt("selected_ID") == 8)
+                    {
                         transport.setHelicopterAlarming(true);
+                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 9)
+                    {
                         transport.setAssistantPerson(true);
+                    }
 
                     if(rs1.getInt("selected_ID") == 10)
-                        transport.setBackTransport(true);
+                    {
+                        transport.setBackTransport(true); 
+                    }
 
                     if(rs1.getInt("selected_ID") == 11)
-                        transport.setLongDistanceTrip(true);
+                    {
+                        transport.setLongDistanceTrip(true); 
+                    }
 
                     if(rs1.getInt("selected_ID") == 12)
+                    {
                         transport.setEmergencyPhone(true);
+                    }
                     
                     if(rs1.getInt("selected_ID") == 13)
+                    {
                         transport.setKITAlarming(true);
+                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
                     
                     if(rs1.getInt("selected_ID") == 14)
+                    {
                         transport.setBlueLight1(true);
+                    }
                 }
 
                 //add the transport to the list
@@ -1024,47 +1126,82 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                 final ResultSet rs1 = query1.executeQuery();
                 while(rs1.next())
                 {
-                    if(rs1.getInt("selected_ID") == 1)
+                	if(rs1.getInt("selected_ID") == 1)
+                    {
                         transport.setEmergencyDoctorAlarming(true);
-
+                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
                     if(rs1.getInt("selected_ID") == 2)
+                    {
                         transport.setPoliceAlarming(true);
+                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 3)
+                    {
                         transport.setFirebrigadeAlarming(true);
+                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 4)
+                    {
                         transport.setMountainRescueServiceAlarming(true);
+                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 5)
+                    {
                         transport.setDfAlarming(true);
+                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 6)
+                    {
                         transport.setBrkdtAlarming(true);
+                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 7)
+                    {
                         transport.setBlueLightToGoal(true);
+                    }
 
                     if(rs1.getInt("selected_ID") == 8)
+                    {
                         transport.setHelicopterAlarming(true);
+                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
 
                     if(rs1.getInt("selected_ID") == 9)
+                    {
                         transport.setAssistantPerson(true);
+                    }
 
                     if(rs1.getInt("selected_ID") == 10)
-                        transport.setBackTransport(true);
+                    {
+                        transport.setBackTransport(true); 
+                    }
 
                     if(rs1.getInt("selected_ID") == 11)
-                        transport.setLongDistanceTrip(true);
+                    {
+                        transport.setLongDistanceTrip(true); 
+                    }
 
                     if(rs1.getInt("selected_ID") == 12)
+                    {
                         transport.setEmergencyPhone(true);
+                    }
                     
                     if(rs1.getInt("selected_ID") == 13)
+                    {
                         transport.setKITAlarming(true);
+                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                    }
                     
                     if(rs1.getInt("selected_ID") == 14)
+                    {
                         transport.setBlueLight1(true);
+                    }
                 }
                 return transport;
             }
@@ -1531,6 +1668,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
      */
     private boolean assignTransportItems(Transport transport) throws SQLException
     {
+    	System.out.println("TransportDAO.......................Bergrettung Timestamp: " +transport.getTimestampBergrettung());
         //removes all selected transports for specific transportId
         if(!removeTransportItems(transport))
         {
@@ -1538,34 +1676,33 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             return false;
         }
         if(transport.isEmergencyDoctorAlarming() == true)
-            addTransportItem(transport.getTransportId(), 1);
+            addTransportItem(transport.getTransportId(), transport.getTimestampNA(), 1);
         if(transport.isPoliceAlarming() == true)
-            addTransportItem(transport.getTransportId(), 2);
+            addTransportItem(transport.getTransportId(), transport.getTimestampPolizei(), 2);
         if(transport.isFirebrigadeAlarming() == true)
-            addTransportItem(transport.getTransportId(), 3);
+            addTransportItem(transport.getTransportId(), transport.getTimestampFW(), 3);
         if(transport.isMountainRescueServiceAlarming() == true)
-            addTransportItem(transport.getTransportId(), 4);
+            addTransportItem(transport.getTransportId(), transport.getTimestampBergrettung(), 4);
         if(transport.isDfAlarming() == true)
-            addTransportItem(transport.getTransportId(), 5);
+            addTransportItem(transport.getTransportId(), transport.getTimestampDF(), 5);
         if(transport.isBrkdtAlarming() == true)
-            addTransportItem(transport.getTransportId(), 6);
+            addTransportItem(transport.getTransportId(), transport.getTimestampBRKDT(), 6);
         if(transport.isBlueLightToGoal() == true)
-            addTransportItem(transport.getTransportId(), 7);
+            addTransportItem(transport.getTransportId(), transport.getCreationTime(), 7);
         if(transport.isHelicopterAlarming() == true)
-            addTransportItem(transport.getTransportId(), 8);
+            addTransportItem(transport.getTransportId(), transport.getTimestampRTH(), 8);
         if(transport.isAssistantPerson() == true)
-            addTransportItem(transport.getTransportId(), 9);
+            addTransportItem(transport.getTransportId(), transport.getCreationTime(), 9);
         if(transport.isBackTransport() == true)
-            addTransportItem(transport.getTransportId(), 10);
+            addTransportItem(transport.getTransportId(), transport.getCreationTime(), 10);
         if(transport.isLongDistanceTrip() == true)
-            addTransportItem(transport.getTransportId(), 11);
+            addTransportItem(transport.getTransportId(), transport.getCreationTime(), 11);
         if(transport.isEmergencyPhone() == true)
-            addTransportItem(transport.getTransportId(), 12);
+            addTransportItem(transport.getTransportId(), transport.getCreationTime(), 12);
         if(transport.isKITAlarming() == true)
-            addTransportItem(transport.getTransportId(), 13);
+            addTransportItem(transport.getTransportId(), transport.getTimestampKIT(), 13);
         if(transport.isBlueLight1() == true)
-            addTransportItem(transport.getTransportId(), 14);
-        //TODO
+            addTransportItem(transport.getTransportId(), transport.getCreationTime(), 14);
         return true;
     }	
 
@@ -1573,16 +1710,17 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
      * inserts a new transportstate to the database
      * @param transportId
      * @param selectedId
-     * @return true if insert was sucessful
+     * @return true if insert was successful
      */
-    private boolean addTransportItem(int transportId, int selectedId) throws SQLException
+    private boolean addTransportItem(int transportId,  long timestamp, int selectedId) throws SQLException
     {
         Connection connection = source.getConnection();
         try
         {
             final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.selectedTransportItem"));
             query.setInt(1, selectedId);
-            query.setInt(2, transportId);			
+            query.setString(2, MyUtils.timestampToString(timestamp, MyUtils.sqlDateTime));
+            query.setInt(3, transportId);			
             if(query.executeUpdate() == 0)
                 return false;
             return true;
