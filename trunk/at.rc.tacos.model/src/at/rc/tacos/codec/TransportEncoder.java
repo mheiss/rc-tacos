@@ -189,6 +189,10 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeCharacters(Boolean.toString(transport.isBlueLightToGoal()));
         writer.writeEndElement();
         //write the elements and attributes
+        writer.writeStartElement("blueLight1");
+        writer.writeCharacters(Boolean.toString(transport.isBlueLight1()));
+        writer.writeEndElement();
+        //write the elements and attributes
         writer.writeStartElement("dfAlarming");
         writer.writeCharacters(Boolean.toString(transport.isDfAlarming()));
         writer.writeEndElement();
@@ -207,6 +211,10 @@ public class TransportEncoder  implements MessageEncoder
         //write the elements and attributes
         writer.writeStartElement("policeAlarming");
         writer.writeCharacters(Boolean.toString(transport.isPoliceAlarming()));
+        writer.writeEndElement();
+        //write the elements and attributes
+        writer.writeStartElement("KITAlarming");
+        writer.writeCharacters(Boolean.toString(transport.isKITAlarming()));
         writer.writeEndElement();
         
         //vehicle
