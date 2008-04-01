@@ -12,7 +12,7 @@ import at.rc.tacos.util.MyUtils;
  * All roster entries
  * @author b.thek
  */
-public class RosterEntryManager extends PropertyManager 
+public class RosterEntryManager extends PropertyManager
 {
     //the item list
     private List<RosterEntry> objectList = new ArrayList<RosterEntry>();
@@ -21,7 +21,7 @@ public class RosterEntryManager extends PropertyManager
      * Default class constructor
      */
     public RosterEntryManager() { }
-
+    
     /**
      * Adds a new roster entry to the list
      * @param rosterEntry the roster entry to add
@@ -152,5 +152,4 @@ public class RosterEntryManager extends PropertyManager
     	}
     	return null;
     }
-    
 }
