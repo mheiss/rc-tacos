@@ -71,7 +71,56 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private DiseaseManager diseaseManager = ModelFactory.getInstance().getDiseaseManager();
 
     //properties
-    private Group transportdetailsGroup;
+   
+    //text
+    private Text textRueckmeldung;
+    private Text textAnmerkungen;
+    private Text textFahrzeug;
+    private Text textOrtsstelle;
+    private Text textTransportNummer;
+    private Text textTermin;
+    private Text textBeiPat;
+    private Text textAbf;
+    private Text createdBy;
+    private Text textAufgen;
+    private Text textAE;
+    private Text timestampNA;
+    private Text timestampRTH;
+    private Text timestampDF;
+    private Text timestampBRKDT;
+    private Text timestampFW;
+    private Text timestampPolizei;
+    private Text timestampBergrettung;
+    private Text timestampKIT;
+   
+    private Text textTelefonAnrufer;
+    private Text textAnrufer;
+   
+    //combo
+    private Combo comboVorname;
+    private Combo comboNachname;
+    private Combo comboPrioritaet;
+    private Combo comboErkrankungVerletzung;
+    
+    
+    //buttons
+    private Button buttonVormerkung;
+    private Button buttonAlles;
+    private Button buttonNotfall;
+    private Button buttonDialyse;
+    private Button ruecktransportMoeglichButton;
+    private Button begleitpersonButton;
+    private Button rufhilfepatientButton;
+    private Button eigenerRollstuhlButton;
+    private Button krankentrageButton;
+    private Button tragsesselButton;
+    private Button fernfahrtButton;
+    private Button mariazellButton;
+    private Button wienButton;
+    private Button leobenButton;
+    private Button grazButton;
+    private Button bruckButton;
+    private Button kapfenbergButton;
     private Button bergrettungButton;
     private Button polizeiButton;
     private Button KITButton;
@@ -82,60 +131,25 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Button notarztButton;
     private Button bd2Button;
     private Button bd1Button;
-    private Text textRueckmeldung;
-    private Text textAnmerkungen;
-    private Combo comboPrioritaet;
-    private Combo comboErkrankungVerletzung;
-    private Button fernfahrtButton;
-    private Button mariazellButton;
-    private Button wienButton;
-    private Button leobenButton;
-    private Button grazButton;
-    private Button bruckButton;
-    private Button kapfenbergButton;
-    private Text textTermin;
-    private Text textBeiPat;
-    private Text textAbf;
-    private ComboViewer zustaendigeOrtsstelle;
-    private Text textTelefonAnrufer;
-    private Text textAnrufer;
-    private Button ruecktransportMoeglichButton;
-    private Button begleitpersonButton;
-    private Button rufhilfepatientButton;
-    private Button eigenerRollstuhlButton;
-    private Button krankentrageButton;
-    private Button tragsesselButton;
-    private Combo comboVorname;
-    private Combo comboNachname;
-    private Text textFahrzeug;
-    private Text textOrtsstelle;
-    private Text textTransportNummer;
-    private Group group;
-    private Button buttonVormerkung;
-    private Button buttonAlles;
-    private Button buttonNotfall;
-    private Button buttonDialyse;
+    private Button gehendButton;
+    
+    //groups
+    private Group formGroup;
     private Group statusmeldungenGroup;
     private Group personalAmFahrzeugGroup;
     private Group planungGroup_1;
     private Group patientenzustandGroup;
     private Group planungGroup;
     private Group transportdatenGroup;
+    private Group transportdetailsGroup;
+    
+    
+    
+    
+    private ComboViewer zustaendigeOrtsstelle;
     private DateTime dateTime;
-    private Button gehendButton;
     protected Shell shell;
 
-    private Text textAufgen;
-    private Text textAE;
-    
-    private Text timestampNA;
-    private Text timestampRTH;
-    private Text timestampDF;
-    private Text timestampBRKDT;
-    private Text timestampFW;
-    private Text timestampPolizei;
-    private Text timestampBergrettung;
-    private Text timestampKIT;
 
     //the stati
     private Text textS1,textS2,textS3,textS4,textS5,textS6,textS7,textS8,textS9;
@@ -258,6 +272,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         //init data
         if(!createNew)
         {
+        	//changing transport type only possible for a new transport
+        	buttonAlles.setEnabled(false);
+            buttonVormerkung.setEnabled(false);
+            buttonNotfall.setEnabled(false);
+             
+             
             //set field contents
             GregorianCalendar gcal = new GregorianCalendar();
             gcal.setTimeZone(TimeZone.getDefault());
@@ -365,7 +385,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 textAufgen.setText(sdf.format(cal.getTime()));
             }
             
-            //alarming timestamps TODO----------------------------------------------------------------------
+            //alarming timestamps
             if(transport.getTimestampNA() != 0)
             {
             	cal.setTimeInMillis(transport.getTimestampNA());
@@ -465,6 +485,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             this.bd1Button.setSelection(transport.isBlueLight1());
             
 
+            this.createdBy.setText(transport.getCreatedByUsername());
+            
             if(transport.getNotes() != null)
             {
                 this.textAnmerkungen.setText(transport.getNotes());
@@ -768,7 +790,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         transport.setPoliceAlarming(polizeiButton.getSelection());
         transport.setKITAlarming(KITButton.getSelection());
         
-        //the timestamps for the alarming fields TODO
+        //the timestamps for the alarming fields
         if(!timestampNA.getText().equalsIgnoreCase(""))
         	transport.settimestampNA(MyUtils.stringToTimestamp(timestampNA.getText(), MyUtils.timeAndDateFormatShort));
         if(!timestampRTH.getText().equalsIgnoreCase(""))
@@ -782,10 +804,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         if(!timestampPolizei.getText().equalsIgnoreCase(""))
             transport.settimestampPolizei(MyUtils.stringToTimestamp(timestampPolizei.getText(), MyUtils.timeAndDateFormatShort));
         if(!timestampBergrettung.getText().equalsIgnoreCase(""))
-            transport.settimestampBergrettung(MyUtils.stringToTimestamp(timestampBergrettung.getText(), MyUtils.timeAndDateFormatShort));
-        
-        System.out.println("Transportform, ................Bergrettung Timestamp: " +transport.getTimestampBergrettung());
-        
+            transport.settimestampBergrettung(MyUtils.stringToTimestamp(timestampBergrettung.getText(), MyUtils.timeAndDateFormatShort));        
         if(!timestampKIT.getText().equalsIgnoreCase(""))
             transport.settimestampKIT(MyUtils.stringToTimestamp(timestampKIT.getText(), MyUtils.timeAndDateFormatShort));
         
@@ -1313,6 +1332,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_textTelefonAnrufer.right = new FormAttachment(0, 850);
         fd_textTelefonAnrufer.left = new FormAttachment(0, 663);
         textTelefonAnrufer.setLayoutData(fd_textTelefonAnrufer);
+        
+       
+        
+        
 
         final Label label_6 = new Label(transportdatenGroup, SWT.NONE);
         label_6.setFont(CustomColors.SUBHEADER_FONT);
@@ -2272,6 +2295,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         ts9Label.setForeground(Util.getColor(128, 128, 128));
         ts9Label.setText("S9:");
 
+        
         //set uninteresting groups invisible
         if ("prebooking".equalsIgnoreCase(transportType))
         {
@@ -2318,21 +2342,21 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         }
 
         //transport type selection buttons
-        group = new Group(client, SWT.NONE);
-        group.setLayout(new FormLayout());
+        formGroup = new Group(client, SWT.NONE);
+        formGroup.setLayout(new FormLayout());
         final FormData fd_group = new FormData();
-        fd_group.bottom = new FormAttachment(0, 472);
+        fd_group.bottom = new FormAttachment(0, 501);
         fd_group.top = new FormAttachment(0, 373);
         fd_group.right = new FormAttachment(0, 1056);
         fd_group.left = new FormAttachment(0, 846);
-        group.setLayoutData(fd_group);
-        group.setText("Formularansicht");
+        formGroup.setLayoutData(fd_group);
+        formGroup.setText("Formularansicht");
 
-        buttonNotfall = new Button(group, SWT.TOGGLE);
+        buttonNotfall = new Button(formGroup, SWT.TOGGLE);
         final FormData fd_buttonNotfall = new FormData();
         fd_buttonNotfall.bottom = new FormAttachment(0, 20);
         fd_buttonNotfall.top = new FormAttachment(0, -3);
-        fd_buttonNotfall.right = new FormAttachment(0, 201);
+        fd_buttonNotfall.right = new FormAttachment(0, 202);
         fd_buttonNotfall.left = new FormAttachment(0, 94);
         buttonNotfall.setLayoutData(fd_buttonNotfall);
         buttonNotfall.setToolTipText("Blendet alle für einen Notfall nicht relevanten Felder aus");
@@ -2363,7 +2387,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         });
         buttonNotfall.setText("Transport/Einsatz");
 
-        buttonVormerkung = new Button(group, SWT.TOGGLE);
+        buttonVormerkung = new Button(formGroup, SWT.TOGGLE);
         final FormData fd_buttonVormerkung = new FormData();
         fd_buttonVormerkung.bottom = new FormAttachment(0, 49);
         fd_buttonVormerkung.top = new FormAttachment(0, 26);
@@ -2397,7 +2421,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             }
         });
 
-        buttonAlles = new Button(group, SWT.TOGGLE);
+        buttonAlles = new Button(formGroup, SWT.TOGGLE);
         final FormData fd_buttonAlles = new FormData();
         fd_buttonAlles.bottom = new FormAttachment(0, 78);
         fd_buttonAlles.top = new FormAttachment(0, 55);
@@ -2421,14 +2445,26 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             buttonAlles.setVisible(true);
         else
             buttonAlles.setVisible(false);
+        
+        createdBy = new Text(formGroup, SWT.BORDER);
+        final FormData fd_crreatedBy = new FormData();
+        fd_crreatedBy.bottom = new FormAttachment(0, 108);
+        fd_crreatedBy.top = new FormAttachment(0, 88);
+        fd_crreatedBy.right = new FormAttachment(0, 202);
+        fd_crreatedBy.left = new FormAttachment(0, 94);
+        createdBy.setLayoutData(fd_crreatedBy);
+        createdBy.setToolTipText("Aufgenommen von");
+        createdBy.setEditable(false);
+        
+        
 
-        final Label label_7 = new Label(group, SWT.NONE);
-        final FormData fd_label_7 = new FormData();
-        fd_label_7.bottom = new FormAttachment(0, 76);
-        fd_label_7.top = new FormAttachment(0, 26);
-        fd_label_7.right = new FormAttachment(0, 88);
-        fd_label_7.left = new FormAttachment(0, 5);
-        label_7.setLayoutData(fd_label_7);
+//        final Label label_7 = new Label(formGroup, SWT.NONE);
+//        final FormData fd_label_7 = new FormData();
+//        fd_label_7.bottom = new FormAttachment(0, 76);
+//        fd_label_7.top = new FormAttachment(0, 26);
+//        fd_label_7.right = new FormAttachment(0, 88);
+//        fd_label_7.left = new FormAttachment(0, 5);
+//        label_7.setLayoutData(fd_label_7);
     }
 
     @Override
