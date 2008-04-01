@@ -82,6 +82,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         RosterEntry entry = (RosterEntry)element;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         long displayedDate = SessionManager.getInstance().getDisplayedDate();
+        long thisDay;
         long nextDay;
         String plannedStart;
         String plannedEnd;
@@ -97,10 +98,15 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 	        case COLUMN_PLANED_WORK_TIME: 
 	        	Calendar cal = Calendar.getInstance();
 	        	cal.setTimeInMillis(displayedDate);
+	        	cal.set(Calendar.HOUR_OF_DAY, 0);
+	        	cal.set(Calendar.MINUTE, 0);
+	        	thisDay = cal.getTimeInMillis();
+	        	
 	        	cal.set(Calendar.HOUR_OF_DAY, 24);
+	        	cal.set(Calendar.MINUTE, 60);
 	        	nextDay = cal.getTimeInMillis();
 	        	
-	        	if(entry.getPlannedStartOfWork() <displayedDate)
+	        	if(entry.getPlannedStartOfWork() <thisDay)
 	        		plannedStart = "00:00";
 	        	else 
 	        		plannedStart = sdf.format(entry.getPlannedStartOfWork());
