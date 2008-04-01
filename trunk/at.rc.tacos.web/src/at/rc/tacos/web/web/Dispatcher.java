@@ -101,7 +101,7 @@ public class Dispatcher extends HttpServlet
 		//Do not forward if response is not committed
 		if (!response.isCommitted())			
 		{
-			getServletContext().getRequestDispatcher("/" + relativePath.replaceAll(".do", "View")).forward( request, response);
+			getServletContext().getRequestDispatcher("/WEB-INF/jsp/" + relativePath.replaceAll(".do", ".jsp")).forward( request, response);
 		}
 	}
 }
