@@ -39,7 +39,6 @@ import at.rc.tacos.client.controller.PersonalDeleteEntryAction;
 import at.rc.tacos.client.controller.PersonalEditEntryAction;
 import at.rc.tacos.client.controller.PersonalSignInAction;
 import at.rc.tacos.client.controller.PersonalSignOutAction;
-import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.PersonalViewContentProvider;
 import at.rc.tacos.client.providers.PersonalViewFilter;
@@ -52,7 +51,6 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.model.VehicleDetail;
 
 public class PersonalView extends ViewPart implements PropertyChangeListener
 {
@@ -280,9 +278,6 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         //create the actions
         makeActions();
         hookContextMenu();
-        //TODO: ok?- the assigned vehicle was not shown
-        RefreshViewAction refreshAction = new RefreshViewAction(VehicleDetail.ID);
-        refreshAction.run();
     }
 
     /**
@@ -484,7 +479,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         if("VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName())
                 || "VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
                 || "VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName())
-                || "VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+                || "VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+                || "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName()))
         {
             viewer.refresh();
         }
