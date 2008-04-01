@@ -49,7 +49,7 @@ public class StaffMemberVehicleLabelProvider extends LabelProvider
     	dateTomorrow = cal.getTimeInMillis();
     	
         StaffMember member = (StaffMember)object;
-        entry = rosterManager.getRosterEntryByStaffId(member.getStaffMemberId());
+        entry = rosterManager.getCheckedInRosterEntryByStaffId(member.getStaffMemberId());
         
     	if(entry.getPlannedStartOfWork() < dateToday)
     		plannedStart = "00:00";
