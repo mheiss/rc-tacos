@@ -276,13 +276,12 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
     {		
         // the viewer represents simple model. refresh should be enough.
         if ("VEHICLE_ADD".equals(evt.getPropertyName())
+        		|| "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName())
                 || "VEHICLE_REMOVE".equals(evt.getPropertyName())
                 || "VEHICLE_UPDATE".equals(evt.getPropertyName())
                 || "VEHICLE_CLEARED".equals(evt.getPropertyName())) 
         {
             viewer.refresh();
         }
-        //TODO: find a better solution to show the vehicle after the startup
-        viewer.refresh();
     }
 }
