@@ -128,10 +128,13 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 	        case COLUMN_SERVICE_TYPE: return entry.getServicetype().getServiceName();
 	        case COLUMN_JOB: return entry.getJob().getJobName();
 	        case COLUMN_VEHICLE: 
+	        	
 	        	VehicleDetail detail = vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId());
-	        	//assert valid
-	        	if(detail != null)
+	        	//assert valid (only the checked in members could be assigned to a vehicle
+	        	if(detail != null && entry.getRealStartOfWork() != 0 && entry.getRealEndOfWork() == 0)
+	        	{
 	        		return detail.getVehicleName();
+	        	}
 	        	return null;
 	        default: return null;
         }   
