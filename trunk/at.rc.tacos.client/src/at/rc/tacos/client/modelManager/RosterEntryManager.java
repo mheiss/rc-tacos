@@ -139,14 +139,15 @@ public class RosterEntryManager extends PropertyManager
     }
     
     /**
-     * Returns the roster entry for the given StaffMember or null if there is no entry for the staffMemberId
+     * Returns the roster entry for the given (checked in) StaffMember or null if there is no entry for the staffMemberId
      * @param staffMember the staffMember to filter
      */
-    public RosterEntry getRosterEntryByStaffId(int staffId)
+    public RosterEntry getCheckedInRosterEntryByStaffId(int staffId)
     {
     	for(RosterEntry entry : objectList)
     	{
-    		if(entry.getStaffMember().getStaffMemberId() == staffId)
+    		if(entry.getRealStartOfWork() != 0 && entry.getRealEndOfWork() == 0)
+    			if(entry.getStaffMember().getStaffMemberId() == staffId)
     			return entry;
     	}
     	return null;
