@@ -31,7 +31,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
-import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberVehicleContentProvider;
 import at.rc.tacos.client.providers.StaffMemberVehicleLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
