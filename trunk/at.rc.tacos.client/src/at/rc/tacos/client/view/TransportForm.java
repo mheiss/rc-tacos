@@ -2628,12 +2628,4 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             return null;
         }
     }
-    
-    /**
-     * Sets the fields of the transport
-     */
-    private void setTransportFields()
-    {
-    	
-    }
 }
