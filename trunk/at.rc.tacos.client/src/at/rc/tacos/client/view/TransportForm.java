@@ -51,6 +51,7 @@ import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
+import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
@@ -276,6 +277,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         	buttonAlles.setEnabled(false);
             buttonVormerkung.setEnabled(false);
             buttonNotfall.setEnabled(false);
+            buttonDialyse.setEnabled(false);
              
              
             //set field contents
@@ -2457,6 +2459,99 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         createdBy.setEditable(false);
         
         
+        buttonDialyse = new Button(formGroup, SWT.TOGGLE);
+        final FormData fd_buttonDialye = new FormData();
+        fd_buttonDialye.bottom = new FormAttachment(0, 78);
+        fd_buttonDialye.top = new FormAttachment(0, 55);
+        fd_buttonDialye.right = new FormAttachment(0, 90);
+        fd_buttonDialye.left = new FormAttachment(0, 2);
+        buttonDialyse.setLayoutData(fd_buttonDialye);
+        buttonDialyse.setToolTipText("Erstellt einen Dialysetransport");
+        buttonDialyse.setText("Dialyse");
+        buttonDialyse.addSelectionListener(new SelectionAdapter() 
+        {
+        	//TODO
+            public void widgetSelected(final SelectionEvent e) 
+            {
+            	DialysisPatient dia = new DialysisPatient();
+            	if(!viewerFromStreet.getCombo().getText().equalsIgnoreCase(""))
+            		dia.setFromStreet(viewerFromStreet.getCombo().getText());
+            	else
+            		dia.setFromStreet("<bitte ausfüllen>");
+            	
+            	if(!viewerFromCity.getCombo().getText().equalsIgnoreCase(""))
+            		dia.setFromCity(viewerFromCity.getCombo().getText());
+            	else
+            		dia.setFromCity("<bitte ausfüllen>");
+
+                 dia.setToStreet(viewerToStreet.getCombo().getText());
+
+                 dia.setToCity(viewerFromCity.getCombo().getText());
+                 int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
+                 if(index != -1)
+                	 dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
+                
+                 
+                 Calendar startTime = convertStringToDate(textAbf.getText());
+                 if(startTime != null)
+                 {
+                     startTime.set(Calendar.YEAR, dateTime.getYear());
+                     startTime.set(Calendar.MONTH, dateTime.getMonth());
+                     startTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+
+                     dia.setPlannedStartOfTransport(startTime.getTimeInMillis());
+                 }
+                 else
+                     dia.setPlannedStartOfTransport(0);
+            	 
+                 Calendar patientTime = convertStringToDate(textBeiPat.getText());
+                 if(patientTime != null)
+                 {
+                     patientTime.set(Calendar.YEAR, dateTime.getYear());
+                     patientTime.set(Calendar.MONTH, dateTime.getMonth());
+                     patientTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+                     dia.setPlannedTimeAtPatient(patientTime.getTimeInMillis());
+                 }
+                 else
+                     dia.setPlannedTimeAtPatient(0);
+                 
+                 
+                 Calendar appointmentTime = convertStringToDate(textTermin.getText());
+                 if(appointmentTime != null)
+                 {
+                     appointmentTime.set(Calendar.YEAR, dateTime.getYear());
+                     appointmentTime.set(Calendar.MONTH, dateTime.getMonth());
+                     appointmentTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+                     dia.setAppointmentTimeAtDialysis(appointmentTime.getTimeInMillis());
+                 }
+                 else
+                     dia.setAppointmentTimeAtDialysis(0);
+            	                  
+               
+                 //the kind of transport
+                 if(eigenerRollstuhlButton.getSelection())
+                     dia.setKindOfTransport(TRANSPORT_KIND_ROLLSTUHL);
+                 else if(krankentrageButton.getSelection())
+                     dia.setKindOfTransport(TRANSPORT_KIND_KRANKENTRAGE);
+                 else if (tragsesselButton.getSelection())
+                     dia.setKindOfTransport(TRANSPORT_KIND_TRAGSESSEL);
+                 else if (gehendButton.getSelection())
+                     dia.setKindOfTransport(TRANSPORT_KIND_GEHEND);
+                 else
+                     dia.setKindOfTransport("<keine Angabe>");
+                 
+             
+                 Patient patient = new Patient(comboVorname.getText(),comboNachname.getText());
+                 dia.setPatient(patient);
+                 
+            	DialysisForm form = new DialysisForm(dia, true);
+            	form.open();
+            	
+            	getShell().close();
+            }
+        });
+        
+        
 
 //        final Label label_7 = new Label(formGroup, SWT.NONE);
 //        final FormData fd_label_7 = new FormData();
@@ -2532,5 +2627,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         {
             return null;
         }
+    }
+    
+    /**
+     * Sets the fields of the transport
+     */
+    private void setTransportFields()
+    {
+    	
     }
 }
