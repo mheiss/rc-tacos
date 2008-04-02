@@ -277,7 +277,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	{
 		// Create the section
 		Section section = toolkit.createSection(form.getBody(), ExpandableComposite.TWISTIE
-				| ExpandableComposite.TITLE_BAR | Section.DESCRIPTION | ExpandableComposite.EXPANDED);
+				| ExpandableComposite.COMPACT  | ExpandableComposite.EXPANDED);
 		toolkit.createCompositeSeparator(section);
 		// Add the title and the description
 		section.setText(title);
