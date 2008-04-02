@@ -97,9 +97,9 @@ public class DialysisForm implements IKindOfTransport
      * used to edit an dialysis entry
      * @param dialysisPatient the dialysisPatient to edit
      */
-	public DialysisForm(DialysisPatient patient)
+	public DialysisForm(DialysisPatient patient, boolean createNew)
 	{
-		createNew = false;
+		this.createNew = createNew;
 		this.dia = patient;
 		
 		createContents();
@@ -160,7 +160,8 @@ public class DialysisForm implements IKindOfTransport
         
         this.begleitpersonButton.setSelection(dia.isAssistantPerson());
         
-        this.comboZustOrtsstelle.setText(dia.getLocation().getLocationName());
+        if(dia.getLocation() != null)
+        	this.comboZustOrtsstelle.setText(dia.getLocation().getLocationName());
         
         this.montagButton.setSelection(dia.isMonday());
         this.dienstagButton.setSelection(dia.isTuesday());
