@@ -35,7 +35,7 @@ public class DialysisEditAction extends Action
 		//get the selected transport
 		DialysisPatient dia = (DialysisPatient)((IStructuredSelection)selection).getFirstElement();
 		//delete the entry
-		DialysisForm form = new DialysisForm(dia);
+		DialysisForm form = new DialysisForm(dia, false);
 		form.open();
 	}
 }
