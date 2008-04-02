@@ -437,7 +437,7 @@ public class VehicleForm extends TitleAreaDialog
 			}
 		});	
 		medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));
-		medic1ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
+		medic1ComboViewer.setLabelProvider(new  StaffMemberVehicleLabelProvider());
 		medic1ComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
 		//create the hyperlink
 		ImageHyperlink removeMedic = toolkit.createImageHyperlink(comp, SWT.NONE);
@@ -470,7 +470,7 @@ public class VehicleForm extends TitleAreaDialog
 			}
 		});
 		medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));
-		medic2ComboViewer.setLabelProvider(new StaffMemberLabelProvider());
+		medic2ComboViewer.setLabelProvider(new  StaffMemberVehicleLabelProvider());
 		medic2ComboViewer.setInput(ModelFactory.getInstance().getStaffManager().getUnassignedStaffList());
 
 		//create the hyperlink
