@@ -1,20 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ page import="java.util.*,java.text.*"%>
-<%@page import="java.util.ResourceBundle"%>
-<%@page session="true"%>
+<%@ page session="true"%>
 <%
-	Map<String, Object> params = (Map) request.getAttribute("params");
+	Map<String, Object> params = (Map<String, Object>) request.getAttribute("params");
 %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" type="text/css" href="../css/stylesheetLog.css">
-<link rel='icon' type="image/x-icon" href="../favicon.ico">
-<title>Dienstplan RK Bruck-Kapfenberg</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="../css/stylesheetLog.css" />
+	<link rel='icon' type="image/x-icon" href="../favicon.ico" />
+	<title>Login</title>
 </head>
-<body onLoad="document.loginPanel.username.focus()">
+<body onload="document.loginPanel.username.focus()">
 <%
-	ResourceBundle res = (ResourceBundle) session
-			.getAttribute("curResBundle");
 	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 	Date current = new Date();
 %>
@@ -25,10 +24,9 @@
 %>
 <%!int s = -1;%>
 
-<table cellpadding="0" border="0" cellspacing="0" width="800"
-	align="center" id="mainTabLogDate">
+<table cellpadding="0" border="0" cellspacing="0" width="800" align="center" id="mainTabLogDate">
 	<tr>
-		<td align="right">Heute ist der <%=format.format(current)%></td>
+		<td align="right">Heute ist der <%= format.format(current) %></td>
 	</tr>
 </table>
 <table cellpadding="0" border="0" cellspacing="0" width="800"
@@ -44,35 +42,32 @@
 		<%
 			}
 		%>
-		<form method="post"
-			action="<%=request.getContextPath()+"/Dispatcher/login.do?action=login"%>">
+		<form method="post" action="<%=request.getContextPath()+"/Dispatcher/login.do?action=login"%>">
 		<table id="loginPanel">
 			<tr>
-				<td align='right'>Username:</td>
-				<td align='left'><input type="text" name="username" size="20"
-					id="username"></td>
+				<td align="right">Benutzername:</td>
+				<td align="left"><input type="text" name="username" size="20" id="username"/></td>
 			</tr>
 			<tr>
-				<td align='right'>Passwort:</td>
-				<td align='left'><input type="password" name="password"
-					size="20" maxlength="12" id="password"></td>
+				<td align="right">Passwort:</td>
+				<td align="left"><input type="password" name="password" size="20" maxlength="12" id="password"/></td>
 			</tr>
 			<tr>
-				<td colspan='2' align='right'><input type="submit"
-					value="Login" id="login"></td>
+				<td colspan='2' align='right'><input type="submit" value="Login" id="login"/></td>
 			</tr>
 		</table>
 		</form>
 		</td>
 	</tr>
 </table>
-<table cellpadding="0" border="0" cellspacing="0" width="800"
-	align="center">
+<table cellpadding="0" border="0" cellspacing="0" width="800" align="center">
 	<tr>
-		<td align="left" width="190"><img src="../image/tacos_logo_7.jpg"
-			name="tacos" alt="tacos_logo" /></td>
-		<td align="left" valign="bottom" width="610"><img
-			src="../image/tacos_logo_6.jpg" name="tacos" alt="tacos_logo" /></td>
+		<td align="left" width="190">
+			<img src="../image/tacos_logo_7.jpg" name="tacos" alt="tacos_logo" />
+		</td>
+		<td align="left" valign="bottom" width="610">
+			<img src="../image/tacos_logo_6.jpg" name="tacos" alt="tacos_logo" />
+		</td>
 	</tr>
 </table>
 </body>
