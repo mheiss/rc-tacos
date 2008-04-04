@@ -157,19 +157,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private ComboViewer setTextFahrer,setTextSaniI,setTextSaniII;
     private ComboViewer setErkrVerl;
 
-    private String[] prebookingPriorities = {"3 Terminfahrt","4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
+    private String[] prebookingPriorities = {"2 Transport", "3 Terminfahrt","4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
     private String[] emergencyAndTransportPriorities = {"1 NEF", "2 Transport", "3 Terminfahrt", "4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
+    
     
     /**if the old priority is not A but the new is A-> DuplicatePriorityATransportAction necessary**/
     private String oldPriority;
-    //A: NEF + RTW
-    //B: BD1
-    //C: normaler Transport
-    //D: Rücktransport
-    //E: Heimtransport
-    //F: Sonstiges
-    //G: NEF für extern
-
+    private String tmpPriority = "";//save the priority when the type of transport is switched (e.g. from prebooking to emergency)
 
     //determine whether to update or to create a new entry
     private boolean createNew;
@@ -1547,8 +1541,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         bd1Button.setToolTipText("Sondersignal auf dem Weg zum Einsatzort");
         bd1Button.setText("BD 1");
 
-        comboPrioritaet = new Combo(patientenzustandGroup, SWT.READ_ONLY);//TODO
-        comboPrioritaet.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), G (NEF extern)");
+        comboPrioritaet = new Combo(patientenzustandGroup, SWT.READ_ONLY);
+        comboPrioritaet.setToolTipText("1 (NEF), 2 (Transport), 3 (Terminfahrt), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
 
         //set possible priorities
         if(transportType.equalsIgnoreCase("prebooking"))
@@ -1562,6 +1556,30 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_comboPrioritaet.right = new FormAttachment(0, 287);
         fd_comboPrioritaet.left = new FormAttachment(0, 225);
         comboPrioritaet.setLayoutData(fd_comboPrioritaet);
+        
+        comboPrioritaet.addSelectionListener(new SelectionAdapter() 
+        {
+        	int index;
+        	public void widgetSelected(final SelectionEvent e) 
+            {
+	        	//set possible priorities//TODO
+	            index = comboPrioritaet.getSelectionIndex();
+	            if(index != -1)
+	            	tmpPriority = comboPrioritaet.getItem(index);
+	        	//automatically set bd1 and bd2 if the priority 1 NEF (A) is choosen
+	            
+	            if(tmpPriority.equalsIgnoreCase("1 NEF"))
+	            {
+	            	bd1Button.setSelection(true);
+	            	bd2Button.setSelection(true);
+	            }
+	            else
+	            {
+	            	bd1Button.setSelection(false);
+	            	bd2Button.setSelection(false);
+	            }            	
+            }
+        });
 
         final Label label_4 = new Label(patientenzustandGroup, SWT.NONE);
         label_4.setFont(CustomColors.SUBHEADER_FONT);
@@ -2251,6 +2269,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         buttonNotfall.setToolTipText("Blendet alle für einen Notfall nicht relevanten Felder aus");
         buttonNotfall.addSelectionListener(new SelectionAdapter() 
         {
+        	int index;
             public void widgetSelected(final SelectionEvent e) 
             {
                 planungGroup.setVisible(false);
@@ -2268,10 +2287,22 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 transportType = "emergencyTransport";
 
                 //set possible priorities//TODO
+                index = comboPrioritaet.getSelectionIndex();
+                if(index != -1)
+                	tmpPriority = comboPrioritaet.getItem(index);
+                
+                System.out.println("priority......" +tmpPriority);
+                
                 if(transportType.equalsIgnoreCase("prebooking"))
+                {
                     comboPrioritaet.setItems(prebookingPriorities);
+                	comboPrioritaet.setText(tmpPriority);
+                }
                 if(transportType.equalsIgnoreCase("emergencyTransport"))
+                {
                     comboPrioritaet.setItems(emergencyAndTransportPriorities);
+                    comboPrioritaet.setText(tmpPriority);
+                }
             }
         });
         buttonNotfall.setText("Transport/Einsatz");
@@ -2287,6 +2318,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         buttonVormerkung.setText("Vormerkung");
         buttonVormerkung.addSelectionListener(new SelectionAdapter() 
         {
+        	int index;
             public void widgetSelected(final SelectionEvent e) 
             {
                 planungGroup_1.setVisible(false);
@@ -2299,13 +2331,19 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 transportType = "prebooking";
 
                 //set possible priorities//TODO
+                index = comboPrioritaet.getSelectionIndex();
+                if(index != -1)
+                	tmpPriority = comboPrioritaet.getItem(index);
+                
                 if(transportType.equalsIgnoreCase("prebooking"))
                 {
                     comboPrioritaet.setItems(prebookingPriorities);
+                	comboPrioritaet.setText(tmpPriority);
                 }
                 if(transportType.equalsIgnoreCase("emergencyTransport"))
                 {
                     comboPrioritaet.setItems(emergencyAndTransportPriorities);
+                    comboPrioritaet.setText(tmpPriority);
                 }
             }
         });
