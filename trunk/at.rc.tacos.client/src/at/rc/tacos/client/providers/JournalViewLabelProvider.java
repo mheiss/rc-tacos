@@ -114,7 +114,22 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				return "NEF";
 			else
 				return String.valueOf(transport.getTransportNumber());
-		case COLUMN_PRIORITY: return transport.getTransportPriority();
+		case COLUMN_PRIORITY:
+			if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        		return "1";
+        	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
+        		return "2";
+        	else if(transport.getTransportPriority().equalsIgnoreCase("C"))
+        		return "3";
+        	else if(transport.getTransportPriority().equalsIgnoreCase("D"))
+        		return "4";
+        	else if(transport.getTransportPriority().equalsIgnoreCase("E"))
+        		return "5";
+        	else if(transport.getTransportPriority().equalsIgnoreCase("F"))
+        		return "6";
+        	else if(transport.getTransportPriority().equalsIgnoreCase("G"))
+        		return "7";
+        	else return null;
 		case COLUMN_TRANSPORT_FROM: return transport.getFromStreet() +"/" +transport.getFromCity();
 		case COLUMN_PATIENT:
 			if(transport.isAssistantPerson())
