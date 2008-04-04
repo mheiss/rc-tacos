@@ -3,7 +3,15 @@
 <%
 	UserSession user = (UserSession)session.getAttribute("userSession"); 
 %>
-<table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
+<table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
+	</tr>
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="dutiesDay.do">Dienstplan Tagesansicht</a></td>
+	</tr>
+</table>
+<table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
 	</tr>
@@ -58,19 +66,29 @@
 </table>
 <% if(user.getLoginInformation().getAuthorization().equals(Login.AUTH_ADMIN)) 
 {
-out.println("<table id=\"Block\" width=\"100%\" border='0' cellpadding='0' cellspacing='0'>" +
-"<tr><td id=\"BlockHead\" colspan=\"2\"><b>Administration</b></td></tr><tr>" +
-"<td id=\"navIcon\"><img src=\"../image/benutzerNew.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href="+request.getContextPath()+"/Dispatcher/addUser.do>Benutzer anlegen</a>" +
-"</td></tr><tr>" +
-"<td id=\"navIcon\"><img src=\"../image/benutzerEdit.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href="+request.getContextPath()+"/Dispatcher/listUser.do>Benutzer editieren</a>" +
-"</td><tr>" +
-"<td id=\"navIcon\"><img src=\"../image/benutzerDel.jpg\" name=\"benutzer\" alt=\"benutzer\" /></td><td id=\"BlockContentNav\"><a href="+request.getContextPath()+"/Dispatcher/lockUser.do>Benutzer sperren</a>" +
-"</td></tr></table>"); 
+%>
+	<table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td id="BlockHead" colspan="2"><b>Administration</b></td>
+		</tr>
+		<tr>
+			<td id="navIcon">
+				<img src="../image/benutzerNew.jpg" name="benutzer" alt="benutzer" />
+			</td>
+			<td id="BlockContentNav">
+				<a href="<%= request.getContextPath() %>/Dispatcher/addUser.do">Benutzer anlegen</a>
+			</td>
+		</tr>
+		<tr>
+			<td id="navIcon"><img src="../image/benutzerEdit.jpg" name="benutzer" alt="benutzer" /></td><td id="BlockContentNav"><a href="<%= request.getContextPath() %>/Dispatcher/listUser.do">Benutzer editieren</a></td>
+		<tr>
+			<td id="navIcon">
+				<img src="../image/benutzerDel.jpg" name="benutzer" alt="benutzer" /></td><td id="BlockContentNav"><a href="<%= request.getContextPath() %>/Dispatcher/lockUser.do">Benutzer sperren</a>
+			</td>
+		</tr>
+	</table>
+<%
 } 
-else
-{
-out.println("");
-}
 %>
 <table id="Block" width="100%" border='0' cellpadding='0' cellspacing='0'>
     <tr>
