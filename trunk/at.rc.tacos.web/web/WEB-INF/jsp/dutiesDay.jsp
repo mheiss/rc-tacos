@@ -2,9 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ page import="at.rc.tacos.web.web.UserSession" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="java.util.List" %>
-<%@ page import="at.rc.tacos.model.RosterEntry" %>
-<%@page import="java.util.Calendar"%>
 <%@ page import="java.text.*"%>
 <%@ page import="java.util.Date"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
