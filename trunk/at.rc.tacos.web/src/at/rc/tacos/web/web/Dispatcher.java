@@ -26,7 +26,9 @@ public class Dispatcher extends HttpServlet
 	public void init() throws ServletException
 	{
 		super.init();
-		this.getServletContext().setAttribute("client", new WebClient());
+		if (getServletContext().getAttribute("client") == null) {
+			getServletContext().setAttribute("client", new WebClient());
+		}
 	}
 
 	/**
@@ -52,14 +54,13 @@ public class Dispatcher extends HttpServlet
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
 
 		//Assert we have a valid user session.
-		if (userSession == null)
-		{
+		if (userSession == null) {
 			userSession = new UserSession();
 			request.getSession().setAttribute("userSession", userSession);
 		}
 
 		//Get the relative Path from request URI.	
-		final String relativePath = request.getRequestURI().replaceAll(request.getContextPath(), "").replaceFirst("/Dispatcher", "");
+		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
 		//System.out.println("relativePath: " + relativePath);
 
 		final Controller controller = ControllerFactory.getController(relativePath);
@@ -69,17 +70,13 @@ public class Dispatcher extends HttpServlet
 			response.sendRedirect(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath());
 		}
 		//If no URL is specified send redirect to home.do.
-		else if (relativePath.equals("") || relativePath.equals("/")) response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("url.rosterDay"));
+		else if (relativePath.equals("") || relativePath.equals("/")) response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("url.home"));
 		//If no controller is found redirect to notFound.do.
 		else if (controller == null) {
 			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("url.notFound")); 
 		//If user isn't logged in redirect to login.do.
-		} else if (!userSession.getLoggedIn()
-				&& !relativePath.equals(urls.getString("url.login"))
-				&& !relativePath.equals(urls.getString("url.error"))
-				&& !relativePath.equals(urls.getString("url.notFound")))
-		{
-			response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("url.login"));
+		} else if (!userSession.getLoggedIn() && !relativePath.equals(urls.getString("url.login")) && !relativePath.equals(urls.getString("url.error")) && !relativePath.equals(urls.getString("url.notFound"))) {
+			response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("url.login") + "?url=" + relativePath);
 		}
 		else
 		{
@@ -95,9 +92,9 @@ public class Dispatcher extends HttpServlet
 			}
 		}
 
-		//Do not forward if response is not committed
+		//Do not forward if response is committed
 		if (!response.isCommitted()) {
-			getServletContext().getRequestDispatcher("/WEB-INF/jsp" + relativePath.replaceAll(".do", ".jsp")).forward( request, response);
+			getServletContext().getRequestDispatcher("/WEB-INF/jsp" + relativePath.replaceAll(".do", ".jsp")).forward(request, response);
 		}
 	}
 }

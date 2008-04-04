@@ -44,7 +44,7 @@ Map<String,Object> params = (Map)request.getAttribute("params");
            <table width="100%" id="userInfo">
 				<tr>
 					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
-					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
+					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Benutzer anlegen</td>
 					<td width="33%" align="right">Heute ist der <%= formath.format(current) %>

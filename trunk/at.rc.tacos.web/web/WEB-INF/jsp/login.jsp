@@ -9,8 +9,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="../css/stylesheetLog.css" />
-	<link rel='icon' type="image/x-icon" href="../favicon.ico" />
-	<title>Login</title>
+	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+	<title>TACOS : Login</title>
 </head>
 <body onload="document.loginPanel.username.focus()">
 <%
@@ -29,8 +29,7 @@
 		<td align="right">Heute ist der <%= format.format(current) %></td>
 	</tr>
 </table>
-<table cellpadding="0" border="0" cellspacing="0" width="800"
-	align="center" id="mainTabLog">
+<table cellpadding="0" border="0" cellspacing="0" width="800" align="center" id="mainTabLog">
 	<tr>
 		<td id="leftLogSite" align="left" valign="bottom"><a
 			href="http://www.st.roteskreuz.at/">Rotes Kreuz Steiermark</a> <br /></td>
@@ -43,19 +42,20 @@
 			}
 		%>
 		<form method="post" action="<%=request.getContextPath()+"/Dispatcher/login.do?action=login"%>">
-		<table id="loginPanel">
-			<tr>
-				<td align="right">Benutzername:</td>
-				<td align="left"><input type="text" name="username" size="20" id="username"/></td>
-			</tr>
-			<tr>
-				<td align="right">Passwort:</td>
-				<td align="left"><input type="password" name="password" size="20" maxlength="12" id="password"/></td>
-			</tr>
-			<tr>
-				<td colspan='2' align='right'><input type="submit" value="Login" id="login"/></td>
-			</tr>
-		</table>
+			<table id="loginPanel">
+				<tr>
+					<td align="right">Benutzername:</td>
+					<td align="left"><input type="text" name="username" size="20" id="username"/></td>
+				</tr>
+				<tr>
+					<td align="right">Passwort:</td>
+					<td align="left"><input type="password" name="password" size="20" maxlength="12" id="password"/></td>
+				</tr>
+				<tr>
+					<td><input type=hidden name="url" value="<%= request.getParameter("url") %>"/></td>
+					<td colspan='2' align='right'><input type="submit" value="Login" id="login"/></td>
+				</tr>
+			</table>
 		</form>
 		</td>
 	</tr>

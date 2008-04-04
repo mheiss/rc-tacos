@@ -43,9 +43,7 @@
 	//current date as calendar
 	current.setTime(df.parse(startDate));
 %>
-<form method="post"
-	action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>"
-	border='0' cellpadding='0' cellspacing='0'>
+<form method="post" action="<%=request.getContextPath()+"/rosterEntryView?action=doRosterEntry"%>" border='0' cellpadding='0' cellspacing='0'>
 <table border='0' cellpadding='0' cellspacing='0' width="100%"
 	id="MainTab">
 	<thead>
@@ -67,7 +65,7 @@
 					<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName() + " "
 					+ userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 					&nbsp;&nbsp;( <a
-						href="<%=request.getContextPath()+"/Dispatcher/login.do?action=logout"%>">logout</a>
+						href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Tages&uuml;bersicht der Dienststelle: <%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></td>
 					<td width="33%" align="right">Heute ist der <%=format.format(today)%></td>
