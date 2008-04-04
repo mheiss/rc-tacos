@@ -65,9 +65,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private SetTransportStatusAction setTransportStatusS4Action;
 	private SetTransportStatusAction setTransportStatusS5Action;
 	private SetTransportStatusAction setTransportStatusS6Action;
-	private SetTransportStatusAction setTransportStatusS7Action;
-	private SetTransportStatusAction setTransportStatusS8Action;
-	private SetTransportStatusAction setTransportStatusS9Action;
+
 	
 	private EditTransportStatusAction editTransportStatusAction;
 	
@@ -326,9 +324,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		setTransportStatusS4Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_AT_DESTINATION, "S4 Ankunft am Ziel");
 		setTransportStatusS5Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_DESTINATION_FREE, "S5 Ziel frei");
 		setTransportStatusS6Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_CAR_IN_STATION, "S6 Eingerückt");
-		setTransportStatusS7Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, "S7 Verlässt Einsatzgebiet");
-		setTransportStatusS8Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, "S8 Wieder im Einsatzgebiet");
-		setTransportStatusS9Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_OTHER, "S9 Sonderstatus");
 		editTransportStatusAction = new EditTransportStatusAction(this.viewer);
 		
 		editTransportAction = new EditTransportAction(this.viewer,"underway");
@@ -380,9 +375,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(setTransportStatusS4Action);
 		manager.add(setTransportStatusS5Action);
 		manager.add(setTransportStatusS6Action);
-		manager.add(setTransportStatusS7Action);
-		manager.add(setTransportStatusS8Action);
-		manager.add(setTransportStatusS9Action);
 		manager.add(new Separator());
 		manager.add(editTransportStatusAction);
 		manager.add(new Separator());
