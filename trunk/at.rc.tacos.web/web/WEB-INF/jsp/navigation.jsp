@@ -1,6 +1,4 @@
-<%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.Login"%>
-<%@page import="at.rc.tacos.web.web.LoginController"%>
 <%@page import="at.rc.tacos.web.web.UserSession"%>
 <%
 	UserSession user = (UserSession)session.getAttribute("userSession"); 

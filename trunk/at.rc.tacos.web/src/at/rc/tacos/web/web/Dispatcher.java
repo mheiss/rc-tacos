@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.web.utils.ControllerFactory;
 
 public class Dispatcher extends HttpServlet 
@@ -16,6 +17,7 @@ public class Dispatcher extends HttpServlet
 	private static final long serialVersionUID = 1L;
 	public static final String URLS_BUNDLE_PATH = "at.rc.tacos.web.web.urls";
 	private static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.web.server";
+	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.net.net";
 
 	/**
 	 * Initializes servlet context.
@@ -24,6 +26,7 @@ public class Dispatcher extends HttpServlet
 	public void init() throws ServletException
 	{
 		super.init();
+		this.getServletContext().setAttribute("client", new WebClient());
 	}
 
 	/**
@@ -41,8 +44,8 @@ public class Dispatcher extends HttpServlet
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		ResourceBundle urls = ResourceBundle.getBundle(URLS_BUNDLE_PATH);
-		ResourceBundle server = ResourceBundle.getBundle(SERVER_BUNDLE_PATH);
+		final ResourceBundle urls = ResourceBundle.getBundle(URLS_BUNDLE_PATH);
+		final ResourceBundle server = ResourceBundle.getBundle(SERVER_BUNDLE_PATH);
 		
 		//Assert we have a valid session.
 		final HttpSession session = request.getSession(true);
@@ -56,8 +59,8 @@ public class Dispatcher extends HttpServlet
 		}
 
 		//Get the relative Path from request URI.	
-		final String relativePath = request.getRequestURI().replaceAll(request.getContextPath(), "").replaceFirst("/Dispatcher/", "").replaceFirst("/Dispatcher", "");
-		System.out.println("relativePath: " + relativePath);
+		final String relativePath = request.getRequestURI().replaceAll(request.getContextPath(), "").replaceFirst("/Dispatcher", "");
+		//System.out.println("relativePath: " + relativePath);
 
 		final Controller controller = ControllerFactory.getController(relativePath);
 
@@ -66,42 +69,35 @@ public class Dispatcher extends HttpServlet
 			response.sendRedirect(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath());
 		}
 		//If no URL is specified send redirect to home.do.
-		else if (relativePath.equals("") || relativePath.equals("/"))
-			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" +  urls.getString("url.rosterDay"));
+		else if (relativePath.equals("") || relativePath.equals("/")) response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("url.rosterDay"));
 		//If no controller is found redirect to notFound.do.
-		else if (controller == null){
-			response.sendRedirect(getServletContext().getContextPath()+ "/Dispatcher/" + urls.getString("url.notFound")); 
-			//If user isn't logged in redirect to login.do.
-		}else if (!userSession.getLoggedIn()
+		else if (controller == null) {
+			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("url.notFound")); 
+		//If user isn't logged in redirect to login.do.
+		} else if (!userSession.getLoggedIn()
 				&& !relativePath.equals(urls.getString("url.login"))
 				&& !relativePath.equals(urls.getString("url.error"))
 				&& !relativePath.equals(urls.getString("url.notFound")))
 		{
-			response.sendRedirect(getServletContext().getContextPath() + "/Dispatcher/" + urls.getString("url.login"));
+			response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("url.login"));
 		}
 		else
 		{
-			try
-			{
+			try {
 				final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
 				request.setAttribute("params", params);
-			} 
-			catch (IllegalArgumentException e)
-			{
+			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
-				response.sendRedirect(getServletContext().getContextPath() + "/Dispatcher/"+ urls.getString("url.error"));
-			}
-			catch (Exception e)
-			{
+				response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("url.error"));
+			} catch (Exception e) {
 				e.printStackTrace();
-				response.sendRedirect(getServletContext().getContextPath() + "/Dispatcher/" + urls.getString("url.error"));
+				response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("url.error"));
 			}
 		}
 
 		//Do not forward if response is not committed
-		if (!response.isCommitted())			
-		{
-			getServletContext().getRequestDispatcher("/WEB-INF/jsp/" + relativePath.replaceAll(".do", ".jsp")).forward( request, response);
+		if (!response.isCommitted()) {
+			getServletContext().getRequestDispatcher("/WEB-INF/jsp" + relativePath.replaceAll(".do", ".jsp")).forward( request, response);
 		}
 	}
 }
