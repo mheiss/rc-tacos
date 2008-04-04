@@ -153,7 +153,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 
     //the stati
-    private Text textS1,textS2,textS3,textS4,textS5,textS6,textS7,textS8,textS9;
+    private Text textS1,textS2,textS3,textS4,textS5,textS6;
 
     private Transport transport;
 
@@ -361,24 +361,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                     cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION));
                     textS6.setText(sdf.format(cal.getTime()));
                 }
-                //Status 7
-                if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
-                {
-                    cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA));
-                    textS7.setText(sdf.format(cal.getTime()));
-                }
-                //Status 8
-                if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
-                {
-                    cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
-                    textS8.setText(sdf.format(cal.getTime()));
-                }
-                //Status 9
-                if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
-                {
-                    cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OTHER));
-                    textS9.setText(sdf.format(cal.getTime()));
-                } 
             }
 
             if(transport.getCreationTime() != 0)
@@ -957,42 +939,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION, s6.getTimeInMillis());
             else
            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION);
-            //S7
-            Calendar s7 = convertStringToDate(textS7.getText());
-            if(!textS7.getText().trim().isEmpty() && s7 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S7 in der Form HHmm oder HH:mm ein");
-	            return;	 
-            }
-            if(s7 != null)
-           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA, s7.getTimeInMillis());
-            else
-           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA);
-            //S8
-            Calendar s8 = convertStringToDate(textS8.getText());
-            if(!textS8.getText().trim().isEmpty() && s8 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S8 in der Form HHmm oder HH:mm ein");
-	            return;	 
-            }
-            if(s8 != null)
-           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA, s8.getTimeInMillis());
-            else
-           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA);
-            //S9
-            Calendar s9 = convertStringToDate(textS9.getText());
-            if(!textS9.getText().trim().isEmpty() && s9 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S9 in der Form HHmm oder HH:mm ein");
-	            return;	 
-            }
-            if(s9 != null)
-           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_OTHER, s9.getTimeInMillis());
-            else
-           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_OTHER);
+            
             
             /**duplicate the transport if the priority is changed to A*/
             if(!oldPriority.equalsIgnoreCase("A") && transport.getTransportPriority().equalsIgnoreCase("A"))
@@ -2239,63 +2186,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         ts6Label.setLayoutData(fd_ts6Label);
         ts6Label.setForeground(Util.getColor(128, 128, 128));
         ts6Label.setText("S6:");
-
-
-        textS7 = new Text(statusmeldungenGroup, SWT.BORDER);
-        final FormData fd_textS7 = new FormData();
-        fd_textS7.bottom = new FormAttachment(0, 32);
-        fd_textS7.top = new FormAttachment(0, 11);
-        fd_textS7.right = new FormAttachment(0, 339);
-        fd_textS7.left = new FormAttachment(0, 298);
-        textS7.setLayoutData(fd_textS7);
-
-        final Label ts7Label = new Label(statusmeldungenGroup, SWT.NONE);
-        final FormData fd_ts7Label = new FormData();
-        fd_ts7Label.bottom = new FormAttachment(0, 27);
-        fd_ts7Label.top = new FormAttachment(0, 14);
-        fd_ts7Label.right = new FormAttachment(0, 295);
-        fd_ts7Label.left = new FormAttachment(0, 277);
-        ts7Label.setLayoutData(fd_ts7Label);
-        ts7Label.setForeground(Util.getColor(128, 128, 128));
-        ts7Label.setText("S7:");
-
-
-        textS8 = new Text(statusmeldungenGroup, SWT.BORDER);
-        final FormData fd_textS8 = new FormData();
-        fd_textS8.bottom = new FormAttachment(0, 59);
-        fd_textS8.top = new FormAttachment(0, 38);
-        fd_textS8.right = new FormAttachment(0, 339);
-        fd_textS8.left = new FormAttachment(0, 298);
-        textS8.setLayoutData(fd_textS8);
-
-        final Label ts8Label = new Label(statusmeldungenGroup, SWT.NONE);
-        final FormData fd_ts8Label = new FormData();
-        fd_ts8Label.bottom = new FormAttachment(0, 54);
-        fd_ts8Label.top = new FormAttachment(0, 41);
-        fd_ts8Label.right = new FormAttachment(0, 295);
-        fd_ts8Label.left = new FormAttachment(0, 277);
-        ts8Label.setLayoutData(fd_ts8Label);
-        ts8Label.setForeground(Util.getColor(128, 128, 128));
-        ts8Label.setText("S8:");
-
-
-        textS9 = new Text(statusmeldungenGroup, SWT.BORDER);
-        final FormData fd_textS9 = new FormData();
-        fd_textS9.bottom = new FormAttachment(0, 86);
-        fd_textS9.top = new FormAttachment(0, 65);
-        fd_textS9.right = new FormAttachment(0, 339);
-        fd_textS9.left = new FormAttachment(0, 298);
-        textS9.setLayoutData(fd_textS9);
-
-        final Label ts9Label = new Label(statusmeldungenGroup, SWT.NONE);
-        final FormData fd_ts9Label = new FormData();
-        fd_ts9Label.bottom = new FormAttachment(0, 81);
-        fd_ts9Label.top = new FormAttachment(0, 68);
-        fd_ts9Label.right = new FormAttachment(0, 295);
-        fd_ts9Label.left = new FormAttachment(0, 277);
-        ts9Label.setLayoutData(fd_ts9Label);
-        ts9Label.setForeground(Util.getColor(128, 128, 128));
-        ts9Label.setText("S9:");
 
         
         //set uninteresting groups invisible
