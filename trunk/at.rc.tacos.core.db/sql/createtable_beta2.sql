@@ -1,5 +1,6 @@
+
 CREATE TABLE servicetype (
-  servicetype_ID BIGINT IDENTITY (1, 1) NOT NULL, --AUTO_INCREMENT NOT NULL,
+  servicetype_ID BIGINT IDENTITY (1,1) NOT NULL, --AUTO_INCREMENT NOT NULL,
   servicetype VARCHAR(30) NOT NULL,
   PRIMARY KEY(servicetype_ID)
 )
@@ -32,7 +33,7 @@ CREATE TABLE userlogin (
 
 
 CREATE TABLE selected (
-  selected_ID BIGINT NOT NULL, --IDENTITY (1,1) NOT NULL,
+  selected_ID BIGINT IDENTITY (1,1) NOT NULL,
   name VARCHAR(30) NOT NULL,
   PRIMARY KEY(selected_ID)
 )
@@ -41,6 +42,7 @@ CREATE TABLE selected (
 -- Insert the possible values for the selected table
 -- Do NOT clear this table
 -- This MUST be done in the createTables script
+SET IDENTITY_INSERT  selected ON
 INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');
 INSERT INTO selected(selected_ID, name) VALUES(2, 'Exekutive');
 INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
@@ -55,6 +57,7 @@ INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
 INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
 INSERT INTO selected(selected_ID, name) VALUES(13, 'KIT');
 INSERT INTO selected(selected_ID, name) VALUES(14, 'BD1');
+SET IDENTITY_INSERT  selected OFF
 
 CREATE TABLE disease (
   disease_ID BIGINT IDENTITY (1,1) NOT NULL,
@@ -165,7 +168,7 @@ CREATE TABLE dayinfo (
 
 
 CREATE TABLE staffmembers (
-  staffmember_ID BIGINT NOT NULL,
+  staffmember_ID BIGINT NOT NULL, --kein auto increment???????
   username VARCHAR(30) NOT NULL,
   primaryLocation BIGINT NOT NULL,
   lastname VARCHAR(30) NOT NULL,
