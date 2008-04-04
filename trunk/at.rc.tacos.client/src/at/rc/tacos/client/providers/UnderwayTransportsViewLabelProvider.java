@@ -29,12 +29,9 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     public static final int COLUMN_S2 = 9;
     public static final int COLUMN_S3 = 10; 
     public static final int COLUMN_S4 = 11;  
-    public static final int COLUMN_S7 = 12;
-    public static final int COLUMN_S8 = 13;
-    public static final int COLUMN_S9 = 14;
-    public static final int COLUMN_FZG = 15;
-    public static final int COLUMN_T = 16;
-    public static final int COLUMN_ERKR_VERL = 17;
+    public static final int COLUMN_FZG = 12;
+    public static final int COLUMN_T = 13;
+    public static final int COLUMN_ERKR_VERL = 14;
 
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
@@ -127,30 +124,6 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
 				{
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
-					return sdf.format(cal.getTime());
-				}
-				else return null;
-	        case COLUMN_S7: 
-	        	//Status 7
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
-				{
-					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA));
-					return sdf.format(cal.getTime());
-				}
-				else return null;
-	        case COLUMN_S8:
-	        	//Status 8
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
-				{
-					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
-					return sdf.format(cal.getTime());
-				}
-				else return null;
-	        case COLUMN_S9:
-	        	//Status 9
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OTHER))
-				{
-					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OTHER));
 					return sdf.format(cal.getTime());
 				}
 				else return null;
