@@ -2,8 +2,14 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ page import="at.rc.tacos.web.web.UserSession" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="java.text.*"%>
-<%@ page import="java.util.Date"%>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.*" %>
+<%
+final Map<String, Object> params = (Map<String, Object>)request.getAttribute("params");
+final UserSession userSession = (UserSession)session.getAttribute("userSession");
+final Date today = new Date();
+final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -11,12 +17,6 @@
 	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
 	<script type="text/javascript" src="../js/windowActions.js"></script>
 	<title>TACOS : Dienstplan Tagesansicht</title>
-	<%
-	Map<String, Object> params = (Map<String, Object>)request.getAttribute("params");
-	UserSession userSession = (UserSession)session.getAttribute("userSession");
-	Date today = new Date();
-	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-	%>
 </head>
 <body>
 
