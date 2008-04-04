@@ -215,21 +215,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		s4DisponierteTransporte.setWidth(40);
 		s4DisponierteTransporte.setText("S4");
 
-		final TableColumn s7DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		s7DisponierteTransporte.setToolTipText("Einsatzgebiet verlassen");
-		s7DisponierteTransporte.setWidth(40);
-		s7DisponierteTransporte.setText("S7");
-
-		final TableColumn s8DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		s8DisponierteTransporte.setToolTipText("Zurück im Einsatzgebiet");
-		s8DisponierteTransporte.setWidth(40);
-		s8DisponierteTransporte.setText("S8");
-
-		final TableColumn s9DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		s9DisponierteTransporte.setToolTipText("Sonderstatus");
-		s9DisponierteTransporte.setWidth(40);
-		s9DisponierteTransporte.setText("S9");
-
 		final TableColumn fzgDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		fzgDisponierteTransporte.setToolTipText("Fahrzeugkennzeichnung");
 		fzgDisponierteTransporte.setWidth(60);
@@ -296,12 +281,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 					sortIdentifier = TransportSorter.S3_SORTER;
 				if(currentColumn == s4DisponierteTransporte)
 					sortIdentifier = TransportSorter.S4_SORTER;
-				if(currentColumn == s7DisponierteTransporte)
-					sortIdentifier = TransportSorter.S7_SORTER;
-				if(currentColumn == s8DisponierteTransporte)
-					sortIdentifier = TransportSorter.S8_SORTER;
-				if(currentColumn == s9DisponierteTransporte)
-					sortIdentifier = TransportSorter.S9_SORTER;
 				if(currentColumn == erkrankungVerletzungDisponierteTransporte)
 					sortIdentifier = TransportSorter.KIND_OF_ILLNESS_SORTER;
 				
@@ -325,9 +304,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		s2DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		s3DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		s4DisponierteTransporte.addListener(SWT.Selection, sortListener);
-		s7DisponierteTransporte.addListener(SWT.Selection, sortListener);
-		s8DisponierteTransporte.addListener(SWT.Selection, sortListener);
-		s9DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		
 		//create the actions
 		makeActions();
