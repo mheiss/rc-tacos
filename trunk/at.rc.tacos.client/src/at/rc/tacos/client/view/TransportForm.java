@@ -144,13 +144,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Group transportdatenGroup;
     private Group transportdetailsGroup;
     
-    
-    
-    
     private ComboViewer zustaendigeOrtsstelle;
     private DateTime dateTime;
     protected Shell shell;
-
 
     //the stati
     private Text textS1,textS2,textS3,textS4,textS5,textS6;
@@ -161,8 +157,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private ComboViewer setTextFahrer,setTextSaniI,setTextSaniII;
     private ComboViewer setErkrVerl;
 
-    private String[] prebookingPriorities = {"C", "D", "E", "F"};
-    private String[] emergencyAndTransportPriorities = {"A", "B", "C", "D", "E", "F", "G"};
+    private String[] prebookingPriorities = {"3 Terminfahrt","4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
+    private String[] emergencyAndTransportPriorities = {"1 NEF", "2 Transport", "3 Terminfahrt", "4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
+    
     /**if the old priority is not A but the new is A-> DuplicatePriorityATransportAction necessary**/
     private String oldPriority;
     //A: NEF + RTW
@@ -445,7 +442,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             if(transport.getTransportPriority() != null)
             {
             	oldPriority = transport.getTransportPriority();
-                comboPrioritaet.setText(transport.getTransportPriority());
+                comboPrioritaet.setText(this.priorityToString(transport.getTransportPriority()));
             }
 
             viewerFromStreet.getCombo().setText(transport.getFromStreet());
@@ -623,7 +620,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             setErrorMessage("Bitte geben sie die Priorität des Transports ein");
             return;
         }
-        transport.setTransportPriority(comboPrioritaet.getItem(index));
+        transport.setTransportPriority(this.stringToPriority(comboPrioritaet.getItem(index)));
 
         //convert the start time --> no validation when an emergency transport
         Calendar startTime = convertStringToDate(textAbf.getText());
@@ -1550,7 +1547,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         bd1Button.setToolTipText("Sondersignal auf dem Weg zum Einsatzort");
         bd1Button.setText("BD 1");
 
-        comboPrioritaet = new Combo(patientenzustandGroup, SWT.READ_ONLY);
+        comboPrioritaet = new Combo(patientenzustandGroup, SWT.READ_ONLY);//TODO
         comboPrioritaet.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), G (NEF extern)");
 
         //set possible priorities
@@ -1558,7 +1555,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             comboPrioritaet.setItems(prebookingPriorities);
         if(transportType.equalsIgnoreCase("emergencyTransport") || transportType.equalsIgnoreCase("both"))
             comboPrioritaet.setItems(emergencyAndTransportPriorities);
-        comboPrioritaet.setData("newKey", null);
+//        comboPrioritaet.setData("newKey", null);
         final FormData fd_comboPrioritaet = new FormData();
         fd_comboPrioritaet.bottom = new FormAttachment(0, 73);
         fd_comboPrioritaet.top = new FormAttachment(0, 52);
@@ -2270,7 +2267,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
                 transportType = "emergencyTransport";
 
-                //set possible priorities
+                //set possible priorities//TODO
                 if(transportType.equalsIgnoreCase("prebooking"))
                     comboPrioritaet.setItems(prebookingPriorities);
                 if(transportType.equalsIgnoreCase("emergencyTransport"))
@@ -2301,7 +2298,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
                 transportType = "prebooking";
 
-                //set possible priorities
+                //set possible priorities//TODO
                 if(transportType.equalsIgnoreCase("prebooking"))
                 {
                     comboPrioritaet.setItems(prebookingPriorities);
@@ -2360,7 +2357,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         buttonDialyse.setText("Dialyse");
         buttonDialyse.addSelectionListener(new SelectionAdapter() 
         {
-        	//TODO
             public void widgetSelected(final SelectionEvent e) 
             {
             	DialysisPatient dia = new DialysisPatient();
@@ -2518,4 +2514,52 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             return null;
         }
     }
+    
+    /** 
+     * returns the priority to set
+     * @param the priority string
+     */
+    private String stringToPriority(String priorityString)
+    {
+    	if (priorityString.equalsIgnoreCase("1 NEF"))
+    			return "A";
+    	else if (priorityString.equalsIgnoreCase("2 Transport"))
+    		return "B";
+    	else if(priorityString.equalsIgnoreCase("3 Terminfahrt"))
+    		return "C";
+    	else if(priorityString.equalsIgnoreCase("4 RT"))
+    		return "D";
+    	else if(priorityString.equalsIgnoreCase("5 HT"))
+    		return "E";
+    	else if(priorityString.equalsIgnoreCase("6 Sonstiges"))
+    		return "F";
+    	else if(priorityString.equalsIgnoreCase("7 NEF extern"))
+    		return "G";
+    	else return null;
+    }
+    
+    /**
+     * returns the priority string to display
+     * @param  the priority
+     */
+    private String priorityToString(String priority)
+    {
+    	if (priority.equalsIgnoreCase("A"))
+			return "1 NEF";
+    	else if (priority.equalsIgnoreCase("B"))
+    		return "2 Transport";
+    	else if(priority.equalsIgnoreCase("C"))
+    		return "3 Terminfahrt";
+    	else if(priority.equalsIgnoreCase("D"))
+    		return "4 RT";
+    	else if(priority.equalsIgnoreCase("E"))
+    		return "5 HT";
+    	else if(priority.equalsIgnoreCase("F"))
+    		return "6 Sonstiges";
+    	else if(priority.equalsIgnoreCase("G"))
+    		return "7 NEF extern";
+    	else return null;
+    }
+    
+    
 }
