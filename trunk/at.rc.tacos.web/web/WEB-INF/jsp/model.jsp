@@ -1,13 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ page import="at.rc.tacos.web.web.UserSession" %>
-<%@ page import="at.rc.tacos.web.web.Dispatcher" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Date" %>
-<%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.text.*" %>
 <%
 final Map<String, Object> params = (Map<String, Object>)request.getAttribute("params");
+final String viewName = (String)params.get("view");
 final UserSession userSession = (UserSession)session.getAttribute("userSession");
 final Date today = new Date();
 final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -55,13 +54,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 							<td id="LeftContainerPanel" valign="top"><%@ include file="navigation.jsp"%></td>
 							<!-- #### CONTENT -->
 							<td id="ContentContainer" valign="top">
-							<%
-							if (request.getParameter("view").equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("dutiesDay.url"))) {
-								%>
-								<%@ include file="dutiesDay.jsp" %>
-								<%
-							}
-							%>
+								<jsp:include page="<%= viewName %>" />
 							</td>
 						</tr>
 					</table>

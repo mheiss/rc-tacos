@@ -22,7 +22,7 @@ import at.rc.tacos.core.net.internal.WebClient;
 public class Dispatcher extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
-	public static final String VIEWS_BUNDLE_PATH = "at.rc.tacos.web.web.views";
+	public static final String VIEWS_BUNDLE_PATH = "at.rc.tacos.web.web.urls";
 	private static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.web.server";
 	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.net.net";
 
@@ -132,7 +132,8 @@ public class Dispatcher extends HttpServlet
 								if (templateFound) {
 									params.put("title", viewTitle);
 									params.put("header", viewHeader);
-									getServletContext().getRequestDispatcher(templatePath + "?view=" + viewPath).forward(request, response);
+									params.put("view", viewPath);
+									getServletContext().getRequestDispatcher(templatePath).forward(request, response);
 								} else {
 									getServletContext().getRequestDispatcher(viewPath).forward(request, response);
 								}
