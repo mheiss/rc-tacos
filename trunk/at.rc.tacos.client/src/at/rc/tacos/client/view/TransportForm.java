@@ -83,6 +83,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Text textBeiPat;
     private Text textAbf;
     private Text createdBy;
+    private Text disposedBy;
     private Text textAufgen;
     private Text textAE;
     private Text timestampNA;
@@ -107,7 +108,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     
     //buttons
     private Button buttonVormerkung;
-    private Button buttonAlles;
+//    private Button buttonAlles;
     private Button buttonNotfall;
     private Button buttonDialyse;
     private Button ruecktransportMoeglichButton;
@@ -266,7 +267,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         if(!createNew)
         {
         	//changing transport type only possible for a new transport
-        	buttonAlles.setEnabled(false);
+//        	buttonAlles.setEnabled(false);
             buttonVormerkung.setEnabled(false);
             buttonNotfall.setEnabled(false);
             buttonDialyse.setEnabled(false);
@@ -462,6 +463,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             
 
             this.createdBy.setText(transport.getCreatedByUsername());
+            if(transport.getDisposedByUsername() != null)
+            	disposedBy.setText(transport.getDisposedByUsername());
             
             if(transport.getNotes() != null)
             {
@@ -689,9 +692,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         }
 
         //set the fields that do not have to be validated
-        transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
         transport.setBackTransport(ruecktransportMoeglichButton.getSelection());
 
+        //the disposed by user
+        if(!disposedBy.getText().trim().isEmpty())
+        	transport.setDisposedByUsername(disposedBy.getText());
         //the kind of transport
         index = combokindOfTransport.getSelectionIndex();
         if (index != -1)
@@ -793,7 +798,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         {
             //created time
             transport.setCreationTime(Calendar.getInstance().getTimeInMillis());
-
+            //created by user
+            transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
             
             //create and run the add action
             CreateTransportAction newAction = new CreateTransportAction(transport);
@@ -1561,7 +1567,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_label_4.top = new FormAttachment(0, 56);
         fd_label_4.right = new FormAttachment(0, 255);
         label_4.setLayoutData(fd_label_4);
-        label_4.setForeground(Util.getColor(25, 25, 112));
+        label_4.setForeground(Util.getColor(0, 0, 255));
         label_4.setText("Priorität:");
         patientenzustandGroup.setTabList(new Control[] {setErkrVerl.getControl(), bd1Button, comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
 
@@ -2226,10 +2232,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
         buttonNotfall = new Button(formGroup, SWT.TOGGLE);
         final FormData fd_buttonNotfall = new FormData();
-        fd_buttonNotfall.bottom = new FormAttachment(0, 20);
-        fd_buttonNotfall.top = new FormAttachment(0, -3);
-        fd_buttonNotfall.right = new FormAttachment(0, 202);
-        fd_buttonNotfall.left = new FormAttachment(0, 94);
+        fd_buttonNotfall.bottom = new FormAttachment(0, 25);
+        fd_buttonNotfall.top = new FormAttachment(0, 2);
+        fd_buttonNotfall.right = new FormAttachment(0, 204);
+        fd_buttonNotfall.left = new FormAttachment(0, 104);
         buttonNotfall.setLayoutData(fd_buttonNotfall);
         buttonNotfall.setToolTipText("Blendet alle für einen Notfall nicht relevanten Felder aus");
         buttonNotfall.addSelectionListener(new SelectionAdapter() 
@@ -2272,10 +2278,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
         buttonVormerkung = new Button(formGroup, SWT.TOGGLE);
         final FormData fd_buttonVormerkung = new FormData();
-        fd_buttonVormerkung.bottom = new FormAttachment(0, 49);
-        fd_buttonVormerkung.top = new FormAttachment(0, 26);
-        fd_buttonVormerkung.right = new FormAttachment(0, 202);
-        fd_buttonVormerkung.left = new FormAttachment(0, 94);
+        fd_buttonVormerkung.bottom = new FormAttachment(0, 59);
+        fd_buttonVormerkung.top = new FormAttachment(0, 36);
+        fd_buttonVormerkung.right = new FormAttachment(0, 204);
+        fd_buttonVormerkung.left = new FormAttachment(0, 104);
         buttonVormerkung.setLayoutData(fd_buttonVormerkung);
         buttonVormerkung.setToolTipText("Blendet alle für eine Vormerkung nicht relevanten Felder aus");
         buttonVormerkung.setText("Transport");
@@ -2311,47 +2317,57 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             }
         });
 
-        buttonAlles = new Button(formGroup, SWT.TOGGLE);
-        final FormData fd_buttonAlles = new FormData();
-        fd_buttonAlles.bottom = new FormAttachment(0, 78);
-        fd_buttonAlles.top = new FormAttachment(0, 55);
-        fd_buttonAlles.right = new FormAttachment(0, 202);
-        fd_buttonAlles.left = new FormAttachment(0, 94);
-        buttonAlles.setLayoutData(fd_buttonAlles);
-        buttonAlles.setToolTipText("Blendet alle Felder ein");
-        buttonAlles.setText("Alle Felder anzeigen");
-        buttonAlles.addSelectionListener(new SelectionAdapter() 
-        {
-            public void widgetSelected(final SelectionEvent e) 
-            {
-                planungGroup_1.setVisible(true);
-                planungGroup.setVisible(true);
-                transportdetailsGroup.setVisible(true);
-                statusmeldungenGroup.setVisible(true);
-                personalAmFahrzeugGroup.setVisible(true);
-            }
-        });
-        if("journal".equalsIgnoreCase(editingType))
-            buttonAlles.setVisible(true);
-        else
-            buttonAlles.setVisible(false);
+//        buttonAlles = new Button(formGroup, SWT.TOGGLE);
+//        final FormData fd_buttonAlles = new FormData();
+//        fd_buttonAlles.bottom = new FormAttachment(0, 78);
+//        fd_buttonAlles.top = new FormAttachment(0, 55);
+//        fd_buttonAlles.right = new FormAttachment(0, 202);
+//        fd_buttonAlles.left = new FormAttachment(0, 94);
+//        buttonAlles.setLayoutData(fd_buttonAlles);
+//        buttonAlles.setToolTipText("Blendet alle Felder ein");
+//        buttonAlles.setText("Alle Felder anzeigen");
+//        buttonAlles.addSelectionListener(new SelectionAdapter() 
+//        {
+//            public void widgetSelected(final SelectionEvent e) 
+//            {
+//                planungGroup_1.setVisible(true);
+//                planungGroup.setVisible(true);
+//                transportdetailsGroup.setVisible(true);
+//                statusmeldungenGroup.setVisible(true);
+//                personalAmFahrzeugGroup.setVisible(true);
+//            }
+//        });
+//        if("journal".equalsIgnoreCase(editingType))
+//            buttonAlles.setVisible(true);
+//        else
+//            buttonAlles.setVisible(false);
         
         createdBy = new Text(formGroup, SWT.BORDER);
         final FormData fd_crreatedBy = new FormData();
         fd_crreatedBy.bottom = new FormAttachment(0, 108);
         fd_crreatedBy.top = new FormAttachment(0, 88);
-        fd_crreatedBy.right = new FormAttachment(0, 202);
-        fd_crreatedBy.left = new FormAttachment(0, 94);
+        fd_crreatedBy.right = new FormAttachment(0, 102);
+        fd_crreatedBy.left = new FormAttachment(0, 2);
         createdBy.setLayoutData(fd_crreatedBy);
         createdBy.setToolTipText("Aufgenommen von");
         createdBy.setEditable(false);
         
+        disposedBy = new Text(formGroup, SWT.BORDER);
+        final FormData fd_disposedBy = new FormData();
+        fd_disposedBy.bottom = new FormAttachment(0, 108);
+        fd_disposedBy.top = new FormAttachment(0, 88);
+        fd_disposedBy.right = new FormAttachment(0, 204);
+        fd_disposedBy.left = new FormAttachment(0, 104);
+        disposedBy.setLayoutData(fd_disposedBy);
+        disposedBy.setToolTipText("Disponiert von");
+        disposedBy.setEditable(false);
+        
         
         buttonDialyse = new Button(formGroup, SWT.TOGGLE);
         final FormData fd_buttonDialye = new FormData();
-        fd_buttonDialye.bottom = new FormAttachment(0, 78);
-        fd_buttonDialye.top = new FormAttachment(0, 55);
-        fd_buttonDialye.right = new FormAttachment(0, 90);
+        fd_buttonDialye.bottom = new FormAttachment(0, 25);
+        fd_buttonDialye.top = new FormAttachment(0, 2);
+        fd_buttonDialye.right = new FormAttachment(0, 102);
         fd_buttonDialye.left = new FormAttachment(0, 2);
         buttonDialyse.setLayoutData(fd_buttonDialye);
         buttonDialyse.setToolTipText("Erstellt einen Dialysetransport");
