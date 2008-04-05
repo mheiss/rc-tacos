@@ -254,6 +254,7 @@ CREATE TABLE transports (
   priority VARCHAR(1) NULL,
   direction INTEGER UNSIGNED NULL,
   dateOfTransport DATETIME NULL,
+  disposedBy_user VARCHAR(30) NULL,
   PRIMARY KEY(transport_ID),
   INDEX transports_FKIndex1(CreatedBy_user),
   INDEX transports_FKIndex3(caller_ID),
