@@ -114,6 +114,8 @@ public class TransportDecoder implements MessageDecoder
 					transport.setProgramStatus(Integer.valueOf(reader.getElementText()));
 				if("createdByUser".equalsIgnoreCase(startName))
 					transport.setCreatedByUsername(reader.getElementText());
+				if("disposedByUser".equalsIgnoreCase(startName))
+					transport.setDisposedByUsername(reader.getElementText());
 
 				//next
 				if("emergencyDoctoralarming".equalsIgnoreCase(startName))
