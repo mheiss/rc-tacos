@@ -12,7 +12,7 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.StaffMember;
 
-public class AddUserController implements Controller
+public class AddUserController extends Controller
 {
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception

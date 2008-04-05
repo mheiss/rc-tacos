@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import at.rc.tacos.core.net.internal.WebClient;
 
 
-public class StatisticEmployeeController  implements Controller {
+public class StatisticEmployeeController extends Controller {
 
 	private String splitedDate[] = null;
 	private String form = null;

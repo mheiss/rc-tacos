@@ -1,9 +1,7 @@
 package at.rc.tacos.web.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -15,8 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import at.rc.tacos.core.net.internal.WebClient;
-import at.rc.tacos.web.utils.ControllerFactory;
-
+/**
+ * Dispatcher (Front Controller):
+ * This class is responsible for URL resolving, security and forwarding to view.
+ * @author Payer Martin
+ * @version 1.0
+ */
 public class Dispatcher extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
@@ -66,74 +68,93 @@ public class Dispatcher extends HttpServlet
 
 		//Get the relative Path from request URL
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
-
-		//Find out if login is required for request URL
+		
+		final Set<String> set = views.keySet();
+		boolean urlFound = false;
 		boolean loginRequired = true;
-		final Set<String> set1 = views.keySet();
-		for (final Iterator<String> it = set1.iterator(); it.hasNext();) {
-			String key = it.next();
-			if (key.contains(".loginRequired")) {
-				String value = views.getString(key);
-				if (value.equalsIgnoreCase("false")) {
-					key = key.replaceFirst("loginRequired", "url");
-					if (views.getString(key).equalsIgnoreCase(relativePath)) {
-						loginRequired = false;
-					}
-				}
-			}
-		}
-		
-		//Find out if template is required for request URL
-		boolean usesTemplate = false;
-		String template = "";
-		final Set<String> set2 = views.keySet();
-		for (final Iterator<String> it = set2.iterator(); it.hasNext();) {
-			String key1 = it.next();
-			if (key1.contains(".template")) {
-				String key2 = key1.replaceFirst("template", "url");
-				if (views.getString(key2).equalsIgnoreCase(relativePath)) {
-					usesTemplate = true;
-					template = views.getString(key1);
-				}		
-			}
-		}
-		
-		final Controller controller = ControllerFactory.getController(relativePath);
+		boolean controllerFound = false;
+		String controllerClassName = null;
+		boolean viewFound = false;
+		String viewPath = null;
+		boolean templateFound = false;
+		String templatePath = null;
+		String viewTitle = null;
+		String viewHeader = null;
 		
 		//Redirect if request is not send over SSL connection
 		if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
 			response.sendRedirect(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath);
 		}
 		//If no URL is specified send redirect to home.do.
-		else if (relativePath.equals("") || relativePath.equals("/")) response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + views.getString("home.url"));
-		//If no controller is found redirect to notFound.do.
-		else if (controller == null) {
-			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url")); 
-		//If user isn't logged in and login is required for specified URL redirect to login.do.
-		} else if (!userSession.getLoggedIn() && loginRequired) {
-			response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?url=" + relativePath);
-		}
-		else
-		{
-			try {
-				final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
-				request.setAttribute("params", params);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
-			}
-		}
-
-		//Do not forward if response is committed
-		if (!response.isCommitted()) {
-			//Differentiate if View uses model.jsp or not
-			if (usesTemplate) {
-				getServletContext().getRequestDispatcher(response.encodeURL(template + "?view=" + relativePath)).forward(request, response);
+		else if (relativePath.equals("") || relativePath.equals("/")) {
+			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + views.getString("dutiesDay.url"));
+		} else {
+			//Get login requirement view and template
+			for (final Iterator<String> it = set.iterator(); it.hasNext();) {
+				final String key = it.next();
+				if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".url")) {
+					urlFound = true;
+				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".loginRequired")) {
+					if (views.getString(key).equalsIgnoreCase("false")) {
+						loginRequired = false;
+					}
+				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".controller")) {
+					controllerFound = true;
+					controllerClassName = views.getString(key);
+				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".view")) {
+					viewFound = true;
+					viewPath = views.getString(key);
+				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".template")) {
+					templateFound = true;
+					templatePath = views.getString(key);
+				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".title")) {
+					viewTitle = views.getString(key);
+				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".header")) {
+					viewHeader = views.getString(key);
+				}
+			}			
+			if (urlFound == false) {
+				response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url")); 
 			} else {
-				getServletContext().getRequestDispatcher("/WEB-INF/jsp" + relativePath.replaceAll(".do", ".jsp")).forward(request, response);
+				if (loginRequired == true && !userSession.getLoggedIn()) {
+					response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?url=" + relativePath);
+				} else {
+					if (controllerFound == false) {
+						response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+					} else {
+						try {
+							final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
+							final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
+							request.setAttribute("params", params);
+							//Forward to view if response is not commited and view is found in views.properties
+							if (!response.isCommitted() && viewFound) {
+								//Differentiate if View uses model.jsp or not
+								if (templateFound) {
+									params.put("title", viewTitle);
+									params.put("header", viewHeader);
+									getServletContext().getRequestDispatcher(templatePath + "?view=" + viewPath).forward(request, response);
+								} else {
+									getServletContext().getRequestDispatcher(viewPath).forward(request, response);
+								}
+							}
+						} catch (InstantiationException e1) {
+							e1.printStackTrace();
+							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+						} catch (IllegalAccessException e1) {
+							e1.printStackTrace();
+							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+						} catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+						} catch (Exception e) {
+							e.printStackTrace();
+							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+						}
+					}
+				}
 			}
 		}
 	}

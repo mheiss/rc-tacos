@@ -7,7 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DutiesDayController implements Controller {
+public class DutiesDayController extends Controller {
 
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,

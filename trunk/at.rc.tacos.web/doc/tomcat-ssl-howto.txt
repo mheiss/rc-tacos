@@ -7,7 +7,7 @@ To set up Tomcat, SSL and Eclipse for Joanna do the following:
    in Window / Preferences / Tomcat set tomcat home to e.g. D:\Devel\tomcat-6.0.10
    
    Then add the following JVM parameter in Window / Preferences / Tomcat / JVM Settings:
-   -Djava.library.path=D:\Devel\tomcat-6.0.10\bin
+   -Djava.library.path=E:\tomcat-6.0.10\bin
 
 2. Check that tomcat.home property in build.properties has the proper value.
 

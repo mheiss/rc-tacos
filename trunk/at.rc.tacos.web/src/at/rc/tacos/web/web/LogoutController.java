@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class LogoutController implements Controller {
+public class LogoutController extends Controller {
 
 	public Map<String, Object> doLogout(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception {
 		final HttpSession session = request.getSession();

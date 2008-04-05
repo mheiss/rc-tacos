@@ -18,7 +18,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 
 
-public class RosterWeekController  implements Controller
+public class RosterWeekController extends Controller
 {
 	private String splitedDate[] = null;
 

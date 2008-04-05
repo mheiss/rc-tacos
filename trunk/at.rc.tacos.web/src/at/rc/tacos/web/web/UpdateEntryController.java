@@ -17,7 +17,7 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
-public class UpdateEntryController implements Controller
+public class UpdateEntryController extends Controller
 {
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
