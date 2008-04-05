@@ -102,6 +102,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Combo comboNachname;
     private Combo comboPrioritaet;
     private Combo comboErkrankungVerletzung;
+    private Combo combokindOfTransport;
     
     
     //buttons
@@ -112,9 +113,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Button ruecktransportMoeglichButton;
     private Button begleitpersonButton;
     private Button rufhilfepatientButton;
-    private Button eigenerRollstuhlButton;
-    private Button krankentrageButton;
-    private Button tragsesselButton;
+//    private Button eigenerRollstuhlButton;
+//    private Button krankentrageButton;
+//    private Button tragsesselButton;
     private Button fernfahrtButton;
     private Button mariazellButton;
     private Button wienButton;
@@ -132,7 +133,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Button notarztButton;
     private Button bd2Button;
     private Button bd1Button;
-    private Button gehendButton;
+//    private Button gehendButton;
     
     //groups
     private Group formGroup;
@@ -496,24 +497,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             		this.textTransportNummer.setText(String.valueOf(transport.getTransportNumber()));
 
             //kind of transport
-            String kindOfTransport = transport.getKindOfTransport();
-            if(TRANSPORT_KIND_GEHEND.equalsIgnoreCase(kindOfTransport))
-            {
-                this.gehendButton.setSelection(true);
-            }
-            else if (TRANSPORT_KIND_TRAGSESSEL.equalsIgnoreCase(kindOfTransport))
-            {
-                this.tragsesselButton.setSelection(true);
-            }
-            else if (TRANSPORT_KIND_KRANKENTRAGE.equalsIgnoreCase(kindOfTransport))
-            {
-                this.krankentrageButton.setSelection(true);
-            }
-            else if (TRANSPORT_KIND_ROLLSTUHL.equalsIgnoreCase(kindOfTransport))
-            {
-                this.eigenerRollstuhlButton.setSelection(true);
-            }
-
+            if(transport.getKindOfTransport() != null)
+            	combokindOfTransport.setText(transport.getKindOfTransport());
+                       
             //directness
             int direction = transport.getDirection();
             if (TOWARDS_BRUCK == direction)
@@ -707,16 +693,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         transport.setBackTransport(ruecktransportMoeglichButton.getSelection());
 
         //the kind of transport
-        if(eigenerRollstuhlButton.getSelection())
-            transport.setKindOfTransport(TRANSPORT_KIND_ROLLSTUHL);
-        else if(krankentrageButton.getSelection())
-            transport.setKindOfTransport(TRANSPORT_KIND_KRANKENTRAGE);
-        else if (tragsesselButton.getSelection())
-            transport.setKindOfTransport(TRANSPORT_KIND_TRAGSESSEL);
-        else if (gehendButton.getSelection())
-            transport.setKindOfTransport(TRANSPORT_KIND_GEHEND);
-        else
-            transport.setKindOfTransport("<keine Angabe>");
+        index = combokindOfTransport.getSelectionIndex();
+        if (index != -1)
+        	transport.setKindOfTransport(combokindOfTransport.getItem(index));
 
         //if we have a patient just update it
         if(transport.getPatient() == null)
@@ -1006,7 +985,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_vonLabel.left = new FormAttachment(0, 7);
 
         vonLabel.setLayoutData(fd_vonLabel);
-        vonLabel.setForeground(Util.getColor(25, 25, 112));
+        vonLabel.setForeground(Util.getColor(0,0,255));
         vonLabel.setText("von:");
 
         Combo comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
@@ -1180,42 +1159,28 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         nachnameLabel_1.setLayoutData(fd_nachnameLabel_1);
         nachnameLabel_1.setForeground(Util.getColor(128, 128, 128));
         nachnameLabel_1.setText("Vorname");
-
-        gehendButton = new Button(transportdatenGroup, SWT.RADIO);
-        final FormData fd_gehendButton = new FormData();
-        fd_gehendButton.bottom = new FormAttachment(0, 70);
-        fd_gehendButton.top = new FormAttachment(0, 54);
-        fd_gehendButton.right = new FormAttachment(0, 547);
-        fd_gehendButton.left = new FormAttachment(0, 464);
-        gehendButton.setLayoutData(fd_gehendButton);
-        gehendButton.setText("gehend");
-
-        tragsesselButton = new Button(transportdatenGroup, SWT.RADIO);
-        final FormData fd_tragsesselButton = new FormData();
-        fd_tragsesselButton.bottom = new FormAttachment(0, 70);
-        fd_tragsesselButton.top = new FormAttachment(0, 54);
-        fd_tragsesselButton.right = new FormAttachment(0, 636);
-        fd_tragsesselButton.left = new FormAttachment(0, 553);
-        tragsesselButton.setLayoutData(fd_tragsesselButton);
-        tragsesselButton.setText("Tragsessel");
-
-        krankentrageButton = new Button(transportdatenGroup, SWT.RADIO);
-        final FormData fd_krankentrageButton = new FormData();
-        fd_krankentrageButton.bottom = new FormAttachment(0, 70);
-        fd_krankentrageButton.top = new FormAttachment(0, 54);
-        fd_krankentrageButton.right = new FormAttachment(0, 734);
-        fd_krankentrageButton.left = new FormAttachment(0, 651);
-        krankentrageButton.setLayoutData(fd_krankentrageButton);
-        krankentrageButton.setText("Krankentrage");
-
-        eigenerRollstuhlButton = new Button(transportdatenGroup, SWT.RADIO);
-        final FormData fd_eigenerRollstuhlButton = new FormData();
-        fd_eigenerRollstuhlButton.bottom = new FormAttachment(0, 70);
-        fd_eigenerRollstuhlButton.top = new FormAttachment(0, 54);
-        fd_eigenerRollstuhlButton.right = new FormAttachment(0, 850);
-        fd_eigenerRollstuhlButton.left = new FormAttachment(0, 750);
-        eigenerRollstuhlButton.setLayoutData(fd_eigenerRollstuhlButton);
-        eigenerRollstuhlButton.setText("Eigener Rollstuhl");
+        
+        final Label label_kind = new Label(transportdatenGroup, SWT.NONE);
+        final FormData fd_label_kind = new FormData();
+        fd_label_kind.left = new FormAttachment(0, 680);
+        fd_label_kind.bottom = new FormAttachment(0, 69);
+        fd_label_kind.top = new FormAttachment(0, 56);
+        fd_label_kind.right = new FormAttachment(0, 752);
+        label_kind.setLayoutData(fd_label_kind);
+        label_kind.setText("Transportart:");
+        
+        //TODO
+        combokindOfTransport = new Combo(transportdatenGroup, SWT.READ_ONLY);
+        //set possible priorities
+        String[] kindsOfTransport = {TRANSPORT_KIND_GEHEND, TRANSPORT_KIND_TRAGSESSEL, TRANSPORT_KIND_KRANKENTRAGE, TRANSPORT_KIND_ROLLSTUHL};
+        combokindOfTransport.setItems(kindsOfTransport);
+    
+        final FormData fd_comboTransportKind = new FormData();
+        fd_comboTransportKind.bottom = new FormAttachment(0, 74);
+        fd_comboTransportKind.top = new FormAttachment(0, 53);
+        fd_comboTransportKind.right = new FormAttachment(0, 850);
+        fd_comboTransportKind.left = new FormAttachment(0, 753);
+        combokindOfTransport.setLayoutData(fd_comboTransportKind);
 
         begleitpersonButton = new Button(transportdatenGroup, SWT.CHECK);
         final FormData fd_begleitpersonButton = new FormData();
@@ -1282,10 +1247,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         final FormData fd_label_6 = new FormData();
         fd_label_6.bottom = new FormAttachment(0, 118);
         fd_label_6.top = new FormAttachment(0, 105);
-        fd_label_6.right = new FormAttachment(0, 313);
-        fd_label_6.left = new FormAttachment(0, 150);
+        fd_label_6.right = new FormAttachment(0, 315);
+        fd_label_6.left = new FormAttachment(0, 200);
         label_6.setLayoutData(fd_label_6);
-        label_6.setForeground(Util.getColor(25, 25, 112));
+        label_6.setForeground(Util.getColor(0, 0, 255));
         label_6.setText("Zuständige Ortsstelle:");
 
         Combo comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.READ_ONLY);
@@ -1301,7 +1266,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_comboZustaendigeOrtsstelle.left = new FormAttachment(0, 319);
         comboZustaendigeOrtsstelle.setLayoutData(fd_comboZustaendigeOrtsstelle);
 
-        transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, ruecktransportMoeglichButton, comboZustaendigeOrtsstelle, begleitpersonButton, textAnrufer, textTelefonAnrufer});
+        transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, combokindOfTransport, ruecktransportMoeglichButton, comboZustaendigeOrtsstelle, begleitpersonButton, textAnrufer, textTelefonAnrufer});
 
         planungGroup = new Group(client, SWT.NONE);
         planungGroup.setLayout(new FormLayout());
@@ -1322,7 +1287,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_abfLabel.right = new FormAttachment(0, 32);
         fd_abfLabel.left = new FormAttachment(0, 7);
         abfLabel.setLayoutData(fd_abfLabel);
-        abfLabel.setForeground(Util.getColor(25, 25, 112));
+        abfLabel.setForeground(Util.getColor(0,0,255));
         abfLabel.setText("Abf:");
 
         final Label beiPatLabel = new Label(planungGroup, SWT.NONE);
@@ -1554,7 +1519,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_comboPrioritaet.bottom = new FormAttachment(0, 73);
         fd_comboPrioritaet.top = new FormAttachment(0, 52);
         fd_comboPrioritaet.right = new FormAttachment(0, 287);
-        fd_comboPrioritaet.left = new FormAttachment(0, 225);
+        fd_comboPrioritaet.left = new FormAttachment(0, 193);
         comboPrioritaet.setLayoutData(fd_comboPrioritaet);
         
         comboPrioritaet.addSelectionListener(new SelectionAdapter() 
@@ -1562,7 +1527,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         	int index;
         	public void widgetSelected(final SelectionEvent e) 
             {
-	        	//set possible priorities//TODO
+	        	//set possible priorities
 	            index = comboPrioritaet.getSelectionIndex();
 	            if(index != -1)
 	            	tmpPriority = comboPrioritaet.getItem(index);
@@ -1584,10 +1549,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         final Label label_4 = new Label(patientenzustandGroup, SWT.NONE);
         label_4.setFont(CustomColors.SUBHEADER_FONT);
         final FormData fd_label_4 = new FormData();
-        fd_label_4.left = new FormAttachment(0, 160);
+        fd_label_4.left = new FormAttachment(0, 135);
         fd_label_4.bottom = new FormAttachment(0, 69);
         fd_label_4.top = new FormAttachment(0, 56);
-        fd_label_4.right = new FormAttachment(0, 220);
+        fd_label_4.right = new FormAttachment(0, 255);
         label_4.setLayoutData(fd_label_4);
         label_4.setForeground(Util.getColor(25, 25, 112));
         label_4.setText("Priorität:");
@@ -2305,7 +2270,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 }
             }
         });
-        buttonNotfall.setText("Transport/Einsatz");
+        buttonNotfall.setText("Notfall");
 
         buttonVormerkung = new Button(formGroup, SWT.TOGGLE);
         final FormData fd_buttonVormerkung = new FormData();
@@ -2315,7 +2280,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_buttonVormerkung.left = new FormAttachment(0, 94);
         buttonVormerkung.setLayoutData(fd_buttonVormerkung);
         buttonVormerkung.setToolTipText("Blendet alle für eine Vormerkung nicht relevanten Felder aus");
-        buttonVormerkung.setText("Vormerkung");
+        buttonVormerkung.setText("Transport");
         buttonVormerkung.addSelectionListener(new SelectionAdapter() 
         {
         	int index;
@@ -2453,16 +2418,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             	                  
                
                  //the kind of transport
-                 if(eigenerRollstuhlButton.getSelection())
-                     dia.setKindOfTransport(TRANSPORT_KIND_ROLLSTUHL);
-                 else if(krankentrageButton.getSelection())
-                     dia.setKindOfTransport(TRANSPORT_KIND_KRANKENTRAGE);
-                 else if (tragsesselButton.getSelection())
-                     dia.setKindOfTransport(TRANSPORT_KIND_TRAGSESSEL);
-                 else if (gehendButton.getSelection())
-                     dia.setKindOfTransport(TRANSPORT_KIND_GEHEND);
-                 else
-                     dia.setKindOfTransport("<keine Angabe>");
+                 index = combokindOfTransport.getSelectionIndex();
+                 if (index != -1)
+                 	dia.setKindOfTransport(combokindOfTransport.getItem(index));
+                 
                  
              
                  Patient patient = new Patient(comboVorname.getText(),comboNachname.getText());
@@ -2474,16 +2433,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             	getShell().close();
             }
         });
-        
-        
-
-//        final Label label_7 = new Label(formGroup, SWT.NONE);
-//        final FormData fd_label_7 = new FormData();
-//        fd_label_7.bottom = new FormAttachment(0, 76);
-//        fd_label_7.top = new FormAttachment(0, 26);
-//        fd_label_7.right = new FormAttachment(0, 88);
-//        fd_label_7.left = new FormAttachment(0, 5);
-//        label_7.setLayoutData(fd_label_7);
     }
 
     @Override
