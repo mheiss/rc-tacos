@@ -3,7 +3,7 @@ package at.rc.tacos.common;
 public interface IKindOfTransport 
 {
 	/** gehend*/
-	public final static String TRANSPORT_KIND_GEHEND ="gehend";
+	public final static String TRANSPORT_KIND_GEHEND ="Gehend";
 	/** Tragsessel*/
 	public final static String TRANSPORT_KIND_TRAGSESSEL ="Tragsessel";
 	/** Krankentrage*/
