@@ -1271,7 +1271,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_comboZustaendigeOrtsstelle.left = new FormAttachment(0, 319);
         comboZustaendigeOrtsstelle.setLayoutData(fd_comboZustaendigeOrtsstelle);
 
-        //TODO
         transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, combokindOfTransport, 
         		comboNachStrasse, comboNachOrt, ruecktransportMoeglichButton, rufhilfepatientButton,  begleitpersonButton, 
         		textAnrufer, textTelefonAnrufer,comboZustaendigeOrtsstelle});
@@ -2252,12 +2251,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
                 transportType = "emergencyTransport";
 
-                //set possible priorities//TODO
+                //set possible priorities
                 index = comboPrioritaet.getSelectionIndex();
                 if(index != -1)
                 	tmpPriority = comboPrioritaet.getItem(index);
-                
-                System.out.println("priority......" +tmpPriority);
                 
                 if(transportType.equalsIgnoreCase("prebooking"))
                 {
@@ -2296,7 +2293,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
                 transportType = "prebooking";
 
-                //set possible priorities//TODO
+                //set possible priorities
                 index = comboPrioritaet.getSelectionIndex();
                 if(index != -1)
                 	tmpPriority = comboPrioritaet.getItem(index);
