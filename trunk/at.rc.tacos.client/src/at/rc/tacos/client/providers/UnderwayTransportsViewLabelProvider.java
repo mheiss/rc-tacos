@@ -36,22 +36,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
-    	return null;
-//    	Transport transport = (Transport)element;
-//        //determine the colum and return a image if needed
-//        switch(columnIndex)
-//        {
-//		    case COLUMN_PATIENT:
-//		    	if(transport.isAssistantPerson())
-//		    		return ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson");
-//		    	else return null;
-//		    case COLUMN_TRANSPORT_TO:
-//		    	if(transport.isLongDistanceTrip())
-//		    			return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
-//		    	else return null;
-//		       
-//		    default: return null;
-//        }     
+    	return null;   
     }
 
     @Override
@@ -149,15 +134,18 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        	}
 	        	else return "";
 	        case COLUMN_T:
-	        	if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_TRAGSESSEL))
-	    			return "S";
-	    		else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_KRANKENTRAGE))
-	    			return "L";
-	    		else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_GEHEND))
-	    			return "G";
-	    		else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_ROLLSTUHL))
-	    			return "R";
-	    		else return "";
+	        	if(transport.getKindOfTransport() != null)
+				{
+					if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_TRAGSESSEL))
+					return "S";
+					else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_KRANKENTRAGE))
+						return "L";
+					else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_GEHEND))
+						return "G";
+					else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_ROLLSTUHL))
+						return "R";
+					else return "";
+				}
 	        case COLUMN_ERKR_VERL:
 	        	if(transport.getKindOfIllness() != null)
 					return transport.getKindOfIllness().getDiseaseName();
