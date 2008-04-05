@@ -140,15 +140,18 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 				return sdf.format(transport.getCreationTime());
 			else return "";
 		case COLUMN_T:
-			if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_TRAGSESSEL))
+			if(transport.getKindOfTransport() != null)
+			{
+				if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_TRAGSESSEL))
 				return "S";
-			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_KRANKENTRAGE))
-				return "L";
-			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_GEHEND))
-				return "G";
-			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_ROLLSTUHL))
-				return "R";
-			else return "";
+				else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_KRANKENTRAGE))
+					return "L";
+				else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_GEHEND))
+					return "G";
+				else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_ROLLSTUHL))
+					return "R";
+				else return "";
+			}
 		case COLUMN_ERKR_VERL:
 			if(transport.getKindOfIllness() != null)
 				return transport.getKindOfIllness().getDiseaseName();
