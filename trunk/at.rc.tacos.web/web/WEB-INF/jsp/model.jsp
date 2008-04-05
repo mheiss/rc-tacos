@@ -1,8 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ page import="at.rc.tacos.web.web.UserSession" %>
+<%@ page import="at.rc.tacos.web.web.Dispatcher" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.text.*" %>
 <%
 final Map<String, Object> params = (Map<String, Object>)request.getAttribute("params");
@@ -20,8 +22,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 </head>
 <body>
 
-	<table border='0' cellpadding='0' cellspacing='0' width="100%"
-		id="MainTab">
+	<table border='0' cellpadding='0' cellspacing='0' width="100%" id="MainTab">
 		<thead>
 			<tr>
 				<td>
@@ -53,7 +54,15 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 							<!-- #### LEFT CONTAINER NAVIGATION-->
 							<td id="LeftContainerPanel" valign="top"><%@ include file="navigation.jsp"%></td>
 							<!-- #### CONTENT -->
-							<td id="ContentContainer" valign="top"></td>
+							<td id="ContentContainer" valign="top">
+							<%
+							if (request.getParameter("view").equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.duties.day"))) {
+								%>
+								<%@ include file="dutiesDay.jsp" %>
+								<%
+							}
+							%>
+							</td>
 						</tr>
 					</table>
 				</td>
