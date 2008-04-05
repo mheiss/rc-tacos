@@ -11,7 +11,6 @@ import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.util.MyUtils;
 
 /**
  * Opens the editor to edit the selected entry
