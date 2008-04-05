@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.model.*;
-import at.rc.tacos.util.MyUtils;
 
 /**
  * All roster entries
@@ -110,7 +109,8 @@ public class RosterEntryManager extends PropertyManager
     	return objectList;
     }
     
-    /** Returns a list of all checked in roster entries by location
+    /** Returns a list of all checked in roster entries by location within two days
+     * so  two days after the planned end of the entry the member can't longer be assigned to a vehicle
      * @param location the location to filter
      */
     public List<RosterEntry> getCheckedInRosterEntriesByLocation(Location location)
@@ -125,14 +125,11 @@ public class RosterEntryManager extends PropertyManager
     		if(entry.getRealStartOfWork() == 0 || entry.getRealEndOfWork() != 0)
     			continue;
     		
-    		//check if the entry is for today
-    		if(MyUtils.isEqualDate(Calendar.getInstance().getTimeInMillis(), entry.getRealStartOfWork()))
-    				filteredList.add(entry);
-    		
-    		Calendar bevor = Calendar.getInstance();
-    		bevor.add(Calendar.DAY_OF_MONTH, -1);		
-    		//if the entry is split up we must look at the day bevor also
-    		if(entry.isSplitEntry() && MyUtils.isEqualDate(bevor.getTimeInMillis(), entry.getRealStartOfWork()))
+    		//do not add entries if they are older than 2 days even if the member is signed in		
+    		Calendar cal = Calendar.getInstance();
+    		cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) -2);
+    		long before4Days = cal.getTimeInMillis();
+    		if(entry.getPlannedEndOfWork()>before4Days)
     			filteredList.add(entry);
     	}
     	return filteredList;
