@@ -70,13 +70,13 @@ public class Dispatcher extends HttpServlet
 			response.sendRedirect(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath());
 		}
 		//If no URL is specified send redirect to home.do.
-		else if (relativePath.equals("") || relativePath.equals("/")) response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("url.home"));
+		else if (relativePath.equals("") || relativePath.equals("/")) response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("home.url"));
 		//If no controller is found redirect to notFound.do.
 		else if (controller == null) {
-			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("url.notFound")); 
+			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + urls.getString("notFound.url")); 
 		//If user isn't logged in redirect to login.do.
-		} else if (!userSession.getLoggedIn() && !relativePath.equals(urls.getString("url.login")) && !relativePath.equals(urls.getString("url.error")) && !relativePath.equals(urls.getString("url.notFound"))) {
-			response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("url.login") + "?url=" + relativePath);
+		} else if (!userSession.getLoggedIn() && !relativePath.equals(urls.getString("login.url")) && !relativePath.equals(urls.getString("error.url")) && !relativePath.equals(urls.getString("notFound.url"))) {
+			response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("login.url") + "?url=" + relativePath);
 		}
 		else
 		{
@@ -85,16 +85,18 @@ public class Dispatcher extends HttpServlet
 				request.setAttribute("params", params);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
-				response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("url.error"));
+				response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("error.url"));
 			} catch (Exception e) {
 				e.printStackTrace();
-				response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("url.error"));
+				response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + urls.getString("error.url"));
 			}
 		}
 
 		//Do not forward if response is committed
 		if (!response.isCommitted()) {
-			getServletContext().getRequestDispatcher("/WEB-INF/jsp" + relativePath.replaceAll(".do", ".jsp")).forward(request, response);
+			if (relativePath.equals(urls.getString("login.url")) || relativePath.equals(urls.getString("error.url")) || relativePath.equals(urls.getString("notFound.url"))) {
+				getServletContext().getRequestDispatcher("/WEB-INF/jsp" + relativePath.replaceAll(".do", ".jsp")).forward(request, response);
+			} else getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/model.jsp?view=" + relativePath)).forward(request, response);
 		}
 	}
 }

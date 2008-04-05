@@ -39,7 +39,7 @@ public class LockUserController implements Controller
 			StaffMember user = (StaffMember)resultList.get(0);  
 
 			client.sendRemoveRequest(StaffMember.ID,user);
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.deleteUser"));
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("deleteUser.url"));
 		}
 		return params;
 	}
