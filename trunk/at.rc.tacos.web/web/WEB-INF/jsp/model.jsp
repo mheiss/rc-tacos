@@ -18,7 +18,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	<link href="../css/stylesheet.css" rel="stylesheet" />
 	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
 	<script type="text/javascript" src="../js/windowActions.js"></script>
-	<title>TACOS : Dienstplan Tagesansicht</title>
+	<title><%= params.get("title") %></title>
 </head>
 <body>
 
@@ -44,7 +44,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 							&nbsp;&nbsp;( <a
 								href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a>
 							)</td>
-							<td width="33%" align="center">Tages&uuml;bersicht der Dienststelle: <%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></td>
+							<td width="33%" align="center"><%= params.get("header") %></td>
 							<td width="33%" align="right">Heute ist der <%=format.format(today)%></td>
 							<td>
 						</tr>

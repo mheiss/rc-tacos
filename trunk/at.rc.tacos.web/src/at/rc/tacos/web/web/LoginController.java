@@ -24,7 +24,7 @@ import at.rc.tacos.model.StaffMember;
  * @version 1.0
  */
 
-public class LoginController implements Controller {
+public class LoginController extends Controller {
 	
 	public Map<String, Object> doLogin(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception {
 		final HttpSession session = request.getSession();

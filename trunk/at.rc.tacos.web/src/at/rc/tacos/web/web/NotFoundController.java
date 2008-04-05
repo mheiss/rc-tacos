@@ -7,7 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class NotFoundController implements Controller {
+public class NotFoundController extends Controller {
 
 	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context)
 	{

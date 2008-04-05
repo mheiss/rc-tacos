@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import at.rc.tacos.core.net.internal.WebClient;
 
-public class StatisticTransportController implements Controller {
+public class StatisticTransportController extends Controller {
 
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,

@@ -7,7 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ErrorController implements Controller {
+public class ErrorController extends Controller {
 
 	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context)
 	{
