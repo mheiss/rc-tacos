@@ -32,10 +32,6 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 		//determine the colum and return a image if needed
 		switch(columnIndex)
 		{
-		case COLUMN_PATIENT:
-			if(transport.isAssistantPerson())
-				return ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson");
-			else return null;
 		case COLUMN_TO:
 			if(transport.isLongDistanceTrip())
 				return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
@@ -99,15 +95,18 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 			else city = transport.getToCity();
 			return street +"/" +city;
 		case COLUMN_T:
-			if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_TRAGSESSEL))
-			return "S";
-			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_KRANKENTRAGE))
-				return "L";
-			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_GEHEND))
-				return "G";
-			else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_ROLLSTUHL))
-				return "R";
-			else return "";
+			if(transport.getKindOfTransport() != null)
+			{
+				if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_TRAGSESSEL))
+				return "S";
+				else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_KRANKENTRAGE))
+					return "L";
+				else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_GEHEND))
+					return "G";
+				else if(transport.getKindOfTransport().equalsIgnoreCase(TRANSPORT_KIND_ROLLSTUHL))
+					return "R";
+				else return "";
+			}
 		default: return null;
 		}
 
