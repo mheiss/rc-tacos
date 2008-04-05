@@ -36,10 +36,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	private int year;
 	private int transportNumber;
 
-	// Infos about the source
+	// Info about the source
 	private CallerDetail callerDetail;
 
-	// transport infos
+	// transport info
 	private String fromStreet;
 	private String fromCity;
 	private Patient patient;
@@ -50,14 +50,14 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	private boolean longDistanceTrip;
 	private int direction;
 
-	// patient infos
+	// patient info
 	private Disease kindOfIllness;
 	private boolean backTransport;
 	private boolean assistantPerson;
 	private boolean emergencyPhone;
 	private String feedback;
 
-	//shedule information
+	//schedule information
 	private long creationTime;
 	private long dateOfTransport;
 	private long plannedStartOfTransport;
@@ -69,8 +69,9 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	private String notes;
 	private int programStatus;
 	private String createdByUser;
+	private String disposedByUser;
 
-	//notification infos
+	//notification info
 	private boolean emergencyDoctorAlarming;
 	private boolean helicopterAlarming;
 	private boolean blueLightToGoal;
@@ -82,7 +83,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	private boolean policeAlarming;
 	private boolean KITAlarming;
 	
-	//notification timestamps
+	//notification time stamps
 	private long timestampNA;
 	private long timestampRTH;
 	private long timestampDF;
@@ -113,7 +114,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	/**
 	 *  Constructor for a minimal Transport object.
 	 *  @param fromStreet the street to get the transport
-	 *  @param fromNumber the housenumber
+	 *  @param fromNumber the house number
 	 *  @param fromCity the city to get the transport
 	 *  @param responsibleStation the station that is responsible
 	 *  @param dateOfTransport the date for the transport
@@ -138,7 +139,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	/**
 	 * Helper method to set a status for a transport
 	 * @param statusId the status identification 
-	 * @param timestamp the timestamp of the statu
+	 * @param timestamp the time stamp of the status
 	 * @throws IllegalArgumentException if the date is not valid
 	 */
 	public void addStatus(int statusId, long timestamp)
@@ -280,7 +281,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/**
-	 * Returns the year when the transport is sheduled for.
+	 * Returns the year when the transport is scheduled for.
 	 * The year has four digits. e.g 2008
 	 * @return the year.
 	 */
@@ -299,7 +300,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * Infos about the source
+	 * Info about the source
 	 * --------------------------------------------*/
 	/**
 	 * @return the callerDetail
@@ -310,7 +311,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * transport infos
+	 * transport info
 	 * --------------------------------------------*/
 	/**
 	 * @return the fromStreet
@@ -389,7 +390,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * patient infos
+	 * patient info
 	 * --------------------------------------------*/
 	/**
 	 * @return the kindOfIllness
@@ -409,7 +410,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
 	/**
 	 * Returns whether or not this transport has a assistant Person.
-	 * @return true if the transport has a additonal assistant person.
+	 * @return true if the transport has an additonal assistant person.
 	 */
 	public boolean isAssistantPerson()
 	{
@@ -447,10 +448,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * shedule information
+	 * schedule information
 	 * --------------------------------------------*/
 	/**
-	 * Returns the timestamp when this transport was created.
+	 * Returns the time stamp when this transport was created.
 	 * @return the creation time
 	 */
 	public long getCreationTime() 
@@ -491,7 +492,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/* ------------------------------------------
-	 * alamring timestamps
+	 * alarming time stamps
 	 * --------------------------------------------*/
 	/**
 	 * Returns the timestamp when the NA button was selected
@@ -503,8 +504,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Returns the timestamp when the RTH button was selected
-	 * @return the selection timestamp
+	 * Returns the time stamp when the RTH button was selected
+	 * @return the selection time stamp
 	 */
 	public long getTimestampRTH() 
 	{
@@ -512,8 +513,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Returns the timestamp when the DF button was selected
-	 * @return the selection timestamp
+	 * Returns the time stamp when the DF button was selected
+	 * @return the selection time stamp
 	 */
 	public long getTimestampDF() 
 	{
@@ -521,8 +522,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Returns the timestamp when the BRKDT button was selected
-	 * @return the selection timestamp
+	 * Returns the time stamp when the BRKDT button was selected
+	 * @return the selection time stamp
 	 */
 	public long getTimestampBRKDT() 
 	{
@@ -530,8 +531,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Returns the timestamp when the FW button was selected
-	 * @return the selection timestamp
+	 * Returns the time stamp when the FW button was selected
+	 * @return the selection time stamp
 	 */
 	public long getTimestampFW() 
 	{
@@ -539,8 +540,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Returns the timestamp when the Polizei button was selected
-	 * @return the selection timestamp
+	 * Returns the time stamp when the Polizei button was selected
+	 * @return the selection time stamp
 	 */
 	public long getTimestampPolizei() 
 	{
@@ -548,8 +549,8 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Returns the timestamp when the Bergrettung button was selected
-	 * @return the selection timestamp
+	 * Returns the time stamp when the Bergrettung button was selected
+	 * @return the selection time stamp
 	 */
 	public long getTimestampBergrettung() 
 	{
@@ -567,7 +568,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
 
 	/* ------------------------------------------
-	 * general informations
+	 * general information
 	 * --------------------------------------------*/
 	/**
 	 * Returns the planned responsible location who will execute the transport.
@@ -610,6 +611,15 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/**
+	 * Returns the name of the user who disposed the transport
+	 * @return the username of the disposer
+	 */
+	public String getDisposedByUsername()
+	{
+		return disposedByUser;
+	}
+	
+	/**
 	 * Returns the name of the user who created the roster entry.
 	 * @return the username of the creator.
 	 */
@@ -619,7 +629,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * notification infos
+	 * notification info
 	 * --------------------------------------------*/
 	/**
 	 * @return the emergencyDoctorAlarming
@@ -741,7 +751,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/**
-	 * Sets the transport year, when the transport is sheduled.
+	 * Sets the transport year, when the transport is scheduled.
 	 * The year must have four digits.
 	 */
 	public void setYear(int year)
@@ -764,7 +774,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * Infos about the source
+	 * Info about the source
 	 * --------------------------------------------*/
 	/**
 	 * @param callerDetail the callerDetail to set
@@ -777,7 +787,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * transport infos
+	 * transport info
 	 * --------------------------------------------*/
 	/**
 	 * @param fromStreet the fromStreet to set
@@ -870,7 +880,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * patient infos
+	 * patient info
 	 * --------------------------------------------*/
 	/**
 	 * @param kindOfIllness the kindOfIllness to set
@@ -918,10 +928,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 
 	/* ------------------------------------------
-	 * shedule information
+	 * schedule information
 	 * --------------------------------------------*/
 	/**
-	 * Sets the timestamp when this transport was created.
+	 * Sets the time stamp when this transport was created.
 	 * @param creationTime the creation time
 	 */
 	public void setCreationTime(long creationTime) 
@@ -973,10 +983,10 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/* ------------------------------------------
-	 * alarming timestamps
+	 * alarming time tamps
 	 * --------------------------------------------*/
 	/**
-	 * Sets the timestamp when the NA button was selected
+	 * Sets the time stamp when the NA button was selected
 	 * @param timestampNA the selection time
 	 */
 	public void settimestampNA(long timestampNA) 
@@ -985,7 +995,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Sets the timestamp when the RTH button was selected
+	 * Sets the time tamp when the RTH button was selected
 	 * @param timestampRTH the selection time
 	 */
 	public void settimestampRTH(long timestampRTH) 
@@ -994,7 +1004,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Sets the timestamp when the DF button was selected
+	 * Sets the time stamp when the DF button was selected
 	 * @param timestampDF the selection time
 	 */
 	public void settimestampDF(long timestampDF) 
@@ -1003,7 +1013,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Sets the timestamp when the BRKDT button was selected
+	 * Sets the time stamp when the BRKDT button was selected
 	 * @param timestampBRKDT the selection time
 	 */
 	public void settimestampBRKDT(long timestampBRKDT) 
@@ -1012,7 +1022,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Sets the timestamp when the FW button was selected
+	 * Sets the time stamp when the FW button was selected
 	 * @param timestampFW the selection time
 	 */
 	public void settimestampFW(long timestampFW) 
@@ -1021,7 +1031,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Sets the timestamp when the Polizei button was selected
+	 * Sets the time stamp when the Polizei button was selected
 	 * @param timestampPolizei the selection time
 	 */
 	public void settimestampPolizei(long timestampPolizei) 
@@ -1030,7 +1040,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Sets the timestamp when the Bergrettung button was selected
+	 * Sets the time stamp when the Bergrettung button was selected
 	* @param timestampBergrettung the selection time
 	 */
 	public void settimestampBergrettung(long timestampBergrettung) 
@@ -1039,7 +1049,7 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	}
 	
 	/**
-	 * Sets the timestamp when the KIT button was selected
+	 * Sets the time stamp when the KIT button was selected
 	 * @param timestampKIT the selection time
 	 */
 	public void settimestampKIT(long timestampKIT) 
@@ -1083,11 +1093,20 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 
 	/**
 	 * Sets the name of the staff member who created the entry.
-	 * @param username the username of the creator
+	 * @param username the user name of the creator
 	 */
 	public void setCreatedByUsername(String createdByUser) 
 	{
 		this.createdByUser = createdByUser;
+	}
+	
+	/**
+	 * Sets the name of the staff member who disposed the transport
+	 * @param username the user name of the disposer
+	 */
+	public void setDisposedByUsername(String disposedByUser) 
+	{
+		this.disposedByUser = disposedByUser;
 	}
 
 	/* ------------------------------------------
