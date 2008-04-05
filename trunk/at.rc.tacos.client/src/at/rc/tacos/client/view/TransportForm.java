@@ -1169,7 +1169,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         label_kind.setLayoutData(fd_label_kind);
         label_kind.setText("Transportart:");
         
-        //TODO
         combokindOfTransport = new Combo(transportdatenGroup, SWT.READ_ONLY);
         //set possible priorities
         String[] kindsOfTransport = {TRANSPORT_KIND_GEHEND, TRANSPORT_KIND_TRAGSESSEL, TRANSPORT_KIND_KRANKENTRAGE, TRANSPORT_KIND_ROLLSTUHL};
@@ -1245,7 +1244,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         final Label label_6 = new Label(transportdatenGroup, SWT.NONE);
         label_6.setFont(CustomColors.SUBHEADER_FONT);
         final FormData fd_label_6 = new FormData();
-        fd_label_6.bottom = new FormAttachment(0, 118);
+        fd_label_6.bottom = new FormAttachment(0, 122);
         fd_label_6.top = new FormAttachment(0, 105);
         fd_label_6.right = new FormAttachment(0, 315);
         fd_label_6.left = new FormAttachment(0, 200);
