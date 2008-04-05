@@ -175,6 +175,12 @@ public class TransportEncoder  implements MessageEncoder
         writer.writeStartElement("createdByUser");
         writer.writeCharacters(transport.getCreatedByUsername());
         writer.writeEndElement();
+        if(transport.getDisposedByUsername() != null)
+        {
+	        writer.writeStartElement("disposedByUser");
+	        writer.writeCharacters(transport.getDisposedByUsername());
+	        writer.writeEndElement();
+        }
         
         //next
         writer.writeStartElement("emergencyDoctoralarming");
