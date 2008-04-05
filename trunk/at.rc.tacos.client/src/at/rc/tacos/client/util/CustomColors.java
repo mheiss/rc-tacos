@@ -14,7 +14,7 @@ import org.eclipse.ui.forms.IFormColors;
 public final class CustomColors 
 { 
     /** Set the default font */
-    public static final Font SUBHEADER_FONT = new Font(null,"Arial", 10, SWT.BOLD);
+    public static final Font SUBHEADER_FONT = new Font(null,"Arial", 8, SWT.ITALIC);
     public static final Font VEHICLE_NAME = new Font(null,"Arial", 18, SWT.BOLD);
     public static final Font VEHICLE_TEXT = new Font(null,"Arial", 10, SWT.BOLD);
     
