@@ -61,7 +61,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private ScrolledForm form;
 
 	//the values that can be changed
-	private Text staffId,fName,lName,street,cityname,eMail,dateOfBirth;
+	private Text staffId,fName,lName,dateOfBirth;
 	private Text uName,pwd,pwdRetype;
 	private TableViewer phoneViewer,competenceViewer;
 	private ComboViewer phoneComboViewer,primaryLocationComboViewer,competenceComboViewer,authorisationComboViewer,sexComboViewer;
@@ -171,12 +171,11 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		staffId.setText(String.valueOf(staffMember.getStaffMemberId()));
 		fName.setText(staffMember.getFirstName());
 		lName.setText(staffMember.getLastName());
-		street.setText(staffMember.getStreetname());
-		cityname.setText(staffMember.getCityname());
-		dateOfBirth.setText(staffMember.getBirthday());
-		for(MobilePhoneDetail detail:staffMember.getPhonelist())
-			phoneViewer.add(detail);
-		eMail.setText(staffMember.getEMail());
+		if(staffMember.getBirthday() != null)
+			dateOfBirth.setText(staffMember.getBirthday());
+		if(staffMember.getPhonelist() != null)
+			for(MobilePhoneDetail detail:staffMember.getPhonelist())
+				phoneViewer.add(detail);
 		if(staffMember.isMale())
 			sexComboViewer.setSelection(new StructuredSelection(StaffMember.STAFF_MALE));
 		else
@@ -235,55 +234,28 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		}
 		staffMember.setLastName(lName.getText());
 
-		//Set the street
-		if(street.getText().length() >50 || street.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie eine gültige Straße ein(max. 50 Zeichen)", IMessageProvider.ERROR);
-			return;
-		}
-		staffMember.setStreetname(street.getText());
-
-		//get the city
-		if(cityname.getText().length() >50 || cityname.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben Sie eine gültige PLZ und eine Stadt ein(max. 50 Zeichen)", IMessageProvider.ERROR);
-			return;
-		}
-		staffMember.setCityname(cityname.getText());
-
-		//the mail address
-		if(eMail.getText().length() >100 || eMail.getText().trim().isEmpty())
-		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte geben sie eine gültige eMail Adresse an(max. 100 Zeichen)", IMessageProvider.ERROR);
-			return;
-		}
-		staffMember.setEMail(eMail.getText());
-
 		//date of birth
 		String patternDate = "\\d{2}\\-\\d{2}-\\d{4}";
-		if(dateOfBirth.getText().trim().isEmpty() |! dateOfBirth.getText().matches(patternDate))
+		if(!dateOfBirth.getText().trim().isEmpty() &! dateOfBirth.getText().matches(patternDate))
 		{
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben sie ein Geburtsdatum in der Form dd-mm-yyyy ein", IMessageProvider.ERROR);
 			return;
 		}
-		staffMember.setBirthday(dateOfBirth.getText());
+		if(!dateOfBirth.getText().trim().isEmpty())
+			staffMember.setBirthday(dateOfBirth.getText());
 		//sex
 		int index = sexComboViewer.getCombo().getSelectionIndex();
-		if(index == -1)
+		if(index != -1)
 		{
-			form.getDisplay().beep();
-			form.setMessage("Bitte wählen sie das Geschlecht aus", IMessageProvider.ERROR);
-			return;
+			String selectedSex = (String)sexComboViewer.getElementAt(index);
+			if(selectedSex.equalsIgnoreCase(StaffMember.STAFF_MALE))
+				staffMember.setMale(true);
+			else
+				staffMember.setMale(false);
 		}
-		String selectedSex = (String)sexComboViewer.getElementAt(index);
-		if(selectedSex.equalsIgnoreCase(StaffMember.STAFF_MALE))
-			staffMember.setMale(true);
-		else
-			staffMember.setMale(false);
+		
+		
 
 		//the location
 		index = primaryLocationComboViewer.getCombo().getSelectionIndex();
@@ -429,15 +401,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		final Label labelLName = toolkit.createLabel(client, "Nachname");
 		lName = toolkit.createText(client, "");
 
-		final Label labelStreetName = toolkit.createLabel(client, "Straße, Haus Nr.");
-		street = toolkit.createText(client, "");
-
-		final Label labelCity = toolkit.createLabel(client, "PLZ, Stadt");
-		cityname = toolkit.createText(client, "");
-
-		final Label labelEMail = toolkit.createLabel(client,"eMail");
-		eMail = toolkit.createText(client, "");
-
 		final Label labelDateOfBirth = toolkit.createLabel(client, "Geburtsdatum");
 		dateOfBirth = toolkit.createText(client, "");
 
@@ -483,12 +446,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				form.setMessage(null, IMessageProvider.NONE);
 				//get the selected phone
 				ISelection selection = phoneComboViewer.getSelection();
-				if(selection.isEmpty())
-				{
-					form.getDisplay().beep();
-					form.setMessage("Bitte wählen Sie ein Mobiltelefon aus welches Sie dem Mitarbeiter zuweisen wollen", IMessageProvider.ERROR);
-					return;
-				}
+				
 				//get the selected phone
 				StructuredSelection structuredSelection = (StructuredSelection)selection;
 				MobilePhoneDetail phone = (MobilePhoneDetail)structuredSelection.getFirstElement();
@@ -560,15 +518,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		labelLName.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
-		labelStreetName.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelCity.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelEMail.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
 		labelDateOfBirth.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
@@ -585,12 +534,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		fName.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		lName.setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		street.setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		cityname.setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		eMail.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		dateOfBirth.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
