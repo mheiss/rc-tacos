@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
@@ -48,6 +49,7 @@ public class AssignCarAction extends Action implements IProgramStatus
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//open the editor
 		transport.setVehicleDetail(vehicle);
+		transport.setDisposedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
 		GregorianCalendar cal = new GregorianCalendar();
 		long now = cal.getTimeInMillis();
 		transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
