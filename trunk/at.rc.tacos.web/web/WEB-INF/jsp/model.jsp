@@ -56,7 +56,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 							<!-- #### CONTENT -->
 							<td id="ContentContainer" valign="top">
 							<%
-							if (request.getParameter("view").equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("url.duties.day"))) {
+							if (request.getParameter("view").equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("dutiesDay.url"))) {
 								%>
 								<%@ include file="dutiesDay.jsp" %>
 								<%

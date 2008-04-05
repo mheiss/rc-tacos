@@ -134,7 +134,7 @@ public class RosterEntryController implements Controller
 			RosterEntry entry = (RosterEntry )resultList.get(0);  
 
 			client.sendRemoveRequest(RosterEntry.ID,entry );
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("rosterDay.url")+"?action=DayView");
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("rosterDay.url")+"?action=DayView");
 		}
 		if("doSignIn".equalsIgnoreCase(action))
 		{
@@ -142,7 +142,7 @@ public class RosterEntryController implements Controller
 			RosterEntry entry = (RosterEntry )resultList.get(0); 
 			entry.setRealStartOfWork(Calendar.getInstance().getTimeInMillis());
 			client.sendUpdateRequest(RosterEntry.ID,entry);
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("rosterDay.url")+"?action=DayView");
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("rosterDay.url")+"?action=DayView");
 		}
 		if("doSignOut".equalsIgnoreCase(action))
 		{
@@ -150,7 +150,7 @@ public class RosterEntryController implements Controller
 			RosterEntry entry = (RosterEntry )resultList.get(0); 
 			entry.setRealEndOfWork(Calendar.getInstance().getTimeInMillis()); 		
 			client.sendUpdateRequest(RosterEntry.ID,entry);
-			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.URLS_BUNDLE_PATH).getString("rosterDay.url")+"?action=DayView");
+			response.sendRedirect(context.getContextPath() + "/Dispatcher/" + ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("rosterDay.url")+"?action=DayView");
 		}
 		return params;
 	}

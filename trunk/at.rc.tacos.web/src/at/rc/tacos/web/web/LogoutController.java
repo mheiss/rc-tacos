@@ -2,6 +2,7 @@ package at.rc.tacos.web.web;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,7 @@ public class LogoutController implements Controller {
 	public Map<String, Object> doLogout(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception {
 		final HttpSession session = request.getSession();
 		session.invalidate();
-		response.sendRedirect(context.getContextPath() + request.getServletPath());
+		response.sendRedirect(context.getContextPath() + request.getServletPath() + ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("login.url"));
 		return new HashMap();
 	}
 	

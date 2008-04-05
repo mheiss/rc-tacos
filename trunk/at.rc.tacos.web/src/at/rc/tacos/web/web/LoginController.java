@@ -84,8 +84,11 @@ public class LoginController implements Controller {
 						for (AbstractMessage abstractStaffMember : staffList)
 							userSession.addStaffMember((StaffMember) abstractStaffMember);
 					}
-
-					response.sendRedirect(context.getContextPath() + request.getServletPath() + request.getParameter("url"));
+					if (request.getParameter("url") == null) {
+						response.sendRedirect(context.getContextPath() + request.getServletPath());
+					} else { 
+						response.sendRedirect(context.getContextPath() + request.getServletPath() + request.getParameter("url"));
+					}
 				} else {
 					params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
 				}
@@ -97,7 +100,7 @@ public class LoginController implements Controller {
 	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception {
 		
 		final UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
-		Map params = new HashMap();
+		Map<String, Object> params = new HashMap<String, Object>();
 		if (userSession.getLoggedIn()) {
 			response.sendRedirect(context.getContextPath() + request.getServletPath());
 		} else {	
@@ -106,6 +109,6 @@ public class LoginController implements Controller {
 				params = doLogin(request, response, context);
 			}
 		}
-		return new HashMap<String, Object>();
+		return params;
 	}
 }
