@@ -248,7 +248,6 @@ public class DialysisForm implements IKindOfTransport
 		nachnameLabel_1.setForeground(Util.getColor(128, 128, 128));
 		nachnameLabel_1.setText("Vorname");
 
-		//TODO
 		final Label label_kind = new Label(transportdatenGroup, SWT.NONE);
 		label_kind.setBounds(680, 72, 70, 13);
 		label_kind.setForeground(Util.getColor(128, 128, 128));
@@ -330,7 +329,10 @@ public class DialysisForm implements IKindOfTransport
 		patientenzustandGroup = new Group(shell, SWT.NONE);
 		fd_transportdatenGroup.bottom = new FormAttachment(patientenzustandGroup, 150, SWT.TOP);
 		fd_transportdatenGroup.top = new FormAttachment(patientenzustandGroup, 0, SWT.TOP);
-		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, combokindOfTransport, button_stationary, comboZustOrtsstelle, begleitpersonButton});
+		transportdatenGroup.setTabList(new Control[] {
+				comboVonStrasse, comboVonOrt, comboNachname, comboVorname, combokindOfTransport, 
+        		comboNachStrasse, comboNachOrt, begleitpersonButton, 
+        		button_stationary});
 		patientenzustandGroup.setLayout(new FormLayout());
 		final FormData fd_patientenzustandGroup = new FormData();
 		fd_patientenzustandGroup.right = new FormAttachment(transportdatenGroup, -5, SWT.LEFT);
