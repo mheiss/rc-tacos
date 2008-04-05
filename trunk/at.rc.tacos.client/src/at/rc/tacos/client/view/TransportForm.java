@@ -1237,8 +1237,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_textTelefonAnrufer.left = new FormAttachment(0, 663);
         textTelefonAnrufer.setLayoutData(fd_textTelefonAnrufer);
         
-       
-        
+        rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
+        final FormData fd_rufhilfepatientButton = new FormData();
+        fd_rufhilfepatientButton.bottom = new FormAttachment(0, 96);
+        fd_rufhilfepatientButton.top = new FormAttachment(0, 80);
+        fd_rufhilfepatientButton.right = new FormAttachment(0, 547);
+        fd_rufhilfepatientButton.left = new FormAttachment(0, 462);
+        rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
+        rufhilfepatientButton.setText("Rufhilfepatient");
         
 
         final Label label_6 = new Label(transportdatenGroup, SWT.NONE);
@@ -1265,7 +1271,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_comboZustaendigeOrtsstelle.left = new FormAttachment(0, 319);
         comboZustaendigeOrtsstelle.setLayoutData(fd_comboZustaendigeOrtsstelle);
 
-        transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, combokindOfTransport, ruecktransportMoeglichButton, comboZustaendigeOrtsstelle, begleitpersonButton, textAnrufer, textTelefonAnrufer});
+        //TODO
+        transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, combokindOfTransport, 
+        		comboNachStrasse, comboNachOrt, ruecktransportMoeglichButton, rufhilfepatientButton,  begleitpersonButton, 
+        		textAnrufer, textTelefonAnrufer,comboZustaendigeOrtsstelle});
 
         planungGroup = new Group(client, SWT.NONE);
         planungGroup.setLayout(new FormLayout());
@@ -1683,14 +1692,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             } 
         });
 
-        rufhilfepatientButton = new Button(transportdatenGroup, SWT.CHECK);
-        final FormData fd_rufhilfepatientButton = new FormData();
-        fd_rufhilfepatientButton.bottom = new FormAttachment(0, 96);
-        fd_rufhilfepatientButton.top = new FormAttachment(0, 80);
-        fd_rufhilfepatientButton.right = new FormAttachment(0, 547);
-        fd_rufhilfepatientButton.left = new FormAttachment(0, 462);
-        rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
-        rufhilfepatientButton.setText("Rufhilfepatient");
+       
 
         polizeiButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_polizeiButton = new FormData();
@@ -1843,7 +1845,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         timestampKIT.setEditable(false);
         
         //-------------------------------------------------------------------------------------------
-        planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton});
+        planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton, KITButton});
 
         final Label label_5 = new Label(client, SWT.SEPARATOR | SWT.HORIZONTAL);
         final FormData fd_label_5 = new FormData();
