@@ -38,8 +38,8 @@ INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(6, '0664
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(7, '0664-2516087', 'BR07');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(8, '0664-9615263', 'BM08');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(9, '0664-8218009', 'BM09');
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(10, '0664-8218011', 'BM010');
-INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(11, '0664-9615264', 'BM016');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(10, '0664-8218011', 'BM10');
+INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(11, '0664-9615264', 'BM16');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(12, '0664-9615251', 'KA02');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(13, '0664-9615252', 'KA03');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(14, '0664-9615253', 'KA04');
