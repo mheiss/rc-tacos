@@ -52,7 +52,15 @@
 					<td align="left"><input type="password" name="password" size="20" maxlength="12" id="password"/></td>
 				</tr>
 				<tr>
-					<td><input type=hidden name="url" value="<%= request.getParameter("url") %>"/></td>
+					<td>
+						<%
+						if (request.getParameter("url") != null) {
+						%>
+						<input type=hidden name="url" value="<%= request.getParameter("url") %>"/>
+						<%
+						}
+						%>	
+					</td>
 					<td colspan='2' align='right'><input type="submit" value="Login" id="login"/></td>
 				</tr>
 			</table>
