@@ -44,9 +44,6 @@ public class DialysisForm implements IKindOfTransport
 	private Button begleitpersonButton;
 	private Combo comboZustOrtsstelle;
 	private Button button_stationary;
-	private Button eigenerRollstuhlButton;
-	private Button krankentrageButton;
-	private Button tragsesselButton;
 	private Button button;
 	private Combo comboNachOrt;
 	private Combo comboNachStrasse;
@@ -65,8 +62,8 @@ public class DialysisForm implements IKindOfTransport
 	private Text textTermin;
 	private Text textBeiPat;
 	private Text textAbf;
-	private Button gehendButton;
 	protected Shell shell;
+	private Combo combokindOfTransport;
 	
 	private Listener exitListener;
 	
@@ -175,23 +172,9 @@ public class DialysisForm implements IKindOfTransport
         
 
         //kind of transport
-        String kindOfTransport = dia.getKindOfTransport();
-        if(TRANSPORT_KIND_GEHEND.equalsIgnoreCase(kindOfTransport))
-        {
-        	this.gehendButton.setSelection(true);
-        }
-        else if (TRANSPORT_KIND_TRAGSESSEL.equalsIgnoreCase(kindOfTransport))
-        {
-        	this.tragsesselButton.setSelection(true);
-        }
-        else if (TRANSPORT_KIND_KRANKENTRAGE.equalsIgnoreCase(kindOfTransport))
-        {
-        	this.krankentrageButton.setSelection(true);
-        }
-        else if (TRANSPORT_KIND_ROLLSTUHL.equalsIgnoreCase(kindOfTransport))
-        {
-        	this.eigenerRollstuhlButton.setSelection(true);
-        }
+        //kind of transport
+        if(dia.getKindOfTransport() != null)
+        	combokindOfTransport.setText(dia.getKindOfTransport());
 		
 	}
 
@@ -265,21 +248,17 @@ public class DialysisForm implements IKindOfTransport
 		nachnameLabel_1.setForeground(Util.getColor(128, 128, 128));
 		nachnameLabel_1.setText("Vorname");
 
-		gehendButton = new Button(transportdatenGroup, SWT.RADIO);
-		gehendButton.setText("gehend");
-		gehendButton.setBounds(467, 67, 83, 16);
-
-		tragsesselButton = new Button(transportdatenGroup, SWT.RADIO);
-		tragsesselButton.setText("Tragsessel");
-		tragsesselButton.setBounds(556, 67, 83, 16);
-
-		krankentrageButton = new Button(transportdatenGroup, SWT.RADIO);
-		krankentrageButton.setText("Krankentrage");
-		krankentrageButton.setBounds(654, 67, 83, 16);
-
-		eigenerRollstuhlButton = new Button(transportdatenGroup, SWT.RADIO);
-		eigenerRollstuhlButton.setText("Eigener Rollstuhl");
-		eigenerRollstuhlButton.setBounds(753, 67, 100, 16);
+		//TODO
+		final Label label_kind = new Label(transportdatenGroup, SWT.NONE);
+		label_kind.setBounds(680, 72, 70, 13);
+		label_kind.setForeground(Util.getColor(128, 128, 128));
+        label_kind.setText("Transportart:");
+        combokindOfTransport = new Combo(transportdatenGroup, SWT.READ_ONLY);
+        //set possible priorities
+        String[] kindsOfTransport = {TRANSPORT_KIND_GEHEND, TRANSPORT_KIND_TRAGSESSEL, TRANSPORT_KIND_KRANKENTRAGE, TRANSPORT_KIND_ROLLSTUHL};
+        combokindOfTransport.setItems(kindsOfTransport);
+        combokindOfTransport.setBounds(753, 69, 100, 23);
+        combokindOfTransport.setForeground(Util.getColor(128, 128, 128));
 
 		begleitpersonButton = new Button(transportdatenGroup, SWT.CHECK);
 		begleitpersonButton.setText("Begleitperson");
@@ -351,7 +330,7 @@ public class DialysisForm implements IKindOfTransport
 		patientenzustandGroup = new Group(shell, SWT.NONE);
 		fd_transportdatenGroup.bottom = new FormAttachment(patientenzustandGroup, 150, SWT.TOP);
 		fd_transportdatenGroup.top = new FormAttachment(patientenzustandGroup, 0, SWT.TOP);
-		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, gehendButton, tragsesselButton, krankentrageButton, eigenerRollstuhlButton, button_stationary, comboZustOrtsstelle, begleitpersonButton});
+		transportdatenGroup.setTabList(new Control[] {comboVonStrasse, comboVonOrt, comboNachname, comboVorname, comboNachStrasse, comboNachOrt, combokindOfTransport, button_stationary, comboZustOrtsstelle, begleitpersonButton});
 		patientenzustandGroup.setLayout(new FormLayout());
 		final FormData fd_patientenzustandGroup = new FormData();
 		fd_patientenzustandGroup.right = new FormAttachment(transportdatenGroup, -5, SWT.LEFT);
@@ -495,18 +474,13 @@ public class DialysisForm implements IKindOfTransport
 			
 			String fromCommunity;
 			String fromStreet;
-			
-			boolean wheelChairButton;
-			boolean gurney;
-			boolean chair;
-			boolean moving;
-			
+		
 			String theRespStation;			
 			String formatOfTime;
 
 			public void handleEvent(Event event) 
 			{
-				String kindOfTransport;
+				String kindOfTransport = "";
 				
 				requiredFields = "";
 				
@@ -572,16 +546,11 @@ public class DialysisForm implements IKindOfTransport
 				}	
 				
 				//set the kind of transport
-				if(wheelChairButton)
-					kindOfTransport = TRANSPORT_KIND_ROLLSTUHL;
-				else if(gurney)
-					kindOfTransport = TRANSPORT_KIND_KRANKENTRAGE;
-				else if(chair)
-					kindOfTransport = TRANSPORT_KIND_TRAGSESSEL;
-				else if(moving)
-					kindOfTransport = TRANSPORT_KIND_GEHEND;
-				else
-					kindOfTransport = "";
+				 //the kind of transport
+		        int index = combokindOfTransport.getSelectionIndex();
+		        if (index != -1)
+		        	kindOfTransport = combokindOfTransport.getItem(index);
+				
 				
 				if(createNew)
 				{
@@ -616,6 +585,11 @@ public class DialysisForm implements IKindOfTransport
 					dia.setSunday(sonntag);
 					
 					dia.setAssistantPerson(assistant);
+					System.out.println("......... start: " +dia.getPlannedStartOfTransport());
+					System.out.println("......... bei pat: " +dia.getPlannedTimeAtPatient());
+					System.out.println("......... termin: " +dia.getAppointmentTimeAtDialysis());
+					System.out.println("......... start rt: " +dia.getPlannedStartForBackTransport());
+					System.out.println("......... ready: " +dia.getReadyTime());
 					
 					CreateDialysisTransportAction newAction = new CreateDialysisTransportAction(dia);
 					newAction.run();
@@ -677,12 +651,7 @@ public class DialysisForm implements IKindOfTransport
 				ready = textFertig.getText();
 				
 				theRespStation = comboZustOrtsstelle.getText();
-				
-				wheelChairButton = eigenerRollstuhlButton.getSelection();
-				gurney = krankentrageButton.getSelection();
-				chair = tragsesselButton.getSelection();
-				moving = gehendButton.getSelection();
-				
+							
 				toCommunity = comboNachOrt.getText();
 				toStreet = comboNachStrasse.getText();
 				firstName = comboVorname.getText();
@@ -944,7 +913,7 @@ public class DialysisForm implements IKindOfTransport
 				
 				if (!abfRT.equalsIgnoreCase(""))
 				{
-					String[] theAbfRTTime = start.split(":");
+					String[] theAbfRTTime = abfRT.split(":");
 					int hourstheAbfRTTime = Integer.valueOf(theAbfRTTime[0]).intValue();
 					int minutestheAbfRTTime = Integer.valueOf(theAbfRTTime[1]).intValue();
 					
@@ -956,7 +925,7 @@ public class DialysisForm implements IKindOfTransport
 				
 				if (!ready.equalsIgnoreCase(""))
 				{
-					String[] theReadyTime = start.split(":");
+					String[] theReadyTime = ready.split(":");
 					int hourstheReadyTime = Integer.valueOf(theReadyTime[0]).intValue();
 					int minutestheReadyTime = Integer.valueOf(theReadyTime[1]).intValue();
 					
