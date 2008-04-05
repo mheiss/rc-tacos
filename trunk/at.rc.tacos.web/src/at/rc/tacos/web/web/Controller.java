@@ -12,7 +12,5 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class Controller {
 
-	Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception {
-		return null;
-	}
+	public abstract Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception;
 }
