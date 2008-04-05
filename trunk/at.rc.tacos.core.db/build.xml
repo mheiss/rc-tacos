@@ -12,7 +12,11 @@
 	<property name="db.insertData.script" value="${sql.dir}/insertData.sql" />
 	<property name="db.clearData.script" value="${sql.dir}/clearData.sql" />
 	<property name="db.dropTables.script" value="${sql.dir}/dropTables.sql" />
-
+	<property name="db.createtable_beta2.script" value="${sql.dir}/createtable_beta2.sql" />
+	<property name="db.droptables_beta1.script" value="${sql.dir}/droptables_beta1.sql" />
+	<property name="db.insertdata_beta1.script" value="${sql.dir}/insertdata_beta1.sql" />
+	<property name="db.cleardata_beta1.script" value="${sql.dir}/cleardata_beta1.sql" />
+	
 	<!-- The classpath including the needed libraries for the database -->
 	<path id="master-classpath">
 		<fileset dir="lib">
@@ -67,4 +71,49 @@
 			<classpath refid="master-classpath"/>
 		</sql>
 	</target>
+	
+	<target name="cleardata_beta1">
+			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+			<sql driver="${db.driver}"
+	             url="${db.url}"
+	             userid="${db.user}"
+	             password="${db.pw}"
+	        	 src="${db.cleardata_beta1.script}">
+				<classpath refid="master-classpath"/>
+			</sql>
+		</target>
+	
+	<target name="droptables_beta1">
+			<echo message="CLEAR DATA USING: ${db.driver} ${db.url}"/>
+			<sql driver="${db.driver}"
+	             url="${db.url}"
+	             userid="${db.user}"
+	             password="${db.pw}"
+	        	 src="${db.droptables_beta1.script}">
+				<classpath refid="master-classpath"/>
+			</sql>
+		</target>
+	
+	<target name="createtable_beta2">
+			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+			<sql driver="${db.driver}"
+	             url="${db.url}"
+	             userid="${db.user}"
+	             password="${db.pw}"
+	        	 src="${db.createtable_beta2.script}">
+				<classpath refid="master-classpath"/>
+			</sql>
+		</target>
+	
+	<target name="insertdata_beta1">
+			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+			<sql driver="${db.driver}"
+	             url="${db.url}"
+	             userid="${db.user}"
+	             password="${db.pw}"
+	        	 src="${db.insertdata_beta1.script}">
+				<classpath refid="master-classpath"/>
+			</sql>
+		</target>
+	
 </project>
