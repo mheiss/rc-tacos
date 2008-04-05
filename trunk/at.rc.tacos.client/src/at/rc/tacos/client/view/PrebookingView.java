@@ -151,7 +151,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		gd_composite_3.widthHint = 989;
 		composite_3.setLayoutData(gd_composite_3);
 
-		//groups
+		//groups-----------------------------------
 		final SashForm sashForm_8 = new SashForm(composite_3, SWT.VERTICAL);
 
 		final Group richtungBruckGroup = new Group(sashForm_8, SWT.NONE);
@@ -169,18 +169,21 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		richtungMariazellGroup.setLayout(new FillLayout());
 		richtungMariazellGroup.setText("Richtung Mariazell");
 
+		//----------------------------------------------
 		final SashForm sashForm_9 = new SashForm(composite_3, SWT.VERTICAL);
 
 		final Group richtungGrazGroup = new Group(sashForm_9, SWT.NONE);
 		richtungGrazGroup.setLayout(new FillLayout());
 		richtungGrazGroup.setText("Richtung Graz");
 
-		final Group richtungLeobenGroup = new Group(sashForm_9, SWT.NONE);
+		final SashForm sashForm_1 = new SashForm(sashForm_9, SWT.VERTICAL);
+		
+		final Group richtungLeobenGroup = new Group(sashForm_1, SWT.NONE);
 		richtungLeobenGroup.setLayout(new FillLayout());
 		richtungLeobenGroup.setText("Richtung Leoben");
 
-		final SashForm sashForm_1 = new SashForm(sashForm_9, SWT.NONE);
-		sashForm_9.setWeights(new int[] {212, 167, 91 });
+		
+//		sashForm_9.setWeights(new int[] {200, 177, 10 });
 
 		final Group richtungWienGroup = new Group(sashForm_1, SWT.NONE);
 		richtungWienGroup.setLayout(new FillLayout());
