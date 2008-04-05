@@ -83,6 +83,7 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             query.setString(21, transport.getToCity());
             query.setInt(22, transport.getProgramStatus());
             query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
+            query.setString(24, transport.getDisposedByUsername());
             query.executeUpdate();
             //get the last inserted auto id
             ResultSet rs = query.getGeneratedKeys();
@@ -162,6 +163,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                     transport.setCallerDetail(caller);
                 }
                 transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
+                if(rs.getString("t.disposedBy_user") != null)
+                	transport.setDisposedByUsername(rs.getString("t.disposedBy_user"));
                 if(rs.getString("t.note") == null)
                     transport.setNotes("");
                 else
@@ -400,6 +403,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                     transport.setCallerDetail(caller);
                 }
                 transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
+                if(rs.getString("t.disposedBy_user") != null)
+                	transport.setDisposedByUsername(rs.getString("t.disposedBy_user"));
                 if(rs.getString("t.note") == null)
                     transport.setNotes("");
                 else
@@ -589,6 +594,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                     transport.setCallerDetail(caller);
                 }
                 transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
+                if(rs.getString("t.disposedBy_user") != null)
+                	transport.setDisposedByUsername(rs.getString("t.disposedBy_user"));
                 if(rs.getString("t.note") == null)
                     transport.setNotes("");
                 else
@@ -1011,6 +1018,8 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
                     transport.setCallerDetail(caller);
                 }
                 transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
+                if(rs.getString("t.disposedBy_user") != null)
+                	transport.setDisposedByUsername(rs.getString("t.disposedBy_user"));
                 if(rs.getString("t.note") == null)
                     transport.setNotes("");
                 else
@@ -1260,8 +1269,9 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
             query.setInt(20, transport.getProgramStatus());
             query.setString(21, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDate));
             query.setInt(22, transport.getTransportNumber());
-            query.setInt(23, transport.getTransportId());
-            //assert the update was successfull
+            query.setString(23, transport.getDisposedByUsername());
+            query.setInt(24, transport.getTransportId());
+            //assert the update was successful
             if(query.executeUpdate() == 0)
                 return false;
             return true;
