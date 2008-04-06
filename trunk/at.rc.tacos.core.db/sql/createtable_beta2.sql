@@ -106,7 +106,7 @@ CREATE TABLE location (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )
-Create Index location_FKIndex1 ON location (phonenumber_id)
+Create NONCLUSTERED Index location_FKIndex1 ON location (phonenumber_id)
 
 
 CREATE TABLE dialysis (
@@ -165,6 +165,7 @@ CREATE TABLE dayinfo (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )
+Create NONCLUSTERED Index dayinfo_FKIndex1 ON dayinfo (username)
 
 
 CREATE TABLE staffmembers (
@@ -190,6 +191,8 @@ CREATE TABLE staffmembers (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )
+Create NONCLUSTERED Index staffmembers_FKIndex1 ON staffmembers (primaryLocation)
+Create NONCLUSTERED Index staffmembers_FKIndex2 ON staffmembers (username)
 
 
 CREATE TABLE phone_staffmember (
@@ -209,6 +212,8 @@ CREATE TABLE phone_staffmember (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )
+Create NONCLUSTERED Index phonenumbers_has_staffmembers_FKIndex1 ON phone_staffmember (phonenumber_ID)
+Create NONCLUSTERED Index phonenumbers_has_staffmembers_FKIndex2 ON phone_staffmember (staffmember_ID)
 
 
 CREATE TABLE staffmember_competence (
@@ -226,6 +231,8 @@ CREATE TABLE staffmember_competence (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )
+Create NONCLUSTERED Index staffmembers_has_competences_FKIndex1 ON staffmember_competence (staffmember_ID)
+Create NONCLUSTERED Index staffmembers_has_competences_FKIndex2 ON staffmember_competence (competence_ID)
 
 
 CREATE TABLE transports (
@@ -253,6 +260,7 @@ CREATE TABLE transports (
   priority VARCHAR(1) NULL,
   direction BIGINT NULL,
   dateOfTransport DATETIME NULL,
+  disposedBy_user VARCHAR(30) NULL,
   PRIMARY KEY(transport_ID),
   --INDEX transports_FKIndex1(CreatedBy_user),
   --INDEX transports_FKIndex3(caller_ID),
@@ -270,6 +278,9 @@ CREATE TABLE transports (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )
+Create NONCLUSTERED Index transports_FKIndex1 ON transports (CreatedBy_user)
+Create NONCLUSTERED Index transports_FKIndex3 ON transports (caller_ID)
+Create NONCLUSTERED Index transports_FKIndex7 ON transports (planned_location)
 
 
 CREATE TABLE roster (
@@ -314,6 +325,11 @@ CREATE TABLE roster (
 		ON DELETE NO ACTION
 		ON UPDATE NO ACTION
 )
+Create NONCLUSTERED Index roster_FKIndex1 ON roster (staffmember_ID)
+Create NONCLUSTERED Index roster_FKIndex2 ON roster (servicetype_ID)
+Create NONCLUSTERED Index roster_FKIndex3 ON roster (job_ID)
+Create NONCLUSTERED Index roster_FKIndex4 ON roster (location_ID)
+Create NONCLUSTERED Index roster_FKIndex5 ON roster (entry_createdBy)
 
 
 CREATE TABLE vehicles (
@@ -371,6 +387,12 @@ CREATE TABLE vehicles (
 		ON DELETE NO ACTION
 		ON UPDATE NO ACTION,
 )
+Create NONCLUSTERED Index vehicles_FKIndex1 ON vehicles (primaryLocation)
+Create NONCLUSTERED Index vehicles_FKIndex2 ON vehicles (phonenumber_ID)
+Create NONCLUSTERED Index vehicles_FKIndex3 ON vehicles (currentLocation)
+Create NONCLUSTERED Index vehicles_FKIndex4 ON vehicles (driver_ID)
+Create NONCLUSTERED Index vehicles_FKIndex5 ON vehicles (medic1_ID)
+Create NONCLUSTERED Index vehicles_FKIndex6 ON vehicles (medic2_ID)
 
 
 CREATE TABLE transportstate (
@@ -384,6 +406,7 @@ CREATE TABLE transportstate (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )
+Create NONCLUSTERED Index transportstate_FKIndex1 ON transportstate (transport_ID)
 
 
 CREATE TABLE assigned_vehicle (
@@ -409,7 +432,7 @@ CREATE TABLE assigned_vehicle (
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 )
-
+Create NONCLUSTERED Index assigned_vehicle_FKIndex1 ON assigned_vehicle (transport_ID)
 
 CREATE TABLE transport_selected (
   selected_ID BIGINT NOT NULL,
@@ -427,3 +450,6 @@ CREATE TABLE transport_selected (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 )
+Create NONCLUSTERED Index notyfied_has_transports_FKIndex1 ON transport_selected (selected_ID)
+Create NONCLUSTERED Index notyfied_has_transports_FKIndex2 ON transport_selected (transport_ID)
+
