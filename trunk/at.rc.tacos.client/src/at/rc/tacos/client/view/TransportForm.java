@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+
+import javax.swing.ButtonModel;
+
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -15,6 +18,7 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.window.WindowManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,6 +34,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
+
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.UpdateTransportAction;
@@ -108,15 +114,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     
     //buttons
     private Button buttonVormerkung;
-//    private Button buttonAlles;
     private Button buttonNotfall;
     private Button buttonDialyse;
     private Button ruecktransportMoeglichButton;
     private Button begleitpersonButton;
     private Button rufhilfepatientButton;
-//    private Button eigenerRollstuhlButton;
-//    private Button krankentrageButton;
-//    private Button tragsesselButton;
     private Button fernfahrtButton;
     private Button mariazellButton;
     private Button wienButton;
@@ -134,7 +136,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Button notarztButton;
     private Button bd2Button;
     private Button bd1Button;
-//    private Button gehendButton;
+    private Button buttonMehrfachtransport;
+    private Button buttonADDMehrfachtransport;
     
     //groups
     private Group formGroup;
@@ -162,6 +165,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private String[] prebookingPriorities = {"2 Transport", "3 Terminfahrt","4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
     private String[] emergencyAndTransportPriorities = {"1 NEF", "2 Transport", "3 Terminfahrt", "4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
     
+    private boolean mehrfachtransport;
+    
+    private MultiTransportForm form;
     
     /**if the old priority is not A but the new is A-> DuplicatePriorityATransportAction necessary**/
     private String oldPriority;
@@ -245,6 +251,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
         //force redraw
         getShell().pack(true);
+        setShellStyle(SWT.SYSTEM_MODAL);
         return contents;
     }
 
@@ -256,7 +263,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     {
         //setup the composite
         Composite composite = (Composite) super.createDialogArea(parent);
-
+        setShellStyle(SWT.SYSTEM_MODAL);
         //Create the content of the dialog
         createTransportSection(composite);
         
@@ -271,6 +278,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             buttonVormerkung.setEnabled(false);
             buttonNotfall.setEnabled(false);
             buttonDialyse.setEnabled(false);
+            buttonMehrfachtransport.setEnabled(false);
+            buttonADDMehrfachtransport.setEnabled(false);
              
              
             //set field contents
@@ -557,377 +566,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     @Override
     protected void okPressed()
     {
-        //reset the error messages
-        setMessage("Hier können Sie einen neuen Transport anlegen");
-
-        //the street
-        if (viewerFromStreet.getCombo().getText().trim().isEmpty())
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
-            return;
-        }
-        transport.setFromStreet(viewerFromStreet.getCombo().getText());
-
-        //the city--> can be empty if the street is LKH or PH
-        if (viewerFromCity.getCombo().getText().trim().isEmpty() &!
-                (transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")
-                        || transport.getFromStreet().contains("PH") || transport.getFromStreet().startsWith("PH") ))
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Bitte geben Sie die Stadt ein, von der der Transport gestartet wird");
-            return;
-        }
-
-        transport.setFromCity(viewerFromCity.getCombo().getText());
-
-        transport.setToStreet(viewerToStreet.getCombo().getText());
-
-        transport.setToCity(viewerFromCity.getCombo().getText());
-
-        //the planned location
-        int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
-        if (index == -1)
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Bitte geben sie die zuständige Ortsstelle ein");
-            return;
-        }
-        transport.setPlanedLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
-
-        //the transport priority
-        index = comboPrioritaet.getSelectionIndex();
-        if (index == -1)
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Bitte geben sie die Priorität des Transports ein");
-            return;
-        }
-        transport.setTransportPriority(this.stringToPriority(comboPrioritaet.getItem(index)));
-
-        //convert the start time --> no validation when an emergency transport
-        Calendar startTime = convertStringToDate(textAbf.getText());
-        if(startTime == null &! transportType.equalsIgnoreCase("emergencyTransport") && createNew)
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Bitte geben Sie eine gültige Abfahrtszeit in der Form HH:mm oder HHmm ein");
-            return;
-        }
-        if(startTime != null)
-        {
-            startTime.set(Calendar.YEAR, dateTime.getYear());
-            startTime.set(Calendar.MONTH, dateTime.getMonth());
-            startTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
-
-            transport.setPlannedStartOfTransport(startTime.getTimeInMillis());
-        }
-        else
-            transport.setPlannedStartOfTransport(0);
-
-        //time at patient  --> validation if the field is not empty 
-        Calendar patientTime = convertStringToDate(textBeiPat.getText());
-        if(!textBeiPat.getText().trim().isEmpty() && patientTime == null)
-        {
-        		getShell().getDisplay().beep();
-        		setErrorMessage("Bitte geben Sie eine gültige Zeit (bei Patient) in der Form HH:mm oder HHmm ein");
-        		return;
-        }
-        if(patientTime != null)
-        {
-            patientTime.set(Calendar.YEAR, dateTime.getYear());
-            patientTime.set(Calendar.MONTH, dateTime.getMonth());
-            patientTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
-            transport.setPlannedTimeAtPatient(patientTime.getTimeInMillis());
-        }
-        else
-            transport.setPlannedTimeAtPatient(0);
-
-        //check the time  --> validation if the field is not empty
-        Calendar appointmentTime = convertStringToDate(textTermin.getText());
-        if(!textTermin.getText().trim().isEmpty() && appointmentTime == null)
-        {
-        	getShell().getDisplay().beep();
-    		setErrorMessage("Bitte geben Sie eine gültige Zeit für den Termin in der Form HH:mm oder HHmm ein");
-    		return;
-        }
-        if(appointmentTime != null)
-        {
-            appointmentTime.set(Calendar.YEAR, dateTime.getYear());
-            appointmentTime.set(Calendar.MONTH, dateTime.getMonth());
-            appointmentTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
-            transport.setAppointmentTimeAtDestination(appointmentTime.getTimeInMillis());
-        }
-        else
-            transport.setAppointmentTimeAtDestination(0);
-
-        //validate: start before atPatient
-        if(transport.getPlannedTimeAtPatient() < transport.getPlannedStartOfTransport() &!(transport.getPlannedTimeAtPatient()==0))
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen.");
-            return;
-        }				
-
-        //validate: atPatient before term
-        if(transport.getAppointmentTimeAtDestination() < transport.getPlannedTimeAtPatient() &!(transport.getAppointmentTimeAtDestination()==0)&!(transport.getPlannedTimeAtPatient()==0))
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Termin kann nicht vor Ankunft bei Patient sein");
-            return;
-        }
-
-        //validate: start before term
-        if(transport.getAppointmentTimeAtDestination() < transport.getPlannedStartOfTransport() &!(transport.getAppointmentTimeAtDestination() ==0))
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen");
-            return;
-        }
-
-        //kind of illness
-        index = setErkrVerl.getCombo().getSelectionIndex();
-        if(index != -1)
-        {
-            transport.setKindOfIllness((Disease)setErkrVerl.getElementAt(index));
-        }
-
-        //set the fields that do not have to be validated
-        transport.setBackTransport(ruecktransportMoeglichButton.getSelection());
-
-        //the disposed by user
-        if(!disposedBy.getText().trim().isEmpty())
-        	transport.setDisposedByUsername(disposedBy.getText());
-        //the kind of transport
-        index = combokindOfTransport.getSelectionIndex();
-        if (index != -1)
-        	transport.setKindOfTransport(combokindOfTransport.getItem(index));
-
-        //if we have a patient just update it
-        if(transport.getPatient() == null)
-        {
-            Patient patient = new Patient(comboVorname.getText(),comboNachname.getText());
-            transport.setPatient(patient);
-        }
-        else
-        {
-            transport.getPatient().setFirstname(comboVorname.getText());
-            transport.getPatient().setLastname(comboNachname.getText());
-        }
-
-        //if we have a caller, just update it
-        if(transport.getCallerDetail() == null)
-        {
-            CallerDetail caller = new CallerDetail(textAnrufer.getText(),textTelefonAnrufer.getText());
-            transport.setCallerDetail(caller);
-        }
-        else
-        {
-            transport.getCallerDetail().setCallerName(textAnrufer.getText());
-            transport.getCallerDetail().setCallerTelephoneNumber(textTelefonAnrufer.getText());
-        }
-
-        //notes and feedback
-        transport.setNotes(textAnmerkungen.getText());
-        transport.setFeedback(textRueckmeldung.getText());
-
-        //the destination
-        transport.setToStreet(viewerToStreet.getCombo().getText());
-        transport.setToCity(viewerToCity.getCombo().getText());
-
-        //the boolean values
-        transport.setAssistantPerson(begleitpersonButton.getSelection());
-        transport.setBlueLightToGoal(bd2Button.getSelection());
-        transport.setBlueLight1(bd1Button.getSelection());
-        transport.setBrkdtAlarming(brkdtButton.getSelection());
-        transport.setDfAlarming(dfButton.getSelection());
-        transport.setEmergencyDoctorAlarming(notarztButton.getSelection());
-        transport.setEmergencyPhone(rufhilfepatientButton.getSelection());
-        transport.setFirebrigadeAlarming(feuerwehrButton.getSelection());
-        transport.setHelicopterAlarming(rthButton.getSelection());
-        transport.setLongDistanceTrip(fernfahrtButton.getSelection());
-        transport.setMountainRescueServiceAlarming(bergrettungButton.getSelection());
-        transport.setPoliceAlarming(polizeiButton.getSelection());
-        transport.setKITAlarming(KITButton.getSelection());
-        
-        //the timestamps for the alarming fields
-        if(!timestampNA.getText().equalsIgnoreCase(""))
-        	transport.settimestampNA(MyUtils.stringToTimestamp(timestampNA.getText(), MyUtils.timeAndDateFormatShort));
-        if(!timestampRTH.getText().equalsIgnoreCase(""))
-            transport.settimestampRTH(MyUtils.stringToTimestamp(timestampRTH.getText(), MyUtils.timeAndDateFormatShort));
-        if(!timestampDF.getText().equalsIgnoreCase(""))
-            transport.settimestampDF(MyUtils.stringToTimestamp(timestampDF.getText(), MyUtils.timeAndDateFormatShort));
-        if(!timestampBRKDT.getText().equalsIgnoreCase(""))
-            transport.settimestampBRKDT(MyUtils.stringToTimestamp(timestampBRKDT.getText(), MyUtils.timeAndDateFormatShort));
-        if(!timestampFW.getText().equalsIgnoreCase(""))
-            transport.settimestampFW(MyUtils.stringToTimestamp(timestampFW.getText(), MyUtils.timeAndDateFormatShort));
-        if(!timestampPolizei.getText().equalsIgnoreCase(""))
-            transport.settimestampPolizei(MyUtils.stringToTimestamp(timestampPolizei.getText(), MyUtils.timeAndDateFormatShort));
-        if(!timestampBergrettung.getText().equalsIgnoreCase(""))
-            transport.settimestampBergrettung(MyUtils.stringToTimestamp(timestampBergrettung.getText(), MyUtils.timeAndDateFormatShort));        
-        if(!timestampKIT.getText().equalsIgnoreCase(""))
-            transport.settimestampKIT(MyUtils.stringToTimestamp(timestampKIT.getText(), MyUtils.timeAndDateFormatShort));
-        
-
-        //set the type of the transport
-        if(transportType.equalsIgnoreCase("prebooking"))
-            transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
-        if(transportType.equalsIgnoreCase("emergencyTransport"))
-            transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
-
-        if (mariazellButton.getSelection())
-            transport.setDirection(TOWARDS_MARIAZELL);
-        else if (wienButton.getSelection())
-            transport.setDirection(TOWARDS_VIENNA);
-        else if (leobenButton.getSelection())
-            transport.setDirection(TOWARDS_LEOBEN);
-        else if (grazButton.getSelection())
-            transport.setDirection(TOWARDS_GRAZ);
-        else if (kapfenbergButton.getSelection())
-            transport.setDirection(TOWARDS_KAPFENBERG);
-        else
-            transport.setDirection(TOWARDS_BRUCK);
-        
-        //transport date 
-        Calendar transportDate = Calendar.getInstance();
-        transportDate.set(Calendar.YEAR, dateTime.getYear());
-        transportDate.set(Calendar.MONTH, dateTime.getMonth());
-        transportDate.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
-        transport.setDateOfTransport(transportDate.getTimeInMillis());
-
-        if(createNew)
-        {
-            //created time
-            transport.setCreationTime(Calendar.getInstance().getTimeInMillis());
-            //created by user
-            transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
-            
-            //create and run the add action
-            CreateTransportAction newAction = new CreateTransportAction(transport);
-            newAction.run();
-            if(transport.getTransportPriority().equalsIgnoreCase("A"))
-            {
-                DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
-                duplicateAction.run();
-            }
-        }
-        else
-        {
-        	//staff
-            index = setTextFahrer.getCombo().getSelectionIndex();
-            if(index != -1)
-            	transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index));
-            
-            index = setTextSaniI.getCombo().getSelectionIndex();
-            if(index != -1)
-            	transport.getVehicleDetail().setFirstParamedic((StaffMember)setTextSaniI.getElementAt(index));
-            
-            index = setTextSaniII.getCombo().getSelectionIndex();
-            if(index != -1)
-            	transport.getVehicleDetail().setSecondParamedic((StaffMember)setTextSaniII.getElementAt(index));
-            
-            //transport stati
-            //S0
-            Calendar s0 = convertStringToDate(textAE.getText());
-            if(!textAE.getText().trim().isEmpty() && s0 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status AE (Auftrag erteilt) in der Form HHmm oder HH:mm ein");
-	            return;	           
-            }
-            if(s0 != null)
-            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, s0.getTimeInMillis());
-            else
-            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED);
-            
-            
-            //S1
-            Calendar s1 = convertStringToDate(textS1.getText());
-            if(!textS1.getText().trim().isEmpty() && s1 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S1 in der Form HHmm oder HH:mm ein");
-	            return;	  
-            }
-            if(s1 != null)
-            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY, s1.getTimeInMillis());
-            else
-            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY);
-            
-            
-            //S2
-            Calendar s2 = convertStringToDate(textS2.getText());
-            if(!textS2.getText().trim().isEmpty() && s2 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S2 in der Form HHmm oder HH:mm ein");
-	            return;	 
-            }
-            if(s2 != null)
-            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT, s2.getTimeInMillis());
-            else
-            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT);
-            	
-            //S3
-            Calendar s3 = convertStringToDate(textS3.getText());
-            if(!textS3.getText().trim().isEmpty() && s3 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S3 in der Form HHmm oder HH:mm ein");
-	            return;	 
-            }
-            if(s3 != null)
-           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT, s3.getTimeInMillis());
-            else
-           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT);
-            //S4
-            Calendar s4 = convertStringToDate(textS4.getText());
-            if(!textS4.getText().trim().isEmpty() && s4 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S4 in der Form HHmm oder HH:mm ein");
-	            return;	 
-            }
-            if(s4 != null)
-           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION, s4.getTimeInMillis());
-            else
-           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-            //S5
-            Calendar s5 = convertStringToDate(textS5.getText());
-            if(!textS5.getText().trim().isEmpty() && s5 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S5 in der Form HHmm oder HH:mm ein");
-	            return;
-            }
-            if(s5 != null)
-           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE, s5.getTimeInMillis());
-            else
-           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
-            //S6
-            Calendar s6 = convertStringToDate(textS6.getText());
-            if(!textS6.getText().trim().isEmpty() && s6 == null)
-            {
-            	getShell().getDisplay().beep();
-            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S6 in der Form HHmm oder HH:mm ein");
-	            return;	 
-            }
-            if(s6 != null)
-           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION, s6.getTimeInMillis());
-            else
-           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION);
-            
-            
-            /**duplicate the transport if the priority is changed to A*/
-            if(!oldPriority.equalsIgnoreCase("A") && transport.getTransportPriority().equalsIgnoreCase("A"))
-            {
-              DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
-              duplicateAction.run();
-          }
-            
-            UpdateTransportAction updateAction = new UpdateTransportAction(transport);
-            updateAction.run();
-        }
-        getShell().close();
+        handleOK();
     }
     
     /**
@@ -2230,7 +1869,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         formGroup.setLayoutData(fd_group);
         formGroup.setText("Formularansicht");
 
-        buttonNotfall = new Button(formGroup, SWT.TOGGLE);
+        buttonNotfall = new Button(formGroup, SWT.NONE);
         final FormData fd_buttonNotfall = new FormData();
         fd_buttonNotfall.bottom = new FormAttachment(0, 25);
         fd_buttonNotfall.top = new FormAttachment(0, 2);
@@ -2276,7 +1915,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         });
         buttonNotfall.setText("Notfall");
 
-        buttonVormerkung = new Button(formGroup, SWT.TOGGLE);
+        buttonVormerkung = new Button(formGroup, SWT.NONE);
         final FormData fd_buttonVormerkung = new FormData();
         fd_buttonVormerkung.bottom = new FormAttachment(0, 59);
         fd_buttonVormerkung.top = new FormAttachment(0, 36);
@@ -2316,31 +1955,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 }
             }
         });
-
-//        buttonAlles = new Button(formGroup, SWT.TOGGLE);
-//        final FormData fd_buttonAlles = new FormData();
-//        fd_buttonAlles.bottom = new FormAttachment(0, 78);
-//        fd_buttonAlles.top = new FormAttachment(0, 55);
-//        fd_buttonAlles.right = new FormAttachment(0, 202);
-//        fd_buttonAlles.left = new FormAttachment(0, 94);
-//        buttonAlles.setLayoutData(fd_buttonAlles);
-//        buttonAlles.setToolTipText("Blendet alle Felder ein");
-//        buttonAlles.setText("Alle Felder anzeigen");
-//        buttonAlles.addSelectionListener(new SelectionAdapter() 
-//        {
-//            public void widgetSelected(final SelectionEvent e) 
-//            {
-//                planungGroup_1.setVisible(true);
-//                planungGroup.setVisible(true);
-//                transportdetailsGroup.setVisible(true);
-//                statusmeldungenGroup.setVisible(true);
-//                personalAmFahrzeugGroup.setVisible(true);
-//            }
-//        });
-//        if("journal".equalsIgnoreCase(editingType))
-//            buttonAlles.setVisible(true);
-//        else
-//            buttonAlles.setVisible(false);
         
         createdBy = new Text(formGroup, SWT.BORDER);
         final FormData fd_crreatedBy = new FormData();
@@ -2363,7 +1977,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         disposedBy.setEditable(false);
         
         
-        buttonDialyse = new Button(formGroup, SWT.TOGGLE);
+        buttonDialyse = new Button(formGroup, SWT.NONE);
         final FormData fd_buttonDialye = new FormData();
         fd_buttonDialye.bottom = new FormAttachment(0, 25);
         fd_buttonDialye.top = new FormAttachment(0, 2);
@@ -2447,7 +2061,54 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             	getShell().close();
             }
         });
-    }
+    
+        //TODO
+	    buttonMehrfachtransport = new Button(formGroup, SWT.NONE);
+	    final FormData fd_buttonMehrfachtransport = new FormData();
+	    fd_buttonMehrfachtransport.bottom = new FormAttachment(0, 59);
+	    fd_buttonMehrfachtransport.top = new FormAttachment(0, 36);
+	    fd_buttonMehrfachtransport.right = new FormAttachment(0, 102);
+	    fd_buttonMehrfachtransport.left = new FormAttachment(0, 2);
+	    buttonMehrfachtransport.setLayoutData(fd_buttonMehrfachtransport);
+	    buttonMehrfachtransport.setToolTipText("Mehrfachtransportfenster öffnen");
+	    buttonMehrfachtransport.setText("Mehrfachtransport");
+	    buttonMehrfachtransport.addSelectionListener(new SelectionAdapter() 
+	    {
+	        public void widgetSelected(final SelectionEvent e) 
+	        {
+	        	mehrfachtransport = true;
+	        	
+	        	
+	        	Shell parent = getShell();
+	        	form = new MultiTransportForm(parent);
+	        	form.setBlockOnOpen(false);
+            	form.open();
+//            	form.getShell().getAccessible();
+//            	handleOK();
+            	buttonMehrfachtransport.setEnabled(false);
+            	
+	        }
+	    });
+	    
+//	    //TODO
+//	    buttonADDMehrfachtransport = new Button(client, SWT.NONE);
+//	    final FormData fd_buttonADDMehrfachtransport = new FormData();
+//	    fd_buttonADDMehrfachtransport.bottom = new FormAttachment(0, 400);
+//	    fd_buttonADDMehrfachtransport.top = new FormAttachment(0, 360);
+//	    fd_buttonADDMehrfachtransport.right = new FormAttachment(0, 102);
+//	    fd_buttonADDMehrfachtransport.left = new FormAttachment(0, 2);
+//	    buttonADDMehrfachtransport.setLayoutData(fd_buttonADDMehrfachtransport);
+//	    buttonADDMehrfachtransport.setToolTipText("Mehrfachtransportfenster hinzufügen");
+//	    buttonADDMehrfachtransport.setText("hinzufügen");
+//	    buttonADDMehrfachtransport.setEnabled(false);
+//	    buttonADDMehrfachtransport.addSelectionListener(new SelectionAdapter() 
+//	    {
+//	        public void widgetSelected(final SelectionEvent e) 
+//	        {
+//	        	//TODO - Transport zu Mehrfachtransporten hinzufügen
+//	        }
+//	    });
+	}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt)
@@ -2560,6 +2221,396 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     	else if(priority.equalsIgnoreCase("G"))
     		return "7 NEF extern";
     	else return null;
+    }
+    
+    private void handleOK()
+    {
+    	//reset the error messages
+        setMessage("Hier können Sie einen neuen Transport anlegen");
+
+        //the street
+        if (viewerFromStreet.getCombo().getText().trim().isEmpty())
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
+            return;
+        }
+        transport.setFromStreet(viewerFromStreet.getCombo().getText());
+        
+        if(viewerFromCity.getCombo().getText().length() > 30 )
+        {
+        	getShell().getDisplay().beep();
+            setErrorMessage("Zu lang");
+            return;
+        }
+
+        //the city--> can be empty if the street is LKH or PH
+        if (viewerFromCity.getCombo().getText().trim().isEmpty() &!
+                (transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")
+                        || transport.getFromStreet().contains("PH") || transport.getFromStreet().startsWith("PH") ))
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben Sie die Stadt ein, von der der Transport gestartet wird");
+            return;
+        }
+
+        transport.setFromCity(viewerFromCity.getCombo().getText());
+
+        transport.setToStreet(viewerToStreet.getCombo().getText());
+
+        transport.setToCity(viewerFromCity.getCombo().getText());
+
+        //the planned location
+        int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
+        if (index == -1)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben sie die zuständige Ortsstelle ein");
+            return;
+        }
+        transport.setPlanedLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
+
+        //the transport priority
+        index = comboPrioritaet.getSelectionIndex();
+        if (index == -1)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben sie die Priorität des Transports ein");
+            return;
+        }
+        transport.setTransportPriority(this.stringToPriority(comboPrioritaet.getItem(index)));
+
+        //convert the start time --> no validation when an emergency transport
+        Calendar startTime = convertStringToDate(textAbf.getText());
+        if(startTime == null &! transportType.equalsIgnoreCase("emergencyTransport") && createNew)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben Sie eine gültige Abfahrtszeit in der Form HH:mm oder HHmm ein");
+            return;
+        }
+        if(startTime != null)
+        {
+            startTime.set(Calendar.YEAR, dateTime.getYear());
+            startTime.set(Calendar.MONTH, dateTime.getMonth());
+            startTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+
+            transport.setPlannedStartOfTransport(startTime.getTimeInMillis());
+        }
+        else
+            transport.setPlannedStartOfTransport(0);
+
+        //time at patient  --> validation if the field is not empty 
+        Calendar patientTime = convertStringToDate(textBeiPat.getText());
+        if(!textBeiPat.getText().trim().isEmpty() && patientTime == null)
+        {
+        		getShell().getDisplay().beep();
+        		setErrorMessage("Bitte geben Sie eine gültige Zeit (bei Patient) in der Form HH:mm oder HHmm ein");
+        		return;
+        }
+        if(patientTime != null)
+        {
+            patientTime.set(Calendar.YEAR, dateTime.getYear());
+            patientTime.set(Calendar.MONTH, dateTime.getMonth());
+            patientTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+            transport.setPlannedTimeAtPatient(patientTime.getTimeInMillis());
+        }
+        else
+            transport.setPlannedTimeAtPatient(0);
+
+        //check the time  --> validation if the field is not empty
+        Calendar appointmentTime = convertStringToDate(textTermin.getText());
+        if(!textTermin.getText().trim().isEmpty() && appointmentTime == null)
+        {
+        	getShell().getDisplay().beep();
+    		setErrorMessage("Bitte geben Sie eine gültige Zeit für den Termin in der Form HH:mm oder HHmm ein");
+    		return;
+        }
+        if(appointmentTime != null)
+        {
+            appointmentTime.set(Calendar.YEAR, dateTime.getYear());
+            appointmentTime.set(Calendar.MONTH, dateTime.getMonth());
+            appointmentTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+            transport.setAppointmentTimeAtDestination(appointmentTime.getTimeInMillis());
+        }
+        else
+            transport.setAppointmentTimeAtDestination(0);
+
+        //validate: start before atPatient
+        if(transport.getPlannedTimeAtPatient() < transport.getPlannedStartOfTransport() &!(transport.getPlannedTimeAtPatient()==0))
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen.");
+            return;
+        }				
+
+        //validate: atPatient before term
+        if(transport.getAppointmentTimeAtDestination() < transport.getPlannedTimeAtPatient() &!(transport.getAppointmentTimeAtDestination()==0)&!(transport.getPlannedTimeAtPatient()==0))
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Termin kann nicht vor Ankunft bei Patient sein");
+            return;
+        }
+
+        //validate: start before term
+        if(transport.getAppointmentTimeAtDestination() < transport.getPlannedStartOfTransport() &!(transport.getAppointmentTimeAtDestination() ==0))
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen");
+            return;
+        }
+
+        //kind of illness
+        index = setErkrVerl.getCombo().getSelectionIndex();
+        if(index != -1)
+        {
+            transport.setKindOfIllness((Disease)setErkrVerl.getElementAt(index));
+        }
+
+        //set the fields that do not have to be validated
+        transport.setBackTransport(ruecktransportMoeglichButton.getSelection());
+
+        //the disposed by user
+        if(!disposedBy.getText().trim().isEmpty())
+        	transport.setDisposedByUsername(disposedBy.getText());
+        //the kind of transport
+        index = combokindOfTransport.getSelectionIndex();
+        if (index != -1)
+        	transport.setKindOfTransport(combokindOfTransport.getItem(index));
+
+        //if we have a patient just update it
+        if(transport.getPatient() == null)
+        {
+            Patient patient = new Patient(comboVorname.getText(),comboNachname.getText());
+            transport.setPatient(patient);
+        }
+        else
+        {
+            transport.getPatient().setFirstname(comboVorname.getText());
+            transport.getPatient().setLastname(comboNachname.getText());
+        }
+
+        //if we have a caller, just update it
+        if(transport.getCallerDetail() == null)
+        {
+            CallerDetail caller = new CallerDetail(textAnrufer.getText(),textTelefonAnrufer.getText());
+            transport.setCallerDetail(caller);
+        }
+        else
+        {
+            transport.getCallerDetail().setCallerName(textAnrufer.getText());
+            transport.getCallerDetail().setCallerTelephoneNumber(textTelefonAnrufer.getText());
+        }
+
+        //notes and feedback
+        transport.setNotes(textAnmerkungen.getText());
+        transport.setFeedback(textRueckmeldung.getText());
+
+        //the destination
+        transport.setToStreet(viewerToStreet.getCombo().getText());
+        transport.setToCity(viewerToCity.getCombo().getText());
+
+        //the boolean values
+        transport.setAssistantPerson(begleitpersonButton.getSelection());
+        transport.setBlueLightToGoal(bd2Button.getSelection());
+        transport.setBlueLight1(bd1Button.getSelection());
+        transport.setBrkdtAlarming(brkdtButton.getSelection());
+        transport.setDfAlarming(dfButton.getSelection());
+        transport.setEmergencyDoctorAlarming(notarztButton.getSelection());
+        transport.setEmergencyPhone(rufhilfepatientButton.getSelection());
+        transport.setFirebrigadeAlarming(feuerwehrButton.getSelection());
+        transport.setHelicopterAlarming(rthButton.getSelection());
+        transport.setLongDistanceTrip(fernfahrtButton.getSelection());
+        transport.setMountainRescueServiceAlarming(bergrettungButton.getSelection());
+        transport.setPoliceAlarming(polizeiButton.getSelection());
+        transport.setKITAlarming(KITButton.getSelection());
+        
+        //the timestamps for the alarming fields
+        if(!timestampNA.getText().equalsIgnoreCase(""))
+        	transport.settimestampNA(MyUtils.stringToTimestamp(timestampNA.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampRTH.getText().equalsIgnoreCase(""))
+            transport.settimestampRTH(MyUtils.stringToTimestamp(timestampRTH.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampDF.getText().equalsIgnoreCase(""))
+            transport.settimestampDF(MyUtils.stringToTimestamp(timestampDF.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampBRKDT.getText().equalsIgnoreCase(""))
+            transport.settimestampBRKDT(MyUtils.stringToTimestamp(timestampBRKDT.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampFW.getText().equalsIgnoreCase(""))
+            transport.settimestampFW(MyUtils.stringToTimestamp(timestampFW.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampPolizei.getText().equalsIgnoreCase(""))
+            transport.settimestampPolizei(MyUtils.stringToTimestamp(timestampPolizei.getText(), MyUtils.timeAndDateFormatShort));
+        if(!timestampBergrettung.getText().equalsIgnoreCase(""))
+            transport.settimestampBergrettung(MyUtils.stringToTimestamp(timestampBergrettung.getText(), MyUtils.timeAndDateFormatShort));        
+        if(!timestampKIT.getText().equalsIgnoreCase(""))
+            transport.settimestampKIT(MyUtils.stringToTimestamp(timestampKIT.getText(), MyUtils.timeAndDateFormatShort));
+        
+
+        //set the type of the transport
+        if(transportType.equalsIgnoreCase("prebooking"))
+            transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
+        if(transportType.equalsIgnoreCase("emergencyTransport"))
+            transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+
+        if (mariazellButton.getSelection())
+            transport.setDirection(TOWARDS_MARIAZELL);
+        else if (wienButton.getSelection())
+            transport.setDirection(TOWARDS_VIENNA);
+        else if (leobenButton.getSelection())
+            transport.setDirection(TOWARDS_LEOBEN);
+        else if (grazButton.getSelection())
+            transport.setDirection(TOWARDS_GRAZ);
+        else if (kapfenbergButton.getSelection())
+            transport.setDirection(TOWARDS_KAPFENBERG);
+        else
+            transport.setDirection(TOWARDS_BRUCK);
+        
+        //transport date 
+        Calendar transportDate = Calendar.getInstance();
+        transportDate.set(Calendar.YEAR, dateTime.getYear());
+        transportDate.set(Calendar.MONTH, dateTime.getMonth());
+        transportDate.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+        transport.setDateOfTransport(transportDate.getTimeInMillis());
+
+        if(createNew)
+        {
+            //created time
+            transport.setCreationTime(Calendar.getInstance().getTimeInMillis());
+            //created by user
+            transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
+            if(!mehrfachtransport)
+            {
+	            //create and run the add action
+	            CreateTransportAction newAction = new CreateTransportAction(transport);
+	            newAction.run();
+            
+	            if(transport.getTransportPriority().equalsIgnoreCase("A"))
+	            {
+	                DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
+	                duplicateAction.run();
+	            }
+            }
+            else
+            	form.addTransport(transport);
+            	
+	            
+        }
+        else
+        {
+        	//staff
+            index = setTextFahrer.getCombo().getSelectionIndex();
+            if(index != -1)
+            	transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index));
+            
+            index = setTextSaniI.getCombo().getSelectionIndex();
+            if(index != -1)
+            	transport.getVehicleDetail().setFirstParamedic((StaffMember)setTextSaniI.getElementAt(index));
+            
+            index = setTextSaniII.getCombo().getSelectionIndex();
+            if(index != -1)
+            	transport.getVehicleDetail().setSecondParamedic((StaffMember)setTextSaniII.getElementAt(index));
+            
+            //transport stati
+            //S0
+            Calendar s0 = convertStringToDate(textAE.getText());
+            if(!textAE.getText().trim().isEmpty() && s0 == null)
+            {
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status AE (Auftrag erteilt) in der Form HHmm oder HH:mm ein");
+	            return;	           
+            }
+            if(s0 != null)
+            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, s0.getTimeInMillis());
+            else
+            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED);
+            
+            
+            //S1
+            Calendar s1 = convertStringToDate(textS1.getText());
+            if(!textS1.getText().trim().isEmpty() && s1 == null)
+            {
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S1 in der Form HHmm oder HH:mm ein");
+	            return;	  
+            }
+            if(s1 != null)
+            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY, s1.getTimeInMillis());
+            else
+            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY);
+            
+            
+            //S2
+            Calendar s2 = convertStringToDate(textS2.getText());
+            if(!textS2.getText().trim().isEmpty() && s2 == null)
+            {
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S2 in der Form HHmm oder HH:mm ein");
+	            return;	 
+            }
+            if(s2 != null)
+            	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT, s2.getTimeInMillis());
+            else
+            	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT);
+            	
+            //S3
+            Calendar s3 = convertStringToDate(textS3.getText());
+            if(!textS3.getText().trim().isEmpty() && s3 == null)
+            {
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S3 in der Form HHmm oder HH:mm ein");
+	            return;	 
+            }
+            if(s3 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT, s3.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT);
+            //S4
+            Calendar s4 = convertStringToDate(textS4.getText());
+            if(!textS4.getText().trim().isEmpty() && s4 == null)
+            {
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S4 in der Form HHmm oder HH:mm ein");
+	            return;	 
+            }
+            if(s4 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION, s4.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
+            //S5
+            Calendar s5 = convertStringToDate(textS5.getText());
+            if(!textS5.getText().trim().isEmpty() && s5 == null)
+            {
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S5 in der Form HHmm oder HH:mm ein");
+	            return;
+            }
+            if(s5 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE, s5.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
+            //S6
+            Calendar s6 = convertStringToDate(textS6.getText());
+            if(!textS6.getText().trim().isEmpty() && s6 == null)
+            {
+            	getShell().getDisplay().beep();
+            	setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S6 in der Form HHmm oder HH:mm ein");
+	            return;	 
+            }
+            if(s6 != null)
+           	 transport.addStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION, s6.getTimeInMillis());
+            else
+           	transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION);
+            
+            
+            /**duplicate the transport if the priority is changed to A*/
+            if(!oldPriority.equalsIgnoreCase("A") && transport.getTransportPriority().equalsIgnoreCase("A"))
+            {
+              DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
+              duplicateAction.run();
+          }
+            
+            UpdateTransportAction updateAction = new UpdateTransportAction(transport);
+            updateAction.run();
+        }
+        if(!mehrfachtransport)
+        	getShell().close();
     }
     
     
