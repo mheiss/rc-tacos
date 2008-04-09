@@ -2235,12 +2235,20 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
             return;
         }
+        if (viewerFromStreet.getCombo().getText().length() > 100)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Der Straßenname (von)darf höchstens 100 Zeichen lang sein");
+            return;
+        }
+        
         transport.setFromStreet(viewerFromStreet.getCombo().getText());
         
-        if(viewerFromCity.getCombo().getText().length() > 30 )
+        //the from city
+        if(viewerFromCity.getCombo().getText().length() > 50 )
         {
         	getShell().getDisplay().beep();
-            setErrorMessage("Zu lang");
+            setErrorMessage("Der Stadtname (von)darf höchstens 50 Zeichen lang sein");
             return;
         }
 
