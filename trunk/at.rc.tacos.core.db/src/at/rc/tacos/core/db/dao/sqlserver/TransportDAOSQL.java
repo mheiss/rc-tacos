@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.TransportDAO;
@@ -23,7 +23,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
 {
     //The data source to get the connection and the queries file
     private final DataSource source = DataSource.getInstance();
-    private final Queries queries = Queries.getInstance();
+    private final SQLQueries queries = SQLQueries.getInstance();
     //dependend dao classes
     private final LocationDAO locationDAO = DaoFactory.SQL.createLocationDAO();
     private final CallerDAO callerDAO = DaoFactory.SQL.createNotifierDAO();
@@ -42,8 +42,17 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     return Transport.TRANSPORT_ERROR;
                 transport.getCallerDetail().setCallerId(callerId);
             }
+			int id = 0;
+			//get the next id
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextTransportID"));
+			final ResultSet rs = stmt.executeQuery();
+			if(!rs.next())
+				return -1;
+			
+			id = rs.getInt(1);
+            
             final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.transport"));
-            query.setString(1, null); //transport.getTransportId()
+            query.setInt(1, id); //transport.getTransportId()
             query.setInt(2, transport.getTransportNumber());
             query.setInt(3, transport.getDirection());	
             if(transport.getCallerDetail() == null)
@@ -86,10 +95,10 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(24, transport.getDisposedByUsername());
             query.executeUpdate();
             //get the last inserted auto id
-            ResultSet rs = query.getGeneratedKeys();
-            if(!rs.first())
-                return Transport.TRANSPORT_ERROR;
+            if(!rs.next())
+            	return Transport.TRANSPORT_ERROR;
             transport.setTransportId(rs.getInt(1));
+
 
             //assign the transport items!
             if(!assignTransportItems(transport))
@@ -998,7 +1007,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.transportById"));
             query.setInt(1, id);
             final ResultSet rs = query.executeQuery();
-            if(rs.first())
+            if(rs.next())
             {
                 Transport transport = new Transport();
                 transport.setTransportId(rs.getInt("t.transport_ID"));
