@@ -22,6 +22,10 @@ public class MyUtils
     public final static SimpleDateFormat sqlTime = new SimpleDateFormat("HH:mm:ss");
     public final static SimpleDateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
     public final static SimpleDateFormat sqlDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public final static SimpleDateFormat sqlServerDateTime = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    public final static SimpleDateFormat sqlServerDate = new SimpleDateFormat("dd.MM.yyyy");
+    
+    //03.01.2008 21:54
 
     /**
      * Convinience helper method to ensure a long value is a valid date.
