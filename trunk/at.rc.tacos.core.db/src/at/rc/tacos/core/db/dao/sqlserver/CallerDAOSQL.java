@@ -32,14 +32,15 @@ public class CallerDAOSQL implements CallerDAO
 
 			// callername, caller_phonenumber
 			final PreparedStatement insertstmt = connection.prepareStatement(queries.getStatment("insert.caller"));
-			insertstmt.setString(1, notifierDetail.getCallerName());
-			insertstmt.setString(2, notifierDetail.getCallerTelephoneNumber());
-			insertstmt.executeUpdate();
-//
+			insertstmt.setInt(1, id);
+			insertstmt.setString(2, notifierDetail.getCallerName());
+			insertstmt.setString(3, notifierDetail.getCallerTelephoneNumber());
+//			insertstmt.executeUpdate();
+
 			if(insertstmt.executeUpdate() == 0)
 				return -1;
 
-			return -1;
+			return id;
 		}
 		finally
 		{
