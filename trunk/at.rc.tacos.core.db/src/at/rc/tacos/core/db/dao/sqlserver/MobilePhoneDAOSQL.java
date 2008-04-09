@@ -57,7 +57,7 @@ public class MobilePhoneDAOSQL implements MobilePhoneDAO
 			query.setString(1, mobilePhoneName);
 			final ResultSet rs = query.executeQuery();
 			//assert we have a result set
-			if(rs.first())
+			if(rs.next())
 			{
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("phonenumber_ID"));
