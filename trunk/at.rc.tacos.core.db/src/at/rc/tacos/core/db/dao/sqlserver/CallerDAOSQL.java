@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.model.CallerDetail;
 
@@ -13,7 +13,7 @@ public class CallerDAOSQL implements CallerDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int addCaller(CallerDetail notifierDetail) throws SQLException
@@ -21,17 +21,24 @@ public class CallerDAOSQL implements CallerDAO
 		Connection connection = source.getConnection();
 		try
 		{	
-			// callername, caller_phonenumber
-			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("insert.caller"));
-			stmt.setString(1, notifierDetail.getCallerName());
-			stmt.setString(2, notifierDetail.getCallerTelephoneNumber());
-			stmt.executeUpdate();
+			int id = 0;
+			//get the next id
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextCallerID"));
+			final ResultSet rs = stmt.executeQuery();
+			if(!rs.next())
+				return -1;
+			
+			id = rs.getInt(1);
 
-			//get the last inserted id
-			final ResultSet rs = stmt.getGeneratedKeys();
-			if (rs.next()) 
-				return rs.getInt(1);
-			//no auto value
+			// callername, caller_phonenumber
+			final PreparedStatement insertstmt = connection.prepareStatement(queries.getStatment("insert.caller"));
+			insertstmt.setString(1, notifierDetail.getCallerName());
+			insertstmt.setString(2, notifierDetail.getCallerTelephoneNumber());
+			insertstmt.executeUpdate();
+//
+			if(insertstmt.executeUpdate() == 0)
+				return -1;
+
 			return -1;
 		}
 		finally
