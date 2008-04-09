@@ -28,7 +28,7 @@ public class LocationDAOSQL implements LocationDAO
 			query.setInt(1, locationID);
 			final ResultSet rs = query.executeQuery();
 			//assert we have a result
-			if(rs.first())
+			if(rs.next())
 			{
 				Location location = new Location();
 				location.setCity(rs.getString("lo.city"));
