@@ -14,6 +14,10 @@
 	<property name="db.cleardata_beta1.script" value="${sql.dir}/cleardata_beta1.sql" />
 	<property name="db.createFunctions.script" value="${sql.dir}/createFunctions.sql" />
 	<property name="db.dropFunctions.script" value="${sql.dir}/dropFunctions.sql" />
+	<property name="db.createTables.script" value="${sql.dir}/createTables.sql" /> 
+	<property name="db.insertData.script" value="${sql.dir}/insertData.sql" /> 
+	<property name="db.clearData.script" value="${sql.dir}/clearData.sql" />
+	<property name="db.dropTables.script" value="${sql.dir}/dropTables.sql" />
 	
 	<!-- The classpath including the needed libraries for the database -->
 	<path id="master-classpath">
@@ -25,6 +29,91 @@
 	<!-- ============================================================== -->
 	<!-- Database Tasks                                                 -->
 	<!-- ============================================================== -->
+	
+	<target name="createTables">
+
+	<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+
+	<sql driver="${db.driver}"
+
+	url="${db.url}"
+
+	userid="${db.user}"
+
+	password="${db.pw}"
+
+	src="${db.createTables.script}">
+
+	<classpath refid="master-classpath"/>
+
+	</sql>
+
+	</target>
+
+	<target name="insertData">
+
+	<echo message="INSERT DATA USING: ${db.driver} ${db.url}"/>
+
+	<sql driver="${db.driver}"
+
+	url="${db.url}"
+
+	userid="${db.user}"
+
+	password="${db.pw}"
+
+	src="${db.insertData.script}"
+
+	print="true">
+
+	<classpath refid="master-classpath"/>
+
+	</sql>
+
+	</target>
+
+	<target name="clearData">
+
+	<echo message="CLEAR DATA USING: ${db.driver} ${db.url}"/>
+
+	<sql driver="${db.driver}"
+
+	url="${db.url}"
+
+	userid="${db.user}"
+
+	password="${db.pw}"
+
+	src="${db.clearData.script}">
+
+	<classpath refid="master-classpath"/>
+
+	</sql>
+
+	</target>
+
+	<target name="dropTables">
+
+	<echo message="DROP TABLES USING: ${db.driver} ${db.url}"/>
+
+	<sql driver="${db.driver}"
+
+	url="${db.url}"
+
+	userid="${db.user}"
+
+	password="${db.pw}"
+
+	src="${db.dropTables.script}">
+
+	<classpath refid="master-classpath"/>
+
+	</sql>
+
+	</target>
+	
+	
+	
 	<target name="cleardata_beta1">
 			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
 			<sql driver="${db.driver}"
