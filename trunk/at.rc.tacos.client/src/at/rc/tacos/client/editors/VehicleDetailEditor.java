@@ -6,15 +6,12 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -38,8 +35,6 @@ import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
-import at.rc.tacos.client.providers.StaffMemberContentProvider;
-import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -65,8 +60,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	//read only values - are changed in the vehicleForm
 	private ComboViewer driverViewer,firstParamedicViewer,secondParamedicViewer;
 	private ComboViewer phoneViewer,currentLocationViewer;
-	private TextViewer notesViewer;
-	private Button readyForAction,outOfOrder;
+
 
 	//managed data
 	private VehicleDetail detail;
@@ -112,7 +106,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		//create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
-		createReadOnlySection(form.getBody());
 
 		//load the data
 		if(!isNew)
@@ -247,97 +240,8 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		currentLocationViewer.getCombo().setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		data2.heightHint = 100;
-		
 	}
 
-	/**
-	 * Creates the sction to display the read only section to display actual data.
-	 * @param parent
-	 */
-	private void createReadOnlySection(Composite parent)
-	{
-		Composite client = createSection(parent, "Aktuelle Fahrzeug Daten");
-		//driver
-		final Label labelDriver = toolkit.createLabel(client, "Fahrer");
-		Combo driverCombo = new Combo(client, SWT.READ_ONLY);
-		driverViewer = new ComboViewer(driverCombo);
-		driverViewer.setContentProvider(new StaffMemberContentProvider());
-		driverViewer.setLabelProvider(new StaffMemberLabelProvider());
-		driverViewer.setInput(ModelFactory.getInstance().getStaffManager().getStaffList());
-		//medic
-		final Label labelFirstParamedic = toolkit.createLabel(client, "Sanit‰ter");
-		Combo firstParamedicCombo = new Combo(client, SWT.READ_ONLY);
-		firstParamedicViewer = new ComboViewer(firstParamedicCombo);
-		firstParamedicViewer.setContentProvider(new StaffMemberContentProvider());
-		firstParamedicViewer.setLabelProvider(new StaffMemberLabelProvider());
-		firstParamedicViewer.setInput(ModelFactory.getInstance().getStaffManager().getStaffList());
-		//medic
-		final Label labelSecondParamedic = toolkit.createLabel(client, "Sanit‰ter");
-		Combo secondParamedicCombo = new Combo(client, SWT.READ_ONLY);
-		secondParamedicViewer = new ComboViewer(secondParamedicCombo);
-		secondParamedicViewer.setContentProvider(new StaffMemberContentProvider());
-		secondParamedicViewer.setLabelProvider(new StaffMemberLabelProvider());
-		secondParamedicViewer.setInput(ModelFactory.getInstance().getStaffManager().getStaffList());
-		
-		//the notes section
-		final Label labelNotes = toolkit.createLabel(client,"Notizen zum Fahrzeug");
-		notesViewer = new TextViewer(client, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-		notesViewer.setDocument(new Document());
-		notesViewer.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		notesViewer.setEditable(true);
-		
-		//status of the vehicle
-		final Label labelAction = toolkit.createLabel(client, "Einsatzbereit");
-		readyForAction = toolkit.createButton(client, "", SWT.CHECK);
-		final Label labelRepair = toolkit.createLabel(client, "Auﬂer Dienst");
-		outOfOrder = toolkit.createButton(client, "", SWT.CHECK);
-
-		//disable each field
-		driverViewer.getCombo().setEnabled(false);
-		driverViewer.getCombo().setBackground(CustomColors.GREY_COLOR);
-		firstParamedicViewer.getCombo().setEnabled(false);
-		firstParamedicViewer.getCombo().setBackground(CustomColors.GREY_COLOR);
-		secondParamedicViewer.getCombo().setEnabled(false);
-		secondParamedicViewer.getCombo().setBackground(CustomColors.GREY_COLOR);
-		notesViewer.getTextWidget().setEditable(false);
-		notesViewer.getTextWidget().setBackground(CustomColors.GREY_COLOR);
-		
-		readyForAction.setEnabled(false);
-		outOfOrder.setEnabled(false);
-
-		//set the layout for the composites
-		GridData data = new GridData();
-		data.widthHint = 150;
-		labelDriver.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelFirstParamedic.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelSecondParamedic.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelAction.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelRepair.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		labelNotes.setLayoutData(data);
-		//the input fields
-		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
-		driverViewer.getCombo().setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		firstParamedicViewer.getCombo().setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		secondParamedicViewer.getCombo().setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		notesViewer.getTextWidget().setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		readyForAction.setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		outOfOrder.setLayoutData(data2);
-	}
 
 	/**
 	 * Loads the data and shows them in the view
@@ -355,20 +259,10 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		vehicleType.setText(detail.getVehicleType());
 		if(detail.getBasicStation() != null)
 			basicLocationViewer.setSelection(new StructuredSelection(detail.getBasicStation()));
-		if(detail.getDriver() != null)
-			driverViewer.setSelection(new StructuredSelection(detail.getDriver()));
-		if(detail.getFirstParamedic() != null)
-			firstParamedicViewer.setSelection(new StructuredSelection(detail.getFirstParamedic()));
-		if(detail.getSecondParamedic() != null)
-			secondParamedicViewer.setSelection(new StructuredSelection(detail.getSecondParamedic()));
 		if(detail.getMobilePhone() != null)
 			phoneViewer.setSelection(new StructuredSelection(detail.getMobilePhone()));
 		if(detail.getCurrentStation() != null)
-			currentLocationViewer.setSelection(new StructuredSelection(detail.getCurrentStation()));
-		if(detail.getVehicleNotes() != null)
-			notesViewer.getTextWidget().setText(detail.getVehicleNotes());
-		readyForAction.setSelection(detail.isReadyForAction());
-		outOfOrder.setSelection(detail.isOutOfOrder());
+			currentLocationViewer.setSelection(new StructuredSelection(detail.getCurrentStation()));	
 	}
 
 	@Override
