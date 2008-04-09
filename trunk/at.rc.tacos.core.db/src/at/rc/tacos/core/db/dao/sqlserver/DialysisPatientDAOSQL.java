@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
@@ -19,7 +19,7 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 	//the location DAO
 	private final LocationDAO locationDAO = DaoFactory.SQL.createLocationDAO();
 	
@@ -29,44 +29,50 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 		Connection connection = source.getConnection();
 		try
 		{	
+			int id = 0;
+			
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextDialysisID"));
+			final ResultSet rs = stmt.executeQuery();
+			if(!rs.next())
+				return -1;
+			
+			id = rs.getInt(1);			
+			
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.dialysisPatient"));
-			query.setString(1, patient.getPatient().getFirstname());
-			query.setString(2, patient.getPatient().getLastname());
-			query.setInt(3, patient.getLocation().getId());
-			query.setString(4, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.sqlTime));
-			query.setString(5, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.sqlTime));
-			query.setString(6, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.sqlTime));
-			query.setString(7, MyUtils.timestampToString(patient.getPlannedStartForBackTransport(), MyUtils.sqlTime));
-			query.setString(8, MyUtils.timestampToString(patient.getReadyTime(), MyUtils.sqlTime));
-			query.setString(9, patient.getFromStreet());
-			query.setString(10, patient.getFromCity());
-			query.setString(11, patient.getToStreet());
-			query.setString(12, patient.getToCity());
-			query.setString(13, patient.getInsurance());
-			query.setBoolean(14, patient.isStationary());
-			query.setString(15, patient.getKindOfTransport());
-			query.setBoolean(16, patient.isAssistantPerson());
-			query.setBoolean(17, patient.isMonday());
-			query.setBoolean(18, patient.isTuesday());
-			query.setBoolean(19, patient.isWednesday());
-			query.setBoolean(20, patient.isThursday());
-			query.setBoolean(21, patient.isFriday());
-			query.setBoolean(22, patient.isSaturday());
-			query.setBoolean(23, patient.isSunday());
+			query.setInt(1, id);
+			query.setString(2, patient.getPatient().getFirstname());
+			query.setString(3, patient.getPatient().getLastname());
+			query.setInt(4, patient.getLocation().getId());
+			query.setString(5, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.sqlTime));
+			query.setString(6, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.sqlTime));
+			query.setString(7, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.sqlTime));
+			query.setString(8, MyUtils.timestampToString(patient.getPlannedStartForBackTransport(), MyUtils.sqlTime));
+			query.setString(9, MyUtils.timestampToString(patient.getReadyTime(), MyUtils.sqlTime));
+			query.setString(10, patient.getFromStreet());
+			query.setString(11, patient.getFromCity());
+			query.setString(12, patient.getToStreet());
+			query.setString(13, patient.getToCity());
+			query.setString(14, patient.getInsurance());
+			query.setBoolean(15, patient.isStationary());
+			query.setString(16, patient.getKindOfTransport());
+			query.setBoolean(17, patient.isAssistantPerson());
+			query.setBoolean(18, patient.isMonday());
+			query.setBoolean(19, patient.isTuesday());
+			query.setBoolean(20, patient.isWednesday());
+			query.setBoolean(21, patient.isThursday());
+			query.setBoolean(22, patient.isFriday());
+			query.setBoolean(23, patient.isSaturday());
+			query.setBoolean(24, patient.isSunday());
 			query.executeUpdate();
 			//get the last inserted id
-			final ResultSet rs = query.getGeneratedKeys();
-		    if (!rs.next()) 
-		        return -1;
-		    //get the generated id
-		    int id = rs.getInt(1);
+
 		    //insert a row into the dialysis transport table to save the last generated transport for
 		    //this patient
-		    final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("insert.dialysisTransport"));
-		    stmt.setInt(1, id);
-		    stmt.setString(2, null);
-		    stmt.setString(3, null);
-		    if(stmt.executeUpdate() != 0)
+		    final PreparedStatement insertstmt = connection.prepareStatement(queries.getStatment("insert.dialysisTransport"));
+		    insertstmt.setInt(1, id);
+		    insertstmt.setString(2, null);
+		    insertstmt.setString(3, null);
+		    if(insertstmt.executeUpdate() != 0)
 		    	return id;
 		 
 		    return -1;
