@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
@@ -17,7 +18,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 	//the dependent dao classes
 	private final StaffMemberDAO staffDAO = DaoFactory.SQL.createStaffMemberDAO();
 
