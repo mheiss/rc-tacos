@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.model.CallerDetail;
