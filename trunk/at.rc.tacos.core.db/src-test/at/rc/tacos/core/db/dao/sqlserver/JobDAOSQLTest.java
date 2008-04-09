@@ -28,9 +28,7 @@ public class JobDAOSQLTest extends DBTestBase
     	job2 = new Job("job2");
         //insert test data
         int id1 = jobDao.addJob(job1);
-        System.out.println("TEST::::::: id1: " +id1);
         int id2 = jobDao.addJob(job2);
-        System.out.println("TEST::::::: id2: " +id2);
         
         job1.setId(id1);
         job2.setId(id2);
