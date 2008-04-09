@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.model.MobilePhoneDetail;
 
@@ -15,7 +16,7 @@ public class MobilePhoneDAOSQL implements MobilePhoneDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int addMobilePhone(MobilePhoneDetail phone) throws SQLException
@@ -23,17 +24,34 @@ public class MobilePhoneDAOSQL implements MobilePhoneDAO
 		Connection connection = source.getConnection();
 		try
 		{	
+			int id = 0;
+			//get the next id
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextPhoneID"));
+			final ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+			{
+				id = rs.getInt(1);
+			}
+			else
+				return -1;
+			
+//			// competence_ID, competence
+//			final PreparedStatement insertStmt = connection.prepareStatement(queries.getStatment("insert.competence"));
+//			insertStmt.setObject(1, id);
+//			insertStmt.setString(2, competence.getCompetenceName());
+//			insertStmt.executeUpdate();
+//			
+//			return id;
+			
+			
 			// phonenumber_ID, phonenumber, phonename
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.phone"));
-			query.setString(1, null);
+			query.setInt(1, id);
 			query.setString(2, phone.getMobilePhoneNumber());
 			query.setString(3, phone.getMobilePhoneName());
 			query.executeUpdate();
-			//get the last inserted id
-			final ResultSet rs = query.getGeneratedKeys();
-			if (rs.next()) 
-				return rs.getInt(1);
-			return -1;
+
+			return id;
 		}
 		finally
 		{

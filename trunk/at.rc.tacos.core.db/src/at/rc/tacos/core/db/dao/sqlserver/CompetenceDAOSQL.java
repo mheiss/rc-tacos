@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.model.Competence;
 
@@ -15,7 +15,7 @@ public class CompetenceDAOSQL implements CompetenceDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int addCompetence(Competence competence) throws SQLException
@@ -23,19 +23,23 @@ public class CompetenceDAOSQL implements CompetenceDAO
 		Connection connection = source.getConnection();
 		try
 		{	
+			int id = 0;
+			//get the next id
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextCompetenceID"));
+			final ResultSet rs = stmt.executeQuery();
+			if(!rs.next())
+				return -1;
+			
+			id = rs.getInt(1);
+				
 			// competence_ID, competence
-			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("insert.competence"));
-			stmt.setString(1, competence.getCompetenceName());
-			stmt.executeUpdate();
-
-			//get the last inserted id
-			final PreparedStatement stmt1 = connection.prepareStatement(queries.getStatment("get.highestCompetenceID"));
-			final ResultSet rs1 = stmt1.executeQuery();
-//			final ResultSet rs = stmt.getGeneratedKeys();
-			if (rs1.next()) 
-				return rs1.getInt(1);
-			//no auto value generated
-			return -1;
+			final PreparedStatement insertStmt = connection.prepareStatement(queries.getStatment("insert.competence"));
+			insertStmt.setInt(1, id);
+			insertStmt.setString(2, competence.getCompetenceName());
+			if(insertStmt.executeUpdate() == 0)
+				return -1;
+			
+			return id;
 		}
 		finally
 		{
@@ -52,15 +56,15 @@ public class CompetenceDAOSQL implements CompetenceDAO
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.competenceByID"));
 			stmt.setInt(1, id);
 			final ResultSet rs = stmt.executeQuery();
-			while(rs.next())
-			{
-				Competence competence = new Competence();
-				competence.setCompetenceName(rs.getString("competence"));
-				competence.setId(id);
-				return competence;
-			}
 			//no result set
-			return null;
+			if(!rs.next())
+				return null;
+			
+			Competence competence = new Competence();
+			competence.setCompetenceName(rs.getString("competence"));
+			competence.setId(id);
+			return competence;
+			
 		}
 		finally
 		{
