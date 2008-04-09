@@ -29,9 +29,11 @@ public class CompetenceDAOSQL implements CompetenceDAO
 			stmt.executeUpdate();
 
 			//get the last inserted id
-			final ResultSet rs = stmt.getGeneratedKeys();
-			if (rs.next()) 
-				return rs.getInt(1);
+			final PreparedStatement stmt1 = connection.prepareStatement(queries.getStatment("get.highestCompetenceID"));
+			final ResultSet rs1 = stmt1.executeQuery();
+//			final ResultSet rs = stmt.getGeneratedKeys();
+			if (rs1.next()) 
+				return rs1.getInt(1);
 			//no auto value generated
 			return -1;
 		}
@@ -50,8 +52,7 @@ public class CompetenceDAOSQL implements CompetenceDAO
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.competenceByID"));
 			stmt.setInt(1, id);
 			final ResultSet rs = stmt.executeQuery();
-			//assert we have a result set
-			if(rs.first())
+			while(rs.next())
 			{
 				Competence competence = new Competence();
 				competence.setCompetenceName(rs.getString("competence"));

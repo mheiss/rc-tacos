@@ -116,9 +116,11 @@ public class LocationDAOSQL implements LocationDAO
 			query.executeUpdate();
 
 			//get the last inserted id
-			final ResultSet rs = query.getGeneratedKeys();
-			if (rs.next()) 
-				return rs.getInt(1);
+			final PreparedStatement stmt1 = connection.prepareStatement(queries.getStatment("get.highestLocationID"));
+			final ResultSet rs1 = stmt1.executeQuery();
+//			final ResultSet rs = query.getGeneratedKeys();
+			if (rs1.next()) 
+				return rs1.getInt(1);
 			return -1;
 		}
 		finally
