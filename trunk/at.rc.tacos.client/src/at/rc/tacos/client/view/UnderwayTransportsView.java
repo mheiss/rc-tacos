@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
@@ -104,16 +105,27 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		//Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		formDisp = toolkit.createScrolledForm(parent);
-		formDisp.setText("Disponierte Transporte");
+		formDisp.setText("Disponierte ---- Transporte");
 		toolkit.decorateFormHeading(formDisp.getForm());
 		formDisp.getBody().setLayout(new FillLayout());
 		
+		
+		
 		final Composite composite = formDisp.getBody();
-		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		
+		SashForm sashForm = new SashForm(composite, SWT.VERTICAL);
+		
+		
+		viewer = new TableViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager().toArray());
 		viewer.getTable().setLinesVisible(true);
+		
+		//integrate the outstandings transports view
+		OutstandingTransportsView outstandingView = new OutstandingTransportsView();
+		outstandingView.createPartControl(sashForm);
+		
 		
 		viewer.refresh();
 		
@@ -351,7 +363,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		});
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
+//		getSite().registerContextMenu(menuManager, viewer);
 	}
 	
 	/**
