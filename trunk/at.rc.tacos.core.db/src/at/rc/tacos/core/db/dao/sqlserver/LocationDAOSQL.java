@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.model.*;
 
@@ -15,7 +15,7 @@ public class LocationDAOSQL implements LocationDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public Location getLocation(int locationID) throws SQLException
@@ -104,24 +104,31 @@ public class LocationDAOSQL implements LocationDAO
 		Connection connection = source.getConnection();
 		try
 		{	
+			int id = 0;
+			//get the next id
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextLocationID"));
+			final ResultSet rs = stmt.executeQuery();
+			if(!rs.next())
+				return -1;
+			
+			id = rs.getInt(1);
+			
+			
 			// location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.location"));
-			query.setString(1, location.getLocationName());
-			query.setString(2, location.getStreet());
-			query.setString(3, location.getStreetNumber());
-			query.setInt(4, location.getZipcode());
-			query.setString(5, location.getCity());
-			query.setString(6, location.getNotes());
-			query.setInt(7, location.getPhone().getId());
-			query.executeUpdate();
-
-			//get the last inserted id
-			final PreparedStatement stmt1 = connection.prepareStatement(queries.getStatment("get.highestLocationID"));
-			final ResultSet rs1 = stmt1.executeQuery();
-//			final ResultSet rs = query.getGeneratedKeys();
-			if (rs1.next()) 
-				return rs1.getInt(1);
-			return -1;
+			query.setInt(1, id);
+			query.setString(2, location.getLocationName());
+			query.setString(3, location.getStreet());
+			query.setString(4, location.getStreetNumber());
+			query.setInt(5, location.getZipcode());
+			query.setString(6, location.getCity());
+			query.setString(7, location.getNotes());
+			query.setInt(8, location.getPhone().getId());
+			
+			if(query.executeUpdate() == 0)
+				return -1;
+			
+			return id;
 		}
 		finally
 		{

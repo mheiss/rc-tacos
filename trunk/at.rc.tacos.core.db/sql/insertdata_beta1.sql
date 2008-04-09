@@ -1,18 +1,15 @@
 -- Insert data scrip, version 1.5 lastChanged 20.02.2008
 -- last changed:
 -- moved the transport states to the createTable script. 
---SET IDENTITY_INSERT tacos.dbo.job OFF
+
 -- Sercive types
-SET IDENTITY_INSERT servicetype ON
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(1, 'Hauptamtlich');
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(2, 'Freiwillig');
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(3, 'Ersatzeinstellung');
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(4, 'Zivildiener');
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(5, 'Sonstiges');
-SET IDENTITY_INSERT servicetype OFF
 
 -- Available jobs
-SET IDENTITY_INSERT job ON
 INSERT INTO job(job_ID, jobname) VALUES(1, 'Fahrer');
 INSERT INTO job(job_ID, jobname) VALUES(2, 'Sanitäter');
 INSERT INTO job(job_ID, jobname) VALUES(3, 'Notfallsanitäter');
@@ -25,10 +22,8 @@ INSERT INTO job(job_ID, jobname) VALUES(9, 'BKTW-Fahrer');
 INSERT INTO job(job_ID, jobname) VALUES(10, 'Journaldienst');
 INSERT INTO job(job_ID, jobname) VALUES(11, 'Volontär');
 INSERT INTO job(job_ID, jobname) VALUES(12, 'Sonstiges');
-SET IDENTITY_INSERT job OFF
 
 -- Mobile phones
---SET IDENTITY_INSERT phonenumbers ON
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(1, '0699-11321018', 'BM01');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(2, '0664-9615263', 'BM02');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(3, '0664-8218004', 'BM03');
@@ -55,7 +50,6 @@ INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(23, '066
 
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(24, '0664-12345678', 'privat');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(25, '0361-12345678', 'privat');
---SET IDENTITY_INSERT phonenumbers OFF
 
 -- logins
 INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('w.lohm', 'pwd', 'Administrator', 0, 0);
@@ -68,14 +62,11 @@ INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES
 INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('h.maie', 'helmut', 'Administrator', 0, 0);
 
 -- diseases
-SET IDENTITY_INSERT disease ON
 INSERT INTO disease(disease_ID, disease) VALUES(1, 'Knochenbruch');
 INSERT INTO disease(disease_ID, disease) VALUES(2, 'Kreislauf');
 INSERT INTO disease(disease_ID, disease) VALUES(3, 'Neuronale Beschwerden');
-SET IDENTITY_INSERT disease OFF
 
 -- competences
-
 INSERT INTO competences(competence_ID, competence) VALUES(1, 'Rettungssanitäter');
 INSERT INTO competences(competence_ID, competence) VALUES(2, 'Einsatzfahrer');
 INSERT INTO competences(competence_ID, competence) VALUES(3, 'FK 1');
@@ -88,7 +79,6 @@ INSERT INTO competences(competence_ID, competence) VALUES(9, 'SVE');
 
 
 -- locations
---SET IDENTITY_INSERT location ON
 INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID)
 VALUES(1, 'Bezirk: Bruck - Kapfenberg', 'Bruckerstr.', '144', 8600, 'Bruck', 'BE', 3);
 INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID)
@@ -103,7 +93,6 @@ INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, c
 VALUES(6, 'Breitenau', 'Wienerstr.', '144', 8605, 'Kapfenberg', 'BR', 2);
 INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID)
 VALUES(7, 'St. Marein', 'Wienerstr.', '144', 8605, 'Kapfenberg', 'MA', 2);
---SET IDENTITY_INSERT location OFF
 
 -- staff members
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
@@ -125,7 +114,6 @@ VALUES(50100008, 2, 'Helmut', 'Maier', 1, '17-10-1955', 'helmut.maier@st.roteskr
 
 
 -- assign mobile phones to staff members
-
 INSERT INTO phone_staffmember(staffmember_ID, phonenumber_ID) VALUES(50100001, 1);
 INSERT INTO phone_staffmember(staffmember_ID, phonenumber_ID) VALUES(50100002, 2);
 INSERT INTO phone_staffmember(staffmember_ID, phonenumber_ID) VALUES(50100003, 3);
@@ -133,7 +121,6 @@ INSERT INTO phone_staffmember(staffmember_ID, phonenumber_ID) VALUES(50100003, 4
 
 
 -- assign the competences to staff members
-
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100001,1);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100003,3);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100003,5);
@@ -143,10 +130,8 @@ INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(5010000
 
 
 -- create dummy dialyse patients
-SET IDENTITY_INSERT dialysis ON
 INSERT INTO dialysis(dialysis_ID, firstname, lastname, location, plannedStartOfTransport, plannedTimeAtPatient, appointmentTimeAtDialysis, plannedStartForBackTransport, readyTime, fromStreet, fromCity, toStreet, toCity, insurance, stationary, kindOfTransport, assistant, monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES(1, 'max', 'muster', 1, '08:20', '09:00', '10:00', '14:00', '15:00', 'fromStreet1', 'fromCity1', 'toStreet1', 'toCity1', 'keine', 0, 'liegend', 0, 1, 0, 0, 1, 0, 1, 1);
 INSERT INTO dialysis(dialysis_ID, firstname, lastname, location, plannedStartOfTransport, plannedTimeAtPatient, appointmentTimeAtDialysis, plannedStartForBackTransport, readyTime, fromStreet, fromCity, toStreet, toCity, insurance, stationary, kindOfTransport, assistant, monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES(2, 'frau', 'musterin', 1, '12:30', '13:00', '14:00', '15:00', '18:00', 'fromStreet2', 'fromCity2', 'toStreet2', 'toCity2', 'keine', 0, 'liegend', 0, 0, 0, 1, 1, 0, 0, 1);
-SET IDENTITY_INSERT dialysis OFF
 
 -- create the entries int the dialysis transport table
 
@@ -155,21 +140,16 @@ INSERT INTO dialysis_transport(dialysis_ID,transport_date,return_date) values(2,
 
 
 -- create dummy caller
-SET IDENTITY_INSERT caller ON
 INSERT INTO caller(caller_ID, callername, caller_phonenumber)
 VALUES(1, 'Herr Maier', '0342 - 12345');
-SET IDENTITY_INSERT caller OFF
 
 -- create dummy transports
-SET IDENTITY_INSERT transports ON
 INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
 --VALUES(null, 0, 1, 1, 'anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '20080215215400');
 --VALUES(1, 0, 1, 1, 'anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', 2008-01-03 21:54, 2007-11-24 21:54, 2007-11-24 21:54, 2007-11-24 21:54, 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, 2008-02-15 21:54);
 VALUES(1, 0, 1, 1, 'anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '03.01.2008 21:54', '24.11.2007 21:54', '24.11.2007 21:54', '24.11.2007 21:54', 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '15.02.2008 21:54');
-SET IDENTITY_INSERT transports OFF
 
 -- create dummy roster
-SET IDENTITY_INSERT roster ON
 INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
 --VALUES(null, 1, 50100001, 3, 2, '20071215070000', '20081215190000', null, null, 'Die erste fahrt in der Steiermark!', 0, 'w.lohm');
 VALUES(1, 1, 50100001, 3, 2, '15.12.2007 07:00', '15.12.2008 19:00', null, null, 'Die erste fahrt in der Steiermark!', 0, 'w.lohm');
@@ -181,7 +161,6 @@ VALUES(2, 1, 50100002, 3, 3, '15.12.2007 07:00', '15.12.2008 19:00', null, null,
 INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
 --VALUES(null, 2, 50100003, 1, 1, '20071215190000', '20081216070000', null, null, 'kommt nicht aus den Federn!', 1, 'u.nech');
 VALUES(3, 2, 50100003, 1, 1, '15.12.2007 19:00', '16.12.2008 07:00', null, null, 'kommt nicht aus den Federn!', 1, 'u.nech');
-SET IDENTITY_INSERT roster OFF
 
 -- create vehicles
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)

@@ -26,7 +26,7 @@ public interface DaoFactory
 	
     final DaoFactoryMySql MYSQL = new DaoFactoryMySql();
 	//factory for SQL
-	//final DaoFactorySQL SQL = new DaoFactorySQL();
+	final DaoFactorySQL SQL = new DaoFactorySQL();
 	
 	
     //the provided factory methods

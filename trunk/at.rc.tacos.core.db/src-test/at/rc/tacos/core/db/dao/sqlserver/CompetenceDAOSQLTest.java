@@ -29,6 +29,7 @@ public class CompetenceDAOSQLTest extends DBTestBase
         //insert test data
         int id1 = compDao.addCompetence(comp1);
         int id2 = compDao.addCompetence(comp2);
+        System.out.println("id1................id1:" +id1);
         comp1.setId(id1);
         comp2.setId(id2);
     }
@@ -42,6 +43,7 @@ public class CompetenceDAOSQLTest extends DBTestBase
     @Test
     public void testFindById() throws SQLException
     {
+    	System.out.println("-----------id comp1: " +comp1.getId());
         Competence comp = compDao.getCompetenceById(comp1.getId());   
         Assert.assertEquals("comp1", comp.getCompetenceName());
     }

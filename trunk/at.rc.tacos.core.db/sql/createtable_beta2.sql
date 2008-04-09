@@ -1,20 +1,20 @@
 
 CREATE TABLE servicetype (
-  servicetype_ID BIGINT IDENTITY (1,1) NOT NULL,
+  servicetype_ID BIGINT NOT NULL, --AUTO_INCREMENT NOT NULL,
   servicetype VARCHAR(30) NOT NULL,
   PRIMARY KEY(servicetype_ID)
 )
 
 
 CREATE TABLE job (
-  job_ID BIGINT IDENTITY (1,1) NOT NULL,
+  job_ID BIGINT NOT NULL,
   jobname VARCHAR(30) NOT NULL,
   PRIMARY KEY(job_ID)
 )
 
 
 CREATE TABLE phonenumbers (
-  phonenumber_ID BIGINT IDENTITY (1,1) NOT NULL,
+  phonenumber_ID BIGINT NOT NULL,
   phonenumber VARCHAR(30) NOT NULL,
   phonename VARCHAR(30) NULL,
   PRIMARY KEY(phonenumber_ID)
@@ -33,7 +33,7 @@ CREATE TABLE userlogin (
 
 
 CREATE TABLE selected (
-  selected_ID BIGINT IDENTITY (1,1) NOT NULL,
+  selected_ID BIGINT NOT NULL,
   name VARCHAR(30) NOT NULL,
   PRIMARY KEY(selected_ID)
 )
@@ -42,7 +42,6 @@ CREATE TABLE selected (
 -- Insert the possible values for the selected table
 -- Do NOT clear this table
 -- This MUST be done in the createTables script
-SET IDENTITY_INSERT selected ON
 INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');
 INSERT INTO selected(selected_ID, name) VALUES(2, 'Exekutive');
 INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
@@ -57,7 +56,6 @@ INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
 INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
 INSERT INTO selected(selected_ID, name) VALUES(13, 'KIT');
 INSERT INTO selected(selected_ID, name) VALUES(14, 'BD1');
-SET IDENTITY_INSERT selected OFF
 
 CREATE TABLE disease (
   disease_ID BIGINT NOT NULL,
@@ -67,7 +65,7 @@ CREATE TABLE disease (
 
 
 CREATE TABLE caller (
-  caller_ID BIGINT IDENTITY (1,1) NOT NULL,
+  caller_ID BIGINT NOT NULL,
   callername VARCHAR(150) NULL,
   caller_phonenumber VARCHAR(60) NULL,
   PRIMARY KEY(caller_ID)
@@ -110,7 +108,7 @@ Create NONCLUSTERED Index location_FKIndex1 ON location (phonenumber_id)
 
 
 CREATE TABLE dialysis (
-  dialysis_ID BIGINT IDENTITY (1,1) NOT NULL,
+  dialysis_ID BIGINT NOT NULL,
   firstname VARCHAR(30) NULL,
   lastname VARCHAR(30) NULL,
   location BIGINT NOT NULL,
@@ -169,7 +167,7 @@ Create NONCLUSTERED Index dayinfo_FKIndex1 ON dayinfo (username)
 
 
 CREATE TABLE staffmembers (
-  staffmember_ID BIGINT NOT NULL, --kein auto increment???????
+  staffmember_ID BIGINT NOT NULL,
   username VARCHAR(30) NOT NULL,
   primaryLocation BIGINT NOT NULL,
   lastname VARCHAR(30) NOT NULL,
@@ -236,7 +234,7 @@ Create NONCLUSTERED Index staffmembers_has_competences_FKIndex2 ON staffmember_c
 
 
 CREATE TABLE transports (
-  transport_ID BIGINT IDENTITY (1,1) NOT NULL,
+  transport_ID BIGINT NOT NULL,
   transportNr BIGINT NOT NULL,
   year VARCHAR(39) NULL,
   planned_location BIGINT NULL,
@@ -284,7 +282,7 @@ Create NONCLUSTERED Index transports_FKIndex7 ON transports (planned_location)
 
 
 CREATE TABLE roster (
-  roster_ID BIGINT IDENTITY (1,1) NOT NULL,
+  roster_ID BIGINT NOT NULL,
   entry_createdBy VARCHAR(30) NOT NULL,
   staffmember_ID BIGINT NOT NULL,
   location_ID BIGINT NOT NULL,
