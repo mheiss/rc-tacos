@@ -28,7 +28,7 @@ INSERT INTO job(job_ID, jobname) VALUES(12, 'Sonstiges');
 SET IDENTITY_INSERT job OFF
 
 -- Mobile phones
-SET IDENTITY_INSERT phonenumbers ON
+--SET IDENTITY_INSERT phonenumbers ON
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(1, '0699-11321018', 'BM01');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(2, '0664-9615263', 'BM02');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(3, '0664-8218004', 'BM03');
@@ -55,7 +55,7 @@ INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(23, '066
 
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(24, '0664-12345678', 'privat');
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(25, '0361-12345678', 'privat');
-SET IDENTITY_INSERT phonenumbers OFF
+--SET IDENTITY_INSERT phonenumbers OFF
 
 -- logins
 INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('w.lohm', 'pwd', 'Administrator', 0, 0);
@@ -75,7 +75,7 @@ INSERT INTO disease(disease_ID, disease) VALUES(3, 'Neuronale Beschwerden');
 SET IDENTITY_INSERT disease OFF
 
 -- competences
-SET IDENTITY_INSERT competences ON
+
 INSERT INTO competences(competence_ID, competence) VALUES(1, 'Rettungssanitäter');
 INSERT INTO competences(competence_ID, competence) VALUES(2, 'Einsatzfahrer');
 INSERT INTO competences(competence_ID, competence) VALUES(3, 'FK 1');
@@ -85,10 +85,10 @@ INSERT INTO competences(competence_ID, competence) VALUES(6, 'Leitstellendispone
 INSERT INTO competences(competence_ID, competence) VALUES(7, 'Notfallsanitäter');
 INSERT INTO competences(competence_ID, competence) VALUES(8, 'KIT');
 INSERT INTO competences(competence_ID, competence) VALUES(9, 'SVE');
-SET IDENTITY_INSERT competences OFF
+
 
 -- locations
-SET IDENTITY_INSERT location ON
+--SET IDENTITY_INSERT location ON
 INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID)
 VALUES(1, 'Bezirk: Bruck - Kapfenberg', 'Bruckerstr.', '144', 8600, 'Bruck', 'BE', 3);
 INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID)
@@ -103,7 +103,7 @@ INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, c
 VALUES(6, 'Breitenau', 'Wienerstr.', '144', 8605, 'Kapfenberg', 'BR', 2);
 INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID)
 VALUES(7, 'St. Marein', 'Wienerstr.', '144', 8605, 'Kapfenberg', 'MA', 2);
-SET IDENTITY_INSERT location OFF
+--SET IDENTITY_INSERT location OFF
 
 -- staff members
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)

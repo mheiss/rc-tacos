@@ -1,6 +1,6 @@
 
 CREATE TABLE servicetype (
-  servicetype_ID BIGINT IDENTITY (1,1) NOT NULL, --AUTO_INCREMENT NOT NULL,
+  servicetype_ID BIGINT IDENTITY (1,1) NOT NULL,
   servicetype VARCHAR(30) NOT NULL,
   PRIMARY KEY(servicetype_ID)
 )
@@ -42,7 +42,7 @@ CREATE TABLE selected (
 -- Insert the possible values for the selected table
 -- Do NOT clear this table
 -- This MUST be done in the createTables script
-SET IDENTITY_INSERT  selected ON
+SET IDENTITY_INSERT selected ON
 INSERT INTO selected(selected_ID, name) VALUES(1, 'Notarzt');
 INSERT INTO selected(selected_ID, name) VALUES(2, 'Exekutive');
 INSERT INTO selected(selected_ID, name) VALUES(3, 'Feuerwehr');
@@ -57,10 +57,10 @@ INSERT INTO selected(selected_ID, name) VALUES(11, 'Fernfahrt');
 INSERT INTO selected(selected_ID, name) VALUES(12, 'Rufhilfepatient');
 INSERT INTO selected(selected_ID, name) VALUES(13, 'KIT');
 INSERT INTO selected(selected_ID, name) VALUES(14, 'BD1');
-SET IDENTITY_INSERT  selected OFF
+SET IDENTITY_INSERT selected OFF
 
 CREATE TABLE disease (
-  disease_ID BIGINT IDENTITY (1,1) NOT NULL,
+  disease_ID BIGINT NOT NULL,
   disease VARCHAR(30) NOT NULL,
   PRIMARY KEY(disease_ID)
 )
@@ -84,14 +84,14 @@ CREATE TABLE tmptransports (
 
 
 CREATE TABLE competences (
-  competence_ID BIGINT IDENTITY (1,1) NOT NULL,
+  competence_ID BIGINT NOT NULL,
   competence VARCHAR(30) NOT NULL,
   PRIMARY KEY(competence_ID)
 )
 
 
 CREATE TABLE location (
-  location_ID BIGINT IDENTITY (1,1) NOT NULL,
+  location_ID BIGINT NOT NULL,
   phonenumber_ID BIGINT NOT NULL,
   locationname VARCHAR(30) NULL,
   street VARCHAR(30) NULL,
