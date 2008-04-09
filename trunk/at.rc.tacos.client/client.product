@@ -34,7 +34,6 @@ Time and Configuration Management
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -44,6 +43,7 @@ Time and Configuration Management
       <plugin id="at.rc.tacos.model"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.ibm.icu36.data.update" fragment="true"/>
+      <plugin id="com.swtdesigner.gwt.saf.browser" fragment="true"/>
       <plugin id="javax.servlet"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>
