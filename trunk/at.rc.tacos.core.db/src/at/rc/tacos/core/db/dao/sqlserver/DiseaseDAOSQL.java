@@ -28,9 +28,11 @@ public class DiseaseDAOSQL implements DiseaseDAO
 			stmt.setString(1, disease.getDiseaseName());
 			stmt.executeUpdate();
 			//get the last inserted id
-			final ResultSet rs = stmt.getGeneratedKeys();
-		    if (rs.next()) 
-		        return rs.getInt(1);
+			final PreparedStatement stmt1 = connection.prepareStatement(queries.getStatment("get.highestDiseaseID"));
+			final ResultSet rs1 = stmt1.executeQuery();
+			//			final ResultSet rs = stmt.getGeneratedKeys();
+		    if (rs1.next()) 
+		        return rs1.getInt(1);
 		    //no auto value
 		    return -1;
 		}
