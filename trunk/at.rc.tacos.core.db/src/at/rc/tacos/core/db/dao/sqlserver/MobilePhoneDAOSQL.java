@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.model.MobilePhoneDetail;
@@ -28,28 +27,17 @@ public class MobilePhoneDAOSQL implements MobilePhoneDAO
 			//get the next id
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextPhoneID"));
 			final ResultSet rs = stmt.executeQuery();
-			if(rs.next())
-			{
-				id = rs.getInt(1);
-			}
-			else
+			if(!rs.next())
 				return -1;
-			
-//			// competence_ID, competence
-//			final PreparedStatement insertStmt = connection.prepareStatement(queries.getStatment("insert.competence"));
-//			insertStmt.setObject(1, id);
-//			insertStmt.setString(2, competence.getCompetenceName());
-//			insertStmt.executeUpdate();
-//			
-//			return id;
-			
+			id = rs.getInt(1);
 			
 			// phonenumber_ID, phonenumber, phonename
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.phone"));
 			query.setInt(1, id);
 			query.setString(2, phone.getMobilePhoneNumber());
 			query.setString(3, phone.getMobilePhoneName());
-			query.executeUpdate();
+			if(query.executeUpdate() == 0)
+				return -1;
 
 			return id;
 		}
