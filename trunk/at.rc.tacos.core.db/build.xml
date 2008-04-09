@@ -16,6 +16,8 @@
 	<property name="db.droptables_beta1.script" value="${sql.dir}/droptables_beta1.sql" />
 	<property name="db.insertdata_beta1.script" value="${sql.dir}/insertdata_beta1.sql" />
 	<property name="db.cleardata_beta1.script" value="${sql.dir}/cleardata_beta1.sql" />
+	<property name="db.createFunctions.script" value="${sql.dir}/createFunctions.sql" />
+	<property name="db.dropFunctions.script" value="${sql.dir}/dropFunctions.sql" />
 	
 	<!-- The classpath including the needed libraries for the database -->
 	<path id="master-classpath">
@@ -112,6 +114,28 @@
 	             userid="${db.user}"
 	             password="${db.pw}"
 	        	 src="${db.insertdata_beta1.script}">
+				<classpath refid="master-classpath"/>
+			</sql>
+		</target>
+	
+	<target name="createFunctions">
+			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+			<sql driver="${db.driver}"
+	             url="${db.url}"
+	             userid="${db.user}"
+	             password="${db.pw}"
+	        	 src="${db.createFunctions.script}">
+				<classpath refid="master-classpath"/>
+			</sql>
+		</target>
+	
+	<target name="dropFunctions">
+			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+			<sql driver="${db.driver}"
+	             url="${db.url}"
+	             userid="${db.user}"
+	             password="${db.pw}"
+	        	 src="${db.dropFunctions.script}">
 				<classpath refid="master-classpath"/>
 			</sql>
 		</target>
