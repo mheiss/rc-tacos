@@ -276,7 +276,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             buttonNotfall.setEnabled(false);
             buttonDialyse.setEnabled(false);
             buttonMehrfachtransport.setEnabled(false);
-            buttonADDMehrfachtransport.setEnabled(false);
              
              
             //set field contents
