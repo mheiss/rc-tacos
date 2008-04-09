@@ -98,7 +98,7 @@ public class DaoFactorySQL implements DaoFactory
 	@Override
 	public ServiceTypeDAO createServiceTypeDAO() 
 	{
-		return new ServiceTypeDAOMySQL();
+		return new ServiceTypeDAOSQL();
 	}
 
 	@Override
