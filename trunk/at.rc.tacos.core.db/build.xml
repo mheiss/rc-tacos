@@ -21,6 +21,7 @@
 	<property name="db.sql_create_f_disease.script" value="${sql.dir}/sql_create_f_disease.sql" />
 	<property name="db.sql_create_f_location.script" value="${sql.dir}/sql_create_f_location.sql" />
 	<property name="db.sql_create_f_job.script" value="${sql.dir}/sql_create_f_job.sql" />
+	<property name="db.sql_create_f_phone.script" value="${sql.dir}/sql_create_f_phone.sql" />
 	
 	<!-- The classpath including the needed libraries for the database -->
 	<path id="master-classpath">
@@ -206,5 +207,16 @@
 						<classpath refid="master-classpath"/>
 					</sql>
 				</target>
+	
+	<target name="sql_create_f_phone">
+						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+						<sql driver="${db.driver}"
+				             url="${db.url}"
+				             userid="${db.user}"
+				             password="${db.pw}"
+				        	 src="${db.sql_create_f_phone.script}">
+							<classpath refid="master-classpath"/>
+						</sql>
+					</target>
 	
 </project>
