@@ -31,7 +31,6 @@ public class JobDAOSQL implements JobDAO
 				return -1;
 			
 			id = rs.getInt(1);
-			System.out.println("DAO:::::::::::::: id:" +id +" " +job.getJobName());
 			
 			// jobname
 			final PreparedStatement insertstmt = connection.prepareStatement(queries.getStatment("insert.job"));
