@@ -24,10 +24,10 @@ public class DayInfoDAOSQL implements DayInfoDAO
 		{
 			//dayinfo_ID, username, date, message
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.dayInfoByDate"));
-			query.setString(1,MyUtils.timestampToString(date, MyUtils.sqlDate));
+			query.setString(1,MyUtils.timestampToString(date, MyUtils.sqlServerDate));
 			final ResultSet rs = query.executeQuery();
 			//assert we have a result set
-			if(rs.first())
+			if(rs.next())
 			{
 				DayInfoMessage dayInfo = new DayInfoMessage();
 				dayInfo.setLastChangedBy(rs.getString("username"));
@@ -58,7 +58,7 @@ public class DayInfoDAOSQL implements DayInfoDAO
 				final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.dayInfo"));
 				query.setString(1,message.getLastChangedBy());
 				query.setString(2,message.getMessage());
-				query.setString(3, MyUtils.timestampToString(message.getTimestamp(), MyUtils.sqlDate));
+				query.setString(3, MyUtils.timestampToString(message.getTimestamp(), MyUtils.sqlServerDate));
 				//check if the day info message was updated
 				if(query.executeUpdate() == 0)
 					return false;
@@ -69,7 +69,7 @@ public class DayInfoDAOSQL implements DayInfoDAO
 				//username, date, message
 				final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.dayInfo"));
 				query.setString(1, message.getLastChangedBy());
-				query.setString(2, MyUtils.timestampToString(message.getTimestamp(), MyUtils.sqlDate));
+				query.setString(2, MyUtils.timestampToString(message.getTimestamp(), MyUtils.sqlServerDate));
 				query.setString(3, message.getMessage());
 				//assert the message was inserted
 				if(query.executeUpdate() == 0)
