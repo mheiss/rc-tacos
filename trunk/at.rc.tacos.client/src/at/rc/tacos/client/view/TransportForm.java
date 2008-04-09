@@ -134,7 +134,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Button bd2Button;
     private Button bd1Button;
     private Button buttonMehrfachtransport;
-    private Button buttonADDMehrfachtransport;
     
     //groups
     private Group formGroup;
