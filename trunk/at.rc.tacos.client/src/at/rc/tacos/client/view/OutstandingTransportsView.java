@@ -160,7 +160,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 				});
 				Menu menu = menuManager.createContextMenu(viewerOffTrans.getControl());
 				viewerOffTrans.getControl().setMenu(menu);
-				getSite().registerContextMenu(menuManager, viewerOffTrans);
+//				getSite().registerContextMenu(menuManager, viewerOffTrans);
 			}
 			
 			/**
