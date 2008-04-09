@@ -28,6 +28,7 @@
 	<property name="db.sql_create_f_selected.script" value="${sql.dir}/sql_create_f_selected.sql" />
 	<property name="db.sql_create_f_servicetype.script" value="${sql.dir}/sql_create_f_servicetype.sql" />
 	<property name="db.sql_create_f_staffmember.script" value="${sql.dir}/sql_create_f_staffmember.sql" />
+	<property name="db.sql_create_f_transport.script" value="${sql.dir}/sql_create_f_transport.sql" />	
 	<property name="db.sql_create_f_vehicle.script" value="${sql.dir}/sql_create_f_vehicle.sql" />
 	
 	<!-- The classpath including the needed libraries for the database -->
@@ -288,6 +289,17 @@
 				             userid="${db.user}"
 				             password="${db.pw}"
 				        	 src="${db.sql_create_f_staffmember.script}">
+							<classpath refid="master-classpath"/>
+						</sql>
+					</target>
+
+	<target name="sql_create_f_transport">
+						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
+						<sql driver="${db.driver}"
+				             url="${db.url}"
+				             userid="${db.user}"
+				             password="${db.pw}"
+				        	 src="${db.sql_create_f_transport.script}">
 							<classpath refid="master-classpath"/>
 						</sql>
 					</target>
