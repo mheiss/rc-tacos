@@ -118,20 +118,11 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		
 		viewerOffTrans.refresh();
 
-//		tooltip = new OutstandingTransportsTooltip(viewerOffTrans.getControl());
-		//show the tool tip when the selection has changed
 		//make the actions for the context menu when selection has changed
 		viewerOffTrans.addSelectionChangedListener(new ISelectionChangedListener() 
 		{
 			public void selectionChanged(SelectionChangedEvent event) 
-			{
-//				TableItem[] selection = viewerOffTrans.getTable().getSelection();
-//				if (selection != null && selection.length > 0) 
-//				{
-//					Rectangle bounds = selection[0].getBounds();
-//					tooltip.show(new Point(bounds.x, bounds.y));
-//				}
-				
+			{				
 				this.makeActions();
 				this.hookContextMenu();
 			}
