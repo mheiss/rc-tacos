@@ -1,4 +1,3 @@
-
 CREATE TABLE servicetype (
   servicetype_ID BIGINT NOT NULL, --AUTO_INCREMENT NOT NULL,
   servicetype VARCHAR(30) NOT NULL,
@@ -281,6 +280,7 @@ Create NONCLUSTERED Index transports_FKIndex3 ON transports (caller_ID)
 Create NONCLUSTERED Index transports_FKIndex7 ON transports (planned_location)
 
 
+
 CREATE TABLE roster (
   roster_ID BIGINT NOT NULL,
   entry_createdBy VARCHAR(30) NOT NULL,
@@ -316,6 +316,8 @@ CREATE TABLE roster (
     REFERENCES location(location_ID)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION,
+		--ON DELETE CASCADE
+		--ON UPDATE CASCADE,
   FOREIGN KEY(entry_createdBy)
     REFERENCES userlogin(username)
       --ON DELETE CASCADE
@@ -427,8 +429,10 @@ CREATE TABLE assigned_vehicle (
   --INDEX assigned_vehicle_FKIndex1(transport_ID),
   FOREIGN KEY(transport_ID)
     REFERENCES transports(transport_ID)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+      --ON DELETE NO ACTION
+      --ON UPDATE NO ACTION
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
 )
 Create NONCLUSTERED Index assigned_vehicle_FKIndex1 ON assigned_vehicle (transport_ID)
 
@@ -450,4 +454,3 @@ CREATE TABLE transport_selected (
 )
 Create NONCLUSTERED Index notyfied_has_transports_FKIndex1 ON transport_selected (selected_ID)
 Create NONCLUSTERED Index notyfied_has_transports_FKIndex2 ON transport_selected (transport_ID)
-
