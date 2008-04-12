@@ -219,7 +219,7 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.staffmemberbyUsername"));
 			query.setString(1, username);
 			final ResultSet rs = query.executeQuery();
-			if(rs.first())
+			if(rs.next())
 			{
 				StaffMember staff = new StaffMember();
 				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));

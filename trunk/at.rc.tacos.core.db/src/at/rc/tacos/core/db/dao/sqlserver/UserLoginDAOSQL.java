@@ -59,7 +59,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 			query.setString(1, username);
 			final ResultSet rs = query.executeQuery();
 			//assert we have a result
-			if(rs.first())
+			if(rs.next())
 			{
 				Login login = new Login();
 				login.setAuthorization(rs.getString("authorization"));
