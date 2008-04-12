@@ -63,7 +63,7 @@ public class VehicleDetailDAOSQL implements VehicleDAO
 
 			//v.vehicle_ID, v.medic1_ID, v.medic2_ID, v.driver_ID, v.currentLocation, v.primaryLocation, lo.locationname, lo.location_ID,
 			//v.vehicletype, v.readyForAction, v.outOfOrder, v.transportStatus, v.phonenumber_ID, pn.phonenumber, v.note
-			if(rs.first())
+			if(rs.next())
 			{
 				VehicleDetail vehicle = new VehicleDetail();
 				vehicle.setVehicleName(rs.getString("v.vehicle_ID"));
