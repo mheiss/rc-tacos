@@ -16,7 +16,7 @@ import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
-
+//
 /**
  * This is a test class to test the functionality of the staffMember and the login class.
  * The test are combined because the two daos cannot be tested alone
