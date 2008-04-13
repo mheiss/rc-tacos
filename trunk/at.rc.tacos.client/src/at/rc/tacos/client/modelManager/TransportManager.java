@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
+import at.rc.tacos.client.controller.CopyTransportDetailsIntoClipboardAction;
+import at.rc.tacos.client.controller.CopyTransportDetailsIntoClipboardUpdateAction;
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
@@ -78,12 +80,20 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 				//assert we have this transport
 				if(!objectList.contains(transport))
 					return;
+				//copy the transport details into the clipboard if the 'assignCarAction' was executed
+				
 				//get the position of the entry
 				int id = objectList.indexOf(transport);
+				
+				//set the new transport
 				objectList.set(id, transport);
 				firePropertyChange("TRANSPORT_UPDATE", null, transport); 
 			}
 		}); 
+		//copy the details to the clipboard
+		//TODO - conditions
+		CopyTransportDetailsIntoClipboardUpdateAction clipboardAction = new CopyTransportDetailsIntoClipboardUpdateAction(transport);
+		clipboardAction.run();
 	}
 
 	/**
