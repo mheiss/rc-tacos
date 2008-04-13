@@ -52,9 +52,9 @@ INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(24, '066
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(25, '0361-12345678', 'privat');
 
 -- logins
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.lohm', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.lohmann', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('m.heiﬂ', 'F7nhxkWIx/pkGbTSncH0QmJ5ugE=', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('u.nech', '6pbBYrrwVSdvHLczVHDBkYoWVS0=', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('u.nechansky', '6pbBYrrwVSdvHLczVHDBkYoWVS0=', 'Administrator', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('user3', 'Ib0S3Bg/dA7nbye3jrOcitlyp1c=', 'Benutzer', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.gehard', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', false, false);
 INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('i.koeppel', '4Rt6vTdoF95SAZe5jwRqtj6bZZ4=', 'Administrator', false, false);
@@ -94,11 +94,11 @@ VALUES(7, 'St. Marein', 'Wienerstr.', '144', 8605, 'Kapfenberg', 'MA', 2);
 
 -- staff members
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100001, 1, 'Walter', 'Lohmann', true, '17-10-1983', 'walter.lohmann.itm05@fh-joanneum.at', 'Krottendorf 8/27', 'Kapfenberg', 'w.lohm');
+VALUES(50100001, 1, 'Walter', 'Lohmann', true, '17-10-1983', 'walter.lohmann.itm05@fh-joanneum.at', 'Krottendorf 8/27', 'Kapfenberg', 'w.lohmann');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
 VALUES(50100002, 2, 'Michael', 'Heiss', true, '02-12-1984', 'michael.heiss.itm05@fh-joanneum.at', 'Krottendorf 8/27', 'Kapfenberg', 'm.heiﬂ');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100003, 3, 'Ulrich', 'Nechansky', true, '01-01-1975', 'ulrichandre.nechansky.itm05@fh-joanneum.at', 'Bruckerstr. 1', 'Bruck an der Mur', 'u.nech');
+VALUES(50100003, 3, 'Ulrich', 'Nechansky', true, '01-01-1975', 'ulrichandre.nechansky.itm05@fh-joanneum.at', 'Bruckerstr. 1', 'Bruck an der Mur', 'u.nechansky');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username) 
 VALUES(50100004, 4, 'User', 'Three', false, '10-02-1980', 'user3@fh-joanneum.at', 'Bruckerstr. 1', 'Bruck an der Mur', 'user3');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
@@ -140,11 +140,11 @@ INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, cr
 VALUES(null, 0, 1, 1, 'anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '20080215215400');
 
 INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
-VALUES(null, 1, 50100001, 3, 2, '20071215070000', '20081215190000', null, null, 'Die erste fahrt in der Steiermark!', false, 'w.lohm');
+VALUES(null, 1, 50100001, 3, 2, '20071215070000', '20081215190000', null, null, 'Die erste fahrt in der Steiermark!', false, 'w.lohmann');
 INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
 VALUES(null, 1, 50100002, 3, 3, '20071215070000', '20081215190000', null, null, 'Marien goes Sozial!', true, 'm.heiﬂ');
 INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
-VALUES(null, 2, 50100003, 1, 1, '20071215190000', '20081216070000', null, null, 'kommt nicht aus den Federn!', true, 'u.nech');
+VALUES(null, 2, 50100003, 1, 1, '20071215190000', '20081216070000', null, null, 'kommt nicht aus den Federn!', true, 'u.nechansky');
 
 -- create vehicles
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
