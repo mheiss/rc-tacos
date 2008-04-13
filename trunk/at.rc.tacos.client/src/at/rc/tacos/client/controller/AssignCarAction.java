@@ -7,7 +7,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.client.modelManager.TransportManager;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
@@ -38,11 +40,7 @@ public class AssignCarAction extends Action implements IProgramStatus
 	
 	@Override
 	public void run()
-	{
-		//copy the details to the clipboard
-		CopyTransportDetailsIntoClipboardAction clipboardAction = new CopyTransportDetailsIntoClipboardAction(viewer);
-		clipboardAction.run();
-		
+	{	
 		//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
@@ -55,6 +53,8 @@ public class AssignCarAction extends Action implements IProgramStatus
 		transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
 		transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		
+		
 		
 	}
 }
