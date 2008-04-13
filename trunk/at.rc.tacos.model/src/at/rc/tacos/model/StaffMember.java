@@ -280,8 +280,8 @@ public class StaffMember extends AbstractMessage
      */
     public void setBirthday(String birhtday)
     {
-        if(birhtday == null)
-            throw new IllegalArgumentException("The birthday cannot be null");
+//        if(birhtday == null)
+//            throw new IllegalArgumentException("The birthday cannot be null");
         this.birthday = birhtday;
     }
     
