@@ -2,9 +2,6 @@ package at.rc.tacos.client.controller;
 
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -20,7 +17,6 @@ import at.rc.tacos.model.Transport;
 public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implements ITransportStatus
 {
 	//properties
-	private TableViewer viewer;
 	private String transportNumber;
 	private String patient;
 	private String toStreet = "";
