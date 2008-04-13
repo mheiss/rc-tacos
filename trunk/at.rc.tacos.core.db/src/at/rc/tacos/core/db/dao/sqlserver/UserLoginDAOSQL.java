@@ -12,6 +12,7 @@ import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.util.PasswordEncryption;
 
 public class UserLoginDAOSQL implements UserLoginDAO
 {
@@ -29,7 +30,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 		{
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("check.UserLogin"));
 			query.setString(1, username);
-			query.setString(2, pwdHash);
+			query.setString(2, PasswordEncryption.getInstance().encrypt(pwdHash));
 			final ResultSet rs = query.executeQuery();
 			//asser we have a result set
 			if(rs.first())
@@ -88,7 +89,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 			// username, pwd, authorization, isloggedin, locked
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.User"));
 			query.setString(1, login.getUsername());
-			query.setString(2, login.getPassword());
+			query.setString(2, PasswordEncryption.getInstance().encrypt(login.getPassword()));
 			query.setString(3, login.getAuthorization());
 			query.setBoolean(4, login.isLoggedIn());
 			query.setBoolean(5, login.isIslocked());
@@ -175,7 +176,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 		{
 			// pwd = ? WHERE username
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.Password"));
-			query.setString(1, newPwd);
+			query.setString(1, PasswordEncryption.getInstance().encrypt(newPwd));
 			query.setString(2, username);
 			if(query.executeUpdate() == 0)
 				return false;
