@@ -15,6 +15,7 @@ import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
 import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.modelManager.MyToolbarManager;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
 import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
 import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
@@ -24,6 +25,8 @@ import at.rc.tacos.client.perspectives.SwitchToTransportPerspective;
 import at.rc.tacos.client.perspectives.SwitchToTransportPrebookingPerspective;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.Login;
+import at.rc.tacos.model.StaffMember;
 
 /**
  * The navigation on the top including the toolbar.
@@ -35,6 +38,7 @@ public class NavigationView extends ViewPart
 	
     //properties
     private static Image imageLogo = ImageFactory.getInstance().getRegisteredImage("toolbar.logo");
+    private Login loginInfo;
 
 	@Override
 	public void createPartControl(Composite parent) 
@@ -92,6 +96,9 @@ public class NavigationView extends ViewPart
 		othView.add(new SwitchToLogPerspective());
 		othView.add(new SwitchToAdminPerspective());
 		othView.update(true);
+		
+		if(!Login.AUTH_ADMIN.equals("Administrator"))
+			otherGroup.setVisible(false);
 
 	    Composite comp1 = new Composite(parent,SWT.NONE);
 	    comp1.setBackground(CustomColors.SECTION_BACKGROUND);
