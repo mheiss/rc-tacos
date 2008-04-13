@@ -34,6 +34,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
     @Override
 	public void run() 
     {
+    	System.out.println("in der duplicate action");
         //copy the transport
         Transport newTransport = new Transport();
         //reset the values for the second transport
@@ -65,7 +66,8 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         //assert valid
         if(transport.getKindOfIllness() != null)
         	newTransport.setKindOfIllness(transport.getKindOfIllness());
-        newTransport.setKindOfTransport(transport.getKindOfTransport());
+        if(transport.getKindOfIllness()!=null)
+        	newTransport.setKindOfTransport(transport.getKindOfTransport());
         if(transport.getCallerDetail() != null)
             newTransport.setCallerDetail(transport.getCallerDetail());
        
