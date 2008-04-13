@@ -86,9 +86,9 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 				
 				//get the old transport
 				Transport oldTransport = objectList.get(id);
-				
+
 				//check if the old transport has no vehicle, but the new has one
-				if(oldTransport.getVehicleDetail() == null && transport.getVehicleDetail() != null)
+				if(oldTransport.getTransportNumber() == 0 && transport.getTransportNumber() != 0)
 				{
 					System.out.println("Copy transport to clipboard");
 					CopyTransportDetailsIntoClipboardUpdateAction clipboardAction = new CopyTransportDetailsIntoClipboardUpdateAction(transport);
