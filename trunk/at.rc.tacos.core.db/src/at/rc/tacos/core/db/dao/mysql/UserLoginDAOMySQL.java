@@ -89,7 +89,6 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			// username, pwd, authorization, isloggedin, locked
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.User"));
 			query.setString(1, login.getUsername());
-			//TODO
 			query.setString(2, PasswordEncryption.getInstance().encrypt(login.getPassword()));
 			query.setString(3, login.getAuthorization());
 			query.setBoolean(4, login.isLoggedIn());
