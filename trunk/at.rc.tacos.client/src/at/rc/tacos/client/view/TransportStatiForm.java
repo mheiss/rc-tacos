@@ -29,9 +29,6 @@ public class TransportStatiForm implements ITransportStatus
 	private Text textS4;
 	private Text textS5;
 	private Text textS6;
-	private Text textS7;
-	private Text textS8;
-	private Text textS9;
 	
 	private Listener exitListener;
 	
@@ -56,7 +53,7 @@ public class TransportStatiForm implements ITransportStatus
 	protected void createContents() 
 	{
 		shell = new Shell();
-		shell.setSize(533, 428);
+		shell.setSize(533, 300);
 		shell.setText("Transportstati bearbeiten");
 		
 		//listener
@@ -96,15 +93,6 @@ public class TransportStatiForm implements ITransportStatus
 		textS6 = new Text(shell, SWT.BORDER);
 		textS6.setBounds(223, 188, 80, 25);
 
-		textS7 = new Text(shell, SWT.BORDER);
-		textS7.setBounds(223, 219, 80, 25);
-
-		textS8 = new Text(shell, SWT.BORDER);
-		textS8.setBounds(223, 250, 80, 25);
-
-		textS9 = new Text(shell, SWT.BORDER);
-		textS9.setBounds(223, 281, 80, 25);
-
 		final Label aeLabel = new Label(shell, SWT.NONE);
 		aeLabel.setText("Aufgenommen");
 		aeLabel.setBounds(10, 45, 79, 13);
@@ -137,18 +125,6 @@ public class TransportStatiForm implements ITransportStatus
 		s6Label.setText("S6");
 		s6Label.setBounds(192, 200, 25, 13);
 
-		final Label s7Label = new Label(shell, SWT.NONE);
-		s7Label.setText("S7");
-		s7Label.setBounds(192, 231, 25, 13);
-
-		final Label s8Label = new Label(shell, SWT.NONE);
-		s8Label.setText("S8");
-		s8Label.setBounds(192, 262, 25, 13);
-
-		final Label s9Label = new Label(shell, SWT.NONE);
-		s9Label.setText("S9");
-		s9Label.setBounds(192, 293, 25, 13);
-
 		final Label fahrzeugUnterwegsLabel = new Label(shell, SWT.NONE);
 		fahrzeugUnterwegsLabel.setText("Fahrzeug unterwegs");
 		fahrzeugUnterwegsLabel.setBounds(309, 45, 117, 13);
@@ -173,31 +149,14 @@ public class TransportStatiForm implements ITransportStatus
 		label.setText("Fahrzeug eingerückt");
 		label.setBounds(309, 200, 98, 13);
 
-		final Label label_1 = new Label(shell, SWT.NONE);
-		label_1.setText("Fahrzeug verlässt Einsatzgebiet");
-		label_1.setBounds(309, 231, 162, 13);
-
-		final Label label_2 = new Label(shell, SWT.NONE);
-		label_2.setText("Fahrzeug ist zurück im Einsatzgebiet");
-		label_2.setBounds(309, 262, 195, 13);
-
-		final Label sonderstatusLabel = new Label(shell, SWT.NONE);
-		sonderstatusLabel.setText("Sonderstatus");
-		sonderstatusLabel.setBounds(309, 293, 98, 13);
-
-		final Label label_3 = new Label(shell, SWT.NONE);
-		label_3.setText("Label");
-		label_3.setBounds(10, 129, 152, 177);
-
 		final Button abbrechenButton = new Button(shell, SWT.NONE);
 		abbrechenButton.setText("Abbrechen");
-		abbrechenButton.setBounds(426, 358, 89, 23);
+		abbrechenButton.setBounds(426, 230, 89, 23);
 		abbrechenButton.addListener(SWT.Selection, exitListener);
 
 		final Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText("OK");
-		okButton.setBounds(337, 358, 89, 23);
-		//TODO - implement reaction to ok and cancel  and  validate the entries!
+		okButton.setBounds(337, 230, 89, 23);
 		
 		okButton.addListener(SWT.Selection, new Listener()
 		{
@@ -207,9 +166,6 @@ public class TransportStatiForm implements ITransportStatus
 			String s4;
 			String s5;
 			String s6;
-			String s7;
-			String s8;
-			String s9;
 			
 			long s1Long;
 			long s2Long;
@@ -217,9 +173,6 @@ public class TransportStatiForm implements ITransportStatus
 			long s4Long;
 			long s5Long;
 			long s6Long;
-			long s7Long;
-			long s8Long;
-			long s9Long;	
 			
 			String formatOfTime;
 			String formatOfTransportStati = "";	
@@ -245,22 +198,28 @@ public class TransportStatiForm implements ITransportStatus
 				
             	if(!s1.equalsIgnoreCase(""))
             		transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
+            	else
+            		transport.removeStatus(TRANSPORT_STATUS_ON_THE_WAY);
             	if(!s2.equalsIgnoreCase(""))
             		transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
+            	else
+            		transport.removeStatus(TRANSPORT_STATUS_AT_PATIENT);
             	if(!s3.equalsIgnoreCase(""))
             		transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
+            	else
+            		transport.removeStatus(TRANSPORT_STATUS_START_WITH_PATIENT);
             	if(!s4.equalsIgnoreCase(""))
             		transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
+            	else
+            		transport.removeStatus(TRANSPORT_STATUS_AT_DESTINATION);
             	if(!s5.equalsIgnoreCase(""))
             		transport.addStatus(TRANSPORT_STATUS_DESTINATION_FREE,s5Long);
+            	else
+            		transport.removeStatus(TRANSPORT_STATUS_DESTINATION_FREE);
             	if(!s6.equalsIgnoreCase(""))
             		transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, s6Long);
-            	if(!s7.equalsIgnoreCase(""))
-            		transport.addStatus(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA,s7Long);
-            	if(!s8.equalsIgnoreCase(""))
-            		transport.addStatus(TRANSPORT_STATUS_BACK_IN_OPERATION_AREA,s8Long);
-            	if(!s9.equalsIgnoreCase(""))
-            		transport.addStatus(TRANSPORT_STATUS_OTHER, s9Long);
+            	else
+            		transport.removeStatus(TRANSPORT_STATUS_CAR_IN_STATION);
             	
             	//create and run the update action
                 UpdateTransportAction updateAction = new UpdateTransportAction(transport);
@@ -278,9 +237,6 @@ public class TransportStatiForm implements ITransportStatus
 				s4 = textS4.getText();
 				s5 = textS5.getText();
 				s6 = textS6.getText();
-				s7 = textS7.getText();
-				s8 = textS8.getText();
-				s9 = textS9.getText();
 			}
 			
 			//checks the time against a valid format, returns a String with the not valid times and the ":" if needed (1234 --> 12:34)
@@ -332,27 +288,6 @@ public class TransportStatiForm implements ITransportStatus
 					s6 = tv.getTime();
 				}
 				
-				if(s7 != null)
-				{
-					tv.checkTime(s7,"S7");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s7 = tv.getTime();
-				}
-				
-				if(s8 != null)
-				{
-					tv.checkTime(s8,"S8");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s8 = tv.getTime();
-				}
-				
-				if(s9 != null)
-				{
-					tv.checkTime(s9,"S9");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
-					s9 = tv.getTime();	
-				}
-				
 				return formatOfTransportStati;
 			}
 			
@@ -383,18 +318,6 @@ public class TransportStatiForm implements ITransportStatus
 				if(s6 != null)
 				{
 					s6Long = tttl.transform(s6);
-				}
-				if(s7 != null)
-				{
-					s7Long = tttl.transform(s7);
-				}
-				if(s8 != null)
-				{
-					s8Long = tttl.transform(s8);
-				}
-				if(s9 != null)
-				{
-					s9Long = tttl.transform(s9);
 				}
 			}
 			
@@ -463,23 +386,5 @@ public class TransportStatiForm implements ITransportStatus
 			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION));
 			textS6.setText(sdf.format(cal.getTime()));
 		}
-    	//Status 7
-		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
-		{
-			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA));
-			textS7.setText(sdf.format(cal.getTime()));
-		}
-    	//Status 8
-		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
-		{
-			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
-			textS8.setText(sdf.format(cal.getTime()));
-		}
-    	//Status 9
-		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA))
-		{
-			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_BACK_IN_OPERATION_AREA));
-			textS9.setText(sdf.format(cal.getTime()));
-		} 
 	}
 }
