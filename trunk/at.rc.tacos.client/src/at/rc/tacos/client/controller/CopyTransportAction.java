@@ -74,7 +74,8 @@ public class CopyTransportAction extends Action implements IProgramStatus
         //assert valid
         if(t1.getKindOfIllness() != null)
         	t2.setKindOfIllness(t1.getKindOfIllness());
-        t2.setKindOfTransport(t1.getKindOfTransport());
+        if(t1.getKindOfTransport()!= null)
+        	t2.setKindOfTransport(t1.getKindOfTransport());
         if(t1.getCallerDetail() != null)
             t2.setCallerDetail(t1.getCallerDetail());
         if(t1.getFeedback() != null)
