@@ -251,7 +251,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 
 		// the label for the username
 		fLabelUsername = new Label(fCompositeLogin, SWT.NONE);
-		fLabelUsername.setText("&User Name:"); 
+		fLabelUsername.setText("&Benutzername:"); 
 
 		// the text widget for the username
 		fTextUsername = new Text(fCompositeLogin, SWT.BORDER);
@@ -263,7 +263,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 
 		// the label for the password
 		fLabelPassword = new Label(fCompositeLogin, SWT.NONE);
-		fLabelPassword.setText("&Password:"); //NON-NLS-1
+		fLabelPassword.setText("&Passwort:"); //NON-NLS-1
 
 		// the text widget for the password
 		fTextPassword = new Text(fCompositeLogin, SWT.PASSWORD | SWT.BORDER);
@@ -288,14 +288,14 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 
 		// Create the button
 		fButtonCancel = new Button(fCompositeLogin, SWT.PUSH);
-		fButtonCancel.setText("Cancel"); 
+		fButtonCancel.setText("Abbrechen"); 
 		// Configure layout data
 		data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_BUTTON_WIDTH_HINT;   
 		data.verticalIndent = 10;
 		fButtonCancel.setLayoutData(data);
 
-		//init values
+		//init values //TODO- delete
 		fTextUsername.setText("user3");
 		fTextPassword.setText("P@ssw0rd");
 	}
@@ -360,7 +360,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	public void keyPressed(KeyEvent ke) 
 	{
 		System.out.println(ke.keyCode);
-		//listent to return key events
+		//listen to return key events
 		if(ke.keyCode == SWT.CR)
 		{
 			handleButtonOKWidgetSelected();
