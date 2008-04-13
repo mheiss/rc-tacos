@@ -105,7 +105,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		//Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		formDisp = toolkit.createScrolledForm(parent);
-		formDisp.setText("Disponierte ---- Transporte");
+		formDisp.setText("Disponierte Transporte");
 		toolkit.decorateFormHeading(formDisp.getForm());
 		formDisp.getBody().setLayout(new FillLayout());
 		
