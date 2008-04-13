@@ -52,14 +52,14 @@ INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(24, '066
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(25, '0361-12345678', 'privat');
 
 -- logins
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.lohm', 'pwd', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('m.heiß', 'pwd', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('u.nech', 'pwd', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('user3', 'P@ssw0rd', 'Benutzer', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.geha', 'walter', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('i.koep', 'isabella', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('m.schu', 'martin', 'Administrator', false, false);
-INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('h.maie', 'helmut', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.lohm', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('m.heiß', 'F7nhxkWIx/pkGbTSncH0QmJ5ugE=', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('u.nech', '6pbBYrrwVSdvHLczVHDBkYoWVS0=', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('user3', 'Ib0S3Bg/dA7nbye3jrOcitlyp1c=', 'Benutzer', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('w.gehard', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('i.koeppel', '4Rt6vTdoF95SAZe5jwRqtj6bZZ4=', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('m.schunko', 'VGaVR6Il/yDLqLdaStylQO7yWFg=', 'Administrator', false, false);
+INSERT INTO userlogin(username, pwd, authorization, isloggedin, locked) VALUES('h.maier', 'BwYCWyu87B7Y1kgi9OzNljFJONA=', 'Administrator', false, false);
 -- diseases
 INSERT INTO disease(disease_ID, disease) VALUES(1, 'Knochenbruch');
 INSERT INTO disease(disease_ID, disease) VALUES(2, 'Kreislauf');
@@ -102,13 +102,13 @@ VALUES(50100003, 3, 'Ulrich', 'Nechansky', true, '01-01-1975', 'ulrichandre.nech
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username) 
 VALUES(50100004, 4, 'User', 'Three', false, '10-02-1980', 'user3@fh-joanneum.at', 'Bruckerstr. 1', 'Bruck an der Mur', 'user3');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100005, 1, 'Walter', 'Gehard', true, '17-10-1955', 'walter.gehard@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'w.geha');
+VALUES(50100005, 1, 'Walter', 'Gehard', true, '17-10-1955', 'walter.gehard@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'w.gehard');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100006, 1, 'Isabella', 'Köppel', false, '17-10-1955', 'isabella.koeppel@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'i.koep');
+VALUES(50100006, 1, 'Isabella', 'Köppel', false, '17-10-1955', 'isabella.koeppel@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'i.koeppel');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100007, 1, 'Martin', 'Schunko', true, '17-10-1955', 'martin.schunko@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'm.schu');
+VALUES(50100007, 1, 'Martin', 'Schunko', true, '17-10-1955', 'martin.schunko@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'm.schunko');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100008, 2, 'Helmut', 'Maier', true, '17-10-1955', 'helmut.maier@st.roteskreuz.at', 'Oberdorferstr.', 'Bruck an der Mur', 'h.maie');
+VALUES(50100008, 2, 'Helmut', 'Maier', true, '17-10-1955', 'helmut.maier@st.roteskreuz.at', 'Oberdorferstr.', 'Bruck an der Mur', 'h.maier');
 
 -- assign mobile phones to staff members
 INSERT INTO phone_staffmember(staffmember_ID, phonenumber_ID) VALUES(50100001, 1);
