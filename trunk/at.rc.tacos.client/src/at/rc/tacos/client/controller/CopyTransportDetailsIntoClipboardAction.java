@@ -29,12 +29,12 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 	private String fromStreet = "";
 	private String fromCity = "";
 	private String from = "";
-	private String kindOfIllness;
+	private String kindOfIllness = "";
 	private String notes = "";
 	private String priority;
 	private String al = "";
 	private String smsData;	
-	
+	private String kindOfTransport = "";	
 	/**
 	 * Default class constructor.
 	 * @param viewer the table viewer
@@ -46,6 +46,7 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 		setToolTipText("Kopiert die Transportdetails in die Windows Zwischenablage");
 	}
 	
+	
 	@Override
 	public void run()
 	{
@@ -54,30 +55,48 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		//copy the details into the windows clipboard
-		transportNumber = String.valueOf(transport.getTransportNumber());
+		transportNumber = "TNr: " +String.valueOf(transport.getTransportNumber());
 		
-		fromStreet = transport.getFromStreet();
+		fromStreet = "von: " +transport.getFromStreet();
 		if(transport.getFromCity() != null)
-			fromCity = transport.getFromCity();
+			fromCity = " " +transport.getFromCity();
 		from = fromStreet + "/" +fromCity;
 	
 		if (transport.getPatient() != null)
 			patient = transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
 		
 		if(transport.getToStreet() != null)
-			toStreet = transport.getToStreet();
+			toStreet = "nach: " +transport.getToStreet();
 		if(transport.getToCity() != null)
-			toCity = transport.getToCity();
-		to = toStreet +"/" +toCity;
+			toCity = " " +transport.getToCity();
+		if(!toStreet.trim().isEmpty() |! toCity.trim().isEmpty())
+			to = toStreet +"/" +toCity;
 		
 		if(transport.getKindOfIllness() != null)
 			kindOfIllness = transport.getKindOfIllness().getDiseaseName();
 		
-		if(transport.getNotes() != null)
+		if(transport.getNotes() != null |! transport.getNotes().trim().isEmpty())
 			notes = transport.getNotes();
 		
-		priority = transport.getTransportPriority();
-		if(transport.getTransportPriority().equalsIgnoreCase("A") || transport.getTransportPriority().equalsIgnoreCase("B"))
+		//transport priority
+		if(transport.getTransportPriority().equalsIgnoreCase("A"))
+			priority = "1 NEF";
+		else if (transport.getTransportPriority().equalsIgnoreCase("B"))
+			priority = "2 Transport";
+		else if (transport.getTransportPriority().equalsIgnoreCase("C"))
+			priority = "3 Terminfahrt";
+		else if (transport.getTransportPriority().equalsIgnoreCase("D"))
+			priority = "4 Rücktransport";
+		else if (transport.getTransportPriority().equalsIgnoreCase("E"))
+			priority = "5 Heimtransport";
+		else if (transport.getTransportPriority().equalsIgnoreCase("F"))
+			priority = "6 Sonstiges";
+		else if (transport.getTransportPriority().equalsIgnoreCase("G"))
+			priority = "7 NEF extern";
+		
+		priority = "Pr: " +priority;
+		
+		if(transport.isBlueLight1())
 			priority = priority + " BD1";
 		
 		if(transport.isBrkdtAlarming())
@@ -94,12 +113,14 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 			al = al + "Bergrettung";
 		if(transport.isPoliceAlarming())
 			al = al + "Polizei";
+		if(transport.getKindOfTransport()!= null)
+			kindOfTransport = transport.getKindOfTransport();
 		
-		String textAlarming = "";
 		if(!al.equalsIgnoreCase(""))
-			textAlarming = "alarmiert: ";
-		smsData = "TNr: " +transportNumber +";" +"Pr: " +priority +";" +"von: " +from +";" +"Patient: " +patient +";" +"nach: " +to +";"
-		+"Anm: " +notes +";" +"Erk/Verl: " +kindOfIllness +";" +textAlarming +al;
+			al = "alarmiert: " +al;
+		
+		smsData = transportNumber +";" +priority +";" +kindOfTransport +";"  +from +";" +patient +";" +to +";"
+		+notes +";" +kindOfIllness +";" +al;
 		if(transport.isLongDistanceTrip())
 			smsData = smsData + " Fernfahrt";
 		if(transport.isEmergencyPhone())
