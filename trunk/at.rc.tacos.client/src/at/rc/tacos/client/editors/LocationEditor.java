@@ -124,8 +124,9 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neue Ortsstelle speichern");
+		saveHyperlink.setText("Zum anlegen einer neuen Ortsstelle bitte die Systemadministratoren informieren");
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setEnabled(false);
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -140,6 +141,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Ortsstelle löschen");
 		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.locationRemove"));
+		removeHyperlink.setEnabled(false);
 		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
@@ -177,6 +179,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		//label and the text field
 		final Label labelLocationName = toolkit.createLabel(client, "Name der Ortsstelle");
 		locationName = toolkit.createText(client, "");
+		locationName.setEditable(false);
 		final Label labelStreet = toolkit.createLabel(client, "Addresse");
 		street = toolkit.createText(client, "");
 		final Label labelStreetNumber = toolkit.createLabel(client, "Hausnummer");
@@ -249,6 +252,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		if(!isNew)
 		{
 			//adjust the links
+			saveHyperlink.setEnabled(true);
 			saveHyperlink.setText("Änderungen speichern");
 		}
 		locationName.setText(location.getLocationName());
