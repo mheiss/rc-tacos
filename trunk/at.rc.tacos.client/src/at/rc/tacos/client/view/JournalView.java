@@ -376,8 +376,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		manager.add(moveToRunningTransportsAction);
 		manager.add(new Separator());
 		manager.add(createBackTransportAction);
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		manager.add(createBackTransportAction);
 	}
 
 	/**
