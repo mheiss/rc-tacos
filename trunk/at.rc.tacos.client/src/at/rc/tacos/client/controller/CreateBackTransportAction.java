@@ -58,7 +58,7 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         t2.setHelicopterAlarming(t1.isHelicopterAlarming());
         t2.setPoliceAlarming(t1.isPoliceAlarming());
         t2.setAssistantPerson(t1.isAssistantPerson());
-        t2.setBackTransport(t1.isBackTransport());
+        t2.setBackTransport(false);
         t2.setBlueLightToGoal(t1.isBlueLightToGoal());
         t2.setBrkdtAlarming(t1.isBrkdtAlarming());
         t2.setFirebrigadeAlarming(t1.isFirebrigadeAlarming());
@@ -69,7 +69,8 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         t2.setMountainRescueServiceAlarming(t1.isMountainRescueServiceAlarming());
         //assert valid
         t2.setKindOfIllness(t1.getKindOfIllness());
-        t2.setKindOfTransport(t1.getKindOfTransport());
+        if(t1.getKindOfTransport() != null)
+        	t2.setKindOfTransport(t1.getKindOfTransport());
         if(t1.getCallerDetail() != null)
             t2.setCallerDetail(t1.getCallerDetail());
         if(t1.getFeedback() != null)
@@ -89,7 +90,11 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         
         t2.setToStreet(t1.getFromStreet()); 
         t2.setToCity(t1.getFromCity()); 
+        
+        //view the arrow for the back transport no longer, so set the field "Rücktransport möglich" to false
+        t1.setBackTransport(false);
 
         NetWrapper.getDefault().sendAddMessage(Transport.ID, t2);
+        NetWrapper.getDefault().sendUpdateMessage(Transport.ID, t1);
     }
 }
