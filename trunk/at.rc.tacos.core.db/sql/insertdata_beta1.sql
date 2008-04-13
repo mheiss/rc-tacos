@@ -96,21 +96,21 @@ VALUES(7, 'St. Marein', 'Wienerstr.', '144', 8605, 'Kapfenberg', 'MA', 2);
 
 -- staff members
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100001, 1, 'Walter', 'Lohmann', 1, '17-10-1983', 'walter.lohmann.itm05@fh-joanneum.at', 'Krottendorf 8/27', 'Kapfenberg', 'w.lohm');
+VALUES(50100001, 1, 'Walter', 'Lohmann', 1, '17-10-1983', 'walter.lohmann.itm05@fh-joanneum.at', 'Krottendorf 8/27', 'Kapfenberg', 'w.lohmann');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
 VALUES(50100002, 2, 'Michael', 'Heiss', 1, '02-12-1984', 'michael.heiss.itm05@fh-joanneum.at', 'Krottendorf 8/27', 'Kapfenberg', 'm.heiß');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100003, 3, 'Ulrich', 'Nechansky', 1, '01-01-1975', 'ulrichandre.nechansky.itm05@fh-joanneum.at', 'Bruckerstr. 1', 'Bruck an der Mur', 'u.nech');
+VALUES(50100003, 3, 'Ulrich', 'Nechansky', 1, '01-01-1975', 'ulrichandre.nechansky.itm05@fh-joanneum.at', 'Bruckerstr. 1', 'Bruck an der Mur', 'u.nechansky');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username) 
 VALUES(50100004, 4, 'User', 'Three', 0, '10-02-1980', 'user3@fh-joanneum.at', 'Bruckerstr. 1', 'Bruck an der Mur', 'user3');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100005, 1, 'Walter', 'Gehard', 1, '17-10-1955', 'walter.gehard@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'w.geha');
+VALUES(50100005, 1, 'Walter', 'Gehard', 1, '17-10-1955', 'walter.gehard@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'w.gehard');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100006, 1, 'Isabella', 'Köppel', 0, '17-10-1955', 'isabella.koeppel@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'i.koep');
+VALUES(50100006, 1, 'Isabella', 'Köppel', 0, '17-10-1955', 'isabella.koeppel@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'i.koeppel');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100007, 1, 'Martin', 'Schunko', 1, '17-10-1955', 'martin.schunko@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'm.schu');
+VALUES(50100007, 1, 'Martin', 'Schunko', 1, '17-10-1955', 'martin.schunko@st.roteskreuz.at', 'Schinitz', 'Kapfenberg', 'm.schunko');
 INSERT INTO staffmembers(staffmember_ID, primaryLocation, firstname, lastname, sex, birthday, email, street, city, username)
-VALUES(50100008, 2, 'Helmut', 'Maier', 1, '17-10-1955', 'helmut.maier@st.roteskreuz.at', 'Oberdorferstr.', 'Bruck an der Mur', 'h.maie');
+VALUES(50100008, 2, 'Helmut', 'Maier', 1, '17-10-1955', 'helmut.maier@st.roteskreuz.at', 'Oberdorferstr.', 'Bruck an der Mur', 'h.maier');
 
 
 -- assign mobile phones to staff members
