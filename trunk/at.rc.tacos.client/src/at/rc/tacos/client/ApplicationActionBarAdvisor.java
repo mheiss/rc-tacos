@@ -8,6 +8,7 @@ import org.eclipse.ui.application.*;
 import org.eclipse.ui.actions.ActionFactory.*;
 
 import at.rc.tacos.client.controller.ConnectionWizardAction;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
 import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
 import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
@@ -86,7 +87,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		
 		//window menue
 		MenuManager windowMenu = new MenuManager("&Window");
-		windowMenu.add(adminMenu);
+		String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
+		if(authorization.equalsIgnoreCase("Administrator"))
+			windowMenu.add(adminMenu);
 		windowMenu.add(new Separator());
 		windowMenu.add(switchToClient);
 		windowMenu.add(switchToTransport);
