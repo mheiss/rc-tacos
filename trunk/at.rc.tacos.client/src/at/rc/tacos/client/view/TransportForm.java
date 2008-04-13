@@ -1998,7 +1998,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
                  dia.setToStreet(viewerToStreet.getCombo().getText());
 
-                 dia.setToCity(viewerFromCity.getCombo().getText());
+                 dia.setToCity(viewerToCity.getCombo().getText());
                  int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
                  if(index != -1)
                 	 dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
