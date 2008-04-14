@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.*;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
@@ -16,7 +17,7 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 	//the dependent dao classes
 	private final LocationDAO locationDAO = DaoFactory.SQL.createLocationDAO();
 	private final CompetenceDAO competenceDAO = DaoFactory.SQL.createCompetenceDAO();
@@ -107,17 +108,17 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 			while(rs.next())
 			{
 				StaffMember staff = new StaffMember();
-				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
-				staff.setLastName(rs.getString("e.lastname"));
-				staff.setFirstName(rs.getString("e.firstname"));
-				staff.setStreetname(rs.getString("e.street"));
-				staff.setCityname(rs.getString("e.city"));
-				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(rs.getString("e.birthday"));
-				staff.setEMail(rs.getString("e.email"));
-				staff.setUserName(rs.getString("u.username"));
+				staff.setStaffMemberId(rs.getInt("staffmember_ID"));
+				staff.setLastName(rs.getString("lastname"));
+				staff.setFirstName(rs.getString("firstname"));
+				staff.setStreetname(rs.getString("street"));
+				staff.setCityname(rs.getString("city"));
+				staff.setMale(rs.getBoolean("sex"));
+				staff.setBirthday(rs.getString("birthday"));
+				staff.setEMail(rs.getString("email"));
+				staff.setUserName(rs.getString("username"));
 				//query and set the location, phone and competence
-				int id = rs.getInt("e.primaryLocation");
+				int id = rs.getInt("primaryLocation");
 				staff.setPrimaryLocation(locationDAO.getLocation(id));
 				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
@@ -146,17 +147,17 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 			while(rs.next())
 			{
 				StaffMember staff = new StaffMember();
-				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
-				staff.setLastName(rs.getString("e.lastname"));
-				staff.setFirstName(rs.getString("e.firstname"));
-				staff.setStreetname(rs.getString("e.street"));
-				staff.setCityname(rs.getString("e.city"));
-				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(rs.getString("e.birthday"));
-				staff.setEMail(rs.getString("e.email"));
-				staff.setUserName(rs.getString("u.username"));
+				staff.setStaffMemberId(rs.getInt("staffmember_ID"));
+				staff.setLastName(rs.getString("lastname"));
+				staff.setFirstName(rs.getString("firstname"));
+				staff.setStreetname(rs.getString("street"));
+				staff.setCityname(rs.getString("city"));
+				staff.setMale(rs.getBoolean("sex"));
+				staff.setBirthday(rs.getString("birthday"));
+				staff.setEMail(rs.getString("email"));
+				staff.setUserName(rs.getString("username"));
 				//query and set the location, phone and competence
-				int id = rs.getInt("e.primaryLocation");
+				int id = rs.getInt("primaryLocation");
 				staff.setPrimaryLocation(locationDAO.getLocation(id));
 				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
@@ -181,20 +182,20 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 			query.setInt(1, id);
 			final ResultSet rs = query.executeQuery();
 			//assert we have a result
-			if(rs.first())
+			if(rs.next())
 			{
 				StaffMember staff = new StaffMember();
-				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
-				staff.setLastName(rs.getString("e.lastname"));
-				staff.setFirstName(rs.getString("e.firstname"));
-				staff.setStreetname(rs.getString("e.street"));
-				staff.setCityname(rs.getString("e.city"));
-				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(rs.getString("e.birthday"));
-				staff.setEMail(rs.getString("e.email"));
-				staff.setUserName(rs.getString("u.username"));
+				staff.setStaffMemberId(rs.getInt("staffmember_ID"));
+				staff.setLastName(rs.getString("lastname"));
+				staff.setFirstName(rs.getString("firstname"));
+				staff.setStreetname(rs.getString("street"));
+				staff.setCityname(rs.getString("city"));
+				staff.setMale(rs.getBoolean("sex"));
+				staff.setBirthday(rs.getString("birthday"));
+				staff.setEMail(rs.getString("email"));
+				staff.setUserName(rs.getString("username"));
 				//query and set the location, phone and competence
-				int locationId = rs.getInt("e.primaryLocation");
+				int locationId = rs.getInt("primaryLocation");
 				staff.setPrimaryLocation(locationDAO.getLocation(locationId));
 				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
@@ -222,17 +223,17 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 			if(rs.next())
 			{
 				StaffMember staff = new StaffMember();
-				staff.setStaffMemberId(rs.getInt("e.staffmember_ID"));
-				staff.setLastName(rs.getString("e.lastname"));
-				staff.setFirstName(rs.getString("e.firstname"));
-				staff.setStreetname(rs.getString("e.street"));
-				staff.setCityname(rs.getString("e.city"));
-				staff.setMale(rs.getBoolean("e.sex"));
-				staff.setBirthday(rs.getString("e.birthday"));
-				staff.setEMail(rs.getString("e.email"));
-				staff.setUserName(rs.getString("u.username"));
+				staff.setStaffMemberId(rs.getInt("staffmember_ID"));
+				staff.setLastName(rs.getString("lastname"));
+				staff.setFirstName(rs.getString("firstname"));
+				staff.setStreetname(rs.getString("street"));
+				staff.setCityname(rs.getString("city"));
+				staff.setMale(rs.getBoolean("sex"));
+				staff.setBirthday(rs.getString("birthday"));
+				staff.setEMail(rs.getString("email"));
+				staff.setUserName(rs.getString("username"));
 				//query and set the location, phone and competence
-				int locationId = rs.getInt("e.primaryLocation");
+				int locationId = rs.getInt("primaryLocation");
 				staff.setPrimaryLocation(locationDAO.getLocation(locationId));
 				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
 				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
