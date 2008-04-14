@@ -22,9 +22,8 @@ public class MyUtils
     public final static SimpleDateFormat sqlTime = new SimpleDateFormat("HH:mm:ss");
     public final static SimpleDateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
     public final static SimpleDateFormat sqlDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public final static SimpleDateFormat sqlServerDateTime = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-    public final static SimpleDateFormat sqlServerDate = new SimpleDateFormat("dd.MM.yyyy");
-    public final static SimpleDateFormat sqlServerTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+    public final static SimpleDateFormat sqlServerDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+
     
     //03.01.2008 21:54
 
