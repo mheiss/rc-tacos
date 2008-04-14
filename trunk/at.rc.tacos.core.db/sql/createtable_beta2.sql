@@ -23,8 +23,7 @@ CREATE TABLE phonenumbers (
 CREATE TABLE userlogin (
   username VARCHAR(30) NOT NULL,
   pwd VARCHAR(255) NULL,
-  --authorization VARCHAR(20) NULL,
-  "authorization" VARCHAR(20) NULL,
+  authorisation VARCHAR(20) NULL,
   isloggedin BIT NULL,
   locked BIT NULL,
   PRIMARY KEY(username)
