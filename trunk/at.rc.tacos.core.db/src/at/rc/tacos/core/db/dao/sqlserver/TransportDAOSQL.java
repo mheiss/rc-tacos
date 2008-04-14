@@ -64,7 +64,6 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(7, transport.getTransportPriority());
             query.setString(8, transport.getFeedback());
             query.setString(9, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.timeAndDateFormat));
-            System.out.println("...addTransport, creation Time an die db: " +MyUtils.timestampToString(transport.getCreationTime(), MyUtils.timeAndDateFormat));
             query.setString(10, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.timeAndDateFormat));
             query.setString(11, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.timeAndDateFormat));
             query.setString(12, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.timeAndDateFormat));
@@ -95,12 +94,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.timeAndDateFormat));
             query.setString(24, transport.getDisposedByUsername());
             query.executeUpdate();
-            //get the last inserted auto id
-//            if(!rs.next()) -- no next value!!!
-//            {
-//            	System.out.println("im !rs.next()");
-//            	return Transport.TRANSPORT_ERROR;
-//            }
+
             transport.setTransportId(id);
 
 
@@ -181,10 +175,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     transport.setFeedback("");
                 else
                     transport.setFeedback(rs.getString("feedback"));
-                transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlServerDateTime));
-                System.out.println("...creation time von der db im list running transports: " +rs.getString("creationDate"));
-                System.out.println("...creation time von der db im list running transports: " +MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlServerDateTime));
-                
+                transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlServerDateTime));                
                 transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("departure"), MyUtils.sqlServerDateTime));
                 transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("appointment"), MyUtils.sqlServerDateTime));
                 transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("appointmentPatient"), MyUtils.sqlServerDateTime));
@@ -1610,7 +1601,6 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
         Connection connection = source.getConnection();
         try
         {
-        	System.out.println("actualYear ------- von integer to string: " +new Integer(actualYear).toString());
             //adds the old transportnumber to the tmp table
             final PreparedStatement query3 = connection.prepareStatement(queries.getStatment("add.tmpTransport"));
             query3.setInt(1, transportNr);
@@ -1690,7 +1680,6 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
      */
     private boolean assignTransportItems(Transport transport) throws SQLException
     {
-    	System.out.println("TransportDAO.......................Bergrettung Timestamp: " +transport.getTimestampBergrettung());
         //removes all selected transports for specific transportId
         if(!removeTransportItems(transport))
         {
