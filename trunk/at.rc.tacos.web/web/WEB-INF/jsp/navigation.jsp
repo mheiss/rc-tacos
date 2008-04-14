@@ -8,7 +8,7 @@
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
 	</tr>
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="dutiesDay.do">Dienstplan Tagesansicht</a></td>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="rosterDay2.do">Dienstplan Tagesansicht</a></td>
 	</tr>
 </table>
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
