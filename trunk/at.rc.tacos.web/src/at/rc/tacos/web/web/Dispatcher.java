@@ -108,7 +108,7 @@ public class Dispatcher extends HttpServlet
 					viewPath = views.getString(key).trim();
 				} else if (prefix.equals(relativePathPrefix) && key.contains(".template")) {
 					templateFound = true;
-					templatePath = views.getString(key);
+					templatePath = views.getString(key).trim();
 				} else if (prefix.equals(relativePathPrefix) && key.contains(".title")) {
 					viewTitle = views.getString(key);
 				} else if (prefix.equals(relativePathPrefix) && key.contains(".header")) {
