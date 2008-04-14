@@ -52,14 +52,14 @@ INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(24, '066
 INSERT INTO phonenumbers(phonenumber_ID, phonenumber, phonename) VALUES(25, '0361-12345678', 'privat');
 
 -- logins
-INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('w.lohmann', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', 0, 0);
-INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('m.heiﬂ', 'F7nhxkWIx/pkGbTSncH0QmJ5ugE=', 'Administrator', 0, 0);
-INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('u.nechansky', '6pbBYrrwVSdvHLczVHDBkYoWVS0=', 'Administrator', 0, 0);
-INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('user3', 'Ib0S3Bg/dA7nbye3jrOcitlyp1c=', 'Benutzer', 0, 0);
-INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('w.gehard', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', 0, 0);
-INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('i.koeppel', '4Rt6vTdoF95SAZe5jwRqtj6bZZ4=', 'Administrator', 0, 0);
-INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('m.schunko', 'VGaVR6Il/yDLqLdaStylQO7yWFg=', 'Administrator', 0, 0);
-INSERT INTO userlogin(username, pwd, "authorization", isloggedin, locked) VALUES('h.maier', 'BwYCWyu87B7Y1kgi9OzNljFJONA=', 'Administrator', 0, 0);
+INSERT INTO userlogin(username, pwd, authorisation, isloggedin, locked) VALUES('w.lohmann', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', 0, 0);
+INSERT INTO userlogin(username, pwd, authorisation, isloggedin, locked) VALUES('m.heiﬂ', 'F7nhxkWIx/pkGbTSncH0QmJ5ugE=', 'Administrator', 0, 0);
+INSERT INTO userlogin(username, pwd, authorisation, isloggedin, locked) VALUES('u.nechansky', '6pbBYrrwVSdvHLczVHDBkYoWVS0=', 'Administrator', 0, 0);
+INSERT INTO userlogin(username, pwd, authorisation, isloggedin, locked) VALUES('user3', 'Ib0S3Bg/dA7nbye3jrOcitlyp1c=', 'Benutzer', 0, 0);
+INSERT INTO userlogin(username, pwd, authorisation, isloggedin, locked) VALUES('w.gehard', '8Y+di6ovoMtYViqHtCZzOFPgpOk=', 'Administrator', 0, 0);
+INSERT INTO userlogin(username, pwd, authorisation, isloggedin, locked) VALUES('i.koeppel', '4Rt6vTdoF95SAZe5jwRqtj6bZZ4=', 'Administrator', 0, 0);
+INSERT INTO userlogin(username, pwd, authorisation, isloggedin, locked) VALUES('m.schunko', 'VGaVR6Il/yDLqLdaStylQO7yWFg=', 'Administrator', 0, 0);
+INSERT INTO userlogin(username, pwd, authorisation, isloggedin, locked) VALUES('h.maier', 'BwYCWyu87B7Y1kgi9OzNljFJONA=', 'Administrator', 0, 0);
 
 -- diseases
 INSERT INTO disease(disease_ID, disease) VALUES(1, 'Knochenbruch');
