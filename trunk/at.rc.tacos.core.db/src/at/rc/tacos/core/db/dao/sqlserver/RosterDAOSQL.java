@@ -52,19 +52,19 @@ public class RosterDAOSQL implements RosterDAO
 			if(entry.getPlannedStartOfWork() == 0)
 				query.setString(6, null);
 			else
-				query.setString(6, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.sqlServerDateTime));
+				query.setString(6, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.timeAndDateFormat));
 			if(entry.getPlannedEndOfWork() == 0)
 				query.setString(7, null);
 			else
-				query.setString(7, MyUtils.timestampToString(entry.getPlannedEndOfWork(), MyUtils.sqlServerDateTime));
+				query.setString(7, MyUtils.timestampToString(entry.getPlannedEndOfWork(), MyUtils.timeAndDateFormat));
 			if(entry.getRealStartOfWork() == 0)
 				query.setString(8, null);
 			else
-				query.setString(8, MyUtils.timestampToString(entry.getRealStartOfWork(), MyUtils.sqlServerDateTime));
+				query.setString(8, MyUtils.timestampToString(entry.getRealStartOfWork(), MyUtils.timeAndDateFormat));
 			if(entry.getRealEndOfWork() == 0)
 				query.setString(9, null);
 			else
-				query.setString(9, MyUtils.timestampToString(entry.getRealEndOfWork(), MyUtils.sqlServerDateTime));
+				query.setString(9, MyUtils.timestampToString(entry.getRealEndOfWork(), MyUtils.timeAndDateFormat));
 			query.setString(10, entry.getRosterNotes());
 			query.setBoolean(11, entry.getStandby());
 			query.setString(12, entry.getCreatedByUsername());
@@ -94,19 +94,19 @@ public class RosterDAOSQL implements RosterDAO
 			if(entry.getPlannedStartOfWork() == 0)
 				query.setString(5, null);
 			else
-				query.setString(5, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.sqlServerDateTime));
+				query.setString(5, MyUtils.timestampToString(entry.getPlannedStartOfWork(), MyUtils.timeAndDateFormat));
 			if(entry.getPlannedEndOfWork() == 0)
 				query.setString(6, null);
 			else
-				query.setString(6, MyUtils.timestampToString(entry.getPlannedEndOfWork(), MyUtils.sqlServerDateTime));
+				query.setString(6, MyUtils.timestampToString(entry.getPlannedEndOfWork(), MyUtils.timeAndDateFormat));
 			if(entry.getRealStartOfWork() == 0)
 				query.setString(7, null);
 			else
-				query.setString(7, MyUtils.timestampToString(entry.getRealStartOfWork(), MyUtils.sqlServerDateTime));
+				query.setString(7, MyUtils.timestampToString(entry.getRealStartOfWork(), MyUtils.timeAndDateFormat));
 			if(entry.getRealEndOfWork() == 0)
 				query.setString(8, null);
 			else
-				query.setString(8, MyUtils.timestampToString(entry.getRealEndOfWork(), MyUtils.sqlServerDateTime));
+				query.setString(8, MyUtils.timestampToString(entry.getRealEndOfWork(), MyUtils.timeAndDateFormat));
 			query.setString(9, entry.getRosterNotes());
 			query.setBoolean(10, entry.getStandby());
 			query.setString(11, entry.getCreatedByUsername());
@@ -158,19 +158,19 @@ public class RosterDAOSQL implements RosterDAO
 				if(rs.getString("starttime") == null)
 					entry.setPlannedStartOfWork(0);
 				else
-					entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlDateTime));
+					entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
 				if(rs.getString("endtime") == null)
 					entry.setPlannedEndOfWork(0);
 				else
-					entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlDateTime));
+					entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
 				if(rs.getString("checkIn") == null)
 					entry.setRealStartOfWork(0);
 				else
-					entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlDateTime));
+					entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
 				if(rs.getString("checkOut") == null)
 					entry.setRealEndOfWork(0);
 				else
-					entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlDateTime));
+					entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
 				//Set the location
 				int locationId = rs.getInt("location_ID");
 				entry.setStation(locationDAO.getLocation(locationId));
@@ -274,8 +274,8 @@ public class RosterDAOSQL implements RosterDAO
 			//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
 			//st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note, ro.standby
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterByTime"));
-			query.setString(1, MyUtils.timestampToString(startTime, MyUtils.sqlServerDateTime));
-			query.setString(2, MyUtils.timestampToString(endTime, MyUtils.sqlServerDateTime));
+			query.setString(1, MyUtils.timestampToString(startTime, MyUtils.timeAndDateFormat));
+			query.setString(2, MyUtils.timestampToString(endTime, MyUtils.timeAndDateFormat));
 			final ResultSet rs = query.executeQuery();
 			//create the result list and loop over the result
 			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
@@ -287,19 +287,19 @@ public class RosterDAOSQL implements RosterDAO
 				if(rs.getString("starttime") == null)
 					entry.setPlannedStartOfWork(0);
 				else
-					entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlDateTime));
+					entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
 				if(rs.getString("endtime") == null)
 					entry.setPlannedEndOfWork(0);
 				else
-					entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlDateTime));
+					entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
 				if(rs.getString("checkIn") == null)
 					entry.setRealStartOfWork(0);
 				else
-					entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlDateTime));
+					entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
 				if(rs.getString("checkOut") == null)
 					entry.setRealEndOfWork(0);
 				else
-					entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlDateTime));
+					entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
 				//Set the location
 				int locationId = rs.getInt("location_ID");
 				entry.setStation(locationDAO.getLocation(locationId));
