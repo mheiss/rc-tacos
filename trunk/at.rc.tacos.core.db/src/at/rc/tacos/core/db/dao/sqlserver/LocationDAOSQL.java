@@ -31,19 +31,19 @@ public class LocationDAOSQL implements LocationDAO
 			if(rs.next())
 			{
 				Location location = new Location();
-				location.setCity(rs.getString("lo.city"));
-				location.setId(rs.getInt("lo.location_ID"));
-				location.setLocationName(rs.getString("lo.locationname"));
-				location.setNotes(rs.getString("lo.note"));
-				location.setStreet(rs.getString("lo.street"));
-				location.setStreetNumber(rs.getString("lo.streetnumber"));
-				location.setZipcode(rs.getInt("lo.zipcode"));
+				location.setCity(rs.getString("city"));
+				location.setId(rs.getInt("location_ID"));
+				location.setLocationName(rs.getString("locationname"));
+				location.setNotes(rs.getString("note"));
+				location.setStreet(rs.getString("street"));
+				location.setStreetNumber(rs.getString("streetnumber"));
+				location.setZipcode(rs.getInt("zipcode"));
 
 				//get the mobile phone
 				MobilePhoneDetail phone = new MobilePhoneDetail();
-				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-				phone.setMobilePhoneName(rs.getString("pn.phonename"));
-				phone.setId(rs.getInt("lo.phonenumber_ID"));
+				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+				phone.setMobilePhoneName(rs.getString("phonename"));
+				phone.setId(rs.getInt("phonenumber_ID"));
 				location.setPhone(phone);
 
 				return location;
@@ -72,20 +72,20 @@ public class LocationDAOSQL implements LocationDAO
 			while(rs.next())
 			{
 				Location location = new Location();
-				location.setCity(rs.getString("lo.city"));
-				location.setId(rs.getInt("lo.location_ID"));
-				location.setLocationName(rs.getString("lo.locationname"));
-				location.setNotes(rs.getString("lo.note"));
+				location.setCity(rs.getString("city"));
+				location.setId(rs.getInt("location_ID"));
+				location.setLocationName(rs.getString("locationname"));
+				location.setNotes(rs.getString("note"));
 				//set the mobile phone
 				MobilePhoneDetail phone = new MobilePhoneDetail();
-				phone.setId(rs.getInt("lo.phonenumber_ID"));
-				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-				phone.setMobilePhoneName(rs.getString("pn.phonename"));
+				phone.setId(rs.getInt("phonenumber_ID"));
+				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+				phone.setMobilePhoneName(rs.getString("phonename"));
 				location.setPhone(phone);
 
-				location.setStreet(rs.getString("lo.street"));
-				location.setStreetNumber(rs.getString("lo.streetnumber"));
-				location.setZipcode(rs.getInt("lo.zipcode"));
+				location.setStreet(rs.getString("street"));
+				location.setStreetNumber(rs.getString("streetnumber"));
+				location.setZipcode(rs.getInt("zipcode"));
 
 				locations.add(location);
 			}
@@ -193,22 +193,22 @@ public class LocationDAOSQL implements LocationDAO
 			query.setString(1, locationname);
 			final ResultSet rs = query.executeQuery();
 			//assert we have a result set
-			if(rs.first())
+			if(rs.next())
 			{
 				Location location = new Location();
-				location.setCity(rs.getString("lo.city"));
-				location.setId(rs.getInt("lo.location_ID"));
-				location.setLocationName(rs.getString("lo.locationname"));
-				location.setNotes(rs.getString("lo.note"));
+				location.setCity(rs.getString("city"));
+				location.setId(rs.getInt("location_ID"));
+				location.setLocationName(rs.getString("locationname"));
+				location.setNotes(rs.getString("note"));
 				//get the phone
 				MobilePhoneDetail phone = new MobilePhoneDetail();
-				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-				phone.setMobilePhoneName(rs.getString("pn.phonename"));
-				phone.setId(rs.getInt("lo.phonenumber_ID"));
+				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+				phone.setMobilePhoneName(rs.getString("phonename"));
+				phone.setId(rs.getInt("phonenumber_ID"));
 				location.setPhone(phone);
-				location.setStreet(rs.getString("lo.street"));
-				location.setStreetNumber(rs.getString("lo.streetnumber"));
-				location.setZipcode(rs.getInt("lo.zipcode"));
+				location.setStreet(rs.getString("street"));
+				location.setStreetNumber(rs.getString("streetnumber"));
+				location.setZipcode(rs.getInt("zipcode"));
 				return location;
 			}
 			//no result set
