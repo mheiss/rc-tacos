@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.*;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
