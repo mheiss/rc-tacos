@@ -26,7 +26,7 @@ public class ControllerFactory {
 		} else if (url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("notFound.url"))) {
 			return new NotFoundController();	
 		} else if (url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("dutiesDay.url"))) {
-			return new DutiesDayController();
+			return new RosterDayController2();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("rosterDay.url"))) {
 			return new RosterDayController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("rosterWeek.url"))) {

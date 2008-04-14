@@ -87,29 +87,30 @@ public class Dispatcher extends HttpServlet
 		}
 		//If no URL is specified send redirect to home.do.
 		else if (relativePath.equals("") || relativePath.equals("/")) {
-			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + views.getString("dutiesDay.url"));
+			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + views.getString("rosterDay2.url"));
 		} else {
 			//Get login requirement view and template
 			for (final Iterator<String> it = set.iterator(); it.hasNext();) {
 				final String key = it.next();
-				if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".url")) {
+				final String prefix = key.replaceAll("\\..*", "");
+				if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".url")) {
 					urlFound = true;
-				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".loginRequired")) {
+				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".loginRequired")) {
 					if (views.getString(key).equalsIgnoreCase("false")) {
 						loginRequired = false;
 					}
-				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".controller")) {
+				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".controller")) {
 					controllerFound = true;
 					controllerClassName = views.getString(key);
-				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".view")) {
+				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".view")) {
 					viewFound = true;
 					viewPath = views.getString(key);
-				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".template")) {
+				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".template")) {
 					templateFound = true;
 					templatePath = views.getString(key);
-				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".title")) {
+				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".title")) {
 					viewTitle = views.getString(key);
-				} else if (key.contains(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".header")) {
+				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".header")) {
 					viewHeader = views.getString(key);
 				}
 			}			
