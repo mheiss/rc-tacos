@@ -33,7 +33,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 			query.setString(2, PasswordEncryption.getInstance().encrypt(pwdHash));
 			final ResultSet rs = query.executeQuery();
 			//asser we have a result set
-			if(rs.first())
+			if(rs.next())
 			{
 				if (rs.getString("username") != null &! rs.getBoolean("locked"))
 					return 0;
@@ -63,7 +63,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 			if(rs.next())
 			{
 				Login login = new Login();
-				login.setAuthorization(rs.getString("authorization"));
+				login.setAuthorization(rs.getString("authorisation"));
 				login.setIslocked(rs.getBoolean("locked"));
 				login.setLoggedIn(rs.getBoolean("isloggedin"));
 				login.setUsername(rs.getString("username"));
@@ -86,7 +86,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 		Connection connection = source.getConnection();
 		try
 		{	
-			// username, pwd, authorization, isloggedin, locked
+			// username, pwd, authorisation, isloggedin, locked
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.User"));
 			query.setString(1, login.getUsername());
 			query.setString(2, PasswordEncryption.getInstance().encrypt(login.getPassword()));
@@ -202,7 +202,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 			{
 				Login login = new Login();
 				login.setUsername(rs.getString("username"));
-				login.setAuthorization(rs.getString("authorization"));
+				login.setAuthorization(rs.getString("authorisation"));
 				login.setIslocked(rs.getBoolean("locked"));
 				login.setLoggedIn(rs.getBoolean("isloggedin"));
 				loginList.add(login);
