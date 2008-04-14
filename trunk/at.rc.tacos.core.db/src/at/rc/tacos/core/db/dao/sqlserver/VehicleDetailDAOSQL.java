@@ -66,37 +66,37 @@ public class VehicleDetailDAOSQL implements VehicleDAO
 			if(rs.next())
 			{
 				VehicleDetail vehicle = new VehicleDetail();
-				vehicle.setVehicleName(rs.getString("v.vehicle_ID"));
-				vehicle.setVehicleType(rs.getString("v.vehicletype"));
-				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
-				vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
-				vehicle.setVehicleNotes(rs.getString("v.note"));
-				vehicle.setTransportStatus(rs.getInt("v.transportStatus"));
+				vehicle.setVehicleName(rs.getString("vehicle_ID"));
+				vehicle.setVehicleType(rs.getString("vehicletype"));
+				vehicle.setReadyForAction(rs.getBoolean("readyForAction"));
+				vehicle.setOutOfOrder(rs.getBoolean("outOfOrder"));
+				vehicle.setVehicleNotes(rs.getString("note"));
+				vehicle.setTransportStatus(rs.getInt("transportStatus"));
 				//the mobile phone for the vehicle
 				MobilePhoneDetail phone = new MobilePhoneDetail();
-				phone.setId(rs.getInt("v.phonenumber_ID"));
-				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-				phone.setMobilePhoneName(rs.getString("pn.phonename"));
+				phone.setId(rs.getInt("phonenumber_ID"));
+				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+				phone.setMobilePhoneName(rs.getString("phonename"));
 				vehicle.setMobilPhone(phone);
 				//the basic location
 				Location basicStation = new Location();
-				basicStation = locationDAO.getLocation(rs.getInt("v.primaryLocation"));
+				basicStation = locationDAO.getLocation(rs.getInt("primaryLocation"));
 				vehicle.setBasicStation(basicStation);
 				//the current location
 				Location currentStation = new Location();
-				currentStation = locationDAO.getLocation(rs.getInt("v.currentLocation"));
+				currentStation = locationDAO.getLocation(rs.getInt("currentLocation"));
 				vehicle.setCurrentStation(currentStation);
 				//the driver
 				StaffMember driver = new StaffMember();
-				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("v.driver_ID"));
+				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("driver_ID"));
 				vehicle.setDriver(driver);
 				//the first paramedic
 				StaffMember firstParamedic = new StaffMember();
-				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic1_ID"));
+				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic1_ID"));
 				vehicle.setFirstParamedic(firstParamedic);
 				//the second paramedic
 				StaffMember secondParamedic = new StaffMember();
-				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic2_ID"));
+				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic2_ID"));
 				vehicle.setSecondParamedic(secondParamedic);
 				return vehicle;
 			}
@@ -123,37 +123,37 @@ public class VehicleDetailDAOSQL implements VehicleDAO
 			while(rs.next())
 			{
 				VehicleDetail vehicle = new VehicleDetail();
-				vehicle.setVehicleName(rs.getString("v.vehicle_ID"));
-				vehicle.setVehicleType(rs.getString("v.vehicletype"));
-				vehicle.setReadyForAction(rs.getBoolean("v.readyForAction"));
-				vehicle.setOutOfOrder(rs.getBoolean("v.outOfOrder"));
-				vehicle.setVehicleNotes(rs.getString("v.note"));
-				vehicle.setTransportStatus(rs.getInt("v.transportStatus"));
+				vehicle.setVehicleName(rs.getString("vehicle_ID"));
+				vehicle.setVehicleType(rs.getString("vehicletype"));
+				vehicle.setReadyForAction(rs.getBoolean("readyForAction"));
+				vehicle.setOutOfOrder(rs.getBoolean("outOfOrder"));
+				vehicle.setVehicleNotes(rs.getString("note"));
+				vehicle.setTransportStatus(rs.getInt("transportStatus"));
 
 				MobilePhoneDetail phone = new MobilePhoneDetail();
-				phone.setId(rs.getInt("v.phonenumber_ID"));
-				phone.setMobilePhoneNumber(rs.getString("pn.phonenumber"));
-				phone.setMobilePhoneName(rs.getString("pn.phonename"));
+				phone.setId(rs.getInt("phonenumber_ID"));
+				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+				phone.setMobilePhoneName(rs.getString("phonename"));
 				vehicle.setMobilPhone(phone);
 
 				Location basicStation = new Location();
-				basicStation = locationDAO.getLocation(rs.getInt("v.primaryLocation"));
+				basicStation = locationDAO.getLocation(rs.getInt("primaryLocation"));
 				vehicle.setBasicStation(basicStation);
 
 				Location currentStation = new Location();
-				currentStation = locationDAO.getLocation(rs.getInt("v.currentLocation"));
+				currentStation = locationDAO.getLocation(rs.getInt("currentLocation"));
 				vehicle.setCurrentStation(currentStation);
 
 				StaffMember driver = new StaffMember();
-				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("v.driver_ID"));
+				driver = staffMemberDAO.getStaffMemberByID(rs.getInt("driver_ID"));
 				vehicle.setDriver(driver);
 
 				StaffMember firstParamedic = new StaffMember();
-				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic1_ID"));
+				firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic1_ID"));
 				vehicle.setFirstParamedic(firstParamedic);
 
 				StaffMember secondParamedic = new StaffMember();
-				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("v.medic2_ID"));
+				secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic2_ID"));
 				vehicle.setSecondParamedic(secondParamedic);
 				vehicles.add(vehicle);
 			}
