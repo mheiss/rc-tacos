@@ -378,8 +378,8 @@ public class DialysisPatient extends AbstractMessage
 	 */
 	public void setPlannedStartOfTransport(long plannedStartOfTransport) 
 	{
-		if(plannedStartOfTransport < 0)
-			throw new IllegalArgumentException("Date cannot be negative");
+//		if(plannedStartOfTransport < 0)
+//			throw new IllegalArgumentException("Date cannot be negative");
 		if(!MyUtils.isValidDate(plannedStartOfTransport))
 			throw new IllegalArgumentException("Date is out of range");
 		this.plannedStartOfTransport = plannedStartOfTransport;
@@ -390,8 +390,8 @@ public class DialysisPatient extends AbstractMessage
 	 */
 	public void setPlannedTimeAtPatient(long plannedTimeAtPatient) 
 	{
-		if(plannedTimeAtPatient < 0)
-			throw new IllegalArgumentException("Date cannot be negative");
+//		if(plannedTimeAtPatient < 0)
+//			throw new IllegalArgumentException("Date cannot be negative");
 		if(!MyUtils.isValidDate(plannedTimeAtPatient))
 			throw new IllegalArgumentException("Date is out of range");
 		this.plannedTimeAtPatient = plannedTimeAtPatient;
@@ -404,8 +404,8 @@ public class DialysisPatient extends AbstractMessage
 	public void setAppointmentTimeAtDialysis(long appointmentTimeAtDialysis) 
 	{
 		System.out.println(appointmentTimeAtDialysis);
-		if(appointmentTimeAtDialysis < 0)
-			throw new IllegalArgumentException("Date cannot be negative");
+//		if(appointmentTimeAtDialysis < 0)
+//			throw new IllegalArgumentException("Date cannot be negative");
 		if(!MyUtils.isValidDate(appointmentTimeAtDialysis))
 			throw new IllegalArgumentException("Date is out of range");
 		this.appointmentTimeAtDialysis = appointmentTimeAtDialysis;
@@ -417,8 +417,8 @@ public class DialysisPatient extends AbstractMessage
 	 */
 	public void setPlannedStartForBackTransport(long plannedStartForBackTransport) 
 	{
-		if(plannedStartForBackTransport < 0)
-			throw new IllegalArgumentException("Date cannot be negative");
+//		if(plannedStartForBackTransport < 0)
+//			throw new IllegalArgumentException("Date cannot be negative");
 		if(!MyUtils.isValidDate(plannedStartForBackTransport))
 			throw new IllegalArgumentException("Date is out of range");
 		this.plannedStartForBackTransport = plannedStartForBackTransport;
@@ -430,8 +430,8 @@ public class DialysisPatient extends AbstractMessage
 	 */
 	public void setReadyTime(long readyTime) 
 	{
-		if(readyTime < 0)
-			throw new IllegalArgumentException("Date cannot be negative");
+//		if(readyTime < 0)
+//			throw new IllegalArgumentException("Date cannot be negative");
 		if(!MyUtils.isValidDate(readyTime))
 			throw new IllegalArgumentException("Date is out of range");
 		this.readyTime = readyTime;
