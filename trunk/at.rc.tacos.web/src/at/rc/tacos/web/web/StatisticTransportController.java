@@ -22,7 +22,7 @@ public class StatisticTransportController extends Controller {
 		
 		if("doTransportStat".equalsIgnoreCase(action)){
 			
-			params.put("statistic", "nioch nix");
+			params.put("statistic", "Under Construction");
 		}
 		return params;
 	}

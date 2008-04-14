@@ -68,6 +68,7 @@ public class Dispatcher extends HttpServlet
 
 		//Get the relative Path from request URL
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
+		final String relativePathPrefix = relativePath.replaceFirst("/", "").replaceFirst(".do", "");
 		
 		final Set<String> set = views.keySet();
 		boolean urlFound = false;
@@ -93,24 +94,24 @@ public class Dispatcher extends HttpServlet
 			for (final Iterator<String> it = set.iterator(); it.hasNext();) {
 				final String key = it.next();
 				final String prefix = key.replaceAll("\\..*", "");
-				if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".url")) {
+				if (prefix.equals(relativePathPrefix) && key.contains(".url")) {
 					urlFound = true;
-				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".loginRequired")) {
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".loginRequired")) {
 					if (views.getString(key).equalsIgnoreCase("false")) {
 						loginRequired = false;
 					}
-				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".controller")) {
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".controller")) {
 					controllerFound = true;
 					controllerClassName = views.getString(key);
-				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".view")) {
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".view")) {
 					viewFound = true;
-					viewPath = views.getString(key);
-				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".template")) {
+					viewPath = views.getString(key).trim();
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".template")) {
 					templateFound = true;
 					templatePath = views.getString(key);
-				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".title")) {
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".title")) {
 					viewTitle = views.getString(key);
-				} else if (prefix.equalsIgnoreCase(relativePath.replaceFirst("/", "").replaceFirst(".do", "")) && key.contains(".header")) {
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".header")) {
 					viewHeader = views.getString(key);
 				}
 			}			
