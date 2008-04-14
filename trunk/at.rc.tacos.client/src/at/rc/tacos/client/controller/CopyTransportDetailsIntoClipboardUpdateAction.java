@@ -68,8 +68,9 @@ public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implem
 		if(transport.getKindOfIllness() != null)
 			kindOfIllness = transport.getKindOfIllness().getDiseaseName();
 		
-		if(transport.getNotes() != null |! transport.getNotes().trim().isEmpty())
-			notes = transport.getNotes();
+		if(transport.getNotes() != null)
+			if(!transport.getNotes().trim().isEmpty())
+				notes = transport.getNotes();
 		
 		//transport priority
 		if(transport.getTransportPriority().equalsIgnoreCase("A"))
