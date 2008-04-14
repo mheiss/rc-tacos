@@ -43,11 +43,11 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			query.setString(2, patient.getPatient().getFirstname());
 			query.setString(3, patient.getPatient().getLastname());
 			query.setInt(4, patient.getLocation().getId());
-			query.setString(5, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.sqlTime));
-			query.setString(6, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.sqlTime));
-			query.setString(7, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.sqlTime));
-			query.setString(8, MyUtils.timestampToString(patient.getPlannedStartForBackTransport(), MyUtils.sqlTime));
-			query.setString(9, MyUtils.timestampToString(patient.getReadyTime(), MyUtils.sqlTime));
+			query.setString(5, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.timeAndDateFormat));
+			query.setString(6, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.timeAndDateFormat));
+			query.setString(7, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.timeAndDateFormat));
+			query.setString(8, MyUtils.timestampToString(patient.getPlannedStartForBackTransport(), MyUtils.timeAndDateFormat));
+			query.setString(9, MyUtils.timestampToString(patient.getReadyTime(), MyUtils.timeAndDateFormat));
 			query.setString(10, patient.getFromStreet());
 			query.setString(11, patient.getFromCity());
 			query.setString(12, patient.getToStreet());
@@ -96,17 +96,17 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			{
 				DialysisPatient dialysis = new DialysisPatient();
 				dialysis.setId(rs.getInt("dialysis_ID"));
-				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlServerTime));
+				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlServerDateTime));
 				dialysis.setAssistantPerson(rs.getBoolean("assistant"));
 				dialysis.setFriday(rs.getBoolean("friday"));
 				dialysis.setFromCity(rs.getString("fromCity"));
 				dialysis.setFromStreet(rs.getString("fromStreet"));
 				dialysis.setInsurance(rs.getString("insurance"));
 				dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
-				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlServerTime));
-				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlServerTime));
-				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlServerTime));
-				dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlServerTime));
+				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlServerDateTime));
+				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlServerDateTime));
+				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlServerDateTime));
+				dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlServerDateTime));
 				dialysis.setSaturday(rs.getBoolean("saturday"));
 				dialysis.setStationary(rs.getBoolean("stationary"));
 				dialysis.setSunday(rs.getBoolean("sunday"));
@@ -127,9 +127,9 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 				
 				//set the last generated transport dates
 				if(rs.getString("transport_date") != null)
-					dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("transport_date"),MyUtils.sqlDate));
+					dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("transport_date"),MyUtils.sqlServerDateTime));
 				if(rs.getString("return_date") != null)
-					dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("return_date"),MyUtils.sqlDate));
+					dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("return_date"),MyUtils.sqlServerDateTime));
 				
 				//return the patient
 				return dialysis;
@@ -156,17 +156,17 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			{
 				DialysisPatient dialysis = new DialysisPatient();
 				dialysis.setId(rs.getInt("dialysis_ID"));
-				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlServerTime));
+				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlServerDateTime));
 				dialysis.setAssistantPerson(rs.getBoolean("assistant"));
 				dialysis.setFriday(rs.getBoolean("friday"));
 				dialysis.setFromCity(rs.getString("fromCity"));
 				dialysis.setFromStreet(rs.getString("fromStreet"));
 				dialysis.setInsurance(rs.getString("insurance"));
 				dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
-				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlServerTime));
-				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlServerTime));
-				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlServerTime));
-				dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlServerTime));
+				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlServerDateTime));
+				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlServerDateTime));
+				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlServerDateTime));
+				dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlServerDateTime));
 				dialysis.setSaturday(rs.getBoolean("saturday"));
 				dialysis.setStationary(rs.getBoolean("stationary"));
 				dialysis.setSunday(rs.getBoolean("sunday"));
@@ -187,9 +187,9 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 				
 				//set the last generated transport dates
 				if(rs.getString("transport_date") != null)
-					dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("transport_date"),MyUtils.sqlServerDate));
+					dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("transport_date"),MyUtils.sqlServerDateTime));
 				if(rs.getString("return_date") != null)
-					dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("return_date"),MyUtils.sqlServerDate));
+					dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("return_date"),MyUtils.sqlServerDateTime));
 				
 				//add to the list
 				dialysises.add(dialysis);
@@ -240,11 +240,11 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
 			query.setInt(3, patient.getLocation().getId());
-			query.setString(4, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.sqlServerTime));
-			query.setString(5, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.sqlServerTime));
-			query.setString(6, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.sqlServerTime));
-			query.setString(7, MyUtils.timestampToString(patient.getPlannedStartForBackTransport(), MyUtils.sqlServerTime));
-			query.setString(8, MyUtils.timestampToString(patient.getReadyTime(), MyUtils.sqlServerTime));
+			query.setString(4, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.timeAndDateFormat));
+			query.setString(5, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.timeAndDateFormat));
+			query.setString(6, MyUtils.timestampToString(patient.getAppointmentTimeAtDialysis(), MyUtils.timeAndDateFormat));
+			query.setString(7, MyUtils.timestampToString(patient.getPlannedStartForBackTransport(), MyUtils.timeAndDateFormat));
+			query.setString(8, MyUtils.timestampToString(patient.getReadyTime(), MyUtils.timeAndDateFormat));
 			query.setString(9, patient.getFromStreet());
 			query.setString(10, patient.getFromCity());
 			query.setString(11, patient.getToStreet());
@@ -269,12 +269,12 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			final PreparedStatement stmtTran = connection.prepareStatement(queries.getStatment("update.dialysisTransport"));
 			//set the values if they are not 0
 			if(patient.getLastTransportDate() > 0)
-				stmtTran.setString(1, MyUtils.timestampToString(patient.getLastTransportDate(), MyUtils.sqlServerDate));
+				stmtTran.setString(1, MyUtils.timestampToString(patient.getLastTransportDate(), MyUtils.timeAndDateFormat));
 			else
 				stmtTran.setString(1,null);
 			//set the value for the backtransport if it is not 0
 			if(patient.getLastBackTransporDate() > 0)
-				stmtTran.setString(2, MyUtils.timestampToString(patient.getLastBackTransporDate(), MyUtils.sqlServerDate));
+				stmtTran.setString(2, MyUtils.timestampToString(patient.getLastBackTransporDate(), MyUtils.timeAndDateFormat));
 			else
 				stmtTran.setString(2,null);
 			stmtTran.setInt(3, patient.getId());
