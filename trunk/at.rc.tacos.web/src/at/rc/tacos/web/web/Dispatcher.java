@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import at.rc.tacos.core.net.internal.WebClient;
 /**
  * Dispatcher (Front Controller):
- * This class is responsible for URL resolving, security and forwarding to view.
+ * This class is responsible for URL resolving, security, forwarding to view and loads template.
  * @author Payer Martin
  * @version 1.0
  */
