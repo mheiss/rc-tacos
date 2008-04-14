@@ -63,10 +63,10 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(6, transport.getCreatedByUsername());
             query.setString(7, transport.getTransportPriority());
             query.setString(8, transport.getFeedback());
-            query.setString(9, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlDateTime));
-            query.setString(10, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
-            query.setString(11, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
-            query.setString(12, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
+            query.setString(9, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlServerDateTime));
+            query.setString(10, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.sqlServerDateTime));
+            query.setString(11, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlServerDateTime));
+            query.setString(12, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlServerDateTime));
             query.setString(13, transport.getKindOfTransport());
             if(transport.getKindOfIllness() == null)
                 query.setString(14, null);
@@ -91,25 +91,25 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(20, transport.getToStreet());
             query.setString(21, transport.getToCity());
             query.setInt(22, transport.getProgramStatus());
-            query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDateTime));
+            query.setString(23, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlServerDateTime));
             query.setString(24, transport.getDisposedByUsername());
             query.executeUpdate();
             //get the last inserted auto id
-            if(!rs.next())
-            	return Transport.TRANSPORT_ERROR;
-            transport.setTransportId(rs.getInt(1));
+//            if(!rs.next()) -- no next value!!!
+//            {
+//            	System.out.println("im !rs.next()");
+//            	return Transport.TRANSPORT_ERROR;
+//            }
+            transport.setTransportId(id);
 
 
             //assign the transport items!
             if(!assignTransportItems(transport))
                 return Transport.TRANSPORT_ERROR;
-            
             //if the new transport is a nef transort (from DuplicatePriorityATransportAction) the
             //vehicle and the status messages (S0 = AE) must be set
             if(transport.getTransportNumber() == Transport.TRANSPORT_NEF && transport.getVehicleDetail() != null)
-            {
-            	System.out.println("im if der add der TransportDAOMySQL");
-            	
+            {           	
             	//assign vehicle, assign transport items, assign transportstate
             	
             	 if(!assignVehicle(transport))
@@ -117,7 +117,6 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             		 System.out.println("Assigning vehicle (NEF) failed");
                      return Transport.TRANSPORT_ERROR;
             	 }
-            	
 
                 //assign the transport states S1,S2,....
                 if(!assignTransportstate(transport))
@@ -126,7 +125,6 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     return Transport.TRANSPORT_ERROR;
                 }
             }
-
             return transport.getTransportId();
         }
         finally
@@ -152,18 +150,18 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 //create the new transport
                 Transport transport = new Transport();
 
-                transport.setTransportId(rs.getInt("t.transport_ID"));
-                transport.setTransportNumber(rs.getInt("t.transportNr"));
+                transport.setTransportId(rs.getInt("transport_ID"));
+                transport.setTransportNumber(rs.getInt("transportNr"));
 
-                if(rs.getInt("t.planned_location") != 0)
+                if(rs.getInt("planned_location") != 0)
                 {
                     Location station = new Location();
-                    station.setId(rs.getInt("t.planned_location"));
-                    station.setLocationName(rs.getString("lo.locationname"));
+                    station.setId(rs.getInt("planned_location"));
+                    station.setLocationName(rs.getString("locationname"));
                     transport.setPlanedLocation(station);
                 }
 
-                if(rs.getInt("t.caller_ID") != 0)
+                if(rs.getInt("caller_ID") != 0)
                 {
                     CallerDetail caller = new CallerDetail();
                     caller.setCallerId(rs.getInt("caller_ID"));
@@ -171,103 +169,103 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
                     transport.setCallerDetail(caller);
                 }
-                transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
-                if(rs.getString("t.disposedBy_user") != null)
-                	transport.setDisposedByUsername(rs.getString("t.disposedBy_user"));
-                if(rs.getString("t.note") == null)
+                transport.setCreatedByUsername(rs.getString("createdBy_user"));
+                if(rs.getString("disposedBy_user") != null)
+                	transport.setDisposedByUsername(rs.getString("disposedBy_user"));
+                if(rs.getString("note") == null)
                     transport.setNotes("");
                 else
-                    transport.setNotes(rs.getString("t.note"));
-                if(rs.getString("t.feedback") == null)
+                    transport.setNotes(rs.getString("note"));
+                if(rs.getString("feedback") == null)
                     transport.setFeedback("");
                 else
-                    transport.setFeedback(rs.getString("t.feedback"));
-                transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
-                transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
-                transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
-                transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+                    transport.setFeedback(rs.getString("feedback"));
+                transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlServerDateTime));
+                transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("departure"), MyUtils.sqlServerDateTime));
+                transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("appointment"), MyUtils.sqlServerDateTime));
+                transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("appointmentPatient"), MyUtils.sqlServerDateTime));
                 Disease disease = new Disease();
-                if(rs.getString("t.disease") == null)
+                if(rs.getString("disease") == null)
                     disease.setDiseaseName("");
                 else
-                    disease.setDiseaseName(rs.getString("t.disease"));
+                    disease.setDiseaseName(rs.getString("disease"));
                 transport.setKindOfIllness(disease);
-                if(rs.getString("t.from_street") == null)
+                if(rs.getString("from_street") == null)
                     transport.setFromStreet("");
                 else
-                    transport.setFromStreet(rs.getString("t.from_street"));
-                if(rs.getString("t.from_city") == null)
+                    transport.setFromStreet(rs.getString("from_street"));
+                if(rs.getString("from_city") == null)
                     transport.setFromCity("");
                 else
-                    transport.setFromCity(rs.getString("t.from_city"));
-                if(rs.getString("t.to_street") == null)
+                    transport.setFromCity(rs.getString("from_city"));
+                if(rs.getString("to_street") == null)
                     transport.setToStreet("");
                 else
-                    transport.setToStreet(rs.getString("t.to_street"));
-                if(rs.getString("t.to_city") == null)
+                    transport.setToStreet(rs.getString("to_street"));
+                if(rs.getString("to_city") == null)
                     transport.setToCity("");
                 else
-                    transport.setToCity(rs.getString("t.to_city"));
-                transport.setProgramStatus(rs.getInt("t.programstate"));
-                if(rs.getString("t.transporttype") == null)
+                    transport.setToCity(rs.getString("to_city"));
+                transport.setProgramStatus(rs.getInt("programstate"));
+                if(rs.getString("transporttype") == null)
                     transport.setKindOfTransport("");
                 else
-                    transport.setKindOfTransport(rs.getString("t.transporttype"));
-                transport.setTransportPriority(rs.getString("t.priority"));
-                transport.setDirection(rs.getInt("t.direction"));
-                transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
+                    transport.setKindOfTransport(rs.getString("transporttype"));
+                transport.setTransportPriority(rs.getString("priority"));
+                transport.setDirection(rs.getInt("direction"));
+                transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("dateOfTransport"), MyUtils.sqlServerDateTime));
 
                 //The patient of the transport
                 Patient patient = new Patient();
-                if(rs.getString("t.firstname") == null)
+                if(rs.getString("firstname") == null)
                     patient.setFirstname("");
                 else
-                    patient.setFirstname(rs.getString("t.firstname"));
-                if(rs.getString("t.lastname") == null)
+                    patient.setFirstname(rs.getString("firstname"));
+                if(rs.getString("lastname") == null)
                     patient.setLastname("");
                 else
-                    patient.setLastname(rs.getString("t.lastname"));
+                    patient.setLastname(rs.getString("lastname"));
                 transport.setPatient(patient);
 
                 //The assigned vehicle of the transport
-                if(rs.getString("av.location_ID") != null)
+                if(rs.getString("location_ID") != null)
                 {
                     //get the location 
                     Location location = new Location();
-                    location.setId(rs.getInt("av.location_ID"));
-                    location.setLocationName(rs.getString("av.location_name"));
+                    location.setId(rs.getInt("location_ID"));
+                    location.setLocationName(rs.getString("location_name"));
                     //get the vehicle
                     VehicleDetail vehicle = new VehicleDetail();
                     vehicle.setCurrentStation(location);
-                    vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
-                    vehicle.setVehicleNotes(rs.getString("av.note"));
-                    vehicle.setVehicleType(rs.getString("av.vehicletype"));
+                    vehicle.setVehicleName(rs.getString("vehicle_ID"));
+                    vehicle.setVehicleNotes(rs.getString("note"));
+                    vehicle.setVehicleType(rs.getString("vehicletype"));
 
                     //the staff of the vehicle
-                    if(rs.getString("av.driver_ID") != null)
+                    if(rs.getString("driver_ID") != null)
                     {
 	                    StaffMember driver = new StaffMember();
-	                    driver.setStaffMemberId(rs.getInt("av.driver_ID"));
-	                    driver.setLastName(rs.getString("av.driver_lastname"));
-	                    driver.setFirstName(rs.getString("av.driver_firstname"));
+	                    driver.setStaffMemberId(rs.getInt("driver_ID"));
+	                    driver.setLastName(rs.getString("driver_lastname"));
+	                    driver.setFirstName(rs.getString("driver_firstname"));
 	                    vehicle.setDriver(driver);
                     }
                     //test the first medic
-                    if(rs.getString("av.medic1_ID") != null)
+                    if(rs.getString("medic1_ID") != null)
                     {
 	                    StaffMember medic1 = new StaffMember();
-	                    medic1.setStaffMemberId(rs.getInt("av.medic1_ID"));
-	                    medic1.setLastName(rs.getString("av.medic1_lastname"));
-	                    medic1.setFirstName(rs.getString("av.medic1_firstname"));
+	                    medic1.setStaffMemberId(rs.getInt("medic1_ID"));
+	                    medic1.setLastName(rs.getString("medic1_lastname"));
+	                    medic1.setFirstName(rs.getString("medic1_firstname"));
 	                    vehicle.setFirstParamedic(medic1);
                     }
                     //test the second medic
-                    if(rs.getString("av.medic2_ID") != null)
+                    if(rs.getString("medic2_ID") != null)
                     {
 	                    StaffMember medic2 = new StaffMember();
-	                    medic2.setStaffMemberId(rs.getInt("av.medic2_ID"));
-	                    medic2.setLastName(rs.getString("av.medic2_lastname"));
-	                    medic2.setFirstName(rs.getString("av.medic2_firstname"));
+	                    medic2.setStaffMemberId(rs.getInt("medic2_ID"));
+	                    medic2.setLastName(rs.getString("medic2_lastname"));
+	                    medic2.setFirstName(rs.getString("medic2_firstname"));
 	                    vehicle.setSecondParamedic(medic2);
                     }
                     transport.setVehicleDetail(vehicle);
@@ -279,7 +277,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 final ResultSet stateResult = stateQuery.executeQuery();
                 //loop over the result set
                 while(stateResult.next())
-                    transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlDateTime));
+                    transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlServerDateTime));
 
                 // find the selected items (boolean values)
                 final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
@@ -290,36 +288,36 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 	if(rs1.getInt("selected_ID") == 1)
                     {
                         transport.setEmergencyDoctorAlarming(true);
-                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
                     if(rs1.getInt("selected_ID") == 2)
                     {
                         transport.setPoliceAlarming(true);
-                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 3)
                     {
                         transport.setFirebrigadeAlarming(true);
-                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 4)
                     {
                         transport.setMountainRescueServiceAlarming(true);
-                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 5)
                     {
                         transport.setDfAlarming(true);
-                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 6)
                     {
                         transport.setBrkdtAlarming(true);
-                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 7)
@@ -330,7 +328,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     if(rs1.getInt("selected_ID") == 8)
                     {
                         transport.setHelicopterAlarming(true);
-                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 9)
@@ -356,7 +354,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     if(rs1.getInt("selected_ID") == 13)
                     {
                         transport.setKITAlarming(true);
-                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
                     
                     if(rs1.getInt("selected_ID") == 14)
@@ -392,18 +390,18 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 //create the new transport
                 Transport transport = new Transport();
 
-                transport.setTransportId(rs.getInt("t.transport_ID"));
-                transport.setTransportNumber(rs.getInt("t.transportNr"));
+                transport.setTransportId(rs.getInt("transport_ID"));
+                transport.setTransportNumber(rs.getInt("transportNr"));
 
-                if(rs.getInt("t.planned_location") != 0)
+                if(rs.getInt("planned_location") != 0)
                 {
                     Location station = new Location();
-                    station.setId(rs.getInt("t.planned_location"));
-                    station.setLocationName(rs.getString("lo.locationname"));
+                    station.setId(rs.getInt("planned_location"));
+                    station.setLocationName(rs.getString("locationname"));
                     transport.setPlanedLocation(station);
                 }
 
-                if(rs.getInt("t.caller_ID") != 0)
+                if(rs.getInt("caller_ID") != 0)
                 {
                     CallerDetail caller = new CallerDetail();
                     caller.setCallerId(rs.getInt("caller_ID"));
@@ -411,62 +409,62 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
                     transport.setCallerDetail(caller);
                 }
-                transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
-                if(rs.getString("t.disposedBy_user") != null)
-                	transport.setDisposedByUsername(rs.getString("t.disposedBy_user"));
-                if(rs.getString("t.note") == null)
+                transport.setCreatedByUsername(rs.getString("createdBy_user"));
+                if(rs.getString("disposedBy_user") != null)
+                	transport.setDisposedByUsername(rs.getString("disposedBy_user"));
+                if(rs.getString("note") == null)
                     transport.setNotes("");
                 else
-                    transport.setNotes(rs.getString("t.note"));
-                if(rs.getString("t.feedback") == null)
+                    transport.setNotes(rs.getString("note"));
+                if(rs.getString("feedback") == null)
                     transport.setFeedback("");
                 else
-                    transport.setFeedback(rs.getString("t.feedback"));
+                    transport.setFeedback(rs.getString("feedback"));
                 transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
-                transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
-                transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
-                transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+                transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("departure"), MyUtils.sqlDateTime));
+                transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("appointment"), MyUtils.sqlDateTime));
+                transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("appointmentPatient"), MyUtils.sqlDateTime));
                 Disease disease = new Disease();
-                if(rs.getString("t.disease") == null)
+                if(rs.getString("disease") == null)
                     disease.setDiseaseName("");
                 else
-                    disease.setDiseaseName(rs.getString("t.disease"));
+                    disease.setDiseaseName(rs.getString("disease"));
                 transport.setKindOfIllness(disease);
-                if(rs.getString("t.from_street") == null)
+                if(rs.getString("from_street") == null)
                     transport.setFromStreet("");
                 else
-                    transport.setFromStreet(rs.getString("t.from_street"));
-                if(rs.getString("t.from_city") == null)
+                    transport.setFromStreet(rs.getString("from_street"));
+                if(rs.getString("from_city") == null)
                     transport.setFromCity("");
                 else
-                    transport.setFromCity(rs.getString("t.from_city"));
-                if(rs.getString("t.to_street") == null)
+                    transport.setFromCity(rs.getString("from_city"));
+                if(rs.getString("to_street") == null)
                     transport.setToStreet("");
                 else
-                    transport.setToStreet(rs.getString("t.to_street"));
-                if(rs.getString("t.to_city") == null)
+                    transport.setToStreet(rs.getString("to_street"));
+                if(rs.getString("to_city") == null)
                     transport.setToCity("");
                 else
-                    transport.setToCity(rs.getString("t.to_city"));
-                transport.setProgramStatus(rs.getInt("t.programstate"));
-                if(rs.getString("t.transporttype") == null)
+                    transport.setToCity(rs.getString("to_city"));
+                transport.setProgramStatus(rs.getInt("programstate"));
+                if(rs.getString("transporttype") == null)
                     transport.setKindOfTransport("");
                 else
-                    transport.setKindOfTransport(rs.getString("t.transporttype"));
-                transport.setTransportPriority(rs.getString("t.priority"));
-                transport.setDirection(rs.getInt("t.direction"));
-                transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
+                    transport.setKindOfTransport(rs.getString("transporttype"));
+                transport.setTransportPriority(rs.getString("priority"));
+                transport.setDirection(rs.getInt("direction"));
+                transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("dateOfTransport"), MyUtils.sqlServerDateTime));
 
                 //The patient of the transport
                 Patient patient = new Patient();
-                if(rs.getString("t.firstname") == null)
+                if(rs.getString("firstname") == null)
                     patient.setFirstname("");
                 else
-                    patient.setFirstname(rs.getString("t.firstname"));
-                if(rs.getString("t.lastname") == null)
+                    patient.setFirstname(rs.getString("firstname"));
+                if(rs.getString("lastname") == null)
                     patient.setLastname("");
                 else
-                    patient.setLastname(rs.getString("t.lastname"));
+                    patient.setLastname(rs.getString("lastname"));
                 transport.setPatient(patient);
 
                 // find the selected items (boolean values)
@@ -479,36 +477,36 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 	if(rs1.getInt("selected_ID") == 1)
                     {
                         transport.setEmergencyDoctorAlarming(true);
-                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
                     if(rs1.getInt("selected_ID") == 2)
                     {
                         transport.setPoliceAlarming(true);
-                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 3)
                     {
                         transport.setFirebrigadeAlarming(true);
-                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 4)
                     {
                         transport.setMountainRescueServiceAlarming(true);
-                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 5)
                     {
                         transport.setDfAlarming(true);
-                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 6)
                     {
                         transport.setBrkdtAlarming(true);
-                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 7)
@@ -519,7 +517,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     if(rs1.getInt("selected_ID") == 8)
                     {
                         transport.setHelicopterAlarming(true);
-                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 9)
@@ -545,7 +543,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     if(rs1.getInt("selected_ID") == 13)
                     {
                         transport.setKITAlarming(true);
-                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
                     
                     if(rs1.getInt("selected_ID") == 14)
@@ -573,8 +571,8 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
         try
         {
             final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.archivedTransports"));
-            query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlDate));
-            query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlDate));
+            query.setString(1, MyUtils.timestampToString(startdate, MyUtils.sqlServerDate));
+            query.setString(2, MyUtils.timestampToString(enddate, MyUtils.sqlServerDate));
             query.setInt(3, PROGRAM_STATUS_JOURNAL);
             final ResultSet rs = query.executeQuery();
             List<Transport> transports = new ArrayList<Transport>();
@@ -583,18 +581,18 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 //create the new transport
                 Transport transport = new Transport();
 
-                transport.setTransportId(rs.getInt("t.transport_ID"));
-                transport.setTransportNumber(rs.getInt("t.transportNr"));
+                transport.setTransportId(rs.getInt("transport_ID"));
+                transport.setTransportNumber(rs.getInt("transportNr"));
 
-                if(rs.getInt("t.planned_location") != 0)
+                if(rs.getInt("planned_location") != 0)
                 {
                     Location station = new Location();
-                    station.setId(rs.getInt("t.planned_location"));
-                    station.setLocationName(rs.getString("lo.locationname"));
+                    station.setId(rs.getInt("planned_location"));
+                    station.setLocationName(rs.getString("locationname"));
                     transport.setPlanedLocation(station);
                 }
 
-                if(rs.getInt("t.caller_ID") != 0)
+                if(rs.getInt("caller_ID") != 0)
                 {
                     CallerDetail caller = new CallerDetail();
                     caller.setCallerId(rs.getInt("caller_ID"));
@@ -602,103 +600,103 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
                     transport.setCallerDetail(caller);
                 }
-                transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
-                if(rs.getString("t.disposedBy_user") != null)
-                	transport.setDisposedByUsername(rs.getString("t.disposedBy_user"));
-                if(rs.getString("t.note") == null)
+                transport.setCreatedByUsername(rs.getString("createdBy_user"));
+                if(rs.getString("disposedBy_user") != null)
+                	transport.setDisposedByUsername(rs.getString("disposedBy_user"));
+                if(rs.getString("note") == null)
                     transport.setNotes("");
                 else
-                    transport.setNotes(rs.getString("t.note"));
-                if(rs.getString("t.feedback") == null)
+                    transport.setNotes(rs.getString("note"));
+                if(rs.getString("feedback") == null)
                     transport.setFeedback("");
                 else
-                    transport.setFeedback(rs.getString("t.feedback"));
-                transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
-                transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
-                transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
-                transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+                    transport.setFeedback(rs.getString("feedback"));
+                transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlServerDateTime));
+                transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("departure"), MyUtils.sqlServerDateTime));
+                transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("appointment"), MyUtils.sqlServerDateTime));
+                transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("appointmentPatient"), MyUtils.sqlServerDateTime));
                 Disease disease = new Disease();
-                if(rs.getString("t.disease") == null)
+                if(rs.getString("disease") == null)
                     disease.setDiseaseName("");
                 else
-                    disease.setDiseaseName(rs.getString("t.disease"));
+                    disease.setDiseaseName(rs.getString("disease"));
                 transport.setKindOfIllness(disease);
-                if(rs.getString("t.from_street") == null)
+                if(rs.getString("from_street") == null)
                     transport.setFromStreet("");
                 else
-                    transport.setFromStreet(rs.getString("t.from_street"));
-                if(rs.getString("t.from_city") == null)
+                    transport.setFromStreet(rs.getString("from_street"));
+                if(rs.getString("from_city") == null)
                     transport.setFromCity("");
                 else
-                    transport.setFromCity(rs.getString("t.from_city"));
-                if(rs.getString("t.to_street") == null)
+                    transport.setFromCity(rs.getString("from_city"));
+                if(rs.getString("to_street") == null)
                     transport.setToStreet("");
                 else
-                    transport.setToStreet(rs.getString("t.to_street"));
-                if(rs.getString("t.to_city") == null)
+                    transport.setToStreet(rs.getString("to_street"));
+                if(rs.getString("to_city") == null)
                     transport.setToCity("");
                 else
-                    transport.setToCity(rs.getString("t.to_city"));
+                    transport.setToCity(rs.getString("to_city"));
                 transport.setProgramStatus(rs.getInt("t.programstate"));
-                if(rs.getString("t.transporttype") == null)
+                if(rs.getString("transporttype") == null)
                     transport.setKindOfTransport("");
                 else
-                    transport.setKindOfTransport(rs.getString("t.transporttype"));
-                transport.setTransportPriority(rs.getString("t.priority"));
-                transport.setDirection(rs.getInt("t.direction"));
-                transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
+                    transport.setKindOfTransport(rs.getString("transporttype"));
+                transport.setTransportPriority(rs.getString("priority"));
+                transport.setDirection(rs.getInt("direction"));
+                transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("dateOfTransport"), MyUtils.sqlServerDateTime));
 
                 //The patient of the transport
                 Patient patient = new Patient();
-                if(rs.getString("t.firstname") == null)
+                if(rs.getString("firstname") == null)
                     patient.setFirstname("");
                 else
-                    patient.setFirstname(rs.getString("t.firstname"));
-                if(rs.getString("t.lastname") == null)
+                    patient.setFirstname(rs.getString("firstname"));
+                if(rs.getString("lastname") == null)
                     patient.setLastname("");
                 else
-                    patient.setLastname(rs.getString("t.lastname"));
+                    patient.setLastname(rs.getString("lastname"));
                 transport.setPatient(patient);
 
                 //The assigned vehicle of the transport
-                if(rs.getString("av.location_ID") != null)
+                if(rs.getString("location_ID") != null)
                 {
                     //get the location 
                     Location location = new Location();
-                    location.setId(rs.getInt("av.location_ID"));
-                    location.setLocationName(rs.getString("av.location_name"));
+                    location.setId(rs.getInt("location_ID"));
+                    location.setLocationName(rs.getString("location_name"));
                     //get the vehicle
                     VehicleDetail vehicle = new VehicleDetail();
                     vehicle.setCurrentStation(location);
-                    vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
-                    vehicle.setVehicleNotes(rs.getString("av.note"));
-                    vehicle.setVehicleType(rs.getString("av.vehicletype"));
+                    vehicle.setVehicleName(rs.getString("vehicle_ID"));
+                    vehicle.setVehicleNotes(rs.getString("note"));
+                    vehicle.setVehicleType(rs.getString("vehicletype"));
 
                     //the staff of the vehicle
-                    if(rs.getString("av.driver_ID") != null)
+                    if(rs.getString("driver_ID") != null)
                     {
 	                    StaffMember driver = new StaffMember();
-	                    driver.setStaffMemberId(rs.getInt("av.driver_ID"));
-	                    driver.setLastName(rs.getString("av.driver_lastname"));
-	                    driver.setFirstName(rs.getString("av.driver_firstname"));
+	                    driver.setStaffMemberId(rs.getInt("driver_ID"));
+	                    driver.setLastName(rs.getString("driver_lastname"));
+	                    driver.setFirstName(rs.getString("driver_firstname"));
 	                    vehicle.setDriver(driver);
                     }
                     //test the first medic
-                    if(rs.getString("av.medic1_ID") != null)
+                    if(rs.getString("medic1_ID") != null)
                     {
 	                    StaffMember medic1 = new StaffMember();
-	                    medic1.setStaffMemberId(rs.getInt("av.medic1_ID"));
-	                    medic1.setLastName(rs.getString("av.medic1_lastname"));
-	                    medic1.setFirstName(rs.getString("av.medic1_firstname"));
+	                    medic1.setStaffMemberId(rs.getInt("medic1_ID"));
+	                    medic1.setLastName(rs.getString("medic1_lastname"));
+	                    medic1.setFirstName(rs.getString("medic1_firstname"));
 	                    vehicle.setFirstParamedic(medic1);
                     }
                     //test the second medic
-                    if(rs.getString("av.medic2_ID") != null)
+                    if(rs.getString("medic2_ID") != null)
                     {
 	                    StaffMember medic2 = new StaffMember();
-	                    medic2.setStaffMemberId(rs.getInt("av.medic2_ID"));
-	                    medic2.setLastName(rs.getString("av.medic2_lastname"));
-	                    medic2.setFirstName(rs.getString("av.medic2_firstname"));
+	                    medic2.setStaffMemberId(rs.getInt("medic2_ID"));
+	                    medic2.setLastName(rs.getString("medic2_lastname"));
+	                    medic2.setFirstName(rs.getString("medic2_firstname"));
 	                    vehicle.setSecondParamedic(medic2);
                     }
                     transport.setVehicleDetail(vehicle);
@@ -710,7 +708,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 final ResultSet stateResult = stateQuery.executeQuery();
                 //loop over the result set
                 while(stateResult.next())
-                    transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlDateTime));
+                    transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlServerDateTime));
 
                 // find the selected items (boolean values)
                 final PreparedStatement query1 = connection.prepareStatement(queries.getStatment("list.selectedTransportItems"));
@@ -722,36 +720,36 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 	if(rs1.getInt("selected_ID") == 1)
                     {
                         transport.setEmergencyDoctorAlarming(true);
-                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
                     if(rs1.getInt("selected_ID") == 2)
                     {
                         transport.setPoliceAlarming(true);
-                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 3)
                     {
                         transport.setFirebrigadeAlarming(true);
-                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 4)
                     {
                         transport.setMountainRescueServiceAlarming(true);
-                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 5)
                     {
                         transport.setDfAlarming(true);
-                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 6)
                     {
                         transport.setBrkdtAlarming(true);
-                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 7)
@@ -762,7 +760,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     if(rs1.getInt("selected_ID") == 8)
                     {
                         transport.setHelicopterAlarming(true);
-                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 9)
@@ -788,7 +786,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     if(rs1.getInt("selected_ID") == 13)
                     {
                         transport.setKITAlarming(true);
-                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
                     
                     if(rs1.getInt("selected_ID") == 14)
@@ -1010,119 +1008,119 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             if(rs.next())
             {
                 Transport transport = new Transport();
-                transport.setTransportId(rs.getInt("t.transport_ID"));
-                transport.setTransportNumber(rs.getInt("t.transportNr"));
-                if(rs.getInt("t.planned_location") != 0)
+                transport.setTransportId(rs.getInt("transport_ID"));
+                transport.setTransportNumber(rs.getInt("transportNr"));
+                if(rs.getInt("planned_location") != 0)
                 {
-                    Location station = locationDAO.getLocation(rs.getInt("t.planned_location"));
+                    Location station = locationDAO.getLocation(rs.getInt("planned_location"));
                     transport.setPlanedLocation(station);
                 }
 
-                if(rs.getInt("t.caller_ID") != 0)
+                if(rs.getInt("caller_ID") != 0)
                 {
                     CallerDetail caller = new CallerDetail();
-                    caller.setCallerId(rs.getInt("t.caller_ID"));
-                    caller.setCallerName(rs.getString("ca.callername"));
-                    caller.setCallerTelephoneNumber(rs.getString("ca.caller_phonenumber"));
+                    caller.setCallerId(rs.getInt("caller_ID"));
+                    caller.setCallerName(rs.getString("callername"));
+                    caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
                     transport.setCallerDetail(caller);
                 }
-                transport.setCreatedByUsername(rs.getString("t.createdBy_user"));
-                if(rs.getString("t.disposedBy_user") != null)
-                	transport.setDisposedByUsername(rs.getString("t.disposedBy_user"));
-                if(rs.getString("t.note") == null)
+                transport.setCreatedByUsername(rs.getString("createdBy_user"));
+                if(rs.getString("disposedBy_user") != null)
+                	transport.setDisposedByUsername(rs.getString("disposedBy_user"));
+                if(rs.getString("note") == null)
                     transport.setNotes("");
                 else
-                    transport.setNotes(rs.getString("t.note"));
-                if(rs.getString("t.feedback") == null)
+                    transport.setNotes(rs.getString("note"));
+                if(rs.getString("feedback") == null)
                     transport.setFeedback("");
                 else
-                    transport.setFeedback(rs.getString("t.feedback"));
+                    transport.setFeedback(rs.getString("feedback"));
                 transport.setCreationTime(MyUtils.stringToTimestamp(rs.getString("creationDate"), MyUtils.sqlDateTime));
-                transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("t.departure"), MyUtils.sqlDateTime));
-                transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("t.appointment"), MyUtils.sqlDateTime));
-                transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("t.appointmentPatient"), MyUtils.sqlDateTime));
+                transport.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("departure"), MyUtils.sqlDateTime));
+                transport.setAppointmentTimeAtDestination(MyUtils.stringToTimestamp(rs.getString("appointment"), MyUtils.sqlDateTime));
+                transport.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("appointmentPatient"), MyUtils.sqlDateTime));
 
                 Disease disease = new Disease();
-                if(rs.getString("t.disease") == null)
+                if(rs.getString("disease") == null)
                     disease.setDiseaseName("");
                 else
-                    disease.setDiseaseName(rs.getString("t.disease"));
+                    disease.setDiseaseName(rs.getString("disease"));
                 transport.setKindOfIllness(disease);
 
                 Patient patient = new Patient();
-                if(rs.getString("t.firstname") == null)
+                if(rs.getString("firstname") == null)
                     patient.setFirstname("");
                 else
-                    patient.setFirstname(rs.getString("t.firstname"));
-                if(rs.getString("t.lastname") == null)
+                    patient.setFirstname(rs.getString("firstname"));
+                if(rs.getString("lastname") == null)
                     patient.setLastname("");
                 else
-                    patient.setLastname(rs.getString("t.lastname"));
+                    patient.setLastname(rs.getString("lastname"));
                 transport.setPatient(patient);
 
-                if(rs.getString("t.from_street") == null)
+                if(rs.getString("from_street") == null)
                     transport.setFromStreet("");
                 else
-                    transport.setFromStreet(rs.getString("t.from_street"));
-                if(rs.getString("t.from_city") == null)
+                    transport.setFromStreet(rs.getString("from_street"));
+                if(rs.getString("from_city") == null)
                     transport.setFromCity("");
                 else
-                    transport.setFromCity(rs.getString("t.from_city"));
-                if(rs.getString("t.to_street") == null)
+                    transport.setFromCity(rs.getString("from_city"));
+                if(rs.getString("to_street") == null)
                     transport.setToStreet("");
                 else
-                    transport.setToStreet(rs.getString("t.to_street"));
-                if(rs.getString("t.to_city") == null)
+                    transport.setToStreet(rs.getString("to_street"));
+                if(rs.getString("to_city") == null)
                     transport.setToCity("");
                 else
-                    transport.setToCity(rs.getString("t.to_city"));
-                transport.setProgramStatus(rs.getInt("t.programstate"));
-                if(rs.getString("t.transporttype") == null)
+                    transport.setToCity(rs.getString("to_city"));
+                transport.setProgramStatus(rs.getInt("programstate"));
+                if(rs.getString("transporttype") == null)
                     transport.setKindOfTransport("");
                 else
-                    transport.setKindOfTransport(rs.getString("t.transporttype"));
-                transport.setTransportPriority(rs.getString("t.priority"));
-                transport.setDirection(rs.getInt("t.direction"));
-                transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("t.dateOfTransport"), MyUtils.sqlDateTime));
+                    transport.setKindOfTransport(rs.getString("transporttype"));
+                transport.setTransportPriority(rs.getString("priority"));
+                transport.setDirection(rs.getInt("direction"));
+                transport.setDateOfTransport(MyUtils.stringToTimestamp(rs.getString("dateOfTransport"), MyUtils.sqlDateTime));
 
-                if(rs.getString("av.location_ID") != null)
+                if(rs.getString("location_ID") != null)
                 {
                     //get the location 
                     Location location = new Location();
-                    location.setId(rs.getInt("av.location_ID"));
-                    location.setLocationName(rs.getString("av.location_name"));
+                    location.setId(rs.getInt("location_ID"));
+                    location.setLocationName(rs.getString("location_name"));
                     //get the vehicle
                     VehicleDetail vehicle = new VehicleDetail();
                     vehicle.setCurrentStation(location);
-                    vehicle.setVehicleName(rs.getString("av.vehicle_ID"));
-                    vehicle.setVehicleNotes(rs.getString("av.note"));
-                    vehicle.setVehicleType(rs.getString("av.vehicletype"));
+                    vehicle.setVehicleName(rs.getString("vehicle_ID"));
+                    vehicle.setVehicleNotes(rs.getString("note"));
+                    vehicle.setVehicleType(rs.getString("vehicletype"));
 
                     //the staff of the vehicle
-                    if(rs.getString("av.driver_ID") != null)
+                    if(rs.getString("driver_ID") != null)
                     {
 	                    StaffMember driver = new StaffMember();
-	                    driver.setStaffMemberId(rs.getInt("av.driver_ID"));
-	                    driver.setLastName(rs.getString("av.driver_lastname"));
-	                    driver.setFirstName(rs.getString("av.driver_firstname"));
+	                    driver.setStaffMemberId(rs.getInt("driver_ID"));
+	                    driver.setLastName(rs.getString("driver_lastname"));
+	                    driver.setFirstName(rs.getString("driver_firstname"));
 	                    vehicle.setDriver(driver);
                     }
                     //test the first medic
-                    if(rs.getString("av.medic1_ID") != null)
+                    if(rs.getString("medic1_ID") != null)
                     {
 	                    StaffMember medic1 = new StaffMember();
-	                    medic1.setStaffMemberId(rs.getInt("av.medic1_ID"));
-	                    medic1.setLastName(rs.getString("av.medic1_lastname"));
-	                    medic1.setFirstName(rs.getString("av.medic1_firstname"));
+	                    medic1.setStaffMemberId(rs.getInt("medic1_ID"));
+	                    medic1.setLastName(rs.getString("medic1_lastname"));
+	                    medic1.setFirstName(rs.getString("medic1_firstname"));
 	                    vehicle.setFirstParamedic(medic1);
                     }
                     //test the second medic
-                    if(rs.getString("av.medic2_ID") != null)
+                    if(rs.getString("medic2_ID") != null)
                     {
 	                    StaffMember medic2 = new StaffMember();
-	                    medic2.setStaffMemberId(rs.getInt("av.medic2_ID"));
-	                    medic2.setLastName(rs.getString("av.medic2_lastname"));
-	                    medic2.setFirstName(rs.getString("av.medic2_firstname"));
+	                    medic2.setStaffMemberId(rs.getInt("medic2_ID"));
+	                    medic2.setLastName(rs.getString("medic2_lastname"));
+	                    medic2.setFirstName(rs.getString("medic2_firstname"));
 	                    vehicle.setSecondParamedic(medic2);
                     }
                     transport.setVehicleDetail(vehicle);
@@ -1135,7 +1133,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 //loop over the result set
                 while(stateResult.next())
                 {
-                    transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlDateTime));
+                    transport.addStatus(stateResult.getInt("transportstate"), MyUtils.stringToTimestamp(stateResult.getString("date"), MyUtils.sqlServerDateTime));
                 }
 
                 // find the selected items (boolean values)
@@ -1147,36 +1145,36 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 	if(rs1.getInt("selected_ID") == 1)
                     {
                         transport.setEmergencyDoctorAlarming(true);
-                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampNA(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
                     if(rs1.getInt("selected_ID") == 2)
                     {
                         transport.setPoliceAlarming(true);
-                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampPolizei(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 3)
                     {
                         transport.setFirebrigadeAlarming(true);
-                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampFW(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 4)
                     {
                         transport.setMountainRescueServiceAlarming(true);
-                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampBergrettung(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 5)
                     {
                         transport.setDfAlarming(true);
-                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampDF(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 6)
                     {
                         transport.setBrkdtAlarming(true);
-                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampBRKDT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 7)
@@ -1187,7 +1185,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     if(rs1.getInt("selected_ID") == 8)
                     {
                         transport.setHelicopterAlarming(true);
-                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampRTH(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
 
                     if(rs1.getInt("selected_ID") == 9)
@@ -1213,7 +1211,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     if(rs1.getInt("selected_ID") == 13)
                     {
                         transport.setKITAlarming(true);
-                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlDateTime));
+                        transport.settimestampKIT(MyUtils.stringToTimestamp(rs1.getString("alarmingDateTime"),MyUtils.sqlServerDateTime));
                     }
                     
                     if(rs1.getInt("selected_ID") == 14)
@@ -1224,6 +1222,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 return transport;
             }
             //nothing in the result set
+            System.out.println("...........nothing in the result set :-((((");
             return null;
         }
         finally
@@ -1248,10 +1247,10 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(4, transport.getCreatedByUsername());
             query.setString(5, transport.getTransportPriority());
             query.setString(6, transport.getFeedback());
-            query.setString(7, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlDateTime));
-            query.setString(8, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.sqlDateTime));
-            query.setString(9, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlDateTime));
-            query.setString(10, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlDateTime));
+            query.setString(7, MyUtils.timestampToString(transport.getCreationTime(), MyUtils.sqlServerDateTime));
+            query.setString(8, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.sqlServerDateTime));
+            query.setString(9, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.sqlServerDateTime));
+            query.setString(10, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.sqlServerDateTime));
             query.setString(11, transport.getKindOfTransport());
             if(transport.getKindOfIllness() == null)
                 query.setString(12, null);
@@ -1276,7 +1275,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(18, transport.getToStreet());
             query.setString(19, transport.getToCity());
             query.setInt(20, transport.getProgramStatus());
-            query.setString(21, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlDate));
+            query.setString(21, MyUtils.timestampToString(transport.getDateOfTransport(), MyUtils.sqlServerDate));
             query.setInt(22, transport.getTransportNumber());
             query.setString(23, transport.getDisposedByUsername());
             query.setInt(24, transport.getTransportId());
@@ -1463,7 +1462,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             queryStmt.setInt(2, year);
             final ResultSet rs = queryStmt.executeQuery();
             //return the transport number and remove the value from the table
-            if(rs.first())
+            if(rs.next())
             {
                 //the found transport number
                 int transportNr = rs.getInt("transportNr");
@@ -1508,7 +1507,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             queryStmt.setString(2,new Integer(year).toString());
             final ResultSet rs = queryStmt.executeQuery();
             //assert we have a result
-            if(rs.first())
+            if(rs.next())
             {
                 int nr = rs.getInt(1);
                 return nr;
@@ -1561,7 +1560,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             PreparedStatement queryStmt = connection.prepareStatement(queries.getStatment("get.transportNr"));
             queryStmt.setInt(1, transportId);
             ResultSet rs = queryStmt.executeQuery();
-            if(rs.first())
+            if(rs.next())
                 return rs.getInt("transportNr");
             //no result set
             return -1;
@@ -1585,7 +1584,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.LocationFromTransport"));
             stmt.setInt(1, transportId);
             ResultSet rs = stmt.executeQuery();
-            if(rs.first())
+            if(rs.next())
                 return rs.getInt("location_ID");
             //nothing found
             return -1;
@@ -1646,7 +1645,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.transportstate"));
                 query.setInt(1, state);
                 query.setInt(2, transport.getTransportId());
-                query.setString(3, MyUtils.timestampToString(time, MyUtils.sqlDateTime));
+                query.setString(3, MyUtils.timestampToString(time, MyUtils.sqlServerDateTime));
                 if(query.executeUpdate() == 0)
                     return false;
             }
@@ -1738,7 +1737,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
         {
             final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.selectedTransportItem"));
             query.setInt(1, selectedId);
-            query.setString(2, MyUtils.timestampToString(timestamp, MyUtils.sqlDateTime));
+            query.setString(2, MyUtils.timestampToString(timestamp, MyUtils.sqlServerDateTime));
             query.setInt(3, transportId);			
             if(query.executeUpdate() == 0)
                 return false;
