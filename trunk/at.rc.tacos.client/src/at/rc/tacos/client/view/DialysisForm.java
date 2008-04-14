@@ -4,6 +4,8 @@ import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -22,10 +24,13 @@ import org.eclipse.swt.widgets.Text;
 import at.rc.tacos.client.controller.CreateDialysisTransportAction;
 import at.rc.tacos.client.controller.UpdateDialysisTransportAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.providers.StationContentProvider;
+import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 
 /**
@@ -42,7 +47,6 @@ public class DialysisForm implements IKindOfTransport
 	private Group patientenzustandGroup;
 	private Group planungGroup;
 	private Button begleitpersonButton;
-	private Combo comboZustOrtsstelle;
 	private Button button_stationary;
 	private Button button;
 	private Combo comboNachOrt;
@@ -66,6 +70,7 @@ public class DialysisForm implements IKindOfTransport
 	private Combo combokindOfTransport;
 	
 	private Listener exitListener;
+	private ComboViewer zustaendigeOrtsstelle;
 	
 	private boolean createNew;
 	
@@ -158,7 +163,8 @@ public class DialysisForm implements IKindOfTransport
         this.begleitpersonButton.setSelection(dia.isAssistantPerson());
         
         if(dia.getLocation() != null)
-        	this.comboZustOrtsstelle.setText(dia.getLocation().getLocationName());
+            this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(dia.getLocation()));//mandatory!! default: Bezirk
+
         
         this.montagButton.setSelection(dia.isMonday());
         this.dienstagButton.setSelection(dia.isTuesday());
@@ -268,9 +274,12 @@ public class DialysisForm implements IKindOfTransport
 		label_6.setText("Zuständige Ortsstelle:");
 		label_6.setBounds(205, 118, 111, 13);
 
-		comboZustOrtsstelle = new Combo(transportdatenGroup, SWT.NONE);
-		comboZustOrtsstelle.setItems(new String[] {"Breitenau", "Bruck an der Mur", "Kapfenberg", "St. Marein", "Thörl", "Turnau"});
-		comboZustOrtsstelle.setBounds(322, 113, 112, 21);
+		 Combo comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.READ_ONLY);
+	        zustaendigeOrtsstelle = new ComboViewer(comboZustaendigeOrtsstelle);
+	        zustaendigeOrtsstelle.setContentProvider(new StationContentProvider());
+	        zustaendigeOrtsstelle.setLabelProvider(new StationLabelProvider());
+	        zustaendigeOrtsstelle.setInput(ModelFactory.getInstance().getLocationManager());
+	        comboZustaendigeOrtsstelle.setBounds(322, 113, 112, 21);
 
 		button_stationary = new Button(transportdatenGroup, SWT.CHECK);
 		button_stationary.setText("stationär");
@@ -476,8 +485,7 @@ public class DialysisForm implements IKindOfTransport
 			
 			String fromCommunity;
 			String fromStreet;
-		
-			String theRespStation;			
+				
 			String formatOfTime;
 
 			public void handleEvent(Event event) 
@@ -547,6 +555,8 @@ public class DialysisForm implements IKindOfTransport
 					return;
 				}	
 				
+				
+				
 				//set the kind of transport
 				 //the kind of transport
 		        int index = combokindOfTransport.getSelectionIndex();
@@ -569,11 +579,14 @@ public class DialysisForm implements IKindOfTransport
 					dia.setInsurance("Versicherung unbekannt");
 					dia.setKindOfTransport(kindOfTransport);
 					
+					index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
+			        dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
+
+					
 					dia.setPlannedStartForBackTransport(abfRTLong);
 					dia.setPlannedStartOfTransport(startLong);
 					dia.setPlannedTimeAtPatient(atPatientLong);
 					dia.setReadyTime(readyLong);
-					dia.setLocation(ModelFactory.getInstance().getLocationManager().getLocationByName(theRespStation));
 					dia.setStationary(stationary);
 					dia.setToCity(toCommunity);
 					dia.setToStreet(toStreet);
@@ -611,7 +624,6 @@ public class DialysisForm implements IKindOfTransport
 					dia.setPlannedStartOfTransport(startLong);
 					dia.setPlannedTimeAtPatient(atPatientLong);
 					dia.setReadyTime(readyLong);
-					dia.setLocation(ModelFactory.getInstance().getLocationManager().getLocationByName(theRespStation));
 					dia.setStationary(stationary);
 					dia.setToCity(toCommunity);
 					dia.setToStreet(toStreet);
@@ -652,8 +664,8 @@ public class DialysisForm implements IKindOfTransport
 				abfRT = textAbfRT.getText();
 				ready = textFertig.getText();
 				
-				theRespStation = comboZustOrtsstelle.getText();
-							
+				 
+				
 				toCommunity = comboNachOrt.getText();
 				toStreet = comboNachStrasse.getText();
 				firstName = comboVorname.getText();
@@ -668,10 +680,13 @@ public class DialysisForm implements IKindOfTransport
 					requiredFields = requiredFields +" " +"von Straße";
 				if (fromCommunity.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"von Ort";
-				if (theRespStation.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"zuständige Ortsstelle";
 				if (toStreet.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"Zielort";
+				//the planned location
+		        int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
+		        if(index == -1)
+		        	requiredFields = requiredFields +"zuständige Ortsstelle";
+		        
 				
 				if (start.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"Abfahrtszeit";
