@@ -641,7 +641,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                     transport.setToCity("");
                 else
                     transport.setToCity(rs.getString("to_city"));
-                transport.setProgramStatus(rs.getInt("t.programstate"));
+                transport.setProgramStatus(rs.getInt("programstate"));
                 if(rs.getString("transporttype") == null)
                     transport.setKindOfTransport("");
                 else
