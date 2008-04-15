@@ -103,13 +103,13 @@ public class AuthenticationListener extends ServerListenerAdapter
 		{
 			login.setLoggedIn(false);
 			login.setIslocked(true);
-			login.setErrorMessage("Your account is locked, please contact the administrator");
+			login.setErrorMessage("Ihr Account ist gesperrt, bitte kontaktieren Sie den Administrator.");
 			return login;
 		}
-		else if(loginResult == UserLoginDAO.LOGIN_NO_DISPONENT)
+		else if(loginResult == UserLoginDAO.LOGIN_NO_DISPONENT &! isWebClient)
 		{
 			login.setLoggedIn(false);
-			login.setErrorMessage("Ihr Account ist nicht freigeschaltet, bitte wenden Sie sich an den Leitstellenleiter");
+			login.setErrorMessage("Ihr Account ist nicht freigeschaltet, bitte wenden Sie sich an den Leitstellenleiter.");
 			return login;
 		}
 		else
