@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.SQLQueries;
+import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
+import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.util.PasswordEncryption;
 
 public class UserLoginDAOSQL implements UserLoginDAO
@@ -21,6 +24,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 	private final SQLQueries queries = SQLQueries.getInstance();
 	//the dependent dao classes
 	private final StaffMemberDAO staffDAO = DaoFactory.SQL.createStaffMemberDAO();
+	private final CompetenceDAO competenceDAO = DaoFactory.SQL.createCompetenceDAO();
 
 	@Override
 	public int checkLogin(String username, String pwdHash) throws SQLException
@@ -28,6 +32,13 @@ public class UserLoginDAOSQL implements UserLoginDAO
 		Connection connection = source.getConnection();
 		try
 		{
+			StaffMember member;
+			
+			member = staffDAO.getStaffMemberByUsername(username);
+			List<Competence> competences = new ArrayList<Competence>();
+			
+			competences = competenceDAO.listCompetencesOfStaffMember(member.getStaffMemberId());
+			
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("check.UserLogin"));
 			query.setString(1, username);
 			query.setString(2, PasswordEncryption.getInstance().encrypt(pwdHash));
@@ -35,6 +46,17 @@ public class UserLoginDAOSQL implements UserLoginDAO
 			//asser we have a result set
 			if(rs.next())
 			{
+				boolean isDispo = false;
+				for(Competence comp : competences)
+				{
+					if (comp.getCompetenceName().equalsIgnoreCase("Leitstellendisponent"))
+						isDispo = true;
+				}
+				if(!isDispo)
+				{
+					System.out.println("im is kein dispo");
+					return -3;
+				}
 				if (rs.getString("username") != null &! rs.getBoolean("locked"))
 					return 0;
 				else if(rs.getString("username") == null)
