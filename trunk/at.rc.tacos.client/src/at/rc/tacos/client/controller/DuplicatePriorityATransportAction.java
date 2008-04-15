@@ -66,7 +66,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         //assert valid
         if(transport.getKindOfIllness() != null)
         	newTransport.setKindOfIllness(transport.getKindOfIllness());
-        if(transport.getKindOfIllness()!=null)
+        if(transport.getKindOfTransport()!=null)
         	newTransport.setKindOfTransport(transport.getKindOfTransport());
         if(transport.getCallerDetail() != null)
             newTransport.setCallerDetail(transport.getCallerDetail());
