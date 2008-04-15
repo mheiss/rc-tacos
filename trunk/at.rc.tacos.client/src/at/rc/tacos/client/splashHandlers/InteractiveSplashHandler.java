@@ -155,7 +155,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		MessageDialog.openError(
 				getSplash(),
 				"Anmeldung fehlgeschlagen",
-		"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
+		"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort. Wenden Sie sich an den Leitstellenleiter, wenn Sie keinen Leitstellenaccount besitzen.");
 	}
 
 	/**
