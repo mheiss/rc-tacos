@@ -18,7 +18,7 @@ import at.rc.tacos.model.QueryFilter;
  */
 public class NotifyDetailListener extends ServerListenerAdapter
 {
-    private CallerDAO callerDao = DaoFactory.MYSQL.createNotifierDAO();
+    private CallerDAO callerDao = DaoFactory.SQL.createNotifierDAO();
     
     /**
      * Add a notifier detail

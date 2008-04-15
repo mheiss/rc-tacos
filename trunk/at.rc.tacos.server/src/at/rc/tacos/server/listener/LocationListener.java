@@ -13,7 +13,7 @@ import at.rc.tacos.model.QueryFilter;
 
 public class LocationListener extends ServerListenerAdapter
 {
-	private LocationDAO locationDao = DaoFactory.MYSQL.createLocationDAO();
+	private LocationDAO locationDao = DaoFactory.SQL.createLocationDAO();
 	
     @Override
     public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException

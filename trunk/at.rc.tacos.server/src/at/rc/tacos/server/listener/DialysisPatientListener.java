@@ -15,7 +15,7 @@ import at.rc.tacos.model.QueryFilter;
 
 public class DialysisPatientListener extends ServerListenerAdapter
 {
-	private DialysisPatientDAO dialysisDao = DaoFactory.MYSQL.createDialysisPatientDAO();
+	private DialysisPatientDAO dialysisDao = DaoFactory.SQL.createDialysisPatientDAO();
 
 	/**
 	 * Add a roster entry

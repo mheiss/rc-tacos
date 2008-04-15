@@ -14,7 +14,7 @@ import at.rc.tacos.model.ServiceType;
 public class ServiceTypeListener extends ServerListenerAdapter
 {
 	//the dao source to use
-	private ServiceTypeDAO serviceDao = DaoFactory.MYSQL.createServiceTypeDAO();
+	private ServiceTypeDAO serviceDao = DaoFactory.SQL.createServiceTypeDAO();
 
 	@Override
 	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException

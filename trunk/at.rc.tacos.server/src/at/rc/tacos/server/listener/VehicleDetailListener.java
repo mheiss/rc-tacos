@@ -17,7 +17,7 @@ import at.rc.tacos.model.VehicleDetail;
  */
 public class VehicleDetailListener extends ServerListenerAdapter
 {
-    private VehicleDAO vehicleDao = DaoFactory.MYSQL.createVehicleDetailDAO();
+    private VehicleDAO vehicleDao = DaoFactory.SQL.createVehicleDetailDAO();
         
     /**
      * Vehicle added

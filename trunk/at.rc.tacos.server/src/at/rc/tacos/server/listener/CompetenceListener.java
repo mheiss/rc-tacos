@@ -14,7 +14,7 @@ import at.rc.tacos.model.QueryFilter;
 public class CompetenceListener extends ServerListenerAdapter
 {
 	//the DAO
-	private CompetenceDAO compDao = DaoFactory.MYSQL.createCompetenceDAO();
+	private CompetenceDAO compDao = DaoFactory.SQL.createCompetenceDAO();
 	
     @Override
     public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException

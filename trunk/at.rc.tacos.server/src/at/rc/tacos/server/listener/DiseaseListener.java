@@ -17,7 +17,7 @@ import at.rc.tacos.model.QueryFilter;
  */
 public class DiseaseListener extends ServerListenerAdapter 
 {
-	private DiseaseDAO diseaseDAO = DaoFactory.MYSQL.createDiseaseDAO();
+	private DiseaseDAO diseaseDAO = DaoFactory.SQL.createDiseaseDAO();
 
 	@Override
 	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
