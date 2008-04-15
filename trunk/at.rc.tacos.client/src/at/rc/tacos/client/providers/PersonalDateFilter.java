@@ -3,6 +3,8 @@ package at.rc.tacos.client.providers;
 import java.util.Calendar;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.model.RosterEntry;
 
 /**
@@ -12,22 +14,23 @@ import at.rc.tacos.model.RosterEntry;
 public class PersonalDateFilter extends ViewerFilter
 {
 	//properties
-	private Calendar nextDay;
-	private Calendar currentDay;
+	private int startDay;
+	private int endDay;
+	private int startYear;
+	private int endYear;
+	private int selectedDay;
+	private Calendar cal;
 
 	/**
 	 * Default class constructor specifying the date for the filter
 	 */
-	public PersonalDateFilter(Calendar date)
+	public PersonalDateFilter()
 	{
-		this.currentDay = date;
-		//reset the hours and minutes and seconds
-		this.currentDay.set(Calendar.HOUR_OF_DAY, 0);
-		this.currentDay.set(Calendar.MINUTE, 0);
-		this.currentDay.set(Calendar.MILLISECOND, 0);
-		//the next day
-		nextDay = currentDay;
-		nextDay.add(Calendar.DAY_OF_MONTH, 1);
+		Calendar selectedCal = Calendar.getInstance();
+		selectedCal.setTimeInMillis(SessionManager.getInstance().getDisplayedDate());
+		selectedDay = selectedCal.get(Calendar.DAY_OF_YEAR);
+
+		
 	}
 	
 	/**
@@ -42,7 +45,17 @@ public class PersonalDateFilter extends ViewerFilter
 		//cast the element
 		RosterEntry entry = (RosterEntry)element;
 		//check the roster entry date
-		if(entry.getPlannedStartOfWork() > currentDay.getTimeInMillis() || entry.getPlannedEndOfWork() < nextDay.getTimeInMillis())
+		cal = Calendar.getInstance();
+		cal.setTimeInMillis(entry.getPlannedStartOfWork());
+		startDay = cal.get(Calendar.DAY_OF_YEAR);
+		startYear = cal.get(Calendar.YEAR);
+		cal.setTimeInMillis(entry.getPlannedEndOfWork());
+		endDay = cal.get(Calendar.DAY_OF_YEAR);
+		endYear = cal.get(Calendar.YEAR);
+		if(selectedDay == startDay || selectedDay == endDay || (selectedDay > startDay && selectedDay < endDay))
+			return true;
+		//for the year change
+		if(startYear != endYear)
 			return true;
 		//filter the element out
 		return false;
