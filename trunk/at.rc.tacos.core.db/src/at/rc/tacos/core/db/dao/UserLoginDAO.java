@@ -28,6 +28,12 @@ public interface UserLoginDAO
 	 */
 	public final static int LOGIN_DENIED = -2;
 	
+	/**
+	 * It is not possible to log in if the user has not the compentence 'Leitstellendisponent'
+	 * This represents the value -3
+	 */
+	public final static int LOGIN_NO_DISPONENT = -3;
+	
     /**
      * Adds a new login to the database. 
      * his method will <b>NOT</b> create the staff member.
