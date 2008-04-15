@@ -1,10 +1,12 @@
 package at.rc.tacos.client.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.jface.action.Action;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
@@ -34,6 +36,11 @@ public class SelectRosterDateAction extends Action
     @Override
     public void run()
     {
+    	//Notify the listeners that the date changed and the view filters must be updated
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(date);
+    	ModelFactory.getInstance().getRosterEntryManager().fireRosterViewFilterChanged(cal);
+    	
     	//save the date
     	SessionManager.getInstance().setDisplayedDate(date.getTime());
     	
