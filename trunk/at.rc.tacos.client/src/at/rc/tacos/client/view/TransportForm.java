@@ -2224,16 +2224,18 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         setMessage("Hier können Sie einen neuen Transport anlegen");
 
         //the street
-        if (viewerFromStreet.getCombo().getText().trim().isEmpty())
-        {
-            getShell().getDisplay().beep();
-            setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
-            return;
-        }
         if (viewerFromStreet.getCombo().getText().length() > 100)
         {
             getShell().getDisplay().beep();
             setErrorMessage("Der Straßenname (von)darf höchstens 100 Zeichen lang sein");
+            return;
+        }
+     
+        
+        if (viewerFromStreet.getCombo().getText().trim().isEmpty())
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
             return;
         }
         
@@ -2258,12 +2260,31 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         }
 
         transport.setFromCity(viewerFromCity.getCombo().getText());
+        
+        
+        if (viewerToStreet.getCombo().getText().length() > 100)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Der Straßenname (nach)darf höchstens 100 Zeichen lang sein");
+            return;
+        }
+     
+        
+        
+        if (viewerToCity.getCombo().getText().length() > 50)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Der Stadtname (nach)darf höchstens 50 Zeichen lang sein");
+            return;
+        }
+     
 
-        transport.setToStreet(viewerToStreet.getCombo().getText());
-
-        transport.setToCity(viewerFromCity.getCombo().getText());
+  
 
         //the planned location
+       
+        
+        
         int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
         if (index == -1)
         {
@@ -2379,8 +2400,25 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         index = combokindOfTransport.getSelectionIndex();
         if (index != -1)
         	transport.setKindOfTransport(combokindOfTransport.getItem(index));
-
-        //if we have a patient just update it
+        
+       
+        
+        
+        if (comboVorname.getText().length() > 30)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben Sie einen Vornamen, der kürzer als 30 Zeichen ist ein");
+            return;
+        }
+        
+        if (comboNachname.getText().length() > 30)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben Sie einen Nachnamen, der kürzer als 30 Zeichen ist ein");
+            return;
+        }
+     
+        //if we have a patient just update it 
         if(transport.getPatient() == null)
         {
             Patient patient = new Patient(comboVorname.getText(),comboNachname.getText());
@@ -2392,6 +2430,21 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             transport.getPatient().setLastname(comboNachname.getText());
         }
 
+        
+        //validate caller
+        if (textAnrufer.getText().length() > 30)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben Sie einen Anrufer kürzer 30 Zeichen ein.");
+            return;
+        }
+        if (textTelefonAnrufer.getText().length() > 30)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Bitte geben Sie eine Telefonnummer kürzer 30 ein!");
+            return;
+        }
+        
         //if we have a caller, just update it
         if(transport.getCallerDetail() == null)
         {
@@ -2405,7 +2458,23 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         }
 
         //notes and feedback
+        if (textAnmerkungen.getText().length() > 2000)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Die Anmerkung muss kürzer als 2000 Zeichen sein");
+            return;
+        }
+     
         transport.setNotes(textAnmerkungen.getText());
+        
+        
+        if (textRueckmeldung.getText().length() > 2000)
+        {
+            getShell().getDisplay().beep();
+            setErrorMessage("Die Rückmeldung muss kürzer als 2000 Zeichen sein");
+            return;
+        }
+     
         transport.setFeedback(textRueckmeldung.getText());
 
         //the destination
