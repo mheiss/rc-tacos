@@ -15,7 +15,7 @@ import at.rc.tacos.model.QueryFilter;
 public class AuthenticationListener extends ServerListenerAdapter
 {
 	//The DAO classes
-	private UserLoginDAO userDao = DaoFactory.MYSQL.createUserDAO();
+	private UserLoginDAO userDao = DaoFactory.SQL.createUserDAO();
 
 	@Override
 	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException 
@@ -104,6 +104,12 @@ public class AuthenticationListener extends ServerListenerAdapter
 			login.setLoggedIn(false);
 			login.setIslocked(true);
 			login.setErrorMessage("Your account is locked, please contact the administrator");
+			return login;
+		}
+		else if(loginResult == UserLoginDAO.LOGIN_NO_DISPONENT)
+		{
+			login.setLoggedIn(false);
+			login.setErrorMessage("Ihr Account ist nicht freigeschaltet, bitte wenden Sie sich an den Leitstellenleiter");
 			return login;
 		}
 		else

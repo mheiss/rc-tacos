@@ -17,7 +17,7 @@ import at.rc.tacos.model.QueryFilter;
  */
 public class MobilePhoneListener extends ServerListenerAdapter
 {
-    private MobilePhoneDAO mobilePhoneDao = DaoFactory.MYSQL.createMobilePhoneDAO();
+    private MobilePhoneDAO mobilePhoneDao = DaoFactory.SQL.createMobilePhoneDAO();
     
     /**
      * Add a mobile phone

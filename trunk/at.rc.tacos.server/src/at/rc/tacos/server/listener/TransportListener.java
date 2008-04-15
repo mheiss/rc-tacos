@@ -20,7 +20,7 @@ import at.rc.tacos.util.MyUtils;
  */
 public class TransportListener extends ServerListenerAdapter
 {
-	private TransportDAO transportDao = DaoFactory.MYSQL.createTransportDAO();
+	private TransportDAO transportDao = DaoFactory.SQL.createTransportDAO();
 
 	/**
 	 * Add a transport

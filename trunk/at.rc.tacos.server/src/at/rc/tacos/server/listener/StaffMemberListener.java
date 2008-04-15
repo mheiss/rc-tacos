@@ -18,7 +18,7 @@ import at.rc.tacos.model.StaffMember;
  */
 public class StaffMemberListener extends ServerListenerAdapter
 {
-    private StaffMemberDAO staffDao = DaoFactory.MYSQL.createStaffMemberDAO();
+    private StaffMemberDAO staffDao = DaoFactory.SQL.createStaffMemberDAO();
     
 	@Override
 	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
