@@ -36,6 +36,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 
 	//the login status
 	int loginStatus;
+	Login login;
 
 	//position of the composite
 	private final static int MARING_LEFT = 180;
@@ -141,7 +142,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		MessageDialog.openError(
 				getSplash(),
 				"Anmeldung fehlgeschlagen",
-				"Ihr Account ist gesperrt, bitte wenden Sie sich an ihren Administrator.");
+				login.getErrorMessage());
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		MessageDialog.openError(
 				getSplash(),
 				"Anmeldung fehlgeschlagen",
-		"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort. Wenden Sie sich an den Leitstellenleiter, wenn Sie keinen Leitstellenaccount besitzen.");
+		login.getErrorMessage());
 	}
 
 	/**
@@ -348,7 +349,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		if("AUTHENTICATION_FAILED".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			//get the login object
-			Login login = (Login)evt.getNewValue();
+			login = (Login)evt.getNewValue();
 			if(login.isIslocked())
 				loginStatus = 2;
 			else
