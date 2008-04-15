@@ -2,6 +2,8 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Calendar;
+
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -40,6 +42,7 @@ import at.rc.tacos.client.controller.PersonalEditEntryAction;
 import at.rc.tacos.client.controller.PersonalSignInAction;
 import at.rc.tacos.client.controller.PersonalSignOutAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.providers.PersonalDateFilter;
 import at.rc.tacos.client.providers.PersonalViewContentProvider;
 import at.rc.tacos.client.providers.PersonalViewFilter;
 import at.rc.tacos.client.providers.PersonalViewLabelProvider;
@@ -71,6 +74,9 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
     private PersonalSignOutAction signOutAction;
     private PersonalEditEntryAction editEntryAction;
     private PersonalDeleteEntryAction deleteEntryAction;
+    
+    //the currently filtered date
+	private Calendar filteredDate = Calendar.getInstance();
 
     /**
      * Constructs a new persoal view.
@@ -432,7 +438,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
                 || "ROSTERENTRY_UPDATE".equals(evt.getPropertyName())
                 || "ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
         {
-            viewer.refresh();
+			viewer.refresh();
             //show entries on program start
             if(tabFolder.getSelectionIndex() == 0)
             {
@@ -441,6 +447,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
                 //remove all filters and add the new
                 viewer.resetFilters();
                 viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
+                viewer.addFilter(new PersonalDateFilter(filteredDate));
             }
         }
 
@@ -484,5 +491,19 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
         {
             viewer.refresh();
         }
+        
+        //listen to changes of the date to set up the filter
+		if("ROSTER_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the new value
+			this.filteredDate = (Calendar)evt.getNewValue();
+            //get the selected station
+            TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
+			//set up the new view filter
+			viewer.resetFilters();
+			viewer.addFilter(new PersonalDateFilter(filteredDate));
+			viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
+			viewer.refresh();			
+		}
     }
 }
