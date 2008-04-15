@@ -15,6 +15,7 @@ public class RosterEntryManager extends PropertyManager
 {
     //the item list
     private List<RosterEntry> objectList = new ArrayList<RosterEntry>();
+    private Calendar displayedDate;
     
     /**
      * Default class constructor
@@ -90,6 +91,23 @@ public class RosterEntryManager extends PropertyManager
         }); 
         
     }
+    
+    /**
+	 * Informs the views that the selected date in the roster view filter has changed.
+	 * @param newDate the newDate to display
+	 */
+	public void fireRosterViewFilterChanged(final Calendar newDate)
+	{
+		this.displayedDate = newDate;
+		Display.getDefault().syncExec(new Runnable ()    
+		{
+			public void run ()       
+			{
+				//fire a property change event to notify the viewers that the date changed
+				firePropertyChange("ROSTER_DATE_CHANGED",null,newDate);
+			}
+		});
+	}
 
     /**
      * Converts the list to an array
@@ -149,4 +167,13 @@ public class RosterEntryManager extends PropertyManager
     	}
     	return null;
     }
+    
+    /**
+	 * Returns the date of the currently displayed entry choosen by the filter view.
+	 * @return displayDate the displayed date
+	 */
+	public Calendar getDisplayedDate()
+	{
+		return displayedDate;
+	}
 }
