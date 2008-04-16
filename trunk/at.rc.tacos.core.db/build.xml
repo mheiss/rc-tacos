@@ -2,7 +2,7 @@
 <!-- ============================================================== -->
 <!-- DO NOT TOUCH THIS -->
 <!-- ============================================================== -->
-<project name="Project-TACOS" basedir="." >
+<project name="Project-TACOS" basedir=".">
 	<property file="src/at/rc/tacos/core/db/config/db.properties" />
 	<property name="src.dir" value="src" />
 	<property name="src.tests.dir" value="src-test" />
@@ -13,8 +13,8 @@
 	<property name="db.insertdata_beta1.script" value="${sql.dir}/insertdata_beta1.sql" />
 	<property name="db.cleardata_beta1.script" value="${sql.dir}/cleardata_beta1.sql" />
 	<property name="db.dropFunctions.script" value="${sql.dir}/dropFunctions.sql" />
-	<property name="db.createTables.script" value="${sql.dir}/createTables.sql" /> 
-	<property name="db.insertData.script" value="${sql.dir}/insertData.sql" /> 
+	<property name="db.createTables.script" value="${sql.dir}/createTables.sql" />
+	<property name="db.insertData.script" value="${sql.dir}/insertData.sql" />
 	<property name="db.clearData.script" value="${sql.dir}/clearData.sql" />
 	<property name="db.dropTables.script" value="${sql.dir}/dropTables.sql" />
 	<property name="db.sql_create_f_caller.script" value="${sql.dir}/sql_create_f_caller.sql" />
@@ -28,9 +28,9 @@
 	<property name="db.sql_create_f_selected.script" value="${sql.dir}/sql_create_f_selected.sql" />
 	<property name="db.sql_create_f_servicetype.script" value="${sql.dir}/sql_create_f_servicetype.sql" />
 	<property name="db.sql_create_f_staffmember.script" value="${sql.dir}/sql_create_f_staffmember.sql" />
-	<property name="db.sql_create_f_transport.script" value="${sql.dir}/sql_create_f_transport.sql" />	
+	<property name="db.sql_create_f_transport.script" value="${sql.dir}/sql_create_f_transport.sql" />
 	<property name="db.sql_create_f_vehicle.script" value="${sql.dir}/sql_create_f_vehicle.sql" />
-	
+
 	<!-- The classpath including the needed libraries for the database -->
 	<path id="master-classpath">
 		<fileset dir="lib">
@@ -41,278 +41,158 @@
 	<!-- ============================================================== -->
 	<!-- Database Tasks                                                 -->
 	<!-- ============================================================== -->
-	
+
 	<target name="mysql_createTables">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-		<sql driver="${db.driver}"
-			url="${db.url}"
-			userid="${db.user}"
-			password="${db.pw}"
-			src="${db.createTables.script}">
-			<classpath refid="master-classpath"/>
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.createTables.script}">
+			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="mysql_insertData">
-
-	<echo message="INSERT DATA USING: ${db.driver} ${db.url}"/>
-
-	<sql driver="${db.driver}"
-
-	url="${db.url}"
-
-	userid="${db.user}"
-
-	password="${db.pw}"
-
-	src="${db.insertData.script}"
-
-	print="true">
-
-	<classpath refid="master-classpath"/>
-
-	</sql>
-
+		<echo message="INSERT DATA USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.insertData.script}" print="true">
+			<classpath refid="master-classpath" />
+		</sql>
 	</target>
 
 	<target name="mysql_clearData">
-
-	<echo message="CLEAR DATA USING: ${db.driver} ${db.url}"/>
-
-	<sql driver="${db.driver}"
-
-	url="${db.url}"
-
-	userid="${db.user}"
-
-	password="${db.pw}"
-
-	src="${db.clearData.script}">
-
-	<classpath refid="master-classpath"/>
-
-	</sql>
-
+		<echo message="CLEAR DATA USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.clearData.script}">
+			<classpath refid="master-classpath" />
+		</sql>
 	</target>
 
 	<target name="mysql_dropTables">
-
-	<echo message="DROP TABLES USING: ${db.driver} ${db.url}"/>
-
-	<sql driver="${db.driver}"
-
-	url="${db.url}"
-
-	userid="${db.user}"
-
-	password="${db.pw}"
-
-	src="${db.dropTables.script}">
-
-	<classpath refid="master-classpath"/>
-
-	</sql>
-
+		<echo message="DROP TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.dropTables.script}">
+			<classpath refid="master-classpath" />
+		</sql>
 	</target>
-	
-	
-	
+
 	<target name="sql_cleardata_beta1">
-			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-			<sql driver="${db.driver}"
-	             url="${db.url}"
-	             userid="${db.user}"
-	             password="${db.pw}"
-	        	 src="${db.cleardata_beta1.script}">
-				<classpath refid="master-classpath"/>
-			</sql>
-		</target>
-	
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.cleardata_beta1.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_droptables_beta1">
-			<echo message="CLEAR DATA USING: ${db.driver} ${db.url}"/>
-			<sql driver="${db.driver}"
-	             url="${db.url}"
-	             userid="${db.user}"
-	             password="${db.pw}"
-	        	 src="${db.droptables_beta1.script}">
-				<classpath refid="master-classpath"/>
-			</sql>
-		</target>
-	
+		<echo message="CLEAR DATA USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.droptables_beta1.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_createtable_beta2">
-			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-			<sql driver="${db.driver}"
-	             url="${db.url}"
-	             userid="${db.user}"
-	             password="${db.pw}"
-	        	 src="${db.createtable_beta2.script}">
-				<classpath refid="master-classpath"/>
-			</sql>
-		</target>
-	
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.createtable_beta2.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_insertdata_beta1">
-			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-			<sql driver="${db.driver}"
-	             url="${db.url}"
-	             userid="${db.user}"
-	             password="${db.pw}"
-	        	 src="${db.insertdata_beta1.script}">
-				<classpath refid="master-classpath"/>
-			</sql>
-		</target>
-	
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.insertdata_beta1.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_dropFunctions">
-			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-			<sql driver="${db.driver}"
-	             url="${db.url}"
-	             userid="${db.user}"
-	             password="${db.pw}"
-	        	 src="${db.dropFunctions.script}">
-				<classpath refid="master-classpath"/>
-			</sql>
-		</target>
-		
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.dropFunctions.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_caller">
-				<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-				<sql driver="${db.driver}"
-		             url="${db.url}"
-		             userid="${db.user}"
-		             password="${db.pw}"
-		        	 src="${db.sql_create_f_caller.script}">
-					<classpath refid="master-classpath"/>
-				</sql>
-			</target>		
-	
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_caller.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_competence">
-				<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-				<sql driver="${db.driver}"
-		             url="${db.url}"
-		             userid="${db.user}"
-		             password="${db.pw}"
-		        	 src="${db.sql_create_f_competence.script}">
-					<classpath refid="master-classpath"/>
-				</sql>
-			</target>
-			
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_competence.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_dialysis">
-				<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-				<sql driver="${db.driver}"
-		             url="${db.url}"
-		             userid="${db.user}"
-		             password="${db.pw}"
-		        	 src="${db.sql_create_f_dialysis.script}">
-					<classpath refid="master-classpath"/>
-				</sql>
-			</target>			
-	
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_dialysis.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_disease">
-				<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-				<sql driver="${db.driver}"
-		             url="${db.url}"
-		             userid="${db.user}"
-		             password="${db.pw}"
-		        	 src="${db.sql_create_f_disease.script}">
-					<classpath refid="master-classpath"/>
-				</sql>
-			</target>
-	
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_disease.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_job">
-					<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-					<sql driver="${db.driver}"
-			             url="${db.url}"
-			             userid="${db.user}"
-			             password="${db.pw}"
-			        	 src="${db.sql_create_f_job.script}">
-						<classpath refid="master-classpath"/>
-					</sql>
-				</target>
-			
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_job.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_location">
-					<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-					<sql driver="${db.driver}"
-		             	url="${db.url}"
-		            	userid="${db.user}"
-		             	password="${db.pw}"
-		        	 	src="${db.sql_create_f_location.script}">
-						<classpath refid="master-classpath"/>
-					</sql>
-				</target>
-				
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_location.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_phone">
-						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-						<sql driver="${db.driver}"
-				             url="${db.url}"
-				             userid="${db.user}"
-				             password="${db.pw}"
-				        	 src="${db.sql_create_f_phone.script}">
-							<classpath refid="master-classpath"/>
-						</sql>
-					</target>
-					
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_phone.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_roster">
-						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-						<sql driver="${db.driver}"
-				             url="${db.url}"
-				             userid="${db.user}"
-				             password="${db.pw}"
-				        	 src="${db.sql_create_f_roster.script}">
-							<classpath refid="master-classpath"/>
-						</sql>
-					</target>	
-					
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_roster.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_selected">
-						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-						<sql driver="${db.driver}"
-				             url="${db.url}"
-				             userid="${db.user}"
-				             password="${db.pw}"
-				        	 src="${db.sql_create_f_selected.script}">
-							<classpath refid="master-classpath"/>
-						</sql>
-					</target>
-					
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_selected.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_servicetype">
-						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-						<sql driver="${db.driver}"
-				             url="${db.url}"
-				             userid="${db.user}"
-				             password="${db.pw}"
-				        	 src="${db.sql_create_f_servicetype.script}">
-							<classpath refid="master-classpath"/>
-						</sql>
-					</target>
-					
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_servicetype.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_staffmember">
-						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-						<sql driver="${db.driver}"
-				             url="${db.url}"
-				             userid="${db.user}"
-				             password="${db.pw}"
-				        	 src="${db.sql_create_f_staffmember.script}">
-							<classpath refid="master-classpath"/>
-						</sql>
-					</target>
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_staffmember.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
 
 	<target name="sql_create_f_transport">
-						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-						<sql driver="${db.driver}"
-				             url="${db.url}"
-				             userid="${db.user}"
-				             password="${db.pw}"
-				        	 src="${db.sql_create_f_transport.script}">
-							<classpath refid="master-classpath"/>
-						</sql>
-					</target>
-					
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_transport.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+
 	<target name="sql_create_f_vehicle">
-						<echo message="CREATE TABLES USING: ${db.driver} ${db.url}"/>
-						<sql driver="${db.driver}"
-				             url="${db.url}"
-				             userid="${db.user}"
-				             password="${db.pw}"
-				        	 src="${db.sql_create_f_vehicle.script}">
-							<classpath refid="master-classpath"/>
-						</sql>
-					</target>																																	
-	
+		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_vehicle.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
 </project>
