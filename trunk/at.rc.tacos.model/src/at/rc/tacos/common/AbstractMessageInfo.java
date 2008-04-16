@@ -25,7 +25,7 @@ public class AbstractMessageInfo
 	 */
 	public AbstractMessageInfo()
 	{
-		
+		transmitted = 0;
 	}
 	
 	/**
