@@ -13,9 +13,6 @@ Time and Configuration Management
    <configIni use="default"/>
 
    <launcherArgs>
-      <vmArgs>-Xms256m 
--Xmx512m 
--Xoptimize</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
@@ -43,7 +40,7 @@ Time and Configuration Management
       <plugin id="at.rc.tacos.model"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.ibm.icu36.data.update" fragment="true"/>
-      <plugin id="com.swtdesigner.gwt.saf.browser" fragment="true"/>
+      <plugin id="com.swtdesigner.gwt.saf.browser"/>
       <plugin id="javax.servlet"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>

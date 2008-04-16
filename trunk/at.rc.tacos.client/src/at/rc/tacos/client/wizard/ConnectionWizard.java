@@ -124,7 +124,6 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 					monitor.done();
 				}
 			});
-
 			//if we have a connection try to login
 			if(NetSource.getInstance().getConnection() == null)
 			{
@@ -178,13 +177,13 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 		}
 		else
 		{
+			//request data from server
+			ModelFactory.getInstance().initalizeModel();
 			Display.getCurrent().beep();
 			MessageDialog.openInformation(
 					PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
 					"Login Erfolgreich",
 					"Sie haben erfolgreich eine Verbindung zum Server hergestellt");
-			//request data from server
-			ModelFactory.getInstance().initalizeModel();
 			return true;
 		}
 	} 
