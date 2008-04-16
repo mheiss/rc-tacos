@@ -9,7 +9,9 @@ import at.rc.tacos.client.modelManager.LoginManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.AbstractMessageInfo;
 import at.rc.tacos.common.IConnectionStates;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
@@ -89,9 +91,9 @@ public class SessionListener extends ClientListenerAdapter
 	}
 
 	@Override
-	public void transferFailed(String contentType,String queryType,AbstractMessage message) 
+	public void transferFailed(AbstractMessageInfo info) 
 	{
-		session.fireTransferFailed(contentType,queryType,message);
+		session.fireTransferFailed(info);
 	} 
 	
     @Override
@@ -148,5 +150,12 @@ public class SessionListener extends ClientListenerAdapter
 				manager.add(login);
 			}
 		}
+	}
+	
+	@Override
+	public void log(String message,int status)
+	{
+		Status statusMessage = new Status(status,NetWrapper.PLUGIN_ID,message);
+        Activator.getDefault().getLog().log(statusMessage);
 	}
 }

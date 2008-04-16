@@ -7,8 +7,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+import at.rc.tacos.core.net.NetSource;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.core.net.internal.IServerInfo;
+import at.rc.tacos.core.net.internal.ServerInfo;
 
 /**
  * This class controls all aspects of the application's execution
@@ -22,12 +24,15 @@ public class Application implements IApplication
      */
     public Object start(IApplicationContext context) 
     {
+    	//the net source
+    	NetSource source = NetSource.getInstance();
+    	ServerInfo primaryServer = source.getServerInfoById(IServerInfo.PRIMARY_SERVER);
+    	ServerInfo failoverServer = source.getServerInfoById(IServerInfo.FAILOVER_SERVER);
+    	
+    	//startup the workbench
         Display display = PlatformUI.createDisplay();
         //connect to the server
-        NetWrapper.getDefault().connectNetwork(IServerInfo.PRIMARY_SERVER);
-        //get the network status
-        System.out.println("Connection status:"+NetWrapper.getDefault().isConnected());
-        if(!NetWrapper.getDefault().isConnected())
+        if(source.openConnection(primaryServer) == null)
         {
             display.beep();
             //show an error message
@@ -35,14 +40,13 @@ public class Application implements IApplication
                     "Verbindungsfehler", 
                     "Verbindung zum primären Server nicht möglich.\n" +
                     "Soll eine Verbindung zum Backup Server hergestellt werden?"))
+            {
                 return IApplication.EXIT_OK;
+            }
             else
             {
-                //connect to the server
-                NetWrapper.getDefault().connectNetwork(IServerInfo.FAILOVER_SERVER);
-                System.out.println("Connection status:"+NetWrapper.getDefault().isConnected());
                 //get the network status
-                if(!NetWrapper.getDefault().isConnected())
+                if(source.openConnection(failoverServer) == null)
                 {
                     display.beep();
                     //show an error message
@@ -54,6 +58,9 @@ public class Application implements IApplication
                 }
             }
         }
+		//startup the network
+		NetWrapper.getDefault().init();
+		Activator.getDefault().init();
         //try to load workbench
         try 
         {

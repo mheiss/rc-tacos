@@ -18,10 +18,47 @@ import at.rc.tacos.client.controller.CreateTransportFromDialysis;
 import at.rc.tacos.client.listeners.*;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.codec.AddressDecoder;
+import at.rc.tacos.codec.AddressEncoder;
+import at.rc.tacos.codec.CallerDecoder;
+import at.rc.tacos.codec.CallerEncoder;
+import at.rc.tacos.codec.CompetenceDecoder;
+import at.rc.tacos.codec.CompetenceEncoder;
+import at.rc.tacos.codec.DayInfoMessageDecoder;
+import at.rc.tacos.codec.DayInfoMessageEncoder;
+import at.rc.tacos.codec.DialysisDecoder;
+import at.rc.tacos.codec.DialysisEncoder;
+import at.rc.tacos.codec.DiseaseDecoder;
+import at.rc.tacos.codec.DiseaseEncoder;
+import at.rc.tacos.codec.JobDecoder;
+import at.rc.tacos.codec.JobEncoder;
+import at.rc.tacos.codec.LocationDecoder;
+import at.rc.tacos.codec.LocationEncoder;
+import at.rc.tacos.codec.LoginDecoder;
+import at.rc.tacos.codec.LoginEncoder;
+import at.rc.tacos.codec.LogoutDecoder;
+import at.rc.tacos.codec.LogoutEncoder;
+import at.rc.tacos.codec.MobilePhoneDecoder;
+import at.rc.tacos.codec.MobilePhoneEncoder;
+import at.rc.tacos.codec.PatientDecoder;
+import at.rc.tacos.codec.PatientEncoder;
+import at.rc.tacos.codec.RosterEntryDecoder;
+import at.rc.tacos.codec.RosterEntryEncoder;
+import at.rc.tacos.codec.ServiceTypeDecoder;
+import at.rc.tacos.codec.ServiceTypeEncoder;
+import at.rc.tacos.codec.StaffMemberDecoder;
+import at.rc.tacos.codec.StaffMemberEncoder;
+import at.rc.tacos.codec.SystemMessageDecoder;
+import at.rc.tacos.codec.SystemMessageEncoder;
+import at.rc.tacos.codec.TransportDecoder;
+import at.rc.tacos.codec.TransportEncoder;
+import at.rc.tacos.codec.VehicleDecoder;
+import at.rc.tacos.codec.VehicleEncoder;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.factory.ListenerFactory;
+import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.model.Address;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Competence;
@@ -70,11 +107,17 @@ public class Activator extends AbstractUIPlugin
 	{
 		super.start(context);
 		plugin = this;
-		//register the encoders and decoders
-		NetWrapper.getDefault().registerEncoderAndDecoder();
 		//load all needed images and register them
 		loadAndRegisterImages();   
 		registerListeners();
+		registerEncoderAndDecoder();
+	}
+	
+	/**
+	 * Initalize the client
+	 */
+	public void init()
+	{
 		backgroundTransportJob();
 	}
 
@@ -140,6 +183,51 @@ public class Activator extends AbstractUIPlugin
 	}
 
 	/**
+	 * Convenience method to registers the encoders and decoders.
+	 */
+	public void registerEncoderAndDecoder()
+	{
+		//register the needed model types with the decoders and encoders
+		ProtocolCodecFactory protFactory = ProtocolCodecFactory.getDefault();
+		protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
+		protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
+		protFactory.registerDecoder(CallerDetail.ID, new CallerDecoder());
+		protFactory.registerEncoder(CallerDetail.ID, new CallerEncoder());
+		protFactory.registerDecoder(Patient.ID, new PatientDecoder());
+		protFactory.registerEncoder(Patient.ID, new PatientEncoder());
+		protFactory.registerDecoder(RosterEntry.ID, new RosterEntryDecoder());
+		protFactory.registerEncoder(RosterEntry.ID, new RosterEntryEncoder());
+		protFactory.registerDecoder(StaffMember.ID, new StaffMemberDecoder());
+		protFactory.registerEncoder(StaffMember.ID, new StaffMemberEncoder());
+		protFactory.registerDecoder(Transport.ID, new TransportDecoder());
+		protFactory.registerEncoder(Transport.ID, new TransportEncoder());
+		protFactory.registerDecoder(VehicleDetail.ID, new VehicleDecoder());
+		protFactory.registerEncoder(VehicleDetail.ID, new VehicleEncoder()); 
+		protFactory.registerDecoder(Login.ID, new LoginDecoder());
+		protFactory.registerEncoder(Login.ID, new LoginEncoder());
+		protFactory.registerDecoder(Logout.ID, new LogoutDecoder());
+		protFactory.registerEncoder(Logout.ID, new LogoutEncoder());
+		protFactory.registerDecoder(SystemMessage.ID, new SystemMessageDecoder());
+		protFactory.registerEncoder(SystemMessage.ID, new SystemMessageEncoder());
+		protFactory.registerDecoder(DialysisPatient.ID, new DialysisDecoder());
+		protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
+		protFactory.registerDecoder(DayInfoMessage.ID, new DayInfoMessageDecoder());
+		protFactory.registerEncoder(DayInfoMessage.ID, new DayInfoMessageEncoder());
+		protFactory.registerDecoder(at.rc.tacos.model.Job.ID, new JobDecoder());
+		protFactory.registerEncoder(at.rc.tacos.model.Job.ID, new JobEncoder());
+		protFactory.registerDecoder(Location.ID, new LocationDecoder());
+		protFactory.registerEncoder(Location.ID, new LocationEncoder());
+		protFactory.registerDecoder(Competence.ID, new CompetenceDecoder());
+		protFactory.registerEncoder(Competence.ID, new CompetenceEncoder());
+		protFactory.registerDecoder(ServiceType.ID, new ServiceTypeDecoder());
+		protFactory.registerEncoder(ServiceType.ID, new ServiceTypeEncoder());
+		protFactory.registerDecoder(Disease.ID,new DiseaseDecoder());
+		protFactory.registerEncoder(Disease.ID, new DiseaseEncoder());
+		protFactory.registerDecoder(Address.ID, new AddressDecoder());
+		protFactory.registerEncoder(Address.ID, new AddressEncoder());
+	}
+
+	/**
 	 * Loads all image files from the image.properties 
 	 * and registers them in the application.<br>
 	 * The images can be accessed through the key value of the
@@ -197,7 +285,7 @@ public class Activator extends AbstractUIPlugin
 			@Override
 			protected IStatus run(IProgressMonitor monitor)
 			{
-				System.out.println("Running: "+MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(), MyUtils.dateFormat));
+				System.out.println("Running: "+MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(), MyUtils.timeAndDateFormat));
 				try 
 				{
 					//the current time minus 2 hours
@@ -223,7 +311,7 @@ public class Activator extends AbstractUIPlugin
 						//first check: do we have already generated a transport for today?
 						if(MyUtils.isEqualDate(patient.getLastTransportDate(),current.getTimeInMillis()))
 							continue;
-						
+
 						//second check: is the day correct?
 						int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 						switch(day)
@@ -261,7 +349,7 @@ public class Activator extends AbstractUIPlugin
 						patientCal.set(Calendar.YEAR, current.get(Calendar.YEAR));
 						patientCal.set(Calendar.MONTH, current.get(Calendar.MONTH));
 						patientCal.set(Calendar.DAY_OF_MONTH, current.get(Calendar.DAY_OF_MONTH));
-						
+
 						//third check: is within the next two hour?
 						if(current.getTimeInMillis() > patientCal.getTimeInMillis())
 						{

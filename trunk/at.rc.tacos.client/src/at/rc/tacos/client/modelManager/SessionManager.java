@@ -7,9 +7,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.controller.ConnectionWizardAction;
-import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.AbstractMessageInfo;
 import at.rc.tacos.common.IConnectionStates;
-import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Login;
@@ -145,7 +144,7 @@ public class SessionManager extends PropertyManager
 		//store the login information
 		this.loginInformation = loginInformation;
 		//set the username in the client session
-		NetWrapper.getDefault().getClientSession().setAuthenticated(loginInformation.getUsername(), false);
+		NetWrapper.getDefault().setNetSessionUsername(loginInformation.getUsername());
 		firePropertyChange("AUTHENTICATION_SUCCESS", null, loginInformation);
 	}
 
@@ -163,10 +162,8 @@ public class SessionManager extends PropertyManager
 	 */
 	public void fireLogout()
 	{
-		//reset the login info
 		loginInformation = null;
-		//set the client deauthenticated
-		NetWrapper.getDefault().getClientSession().setDeAuthenticated();
+		NetWrapper.getDefault().setNetSessionUsername(loginInformation.getUsername());
 	}
 
 	/**
@@ -190,12 +187,12 @@ public class SessionManager extends PropertyManager
 		});
 	}
 
-	public void fireTransferFailed(final String contentType,final String queryType,final AbstractMessage message)
+	public void fireTransferFailed(final AbstractMessageInfo info)
 	{
 		//the message to display
 		final StringBuffer msg = new StringBuffer();
-		msg.append("Die folgende Anforderung konnte nicht an den Server übertragen werden.\n");
-		msg.append(contentType+" -> "+queryType);
+		msg.append("Die folgende Nachricht konnte nicht an den Server übertragen werden. (Zeitüberschreitung).\n");
+		msg.append(info.getContentType()+" -> "+info.getQueryString());
 
 		//show a message
         Display.getDefault().syncExec(new Runnable ()    
@@ -213,15 +210,7 @@ public class SessionManager extends PropertyManager
         		"Wollen sie die Nachricht noch einmal senden?");
         		if (!retryConfirmed) 
         			return;
-        		//send the request
-        		if(IModelActions.ADD.equalsIgnoreCase(queryType))
-        			NetWrapper.getDefault().sendAddMessage(contentType, message);
-        		if(IModelActions.REMOVE.equalsIgnoreCase(queryType))
-        			NetWrapper.getDefault().sendRemoveMessage(contentType, message);
-        		if(IModelActions.UPDATE.equalsIgnoreCase(queryType))
-        			NetWrapper.getDefault().sendUpdateMessage(contentType, message);
-        		if(IModelActions.LIST.equalsIgnoreCase(queryType))
-        			NetWrapper.getDefault().requestListing(contentType, null);
+        		NetWrapper.getDefault().sheduleAndSend(info);
             }
         });
 	}

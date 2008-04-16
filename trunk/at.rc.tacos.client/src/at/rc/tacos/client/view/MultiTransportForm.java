@@ -1,67 +1,27 @@
 package at.rc.tacos.client.view;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.TextViewer;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ImageHyperlink;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
-
-import com.swtdesigner.SWTResourceManager;
-
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.MobilePhoneContentProvider;
-import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.providers.PrebookingViewContentProvider;
 import at.rc.tacos.client.providers.PrebookingViewLabelProvider;
-import at.rc.tacos.client.providers.StaffMemberVehicleContentProvider;
-import at.rc.tacos.client.providers.StaffMemberVehicleLabelProvider;
-import at.rc.tacos.client.providers.StationContentProvider;
-import at.rc.tacos.client.providers.StationLabelProvider;
-import at.rc.tacos.client.providers.VehicleContentProvider;
-import at.rc.tacos.client.providers.VehicleLabelProvider;
-import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.Location;
-import at.rc.tacos.model.MobilePhoneDetail;
-import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
 
 /**

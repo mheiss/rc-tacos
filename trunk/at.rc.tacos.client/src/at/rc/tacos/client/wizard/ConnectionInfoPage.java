@@ -6,7 +6,8 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import at.rc.tacos.core.net.NetWrapper;
+
+import at.rc.tacos.core.net.NetSource;
 import at.rc.tacos.factory.ImageFactory;
 
 public class ConnectionInfoPage extends WizardPage
@@ -39,7 +40,7 @@ public class ConnectionInfoPage extends WizardPage
 		//the status of the connection
 		connectionStatus = new CLabel(container,SWT.LEFT);
 		//the image to display
-		if(NetWrapper.getDefault().isConnected())
+		if(NetSource.getInstance().getConnection() != null)
 		{
 		    setTitle("Verbindung hergestellt");
 		    setDescription("Die Ausführung des Assistenten ist nicht notwendig");
@@ -69,10 +70,10 @@ public class ConnectionInfoPage extends WizardPage
 	public boolean canFlipToNextPage() 
 	{
 		//only go to the next page, if we do not have a connection
-		if(NetWrapper.getDefault().isConnected())
+		if(NetSource.getInstance().getConnection() != null)
 			return false;
-		else
-			return true;
+		
+		return true;
 	}
 
 	/**

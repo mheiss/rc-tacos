@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.AbstractMessageInfo;
 import at.rc.tacos.common.IModelListener;
 
 /**
@@ -99,7 +100,16 @@ public abstract class ClientListenerAdapter implements IModelListener
      * Message failed to send
      */
     @Override
-    public void transferFailed(String contentType,String queryType,AbstractMessage message)
+    public void transferFailed(AbstractMessageInfo info)
+    {
+    	
+    }
+    
+    /**
+     * Logs the message on the client
+     */
+    @Override
+    public void log(String message, int stauts)
     {
     	
     }
