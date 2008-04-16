@@ -103,8 +103,6 @@ public class WebClient
         try
         {
             socket = new MySocket(serverAddress,serverPort);
-            socket.createInputStream();
-            socket.createOutputStream(); 
             socket.setSoTimeout(10000);
             return true;
         }
@@ -118,14 +116,6 @@ public class WebClient
             System.out.println("Error cannot connect to the server "+serverAddress+":"+serverPort);
             return false;
         }
-    }
-    
-    /**
-     * Closes the socket and ends the communication
-     */
-    public void quit()
-    {
-        socket.cleanup();
     }
     
     /**
@@ -274,7 +264,9 @@ public class WebClient
     {
         //set up the factory
         factory = new XMLFactory();
-        factory.setupEncodeFactory(userId, contentType, queryString);
+        factory.setUserId(userId);
+        factory.setContentType(contentType);
+        factory.setQueryString(queryString);
         ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
         //wrapp into a list
         if(messageObject != null)
@@ -313,9 +305,8 @@ public class WebClient
     {
         try
         {
-            //try to send
-            System.out.println("Sending: "+socket.sendMessage(message));
-            return socket.receiveMessage();
+            socket.getBufferedOutputStream().println(message);
+            return socket.getBufferedInputStream().readLine();
         }
         catch(IOException ioe)
         {
@@ -323,10 +314,6 @@ public class WebClient
             return null;
         }
     }
-    
-    /**
-     * 
-     */
 
     /**
      * Convenience method to registers the encoders and decoders.
