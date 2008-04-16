@@ -11,7 +11,6 @@ import org.eclipse.ui.application.*;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.core.net.NetSource;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.core.net.internal.MySocket;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
 
@@ -55,8 +54,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 		//try to close the connection
 		try
 		{
-			MySocket socket = NetSource.getInstance().getConnection();
-			socket.cleanup();
+			//stop the running network jobs
+			NetWrapper.getDefault().requestNetworkStop(false);
+			NetSource.getInstance().closeConnection();
 		}
 		catch(IOException ioe)
 		{

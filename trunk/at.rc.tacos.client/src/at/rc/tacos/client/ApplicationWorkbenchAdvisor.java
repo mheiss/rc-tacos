@@ -43,7 +43,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
     public void initialize(IWorkbenchConfigurer configurer)
     {
         super.initialize(configurer);
-        //load the model
+        configurer.setSaveAndRestore(true);
         ModelFactory.getInstance().initalizeModel();  
     } 
 }

@@ -285,7 +285,6 @@ public class Activator extends AbstractUIPlugin
 			@Override
 			protected IStatus run(IProgressMonitor monitor)
 			{
-				System.out.println("Running: "+MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(), MyUtils.timeAndDateFormat));
 				try 
 				{
 					//the current time minus 2 hours
