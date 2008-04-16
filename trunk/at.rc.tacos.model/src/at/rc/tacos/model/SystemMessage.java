@@ -13,6 +13,7 @@ public class SystemMessage extends AbstractMessage
     public final static String ID = "system";
     
     //Types for the message
+    public static final int TYPE_ALIVE = 0x00;
     public static final int TYPE_INFO = 0x01;
     public static final int TYPE_ERROR = 0x02;
     

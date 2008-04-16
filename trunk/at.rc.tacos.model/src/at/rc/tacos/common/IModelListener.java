@@ -66,7 +66,12 @@ public interface IModelListener
     
     /**
      * Nofification that the message could not be transmitted
- 	 * @param message the message that was not transmitted
+ 	 * @param info the message that was not transmitted
      */
-    public void transferFailed(String contentType,String queryType,AbstractMessage message);
+    public void transferFailed(AbstractMessageInfo info);
+    
+    /**
+     * Logs the message on the client
+     */
+    public void log(String message,int status);
 }

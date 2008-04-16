@@ -25,4 +25,7 @@ public interface IModelActions
     public final static String LIST = "message.list";
     /** Update message */
     public final static String UPDATE = "message.update";
+    
+    /** Keep alive message */
+    public final static String KEEP_ALIVE = "message.alive";
 }
