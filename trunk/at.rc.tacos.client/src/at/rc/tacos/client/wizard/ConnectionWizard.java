@@ -16,8 +16,8 @@ import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.core.net.NetSource;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.core.net.internal.ClientSession;
 import at.rc.tacos.core.net.internal.ServerInfo;
 import at.rc.tacos.model.Login;
 
@@ -94,7 +94,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 	public boolean canFinish() 
 	{
 		//the wizzard can be finished at the first page if we have a connection
-		if(getContainer().getCurrentPage() == infoPage && NetWrapper.getDefault().isConnected())
+		if(getContainer().getCurrentPage() == infoPage && NetSource.getInstance().getConnection() != null)
 			return true;
 		//the wizard can be finished if we have a valid login
 		if(username != null && password != null)
@@ -107,8 +107,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 	public boolean performFinish() 
 	{
 		//skip and exit, if we are authenticated
-		ClientSession session = NetWrapper.getDefault().getClientSession();
-		if(session != null && session.isAuthenticated())
+		if(NetWrapper.getDefault().isAuthenticated())
 			return true;
 		//reset the login status
 		loginResponse = false;
@@ -121,17 +120,16 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 				{
 					monitor.beginTask("Verbindung zum Server " + selectedServer.getDescription()+" wird hergestellt", IProgressMonitor.UNKNOWN);
 					//connect to the new server and login
-					NetWrapper.getDefault().connectNetwork(selectedServer.getId());
+					NetSource.getInstance().openConnection(selectedServer);
 					monitor.done();
 				}
 			});
 
 			//if we have a connection try to login
-			if(NetWrapper.getDefault().getClientSession() == null)
+			if(NetSource.getInstance().getConnection() == null)
 			{
-				loginPage.setErrorMessage("Verbindung zum Server kann nicht hergestellt werden");
-				//show the message to the user
 				Display.getCurrent().beep();
+				loginPage.setErrorMessage("Verbindung zum Server kann nicht hergestellt werden");
 				MessageDialog.openError(
 						PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
 						"Serverfehler",
@@ -140,7 +138,8 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 				//exit, we have no connection
 				return false;
 			}
-			//send the login message
+			//start the monitor jobs and try to login
+			NetWrapper.getDefault().init();
 			NetWrapper.getDefault().sendLoginMessage(new Login(username,password,false));
 			getContainer().run(true, true, new IRunnableWithProgress() 
 			{
@@ -166,7 +165,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 			return false;
 		}
 		//check the login status
-		if(!NetWrapper.getDefault().getClientSession().isAuthenticated())
+		if(!NetWrapper.getDefault().isAuthenticated())
 		{
 			loginPage.setErrorMessage("Anmeldung fehlgeschlagen.\n" +
 			"Bitte überprüfen Sie den angegebenen Benutzernamen und das Passwort");
@@ -194,7 +193,7 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 	public boolean performCancel() 
 	{
 	    //Close the wizard if a connection is established
-	    if(NetWrapper.getDefault().isConnected())
+	    if(NetSource.getInstance().getConnection() != null)
 	        return true;
 		Display.getCurrent().beep();
 		MessageDialog.openError(

@@ -1,5 +1,7 @@
 package at.rc.tacos.client;
 
+import java.io.IOException;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -7,7 +9,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.*;
 
 import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.core.net.NetSource;
 import at.rc.tacos.core.net.NetWrapper;
+import at.rc.tacos.core.net.internal.MySocket;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
 
@@ -48,8 +52,16 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 		//send a logout request to the server and close the connection
 		Logout logout = new Logout(login.getUsername());
 		NetWrapper.getDefault().sendLogoutMessage(logout);
-		//close the connection
-		NetWrapper.getDefault().closeConnection();
+		//try to close the connection
+		try
+		{
+			MySocket socket = NetSource.getInstance().getConnection();
+			socket.cleanup();
+		}
+		catch(IOException ioe)
+		{
+			System.out.println("Failed to close the network socket");
+		}
 		return true;	
 	}
 
@@ -76,7 +88,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
         configurer.setTitle("Time and Coordination System");
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);
-        configurer.setShowProgressIndicator(false);   
+        configurer.setShowProgressIndicator(true);   
         configurer.setShowPerspectiveBar(false);
     }
 
