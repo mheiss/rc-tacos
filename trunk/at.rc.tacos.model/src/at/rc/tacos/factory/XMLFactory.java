@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -36,6 +36,7 @@ public class XMLFactory
 
     //the header fields
     private String userId;          //the username of the loged in user
+    private String sequenceId;		//the (uniqe) number to identify a package
     private long timestamp;         //the timestamp of the message
     private String contentType;     //the type of the body content. e.g. RosterEntry.ID
     private String queryString;     //the type of the query. e.g message.add
@@ -44,20 +45,9 @@ public class XMLFactory
     /**
      * Default constructor specifying a user for the session
      */
-    public XMLFactory() { }
-
-    /**
-     * Sets up the factory to encode a object.
-     * @param userId the identification of the authenticated user
-     * @param contentType the type of the message content. e.g <code>RosterEntry.ID</code>
-     * @param queryString the type of the query. e.g message.add
-     */
-    public void setupEncodeFactory(String userId,String contentType,String queryString)
-    {
-        this.userId = userId;
-        this.contentType = contentType;
-        this.queryString = queryString;
-        this.timestamp = new Date().getTime();
+    public XMLFactory() 
+    { 
+    	timestamp = Calendar.getInstance().getTimeInMillis();
     }
 
     /**
@@ -74,15 +64,6 @@ public class XMLFactory
         this.xmlSource = xmlSource;
         //create a new filter
         queryFilter = new QueryFilter();
-    }
-    
-    /**
-     * Sets a filter for the query string.
-     * @param queryFilter the filter to apply
-     */
-    public void setFilter(QueryFilter queryFilter)
-    {
-        this.queryFilter = queryFilter;
     }
 
     /**
@@ -113,6 +94,11 @@ public class XMLFactory
             //write the user id
             xmlw.writeStartElement(IXMLElements.HEADER_USERID_ELEMENT);
             xmlw.writeCharacters(userId);
+            xmlw.writeEndElement();
+            
+            //write the sequence number
+            xmlw.writeStartElement(IXMLElements.HEADER_SEQUENCE_ELEMENT);
+            xmlw.writeCharacters(sequenceId);
             xmlw.writeEndElement();
             
             //write the timestamp
@@ -166,8 +152,11 @@ public class XMLFactory
             xmlw.writeEndDocument();
             // Close the writer to flush the output
             xmlw.close();
-
-            return output.toString();
+            
+            //replace unwanted characters
+            String message = output.toString();
+            message = message.replaceAll("\\s\\s+|\\n|\\r", "<![CDATA[<br/>]]>");
+            return message;
         }
         catch(XMLStreamException xmlse)
         {
@@ -229,6 +218,8 @@ public class XMLFactory
                     //get the type of the element and set the corresponding value
                     if(IXMLElements.HEADER_USERID_ELEMENT.equalsIgnoreCase(startName))
                         userId = r.getElementText();
+                    if(IXMLElements.HEADER_SEQUENCE_ELEMENT.equalsIgnoreCase(startName))
+                    	sequenceId = r.getElementText();
                     if(IXMLElements.HEADER_TIMESTAMP_ELEMENT.equalsIgnoreCase(startName))
                         timestamp = Long.parseLong(r.getElementText());
                     if(IXMLElements.HEADER_TYPE_ELEMENT.equalsIgnoreCase(startName))
@@ -283,6 +274,60 @@ public class XMLFactory
             }
         }
     }
+    
+    //SETTERS FOR THE ENCODE VALUES
+    /**
+     * Sets the timestamp when the message is send
+     * @param timestamp the current time in milli seconds
+     */
+    public void setTimestamp(long timestamp)
+    {
+    	this.timestamp = timestamp;
+    }
+    
+    /**
+     * Sets the user id of the message owner.
+     * @param userId the username 
+     */
+    public void setUserId(String userId)
+    {
+    	this.userId = userId;
+    }
+    
+    /**
+     *  Sets the (unique) sequence number for this message
+     *  @param sequenceId the unique number to identify the package
+     */
+    public void setSequenceId(String sequenceId)
+    {
+    	this.sequenceId = sequenceId;
+    }
+    
+    /**
+     * Sets the content type of the message
+     * @param contentType the content type of the message
+     */
+    public void setContentType(String contentType)
+    {
+    	this.contentType = contentType;
+    }
+    
+    /**
+     * Sets the query string (the used operation like add or listing) for that package
+     */
+    public void setQueryString(String queryString)
+    {
+    	this.queryString = queryString;
+    }
+    
+    /**
+     * Sets a filter for the query string.
+     * @param queryFilter the filter to apply
+     */
+    public void setFilter(QueryFilter queryFilter)
+    {
+        this.queryFilter = queryFilter;
+    }
 
     // GETTERS FOR THE DECODED VALUES
     /**
@@ -292,6 +337,15 @@ public class XMLFactory
     public String getUserId()
     {
         return userId;
+    }
+    
+    /**
+     * Returns the sequence number for that message.
+     * @return the used sequence number
+     */
+    public String getSequenceId()
+    {
+    	return sequenceId;
     }
 
     /**

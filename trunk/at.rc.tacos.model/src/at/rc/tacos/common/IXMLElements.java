@@ -12,6 +12,8 @@ public class IXMLElements
     public static final String HEADER_ELEMENT = "header";
     /** The userId */
     public static final String HEADER_USERID_ELEMENT = "userid";
+    /** The unique sequence number field */
+    public static final String HEADER_SEQUENCE_ELEMENT = "sequenceNumber";
     /** The timestamp */
     public static final String HEADER_TIMESTAMP_ELEMENT = "timestamp";
     /** the type */
