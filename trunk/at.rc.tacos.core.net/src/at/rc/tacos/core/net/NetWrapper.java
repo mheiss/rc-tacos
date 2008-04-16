@@ -1,37 +1,61 @@
 package at.rc.tacos.core.net;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.osgi.framework.BundleContext;
 
-import at.rc.tacos.core.net.event.*;
+import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.AbstractMessageInfo;
+import at.rc.tacos.common.IConnectionStates;
+import at.rc.tacos.common.IModelActions;
+import at.rc.tacos.common.IModelListener;
 import at.rc.tacos.core.net.internal.*;
-
-import at.rc.tacos.model.*;
-import at.rc.tacos.common.*;
-import at.rc.tacos.codec.*;
-import at.rc.tacos.factory.*;
+import at.rc.tacos.factory.ListenerFactory;
+import at.rc.tacos.factory.XMLFactory;
+import at.rc.tacos.model.Login;
+import at.rc.tacos.model.Logout;
+import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.model.SystemMessage;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class NetWrapper extends Plugin implements INetListener
+public class NetWrapper extends Plugin
 {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "at.rc.tacos.core.net";
-	// The shared instance
 	private static NetWrapper plugin;
 
-	//properties
-	private ClientSession clientSession;
-	private ServerInfo connectionInfo;
-	private boolean connected;
+	//the username of the logged in user
+	private String netSessionUserName;
+
+	//the list of send items, which have currently no answer from the server
+	//if a answere from the server is recevied the items is deleted from the list
+	private ConcurrentHashMap<String,AbstractMessageInfo> messageList;
+
+	//the running jobs
+	private ListenJob listenJob;
+	private KeepAliveJob keepAliveJob;
+	private MonitorJob monitorJob;
 
 	/**
 	 * The constructor
 	 */
-	public NetWrapper() { }
+	public NetWrapper() 
+	{
+		messageList = new ConcurrentHashMap<String, AbstractMessageInfo>();
+	}
 
 	/**
 	 * Called when the plugin is started
@@ -69,121 +93,92 @@ public class NetWrapper extends Plugin implements INetListener
 	}
 
 	/**
-	 *  Opens a connection to the given server.
-	 *  @param connectionName the name of the server to connect
+	 * Initializes and sets up the needed jobs to watch the network status
 	 */
-	public void connectNetwork(String connectionName)
+	public void init()
 	{
-		//get the server
-		connectionInfo = NetSource.getInstance().getServerInfoById(connectionName);
-		if(connectionInfo == null)
-		{
-			System.out.println("Cannot resolve server info: "+connectionName);
-			//reset the info
-			connected = false;
-			return;
-		}
-		System.out.println("Connection to: "+connectionInfo.getHostName()+":"+connectionInfo.getPort());
-		MyClient connection = NetSource.getInstance().getConnection(connectionInfo);
-		//check the status
-		if(connection != null)
-		{
-			//add this class as target for network messages
-			connection.addNetListener(this);
-			//create a new client session
-			clientSession = new ClientSession(connection);
-			//we have a connection
-			connected = true;
-		}
-		else 
-		{
-			//not connected
-			connected = false;
-			//destroy the session
-			clientSession = null;
-			//destory the server info
-			connectionInfo = null;
-		}
+		//start the thread to listen to new data
+		startListenJob();
+		//start the thread to check the server connection
+		startKeepAliveJob();
+		//the monitor thread
+		startMonitorThread();
+		//log to the client
+		IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
+		systemListener.log("Starting up the network jobs", Status.INFO);
 	}
 
 	/**
-	 * Returns current client session used for the nework communication
-	 * @param the client session
+	 * Stops all running jobs
 	 */
-	public ClientSession getClientSession()
+	public void cancelJobs()
 	{
-		return clientSession;
-	}
-	
-	/**
-	 *  Returns the current status of the network connection
-	 *  @return true if the network connection is established
-	 */
-	public boolean isConnected()
-	{
-		return connected;
-	}
-	
-	/**
-	 * Closes the current connection and cleanup.
-	 */
-	public void closeConnection()
-	{
-		//get the client session
-		if(clientSession == null)
-			return;
-		//get the connection
-		MyClient connection = clientSession.getConnection();
-		//assert we have a connection
-		if(connection == null)
-			return;
-		//close
-		NetSource.getInstance().closeConnection(connection);
+		listenJob.cancel();
+		keepAliveJob.cancel();
+		monitorJob.cancel();
+		//log
+		IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
+		systemListener.log("Setting all running network jobs to sleep", Status.INFO);
 	}
 
 	/**
-	 * Convenience method to registers the encoders and decoders.
+	 * Sets the name of the currently authenticated user
+	 * @param name the username
 	 */
-	public void registerEncoderAndDecoder()
+	public void setNetSessionUsername(String username)
 	{
-		//register the needed model types with the decoders and encoders
-		ProtocolCodecFactory protFactory = ProtocolCodecFactory.getDefault();
-		protFactory.registerDecoder(MobilePhoneDetail.ID, new MobilePhoneDecoder());
-		protFactory.registerEncoder(MobilePhoneDetail.ID, new MobilePhoneEncoder());
-		protFactory.registerDecoder(CallerDetail.ID, new CallerDecoder());
-		protFactory.registerEncoder(CallerDetail.ID, new CallerEncoder());
-		protFactory.registerDecoder(Patient.ID, new PatientDecoder());
-		protFactory.registerEncoder(Patient.ID, new PatientEncoder());
-		protFactory.registerDecoder(RosterEntry.ID, new RosterEntryDecoder());
-		protFactory.registerEncoder(RosterEntry.ID, new RosterEntryEncoder());
-		protFactory.registerDecoder(StaffMember.ID, new StaffMemberDecoder());
-		protFactory.registerEncoder(StaffMember.ID, new StaffMemberEncoder());
-		protFactory.registerDecoder(Transport.ID, new TransportDecoder());
-		protFactory.registerEncoder(Transport.ID, new TransportEncoder());
-		protFactory.registerDecoder(VehicleDetail.ID, new VehicleDecoder());
-		protFactory.registerEncoder(VehicleDetail.ID, new VehicleEncoder()); 
-		protFactory.registerDecoder(Login.ID, new LoginDecoder());
-		protFactory.registerEncoder(Login.ID, new LoginEncoder());
-		protFactory.registerDecoder(Logout.ID, new LogoutDecoder());
-		protFactory.registerEncoder(Logout.ID, new LogoutEncoder());
-		protFactory.registerDecoder(SystemMessage.ID, new SystemMessageDecoder());
-		protFactory.registerEncoder(SystemMessage.ID, new SystemMessageEncoder());
-		protFactory.registerDecoder(DialysisPatient.ID, new DialysisDecoder());
-		protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
-		protFactory.registerDecoder(DayInfoMessage.ID, new DayInfoMessageDecoder());
-		protFactory.registerEncoder(DayInfoMessage.ID, new DayInfoMessageEncoder());
-        protFactory.registerDecoder(Job.ID, new JobDecoder());
-        protFactory.registerEncoder(Job.ID, new JobEncoder());
-        protFactory.registerDecoder(Location.ID, new LocationDecoder());
-        protFactory.registerEncoder(Location.ID, new LocationEncoder());
-        protFactory.registerDecoder(Competence.ID, new CompetenceDecoder());
-        protFactory.registerEncoder(Competence.ID, new CompetenceEncoder());
-        protFactory.registerDecoder(ServiceType.ID, new ServiceTypeDecoder());
-        protFactory.registerEncoder(ServiceType.ID, new ServiceTypeEncoder());
-        protFactory.registerDecoder(Disease.ID,new DiseaseDecoder());
-        protFactory.registerEncoder(Disease.ID, new DiseaseEncoder());
-        protFactory.registerDecoder(Address.ID, new AddressDecoder());
-        protFactory.registerEncoder(Address.ID, new AddressEncoder());
+		this.netSessionUserName = username;
+	}
+
+	/**
+	 * Returns whether or not there is a logged in user
+	 */
+	public boolean isAuthenticated()
+	{
+		//check if we have a user
+		if(netSessionUserName == null)
+			return false;
+		return true;
+	}
+
+	// METHODS TO START THE THREADS
+	/**
+	 * Starts the receive job to listen to new data
+	 */
+	private void startListenJob()
+	{
+		//create a new job if we do not have one
+		if(listenJob == null)
+			listenJob = new ListenJob();
+		//wake up if he is sleeping
+		listenJob.schedule();
+		listenJob.shouldRun();
+	}
+
+	/**
+	 * Sends KEEP_ALIVE messages to the server to check the connection regularly
+	 */
+	private void startKeepAliveJob()
+	{
+		//create the job if we do not have one
+		if(keepAliveJob == null)
+			keepAliveJob = new KeepAliveJob();
+		//wake up if he is sleeping
+		keepAliveJob.schedule();
+		keepAliveJob.shouldRun();
+	}
+
+	/**
+	 * Monitors the send packages and informs when the server sends no reply
+	 */
+	private void startMonitorThread()
+	{
+		//create the job if we do not have one
+		if(monitorJob == null)
+			monitorJob = new MonitorJob();	
+		//wake up if he is sleeping
+		monitorJob.schedule();
+		monitorJob.shouldRun();
 	}
 
 	// METHODS TO SEND MESSAGES
@@ -193,16 +188,24 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendLoginMessage(Login login)
 	{
-		sendMessage(Login.ID, IModelActions.LOGIN, login);
+		AbstractMessageInfo info = new AbstractMessageInfo();
+		info.setContentType(Login.ID);
+		info.setQueryString(IModelActions.LOGIN);
+		info.setMessage(login);
+		sheduleAndSend(info);
 	}
-	
+
 	/**
 	 * Sends a request to the server to logout the user.
 	 * @param logout the logut message
 	 */
 	public void sendLogoutMessage(Logout logout)
 	{
-		sendMessage(Logout.ID, IModelActions.LOGOUT, logout);
+		AbstractMessageInfo info = new AbstractMessageInfo();
+		info.setContentType(Logout.ID);
+		info.setQueryString(IModelActions.LOGOUT);
+		info.setMessage(logout);
+		sheduleAndSend(info);
 	}
 
 	/**
@@ -215,12 +218,25 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendAddMessage(String contentType,AbstractMessage addMessage)
 	{
-		sendMessage(contentType,IModelActions.ADD,addMessage);
+		AbstractMessageInfo info = new AbstractMessageInfo();
+		info.setContentType(contentType);
+		info.setQueryString(IModelActions.ADD);
+		info.setMessage(addMessage);
+		sheduleAndSend(info);
 	}
-	
+
+	/**
+	 * Same as the send add message method but allows to send a list of data instead of a single object.
+	 * @param contentType the type of the message
+	 * @param addList the list of object to send
+	 */
 	public void sendAddAllMessage(String contentType,List<AbstractMessage> addList)
 	{
-		sendMessage(contentType,IModelActions.ADD_ALL,null,addList);
+		AbstractMessageInfo info = new AbstractMessageInfo();
+		info.setContentType(contentType);
+		info.setQueryString(IModelActions.ADD_ALL);
+		info.setMessageList(addList);
+		sheduleAndSend(info);
 	}
 
 	/**
@@ -233,7 +249,11 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendRemoveMessage(String contentType,AbstractMessage removeMessage)
 	{
-		sendMessage(contentType,IModelActions.REMOVE,removeMessage);
+		AbstractMessageInfo info = new AbstractMessageInfo();
+		info.setContentType(contentType);
+		info.setQueryString(IModelActions.REMOVE);
+		info.setMessage(removeMessage);
+		sheduleAndSend(info);
 	}
 
 	/**
@@ -246,7 +266,11 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void sendUpdateMessage(String contentType,AbstractMessage updateMessage)
 	{
-		sendMessage(contentType,IModelActions.UPDATE,updateMessage);
+		AbstractMessageInfo info = new AbstractMessageInfo();
+		info.setContentType(contentType);
+		info.setQueryString(IModelActions.UPDATE);
+		info.setMessage(updateMessage);
+		sheduleAndSend(info);
 	}
 
 	/**
@@ -259,161 +283,362 @@ public class NetWrapper extends Plugin implements INetListener
 	 */
 	public void requestListing(String contentType,QueryFilter filter)
 	{
-		sendMessage(contentType,IModelActions.LIST,filter,null);
+		AbstractMessageInfo info = new AbstractMessageInfo();
+		info.setContentType(contentType);
+		info.setQueryString(IModelActions.LIST);
+		info.setQueryFilter(filter);
+		sheduleAndSend(info);
 	}
 
+	// PRIVATE METHODS
 	/**
-	 * Convenience method to send the message to the server.
-	 * @param contentType the type of the content.
-	 * @param queryString the type of the query
-	 * @param queryFilter the filter to apply
-	 * @param message the message to send
+	 * Shedules and sends the given message to the server
+	 * @param info the message info object containing the data to send
 	 */
-	private void sendMessage(String contentType,String queryString,AbstractMessage message)
+	public void sheduleAndSend(final AbstractMessageInfo info)
 	{
-		//create a new list
-		List<AbstractMessage> messageList = new ArrayList<AbstractMessage>();
-		messageList.add(message);
-		sendMessage(contentType, queryString, null, messageList);
-	}
-	
-	/**
-	 * Convenience method to send the message to the server.<br />
-	 * ASSERT: The messages in the list MUST have the same type!.
-	 * @param contentType the type of the content.
-	 * @param queryString the type of the query
-	 * @param queryFilter the filter to apply
-	 * @param messageList the messages to send
-	 */
-	private void sendMessage(String contentType,String queryString,QueryFilter queryFilter,List<AbstractMessage> messageList)
-	{
-		//check if we have a session
-		if(clientSession == null)
+		//generate a sequence number for the message
+		Random random = new Random();
+		info.setSequenceId(netSessionUserName+"_"+String.valueOf(random.nextInt(10000)));
+		info.setTimestamp(Calendar.getInstance().getTimeInMillis());
+		//shedule and start the job
+		SendJob sendJob = new SendJob(info);
+		sendJob.schedule();
+		sendJob.addJobChangeListener(new JobChangeAdapter()
 		{
-			System.out.println("Failed to send the message");
-			System.out.println("No client session available to send the message");
+			//check the result of the job
+			@Override
+			public void done(IJobChangeEvent event) 
+			{
+				//check if the message was successfully send
+				if(event.getResult() == Status.OK_STATUS)
+				{
+					messageList.put(info.getSequenceId(), info);
+					System.out.println("Adding package number:"+info.getSequenceId());
+				}
+			}
+		});
+		//do not watch KEEP_ALIVE packages
+		if(info.getQueryString() == IModelActions.KEEP_ALIVE)
 			return;
-		}
-		//check if we have a connection
-		if(clientSession.getConnection() == null)
-		{
-			System.out.println("Failed to send the message");
-			System.out.println("No connection to a server available");
-			return;
-		}
-		
-		//set up the factory
-		XMLFactory factory = new XMLFactory();
-		factory.setupEncodeFactory(
-				clientSession.getUsername(), 
-				contentType, 
-				queryString);
-		System.out.println("Send: "+clientSession.getUsername()+","+contentType+","+queryString);
-		//appply filter if we have one
-		if(queryFilter != null)
-			factory.setFilter(queryFilter);
-		//encode the message
-		String xmlMessage = factory.encode(messageList);
-		
-		//replace all new lines
-		xmlMessage = xmlMessage.replaceAll("\\s\\s+|\\n|\\r", "<![CDATA[<br/>]]>");
-		
-		//get the connection out of the session and send the message
-		MyClient connection = clientSession.getConnection();
-		connection.sendMessage(xmlMessage);
+
+		//setup the progress monitor job
+		ProgressJob progressJob = new ProgressJob(info.getSequenceId());
+		progressJob.setUser(true);
+		progressJob.schedule();
 	}
 
-	// LISTENER METHODS
+	//THREADS FOR THE NETWORK
 	/**
-	 * Notification that new data is available.<br>
-	 * @param ne the triggered net event
+	 * The thread that listens to new data and informs the listeners. 
 	 */
-	@Override
-	public void dataReceived(NetEvent ne)
+	public class ListenJob extends Job
 	{
-		//set up the factory to decode
-		XMLFactory xmlFactory = new XMLFactory();
-		String message = ne.getMessage().replaceAll("&lt;br/&gt;", "\n");
-		xmlFactory.setupDecodeFactory(message);
-		//decode the message
-		ArrayList<AbstractMessage> objects = xmlFactory.decode();
-		//get the type of the item
-		final String contentType = xmlFactory.getContentType();
-		final String queryString = xmlFactory.getQueryString();
-		final String userId = xmlFactory.getUserId();
-		System.out.println("Received: "+ userId+","+contentType+","+queryString);
-
-		//try to get a listener for this message
-		ListenerFactory listenerFactory = ListenerFactory.getDefault();
-		if(listenerFactory.hasListeners(contentType))
+		/**
+		 * Default class constructor
+		 */
+		public ListenJob()
 		{
-			IModelListener listener = listenerFactory.getListener(contentType);
-			//now pass the message to the listener
-			if(IModelActions.ADD.equalsIgnoreCase(queryString))
-				listener.add(objects.get(0));
-			if(IModelActions.ADD_ALL.endsWith(queryString))
-				listener.addAll(objects);
-			if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
-				listener.remove(objects.get(0));
-			if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
-				listener.update(objects.get(0));
-			if(IModelActions.LIST.equalsIgnoreCase(queryString))
-				listener.list(objects);
-			if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
-				listener.loginMessage(objects.get(0));
-			if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
-				listener.logoutMessage(objects.get(0));
-			if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
-				listener.systemMessage(objects.get(0));
+			super("ListenJob");
 		}
-		else
+
+		/**
+		 * Loops and receives data.
+		 */
+		@Override
+		protected IStatus run(IProgressMonitor monitor) 
 		{
-			System.out.println("No listener found for the message type: "+contentType);
-			IModelListener listener = listenerFactory.getListener("sessionManager");
-			listener.transferFailed(contentType,queryString,objects.get(0));
+			//get the network connection to read data from
+			final MySocket client = NetSource.getInstance().getConnection();
+			monitor.beginTask("Listening to new data on the network", IProgressMonitor.UNKNOWN);
+			try
+			{
+				//get the reader to get new data
+				BufferedReader in = client.getBufferedInputStream();
+
+				String newData = null;
+				//wait and read the next new line from the stream
+				try
+				{
+					newData = in.readLine();
+				}
+				catch(Exception e)
+				{
+					//read timeout so go on;
+				}
+
+				//assert valid
+				if(newData == null)
+					return Status.CANCEL_STATUS;
+
+				//set up the factory to decode
+				XMLFactory xmlFactory = new XMLFactory();
+				ListenerFactory listenerFactory = ListenerFactory.getDefault();
+				ArrayList<AbstractMessage> newObjects = new ArrayList<AbstractMessage>();
+
+				//replace all characters
+				String message = newData.replaceAll("&lt;br/&gt;", "\n");
+				xmlFactory.setupDecodeFactory(message);
+				//decode the message
+				newObjects = xmlFactory.decode();
+				//get the type of the item
+				final String contentType = xmlFactory.getContentType();
+				final String queryString = xmlFactory.getQueryString();
+				final String userId = xmlFactory.getUserId();
+				final String sequenceId = xmlFactory.getSequenceId();
+				System.out.println("Received: "+ userId+","+contentType+","+queryString);
+
+				//try to get a listener for this message
+				if(!listenerFactory.hasListeners(contentType))
+				{
+					System.out.println("No listener found for the message type: "+contentType);
+					return Status.CANCEL_STATUS;
+				}
+
+				IModelListener listener = listenerFactory.getListener(contentType);
+				//now pass the message to the listener
+				if(IModelActions.ADD.equalsIgnoreCase(queryString))
+					listener.add(newObjects.get(0));
+				if(IModelActions.ADD_ALL.endsWith(queryString))
+					listener.addAll(newObjects);
+				if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
+					listener.remove(newObjects.get(0));
+				if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
+					listener.update(newObjects.get(0));
+				if(IModelActions.LIST.equalsIgnoreCase(queryString))
+					listener.list(newObjects);
+				if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
+					listener.loginMessage(newObjects.get(0));
+				if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
+					listener.logoutMessage(newObjects.get(0));
+				if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
+					listener.systemMessage(newObjects.get(0));
+
+				//remove the package from the list
+				if(messageList.containsKey(sequenceId))
+					messageList.remove(sequenceId);
+			}
+			catch(final Exception e)
+			{
+				System.out.println("Exception during the network read");
+				e.printStackTrace();				
+			}
+			finally
+			{
+				if(!monitor.isCanceled())
+					schedule();
+				monitor.done();
+			}
+			return Status.OK_STATUS;
 		}
 	}
 
 	/**
-	 * Notification that the status of the socket changed.<br>
-	 * @param status the new status.
-	 **/
-	@Override
-	public void socketStatusChanged(MyClient client, int status)
-	{
-		//reset the connection status
-		if(status == IConnectionStates.STATE_DISCONNECTED)
-		{
-			//not connected
-			connected = false;
-			//destroy the session
-			clientSession = null;
-			//destory the server info
-			connectionInfo = null;
-		}
-		//inform the listeners
-		ListenerFactory listenerFactory = ListenerFactory.getDefault();
-		IModelListener listener = listenerFactory.getListener("sessionManager");
-		listener.connectionChange(status);
-	}
-
-	/**
-	 * Norification that the transfer of the data failed.
-	 * @param ne the triggered net event
+	 * Threads that sends the new data to the server
 	 */
-	@Override
-	public void dataTransferFailed(NetEvent ne)
-	{    
-		System.out.println("failed to send the data:"+ne.getMessage());
-		//decode the message
-		XMLFactory xmlFactory = new XMLFactory();
-		xmlFactory.setupDecodeFactory(ne.getMessage());
-		//inform the listeners
-		ListenerFactory listenerFactory = ListenerFactory.getDefault();
-		IModelListener listener = listenerFactory.getListener("sessionManager");
-		listener.transferFailed(
-				xmlFactory.getContentType(),
-				xmlFactory.getQueryString(),
-				xmlFactory.decode().get(0));
+	public class SendJob extends Job
+	{
+		//properties
+		private AbstractMessageInfo messageInfo;
+
+		/**
+		 * Default class constructor to set up the send job
+		 * @param messageInfo the message information object to send to the server
+		 */
+		public SendJob(AbstractMessageInfo messageInfo)
+		{
+			super("SendJob");
+			this.messageInfo = messageInfo;
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) 
+		{
+			//setup the facotry
+			XMLFactory factory = new XMLFactory();
+			factory.setUserId(netSessionUserName);
+			factory.setTimestamp(messageInfo.getTimestamp());
+			factory.setContentType(messageInfo.getContentType());
+			factory.setQueryString(messageInfo.getQueryString());
+			factory.setSequenceId(messageInfo.getSequenceId());
+			factory.setFilter(messageInfo.getQueryFilter());
+
+			//get the network connection to send data
+			final MySocket client = NetSource.getInstance().getConnection();
+			monitor.beginTask("Sending data", IProgressMonitor.UNKNOWN);
+			try
+			{
+				String message = factory.encode(messageInfo.getMessageList());
+				PrintWriter writer = client.getBufferedOutputStream();
+				writer.println(message);
+				writer.flush();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Failed to send the data");
+				e.printStackTrace();
+				return Status.CANCEL_STATUS;
+			}
+			finally
+			{
+				monitor.done();
+			}
+			//everything is ok :)
+			return Status.OK_STATUS;
+		}
+	}
+
+	/**
+	 * The keep alive thrad that sends regularly system messages
+	 */
+	public class KeepAliveJob extends Job
+	{
+		/**
+		 * Default class constructor
+		 */
+		public KeepAliveJob()
+		{
+			super("KeepAlive");
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) 
+		{
+			try
+			{
+				monitor.beginTask("Sending keep alive message", IProgressMonitor.UNKNOWN);
+				//setup the keep alive package
+				AbstractMessageInfo info = new AbstractMessageInfo();
+				info.setContentType(SystemMessage.ID);
+				info.setQueryString(IModelActions.KEEP_ALIVE);
+				sheduleAndSend(info);
+			}
+			catch(Exception e)
+			{
+				System.out.println("Failed to send the data");
+				e.printStackTrace();
+			}
+			finally
+			{
+				if(!monitor.isCanceled())
+					schedule(5000);
+				monitor.done();
+			}
+			//everything is ok :)
+			return Status.OK_STATUS;
+		}
+	}
+
+	/**
+	 * Monitors the other threads and has the main task to watch whether or not the requests to the server are successfully.
+	 * The thread should runn every second to watch the send items.
+	 */
+	public class MonitorJob extends Job
+	{
+		/**
+		 * Default class constructor 
+		 */
+		public MonitorJob()
+		{
+			super("MonitorJob");
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) 
+		{
+			try
+			{
+				monitor.beginTask("Checking send packages", messageList.size());
+				//loop and chek the send packages
+				for(Entry<String, AbstractMessageInfo> entry:messageList.entrySet())
+				{
+					AbstractMessageInfo info = entry.getValue();
+					if(info == null)
+						continue;
+					//the time difference between now and the send time
+					long time = Calendar.getInstance().getTimeInMillis() - info.getTimestamp();
+					int seconds = (int)(time/1000) % 60;
+					//check if the time is greater than 5 seconds
+					if(seconds > 5)
+					{
+						IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
+						systemListener.log("WARNING: Package has not been answered by the server:"+info, IStatus.ERROR);
+						info.setTransmitted(info.getTransmitted()+1);
+					}
+					if(info.getTransmitted() >= 2)
+					{
+						IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
+						if(info.getQueryString().equalsIgnoreCase(IModelActions.KEEP_ALIVE))
+						{
+							netSessionUserName = null;
+							//close the current socket
+							NetSource.getInstance().closeConnection();
+							//cancel the running jobs and inform the user
+							cancelJobs();
+							systemListener.connectionChange(IConnectionStates.STATE_DISCONNECTED);
+						}
+						else
+						{
+							systemListener.transferFailed(info);
+							systemListener.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
+						}
+						messageList.remove(info.getSequenceId());
+					}
+					monitor.worked(1);
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				if(!monitor.isCanceled())
+					schedule(1000);
+				monitor.done();
+			}
+			return Status.OK_STATUS;
+		}
+	}
+
+	/**
+	 * Shows that a request is currently in progress
+	 */
+	public class ProgressJob extends Job
+	{
+		//the number of the package waiting for
+		private String sequenceId;
+
+		/**
+		 * Default class constructor defining the package to wait for
+		 */
+		public ProgressJob(String sequenceId)
+		{
+			super("ProgressJob@"+sequenceId);
+			this.sequenceId = sequenceId;
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) 
+		{
+			try
+			{
+				monitor.beginTask("Daten werden vom Server abgerufen", IProgressMonitor.UNKNOWN);
+				while(messageList.containsKey(sequenceId))
+				{
+					Thread.sleep(1000);
+				}
+				return Status.OK_STATUS;
+			}
+			catch(Exception e)
+			{
+				System.out.println("Failed to watch the progress for the package: "+sequenceId);
+				return Status.CANCEL_STATUS;
+			}
+			finally
+			{
+				monitor.done();
+			}
+		}
 	}
 }

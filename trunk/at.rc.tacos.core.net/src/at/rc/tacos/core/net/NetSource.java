@@ -1,12 +1,16 @@
 package at.rc.tacos.core.net;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import at.rc.tacos.core.net.internal.IServerInfo;
-import at.rc.tacos.core.net.internal.MyClient;
+import at.rc.tacos.core.net.internal.MySocket;
 import at.rc.tacos.core.net.internal.ServerInfo;
 
 /**
@@ -18,6 +22,9 @@ public class NetSource
 {    
     //config file
     public static final String NET_SETTINGS_BUNDLE_PATH = "at.rc.tacos.core.net.config.server";
+    
+    //the connected socket
+    private MySocket client;
 
     //the server pool
     private static NetSource instance;
@@ -32,7 +39,7 @@ public class NetSource
         serverPool = new ArrayList<ServerInfo>();
         
         //init the network and load the data
-        initNetwork();
+        loadServerList();
     }
 
     /**
@@ -50,7 +57,7 @@ public class NetSource
      * Loads the configuration for the servers from the config file
      * @return true if the initialisation was successfully
      */
-    protected void initNetwork()
+    protected void loadServerList()
     {    
         try
         {
@@ -86,43 +93,104 @@ public class NetSource
     }
     
     /**
-     * Opens and returns a connection to the server.<br>
+     * Returns the currently established connection to the server
+     * @param the opened connection or null in case of an error
+     */
+    public MySocket getConnection()
+    {
+    	return client;
+    }
+    
+    /**
+     * Opens or reuses the existing connection to the server.<br>
      * When the connection cannot be established this method will return null.
      * @param connectionName the name of the connection to use
+     * @param forceNew a flag to indicate whether a new connection should be established or a old one can be used
      * @return the connection or null if it can't be established
      */
-    public MyClient getConnection(ServerInfo info)
+    public MySocket openConnection(ServerInfo info)
     {  	
-    	//create a new client object
-    	MyClient client = new MyClient();
-    	client.setServerAddress(info.getHostName());
-    	client.setServerPort(info.getPort());
-    	//connect and return the connection
-    	if(client.connect())
-    		return client;
+    	//try to open a socket to the server
+    	try
+    	{
+    		System.out.println("Open a new connection to: "+info.getHostName()+":"+info.getPort());
+    		client = new MySocket(info.getHostName(),info.getPort());
+	    	client.setKeepAlive(true);
+	    	client.setSoTimeout(5000);
+	    	return client;
+    	}
+    	catch(UnknownHostException uhe)
+    	{
+    		System.out.println("Failed to open a connection to the host: "+info.getHostName());
+    		System.out.println("The hostname is unknown");
+    	}
+    	catch(IOException ioe)
+    	{
+    		System.out.println("IO-Error during the socket creation");
+    		ioe.printStackTrace();
+    	}
+    	
     	//cannot establish a connection
     	return null;
     }
     
     /**
-     * Close the connection and cleanup
+     * Closes the current connection
      */
-    public void closeConnection(MyClient client)
+    public void closeConnection() throws IOException
     {
     	//assert valid
     	if(client == null)
     		return;
-    	client.removeAllNetListeners();
-    	client.requestStop();
-    	//the socket connection
-    	if(client.getSocket() == null)
-    		return;
-    	//close the socket and cleanup the streams
-    	client.getSocket().cleanup();
+    	client.cleanup();
+    	client = null;
     }
     
     /**
-     * Helper method to get the server info by the id
+     * Returns the output stream to write data to the server
+     * @return the print writer to write to the server
+     * @throws IOException if a communication (TCP) error occurs
+     * @throws IllegalStateException if the socket is not connected or the output stream of the socket is invalid
+     */
+    public PrintWriter getOutputStream() throws IOException,IllegalStateException
+    {
+    	//assert valid
+    	if(client == null)
+    		throw new IllegalStateException("The socket is not connected to a server. Open a connection to the server first");
+    	if(client.getBufferedOutputStream() == null)
+    		throw new IllegalStateException("Failed to get the output stream to the server");
+    	//return the writer
+    	return client.getBufferedOutputStream();
+    }
+    
+    /**
+     * Returns the input stream to read data from the server
+     * @return the buffered reader to read data
+     * @throws 
+     */
+    public BufferedReader getInputStream() throws IOException,IllegalStateException
+    {
+    	//assert valid
+    	if(client == null)
+    		throw new IllegalStateException("The socket is not connected to a server. Open a connection to the server first");
+    	if(client.getBufferedInputStream() == null)
+    		throw new IllegalStateException("This socket has no connected input stream");
+    	//return the reader
+    	return client.getBufferedInputStream();
+    }
+    
+    /**
+     *  Returns a list of all server informations entries
+     *  @return the server list
+     */
+    public List<ServerInfo> getServerList()
+    {
+    	return serverPool;
+    }
+    
+    /**
+     * Helper method to get the server info by the id.
+     * @return the server information entry found or null
      */
     public ServerInfo getServerInfoById(String id)
     {
@@ -133,15 +201,5 @@ public class NetSource
     	}
     	//nothing found
     	return null;
-    }
-    
-    
-    /**
-     *  Returns a list of all server informations
-     *  @return the server list
-     */
-    public List<ServerInfo> getServerList()
-    {
-    	return serverPool;
     }
 }

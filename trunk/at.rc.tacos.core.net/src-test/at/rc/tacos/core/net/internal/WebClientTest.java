@@ -2,7 +2,6 @@ package at.rc.tacos.core.net.internal;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,12 +35,6 @@ public class WebClientTest
         client = new WebClient();
         client.connect("81.189.52.155", 4711);
         resultList = new ArrayList<AbstractMessage>();
-    }
-    
-    @After
-    public void tearDown()
-    {
-        client.quit();
     }
     
     @Test
