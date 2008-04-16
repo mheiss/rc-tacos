@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.AbstractMessageInfo;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.core.net.internal.*;
 import at.rc.tacos.model.*;
@@ -80,17 +80,17 @@ public class ServerController
         	session.getConnection().removeAllNetListeners();
         	session.getConnection().requestStop();
         	//close the socket when it is open
-        	if(session.getConnection().getSocket() != null)
+        	try
+        	{
         		session.getConnection().getSocket().cleanup();
+        	}
+        	catch(Exception e)
+        	{
+        		logger.error("Failed to close the input and output streams");
+        	}
         }
-        //check the pool and remove the session
-        if(connClientPool.contains(session))
-        {
-            connClientPool.remove(session);
-            //brodcast the message to all other authenticated clients
-            SystemMessage system = new SystemMessage("Client "+session.getUsername() +" disconnected",SystemMessage.TYPE_INFO);
-            brodcastMessage("system",SystemMessage.ID, IModelActions.SYSTEM,system);
-        }
+        //remove the user session
+        connClientPool.remove(session);
     }
 
     /**
@@ -109,57 +109,56 @@ public class ServerController
     }
 
     /**
-     *  Encodes the list of message into xml and brodcasts the message all
-     *  authenticated clients.
-     *  @param userId the identification of the user.
-     *  @param contentType the type of the message content
-     *  @param queryString the type of the query
-     *  @param objectList a list of objects to send
+     *  Encodes the list of message into xml and brodcasts the message all authenticated clients.
+     *  @param username the source of the message
+     *  @param messageInfo the information to send to the clients
      */
-    public synchronized void brodcastMessage(String userId,String contentType,String queryString, List<AbstractMessage> objectList)
+    public synchronized void brodcastMessage(ClientSession session,AbstractMessageInfo messageInfo)
     {
+        //is the source of the message a web client?
+        if(session.isWebClient())
+        {
+        	//-> delegate to the send message method and exit
+        	sendMessage(session, messageInfo);
+        	return;
+        }
+        //is the type a listing request
+        if(IModelActions.LIST.equalsIgnoreCase(messageInfo.getQueryString()))
+        {
+        	//-> delegate to the send message method and exit
+        	sendMessage(session, messageInfo);
+        	return;
+        }
+    	
         //set up the factory
         XMLFactory factory = new XMLFactory();
-        factory.setupEncodeFactory(userId,contentType,queryString);
-        String message = factory.encode(objectList);
+        factory.setUserId(session.getUsername());
+		factory.setTimestamp(Calendar.getInstance().getTimeInMillis());
+		factory.setContentType(messageInfo.getContentType());
+		factory.setQueryString(messageInfo.getQueryString());
+		factory.setSequenceId(messageInfo.getSequenceId());
+		factory.setFilter(messageInfo.getQueryFilter());
+        String message = factory.encode(messageInfo.getMessageList());
+        
         //loop over the client pool and send the message
-        for(ClientSession session:connClientPool)
+        for(ClientSession clientSession:connClientPool)
         {
             //Send the message to all authenticated clients, except the web clients
-            if(session.isAuthenticated() &! session.isWebClient())
+            if(clientSession.isAuthenticated() &! clientSession.isWebClient())
             {
-                MyClient client = session.getConnection();
+                MyClient client = clientSession.getConnection();
                 client.sendMessage(message);
-                logger.debug("REPLY to "+session.getUsername()+" -> "+userId+" : "+contentType+"->"+queryString);
+                logger.debug("BRODCAST REPLY TO "+clientSession.getUsername()+" : "+messageInfo.getContentType()+"->"+messageInfo.getQueryString());
             }
         }
     }
 
     /**
-     *  Encodes the message into xml and brodcasts the message all
-     *  authenticated clients.
-     *  @param userId the identification of the user.
-     *  @param contentType the type of the message content
-     *  @param queryString the type of the query
-     *  @param object the message to send
+     *  Encodes the message into xml and sends the message back to the source client.
+     *  @param session the client session to send the message back to
+     *  @param messageInfo the information to send to the clients
      */
-    public synchronized void brodcastMessage(String userId,String contentType,String queryString, AbstractMessage object)
-    {
-        //create list
-        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.add(object);
-        //delegate
-        brodcastMessage(userId, contentType, queryString, list);
-    }
-
-    /**
-     *  Encodes the message into xml and sends the message to the client.
-     *  @param session the session to send the message to
-     *  @param contentType the type of the message content
-     *  @param queryString the type of the query
-     *  @param objectList a list of objects to send
-     */
-    public synchronized void sendMessage(ClientSession session,String contentType,String queryString, List<AbstractMessage> objectList)
+    public synchronized void sendMessage(ClientSession session,AbstractMessageInfo messageInfo)
     {
         MyClient connection = session.getConnection();
         String userId = session.getUsername();
@@ -168,27 +167,15 @@ public class ServerController
             userId = "system";
         //set up the factory
         XMLFactory factory = new XMLFactory();
-        factory.setupEncodeFactory(userId,contentType,queryString);
-        String xml = factory.encode(objectList);
+        factory.setUserId(userId);
+        factory.setTimestamp(Calendar.getInstance().getTimeInMillis());
+		factory.setContentType(messageInfo.getContentType());
+		factory.setQueryString(messageInfo.getQueryString());
+		factory.setSequenceId(messageInfo.getSequenceId());
+        String xml = factory.encode(messageInfo.getMessageList());
         //encode and send
         connection.sendMessage(xml);
-        logger.debug("Sending reply "+userId+" : "+contentType+"->"+queryString);
-    }
-
-    /**
-     *  Encodes the message into xml and sends the message to the client.
-     *  @param session the session to send the message to
-     *  @param contentType the type of the message content
-     *  @param queryString the type of the query
-     *  @param object the message to send
-     */
-    public synchronized void sendMessage(ClientSession session,String contentType,String queryString, AbstractMessage object)
-    {
-        //create list
-        ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-        list.add(object);
-        //delegate
-        sendMessage(session, contentType, queryString, list);
+        logger.debug("Sending reply "+userId+" : "+messageInfo.getContentType()+"->"+messageInfo.getQueryString());
     }
 
     /**
