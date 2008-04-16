@@ -2,6 +2,7 @@ package at.rc.tacos.core.net;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.net.SocketTimeoutException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -109,19 +110,6 @@ public class NetWrapper extends Plugin
 	}
 
 	/**
-	 * Stops all running jobs
-	 */
-	public void cancelJobs()
-	{
-		listenJob.cancel();
-		keepAliveJob.cancel();
-		monitorJob.cancel();
-		//log
-		IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
-		systemListener.log("Setting all running network jobs to sleep", Status.INFO);
-	}
-
-	/**
 	 * Sets the name of the currently authenticated user
 	 * @param name the username
 	 */
@@ -149,7 +137,9 @@ public class NetWrapper extends Plugin
 	{
 		//create a new job if we do not have one
 		if(listenJob == null)
+		{
 			listenJob = new ListenJob();
+		}
 		//wake up if he is sleeping
 		listenJob.schedule();
 		listenJob.shouldRun();
@@ -175,7 +165,9 @@ public class NetWrapper extends Plugin
 	{
 		//create the job if we do not have one
 		if(monitorJob == null)
+		{
 			monitorJob = new MonitorJob();	
+		}
 		//wake up if he is sleeping
 		monitorJob.schedule();
 		monitorJob.shouldRun();
@@ -325,7 +317,42 @@ public class NetWrapper extends Plugin
 		//setup the progress monitor job
 		ProgressJob progressJob = new ProgressJob(info.getSequenceId());
 		progressJob.setUser(true);
-		progressJob.schedule();
+		progressJob.schedule();	
+	}
+
+	/**
+	 * Stops all network traffic and opens the wizard to establish a new connection to the server
+	 * @param showWizard true if the connection wizard should be shown to reconnect
+	 */
+	public void requestNetworkStop(boolean showWizard)
+	{
+		IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
+		//cancel the running jobs and inform the user
+		listenJob.cancel();
+		listenJob.done(Status.CANCEL_STATUS);
+		keepAliveJob.cancel();
+		keepAliveJob.done(Status.CANCEL_STATUS);
+		monitorJob.cancel();
+		monitorJob.done(Status.CANCEL_STATUS);
+		netSessionUserName = null;
+		systemListener.log("Setting all running network jobs to sleep", Status.INFO);
+		//close the current socket
+		try
+		{
+			NetSource.getInstance().closeConnection();
+		}
+		catch(Exception e)
+		{
+			systemListener.log("Failed to close the network connection", Status.INFO);
+			systemListener.log(e.getMessage(), Status.ERROR);
+			e.printStackTrace();
+		}
+		//show the connection wizard
+		if(showWizard)
+		{
+			systemListener.log("Starting network wizard",Status.INFO);
+			systemListener.connectionChange(IConnectionStates.STATE_DISCONNECTED);	
+		}
 	}
 
 	//THREADS FOR THE NETWORK
@@ -356,16 +383,8 @@ public class NetWrapper extends Plugin
 				//get the reader to get new data
 				BufferedReader in = client.getBufferedInputStream();
 
-				String newData = null;
 				//wait and read the next new line from the stream
-				try
-				{
-					newData = in.readLine();
-				}
-				catch(Exception e)
-				{
-					//read timeout so go on;
-				}
+				String newData = in.readLine();
 
 				//assert valid
 				if(newData == null)
@@ -418,15 +437,19 @@ public class NetWrapper extends Plugin
 				if(messageList.containsKey(sequenceId))
 					messageList.remove(sequenceId);
 			}
-			catch(final Exception e)
+			catch(SocketTimeoutException timeout)
 			{
-				System.out.println("Exception during the network read");
-				e.printStackTrace();				
+				//timeout, just go on . ..
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				requestNetworkStop(true);			
 			}
 			finally
 			{
 				if(!monitor.isCanceled())
-					schedule();
+					schedule(10);
 				monitor.done();
 			}
 			return Status.OK_STATUS;
@@ -475,8 +498,8 @@ public class NetWrapper extends Plugin
 			}
 			catch(Exception e)
 			{
-				System.out.println("Failed to send the data");
-				e.printStackTrace();
+				System.out.println("Failed to send the package #"+messageInfo.getSequenceId() +" content: " +messageInfo.getContentType());
+				requestNetworkStop(true);
 				return Status.CANCEL_STATUS;
 			}
 			finally
@@ -513,13 +536,9 @@ public class NetWrapper extends Plugin
 				info.setQueryString(IModelActions.KEEP_ALIVE);
 				sheduleAndSend(info);
 			}
-			catch(Exception e)
-			{
-				System.out.println("Failed to send the data");
-				e.printStackTrace();
-			}
 			finally
 			{
+				//if the job is not cancled restart it again
 				if(!monitor.isCanceled())
 					schedule(5000);
 				monitor.done();
@@ -562,26 +581,17 @@ public class NetWrapper extends Plugin
 					if(seconds > 5)
 					{
 						IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
-						systemListener.log("WARNING: Package has not been answered by the server:"+info, IStatus.ERROR);
+						systemListener.log("WARNING: The package #"+info.getSequenceId() +" not been answered by the server. Send package again", IStatus.WARNING);
 						info.setTransmitted(info.getTransmitted()+1);
+						sheduleAndSend(info);
 					}
-					if(info.getTransmitted() >= 2)
+					if(info.getTransmitted() > 2)
 					{
 						IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
-						if(info.getQueryString().equalsIgnoreCase(IModelActions.KEEP_ALIVE))
-						{
-							netSessionUserName = null;
-							//close the current socket
-							NetSource.getInstance().closeConnection();
-							//cancel the running jobs and inform the user
-							cancelJobs();
-							systemListener.connectionChange(IConnectionStates.STATE_DISCONNECTED);
-						}
-						else
-						{
+						//show a message box to retransmitt the package
+						if(info.getQueryString() != IModelActions.KEEP_ALIVE)
 							systemListener.transferFailed(info);
-							systemListener.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
-						}
+						systemListener.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
 						messageList.remove(info.getSequenceId());
 					}
 					monitor.worked(1);
@@ -589,10 +599,12 @@ public class NetWrapper extends Plugin
 			}
 			catch(Exception e)
 			{
+				System.out.println("error");
 				e.printStackTrace();
 			}
 			finally
 			{
+				//if the job is not cancled restart it again
 				if(!monitor.isCanceled())
 					schedule(1000);
 				monitor.done();
@@ -623,7 +635,7 @@ public class NetWrapper extends Plugin
 		{
 			try
 			{
-				monitor.beginTask("Daten werden vom Server abgerufen", IProgressMonitor.UNKNOWN);
+				monitor.beginTask("Warte auf Antwort vom Server", IProgressMonitor.UNKNOWN);
 				while(messageList.containsKey(sequenceId))
 				{
 					Thread.sleep(1000);
@@ -633,6 +645,7 @@ public class NetWrapper extends Plugin
 			catch(Exception e)
 			{
 				System.out.println("Failed to watch the progress for the package: "+sequenceId);
+				e.printStackTrace();
 				return Status.CANCEL_STATUS;
 			}
 			finally
