@@ -6,7 +6,6 @@ import org.eclipse.swt.graphics.Color;
 
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.common.IProgramStatus;
-import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.Transport;
 
 /**
@@ -37,7 +36,6 @@ public class Util implements IProgramStatus
 
 		//the new transport
         Transport t2 = new Transport();
-        Patient patient = null;
         
 		//copy the transport
         //reset the values for the second transport
@@ -85,10 +83,9 @@ public class Util implements IProgramStatus
         	t2.setPlanedLocation(t1.getPlanedLocation());
         if(t1.getPatient() != null)
         {
-        	patient = new Patient();
-        	patient = t1.getPatient();
+        	t2.setPatient(t1.getPatient());
         }
-        	t2.setPatient(patient);
+        	
         t2.setDirection(t1.getDirection());
         t2.setFromCity(t1.getFromCity());
         t2.setFromStreet(t1.getFromStreet());
