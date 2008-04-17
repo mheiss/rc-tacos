@@ -12,11 +12,16 @@ import java.util.List;
 import java.util.TimeZone;
 
 
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -38,13 +43,19 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
+import com.sun.corba.se.spi.ior.MakeImmutable;
+
+import at.rc.tacos.client.controller.AssignCarAction;
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
+import at.rc.tacos.client.controller.RemoveTransportFromMultiTransportList;
 import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.client.modelManager.AddressManager;
 import at.rc.tacos.client.modelManager.DiseaseManager;
@@ -183,6 +194,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private boolean finalMultiTransportKlick;
     
     private TableViewer viewer; 
+    
+    private RemoveTransportFromMultiTransportList removeAction;
+    ArrayList<AssignCarAction> actionList = new ArrayList<AssignCarAction>();
+    
     
     /**if the old priority is not A but the new is A-> DuplicatePriorityATransportAction necessary**/
     private String oldPriority;
@@ -2108,6 +2123,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	    {
 	        public void widgetSelected(final SelectionEvent e) 
 	        {
+	        	hookContextMenu();
 	        	mehrfachtransport = true;
             	buttonMehrfachtransport.setEnabled(false);
             	buttonADDMehrfachtransport.setEnabled(true);
@@ -2115,7 +2131,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	        }
 	    });
 
-	    //TODO
 	    buttonADDMehrfachtransport = new Button(formGroup, SWT.NONE);
 	    final FormData fd_buttonADDMehrfachtransport = new FormData();
 	    fd_buttonADDMehrfachtransport.bottom = new FormAttachment(0, 83);
@@ -2130,15 +2145,34 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	    {
 	        public void widgetSelected(final SelectionEvent e) 
 	        {
+	        	//make a difference between immediate and final transports
 	        	finalMultiTransportKlick = false;
+	        	//check the fields
 	        	handleOK();
+	        	//copy the transport (don't use the same objects (transport, patient, caller)!!
+	        	Patient newPatient = new Patient();
+	        	CallerDetail newCaller = new CallerDetail();
+	        	if(transport.getPatient() != null)
+	        	{
+		        	newPatient.setLastname(transport.getPatient().getLastname());
+		        	newPatient.setFirstname(transport.getPatient().getFirstname());
+	        	}
+	        	if(transport.getCallerDetail() != null)
+	        	{
+		        	newCaller.setCallerName(transport.getCallerDetail().getCallerName());
+		        	newCaller.setCallerTelephoneNumber(transport.getCallerDetail().getCallerTelephoneNumber());
+	        	}
 	        	Transport newTransport = Util.copyTransport(transport);
+	        	newTransport.setPatient(newPatient);
+	        	newTransport.setCallerDetail(newCaller);
+	        	//add the created transport to the table object list
 	        	provider.addTransport(newTransport);
-            	viewer.refresh();
-	        	//TODO - Transport zu Mehrfachtransporten hinzufügen
-	        	
+	        	//refresh the viewer
+            	viewer.refresh();	        	
 	        }
 	    });
+	    
+	    
 	}
 
     @Override
@@ -2809,7 +2843,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		bTableColumnTA.setToolTipText("Transportart");
 		bTableColumnTA.setWidth(20);
 		bTableColumnTA.setText("T");
-
+		
 		Listener sortListener = new Listener() 
 		{
 			public void handleEvent(Event e) 
@@ -2865,5 +2899,50 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		bTtableColumnPatient.addListener(SWT.Selection, sortListener);
 		bTableColumnTransportNach.addListener(SWT.Selection, sortListener);
 		bTableColumnTA.addListener(SWT.Selection, sortListener);
+		
+		//create the menu
+		removeAction = new RemoveTransportFromMultiTransportList(transport, provider);
+		hookContextMenu();
+		viewer.refresh();
     }
+    
+    
+    
+		/**
+		 * Creates the context menu
+		 */
+		private void hookContextMenu() 
+		{
+			MenuManager menuManager = new MenuManager("#JournalPopupMenu");
+			menuManager.setRemoveAllWhenShown(true);
+			menuManager.addMenuListener(new IMenuListener() {
+				public void menuAboutToShow(IMenuManager manager) {
+					fillContextMenu(manager);
+				}
+			});
+			Menu menu = menuManager.createContextMenu(viewer.getControl());
+			viewer.getControl().setMenu(menu);
+//			getSite().registerContextMenu(menuManager, viewer);
+		}
+		
+		/**
+		 * Fills the context menu with the actions
+		 */
+		private void fillContextMenu(IMenuManager manager)
+		{
+			//get the selected object
+			final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+				
+			//cast to a RosterEntry
+			Transport transport = (Transport)firstSelectedObject;
+			
+			if(transport == null)
+				return;
+
+			//add the actions			
+			manager.add(removeAction);
+		}
+	
+
+		
 }
