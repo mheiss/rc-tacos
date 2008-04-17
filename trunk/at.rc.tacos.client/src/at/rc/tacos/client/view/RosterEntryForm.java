@@ -131,7 +131,8 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
         setMessage("Hier können Sie einen neuen Dienstplaneintrag anlegen", IMessageProvider.INFORMATION);
         setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
         //force a redraw
-        getShell().pack(true);
+//        getShell().pack(true);
+//        getShell().setSize(600, 400);
         return contents;
     }
 
