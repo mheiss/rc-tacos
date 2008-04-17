@@ -47,7 +47,7 @@ public class PersonalNewEntryAction extends Action
     public void run()
     {
         //open the editor
-        Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+    	Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         RosterEntryForm window = new RosterEntryForm(parent);
 		window.open();
     }
