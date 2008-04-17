@@ -127,6 +127,9 @@ INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(5010000
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,6);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,1);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,2);
+INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100004,6);
+
+
 
 
 -- create dummy dialyse patients
