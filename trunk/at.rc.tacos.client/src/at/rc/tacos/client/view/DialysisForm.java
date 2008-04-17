@@ -333,7 +333,7 @@ public class DialysisForm implements IKindOfTransport
 
 		textFertig = new Text(planungGroup, SWT.BORDER);
 		textFertig.setBounds(41, 142, 41, 21);
-		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, textAbfRT, abfLabel_1, textFertig});
+		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, textAbfRT, textFertig});
 
 		patientenzustandGroup = new Group(shell, SWT.NONE);
 		fd_transportdatenGroup.bottom = new FormAttachment(patientenzustandGroup, 150, SWT.TOP);
