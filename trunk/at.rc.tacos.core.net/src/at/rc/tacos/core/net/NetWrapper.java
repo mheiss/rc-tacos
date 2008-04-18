@@ -11,9 +11,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.osgi.framework.BundleContext;
 
 import at.rc.tacos.common.AbstractMessage;
@@ -22,6 +21,7 @@ import at.rc.tacos.common.IConnectionStates;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.common.IModelListener;
 import at.rc.tacos.core.net.internal.*;
+import at.rc.tacos.core.net.jobs.SendJobRule;
 import at.rc.tacos.factory.ListenerFactory;
 import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.Login;
@@ -45,10 +45,8 @@ public class NetWrapper extends Plugin
 	//if a answere from the server is recevied the items is deleted from the list
 	private ConcurrentHashMap<String,AbstractMessageInfo> messageList;
 
-	//the running jobs
-	private ListenJob listenJob;
-	private KeepAliveJob keepAliveJob;
-	private MonitorJob monitorJob;
+	//the system listener for logging messages
+	private IModelListener logService = ListenerFactory.getDefault().getListener(SystemMessage.ID);
 
 	/**
 	 * The constructor
@@ -105,8 +103,7 @@ public class NetWrapper extends Plugin
 		//the monitor thread
 		startMonitorThread();
 		//log to the client
-		IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
-		systemListener.log("Starting up the network jobs", Status.INFO);
+		logService.log("Starting up the network jobs", Status.INFO);
 	}
 
 	/**
@@ -136,13 +133,9 @@ public class NetWrapper extends Plugin
 	private void startListenJob()
 	{
 		//create a new job if we do not have one
-		if(listenJob == null)
-		{
-			listenJob = new ListenJob();
-		}
-		//wake up if he is sleeping
+		ListenJob listenJob = new ListenJob();
+		listenJob.setSystem(true);
 		listenJob.schedule();
-		listenJob.shouldRun();
 	}
 
 	/**
@@ -151,11 +144,9 @@ public class NetWrapper extends Plugin
 	private void startKeepAliveJob()
 	{
 		//create the job if we do not have one
-		if(keepAliveJob == null)
-			keepAliveJob = new KeepAliveJob();
-		//wake up if he is sleeping
+		KeepAliveJob keepAliveJob = new KeepAliveJob();
+		keepAliveJob.setSystem(true);
 		keepAliveJob.schedule();
-		keepAliveJob.shouldRun();
 	}
 
 	/**
@@ -164,13 +155,9 @@ public class NetWrapper extends Plugin
 	private void startMonitorThread()
 	{
 		//create the job if we do not have one
-		if(monitorJob == null)
-		{
-			monitorJob = new MonitorJob();	
-		}
-		//wake up if he is sleeping
+		MonitorJob monitorJob = new MonitorJob();	
+		monitorJob.setSystem(true);
 		monitorJob.schedule();
-		monitorJob.shouldRun();
 	}
 
 	// METHODS TO SEND MESSAGES
@@ -293,31 +280,15 @@ public class NetWrapper extends Plugin
 		Random random = new Random();
 		info.setSequenceId(netSessionUserName+"_"+String.valueOf(random.nextInt(10000)));
 		info.setTimestamp(Calendar.getInstance().getTimeInMillis());
-		//shedule and start the job
+		//create the send kob and put it to wait
 		SendJob sendJob = new SendJob(info);
+		sendJob.setRule(new SendJobRule());
+		//the keep alive packages need no dialog to show 
+		if(IModelActions.KEEP_ALIVE.equalsIgnoreCase(info.getQueryString()))
+			sendJob.setUser(false);
+		else
+			sendJob.setUser(true);
 		sendJob.schedule();
-		sendJob.addJobChangeListener(new JobChangeAdapter()
-		{
-			//check the result of the job
-			@Override
-			public void done(IJobChangeEvent event) 
-			{
-				//check if the message was successfully send
-				if(event.getResult() == Status.OK_STATUS)
-				{
-					messageList.put(info.getSequenceId(), info);
-					System.out.println("Adding package number:"+info.getSequenceId());
-				}
-			}
-		});
-		//do not watch KEEP_ALIVE packages
-		if(info.getQueryString() == IModelActions.KEEP_ALIVE)
-			return;
-
-		//setup the progress monitor job
-		ProgressJob progressJob = new ProgressJob(info.getSequenceId());
-		progressJob.setUser(true);
-		progressJob.schedule();	
 	}
 
 	/**
@@ -326,16 +297,19 @@ public class NetWrapper extends Plugin
 	 */
 	public void requestNetworkStop(boolean showWizard)
 	{
-		IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
-		//cancel the running jobs and inform the user
-		listenJob.cancel();
-		listenJob.done(Status.CANCEL_STATUS);
-		keepAliveJob.cancel();
-		keepAliveJob.done(Status.CANCEL_STATUS);
-		monitorJob.cancel();
-		monitorJob.done(Status.CANCEL_STATUS);
 		netSessionUserName = null;
-		systemListener.log("Setting all running network jobs to sleep", Status.INFO);
+		//request all running jobs to stop
+		IJobManager jobManager = Job.getJobManager();
+		jobManager.cancel("KeepAliveJob");
+		jobManager.cancel("ListenJob");
+		jobManager.cancel("SendJob");
+		jobManager.cancel("MonitorJob");
+		if(!showWizard)
+		{
+			while(jobManager.currentJob() != null)
+				System.out.println("wait for job");
+		}
+		logService.log("Setting all running network jobs to sleep", Status.INFO);
 		//close the current socket
 		try
 		{
@@ -343,15 +317,15 @@ public class NetWrapper extends Plugin
 		}
 		catch(Exception e)
 		{
-			systemListener.log("Failed to close the network connection", Status.INFO);
-			systemListener.log(e.getMessage(), Status.ERROR);
+			logService.log("Failed to close the network connection", Status.INFO);
+			logService.log(e.getMessage(), Status.ERROR);
 			e.printStackTrace();
 		}
 		//show the connection wizard
 		if(showWizard)
 		{
-			systemListener.log("Starting network wizard",Status.INFO);
-			systemListener.connectionChange(IConnectionStates.STATE_DISCONNECTED);	
+			logService.log("Starting network wizard",Status.INFO);
+			logService.connectionChange(IConnectionStates.STATE_DISCONNECTED);	
 		}
 	}
 
@@ -367,6 +341,15 @@ public class NetWrapper extends Plugin
 		public ListenJob()
 		{
 			super("ListenJob");
+		}
+
+		/**
+		 * Returns the family to which the job belongs to
+		 */
+		@Override
+		public boolean belongsTo(Object family) 
+		{
+			return "ListenJob".equals(family);
 		}
 
 		/**
@@ -403,14 +386,12 @@ public class NetWrapper extends Plugin
 				//get the type of the item
 				final String contentType = xmlFactory.getContentType();
 				final String queryString = xmlFactory.getQueryString();
-				final String userId = xmlFactory.getUserId();
 				final String sequenceId = xmlFactory.getSequenceId();
-				System.out.println("Received: "+ userId+","+contentType+","+queryString);
 
 				//try to get a listener for this message
 				if(!listenerFactory.hasListeners(contentType))
 				{
-					System.out.println("No listener found for the message type: "+contentType);
+					logService.log("No listener found for the message type: "+contentType,IStatus.WARNING);
 					return Status.CANCEL_STATUS;
 				}
 
@@ -443,8 +424,8 @@ public class NetWrapper extends Plugin
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
-				requestNetworkStop(true);			
+				logService.log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR);
+				requestNetworkStop(true);	
 			}
 			finally
 			{
@@ -457,7 +438,7 @@ public class NetWrapper extends Plugin
 	}
 
 	/**
-	 * Threads that sends the new data to the server
+	 * Threads that sends the new data to the server and waits for the server reply
 	 */
 	public class SendJob extends Job
 	{
@@ -472,33 +453,62 @@ public class NetWrapper extends Plugin
 		{
 			super("SendJob");
 			this.messageInfo = messageInfo;
+			setName("Sende "+messageInfo.getContentType() +" " + messageInfo.getQueryString() +" an den Server");
+		}
+
+		/**
+		 * Returns the family to which the job belongs to
+		 */
+		@Override
+		public boolean belongsTo(Object family) 
+		{
+			return "SendJob".equals(family);
 		}
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) 
 		{
-			//setup the facotry
-			XMLFactory factory = new XMLFactory();
-			factory.setUserId(netSessionUserName);
-			factory.setTimestamp(messageInfo.getTimestamp());
-			factory.setContentType(messageInfo.getContentType());
-			factory.setQueryString(messageInfo.getQueryString());
-			factory.setSequenceId(messageInfo.getSequenceId());
-			factory.setFilter(messageInfo.getQueryFilter());
-
-			//get the network connection to send data
-			final MySocket client = NetSource.getInstance().getConnection();
-			monitor.beginTask("Sending data", IProgressMonitor.UNKNOWN);
 			try
 			{
+				//get the network connection to send data
+				final MySocket client = NetSource.getInstance().getConnection();
+
+				monitor.beginTask("Initialisierung", IProgressMonitor.UNKNOWN);
+				//setup the facotry
+				XMLFactory factory = new XMLFactory();
+				factory.setUserId(netSessionUserName);
+				factory.setTimestamp(messageInfo.getTimestamp());
+				factory.setContentType(messageInfo.getContentType());
+				factory.setQueryString(messageInfo.getQueryString());
+				factory.setSequenceId(messageInfo.getSequenceId());
+				factory.setFilter(messageInfo.getQueryFilter());
+
+				//send the encoded data to the server
+				monitor.beginTask("Sende Daten and den Server",IProgressMonitor.UNKNOWN);
 				String message = factory.encode(messageInfo.getMessageList());
 				PrintWriter writer = client.getBufferedOutputStream();
 				writer.println(message);
 				writer.flush();
+
+				//put the message to the list of packages that are waiting for server reply
+				messageList.put(messageInfo.getSequenceId(), messageInfo);
+
+				//if this is not a KEEP_ALIVE package we want to track the status
+				if(IModelActions.KEEP_ALIVE.equalsIgnoreCase(messageInfo.getQueryString()))
+					return Status.OK_STATUS;
+
+				//for all other message wait until the server sends a response
+				while(messageList.containsKey(messageInfo.getSequenceId()))
+				{
+					monitor.beginTask("Warte auf Antwort vom Server", IProgressMonitor.UNKNOWN);
+					Thread.sleep(10);
+				}
+				//we have the response so everything
+				return Status.OK_STATUS;
 			}
 			catch(Exception e)
 			{
-				System.out.println("Failed to send the package #"+messageInfo.getSequenceId() +" content: " +messageInfo.getContentType());
+				logService.log("Failed to send the package #"+messageInfo.getSequenceId() +" content: " +messageInfo.getContentType(),Status.ERROR);
 				requestNetworkStop(true);
 				return Status.CANCEL_STATUS;
 			}
@@ -506,8 +516,6 @@ public class NetWrapper extends Plugin
 			{
 				monitor.done();
 			}
-			//everything is ok :)
-			return Status.OK_STATUS;
 		}
 	}
 
@@ -524,6 +532,15 @@ public class NetWrapper extends Plugin
 			super("KeepAlive");
 		}
 
+		/**
+		 * Returns the family to which the job belongs to
+		 */
+		@Override
+		public boolean belongsTo(Object family) 
+		{
+			return "KeepAliveJob".equals(family);
+		}
+
 		@Override
 		protected IStatus run(IProgressMonitor monitor) 
 		{
@@ -538,7 +555,7 @@ public class NetWrapper extends Plugin
 			}
 			finally
 			{
-				//if the job is not cancled restart it again
+				//if the job is not canceled restart it again
 				if(!monitor.isCanceled())
 					schedule(5000);
 				monitor.done();
@@ -562,36 +579,45 @@ public class NetWrapper extends Plugin
 			super("MonitorJob");
 		}
 
+		/**
+		 * Returns the family to which the job belongs to
+		 */
+		@Override
+		public boolean belongsTo(Object family) 
+		{
+			return "MonitorJob".equals(family);
+		}
+
 		@Override
 		protected IStatus run(IProgressMonitor monitor) 
 		{
 			try
 			{
-				monitor.beginTask("Checking send packages", messageList.size());
+				monitor.beginTask("Überprüfe gesendete Pakete", messageList.size());
 				//loop and chek the send packages
 				for(Entry<String, AbstractMessageInfo> entry:messageList.entrySet())
 				{
 					AbstractMessageInfo info = entry.getValue();
 					if(info == null)
 						continue;
+					monitor.subTask("Prüfe Paket Nummer:"+info.getSequenceId());
 					//the time difference between now and the send time
 					long time = Calendar.getInstance().getTimeInMillis() - info.getTimestamp();
 					int seconds = (int)(time/1000) % 60;
 					//check if the time is greater than 5 seconds
 					if(seconds > 5)
 					{
-						IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
-						systemListener.log("WARNING: The package #"+info.getSequenceId() +" not been answered by the server. Send package again", IStatus.WARNING);
+						logService.log("WARNING: The package #"+info.getSequenceId() +" not been answered by the server. Send package again", IStatus.WARNING);
 						info.setTransmitted(info.getTransmitted()+1);
 						sheduleAndSend(info);
 					}
 					if(info.getTransmitted() > 2)
 					{
-						IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
+
 						//show a message box to retransmitt the package
 						if(info.getQueryString() != IModelActions.KEEP_ALIVE)
-							systemListener.transferFailed(info);
-						systemListener.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
+							logService.transferFailed(info);
+						logService.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
 						messageList.remove(info.getSequenceId());
 					}
 					monitor.worked(1);
@@ -599,7 +625,7 @@ public class NetWrapper extends Plugin
 			}
 			catch(Exception e)
 			{
-				System.out.println("error");
+				logService.log("Critical error while monitoring the status of the packages: "+e.getMessage(), Status.ERROR);
 				e.printStackTrace();
 			}
 			finally
@@ -610,48 +636,6 @@ public class NetWrapper extends Plugin
 				monitor.done();
 			}
 			return Status.OK_STATUS;
-		}
-	}
-
-	/**
-	 * Shows that a request is currently in progress
-	 */
-	public class ProgressJob extends Job
-	{
-		//the number of the package waiting for
-		private String sequenceId;
-
-		/**
-		 * Default class constructor defining the package to wait for
-		 */
-		public ProgressJob(String sequenceId)
-		{
-			super("ProgressJob@"+sequenceId);
-			this.sequenceId = sequenceId;
-		}
-
-		@Override
-		protected IStatus run(IProgressMonitor monitor) 
-		{
-			try
-			{
-				monitor.beginTask("Warte auf Antwort vom Server", IProgressMonitor.UNKNOWN);
-				while(messageList.containsKey(sequenceId))
-				{
-					Thread.sleep(1000);
-				}
-				return Status.OK_STATUS;
-			}
-			catch(Exception e)
-			{
-				System.out.println("Failed to watch the progress for the package: "+sequenceId);
-				e.printStackTrace();
-				return Status.CANCEL_STATUS;
-			}
-			finally
-			{
-				monitor.done();
-			}
 		}
 	}
 }
