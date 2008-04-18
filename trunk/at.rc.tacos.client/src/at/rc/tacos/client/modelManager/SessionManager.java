@@ -1,5 +1,7 @@
 package at.rc.tacos.client.modelManager;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -39,6 +41,7 @@ public class SessionManager extends PropertyManager
 	private SessionManager() 
 	{ 
 		displayedDate = Calendar.getInstance().getTimeInMillis();
+		dayInfo = new DayInfoMessage("",displayedDate,"<keine Änderungen>");
 	} 
 
 	/**
@@ -50,6 +53,14 @@ public class SessionManager extends PropertyManager
 			instance = new SessionManager();
 		return instance;
 	}
+	
+    /**
+     *  informs all listeners about new locations
+     */
+    public void initViews(PropertyChangeListener listener)
+    {
+    	listener.propertyChange(new PropertyChangeEvent(this,"DAY_INFO_CHANGED",null,dayInfo));
+    }
 
 	/**
 	 * Returns whether or not the user is logged in
