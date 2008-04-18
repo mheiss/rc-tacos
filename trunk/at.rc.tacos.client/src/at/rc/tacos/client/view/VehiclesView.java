@@ -41,10 +41,13 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	 */
 	public VehiclesView()
 	{
-		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 		//create the list for the sections
 		sectionList = new ArrayList<Section>();
+		//load and init the data
+		loadData();
+		//register the listeners
+		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -78,6 +81,14 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 
 	@Override
 	public void setFocus() { }
+	
+	/**
+	 * Loads and inits the data
+	 */
+	public void loadData()
+	{
+		
+	}
 
 	/**
 	 * Notification that the data model has changed so the view have to be updated.
@@ -93,7 +104,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 			Section section = createSection(form,toolkit,newLocation.getLocationName(),"Fahzeuge von "+newLocation.getLocationName());
 			//store the location
 			section.setData(newLocation);
-			sectionList.add(section);           
+			sectionList.add(section);       
 		}
 		//remove all locations
 		if("LOCATION_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
@@ -101,7 +112,6 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 			//loop and dispose all locations
 			for(Section section:sectionList)
 			{
-				System.out.println("Removin section"+((Location)section.getData()).getLocationName());
 				//assert valid
 				if(!section.isDisposed())
 				{

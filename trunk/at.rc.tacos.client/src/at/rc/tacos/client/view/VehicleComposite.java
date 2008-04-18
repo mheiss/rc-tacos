@@ -165,16 +165,19 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		driverLabel.setForeground(CustomColors.COLOR_NAME);
 		driverLabel.setFont(CustomColors.VEHICLE_TEXT);
 		driverLabel.setBackground(CustomColors.COLOR_BLUE);
+		driverLabel.setSize(10, 10);
 
 		medicILabel = new Label(compositeCarStaff, SWT.NONE);
 		medicILabel.setForeground(CustomColors.COLOR_NAME);
 		medicILabel.setFont(CustomColors.VEHICLE_TEXT);
 		medicILabel.setBackground(CustomColors.COLOR_BLUE);
+		medicILabel.setSize(10,10);
 
 		medicIILabel = new Label(compositeCarStaff, SWT.NONE);
 		medicIILabel.setForeground(CustomColors.COLOR_NAME);
 		medicIILabel.setFont(CustomColors.VEHICLE_TEXT);
 		medicIILabel.setBackground(CustomColors.COLOR_BLUE);
+		medicIILabel.setSize(10,10);
 
 		//create the actions
 		makeActions();
