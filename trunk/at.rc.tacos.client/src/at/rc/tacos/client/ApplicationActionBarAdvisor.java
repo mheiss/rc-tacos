@@ -75,21 +75,24 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	@Override
 	protected void fillMenuBar(IMenuManager menuBar) 
 	{
+		//get the authorization;
+		String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
 		//the file menu
 		MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
 		fileMenu.add(exitAction);
 		
 		//the admin sub menu
 		MenuManager adminMenu = new MenuManager("&Administation");
-		adminMenu.add(switchToLog);
-		adminMenu.add(switchToAdmin);
+		if(authorization.equalsIgnoreCase("Administrator"))
+		{
+			adminMenu.add(switchToLog);
+			adminMenu.add(switchToAdmin);
+		}
 		adminMenu.add(viewList);
 		
-		//window menue
+		//window menu
 		MenuManager windowMenu = new MenuManager("&Window");
-		String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
-		if(authorization.equalsIgnoreCase("Administrator"))
-			windowMenu.add(adminMenu);
+		windowMenu.add(adminMenu);
 		windowMenu.add(new Separator());
 		windowMenu.add(switchToClient);
 		windowMenu.add(switchToTransport);
