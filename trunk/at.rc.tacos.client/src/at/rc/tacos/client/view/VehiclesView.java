@@ -43,8 +43,6 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	{
 		//create the list for the sections
 		sectionList = new ArrayList<Section>();
-		//load and init the data
-		loadData();
 		//register the listeners
 		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
@@ -77,6 +75,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 		form.getBody().setLayout(layout);
 		//create and hook the toolbar action
 		createToolBarActions();
+		//load the data
+		loadData();
 	}
 
 	@Override
@@ -87,7 +87,8 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	 */
 	public void loadData()
 	{
-		
+		ModelFactory.getInstance().getLocationManager().initViews(this);
+		ModelFactory.getInstance().getVehicleManager().initViews(this);
 	}
 
 	/**

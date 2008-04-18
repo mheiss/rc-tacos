@@ -1,5 +1,7 @@
 package at.rc.tacos.client.modelManager;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +104,15 @@ public class LocationManager extends PropertyManager
         }
         //nothing found
         return null;
+    }
+    
+    /**
+     *  informs all listeners about new locations
+     */
+    public void initViews(PropertyChangeListener listener)
+    {
+    	for(Location location:objectList)
+    		listener.propertyChange(new PropertyChangeEvent(this,"LOCATION_ADD", null, location));
     }
     
     /**

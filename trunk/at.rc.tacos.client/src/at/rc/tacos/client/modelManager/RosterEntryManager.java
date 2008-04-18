@@ -1,5 +1,7 @@
 package at.rc.tacos.client.modelManager;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -54,7 +56,6 @@ public class RosterEntryManager extends PropertyManager
         }); 
     }
     
-    
     /**
      * Updates the roster entry at the list
      * @param rosterEntry the roster entry to update
@@ -89,7 +90,15 @@ public class RosterEntryManager extends PropertyManager
                 firePropertyChange("ROSTERENTRY_CLEARED",null,null);
             }
         }); 
-        
+    }
+    
+    /**
+     *  informs all listeners about new locations
+     */
+    public void initViews(PropertyChangeListener listener)
+    {
+    	for(RosterEntry entry:objectList)
+    		listener.propertyChange(new PropertyChangeEvent(this,"ROSTERENTRY_ADD", null, entry));
     }
     
     /**

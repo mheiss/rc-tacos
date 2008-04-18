@@ -111,6 +111,8 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         createCalendarSection(form.getBody());
         createNotesSection(form.getBody());
         
+        //load and init the data
+        SessionManager.getInstance().initViews(this);
 
         //info should span over two
         GridData data = new GridData(GridData.FILL_HORIZONTAL);

@@ -126,6 +126,15 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             }
         });
     }
+    
+    /**
+     *  informs all listeners about new locations
+     */
+    public void initViews(PropertyChangeListener listener)
+    {
+    	for(VehicleDetail detail:objectList)
+    		listener.propertyChange(new PropertyChangeEvent(this,"VEHICLE_ADD", null, detail));
+    }
 
     /**
      * Converts the list to an array
