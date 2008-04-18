@@ -148,7 +148,6 @@ public class ServerController
             {
                 MyClient client = clientSession.getConnection();
                 client.sendMessage(message);
-                logger.debug("BRODCAST REPLY TO "+clientSession.getUsername()+" : "+messageInfo.getContentType()+"->"+messageInfo.getQueryString());
             }
         }
     }
@@ -175,7 +174,6 @@ public class ServerController
         String xml = factory.encode(messageInfo.getMessageList());
         //encode and send
         connection.sendMessage(xml);
-        logger.debug("Sending reply "+userId+" : "+messageInfo.getContentType()+"->"+messageInfo.getQueryString());
     }
 
     /**
