@@ -35,7 +35,6 @@ public class ClientHandler implements INetListener
 		ArrayList<AbstractMessage> objects = xmlFactory.decode();
 
 		//get the type of the item
-		final String userId = xmlFactory.getUserId();
 		final String sequenceId = xmlFactory.getSequenceId();
 		final String contentType = xmlFactory.getContentType();
 		final String queryString = xmlFactory.getQueryString();
@@ -48,8 +47,6 @@ public class ClientHandler implements INetListener
 
 		//the client connection
 		final ClientSession session = server.getSession(ne.getClient());
-
-		logger.debug("QUERY from "+userId+": "+contentType+"->"+queryString);
 		
 		//send back the keep alive package
 		if(IModelActions.KEEP_ALIVE.equalsIgnoreCase(queryString))
