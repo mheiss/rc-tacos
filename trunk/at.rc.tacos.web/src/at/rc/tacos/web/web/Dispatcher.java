@@ -26,17 +26,6 @@ public class Dispatcher extends HttpServlet
 	private static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.web.server";
 	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.net.net";
 
-	/**
-	 * Initializes servlet context.
-	 */
-	@Override
-	public void init() throws ServletException
-	{
-		super.init();
-		if (getServletContext().getAttribute("client") == null) {
-			getServletContext().setAttribute("client", new WebClient());
-		}
-	}
 
 	/**
 	 * Calls doPost.
@@ -84,11 +73,11 @@ public class Dispatcher extends HttpServlet
 		
 		//Redirect if request is not send over SSL connection
 		if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
-			response.sendRedirect(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath);
+			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
 		}
 		//If no URL is specified send redirect to home.do.
 		else if (relativePath.equals("") || relativePath.equals("/")) {
-			response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + views.getString("rosterDay2.url"));
+			response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()+ request.getServletPath() + views.getString("rosterDay2.url")));
 		} else {
 			//Get login requirement view and template
 			for (final Iterator<String> it = set.iterator(); it.hasNext();) {
@@ -116,13 +105,13 @@ public class Dispatcher extends HttpServlet
 				}
 			}			
 			if (urlFound == false) {
-				response.sendRedirect(getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url")); 
+				response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url"))); 
 			} else {
 				if (loginRequired == true && !userSession.getLoggedIn()) {
-					response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?url=" + relativePath);
+					response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?url=" + relativePath));
 				} else {
 					if (controllerFound == false) {
-						response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+						response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 					} else {
 						try {
 							final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
@@ -135,26 +124,26 @@ public class Dispatcher extends HttpServlet
 									params.put("title", viewTitle);
 									params.put("header", viewHeader);
 									params.put("view", viewPath);
-									getServletContext().getRequestDispatcher(templatePath).forward(request, response);
+									getServletContext().getRequestDispatcher(response.encodeURL(templatePath)).forward(request, response);
 								} else {
-									getServletContext().getRequestDispatcher(viewPath).forward(request, response);
+									getServletContext().getRequestDispatcher(response.encodeURL(viewPath)).forward(request, response);
 								}
 							}
 						} catch (InstantiationException e1) {
 							e1.printStackTrace();
-							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						} catch (IllegalAccessException e1) {
 							e1.printStackTrace();
-							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						} catch (ClassNotFoundException e1) {
 							e1.printStackTrace();
-							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						} catch (IllegalArgumentException e) {
 							e.printStackTrace();
-							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						} catch (Exception e) {
 							e.printStackTrace();
-							response.sendRedirect(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url"));
+							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						}
 					}
 				}

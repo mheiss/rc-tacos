@@ -8,7 +8,7 @@
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
 	</tr>
-	<c:url var="url" value="rosterDay2.do" />
+	<c:url var="url" value="/Dispatcher/rosterDay2.do" />
 	<tr>
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienstplan Tagesansicht</a></td>
 	</tr>
