@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class EditProfileController extends Controller {
 
-	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context)
+	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 
