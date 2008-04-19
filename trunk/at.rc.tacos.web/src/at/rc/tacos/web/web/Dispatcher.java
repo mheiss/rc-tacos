@@ -58,6 +58,8 @@ public class Dispatcher extends HttpServlet
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
 		final String relativePathPrefix = relativePath.replaceFirst("/", "").replaceFirst(".do", "");
 		
+		final String ip = request.getRemoteAddr();
+		
 		final Set<String> set = views.keySet();
 		boolean urlFound = false;
 		boolean loginRequired = true;
