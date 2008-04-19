@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ include file="includes.jsp" %>
 <%@ page import="java.util.*,java.text.*"%>
 <%@ page session="true"%>
 <%
@@ -31,11 +32,12 @@
 		<%
 			if (params.containsKey("loginError")) {
 		%>
-		<div id='meldungstext'><%=params.get("loginError")%></div>
+		<div id="meldungstext"><%=params.get("loginError")%></div>
 		<%
 			}
 		%>
-		<form method="post" action="<%=request.getContextPath()+"/Dispatcher/login.do?action=login"%>">
+		<c:url var="url" value="/Dispatcher/login.do?action=login" />
+		<form method="post" action="${url}">
 			<table id="loginPanel">
 				<tr>
 					<td align="right">Benutzername:</td>
@@ -48,14 +50,14 @@
 				<tr>
 					<td>
 						<%
-						if (request.getParameter("url") != null) {
+						if (request.getParameter("responseUrl") != null) {
 						%>
-						<input type=hidden name="url" value="<%= request.getParameter("url") %>"/>
+						<input type=hidden name="responseUrl" value="<%= request.getParameter("responseUrl") %>"/>
 						<%
 						}
 						%>	
 					</td>
-					<td colspan='2' align='right'><input type="submit" value="Login" id="login"/></td>
+					<td colspan="2" align="right"><input type="submit" value="Login" id="login"/></td>
 				</tr>
 			</table>
 		</form>
