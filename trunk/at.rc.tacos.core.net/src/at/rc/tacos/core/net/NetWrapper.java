@@ -297,35 +297,37 @@ public class NetWrapper extends Plugin
 	 */
 	public void requestNetworkStop(boolean showWizard)
 	{
-		netSessionUserName = null;
-		//request all running jobs to stop
-		IJobManager jobManager = Job.getJobManager();
-		jobManager.cancel("KeepAliveJob");
-		jobManager.cancel("ListenJob");
-		jobManager.cancel("SendJob");
-		jobManager.cancel("MonitorJob");
-		if(!showWizard)
-		{
-			while(jobManager.currentJob() != null)
-				System.out.println("wait for job");
-		}
-		logService.log("Setting all running network jobs to sleep", Status.INFO);
-		//close the current socket
 		try
 		{
+			netSessionUserName = null;
+			//request all running jobs to stop
+			IJobManager jobManager = Job.getJobManager();
+			jobManager.cancel("KeepAliveJob");
+			jobManager.cancel("ListenJob");
+			jobManager.cancel("SendJob");
+			jobManager.cancel("MonitorJob");
+			if(!showWizard)
+			{
+				while(jobManager.currentJob() != null)
+					System.out.println("wait for job");
+			}
+			logService.log("Setting all running network jobs to sleep", Status.INFO);
+			
+			//close the current socket
 			NetSource.getInstance().closeConnection();
+
+			//show the connection wizard
+			if(showWizard)
+			{
+				logService.log("Starting network wizard",Status.INFO);
+				logService.connectionChange(IConnectionStates.STATE_DISCONNECTED);	
+			}
 		}
 		catch(Exception e)
 		{
 			logService.log("Failed to close the network connection", Status.INFO);
 			logService.log(e.getMessage(), Status.ERROR);
 			e.printStackTrace();
-		}
-		//show the connection wizard
-		if(showWizard)
-		{
-			logService.log("Starting network wizard",Status.INFO);
-			logService.connectionChange(IConnectionStates.STATE_DISCONNECTED);	
 		}
 	}
 
