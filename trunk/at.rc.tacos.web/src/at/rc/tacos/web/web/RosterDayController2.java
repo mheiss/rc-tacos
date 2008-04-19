@@ -14,7 +14,8 @@ public class RosterDayController2 extends Controller {
 			HttpServletResponse response, ServletContext context)
 			throws Exception {
 		// TODO Auto-generated method stub
-		return new HashMap();
+		Map<String, Object> params = new HashMap<String, Object>();
+		return params;
 	}
 
 }

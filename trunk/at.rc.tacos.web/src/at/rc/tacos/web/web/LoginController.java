@@ -84,10 +84,10 @@ public class LoginController extends Controller {
 						for (AbstractMessage abstractStaffMember : staffList)
 							userSession.addStaffMember((StaffMember) abstractStaffMember);
 					}
-					if (request.getParameter("url") == null) {
+					if (request.getParameter("responseUrl") == null) {
 						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath()));
 					} else {
-						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath() + request.getParameter("url")));
+						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath() + request.getParameter("responseUrl")));
 					}
 				} else {
 					params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");

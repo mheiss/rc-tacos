@@ -23,11 +23,11 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 </head>
 <body>
 
-	<table border='0' cellpadding='0' cellspacing='0' width="100%" id="MainTab">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" id="MainTab">
 		<thead>
 			<tr>
 				<td>
-				<table border='0' cellpadding='0' cellspacing='0' width="100%" id="Tablogo">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%" id="Tablogo">
 					<tr>
 						<td style="background:url(../image/headlogopx.jpg) repeat-x center;"><img src="../image/headlogo.jpg" name="logoLeft" id="logoLeft" /></td>
 					</tr>

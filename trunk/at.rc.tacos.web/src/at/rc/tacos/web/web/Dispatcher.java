@@ -113,7 +113,7 @@ public class Dispatcher extends HttpServlet
 				response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url"))); 
 			} else {
 				if (loginRequired == true && !userSession.getLoggedIn()) {
-					response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?url=" + relativePath));
+					response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?responseUrl=" + relativePath));
 				} else {
 					try {
 						final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
