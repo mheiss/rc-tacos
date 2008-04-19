@@ -139,7 +139,6 @@ public class NetSource
 	 */
 	public void closeConnection() throws IOException
 	{
-
 		//assert valid
 		if(client == null)
 			return;

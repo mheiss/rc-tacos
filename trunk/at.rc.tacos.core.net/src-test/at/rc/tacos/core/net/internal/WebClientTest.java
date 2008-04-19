@@ -33,14 +33,14 @@ public class WebClientTest
     public void setUp()
     {
         client = new WebClient();
-        client.connect("81.189.52.155", 4711);
+        client.connect("localhost", 4711);
         resultList = new ArrayList<AbstractMessage>();
     }
     
     @Test
     public void testLoginSuccess()
     {
-        result = client.sendLoginRequest("testUser","P@ssw0rd");
+        result = client.sendLoginRequest("user3","P@ssw0rd");
         Login loginResponse = (Login)result;
         Assert.assertTrue(loginResponse.isLoggedIn());
     }
@@ -63,7 +63,7 @@ public class WebClientTest
     @Test
     public void testTransportListing()
     {
-        client.sendLoginRequest("testUser","P@ssw0rd");
+        client.sendLoginRequest("user3","P@ssw0rd");
         //send the request for the listing
         resultList = client.sendListingRequest(Transport.ID, null);
         Assert.assertEquals(Transport.ID, client.getContentType());
@@ -73,7 +73,7 @@ public class WebClientTest
     @Test
     public void testRosterEntryListing()
     {
-        client.sendLoginRequest("testUser","P@ssw0rd");
+        client.sendLoginRequest("user3","P@ssw0rd");
         //send the request for the listing
         resultList = client.sendListingRequest(RosterEntry.ID, null);
         Assert.assertEquals(RosterEntry.ID, client.getContentType());
@@ -83,7 +83,7 @@ public class WebClientTest
     @Test
     public void testStaffMemberListing()
     {
-        client.sendLoginRequest("testUser","P@ssw0rd");
+        client.sendLoginRequest("user3","P@ssw0rd");
         //send the request for the listing
         resultList = client.sendListingRequest(StaffMember.ID, null);
         Assert.assertEquals(StaffMember.ID, client.getContentType());
@@ -94,7 +94,7 @@ public class WebClientTest
     public void testMobilePhoneDetailListing()
     {
         //login
-        client.sendLoginRequest("testUser","P@ssw0rd");
+        client.sendLoginRequest("user3","P@ssw0rd");
         //send the request for the listing
         resultList = client.sendListingRequest(MobilePhoneDetail.ID, null);
         Assert.assertEquals(MobilePhoneDetail.ID, client.getContentType());
@@ -104,7 +104,7 @@ public class WebClientTest
     @Test
     public void testNotifierDetailListing()
     {
-        client.sendLoginRequest("testUser","P@ssw0rd");
+        client.sendLoginRequest("user3","P@ssw0rd");
         //send the request for the listing
         resultList = client.sendListingRequest(CallerDetail.ID, null);
         Assert.assertEquals(CallerDetail.ID, client.getContentType());
@@ -114,7 +114,7 @@ public class WebClientTest
     @Test
     public void testPatientListing()
     {
-        client.sendLoginRequest("testUser","P@ssw0rd");
+        client.sendLoginRequest("user3","P@ssw0rd");
         //send the request for the listing
         resultList = client.sendListingRequest(Patient.ID, null);
         Assert.assertEquals(Patient.ID, client.getContentType());
@@ -124,7 +124,7 @@ public class WebClientTest
     @Test
     public void testVehicleListing()
     {
-        client.sendLoginRequest("testUser","P@ssw0rd");
+        client.sendLoginRequest("user3","P@ssw0rd");
         //send the request for the listing
         resultList = client.sendListingRequest(VehicleDetail.ID, null);
         Assert.assertEquals(VehicleDetail.ID, client.getContentType());
@@ -134,7 +134,7 @@ public class WebClientTest
     @Test
     public void testGetStaffMemberById()
     {
-        client.sendLoginRequest("testUser","P@ssw0rd");
+        client.sendLoginRequest("user3","P@ssw0rd");
         //send the request for the listing
         QueryFilter filter = new QueryFilter(IFilterTypes.ID_FILTER,"1");
         resultList = client.sendListingRequest(StaffMember.ID, filter);
