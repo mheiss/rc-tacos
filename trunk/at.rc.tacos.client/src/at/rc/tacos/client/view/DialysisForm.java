@@ -188,7 +188,7 @@ public class DialysisForm implements IKindOfTransport
 	 * Create contents of the window
 	 */
 	protected void createContents() {
-		shell = new Shell();
+		shell = new Shell(SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell.setLayout(new FormLayout());
 		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 		shell.setSize(1083, 223);
