@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ include file="includes.jsp" %>
 <%@ page import="at.rc.tacos.web.web.UserSession" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.*" %>
 <%
 final Map<String, Object> params = (Map<String, Object>)request.getAttribute("params");
-final String viewName = (String)params.get("view");
 final UserSession userSession = (UserSession)session.getAttribute("userSession");
 final Date today = new Date();
 final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -14,11 +14,12 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link href="../css/stylesheet.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" />
+	<c:if test="${not empty css}"><c:forTokens var="item" items="${css}" delims="|"><link rel="stylesheet" href="<c:url value="/css/${item}"/>" type="text/css" /></c:forTokens></c:if>
 	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
 	<script type="text/javascript" src="../js/windowActions.js"></script>
-	<!--<title><%= params.get("title") %></title>-->
-	<title>${params.title}</title>
+	<c:if test="${not empty js}"><c:forTokens var="item" items="${js}" delims="|"><script type="text/javascript" src="<c:url value="/js/${item}"/>"></script></c:forTokens></c:if>
+	<title>${title}</title>
 </head>
 <body>
 
@@ -38,13 +39,14 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			<tr>
 				<td id="MainBodyContent">
 					<table width="100%" id="userInfo">
+						<c:url var="url" value="/Dispatcher/logout.do" />
 						<tr>
 							<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName() + " "
 							+ userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 							&nbsp;&nbsp;( <a
-								href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a>
+								href="${url}">Logout</a>
 							)</td>
-							<td width="33%" align="center"><%= params.get("header") %></td>
+							<td width="33%" align="center">${htitle}</td>
 							<td width="33%" align="right">Heute ist der <%=format.format(today)%></td>
 							<td>
 						</tr>
@@ -55,7 +57,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 							<td id="LeftContainerPanel" valign="top"><%@ include file="navigation.jsp"%></td>
 							<!-- #### CONTENT -->
 							<td id="ContentContainer" valign="top">
-								<jsp:include page="<%= viewName %>" />
+								<jsp:include page="${view}" />
 							</td>
 						</tr>
 					</table>

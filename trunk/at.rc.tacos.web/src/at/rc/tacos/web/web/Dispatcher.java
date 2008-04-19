@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import at.rc.tacos.core.net.internal.WebClient;
 /**
  * Dispatcher (Front Controller):
  * This class is responsible for URL resolving, security, forwarding to view and loads template.
@@ -69,7 +68,9 @@ public class Dispatcher extends HttpServlet
 		boolean templateFound = false;
 		String templatePath = null;
 		String viewTitle = null;
-		String viewHeader = null;
+		String viewHeaderTitle = null;
+		String js = null;
+		String css = null;
 		
 		//Redirect if request is not send over SSL connection
 		if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
@@ -100,51 +101,53 @@ public class Dispatcher extends HttpServlet
 					templatePath = views.getString(key).trim();
 				} else if (prefix.equals(relativePathPrefix) && key.contains(".title")) {
 					viewTitle = views.getString(key);
-				} else if (prefix.equals(relativePathPrefix) && key.contains(".header")) {
-					viewHeader = views.getString(key);
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".htitle")) {
+					viewHeaderTitle = views.getString(key);
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".js")) {
+					js = views.getString(key).trim();
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".css")) {
+					css = views.getString(key).trim();
 				}
 			}			
-			if (urlFound == false) {
+			if (urlFound == false || controllerFound == false) {
 				response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url"))); 
 			} else {
 				if (loginRequired == true && !userSession.getLoggedIn()) {
 					response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?url=" + relativePath));
 				} else {
-					if (controllerFound == false) {
-						response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
-					} else {
-						try {
-							final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
-							final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
-							request.setAttribute("params", params);
-							//Forward to view if response is not commited and view is found in views.properties
-							if (!response.isCommitted() && viewFound) {
-								//Differentiate if View uses model.jsp or not
-								if (templateFound) {
-									params.put("title", viewTitle);
-									params.put("header", viewHeader);
-									params.put("view", viewPath);
-									getServletContext().getRequestDispatcher(response.encodeURL(templatePath)).forward(request, response);
-								} else {
-									getServletContext().getRequestDispatcher(response.encodeURL(viewPath)).forward(request, response);
-								}
+					try {
+						final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
+						final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
+						request.setAttribute("params", params);
+						//Forward to view if response is not commited and view is found in views.properties
+						if (!response.isCommitted() && viewFound) {
+							//Differentiate if View uses model.jsp or not
+							if (templateFound) {
+								request.setAttribute("title", viewTitle);
+								request.setAttribute("htitle", viewHeaderTitle);
+								request.setAttribute("view", viewPath);
+								request.setAttribute("js", js);
+								request.setAttribute("css", css);
+								getServletContext().getRequestDispatcher(response.encodeURL(templatePath)).forward(request, response);
+							} else {
+								getServletContext().getRequestDispatcher(response.encodeURL(viewPath)).forward(request, response);
 							}
-						} catch (InstantiationException e1) {
-							e1.printStackTrace();
-							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
-						} catch (IllegalAccessException e1) {
-							e1.printStackTrace();
-							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
-						} catch (ClassNotFoundException e1) {
-							e1.printStackTrace();
-							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
-						} catch (Exception e) {
-							e.printStackTrace();
-							response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						}
+					} catch (InstantiationException e1) {
+						e1.printStackTrace();
+						response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+					} catch (IllegalAccessException e1) {
+						e1.printStackTrace();
+						response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+					} catch (ClassNotFoundException e1) {
+						e1.printStackTrace();
+						response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+						response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+					} catch (Exception e) {
+						e.printStackTrace();
+						response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 					}
 				}
 			}
