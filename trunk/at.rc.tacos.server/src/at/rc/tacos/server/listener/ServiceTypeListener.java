@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.ServiceTypeDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
@@ -33,8 +34,13 @@ public class ServiceTypeListener extends ServerListenerAdapter
 	{
 		//the basic list to hold the returned result
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-		//query the result
-		List<ServiceType> serviceList = serviceDao.listServiceTypes();
+		List<ServiceType> serviceList = new ArrayList<ServiceType>();
+		if (queryFilter.containsFilterType(IFilterTypes.SERVICETYPE_FILTER)) {
+			serviceList = serviceDao.listServiceTypesByName(queryFilter.getFilterValue(IFilterTypes.SERVICETYPE_FILTER));
+		} else {
+			serviceList = serviceDao.listServiceTypes();
+		}
+
 		list.addAll(serviceList);
 		return list;
 	}
