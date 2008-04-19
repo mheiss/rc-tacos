@@ -15,7 +15,6 @@ import java.util.TimeZone;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -48,9 +47,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchActionConstants;
-
-import com.sun.corba.se.spi.ior.MakeImmutable;
 
 import at.rc.tacos.client.controller.AssignCarAction;
 import at.rc.tacos.client.controller.CreateTransportAction;
