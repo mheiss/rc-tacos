@@ -17,7 +17,8 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	<link href="../css/stylesheet.css" rel="stylesheet" />
 	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
 	<script type="text/javascript" src="../js/windowActions.js"></script>
-	<title><%= params.get("title") %></title>
+	<!--<title><%= params.get("title") %></title>-->
+	<title>${params.title}</title>
 </head>
 <body>
 
