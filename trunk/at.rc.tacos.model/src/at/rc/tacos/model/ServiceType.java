@@ -10,6 +10,8 @@ public class ServiceType extends AbstractMessage
 {
 	//unique identification string
 	public final static String ID = "serviceType";
+	
+	public final static String SERVICETYPE_FREIWILLIG = "Freiwillig";
 
 	//properties   
 	private int id;
