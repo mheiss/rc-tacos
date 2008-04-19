@@ -40,7 +40,7 @@ public class LoginController extends Controller {
 			return params;
 		}
 
-		final WebClient client = (WebClient)context.getAttribute("client");
+		final WebClient client = new WebClient();
 		boolean serverListening = false;
 		serverListening = client.connect(netBundle.getString("server.host"), Integer.parseInt(netBundle.getString("server.port")));
 		if (!serverListening) {
@@ -85,9 +85,9 @@ public class LoginController extends Controller {
 							userSession.addStaffMember((StaffMember) abstractStaffMember);
 					}
 					if (request.getParameter("url") == null) {
-						response.sendRedirect(context.getContextPath() + request.getServletPath());
-					} else { 
-						response.sendRedirect(context.getContextPath() + request.getServletPath() + request.getParameter("url"));
+						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath()));
+					} else {
+						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath() + request.getParameter("url")));
 					}
 				} else {
 					params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
@@ -102,7 +102,7 @@ public class LoginController extends Controller {
 		final UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (userSession.getLoggedIn()) {
-			response.sendRedirect(context.getContextPath() + request.getServletPath());
+			response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath()));
 		} else {	
 			final String action = request.getParameter("action");
 			if ("login".equalsIgnoreCase(action)) {
