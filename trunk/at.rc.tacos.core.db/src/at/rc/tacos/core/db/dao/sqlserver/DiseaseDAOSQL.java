@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.DiseaseDAO;
 import at.rc.tacos.model.Disease;
 
@@ -15,7 +15,7 @@ public class DiseaseDAOSQL implements DiseaseDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int addDisease(Disease disease) throws SQLException
@@ -23,18 +23,23 @@ public class DiseaseDAOSQL implements DiseaseDAO
 		Connection connection = source.getConnection();
 		try
 		{	
+			int id = 0;
+			//get the next id
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextDiseaseID"));
+			final ResultSet rs = stmt.executeQuery();
+			if(!rs.next())
+				return -1;
+			
+			id = rs.getInt(1);
 			// disease name
-			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("insert.disease"));
-			stmt.setString(1, disease.getDiseaseName());
-			stmt.executeUpdate();
-			//get the last inserted id
-			final PreparedStatement stmt1 = connection.prepareStatement(queries.getStatment("get.highestDiseaseID"));
-			final ResultSet rs1 = stmt1.executeQuery();
-			//			final ResultSet rs = stmt.getGeneratedKeys();
-		    if (rs1.next()) 
-		        return rs1.getInt(1);
-		    //no auto value
-		    return -1;
+			final PreparedStatement insertstmt = connection.prepareStatement(queries.getStatment("insert.disease"));
+			insertstmt.setInt(1, id);
+			insertstmt.setString(2, disease.getDiseaseName());
+			
+			if(insertstmt.executeUpdate() == 0)
+				return -1;
+			
+			return id;
 		}
 		finally
 		{
