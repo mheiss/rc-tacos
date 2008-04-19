@@ -42,4 +42,6 @@ public interface ServiceTypeDAO
      * @return the complete list of all service type
      */
 	public List<ServiceType> listServiceTypes() throws SQLException;
+
+	public List<ServiceType> listServiceTypesByName(String name) throws SQLException;
 }

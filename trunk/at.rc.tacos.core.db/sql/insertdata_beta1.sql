@@ -147,23 +147,23 @@ INSERT INTO caller(caller_ID, callername, caller_phonenumber)
 VALUES(1, 'Herr Maier', '0342 - 12345');
 
 -- create dummy transports
-INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
+--INSERT INTO transports(transport_ID, transportNr, direction, caller_ID, note, createdBy_user, priority, feedback, creationDate, departure, appointment, appointmentPatient, transporttype, disease, firstname, lastname, planned_location, from_street, from_city, to_street, to_city, programstate, dateOfTransport)
 --VALUES(null, 0, 1, 1, 'anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', '20080103215400', '20071124215400', '20071124215400', '20071124215400', 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '20080215215400');
 --VALUES(1, 0, 1, 1, 'anote ...', 'w.lohm', 'B', 'kein NEF erforderlich', 2008-01-03 21:54, 2007-11-24 21:54, 2007-11-24 21:54, 2007-11-24 21:54, 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, 2008-02-15 21:54);
-VALUES(1, 0, 1, 1, 'anote ...', 'w.lohmann', 'B', 'kein NEF erforderlich', '03.01.2008 21:54', '24.11.2007 21:54', '24.11.2007 21:54', '24.11.2007 21:54', 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '15.02.2008 21:54');
+--VALUES(1, 0, 1, 1, 'anote ...', 'w.lohmann', 'B', 'kein NEF erforderlich', '03.01.2008 21:54', '24.11.2007 21:54', '24.11.2007 21:54', '24.11.2007 21:54', 'gehend', 'v.a. Schlaganfall..', 'Sepp', 'Maier', 4, 'Krottendorf 827', 'Kapfenberg', 'LKH', 'Graz', 0, '15.02.2008 21:54');
 
 -- create dummy roster
-INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
+--INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
 --VALUES(null, 1, 50100001, 3, 2, '20071215070000', '20081215190000', null, null, 'Die erste fahrt in der Steiermark!', 0, 'w.lohm');
-VALUES(1, 1, 50100001, 3, 2, '15.12.2007 07:00', '15.12.2008 19:00', null, null, 'Die erste fahrt in der Steiermark!', 0, 'w.lohmann');
+--VALUES(1, 1, 50100001, 3, 2, '15.12.2007 07:00', '15.12.2008 19:00', null, null, 'Die erste fahrt in der Steiermark!', 0, 'w.lohmann');
 
-INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
+--INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
 --VALUES(null, 1, 50100002, 3, 3, '20071215070000', '20081215190000', null, null, 'Marien goes Sozial!', 1, 'm.heiﬂ');
-VALUES(2, 1, 50100002, 3, 3, '15.12.2007 07:00', '15.12.2008 19:00', null, null, 'Marien goes Sozial!', 1, 'm.heiﬂ');
+--VALUES(2, 1, 50100002, 3, 3, '15.12.2007 07:00', '15.12.2008 19:00', null, null, 'Marien goes Sozial!', 1, 'm.heiﬂ');
 
-INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
+--INSERT INTO roster(roster_ID, location_ID, staffmember_ID, servicetype_ID, job_ID, starttime, endtime, checkIn, checkOut, note, standby, entry_createdBy)
 --VALUES(null, 2, 50100003, 1, 1, '20071215190000', '20081216070000', null, null, 'kommt nicht aus den Federn!', 1, 'u.nech');
-VALUES(3, 2, 50100003, 1, 1, '15.12.2007 19:00', '16.12.2008 07:00', null, null, 'kommt nicht aus den Federn!', 1, 'u.nechansky');
+--VALUES(3, 2, 50100003, 1, 1, '15.12.2007 19:00', '16.12.2008 07:00', null, null, 'kommt nicht aus den Federn!', 1, 'u.nechansky');
 
 -- create vehicles
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus)
