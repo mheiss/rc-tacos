@@ -130,4 +130,11 @@ public class ServiceTypeDAOMySQL implements ServiceTypeDAO
 			connection.close();
 		}
 	}
+
+	@Override
+	public List<ServiceType> listServiceTypesByName(String name)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

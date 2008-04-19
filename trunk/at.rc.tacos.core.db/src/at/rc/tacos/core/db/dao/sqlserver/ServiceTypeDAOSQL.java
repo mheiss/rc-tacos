@@ -72,6 +72,32 @@ public class ServiceTypeDAOSQL implements ServiceTypeDAO
 			connection.close();
 		}
 	}
+	
+	@Override
+	public List<ServiceType> listServiceTypesByName(String name) throws SQLException
+	{
+		Connection connection = source.getConnection();
+		try
+		{
+			final String s = queries.getStatment("list.servicetypesByName");
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.servicetypesByName"));
+			stmt.setString(1, name);
+			final ResultSet rs = stmt.executeQuery();
+			final List<ServiceType> serviceTypes = new ArrayList<ServiceType>();
+			//no result set
+			while (rs.next()) {
+				ServiceType servicetype = new ServiceType();
+				servicetype.setId(rs.getInt("servicetype_ID"));
+				servicetype.setServiceName(rs.getString("servicetype"));
+				serviceTypes.add(servicetype);
+			}
+			return serviceTypes;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
 
 	@Override
 	public List<ServiceType> listServiceTypes() throws SQLException
