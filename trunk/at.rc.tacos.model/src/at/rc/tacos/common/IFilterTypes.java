@@ -15,6 +15,10 @@ public interface IFilterTypes
     /** Filter by dateRange */
     public final static String DATERANGE_FILTER = "dateRange";
     
-    /** Filer by type */
+    /** Filter by type */
     public final static String TYPE_FILTER = "typeFilter";
+    
+    /** Filter by name */
+    public final static String SERVICETYPE_FILTER = "serviceTypeFilter";
+    
 }
