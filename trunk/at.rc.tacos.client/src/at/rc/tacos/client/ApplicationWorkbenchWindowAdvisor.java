@@ -1,7 +1,5 @@
 package at.rc.tacos.client;
 
-import java.io.IOException;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -9,7 +7,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.*;
 
 import at.rc.tacos.client.modelManager.SessionManager;
-import at.rc.tacos.core.net.NetSource;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
@@ -47,21 +44,15 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 		Login login = SessionManager.getInstance().getLoginInformation();
 		if(login == null)
 			return true;
-		System.out.println("Sending logout request. Have a nice day :)");
+		
 		//send a logout request to the server and close the connection
+		System.out.println("Sending logout request. Have a nice day :)");
 		Logout logout = new Logout(login.getUsername());
 		NetWrapper.getDefault().sendLogoutMessage(logout);
+		
 		//try to close the connection
-		try
-		{
-			//stop the running network jobs
-			NetWrapper.getDefault().requestNetworkStop(false);
-			NetSource.getInstance().closeConnection();
-		}
-		catch(IOException ioe)
-		{
-			System.out.println("Failed to close the network socket");
-		}
+		NetWrapper.getDefault().requestNetworkStop(false);
+
 		return true;	
 	}
 
