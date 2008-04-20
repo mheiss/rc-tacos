@@ -79,7 +79,6 @@ public class ServiceTypeDAOSQL implements ServiceTypeDAO
 		Connection connection = source.getConnection();
 		try
 		{
-			final String s = queries.getStatment("list.servicetypesByName");
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.servicetypesByName"));
 			stmt.setString(1, name);
 			final ResultSet rs = stmt.executeQuery();
