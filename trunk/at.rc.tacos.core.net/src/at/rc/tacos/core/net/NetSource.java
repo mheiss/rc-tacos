@@ -116,7 +116,7 @@ public class NetSource
 			System.out.println("Open a new connection to: "+info.getHostName()+":"+info.getPort());
 			client = new MySocket(info.getHostName(),info.getPort());
 			client.setKeepAlive(true);
-			client.setSoTimeout(5000);
+			client.setSoTimeout(1000);
 			return client;
 		}
 		catch(UnknownHostException uhe)

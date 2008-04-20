@@ -47,6 +47,12 @@ public class NetWrapper extends Plugin
 
 	//the system listener for logging messages
 	private IModelListener logService = ListenerFactory.getDefault().getListener(SystemMessage.ID);
+	
+	//the running jobs
+	private final static String JOB_MONITOR = "MonitorJob";
+	private final static String JOB_LISTEN = "ListenJob";
+	private final static String JOB_ALIVE = "KeepAliveJob";
+	private final static String JOB_SEND = "SendJob";
 
 	/**
 	 * The constructor
@@ -302,15 +308,10 @@ public class NetWrapper extends Plugin
 			netSessionUserName = null;
 			//request all running jobs to stop
 			IJobManager jobManager = Job.getJobManager();
-			jobManager.cancel("KeepAliveJob");
-			jobManager.cancel("ListenJob");
-			jobManager.cancel("SendJob");
-			jobManager.cancel("MonitorJob");
-			if(!showWizard)
-			{
-				while(jobManager.currentJob() != null)
-					System.out.println("wait for job");
-			}
+			jobManager.cancel(JOB_LISTEN);
+			jobManager.cancel(JOB_SEND);
+			jobManager.cancel(JOB_MONITOR);
+			jobManager.cancel(JOB_ALIVE);
 			logService.log("Setting all running network jobs to sleep", Status.INFO);
 			
 			//close the current socket
@@ -319,6 +320,7 @@ public class NetWrapper extends Plugin
 			//show the connection wizard
 			if(showWizard)
 			{
+				System.out.println("show");
 				logService.log("Starting network wizard",Status.INFO);
 				logService.connectionChange(IConnectionStates.STATE_DISCONNECTED);	
 			}
@@ -342,7 +344,7 @@ public class NetWrapper extends Plugin
 		 */
 		public ListenJob()
 		{
-			super("ListenJob");
+			super(JOB_LISTEN);
 		}
 
 		/**
@@ -351,7 +353,7 @@ public class NetWrapper extends Plugin
 		@Override
 		public boolean belongsTo(Object family) 
 		{
-			return "ListenJob".equals(family);
+			return JOB_LISTEN.equals(family);
 		}
 
 		/**
@@ -426,8 +428,10 @@ public class NetWrapper extends Plugin
 			}
 			catch(Exception e)
 			{
+				e.printStackTrace();
 				logService.log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR);
-				requestNetworkStop(true);	
+				if(!monitor.isCanceled())
+					requestNetworkStop(true);	
 			}
 			finally
 			{
@@ -453,7 +457,7 @@ public class NetWrapper extends Plugin
 		 */
 		public SendJob(AbstractMessageInfo messageInfo)
 		{
-			super("SendJob");
+			super(JOB_SEND);
 			this.messageInfo = messageInfo;
 			setName("Sende "+messageInfo.getContentType() +" " + messageInfo.getQueryString() +" an den Server");
 		}
@@ -464,7 +468,7 @@ public class NetWrapper extends Plugin
 		@Override
 		public boolean belongsTo(Object family) 
 		{
-			return "SendJob".equals(family);
+			return JOB_SEND.equals(family);
 		}
 
 		@Override
@@ -531,7 +535,7 @@ public class NetWrapper extends Plugin
 		 */
 		public KeepAliveJob()
 		{
-			super("KeepAlive");
+			super(JOB_ALIVE);
 		}
 
 		/**
@@ -540,7 +544,7 @@ public class NetWrapper extends Plugin
 		@Override
 		public boolean belongsTo(Object family) 
 		{
-			return "KeepAliveJob".equals(family);
+			return JOB_ALIVE.equals(family);
 		}
 
 		@Override
@@ -578,7 +582,7 @@ public class NetWrapper extends Plugin
 		 */
 		public MonitorJob()
 		{
-			super("MonitorJob");
+			super(JOB_MONITOR);
 		}
 
 		/**
@@ -587,7 +591,7 @@ public class NetWrapper extends Plugin
 		@Override
 		public boolean belongsTo(Object family) 
 		{
-			return "MonitorJob".equals(family);
+			return JOB_MONITOR.equals(family);
 		}
 
 		@Override
@@ -606,19 +610,18 @@ public class NetWrapper extends Plugin
 					//the time difference between now and the send time
 					long time = Calendar.getInstance().getTimeInMillis() - info.getTimestamp();
 					int seconds = (int)(time/1000) % 60;
-					//check if the time is greater than 5 seconds
+					//check if the time is greater than 5 seconds and log a warning
 					if(seconds > 5)
+						logService.log("WARNING: The package #"+info.getSequenceId() +" not been answered by the server in time. Waiting . . .", IStatus.WARNING);
+					//show a message box to retransmitt the package
+					if(seconds > 10)
 					{
-						logService.log("WARNING: The package #"+info.getSequenceId() +" not been answered by the server. Send package again", IStatus.WARNING);
-						info.setTransmitted(info.getTransmitted()+1);
-						sheduleAndSend(info);
-					}
-					if(info.getTransmitted() > 2)
-					{
-
-						//show a message box to retransmitt the package
+						//only retransmit "normal" messages
 						if(info.getQueryString() != IModelActions.KEEP_ALIVE)
 							logService.transferFailed(info);
+						//when a keep alive package is not answered in time -> connection problem with the current server
+						else
+							requestNetworkStop(true);
 						logService.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
 						messageList.remove(info.getSequenceId());
 					}
