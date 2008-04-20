@@ -12,7 +12,6 @@ import at.rc.tacos.model.QueryFilter;
 public class AbstractMessageInfo 
 {
 	//properties
-	private int transmitted;
 	private long timestamp;
 	private String sequenceId;
 	private String contentType;
@@ -25,7 +24,7 @@ public class AbstractMessageInfo
 	 */
 	public AbstractMessageInfo()
 	{
-		transmitted = 0;
+		
 	}
 	
 	/**
@@ -91,14 +90,6 @@ public class AbstractMessageInfo
 	{
 		return sequenceId;
 	}
-	
-	/**
-	 * @return the transmitted
-	 */
-	public int getTransmitted() 
-	{
-		return transmitted;
-	}
 
 	/**
 	 * @param timestamp the timestamp to set
@@ -146,13 +137,5 @@ public class AbstractMessageInfo
 	public void setSequenceId(String sequenceId) 
 	{
 		this.sequenceId = sequenceId;
-	}
-
-	/**
-	 * @param transmitted the transmitted to set
-	 */
-	public void setTransmitted(int transmitted) 
-	{
-		this.transmitted = transmitted;
 	}
 }
