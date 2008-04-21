@@ -289,6 +289,7 @@ public class NetWrapper extends Plugin
 		//create the send kob and put it to wait
 		SendJob sendJob = new SendJob(info);
 		sendJob.setRule(new SendJobRule());
+		sendJob.setPriority(Job.INTERACTIVE); 
 		//the keep alive packages need no dialog to show 
 		if(IModelActions.KEEP_ALIVE.equalsIgnoreCase(info.getQueryString()))
 			sendJob.setUser(false);
@@ -612,7 +613,7 @@ public class NetWrapper extends Plugin
 					int seconds = (int)(time/1000) % 60;
 					//check if the time is greater than 5 seconds and log a warning
 					if(seconds > 5)
-						logService.log("WARNING: The package #"+info.getSequenceId() +" not been answered by the server in time. Waiting . . .", IStatus.WARNING);
+						logService.log("WARNING: The package #"+info.getSequenceId()  +" content: " + info.getContentType()+" not been answered by the server in time. Waiting . . .", IStatus.WARNING);
 					//show a message box to retransmitt the package
 					if(seconds > 10)
 					{
