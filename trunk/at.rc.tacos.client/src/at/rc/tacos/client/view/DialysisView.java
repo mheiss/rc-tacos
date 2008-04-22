@@ -254,7 +254,6 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	 */
 	private void makeActions()
 	{
-		dialysisOpenNewFormAction = new DialysisOpenNewFormAction();
 		dialysisEditAction = new DialysisEditAction(viewer);
 		dialysisDeleteAction = new DialysisDeleteAction(viewer);
 		dialysisTransportNowAction = new DialysisTransportNowAction(viewer);
@@ -292,7 +291,6 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 			return;
 		
 		//add the actions
-		manager.add(dialysisOpenNewFormAction);
 		manager.add(dialysisEditAction);
 		manager.add(new Separator());
 		manager.add(dialysisDeleteAction);
