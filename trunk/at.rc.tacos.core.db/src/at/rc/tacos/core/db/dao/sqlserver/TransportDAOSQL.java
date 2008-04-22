@@ -811,7 +811,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
         try
         {
             /** add or update the caller of the transport*/
-            if(transport.getCallerDetail() != null && transport.getCallerDetail().getCallerId() == -1)
+            if(transport.getCallerDetail() != null && transport.getCallerDetail().getCallerId() == 0)
             {
                 System.out.println("Adding caller");
                 int callerId = callerDAO.addCaller(transport.getCallerDetail());
@@ -823,7 +823,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 }
                 transport.getCallerDetail().setCallerId(callerId);
             }
-            else if(transport.getCallerDetail() != null)
+            else if(transport.getCallerDetail() != null && transport.getCallerDetail().getCallerId() != 0)
             {
                 if(!callerDAO.updateCaller(transport.getCallerDetail()))
                 {
