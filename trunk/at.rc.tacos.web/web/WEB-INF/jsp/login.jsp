@@ -9,8 +9,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="../css/stylesheetLog.css" />
-	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="<c:url value="/css/stylesheetLog.css"/>" />
+	<link rel="icon" type="image/x-icon" href="<c:url value="/favicon.ico"/>" />
 	<title>TACOS : Login</title>
 </head>
 <body onload="document.loginPanel.username.focus()">
