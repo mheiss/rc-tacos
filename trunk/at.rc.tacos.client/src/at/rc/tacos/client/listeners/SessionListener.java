@@ -77,7 +77,6 @@ public class SessionListener extends ClientListenerAdapter
         //check if the user is logged out
         if(logout.isLoggedOut())
         {
-        	session.fireLogout();
             Status status = new Status(IStatus.INFO,Activator.PLUGIN_ID,"Successfully logged out the user: "+logout.getUsername()); 
             Activator.getDefault().getLog().log(status);
         }

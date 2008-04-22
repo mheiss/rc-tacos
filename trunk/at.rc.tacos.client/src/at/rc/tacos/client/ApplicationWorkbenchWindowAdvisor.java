@@ -9,7 +9,6 @@ import org.eclipse.ui.application.*;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Login;
-import at.rc.tacos.model.Logout;
 
 /**
  * This class is used to control the status line, toolbar, title, 
@@ -45,13 +44,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 		if(login == null)
 			return true;
 		
-		//send a logout request to the server and close the connection
-		System.out.println("Sending logout request. Have a nice day :)");
-		Logout logout = new Logout(login.getUsername());
-		NetWrapper.getDefault().sendLogoutMessage(logout);
-		
 		//try to close the connection
 		NetWrapper.getDefault().requestNetworkStop(false);
+		
+		//Close the connection
+		System.out.println("Have a nice day :)");
 
 		return true;	
 	}

@@ -97,7 +97,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 				
 				//set the new transport
 				objectList.set(id, transport);
-				firePropertyChange("TRANSPORT_UPDATE", null, transport); 
+				firePropertyChange("TRANSPORT_UPDATE", oldTransport.getVehicleDetail(), transport); 
 			}
 		}); 
 	}
