@@ -25,8 +25,8 @@ public class TransportPerspective implements IPerspectiveFactory
         layout.setEditorAreaVisible(false);
         layout.setFixed(true);
         //the main components
-        layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
-        layout.addStandaloneView(UnderwayTransportsView.ID, false, IPageLayout.TOP, 0.45f, editorArea);
-        layout.addStandaloneView(OutstandingTransportsView.ID,false, IPageLayout.BOTTOM, 0.45f, editorArea);
+        layout.addStandaloneView(NavigationView.ID, true, IPageLayout.TOP, 0.10f, editorArea);
+        layout.addStandaloneView(UnderwayTransportsView.ID, true, IPageLayout.TOP, 0.45f, editorArea);
+        layout.addStandaloneView(OutstandingTransportsView.ID,true, IPageLayout.BOTTOM, 0.45f, editorArea);
     }
 }
