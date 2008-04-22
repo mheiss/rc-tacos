@@ -27,7 +27,7 @@ public class CopyTransportAction extends Action implements IProgramStatus
     public CopyTransportAction(TableViewer viewer)
     {
         this.viewer = viewer;
-        setText("Transport kopieren");
+        setText("Kopie erstellen");
         setToolTipText("Dupliziert den ausgewählten Transport");
     }
 
