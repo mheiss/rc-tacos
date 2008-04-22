@@ -141,8 +141,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
+		
+		SashForm sashForm = new SashForm(composite, SWT.HORIZONTAL);
+		
+		
+		
 
-		final Composite composite_1 = new Composite(composite, SWT.NONE);
+		final Composite composite_1 = new Composite(sashForm, SWT.NONE);
 		composite_1.setLayout(new FillLayout());
 
 		final Composite composite_3 = new Composite(composite_1, SWT.NONE);
@@ -153,6 +158,9 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 		//groups-----------------------------------
 		final SashForm sashForm_8 = new SashForm(composite_3, SWT.VERTICAL);
+		
+		FilterView filter = new FilterView();
+		filter.createPartControl(sashForm);
 
 		final Group richtungBruckGroup = new Group(sashForm_8, SWT.NONE);
 		richtungBruckGroup.setLayout(new FillLayout());
