@@ -42,7 +42,7 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 	public CopyTransportDetailsIntoClipboardAction(TableViewer viewer)
 	{
 		this.viewer = viewer;
-		setText("Transportdetails in die Zwischenablage kopieren");
+		setText("Zwischenablage (SMS) befüllen");
 		setToolTipText("Kopiert die Transportdetails in die Windows Zwischenablage");
 	}
 	
