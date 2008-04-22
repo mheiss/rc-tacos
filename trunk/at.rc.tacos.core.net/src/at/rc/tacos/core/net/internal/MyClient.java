@@ -88,11 +88,12 @@ public class MyClient implements Runnable,IConnectionStates
 				fireSocketStatusChanged(this,IConnectionStates.STATE_DISCONNECTED);
 				return;
 			}
-
-			String message = null;
 			try
 			{
-				message = socket.getBufferedInputStream().readLine();
+				String message = socket.getBufferedInputStream().readLine();
+				//assert we have a valid message
+				if(message == null)
+					throw new NullPointerException("Failed to get the data from the client");
 				//Create and fire the event
 				fireDataReceived(new NetEvent(this,message));  
 			}

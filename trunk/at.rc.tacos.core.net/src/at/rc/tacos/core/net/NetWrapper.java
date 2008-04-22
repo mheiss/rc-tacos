@@ -11,8 +11,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.osgi.framework.BundleContext;
 
 import at.rc.tacos.common.AbstractMessage;
@@ -138,6 +140,16 @@ public class NetWrapper extends Plugin
 		//create a new job if we do not have one
 		ListenJob listenJob = new ListenJob();
 		listenJob.setSystem(true);
+		listenJob.addJobChangeListener(new JobChangeAdapter()
+		{
+			@Override
+			public void done(IJobChangeEvent event) 
+			{
+				//check if the job was successful
+				if(event.getResult() == Status.CANCEL_STATUS)
+					requestNetworkStop(true);
+			}
+		});
 		listenJob.schedule();
 	}
 
@@ -277,11 +289,17 @@ public class NetWrapper extends Plugin
 		SendJob sendJob = new SendJob(info);
 		sendJob.setRule(new SendJobRule());
 		sendJob.setPriority(Job.INTERACTIVE); 
-		//the keep alive packages need no dialog to show 
-		if(IModelActions.KEEP_ALIVE.equalsIgnoreCase(info.getQueryString()))
-			sendJob.setUser(false);
-		else
-			sendJob.setUser(true);
+		sendJob.setUser(true);
+		sendJob.addJobChangeListener(new JobChangeAdapter()
+		{
+			@Override
+			public void done(IJobChangeEvent event) 
+			{
+				//check if the job was successful
+				if(event.getResult() == Status.CANCEL_STATUS)
+					requestNetworkStop(true);
+			}
+		});
 		sendJob.schedule();
 	}
 
@@ -296,18 +314,26 @@ public class NetWrapper extends Plugin
 			netSessionUserName = null;
 			//request all running jobs to stop
 			IJobManager jobManager = Job.getJobManager();
-			jobManager.cancel(JOB_LISTEN);
-			//find and wait for the job
+			//wait for the send job to complete
+			for(Job job:jobManager.find(JOB_SEND))
+			{
+				if(!job.cancel())
+					job.join();
+			}
+			//wait for the listen job to complete
 			for(Job job:jobManager.find(JOB_LISTEN))
 			{
-				System.out.println("waiting for job");
-				job.cancel();
-				job.join();
+				if(!job.cancel())
+					job.join();
 			}
-			jobManager.cancel(JOB_SEND);
-			jobManager.cancel(JOB_MONITOR);
+			//wait for the monitor job to complete
+			for(Job job:jobManager.find(JOB_MONITOR))
+			{
+				if(!job.cancel())
+					job.join();
+			}
 			logService.log("Setting all running network jobs to sleep", Status.INFO);
-			
+
 			//close the current socket
 			NetSource.getInstance().closeConnection();
 
@@ -323,7 +349,6 @@ public class NetWrapper extends Plugin
 		{
 			logService.log("Failed to close the network connection", Status.INFO);
 			logService.log(e.getMessage(), Status.ERROR);
-			e.printStackTrace();
 		}
 	}
 
@@ -363,13 +388,13 @@ public class NetWrapper extends Plugin
 			{
 				//get the reader to get new data
 				BufferedReader in = client.getBufferedInputStream();
-
+				
 				//wait and read the next new line from the stream
 				String newData = in.readLine();
 
 				//assert valid
 				if(newData == null)
-					return Status.CANCEL_STATUS;
+					return Status.OK_STATUS;
 
 				//set up the factory to decode
 				XMLFactory xmlFactory = new XMLFactory();
@@ -390,7 +415,7 @@ public class NetWrapper extends Plugin
 				if(!listenerFactory.hasListeners(contentType))
 				{
 					logService.log("No listener found for the message type: "+contentType,IStatus.WARNING);
-					return Status.CANCEL_STATUS;
+					return Status.OK_STATUS;
 				}
 
 				IModelListener listener = listenerFactory.getListener(contentType);
@@ -415,16 +440,19 @@ public class NetWrapper extends Plugin
 				//remove the package from the list
 				if(messageList.containsKey(sequenceId))
 					messageList.remove(sequenceId);
+				
+				return Status.OK_STATUS;
 			}
 			catch(SocketTimeoutException timeout)
 			{
 				//timeout, just go on . ..
+				return Status.OK_STATUS;
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
 				logService.log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR);
-				requestNetworkStop(true);	
+				logService.log("Starting the network wizard from the listen job. Reason:"+e.getMessage(), Status.ERROR);
+				return Status.CANCEL_STATUS;
 			}
 			finally
 			{
@@ -433,7 +461,6 @@ public class NetWrapper extends Plugin
 					schedule(10);
 				monitor.done();
 			}
-			return Status.OK_STATUS;
 		}
 	}
 
@@ -505,7 +532,7 @@ public class NetWrapper extends Plugin
 			catch(Exception e)
 			{
 				logService.log("Failed to send the package #"+messageInfo.getSequenceId() +" content: " +messageInfo.getContentType(),Status.ERROR);
-				requestNetworkStop(true);
+				logService.log("Starting the network wizard from the send job. Reason:"+e.getMessage(), Status.ERROR);
 				return Status.CANCEL_STATUS;
 			}
 			finally
@@ -562,9 +589,7 @@ public class NetWrapper extends Plugin
 					{
 						messageList.remove(info.getSequenceId());
 						logService.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
-						//only retransmit "normal" messages
-						if(info.getQueryString() != IModelActions.KEEP_ALIVE)
-							logService.transferFailed(info);					
+						logService.transferFailed(info);					
 					}
 					monitor.worked(1);
 				}
@@ -572,7 +597,6 @@ public class NetWrapper extends Plugin
 			catch(Exception e)
 			{
 				logService.log("Critical error while monitoring the status of the packages: "+e.getMessage(), Status.ERROR);
-				e.printStackTrace();
 			}
 			finally
 			{
