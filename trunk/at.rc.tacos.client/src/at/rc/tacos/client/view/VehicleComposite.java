@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -136,48 +137,57 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		compositeCarBottom.setLayout(new FillLayout(SWT.VERTICAL));
 
 		final Composite compositeCarIcons = new Composite(compositeCarBottom, SWT.NONE);
-		compositeCarIcons.setLayout(new FillLayout());
+//		compositeCarIcons.setLayout(new FormLayout());
 
 		// .. icons
 		readyLabel = new Label(compositeCarIcons, SWT.NONE);
 		readyLabel.setBackground(CustomColors.COLOR_BLUE);
+		readyLabel.setBounds(0, 0, 19, 19);
 
 		mobilePhoneLabel = new Label(compositeCarIcons, SWT.NONE);
 		mobilePhoneLabel.setBackground(CustomColors.COLOR_BLUE);
+		mobilePhoneLabel.setBounds(25, 0, 19, 19);
 
 		stationLabel = new Label(compositeCarIcons, SWT.NONE);
 		stationLabel.setBackground(CustomColors.COLOR_BLUE);
+		stationLabel.setBounds(45, 0, 19, 19);
 
 		repairLabel = new Label(compositeCarIcons, SWT.NONE);
 		repairLabel.setBackground(CustomColors.COLOR_BLUE);
+		repairLabel.setBounds(70, 0, 19, 19);
 
 		notesLabel = new Label(compositeCarIcons, SWT.NONE);
 		notesLabel.setBackground(CustomColors.COLOR_BLUE);
+		notesLabel.setBounds(95, 0, 19, 19);
 
 		statusLabel = new Label(compositeCarIcons, SWT.NONE);
 		statusLabel.setBackground(CustomColors.COLOR_BLUE);
+		statusLabel.setBounds(120, 0, 19, 19);
 
 		// .. staff
 		final Composite compositeCarStaff = new Composite(compositeCarBottom, SWT.NONE);
-		compositeCarStaff.setLayout(new FillLayout());
+		compositeCarBottom.setLayout(new FormLayout());
+//		compositeCarStaff.setLayout(new FormLayout());
 
 		driverLabel = new Label(compositeCarStaff, SWT.NONE);
 		driverLabel.setForeground(CustomColors.COLOR_NAME);
 		driverLabel.setFont(CustomColors.VEHICLE_TEXT);
 		driverLabel.setBackground(CustomColors.COLOR_BLUE);
-		driverLabel.setSize(10, 10);
+		driverLabel.setBounds(0, 19, 52, 19);
 
 		medicILabel = new Label(compositeCarStaff, SWT.NONE);
 		medicILabel.setForeground(CustomColors.COLOR_NAME);
 		medicILabel.setFont(CustomColors.VEHICLE_TEXT);
 		medicILabel.setBackground(CustomColors.COLOR_BLUE);
-		medicILabel.setSize(10,10);
+		medicILabel.setBounds(45, 19, 52, 19);
+//		medicILabel.setBounds()
 
 		medicIILabel = new Label(compositeCarStaff, SWT.NONE);
 		medicIILabel.setForeground(CustomColors.COLOR_NAME);
 		medicIILabel.setFont(CustomColors.VEHICLE_TEXT);
 		medicIILabel.setBackground(CustomColors.COLOR_BLUE);
-		medicIILabel.setSize(10,10);
+		medicIILabel.setBounds(95, 19, 52, 19);
+//		medicIILabel.setSize(10,10);
 
 		//create the actions
 		makeActions();
