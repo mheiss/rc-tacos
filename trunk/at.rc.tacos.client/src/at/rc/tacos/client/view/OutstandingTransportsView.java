@@ -190,9 +190,10 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 				
 				manager.add(new Separator());
 				manager.add(editTransportAction);
-				manager.add(cancelTransportAction);
 				manager.add(new Separator());
+				manager.add(cancelTransportAction);
 				manager.add(forwardTransportAction);
+				manager.add(new Separator());
 				manager.add(copyTransportAction);
 			}
 		});  
