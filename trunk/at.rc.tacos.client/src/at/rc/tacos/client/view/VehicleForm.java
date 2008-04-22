@@ -209,6 +209,9 @@ public class VehicleForm extends TitleAreaDialog
 				medic1ComboViewer.getCombo().getSelectionIndex() == -1 &&
 				medic2ComboViewer.getCombo().getSelectionIndex() == -1)
 			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+		
+		if(!readyButton.getSelection())
+			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		//Send the update message
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
 		getShell().close();
