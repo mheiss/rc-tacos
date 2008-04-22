@@ -2,11 +2,9 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.jface.viewers.TableViewer;
 
 import at.rc.tacos.client.providers.MultiTransportContentProvider;
-import at.rc.tacos.client.view.TransportForm;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
@@ -14,11 +12,13 @@ public class RemoveTransportFromMultiTransportList extends Action
 {
 	private Transport transport;
 	private MultiTransportContentProvider provider;
+	private TableViewer viewer;
 	
-	public RemoveTransportFromMultiTransportList(Transport transport, MultiTransportContentProvider provider)
+	public RemoveTransportFromMultiTransportList(Transport transport, MultiTransportContentProvider provider, TableViewer viewer)
 	{
 		this.transport = transport;
 		this.provider = provider;
+		this.viewer = viewer;
 	}
     /**
      * Returns the tool tip text for the action
@@ -27,7 +27,7 @@ public class RemoveTransportFromMultiTransportList extends Action
     @Override
     public String getToolTipText() 
     {
-        return "Öffnet ein Fenster um einen neuen Transportauftrag zu erstellen";
+        return "Löscht den markierten Transport aus der Liste der zu speichernden Transporte";
     }
     
     /**
@@ -37,7 +37,7 @@ public class RemoveTransportFromMultiTransportList extends Action
     @Override
     public String getText()
     {
-        return "Transport";
+        return "Löschen";
     }
     
     /**
@@ -57,6 +57,7 @@ public class RemoveTransportFromMultiTransportList extends Action
     public void run()
     {
     	provider.removeTransport(transport);
+    	viewer.refresh();
     }
 
 }
