@@ -301,7 +301,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         if(!createNew)
         {
         	//changing transport type only possible for a new transport
-//        	buttonAlles.setEnabled(false);
             buttonVormerkung.setEnabled(false);
             buttonNotfall.setEnabled(false);
             buttonDialyse.setEnabled(false);
@@ -776,7 +775,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         });
         viewerToCity.setInput(addressManager.toCityArray());
 
-
         final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
         final FormData fd_ortLabel = new FormData();
         fd_ortLabel.bottom = new FormAttachment(0, 20);
@@ -862,7 +860,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         begleitpersonButton.setLayoutData(fd_begleitpersonButton);
         begleitpersonButton.setToolTipText("Begleitperson");
         begleitpersonButton.setText("Begleitperson");
-//        begleitpersonButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson"));
 
         ruecktransportMoeglichButton = new Button(transportdatenGroup, SWT.CHECK);
         final FormData fd_button_1 = new FormData();
@@ -1193,7 +1190,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             comboPrioritaet.setItems(prebookingPriorities);
         if(transportType.equalsIgnoreCase("emergencyTransport") || transportType.equalsIgnoreCase("both"))
             comboPrioritaet.setItems(emergencyAndTransportPriorities);
-//        comboPrioritaet.setData("newKey", null);
         final FormData fd_comboPrioritaet = new FormData();
         fd_comboPrioritaet.bottom = new FormAttachment(0, 73);
         fd_comboPrioritaet.top = new FormAttachment(0, 52);
@@ -1236,7 +1232,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         label_4.setForeground(Util.getColor(0, 0, 255));
         label_4.setText("Priorität:");
         patientenzustandGroup.setTabList(new Control[] {setErkrVerl.getControl(), bd1Button, comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
-
         
         //group multi transport (only visible if the multi transport button was pressed
         multiTransportGroup = new Group(client, SWT.NONE);
@@ -1249,9 +1244,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         multiTransportGroup.setLayoutData(fd_multitransportGroup);
         multiTransportGroup.setText("Mehrfachtransport");
         multiTransportGroup.setVisible(false);
-        createMultiTransportTable();
-        
-        
+        createMultiTransportTable();  
         
         //group 'Alarmierung'
         planungGroup_1 = new Group(client, SWT.NONE);
@@ -1271,7 +1264,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_notarztButton.right = new FormAttachment(0, 88);
         fd_notarztButton.left = new FormAttachment(0, 5);
         notarztButton.setLayoutData(fd_notarztButton);
-//        notarztButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.notarzt"));
         notarztButton.setText("NA extern");
         notarztButton.setToolTipText("Externer! Notarzt für diesen Transport alarmiert");
         notarztButton.addSelectionListener(new SelectionAdapter() 
@@ -1295,7 +1287,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_rthButton.left = new FormAttachment(0, 5);
         rthButton.setLayoutData(fd_rthButton);
         rthButton.setToolTipText("Hubschrauber");
-//        rthButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.hubschrauber"));
         rthButton.setText("RTH");
         rthButton.addSelectionListener(new SelectionAdapter() 
         {
@@ -1319,7 +1310,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         dfButton.setLayoutData(fd_dfButton);
         dfButton.setText("DF/Inspektion");
         dfButton.setToolTipText("DF/Inspektionsdienst");
-//        dfButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.rotlicht"));
         dfButton.addSelectionListener(new SelectionAdapter() 
         {
             public void widgetSelected(final SelectionEvent e) 
@@ -1342,7 +1332,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         brkdtButton.setLayoutData(fd_brkdtButton);
         brkdtButton.setToolTipText("Bezirksrettungskommandant");
         brkdtButton.setText("BRKDT");
-//        brkdtButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.rotlicht"));
         brkdtButton.addSelectionListener(new SelectionAdapter() 
         {
             public void widgetSelected(final SelectionEvent e) 
@@ -1365,7 +1354,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         feuerwehrButton.setLayoutData(fd_feuerwehrButton);
         feuerwehrButton.setToolTipText("Feuerwehr");
         feuerwehrButton.setText("FW");
-//        feuerwehrButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.feuerwehr"));
         feuerwehrButton.addSelectionListener(new SelectionAdapter() 
         {
             public void widgetSelected(final SelectionEvent e) 
@@ -1379,8 +1367,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             } 
         });
 
-       
-
         polizeiButton = new Button(planungGroup_1, SWT.CHECK);
         final FormData fd_polizeiButton = new FormData();
         fd_polizeiButton.bottom = new FormAttachment(0, 124);
@@ -1390,7 +1376,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         polizeiButton.setLayoutData(fd_polizeiButton);
         polizeiButton.setToolTipText("Polizei");
         polizeiButton.setText("Polizei");
-//        polizeiButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.polizei"));
         polizeiButton.addSelectionListener(new SelectionAdapter() 
         {
             public void widgetSelected(final SelectionEvent e) 
@@ -1434,7 +1419,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         fd_bergrettungButton.left = new FormAttachment(0, 5);
         bergrettungButton.setLayoutData(fd_bergrettungButton);
         bergrettungButton.setText("Bergrettung");
-//        bergrettungButton.setImage(ImageFactory.getInstance().getRegisteredImage("transport.alarming.bergrettung"));
         bergrettungButton.setToolTipText("Bergrettung");
         bergrettungButton.addSelectionListener(new SelectionAdapter() 
         {
@@ -1449,7 +1433,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             } 
         });
 
-        //alarming timestamp text fields-------------------------------------------------------------
         timestampNA = new Text(planungGroup_1, SWT.BORDER);
         final FormData fd_timestampNA = new FormData();
         fd_timestampNA.bottom = new FormAttachment(0, 19);
@@ -1531,7 +1514,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         timestampBergrettung.setEditable(false);
         timestampKIT.setEditable(false);
         
-        //-------------------------------------------------------------------------------------------
         planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton, KITButton});
 
         final Label label_5 = new Label(client, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -2105,7 +2087,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             }
         });
     
-        //TODO
 	    buttonMehrfachtransport = new Button(formGroup, SWT.NONE);
 	    final FormData fd_buttonMehrfachtransport = new FormData();
 	    fd_buttonMehrfachtransport.bottom = new FormAttachment(0, 59);
@@ -2167,8 +2148,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             	viewer.refresh();	        	
 	        }
 	    });
-	    
-	    
 	}
 
     @Override
@@ -2767,8 +2746,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     
     private void createMultiTransportTable()
     {
-    
-    	viewer = new TableViewer(multiTransportGroup, SWT.VIRTUAL | SWT.MULTI | SWT.BORDER);
+    	viewer = new TableViewer(multiTransportGroup, SWT.VIRTUAL | SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
     	final Table table_1 = viewer.getTable();
     	final FormData fd_table_1 = new FormData();
     	fd_table_1.right = new FormAttachment(0, 824);
@@ -2780,7 +2758,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		viewer.setLabelProvider(new MultiTransportLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager().toArray());
 		viewer.refresh();
-		
 		
 		viewer.getTable().addMouseListener(new MouseAdapter() 
 		{
@@ -2796,14 +2773,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		//table.setSize(100, 300);
 
 		final TableColumn dateColumn = new TableColumn(table, SWT.NONE);
 		dateColumn.setToolTipText("Transportdatum");
 		dateColumn.setWidth(65);
 		dateColumn.setText("Datum");
 	
-
 		final TableColumn bTableColumnOrtsstelle = new TableColumn(table, SWT.NONE);
 		bTableColumnOrtsstelle.setWidth(27);
 		bTableColumnOrtsstelle.setText("OS");
@@ -2897,7 +2872,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		bTableColumnTA.addListener(SWT.Selection, sortListener);
 		
 		//create the menu
-		removeAction = new RemoveTransportFromMultiTransportList(transport, provider);
+		removeAction = new RemoveTransportFromMultiTransportList(transport, provider, viewer);
 		hookContextMenu();
 		viewer.refresh();
     }
