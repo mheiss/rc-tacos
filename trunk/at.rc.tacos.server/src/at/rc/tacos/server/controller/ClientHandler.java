@@ -47,17 +47,6 @@ public class ClientHandler implements INetListener
 
 		//the client connection
 		final ClientSession session = server.getSession(ne.getClient());
-		
-		//send back the keep alive package
-		if(IModelActions.KEEP_ALIVE.equalsIgnoreCase(queryString))
-		{
-			AbstractMessageInfo info = new AbstractMessageInfo();
-			info.setSequenceId(sequenceId);
-			info.setContentType(SystemMessage.ID);
-			info.setQueryString(IModelActions.KEEP_ALIVE);
-			server.sendMessage(session, info);
-			return;
-		}
 
 		//the client is not authenticated, no login request -> not accepted
 		if(!session.isAuthenticated() &! Login.ID.equalsIgnoreCase(contentType))
