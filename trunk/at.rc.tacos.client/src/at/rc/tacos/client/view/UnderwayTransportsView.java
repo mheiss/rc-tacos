@@ -384,7 +384,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(setTransportStatusS3Action);
 		manager.add(setTransportStatusS4Action);
 		manager.add(setTransportStatusS5Action);
-		manager.add(new Separator());
 		manager.add(editTransportStatusAction);
 		manager.add(new Separator());
 		manager.add(editTransportAction);
@@ -392,6 +391,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(detachCarAction);
 		manager.add(emptyTransportAction);
 		manager.add(cancelTransportAction);
+		manager.add(new Separator());
 		manager.add(copyTransportAction);
 		manager.add(copyTransportDetailsIntoClipboardAction);
 	}
