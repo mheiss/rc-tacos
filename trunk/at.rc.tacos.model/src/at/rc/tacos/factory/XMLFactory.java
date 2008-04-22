@@ -58,7 +58,7 @@ public class XMLFactory
     public void setupDecodeFactory(String xmlSource)
     {
         if(xmlSource == null || xmlSource.trim().isEmpty())
-            throw new IllegalArgumentException("The source string canno be null or empty");
+            throw new IllegalArgumentException("The source string cannot be null or empty");
         if(!xmlSource.startsWith("<") &! xmlSource.endsWith(">"))
             throw new IllegalArgumentException("This source string must be encoded in xml");
         this.xmlSource = xmlSource;
