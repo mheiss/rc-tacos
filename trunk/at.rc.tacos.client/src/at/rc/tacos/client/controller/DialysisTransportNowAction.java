@@ -28,7 +28,7 @@ public class DialysisTransportNowAction extends Action
 	public DialysisTransportNowAction(TableViewer viewer)
 	{
 		this.viewer = viewer;
-		setText("Transport jetzt durchführen");
+		setText("Jetzt durchführen");
 		setToolTipText("Dialyseeintrag wird in Tabelle offene Transporte angezeigt");
 	}
 	
