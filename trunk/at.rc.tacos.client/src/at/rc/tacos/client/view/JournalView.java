@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
@@ -99,9 +100,17 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		form.setText("Journalblatt");
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new FillLayout());
+		
+		
 
 		final Composite composite = form.getBody();
-		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		
+		SashForm sashForm = new SashForm(composite, SWT.HORIZONTAL);
+		
+		FilterView filter = new FilterView();
+		filter.createPartControl(sashForm);
+		
+		viewer = new TableViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new JournalViewContentProvider());
 		viewer.setLabelProvider(new JournalViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager());
