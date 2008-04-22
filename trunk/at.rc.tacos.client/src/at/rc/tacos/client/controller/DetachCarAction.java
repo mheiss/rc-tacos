@@ -28,7 +28,7 @@ public class DetachCarAction extends Action implements IProgramStatus
 	public DetachCarAction(TableViewer viewer)
 	{
 		this.viewer = viewer;
-		setText("Fahrzeug abziehen");
+		setText("Abziehen des Fahrzeuges");
 		setToolTipText("Zieht das Fahrzeug vom Transport ab");
 	}
 	
