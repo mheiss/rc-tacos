@@ -95,7 +95,10 @@ public class ClientHandler implements INetListener
 				Login loginResult = (Login)listener.handleLoginRequest(objects.get(0));
 				//add the client to the authenticated list
 				if(loginResult.isLoggedIn())
+				{
 					session.setAuthenticated(loginResult.getUsername(),loginResult.isWebClient());
+					logger.info("Login successful for user "+loginResult.getUsername());
+				}
 				//send back
 				info.setMessage(loginResult);
 				server.sendMessage(session,info);
@@ -107,11 +110,14 @@ public class ClientHandler implements INetListener
 				Logout logoutResult = (Logout)listener.handleLogoutRequest(objects.get(0));
 				//remove the client form the list of authenticated clients if successfully
 				if(logoutResult.isLoggedOut())
+				{
+					logger.info("Logout from user: "+logoutResult.getUsername()+". Have a nice day :)");
+					//send back to the client
+					info.setMessage(logoutResult);
+					server.sendMessage(session,info);
 					session.setDeAuthenticated();
+				}
 				server.clientDisconnected(session.getConnection());
-				//send back to the client
-				info.setMessage(logoutResult);
-				server.sendMessage(session,info);
 				return;
 			}
 			//add request
