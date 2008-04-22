@@ -88,6 +88,9 @@ public class RosterDayController2 extends Controller {
 			}
 			params.put("staffList", staffList);
 		}
+		if (staffMember != null) {
+			params.put("staffMember", staffMember);
+		}
 		
 		// Location
 		final String paramLocationId = request.getParameter("locationId");
@@ -106,8 +109,17 @@ public class RosterDayController2 extends Controller {
 				}
 			}
 		}
+		if (location != null) {
+			params.put("location", location);
+		}
 		
 		// Service Type
+		final String paramServiceTypeId = request.getParameter("serviceTypeId");
+		int serviceTypeId = 0;
+		ServiceType serviceType = null;
+		if (paramServiceTypeId != null) {
+			serviceTypeId = Integer.parseInt(paramServiceTypeId);
+		}
 		List<AbstractMessage> serviceTypeList = new ArrayList<AbstractMessage>();
 		if (authorization.equals(Login.AUTH_ADMIN)) {
 			serviceTypeList = connection.sendListingRequest(ServiceType.ID, null);
@@ -115,10 +127,12 @@ public class RosterDayController2 extends Controller {
 			final QueryFilter filter = new QueryFilter();
 			filter.add(IFilterTypes.SERVICETYPE_FILTER, ServiceType.SERVICETYPE_FREIWILLIG);
 			serviceTypeList = connection.sendListingRequest(ServiceType.ID, filter);
-		}
-		
+		}	
 		if (ServiceType.ID.equalsIgnoreCase(connection.getContentType())) {
 			params.put("serviceTypeList", serviceTypeList);
+		}
+		if (serviceType != null) {
+			params.put("serviceType", serviceType);
 		}
 		
 		// Create Calendar
