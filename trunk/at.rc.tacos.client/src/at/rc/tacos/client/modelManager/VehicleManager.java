@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import at.rc.tacos.common.ITransportStatus;
@@ -252,15 +251,26 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 
             //the updated transport
             Transport transport = (Transport)evt.getNewValue();
+            
             //assert valid
             if(transport == null)
                 return;
+            
+            VehicleDetail vehicle = null;
 
             //assert valid
             if(transport.getVehicleDetail() == null)
-                return;
+            {
+            	//check the old vehicle of the transport
+                if(evt.getOldValue() == null)
+                	return;
+                System.out.println("Checking the old transport");
+                vehicle = (VehicleDetail)evt.getOldValue();
+            }
+            else
+            	vehicle = transport.getVehicleDetail();
             
-            int index = objectList.indexOf(transport.getVehicleDetail());
+            int index = objectList.indexOf(vehicle);
             VehicleDetail detail = objectList.get(index);
 
             //get the list of transports

@@ -169,15 +169,6 @@ public class SessionManager extends PropertyManager
 	}
 
 	/**
-	 * Fired when a logout event occures.
-	 */
-	public void fireLogout()
-	{
-		loginInformation = null;
-		NetWrapper.getDefault().setNetSessionUsername(loginInformation.getUsername());
-	}
-
-	/**
 	 * Fired when the connection to the server is lost.
 	 */
 	public void fireConnectionLost()
