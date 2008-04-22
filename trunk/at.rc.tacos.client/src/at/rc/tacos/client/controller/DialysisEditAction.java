@@ -23,7 +23,7 @@ public class DialysisEditAction extends Action
 	public DialysisEditAction(TableViewer viewer)
 	{
 		this.viewer = viewer;
-		setText("Dialyseeintrag bearbeiten");
+		setText("Eintrag bearbeiten");
 		setToolTipText("Öffnet ein Fenster, um den Dialyseeintrag zu bearbeiten");
 	}
 	
