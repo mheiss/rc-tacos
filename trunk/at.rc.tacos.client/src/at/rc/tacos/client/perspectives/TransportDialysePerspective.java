@@ -24,7 +24,7 @@ public class TransportDialysePerspective implements IPerspectiveFactory
         layout.setEditorAreaVisible(false);
         layout.setFixed(true);
         //the main components
-        layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
-        layout.addStandaloneView(DialysisView.ID, false, IPageLayout.RIGHT, 0.90f, editorArea);
+        layout.addStandaloneView(NavigationView.ID, true, IPageLayout.TOP, 0.10f, editorArea);
+        layout.addStandaloneView(DialysisView.ID, true, IPageLayout.RIGHT, 0.90f, editorArea);
     }
 }

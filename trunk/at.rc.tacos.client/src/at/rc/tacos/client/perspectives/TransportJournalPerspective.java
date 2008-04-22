@@ -21,8 +21,8 @@ public class TransportJournalPerspective implements IPerspectiveFactory
         layout.setEditorAreaVisible(false);
         layout.setFixed(true);
         //the main components
-        layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
-        layout.addStandaloneView(JournalView.ID,false, IPageLayout.RIGHT, 0.12f, editorArea);
-        layout.addStandaloneView(FilterView.ID, false, IPageLayout.LEFT, 0.85f, editorArea);
+        layout.addStandaloneView(NavigationView.ID, true, IPageLayout.TOP, 0.10f, editorArea);
+        layout.addStandaloneView(JournalView.ID,true, IPageLayout.RIGHT, 0.12f, editorArea);
+        layout.addStandaloneView(FilterView.ID, true, IPageLayout.LEFT, 0.85f, editorArea);
     }
 }
