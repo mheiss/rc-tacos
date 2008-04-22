@@ -20,7 +20,7 @@ import at.rc.tacos.model.Login;
  * splash screen is shown.
  * @since 3.3
  */
-public class InteractiveSplashHandler extends AbstractSplashHandler implements PropertyChangeListener, KeyListener
+public class InteractiveSplashHandler extends AbstractSplashHandler implements PropertyChangeListener
 {
 	//the components
 	private Text fTextUsername;
@@ -92,8 +92,6 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		// Keep the splash screen visible and prevent the RCP application from 
 		// loading until the close button is clicked.
 		doEventLoop();
-		//listen to key events
-		splash.addKeyListener(this);
 	}
 
 	/**
@@ -182,7 +180,6 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 				handleButtonOKWidgetSelected();
 			}
 		}); 
-		fButtonOK.addKeyListener(this);
 	}
 
 	/**
@@ -245,6 +242,20 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		GridData data;
 		// Create the composite
 		fCompositeLogin = new Composite(getSplash(), SWT.BORDER);
+		fCompositeLogin.addTraverseListener(new TraverseListener()
+		{
+			@Override
+			public void keyTraversed(TraverseEvent te) 
+			{
+				//check for a pressed entry key
+				if(te.keyCode == 13)
+				{
+					te.doit = false;
+					handleButtonOKWidgetSelected();
+				}
+			}
+			
+		});
 		GridLayout layout = new GridLayout(3, false);
 		layout.marginLeft = MARING_LEFT;
 		layout.marginTop = MARGIN_TOP;
@@ -261,7 +272,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		data.widthHint = F_TEXT_WIDTH_HINT;
 		data.horizontalSpan = 2;
 		fTextUsername.setLayoutData(data);  
-
+		fTextUsername.setFocus();
 		// the label for the password
 		fLabelPassword = new Label(fCompositeLogin, SWT.NONE);
 		fLabelPassword.setText("&Passwort:"); //NON-NLS-1
@@ -285,7 +296,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_BUTTON_WIDTH_HINT;
 		data.verticalIndent = 10;
-		fButtonOK.setLayoutData(data);  
+		fButtonOK.setLayoutData(data); 
 
 		// Create the button
 		fButtonCancel = new Button(fCompositeLogin, SWT.PUSH);
@@ -356,19 +367,4 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 				loginStatus = 3;
 		}
 	}
-
-	@Override
-	public void keyPressed(KeyEvent ke) 
-	{
-		System.out.println(ke.keyCode);
-		//listen to return key events
-		if(ke.keyCode == SWT.CR)
-		{
-			handleButtonOKWidgetSelected();
-		}
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent ke) { }
 }
