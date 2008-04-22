@@ -29,7 +29,7 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 	public CancelTransportAction(TableViewer viewer)
 	{
 		this.viewer = viewer;
-		setText("Transport stornieren");
+		setText("Storno");
 		setToolTipText("Storniert den Transport und verschiebt ihn in das Journalblatt");
 	}
 	
