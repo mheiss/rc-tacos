@@ -67,16 +67,18 @@ INSERT INTO disease(disease_ID, disease) VALUES(2, 'Kreislauf');
 INSERT INTO disease(disease_ID, disease) VALUES(3, 'Neuronale Beschwerden');
 
 -- competences
-INSERT INTO competences(competence_ID, competence) VALUES(1, 'Rettungssanitäter');
-INSERT INTO competences(competence_ID, competence) VALUES(2, 'Einsatzfahrer');
-INSERT INTO competences(competence_ID, competence) VALUES(3, 'FK 1');
-INSERT INTO competences(competence_ID, competence) VALUES(4, 'FK 2');
-INSERT INTO competences(competence_ID, competence) VALUES(5, 'FK 3');
+INSERT INTO competences(competence_ID, competence) VALUES(1, 'Fahrer');
+INSERT INTO competences(competence_ID, competence) VALUES(2, 'Sanitäter');
+INSERT INTO competences(competence_ID, competence) VALUES(3, 'Notfallsanitäter');
+INSERT INTO competences(competence_ID, competence) VALUES(4, 'Rettungssanitäter');
+INSERT INTO competences(competence_ID, competence) VALUES(5, 'Notarzt');
 INSERT INTO competences(competence_ID, competence) VALUES(6, 'Leitstellendisponent');
-INSERT INTO competences(competence_ID, competence) VALUES(7, 'Notfallsanitäter');
-INSERT INTO competences(competence_ID, competence) VALUES(8, 'KIT');
-INSERT INTO competences(competence_ID, competence) VALUES(9, 'SVE');
-
+INSERT INTO competences(competence_ID, competence) VALUES(7, 'Dienststellenführender');
+INSERT INTO competences(competence_ID, competence) VALUES(8, 'Inspektionsdienst');
+INSERT INTO competences(competence_ID, competence) VALUES(9, 'BKTW-Fahrer');
+INSERT INTO competences(competence_ID, competence) VALUES(10, 'Journaldienst');
+INSERT INTO competences(competence_ID, competence) VALUES(11, 'Volontär');
+INSERT INTO competences(competence_ID, competence) VALUES(12, 'Sonstiges');
 
 -- locations
 INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID)
