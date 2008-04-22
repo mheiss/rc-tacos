@@ -26,7 +26,7 @@ public class DialysisDeleteAction extends Action
 	public DialysisDeleteAction(TableViewer viewer)
 	{
 		this.viewer = viewer;
-		setText("Dialyseeintrag löschen");
+		setText("Löschen");
 		setToolTipText("Löscht den Dialyseeintrag endgültig!");
 	}
 	
