@@ -59,7 +59,7 @@
 	<table id="commentForm" class="standardForm">
 		<tr>
 			<td>
-				<textarea cols="50" rows="10" wrap="soft">
+				<textarea cols="50" rows="5" wrap="soft">
 				</textarea>
 			</td>
 		</tr>
