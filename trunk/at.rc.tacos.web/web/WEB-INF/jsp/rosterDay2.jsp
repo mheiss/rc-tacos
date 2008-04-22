@@ -59,7 +59,7 @@
 	<table id="commentForm" class="standardForm">
 		<tr>
 			<td>
-				<textarea cols="50" rows="5" wrap="soft">
+				<textarea cols="40" rows="7" wrap="soft">
 				</textarea>
 			</td>
 		</tr>
@@ -67,15 +67,57 @@
 	<div id="timeFormHeader" class="formHeader">Dienstzeiten</div>
 	<table id="timeForm" class="standardForm">
 		<tr>
-			<td>Dienst von: 
-				<input id="dateFrom" type="text" size="20" maxlength="20" />
-				<c:url var="url" value="/image/calendar_edit.gif" />
-				<img src="${url}" border="0" id="dateFromCalendarTrigger" style="cursor:pointer" /> 
-			</td>
-			<td>bis: 
-				<input id="dateTo" type="text" size="20" maxlength="20" />
-				<c:url var="url" value="/image/calendar_edit.gif" />
-				<img src="${url}" border="0" id="dateToCalendarTrigger" style="cursor:pointer" />
+			<td>
+				<table>
+					<tr>
+						<td>
+							Dienst von: 
+						</td>
+						<td>
+							<input id="dateFrom" name="dateFrom" type="text" size="10" maxlength="10" />
+							<c:url var="url" value="/image/calendar_edit.gif" />
+							<img src="${url}" border="0" id="dateFromCalendarTrigger" style="cursor:pointer" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<select size="1" name="timeFromHours">
+								<option>12</option>
+								<option>13</option>
+							</select>
+							<select size="1" name="timeFromMinutes">
+								<option>5</option>
+								<option>10</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							bis: 
+						</td>
+						<td>
+							<input id="dateTo" name="dateTo" type="text" size="10" maxlength="10" />
+							<c:url var="url" value="/image/calendar_edit.gif" />
+							<img src="${url}" border="0" id="dateToCalendarTrigger" style="cursor:pointer" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<select size="1" name="timeToHours">
+								<option>12</option>
+								<option>13</option>
+							</select>
+							<select size="1" name="timeToMinutes">
+								<option>5</option>
+								<option>10</option>
+							</select>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 	</table>
