@@ -51,7 +51,6 @@ public class NetWrapper extends Plugin
 	//the running jobs
 	private final static String JOB_MONITOR = "MonitorJob";
 	private final static String JOB_LISTEN = "ListenJob";
-	private final static String JOB_ALIVE = "KeepAliveJob";
 	private final static String JOB_SEND = "SendJob";
 
 	/**
@@ -104,8 +103,6 @@ public class NetWrapper extends Plugin
 	{
 		//start the thread to listen to new data
 		startListenJob();
-		//start the thread to check the server connection
-		startKeepAliveJob();
 		//the monitor thread
 		startMonitorThread();
 		//log to the client
@@ -144,16 +141,6 @@ public class NetWrapper extends Plugin
 		listenJob.schedule();
 	}
 
-	/**
-	 * Sends KEEP_ALIVE messages to the server to check the connection regularly
-	 */
-	private void startKeepAliveJob()
-	{
-		//create the job if we do not have one
-		KeepAliveJob keepAliveJob = new KeepAliveJob();
-		keepAliveJob.setSystem(true);
-		keepAliveJob.schedule();
-	}
 
 	/**
 	 * Monitors the send packages and informs when the server sends no reply
@@ -310,9 +297,15 @@ public class NetWrapper extends Plugin
 			//request all running jobs to stop
 			IJobManager jobManager = Job.getJobManager();
 			jobManager.cancel(JOB_LISTEN);
+			//find and wait for the job
+			for(Job job:jobManager.find(JOB_LISTEN))
+			{
+				System.out.println("waiting for job");
+				job.cancel();
+				job.join();
+			}
 			jobManager.cancel(JOB_SEND);
 			jobManager.cancel(JOB_MONITOR);
-			jobManager.cancel(JOB_ALIVE);
 			logService.log("Setting all running network jobs to sleep", Status.INFO);
 			
 			//close the current socket
@@ -431,11 +424,11 @@ public class NetWrapper extends Plugin
 			{
 				e.printStackTrace();
 				logService.log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR);
-				if(!monitor.isCanceled())
-					requestNetworkStop(true);	
+				requestNetworkStop(true);	
 			}
 			finally
 			{
+				//restart again if not cancled
 				if(!monitor.isCanceled())
 					schedule(10);
 				monitor.done();
@@ -500,10 +493,6 @@ public class NetWrapper extends Plugin
 				//put the message to the list of packages that are waiting for server reply
 				messageList.put(messageInfo.getSequenceId(), messageInfo);
 
-				//if this is not a KEEP_ALIVE package we want to track the status
-				if(IModelActions.KEEP_ALIVE.equalsIgnoreCase(messageInfo.getQueryString()))
-					return Status.OK_STATUS;
-
 				//for all other message wait until the server sends a response
 				while(messageList.containsKey(messageInfo.getSequenceId()))
 				{
@@ -523,52 +512,6 @@ public class NetWrapper extends Plugin
 			{
 				monitor.done();
 			}
-		}
-	}
-
-	/**
-	 * The keep alive thrad that sends regularly system messages
-	 */
-	public class KeepAliveJob extends Job
-	{
-		/**
-		 * Default class constructor
-		 */
-		public KeepAliveJob()
-		{
-			super(JOB_ALIVE);
-		}
-
-		/**
-		 * Returns the family to which the job belongs to
-		 */
-		@Override
-		public boolean belongsTo(Object family) 
-		{
-			return JOB_ALIVE.equals(family);
-		}
-
-		@Override
-		protected IStatus run(IProgressMonitor monitor) 
-		{
-			try
-			{
-				monitor.beginTask("Sending keep alive message", IProgressMonitor.UNKNOWN);
-				//setup the keep alive package
-				AbstractMessageInfo info = new AbstractMessageInfo();
-				info.setContentType(SystemMessage.ID);
-				info.setQueryString(IModelActions.KEEP_ALIVE);
-				sheduleAndSend(info);
-			}
-			finally
-			{
-				//if the job is not canceled restart it again
-				if(!monitor.isCanceled())
-					schedule(5000);
-				monitor.done();
-			}
-			//everything is ok :)
-			return Status.OK_STATUS;
 		}
 	}
 
@@ -617,14 +560,11 @@ public class NetWrapper extends Plugin
 					//show a message box to retransmitt the package
 					if(seconds > 10)
 					{
+						messageList.remove(info.getSequenceId());
+						logService.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
 						//only retransmit "normal" messages
 						if(info.getQueryString() != IModelActions.KEEP_ALIVE)
-							logService.transferFailed(info);
-						//when a keep alive package is not answered in time -> connection problem with the current server
-						else
-							requestNetworkStop(true);
-						logService.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
-						messageList.remove(info.getSequenceId());
+							logService.transferFailed(info);					
 					}
 					monitor.worked(1);
 				}
