@@ -2,7 +2,6 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.action.IMenuListener;
@@ -15,12 +14,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PlatformUI;
-
 import at.rc.tacos.client.controller.VehicleAtStationAction;
 import at.rc.tacos.client.controller.VehicleDetachAllStaffMembersAction;
 import at.rc.tacos.client.controller.VehicleEditAction;
@@ -111,6 +108,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		//top composite (name of the ambulance, type of the ambulance)
 		Composite compositeCarTop = new Composite(this,SWT.NONE);
 		compositeCarTop.setLayout(new FillLayout());
+		
 		// .. name of the ambulance
 		vehicleNameLabel = new Label(compositeCarTop, SWT.NONE);
 		vehicleNameLabel.setForeground(CustomColors.COLOR_DARK);
@@ -139,7 +137,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		compositeCarBottom.setLayout(new FillLayout(SWT.VERTICAL));
 
 		compositeCarIcons = new Composite(compositeCarBottom, SWT.NONE);
-//		compositeCarIcons.setLayout(new FormLayout());
 
 		// .. icons
 		readyLabel = new Label(compositeCarIcons, SWT.NONE);
