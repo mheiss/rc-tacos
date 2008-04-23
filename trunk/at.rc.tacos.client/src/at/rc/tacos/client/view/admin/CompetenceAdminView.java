@@ -26,6 +26,7 @@ import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.CompetenceEditor;
 import at.rc.tacos.client.editors.CompetenceEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.CompetenceContentProvider;
 import at.rc.tacos.client.providers.CompetenceLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -63,10 +64,13 @@ public class CompetenceAdminView extends ViewPart implements PropertyChangeListe
     @Override
     public void createPartControl(final Composite parent) 
     {
+    	String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
     	//the scrolled form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
-        form.setText("Liste der Kompetenzen"); 
+        form.setText("Liste der Kompetenzen");
+        if(!authorization.equalsIgnoreCase("Administrator"))
+			form.setEnabled(false);
         toolkit.decorateFormHeading(form.getForm());
         GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;

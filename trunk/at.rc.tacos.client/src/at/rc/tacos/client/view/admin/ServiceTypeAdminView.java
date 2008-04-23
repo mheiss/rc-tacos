@@ -26,6 +26,7 @@ import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.ServiceTypeEditor;
 import at.rc.tacos.client.editors.ServiceTypeEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.ServiceTypeContentProvider;
 import at.rc.tacos.client.providers.ServiceTypeLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -63,10 +64,13 @@ public class ServiceTypeAdminView extends ViewPart implements PropertyChangeList
     @Override
     public void createPartControl(final Composite parent) 
     {
+    	String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
     	//the scrolled form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
         form.setText("Liste der Dienstverhältnisse"); 
+        if(!authorization.equalsIgnoreCase("Administrator"))
+			form.setEnabled(false);
         toolkit.decorateFormHeading(form.getForm());
         GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;

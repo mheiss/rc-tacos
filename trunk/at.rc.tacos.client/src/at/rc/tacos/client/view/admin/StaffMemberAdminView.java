@@ -27,6 +27,7 @@ import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.StaffMemberEditor;
 import at.rc.tacos.client.editors.StaffMemberEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -65,10 +66,13 @@ public class StaffMemberAdminView extends ViewPart implements PropertyChangeList
     @Override
     public void createPartControl(final Composite parent) 
     { 	
+    	String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
     	//the scrolled form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
         form.setText("Liste der Mitarbeiter"); 
+        if(!authorization.equalsIgnoreCase("Administrator"))
+			form.setEnabled(false);
         toolkit.decorateFormHeading(form.getForm());
         GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;

@@ -26,6 +26,7 @@ import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.LocationEditor;
 import at.rc.tacos.client.editors.LocationEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -63,10 +64,13 @@ public class LocationAdminView extends ViewPart implements PropertyChangeListene
     @Override
     public void createPartControl(final Composite parent) 
     {
+    	String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
     	//the scrolled form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
         form.setText("Liste der Dienststellen"); 
+        if(!authorization.equalsIgnoreCase("Administrator"))
+			form.setEnabled(false);
         toolkit.decorateFormHeading(form.getForm());
         GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;
