@@ -74,6 +74,16 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
+         
+         
+       <view
+            name="Transporte"
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.TransportFolder"
+            icon="icons/resources/vehicle.png"
+            id="at.rc.tacos.client.view.folder_view">
+      </view>
+         
       <view
             name="Fahrzeugübersicht"
             allowMultiple="false"
