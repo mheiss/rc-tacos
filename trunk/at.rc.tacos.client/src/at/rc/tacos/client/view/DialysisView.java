@@ -23,7 +23,6 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.DialysisDeleteAction;
 import at.rc.tacos.client.controller.DialysisEditAction;
-import at.rc.tacos.client.controller.DialysisOpenNewFormAction;
 import at.rc.tacos.client.controller.DialysisTransportNowAction;
 import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -44,7 +43,6 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	private TableViewer viewer;
 	
 	//the actions for the context menu
-	private DialysisOpenNewFormAction dialysisOpenNewFormAction;
 	private DialysisEditAction dialysisEditAction;
 	private DialysisDeleteAction dialysisDeleteAction;
 	private DialysisTransportNowAction dialysisTransportNowAction;
