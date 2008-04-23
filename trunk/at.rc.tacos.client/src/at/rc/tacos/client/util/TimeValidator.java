@@ -70,7 +70,6 @@ public class TimeValidator
 				}
 		}
 		else checkStatus="";
-		System.out.println("TimeValidator---- ganz draussen im else");
 	}
 	
 	public void setTime(String time)
