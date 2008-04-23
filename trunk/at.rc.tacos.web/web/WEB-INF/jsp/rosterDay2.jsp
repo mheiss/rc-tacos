@@ -46,7 +46,7 @@
 		<tr>
 			<td>Dienstverhältnis:</td>
 			<td>
-				<select size="1" name="serviceTypeId">
+				<select size="1" id="serviceTypeId" name="serviceTypeId">
 					<option value="">-- Dienstverhältnis wählen --</option>
 					<c:forEach var="serviceType" items="${params.serviceTypeList}">
 						<option value="${serviceType.id}">${serviceType.serviceName}</option>
@@ -59,7 +59,7 @@
 	<table id="commentForm" class="standardForm">
 		<tr>
 			<td>
-				<textarea cols="40" rows="7" wrap="soft">
+				<textarea id="comment" cols="40" rows="7" wrap="soft">
 				</textarea>
 			</td>
 		</tr>
@@ -83,11 +83,11 @@
 						<td>
 						</td>
 						<td>
-							<select size="1" name="timeFromHours">
+							<select size="1" id="timeFromHours" name="timeFromHours">
 								<option>12</option>
 								<option>13</option>
 							</select>
-							<select size="1" name="timeFromMinutes">
+							<select size="1" id="timeFromMinutes" name="timeFromMinutes">
 								<option>5</option>
 								<option>10</option>
 							</select>
@@ -107,11 +107,11 @@
 						<td>
 						</td>
 						<td>
-							<select size="1" name="timeToHours">
+							<select size="1" id="timeToHours" name="timeToHours">
 								<option>12</option>
 								<option>13</option>
 							</select>
-							<select size="1" name="timeToMinutes">
+							<select size="1" id="timeToMinutes" name="timeToMinutes">
 								<option>5</option>
 								<option>10</option>
 							</select>
@@ -145,7 +145,53 @@ $(document).ready(function() {
 });
 $(function() {			
 	$('#jobId').change(function() {
-		document.location = '?jobId=' + $(this).val(); 
+		var staffMemberId = $('#staffMemberId').val();
+		var locationId = $('#locationId').val();
+		var jobId = $('#jobId').val();
+		var serviceTypeId = $('#serviceTypeId').val();
+		var comment = null;
+		comment = $('#comment').val();
+		var dateFrom = $('#dateFrom').val();
+		var timeFromHours = $('#timeFromHours').val();
+		var timeFromMinutes = $('#timeFromMinutes').val();
+		var dateTo = $('#dateTo').val();
+		var timeToHours = $('#timeToHours').val();
+		var timeToMinutes = $('#timeToMinutes').val();
+		var url = '?jobId=' + $(this).val();
+		if (staffMemberId) {
+			 url += '&staffMemberId=' + staffMemberId;
+		}
+		if (locationId) {
+			url += '&locationId=' + locationId;
+		}
+		if (jobId) {
+			url += '&jobId=' + jobId;
+		}
+		if (serviceTypeId) {
+			url += '&serviceTypeId=' + serviceTypeId;
+		}
+		if (comment && jQuery.trim(comment) != '') {
+			url += '&comment=' + comment;
+		}
+		if (dateFrom) {
+			url += '&dateFrom=' + dateFrom;
+		}
+		if (timeFromHours) {
+			url += '&timeFromHours=' + timeFromHours;
+		}
+		if (timeFromMinutes) {
+			url += '&timeFromMinutes=' + timeFromMinutes;
+		}
+		if (dateTo) {
+			url += '&dateTo=' + dateTo;
+		}
+		if (timeToHours) {
+			url += '&timeToHours=' + timeToHours;
+		}
+		if (timeToMinutes) {
+			url += '&timeToMinutes=' + timeToMinutes;
+		}
+		document.location = url;
 	});
 });
 </script>
