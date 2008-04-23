@@ -4,6 +4,7 @@
 <%
 	UserSession user = (UserSession)session.getAttribute("userSession"); 
 %>
+<!--
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
@@ -12,7 +13,7 @@
 	<tr>
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienstplan Tagesansicht</a></td>
 	</tr>
-</table>
+</table>-->
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>

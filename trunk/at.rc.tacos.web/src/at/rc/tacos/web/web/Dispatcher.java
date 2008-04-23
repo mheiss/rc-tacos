@@ -75,11 +75,15 @@ public class Dispatcher extends HttpServlet
 		String css = null;
 		
 		//Redirect if request is not send over SSL connection
+
 		if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
 			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
+
 		}
 		//If no URL is specified send redirect to home.do.
+
 		else if (relativePath.equals("") || relativePath.equals("/")) {
+
 			response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()+ request.getServletPath() + views.getString("rosterDay2.url")));
 		} else {
 			//Get login requirement view and template
@@ -152,6 +156,7 @@ public class Dispatcher extends HttpServlet
 						response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 					}
 				}
+
 			}
 		}
 	}
