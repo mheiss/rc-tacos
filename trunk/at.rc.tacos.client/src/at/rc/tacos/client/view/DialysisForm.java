@@ -1,11 +1,15 @@
 package at.rc.tacos.client.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -23,6 +27,7 @@ import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.controller.CreateDialysisTransportAction;
 import at.rc.tacos.client.controller.UpdateDialysisTransportAction;
+import at.rc.tacos.client.modelManager.AddressManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
@@ -37,8 +42,13 @@ import at.rc.tacos.model.Patient;
  * GUI (form) to manage the details of a dialysis patient
  * @author b.thek
 */
-public class DialysisForm implements IKindOfTransport
+public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 {
+	//The managed streets
+    private AddressManager addressManager = ModelFactory.getInstance().getAddressManager();
+    
+    private ComboViewer viewerFromStreet,viewerToStreet,viewerFromCity,viewerToCity;
+    
 	private Text textFertig;
 	private Label abfLabel_1;
 	private Button abbrechenButton;
@@ -148,11 +158,14 @@ public class DialysisForm implements IKindOfTransport
         	this.textFertig.setText(readyTime);
         }
 		
-        comboVonStrasse.setText(dia.getFromStreet());
-        comboVonOrt.setText(dia.getFromCity());
-        comboNachStrasse.setText(dia.getToStreet());
-        if (dia.getToCity() != null)
-        	 comboNachOrt.setText(dia.getToCity());
+        viewerFromStreet.getCombo().setText(dia.getFromStreet());
+        if(dia.getFromCity() != null)
+            viewerFromCity.getCombo().setText(dia.getFromCity());
+        if(dia.getToCity() != null)
+            viewerToCity.getCombo().setText(dia.getToCity());
+
+        if(dia.getToStreet() != null)
+            viewerToStreet.getCombo().setText(dia.getToStreet());
         
         if(dia.getPatient().getLastname() != null)
         	this.comboNachname.setText(dia.getPatient().getLastname());
@@ -209,9 +222,41 @@ public class DialysisForm implements IKindOfTransport
 
 		comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		comboNachStrasse.setBounds(41, 66, 230, 21);
+		viewerToStreet = new ComboViewer(comboNachStrasse);
+        viewerToStreet.setContentProvider(new IStructuredContentProvider()
+        {
+            @Override
+            public Object[] getElements(Object arg0)
+            {
+                return addressManager.toStreetArray();
+            }
+
+            @Override
+            public void dispose() { }
+
+            @Override
+            public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+        });
+        viewerToStreet.setInput(addressManager.toStreetArray());
 
 		comboVonStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		comboVonStrasse.setBounds(41, 39, 230, 21);
+		viewerFromStreet = new ComboViewer(comboVonStrasse);
+        viewerFromStreet.setContentProvider(new IStructuredContentProvider()
+        {
+            @Override
+            public Object[] getElements(Object arg0)
+            {
+                return addressManager.toStreetArray();
+            }
+
+            @Override
+            public void dispose() { }
+
+            @Override
+            public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+        });
+        viewerFromStreet.setInput(addressManager.toStreetArray());
 
 		final Label nachLabel = new Label(transportdatenGroup, SWT.NONE);
 		nachLabel.setForeground(Util.getColor(128, 128, 128));
@@ -225,9 +270,41 @@ public class DialysisForm implements IKindOfTransport
 
 		comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
 		comboVonOrt.setBounds(277, 39, 156, 21);
+		viewerFromCity = new ComboViewer(comboVonOrt);
+        viewerFromCity.setContentProvider(new IStructuredContentProvider()
+        {
+            @Override
+            public Object[] getElements(Object arg0)
+            {
+                return addressManager.toCityArray();
+            }
+
+            @Override
+            public void dispose() { }
+
+            @Override
+            public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+        });
+        viewerFromCity.setInput(addressManager.toCityArray());
 
 		comboNachOrt = new Combo(transportdatenGroup, SWT.NONE);
 		comboNachOrt.setBounds(277, 66, 156, 21);
+		viewerToCity = new ComboViewer(comboNachOrt);
+        viewerToCity.setContentProvider(new IStructuredContentProvider()
+        {
+            @Override
+            public Object[] getElements(Object arg0)
+            {
+                return addressManager.toCityArray();
+            }
+
+            @Override
+            public void dispose() { }
+
+            @Override
+            public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+        });
+        viewerToCity.setInput(addressManager.toCityArray());
 
 		final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
 		ortLabel.setForeground(Util.getColor(128, 128, 128));
@@ -666,12 +743,12 @@ public class DialysisForm implements IKindOfTransport
 				
 				 
 				
-				toCommunity = comboNachOrt.getText();
-				toStreet = comboNachStrasse.getText();
+				toCommunity = viewerToCity.getCombo().getText();
+				toStreet = viewerToStreet.getCombo().getText();
 				firstName = comboVorname.getText();
 				lastName = comboNachname.getText();
-				fromCommunity = comboVonOrt.getText();
-				fromStreet = comboVonStrasse.getText();
+				fromCommunity = viewerFromCity.getCombo().getText();
+				fromStreet = viewerFromStreet.getCombo().getText();
 			}
 			
 			private String checkRequiredFields()
@@ -967,4 +1044,22 @@ public class DialysisForm implements IKindOfTransport
 		shell.setTabList(new Control[] {planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton});
 
 	}
+	
+	@Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        //update the view when a address has changed
+        if ("ADDRESS_ADD".equals(evt.getPropertyName())
+                || "ADDRESS_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+                || "ADDRESS_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+                || "ADDRESS_CLEARED".equalsIgnoreCase(evt.getPropertyName())
+                || "ADDRESS_ADD_ALL".equalsIgnoreCase(evt.getPropertyName()))
+        { 
+            //update the address data
+            viewerFromCity.refresh();
+            viewerToCity.refresh();
+            viewerToStreet.refresh();
+            viewerFromStreet.refresh();
+        }
+    }
 }
