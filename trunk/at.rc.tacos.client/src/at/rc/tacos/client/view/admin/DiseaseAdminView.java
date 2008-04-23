@@ -26,6 +26,7 @@ import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.DiseaseEditor;
 import at.rc.tacos.client.editors.DiseaseEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.DiseaseContentProvider;
 import at.rc.tacos.client.providers.DiseaseLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -63,10 +64,13 @@ public class DiseaseAdminView extends ViewPart implements PropertyChangeListener
     @Override
     public void createPartControl(final Composite parent) 
     {
+    	String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
     	//the scrolled form
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
         form.setText("Liste der Erkrankungen"); 
+        if(!authorization.equalsIgnoreCase("Administrator"))
+			form.setEnabled(false);
         toolkit.decorateFormHeading(form.getForm());
         GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 0;

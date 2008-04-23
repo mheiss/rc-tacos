@@ -38,6 +38,7 @@ import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.AddressEditor;
 import at.rc.tacos.client.editors.AddressEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.AddressAdminViewFilter;
 import at.rc.tacos.client.providers.AddressContentProvider;
 import at.rc.tacos.client.providers.AddressLabelProvider;
@@ -83,10 +84,15 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	@Override
 	public void createPartControl(final Composite parent) 
 	{
+		String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
+		
 		//the scrolled form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
 		form.setText("Liste der Adressen"); 
+		
+		if(!authorization.equalsIgnoreCase("Administrator"))
+			form.setEnabled(false);
 		toolkit.decorateFormHeading(form.getForm());
 		GridLayout layout = new GridLayout();
 		layout.horizontalSpacing = 0;
