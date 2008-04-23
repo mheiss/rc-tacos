@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+
+import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Location;
@@ -18,7 +20,7 @@ import at.rc.tacos.model.VehicleDetail;
  * This class manages the vehicles.
  * @author Michael
  */
-public class VehicleManager extends PropertyManager implements PropertyChangeListener, ITransportStatus
+public class VehicleManager extends PropertyManager implements PropertyChangeListener, ITransportStatus, IProgramStatus
 {
     //the item list
     private List<VehicleDetail> objectList = new ArrayList<VehicleDetail>();
@@ -257,7 +259,52 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
                 return;
             
             VehicleDetail vehicle = null;
+            
+            
+            //to update the vheicle color status in case of detaching a vehicle from a transport
+            if(transport.getProgramStatus() == PROGRAM_STATUS_OUTSTANDING && transport.getNotes().contains("Fahrzeugabzug"))
+            {
+            	List<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>();
+                vehicleList = this.getReadyVehicleList();
+                for(VehicleDetail detachedVehicle : vehicleList)
+                {
+                	//get the list of transports
+                    List<Transport> vehicleDetachedTransportList = transportManager.getTransportsByVehicle(detachedVehicle.getVehicleName());
+                	//simplest calculation comes first ;)
+                    //green (30) is for a 'underway'(program status) vehicle not possible
+                    if(vehicleDetachedTransportList.isEmpty())
+                    {
+                    	detachedVehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+                        NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);
+                        return;
+                    }
 
+                    //status list
+                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    //get the most important status of each transport
+                    for(Transport trList:vehicleDetachedTransportList)
+                    {
+                        int mostImportantStatus = trList.getMostImportantStatusMessageOfOneTransport();
+                        list.add(mostImportantStatus);
+                    }
+
+                    //get most important status of one vehicle (from the list)
+
+                    //for a 'red' status
+                    if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+                    {
+                    	detachedVehicle.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
+                        NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);
+                        return;
+                    }
+
+                    //for a 'yellow' status
+                    detachedVehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
+                    NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);	
+                    return;
+                }	
+            }
+  
             //assert valid
             if(transport.getVehicleDetail() == null)
             {
@@ -275,6 +322,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 
             //get the list of transports
             List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
+
 
             //simplest calculation comes first ;)
             //green (30) is for a 'underway'(program status) vehicle not possible
