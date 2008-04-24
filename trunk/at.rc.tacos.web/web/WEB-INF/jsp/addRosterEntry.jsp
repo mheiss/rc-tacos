@@ -1,5 +1,7 @@
 <%@ include file="includes.jsp" %>
-<c:url var="url" value="/Dispatcher/rosterDay2.do?action=addRosterEntry" />
+<c:url var="url" value="/Dispatcher/rosterDay2.do?action=addRosterEntry">
+	<c:param name="action">addRosterEntry</c:param>
+</c:url>
 <form action="url" method="post" accept-charset="utf-8">
 	<div id="generalDataformHeader" class="formHeader">Allgemeine Daten</div>
 	<table id="generalDataForm" class="standardForm">
@@ -27,8 +29,9 @@
 				</select>
 			</td>
 		</tr>
-		<tr colspan="2">
-			<td>Bereitschaft</td>
+		<tr>
+			<td/>
+			<td><label for="standby" style="cursor:pointer"/><input id="standby" name="standby" type="checkbox" />Bereitschaft</td>
 		</tr>
 		<tr>
 			<td>Verwendung:</td>
@@ -84,12 +87,14 @@
 						</td>
 						<td>
 							<select size="1" id="timeFromHours" name="timeFromHours">
-								<option>12</option>
-								<option>13</option>
+								<c:forTokens var="i" items="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23" delims=",">
+									<option>${i}</option>
+								</c:forTokens>
 							</select>
 							<select size="1" id="timeFromMinutes" name="timeFromMinutes">
-								<option>5</option>
-								<option>10</option>
+								<c:forTokens var="i" items="5,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+									<option>${i}</option>
+								</c:forTokens>
 							</select>
 						</td>
 					</tr>
@@ -108,16 +113,25 @@
 						</td>
 						<td>
 							<select size="1" id="timeToHours" name="timeToHours">
-								<option>12</option>
-								<option>13</option>
+								<c:forTokens var="i" items="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23" delims=",">
+									<option>${i}</option>
+								</c:forTokens>
 							</select>
 							<select size="1" id="timeToMinutes" name="timeToMinutes">
-								<option>5</option>
-								<option>10</option>
+								<c:forTokens var="i" items="5,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+									<option>${i}</option>
+								</c:forTokens>
 							</select>
 						</td>
 					</tr>
 				</table>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>
+				<input type="submit" value="Anlegen" />
 			</td>
 		</tr>
 	</table>

@@ -22,7 +22,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
-public class RosterDayController2 extends Controller {
+public class AddRosterEntryController extends Controller {
 
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,

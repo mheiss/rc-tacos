@@ -1,6 +1,7 @@
 package at.rc.tacos.web.web;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -84,7 +85,7 @@ public class Dispatcher extends HttpServlet
 
 		else if (relativePath.equals("") || relativePath.equals("/")) {
 
-			response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()+ request.getServletPath() + views.getString("rosterDay2.url")));
+			response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()+ request.getServletPath() + views.getString("addRosterEntry.url")));
 		} else {
 			//Get login requirement view and template
 			for (final Iterator<String> it = set.iterator(); it.hasNext();) {
@@ -119,7 +120,14 @@ public class Dispatcher extends HttpServlet
 				response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url"))); 
 			} else {
 				if (loginRequired == true && !userSession.getLoggedIn()) {
-					response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?responseUrl=" + relativePath));
+					final Enumeration<Object> e = request.getParameterNames();
+					String url = getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?responseUrl=" + relativePath;
+					while (e.hasMoreElements()) {
+						final String parameterName = (String)e.nextElement();
+						final String parameterValue = request.getParameter(parameterName);
+						url += "&" + parameterName + "=" + parameterValue;
+					}
+					response.sendRedirect(response.encodeRedirectURL(url));
 				} else {
 					try {
 						final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
