@@ -6,6 +6,7 @@ import org.eclipse.ui.*;
 import org.eclipse.ui.actions.*;
 import org.eclipse.ui.application.*;
 import org.eclipse.ui.actions.ActionFactory.*;
+
 import at.rc.tacos.client.controller.ConnectionWizardAction;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
 import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
@@ -26,6 +27,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	private SwitchToClientPerspective switchToClient;
 	private SwitchToAdminPerspective switchToAdmin;
 	private SwitchToLogPerspective switchToLog;
+	private IContributionItem viewList;
 
 	/**
 	 * Default class constructor.
@@ -49,6 +51,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		switchToClient = new SwitchToClientPerspective();
 		switchToAdmin = new SwitchToAdminPerspective();
 		switchToLog = new SwitchToLogPerspective();
+		viewList = ContributionItemFactory.VIEWS_SHORTLIST.create(window);
 		register(aboutAction);
 		register(exitAction);
 		register(conWizard);
@@ -74,6 +77,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		windowMenu.add(adminMenu);
 		windowMenu.add(new Separator());
 		windowMenu.add(switchToClient);
+		 adminMenu.add(viewList);
 
 		//help menu
 		MenuManager helpMenu = new MenuManager("&Help");
