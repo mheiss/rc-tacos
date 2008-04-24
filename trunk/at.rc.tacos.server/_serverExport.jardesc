@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="[insert target Path here]"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/at.rc.tacos.server/serverExport.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" mainClassHandleIdentifier="=at.rc.tacos.server/src&lt;at.rc.tacos.server.run{TacosServer.java[TacosServer" manifestLocation="/at.rc.tacos.server/manifest.mf" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/at.rc.tacos.server/.classpath"/>
+        <javaElement handleIdentifier="=at.rc.tacos.core.db/src"/>
+        <folder path="/at.rc.tacos.core.db/sql"/>
+        <folder path="/at.rc.tacos.core.db/lib"/>
+        <folder path="/at.rc.tacos.server/lib"/>
+        <javaElement handleIdentifier="=at.rc.tacos.server/src"/>
+        <javaElement handleIdentifier="=at.rc.tacos.model/src"/>
+        <javaElement handleIdentifier="=at.rc.tacos.core.net/src"/>
+    </selectedElements>
+</jardesc>
