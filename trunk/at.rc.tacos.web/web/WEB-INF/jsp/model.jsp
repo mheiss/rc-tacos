@@ -18,7 +18,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	<c:if test="${not empty css}"><c:forTokens var="item" items="${css}" delims="|"><link rel="stylesheet" href="<c:url value="/css/${item}"/>" type="text/css" /></c:forTokens></c:if>
 	<link rel="icon" type="image/x-icon" href="<c:url value="/favicon.ico"/>" />
 	<script type="text/javascript" src="<c:url value="/js/windowActions.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/js/jquery.js"/>"></script>
+	<script type="text/javascript" src="<c:url value="/js/jquery-1.2.3.js"/>"></script>
 	<c:if test="${not empty js}"><c:forTokens var="item" items="${js}" delims="|"><script type="text/javascript" src="<c:url value="/js/${item}"/>"></script></c:forTokens></c:if>
 	<title>${title}</title>
 </head>
