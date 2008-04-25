@@ -2,16 +2,16 @@
 <c:url var="url" value="/Dispatcher/rosterDay2.do?action=addRosterEntry">
 	<c:param name="action">addRosterEntry</c:param>
 </c:url>
-<form action="url" method="post" accept-charset="utf-8">
+<form action="${url}" method="post" accept-charset="utf-8">
 	<div id="generalDataformHeader" class="formHeader">Allgemeine Daten</div>
 	<table id="generalDataForm" class="standardForm">
 		<tr>
 			<td>Mitarbeiter:</td>
 			<td>
-				<select size="1" name="staffMemberId">
+				<select size="1" id="staffMemberId" name="staffMemberId">
 					<option value="">-- Mitarbeiter wählen--</option>
 					<c:forEach var="staffMember" items="${params.staffList}">
-						<option value="${staffMember.staffMemberId}">
+						<option value="${staffMember.staffMemberId}" ${(not empty params.staffMember) and (params.staffMember.staffMemberId == staffMember.staffMemberId) ? ' selected="selected"' : ''}>
 							${staffMember.lastName}&nbsp;${staffMember.firstName}
 						</option>
 					</c:forEach>
@@ -21,10 +21,10 @@
 		<tr>
 			<td>Ortsstelle:</td>
 			<td>
-				<select size="1" name="locationId">
+				<select size="1" id="locationId" name="locationId">
 					<option value="">-- Ortsstelle wählen --</option>
 					<c:forEach var="location" items="${params.locationList}">
-						<option value="${location.id}">${location.locationName}</option>
+						<option value="${location.id}" ${(not empty params.location) and (params.location.id == location.id) ? ' selected="selected"' : ''}>${location.locationName}</option>
 					</c:forEach>
 				</select>
 			</td>
@@ -52,7 +52,7 @@
 				<select size="1" id="serviceTypeId" name="serviceTypeId">
 					<option value="">-- Dienstverhältnis wählen --</option>
 					<c:forEach var="serviceType" items="${params.serviceTypeList}">
-						<option value="${serviceType.id}">${serviceType.serviceName}</option>
+						<option value="${serviceType.id}" ${(not empty params.serviceType) and (params.serviceType.id == serviceType.id) ? ' selected="selected"' : ''}>${serviceType.serviceName}</option>
 					</c:forEach>
 				</select>
 			</td>
@@ -92,7 +92,7 @@
 								</c:forTokens>
 							</select>
 							<select size="1" id="timeFromMinutes" name="timeFromMinutes">
-								<c:forTokens var="i" items="5,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+								<c:forTokens var="i" items="0,5,10,15,20,25,30,35,40,45,50,55,60" delims=",">
 									<option>${i}</option>
 								</c:forTokens>
 							</select>
@@ -118,7 +118,7 @@
 								</c:forTokens>
 							</select>
 							<select size="1" id="timeToMinutes" name="timeToMinutes">
-								<c:forTokens var="i" items="5,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+								<c:forTokens var="i" items="0,5,10,15,20,25,30,35,40,45,50,55,60" delims=",">
 									<option>${i}</option>
 								</c:forTokens>
 							</select>

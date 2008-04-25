@@ -130,6 +130,12 @@ public class AddRosterEntryController extends Controller {
 		}	
 		if (ServiceType.ID.equalsIgnoreCase(connection.getContentType())) {
 			params.put("serviceTypeList", serviceTypeList);
+			for (final Iterator<AbstractMessage> itServiceTypeList = serviceTypeList.iterator(); itServiceTypeList.hasNext();) {
+				final ServiceType st = (ServiceType)itServiceTypeList.next();
+				if (st.getId() == serviceTypeId) {
+					serviceType = st;
+				}
+			}
 		}
 		if (serviceType != null) {
 			params.put("serviceType", serviceType);
