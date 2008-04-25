@@ -20,7 +20,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -136,31 +135,24 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
-		form.setText("Vormerkungen");
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
 		
 		SashForm sashForm = new SashForm(composite, SWT.HORIZONTAL);
-		
-		
-		
-
-		final Composite composite_1 = new Composite(sashForm, SWT.NONE);
-		composite_1.setLayout(new FillLayout());
-
-		final Composite composite_3 = new Composite(composite_1, SWT.NONE);
-		composite_3.setLayout(new FillLayout());
-		final GridData gd_composite_3 = new GridData(SWT.FILL, SWT.FILL, false, true);
-		gd_composite_3.widthHint = 989;
-		composite_3.setLayoutData(gd_composite_3);
-
-		//groups-----------------------------------
-		final SashForm sashForm_8 = new SashForm(composite_3, SWT.VERTICAL);
-		
 		FilterView filter = new FilterView();
 		filter.createPartControl(sashForm);
+		
+		final Composite composite_1 = new Composite(sashForm, SWT.NONE);
+		composite_1.setLayout(new FillLayout());
+		
+		sashForm.setWeights(new int[] {11, 89 });
+
+		//groups-----------------------------------
+		final SashForm sashForm_8 = new SashForm(composite_1, SWT.VERTICAL);
+		
+		
 
 		final Group richtungBruckGroup = new Group(sashForm_8, SWT.NONE);
 		richtungBruckGroup.setLayout(new FillLayout());
@@ -178,7 +170,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		richtungMariazellGroup.setText("Richtung Mariazell");
 
 		//----------------------------------------------
-		final SashForm sashForm_9 = new SashForm(composite_3, SWT.VERTICAL);
+		final SashForm sashForm_9 = new SashForm(composite_1, SWT.VERTICAL);
 
 		final Group richtungGrazGroup = new Group(sashForm_9, SWT.NONE);
 		richtungGrazGroup.setLayout(new FillLayout());
