@@ -264,44 +264,53 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             //to update the vheicle color status in case of detaching a vehicle from a transport
             if(transport.getProgramStatus() == PROGRAM_STATUS_OUTSTANDING && transport.getNotes().contains("Fahrzeugabzug"))
             {
+            	System.out.println("transport: "+transport.getFromStreet());
+            	System.out.println("1");
             	List<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>();
                 vehicleList = this.getReadyVehicleList();
+                for(VehicleDetail veh : vehicleList)
+                	System.out.println("vehicle in ready vehicle list: " +veh.getVehicleName());
                 for(VehicleDetail detachedVehicle : vehicleList)
                 {
+                	System.out.println("2");
                 	//get the list of transports
                     List<Transport> vehicleDetachedTransportList = transportManager.getTransportsByVehicle(detachedVehicle.getVehicleName());
                 	//simplest calculation comes first ;)
                     //green (30) is for a 'underway'(program status) vehicle not possible
                     if(vehicleDetachedTransportList.isEmpty())
                     {
+                    	System.out.println("4");
                     	detachedVehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
                         NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);
-                        return;
+                        continue;
                     }
-
+                    System.out.println("5");
                     //status list
                     ArrayList<Integer> list = new ArrayList<Integer>();
                     //get the most important status of each transport
                     for(Transport trList:vehicleDetachedTransportList)
                     {
+                    	System.out.println("6");
                         int mostImportantStatus = trList.getMostImportantStatusMessageOfOneTransport();
                         list.add(mostImportantStatus);
                     }
 
                     //get most important status of one vehicle (from the list)
-
+                    System.out.println("7");
                     //for a 'red' status
                     if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
                     {
+                    	System.out.println("8");
                     	detachedVehicle.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
                         NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);
-                        return;
+                        continue;
                     }
-
+                    System.out.println("9");
                     //for a 'yellow' status
                     detachedVehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
                     NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);	
-                    return;
+                    System.out.println("10");
+                    continue;
                 }	
             }
   
