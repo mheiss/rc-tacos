@@ -1,7 +1,10 @@
 package at.rc.tacos.web.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +27,8 @@ import at.rc.tacos.model.StaffMember;
 
 public class AddRosterEntryController extends Controller {
 
+	public static final String ACTION_ADD_ROSTER_ENTRY = "addRosterEntry";
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -35,11 +40,11 @@ public class AddRosterEntryController extends Controller {
 		
 		final WebClient connection = userSession.getConnection();
 		
-		// Job
+		// Job List
 		final String paramJobId = request.getParameter("jobId");
 		int jobId = 0;
 		Job job = null;
-		if (paramJobId != null) {
+		if (paramJobId != null && !paramJobId.equals("")) {
 			jobId = Integer.parseInt(paramJobId);
 		}
 		final List<AbstractMessage> jobList = connection.sendListingRequest(Job.ID, null);
@@ -52,15 +57,14 @@ public class AddRosterEntryController extends Controller {
 				}
 			}
 		}
-		if (job != null) {
-			params.put("job", job);
-		}
+		params.put("job", job);
 		
-		// Staff Member
+		
+		// Staff Member List
 		final String paramStaffMemberId = request.getParameter("staffMemberId");
 		int staffMemberId = 0;
 		StaffMember staffMember = null;
-		if (paramStaffMemberId != null) {
+		if (paramStaffMemberId != null && !paramStaffMemberId.equals("")) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);
 		}
 		final List<AbstractMessage> staffList = new ArrayList<AbstractMessage>();
@@ -87,16 +91,15 @@ public class AddRosterEntryController extends Controller {
 				staffList.addAll(staffListTemp);
 			}
 			params.put("staffList", staffList);
-		}
-		if (staffMember != null) {
-			params.put("staffMember", staffMember);
-		}
+		}		
+		params.put("staffMember", staffMember);
 		
-		// Location
+		
+		// Location List
 		final String paramLocationId = request.getParameter("locationId");
 		int locationId = 0;
 		Location location = null;
-		if (paramLocationId != null) {
+		if (paramLocationId != null && !paramLocationId.equals("")) {
 			locationId = Integer.parseInt(paramLocationId);
 		}
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
@@ -109,15 +112,14 @@ public class AddRosterEntryController extends Controller {
 				}
 			}
 		}
-		if (location != null) {
-			params.put("location", location);
-		}
+		params.put("location", location);
 		
-		// Service Type
+		
+		// Service Type List
 		final String paramServiceTypeId = request.getParameter("serviceTypeId");
 		int serviceTypeId = 0;
 		ServiceType serviceType = null;
-		if (paramServiceTypeId != null) {
+		if (paramServiceTypeId != null && !paramServiceTypeId.equals("")) {
 			serviceTypeId = Integer.parseInt(paramServiceTypeId);
 		}
 		List<AbstractMessage> serviceTypeList = new ArrayList<AbstractMessage>();
@@ -136,10 +138,39 @@ public class AddRosterEntryController extends Controller {
 					serviceType = st;
 				}
 			}
+		}	
+		params.put("serviceType", serviceType);
+		
+		// Get Standby
+		final String paramStandby = request.getParameter("standby");
+		boolean standby = false;
+		if (paramStandby != null) {
+			standby = true;
 		}
-		if (serviceType != null) {
-			params.put("serviceType", serviceType);
-		}
+		params.put("standby", standby);
+		
+		// Get Comment
+		final String comment = request.getParameter("comment");
+		params.put("comment", comment);
+		
+		
+		// Get From
+		final String dateFrom = request.getParameter("dateFrom");
+		final String timeFromHours = request.getParameter("timeFromHours");
+		final String timeFromMinutes = request.getParameter("timeFromMinutes");
+		params.put("dateFrom", dateFrom);
+		params.put("timeFromHours", timeFromHours);
+		params.put("timeFromMinutes", timeFromMinutes);
+		final String from = dateFrom + " " + timeFromHours + ":" + timeFromMinutes;
+			
+		// Get To
+		final String dateTo = request.getParameter("dateTo");
+		final String timeToHours = request.getParameter("timeToHours");
+		final String timeToMinutes = request.getParameter("timeToMinutes");
+		params.put("dateTo", dateTo);
+		params.put("timeToHours", timeToHours);
+		params.put("timeToMinutes", timeToMinutes);
+		final String to = dateTo + " " + timeToHours + ":" + timeToMinutes;
 		
 		// Create Calendar
 		final Calendar calendar = Calendar.getInstance();
@@ -149,6 +180,59 @@ public class AddRosterEntryController extends Controller {
 		params.put("rangeStart", rangeStart);
 		params.put("rangeEnd", rangeEnd);
 		
+		
+		// Get Action
+		final String action = request.getParameter("action");
+		final Map<String, String> errors = new HashMap<String, String>();
+		boolean valid = true;
+		if (action != null && action.equals(ACTION_ADD_ROSTER_ENTRY)) {
+			if (job == null) {
+				errors.put("job", "Verwendung ist ein Pflichtfeld.");
+				valid = false;
+			}
+			if (location == null) {
+				errors.put("location", "Ortstelle ist ein Pflichtfeld.");
+				valid = false;
+			}
+			if (staffMember == null) {
+				errors.put("staffMember", "Mitarbeiter ist ein Pflichtfeld.");
+				valid = false;
+			}
+			if (serviceType == null) {
+				errors.put("serviceType", "Dienstverhältnis ist ein Pflichtfeld.");
+				valid = false;
+			}
+			
+			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+			
+			Date realStartOfWork = null;
+			try {
+				realStartOfWork = df.parse(from);
+			}
+			catch (ParseException e) {
+				errors.put("realStartOfWork", "Dienst von ist ein Pflichtfeld.");
+				valid = false;
+			}
+			
+			Date realEndOfWork = null;
+			try {
+				realEndOfWork = df.parse(to);
+			} catch (ParseException e) {	
+				errors.put("realEndOfWork", "Dienst bis ist ein Pflichtfeld.");
+				valid = false;
+			}
+			
+			if (realStartOfWork != null && realEndOfWork != null) {
+				if (realStartOfWork.getTime() >= realEndOfWork.getTime()) {
+					errors.put("period", "Dienst von muss größer sein als Diens bis.");
+				}
+			}
+			
+			if (valid) {
+				
+			}
+		}
+		params.put("errors", errors);
 		return params;
 	}
 
