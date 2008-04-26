@@ -52,7 +52,6 @@ public class PersonalNewEntryAction extends Action
 
 		//get the parent and the window shell
 		RosterEntryForm window = new RosterEntryForm(parent);
-		window.getShell().setVisible(false);
 		window.create();
 
 		//get the shell and resize
