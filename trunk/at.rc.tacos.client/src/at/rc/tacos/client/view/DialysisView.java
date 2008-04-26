@@ -74,7 +74,6 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
-		form.setText("Dialysetransporte");
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new FillLayout());
 
