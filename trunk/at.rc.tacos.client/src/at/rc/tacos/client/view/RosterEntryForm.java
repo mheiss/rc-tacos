@@ -11,7 +11,6 @@ import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -21,7 +20,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.events.IExpansionListener;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -132,22 +130,6 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		setTitle("Dienstplaneintrag");
 		setMessage("Hier können Sie einen neuen Dienstplaneintrag anlegen", IMessageProvider.INFORMATION);
 		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		//force a redraw
-		getShell().setSize(500, 600);
-
-		//the shell
-		Shell workbenchShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		Shell myShell = getShell();
-
-		Rectangle workbenchSize = workbenchShell.getBounds();
-		Rectangle mySize = myShell.getBounds();
-
-		int locationX, locationY;
-		locationX = (workbenchSize.width - mySize.width)/2+workbenchSize.x;
-		locationY = (workbenchSize.height - mySize.height)/2+workbenchSize.y;
-
-		//draw centered
-		getShell().setLocation(locationX,locationY);
 		return contents;
 	}
 

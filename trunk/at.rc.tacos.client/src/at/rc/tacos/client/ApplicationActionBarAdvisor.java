@@ -101,7 +101,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		windowMenu.add(adminMenu);
 		windowMenu.add(new Separator());
 		windowMenu.add(switchToClient);
-		 adminMenu.add(viewList);
+		adminMenu.add(viewList);
 
 		//help menu
 		MenuManager helpMenu = new MenuManager("&Hilfe");
@@ -110,10 +110,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
 		//add the manager to the main menu
 		menuBar.add(fileMenu);
+		menuBar.add(newMenu);
 		menuBar.add(windowMenu);
 		menuBar.add(helpMenu);
-		menuBar.add(newMenu);
-		
 	}
 
 	/**

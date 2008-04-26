@@ -5,6 +5,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -67,9 +68,28 @@ public class VehicleTableEditAction extends Action
 		//get the selected entry
 		VehicleDetail vehicle = (VehicleDetail)((IStructuredSelection)selection).getFirstElement();
 				
-	    //open the editor
+	    //get the active shell
         Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-		VehicleForm window = new VehicleForm(parent,vehicle);
-		window.open();
+        
+        //create the window
+        VehicleForm window = new VehicleForm(parent,vehicle);
+        window.getShell().setVisible(false);
+        window.create();
+
+        //get the shell and resize
+		Shell myShell = window.getShell();
+	    myShell.setSize(500, 600);
+		
+		//calculate and draw centered
+		Rectangle workbenchSize = parent.getBounds();
+		Rectangle mySize = myShell.getBounds();
+		int locationX, locationY;
+		locationX = (workbenchSize.width - mySize.width)/2+workbenchSize.x;
+		locationY = (workbenchSize.height - mySize.height)/2+workbenchSize.y;
+		myShell.setLocation(locationX,locationY);
+		
+		//now open the window
+		myShell.open();
+		myShell.setVisible(true);
 	}
 }

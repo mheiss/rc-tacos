@@ -2,6 +2,7 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -59,9 +60,28 @@ public class VehicleEditAction extends Action
 	@Override
 	public void run()
 	{
-	    //open the editor
+	    //get the active shell
         Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-		VehicleForm window = new VehicleForm(parent,detail);
-		window.open();
+        
+        //create the window
+        VehicleForm window = new VehicleForm(parent,detail);
+        window.getShell().setVisible(false);
+        window.create();
+
+        //get the shell and resize
+		Shell myShell = window.getShell();
+	    myShell.setSize(500, 600);
+		
+		//calculate and draw centered
+		Rectangle workbenchSize = parent.getBounds();
+		Rectangle mySize = myShell.getBounds();
+		int locationX, locationY;
+		locationX = (workbenchSize.width - mySize.width)/2+workbenchSize.x;
+		locationY = (workbenchSize.height - mySize.height)/2+workbenchSize.y;
+		myShell.setLocation(locationX,locationY);
+		
+		//now open the window
+		myShell.open();
+		myShell.setVisible(true);
 	}
 }

@@ -55,13 +55,12 @@ public class NavigationView extends ViewPart
 
 	    Composite comp1 = new Composite(parent,SWT.NONE);
 	    comp1.setBackground(CustomColors.SECTION_BACKGROUND);
-	    GridData gd = new GridData(SWT.BEGINNING,SWT.BEGINNING, false,false);
-	    gd.widthHint = 490;
+	    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 	    comp1.setLayoutData(gd);
 	    
 	    Label headerImageLabel = new Label(parent,SWT.NONE);
 	    headerImageLabel.setImage(imageLogo);
-	    gd = new GridData(SWT.BEGINNING,SWT.CENTER,false,false);
+	    gd = new GridData(SWT.RIGHT,SWT.CENTER,false,false);
 	    headerImageLabel.setLayoutData(gd);
 	}
 

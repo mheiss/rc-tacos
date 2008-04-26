@@ -48,8 +48,6 @@ public class VehiclesSelectForm extends TitleAreaDialog
         setTitle("Fahrzeugverwaltung");
         setMessage("Bitte wählen sie ein Fahrzeug aus", IMessageProvider.INFORMATION);
         setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-        getShell().setSize(600, 400);
-        
         return contents;
     }
     /**
