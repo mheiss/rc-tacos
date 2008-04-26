@@ -97,7 +97,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
-		form.setText("Journalblatt");
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new FillLayout());
 		
@@ -115,6 +114,8 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		viewer.setLabelProvider(new JournalViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager());
 		viewer.getTable().setLinesVisible(true);
+		
+		sashForm.setWeights(new int[] {11, 89 });
 
 		//set the tooltip
 		tooltip = new JournalViewTooltip(viewer.getControl());
