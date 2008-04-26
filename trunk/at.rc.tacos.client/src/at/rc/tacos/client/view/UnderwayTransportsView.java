@@ -184,7 +184,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	
 		//create the tab items for the disposition view
 		final TableColumn prioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		prioritaetDisponierteTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
+		prioritaetDisponierteTransporte.setToolTipText("1 (NEF), 2 (BD1), 3 (Transport), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
 		prioritaetDisponierteTransporte.setWidth(20);
 		prioritaetDisponierteTransporte.setText("Pr");
 
@@ -202,16 +202,16 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 
 		final TableColumn transportVonDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		transportVonDisponierteTransporte.setMoveable(true);
-		transportVonDisponierteTransporte.setWidth(250);
+		transportVonDisponierteTransporte.setWidth(300);
 		transportVonDisponierteTransporte.setText("Transport von");
 
 		final TableColumn patientDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		patientDisponierteTransporte.setMoveable(true);
-		patientDisponierteTransporte.setWidth(200);
+		patientDisponierteTransporte.setWidth(250);
 		patientDisponierteTransporte.setText("Patient");
 
 		final TableColumn transportNachDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		transportNachDisponierteTransporte.setWidth(250);
+		transportNachDisponierteTransporte.setWidth(300);
 		transportNachDisponierteTransporte.setText("Transport nach");
 
 		final TableColumn aeDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -250,7 +250,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		taDisponierteTransporte.setText("T");
 		
 		final TableColumn erkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		erkrankungVerletzungDisponierteTransporte.setWidth(150);
+		erkrankungVerletzungDisponierteTransporte.setWidth(250);
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 		
 		
