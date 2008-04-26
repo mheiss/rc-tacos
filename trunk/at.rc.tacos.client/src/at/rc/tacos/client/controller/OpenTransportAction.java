@@ -52,7 +52,6 @@ public class OpenTransportAction extends Action
 
 		//create the window
 		TransportForm window = new TransportForm(parent,"prebooking");
-		window.getShell().setVisible(false);
 		window.create();
 
 		//get the parent and the window shell
