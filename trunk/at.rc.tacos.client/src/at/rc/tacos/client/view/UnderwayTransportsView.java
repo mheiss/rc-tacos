@@ -29,11 +29,13 @@ import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.client.controller.CancelTransportAction;
 import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.CopyTransportDetailsIntoClipboardAction;
+import at.rc.tacos.client.controller.CreateBackTransportAction;
 import at.rc.tacos.client.controller.DetachCarAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.EditTransportStatusAction;
 import at.rc.tacos.client.controller.EmptyTransportAction;
 import at.rc.tacos.client.controller.SetAccompanyingPersonAction;
+import at.rc.tacos.client.controller.SetAlarmingAction;
 import at.rc.tacos.client.controller.SetBD1Action;
 import at.rc.tacos.client.controller.SetBD2Action;
 import at.rc.tacos.client.controller.SetBackTransportPossibleAction;
@@ -79,6 +81,15 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private SetBD2Action setBD2Action;
 	private SetBD1Action setBD1Action;
 	private SetBackTransportPossibleAction setBackTransportPossibleAction;
+	private CreateBackTransportAction createBackTransportAction;
+	private SetAlarmingAction setAlarmingActionNA;
+	private SetAlarmingAction setAlarmingActionRTH;
+	private SetAlarmingAction setAlarmingActionDF;
+	private SetAlarmingAction setAlarmingActionBRKDT;
+	private SetAlarmingAction setAlarmingActionFW;
+	private SetAlarmingAction setAlarmingActionPO;
+	private SetAlarmingAction setAlarmingActionBR;
+	private SetAlarmingAction setAlarmingActionKIT;
 
 	/**
 	 * Defaul class constructor
@@ -344,12 +355,23 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		setBD1Action = new SetBD1Action(this.viewer);
 		setBD2Action = new SetBD2Action(this.viewer);
 		setBackTransportPossibleAction = new SetBackTransportPossibleAction(this.viewer);
+		createBackTransportAction = new CreateBackTransportAction(this.viewer);
 		editTransportAction = new EditTransportAction(this.viewer,"underway");
 		detachCarAction = new DetachCarAction(this.viewer);
 		emptyTransportAction = new EmptyTransportAction(this.viewer);
 		cancelTransportAction = new CancelTransportAction(this.viewer);
 		copyTransportAction = new CopyTransportAction(this.viewer);
 		copyTransportDetailsIntoClipboardAction = new CopyTransportDetailsIntoClipboardAction(this.viewer);
+		setAlarmingActionNA = new SetAlarmingAction(this.viewer,"NA extern");
+		setAlarmingActionRTH = new SetAlarmingAction(this.viewer,"RTH");
+		setAlarmingActionDF = new SetAlarmingAction(this.viewer,"DF/Inspektion");
+		setAlarmingActionBRKDT = new SetAlarmingAction(this.viewer,"BRKDT");
+		setAlarmingActionFW = new SetAlarmingAction(this.viewer,"FW");
+		setAlarmingActionPO = new SetAlarmingAction(this.viewer,"Polizei");
+		setAlarmingActionBR = new SetAlarmingAction(this.viewer,"Bergrettung");
+		setAlarmingActionKIT = new SetAlarmingAction(this.viewer,"KIT");
+		
+		
 		
 	}
 	
@@ -386,14 +408,29 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		if(transport == null)
 			return;
 		
-		//submenu for the available vehicles
+		//submenu for the details
 		MenuManager menuManagerSub = new MenuManager("Details");
+		//submenu for the alarmings
+		MenuManager menuManagerAlarming = new MenuManager("Alarmierung setzen");
+		menuManagerAlarming.add(setAlarmingActionNA);
+		menuManagerAlarming.add(setAlarmingActionRTH);
+		menuManagerAlarming.add(setAlarmingActionDF);
+		menuManagerAlarming.add(setAlarmingActionBRKDT);
+		menuManagerAlarming.add(setAlarmingActionFW);
+		menuManagerAlarming.add(setAlarmingActionPO);
+		menuManagerAlarming.add(setAlarmingActionBR);
+		menuManagerAlarming.add(setAlarmingActionKIT);
 
 		//add the actions
 		menuManagerSub.add(setAccompanyingPersonAction);
+		menuManagerSub.add(new Separator());
 		menuManagerSub.add(setBD1Action);
 		menuManagerSub.add(setBD2Action);
+		menuManagerSub.add(new Separator());
 		menuManagerSub.add(setBackTransportPossibleAction);
+		menuManagerSub.add(createBackTransportAction);
+		menuManagerSub.add(new Separator());
+		menuManagerSub.add(menuManagerAlarming);
 		
 		//add the actions
 		manager.add(setTransportStatusS1Action);
