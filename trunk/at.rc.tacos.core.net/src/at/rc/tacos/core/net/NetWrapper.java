@@ -289,7 +289,6 @@ public class NetWrapper extends Plugin
 		SendJob sendJob = new SendJob(info);
 		sendJob.setRule(new SendJobRule());
 		sendJob.setPriority(Job.INTERACTIVE); 
-		sendJob.setUser(true);
 		sendJob.addJobChangeListener(new JobChangeAdapter()
 		{
 			@Override
