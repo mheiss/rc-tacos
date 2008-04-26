@@ -55,18 +55,10 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         t2.setDateOfTransport(Calendar.getInstance().getTimeInMillis());
         t2.setPlannedStartOfTransport(Calendar.getInstance().getTimeInMillis());
         //alarming
-        t2.setHelicopterAlarming(t1.isHelicopterAlarming());
-        t2.setPoliceAlarming(t1.isPoliceAlarming());
         t2.setAssistantPerson(t1.isAssistantPerson());
         t2.setBackTransport(false);
-        t2.setBlueLightToGoal(t1.isBlueLightToGoal());
-        t2.setBrkdtAlarming(t1.isBrkdtAlarming());
-        t2.setFirebrigadeAlarming(t1.isFirebrigadeAlarming());
-        t2.setDfAlarming(t1.isDfAlarming());
-        t2.setEmergencyDoctorAlarming(t1.isEmergencyDoctorAlarming());
         t2.setEmergencyPhone(t1.isEmergencyPhone());
         t2.setLongDistanceTrip(t1.isLongDistanceTrip());
-        t2.setMountainRescueServiceAlarming(t1.isMountainRescueServiceAlarming());
         //assert valid
         t2.setKindOfIllness(t1.getKindOfIllness());
         if(t1.getKindOfTransport() != null)
