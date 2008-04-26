@@ -93,8 +93,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     //The managed streets
     private AddressManager addressManager = ModelFactory.getInstance().getAddressManager();
     private DiseaseManager diseaseManager = ModelFactory.getInstance().getDiseaseManager();
-
-    //properties
    
     //text
     private Text textRueckmeldung;

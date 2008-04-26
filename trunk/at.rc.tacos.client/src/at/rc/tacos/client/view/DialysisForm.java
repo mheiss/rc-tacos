@@ -87,8 +87,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 	private DialysisPatient dia;
 
 	 /**
-     * constructor used to create a 
-     * a new dialysis transport entry.
+     * constructor used to create a a new dialysis transport entry.
      */
 	public DialysisForm()
 	{

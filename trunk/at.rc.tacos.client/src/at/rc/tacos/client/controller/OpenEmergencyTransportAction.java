@@ -2,6 +2,7 @@ package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -37,7 +38,7 @@ public class OpenEmergencyTransportAction extends Action
     @Override
     public ImageDescriptor getImageDescriptor() 
     {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.createTransportEmergency");
+        return ImageFactory.getInstance().getRegisteredImageDescriptor("toolbar.createTransportEmergency"); 
     }
     
     /**
@@ -46,9 +47,28 @@ public class OpenEmergencyTransportAction extends Action
     @Override
     public void run()
     {
-    	Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-    	TransportForm window = new TransportForm(shell,"emergencyTransport");
-		window.open();
+    	//get the active shell
+    	Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+    	
+    	//create the window
+    	TransportForm window = new TransportForm(parent,"emergencyTransport");
+    	window.getShell().setVisible(false);
+		window.create();
+		
+		//get the parent and the window shell
+		Shell myShell = window.getShell();
+	    myShell.setSize(1080, 680);
+		
+		//calculate and draw centered
+		Rectangle workbenchSize = parent.getBounds();
+		Rectangle mySize = myShell.getBounds();
+		int locationX, locationY;
+		locationX = (workbenchSize.width - mySize.width)/2+workbenchSize.x;
+		locationY = (workbenchSize.height - mySize.height)/2+workbenchSize.y;
+		myShell.setLocation(locationX,locationY);
+		
+		//now open the window
+		myShell.open();
+		myShell.setVisible(true);
     }
-
 }
