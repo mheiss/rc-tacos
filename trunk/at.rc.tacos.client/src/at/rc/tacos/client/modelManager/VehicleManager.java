@@ -245,7 +245,69 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) 
-    {		
+    {	
+    	//to get the color status for the nef vehicle (--> add action)
+    	if("TRANSPORT_ADD".equalsIgnoreCase(evt.getPropertyName()))
+    	{
+    		VehicleDetail vehicle;
+    		//the transport manager
+            TransportManager transportManager = ModelFactory.getInstance().getTransportManager();
+          //the added transport
+            Transport transport = (Transport)evt.getNewValue();
+            
+            if(transport == null)
+            	return;
+            
+            if(transport.getVehicleDetail() == null)
+            	return;
+            
+            if(!transport.getVehicleDetail().getVehicleName().equalsIgnoreCase("NEF"))
+            	return;
+            
+            vehicle = transport.getVehicleDetail();
+            
+            int index = objectList.indexOf(vehicle);
+            VehicleDetail detail = objectList.get(index);
+            
+          //get the list of transports
+            List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
+
+            
+            //simplest calculation comes first ;)
+            //green (30) is for a 'underway'(program status) vehicle not possible
+            if(transportList.isEmpty())
+            {
+                detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+                NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+                return;
+            }
+
+            //status list
+            ArrayList<Integer> list = new ArrayList<Integer>();
+            //get the most important status of each transport
+            for(Transport trList:transportList)
+            {
+                int mostImportantStatus = trList.getMostImportantStatusMessageOfOneTransport();
+                list.add(mostImportantStatus);
+            }
+
+            //get most important status of one vehicle (from the list)
+
+            //for a 'red' status
+            if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+            {
+                detail.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
+                NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+                return;
+            }
+
+            //for a 'yellow' status
+            detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
+            NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+            
+            
+            
+    	}
         if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	
             //the transport manager
