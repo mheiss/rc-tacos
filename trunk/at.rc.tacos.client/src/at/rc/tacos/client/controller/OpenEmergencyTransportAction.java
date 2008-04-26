@@ -52,7 +52,6 @@ public class OpenEmergencyTransportAction extends Action
     	
     	//create the window
     	TransportForm window = new TransportForm(parent,"emergencyTransport");
-    	window.getShell().setVisible(false);
 		window.create();
 		
 		//get the parent and the window shell
