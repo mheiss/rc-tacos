@@ -36,8 +36,6 @@
 		<tr>
 			<td>Verwendung:</td>
 			<td>
-				<c:url var="url" value="/Dispatcher/rosterDay2.do">
-				</c:url>
 				<select size="1" id="jobId" name="jobId">
 					<option value="">-- Verwendung wählen --</option>
 					<c:forEach var="job" items="${params.jobList}">
