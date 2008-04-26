@@ -70,9 +70,9 @@ public class AddRosterEntryController extends Controller {
 		final List<AbstractMessage> staffList = new ArrayList<AbstractMessage>();
 		final List<AbstractMessage> staffListTemp = connection.sendListingRequest(StaffMember.ID, null);
 		if (StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
-			if (job != null) {
-				for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
-					final StaffMember sm = (StaffMember)itStaffList.next();
+			for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
+				final StaffMember sm = (StaffMember)itStaffList.next();
+				if (job != null) {
 					boolean hasCompetence = false;
 					final List<Competence> competenceList = sm.getCompetenceList();
 					for (final Iterator<Competence> itCompetenceList = competenceList.iterator(); itCompetenceList.hasNext();) {
@@ -83,12 +83,12 @@ public class AddRosterEntryController extends Controller {
 					if (hasCompetence) {
 						staffList.add(sm);
 					}
-					if (sm.getStaffMemberId() == staffMemberId) {
-						staffMember = sm;
-					}
+				} else {
+					staffList.add(sm);
 				}
-			} else {
-				staffList.addAll(staffListTemp);
+				if (sm.getStaffMemberId() == staffMemberId) {
+					staffMember = sm;
+				}
 			}
 			params.put("staffList", staffList);
 		}		
