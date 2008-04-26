@@ -128,14 +128,14 @@
             name="Mobiltelefone">
       </view>
       <view
-            name="DispositionView"
+            name="Disposition"
             allowMultiple="false"
             class="at.rc.tacos.client.view.UnderwayTransportsView"
             icon="icons/toolbar/viewTransport.png"
             id="at.rc.tacos.client.view.disposition_view">
       </view>
       <view
-            name="OutstandingTransportsView"
+            name="Offene Transporte"
             allowMultiple="false"
             class="at.rc.tacos.client.view.OutstandingTransportsView"
             icon="icons/toolbar/viewTransport.png"
@@ -149,7 +149,7 @@
             id="at.rc.tacos.client.view.journal_view">
       </view>
       <view
-            name="PrebookingView"
+            name="Vormerkungen"
             allowMultiple="false"
             class="at.rc.tacos.client.view.PrebookingView"
             icon="icons/toolbar/viewTransportPrebooking.png"
@@ -162,7 +162,7 @@
             id="at.rc.tacos.client.view.searchView">
       </view>      
       <view
-            name="Dialyse Patienten"
+            name="Dialyse"
             allowMultiple="false"
             class="at.rc.tacos.client.view.DialysisView"
             icon="icons/toolbar/viewTransportDialyse.png"
