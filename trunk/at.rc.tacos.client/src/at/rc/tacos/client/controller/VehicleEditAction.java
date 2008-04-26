@@ -65,7 +65,6 @@ public class VehicleEditAction extends Action
         
         //create the window
         VehicleForm window = new VehicleForm(parent,detail);
-        window.getShell().setVisible(false);
         window.create();
 
         //get the shell and resize
