@@ -68,7 +68,7 @@
 		<tr><td>Anmerkungen:</td></tr>
 		<tr>
 			<td colspan="2">
-				<textarea id="comment" cols="40" rows="7" wrap="soft">${params.comment}</textarea>
+				<textarea id="comment" name="comment" cols="40" rows="7" wrap="soft">${params.comment}</textarea>
 			</td>
 			<td />
 		</tr>
@@ -128,7 +128,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.realEndOfWork} ${params.errors.period}</span>
+				<span class="errorText">${params.errors.realEndOfWork}${not empty params.errors.period ? params.errors.period : ''}</span>
 			</td>
 		</tr>
 		<tr>
