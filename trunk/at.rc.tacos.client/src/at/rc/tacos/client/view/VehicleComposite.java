@@ -11,8 +11,6 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -37,7 +35,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	private VehicleDetail vehicle;
 
 	//the labels to display
-	private Composite compositeCarType;
 	private Composite compositeCarBottom;
 	private Composite compositeCarIcons;
 	private Label vehicleNameLabel;
