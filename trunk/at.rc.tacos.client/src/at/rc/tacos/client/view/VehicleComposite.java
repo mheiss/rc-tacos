@@ -116,18 +116,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		vehicleNameLabel.setBackground(CustomColors.COLOR_BLUE);
 
 		// .. type of the ambulance
-		compositeCarType = new Composite(compositeCarTop, SWT.NONE);
-		compositeCarType.setLayout(new FormLayout());
-		compositeCarType.setBackground(CustomColors.COLOR_BLUE);
-
-		vehicleTypeLabel = new Label(compositeCarType, SWT.CENTER);
-
-		final FormData fd_label = new FormData();
-		fd_label.bottom = new FormAttachment(0, 15);
-		fd_label.top = new FormAttachment(0, 0);
-		fd_label.right = new FormAttachment(0, 68);
-		fd_label.left = new FormAttachment(0, 15);
-		vehicleTypeLabel.setLayoutData(fd_label);
+		vehicleTypeLabel = new Label(compositeCarTop, SWT.CENTER);
 		vehicleTypeLabel.setForeground(CustomColors.COLOR_WHITE);
 		vehicleTypeLabel.setFont(CustomColors.VEHICLE_TEXT);
 		vehicleTypeLabel.setBackground(CustomColors.COLOR_GRAY);
@@ -141,27 +130,27 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		// .. icons
 		readyLabel = new Label(compositeCarIcons, SWT.NONE);
 		readyLabel.setBackground(CustomColors.COLOR_BLUE);
-		readyLabel.setBounds(0, 0, 19, 19);
+		readyLabel.setBounds(0, 0, 14, 19);
 
 		mobilePhoneLabel = new Label(compositeCarIcons, SWT.NONE);
 		mobilePhoneLabel.setBackground(CustomColors.COLOR_BLUE);
-		mobilePhoneLabel.setBounds(29, 0, 19, 19);
+		mobilePhoneLabel.setBounds(20, 0, 14, 19);
 
 		stationLabel = new Label(compositeCarIcons, SWT.NONE);
 		stationLabel.setBackground(CustomColors.COLOR_BLUE);
-		stationLabel.setBounds(54, 0, 19, 19);
+		stationLabel.setBounds(40, 0, 14, 19);
 
 		repairLabel = new Label(compositeCarIcons, SWT.NONE);
 		repairLabel.setBackground(CustomColors.COLOR_BLUE);
-		repairLabel.setBounds(83, 0, 19, 19);
+		repairLabel.setBounds(60, 0, 14, 19);
 
 		notesLabel = new Label(compositeCarIcons, SWT.NONE);
 		notesLabel.setBackground(CustomColors.COLOR_BLUE);
-		notesLabel.setBounds(112, 0, 19, 19);
+		notesLabel.setBounds(80, 0, 14, 19);
 
 		statusLabel = new Label(compositeCarIcons, SWT.NONE);
 		statusLabel.setBackground(CustomColors.COLOR_BLUE);
-		statusLabel.setBounds(141, 0, 21, 19);
+		statusLabel.setBounds(116, 0, 14, 22);
 
 		// .. staff
 		final Composite compositeCarStaff = new Composite(compositeCarBottom, SWT.NONE);
@@ -172,21 +161,21 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		driverLabel.setFont(CustomColors.VEHICLE_TEXT);
 		driverLabel.setBackground(CustomColors.COLOR_BLUE);
 		driverLabel.setAlignment(SWT.LEFT);
-		driverLabel.setBounds(0, 19, 54, 19);
+		driverLabel.setBounds(0, 19, 44, 13);
 
 		medicILabel = new Label(compositeCarStaff, SWT.NONE);
 		medicILabel.setForeground(CustomColors.COLOR_NAME);
 		medicILabel.setFont(CustomColors.VEHICLE_TEXT);
 		medicILabel.setBackground(CustomColors.COLOR_BLUE);
 		medicILabel.setAlignment(SWT.CENTER);
-		medicILabel.setBounds(54, 19, 54, 19);
+		medicILabel.setBounds(44, 19, 44, 13);
 
 		medicIILabel = new Label(compositeCarStaff, SWT.NONE);
 		medicIILabel.setForeground(CustomColors.COLOR_NAME);
 		medicIILabel.setFont(CustomColors.VEHICLE_TEXT);
 		medicIILabel.setBackground(CustomColors.COLOR_BLUE);
 		medicIILabel.setAlignment(SWT.RIGHT);
-		medicIILabel.setBounds(108, 19, 54, 19);
+		medicIILabel.setBounds(88, 19, 44, 13);
 
 		//create the actions
 		makeActions();
@@ -321,7 +310,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		//change the background color
 		if(vehicle.getDriver() == null)
 		{
-			compositeCarType.setBackground(CustomColors.COLOR_GRAY);
 			compositeCarIcons.setBackground(CustomColors.COLOR_GRAY);
 			vehicleNameLabel.setBackground(CustomColors.COLOR_GRAY);
 			vehicleTypeLabel.setBackground(CustomColors.COLOR_GRAY);
@@ -337,7 +325,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		}
 		else
 		{
-			compositeCarType.setBackground(CustomColors.COLOR_BLUE);
 			compositeCarIcons.setBackground(CustomColors.COLOR_BLUE);
 			vehicleNameLabel.setBackground(CustomColors.COLOR_BLUE);
 			vehicleTypeLabel.setBackground(CustomColors.COLOR_BLUE);
