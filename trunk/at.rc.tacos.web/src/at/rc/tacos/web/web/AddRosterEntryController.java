@@ -82,12 +82,15 @@ public class AddRosterEntryController extends Controller {
 					}
 					if (hasCompetence) {
 						staffList.add(sm);
+						if (sm.getStaffMemberId() == staffMemberId) {
+							staffMember = sm;
+						}
 					}
 				} else {
 					staffList.add(sm);
-				}
-				if (sm.getStaffMemberId() == staffMemberId) {
-					staffMember = sm;
+					if (sm.getStaffMemberId() == staffMemberId) {
+						staffMember = sm;
+					}
 				}
 			}
 			params.put("staffList", staffList);
@@ -224,7 +227,7 @@ public class AddRosterEntryController extends Controller {
 			
 			if (realStartOfWork != null && realEndOfWork != null) {
 				if (realStartOfWork.getTime() >= realEndOfWork.getTime()) {
-					errors.put("period", "Dienst von muss größer sein als Diens bis.");
+					errors.put("period", "Dienst von muss größer sein als Dienst bis.");
 				}
 			}
 			
