@@ -73,7 +73,6 @@ public class VehicleTableEditAction extends Action
         
         //create the window
         VehicleForm window = new VehicleForm(parent,vehicle);
-        window.getShell().setVisible(false);
         window.create();
 
         //get the shell and resize
