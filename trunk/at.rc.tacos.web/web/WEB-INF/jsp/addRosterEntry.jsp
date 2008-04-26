@@ -1,10 +1,8 @@
 <%@ include file="includes.jsp" %>
-<c:url var="url" value="/Dispatcher/rosterDay2.do?action=addRosterEntry">
-	<c:param name="action">addRosterEntry</c:param>
-</c:url>
+<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 <form action="${url}" method="post" accept-charset="utf-8">
-	<div id="generalDataformHeader" class="formHeader">Allgemeine Daten</div>
 	<table id="generalDataForm" class="standardForm">
+		<tr><td>Allgemeine Daten:</td></tr>
 		<tr>
 			<td>Mitarbeiter:</td>
 			<td>
@@ -17,6 +15,9 @@
 					</c:forEach>
 				</select>
 			</td>
+			<td>
+				<span class="errorText">${params.errors.staffMember}</span>
+			</td>
 		</tr>
 		<tr>
 			<td>Ortsstelle:</td>
@@ -28,10 +29,9 @@
 					</c:forEach>
 				</select>
 			</td>
-		</tr>
-		<tr>
-			<td/>
-			<td><label for="standby" style="cursor:pointer"/><input id="standby" name="standby" type="checkbox" />Bereitschaft</td>
+			<td>
+				<span class="errorText">${params.errors.location}</span>
+			</td>
 		</tr>
 		<tr>
 			<td>Verwendung:</td>
@@ -45,6 +45,9 @@
 					</c:forEach>
 				</select>
 			</td>
+			<td>
+				<span class="errorText">${params.errors.job}</span>
+			</td>
 		</tr>
 		<tr>
 			<td>Dienstverhältnis:</td>
@@ -56,83 +59,86 @@
 					</c:forEach>
 				</select>
 			</td>
-		</tr>
-	</table>
-	<div id="commentFormHeader" class="formHeader">Anmerkungen</div>
-	<table id="commentForm" class="standardForm">
-		<tr>
 			<td>
-				<textarea id="comment" cols="40" rows="7" wrap="soft">
-				</textarea>
+				<span class="errorText">${params.errors.job}</span>
 			</td>
 		</tr>
-	</table>
-	<div id="timeFormHeader" class="formHeader">Dienstzeiten</div>
-	<table id="timeForm" class="standardForm">
+		<tr>
+			<td />
+			<td><label for="standby" style="cursor:pointer"/><input id="standby" name="standby" type="checkbox" value="true"${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} />Bereitschaft</td>
+		</tr>
+		<tr><td>Anmerkungen:</td></tr>
+		<tr>
+			<td colspan="2">
+				<textarea id="comment" cols="40" rows="7" wrap="soft">${params.comment}</textarea>
+			</td>
+			<td />
+		</tr>
+		<tr><td>Dienstzeiten:</td></tr>
 		<tr>
 			<td>
-				<table>
-					<tr>
-						<td>
-							Dienst von: 
-						</td>
-						<td>
-							<input id="dateFrom" name="dateFrom" type="text" size="10" maxlength="10" />
-							<c:url var="url" value="/image/calendar_edit.gif" />
-							<img src="${url}" border="0" id="dateFromCalendarTrigger" style="cursor:pointer" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-						</td>
-						<td>
-							<select size="1" id="timeFromHours" name="timeFromHours">
-								<c:forTokens var="i" items="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23" delims=",">
-									<option>${i}</option>
-								</c:forTokens>
-							</select>
-							<select size="1" id="timeFromMinutes" name="timeFromMinutes">
-								<c:forTokens var="i" items="0,5,10,15,20,25,30,35,40,45,50,55,60" delims=",">
-									<option>${i}</option>
-								</c:forTokens>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							bis: 
-						</td>
-						<td>
-							<input id="dateTo" name="dateTo" type="text" size="10" maxlength="10" />
-							<c:url var="url" value="/image/calendar_edit.gif" />
-							<img src="${url}" border="0" id="dateToCalendarTrigger" style="cursor:pointer" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-						</td>
-						<td>
-							<select size="1" id="timeToHours" name="timeToHours">
-								<c:forTokens var="i" items="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23" delims=",">
-									<option>${i}</option>
-								</c:forTokens>
-							</select>
-							<select size="1" id="timeToMinutes" name="timeToMinutes">
-								<c:forTokens var="i" items="0,5,10,15,20,25,30,35,40,45,50,55,60" delims=",">
-									<option>${i}</option>
-								</c:forTokens>
-							</select>
-						</td>
-					</tr>
-				</table>
+				Dienst von: 
+			</td>
+			<td>
+				<input id="dateFrom" name="dateFrom" type="text" size="10" maxlength="10" value="${params.dateFrom}" />
+				<c:url var="url" value="/image/calendar_edit.gif" />
+				<img src="${url}" border="0" id="dateFromCalendarTrigger" style="cursor:pointer" />
+			</td>
+			<td />
+		</tr>
+		<tr>
+			<td />
+			<td>
+				<select size="1" id="timeFromHours" name="timeFromHours">
+					<c:forTokens var="i" items="00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23" delims=",">
+						<option ${(not empty params.timeFromHours) and (params.timeFromHours == i) ? ' selected="selected"' : ''}>${i}</option>
+					</c:forTokens>
+				</select> :
+				<select size="1" id="timeFromMinutes" name="timeFromMinutes">
+					<c:forTokens var="i" items="00,05,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+						<option ${(not empty params.timeFromMinutes) and (params.timeFromMinutes == i) ? ' selected="selected"' : ''}>${i}</option>
+					</c:forTokens>
+				</select>
+			</td>
+			<td>
+				<span class="errorText">${params.errors.realStartOfWork}</span>
 			</td>
 		</tr>
-	</table>
-	<table>
 		<tr>
 			<td>
+				bis: 
+			</td>
+			<td>
+				<input id="dateTo" name="dateTo" type="text" size="10" maxlength="10" value="${params.dateTo}" />
+				<c:url var="url" value="/image/calendar_edit.gif" />
+				<img src="${url}" border="0" id="dateToCalendarTrigger" style="cursor:pointer" />
+			</td>
+			<td />
+		</tr>
+		<tr>
+			<td />
+			<td>
+				<select size="1" id="timeToHours" name="timeToHours">
+					<c:forTokens var="i" items="00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23" delims=",">
+						<option ${(not empty params.timeToHours) and (params.timeToHours == i) ? ' selected="selected"' : ''}>${i}</option>
+					</c:forTokens>
+				</select> :
+				<select size="1" id="timeToMinutes" name="timeToMinutes">
+					<c:forTokens var="i" items="00,05,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+						<option ${(not empty params.timeToMinutes) and (params.timeToMinutes == i) ? ' selected="selected"' : ''}>${i}</option>
+					</c:forTokens>
+				</select>
+			</td>
+			<td>
+				<span class="errorText">${params.errors.realEndOfWork} ${params.errors.period}</span>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
 				<input type="submit" value="Anlegen" />
+				<input name="action" type="hidden" value="addRosterEntry" />
 			</td>
+			<td />
 		</tr>
 	</table>
 </form>
@@ -163,6 +169,7 @@ $(function() {
 		var locationId = $('#locationId').val();
 		var jobId = $('#jobId').val();
 		var serviceTypeId = $('#serviceTypeId').val();
+		var standby = $('#standby').attr('checked');
 		var comment = null;
 		comment = $('#comment').val();
 		var dateFrom = $('#dateFrom').val();
@@ -183,6 +190,9 @@ $(function() {
 		}
 		if (serviceTypeId) {
 			url += '&serviceTypeId=' + serviceTypeId;
+		}
+		if (standby) {
+			url += '&standby=' + standby;
 		}
 		if (comment && jQuery.trim(comment) != '') {
 			url += '&comment=' + comment;

@@ -52,7 +52,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 							<td>
 						</tr>
 					</table>
-					<table width="100%">
+					<table>
 						<tr>
 							<!-- #### LEFT CONTAINER NAVIGATION-->
 							<td id="LeftContainerPanel" valign="top"><%@ include file="navigation.jsp"%></td>

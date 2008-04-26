@@ -473,3 +473,5 @@ weekdayZ {
     border-style:dotted;
     border-color:#666666;
 }
+
+.errorText { color:red; }
