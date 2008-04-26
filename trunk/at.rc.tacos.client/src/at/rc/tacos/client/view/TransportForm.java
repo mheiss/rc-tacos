@@ -1238,7 +1238,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         multiTransportGroup.setLayout(new FormLayout());
         final FormData fd_multitransportGroup = new FormData();
         fd_multitransportGroup.right = new FormAttachment(0, 842);
-        fd_multitransportGroup.bottom = new FormAttachment(0, 550);
+        fd_multitransportGroup.bottom = new FormAttachment(0, 500);
         fd_multitransportGroup.top = new FormAttachment(0, 360);
         fd_multitransportGroup.left = new FormAttachment(0, 10);
         multiTransportGroup.setLayoutData(fd_multitransportGroup);
@@ -2752,7 +2752,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     	fd_table_1.right = new FormAttachment(0, 824);
     	fd_table_1.left = new FormAttachment(0, 3);
     	fd_table_1.top = new FormAttachment(0, 1);
-    	fd_table_1.bottom = new FormAttachment(0, 174);
+    	fd_table_1.bottom = new FormAttachment(0, 122);
     	table_1.setLayoutData(fd_table_1);
 		viewer.setContentProvider(provider);
 		viewer.setLabelProvider(new MultiTransportLabelProvider());
