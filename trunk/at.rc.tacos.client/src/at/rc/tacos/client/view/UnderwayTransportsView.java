@@ -26,7 +26,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
-
 import at.rc.tacos.client.controller.CancelTransportAction;
 import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.CopyTransportDetailsIntoClipboardAction;
@@ -34,6 +33,10 @@ import at.rc.tacos.client.controller.DetachCarAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.EditTransportStatusAction;
 import at.rc.tacos.client.controller.EmptyTransportAction;
+import at.rc.tacos.client.controller.SetAccompanyingPersonAction;
+import at.rc.tacos.client.controller.SetBD1Action;
+import at.rc.tacos.client.controller.SetBD2Action;
+import at.rc.tacos.client.controller.SetBackTransportPossibleAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
@@ -65,16 +68,17 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private SetTransportStatusAction setTransportStatusS3Action;
 	private SetTransportStatusAction setTransportStatusS4Action;
 	private SetTransportStatusAction setTransportStatusS5Action;
-
-	
 	private EditTransportStatusAction editTransportStatusAction;
-	
 	private DetachCarAction detachCarAction;
 	private EditTransportAction editTransportAction;
 	private EmptyTransportAction emptyTransportAction;
 	private CancelTransportAction cancelTransportAction;
 	private CopyTransportAction copyTransportAction;
 	private CopyTransportDetailsIntoClipboardAction copyTransportDetailsIntoClipboardAction;
+	private SetAccompanyingPersonAction setAccompanyingPersonAction;
+	private SetBD2Action setBD2Action;
+	private SetBD1Action setBD1Action;
+	private SetBackTransportPossibleAction setBackTransportPossibleAction;
 
 	/**
 	 * Defaul class constructor
@@ -336,6 +340,10 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		setTransportStatusS5Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_DESTINATION_FREE, "S5 Ziel frei");
 		editTransportStatusAction = new EditTransportStatusAction(this.viewer);
 		
+		setAccompanyingPersonAction = new SetAccompanyingPersonAction(this.viewer);
+		setBD1Action = new SetBD1Action(this.viewer);
+		setBD2Action = new SetBD2Action(this.viewer);
+		setBackTransportPossibleAction = new SetBackTransportPossibleAction(this.viewer);
 		editTransportAction = new EditTransportAction(this.viewer,"underway");
 		detachCarAction = new DetachCarAction(this.viewer);
 		emptyTransportAction = new EmptyTransportAction(this.viewer);
@@ -378,6 +386,15 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		if(transport == null)
 			return;
 		
+		//submenu for the available vehicles
+		MenuManager menuManagerSub = new MenuManager("Details");
+
+		//add the actions
+		menuManagerSub.add(setAccompanyingPersonAction);
+		menuManagerSub.add(setBD1Action);
+		menuManagerSub.add(setBD2Action);
+		menuManagerSub.add(setBackTransportPossibleAction);
+		
 		//add the actions
 		manager.add(setTransportStatusS1Action);
 		manager.add(setTransportStatusS2Action);
@@ -385,6 +402,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(setTransportStatusS4Action);
 		manager.add(setTransportStatusS5Action);
 		manager.add(editTransportStatusAction);
+		manager.add(new Separator());
+		manager.add(menuManagerSub);
 		manager.add(new Separator());
 		manager.add(editTransportAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
