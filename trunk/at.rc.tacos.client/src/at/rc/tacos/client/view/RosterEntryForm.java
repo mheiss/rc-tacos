@@ -236,6 +236,15 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			rosterEntry.setStation((Location)comboOrtsstelle.getElementAt(index2));
 			System.out.println(rosterEntry.getStation());
 
+			 if (noteEditor.getTextWidget().getText().length() > 400)
+		        {
+		            getShell().getDisplay().beep();
+		            setErrorMessage("Die Anmerkungen dürfen nicht länger als 400 Zeichen sein.");
+		            return;
+		        }
+			
+			
+			
 			rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
 			rosterEntry.setStandby(bereitschaftButton.getSelection());
 			rosterEntry.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
@@ -337,6 +346,8 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		//create the section
 		Section dayInfoSection = toolkit.createSection(client, ExpandableComposite.TITLE_BAR);
 		toolkit.createCompositeSeparator(dayInfoSection);
+		
+		
 		dayInfoSection.setText("Anmerkungen");
 		dayInfoSection.setExpanded(true);
 		dayInfoSection.setLayout(new GridLayout());
@@ -503,7 +514,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		}
 		if (dienstVon.getDate() == null)
 		{
-			setErrorMessage("Bitte geben Sie einen Dienstbegin an");
+			setErrorMessage("Bitte geben Sie einen Dienstbeginn an");
 			return false;
 		}
 		if (dienstBis.getDate() == null)
