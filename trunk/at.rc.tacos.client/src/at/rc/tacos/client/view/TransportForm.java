@@ -19,6 +19,7 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -86,6 +87,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
 
 /**
@@ -2678,26 +2680,26 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
             if(!mehrfachtransport)
             {
-            	System.out.println("....mehrfachtransport: " +mehrfachtransport);
+            	//assign the vehicle if one is selected	//TODO
+            	if(viewerAssign.getTable().getSelectionIndex() != -1)
+            	{
+            		//the selection
+            		ISelection selection = viewerAssign.getSelection();
+            		//get the selected transport
+            		VehicleDetail vehicle = (VehicleDetail)((IStructuredSelection)selection).getFirstElement();
+            		//set the details
+            		transport.setVehicleDetail(vehicle);
+            		transport.setDisposedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
+            		GregorianCalendar cal = new GregorianCalendar();
+            		long now = cal.getTimeInMillis();
+            		transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
+            		transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
+            	}
+            		
 	            //create and run the add action
 	            CreateTransportAction newAction = new CreateTransportAction(transport);
-	            newAction.run();
-	            NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+	            newAction.run();     		
 	            
-	            System.out.println("..............nach der Create TransportAction");
-	            
-//	            //assign car if a car is selected	//TODO
-	            if(viewerAssign.getTable().getSelectionIndex() != -1)
-	            {
-	            	System.out.println("direkte Fahrzeugzuweisung");
-	            	System.out.println("TransportForm, transportId vor assignCarDirectAction: " +transport.getTransportId());
-	            	AssignCarDirectAction assignCarDirectAction = new AssignCarDirectAction(viewerAssign, transport);
-	            	assignCarDirectAction.run();
-	            	NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
-	            }
-	        		
-	            
-            
 	            if(transport.getTransportPriority().equalsIgnoreCase("A"))
 	            {
 	                DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
