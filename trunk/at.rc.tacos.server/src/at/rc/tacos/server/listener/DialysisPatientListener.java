@@ -67,7 +67,7 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	}
 
 	/**
-	 * Remove a roster entry
+	 * Remove a dialysis patient
 	 */
 	@Override
 	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException,SQLException
