@@ -19,8 +19,10 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -49,6 +51,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.controller.AssignCarAction;
+import at.rc.tacos.client.controller.AssignCarDirectAction;
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.RemoveTransportFromMultiTransportList;
@@ -57,6 +60,7 @@ import at.rc.tacos.client.modelManager.AddressManager;
 import at.rc.tacos.client.modelManager.DiseaseManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.client.providers.AssignVehicleContentProvider;
 import at.rc.tacos.client.providers.DiseaseContentProvider;
 import at.rc.tacos.client.providers.DiseaseLabelProvider;
 import at.rc.tacos.client.providers.MultiTransportContentProvider;
@@ -65,6 +69,7 @@ import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
+import at.rc.tacos.client.providers.VehicleAssignLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
@@ -72,6 +77,7 @@ import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.DialysisPatient;
@@ -153,6 +159,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Button bd1Button;
     private Button buttonMehrfachtransport;
     private Button buttonADDMehrfachtransport;
+    private Button buttonAssignCar;
     
     //groups
     private Group formGroup;
@@ -164,13 +171,15 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private Group transportdatenGroup;
     private Group transportdetailsGroup;
     private Group multiTransportGroup;
+    private Group assignCarGroup;
     
     private ComboViewer zustaendigeOrtsstelle;
     private DateTime dateTime;
     protected Shell shell;
     private Composite client;
     
-    private MultiTransportContentProvider provider;
+    private MultiTransportContentProvider multiTransportProvider;
+    private AssignVehicleContentProvider assignVehicleContentProvider;
 
     //the stati
     private Text textS1,textS2,textS3,textS4,textS5,textS6;
@@ -188,6 +197,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     private boolean finalMultiTransportKlick;
     
     private TableViewer viewer; 
+    private TableViewer viewerAssign;
     
     private RemoveTransportFromMultiTransportList removeAction;
     ArrayList<AssignCarAction> actionList = new ArrayList<AssignCarAction>();
@@ -269,7 +279,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
      */
     protected Control createContents(Composite parent) 
     {
-    	provider = new MultiTransportContentProvider();
+    	multiTransportProvider = new MultiTransportContentProvider();
+//    	Location location = ModelFactory.getInstance().getLocationManager().getLocationByName("Bezirk: Bruck - Kapfenberg");
+//    	assignVehicleContentProvider = new AssignVehicleContentProvider(location);
         Control contents = super.createContents(parent);
         setTitle("Transport");
         setMessage("Hier können Sie einen neuen Transport anlegen", IMessageProvider.INFORMATION);
@@ -304,6 +316,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             buttonDialyse.setEnabled(false);
             buttonMehrfachtransport.setEnabled(false);
             buttonADDMehrfachtransport.setVisible(false);
+            buttonAssignCar.setVisible(false);
              
              
             //set field contents
@@ -930,6 +943,19 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         zustaendigeOrtsstelle.setContentProvider(new StationContentProvider());
         zustaendigeOrtsstelle.setLabelProvider(new StationLabelProvider());
         zustaendigeOrtsstelle.setInput(ModelFactory.getInstance().getLocationManager());
+        zustaendigeOrtsstelle.addSelectionChangedListener(new ISelectionChangedListener()
+		{
+			@Override
+			public void selectionChanged(SelectionChangedEvent arg0) 
+			{
+				int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
+                if(index != -1)
+                {
+                	buttonAssignCar.setEnabled(true);
+                }
+				//TODO- change the location for the AssignVehicleContentProvider
+			}
+		});
 
         final FormData fd_comboZustaendigeOrtsstelle = new FormData();
         fd_comboZustaendigeOrtsstelle.bottom = new FormAttachment(0, 121);
@@ -1243,6 +1269,20 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         multiTransportGroup.setText("Mehrfachtransport");
         multiTransportGroup.setVisible(false);
         createMultiTransportTable();  
+        
+        //assign car group
+        assignCarGroup = new Group(client, SWT.NONE);
+        assignCarGroup.setLayout(new FormLayout());
+        final FormData fd_assignCarGroup = new FormData();
+        fd_assignCarGroup.right = new FormAttachment(0, 842);
+        fd_assignCarGroup.bottom = new FormAttachment(0, 500);
+        fd_assignCarGroup.top = new FormAttachment(0, 360);
+        fd_assignCarGroup.left = new FormAttachment(0, 10);
+        assignCarGroup.setLayoutData(fd_assignCarGroup);
+        assignCarGroup.setText("Fahrzeug zuweisen");
+        assignCarGroup.setVisible(false);
+        createAssignCarTable();
+       
         
         //group 'Alarmierung'
         planungGroup_1 = new Group(client, SWT.NONE);
@@ -2141,9 +2181,38 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	        	newTransport.setPatient(newPatient);
 	        	newTransport.setCallerDetail(newCaller);
 	        	//add the created transport to the table object list
-	        	provider.addTransport(newTransport);
+	        	multiTransportProvider.addTransport(newTransport);
 	        	//refresh the viewer
             	viewer.refresh();	        	
+	        }
+	    });
+	    
+	    buttonAssignCar = new Button(formGroup, SWT.NONE);
+	    final FormData fd_buttonAssignCar = new FormData();
+	    fd_buttonAssignCar.bottom = new FormAttachment(0, 83);
+	    fd_buttonAssignCar.top = new FormAttachment(0, 60);
+	    fd_buttonAssignCar.right = new FormAttachment(0, 204);
+	    fd_buttonAssignCar.left = new FormAttachment(0, 104);
+	    buttonAssignCar.setLayoutData(fd_buttonAssignCar);
+	    buttonAssignCar.setToolTipText("Fahrzeug zuweisen");
+	    buttonAssignCar.setText("Fahrzeug zuweisen");
+	    buttonAssignCar.setEnabled(false);
+	    buttonAssignCar.addSelectionListener(new SelectionAdapter() 
+	    {
+	        public void widgetSelected(final SelectionEvent e) 
+	        {
+//	        	hookContextMenu();
+//	        	mehrfachtransport = true;
+//            	buttonMehrfachtransport.setEnabled(false);
+//            	buttonADDMehrfachtransport.setEnabled(true);
+//            	multiTransportGroup.setVisible(true); 
+	        	assignVehicleContentProvider = new AssignVehicleContentProvider();
+	        	viewerAssign.setContentProvider(assignVehicleContentProvider);
+	        	viewerAssign.setLabelProvider(new VehicleAssignLabelProvider());
+//	    		assignCarLocation = ModelFactory.getInstance().getLocationManager().getLocationByName("Bezirk: Bruck - Kapfenberg");
+	        	viewerAssign.setInput(ModelFactory.getInstance().getVehicleManager().getReadyVehicleList());
+	        	viewerAssign.refresh();
+	        	assignCarGroup.setVisible(true);
 	        }
 	    });
 	}
@@ -2182,6 +2251,23 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             viewerToStreet.refresh();
             viewerFromStreet.refresh();
         }
+        // update the viewer when a roster entry has changed//TODO
+        if ("DISEASE_ADD".equals(evt.getPropertyName())
+                || "DISEASE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+                || "DISEASE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+                || "DISEASE_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
+        { 
+            setErkrVerl.refresh();
+        }
+     	//update the vehicle table
+		if("VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName())
+				|| "VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+				|| "VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName())
+				|| "VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			viewerAssign.refresh();
+		}
     }
 
     /**
@@ -2592,9 +2678,25 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
             if(!mehrfachtransport)
             {
+            	System.out.println("....mehrfachtransport: " +mehrfachtransport);
 	            //create and run the add action
 	            CreateTransportAction newAction = new CreateTransportAction(transport);
 	            newAction.run();
+	            NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+	            
+	            System.out.println("..............nach der Create TransportAction");
+	            
+//	            //assign car if a car is selected	//TODO
+	            if(viewerAssign.getTable().getSelectionIndex() != -1)
+	            {
+	            	System.out.println("direkte Fahrzeugzuweisung");
+	            	System.out.println("TransportForm, transportId vor assignCarDirectAction: " +transport.getTransportId());
+	            	AssignCarDirectAction assignCarDirectAction = new AssignCarDirectAction(viewerAssign, transport);
+	            	assignCarDirectAction.run();
+	            	NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+	            }
+	        		
+	            
             
 	            if(transport.getTransportPriority().equalsIgnoreCase("A"))
 	            {
@@ -2607,7 +2709,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             	if(finalMultiTransportKlick)
             	{
 	            	List<Transport> objectList = new ArrayList<Transport>();
-	            	objectList = provider.getObjectList();
+	            	objectList = multiTransportProvider.getObjectList();
 	            	for(Transport transport : objectList)
 	            	{
 	            		//create and run the add action
@@ -2741,6 +2843,122 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         finalMultiTransportKlick = true;
     }
     
+    private void createAssignCarTable()
+    {
+    	viewerAssign = new TableViewer(assignCarGroup, SWT.VIRTUAL | SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+    	final Table table_1 = viewerAssign.getTable();
+    	final FormData fd_table_1 = new FormData();
+    	fd_table_1.right = new FormAttachment(0, 824);
+    	fd_table_1.left = new FormAttachment(0, 3);
+    	fd_table_1.top = new FormAttachment(0, 1);
+    	fd_table_1.bottom = new FormAttachment(0, 122);
+    	table_1.setLayoutData(fd_table_1);
+    	
+		
+    	viewerAssign.getTable().addMouseListener(new MouseAdapter() 
+		{
+			public void mouseDown(MouseEvent e) 
+			{
+				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
+				{
+					viewer.setSelection(new StructuredSelection());
+				}
+			}
+		});
+
+		final Table table = viewerAssign.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+
+		final TableColumn stationColumn = new TableColumn(table, SWT.NONE);
+		stationColumn.setToolTipText("Aktuelle Dienststelle des Fahrzeuges");
+		stationColumn.setWidth(66);
+		stationColumn.setText("Dienststelle");
+		
+		final TableColumn nameColumn = new TableColumn(table, SWT.NONE);
+		nameColumn.setToolTipText("Fahrzeug");
+		nameColumn.setWidth(66);
+		nameColumn.setText("Fahrzeug");
+	
+		final TableColumn typeColumn = new TableColumn(table, SWT.NONE);
+		typeColumn.setWidth(40);
+		typeColumn.setText("Fahrzeugtyp");
+
+		final TableColumn driverColumn = new TableColumn(table, SWT.NONE);
+		driverColumn.setToolTipText("Fahrer");
+		driverColumn.setWidth(60);
+		driverColumn.setText("Fahrer");
+		
+		final TableColumn medicIColumn = new TableColumn(table, SWT.NONE);
+		medicIColumn.setToolTipText("Sanitäter I");
+		medicIColumn.setWidth(60);
+		medicIColumn.setText("Sanitäter I");
+		
+		final TableColumn medicIIColumn = new TableColumn(table, SWT.NONE);
+		medicIIColumn.setToolTipText("Sanitäter II");
+		medicIIColumn.setWidth(60);
+		medicIIColumn.setText("Sanitäter II");
+		
+//		Listener sortListener = new Listener() 
+//		{
+//			public void handleEvent(Event e) 
+//			{
+//				// determine new sort column and direction
+//				TableColumn sortColumn = viewer.getTable().getSortColumn();
+//				TableColumn currentColumn = (TableColumn) e.widget;
+//				int dir = viewer.getTable().getSortDirection();
+//				//revert the sort order if the column is the same
+//				if (sortColumn == currentColumn) 
+//				{
+//					if(dir == SWT.UP)
+//						dir = SWT.DOWN;
+//					else
+//						dir = SWT.UP;
+//				} 
+//				else 
+//				{
+//					viewer.getTable().setSortColumn(currentColumn);
+//					dir = SWT.UP;
+//				}
+				// sort the data based on column and direction
+//				String sortIdentifier = null;
+//				if (currentColumn == bTableColumnOrtsstelle) 
+//					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
+//				if (currentColumn == bTableColumnAbfahrt) 
+//					sortIdentifier = TransportSorter.ABF_SORTER;
+//				if (currentColumn == bTableColumnAnkunft) 
+//					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
+//				if (currentColumn == bTableColumnTermin)
+//					sortIdentifier = TransportSorter.TERM_SORTER;
+//				if (currentColumn == bTableColumnTransportVon)
+//					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
+//				if(currentColumn == bTtableColumnPatient)
+//					sortIdentifier = TransportSorter.PATIENT_SORTER;
+//				if(currentColumn == bTableColumnTransportNach)
+//					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
+//				if(currentColumn == bTableColumnTA)
+//					sortIdentifier = TransportSorter.TA_SORTER;
+				//apply the filter
+//				viewer.getTable().setSortDirection(dir);
+//				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
+		viewerAssign.refresh();
+//			}
+//		};
+
+		//attach the listener
+//		bTableColumnOrtsstelle.addListener(SWT.Selection, sortListener);
+//		bTableColumnAbfahrt.addListener(SWT.Selection, sortListener);
+//		bTableColumnAnkunft.addListener(SWT.Selection, sortListener);
+//		bTableColumnTermin.addListener(SWT.Selection, sortListener);
+//		bTableColumnTransportVon.addListener(SWT.Selection, sortListener);
+//		bTtableColumnPatient.addListener(SWT.Selection, sortListener);
+//		bTableColumnTransportNach.addListener(SWT.Selection, sortListener);
+//		bTableColumnTA.addListener(SWT.Selection, sortListener);
+		
+		
+		hookContextMenu();
+		viewer.refresh();
+    }
     
     private void createMultiTransportTable()
     {
@@ -2752,7 +2970,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     	fd_table_1.top = new FormAttachment(0, 1);
     	fd_table_1.bottom = new FormAttachment(0, 122);
     	table_1.setLayoutData(fd_table_1);
-		viewer.setContentProvider(provider);
+		viewer.setContentProvider(multiTransportProvider);
 		viewer.setLabelProvider(new MultiTransportLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager().toArray());
 		viewer.refresh();
@@ -2870,7 +3088,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		bTableColumnTA.addListener(SWT.Selection, sortListener);
 		
 		//create the menu
-		removeAction = new RemoveTransportFromMultiTransportList(transport, provider, viewer);
+		removeAction = new RemoveTransportFromMultiTransportList(transport, multiTransportProvider, viewer);
 		hookContextMenu();
 		viewer.refresh();
     }
