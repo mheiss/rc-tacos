@@ -35,12 +35,17 @@ public class TransportListener extends ServerListenerAdapter
 		transport.setTransportId(id);
 		
 		//for the direct car assign to a transport (in the transport form)
-		if(transport.getVehicleDetail()!= null)
+		if(transport.getVehicleDetail() != null && transport.getTransportNumber() == 0)
 		{
-			System.out.println("................ im if(transport.getVehicleDetail() != null) im TransportListener");
-			transportDao.updateTransport(transport);
+			System.out.println("Assign car to transport, generating transport number");
+			//set the current year to generate a valid transport numer
+			transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
+			int transportNr = transportDao.generateTransportNumber(transport);
+			if (transportNr == Transport.TRANSPORT_ERROR)
+				throw new DAOException("TransportListener","Failed to generate a valid transport number for transport "+transport);
+			transport.setTransportNumber(transportNr);
+			transportDao.updateTransport(transport);//to set the AE- status
 		}
-		
 		return transport;
 	}
 
