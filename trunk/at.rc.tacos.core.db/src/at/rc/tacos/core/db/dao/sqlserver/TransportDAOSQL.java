@@ -832,7 +832,6 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 }
             }
             
-            System.out.println("TransportDAOSQL, updateTransport, die transportId: " +transport.getTransportId());
             /** update the vehicle of the transport*/
             if(transport.getVehicleDetail() != null)
             {
@@ -863,6 +862,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 System.out.println("Assigning transport state failed");
                 return false;
             }
+            
             //everything is ok
             return true;
         }
@@ -1300,7 +1300,6 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
         try
         {
             final PreparedStatement query = connection.prepareStatement(queries.getStatment("add.assignedVehicle"));
-            System.out.println("TransportDAOSQL, TransportId: " +transport.getTransportId());
             query.setInt(1, transport.getTransportId());
             query.setString(2, transport.getVehicleDetail().getVehicleName());
             query.setString(3, transport.getVehicleDetail().getVehicleType());
