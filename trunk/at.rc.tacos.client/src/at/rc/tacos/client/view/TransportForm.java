@@ -1952,6 +1952,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 multiTransportGroup.setVisible(false);
                 mehrfachtransport = false;
                 buttonMehrfachtransport.setEnabled(false);
+                buttonADDMehrfachtransport.setEnabled(false);
+                buttonAssignCar.setEnabled(true);
                 //set dateTime to default and disable editing
                 GregorianCalendar gcal = new GregorianCalendar();
                 dateTime.setDay(gcal.get(GregorianCalendar.DATE));
@@ -2002,6 +2004,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 dateTime.setEnabled(true);
                 viewerAssign.getTable().setSelection(-1);//deselect 
                 assignCarGroup.setVisible(false);
+                buttonMehrfachtransport.setEnabled(true);
+                buttonADDMehrfachtransport.setEnabled(true);
 
                 transportType = "prebooking";
 
@@ -2148,6 +2152,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             	buttonADDMehrfachtransport.setEnabled(true);
             	multiTransportGroup.setVisible(true);
             	assignCarGroup.setVisible(false);
+            	buttonAssignCar.setEnabled(false);
 	        }
 	    });
 
