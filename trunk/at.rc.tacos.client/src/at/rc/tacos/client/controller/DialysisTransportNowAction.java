@@ -59,7 +59,6 @@ public class DialysisTransportNowAction extends Action
 		if (!cancelConfirmed) 
 			return;
 		//set the time and send a update request to the server
-		dia.setPlannedStartOfTransport(Calendar.getInstance().getTimeInMillis());
 		dia.setLastTransportDate(Calendar.getInstance().getTimeInMillis());
 		NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, dia);
 		//create a transport for this patient
