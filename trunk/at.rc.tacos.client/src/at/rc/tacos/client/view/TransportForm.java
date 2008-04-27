@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import at.rc.tacos.client.controller.AssignCarAction;
-import at.rc.tacos.client.controller.AssignCarDirectAction;
 import at.rc.tacos.client.controller.CreateTransportAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.RemoveTransportFromMultiTransportList;
@@ -78,7 +77,6 @@ import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.DialysisPatient;
@@ -316,7 +314,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             buttonVormerkung.setEnabled(false);
             buttonNotfall.setEnabled(false);
             buttonDialyse.setEnabled(false);
-            buttonMehrfachtransport.setEnabled(false);
+            buttonMehrfachtransport.setVisible(false);
             buttonADDMehrfachtransport.setVisible(false);
             buttonAssignCar.setVisible(false);
              
@@ -955,7 +953,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 {
                 	buttonAssignCar.setEnabled(true);
                 }
-				//TODO- change the location for the AssignVehicleContentProvider
 			}
 		});
 
@@ -1952,6 +1949,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 transportdetailsGroup.setVisible(false);
                 statusmeldungenGroup.setVisible(false);
                 personalAmFahrzeugGroup.setVisible(false);
+                multiTransportGroup.setVisible(false);
+                mehrfachtransport = false;
+                buttonMehrfachtransport.setEnabled(false);
                 //set dateTime to default and disable editing
                 GregorianCalendar gcal = new GregorianCalendar();
                 dateTime.setDay(gcal.get(GregorianCalendar.DATE));
@@ -2000,6 +2000,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
                 statusmeldungenGroup.setVisible(false);
                 personalAmFahrzeugGroup.setVisible(false);
                 dateTime.setEnabled(true);
+                viewerAssign.getTable().setSelection(-1);//deselect 
+                assignCarGroup.setVisible(false);
 
                 transportType = "prebooking";
 
@@ -2145,6 +2147,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
             	buttonMehrfachtransport.setEnabled(false);
             	buttonADDMehrfachtransport.setEnabled(true);
             	multiTransportGroup.setVisible(true);
+            	assignCarGroup.setVisible(false);
 	        }
 	    });
 
@@ -2204,10 +2207,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	        public void widgetSelected(final SelectionEvent e) 
 	        {
 //	        	hookContextMenu();
-//	        	mehrfachtransport = true;
-//            	buttonMehrfachtransport.setEnabled(false);
-//            	buttonADDMehrfachtransport.setEnabled(true);
-//            	multiTransportGroup.setVisible(true); 
+	        	mehrfachtransport = false;
+            	buttonMehrfachtransport.setEnabled(false);
+            	buttonADDMehrfachtransport.setEnabled(false);
+            	multiTransportGroup.setVisible(false); 
 	        	assignVehicleContentProvider = new AssignVehicleContentProvider();
 	        	viewerAssign.setContentProvider(assignVehicleContentProvider);
 	        	viewerAssign.setLabelProvider(new VehicleAssignLabelProvider());
