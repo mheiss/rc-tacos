@@ -2869,12 +2869,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		{
 			public void mouseDown(MouseEvent e) 
 			{
-				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
+				if( viewerAssign.getTable().getItem(new Point(e.x,e.y))==null ) 
 				{
-					viewer.setSelection(new StructuredSelection());
+					viewerAssign.setSelection(new StructuredSelection());
 				}
 			}
 		});
+    	
 
 		final Table table = viewerAssign.getTable();
 		table.setLinesVisible(true);
