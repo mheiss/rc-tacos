@@ -33,6 +33,14 @@ public class TransportListener extends ServerListenerAdapter
 		if(id == Transport.TRANSPORT_ERROR)
 			throw new DAOException("TransportListener","Failed to add the transport:"+transport);
 		transport.setTransportId(id);
+		
+		//for the direct car assign to a transport (in the transport form)
+		if(transport.getVehicleDetail()!= null)
+		{
+			System.out.println("................ im if(transport.getVehicleDetail() != null) im TransportListener");
+			transportDao.updateTransport(transport);
+		}
+		
 		return transport;
 	}
 
