@@ -832,6 +832,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 }
             }
             
+            System.out.println("TransportDAOSQL, updateTransport, die transportId: " +transport.getTransportId());
             /** update the vehicle of the transport*/
             if(transport.getVehicleDetail() != null)
             {
