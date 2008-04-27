@@ -1247,7 +1247,10 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(8, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.timeAndDateFormat));
             query.setString(9, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.timeAndDateFormat));
             query.setString(10, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.timeAndDateFormat));
-            query.setString(11, transport.getKindOfTransport());
+            if(transport.getKindOfTransport()!= null)
+            	query.setString(11, transport.getKindOfTransport());
+            else
+            	query.setString(11, null);
             if(transport.getKindOfIllness() == null)
                 query.setString(12, null);
             else
