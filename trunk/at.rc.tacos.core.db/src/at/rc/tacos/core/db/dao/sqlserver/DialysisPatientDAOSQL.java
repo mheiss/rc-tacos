@@ -40,8 +40,16 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.dialysisPatient"));
 			query.setInt(1, id);
-			query.setString(2, patient.getPatient().getFirstname());
-			query.setString(3, patient.getPatient().getLastname());
+			if(patient.getPatient() == null)
+			{
+				query.setString(2, null);
+				query.setString(3, null);
+			}
+			else
+			{
+				query.setString(2, patient.getPatient().getFirstname());
+				query.setString(3, patient.getPatient().getLastname());
+			}
 			query.setInt(4, patient.getLocation().getId());
 			query.setString(5, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.timeAndDateFormat));
 			query.setString(6, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.timeAndDateFormat));
@@ -54,8 +62,16 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			query.setString(13, patient.getToCity());
 			query.setString(14, patient.getInsurance());
 			query.setBoolean(15, patient.isStationary());
-			query.setString(16, patient.getKindOfTransport());
-			query.setBoolean(17, patient.isAssistantPerson());
+			if(patient.getKindOfTransport() != null)
+			{
+				query.setString(16, null);
+				query.setString(17, null);
+			}
+			else
+			{
+				query.setString(16, patient.getKindOfTransport());
+				query.setBoolean(17, patient.isAssistantPerson());
+			}
 			query.setBoolean(18, patient.isMonday());
 			query.setBoolean(19, patient.isTuesday());
 			query.setBoolean(20, patient.isWednesday());
@@ -121,8 +137,14 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 				dialysis.setLocation(locationDAO.getLocation(locationId));
 				//the patient for the dialysis
 				Patient patient = new Patient();
-				patient.setFirstname(rs.getString("firstname"));
-				patient.setLastname(rs.getString("lastname"));
+				if(rs.getString("firstname") == null)
+					patient.setFirstname("");
+				else
+					patient.setFirstname(rs.getString("firstname"));
+				if(rs.getString("lastname") == null)
+					patient.setLastname("");
+				else
+					patient.setLastname(rs.getString("lastname"));
 				dialysis.setPatient(patient);
 				
 				//set the last generated transport dates
@@ -181,8 +203,14 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 				dialysis.setLocation(locationDAO.getLocation(locationId));
 				//the patient for the dialysis
 				Patient patient = new Patient();
-				patient.setFirstname(rs.getString("firstname"));
-				patient.setLastname(rs.getString("lastname"));
+				if(rs.getString("firstname") == null)
+					patient.setFirstname("");
+				else
+					patient.setFirstname(rs.getString("firstname"));
+				if(rs.getString("lastname") == null)
+					patient.setLastname("");
+				else
+					patient.setLastname(rs.getString("lastname"));
 				dialysis.setPatient(patient);
 				
 				//set the last generated transport dates
@@ -218,9 +246,8 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			//delete the dialyse transport entry
 			final PreparedStatement stmtTrans = connection.prepareStatement(queries.getStatment("delete.dialsyisTransport"));
 			stmtTrans.setInt(1, id);
-			//assert the entry is removed
-			if(stmtTrans.executeUpdate() == 0)
-				return false;
+			//assert the entry is removed -> NO VALIDATION because of a problem
+			stmtTrans.executeUpdate();
 			
 			return true;
 		}
@@ -237,8 +264,16 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 		try
 		{
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.dialysis"));
-			query.setString(1, patient.getPatient().getFirstname());
-			query.setString(2, patient.getPatient().getLastname());
+			if(patient.getPatient() == null)
+			{
+				query.setString(1, null);
+				query.setString(2, null);
+			}
+			else
+			{
+				query.setString(1, patient.getPatient().getFirstname());
+				query.setString(2, patient.getPatient().getLastname());
+			}
 			query.setInt(3, patient.getLocation().getId());
 			query.setString(4, MyUtils.timestampToString(patient.getPlannedStartOfTransport(), MyUtils.timeAndDateFormat));
 			query.setString(5, MyUtils.timestampToString(patient.getPlannedTimeAtPatient(), MyUtils.timeAndDateFormat));
@@ -251,7 +286,10 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 			query.setString(12, patient.getToCity());
 			query.setString(13, patient.getInsurance());
 			query.setBoolean(14, patient.isStationary());
-			query.setString(15, patient.getKindOfTransport());
+			if(patient.getKindOfTransport() != null)
+				query.setString(15, patient.getKindOfTransport());
+			else
+				query.setString(15, null);
 			query.setBoolean(16, patient.isAssistantPerson());
 			query.setBoolean(17, patient.isMonday());
 			query.setBoolean(18, patient.isTuesday());
