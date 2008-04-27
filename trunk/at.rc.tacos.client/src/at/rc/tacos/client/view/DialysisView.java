@@ -7,8 +7,12 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -174,6 +178,17 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnStationaer.setToolTipText("Patient wird derzeit nicht transportiert");
 		newColumnTableColumnStationaer.setWidth(49);
 		newColumnTableColumnStationaer.setText("Stat");
+		
+		viewer.getTable().addMouseListener(new MouseAdapter() 
+		{
+			public void mouseDown(MouseEvent e) 
+			{
+				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
+				{
+					viewer.setSelection(new StructuredSelection());
+				}
+			}
+		});
 	
 		/** make the columns sort able*/
 		Listener sortListener = new Listener() 
