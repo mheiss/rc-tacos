@@ -337,7 +337,8 @@ public class Activator extends AbstractUIPlugin
 							break;
 						case Calendar.SUNDAY:
 							if(!patient.isSunday())
-								break;
+								continue;
+							break;
 						default:
 							continue;
 						}
