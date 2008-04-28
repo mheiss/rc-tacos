@@ -307,10 +307,13 @@ public class Activator extends AbstractUIPlugin
 					//check the dialysis patients
 					for(DialysisPatient patient:ModelFactory.getInstance().getDialyseManager().getDialysisList())
 					{
+						Calendar currentDialysis = Calendar.getInstance();
 						//first check: do we have already generated a transport for today?
-						if(MyUtils.isEqualDate(patient.getLastTransportDate(),current.getTimeInMillis()))
+						if(MyUtils.isEqualDate(patient.getLastTransportDate(),currentDialysis.getTimeInMillis()))
 							continue;
 
+						//after the date check we can add 2 hours
+						currentDialysis.add(Calendar.HOUR_OF_DAY, +2);
 						//second check: is the day correct?
 						int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 						switch(day)
@@ -346,18 +349,18 @@ public class Activator extends AbstractUIPlugin
 						Calendar patientCal = Calendar.getInstance();
 						patientCal.setTimeInMillis(patient.getPlannedStartOfTransport());
 						//now add the current year,month and day
-						patientCal.set(Calendar.YEAR, current.get(Calendar.YEAR));
-						patientCal.set(Calendar.MONTH, current.get(Calendar.MONTH));
-						patientCal.set(Calendar.DAY_OF_MONTH, current.get(Calendar.DAY_OF_MONTH));
+						patientCal.set(Calendar.YEAR, currentDialysis.get(Calendar.YEAR));
+						patientCal.set(Calendar.MONTH, currentDialysis.get(Calendar.MONTH));
+						patientCal.set(Calendar.DAY_OF_MONTH, currentDialysis.get(Calendar.DAY_OF_MONTH));
 
 						//third check: is within the next two hour?
-						if(current.getTimeInMillis() > patientCal.getTimeInMillis())
+						if(currentDialysis.getTimeInMillis() > patientCal.getTimeInMillis())
 						{
 							//set the last generated transport date to now
 							patient.setLastTransportDate(Calendar.getInstance().getTimeInMillis());
 							NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, patient);
 							//create and run the action
-							CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,current);
+							CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,currentDialysis);
 							createAction.run();
 						}
 					}
