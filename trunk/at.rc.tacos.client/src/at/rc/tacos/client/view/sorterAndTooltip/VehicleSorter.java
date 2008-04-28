@@ -3,9 +3,7 @@ package at.rc.tacos.client.view.sorterAndTooltip;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
-
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
