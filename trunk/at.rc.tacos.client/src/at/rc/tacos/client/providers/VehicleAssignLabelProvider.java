@@ -32,7 +32,22 @@ public class VehicleAssignLabelProvider implements ITableLabelProvider, ITableCo
 		switch(columnIndex)
 		{
 		//define the columns
-		case COLUMN_STATION: return vehicle.getCurrentStation().getLocationName();
+		case COLUMN_STATION:
+			if(vehicle.getCurrentStation().getLocationName().equalsIgnoreCase("Kapfenberg"))
+				return "KA";
+			else if(vehicle.getCurrentStation().getLocationName().equalsIgnoreCase("Bruck an der Mur"))
+				return "BM";
+			else if(vehicle.getCurrentStation().getLocationName().equalsIgnoreCase("St. Marein"))
+				return "MA";
+			else if(vehicle.getCurrentStation().getLocationName().equalsIgnoreCase("Breitenau"))
+				return "BR";
+			else if(vehicle.getCurrentStation().getLocationName().equalsIgnoreCase("Thörl"))
+				return "TH";
+			else if(vehicle.getCurrentStation().getLocationName().equalsIgnoreCase("Turnau"))
+				return "TU";
+			else if(vehicle.getCurrentStation().getLocationName().equalsIgnoreCase("Bezirk: Bruck - Kapfenberg"))
+				return "BE";
+			else return null;
 		case COLUMN_NAME: return vehicle.getVehicleName();
 		case COlUMN_TYPE: return vehicle.getVehicleType();			
 		case COLUMN_DRIVER: 
@@ -45,8 +60,7 @@ public class VehicleAssignLabelProvider implements ITableLabelProvider, ITableCo
 			if(vehicle.getSecondParamedic() != null)
 				return vehicle.getSecondParamedic().getLastName() +" " +vehicle.getSecondParamedic().getFirstName();
 		default: return null;
-		}
-			
+		}	
 	}
 
 	@Override
