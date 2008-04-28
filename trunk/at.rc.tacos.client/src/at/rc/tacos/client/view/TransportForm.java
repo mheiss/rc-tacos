@@ -73,6 +73,7 @@ import at.rc.tacos.client.providers.VehicleAssignLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
+import at.rc.tacos.client.view.sorterAndTooltip.VehicleSorter;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.IProgramStatus;
@@ -2883,92 +2884,84 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		final TableColumn stationColumn = new TableColumn(table, SWT.NONE);
 		stationColumn.setToolTipText("Aktuelle Dienststelle des Fahrzeuges");
-		stationColumn.setWidth(66);
+		stationColumn.setWidth(30);
 		stationColumn.setText("Dienststelle");
 		
 		final TableColumn nameColumn = new TableColumn(table, SWT.NONE);
 		nameColumn.setToolTipText("Fahrzeug");
-		nameColumn.setWidth(66);
+		nameColumn.setWidth(60);
 		nameColumn.setText("Fahrzeug");
 	
 		final TableColumn typeColumn = new TableColumn(table, SWT.NONE);
-		typeColumn.setWidth(40);
+		typeColumn.setWidth(60);
 		typeColumn.setText("Fahrzeugtyp");
 
 		final TableColumn driverColumn = new TableColumn(table, SWT.NONE);
 		driverColumn.setToolTipText("Fahrer");
-		driverColumn.setWidth(60);
+		driverColumn.setWidth(100);
 		driverColumn.setText("Fahrer");
 		
 		final TableColumn medicIColumn = new TableColumn(table, SWT.NONE);
 		medicIColumn.setToolTipText("Sanitäter I");
-		medicIColumn.setWidth(60);
+		medicIColumn.setWidth(100);
 		medicIColumn.setText("Sanitäter I");
 		
 		final TableColumn medicIIColumn = new TableColumn(table, SWT.NONE);
 		medicIIColumn.setToolTipText("Sanitäter II");
-		medicIIColumn.setWidth(60);
+		medicIIColumn.setWidth(100);
 		medicIIColumn.setText("Sanitäter II");
 		
-//		Listener sortListener = new Listener() 
-//		{
-//			public void handleEvent(Event e) 
-//			{
-//				// determine new sort column and direction
-//				TableColumn sortColumn = viewer.getTable().getSortColumn();
-//				TableColumn currentColumn = (TableColumn) e.widget;
-//				int dir = viewer.getTable().getSortDirection();
-//				//revert the sort order if the column is the same
-//				if (sortColumn == currentColumn) 
-//				{
-//					if(dir == SWT.UP)
-//						dir = SWT.DOWN;
-//					else
-//						dir = SWT.UP;
-//				} 
-//				else 
-//				{
-//					viewer.getTable().setSortColumn(currentColumn);
-//					dir = SWT.UP;
-//				}
+		Listener sortListener = new Listener() 
+		{
+			public void handleEvent(Event e) 
+			{
+				// determine new sort column and direction
+				TableColumn sortColumn = viewerAssign.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewerAssign.getTable().getSortDirection();
+				//revert the sort order if the column is the same
+				if (sortColumn == currentColumn) 
+				{
+					if(dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				} 
+				else 
+				{
+					viewerAssign.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
 				// sort the data based on column and direction
-//				String sortIdentifier = null;
-//				if (currentColumn == bTableColumnOrtsstelle) 
-//					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
-//				if (currentColumn == bTableColumnAbfahrt) 
-//					sortIdentifier = TransportSorter.ABF_SORTER;
-//				if (currentColumn == bTableColumnAnkunft) 
-//					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
-//				if (currentColumn == bTableColumnTermin)
-//					sortIdentifier = TransportSorter.TERM_SORTER;
-//				if (currentColumn == bTableColumnTransportVon)
-//					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-//				if(currentColumn == bTtableColumnPatient)
-//					sortIdentifier = TransportSorter.PATIENT_SORTER;
-//				if(currentColumn == bTableColumnTransportNach)
-//					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-//				if(currentColumn == bTableColumnTA)
-//					sortIdentifier = TransportSorter.TA_SORTER;
+				String sortIdentifier = null;
+				if (currentColumn == stationColumn) 
+					sortIdentifier = VehicleSorter.CURRENT_STATION_SORTER;
+				if (currentColumn == nameColumn) 
+					sortIdentifier = VehicleSorter.VEHICLE_SORTER;
+				if (currentColumn == typeColumn) 
+					sortIdentifier = VehicleSorter.VEHICLE_TYPE_SORTER;
+				if (currentColumn == driverColumn)
+					sortIdentifier = VehicleSorter.DRIVER_SORTER;
+				if (currentColumn == medicIColumn)
+					sortIdentifier = VehicleSorter.PARAMEDIC_I_SORTER;
+				if(currentColumn == medicIIColumn)
+					sortIdentifier = VehicleSorter.PARAMEDIC_II_SORTER;
 				//apply the filter
-//				viewer.getTable().setSortDirection(dir);
-//				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
-		viewerAssign.refresh();
-//			}
-//		};
+				viewerAssign.getTable().setSortDirection(dir);
+				viewerAssign.setSorter(new VehicleSorter(sortIdentifier,dir));
+				viewerAssign.refresh();
+			}
+		};
 
 		//attach the listener
-//		bTableColumnOrtsstelle.addListener(SWT.Selection, sortListener);
-//		bTableColumnAbfahrt.addListener(SWT.Selection, sortListener);
-//		bTableColumnAnkunft.addListener(SWT.Selection, sortListener);
-//		bTableColumnTermin.addListener(SWT.Selection, sortListener);
-//		bTableColumnTransportVon.addListener(SWT.Selection, sortListener);
-//		bTtableColumnPatient.addListener(SWT.Selection, sortListener);
-//		bTableColumnTransportNach.addListener(SWT.Selection, sortListener);
-//		bTableColumnTA.addListener(SWT.Selection, sortListener);
+		stationColumn.addListener(SWT.Selection, sortListener);
+		nameColumn.addListener(SWT.Selection, sortListener);
+		typeColumn.addListener(SWT.Selection, sortListener);
+		driverColumn.addListener(SWT.Selection, sortListener);
+		medicIColumn.addListener(SWT.Selection, sortListener);
+		medicIIColumn.addListener(SWT.Selection, sortListener);		
 		
-		
-		hookContextMenu();
-		viewer.refresh();
+		viewerAssign.refresh();
     }
     
     private void createMultiTransportTable()
