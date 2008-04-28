@@ -586,6 +586,40 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 				
 				this.getContentOfAllFields();
 				
+				   if (comboVorname.getText().length() >30)
+			        {
+			        	this.displayMessageBox(event, "Bitte geben Sie einen Vornamen, der kürzer 30 Zeichen ist, ein", firstName);
+			        	return;
+			        }
+				   
+				   if (comboNachname.getText().length() >30)
+			        {
+			        	this.displayMessageBox(event, "Bitte geben Sie einen Nachname, der kürzer 30 Zeichen ist, ein", lastName);
+			        	return;
+			        }
+				   
+				   if (viewerToCity.getCombo().getText().length() >30)
+			        {
+			        	this.displayMessageBox(event, "Bitte geben Sie einen Stadt (nach) ein, der kürzer 30 Zeichen ist, ein", toCommunity);
+			        	return;
+			        }
+				   if (viewerToStreet.getCombo().getText().length() >50)
+			        {
+			        	this.displayMessageBox(event, "Bitte geben Sie eine Straße (zu), der kürzer 50 Zeichen ist, ein", toStreet);
+			        	return;
+			        }
+				   
+				   if (viewerFromCity.getCombo().getText().length() >30)
+			        {
+			        	this.displayMessageBox(event, "Bitte geben Sie einen Stadt (von) ein, der kürzer 30 Zeichen ist, ein", fromCommunity);
+			        	return;
+			        }
+				   if (viewerFromStreet.getCombo().getText().length() >50)
+			        {
+			        	this.displayMessageBox(event, "Bitte geben Sie eine Straße (von), der kürzer 50 Zeichen ist, ein", fromStreet);
+			        	return;
+			        }
+				  
 				//check required fields
 				if (!this.checkRequiredFields().equalsIgnoreCase(""))
 				{
@@ -638,8 +672,10 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		        int index = combokindOfTransport.getSelectionIndex();
 		        if (index != -1)
 		        	kindOfTransport = combokindOfTransport.getItem(index);
-				
-				
+		        
+		     
+		     
+		       
 				if(createNew)
 				{
 					dia = new DialysisPatient();
