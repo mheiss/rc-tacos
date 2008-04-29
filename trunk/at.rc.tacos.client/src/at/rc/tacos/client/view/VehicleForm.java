@@ -248,6 +248,20 @@ public class VehicleForm extends TitleAreaDialog
 		stationComboViewer.setContentProvider(new StationContentProvider());
 		stationComboViewer.setLabelProvider(new StationLabelProvider());
 		stationComboViewer.setInput(ModelFactory.getInstance().getLocationManager());
+		stationComboViewer.getCombo().addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				int index = stationComboViewer.getCombo().getSelectionIndex();
+				Location location = (Location)stationComboViewer.getElementAt(index);
+				//update the crew based on the current location
+				vehicleDetail.setCurrentStation(location);
+				driverComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));
+				medic1ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));
+				medic2ComboViewer.setContentProvider(new StaffMemberVehicleContentProvider(vehicleDetail));	
+			}
+		});
 
 		//layout for the labels
 		GridData data = new GridData();
