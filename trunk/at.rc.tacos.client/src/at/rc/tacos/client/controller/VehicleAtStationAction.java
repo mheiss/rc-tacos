@@ -78,7 +78,9 @@ public class VehicleAtStationAction extends Action implements ITransportStatus, 
 		}
 		
 		//set the vehicle status to green and update the vehicle
-		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+		if(detail.getDriver() != null && detail.isReadyForAction())
+			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+		
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
 	}
 }
