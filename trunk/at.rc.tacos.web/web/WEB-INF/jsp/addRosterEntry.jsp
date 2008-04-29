@@ -99,7 +99,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.realStartOfWork}</span>
+				<span class="errorText">${params.errors.plannedStartOfWork}</span>
 			</td>
 		</tr>
 		<tr>
@@ -128,7 +128,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.realEndOfWork}${not empty params.errors.period ? params.errors.period : ''}</span>
+				<span class="errorText">${params.errors.plannedEndOfWork}${not empty params.errors.period ? params.errors.period : ''}</span>
 			</td>
 		</tr>
 		<tr>

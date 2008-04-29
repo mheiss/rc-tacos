@@ -22,6 +22,7 @@ import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
@@ -208,31 +209,43 @@ public class AddRosterEntryController extends Controller {
 			
 			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			
-			Date realStartOfWork = null;
+			Date plannedStartOfWork = null;
 			try {
-				realStartOfWork = df.parse(from);
+				plannedStartOfWork = df.parse(from);
 			}
 			catch (ParseException e) {
-				errors.put("realStartOfWork", "Dienst von ist ein Pflichtfeld.");
+				errors.put("plannedStartOfWork", "Dienst von ist ein Pflichtfeld.");
 				valid = false;
 			}
 			
-			Date realEndOfWork = null;
+			Date plannedEndOfWork = null;
 			try {
-				realEndOfWork = df.parse(to);
+				plannedEndOfWork = df.parse(to);
 			} catch (ParseException e) {	
-				errors.put("realEndOfWork", "Dienst bis ist ein Pflichtfeld.");
+				errors.put("plannedEndOfWork", "Dienst bis ist ein Pflichtfeld.");
 				valid = false;
 			}
 			
-			if (realStartOfWork != null && realEndOfWork != null) {
-				if (realStartOfWork.getTime() >= realEndOfWork.getTime()) {
+			if (plannedStartOfWork != null && plannedEndOfWork != null) {
+				if (plannedStartOfWork.getTime() >= plannedEndOfWork.getTime()) {
 					errors.put("period", "Dienst von muss größer sein als Dienst bis.");
 				}
 			}
 			
 			if (valid) {
-				
+				final RosterEntry rosterEntry = new RosterEntry();
+				rosterEntry.setStation(location);
+				rosterEntry.setStaffMember(staffMember);
+				rosterEntry.setPlannedStartOfWork(plannedStartOfWork.getTime());
+				rosterEntry.setPlannedEndOfWork(plannedEndOfWork.getTime());
+				rosterEntry.setServicetype(serviceType);
+				rosterEntry.setJob(job);
+				rosterEntry.setCreatedByUsername(userSession.getUsername());
+				if (comment != null && !comment.equals("")) {
+					rosterEntry.setRosterNotes(comment);
+				}
+				rosterEntry.setStandby(standby);
+				connection.sendAddRequest(RosterEntry.ID, rosterEntry);
 			}
 		}
 		params.put("errors", errors);
