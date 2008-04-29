@@ -60,7 +60,8 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         t2.setEmergencyPhone(t1.isEmergencyPhone());
         t2.setLongDistanceTrip(t1.isLongDistanceTrip());
         //assert valid
-        t2.setKindOfIllness(t1.getKindOfIllness());
+        if(t1.getKindOfIllness() != null)
+        	t2.setKindOfIllness(t1.getKindOfIllness());
         if(t1.getKindOfTransport() != null)
         	t2.setKindOfTransport(t1.getKindOfTransport());
         if(t1.getCallerDetail() != null)
