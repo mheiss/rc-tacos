@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
@@ -35,7 +36,12 @@ public class AuthenticationListener extends ServerListenerAdapter
 	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException  
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-		List<Login> loginList = userDao.listLogins();
+		List<Login> loginList;
+		if (queryFilter.containsFilterType(IFilterTypes.USERNAME_FILTER)) {
+			loginList = userDao.listLoginsAndStaffMemberByUsername(queryFilter.getFilterValue(IFilterTypes.USERNAME_FILTER));
+		} else {
+			loginList = userDao.listLogins();
+		}
 		if(loginList == null)
 			throw new DAOException("AuthenticationListener","Failed to list the logins");
 		list.addAll(loginList);
