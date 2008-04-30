@@ -214,4 +214,11 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 			connection.close();
 		}
 	}
+
+	@Override
+	public List<Login> listLoginsAndStaffMemberByUsername(String username)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
