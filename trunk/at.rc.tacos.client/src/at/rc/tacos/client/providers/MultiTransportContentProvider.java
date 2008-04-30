@@ -33,7 +33,6 @@ public class MultiTransportContentProvider implements IStructuredContentProvider
 	
 	public void addTransport(Transport transport)
 	{
-		System.out.println("transportdate: " +MyUtils.timestampToString(transport.getDateOfTransport(),MyUtils.dateFormat));
 		objectList.add(transport);
 	}
 	
