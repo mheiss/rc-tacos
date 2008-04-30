@@ -21,4 +21,7 @@ public interface IFilterTypes
     /** Filter by name */
     public final static String SERVICETYPE_FILTER = "serviceTypeFilter";
     
+    /** Filter by username */
+    public final static String USERNAME_FILTER = "userNameFilter";
+    
 }
