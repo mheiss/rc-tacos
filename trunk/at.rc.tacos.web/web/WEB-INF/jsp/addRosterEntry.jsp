@@ -128,7 +128,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.plannedEndOfWork}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
+			<span class="errorText">${params.errors.plannedEndOfWork}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
 			</td>
 		</tr>
 		<tr>
