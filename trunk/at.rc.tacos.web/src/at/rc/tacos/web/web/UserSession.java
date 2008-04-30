@@ -190,6 +190,10 @@ public class UserSession
 	{
 		return loginInfo;
 	}
+	
+	public void setLoginInformation(Login login) {
+		this.loginInfo = login;
+	}
 
 	/**
 	 * Adds a competence
