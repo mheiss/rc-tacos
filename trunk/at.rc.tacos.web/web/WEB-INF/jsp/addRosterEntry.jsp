@@ -99,7 +99,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.plannedStartOfWork}${not empty params.errors.plannedStartOfWorkTooSmall ? params.errors.plannedStartOfWorkTooSmall : ''}</span>
+				<span class="errorText">${params.errors.plannedStartOfWork}${not empty params.errors.plannedStartOfWorkTooSmall ? params.errors.plannedStartOfWorkTooSmall : ''}${not empty params.errors.plannedStartOfWorkTooBig ? params.errors.plannedStartOfWorkTooBig : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -128,7 +128,7 @@
 				</select>
 			</td>
 			<td>
-			<span class="errorText">${params.errors.plannedEndOfWork}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
+			<span class="errorText">${params.errors.plannedEndOfWork}${not empty params.errors.plannedEndOfWorkTooSmall ? params.errors.plannedEndOfWorkTooSmall : ''}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
 			</td>
 		</tr>
 		<tr>

@@ -248,9 +248,17 @@ public class AddRosterEntryController extends Controller {
 					errors.put("plannedStartOfWorkTooSmall", "Der Wert von Dienst von ist zu klein.");
 					valid = false;
 				}
+				if (plannedStartOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
+					errors.put("plannedStartOfWorkTooBig", "Der Wert von Dienst von ist zu groﬂ.");
+					valid = false;
+				}
 			}
 			
 			if (plannedEndOfWork != null) {
+				if (plannedEndOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
+					errors.put("plannedEndOfWorkTooSmall", "Der Wert von Dienst bis ist zu klein.");
+					valid = false;
+				}
 				if (plannedEndOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
 					errors.put("plannedEndOfWorkTooBig", "Der Wert von Dienst bis ist zu groﬂ.");
 					valid = false;
