@@ -35,5 +35,7 @@ $(document).ready(function() {
 $(function() {			
 	$('#locationId').change(function() {
 	});
+	$('#date').change(function() {
+	});
 });
 </script>
