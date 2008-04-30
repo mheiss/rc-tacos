@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.util.MyUtils;
 
 public class MultiTransportContentProvider implements IStructuredContentProvider 
 {
