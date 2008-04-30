@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.JobDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
@@ -14,9 +16,11 @@ import at.rc.tacos.model.QueryFilter;
 public class JobListener extends ServerListenerAdapter
 {
 	private JobDAO jobDao = DaoFactory.SQL.createJobDAO();
+	//the logger
+	private static Logger logger = Logger.getLogger(DiseaseListener.class);
 	
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
     {
         Job job = (Job)addObject;
         //add the job into the dao
@@ -25,6 +29,7 @@ public class JobListener extends ServerListenerAdapter
         	throw new DAOException("JobListener","Failed to add the job "+job);
         //set the returned id
         job.setId(id);
+        logger.info("added by:" +username +";" +job);
         return job;
     }
 
@@ -49,11 +54,12 @@ public class JobListener extends ServerListenerAdapter
     }
 
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
     {
     	Job job = (Job)updateObject;
     	if(!jobDao.updateJob(job))
     		throw new DAOException("JobListener","Failed to update the job: "+job); 
+    	logger.info("updated by: " +username +";" +job);
     	return job;
     }
 }

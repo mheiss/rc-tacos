@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.RosterDAO;
@@ -21,18 +23,22 @@ import at.rc.tacos.util.MyUtils;
 public class RosterEntryListener extends ServerListenerAdapter
 {
 	private RosterDAO rosterDao = DaoFactory.SQL.createRosterEntryDAO();
+	
+	//the logger
+	private static Logger logger = Logger.getLogger(RosterEntryListener.class);
 
 	/**
 	 * Add a roster entry
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
 	{
 		RosterEntry entry = (RosterEntry)addObject;
 		int id = rosterDao.addRosterEntry(entry);
 		if(id == -1)
 			throw new DAOException("RosterEntryListener","Failed to add the roster entry "+entry);
 		entry.setRosterId(id);
+		logger.info("added by:" +username +";" +entry);
 		return entry;
 	}
 
@@ -98,11 +104,12 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Update a roster entry
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
 	{
 		RosterEntry entry = (RosterEntry)updateObject;
 		if(!rosterDao.updateRosterEntry(entry))
 			throw new DAOException("RosterEntryListener","Failed to update the roster entry:"+entry);
+		logger.info("updated by: " +username +";" +entry);
 		return entry;
 	}
 }

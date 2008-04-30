@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.VehicleDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
@@ -18,16 +20,19 @@ import at.rc.tacos.model.VehicleDetail;
 public class VehicleDetailListener extends ServerListenerAdapter
 {
     private VehicleDAO vehicleDao = DaoFactory.SQL.createVehicleDetailDAO();
+  //the logger
+	private static Logger logger = Logger.getLogger(VehicleDetailListener.class);
         
     /**
      * Vehicle added
      */
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
     {
         VehicleDetail vehicle = (VehicleDetail)addObject;
         if(!vehicleDao.addVehicle(vehicle))
         	throw new DAOException("VehicleDetailListener","Failed to add the vehicle:"+vehicle);
+        logger.info("added by:" +username +";" +vehicle);
         return vehicle;
     }
 
@@ -61,11 +66,12 @@ public class VehicleDetailListener extends ServerListenerAdapter
      * Updates a vehicle
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
     {
         VehicleDetail vehicle = (VehicleDetail)updateObject;
         if(!vehicleDao.updateVehicle(vehicle))
         	throw new DAOException("VehicleDetailListener","Failed to update the vehicle "+vehicle);
+        logger.info("updated by: " +username +";" +vehicle);
         return vehicle;
     }
 }
