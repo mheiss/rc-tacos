@@ -100,7 +100,10 @@ public class RosterEntry extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return rosterId+","+staffMember+","+station+","+MyUtils.timestampToString(plannedStartOfWork,MyUtils.dateFormat)+"-"+MyUtils.timestampToString(plannedEndOfWork,MyUtils.dateFormat);
+		return "ID: " +rosterId +";" +staffMember.getLastName() +" " +staffMember.getFirstName() +";" +"standby: " +standby +";"
+		+"OS: " +station.getLocationName() +";" +"job: " +job.getJobName() +";" +"serviceType: " +serviceType.getServiceName() +";" +"notes: " +rosterNotes +";"
+		+"plannedTime: " +MyUtils.timestampToString(plannedStartOfWork,MyUtils.timeAndDateFormat)+" bis "+MyUtils.timestampToString(plannedEndOfWork,MyUtils.timeAndDateFormat) +";"
+		+"realTime: " +MyUtils.timestampToString(realStartOfWork, MyUtils.timeAndDateFormat) +" bis " +MyUtils.timestampToString(realEndOfWork, MyUtils.timeAndDateFormat) +";";
 	}
 
 	/**
