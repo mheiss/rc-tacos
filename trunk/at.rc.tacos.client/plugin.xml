@@ -11,7 +11,7 @@
       </application>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectives">
+         point="org.eclipse.ui.perspectives">  
       <perspective
             name="Resourcen"
             class="at.rc.tacos.client.perspectives.Perspective"
@@ -74,8 +74,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-         
-         
        <view
             name="Transporte"
             allowMultiple="false"

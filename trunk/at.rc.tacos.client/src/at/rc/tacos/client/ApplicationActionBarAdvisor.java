@@ -82,7 +82,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	protected void fillMenuBar(IMenuManager menuBar) 
 	{
 		//the file menu
-		MenuManager fileMenu = new MenuManager("&Datei", IWorkbenchActionConstants.M_FILE);
+		MenuManager fileMenu = new MenuManager("&Datei");
 		fileMenu.add(exitAction);
 		
 		MenuManager newMenu = new MenuManager("&Anlegen");
@@ -97,11 +97,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		adminMenu.add(switchToAdmin);
 		
 		//window menu
-		MenuManager windowMenu = new MenuManager("&Fenster");
+		MenuManager windowMenu = new MenuManager("&Fenster","viewsShortlist");
 		windowMenu.add(adminMenu);
 		windowMenu.add(new Separator());
 		windowMenu.add(switchToClient);
-		adminMenu.add(viewList);
+		windowMenu.add(viewList);
 
 		//help menu
 		MenuManager helpMenu = new MenuManager("&Hilfe");
