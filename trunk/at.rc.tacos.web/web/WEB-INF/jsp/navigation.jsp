@@ -4,16 +4,19 @@
 <%
 	UserSession user = (UserSession)session.getAttribute("userSession"); 
 %>
-<!--
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/rosterDay2.do" />
+	<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienstplan Tagesansicht</a></td>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienst eintragen</a></td>
 	</tr>
-</table>-->
+	<c:url var="url" value="/Dispatcher/roster.do" />
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienstplan</a></td>
+	</tr>
+</table>
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>

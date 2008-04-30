@@ -1,7 +1,7 @@
 <%@ include file="includes.jsp" %>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 <form action="${url}" method="post" accept-charset="utf-8">
-	<table id="generalDataForm" class="standardForm">
+	<table class="standardForm">
 		<tr><td>Allgemeine Daten:</td></tr>
 		<tr>
 			<td>Mitarbeiter:</td>
@@ -99,7 +99,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.plannedStartOfWork}</span>
+				<span class="errorText">${params.errors.plannedStartOfWork}${not empty params.errors.plannedStartOfWorkTooSmall ? params.errors.plannedStartOfWorkTooSmall : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -128,7 +128,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.plannedEndOfWork}${not empty params.errors.period ? params.errors.period : ''}</span>
+				<span class="errorText">${params.errors.plannedEndOfWork}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -145,8 +145,8 @@ $(document).ready(function() {
 	Calendar.setup ({
 		inputField : "dateFrom",
 		button : "dateFromCalendarTrigger",
-		date : new Date(${params.dateMilliseconds}),
-		range : new Array (${params.rangeStart}, ${params.rangeEnd}),
+		date : new Date(${params.calendarDefaultDateMilliseconds}),
+		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
 		align : "Tr",
 		ifFormat : "%d.%m.%Y",
 		daFormat : "%d.%m.%Y"
@@ -154,8 +154,8 @@ $(document).ready(function() {
 	Calendar.setup ({
 		inputField : "dateTo",
 		button : "dateToCalendarTrigger",
-		date : new Date(${params.dateMilliseconds}),
-		range : new Array (${params.rangeStart}, ${params.rangeEnd}),
+		date : new Date(${params.defaultDateMilliseconds}),
+		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
 		align : "Tr",
 		ifFormat : "%d.%m.%Y",
 		daFormat : "%d.%m.%Y"

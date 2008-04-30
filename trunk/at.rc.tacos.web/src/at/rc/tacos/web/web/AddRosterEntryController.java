@@ -37,9 +37,20 @@ public class AddRosterEntryController extends Controller {
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
-		final String authorization = userSession.getLoginInformation().getAuthorization();
-		
 		final WebClient connection = userSession.getConnection();
+		
+		// Get current login information from server
+		Login login = null;
+		final QueryFilter usernameFilter = new QueryFilter();
+		usernameFilter.add(IFilterTypes.USERNAME_FILTER, userSession.getLoginInformation().getUsername());
+		final List<AbstractMessage> loginList = connection.sendListingRequest(Login.ID, usernameFilter);
+		if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
+			login = (Login)loginList.get(0);
+		}
+		userSession.getLoginInformation().setAuthorization(login.getAuthorization());
+		userSession.getLoginInformation().setUserInformation(login.getUserInformation());
+		
+		final String authorization = userSession.getLoginInformation().getAuthorization();
 		
 		// Job List
 		final String paramJobId = request.getParameter("jobId");
@@ -176,13 +187,13 @@ public class AddRosterEntryController extends Controller {
 		params.put("timeToMinutes", timeToMinutes);
 		final String to = dateTo + " " + timeToHours + ":" + timeToMinutes;
 		
-		// Create Calendar
+		// Create Calendar for DatePicker
 		final Calendar calendar = Calendar.getInstance();
-		final int rangeStart = calendar.get(Calendar.YEAR) - 100;
-		final int rangeEnd = calendar.get(Calendar.YEAR);
-		params.put("dateMilliseconds", calendar.getTimeInMillis());
-		params.put("rangeStart", rangeStart);
-		params.put("rangeEnd", rangeEnd);
+		final int rangeStart = calendar.get(Calendar.YEAR) - 10;
+		final int rangeEnd = calendar.get(Calendar.YEAR) + 1;
+		params.put("calendarDefaultDateMilliseconds", calendar.getTimeInMillis());
+		params.put("calendarRangeStart", rangeStart);
+		params.put("calendarRangeEnd", rangeEnd);
 		
 		
 		// Get Action
@@ -207,6 +218,12 @@ public class AddRosterEntryController extends Controller {
 				valid = false;
 			}
 			
+			final Calendar rangeStartCalendar = Calendar.getInstance();
+			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - 10);
+			
+			final Calendar rangeEndCalendar = Calendar.getInstance();
+			rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR) + 1);
+			
 			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			
 			Date plannedStartOfWork = null;
@@ -217,7 +234,7 @@ public class AddRosterEntryController extends Controller {
 				errors.put("plannedStartOfWork", "Dienst von ist ein Pflichtfeld.");
 				valid = false;
 			}
-			
+				
 			Date plannedEndOfWork = null;
 			try {
 				plannedEndOfWork = df.parse(to);
@@ -226,9 +243,24 @@ public class AddRosterEntryController extends Controller {
 				valid = false;
 			}
 			
+			if (plannedStartOfWork != null) {
+				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
+					errors.put("plannedStartOfWorkTooSmall", "Der Wert von Dienst von ist zu klein.");
+					valid = false;
+				}
+			}
+			
+			if (plannedEndOfWork != null) {
+				if (plannedEndOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
+					errors.put("plannedEndOfWorkTooBig", "Der Wert von Dienst bis ist zu groß.");
+					valid = false;
+				}
+			}
+			
 			if (plannedStartOfWork != null && plannedEndOfWork != null) {
 				if (plannedStartOfWork.getTime() >= plannedEndOfWork.getTime()) {
 					errors.put("period", "Dienst von muss größer sein als Dienst bis.");
+					valid = false;
 				}
 			}
 			
