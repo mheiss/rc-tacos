@@ -236,4 +236,28 @@ public class UserLoginDAOSQL implements UserLoginDAO
 			connection.close();
 		}
 	}
+	
+	public List<Login> listLoginsAndStaffMemberByUsername(String username) throws SQLException {
+		Connection connection = source.getConnection();
+		try {
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.UserByUsername"));
+			query.setString(1, username);
+			final ResultSet rs = query.executeQuery();
+			List<Login> loginList = new ArrayList<Login>();
+			while (rs.next()) {
+				Login login = new Login();
+				login.setUsername(rs.getString("username"));
+				login.setAuthorization(rs.getString("authorisation"));
+				login.setIslocked(rs.getBoolean("locked"));
+				login.setLoggedIn(rs.getBoolean("isloggedin"));
+				login.setUserInformation(staffDAO.getStaffMemberByUsername(username));
+				loginList.add(login);
+			}
+			return loginList;
+		}
+		finally {
+			connection.close();
+		}
+	}
+
 }

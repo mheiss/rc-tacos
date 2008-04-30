@@ -98,4 +98,6 @@ public interface UserLoginDAO
      * @return the login object
      */
     public Login getLoginAndStaffmember(String username) throws SQLException;
+    
+    public List<Login> listLoginsAndStaffMemberByUsername(String username) throws SQLException;
 }
