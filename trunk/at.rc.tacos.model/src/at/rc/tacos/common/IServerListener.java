@@ -18,7 +18,7 @@ public interface IServerListener
      * @param addObject the object to add
      * @return the response from the server
      */    
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException;
+    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException;
     
     /**
      * Add request from the client to handle.
@@ -39,7 +39,7 @@ public interface IServerListener
      * @param updateObject the object to update
      * @return the response from the server
      */
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException;
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException;
     
     /**
      * Listing request from the client to handle
