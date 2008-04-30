@@ -1,10 +1,11 @@
 <%@ include file="includes.jsp" %>
-<table class="standardForm">
+<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
+<form action="${url}" method="post" accept-charset="utf-8">
+<table class="standardForm"">
 	<tr>
 		<td>Ortsstelle:</td>
 		<td>
 			<select size="1" id="locationId" name="locationId">
-				<option value="">-- Ortsstelle wählen --</option>
 				<c:forEach var="location" items="${params.locationList}">
 					<option value="${location.id}" ${(not empty params.location) and (params.location.id == location.id) ? ' selected="selected"' : ''}>${location.locationName}</option>
 				</c:forEach>
@@ -29,13 +30,26 @@ $(document).ready(function() {
 		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
 		align : "Br",
 		ifFormat : "%d.%m.%Y",
-		daFormat : "%d.%m.%Y"
+		daFormat : "%d.%m.%Y",
+		onUpdate : update
 	});
 });
 $(function() {			
 	$('#locationId').change(function() {
-	});
-	$('#date').change(function() {
+		var url = '?locationId=' + $(this).val();
+		var date = $('#date').val();
+		if (date) {
+			url += '&date=' + date;
+		}
+		document.location = url;
 	});
 });
+function update(cal) {
+	var url = '?date=' + $('#date').val();
+	var locationId = $('#locationId').val();
+	if (locationId) {
+		url += '&locationId=' + locationId;
+	}
+	document.location = url;
+}
 </script>
