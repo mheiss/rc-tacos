@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
@@ -16,18 +18,21 @@ import at.rc.tacos.model.QueryFilter;
 public class DialysisPatientListener extends ServerListenerAdapter
 {
 	private DialysisPatientDAO dialysisDao = DaoFactory.SQL.createDialysisPatientDAO();
+	//the logger
+	private static Logger logger = Logger.getLogger(DialysisPatientListener.class);
 
 	/**
 	 * Add a roster entry
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
 	{
 		DialysisPatient patient = (DialysisPatient)addObject;
 		int id = dialysisDao.addDialysisPatient(patient);
 		if(id == -1)
 			throw new DAOException("DialysisPatientListener","Failed to add the dialysis patient: "+patient);
 		patient.setId(id);
+		logger.info("added by:" +username +";" +patient);
 		return patient;
 	}
 
@@ -82,11 +87,12 @@ public class DialysisPatientListener extends ServerListenerAdapter
 	 * Update a roster entry
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
 	{
 		DialysisPatient patient = (DialysisPatient)updateObject;
 		if(!dialysisDao.updateDialysisPatient(patient))
 			throw new DAOException("DialysisPatientListener","Failed to update the dialysis patient "+patient);
+		logger.info("updated by: " +username +";" +patient);
 		return patient;
 	}
 }

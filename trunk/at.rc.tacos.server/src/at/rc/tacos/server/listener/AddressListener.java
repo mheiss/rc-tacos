@@ -4,17 +4,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.QueryFilter;
 
 public class AddressListener extends ServerListenerAdapter
 {
-
+	//the logger
+	private static Logger logger = Logger.getLogger(AddressListener.class);
+	
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException 
 	{
 		//just forward to the client
+		logger.info("added by:" +username +";" +addObject);
 		return addObject;
 	}
 	
@@ -33,8 +38,9 @@ public class AddressListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException, SQLException 
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException, SQLException 
 	{
+		logger.info("updated by: " +username +";" +updateObject);
 		//just forward to the client
 		return updateObject;
 	}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.TransportDAO;
@@ -21,12 +23,14 @@ import at.rc.tacos.util.MyUtils;
 public class TransportListener extends ServerListenerAdapter
 {
 	private TransportDAO transportDao = DaoFactory.SQL.createTransportDAO();
+	//the logger
+	private static Logger logger = Logger.getLogger(TransportListener.class);
 
 	/**
 	 * Add a transport
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
 	{
 		Transport transport = (Transport)addObject;
 		int id = transportDao.addTransport(transport);
@@ -46,6 +50,7 @@ public class TransportListener extends ServerListenerAdapter
 			transport.setTransportNumber(transportNr);
 			transportDao.updateTransport(transport);//to set the AE- status
 		}
+		logger.info("added by:" +username +";" +transport);
 		return transport;
 	}
 
@@ -114,7 +119,7 @@ public class TransportListener extends ServerListenerAdapter
 	 *  Update a transport
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username)  throws DAOException,SQLException
 	{
 		Transport transport = (Transport)updateObject;
 		//
@@ -154,7 +159,7 @@ public class TransportListener extends ServerListenerAdapter
 		//send a simple update request to the dao
 		if(!transportDao.updateTransport(transport))
 			throw new DAOException("TransportListener","Failed to update the transport: "+transport);
-
+		logger.info("updated by: " +username +";" +transport);
 		return transport;
 	}
 }

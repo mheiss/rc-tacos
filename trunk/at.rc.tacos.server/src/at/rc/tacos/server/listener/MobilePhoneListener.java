@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
@@ -18,18 +20,21 @@ import at.rc.tacos.model.QueryFilter;
 public class MobilePhoneListener extends ServerListenerAdapter
 {
     private MobilePhoneDAO mobilePhoneDao = DaoFactory.SQL.createMobilePhoneDAO();
+  //the logger
+	private static Logger logger = Logger.getLogger(MobilePhoneListener.class);
     
     /**
      * Add a mobile phone
      */    
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)addObject;
         int id = mobilePhoneDao.addMobilePhone(phone);
         if(id == -1)
         	throw new DAOException("MobilePhoneListener","Failed to add the mobile phone:"+phone);
         phone.setId(id);
+        logger.info("added by:" +username +";" +addObject);
         return addObject;
     }
 
@@ -63,11 +68,12 @@ public class MobilePhoneListener extends ServerListenerAdapter
      * Update a mobile phone
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException,SQLException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username)  throws DAOException,SQLException
     {
         MobilePhoneDetail phone = (MobilePhoneDetail)updateObject;
         if(!mobilePhoneDao.updateMobilePhone(phone))
         	throw new DAOException("MobilePhoneListener","Failed to update the mobile phone:"+phone);
+        logger.info("updated by: " +username +";" +phone);
         return phone;
     }
 }

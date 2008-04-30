@@ -2,6 +2,9 @@ package at.rc.tacos.server.listener;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.DayInfoDAO;
@@ -15,6 +18,8 @@ public class DayInfoListener extends ServerListenerAdapter
 {
 	//The DAO classes
 	private DayInfoDAO dayInfoDao = DaoFactory.SQL.createDayInfoDAO();
+	//the logger
+	private static Logger logger = Logger.getLogger(DayInfoListener.class);
 
 	@Override
 	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
@@ -44,7 +49,7 @@ public class DayInfoListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
 	{
 		DayInfoMessage dayInfo = (DayInfoMessage)updateObject;
 		//update the message on the server
@@ -52,6 +57,7 @@ public class DayInfoListener extends ServerListenerAdapter
 			throw new DAOException("DayInfoListener","Failed to update the day info message: "+dayInfo);
 		//reset the dirty flag
 		dayInfo.setDirty(false);
+		logger.info("updated by: " +username +";" +dayInfo);
 		return dayInfo;
 	}
 }

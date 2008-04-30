@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.ServiceTypeDAO;
@@ -16,9 +18,11 @@ public class ServiceTypeListener extends ServerListenerAdapter
 {
 	//the dao source to use
 	private ServiceTypeDAO serviceDao = DaoFactory.SQL.createServiceTypeDAO();
+	//the logger
+	private static Logger logger = Logger.getLogger(ServiceTypeListener.class);
 
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
 	{
 		ServiceType serviceType = (ServiceType)addObject;
 		int id = serviceDao.addServiceType(serviceType);
@@ -26,6 +30,7 @@ public class ServiceTypeListener extends ServerListenerAdapter
 		if(id == -1)
 			throw new DAOException("ServiceTypeListener","Failed to add the service type:"+serviceType);
 		serviceType.setId(id);
+		logger.info("added by:" +username +";" +serviceType);
 		return addObject;
 	}
 
@@ -55,11 +60,12 @@ public class ServiceTypeListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
 	{
 		ServiceType serviceType = (ServiceType)updateObject;
 		if(!serviceDao.updateServiceType(serviceType))
 			throw new DAOException("ServiceTypeListener","Failed to update the service type: "+serviceType);
+		logger.info("updated by: " +username +";" +serviceType);
 		return serviceType;
 	}
 }

@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
@@ -19,13 +21,16 @@ import at.rc.tacos.model.StaffMember;
 public class StaffMemberListener extends ServerListenerAdapter
 {
     private StaffMemberDAO staffDao = DaoFactory.SQL.createStaffMemberDAO();
+  //the logger
+	private static Logger logger = Logger.getLogger(StaffMemberListener.class);
     
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException 
 	{
 		StaffMember addMember = (StaffMember)addObject;
 		if(!staffDao.addStaffMember(addMember))
 			throw new DAOException("StaffMemberListener","Failed to add the staff member: "+addMember);
+		logger.info("added by:" +username +";" +addMember);
 		return addMember;
 	}
 
@@ -33,11 +38,12 @@ public class StaffMemberListener extends ServerListenerAdapter
 	 * Update of a staff member
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
 	{
 		StaffMember updateMember = (StaffMember)updateObject;
 		if(!staffDao.updateStaffMember(updateMember))
 			throw new DAOException("StaffMemberListener","Failed to update the staff member: "+updateMember);
+		logger.info("updated by: " +username +";" +updateMember);
 		return updateMember;
 	}
     

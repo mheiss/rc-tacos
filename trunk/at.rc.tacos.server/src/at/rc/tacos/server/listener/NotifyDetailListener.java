@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.CallerDAO;
@@ -19,17 +21,20 @@ import at.rc.tacos.model.QueryFilter;
 public class NotifyDetailListener extends ServerListenerAdapter
 {
     private CallerDAO callerDao = DaoFactory.SQL.createNotifierDAO();
+  //the logger
+	private static Logger logger = Logger.getLogger(NotifyDetailListener.class);
     
     /**
      * Add a notifier detail
      */
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
     {
         CallerDetail detail = (CallerDetail)addObject;
         int id = callerDao.addCaller(detail);
         if(id == -1)
         	throw new DAOException("NotifyDetailListener","Failed to add the caller:"+detail);
+        logger.info("added by:" +username +";" +detail);
         return detail;
     }
     
@@ -63,11 +68,12 @@ public class NotifyDetailListener extends ServerListenerAdapter
      * Update a notifier detail
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
     {
         CallerDetail detail = (CallerDetail)updateObject;
         if(!callerDao.updateCaller(detail))
         	throw new DAOException("NotifyDetailListener","Failed to update the caller:"+detail);
+        logger.info("updated by: " +username +";" +detail);
         return detail;
     }
 }

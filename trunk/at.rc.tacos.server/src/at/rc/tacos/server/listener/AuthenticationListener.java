@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.db.dao.UserLoginDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
@@ -16,13 +18,16 @@ public class AuthenticationListener extends ServerListenerAdapter
 {
 	//The DAO classes
 	private UserLoginDAO userDao = DaoFactory.SQL.createUserDAO();
+	//the logger
+	private static Logger logger = Logger.getLogger(AuthenticationListener.class);
 
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException 
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException 
 	{
 		Login login = (Login)addObject;
 		if(!userDao.addLogin(login))
 			throw new DAOException("AuthenticationListener","Failed to add the login "+ login +" to the database");
+		logger.info("added by:" +username +";" +login);
 		return login;
 	}
 
@@ -48,7 +53,7 @@ public class AuthenticationListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException 
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException 
 	{
 		Login updateLogin = (Login)updateObject;		
 		//check if we have a different password
@@ -62,6 +67,7 @@ public class AuthenticationListener extends ServerListenerAdapter
 			throw new DAOException("AuthenticationListener","Failed to update the login: "+updateLogin);
 		//reset the password
 		updateLogin.resetPassword();
+		logger.info("updated by: " +username +";" +updateLogin);
 		return updateLogin;
 	}
 
