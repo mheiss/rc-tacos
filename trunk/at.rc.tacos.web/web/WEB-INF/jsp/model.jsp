@@ -52,12 +52,12 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 							<td>
 						</tr>
 					</table>
-					<table>
+					<table width="100%">
 						<tr>
 							<!-- #### LEFT CONTAINER NAVIGATION-->
-							<td id="LeftContainerPanel" valign="top"><%@ include file="navigation.jsp"%></td>
+							<td id="LeftContainerPanel" valign="top" width="30%"><%@ include file="navigation.jsp"%></td>
 							<!-- #### CONTENT -->
-							<td id="ContentContainer" valign="top">
+							<td id="ContentContainer" valign="top" width="70%">
 								<jsp:include page="${view}" />
 							</td>
 						</tr>
