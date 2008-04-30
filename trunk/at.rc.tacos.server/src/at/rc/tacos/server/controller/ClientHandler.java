@@ -47,6 +47,7 @@ public class ClientHandler implements INetListener
 
 		//the client connection
 		final ClientSession session = server.getSession(ne.getClient());
+		
 
 		//the client is not authenticated, no login request -> not accepted
 		if(!session.isAuthenticated() &! Login.ID.equalsIgnoreCase(contentType))
@@ -123,7 +124,7 @@ public class ClientHandler implements INetListener
 			//add request
 			if(IModelActions.ADD.equalsIgnoreCase(queryString))
 			{
-				AbstractMessage resultAddMessage = listener.handleAddRequest(objects.get(0));
+				AbstractMessage resultAddMessage = listener.handleAddRequest(objects.get(0), session.getUsername());
 				info.setMessage(resultAddMessage);
 				server.brodcastMessage(session,info);
 				return;
@@ -147,7 +148,7 @@ public class ClientHandler implements INetListener
 			//update request
 			if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
 			{
-				AbstractMessage resultUpdateMessage = listener.handleUpdateRequest(objects.get(0));
+				AbstractMessage resultUpdateMessage = listener.handleUpdateRequest(objects.get(0), session.getUsername());
 				info.setMessage(resultUpdateMessage);
 				server.brodcastMessage(session,info);
 				return;
