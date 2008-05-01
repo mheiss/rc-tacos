@@ -19,9 +19,12 @@ public interface IFilterTypes
     public final static String TYPE_FILTER = "typeFilter";
     
     /** Filter by name */
-    public final static String SERVICETYPE_FILTER = "serviceTypeFilter";
+    public final static String SERVICETYPE_SERVICENAME_FILTER = "serviceTypeFilter";
     
     /** Filter by username */
     public final static String USERNAME_FILTER = "userNameFilter";
+    
+    /** Filter by location */
+    public final static String ROSTER_LOCATION_FILTER = "locationFilter";
     
 }
