@@ -40,8 +40,8 @@ public class ServiceTypeListener extends ServerListenerAdapter
 		//the basic list to hold the returned result
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		List<ServiceType> serviceList = new ArrayList<ServiceType>();
-		if (queryFilter.containsFilterType(IFilterTypes.SERVICETYPE_FILTER)) {
-			serviceList = serviceDao.listServiceTypesByName(queryFilter.getFilterValue(IFilterTypes.SERVICETYPE_FILTER));
+		if (queryFilter.containsFilterType(IFilterTypes.SERVICETYPE_SERVICENAME_FILTER)) {
+			serviceList = serviceDao.listServiceTypesByName(queryFilter.getFilterValue(IFilterTypes.SERVICETYPE_SERVICENAME_FILTER));
 		} else {
 			serviceList = serviceDao.listServiceTypes();
 		}

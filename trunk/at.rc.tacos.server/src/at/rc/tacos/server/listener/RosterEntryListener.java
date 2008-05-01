@@ -56,6 +56,24 @@ public class RosterEntryListener extends ServerListenerAdapter
 		{
 			System.out.println("WARNING: Listing of all roster entries is denied.");
 			throw new DAOException("RosterEntryListener","Listing of all roster entries is denied");
+		} else if (queryFilter.containsFilterType(IFilterTypes.DATE_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_LOCATION_FILTER)) {
+			//get the query filter and parse it to a date time
+			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.DATE_FILTER);
+			long dateStart = MyUtils.stringToTimestamp(dateFilter,MyUtils.dateFormat);
+			Calendar calEnd = Calendar.getInstance();
+			calEnd.setTimeInMillis(dateStart);
+			calEnd.add(Calendar.DAY_OF_MONTH, 1);
+			long dateEnd = calEnd.getTimeInMillis();
+			
+			int filterLocationId = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
+			
+			rosterList = rosterDao.listRosterEntryiesByDateAndLocation(dateStart, dateEnd, filterLocationId);
+			if(rosterList == null)
+			{
+				String time = MyUtils.timestampToString(dateStart, MyUtils.dateFormat) +" bis " +MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
+				throw new DAOException("RosterEntryListener","Failed to list the roster entries by date from "+time);
+			}
+			list.addAll(rosterList);
 		}
 		else if(queryFilter.containsFilterType(IFilterTypes.DATE_FILTER))
 		{
@@ -73,7 +91,7 @@ public class RosterEntryListener extends ServerListenerAdapter
 				throw new DAOException("RosterEntryListener","Failed to list the roster entries by date from "+time);
 			}
 			list.addAll(rosterList);
-		}
+		} 
 		else if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER))
 		{
 			//get the query filter
