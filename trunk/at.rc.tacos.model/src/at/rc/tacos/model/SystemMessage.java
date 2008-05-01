@@ -47,7 +47,7 @@ public class SystemMessage extends AbstractMessage
     @Override
     public String toString()
     {
-        return message;
+        return "message: "+message +"; type: "+type;
     }
     
     /**
