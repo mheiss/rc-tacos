@@ -1,6 +1,5 @@
 package at.rc.tacos.common;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ public interface IModelListener
      * Notification about a list of messages to display.
      * @param listMessage the objects to list
      */
-    public void list(ArrayList<AbstractMessage> listMessage);
+    public void list(List<AbstractMessage> listMessage);
     
     /**
      * Notification about a item to update.
