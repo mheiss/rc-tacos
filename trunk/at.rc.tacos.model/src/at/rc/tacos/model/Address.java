@@ -45,7 +45,8 @@ public class Address extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return zip +","+city+","+street;
+	 return "zip: " +zip +";" +"city: " +city+";" +"street: " +street;
+			
 	}
 
 	/**
