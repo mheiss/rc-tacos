@@ -12,6 +12,7 @@
 	<property name="name" value="rc-tacos" />
 	<property name="at.rc.tacos.core.net.classes" value="../at.rc.tacos.core.net/bin" />
 	<property name="at.rc.tacos.model.classes" value="../at.rc.tacos.model/bin" />
+	<property name="production-specific.dir" value="production-specific" />
 	<property name="openssl.conf" value="${openssl.bin}/openssl.cnf" />
 
 	<path id="master-classpath">
@@ -43,7 +44,7 @@
 			<src path="${src.dir}" />
 			<classpath refid="master-classpath" />
 		</javac>
-		<copy todir="${build.dir}" preservelastmodified="true">
+		<copy todir="${build.dir}">
 			<fileset dir="${src.dir}">
 				<include name="**/*.properties" />
 			</fileset>
@@ -69,10 +70,15 @@
 				<include name="**/*.*" />
 			</fileset>
 		</copy>
+		<copy verbose="true" todir="${production.deploy.path}/${name}/WEB-INF/classes/at/rc/tacos/web/net" overwrite="true">
+			<fileset dir="${production-specific.dir}">
+				<include name="net.properties" />
+			</fileset>
+		</copy>
 		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
 		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
 	</target>
-
+	
 	<target name="production-deploy-ftp" description="Deploy application to producation system via FTP">
 		<jar destfile="${lib.dir}/at.rc.tacos.core.net.jar">
 			<fileset dir="${at.rc.tacos.core.net.classes}">
@@ -84,9 +90,14 @@
 				<include name="**/*.*" />
 			</fileset>
 		</jar>
-		<ftp server="${ftp.ip}" port="${ftp.port}" remotedir="${ftp.dir}" userid="${ftp.username}" password="${ftp.password}" depends="yes" binary="no" passive="yes" systemTypeKey="Windows" verbose="true">
+		<ftp server="${ftp.ip}" port="${ftp.port}" remotedir="${ftp.dir}/${name}" userid="${ftp.username}" password="${ftp.password}" depends="yes" binary="no" passive="yes" systemTypeKey="Windows" verbose="true">
 			<fileset dir="${web.dir}">
 				<include name="**/*.*" />
+			</fileset>
+		</ftp>
+		<ftp server="${ftp.ip}" port="${ftp.port}" remotedir="${ftp.dir}/${name}/WEB-INF/classes/at/rc/tacos/web/net" userid="${ftp.username}" password="${ftp.password}" depends="yes" binary="no" passive="yes" systemTypeKey="Windows" verbose="true" overwrite="true">
+			<fileset dir="${production-specific.dir}">
+				<include name="net.properties" />
 			</fileset>
 		</ftp>
 		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
