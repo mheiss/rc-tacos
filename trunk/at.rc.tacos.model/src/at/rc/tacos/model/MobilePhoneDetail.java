@@ -50,7 +50,7 @@ public class MobilePhoneDetail extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return id+": "+mobilePhoneName+" - "+mobilePhoneNumber;
+		return "id: "+id+"; mobilePhoneName:  "+mobilePhoneName+"; PhoneNumber:  "+mobilePhoneNumber;
 	}
 
 	/**
