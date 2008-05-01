@@ -184,7 +184,8 @@ public class DialysisPatientDAOSQL implements DialysisPatientDAO
 				dialysis.setFromCity(rs.getString("fromCity"));
 				dialysis.setFromStreet(rs.getString("fromStreet"));
 				dialysis.setInsurance(rs.getString("insurance"));
-				dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
+				if(rs.getString("kindOfTransport") != null)
+					dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
 				dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlServerDateTime));
 				dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlServerDateTime));
 				dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlServerDateTime));
