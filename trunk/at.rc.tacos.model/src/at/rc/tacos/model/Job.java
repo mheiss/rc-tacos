@@ -44,7 +44,7 @@ public class Job extends AbstractMessage
     @Override
     public String toString()
     {
-        return id + ":"+jobName;
+        return "id: "+id + "; jobName: "+jobName;
     }
     
     /**
