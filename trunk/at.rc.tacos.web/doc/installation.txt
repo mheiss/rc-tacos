@@ -1,0 +1,107 @@
+Installation
+------------------------------------------------
+
+To set up Tomcat, SSL and Eclipse for rc-tacos do the following:
+
+1. Checkout project (be aware of dependencies to at.rc.tacos.server at.rc.tacos.core.net, at.rc.tacos.model)
+
+2. Install Apache Tomcat 6.0.
+
+3. If you want to use Eclipse to run the application import Tomcat into Eclipse
+
+4. If you use the Sysdeo Tomcat Plugin for Eclipse, do the following in Eclipse:
+   in Window / Preferences / Tomcat set tomcat home to e.g. D:\Devel\tomcat-6.0.10
+   
+   Then add the following JVM parameter in Window / Preferences / Tomcat / JVM Settings:
+   -Djava.library.path=E:\tomcat-6.0.10\bin
+   
+5. Rename _build.properties in root directory to build.properties. Check the following properties in build.properties:
+   appserver.home (directory of your appserver - needed libraries for compilation)
+   eclipse.appserver.home (directory of your appserver in eclipse, can be found in workspace - must be set if you want to create keys for eclipse integrated tomcat)
+   
+   production.appserver.home (directory of your production appserver - must be set if you want to deploy to production system or create keys for production system)
+   
+   production.ftp.ip
+   production.ftp.port
+   production.ftp.username
+   production.ftp.password
+   production.ftp.dir
+   (These properties must be set if you want to deploy to production system via FTP.)
+   
+   openssl.bin = E:/OpenSSL/bin (path to you OpenSSL installation directory, must be set if you want to generate OpenSSL keys.)
+   
+   ssl.key.validity = 1095
+   ssl.key.pass = xu7nrAv
+   (use these values)
+   
+   ssl.key.dname.openssl = ""/C=AT/ST=CA/L=Graz/CN=localhost/O=Rotes Kreuz""
+   (use this value - must be set if you want to generate keys with OpenSSL, OpenSSL must be installed)
+   
+   ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=localhost,O=Rotes Kreuz""
+   (use this value - must be set if you want to generate keys with J2SSE, Java must be installed)
+   
+6. Rename the file _server.properties (WebServer Settings) in package at.rc.tacos.web.web to server.properties and check the values. Must be the same ports as in server.xml.
+
+7. Rename the file _net.properties (Connection to Server Settings)= in package at.rc.tacos.web.net to net.properties and check the values. You must run at.rc.tacos.server somewhere to use at.rc.tacos.web.
+   Be sure that configuration of the server is equivalent to net configuration of the webserver.
+
+a.)
+If APR is used with Tomcat (it's used when tcnative-1.dll is in tomcat-6.0.10\bin) then
+you should use OpenSSL with Tomcat instead of the standard java security tools (JSSE).
+So you will need to:
+
+7a.) Install OpenSSL
+    to e.g. C:\Tools\OpenSSL
+    (download it from http://www.openssl.org/related/binaries.html) 
+
+8a.) Run ssl-genkey-openssl Ant build task or run production-ssl-genkey-openssl (to create key for production system).
+
+9a.) Make sure the HTTPS connector in server.xml looks like the following (the port
+    number can vary):
+
+	Under Eclipse:
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+               maxThreads="150" scheme="https" secure="true" 
+               clientAuth="false" sslProtocol="TLS"
+               SSLCertificateFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/server.crt" 
+               SSLCertificateKeyFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/server.key"
+               />
+               
+    On Production System:
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+               maxThreads="150" scheme="https" secure="true" 
+               clientAuth="false" sslProtocol="TLS"
+               SSLCertificateFile="conf/server.crt" 
+               SSLCertificateKeyFile="conf/server.key"
+               />
+
+b.)
+Otherwise if the standard java security libs are used then you will have to do
+the following: 
+
+7b). Make sure that tcnative-1.dll is NOT in the tomcat-6.0.10\bin directory,
+    otherwise SSLEngine won't work.
+
+8b). Run ssl-genkey-jsse Ant build task or production-ssl-genkey-jsse (to create key for production system).
+
+9b). Make sure the HTTPS connector in server.xml looks like the following:
+
+	Under Eclipse:
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+               maxThreads="150" scheme="https" secure="true" 
+               clientAuth="false" sslProtocol="TLS"
+               keystoreFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/.keystore" keystorePass="xu7nrAv"
+               />
+    On Production System:
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+               maxThreads="150" scheme="https" secure="true" 
+               clientAuth="false" sslProtocol="TLS"
+               keystoreFile="conf/.keystore" keystorePass="xu7nrAv"
+               />
+               
+10.
+Under Eclipse:
+If you want to run the application under Eclipse choose Run on Server and choose your imported Server.
+
+On Production System:
+If you want to run the application on producation system run ant targets production-compile, production-deploy or production-deploy-ftp to deploy via FTP. Start Tomcat.)
