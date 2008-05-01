@@ -42,10 +42,8 @@ public class VehicleDetailListener extends ClientListenerAdapter
 	}
 	
     @Override
-    public void list(ArrayList<AbstractMessage> listMessage)
+    public void list(List<AbstractMessage> listMessage)
     {
-    	//remove all stored vehicles
-    	manager.resetVehicles();
     	//conert to a list of vehicles
     	List<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>();
     	for(AbstractMessage object:listMessage)

@@ -89,6 +89,15 @@ public class JobManager extends PropertyManager
     }
     
     /**
+     * Returns whether or not this job is in the list of managed object
+     * @param newJob the job to check
+     */
+    public boolean contains(Job newJob)
+    {
+    	return objectList.contains(newJob);
+    }
+    
+    /**
      * Returns a given job by the name
      * @param jobName the name of the job to get
      */

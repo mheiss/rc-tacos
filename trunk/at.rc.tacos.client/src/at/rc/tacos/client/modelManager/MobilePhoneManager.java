@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
+
 import at.rc.tacos.model.MobilePhoneDetail;
 
 public class MobilePhoneManager extends PropertyManager 
@@ -84,6 +85,15 @@ public class MobilePhoneManager extends PropertyManager
                 objectList.clear();
             }
         });
+    }
+    
+    /**
+     * Returns whether or not this mobile phone is in the list of managed object
+     * @param newMobilePhone the mobilePhone to check
+     */
+    public boolean contains(MobilePhoneDetail newMobilePhone)
+    {
+    	return objectList.contains(newMobilePhone);
     }
 
     /**

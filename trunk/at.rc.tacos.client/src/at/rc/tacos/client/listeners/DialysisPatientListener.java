@@ -1,6 +1,6 @@
 package at.rc.tacos.client.listeners;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.client.modelManager.DialysisTransportManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -30,12 +30,17 @@ public class DialysisPatientListener extends ClientListenerAdapter
     }
     
     @Override
-    public void list(ArrayList<AbstractMessage> listMessage)
+    public void list(List<AbstractMessage> listMessage)
     {
-    	//reset the list
-        manager.removeAllEntries();
         //add the entries
         for(AbstractMessage msg:listMessage)
-	        manager.add((DialysisPatient)msg);
+        {
+        	DialysisPatient patient = (DialysisPatient)msg;
+        	//assert we do not have this patient
+        	if(manager.contains(patient))
+        		manager.update(patient);
+        	else
+        		manager.add(patient);
+        }
     }  
 }

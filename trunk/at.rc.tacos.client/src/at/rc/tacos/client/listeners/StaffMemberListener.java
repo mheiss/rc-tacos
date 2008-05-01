@@ -1,6 +1,6 @@
 package at.rc.tacos.client.listeners;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.StaffManager;
@@ -13,34 +13,37 @@ import at.rc.tacos.model.StaffMember;
  */
 public class StaffMemberListener extends ClientListenerAdapter
 {
-    StaffManager manager = ModelFactory.getInstance().getStaffManager();
-    
-    @Override
-    public void add(AbstractMessage addMessage)
-    {
-        manager.add((StaffMember)addMessage);
-    }
-    
-    @Override
-    public void update(AbstractMessage updateMessage)
-    {
-        manager.update((StaffMember)updateMessage);  
-    }
-    
-    @Override
-    public void remove(AbstractMessage removeMessage)
-    {
-        manager.remove((StaffMember)removeMessage);  
-    }
-    
-    @Override
-    public void list(ArrayList<AbstractMessage> listMessage)
-    {
-        manager.removeAllElements();
-        for(AbstractMessage msg:listMessage)
-        {
-            StaffMember member = (StaffMember)msg;
-            manager.add(member);
-        }
-    }  
+	private StaffManager manager = ModelFactory.getInstance().getStaffManager();
+
+	@Override
+	public void add(AbstractMessage addMessage)
+	{
+		manager.add((StaffMember)addMessage);
+	}
+
+	@Override
+	public void update(AbstractMessage updateMessage)
+	{
+		manager.update((StaffMember)updateMessage);  
+	}
+
+	@Override
+	public void remove(AbstractMessage removeMessage)
+	{
+		manager.remove((StaffMember)removeMessage);  
+	}
+
+	@Override
+	public void list(List<AbstractMessage> listMessage)
+	{
+		for(AbstractMessage msg:listMessage)
+		{
+			StaffMember member = (StaffMember)msg;
+			//assert we do not have this member
+			if(manager.contains(member))
+				manager.update(member);
+			else
+				manager.add(member);
+		}
+	}  
 }

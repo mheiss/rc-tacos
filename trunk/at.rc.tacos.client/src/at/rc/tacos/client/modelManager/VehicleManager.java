@@ -128,6 +128,15 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         });
     }
     
+	/**
+	 * Returns whether or not this vehicle is in the list of managed object
+	 * @param newVehicle the vehicle to check
+	 */
+	public boolean contains(VehicleDetail newVehicle)
+	{
+		return objectList.contains(newVehicle);
+	}
+    
     /**
      *  informs all listeners about new locations
      */

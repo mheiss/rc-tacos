@@ -2,8 +2,10 @@ package at.rc.tacos.client.modelManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.swt.widgets.Display;
-import at.rc.tacos.model.*;
+
+import at.rc.tacos.model.DialysisPatient;
 
 /**
  * Dialysis transports
@@ -92,6 +94,15 @@ public class DialysisTransportManager extends PropertyManager
                 firePropertyChange("DIALYSISPATIENT_CLEARED",null,null);
             }
         }); 
+    }
+    
+    /**
+     * Returns whether or not this dialysis transport is in the list of managed object
+     * @param newDialysisTransport the transport to check
+     */
+    public boolean contains(DialysisPatient newDialysisTransport)
+    {
+    	return objectList.contains(newDialysisTransport);
     }
     
     /**

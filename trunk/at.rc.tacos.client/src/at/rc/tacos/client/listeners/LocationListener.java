@@ -1,6 +1,6 @@
 package at.rc.tacos.client.listeners;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.client.modelManager.LocationManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -37,7 +37,7 @@ public class LocationListener extends ClientListenerAdapter
 	}
 	
     @Override
-    public void list(ArrayList<AbstractMessage> listMessage)
+    public void list(List<AbstractMessage> listMessage)
     {
     	//remove all stored location
     	manager.removeAllEntries();
@@ -46,7 +46,11 @@ public class LocationListener extends ClientListenerAdapter
         {
         	//cast to a location and add it
             Location location = (Location)detailObject;
-            manager.add(location);
+            //assert we do not have this location
+            if(manager.contains(location))
+            	manager.update(location);
+            else
+            	manager.add(location);
         }
     }
 }
