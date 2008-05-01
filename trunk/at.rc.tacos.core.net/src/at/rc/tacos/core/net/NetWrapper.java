@@ -23,6 +23,7 @@ import at.rc.tacos.common.IConnectionStates;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.common.IModelListener;
 import at.rc.tacos.core.net.internal.*;
+import at.rc.tacos.core.net.jobs.ProcessDataJobRule;
 import at.rc.tacos.core.net.jobs.SendJobRule;
 import at.rc.tacos.factory.ListenerFactory;
 import at.rc.tacos.factory.XMLFactory;
@@ -54,6 +55,7 @@ public class NetWrapper extends Plugin
 	private final static String JOB_MONITOR = "MonitorJob";
 	private final static String JOB_LISTEN = "ListenJob";
 	private final static String JOB_SEND = "SendJob";
+	private final static String JOB_PROCESS = "ProcessJob";
 
 	/**
 	 * The constructor
@@ -395,51 +397,27 @@ public class NetWrapper extends Plugin
 				//assert valid
 				if(newData == null)
 					return Status.OK_STATUS;
-
+				
 				//set up the factory to decode
 				XMLFactory xmlFactory = new XMLFactory();
-				ListenerFactory listenerFactory = ListenerFactory.getDefault();
-				ArrayList<AbstractMessage> newObjects = new ArrayList<AbstractMessage>();
-
 				//replace all characters
 				String message = newData.replaceAll("&lt;br/&gt;", "\n");
 				xmlFactory.setupDecodeFactory(message);
 				//decode the message
-				newObjects = xmlFactory.decode();
+				List<AbstractMessage> newObjects = xmlFactory.decode();
 				//get the type of the item
 				final String contentType = xmlFactory.getContentType();
 				final String queryString = xmlFactory.getQueryString();
 				final String sequenceId = xmlFactory.getSequenceId();
-
-				//try to get a listener for this message
-				if(!listenerFactory.hasListeners(contentType))
-				{
-					logService.log("No listener found for the message type: "+contentType,IStatus.WARNING);
-					return Status.OK_STATUS;
-				}
-
-				IModelListener listener = listenerFactory.getListener(contentType);
-				//now pass the message to the listener
-				if(IModelActions.ADD.equalsIgnoreCase(queryString))
-					listener.add(newObjects.get(0));
-				if(IModelActions.ADD_ALL.endsWith(queryString))
-					listener.addAll(newObjects);
-				if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
-					listener.remove(newObjects.get(0));
-				if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
-					listener.update(newObjects.get(0));
-				if(IModelActions.LIST.equalsIgnoreCase(queryString))
-					listener.list(newObjects);
-				if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
-					listener.loginMessage(newObjects.get(0));
-				if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
-					listener.logoutMessage(newObjects.get(0));
-				if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
-					listener.systemMessage(newObjects.get(0));
-
+				
 				//remove the package from the list
 				if(messageList.containsKey(sequenceId))
 					messageList.remove(sequenceId);
+				
+				//start the job to proccess the data
+				ProcessDataJob dataJob = new ProcessDataJob(contentType,queryString,newObjects);
+				dataJob.setRule(new ProcessDataJobRule(contentType));
+				dataJob.schedule();				
 				
 				return Status.OK_STATUS;
 			}
@@ -605,6 +583,64 @@ public class NetWrapper extends Plugin
 					schedule(1000);
 				monitor.done();
 			}
+			return Status.OK_STATUS;
+		}
+	}
+	
+	/**
+	 * This job is responsible to process the received data.
+	 */
+	public class ProcessDataJob extends Job
+	{
+		//properties
+		private String contentType;
+		private String queryString;
+		private List<AbstractMessage> messageList;
+		
+		/**
+		 * Default class constructor for the data to process
+		 * @param newData the received message
+		 */
+		public ProcessDataJob(String contentType,String queryString,List<AbstractMessage> messageList)
+		{
+			super(JOB_PROCESS);
+			this.contentType = contentType;
+			this.queryString = queryString;
+			this.messageList = messageList;
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) 
+		{
+			monitor.beginTask("Processing the received data:"+contentType,IProgressMonitor.UNKNOWN);
+				
+			//try to get a listener for this message
+			ListenerFactory listenerFactory = ListenerFactory.getDefault();
+			if(!listenerFactory.hasListeners(contentType))
+			{
+				logService.log("No listener found for the message type: "+contentType,IStatus.WARNING);
+				return Status.CANCEL_STATUS;
+			}
+
+			IModelListener listener = listenerFactory.getListener(contentType);
+			//now pass the message to the listener
+			if(IModelActions.ADD.equalsIgnoreCase(queryString))
+				listener.add(messageList.get(0));
+			if(IModelActions.ADD_ALL.endsWith(queryString))
+				listener.addAll(messageList);
+			if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
+				listener.remove(messageList.get(0));
+			if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
+				listener.update(messageList.get(0));
+			if(IModelActions.LIST.equalsIgnoreCase(queryString))
+				listener.list(messageList);
+			if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
+				listener.loginMessage(messageList.get(0));
+			if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
+				listener.logoutMessage(messageList.get(0));
+			if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
+				listener.systemMessage(messageList.get(0));
+			
 			return Status.OK_STATUS;
 		}
 	}
