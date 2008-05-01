@@ -3,11 +3,13 @@ Installation
 
 To set up Tomcat, SSL and Eclipse for rc-tacos do the following:
 
-1. Checkout project (be aware of dependencies to at.rc.tacos.server at.rc.tacos.core.net, at.rc.tacos.model)
+1. Checkout project (be aware of dependencies to at.rc.tacos.server at.rc.tacos.core.net, at.rc.tacos.model).
+   For this reason check out all projects into same root folder/workspace.
 
 2. Install Apache Tomcat 6.0.
 
-3. If you want to use Eclipse to run the application import Tomcat into Eclipse
+3. If you want to use Eclipse to run the application import Tomcat into Eclipse.
+   Use Project-Properties to set J2EE module dependencies to at.rc.tacos.model and at.rc.tacos.core.net)
 
 4. If you use the Sysdeo Tomcat Plugin for Eclipse, do the following in Eclipse:
    in Window / Preferences / Tomcat set tomcat home to e.g. D:\Devel\tomcat-6.0.10
@@ -16,8 +18,9 @@ To set up Tomcat, SSL and Eclipse for rc-tacos do the following:
    -Djava.library.path=E:\tomcat-6.0.10\bin
    
 5. Rename _build.properties in root directory to build.properties. Check the following properties in build.properties:
+   
    appserver.home (directory of your appserver - needed libraries for compilation)
-   eclipse.appserver.home (directory of your appserver in eclipse, can be found in workspace - must be set if you want to create keys for eclipse integrated tomcat)
+   eclipse.appserver.home (directory of your appserver in eclipse, can be found in workspace/.plugins/org.eclipse.wst.server.core/tmp0 - must be set if you want to create keys for eclipse integrated tomcat)
    
    production.appserver.home (directory of your production appserver - must be set if you want to deploy to production system or create keys for production system)
    
