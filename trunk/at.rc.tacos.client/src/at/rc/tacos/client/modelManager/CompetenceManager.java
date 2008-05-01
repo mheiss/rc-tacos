@@ -87,6 +87,15 @@ public class CompetenceManager extends PropertyManager
     }
     
     /**
+     * Returns whether or not this competence is in the list of managed object
+     * @param newCompetence the comptence to check
+     */
+    public boolean contains(Competence newCompetence)
+    {
+    	return objectList.contains(newCompetence);
+    }
+    
+    /**
      * Returns a given competence by the name
      * @param competence name the name of the competence to get
      */

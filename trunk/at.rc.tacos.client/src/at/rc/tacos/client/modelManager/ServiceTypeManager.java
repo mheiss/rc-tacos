@@ -100,6 +100,15 @@ public class ServiceTypeManager extends PropertyManager
         //nothing found
         return null;
     }
+    
+    /**
+     * Returns whether or not this service type is in the list of managed object
+     * @param newServiceType the serviceType to check
+     */
+    public boolean contains(ServiceType newServiceType)
+    {
+    	return objectList.contains(newServiceType);
+    }
 
     /**
      * Converts the list to an array

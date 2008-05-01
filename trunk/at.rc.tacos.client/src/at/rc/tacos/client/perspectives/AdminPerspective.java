@@ -4,13 +4,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import at.rc.tacos.client.view.DialysisView;
-import at.rc.tacos.client.view.JournalView;
 import at.rc.tacos.client.view.NavigationView;
-import at.rc.tacos.client.view.PersonalView;
-import at.rc.tacos.client.view.PrebookingView;
-import at.rc.tacos.client.view.UnderwayTransportsView;
-import at.rc.tacos.client.view.VehiclesViewTable;
 import at.rc.tacos.client.view.admin.AddressAdminView;
 import at.rc.tacos.client.view.admin.CompetenceAdminView;
 import at.rc.tacos.client.view.admin.DiseaseAdminView;

@@ -1,6 +1,6 @@
 package at.rc.tacos.client.listeners;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.client.modelManager.JobManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -37,16 +37,18 @@ public class JobListener extends ClientListenerAdapter
 	}
 	
     @Override
-    public void list(ArrayList<AbstractMessage> listMessage)
+    public void list(List<AbstractMessage> listMessage)
     {
-    	//remove all stored job
-    	manager.removeAllEntries();
         //loop and add all job
         for(AbstractMessage detailObject:listMessage)
         {
         	//cast to a job and add it
             Job job = (Job)detailObject;
-            manager.add(job);
+            //assert we do not have this job
+            if(manager.contains(job))
+            	manager.update(job);
+            else
+            	manager.add(job);
         }
     }
 }

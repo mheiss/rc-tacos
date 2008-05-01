@@ -94,6 +94,15 @@ public class LoginManager extends PropertyManager
     }
     
     /**
+     * Returns whether or not this login is in the list of managed object
+     * @param newLogin the login object to check
+     */
+    public boolean contains(Login newLogin)
+    {
+    	return objectList.contains(newLogin);
+    }
+    
+    /**
      * Returns the given login information by the username
      * @param username the username to get the login information
      * @return the accociated login info or null if nothing found

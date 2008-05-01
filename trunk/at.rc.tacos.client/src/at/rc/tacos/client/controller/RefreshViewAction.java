@@ -3,10 +3,13 @@ package at.rc.tacos.client.controller;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.model.VehicleDetail;
 
 /**
  * This action sends a listing request to the server to update the displayed data
@@ -44,6 +47,12 @@ public class RefreshViewAction  extends Action
 	@Override
 	public void run()
 	{
+		//clear the managed object list to force a complete refresh
+		if(VehicleDetail.ID.equalsIgnoreCase(modelId))
+			ModelFactory.getInstance().getVehicleManager().resetVehicles();
+		if(DialysisPatient.ID.equalsIgnoreCase(modelId))
+			ModelFactory.getInstance().getDialyseManager().removeAllEntries();
+		
 		//filtered by date?
 		if(date > 0)
 		{

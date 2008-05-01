@@ -91,6 +91,15 @@ public class LocationManager extends PropertyManager
     }
     
     /**
+     * Returns whether or not this location is in the list of managed object
+     * @param newLocation the Location to check
+     */
+    public boolean contains(Location newLocation)
+    {
+    	return objectList.contains(newLocation);
+    }
+    
+    /**
      * Returns a given location by the name of the station
      * @param station name the name of the station to get the location
      */

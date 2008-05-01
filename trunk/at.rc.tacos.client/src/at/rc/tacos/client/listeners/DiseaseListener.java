@@ -1,6 +1,6 @@
 package at.rc.tacos.client.listeners;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.client.modelManager.DiseaseManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -25,14 +25,17 @@ public class DiseaseListener extends ClientListenerAdapter
 	}
 
 	@Override
-	public void list(ArrayList<AbstractMessage> listMessage) 
+	public void list(List<AbstractMessage> listMessage) 
 	{
-		//remove all elements
-		manager.removeAllEntries();
 		//loop and add
 		for(AbstractMessage listObject:listMessage)
 		{
-			manager.add((Disease)listObject);
+			Disease disease = (Disease)listObject;
+			//assert we do not have this disease
+			if(manager.contains(disease))
+				manager.update(disease);
+			else
+				manager.add(disease);
 		}
 	}
 

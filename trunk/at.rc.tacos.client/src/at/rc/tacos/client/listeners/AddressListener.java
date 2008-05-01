@@ -35,7 +35,7 @@ public class AddressListener extends ClientListenerAdapter
 	}
 
 	@Override
-	public void list(ArrayList<AbstractMessage> listMessage) 
+	public void list(List<AbstractMessage> listMessage) 
 	{
 		//remove all elements
 		manager.removeAllElements();

@@ -447,15 +447,15 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				|| "ROSTERENTRY_UPDATE".equals(evt.getPropertyName())
 				|| "ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
 		{
+			//get the new added entry
+			RosterEntry entry = (RosterEntry)evt.getNewValue();
 			//get the selected station
 			TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
 			//remove all filters and add the new
 			viewer.resetFilters();
 			viewer.addFilter(new PersonalDateFilter());
 			viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
-			viewer.refresh();
-			tabFolder.setSelection(1);
-			tabFolder.setSelection(0);
+			viewer.refresh(entry,true);
 		}
 
 		//update the staff member when it is changed
@@ -485,9 +485,9 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 					entry.setJob(updatedJob);
 				if(updatedService != null && entry.getServicetype().equals(updatedService))
 					entry.setServicetype(updatedService);
+				//update the entry
+				viewer.refresh(entry, true);
 			}
-			//redraw the view
-			viewer.refresh();
 		}
 		//update the assigned vehicle of the staff member
 		if("VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName())

@@ -89,6 +89,15 @@ public class DiseaseManager extends PropertyManager
     }
     
     /**
+     * Returns whether or not this disease is in the list of managed object
+     * @param newDisease the disease to check
+     */
+    public boolean contains(Disease newDisease)
+    {
+    	return objectList.contains(newDisease);
+    }
+    
+    /**
      * Returns a given disease by the name
      * @param diseaseName the name of the disease to get
      */

@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.client.controller.CopyTransportDetailsIntoClipboardUpdateAction;
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.model.*;
+import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
 
 /**
@@ -127,6 +129,15 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 			}
 		}); 
 	}
+	
+    /**
+     * Returns whether or not this transport is in the list of managed object
+     * @param newTransport the transport to check
+     */
+    public boolean contains(Transport newTransport)
+    {
+    	return objectList.contains(newTransport);
+    }
 
 	/**
 	 * Returns a list of all transports in the system.

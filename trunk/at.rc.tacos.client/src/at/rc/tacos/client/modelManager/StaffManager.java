@@ -2,6 +2,7 @@ package at.rc.tacos.client.modelManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.model.RosterEntry;
@@ -85,6 +86,15 @@ public class StaffManager extends PropertyManager
 			}
 		});
 	}
+	
+    /**
+     * Returns whether or not this staff member is in the list of managed object
+     * @param newStaff the staff member to check
+     */
+    public boolean contains(StaffMember newStaff)
+    {
+    	return objectList.contains(newStaff);
+    }
 
 	/**
 	 * Converts the list to an array

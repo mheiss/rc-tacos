@@ -1,12 +1,11 @@
 package at.rc.tacos.client.listeners;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import at.rc.tacos.client.modelManager.MobilePhoneManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.MobilePhoneDetail;
-
 
 /**
  * This class will be notified uppon mobile phone changes
@@ -14,33 +13,38 @@ import at.rc.tacos.model.MobilePhoneDetail;
  */
 public class MobilePhoneListener extends ClientListenerAdapter
 {
-    @Override
-    public void add(AbstractMessage addMessage)
-    {
-        ModelFactory.getInstance().getPhoneManager().add((MobilePhoneDetail)addMessage);
-    }
+	//the mobile phone manager
+	private MobilePhoneManager manager = ModelFactory.getInstance().getPhoneManager();
 
-    @Override
-    public void list(ArrayList<AbstractMessage> listMessage)
-    {
-        MobilePhoneManager manager = ModelFactory.getInstance().getPhoneManager();
-        manager.resetPhones();
-        for(AbstractMessage msg:listMessage)
-        {
-            MobilePhoneDetail detail = (MobilePhoneDetail)msg;
-            manager.add(detail);
-        }
-    }
+	@Override
+	public void add(AbstractMessage addMessage)
+	{
+		manager.add((MobilePhoneDetail)addMessage);
+	}
 
-    @Override
-    public void remove(AbstractMessage removeMessage)
-    {
-        ModelFactory.getInstance().getPhoneManager().remove((MobilePhoneDetail)removeMessage);
-    }
+	@Override
+	public void list(List<AbstractMessage> listMessage)
+	{
+		for(AbstractMessage msg:listMessage)
+		{
+			MobilePhoneDetail detail = (MobilePhoneDetail)msg;
+			//assert we do not have this phone
+			if(manager.contains(detail))
+				manager.update(detail);
+			else
+				manager.add(detail);
+		}
+	}
 
-    @Override
-    public void update(AbstractMessage updateMessage)
-    {
-        ModelFactory.getInstance().getPhoneManager().update((MobilePhoneDetail)updateMessage);
-    }
+	@Override
+	public void remove(AbstractMessage removeMessage)
+	{
+		manager.remove((MobilePhoneDetail)removeMessage);
+	}
+
+	@Override
+	public void update(AbstractMessage updateMessage)
+	{
+		manager.update((MobilePhoneDetail)updateMessage);
+	}
 }

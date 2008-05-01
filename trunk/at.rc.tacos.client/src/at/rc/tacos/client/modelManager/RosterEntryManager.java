@@ -5,9 +5,11 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import org.eclipse.swt.widgets.Display;
 
-import at.rc.tacos.model.*;
+import at.rc.tacos.model.Location;
+import at.rc.tacos.model.RosterEntry;
 
 /**
  * All roster entries
@@ -90,6 +92,15 @@ public class RosterEntryManager extends PropertyManager
                 firePropertyChange("ROSTERENTRY_CLEARED",null,null);
             }
         }); 
+    }
+    
+    /**
+     * Returns whether or not this roster entry is in the list of managed object
+     * @param newRosterEntry the roster entry to check
+     */
+    public boolean contains(RosterEntry newRosterEntry)
+    {
+    	return objectList.contains(newRosterEntry);
     }
     
     /**
