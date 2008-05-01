@@ -39,7 +39,7 @@ public class Disease extends AbstractMessage
     @Override
     public String toString()
     {
-        return id + ":"+diseaseName;
+        return "id: "+id + "; diseaseName: "+diseaseName;
     }
     
     /**
