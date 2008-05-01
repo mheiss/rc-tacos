@@ -43,7 +43,7 @@ public class Competence extends AbstractMessage
     @Override
     public String toString()
     {
-        return id + ":"+competenceName;
+        return "id: " +id +"; "+ "competenceName: "+competenceName;
     }
     
     /**
