@@ -47,7 +47,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 							&nbsp;&nbsp;( <a
 								href="${url}">Logout</a>
 							)</td>
-							<td width="33%" align="center">${htitle}</td>
+							<td id="headerTitle" width="33%" align="center">${htitle}</td>
 							<td width="33%" align="right">Heute ist der <%=format.format(today)%></td>
 							<td>
 						</tr>
@@ -55,9 +55,9 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 					<table width="100%">
 						<tr>
 							<!-- #### LEFT CONTAINER NAVIGATION-->
-							<td id="LeftContainerPanel" valign="top" width="30%"><%@ include file="navigation.jsp"%></td>
+							<td id="LeftContainerPanel" valign="top" width="20%"><%@ include file="navigation.jsp"%></td>
 							<!-- #### CONTENT -->
-							<td id="ContentContainer" valign="top" width="70%">
+							<td id="ContentContainer" valign="top" width="80%">
 								<jsp:include page="${view}" />
 							</td>
 						</tr>

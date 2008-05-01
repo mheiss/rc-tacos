@@ -1,11 +1,11 @@
 <%@ include file="includes.jsp" %>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
-<form action="${url}" method="post" accept-charset="utf-8">
 <table class="standardForm"">
 	<tr>
 		<td>Ortsstelle:</td>
 		<td>
 			<select size="1" id="locationId" name="locationId">
+				<option value="noValue">-- Ortsstelle wählen --</option>
 				<c:forEach var="location" items="${params.locationList}">
 					<option value="${location.id}" ${(not empty params.location) and (params.location.id == location.id) ? ' selected="selected"' : ''}>${location.locationName}</option>
 				</c:forEach>
@@ -15,7 +15,7 @@
 	<tr>
 		<td>Datum:</td>
 		<td>
-			<input id="date" name="date" type="text" size="10" maxlength="10" value="${params.date}" />
+			<input id="date" name="date" type="text" size="10" maxlength="10" value="<fmt:formatDate type="date" value="${params.date}"/>" />
 			<c:url var="url" value="/image/calendar_edit.gif" />
 			<img src="${url}" border="0" id="dateCalendarTrigger" style="cursor:pointer" />
 		</td>
@@ -31,7 +31,7 @@ $(document).ready(function() {
 		align : "Br",
 		ifFormat : "%d.%m.%Y",
 		daFormat : "%d.%m.%Y",
-		onUpdate : update
+		onClose : update
 	});
 });
 $(function() {			

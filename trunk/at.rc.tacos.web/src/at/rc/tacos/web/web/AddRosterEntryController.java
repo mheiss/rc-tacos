@@ -39,17 +39,6 @@ public class AddRosterEntryController extends Controller {
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
 		
-		// Get current login information from server
-		Login login = null;
-		final QueryFilter usernameFilter = new QueryFilter();
-		usernameFilter.add(IFilterTypes.USERNAME_FILTER, userSession.getLoginInformation().getUsername());
-		final List<AbstractMessage> loginList = connection.sendListingRequest(Login.ID, usernameFilter);
-		if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
-			login = (Login)loginList.get(0);
-		}
-		userSession.getLoginInformation().setAuthorization(login.getAuthorization());
-		userSession.getLoginInformation().setUserInformation(login.getUserInformation());
-		
 		final String authorization = userSession.getLoginInformation().getAuthorization();
 		
 		// Job List
@@ -142,7 +131,7 @@ public class AddRosterEntryController extends Controller {
 			serviceTypeList = connection.sendListingRequest(ServiceType.ID, null);
 		} else if (authorization.equals(Login.AUTH_USER)) {
 			final QueryFilter filter = new QueryFilter();
-			filter.add(IFilterTypes.SERVICETYPE_FILTER, ServiceType.SERVICETYPE_FREIWILLIG);
+			filter.add(IFilterTypes.SERVICETYPE_SERVICENAME_FILTER, ServiceType.SERVICETYPE_FREIWILLIG);
 			serviceTypeList = connection.sendListingRequest(ServiceType.ID, filter);
 		}	
 		if (ServiceType.ID.equalsIgnoreCase(connection.getContentType())) {
@@ -227,20 +216,30 @@ public class AddRosterEntryController extends Controller {
 			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			
 			Date plannedStartOfWork = null;
-			try {
-				plannedStartOfWork = df.parse(from);
-			}
-			catch (ParseException e) {
-				errors.put("plannedStartOfWork", "Dienst von ist ein Pflichtfeld.");
+			if (dateFrom == null || dateFrom.equals("") || timeFromHours == null || timeFromMinutes == null) {
+				errors.put("plannedStartOfWorkMissing", "Dienst von ist ein Pflichtfeld.");
 				valid = false;
+			} else {
+				try {
+					plannedStartOfWork = df.parse(from);
+				}
+				catch (ParseException e) {
+					errors.put("plannedStartOfWorkError", "Das Datumsformat von Dienst von ist nicht korreckt.");
+					valid = false;
+				}
 			}
 				
 			Date plannedEndOfWork = null;
-			try {
-				plannedEndOfWork = df.parse(to);
-			} catch (ParseException e) {	
-				errors.put("plannedEndOfWork", "Dienst bis ist ein Pflichtfeld.");
+			if (dateTo == null || dateTo.equals("") || timeToHours == null || timeToMinutes == null) {
+				errors.put("plannedEndOfWorkMissing", "Dienst bis ist ein Pflichtfeld.");
 				valid = false;
+			} else {
+				try {
+					plannedEndOfWork = df.parse(to);
+				} catch (ParseException e) {	
+					errors.put("plannedEndOfWorkError", "Das Datumsformat von Dienst bis ist nicht korreckt.");
+					valid = false;
+				}
 			}
 			
 			if (plannedStartOfWork != null) {
@@ -286,6 +285,9 @@ public class AddRosterEntryController extends Controller {
 				}
 				rosterEntry.setStandby(standby);
 				connection.sendAddRequest(RosterEntry.ID, rosterEntry);
+				if(connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
+					params.put("addedCount", 1);
+				}
 			}
 		}
 		params.put("errors", errors);
