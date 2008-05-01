@@ -417,6 +417,7 @@ public class NetWrapper extends Plugin
 				//start the job to proccess the data
 				ProcessDataJob dataJob = new ProcessDataJob(contentType,queryString,newObjects);
 				dataJob.setRule(new ProcessDataJobRule(contentType));
+				dataJob.setName("In Bearbeitung: "+contentType);
 				dataJob.schedule();				
 				
 				return Status.OK_STATUS;
