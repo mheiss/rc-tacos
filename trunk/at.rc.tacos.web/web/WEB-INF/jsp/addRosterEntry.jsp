@@ -1,10 +1,18 @@
 <%@ include file="includes.jsp" %>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 <form action="${url}" method="post" accept-charset="utf-8">
+	<c:choose>
+		<c:when test="${params.addedCount gt 0}">
+			<div id="submitSuccess">
+				Sie haben sich einen neuen Dienstplaneintrag erstellt.
+			</div>
+			<br />
+		</c:when>
+	</c:choose>
 	<table class="standardForm">
 		<tr><td>Allgemeine Daten:</td></tr>
 		<tr>
-			<td>Mitarbeiter:</td>
+			<td>Mitarbeiter:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="staffMemberId" name="staffMemberId">
 					<option value="">-- Mitarbeiter wählen--</option>
@@ -20,7 +28,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Ortsstelle:</td>
+			<td>Ortsstelle:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="locationId" name="locationId">
 					<option value="">-- Ortsstelle wählen --</option>
@@ -34,7 +42,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Verwendung:</td>
+			<td>Verwendung:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="jobId" name="jobId">
 					<option value="">-- Verwendung wählen --</option>
@@ -48,7 +56,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Dienstverhältnis:</td>
+			<td>Dienstverhältnis:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="serviceTypeId" name="serviceTypeId">
 					<option value="">-- Dienstverhältnis wählen --</option>
@@ -75,7 +83,7 @@
 		<tr><td>Dienstzeiten:</td></tr>
 		<tr>
 			<td>
-				Dienst von: 
+				Dienst von:<sup class="reqMark">*</sup> 
 			</td>
 			<td>
 				<input id="dateFrom" name="dateFrom" type="text" size="10" maxlength="10" value="${params.dateFrom}" />
@@ -99,12 +107,12 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.plannedStartOfWork}${not empty params.errors.plannedStartOfWorkTooSmall ? params.errors.plannedStartOfWorkTooSmall : ''}${not empty params.errors.plannedStartOfWorkTooBig ? params.errors.plannedStartOfWorkTooBig : ''}</span>
+				<span class="errorText">${params.errors.plannedStartOfWorkMissing}${not empty params.errors.plannedStartOfWorkError ? params.errors.plannedStartOfWorkError : ''}${not empty params.errors.plannedStartOfWorkTooSmall ? params.errors.plannedStartOfWorkTooSmall : ''}${not empty params.errors.plannedStartOfWorkTooBig ? params.errors.plannedStartOfWorkTooBig : ''}</span>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				bis: 
+				bis:<sup class="reqMark">*</sup>
 			</td>
 			<td>
 				<input id="dateTo" name="dateTo" type="text" size="10" maxlength="10" value="${params.dateTo}" />
@@ -128,11 +136,14 @@
 				</select>
 			</td>
 			<td>
-			<span class="errorText">${params.errors.plannedEndOfWork}${not empty params.errors.plannedEndOfWorkTooSmall ? params.errors.plannedEndOfWorkTooSmall : ''}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
+			<span class="errorText">${params.errors.plannedEndOfWorkMissing}${not empty params.errors.plannedEndOfWorkError ? params.errors.plannedEndOfWorkError : ''}${not empty params.errors.plannedEndOfWorkTooSmall ? params.errors.plannedEndOfWorkTooSmall : ''}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td colspan="2" class="reqComment">Mit * markierte Felder sind Pflichtfelder.</td>
+		</tr>
+		<tr>
+			<td class="hButtonArea" colspan="2">
 				<input type="submit" value="Anlegen" />
 				<input name="action" type="hidden" value="addRosterEntry" />
 			</td>

@@ -3,6 +3,7 @@ package at.rc.tacos.web.web;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -12,6 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
+import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.Login;
+import at.rc.tacos.model.QueryFilter;
 
 /**
  * Dispatcher (Front Controller):
@@ -130,6 +137,21 @@ public class Dispatcher extends HttpServlet
 					response.sendRedirect(response.encodeRedirectURL(url));
 				} else {
 					try {
+						
+						/*if (userSession.getLoggedIn()) {
+							// Get current login information from server
+							final WebClient connection = userSession.getConnection();
+							Login login = null;
+							final QueryFilter usernameFilter = new QueryFilter();
+							usernameFilter.add(IFilterTypes.USERNAME_FILTER, userSession.getLoginInformation().getUsername());
+							final List<AbstractMessage> loginList = connection.sendListingRequest(Login.ID, usernameFilter);
+							if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
+								login = (Login)loginList.get(0);
+							}
+							userSession.getLoginInformation().setAuthorization(login.getAuthorization());
+							userSession.getLoginInformation().setUserInformation(login.getUserInformation());
+						}*/
+						
 						final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
 						final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
 						request.setAttribute("params", params);
