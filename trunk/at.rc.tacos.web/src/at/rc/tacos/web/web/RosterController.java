@@ -1,6 +1,7 @@
 package at.rc.tacos.web.web;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -72,6 +73,7 @@ public class RosterController extends Controller {
 		final String paramDate = request.getParameter("date");
 		
 		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
 
 		Date date = new Date();			
 		if (paramDate != null) {		
@@ -82,9 +84,7 @@ public class RosterController extends Controller {
 		}
 		params.put("date", date);
 		
-		final Calendar dateCalendar = Calendar.getInstance();
-		dateCalendar.setTime(date);
-		final String dateString = dateCalendar.get(Calendar.DAY_OF_MONTH) + "-" + dateCalendar.get(Calendar.MONTH) + "-" + dateCalendar.get(Calendar.YEAR);
+		final String dateString = formatDateForServer.format(date);
 		
 		// Get Roster Entries
 		QueryFilter rosterFilter = new QueryFilter();
@@ -92,9 +92,30 @@ public class RosterController extends Controller {
 		if (location != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
 		}
+		
+		// Form RosterEntryContainer for Table
 		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
+		final List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
 		if (RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
-			
+			for (Iterator<AbstractMessage> itRosterEntryList = rosterEntryList.iterator(); itRosterEntryList.hasNext();) {
+				final RosterEntry rosterEntry = (RosterEntry)itRosterEntryList.next();
+				final RosterEntryContainer rosterEntryContainer = new RosterEntryContainer();
+				rosterEntryContainer.setRosterEntry(rosterEntry);
+				rosterEntryContainer.setPlannedStartOfWork(new Date(rosterEntry.getPlannedStartOfWork()));
+				rosterEntryContainer.setPlannedEndOfWork(new Date(rosterEntry.getPlannedEndOfWork()));
+				if (rosterEntry.getRealStartOfWork() == 0) {
+					rosterEntryContainer.setRealStartOfWork(null);
+				} else {
+					rosterEntryContainer.setRealStartOfWork(new Date(rosterEntry.getRealStartOfWork()));
+				}
+				if (rosterEntry.getRealEndOfWork() == 0) {
+					rosterEntryContainer.setRealEndOfWork(null);
+				} else {
+					rosterEntryContainer.setRealEndOfWork(new Date(rosterEntry.getRealEndOfWork()));
+				}
+				rosterEntryContainerList.add(rosterEntryContainer);
+			}
+			params.put("rosterEntryContainerList", rosterEntryContainerList);
 		}
 		
 		return params;
