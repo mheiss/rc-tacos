@@ -21,6 +21,65 @@
 		</td>
 	</tr>
 </table>
+<c:set var="fieldHeadersRow">
+	<tr class="subhead2">
+		<th nowrap="nowrap">Name</th>
+		<th nowrap="nowrap">von (geplant)</th>
+		<th nowrap="nowrap">bis (geplant)</th>
+		<th nowrap="nowrap">von (real)</th>
+		<th nowrap="nowrap">bis (real)</th>
+		<th nowrap="nowrap">Verwendung</th>
+		<th nowrap="nowrap">Dienstverhältnis</th>
+		<th nowrap="nowrap">&nbsp;</th>
+		<th nowrap="nowrap">Bereitschaft</th>
+		<th nowrap="nowrap">&nbsp;</th>
+	</tr>
+</c:set>
+<br />
+<br />
+<table class="list">
+	<tr>
+		<th class="header2" colspan="10">Dienste</th>
+	</tr>
+	${fieldHeadersRow}
+	<c:forEach var="rosterEntryContainer" items="${params.rosterEntryContainerList}">
+		<tr>
+			<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName} ${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
+			<td nowrap="nowrap">
+				<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
+			</td>
+			<td nowrap="nowrap">
+				<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
+			</td>
+			<td nowrap="nowrap">
+				<c:choose>
+					<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
+					<c:otherwise>
+						<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
+					</c:otherwise>
+				</c:choose>
+			</td>
+			<td nowrap="nowrap">
+				<c:choose>
+					<c:when test="${rosterEntry.Container.realEndOfWork eq null}">-</c:when>
+					<c:otherwise>
+						<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
+					</c:otherwise>
+				</c:choose>
+			</td>
+			<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
+			<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
+			<td>&nbsp;</td>
+			<td nowrap="nowrap">
+				<c:choose>
+					<c:when test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
+					<c:otherwise>Nein</c:otherwise>
+				</c:choose>
+			</td>
+			<td>&nbsp;</td>
+		</tr>
+	</c:forEach>
+</table>
 <script type="text/javascript">
 $(document).ready(function() {
 	Calendar.setup ({

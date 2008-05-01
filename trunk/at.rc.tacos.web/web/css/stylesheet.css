@@ -145,12 +145,12 @@ table.list tbody td { height:1.9em; }
 .list tr.filter td table td { border:none; padding:3px 0px; }
 .list label.filter { font-size:8pt; }
 .list select.filter { font-size:8pt; margin:0px; }
-.list th { text-align:center; background-color:#00669C; color:white; padding:7px 10px; border-right:#999999 solid 1px; border-bottom:#999999 solid 1px; border-top:#999999 solid 1px; cursor:default; }
-.list th.header2 { text-align:center; color:black; background-color:#BFE9FF; padding:7px 10px; border-right:#999999 solid 1px; border-bottom:#999999 solid 1px; border-top:#999999 solid 1px; }
+.list th { text-align:center; background-color:#00669C; color:white; padding:3px 5px; border-right:#999999 solid 1px; border-bottom:#999999 solid 1px; border-top:#999999 solid 1px; cursor:default; }
+.list th.header2 { text-align:center; color:black; background-color:#BFE9FF; padding:3px 5px; border-right:#999999 solid 1px; border-bottom:#999999 solid 1px; border-top:#999999 solid 1px; font-size:12px; }
 .list th.header2 a { color:black; cursor:pointer }
-.list tr.subhead2 th { color:black; background-color:#BFE9FF; padding:5px 10px; border-top:none; border-right:#999999 solid 1px; cursor:default; }
+.list tr.subhead2 th { color:black; background-color:#BFE9FF; padding:2px 5px; border-top:none; border-right:#999999 solid 1px; cursor:default; font-size:12px; }
 .list tr.subhead2 th a { color:black; cursor:pointer }
-.list tr.subhead th { padding:5px 10px; border-top:none; border-right:#999999 solid 1px; cursor:default; }
+.list tr.subhead th { padding:2px 5px; border-top:none; border-right:#999999 solid 1px; cursor:default; }
 .list tr.subfooter { color:#666666; background-color:#BFE9FF; }
 .list.selectable tbody tr.selected.subfooter { background-color:#BFE9FF; cursor:default; }
 .list.selectable tbody tr.selected.subfooter td { border-top-color:#ffffff;  }
