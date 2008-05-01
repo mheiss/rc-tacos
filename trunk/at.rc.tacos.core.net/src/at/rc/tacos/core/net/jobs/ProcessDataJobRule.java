@@ -2,6 +2,8 @@ package at.rc.tacos.core.net.jobs;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
+import at.rc.tacos.model.Location;
+
 /**
  * This job rule is for the process data job and enshures that only one job for each model type is running at time. 
  * @author Michael
@@ -22,41 +24,48 @@ public class ProcessDataJobRule implements ISchedulingRule
 	@Override
 	public boolean contains(ISchedulingRule otherRule) 
 	{	
-		if(contentType == "")
-			contentType = ".";
-		
-		return otherRule.getClass() == ProcessDataJobRule.class;
-		
-//		//check the rule class
-//		if(otherRule instanceof ProcessDataJobRule)
-//		{
-//			//get the other rule
-//			ProcessDataJobRule rule = (ProcessDataJobRule)otherRule;
-//			//check if the are processing the same content type
-//			if(rule.contentType.equalsIgnoreCase(contentType))
-//				return true;
-//			return false;
-//		}
-//		//other rule so they can run at the same time
-//		return false;
+		//check the rule class
+		if(otherRule instanceof ProcessDataJobRule)
+		{
+			//get the other rule
+			ProcessDataJobRule rule = (ProcessDataJobRule)otherRule;
+			
+			//a location must always run lonely
+			if(rule.contentType.equalsIgnoreCase(Location.ID))
+				return true;
+			if(Location.ID.equalsIgnoreCase(contentType))
+				return true;
+			
+			//check if the are processing the same content type
+			if(rule.contentType.equalsIgnoreCase(contentType))
+				return true;
+			return false;
+		}
+		//other rule so they can run at the same time
+		return false;
 	}
 
 	@Override
 	public boolean isConflicting(ISchedulingRule otherRule) 
 	{
-		return otherRule.getClass() == ProcessDataJobRule.class;
-		
-//		//check the rule class
-//		if(otherRule instanceof ProcessDataJobRule)
-//		{
-//			//get the other rule
-//			ProcessDataJobRule rule = (ProcessDataJobRule)otherRule;
-//			//check if the are processing the same content type
-//			if(rule.contentType.equalsIgnoreCase(contentType))
-//				return true;
-//			return false;
-//		}
-//		//other rule so they can run at the same time
-//		return false;
+		//check the rule class
+		if(otherRule instanceof ProcessDataJobRule)
+		{
+			//get the other rule
+			ProcessDataJobRule rule = (ProcessDataJobRule)otherRule;
+			
+			//a location must always run lonely
+			if(rule.contentType.equalsIgnoreCase(Location.ID))
+				return true;
+			if(Location.ID.equalsIgnoreCase(contentType))
+				return true;
+			
+			//check if the are processing the same content type
+			if(rule.contentType.equalsIgnoreCase(contentType))
+				return true;
+			return false;
+		}
+		//other rule so they can run at the same time
+		return false;
 	}
 }

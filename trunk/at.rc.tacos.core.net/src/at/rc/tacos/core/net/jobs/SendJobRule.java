@@ -8,7 +8,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
  * @author Michael
  */
 public class SendJobRule implements ISchedulingRule
-{
+{	
 	@Override
 	public boolean contains(ISchedulingRule otherRule) 
 	{
