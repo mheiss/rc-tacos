@@ -50,4 +50,6 @@ public interface RosterDAO
 	 * @return the list of roster entries
 	 */
 	public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime) throws SQLException;
+	
+	public List<RosterEntry> listRosterEntryiesByDateAndLocation(long startTime, long endTime, int filterLocationId) throws SQLException;
 }

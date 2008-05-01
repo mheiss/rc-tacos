@@ -320,4 +320,11 @@ public class RosterDAOMySQL implements RosterDAO
 			connection.close();
 		}
 	}
+
+	@Override
+	public List<RosterEntry> listRosterEntryiesByDateAndLocation(
+			long startTime, long endTime, int filterLocationId) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
