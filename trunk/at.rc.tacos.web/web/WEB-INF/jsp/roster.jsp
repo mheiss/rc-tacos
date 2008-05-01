@@ -42,43 +42,45 @@
 		<th class="header2" colspan="10">Dienste</th>
 	</tr>
 	${fieldHeadersRow}
-	<c:forEach var="rosterEntryContainer" items="${params.rosterEntryContainerList}">
-		<tr>
-			<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName} ${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
-			<td nowrap="nowrap">
-				<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
-			</td>
-			<td nowrap="nowrap">
-				<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
-			</td>
-			<td nowrap="nowrap">
-				<c:choose>
-					<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
-					<c:otherwise>
-						<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td nowrap="nowrap">
-				<c:choose>
-					<c:when test="${rosterEntry.Container.realEndOfWork eq null}">-</c:when>
-					<c:otherwise>
-						<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
-			<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
-			<td>&nbsp;</td>
-			<td nowrap="nowrap">
-				<c:choose>
-					<c:when test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
-					<c:otherwise>Nein</c:otherwise>
-				</c:choose>
-			</td>
-			<td>&nbsp;</td>
-		</tr>
-	</c:forEach>
+	<tbody>
+		<c:forEach var="rosterEntryContainer" items="${params.rosterEntryContainerList}" varStatus="loop">
+			<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
+				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName} ${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
+				<td nowrap="nowrap">
+					<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
+				</td>
+				<td nowrap="nowrap">
+					<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
+				</td>
+				<td nowrap="nowrap">
+					<c:choose>
+						<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
+						<c:otherwise>
+							<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td nowrap="nowrap">
+					<c:choose>
+						<c:when test="${rosterEntry.Container.realEndOfWork eq null}">-</c:when>
+						<c:otherwise>
+							<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
+				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
+				<td>&nbsp;</td>
+				<td nowrap="nowrap">
+					<c:choose>
+						<c:when test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
+						<c:otherwise>Nein</c:otherwise>
+					</c:choose>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+		</c:forEach>
+	</tbody>
 </table>
 <script type="text/javascript">
 $(document).ready(function() {
