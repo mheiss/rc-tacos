@@ -52,7 +52,7 @@
 						<%
 						if (request.getParameter("responseUrl") != null) {
 						%>
-						<input type=hidden name="responseUrl" value="<%= request.getParameter("responseUrl") %>"/>
+						<input type=hidden name="savedUrl" value="${savedUrl}"/>
 						<%
 						}
 						%>	

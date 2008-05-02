@@ -128,7 +128,7 @@ public class Dispatcher extends HttpServlet
 			} else {
 				if (loginRequired == true && !userSession.getLoggedIn()) {
 					final Enumeration<Object> e = request.getParameterNames();
-					String url = getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?responseUrl=" + relativePath;
+					String url = getServletContext().getContextPath() + request.getServletPath() + views.getString("login.url") + "?savedUrl=" + relativePath;
 					while (e.hasMoreElements()) {
 						final String parameterName = (String)e.nextElement();
 						final String parameterValue = request.getParameter(parameterName);
