@@ -91,6 +91,14 @@
       </view>
       
       <view
+            name="Transporte"
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.TransportView"
+            icon="icons/resources/vehicle.png"
+            id="at.rc.tacos.client.view.transport_view">
+      </view>
+      
+      <view
             name="Fahrzeugübersicht-Tabelle"
             allowMultiple="false"
             class="at.rc.tacos.client.view.VehiclesViewTable"
