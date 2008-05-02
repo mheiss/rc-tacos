@@ -180,7 +180,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 		final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(30);
+		lockColumn.setWidth(0);
 		lockColumn.setText("L");
 
 		final TableColumn columnStandby = new TableColumn(table, SWT.NONE);
@@ -224,7 +224,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 		final TableColumn columnVehicle = new TableColumn(table, SWT.NONE);
 		columnVehicle.setToolTipText("Fahrzeug, dem der Mitarbeiter zugewiesen ist");
-		columnVehicle.setWidth(80);
+		columnVehicle.setWidth(55);
 		columnVehicle.setText("Fzg");
 
 		//make the columns sortable
