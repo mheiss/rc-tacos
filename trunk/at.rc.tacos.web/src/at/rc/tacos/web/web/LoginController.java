@@ -1,5 +1,6 @@
 package at.rc.tacos.web.web;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,10 +85,10 @@ public class LoginController extends Controller {
 						for (AbstractMessage abstractStaffMember : staffList)
 							userSession.addStaffMember((StaffMember) abstractStaffMember);
 					}
-					if (request.getParameter("responseUrl") == null) {
+					if (request.getParameter("savedUrl") == null) {
 						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath()));
 					} else {
-						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath() + request.getParameter("responseUrl")));
+						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath() + request.getParameter("savedUrl")));
 					}
 				} else {
 					params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
@@ -101,6 +102,23 @@ public class LoginController extends Controller {
 		
 		final UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
 		Map<String, Object> params = new HashMap<String, Object>();
+		
+		final Enumeration<Object> e = request.getParameterNames();
+		String savedUrl = request.getParameter("savedUrl");
+		int i = 0;
+		while (e.hasMoreElements()) {
+			final String parameterName = (String)e.nextElement();
+			final String parameterValue = request.getParameter(parameterName);
+			if (i == 0) {
+				savedUrl += "?" + parameterName + "=" + parameterValue;
+			} else {
+				savedUrl += "&" + parameterName + "=" + parameterValue;
+			}
+			
+			i++;
+		}
+		request.setAttribute("savedUrl", savedUrl);
+		
 		if (userSession.getLoggedIn()) {
 			response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath()));
 		} else {	
