@@ -99,7 +99,7 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
         // Create the scrolled parent component
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
-        form.setText("Fahrzeuge");
+//        form.setText("Fzg.");
         toolkit.decorateFormHeading(form.getForm());
         form.getBody().setLayout(new FillLayout());
 
@@ -149,12 +149,12 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
         final TableColumn columnVehicleName = new TableColumn(table, SWT.NONE);
         columnVehicleName.setToolTipText("Fahrzeugname");
         columnVehicleName.setWidth(60);
-        columnVehicleName.setText("Fahrzeug");
+//        columnVehicleName.setText("Fzg.");
 
         final TableColumn columnVehicleStatus = new TableColumn(table, SWT.NONE);
         columnVehicleStatus.setToolTipText("Verfügbarkeit des Fahrzeuges");
         columnVehicleStatus.setWidth(50);
-        columnVehicleStatus.setText("Status");
+//        columnVehicleStatus.setText("Status");
 
         //make the columns sortable
         Listener sortListener = new Listener() 
