@@ -246,6 +246,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         super(parentShell);
         createNew = true;
         this.transportType = transportType;
+        System.out.println("............... transport type: " +transportType);
         this.transport = new Transport();
         //bind the staff to this view
         ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
@@ -265,7 +266,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         //update an entry
         createNew = false;
         this.transport = transport;
-        this.editingType = editingType;
+        this.editingType = "journal";
+        System.out.println("............... editing type: " +editingType);
         transportType = "both";
         //bind the staff to this view
         ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
