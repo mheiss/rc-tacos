@@ -53,7 +53,7 @@ public class Patient extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return firstname+","+lastname;
+		return "id: "+patientId+ "; firstname: "+firstname+"; lastname: "+lastname +"; sex: "+sex +"; birthday: "+birthday;
 	}
 
 	/**
