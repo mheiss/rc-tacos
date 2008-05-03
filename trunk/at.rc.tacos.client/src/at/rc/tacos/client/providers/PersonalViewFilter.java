@@ -36,9 +36,11 @@ public class PersonalViewFilter extends ViewerFilter
 	{
 		//cast the element
 		RosterEntry entry = (RosterEntry)element;
+		
 		//check the entry
 		if(entry.getStation().equals(location))
 			return true;
+		
 		//filter the element out
 		return false;
 	}
