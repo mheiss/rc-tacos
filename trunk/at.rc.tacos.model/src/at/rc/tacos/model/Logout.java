@@ -45,7 +45,7 @@ public class Logout extends AbstractMessage
     @Override
     public String toString()
     {
-        return username+","+loggedOut;
+        return "username: "+username+","+loggedOut+"; errorMessage: "+errorMessage;
     }
 
     //GETTERS AND SETTERS
