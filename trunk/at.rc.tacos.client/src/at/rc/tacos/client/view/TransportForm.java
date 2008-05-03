@@ -304,6 +304,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
         setShellStyle(SWT.SYSTEM_MODAL);
         //Create the content of the dialog
         createTransportSection(composite);
+        //disable some buttons
+        System.out.println("transportType: " +transportType);
+        if(transportType.equalsIgnoreCase("emergencyTransport"))
+        {
+        	buttonMehrfachtransport.setEnabled(false);
+        }
+        if(transportType.equalsIgnoreCase("prebooking"))
+        	buttonAssignCar.setEnabled(false);
         
         //Simple date format for the alarming timestamps
         SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
@@ -2188,7 +2196,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		        	newCaller.setCallerName(transport.getCallerDetail().getCallerName());
 		        	newCaller.setCallerTelephoneNumber(transport.getCallerDetail().getCallerTelephoneNumber());
 	        	}
-	        	Transport newTransport = Util.copyTransport(transport);
+	        	Transport newTransport = Util.copyTransport(transport);//TODO
 	        	newTransport.setPatient(newPatient);
 	        	newTransport.setCallerDetail(newCaller);
 	        	//add the created transport to the table object list
@@ -2332,7 +2340,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
     		return "F";
     	else if(priorityString.equalsIgnoreCase("7 NEF extern"))
     		return "G";
-    	else return null;
+    	else return "F";//default in case of a problem
     }
     
     /**
