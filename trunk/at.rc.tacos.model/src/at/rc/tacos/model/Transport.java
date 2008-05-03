@@ -231,7 +231,14 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	@Override
 	public String toString()
 	{
-		return transportId+","+fromStreet+","+fromCity+","+patient+","+toStreet+","+toCity;
+		return "transportId: "+transportId+"; fromStreet: "+fromStreet+"; fromCity: "+fromCity+"; patient: "+patient+"; toStreet: "+toStreet+"; toCity: "+toCity
+		+"; kindofTransport: "+kindOfTransport+"; transportPriority: "+transportPriority+"; longDistanceTrip: "+longDistanceTrip+"; Direction: "+direction+"; kindOfIlness: "
+		+kindOfIllness+"; backTransport: "+backTransport+"; assistandPerson: "+assistantPerson+"; emergencyPhone: "+emergencyPhone+"; feedback: "+feedback+"; creationTime: "
+		+creationTime+"; dateOfTransport: "+dateOfTransport+"; plannedStartOfTransport: "+ plannedStartOfTransport +"; plannedTimeAtPatient: "+plannedTimeAtPatient+"; appointmentTimeAtDestination: "
+		+appointmentTimeAtDestination+"; planedLocation: "+planedLocation+"; notes: "+notes+"; programStatus: "+programStatus+"; createdByUser: "+createdByUser+"; disposedByUser: "+disposedByUser+"; emergencyDoctorAlarming: "
+		+emergencyDoctorAlarming+"; helicoperterAlarming: "+helicopterAlarming+"; blueLighttoGoal: "+blueLightToGoal+"; blueLight1: "+blueLight1+"; dfAlarming: "+dfAlarming+"; brkdtAlarming: "+brkdtAlarming+"; firebrigadeAlarming: "
+		+firebrigadeAlarming+"; mountainRescueServiceAlarming: "+mountainRescueServiceAlarming+"; policeAlarming: "+policeAlarming+"; KITAlarming: "+KITAlarming+"; timestampNA: "+timestampNA+"; timestampRTH: "+timestampRTH+"; timestampDF: "+timestampDF
+		+"; timestampBRKDT: "+timestampBRKDT+"; timestampFW: "+timestampFW+"; timestampPolizei: "+timestampPolizei+"; timestampBergrettung: "+timestampBergrettung+"; timestampKIT: "+timestampKIT+"; vehicleDetail: "+vehicleDetail+"; statusMessages: "+statusMessages;
 	}
 
 	/**
