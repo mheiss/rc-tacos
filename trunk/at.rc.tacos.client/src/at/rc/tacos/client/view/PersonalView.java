@@ -2,6 +2,8 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Calendar;
+
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -11,15 +13,18 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -120,28 +125,33 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 		//tab folder
 		tabFolder = new TabFolder(composite, SWT.NONE);
-		tabFolder.addSelectionListener(new SelectionListener() 
+		tabFolder.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e) 
 			{
-				//get the selected station
-				TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
-				//remove all filters and add the new
-				viewer.resetFilters();
-				viewer.addFilter(new PersonalDateFilter());
-				viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
-				viewer.refresh();
-			}
-			public void widgetDefaultSelected(SelectionEvent e) 
-			{
-				widgetSelected(e);
+				//assert valid
+				if(e.item.getData() == null)
+					return;
+				if(!(e.item.getData() instanceof Location))
+					return;
+
+				//remove all location filter
+				for(ViewerFilter filter:viewer.getFilters())
+				{
+					if(filter instanceof PersonalViewFilter)
+						viewer.removeFilter(filter);
+				}	
+
+				//cast to a location and apply the new filter
+				Location location = (Location)e.item.getData();
+				viewer.addFilter(new PersonalViewFilter(location));	
 			}
 		});
 
-		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		viewer = new TableViewer(tabFolder,SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new PersonalViewContentProvider());
 		viewer.setLabelProvider(new PersonalViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getRosterEntryManager());
+		viewer.setInput(ModelFactory.getInstance().getRosterEntryManager().toArray());
 		viewer.getTable().setLinesVisible(true);
 
 		//set the tooltip
@@ -172,6 +182,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		});
 		//sort the table by default
 		viewer.setSorter(new PersonalViewSorter(PersonalViewSorter.NAME_SORTER,SWT.UP));
+		viewer.addFilter(new PersonalDateFilter(Calendar.getInstance()));
 
 		//create the table for the roster entries 
 		final Table table = viewer.getTable();
@@ -392,9 +403,13 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 			//Store the location
 			tabItem.setData(location);
 			tabItem.setControl(viewer.getTable());
-			//set the first tabfoler as selected
 			tabFolder.setSelection(1);
 			tabFolder.setSelection(0);
+
+			//set the default filter to the first location
+			if(location.getId() == 1)
+				viewer.addFilter(new PersonalViewFilter(location));			
+
 		}
 		//update the TabItem
 		if("LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
@@ -441,21 +456,31 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				tabItem.dispose();
 		}
 
-		// the viewer represents simple model. refresh should be enough.
-		if ("ROSTERENTRY_ADD".equals(evt.getPropertyName())
-				|| "ROSTERENTRY_REMOVE".equals(evt.getPropertyName())
-				|| "ROSTERENTRY_UPDATE".equals(evt.getPropertyName())
-				|| "ROSTERENTRY_CLEARED".equals(evt.getPropertyName())) 
+		// add the new element to the viewer
+		if("ROSTERENTRY_ADD".equals(evt.getPropertyName()))
 		{
 			//get the new added entry
 			RosterEntry entry = (RosterEntry)evt.getNewValue();
-			//get the selected station
-			TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
-			//remove all filters and add the new
-			viewer.resetFilters();
-			viewer.addFilter(new PersonalDateFilter());
-			viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
+			viewer.add(entry);
+		}
+		//update the existing element
+		if("ROSTERENTRY_UPDATE".equals(evt.getPropertyName()))
+		{
+			//get the updated element
+			RosterEntry entry = (RosterEntry)evt.getNewValue();
 			viewer.refresh(entry,true);
+		}
+		//remove the single entry
+		if("ROSTERENTRY_REMOVE".equals(evt.getPropertyName())) 
+		{
+			//get the removed element
+			RosterEntry entry = (RosterEntry)evt.getOldValue();
+			viewer.remove(entry);
+		}
+		//refresh the complete table
+		if("ROSTERENTRY_CLEARED".equals(evt.getPropertyName()))
+		{
+			viewer.refresh();
 		}
 
 		//update the staff member when it is changed
@@ -486,8 +511,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 				if(updatedService != null && entry.getServicetype().equals(updatedService))
 					entry.setServicetype(updatedService);
 				//update the entry
-				viewer.refresh(entry, true);
 			}
+			viewer.refresh();
 		}
 		//update the assigned vehicle of the staff member
 		if("VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName())
@@ -501,14 +526,17 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 		//listen to changes of the date to set up the filter
 		if("ROSTER_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the selected station
-			TabItem locationTab = tabFolder.getItem(tabFolder.getSelectionIndex());
-			//set up the new view filter
-			viewer.resetFilters();
-			viewer.addFilter(new PersonalDateFilter());
-			viewer.addFilter(new PersonalViewFilter((Location)locationTab.getData()));
-			viewer.refresh();			
+		{	
+			Calendar newDate = (Calendar)evt.getNewValue();
+
+			//remove all date filter
+			for(ViewerFilter filter:viewer.getFilters())
+			{
+				if(filter instanceof PersonalDateFilter)
+					viewer.removeFilter(filter);
+			}
+			//apply the new date filter
+			viewer.addFilter(new PersonalDateFilter(newDate));		
 		}
 	}
 }

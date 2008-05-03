@@ -30,6 +30,14 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	 * Default class constructor
 	 */
 	public TransportManager() { }
+	
+    /**
+     * Initalizes the vehicle manager and adds the needed listeners
+     */
+    protected void init()
+    {
+    	ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+    }
 
 	/**
 	 * Adds a new transport to the list

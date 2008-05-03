@@ -39,8 +39,6 @@ public class LocationListener extends ClientListenerAdapter
     @Override
     public void list(List<AbstractMessage> listMessage)
     {
-    	//remove all stored location
-    	manager.removeAllEntries();
         //loop and add all location
         for(AbstractMessage detailObject:listMessage)
         {

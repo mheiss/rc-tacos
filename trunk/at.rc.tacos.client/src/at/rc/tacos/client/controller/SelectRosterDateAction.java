@@ -50,7 +50,7 @@ public class SelectRosterDateAction extends Action
         
         //set up the filter and query the server
         QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,strDate);
-        NetWrapper.getDefault().requestListing(RosterEntry.ID,filter);
         NetWrapper.getDefault().requestListing(DayInfoMessage.ID, filter);
+        NetWrapper.getDefault().requestListing(RosterEntry.ID,filter);
     }
 }

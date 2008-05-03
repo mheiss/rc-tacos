@@ -68,6 +68,7 @@ public class ModelFactory
 	{
 		//add the listeners
 		vehicleManager.init();
+		transportManager.init();
 		//request the data from the server
 		NetWrapper net = NetWrapper.getDefault();
 		String now = MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(),MyUtils.timeAndDateFormat);
