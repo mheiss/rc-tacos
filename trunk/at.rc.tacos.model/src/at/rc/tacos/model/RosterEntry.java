@@ -11,7 +11,7 @@ public class RosterEntry extends AbstractMessage
 {
 	//unique identification string
 	public final static String ID = "rosterEntry";
-
+	
 	//Properties    
 	private int rosterId;
 	private Location station;
