@@ -1,6 +1,6 @@
 <%@ include file="includes.jsp" %>
 <%@page import="at.rc.tacos.model.Login"%>
-<%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="at.rc.tacos.web.controller.UserSession"%>
 <%
 	UserSession user = (UserSession)session.getAttribute("userSession"); 
 %>

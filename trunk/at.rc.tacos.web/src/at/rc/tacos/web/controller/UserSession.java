@@ -1,4 +1,4 @@
-package at.rc.tacos.web.web;
+package at.rc.tacos.web.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ public class UserSession
 	private String username;
 	private WebClient connection;
 	private Login loginInfo;
+	private FormDefaultValues formDefaultValues;
 	private List<Competence> competenceList;
 	private List<Job> jobList;
 	private List<ServiceType> serviceTypeList;
@@ -248,5 +249,13 @@ public class UserSession
 	 */
 	public void addDayInfo(List<DayInfoMessage> dayInfoList) {
 		this.dayInfoList = dayInfoList;
+	}
+
+	public FormDefaultValues getFilterDefaultValues() {
+		return formDefaultValues;
+	}
+
+	public void setFilterDefaultValues(FormDefaultValues formDefaultValues) {
+		this.formDefaultValues = formDefaultValues;
 	}
 }

@@ -1,7 +1,7 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
-<%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="at.rc.tacos.web.controller.UserSession"%>
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%

@@ -2,7 +2,7 @@ package at.rc.tacos.web.utils;
 
 import java.util.ResourceBundle;
 
-import at.rc.tacos.web.web.*;
+import at.rc.tacos.web.controller.*;
 
 /**
  * ControllerFactory creates a handler out of the request URL.

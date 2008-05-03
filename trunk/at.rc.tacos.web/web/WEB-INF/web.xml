@@ -10,7 +10,7 @@
 		<description></description>
 		<display-name>Dispatcher</display-name>
 		<servlet-name>Dispatcher</servlet-name>
-		<servlet-class>at.rc.tacos.web.web.Dispatcher</servlet-class>
+		<servlet-class>at.rc.tacos.web.controller.Dispatcher</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

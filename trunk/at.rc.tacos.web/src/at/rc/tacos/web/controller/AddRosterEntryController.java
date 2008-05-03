@@ -1,4 +1,4 @@
-package at.rc.tacos.web.web;
+package at.rc.tacos.web.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +25,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.session.UserSession;
 
 public class AddRosterEntryController extends Controller {
 

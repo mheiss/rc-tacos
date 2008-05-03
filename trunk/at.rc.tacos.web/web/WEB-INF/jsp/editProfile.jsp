@@ -1,5 +1,5 @@
 <%@page import="at.rc.tacos.common.Constants"%>
-<%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="at.rc.tacos.web.controller.UserSession"%>
 <%@page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%
