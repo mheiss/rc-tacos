@@ -1,14 +1,17 @@
-package at.rc.tacos.web.controller;
+package at.rc.tacos.web.form;
 
 import java.util.Date;
 
 import at.rc.tacos.model.RosterEntry;
 
 public class RosterEntryContainer {
+	public static final int DEADLINE_HOURS = 72;
+	
 	private Date plannedStartOfWork;
 	private Date plannedEndOfWork;
 	private Date realStartOfWork;
 	private Date realEndOfWork;
+	private Date deadline;
 	private RosterEntry rosterEntry;
 	public Date getPlannedStartOfWork() {
 		return plannedStartOfWork;
@@ -39,5 +42,11 @@ public class RosterEntryContainer {
 	}
 	public void setRosterEntry(RosterEntry rosterEntry) {
 		this.rosterEntry = rosterEntry;
+	}
+	public Date getDeadline() {
+		return deadline;
+	}
+	public void setDeadline(Date deadline) {
+		this.deadline = deadline;
 	}
 }

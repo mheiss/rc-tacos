@@ -18,7 +18,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.session.UserSession;
 
-public class RosterDayController extends Controller
+public class OldRosterDayController extends Controller
 {
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
 	{

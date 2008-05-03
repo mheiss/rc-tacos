@@ -19,10 +19,12 @@ import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
 public class RosterController extends Controller {
 
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -32,12 +34,17 @@ public class RosterController extends Controller {
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
 		
+		// Put authorization to parameter map to use it in view
 		final String authorization = userSession.getLoginInformation().getAuthorization();
+		params.put("authorization", authorization);
+		
+		// Put current date to parameter to parameter list
+		params.put("currentDate", new Date());
 		
 		// Location List
 		final String paramLocationId = request.getParameter("locationId");
 		int locationId = 0;
-		Location location = userSession.getLoginInformation().getUserInformation().getPrimaryLocation();
+		Location location = userSession.getFormDefaultValues().getDefaultLocation();
 		if (paramLocationId != null && !paramLocationId.equals("")) {
 			if (paramLocationId.equalsIgnoreCase("noValue")) {
 				location = null;
@@ -55,10 +62,11 @@ public class RosterController extends Controller {
 				}
 			}
 		}
+		userSession.getFormDefaultValues().setDefaultLocation(location);
 		params.put("location", location);
 		
 		// Get Date and create calendar for datepicker
-		Date date = userSession.getFilterDefaultValues().getRosterDefaultDate();	
+		Date date = userSession.getFormDefaultValues().getDefaultDate();	
 		final Calendar calendar = Calendar.getInstance();
 		final int rangeStart = calendar.get(Calendar.YEAR) - 10;
 		final int rangeEnd = calendar.get(Calendar.YEAR) + 1;
@@ -76,12 +84,15 @@ public class RosterController extends Controller {
 		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
 		
-		if (paramDate != null) {		
-			date = df.parse(paramDate);
+		if (paramDate != null) {
+			final Date dateTemp = df.parse(paramDate);
 			if (date.getTime() < rangeStartCalendar.getTimeInMillis() || date.getTime() > rangeEndCalendar.getTimeInMillis()) {
-				throw new IllegalArgumentException();
+				//throw new IllegalArgumentException();
+			} else {
+				date = dateTemp;
 			}
 		}
+		userSession.getFormDefaultValues().setDefaultDate(date);
 		params.put("date", date);
 		
 		final String dateForServerString = formatDateForServer.format(date);
@@ -113,6 +124,10 @@ public class RosterController extends Controller {
 				} else {
 					rosterEntryContainer.setRealEndOfWork(new Date(rosterEntry.getRealEndOfWork()));
 				}
+				final Calendar deadlineCalendar = Calendar.getInstance();
+				deadlineCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
+				deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
+				rosterEntryContainer.setDeadline(deadlineCalendar.getTime());
 				rosterEntryContainerList.add(rosterEntryContainer);
 			}
 			params.put("rosterEntryContainerList", rosterEntryContainerList);

@@ -28,29 +28,29 @@ public class ControllerFactory {
 		} else if (url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("dutiesDay.url"))) {
 			return new AddRosterEntryController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("rosterDay.url"))) {
-			return new RosterDayController();
+			return new OldRosterDayController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("rosterWeek.url"))) {
-			return new RosterWeekController();
+			return new OldRosterWeekController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("rosterEntry.url"))) {
-			return new RosterEntryController();
+			return new OldRosterEntryController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("stationWeek.url"))) {
-			return new RosterWeekController();
+			return new OldRosterWeekController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("editProfile.url"))) {
-			return new EditProfileController();
+			return new OldEditProfileController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("addUser.url"))) {
-			return new AddUserController();
+			return new OldAddUserController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("editUser.url"))) {
-			return new EditUserController();
+			return new OldEditUserController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("lockUser.url"))) {
-			return new LockUserController();
+			return new OldLockUserController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("printRoster.url"))) {
-			return new PrintController();
+			return new OldPrintController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("updateEntry.url"))) {
-			return new UpdateEntryController();
+			return new OldUpdateEntryController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("listUser.url"))) {
-			return new ListUserController();
+			return new OldListUserController();
 		} else if(url.equalsIgnoreCase(ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("statisticEmployee.url"))) {
-			return new StatisticEmployeeController();
+			return new OldStatisticEmployeeController();
 		} else {
 			return null;
 		}

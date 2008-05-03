@@ -17,7 +17,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.session.UserSession;
 
-public class TimetableController extends Controller{
+public class OldTimetableController extends Controller{
 
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
 	{

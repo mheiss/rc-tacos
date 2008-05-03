@@ -10,7 +10,7 @@ import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.web.session.UserSession;
 
 
-public class StatisticEmployeeController extends Controller {
+public class OldStatisticEmployeeController extends Controller {
 
 	private String splitedDate[] = null;
 	private String form = null;
