@@ -10,11 +10,13 @@ UserSession user = (UserSession)session.getAttribute("userSession");
 	</tr>
 	<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienst eintragen</a></td>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienst eintragen</a>
+		</td>
 	</tr>
 	<c:url var="url" value="/Dispatcher/roster.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienstplan</a></td>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienstplan</a>
+		</td>
 	</tr>
 </table>
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">

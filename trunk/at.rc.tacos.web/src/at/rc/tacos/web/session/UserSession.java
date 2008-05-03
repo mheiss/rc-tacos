@@ -251,11 +251,11 @@ public class UserSession
 		this.dayInfoList = dayInfoList;
 	}
 
-	public FormDefaultValues getFilterDefaultValues() {
+	public FormDefaultValues getFormDefaultValues() {
 		return formDefaultValues;
 	}
 
-	public void setFilterDefaultValues(FormDefaultValues formDefaultValues) {
+	public void setFormDefaultValues(FormDefaultValues formDefaultValues) {
 		this.formDefaultValues = formDefaultValues;
 	}
 }

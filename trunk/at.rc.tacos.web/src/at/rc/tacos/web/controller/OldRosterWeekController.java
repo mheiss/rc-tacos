@@ -19,7 +19,7 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.session.UserSession;
 
 
-public class RosterWeekController extends Controller
+public class OldRosterWeekController extends Controller
 {
 	private String splitedDate[] = null;
 

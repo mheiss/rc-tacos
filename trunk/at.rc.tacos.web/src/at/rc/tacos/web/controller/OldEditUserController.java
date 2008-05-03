@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import at.rc.tacos.web.session.UserSession;
 
-public class EditUserController extends Controller
+public class OldEditUserController extends Controller
 {
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception

@@ -37,7 +37,7 @@
 			}
 		%>
 		<c:url var="url" value="/Dispatcher/login.do?action=login" />
-		<form method="post" action="${url}" accept-charset="utf-8">
+		<form method="post" action="${url}" accept-charset="ISO-8859-1">
 			<table id="loginPanel">
 				<tr>
 					<td align="right">Benutzername:</td>

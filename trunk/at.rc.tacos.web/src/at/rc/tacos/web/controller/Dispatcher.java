@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -15,11 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.net.internal.WebClient;
-import at.rc.tacos.model.Login;
-import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.web.session.FormDefaultValues;
 import at.rc.tacos.web.session.UserSession;
 
@@ -63,12 +57,21 @@ public class Dispatcher extends HttpServlet
 		if (userSession == null) {
 			userSession = new UserSession();
 			final FormDefaultValues formDefaultValues = new FormDefaultValues();
-			final Date rosterDefaultDate = new Date();
-			formDefaultValues.setRosterDefaultDate(rosterDefaultDate);
-			userSession.setFilterDefaultValues(formDefaultValues);
+			userSession.setFormDefaultValues(formDefaultValues);
 			session.setAttribute("userSession", userSession);
 		}
-
+		
+		//Set default form values
+		if (userSession.getLoggedIn()) {
+			if (userSession.getFormDefaultValues().getDefaultDate() == null) {
+				final Date rosterDefaultDate = new Date();
+				userSession.getFormDefaultValues().setDefaultDate(rosterDefaultDate);
+			}
+			if (userSession.getFormDefaultValues().getDefaultLocation() == null) {
+				userSession.getFormDefaultValues().setDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
+			}
+		}
+		
 		//Get the relative Path from request URL
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
 		final String relativePathPrefix = relativePath.replaceFirst("/", "").replaceFirst(".do", "");

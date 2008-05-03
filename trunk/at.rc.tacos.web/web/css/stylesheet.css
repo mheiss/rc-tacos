@@ -122,6 +122,8 @@ div#submitSuccess { font-weight:bold; color:black; background-color:#DFFF80; tex
 .standardForm td { padding:2px; }
 .standardForm td.hButtonArea { padding-top:15px; text-align:left; }
 
+.showRosterEntryInfo { cursor:pointer !important; }
+
 /** List **/
 table.list { empty-cells:show; border-collapse:separate; border-spacing:0px 0px; border-left:#999999 solid 1px; }
 .list tbody tr.even { background-color:#f7f7f7; }

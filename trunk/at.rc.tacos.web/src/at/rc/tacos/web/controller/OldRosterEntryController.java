@@ -20,7 +20,7 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
 
-public class RosterEntryController extends Controller
+public class OldRosterEntryController extends Controller
 {
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception

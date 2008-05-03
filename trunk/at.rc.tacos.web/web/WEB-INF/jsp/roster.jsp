@@ -1,24 +1,24 @@
-<%@ include file="includes.jsp" %>
+<%@ include file="includes.jsp"%>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 <table class="standardForm"">
 	<tr>
 		<td>Ortsstelle:</td>
-		<td>
-			<select size="1" id="locationId" name="locationId">
-				<option value="noValue">-- Ortsstelle wählen --</option>
-				<c:forEach var="location" items="${params.locationList}">
-					<option value="${location.id}" ${(not empty params.location) and (params.location.id == location.id) ? ' selected="selected"' : ''}>${location.locationName}</option>
-				</c:forEach>
-			</select>
-		</td>
+		<td><select size="1" id="locationId" name="locationId">
+			<option value="noValue">-- Ortsstelle wählen --</option>
+			<c:forEach var="location" items="${params.locationList}">
+				<option value="${location.id}" ${(not empty
+					params.location) and (params.location.id==
+					location.id) ? ' selected="selected"' : ''}>${location.locationName}</option>
+			</c:forEach>
+		</select></td>
 	</tr>
 	<tr>
 		<td>Datum:</td>
-		<td>
-			<input id="date" name="date" type="text" size="10" maxlength="10" value="<fmt:formatDate type="date" value="${params.date}"/>" />
-			<c:url var="url" value="/image/calendar_edit.gif" />
-			<img src="${url}" border="0" id="dateCalendarTrigger" style="cursor:pointer" />
-		</td>
+		<td><input id="date" name="date" type="text" size="10"
+			maxlength="10"
+			value="<fmt:formatDate type="date" value="${params.date}"/>" /> <c:url
+			var="url" value="/image/calendar_edit.gif" /> <img src="${url}"
+			border="0" id="dateCalendarTrigger" style="cursor: pointer" /></td>
 	</tr>
 </table>
 <c:set var="fieldHeadersRow">
@@ -30,54 +30,85 @@
 		<th nowrap="nowrap">bis (real)</th>
 		<th nowrap="nowrap">Verwendung</th>
 		<th nowrap="nowrap">Dienstverhältnis</th>
-		<th nowrap="nowrap">&nbsp;</th>
 		<th nowrap="nowrap">Bereitschaft</th>
+		<th nowrap="nowrap">&nbsp;</th>
 		<th nowrap="nowrap">&nbsp;</th>
 	</tr>
 </c:set>
 <br />
 <br />
-<table class="list">
+<table id="rosterEntryTable" class="list">
 	<tr>
-		<th class="header2" colspan="10">Dienste</th>
+		<th class="header2" colspan="10">${params.location.locationName}&nbsp;am&nbsp;<fmt:formatDate
+			type="date" dateStyle="medium" value="${params.date}" /></th>
 	</tr>
 	${fieldHeadersRow}
 	<tbody>
-		<c:forEach var="rosterEntryContainer" items="${params.rosterEntryContainerList}" varStatus="loop">
+		<c:forEach var="rosterEntryContainer"
+			items="${params.rosterEntryContainerList}" varStatus="loop">
 			<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName} ${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
-				<td nowrap="nowrap">
-					<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
-				</td>
-				<td nowrap="nowrap">
-					<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
-				</td>
-				<td nowrap="nowrap">
-					<c:choose>
-						<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
-						<c:otherwise>
-							<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
-						</c:otherwise>
-					</c:choose>
-				</td>
-				<td nowrap="nowrap">
-					<c:choose>
-						<c:when test="${rosterEntry.Container.realEndOfWork eq null}">-</c:when>
-						<c:otherwise>
-							<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
-						</c:otherwise>
-					</c:choose>
-				</td>
+				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName}
+				${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
+				<td nowrap="nowrap"><fmt:formatDate type="both"
+					dateStyle="short" timeStyle="short"
+					value="${rosterEntryContainer.plannedStartOfWork}" /></td>
+				<td nowrap="nowrap"><fmt:formatDate type="both"
+					dateStyle="short" timeStyle="short"
+					value="${rosterEntryContainer.plannedEndOfWork}" /></td>
+				<td nowrap="nowrap"><c:choose>
+					<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
+					<c:otherwise>
+						<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
+							value="${rosterEntryContainer.realStartOfWork}" />
+					</c:otherwise>
+				</c:choose></td>
+				<td nowrap="nowrap"><c:choose>
+					<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
+					<c:otherwise>
+						<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
+							value="${rosterEntryContainer.realEndOfWork}" />
+					</c:otherwise>
+				</c:choose></td>
 				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
 				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
-				<td>&nbsp;</td>
-				<td nowrap="nowrap">
-					<c:choose>
-						<c:when test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
-						<c:otherwise>Nein</c:otherwise>
-					</c:choose>
-				</td>
-				<td>&nbsp;</td>
+				<td nowrap="nowrap"><c:choose>
+					<c:when test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
+					<c:otherwise>Nein</c:otherwise>
+				</c:choose></td>
+				<td><img class="showRosterEntryInfo"
+					title="${rosterEntryContainer.rosterEntry.rosterNotes}"
+					src="<c:url value="/image/info.gif"/>" /></td>
+				<td><c:choose>
+					<c:when test="${params.authorization eq 'Benutzer'}">
+						<c:choose>
+							<c:when
+								test="${params.currentDate gt rosterEntryContainer.deadline}">
+							</c:when>
+							<c:otherwise>
+								<c:url var="url" value="/Dispatcher/editRosterEntry.do">
+									<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+								</c:url>
+								<a href="${url}">Bearbeiten</a>
+								<br />
+								<c:url var="url" value="/Dispatcher/deleteRosterEntry.do">
+									<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+								</c:url>
+								<a href="${url}">Löschen</a>
+							</c:otherwise>
+						</c:choose>
+					</c:when>
+					<c:otherwise>
+						<c:url var="url" value="/Dispatcher/editRosterEntry.do">
+							<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+						</c:url>
+						<a href="${url}">Bearbeiten</a>
+						<br />
+						<c:url var="url" value="/Dispatcher/deleteRosterEntry.do">
+							<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+						</c:url>
+						<a href="${url}">Löschen</a>
+					</c:otherwise>
+				</c:choose></td>
 			</tr>
 		</c:forEach>
 	</tbody>
@@ -104,6 +135,7 @@ $(function() {
 		}
 		document.location = url;
 	});
+	$('#rosterEntryTable .showRosterEntryInfo').Tooltip({ delay: 100, showURL: false });
 });
 function update(cal) {
 	var url = '?date=' + $('#date').val();

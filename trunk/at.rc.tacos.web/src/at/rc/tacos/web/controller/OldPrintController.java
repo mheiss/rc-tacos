@@ -22,7 +22,7 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.session.UserSession;
 import at.rc.tacos.web.utils.PrinterJobRoster;
 
-public class PrintController extends Controller
+public class OldPrintController extends Controller
 {
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
