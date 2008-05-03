@@ -1,4 +1,4 @@
-package at.rc.tacos.web.controller;
+package at.rc.tacos.web.session;
 
 import java.util.ArrayList;
 import java.util.List;

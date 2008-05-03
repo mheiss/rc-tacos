@@ -1,6 +1,6 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.web.controller.UserSession"%>
+<%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%@page import="at.rc.tacos.common.AbstractMessage"%>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
 <%@page import="at.rc.tacos.common.Constants"%>

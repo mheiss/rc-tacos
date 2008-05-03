@@ -1,8 +1,8 @@
 <%@ include file="includes.jsp" %>
 <%@page import="at.rc.tacos.model.Login"%>
-<%@page import="at.rc.tacos.web.controller.UserSession"%>
+<%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%
-	UserSession user = (UserSession)session.getAttribute("userSession"); 
+UserSession user = (UserSession)session.getAttribute("userSession");
 %>
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>

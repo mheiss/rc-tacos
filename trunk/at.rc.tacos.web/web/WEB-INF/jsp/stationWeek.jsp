@@ -1,6 +1,6 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.web.controller.UserSession"%>
+<%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
@@ -55,7 +55,7 @@
 			<td id="MainBodyContent">
            <table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
+					<td width="33%" align="left"> Willkommen : <%=userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle <%=userSession.getLocationById(Integer.valueOf(request.getParameter("station") )).getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></td>
