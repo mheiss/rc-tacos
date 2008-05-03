@@ -43,7 +43,7 @@ To set up Tomcat, SSL and Eclipse for rc-tacos do the following:
    ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=localhost,O=Rotes Kreuz""
    (use this value - must be set if you want to generate keys with J2SSE, Java must be installed)
    
-6. Rename the file _server.properties (WebServer Settings) in package at.rc.tacos.web.web to server.properties and check the values. Must be the same ports as in server.xml.
+6. Rename the file _server.properties (WebServer Settings) in package at.rc.tacos.web.controller to server.properties and check the values. Must be the same ports as in server.xml.
 
 7. Rename the file _net.properties (Connection to Server Settings)= in package at.rc.tacos.web.net to net.properties and check the values. You must run at.rc.tacos.server somewhere to use at.rc.tacos.web.
    Be sure that configuration of the server is equivalent to net configuration of the webserver.

@@ -2,7 +2,7 @@
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.model.Location"%>
-<%@page import="at.rc.tacos.web.web.UserSession"%>
+<%@page import="at.rc.tacos.web.controller.UserSession"%>
 <%@page import="at.rc.tacos.model.ServiceType"%>
 <%@page import="at.rc.tacos.model.Job"%>
 <%@page import="java.text.*"%>

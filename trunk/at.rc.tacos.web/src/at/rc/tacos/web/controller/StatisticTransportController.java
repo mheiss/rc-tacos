@@ -1,4 +1,4 @@
-package at.rc.tacos.web.web;
+package at.rc.tacos.web.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.web.session.UserSession;
 
 public class StatisticTransportController extends Controller {
 

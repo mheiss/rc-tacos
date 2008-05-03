@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ include file="includes.jsp" %>
-<%@ page import="at.rc.tacos.web.web.UserSession" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.Date" %>
-<%@ page import="java.text.*" %>
+<%@ page import="at.rc.tacos.web.controller.UserSessionSession" %>
+<%@ page ijava.util.Maptil.Map" %>
+<%@ page ijava.util.Dateil.Date" %>
+<%@ page ijava.text.*.text.*" %>
 <%
 final Map<String, Object> params = (Map<String, Object>)request.getAttribute("params");
 final UserSession userSession = (UserSession)session.getAttribute("userSession");

@@ -1,4 +1,4 @@
-package at.rc.tacos.web.web;
+package at.rc.tacos.web.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.web.session.UserSession;
 
 public class RosterController extends Controller {
 

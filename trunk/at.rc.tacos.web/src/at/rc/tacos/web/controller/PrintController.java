@@ -1,4 +1,4 @@
-package at.rc.tacos.web.web;
+package at.rc.tacos.web.controller;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -19,6 +19,7 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.web.session.UserSession;
 import at.rc.tacos.web.utils.PrinterJobRoster;
 
 public class PrintController extends Controller

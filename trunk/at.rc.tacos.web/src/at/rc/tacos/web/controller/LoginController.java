@@ -1,4 +1,4 @@
-package at.rc.tacos.web.web;
+package at.rc.tacos.web.controller;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -19,6 +19,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.session.UserSession;
 /**
  * This controller is responsible for creating Login View and for doing Login and Logout.
  * @author Payer Martin
@@ -32,6 +33,7 @@ public class LoginController extends Controller {
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
 		final ResourceBundle netBundle = ResourceBundle.getBundle(Dispatcher.NET_BUNDLE_PATH);
+		final ResourceBundle server = ResourceBundle.getBundle(Dispatcher.SERVER_BUNDLE_PATH);
 		
 		final String username = request.getParameter("username");
 		final String password = request.getParameter("password");
@@ -86,9 +88,13 @@ public class LoginController extends Controller {
 							userSession.addStaffMember((StaffMember) abstractStaffMember);
 					}
 					if (request.getParameter("savedUrl") == null) {
-						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath()));
+						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
+						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
+						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
 					} else {
-						response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath() + request.getParameter("savedUrl")));
+						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + request.getParameter("savedUrl")));
+						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + request.getParameter("savedUrl")));
+						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 					}
 				} else {
 					params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
@@ -99,6 +105,8 @@ public class LoginController extends Controller {
 	}
 	
 	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception {
+		
+		final ResourceBundle server = ResourceBundle.getBundle(Dispatcher.SERVER_BUNDLE_PATH);
 		
 		final UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -120,7 +128,9 @@ public class LoginController extends Controller {
 		request.setAttribute("savedUrl", savedUrl);
 		
 		if (userSession.getLoggedIn()) {
-			response.sendRedirect(response.encodeRedirectURL(context.getContextPath() + request.getServletPath()));
+			System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
+			System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
+			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
 		} else {	
 			final String action = request.getParameter("action");
 			if ("login".equalsIgnoreCase(action)) {

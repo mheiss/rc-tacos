@@ -1,8 +1,7 @@
-package at.rc.tacos.web.web;
+package at.rc.tacos.web.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +15,10 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.web.session.UserSession;
 
-public class RosterDayController extends Controller
-{
+public class TimetableController extends Controller{
+
 	public Map<String, Object> handleRequest(HttpServletRequest request,HttpServletResponse response, ServletContext context) throws Exception
 	{
 		//values that will be returned to the view
@@ -27,26 +27,24 @@ public class RosterDayController extends Controller
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		WebClient client = userSession.getConnection();
+		List<AbstractMessage> resultList;
 
-		//date to show
-		Calendar current = Calendar.getInstance();
-		SimpleDateFormat formath = new SimpleDateFormat("dd-MM-yyyy");
-		String startDate = request.getParameter("startDate");
-		//if we have no date, use the current date
-		if (startDate == null || startDate.trim().isEmpty())
-			startDate = formath.format(current.getTime());
-
+		Date current = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		//get roster entries
-		QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,startDate);			
+		QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,format.format(current));
+		resultList = client.sendListingRequest(RosterEntry.ID, filter);
+		if(RosterEntry.ID.equalsIgnoreCase(client.getContentType()))          
+			params.put("rosterList", resultList); 
+
 		List<AbstractMessage> dayResult = client.sendListingRequest(RosterEntry.ID, filter);
-		List<RosterEntry> filterdByLocation = new ArrayList<RosterEntry>();
 		for(AbstractMessage object:dayResult)   
 		{  
 			RosterEntry entry = (RosterEntry)object;  
-			if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
-				filterdByLocation.add(entry); 
+			if(entry.getStation().equals("Kapfenberg"))
+				// statt Kapfenberg dann: StaffMember.getPrimaryLocation()
+				resultList.add(entry);  
 		}
-		params.put("rosterList", filterdByLocation);
 		return params;
 	}
 }
