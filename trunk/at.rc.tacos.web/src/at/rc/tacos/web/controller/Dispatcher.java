@@ -53,7 +53,7 @@ public class Dispatcher extends HttpServlet
 		final HttpSession session = request.getSession(true);
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
 
-		//Assert we have a valid user session
+		//Assert that there is valid user session
 		if (userSession == null) {
 			userSession = new UserSession();
 			final FormDefaultValues formDefaultValues = new FormDefaultValues();
@@ -133,6 +133,9 @@ public class Dispatcher extends HttpServlet
 			System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
 			System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
+			
+			/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
+			getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 
 		}
 		//If no URL is specified send redirect to home.do.
