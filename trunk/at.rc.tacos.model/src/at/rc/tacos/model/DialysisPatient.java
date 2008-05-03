@@ -81,7 +81,12 @@ public class DialysisPatient extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return id+","+patient;
+		return "id: "+id+"; patient: "+patient +"; location: " +location +"; plannedStartofTransport: " +plannedStartOfTransport
+		+"; plannedTimeAtPatient: " +plannedTimeAtPatient +"; appointmentTimeAtDialysis: " +appointmentTimeAtDialysis
+		+"; plannedStartForBackTransport: " +plannedStartForBackTransport +"; readyTime: "+readyTime +" ; fromStreet: "+fromStreet
+		+ "; fromCity: " +fromCity +"; toStreet: "+toStreet +"; toCity: "+toCity +"; insurance: "+insurance+"; kindofTransport: "+kindOfTransport
+		+"; assistantPerson: "+assistantPerson+"; Monday: "+monday+"; Tuesday: "+tuesday+"; Wednesday: "+wednesday+"; Thursday: "+thursday+"; Friday: "+friday
+		+"; Saturday: "+saturday+"; Sunday: "+sunday+"; lastTransportDate: "+lastTransportDate+"; lastBackTransportDate: "+lastBackTransportDate;
 	}
 
 	/**
