@@ -2,7 +2,7 @@
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.model.Location"%>
-<%@page import="at.rc.tacos.web.controller.UserSession"%>
+<%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%@page import="at.rc.tacos.model.ServiceType"%>
 <%@page import="at.rc.tacos.model.Job"%>
 <%@page import="java.text.*"%>
@@ -14,7 +14,7 @@
 	List<Location> lista = userSession.getLocationList();
 	List<ServiceType> listServiceType = userSession.getServiceTypeList();
 	List<Job> listJob = userSession.getJobList();
-	RosterEntry entry = (RosterEntry)params.get("rosterEntry"); 
+	RosterEntry entry = (RosterEntry)params.get("rosterEntry");
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -54,12 +54,12 @@
 			<td id="MainBodyContent">
 			<table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left">Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
+					<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 					&nbsp;&nbsp;( <a
 						href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Diensteintrag &auml;ndern</td>
-					<td width="33%" align="right">Heute ist der <%= format.format(current) %>
+					<td width="33%" align="right">Heute ist der <%=format.format(current)%>
 					</td>
 					<td>
 				</tr>

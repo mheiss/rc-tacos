@@ -2,7 +2,7 @@
 <%@page import="java.util.List"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
 <%@page import="at.rc.tacos.model.Location"%>
-<%@page import="at.rc.tacos.web.controller.UserSession"%>
+<%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%@page import="at.rc.tacos.model.ServiceType"%>
 <%@page import="at.rc.tacos.model.Job"%>
 <%@page import="java.text.*"%>
@@ -54,10 +54,10 @@
 			<td id="MainBodyContent">
 			<table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left">Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
+					<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a> )</td>
 					<td width="33%" align="center">Dienst eintragen</td>
-					<td width="33%" align="right">Heute ist der <%= format.format(current) %>
+					<td width="33%" align="right">Heute ist der <%=format.format(current)%>
 					</td>
 					<td>
 				</tr>

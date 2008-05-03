@@ -1,6 +1,6 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.web.controller.UserSession"%>
+<%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%@page import="at.rc.tacos.model.RosterEntry"%>
 <%@page import="java.util.Calendar"%>
 <%@ page import="java.text.*"%>
@@ -8,7 +8,7 @@
 <%
     Map<String,Object> params = (Map)request.getAttribute("params");
     List<RosterEntry> rosterList = (List)params.get("rosterList");
-    UserSession userSession = (UserSession)session.getAttribute("userSession"); 
+    UserSession userSession = (UserSession)session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page import="at.rc.tacos.web.utils.TimetableVertical"%>
@@ -56,7 +56,7 @@
             <td id="MainBodyContent">
            <table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
+					<td width="33%" align="left"> Willkommen : <%=userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Wochen&uuml;bersicht der Dienststelle: <%=userSession.getStaffMember().getPrimaryLocation().getLocationName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%></td>

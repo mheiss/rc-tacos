@@ -1,10 +1,10 @@
 <%@page import="java.util.Map"%>
 <%@page import="at.rc.tacos.model.StaffMember"%>
-<%@page import="at.rc.tacos.web.controller.UserSession"%>
+<%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%@ page import="java.text.*"%>
 <%@page import="java.util.Date"%>
 <%
-Map<String,Object> params = (Map)request.getAttribute("params");
+	Map<String,Object> params = (Map)request.getAttribute("params");
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -43,11 +43,11 @@ Map<String,Object> params = (Map)request.getAttribute("params");
 			<td id="MainBodyContent">
            <table width="100%" id="userInfo">
 				<tr>
-					<td width="33%" align="left"> Willkommen : <%= userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss") %>
+					<td width="33%" align="left"> Willkommen : <%=userSession.getStaffMember().getFirstName()+ " " + userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 					&nbsp;&nbsp;( <a href="<%=request.getContextPath()+"/Dispatcher/logout.do"%>">logout</a>
 					)</td>
 					<td width="33%" align="center">Benutzer anlegen</td>
-					<td width="33%" align="right">Heute ist der <%= formath.format(current) %>
+					<td width="33%" align="right">Heute ist der <%=formath.format(current)%>
 					</td>
 					<td>
 				</tr>
