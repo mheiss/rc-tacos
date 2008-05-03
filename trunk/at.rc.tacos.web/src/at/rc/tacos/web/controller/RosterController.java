@@ -57,15 +57,15 @@ public class RosterController extends Controller {
 		}
 		params.put("location", location);
 		
-		// Create Calendar for DatePicker
+		// Get Date and create calendar for datepicker
+		Date date = userSession.getFilterDefaultValues().getRosterDefaultDate();	
 		final Calendar calendar = Calendar.getInstance();
 		final int rangeStart = calendar.get(Calendar.YEAR) - 10;
 		final int rangeEnd = calendar.get(Calendar.YEAR) + 1;
-		params.put("calendarDefaultDateMilliseconds", calendar.getTimeInMillis());
+		params.put("calendarDefaultDateMilliseconds", date.getTime());
 		params.put("calendarRangeStart", rangeStart);
 		params.put("calendarRangeEnd", rangeEnd);
 		
-		// Get Date
 		final Calendar rangeStartCalendar = Calendar.getInstance();
 		rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - 10);
 		
@@ -75,8 +75,7 @@ public class RosterController extends Controller {
 		
 		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
-
-		Date date = new Date();			
+		
 		if (paramDate != null) {		
 			date = df.parse(paramDate);
 			if (date.getTime() < rangeStartCalendar.getTimeInMillis() || date.getTime() > rangeEndCalendar.getTimeInMillis()) {
@@ -85,11 +84,11 @@ public class RosterController extends Controller {
 		}
 		params.put("date", date);
 		
-		final String dateString = formatDateForServer.format(date);
+		final String dateForServerString = formatDateForServer.format(date);
 		
 		// Get Roster Entries
 		QueryFilter rosterFilter = new QueryFilter();
-		rosterFilter.add(IFilterTypes.DATE_FILTER, dateString);
+		rosterFilter.add(IFilterTypes.DATE_FILTER, dateForServerString);
 		if (location != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
 		}
