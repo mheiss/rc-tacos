@@ -49,7 +49,8 @@ public class CallerDetail extends AbstractMessage
     @Override
     public String toString()
     {
-        return callerId+":"+callerName+","+callerTelephoneNumber;
+        return "id: " +callerId+";"+"CallerName: "+callerName+";"+"callerTelephone: "+callerTelephoneNumber;
+       
     }
     
     /**
