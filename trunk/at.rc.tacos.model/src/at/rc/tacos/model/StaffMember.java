@@ -93,7 +93,9 @@ public class StaffMember extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return userName +","+lastName + " " + firstName;
+		return "id: "+staffMemberId+"; primaryLocation: "+primaryLocation
+		+"; lastName: "+lastName+"; firstName: "+firstName+"; streetname: "+streetname
+		+"; cityname: "+cityname+"; sex: "+sex+"; birthday: "+birthday+"; eMail: "+eMail+"; userName: "+userName;
 	}
 
 	/**
