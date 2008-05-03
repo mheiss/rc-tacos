@@ -1,5 +1,7 @@
 package at.rc.tacos.client.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.Document;
@@ -29,6 +31,7 @@ import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.TransportManager;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberVehicleContentProvider;
@@ -44,6 +47,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.model.Transport;
 
 /**
  * The gui to manage a vehicle
@@ -65,9 +69,14 @@ public class VehicleForm extends TitleAreaDialog
 
 	//the vehicle
 	private VehicleDetail vehicleDetail;
+	
+	private List<Transport> transportList = new ArrayList<Transport>();
 
 	// description text
 	public final static String FORM_DESCRIPTION = "Hier können Sie Fahrzeug und dessen Besatzung verwalten";
+	
+	//the transport manager
+	TransportManager transportManager = ModelFactory.getInstance().getTransportManager();
 
 	/**
 	 * Default class constructor for the vehicle form
@@ -196,6 +205,14 @@ public class VehicleForm extends TitleAreaDialog
 		//Send the update message
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
 		getShell().close();
+		
+		//overwrite the vehicle details of all outstanding transports
+		transportList = transportManager.getTransportsByVehicle(vehicleDetail.getVehicleName());
+		for(Transport transport: transportList)
+		{
+			transport.setVehicleDetail(vehicleDetail);
+			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+		}
 	}
 
 	/**
