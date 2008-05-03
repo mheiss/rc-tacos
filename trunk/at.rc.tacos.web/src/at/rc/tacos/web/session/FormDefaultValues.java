@@ -12,7 +12,6 @@ public class FormDefaultValues {
 	private Date rosterDefaultDate;
 	public FormDefaultValues() {
 		rosterDefaultDate = null;
-		rosterDefaultLocation = null;
 	}
 	public Date getRosterDefaultDate() {
 		return rosterDefaultDate;
