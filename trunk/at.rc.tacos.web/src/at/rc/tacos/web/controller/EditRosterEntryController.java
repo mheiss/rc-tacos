@@ -103,13 +103,10 @@ public class EditRosterEntryController extends Controller {
 		// Job List
 		final String paramJobId = request.getParameter("jobId");
 		int jobId = 0;
-		Job job = rosterEntry.getJob();
-		if (paramJobId != null && !paramJobId.equals("")) {
-			if (paramJobId.equalsIgnoreCase("noValue")) {
-				job = null;
-			} else {
-				jobId = Integer.parseInt(paramJobId);
-			}
+		final Job defaultJob = rosterEntry.getJob();
+		Job job = null;
+		if (paramJobId != null && !paramJobId.equals("") && !paramJobId.equals("noValue")) {
+			jobId = Integer.parseInt(paramJobId);	
 		}
 		final List<AbstractMessage> jobList = connection.sendListingRequest(Job.ID, null);
 		if (Job.ID.equalsIgnoreCase(connection.getContentType())) {
@@ -121,19 +118,20 @@ public class EditRosterEntryController extends Controller {
 				}
 			}
 		}
-		params.put("job", job);
+		if (job != null || (paramJobId != null && paramJobId.equals("noValue"))) {
+			params.put("job", job);
+		} else {
+			params.put("job", defaultJob);
+		}
 		
 		
 		// Staff Member List
 		final String paramStaffMemberId = request.getParameter("staffMemberId");
 		int staffMemberId = 0;
-		StaffMember staffMember = rosterEntry.getStaffMember();
-		if (paramStaffMemberId != null && !paramStaffMemberId.equals("")) {
-			if (paramStaffMemberId.equalsIgnoreCase("noValue")) {
-				staffMember = null;
-			} else {
-				staffMemberId = Integer.parseInt(paramStaffMemberId);
-			}
+		final StaffMember defaultStaffMember = rosterEntry.getStaffMember();
+		StaffMember staffMember = null;
+		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase("noValue")) {
+				staffMemberId = Integer.parseInt(paramStaffMemberId);		
 		}
 		final List<AbstractMessage> staffList = new ArrayList<AbstractMessage>();
 		final List<AbstractMessage> staffListTemp = connection.sendListingRequest(StaffMember.ID, null);
@@ -162,20 +160,20 @@ public class EditRosterEntryController extends Controller {
 				}
 			}
 			params.put("staffList", staffList);
-		}		
-		params.put("staffMember", staffMember);
-		
-		
+		}
+		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals("noValue"))) {
+			params.put("staffMember", staffMember);
+		} else {
+			params.put("staffMember", defaultStaffMember);
+		}
+				
 		// Location List
 		final String paramLocationId = request.getParameter("locationId");
 		int locationId = 0;
-		Location location = rosterEntry.getStation();
-		if (paramLocationId != null && !paramLocationId.equals("")) {
-			if (paramLocationId.equalsIgnoreCase("noValue")) {
-				location = null;
-			} else {
-				locationId = Integer.parseInt(paramLocationId);
-			}
+		final Location defaultLocation = rosterEntry.getStation();
+		Location location = null;
+		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals("noValue")) {
+			locationId = Integer.parseInt(paramLocationId);
 		}
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
 		if (Location.ID.equalsIgnoreCase(connection.getContentType())) {
@@ -187,19 +185,20 @@ public class EditRosterEntryController extends Controller {
 				}
 			}
 		}
-		params.put("location", location);
+		if (location != null || (paramLocationId != null && paramLocationId.equals("noValue"))) {
+			params.put("location", location);
+		} else {
+			params.put("location", defaultLocation);
+		}
 		
 		
 		// Service Type List
 		final String paramServiceTypeId = request.getParameter("serviceTypeId");
 		int serviceTypeId = 0;
-		ServiceType serviceType = rosterEntry.getServicetype();
-		if (paramServiceTypeId != null && !paramServiceTypeId.equals("")) {
-			if (paramServiceTypeId.equalsIgnoreCase("noValue")) {
-				serviceType = null;
-			} else {
-				serviceTypeId = Integer.parseInt(paramServiceTypeId);
-			}
+		final ServiceType defaultServiceType = rosterEntry.getServicetype();
+		ServiceType serviceType = null;
+		if (paramServiceTypeId != null && !paramServiceTypeId.equals("") &&!paramServiceTypeId.equals("noValue")) {
+			serviceTypeId = Integer.parseInt(paramServiceTypeId);		
 		}
 		List<AbstractMessage> serviceTypeList = new ArrayList<AbstractMessage>();
 		if (authorization.equals(Login.AUTH_ADMIN)) {
@@ -217,8 +216,12 @@ public class EditRosterEntryController extends Controller {
 					serviceType = st;
 				}
 			}
-		}	
-		params.put("serviceType", serviceType);
+		}
+		if (serviceType != null || (paramServiceTypeId != null && paramServiceTypeId.equals("noValue"))) {
+			params.put("serviceType", serviceType);
+		} else {
+			params.put("serviceType", defaultServiceType);
+		}
 		
 		// Get Standby
 		boolean standby = rosterEntry.getStandby();
@@ -240,9 +243,13 @@ public class EditRosterEntryController extends Controller {
 		final SimpleDateFormat sdfTimeHours = new SimpleDateFormat("HH");
 		final SimpleDateFormat sdfTimeMinutes = new SimpleDateFormat("mm");
 		
-		String dateFromString = sdfDate.format(new Date(rosterEntry.getPlannedStartOfWork()));
-		String timeFromHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedStartOfWork()));
-		String timeFromMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedStartOfWork()));
+		String dateFromString = null;
+		String timeFromHoursString = null;
+		String timeFromMinutesString = null;
+		
+		final String defaultDateFromString = sdfDate.format(new Date(rosterEntry.getPlannedStartOfWork()));
+		final String defaultTimeFromHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedStartOfWork()));
+		final String defaultTimeFromMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedStartOfWork()));
 		
 		if (request.getParameter("dateFrom") != null) {
 			dateFromString = request.getParameter("dateFrom");
@@ -253,15 +260,31 @@ public class EditRosterEntryController extends Controller {
 		if (request.getParameter("timeFromMinutes") != null) {
 			timeFromMinutesString = request.getParameter("timeFromMinutes");
 		}
-		params.put("dateFrom", dateFromString);
-		params.put("timeFromHours", timeFromHoursString);
-		params.put("timeFromMinutes", timeFromMinutesString);
+		if (dateFromString != null) {
+			params.put("dateFrom", dateFromString);
+		} else {
+			params.put("dateFrom", defaultDateFromString);
+		}
+		if (timeFromHoursString != null) {
+			params.put("timeFromHours", timeFromHoursString);
+		} else {
+			params.put("timeFromHours", defaultTimeFromHoursString);
+		}
+		if (timeFromMinutesString != null) {
+			params.put("timeFromMinutes", timeFromMinutesString);
+		} else {
+			params.put("timeFromMinutes", defaultTimeFromMinutesString);
+		}
 		final String from = dateFromString + " " + timeFromHoursString + ":" + timeFromMinutesString;
 			
 		// Get To
-		String dateToString = sdfDate.format(new Date(rosterEntry.getPlannedEndOfWork()));
-		String timeToHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedEndOfWork()));
-		String timeToMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedEndOfWork()));
+		String dateToString = null;
+		String timeToHoursString = null;
+		String timeToMinutesString = null;
+		
+		final String defaultDateToString = sdfDate.format(new Date(rosterEntry.getPlannedEndOfWork()));
+		final String defaultTimeToHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedEndOfWork()));
+		final String defaultTimeToMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedEndOfWork()));
 		
 		if (request.getParameter("dateTo") != null) {
 			dateToString = request.getParameter("dateTo");
@@ -272,9 +295,21 @@ public class EditRosterEntryController extends Controller {
 		if (request.getParameter("timeToMinutes") != null) {
 			timeToMinutesString = request.getParameter("timeToMinutes");
 		}
-		params.put("dateTo", dateToString);
-		params.put("timeToHours", timeToHoursString);
-		params.put("timeToMinutes", timeToMinutesString);
+		if (dateToString != null) {
+			params.put("dateTo", dateToString);
+		} else {
+			params.put("dateTo", defaultDateToString);
+		}
+		if (timeToHoursString != null) {
+			params.put("timeToHours", timeToHoursString);
+		} else {
+			params.put("timeToHours", defaultTimeToHoursString);
+		}
+		if (timeToMinutesString != null) {
+			params.put("timeToMinutes", timeToMinutesString);
+		} else {
+			params.put("timeToMinutes", defaultTimeToMinutesString);
+		}
 		final String to = dateToString + " " + timeToHoursString + ":" + timeToMinutesString;
 				
 		// Get Action
