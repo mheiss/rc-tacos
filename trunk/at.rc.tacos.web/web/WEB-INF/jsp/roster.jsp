@@ -1,5 +1,19 @@
 <%@ include file="includes.jsp"%>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
+	<c:choose>
+		<c:when test="${editedCount gt 0}">
+			<div id="submitSuccess">
+				Sie haben einen Dienstplaneintrag erfolgreich bearbeitet.
+			</div>
+			<br />
+		</c:when>
+		<c:when test="${deletedCount gt 0}">
+			<div id="submitSuccess">
+				Sie haben einen Dienstplaneintrag erfolgreich gelöscht.
+			</div>
+			<br />
+		</c:when>
+	</c:choose>
 <table class="standardForm"">
 	<tr>
 		<td>Ortsstelle:</td>
