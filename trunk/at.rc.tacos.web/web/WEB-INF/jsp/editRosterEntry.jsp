@@ -144,8 +144,8 @@
 		</tr>
 		<tr>
 			<td class="hButtonArea" colspan="2">
-				<input type="submit" value="Anlegen" />
-				<input name="action" type="hidden" value="addRosterEntry" />
+				<input type="submit" value="Speichern" />
+				<input name="action" type="hidden" value="updateRosterEntry" />
 			</td>
 			<td />
 		</tr>

@@ -86,7 +86,7 @@ public class RosterController extends Controller {
 		
 		if (paramDate != null) {
 			final Date dateTemp = df.parse(paramDate);
-			if (date.getTime() < rangeStartCalendar.getTimeInMillis() || date.getTime() > rangeEndCalendar.getTimeInMillis()) {
+			if (dateTemp!= null && dateTemp.getTime() < rangeStartCalendar.getTimeInMillis() || dateTemp.getTime() > rangeEndCalendar.getTimeInMillis()) {
 				//throw new IllegalArgumentException();
 			} else {
 				date = dateTemp;
@@ -104,7 +104,7 @@ public class RosterController extends Controller {
 			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
 		}
 		
-		// Form RosterEntryContainer for Table
+		// Form RosterEntryContainerList for Table
 		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
 		final List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
 		if (RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
