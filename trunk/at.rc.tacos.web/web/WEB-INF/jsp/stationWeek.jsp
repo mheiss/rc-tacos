@@ -1,10 +1,10 @@
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.List"%>
 <%@ page import="at.rc.tacos.web.session.UserSession" %>
-<%@page import="at.rc.tacos.model.RosterEntry"%>
+<%@ page import="at.rc.tacos.model.RosterEntry"%>
 <%@ page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Calendar"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="java.util.Calendar"%>
 <%
 	Map<String,Object> params = (Map)request.getAttribute("params");
 	List<RosterEntry> rosterList = (List)params.get("rosterList");

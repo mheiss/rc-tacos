@@ -1,24 +1,24 @@
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.model.StaffMember"%>
-<%@page import="at.rc.tacos.model.Location"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.List"%>
+<%@ page import="at.rc.tacos.model.StaffMember"%>
+<%@ page import="at.rc.tacos.model.Location"%>
 <%@ page import="at.rc.tacos.web.session.UserSession" %>
-<%@page import="at.rc.tacos.model.ServiceType"%>
-<%@page import="at.rc.tacos.model.Job"%>
-<%@page import="java.text.*"%>
-<%@page import="java.util.Date"%>
+<%@ page import="at.rc.tacos.model.ServiceType"%>
+<%@ page import="at.rc.tacos.model.Job"%>
+<%@ page import="java.text.*"%>
+<%@ page import="java.util.Date"%>
 
 <%
     Map<String,Object> params = (Map)request.getAttribute("params");
     UserSession userSession = (UserSession)session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="at.rc.tacos.model.Transport"%>
-<%@page import="at.rc.tacos.model.Competence"%>
-<%@page import="at.rc.tacos.model.RosterEntry"%>
-<%@page import="at.rc.tacos.common.AbstractMessage"%>
-<%@page import="java.util.Calendar"%>
-<%@page import="java.util.ArrayList"%>
+<%@ page import="at.rc.tacos.model.Transport"%>
+<%@ page import="at.rc.tacos.model.Competence"%>
+<%@ page import="at.rc.tacos.model.RosterEntry"%>
+<%@ page import="at.rc.tacos.common.AbstractMessage"%>
+<%@ page import="java.util.Calendar"%>
+<%@ page import="java.util.ArrayList"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
