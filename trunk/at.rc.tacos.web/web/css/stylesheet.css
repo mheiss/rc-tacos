@@ -163,17 +163,6 @@ table.list tbody td { height:1.9em; }
 .list td.comment { color:#999999;font-size:8pt; }
 .list td.nodata { border-top:#999999 solid 1px; border-left:none; padding:5px; font-weight:bold; text-align:center; width:500px; background-color:#00669C; color:white; }
 
-.list td.notRegistered { font-weight:bold; }
-.list tr.notRegistered { }
-.list td.registered { font-weight:bold; }
-.list tr.registered { background-color:#EFFFBF !important; }
-.list tr.registeredByOffice { background-color:#EFFFBF !important; }
-.list td.registeredByOffice { font-weight:bold; background-color:#EFFFBF; }
-.list td.signedOff { font-weight:bold; }
-.list td.signedOffByOffice { font-weight:bold; background-color:#FFBFBF; }
-.list tr.takenPlace { color:#999999; }
-
-
 /* Unused Styles - These styles are used by old functionalities and won't be used in the final version. */
 .hidefocus { 
 	outline:0; -moz-outline:0; border:0; 

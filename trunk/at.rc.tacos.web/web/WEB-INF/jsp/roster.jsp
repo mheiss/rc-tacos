@@ -37,52 +37,68 @@
 </c:set>
 <br />
 <br />
-<table id="rosterEntryTable" class="list">
-	<tr>
-		<th class="header2" colspan="10">${params.location.locationName}&nbsp;am&nbsp;<fmt:formatDate
-			type="date" dateStyle="medium" value="${params.date}" /></th>
-	</tr>
-	${fieldHeadersRow}
-	<tbody>
-		<c:forEach var="rosterEntryContainer"
-			items="${params.rosterEntryContainerList}" varStatus="loop">
-			<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName}
-				${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
-				<td nowrap="nowrap"><fmt:formatDate type="both"
-					dateStyle="short" timeStyle="short"
-					value="${rosterEntryContainer.plannedStartOfWork}" /></td>
-				<td nowrap="nowrap"><fmt:formatDate type="both"
-					dateStyle="short" timeStyle="short"
-					value="${rosterEntryContainer.plannedEndOfWork}" /></td>
-				<td nowrap="nowrap"><c:choose>
-					<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
-					<c:otherwise>
-						<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
-							value="${rosterEntryContainer.realStartOfWork}" />
-					</c:otherwise>
-				</c:choose></td>
-				<td nowrap="nowrap"><c:choose>
-					<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
-					<c:otherwise>
-						<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
-							value="${rosterEntryContainer.realEndOfWork}" />
-					</c:otherwise>
-				</c:choose></td>
-				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
-				<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
-				<td nowrap="nowrap"><c:choose>
-					<c:when test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
-					<c:otherwise>Nein</c:otherwise>
-				</c:choose></td>
-				<td><img class="showRosterEntryInfo"
-					title="${rosterEntryContainer.rosterEntry.rosterNotes}"
-					src="<c:url value="/image/info.gif"/>" /></td>
-				<td><c:choose>
-					<c:when test="${params.authorization eq 'Benutzer'}">
-						<c:choose>
+<c:choose>
+	<c:when test="${fn:length(params.rosterEntryContainerList) gt 0}">
+		<table id="rosterEntryTable" class="list">
+			<tr>
+				<th class="header2" colspan="10">${params.location.locationName}&nbsp;am&nbsp;<fmt:formatDate
+					type="date" dateStyle="medium" value="${params.date}" /></th>
+			</tr>
+			${fieldHeadersRow}
+			<tbody>
+				<c:forEach var="rosterEntryContainer"
+					items="${params.rosterEntryContainerList}" varStatus="loop">
+					<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
+						<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName}
+						${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
+						<td nowrap="nowrap"><fmt:formatDate type="both"
+							dateStyle="short" timeStyle="short"
+							value="${rosterEntryContainer.plannedStartOfWork}" /></td>
+						<td nowrap="nowrap"><fmt:formatDate type="both"
+							dateStyle="short" timeStyle="short"
+							value="${rosterEntryContainer.plannedEndOfWork}" /></td>
+						<td nowrap="nowrap"><c:choose>
+							<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
+							<c:otherwise>
+								<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
+									value="${rosterEntryContainer.realStartOfWork}" />
+							</c:otherwise>
+						</c:choose></td>
+						<td nowrap="nowrap"><c:choose>
+							<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
+							<c:otherwise>
+								<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
+									value="${rosterEntryContainer.realEndOfWork}" />
+							</c:otherwise>
+						</c:choose></td>
+						<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
+						<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
+						<td nowrap="nowrap"><c:choose>
 							<c:when
-								test="${params.currentDate gt rosterEntryContainer.deadline}">
+								test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
+							<c:otherwise>Nein</c:otherwise>
+						</c:choose></td>
+						<td><img class="showRosterEntryInfo"
+							title="${rosterEntryContainer.rosterEntry.rosterNotes}"
+							src="<c:url value="/image/info.gif"/>" /></td>
+						<td><c:choose>
+							<c:when test="${params.authorization eq 'Benutzer'}">
+								<c:choose>
+									<c:when
+										test="${params.currentDate gt rosterEntryContainer.deadline}">
+									</c:when>
+									<c:otherwise>
+										<c:url var="url" value="/Dispatcher/editRosterEntry.do">
+											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										</c:url>
+										<a href="${url}">Bearbeiten</a>
+										<br />
+										<c:url var="url" value="/Dispatcher/deleteRosterEntry.do">
+											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										</c:url>
+										<a href="${url}">Löschen</a>
+									</c:otherwise>
+								</c:choose>
 							</c:when>
 							<c:otherwise>
 								<c:url var="url" value="/Dispatcher/editRosterEntry.do">
@@ -95,24 +111,20 @@
 								</c:url>
 								<a href="${url}">Löschen</a>
 							</c:otherwise>
-						</c:choose>
-					</c:when>
-					<c:otherwise>
-						<c:url var="url" value="/Dispatcher/editRosterEntry.do">
-							<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-						</c:url>
-						<a href="${url}">Bearbeiten</a>
-						<br />
-						<c:url var="url" value="/Dispatcher/deleteRosterEntry.do">
-							<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-						</c:url>
-						<a href="${url}">Löschen</a>
-					</c:otherwise>
-				</c:choose></td>
+						</c:choose></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</c:when>
+	<c:otherwise>
+		<table cellpadding="3" cellspacing="0" class="list">
+			<tr>
+				<td class="nodata">Keine&nbsp;Treffer</td>
 			</tr>
-		</c:forEach>
-	</tbody>
-</table>
+		</table>
+	</c:otherwise>
+</c:choose>
 <script type="text/javascript">
 $(document).ready(function() {
 	Calendar.setup ({

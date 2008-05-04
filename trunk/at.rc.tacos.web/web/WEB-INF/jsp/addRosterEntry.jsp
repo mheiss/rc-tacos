@@ -156,7 +156,7 @@ $(document).ready(function() {
 	Calendar.setup ({
 		inputField : "dateFrom",
 		button : "dateFromCalendarTrigger",
-		date : new Date(${params.calendarDefaultDateMilliseconds}),
+		date : new Date(${params.defaultDateMilliseconds}),
 		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
 		align : "Tr",
 		ifFormat : "%d.%m.%Y",
