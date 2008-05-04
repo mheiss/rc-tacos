@@ -25,14 +25,13 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import at.rc.tacos.client.controller.CreateDialysisTransportAction;
-import at.rc.tacos.client.controller.UpdateDialysisTransportAction;
 import at.rc.tacos.client.modelManager.AddressManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IKindOfTransport;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Location;
@@ -718,8 +717,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					System.out.println("......... start rt: " +dia.getPlannedStartForBackTransport());
 					System.out.println("......... ready: " +dia.getReadyTime());
 					
-					CreateDialysisTransportAction newAction = new CreateDialysisTransportAction(dia);
-					newAction.run();
+					NetWrapper.getDefault().sendAddMessage(DialysisPatient.ID, dia);
 				}
 				else
 				{
@@ -750,8 +748,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					
 					dia.setAssistantPerson(assistant);
 					
-					UpdateDialysisTransportAction updateAction = new UpdateDialysisTransportAction(dia);
-					updateAction.run();
+					NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, dia);
 				}
 				shell.close();
 			}

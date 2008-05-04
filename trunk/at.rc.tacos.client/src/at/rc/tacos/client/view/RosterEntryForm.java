@@ -26,8 +26,6 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-import at.rc.tacos.client.controller.PersonalCreateEntryAction;
-import at.rc.tacos.client.controller.PersonalUpdateEntryAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.JobContentProvider;
@@ -39,6 +37,7 @@ import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
@@ -249,19 +248,12 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			rosterEntry.setStandby(bereitschaftButton.getSelection());
 			rosterEntry.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
 
-			//create a new entry
+			//create or update the roster entry
 			if(createNew)
-			{
-				//create and run the add action
-				PersonalCreateEntryAction newAction = new PersonalCreateEntryAction(rosterEntry);
-				newAction.run();
-			}
+				NetWrapper.getDefault().sendAddMessage(RosterEntry.ID, rosterEntry);
 			else
-			{
-				//create and run the update action
-				PersonalUpdateEntryAction updateAction = new PersonalUpdateEntryAction(rosterEntry);
-				updateAction.run();
-			}
+				NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, rosterEntry);
+		
 			getShell().close();
 			return;
 		}

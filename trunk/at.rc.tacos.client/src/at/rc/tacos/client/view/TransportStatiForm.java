@@ -11,10 +11,10 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import at.rc.tacos.client.controller.UpdateTransportAction;
 import at.rc.tacos.client.util.TimeValidator;
 import at.rc.tacos.client.util.TransformTimeToLong;
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
 public class TransportStatiForm implements ITransportStatus
@@ -221,12 +221,9 @@ public class TransportStatiForm implements ITransportStatus
             	else
             		transport.removeStatus(TRANSPORT_STATUS_CAR_IN_STATION);
             	
-            	//create and run the update action
-                UpdateTransportAction updateAction = new UpdateTransportAction(transport);
-                updateAction.run();
-                
+            	NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+            	     
                 shell.close();
-				
 			}
 			
 			private void getContentOfAllFields()
