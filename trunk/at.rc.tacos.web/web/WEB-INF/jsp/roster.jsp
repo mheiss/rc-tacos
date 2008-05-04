@@ -1,4 +1,5 @@
 <%@ include file="includes.jsp"%>
+<%@ page import="at.rc.tacos.model.ServiceType"%>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 <table class="standardForm"">
 	<tr>
@@ -87,7 +88,8 @@
 									<c:when
 										test="${params.currentDate gt rosterEntryContainer.deadline}">
 									</c:when>
-									<c:otherwise>
+									<c:when
+										test="${rosterEntryContainer.rosterEntry.servicetype.serviceName eq 'Freiwillig'}">
 										<c:url var="url" value="/Dispatcher/editRosterEntry.do">
 											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										</c:url>
@@ -97,6 +99,8 @@
 											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										</c:url>
 										<a href="${url}">Löschen</a>
+									</c:when>
+									<c:otherwise>
 									</c:otherwise>
 								</c:choose>
 							</c:when>

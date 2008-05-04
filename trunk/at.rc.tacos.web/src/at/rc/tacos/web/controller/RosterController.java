@@ -98,12 +98,11 @@ public class RosterController extends Controller {
 		final String dateForServerString = formatDateForServer.format(date);
 		
 		// Get Roster Entries
-		QueryFilter rosterFilter = new QueryFilter();
+		final QueryFilter rosterFilter = new QueryFilter();
 		rosterFilter.add(IFilterTypes.DATE_FILTER, dateForServerString);
 		if (location != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
-		}
-		
+		}	
 		// Form RosterEntryContainerList for Table
 		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
 		final List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
