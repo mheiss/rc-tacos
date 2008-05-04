@@ -101,7 +101,7 @@
 					</c:forTokens>
 				</select> :
 				<select size="1" id="timeFromMinutes" name="timeFromMinutes">
-					<c:forTokens var="i" items="00,05,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+					<c:forTokens var="i" items="00,30" delims=",">
 						<option ${(not empty params.timeFromMinutes) and (params.timeFromMinutes == i) ? ' selected="selected"' : ''}>${i}</option>
 					</c:forTokens>
 				</select>
@@ -130,7 +130,7 @@
 					</c:forTokens>
 				</select> :
 				<select size="1" id="timeToMinutes" name="timeToMinutes">
-					<c:forTokens var="i" items="00,05,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+					<c:forTokens var="i" items="00,30" delims=",">
 						<option ${(not empty params.timeToMinutes) and (params.timeToMinutes == i) ? ' selected="selected"' : ''}>${i}</option>
 					</c:forTokens>
 				</select>
