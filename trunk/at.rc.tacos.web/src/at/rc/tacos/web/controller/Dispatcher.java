@@ -144,6 +144,9 @@ public class Dispatcher extends HttpServlet
 			System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("addRosterEntry.url")));
 			System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("addRosterEntry.url")));
+			
+			/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("addRosterEntry.url"));
+			getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 		} else {
 			//Get login requirement view and template
 			for (final Iterator<String> it = set.iterator(); it.hasNext();) {
@@ -177,7 +180,10 @@ public class Dispatcher extends HttpServlet
 			if (urlFound == false || controllerFound == false) {
 				System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url")));
 				System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
-				response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url"))); 
+				response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("notFound.url")));
+				
+				/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("notFound.url")));
+				getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 			} else {
 				if (loginRequired == true && !userSession.getLoggedIn()) {
 					final Enumeration<Object> e = request.getParameterNames();
@@ -190,6 +196,9 @@ public class Dispatcher extends HttpServlet
 					System.out.println("Redirect: " + response.encodeRedirectURL(url));
 					System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 					response.sendRedirect(response.encodeRedirectURL(url));
+					
+					/*request.setAttribute("redirectUrl", response.encodeRedirectURL(url));
+					getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 				} else {
 					try {
 						
@@ -233,26 +242,41 @@ public class Dispatcher extends HttpServlet
 						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						
+						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 					} catch (IllegalAccessException e1) {
 						e1.printStackTrace();
 						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						
+						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 					} catch (ClassNotFoundException e1) {
 						e1.printStackTrace();
 						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						
+						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
 						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						
+						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 					} catch (Exception e) {
 						e.printStackTrace();
 						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
 						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						
+						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("error.url")));
+						getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 					}
 				}
 
