@@ -25,11 +25,11 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.*;
 
-import at.rc.tacos.client.controller.PersonalUpdateDayInfoAction;
 import at.rc.tacos.client.controller.SelectRosterDateAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.StaffMember;
@@ -303,8 +303,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
                 dayInfo.setLastChangedBy(user);
                 dayInfo.setDirty(true);
                 //send the update request
-                PersonalUpdateDayInfoAction updateAction = new PersonalUpdateDayInfoAction(dayInfo);
-                updateAction.run();
+                NetWrapper.getDefault().sendUpdateMessage(DayInfoMessage.ID, dayInfo);
 			}
         });
         
