@@ -49,13 +49,7 @@
 				</tr>
 				<tr>
 					<td>
-						<%
-						if (request.getParameter("responseUrl") != null) {
-						%>
-						<input type=hidden name="savedUrl" value="${savedUrl}"/>
-						<%
-						}
-						%>	
+						<input type="hidden" name="savedUrl" value="${savedUrl}" />
 					</td>
 					<td colspan="2" align="right"><input type="submit" value="Login" id="login"/></td>
 				</tr>

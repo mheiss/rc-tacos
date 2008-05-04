@@ -20,8 +20,8 @@ public class LogoutController extends Controller {
 		System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 		response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("login.url")));
 		
-		/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("login.url")));
-		getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
+		/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("login.url")));
+		context.getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 		return new HashMap();
 	}
 	

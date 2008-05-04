@@ -92,15 +92,18 @@ public class LoginController extends Controller {
 						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
 						
-						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath()));
-						getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
+						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
+						context.getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 					} else {
-						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + request.getParameter("savedUrl")));
-						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
-						response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + request.getParameter("savedUrl")));
+						final Enumeration<Object> e = request.getParameterNames();
+						String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + request.getParameter("savedUrl");
 						
-						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + request.getParameter("savedUrl")));
-						getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
+						System.out.println("Redirect: " + response.encodeRedirectURL(url));
+						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
+						response.sendRedirect(response.encodeRedirectURL(url));
+						
+						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(url));
+						context.getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 					}
 				} else {
 					params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
@@ -123,12 +126,13 @@ public class LoginController extends Controller {
 		while (e.hasMoreElements()) {
 			final String parameterName = (String)e.nextElement();
 			final String parameterValue = request.getParameter(parameterName);
-			if (i == 0) {
-				savedUrl += "?" + parameterName + "=" + parameterValue;
-			} else {
-				savedUrl += "&" + parameterName + "=" + parameterValue;
+			if (!parameterName.equals("savedUrl")) {
+				if (i == 0) {
+					savedUrl += "?" + parameterName + "=" + parameterValue;
+				} else {
+					savedUrl += "&" + parameterName + "=" + parameterValue;
+				}
 			}
-			
 			i++;
 		}
 		request.setAttribute("savedUrl", savedUrl);
@@ -138,8 +142,8 @@ public class LoginController extends Controller {
 			System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
 			
-			/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath()));
-			getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
+			/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
+			context.getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 		} else {	
 			final String action = request.getParameter("action");
 			if ("login".equalsIgnoreCase(action)) {
