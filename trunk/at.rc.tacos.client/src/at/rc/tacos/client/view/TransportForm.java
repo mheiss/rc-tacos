@@ -245,7 +245,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		super(parentShell);
 		createNew = true;
 		this.transportType = transportType;
-		System.out.println("............... transport type: " +transportType);
 		this.transport = new Transport();
 		//bind the staff to this view
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
@@ -265,8 +264,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//update an entry
 		createNew = false;
 		this.transport = transport;
-		this.editingType = "journal";
-		System.out.println("............... editing type: " +editingType);
+		this.editingType = editingType;
 		transportType = "both";
 		//bind the staff to this view
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
@@ -282,8 +280,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	protected Control createContents(Composite parent) 
 	{
 		multiTransportProvider = new MultiTransportContentProvider();
-//		Location location = ModelFactory.getInstance().getLocationManager().getLocationByName("Bezirk: Bruck - Kapfenberg");
-//		assignVehicleContentProvider = new AssignVehicleContentProvider(location);
 		Control contents = super.createContents(parent);
 		setTitle("Transport");
 		setMessage("Hier können Sie einen neuen Transport anlegen", IMessageProvider.INFORMATION);
