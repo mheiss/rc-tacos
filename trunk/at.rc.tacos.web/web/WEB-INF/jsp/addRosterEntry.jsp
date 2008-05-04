@@ -146,6 +146,7 @@
 		<tr>
 			<td class="hButtonArea" colspan="2">
 				<input type="submit" value="Anlegen" />
+				<input type="reset" name="reset" value="Zurücksetzen">
 				<input name="action" type="hidden" value="addRosterEntry" />
 			</td>
 			<td />

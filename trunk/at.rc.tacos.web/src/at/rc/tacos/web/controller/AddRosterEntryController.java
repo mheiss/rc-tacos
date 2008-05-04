@@ -195,9 +195,9 @@ public class AddRosterEntryController extends Controller {
 		final SimpleDateFormat sdfTimeHours = new SimpleDateFormat("HH");
 		final SimpleDateFormat sdfTimeMinutes = new SimpleDateFormat("mm");
 		
-		String dateFromString = sdfDate.format(new Date());
-		String timeFromHoursString = sdfTimeHours.format(new Date());
-		String timeFromMinutesString = sdfTimeMinutes.format(new Date());
+		String dateFromString = null;
+		String timeFromHoursString = null;
+		String timeFromMinutesString = null;
 		
 		if (request.getParameter("dateFrom") != null && !request.getParameter("dateFrom").equals("")) {
 			dateFromString = request.getParameter("dateFrom");		
@@ -214,9 +214,9 @@ public class AddRosterEntryController extends Controller {
 		final String from = dateFromString + " " + timeFromHoursString + ":" + timeFromMinutesString;
 			
 		// Get To
-		String dateToString = sdfDate.format(new Date());
-		String timeToHoursString = sdfTimeHours.format(new Date());
-		String timeToMinutesString = sdfTimeMinutes.format(new Date());
+		String dateToString = null;
+		String timeToHoursString = null;
+		String timeToMinutesString = null;
 		
 		if (request.getParameter("dateTo") != null && !request.getParameter("dateTo").equals("")) {
 			dateToString = request.getParameter("dateTo");

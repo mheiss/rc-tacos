@@ -6,14 +6,6 @@
 	<c:param name="rosterEntryId">${params.rosterEntry.rosterId}</c:param>
 </c:url>
 <form action="${url}" method="post" accept-charset="ISO-8859-1">
-	<c:choose>
-		<c:when test="${params.addedCount gt 0}">
-			<div id="submitSuccess">
-				Sie haben sich einen neuen Dienstplaneintrag erstellt.
-			</div>
-			<br />
-		</c:when>
-	</c:choose>
 	<table class="standardForm">
 		<tr><td>Allgemeine Daten:</td></tr>
 		<tr>
