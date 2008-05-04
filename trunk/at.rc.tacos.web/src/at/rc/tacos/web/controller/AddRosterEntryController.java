@@ -124,7 +124,7 @@ public class AddRosterEntryController extends Controller {
 		// Location List
 		final String paramLocationId = request.getParameter("locationId");
 		int locationId = 0;
-		Location location = null;
+		Location location = userSession.getFormDefaultValues().getDefaultLocation();
 		if (paramLocationId != null && !paramLocationId.equals("")) {
 			if (paramLocationId.equalsIgnoreCase("noValue")) {
 				location = null;
@@ -184,8 +184,8 @@ public class AddRosterEntryController extends Controller {
 		params.put("standby", standby);
 		
 		// Get Comment
-		String comment = "";
-		if (request.getParameter("comment")!= null && !request.getParameter("comment").equals("")) {
+		String comment = null;
+		if (request.getParameter("comment") != null) {
 			comment = request.getParameter("comment");
 		}
 		params.put("comment", comment);
@@ -195,17 +195,17 @@ public class AddRosterEntryController extends Controller {
 		final SimpleDateFormat sdfTimeHours = new SimpleDateFormat("HH");
 		final SimpleDateFormat sdfTimeMinutes = new SimpleDateFormat("mm");
 		
-		String dateFromString = null;
+		String dateFromString = sdfDate.format(userSession.getFormDefaultValues().getDefaultDate());
 		String timeFromHoursString = null;
 		String timeFromMinutesString = null;
 		
-		if (request.getParameter("dateFrom") != null && !request.getParameter("dateFrom").equals("")) {
-			dateFromString = request.getParameter("dateFrom");		
+		if (request.getParameter("dateFrom") != null) {
+			dateFromString = request.getParameter("dateFrom");
 		}
-		if (request.getParameter("timeFromHours") != null && !request.getParameter("timeFromHours").equals("")) {
+		if (request.getParameter("timeFromHours") != null) {
 			timeFromHoursString = request.getParameter("timeFromHours");
 		}
-		if (request.getParameter("timeFromMinutes") != null && !request.getParameter("timeFromMinutes").equals("")) {
+		if (request.getParameter("timeFromMinutes") != null) {
 			timeFromMinutesString = request.getParameter("timeFromMinutes");
 		}
 		params.put("dateFrom", dateFromString);
@@ -214,25 +214,24 @@ public class AddRosterEntryController extends Controller {
 		final String from = dateFromString + " " + timeFromHoursString + ":" + timeFromMinutesString;
 			
 		// Get To
-		String dateToString = null;
+		String dateToString = sdfDate.format(userSession.getFormDefaultValues().getDefaultDate());
 		String timeToHoursString = null;
 		String timeToMinutesString = null;
 		
-		if (request.getParameter("dateTo") != null && !request.getParameter("dateTo").equals("")) {
-			dateToString = request.getParameter("dateTo");
+		if (request.getParameter("dateTo") != null) {
+			dateToString = request.getParameter("dateTo");		
 		}
-		if (request.getParameter("timeToHours") != null && !request.getParameter("timeToHours").equals("")) {
+		if (request.getParameter("timeToHours") != null) {
 			timeToHoursString = request.getParameter("timeToHours");
 		}
-		if (request.getParameter("timeToMinutes") != null && !request.getParameter("timeToMinutes").equals("")) {
+		if (request.getParameter("timeToMinutes") != null) {
 			timeToMinutesString = request.getParameter("timeToMinutes");
 		}
 		params.put("dateTo", dateToString);
 		params.put("timeToHours", timeToHoursString);
 		params.put("timeToMinutes", timeToMinutesString);
 		final String to = dateToString + " " + timeToHoursString + ":" + timeToMinutesString;
-		
-		
+				
 		// Get Action
 		final String action = request.getParameter("action");
 		final Map<String, String> errors = new HashMap<String, String>();
@@ -341,5 +340,4 @@ public class AddRosterEntryController extends Controller {
 		params.put("errors", errors);
 		return params;
 	}
-
 }

@@ -3,13 +3,13 @@
 	<c:choose>
 		<c:when test="${editedCount gt 0}">
 			<div id="submitSuccess">
-				Sie haben einen Dienstplaneintrag erfolgreich bearbeitet.
+				Sie haben einen Dienstplaneintrag erfolgreich bearbeitet
 			</div>
 			<br />
 		</c:when>
 		<c:when test="${deletedCount gt 0}">
 			<div id="submitSuccess">
-				Sie haben einen Dienstplaneintrag erfolgreich gelöscht.
+				Sie haben einen Dienstplaneintrag erfolgreich gelöscht
 			</div>
 			<br />
 		</c:when>

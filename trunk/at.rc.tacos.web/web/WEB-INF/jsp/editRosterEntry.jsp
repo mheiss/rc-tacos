@@ -63,7 +63,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.job}</span>
+				<span class="errorText">${params.errors.serviceType}</span>
 			</td>
 		</tr>
 		<tr>
@@ -178,8 +178,7 @@ $(function() {
 		var jobId = $('#jobId').val();
 		var serviceTypeId = $('#serviceTypeId').val();
 		var standby = $('#standby').attr('checked');
-		var comment = null;
-		comment = $('#comment').val();
+		var comment = $('#comment').val();
 		var dateFrom = $('#dateFrom').val();
 		var timeFromHours = $('#timeFromHours').val();
 		var timeFromMinutes = $('#timeFromMinutes').val();
@@ -202,27 +201,13 @@ $(function() {
 		if (standby) {
 			url += '&standby=' + standby;
 		}
-		if (comment && jQuery.trim(comment) != '') {
-			url += '&comment=' + comment;
-		}
-		if (dateFrom) {
-			url += '&dateFrom=' + dateFrom;
-		}
-		if (timeFromHours) {
-			url += '&timeFromHours=' + timeFromHours;
-		}
-		if (timeFromMinutes) {
-			url += '&timeFromMinutes=' + timeFromMinutes;
-		}
-		if (dateTo) {
-			url += '&dateTo=' + dateTo;
-		}
-		if (timeToHours) {
-			url += '&timeToHours=' + timeToHours;
-		}
-		if (timeToMinutes) {
-			url += '&timeToMinutes=' + timeToMinutes;
-		}
+		url += '&comment=' + comment;
+		url += '&dateFrom=' + dateFrom;
+		url += '&timeFromHours=' + timeFromHours;
+		url += '&timeFromMinutes=' + timeFromMinutes;
+		url += '&dateTo=' + dateTo;
+		url += '&timeToHours=' + timeToHours;
+		url += '&timeToMinutes=' + timeToMinutes;
 		document.location = url;
 	});
 });
