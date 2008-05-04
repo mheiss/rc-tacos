@@ -132,6 +132,15 @@ public class RosterController extends Controller {
 			params.put("rosterEntryContainerList", rosterEntryContainerList);
 		}
 		
+		if (request.getParameter("editedCount") != null && !request.getParameter("editedCount").equals("")) {
+			Integer.parseInt(request.getParameter("editedCount"));
+			request.setAttribute("editedCount", request.getParameter("editedCount"));
+		}
+		
+		if (request.getParameter("deletedCount") != null && !request.getParameter("deletedCount").equals("")) {
+			Integer.parseInt(request.getParameter("deletedCount"));
+			request.setAttribute("deletedCount", request.getParameter("deletedCount"));
+		}
 		return params;
 		
 	}

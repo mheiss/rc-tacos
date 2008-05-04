@@ -26,6 +26,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
@@ -75,12 +76,28 @@ public class EditRosterEntryController extends Controller {
 		if (RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
 			rosterEntry = (RosterEntry)rosterEntryList.get(0);
 		}
+		
+		// Roster Entry must not be null
 		if (rosterEntry == null) {
-			throw new IllegalArgumentException("Fehler: rosterEntry darf nicht null sein.");
+			throw new IllegalArgumentException("Fehler: Roster Entry darf nicht null sein.");
 		}
+		
+		// If authorization eq Benutzer and ServiceType neq Freiwillig throw Exception
 		if (authorization.equals(Login.AUTH_USER) && !rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
 			throw new IllegalArgumentException("Fehler: Benutzer hat keine Objektberechtigung.");
 		}
+		
+		// Check deadline if authorization eq Benutzer
+		if (authorization.equals(Login.AUTH_USER)) {
+			final Calendar deadlineCalendar = Calendar.getInstance();
+			deadlineCalendar.setTime(new Date(rosterEntry.getPlannedStartOfWork()));
+			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
+			final Date currDate = new Date();
+			if (currDate.getTime() > deadlineCalendar.getTimeInMillis()) {
+				throw new IllegalArgumentException("Fehler: Roster Entry darf nicht editiert werden. Deadline wurde überschritten.");
+			}
+		}
+		
 		params.put("rosterEntry", rosterEntry);
 		
 		// Job List
@@ -361,7 +378,7 @@ public class EditRosterEntryController extends Controller {
 				rosterEntry.setStandby(standby);
 				connection.sendUpdateRequest(RosterEntry.ID, rosterEntry);
 
-				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url");
+				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?editedCount=1";
 				
 				System.out.println("Redirect: " + response.encodeRedirectURL(url));
 				System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
