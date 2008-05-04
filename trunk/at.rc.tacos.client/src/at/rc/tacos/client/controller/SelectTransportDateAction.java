@@ -42,6 +42,6 @@ public class SelectTransportDateAction extends Action
         //set up the filter and query the server
         QueryFilter filter = new QueryFilter(IFilterTypes.DATE_FILTER,strDate);
         //query transports in progress and journal transports
-//        NetWrapper.getDefault().requestListing(Transport.ID,filter);
+        NetWrapper.getDefault().requestListing(Transport.ID,filter);
     }
 }
