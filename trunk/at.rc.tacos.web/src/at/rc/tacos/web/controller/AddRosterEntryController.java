@@ -27,6 +27,11 @@ import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
 
+/**
+ * 
+ * @author Payer Martin
+ * @version 1.0
+ */
 public class AddRosterEntryController extends Controller {
 
 	public static final String ACTION_ADD_ROSTER_ENTRY = "addRosterEntry";
@@ -42,12 +47,24 @@ public class AddRosterEntryController extends Controller {
 		
 		final String authorization = userSession.getLoginInformation().getAuthorization();
 		
+		// Create Calendar for DatePicker
+		final Calendar calendar = Calendar.getInstance();
+		final int rangeStart = calendar.get(Calendar.YEAR) - 10;
+		final int rangeEnd = calendar.get(Calendar.YEAR) + 1;
+		params.put("calendarDefaultDateMilliseconds", calendar.getTimeInMillis());
+		params.put("calendarRangeStart", rangeStart);
+		params.put("calendarRangeEnd", rangeEnd);
+		
 		// Job List
 		final String paramJobId = request.getParameter("jobId");
 		int jobId = 0;
 		Job job = null;
 		if (paramJobId != null && !paramJobId.equals("")) {
-			jobId = Integer.parseInt(paramJobId);
+			if (paramJobId.equalsIgnoreCase("noValue")) {
+				job = null;
+			} else {
+				jobId = Integer.parseInt(paramJobId);
+			}
 		}
 		final List<AbstractMessage> jobList = connection.sendListingRequest(Job.ID, null);
 		if (Job.ID.equalsIgnoreCase(connection.getContentType())) {
@@ -67,7 +84,11 @@ public class AddRosterEntryController extends Controller {
 		int staffMemberId = 0;
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("")) {
-			staffMemberId = Integer.parseInt(paramStaffMemberId);
+			if (paramStaffMemberId.equalsIgnoreCase("noValue")) {
+				staffMember = null;
+			} else {
+				staffMemberId = Integer.parseInt(paramStaffMemberId);
+			}
 		}
 		final List<AbstractMessage> staffList = new ArrayList<AbstractMessage>();
 		final List<AbstractMessage> staffListTemp = connection.sendListingRequest(StaffMember.ID, null);
@@ -105,7 +126,11 @@ public class AddRosterEntryController extends Controller {
 		int locationId = 0;
 		Location location = null;
 		if (paramLocationId != null && !paramLocationId.equals("")) {
-			locationId = Integer.parseInt(paramLocationId);
+			if (paramLocationId.equalsIgnoreCase("noValue")) {
+				location = null;
+			} else {
+				locationId = Integer.parseInt(paramLocationId);
+			}
 		}
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
 		if (Location.ID.equalsIgnoreCase(connection.getContentType())) {
@@ -125,7 +150,11 @@ public class AddRosterEntryController extends Controller {
 		int serviceTypeId = 0;
 		ServiceType serviceType = null;
 		if (paramServiceTypeId != null && !paramServiceTypeId.equals("")) {
-			serviceTypeId = Integer.parseInt(paramServiceTypeId);
+			if (paramServiceTypeId.equalsIgnoreCase("noValue")) {
+				serviceType = null;
+			} else {
+				serviceTypeId = Integer.parseInt(paramServiceTypeId);
+			}
 		}
 		List<AbstractMessage> serviceTypeList = new ArrayList<AbstractMessage>();
 		if (authorization.equals(Login.AUTH_ADMIN)) {
@@ -158,7 +187,6 @@ public class AddRosterEntryController extends Controller {
 		final String comment = request.getParameter("comment");
 		params.put("comment", comment);
 		
-		
 		// Get From
 		final String dateFrom = request.getParameter("dateFrom");
 		final String timeFromHours = request.getParameter("timeFromHours");
@@ -176,14 +204,6 @@ public class AddRosterEntryController extends Controller {
 		params.put("timeToHours", timeToHours);
 		params.put("timeToMinutes", timeToMinutes);
 		final String to = dateTo + " " + timeToHours + ":" + timeToMinutes;
-		
-		// Create Calendar for DatePicker
-		final Calendar calendar = Calendar.getInstance();
-		final int rangeStart = calendar.get(Calendar.YEAR) - 10;
-		final int rangeEnd = calendar.get(Calendar.YEAR) + 1;
-		params.put("calendarDefaultDateMilliseconds", calendar.getTimeInMillis());
-		params.put("calendarRangeStart", rangeStart);
-		params.put("calendarRangeEnd", rangeEnd);
 		
 		
 		// Get Action
