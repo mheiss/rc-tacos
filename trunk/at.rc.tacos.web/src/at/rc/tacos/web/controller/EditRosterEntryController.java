@@ -74,6 +74,9 @@ public class EditRosterEntryController extends Controller {
 		if (rosterEntry == null) {
 			throw new IllegalArgumentException("Fehler: rosterEntry darf nicht null sein.");
 		}
+		if (authorization.equals(Login.AUTH_USER) && !rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
+			throw new IllegalArgumentException("Fehler: Benutzer hat keine Objektberechtigung.");
+		}
 		params.put("rosterEntry", rosterEntry);
 		
 		// Job List
