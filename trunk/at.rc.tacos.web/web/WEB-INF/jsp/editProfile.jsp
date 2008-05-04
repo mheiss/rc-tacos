@@ -1,7 +1,7 @@
-<%@page import="at.rc.tacos.common.Constants"%>
+<%@ page import="at.rc.tacos.common.Constants"%>
 <%@ page import="at.rc.tacos.web.session.UserSession" %>
-<%@page import="java.text.*"%>
-<%@page import="java.util.Date"%>
+<%@ page import="java.text.*"%>
+<%@ page import="java.util.Date"%>
 <%
 UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>

@@ -1,16 +1,16 @@
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.model.StaffMember"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.List"%>
+<%@ page import="at.rc.tacos.model.StaffMember"%>
 <%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%@ page import="java.text.*"%>
-<%@page import="java.util.Date"%>
+<%@ page import="java.util.Date"%>
 <%
 	Map<String, Object> params = (Map) request.getAttribute("params");
 	List<StaffMember> list = (List) params.get("employeeList");
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@page import="at.rc.tacos.common.Constants"%>
+<%@ page import="at.rc.tacos.common.Constants"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

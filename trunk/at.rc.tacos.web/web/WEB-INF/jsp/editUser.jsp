@@ -1,11 +1,11 @@
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
-<%@page import="at.rc.tacos.model.StaffMember"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.List"%>
+<%@ page import="at.rc.tacos.model.StaffMember"%>
 <%@ page import="at.rc.tacos.web.session.UserSession" %>
-<%@page import="java.text.*"%>
-<%@page import="java.util.Date"%>
-<%@page import="at.rc.tacos.model.MobilePhoneDetail"%>
-<%@page import="at.rc.tacos.model.Competence"%>
+<%@ page import="java.text.*"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="at.rc.tacos.model.MobilePhoneDetail"%>
+<%@ page import="at.rc.tacos.model.Competence"%>
 <%
 	UserSession userSession = (UserSession) session.getAttribute("userSession");
 	Map<String, Object> params = (Map) request.getAttribute("params");
@@ -13,7 +13,7 @@
 	StaffMember editStaffMember = (StaffMember) params.get("editStaffMember");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@page import="at.rc.tacos.model.Location"%>
+<%@ page import="at.rc.tacos.model.Location"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

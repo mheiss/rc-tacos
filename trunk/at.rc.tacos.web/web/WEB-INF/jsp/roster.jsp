@@ -1,5 +1,4 @@
 <%@ include file="includes.jsp"%>
-<%@ page import="at.rc.tacos.model.ServiceType"%>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 <table class="standardForm"">
 	<tr>
