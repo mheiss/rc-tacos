@@ -55,10 +55,31 @@ public class EditRosterEntryController extends Controller {
 		params.put("calendarRangeStart", rangeStart);
 		params.put("calendarRangeEnd", rangeEnd);
 		
+		// Get Id
+		int rosterEntryId = 0;
+		final String paramRosterEntryId = request.getParameter("rosterEntryId");
+		if (paramRosterEntryId == null || paramRosterEntryId.equals("")) {
+			throw new IllegalArgumentException("Fehler: Diese URL muss mit einer gültigen RosterEntry.rosterId als Parameter aufgerufen werden.");
+		}
+		rosterEntryId = Integer.parseInt(paramRosterEntryId);
+		
+		// Get Roster Entry By Id
+		RosterEntry rosterEntry = null;
+		final QueryFilter rosterFilter = new QueryFilter();
+		rosterFilter.add(IFilterTypes.ID_FILTER, Integer.toString(rosterEntryId));
+		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
+		if (RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
+			rosterEntry = (RosterEntry)rosterEntryList.get(0);
+		}
+		if (rosterEntry == null) {
+			throw new IllegalArgumentException("Fehler: rosterEntry darf nicht null sein.");
+		}
+		params.put("rosterEntry", rosterEntry);
+		
 		// Job List
 		final String paramJobId = request.getParameter("jobId");
 		int jobId = 0;
-		Job job = null;
+		Job job = rosterEntry.getJob();
 		if (paramJobId != null && !paramJobId.equals("")) {
 			if (paramJobId.equalsIgnoreCase("noValue")) {
 				job = null;
@@ -82,7 +103,7 @@ public class EditRosterEntryController extends Controller {
 		// Staff Member List
 		final String paramStaffMemberId = request.getParameter("staffMemberId");
 		int staffMemberId = 0;
-		StaffMember staffMember = null;
+		StaffMember staffMember = rosterEntry.getStaffMember();
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("")) {
 			if (paramStaffMemberId.equalsIgnoreCase("noValue")) {
 				staffMember = null;
@@ -124,7 +145,7 @@ public class EditRosterEntryController extends Controller {
 		// Location List
 		final String paramLocationId = request.getParameter("locationId");
 		int locationId = 0;
-		Location location = null;
+		Location location = rosterEntry.getStation();
 		if (paramLocationId != null && !paramLocationId.equals("")) {
 			if (paramLocationId.equalsIgnoreCase("noValue")) {
 				location = null;
@@ -148,7 +169,7 @@ public class EditRosterEntryController extends Controller {
 		// Service Type List
 		final String paramServiceTypeId = request.getParameter("serviceTypeId");
 		int serviceTypeId = 0;
-		ServiceType serviceType = null;
+		ServiceType serviceType = rosterEntry.getServicetype();
 		if (paramServiceTypeId != null && !paramServiceTypeId.equals("")) {
 			if (paramServiceTypeId.equalsIgnoreCase("noValue")) {
 				serviceType = null;
@@ -293,7 +314,6 @@ public class EditRosterEntryController extends Controller {
 			}
 			
 			if (valid) {
-				final RosterEntry rosterEntry = new RosterEntry();
 				rosterEntry.setStation(location);
 				rosterEntry.setStaffMember(staffMember);
 				rosterEntry.setPlannedStartOfWork(plannedStartOfWork.getTime());
