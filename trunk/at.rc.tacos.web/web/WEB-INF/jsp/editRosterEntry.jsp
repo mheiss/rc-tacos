@@ -1,5 +1,10 @@
 <%@ include file="includes.jsp" %>
-<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
+<script type="text/javascript">
+	var rosterEntryId = '${params.rosterEntry.rosterId}';
+</script>
+<c:url var="url" value="/Dispatcher/editRosterEntry.do">
+	<c:param name="rosterEntryId">${params.rosterEntry.rosterId}</c:param>
+</c:url>
 <form action="${url}" method="post" accept-charset="ISO-8859-1">
 	<c:choose>
 		<c:when test="${params.addedCount gt 0}">
@@ -101,7 +106,7 @@
 					</c:forTokens>
 				</select> :
 				<select size="1" id="timeFromMinutes" name="timeFromMinutes">
-					<c:forTokens var="i" items="00,05,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+					<c:forTokens var="i" items="00,30" delims=",">
 						<option ${(not empty params.timeFromMinutes) and (params.timeFromMinutes == i) ? ' selected="selected"' : ''}>${i}</option>
 					</c:forTokens>
 				</select>
@@ -130,7 +135,7 @@
 					</c:forTokens>
 				</select> :
 				<select size="1" id="timeToMinutes" name="timeToMinutes">
-					<c:forTokens var="i" items="00,05,10,15,20,25,30,35,40,45,50,55,60" delims=",">
+					<c:forTokens var="i" items="00,30" delims=",">
 						<option ${(not empty params.timeToMinutes) and (params.timeToMinutes == i) ? ' selected="selected"' : ''}>${i}</option>
 					</c:forTokens>
 				</select>
@@ -145,6 +150,8 @@
 		<tr>
 			<td class="hButtonArea" colspan="2">
 				<input type="submit" value="Speichern" />
+				<c:url var="url" value="/Dispatcher/roster.do" />
+				<input type="button" name="cancel" value="Abbrechen" onclick="document.location='${url}'">
 				<input name="action" type="hidden" value="updateRosterEntry" />
 			</td>
 			<td />
@@ -187,7 +194,7 @@ $(function() {
 		var dateTo = $('#dateTo').val();
 		var timeToHours = $('#timeToHours').val();
 		var timeToMinutes = $('#timeToMinutes').val();
-		var url = '?jobId=' + $(this).val();
+		var url = '?rosterEntryId=' + rosterEntryId + '&jobId=' + $(this).val();
 		if (staffMemberId) {
 			 url += '&staffMemberId=' + staffMemberId;
 		}

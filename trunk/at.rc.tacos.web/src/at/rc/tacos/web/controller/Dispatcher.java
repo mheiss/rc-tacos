@@ -49,6 +49,9 @@ public class Dispatcher extends HttpServlet
 		final ResourceBundle views = ResourceBundle.getBundle(VIEWS_BUNDLE_PATH);
 		final ResourceBundle server = ResourceBundle.getBundle(SERVER_BUNDLE_PATH);
 		
+		//Set charakter encoding
+		request.setCharacterEncoding("ISO-8859-1");
+		
 		//Assert we have a valid session
 		final HttpSession session = request.getSession(true);
 		UserSession userSession = (UserSession) session.getAttribute("userSession");

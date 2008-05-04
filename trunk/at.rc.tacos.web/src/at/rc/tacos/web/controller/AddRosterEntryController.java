@@ -184,26 +184,53 @@ public class AddRosterEntryController extends Controller {
 		params.put("standby", standby);
 		
 		// Get Comment
-		final String comment = request.getParameter("comment");
+		String comment = "";
+		if (request.getParameter("comment")!= null && !request.getParameter("comment").equals("")) {
+			comment = request.getParameter("comment");
+		}
 		params.put("comment", comment);
 		
 		// Get From
-		final String dateFrom = request.getParameter("dateFrom");
-		final String timeFromHours = request.getParameter("timeFromHours");
-		final String timeFromMinutes = request.getParameter("timeFromMinutes");
-		params.put("dateFrom", dateFrom);
-		params.put("timeFromHours", timeFromHours);
-		params.put("timeFromMinutes", timeFromMinutes);
-		final String from = dateFrom + " " + timeFromHours + ":" + timeFromMinutes;
+		final SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy");
+		final SimpleDateFormat sdfTimeHours = new SimpleDateFormat("HH");
+		final SimpleDateFormat sdfTimeMinutes = new SimpleDateFormat("mm");
+		
+		String dateFromString = sdfDate.format(new Date());
+		String timeFromHoursString = sdfTimeHours.format(new Date());
+		String timeFromMinutesString = sdfTimeMinutes.format(new Date());
+		
+		if (request.getParameter("dateFrom") != null && !request.getParameter("dateFrom").equals("")) {
+			dateFromString = request.getParameter("dateFrom");		
+		}
+		if (request.getParameter("timeFromHours") != null && !request.getParameter("timeFromHours").equals("")) {
+			timeFromHoursString = request.getParameter("timeFromHours");
+		}
+		if (request.getParameter("timeFromMinutes") != null && !request.getParameter("timeFromMinutes").equals("")) {
+			timeFromMinutesString = request.getParameter("timeFromMinutes");
+		}
+		params.put("dateFrom", dateFromString);
+		params.put("timeFromHours", timeFromHoursString);
+		params.put("timeFromMinutes", timeFromMinutesString);
+		final String from = dateFromString + " " + timeFromHoursString + ":" + timeFromMinutesString;
 			
 		// Get To
-		final String dateTo = request.getParameter("dateTo");
-		final String timeToHours = request.getParameter("timeToHours");
-		final String timeToMinutes = request.getParameter("timeToMinutes");
-		params.put("dateTo", dateTo);
-		params.put("timeToHours", timeToHours);
-		params.put("timeToMinutes", timeToMinutes);
-		final String to = dateTo + " " + timeToHours + ":" + timeToMinutes;
+		String dateToString = sdfDate.format(new Date());
+		String timeToHoursString = sdfTimeHours.format(new Date());
+		String timeToMinutesString = sdfTimeMinutes.format(new Date());
+		
+		if (request.getParameter("dateTo") != null && !request.getParameter("dateTo").equals("")) {
+			dateToString = request.getParameter("dateTo");
+		}
+		if (request.getParameter("timeToHours") != null && !request.getParameter("timeToHours").equals("")) {
+			timeToHoursString = request.getParameter("timeToHours");
+		}
+		if (request.getParameter("timeToMinutes") != null && !request.getParameter("timeToMinutes").equals("")) {
+			timeToMinutesString = request.getParameter("timeToMinutes");
+		}
+		params.put("dateTo", dateToString);
+		params.put("timeToHours", timeToHoursString);
+		params.put("timeToMinutes", timeToMinutesString);
+		final String to = dateToString + " " + timeToHoursString + ":" + timeToMinutesString;
 		
 		
 		// Get Action
@@ -237,7 +264,7 @@ public class AddRosterEntryController extends Controller {
 			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			
 			Date plannedStartOfWork = null;
-			if (dateFrom == null || dateFrom.equals("") || timeFromHours == null || timeFromMinutes == null) {
+			if (dateFromString == null || dateFromString.equals("") || timeFromHoursString == null || timeFromMinutesString == null) {
 				errors.put("plannedStartOfWorkMissing", "Dienst von ist ein Pflichtfeld.");
 				valid = false;
 			} else {
@@ -251,7 +278,7 @@ public class AddRosterEntryController extends Controller {
 			}
 				
 			Date plannedEndOfWork = null;
-			if (dateTo == null || dateTo.equals("") || timeToHours == null || timeToMinutes == null) {
+			if (dateToString == null || dateToString.equals("") || timeToHoursString == null || timeToMinutesString == null) {
 				errors.put("plannedEndOfWorkMissing", "Dienst bis ist ein Pflichtfeld.");
 				valid = false;
 			} else {

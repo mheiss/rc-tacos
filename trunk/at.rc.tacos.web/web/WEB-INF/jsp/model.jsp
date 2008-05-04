@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ include file="includes.jsp" %>
 <%@ page import="at.rc.tacos.web.session.UserSession" %>
 <%@ page import="java.util.Map" %>
@@ -13,7 +13,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/css/stylesheet.css"/>" />
 	<c:if test="${not empty css}"><c:forTokens var="item" items="${css}" delims="|"><link rel="stylesheet" href="<c:url value="/css/${item}"/>" type="text/css" /></c:forTokens></c:if>
 	<link rel="icon" type="image/x-icon" href="<c:url value="/favicon.ico"/>" />
@@ -43,7 +43,7 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 						<c:url var="url" value="/Dispatcher/logout.do" />
 						<tr>
 							<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName() + " "
-							+ userSession.getStaffMember().getLastName().replaceAll("Ã¤","&auml;").replaceAll("Ã¶","&ouml;").replaceAll("Ã¼","&uuml;").replaceAll("ÃŸ","ss")%>
+							+ userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 							&nbsp;&nbsp;( <a
 								href="${url}">Logout</a>
 							)</td>

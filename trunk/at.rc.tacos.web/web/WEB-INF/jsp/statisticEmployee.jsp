@@ -21,7 +21,7 @@
 <%@ page import="java.util.ArrayList"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <link href="../css/stylesheet.css" rel="stylesheet" />
 <link rel='icon' type="image/x-icon" href="../favicon.ico" />
 <script type="text/javascript" src="../js/calendar_js.js"></script>
