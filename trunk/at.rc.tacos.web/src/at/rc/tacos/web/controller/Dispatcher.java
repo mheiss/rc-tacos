@@ -74,6 +74,7 @@ public class Dispatcher extends HttpServlet
 				userSession.getFormDefaultValues().setDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
 			}
 		}
+		String remoteAdr =  request.getRemoteAddr();
 		
 		//Get the relative Path from request URL
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
@@ -96,7 +97,6 @@ public class Dispatcher extends HttpServlet
 		String localAddr = request.getLocalAddr();
 		String localName = request.getLocalName();
 		int localPort = request.getLocalPort();
-		String remoteAdr =  request.getRemoteAddr();
 		String remoteHost = request.getRemoteHost();
 		String remoteUser = request.getRemoteUser();
 		int remotePort = request.getRemotePort();
