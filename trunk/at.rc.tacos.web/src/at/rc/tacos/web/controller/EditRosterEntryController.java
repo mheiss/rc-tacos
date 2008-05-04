@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,9 @@ public class EditRosterEntryController extends Controller {
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
 			throws Exception {
+		final ResourceBundle server = ResourceBundle.getBundle(Dispatcher.SERVER_BUNDLE_PATH);
+		final ResourceBundle views = ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH);
+		
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
@@ -344,7 +348,6 @@ public class EditRosterEntryController extends Controller {
 			}
 			
 			if (valid) {
-				/*
 				rosterEntry.setStation(location);
 				rosterEntry.setStaffMember(staffMember);
 				rosterEntry.setPlannedStartOfWork(plannedStartOfWork.getTime());
@@ -356,10 +359,16 @@ public class EditRosterEntryController extends Controller {
 					rosterEntry.setRosterNotes(comment);
 				}
 				rosterEntry.setStandby(standby);
-				connection.sendAddRequest(RosterEntry.ID, rosterEntry);
-				if(connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
-					params.put("addedCount", 1);
-				}*/
+				connection.sendUpdateRequest(RosterEntry.ID, rosterEntry);
+
+				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url");
+				
+				System.out.println("Redirect: " + response.encodeRedirectURL(url));
+				System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
+				response.sendRedirect(response.encodeRedirectURL(url));
+				
+				/*request.setAttribute("redirectUrl", response.encodeRedirectURL(url));
+				context.getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 			} 
 		}
 		params.put("errors", errors);
