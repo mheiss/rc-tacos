@@ -1,5 +1,6 @@
 package at.rc.tacos.web.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,8 +85,14 @@ public class RosterController extends Controller {
 		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
 		
+		Date dateTemp = null;
 		if (paramDate != null) {
-			final Date dateTemp = df.parse(paramDate);
+			try {
+				dateTemp = df.parse(paramDate);
+			}
+			catch (ParseException e) {
+				
+			}
 			if (dateTemp!= null && dateTemp.getTime() < rangeStartCalendar.getTimeInMillis() || dateTemp.getTime() > rangeEndCalendar.getTimeInMillis()) {
 				//throw new IllegalArgumentException();
 			} else {

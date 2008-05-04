@@ -230,7 +230,7 @@ public class EditRosterEntryController extends Controller {
 		
 		// Get Comment
 		String comment = rosterEntry.getRosterNotes();
-		if (request.getParameter("comment")!= null && !request.getParameter("comment").equals("")) {
+		if (request.getParameter("comment")!= null) {
 			comment = request.getParameter("comment");
 		}
 		params.put("comment", comment);
@@ -244,13 +244,13 @@ public class EditRosterEntryController extends Controller {
 		String timeFromHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedStartOfWork()));
 		String timeFromMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedStartOfWork()));
 		
-		if (request.getParameter("dateFrom") != null && !request.getParameter("dateFrom").equals("")) {
-			dateFromString = request.getParameter("dateFrom");		
-		}
-		if (request.getParameter("timeFromHours") != null && !request.getParameter("timeFromHours").equals("")) {
+		if (request.getParameter("dateFrom") != null) {
+			dateFromString = request.getParameter("dateFrom");
+		} 
+		if (request.getParameter("timeFromHours") != null) {
 			timeFromHoursString = request.getParameter("timeFromHours");
 		}
-		if (request.getParameter("timeFromMinutes") != null && !request.getParameter("timeFromMinutes").equals("")) {
+		if (request.getParameter("timeFromMinutes") != null) {
 			timeFromMinutesString = request.getParameter("timeFromMinutes");
 		}
 		params.put("dateFrom", dateFromString);
@@ -263,21 +263,20 @@ public class EditRosterEntryController extends Controller {
 		String timeToHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedEndOfWork()));
 		String timeToMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedEndOfWork()));
 		
-		if (request.getParameter("dateTo") != null && !request.getParameter("dateTo").equals("")) {
+		if (request.getParameter("dateTo") != null) {
 			dateToString = request.getParameter("dateTo");
-		}
-		if (request.getParameter("timeToHours") != null && !request.getParameter("timeToHours").equals("")) {
+		} 
+		if (request.getParameter("timeToHours") != null) {
 			timeToHoursString = request.getParameter("timeToHours");
 		}
-		if (request.getParameter("timeToMinutes") != null && !request.getParameter("timeToMinutes").equals("")) {
+		if (request.getParameter("timeToMinutes") != null) {
 			timeToMinutesString = request.getParameter("timeToMinutes");
 		}
 		params.put("dateTo", dateToString);
 		params.put("timeToHours", timeToHoursString);
 		params.put("timeToMinutes", timeToMinutesString);
 		final String to = dateToString + " " + timeToHoursString + ":" + timeToMinutesString;
-		
-		
+				
 		// Get Action
 		final String action = request.getParameter("action");
 		final Map<String, String> errors = new HashMap<String, String>();
