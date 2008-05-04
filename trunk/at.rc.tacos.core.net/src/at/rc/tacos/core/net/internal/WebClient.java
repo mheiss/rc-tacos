@@ -108,12 +108,12 @@ public class WebClient
         }
         catch(UnknownHostException uhe)
         {
-            System.out.println("Cannot resole the host name "+serverAddress);
+            System.out.println("Cannot resole the host name "+serverAddress+".\n");
             return false;
         }
         catch (IOException ioe)
         {
-            System.out.println("Error cannot connect to the server "+serverAddress+":"+serverPort);
+            System.out.println("Error cannot connect to the server "+serverAddress+":"+serverPort+".\n");
             return false;
         }
     }
@@ -286,7 +286,7 @@ public class WebClient
             this.contentType = factory.getContentType();
             this.queryString = factory.getQueryString();
             this.timestamp = factory.getTimestamp();
-            System.out.println("Received: "+ this.userId+","+this.contentType+","+this.queryString+","+this.timestamp);
+            System.out.println("Received: "+ this.userId+","+this.contentType+","+this.queryString+","+this.timestamp+".\n");
             //return the decoded objects
             return list;
         }
@@ -310,7 +310,7 @@ public class WebClient
         }
         catch(IOException ioe)
         {
-            System.out.println("Failed to get the reply from the server");
+            System.out.println("Failed to get the reply from the server.\n");
             return null;
         }
     }
