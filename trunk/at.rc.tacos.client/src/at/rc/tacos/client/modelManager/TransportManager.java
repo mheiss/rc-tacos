@@ -1,7 +1,5 @@
 package at.rc.tacos.client.modelManager;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -13,8 +11,6 @@ import at.rc.tacos.client.controller.CopyTransportDetailsIntoClipboardUpdateActi
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
@@ -23,7 +19,7 @@ import at.rc.tacos.util.MyUtils;
  * All transports
  * @author b.thek
  */
-public class TransportManager extends PropertyManager implements ITransportStatus, IProgramStatus, PropertyChangeListener
+public class TransportManager extends PropertyManager implements ITransportStatus, IProgramStatus
 {
 	//the item list
 	private List<Transport> objectList = new ArrayList<Transport>();
@@ -36,12 +32,10 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	public TransportManager() { }
 	
     /**
-     * Initalizes the vehicle manager and adds the needed listeners
+     * Initializes the vehicle manager and adds the needed listeners
      */
     protected void init()
-    {
-    	ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
-    }
+    { }
 
 	/**
 	 * Adds a new transport to the list
@@ -261,41 +255,4 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		}
 		return filteredList;
 	}
-	
-	@Override
-    public void propertyChange(PropertyChangeEvent evt) 
-    {	
-		System.out.println("vor vehicle .....................................");
-    	//to update the assigned vehicles of the transports with the status underway
-    	if("VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
-    	{
-    		System.out.println("0");
-    		//the updated entry
-            VehicleDetail vehicle = (VehicleDetail)evt.getNewValue();
-            //assert valid
-            if(vehicle == null)
-                return;
-            
-            System.out.println("1");
-            
-            List<Transport> underwayList = new ArrayList<Transport>();
-            underwayList = this.getTransportsByVehicle(vehicle.getVehicleName());
-            
-            System.out.println("2");
-            
-            if(underwayList.size() == 0)
-            	return;
-            
-            System.out.println("3");
-            
-            for(Transport transport: underwayList)
-            {
-            	System.out.println("4");
-            	
-            	transport.setVehicleDetail(vehicle);
-            	NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
-            	
-            }
-    	}
-    }
 }
