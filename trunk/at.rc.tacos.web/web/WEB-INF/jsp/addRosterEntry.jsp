@@ -1,5 +1,6 @@
 <%@ include file="includes.jsp" %>
-<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
+<c:url var="url" value="/Dispatcher/addRosterEntry.do">
+</c:url>
 <form action="${url}" method="post" accept-charset="ISO-8859-1">
 	<c:choose>
 		<c:when test="${params.addedCount gt 0}">

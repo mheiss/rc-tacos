@@ -223,22 +223,34 @@ public class EditRosterEntryController extends Controller {
 		String timeFromHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedStartOfWork()));
 		String timeFromMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedStartOfWork()));
 		
-		dateFromString = request.getParameter("dateFrom");
-		timeFromHoursString = request.getParameter("timeFromHours");
-		timeFromMinutesString = request.getParameter("timeFromMinutes");
+		if (request.getParameter("dateFrom") != null && !request.getParameter("dateFrom").equals("")) {
+			dateFromString = request.getParameter("dateFrom");		
+		}
+		if (request.getParameter("timeFromHours") != null && !request.getParameter("timeFromHours").equals("")) {
+			timeFromHoursString = request.getParameter("timeFromHours");
+		}
+		if (request.getParameter("timeFromMinutes") != null && !request.getParameter("timeFromMinutes").equals("")) {
+			timeFromMinutesString = request.getParameter("timeFromMinutes");
+		}
 		params.put("dateFrom", dateFromString);
 		params.put("timeFromHours", timeFromHoursString);
 		params.put("timeFromMinutes", timeFromMinutesString);
 		final String from = dateFromString + " " + timeFromHoursString + ":" + timeFromMinutesString;
 			
-		// Get To	
+		// Get To
 		String dateToString = sdfDate.format(new Date(rosterEntry.getPlannedEndOfWork()));
 		String timeToHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedEndOfWork()));
 		String timeToMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedEndOfWork()));
 		
-		dateToString = request.getParameter("dateTo");
-		timeToHoursString = request.getParameter("timeToHours");
-		timeToMinutesString = request.getParameter("timeToMinutes");
+		if (request.getParameter("dateTo") != null && !request.getParameter("dateTo").equals("")) {
+			dateToString = request.getParameter("dateTo");
+		}
+		if (request.getParameter("timeToHours") != null && !request.getParameter("timeToHours").equals("")) {
+			timeToHoursString = request.getParameter("timeToHours");
+		}
+		if (request.getParameter("timeToMinutes") != null && !request.getParameter("timeToMinutes").equals("")) {
+			timeToMinutesString = request.getParameter("timeToMinutes");
+		}
 		params.put("dateTo", dateToString);
 		params.put("timeToHours", timeToHoursString);
 		params.put("timeToMinutes", timeToMinutesString);
@@ -332,6 +344,7 @@ public class EditRosterEntryController extends Controller {
 			}
 			
 			if (valid) {
+				/*
 				rosterEntry.setStation(location);
 				rosterEntry.setStaffMember(staffMember);
 				rosterEntry.setPlannedStartOfWork(plannedStartOfWork.getTime());
@@ -346,8 +359,8 @@ public class EditRosterEntryController extends Controller {
 				connection.sendAddRequest(RosterEntry.ID, rosterEntry);
 				if(connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
 					params.put("addedCount", 1);
-				}
-			}
+				}*/
+			} 
 		}
 		params.put("errors", errors);
 		return params;
