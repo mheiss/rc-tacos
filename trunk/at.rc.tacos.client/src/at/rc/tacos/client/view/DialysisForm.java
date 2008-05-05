@@ -189,7 +189,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
         
 
         //kind of transport
-        //kind of transport
         if(dia.getKindOfTransport() != null)
         	combokindOfTransport.setText(dia.getKindOfTransport());
 		
@@ -688,7 +687,8 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					dia.setFromCity(fromCommunity);
 					dia.setFromStreet(fromStreet);
 					dia.setInsurance("Versicherung unbekannt");
-					dia.setKindOfTransport(kindOfTransport);
+					if(kindOfTransport != null)
+						dia.setKindOfTransport(kindOfTransport);
 					
 					index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
 			        dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
@@ -729,7 +729,8 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					dia.setPatient(patient);
 					dia.setFromCity(fromCommunity);
 					dia.setFromStreet(fromStreet);
-					dia.setKindOfTransport(kindOfTransport);
+					if(kindOfTransport != null)
+						dia.setKindOfTransport(kindOfTransport);
 					dia.setPlannedStartForBackTransport(abfRTLong);
 					dia.setPlannedStartOfTransport(startLong);
 					dia.setPlannedTimeAtPatient(atPatientLong);
