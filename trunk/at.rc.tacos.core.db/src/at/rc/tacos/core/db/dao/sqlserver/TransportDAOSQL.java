@@ -67,7 +67,10 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             query.setString(10, MyUtils.timestampToString(transport.getPlannedStartOfTransport(), MyUtils.timeAndDateFormat));
             query.setString(11, MyUtils.timestampToString(transport.getAppointmentTimeAtDestination(), MyUtils.timeAndDateFormat));
             query.setString(12, MyUtils.timestampToString(transport.getPlannedTimeAtPatient(), MyUtils.timeAndDateFormat));
-            query.setString(13, transport.getKindOfTransport());
+            if(transport.getKindOfTransport() == null)
+            	query.setString(13, "");
+            else
+            	query.setString(13, transport.getKindOfTransport());
             if(transport.getKindOfIllness() == null)
                 query.setString(14, null);
             else
@@ -1250,7 +1253,7 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             if(transport.getKindOfTransport()!= null)
             	query.setString(11, transport.getKindOfTransport());
             else
-            	query.setString(11, null);
+            	query.setString(11, "");
             if(transport.getKindOfIllness() == null)
                 query.setString(12, null);
             else
