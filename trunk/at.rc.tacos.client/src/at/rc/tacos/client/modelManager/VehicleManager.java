@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.List;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-
-import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
