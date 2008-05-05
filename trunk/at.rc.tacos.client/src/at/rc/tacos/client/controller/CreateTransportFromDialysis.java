@@ -81,8 +81,10 @@ public class CreateTransportFromDialysis extends Action
 		newTransport.setPatient(patient.getPatient());
 		newTransport.setPlanedLocation(patient.getLocation());
 		Disease disease = new Disease("Dialyse");
-		newTransport.setKindOfIllness(disease);
-		newTransport.setKindOfTransport(patient.getKindOfTransport());
+		if(disease != null)
+			newTransport.setKindOfIllness(disease);
+		if(patient.getKindOfTransport() != null)
+			newTransport.setKindOfTransport(patient.getKindOfTransport());
 		//add the transport to the database
 		NetWrapper.getDefault().sendAddMessage(Transport.ID, newTransport);
 		
