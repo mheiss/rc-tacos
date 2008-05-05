@@ -3,10 +3,12 @@ package at.rc.tacos.client.modelManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
+import at.rc.tacos.client.util.Util;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
@@ -15,6 +17,7 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * This class manages the vehicles.
@@ -261,7 +264,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     		VehicleDetail vehicle;
     		//the transport manager
             TransportManager transportManager = ModelFactory.getInstance().getTransportManager();
-          //the added transport
+            //the added transport
             Transport transport = (Transport)evt.getNewValue();
             
             if(transport == null)
@@ -278,7 +281,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             int index = objectList.indexOf(vehicle);
             VehicleDetail detail = objectList.get(index);
             
-          //get the list of transports
+            //get the list of transports
             List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
 
             
@@ -452,7 +455,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             StaffMember member = entry.getStaffMember();
             if(member == null)
             	return;
-            
+                
             //check if we have a vehicle for this member
             VehicleDetail detail = getVehicleOfStaff(member.getStaffMemberId());
             if(detail == null)
@@ -462,7 +465,17 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             if(entry.getRealEndOfWork() == 0)
             	return;
             
-            //driver?
+            //don't detach the staff member from the car if there is a checked in entry
+            RosterEntryManager rosterManager = ModelFactory.getInstance().getRosterEntryManager();
+            RosterEntry checkedInEntry = rosterManager.getCheckedInRosterEntryByStaffId(member.getStaffMemberId());
+            Calendar calToday = Calendar.getInstance();
+            
+            if(checkedInEntry != null && ((MyUtils.isEqualDate(calToday.getTimeInMillis(), checkedInEntry.getPlannedEndOfWork()) ||
+            		(MyUtils.isEqualDate(calToday.getTimeInMillis(), checkedInEntry.getPlannedEndOfWork())))))
+            	return;
+            
+            //detach the staff member from the car
+            //driver
             if(member.equals(detail.getDriver()))
             	detail.setDriver(null);
             //paramedic
