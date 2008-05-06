@@ -141,11 +141,11 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		final Composite composite = form.getBody();
 		
 		//the sash form for the filter and the prebooking view
-		SashForm sashForm = new SashForm(composite, SWT.HORIZONTAL);
 //		FilterView filter = new FilterView();
 //		filter.createPartControl(sashForm);
 		
-		SashForm sash_prebooking = new SashForm(sashForm, SWT.HORIZONTAL);
+		SashForm sash_prebooking = new SashForm(composite
+				, SWT.HORIZONTAL);
 
 		
 //		sashForm.setWeights(new int[] {11, 89 });
