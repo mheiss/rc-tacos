@@ -30,7 +30,7 @@ import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
- * 
+ * Edit Roster Entry Controller
  * @author Payer Martin
  * @version 1.0
  */

@@ -24,13 +24,12 @@ import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
- * Roster Controller
+ * Roster Controller.
  * @author Payer Martin
  * @version 1.0
  */
 public class RosterController extends Controller {
 
-	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
