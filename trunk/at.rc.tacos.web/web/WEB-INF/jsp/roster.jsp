@@ -125,30 +125,32 @@
 									<c:otherwise>
 									</c:otherwise>
 								</c:choose>
-								<c:choose>
-									<c:when
-										test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
-										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-											<c:param name="action">register</c:param>
-											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-										</c:url>
-										<c:if test="${breakRow eq true}">
-											<br />
-										</c:if>
-										<a href="${url}">Anmelden</a>
-									</c:when>
-									<c:when
-										test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.plannedEndOfWork}">
-										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-											<c:param name="action">signOff</c:param>
-											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-										</c:url>
-										<c:if test="${breakRow eq true}">
-											<br />
-										</c:if>
-										<a href="${url}">Abmelden</a>
-									</c:when>
-								</c:choose>
+								<c:if test="${params.isInternalSession eq true}">
+									<c:choose>
+										<c:when
+											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
+											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+												<c:param name="action">register</c:param>
+												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+											</c:url>
+											<c:if test="${breakRow eq true}">
+												<br />
+											</c:if>
+											<a href="${url}">Anmelden</a>
+										</c:when>
+										<c:when
+											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.plannedEndOfWork}">
+											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+												<c:param name="action">signOff</c:param>
+												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+											</c:url>
+											<c:if test="${breakRow eq true}">
+												<br />
+											</c:if>
+											<a href="${url}">Abmelden</a>
+										</c:when>
+									</c:choose>
+								</c:if>
 							</c:when>
 							<c:when test="${params.authorization eq 'Administrator'}">
 								<c:url var="url" value="/Dispatcher/editRosterEntry.do">
@@ -161,30 +163,32 @@
 								</c:url>
 								<a href="${url}">Löschen</a>
 								<c:set var="breakRow">true</c:set>
-								<c:choose>
-									<c:when
-										test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
-										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-											<c:param name="action">register</c:param>
-											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-										</c:url>
-										<c:if test="${breakRow eq true}">
-											<br />
-										</c:if>
-										<a href="${url}">Anmelden</a>
-									</c:when>
-									<c:when
-										test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null}">
-										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-											<c:param name="action">signoff</c:param>
-											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-										</c:url>
-										<c:if test="${breakRow eq true}">
-											<br />
-										</c:if>
-										<a href="${url}">Abmelden</a>
-									</c:when>
-								</c:choose>
+								<c:if test="${params.isInternalSession eq true}">
+									<c:choose>
+										<c:when
+											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
+											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+												<c:param name="action">register</c:param>
+												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+											</c:url>
+											<c:if test="${breakRow eq true}">
+												<br />
+											</c:if>
+											<a href="${url}">Anmelden</a>
+										</c:when>
+										<c:when
+											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null}">
+											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+												<c:param name="action">signoff</c:param>
+												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+											</c:url>
+											<c:if test="${breakRow eq true}">
+												<br />
+											</c:if>
+											<a href="${url}">Abmelden</a>
+										</c:when>
+									</c:choose>
+								</c:if>
 							</c:when>
 						</c:choose></td>
 					</tr>

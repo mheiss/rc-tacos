@@ -39,6 +39,9 @@ public class RosterController extends Controller {
 		final String authorization = userSession.getLoginInformation().getAuthorization();
 		params.put("authorization", authorization);
 		
+		// Put to model if request was internal or external
+		params.put("isInternalSession", userSession.isInternalSession());
+		
 		// Put current date to parameter to parameter list
 		params.put("currentDate", new Date());
 		
