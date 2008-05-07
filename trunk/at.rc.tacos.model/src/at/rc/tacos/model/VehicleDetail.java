@@ -78,8 +78,8 @@ public class VehicleDetail extends AbstractMessage
     public String toString()
     {
         return "vehicleName: "+vehicleName+"; vehicleType: "+vehicleType+"; driver: "+driver
-        +"; firstParamedic: "+firstParamedic+"; secondParamedic: "+secondParamedic+"; mobilePhone: "+mobilePhone
-        +"; vehicleNotes: "+vehicleNotes+"; basicStation: "+basicStation+"; currentStation: "+currentStation+"; readyforAction: "
+        +"; firstParamedic: "+firstParamedic +"; secondParamedic: "+secondParamedic +"; mobilePhone: "+mobilePhone
+        +"; vehicleNotes: "+vehicleNotes+"; basicStation: "+basicStation+"; currentStation: "+currentStation +"; readyforAction: "
         +readyForAction+"; outOfOrder: "+outOfOrder+"; transportStatus: "+transportStatus;
     }
 
