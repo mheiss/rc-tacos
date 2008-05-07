@@ -76,6 +76,9 @@ public class DeleteRosterEntryController extends Controller {
 		}
 		
 		connection.sendRemoveRequest(RosterEntry.ID, rosterEntry);
+		if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
+			throw new IllegalArgumentException("Fehler: Fehler bei Verbindung zum Server aufgetreten.");
+		}
 		
 		String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?messageCode=" + MESSAGE_CODE_DELETED;
 		

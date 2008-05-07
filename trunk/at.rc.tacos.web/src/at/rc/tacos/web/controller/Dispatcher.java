@@ -27,8 +27,8 @@ import at.rc.tacos.web.session.UserSession;
 public class Dispatcher extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
-	public static final String VIEWS_BUNDLE_PATH = "at.rc.tacos.web.controller.urls";
-	public static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.controller.server";
+	public static final String VIEWS_BUNDLE_PATH = "at.rc.tacos.web.config.urls";
+	public static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.config.server";
 	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.config.net";
 
 
@@ -66,7 +66,9 @@ public class Dispatcher extends HttpServlet
 		}
 		
 		//Check if the request came from an internal IP
-		if (Pattern.matches(server.getString("server.reverseProxy.address"), request.getRemoteAddr())) {
+		if (Pattern.matches(server.getString("server.reverseProxy.address.pattern"), request.getRemoteAddr())) {
+			userSession.setInternalSession(false);
+		} else if (Pattern.matches(server.getString("server.network.address.pattern"), request.getRemoteAddr())) {
 			userSession.setInternalSession(true);
 		} else {
 			userSession.setInternalSession(false);

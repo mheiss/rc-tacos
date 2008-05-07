@@ -107,6 +107,9 @@ public class RegisterRosterEntryController extends Controller {
 			}
 			rosterEntry.setRealStartOfWork(currDate.getTime());
 			connection.sendUpdateRequest(RosterEntry.ID, rosterEntry);
+			if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
+				
+			}
 			messageCode = MESSAGE_CODE_REGISTERED;
 			
 		} else if (action.equals(ACTION_SIGN_OFF)) {
@@ -123,6 +126,9 @@ public class RegisterRosterEntryController extends Controller {
 			}
 			rosterEntry.setRealEndOfWork(currDate.getTime());
 			connection.sendUpdateRequest(RosterEntry.ID, rosterEntry);
+			if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
+				throw new IllegalArgumentException("Fehler: Fehler bei Verbindung zum Server aufgetreten.");
+			}
 			messageCode = MESSAGE_CODE_SIGNED_OFF;
 		}
 		

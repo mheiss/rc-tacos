@@ -366,9 +366,12 @@ public class AddRosterEntryController extends Controller {
 				}
 				rosterEntry.setStandby(standby);
 				connection.sendAddRequest(RosterEntry.ID, rosterEntry);
-				if(connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
-					params.put("addedCount", 1);
+				if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
+					
 				}
+				params.put("addedCount", 1);
+				userSession.getFormDefaultValues().setDefaultLocation(location);
+				userSession.getFormDefaultValues().setDefaultDate(plannedStartOfWork);
 			}
 		}
 		params.put("errors", errors);
