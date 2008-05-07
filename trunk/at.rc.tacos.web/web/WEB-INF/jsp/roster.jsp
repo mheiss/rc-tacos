@@ -1,14 +1,24 @@
 <%@ include file="includes.jsp"%>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 <c:choose>
-	<c:when test="${editedCount gt 0}">
+	<c:when test="${params.messageCode eq 'edited'}">
 		<div id="submitSuccess">Sie haben einen Dienstplaneintrag
 		erfolgreich bearbeitet</div>
 		<br />
 	</c:when>
-	<c:when test="${deletedCount gt 0}">
+	<c:when test="${params.messageCode eq 'deleted'}">
 		<div id="submitSuccess">Sie haben einen Dienstplaneintrag
 		erfolgreich gelöscht</div>
+		<br />
+	</c:when>
+	<c:when test="${params.messageCode eq 'registered'}">
+		<div id="submitSuccess">Sie haben erfolgreich einen Dienst
+		angemeldet</div>
+		<br />
+	</c:when>
+	<c:when test="${params.messageCode eq 'signedOff'}">
+		<div id="submitSuccess">Sie haben erfolgreich einen Dienst
+		abgemeldet</div>
 		<br />
 	</c:when>
 </c:choose>
@@ -63,20 +73,20 @@
 					<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 						<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName}
 						${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
-						<td nowrap="nowrap"><fmt:formatDate type="both"
-							dateStyle="short" timeStyle="short"
+						<td><fmt:formatDate type="both" dateStyle="short"
+							timeStyle="short"
 							value="${rosterEntryContainer.plannedStartOfWork}" /></td>
-						<td nowrap="nowrap"><fmt:formatDate type="both"
-							dateStyle="short" timeStyle="short"
+						<td><fmt:formatDate type="both" dateStyle="short"
+							timeStyle="short"
 							value="${rosterEntryContainer.plannedEndOfWork}" /></td>
-						<td nowrap="nowrap"><c:choose>
+						<td><c:choose>
 							<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
 							<c:otherwise>
 								<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
 									value="${rosterEntryContainer.realStartOfWork}" />
 							</c:otherwise>
 						</c:choose></td>
-						<td nowrap="nowrap"><c:choose>
+						<td><c:choose>
 							<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
 							<c:otherwise>
 								<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
@@ -110,27 +120,32 @@
 											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										</c:url>
 										<a href="${url}">Löschen</a>
-										<br />
+										<c:set var="breakRow">true</c:set>
 									</c:when>
 									<c:otherwise>
 									</c:otherwise>
 								</c:choose>
 								<c:choose>
 									<c:when
-										test="${rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
+										test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
 										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
 											<c:param name="action">register</c:param>
 											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										</c:url>
+										<c:if test="${breakRow eq true}">
+											<br />
+										</c:if>
 										<a href="${url}">Anmelden</a>
 									</c:when>
 									<c:when
-										test="${rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.plannedEndOfWork}">
-										<br />
+										test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.plannedEndOfWork}">
 										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
 											<c:param name="action">signOff</c:param>
 											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										</c:url>
+										<c:if test="${breakRow eq true}">
+											<br />
+										</c:if>
 										<a href="${url}">Abmelden</a>
 									</c:when>
 								</c:choose>
@@ -145,23 +160,28 @@
 									<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 								</c:url>
 								<a href="${url}">Löschen</a>
+								<c:set var="breakRow">true</c:set>
 								<c:choose>
 									<c:when
-										test="${rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
-										<br />
+										test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
 										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
 											<c:param name="action">register</c:param>
 											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										</c:url>
+										<c:if test="${breakRow eq true}">
+											<br />
+										</c:if>
 										<a href="${url}">Anmelden</a>
 									</c:when>
 									<c:when
-										test="${rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null}">
-										<br />
+										test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null}">
 										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
 											<c:param name="action">signoff</c:param>
 											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										</c:url>
+										<c:if test="${breakRow eq true}">
+											<br />
+										</c:if>
 										<a href="${url}">Abmelden</a>
 									</c:when>
 								</c:choose>

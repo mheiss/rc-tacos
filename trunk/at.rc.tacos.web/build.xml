@@ -70,9 +70,9 @@
 				<include name="**/*.*" />
 			</fileset>
 		</copy>
-		<copy verbose="true" todir="${production.deploy.path}/${name}/WEB-INF/classes/at/rc/tacos/web/net" overwrite="true">
+		<copy verbose="true" todir="${production.deploy.path}/${name}/WEB-INF/classes/at/rc/tacos/web/config" overwrite="true">
 			<fileset dir="${production-specific.dir}">
-				<include name="net.properties" />
+				<include name="*.properties" />
 			</fileset>
 		</copy>
 		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
@@ -95,9 +95,9 @@
 				<include name="**/*.*" />
 			</fileset>
 		</ftp>
-		<ftp server="${ftp.ip}" port="${ftp.port}" remotedir="${ftp.dir}/${name}/WEB-INF/classes/at/rc/tacos/web/net" userid="${ftp.username}" password="${ftp.password}" depends="yes" binary="no" passive="yes" systemTypeKey="Windows" verbose="true" overwrite="true">
+		<ftp server="${ftp.ip}" port="${ftp.port}" remotedir="${ftp.dir}/${name}/WEB-INF/classes/at/rc/tacos/web/config" userid="${ftp.username}" password="${ftp.password}" depends="yes" binary="no" passive="yes" systemTypeKey="Windows" verbose="true" overwrite="true">
 			<fileset dir="${production-specific.dir}">
-				<include name="net.properties" />
+				<include name="*.properties" />
 			</fileset>
 		</ftp>
 		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
