@@ -127,7 +127,7 @@ public class RegisterRosterEntryController extends Controller {
 			rosterEntry.setRealEndOfWork(currDate.getTime());
 			connection.sendUpdateRequest(RosterEntry.ID, rosterEntry);
 			if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
-				throw new IllegalArgumentException("Fehler: Fehler bei Verbindung zum Server aufgetreten.");
+				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 			}
 			messageCode = MESSAGE_CODE_SIGNED_OFF;
 		}

@@ -49,7 +49,7 @@ public class LoginController extends Controller {
 		if (!serverListening) {
 			serverListening = client.connect(netBundle.getString("failover.host"), Integer.parseInt(netBundle.getString("failover.port")));
 		}
-		if (!serverListening) throw new IllegalArgumentException();
+		if (!serverListening) throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		else {
 			AbstractMessage result = client.sendLoginRequest(username, password);
 			if (Login.ID.equalsIgnoreCase(client.getContentType())) {
