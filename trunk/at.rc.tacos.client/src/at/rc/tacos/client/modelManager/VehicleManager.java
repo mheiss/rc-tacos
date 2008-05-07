@@ -55,6 +55,8 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         {
             public void run ()       
             {
+            	if(vehicle.isOutOfOrder() |! vehicle.isReadyForAction())
+            		vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
                 objectList.add(vehicle);
                 firePropertyChange("VEHICLE_ADD", null, vehicle);
             }
@@ -72,7 +74,11 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     		public void run()
     		{
     			for(VehicleDetail detail:vehicleList)
+    			{
+    				if(detail.isOutOfOrder() |! detail.isReadyForAction())
+                		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
     				objectList.add(detail);
+    			}
 				firePropertyChange("VEHICLE_ADD_ALL", null, vehicleList);
     		}
     	});	
@@ -106,6 +112,8 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             	//assert we have this vehicle
             	if(!objectList.contains(vehicle))
             		return;
+            	if(vehicle.isOutOfOrder() |! vehicle.isReadyForAction())
+            		vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
                 //get the position of the entry
                 int index = objectList.indexOf(vehicle);
                 objectList.set(index, vehicle);
@@ -271,8 +279,9 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             if(transport.getVehicleDetail() == null)
             	return;
             
-            if(!transport.getVehicleDetail().getVehicleName().equalsIgnoreCase("NEF"))
-            	return;
+            //TODO: abklären, wozu diese Abfrage gedacht war!
+//            if(!transport.getVehicleDetail().getVehicleName().equalsIgnoreCase("NEF"))
+//            	return;
             
             vehicle = transport.getVehicleDetail();
             
@@ -282,44 +291,15 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             //get the list of transports
             List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
 
-            
-            //simplest calculation comes first ;)
-            //green (30) is for a 'underway'(program status) vehicle not possible
-            if(transportList.isEmpty())
-            {
-                detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
-                NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
-                return;
-            }
+            this.checkVehicleColorState(transportList, detail);
 
-            //status list
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            //get the most important status of each transport
-            for(Transport trList:transportList)
-            {
-                int mostImportantStatus = trList.getMostImportantStatusMessageOfOneTransport();
-                list.add(mostImportantStatus);
-            }
-
-            //get most important status of one vehicle (from the list)
-
-            //for a 'red' status
-            if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
-            {
-                detail.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
-                NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
-                return;
-            }
-
-            //for a 'yellow' status
-            detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
-            NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
             
             
             
     	}
         if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	
+        	System.out.println("im TRANSPORT_UPDATE vom VehicleManager");
             //the transport manager
             TransportManager transportManager = ModelFactory.getInstance().getTransportManager();
 
@@ -411,37 +391,8 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             //TODO this is the reason for the automatically vehicle updates (triggered from the DateTime (SWT.CALENDAR)- Field
             //without this calculation the status green is not set correctly
             
-            //simplest calculation comes first ;)
-            //green (30) is for a 'underway'(program status) vehicle not possible
-            if(transportList.isEmpty())
-            {
-                detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
-                NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
-                return;
-            }
-
-            //status list
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            //get the most important status of each transport
-            for(Transport trList:transportList)
-            {
-                int mostImportantStatus = trList.getMostImportantStatusMessageOfOneTransport();
-                list.add(mostImportantStatus);
-            }
-
-            //get most important status of one vehicle (from the list)
-
-            //for a 'red' status
-            if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
-            {
-                detail.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
-                NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
-                return;
-            }
-
-            //for a 'yellow' status
-            detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
-            NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);	
+            System.out.println("VehicleManager UPDATE vor checkVehicleColorState");
+            this.checkVehicleColorState(transportList, detail);
         }
         
         if("ROSTERENTRY_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
@@ -497,5 +448,50 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             		"Der Mitarbeiter "+member.getFirstName() + " " +member.getLastName()+ " hat sich abgemeldet.\n" +
             		"Er wurde vom Fahrzeug "+detail.getVehicleName() +" abgezogen");
         }
-    }		
+    }
+    
+    private void checkVehicleColorState(List<Transport> transportList, VehicleDetail detail)
+    {
+    	System.out.println("vehDetail: " +detail.getVehicleName());
+    	for(Transport tr : transportList)
+    	{
+    		System.out.println("transport from street: " +tr.getFromStreet());
+    	}
+        //simplest calculation comes first ;)
+        //green (30) is for a 'underway'(program status) vehicle not possible
+        if(transportList.isEmpty())
+        {
+            detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+            NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+            return;
+        }
+
+        //status list
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        //get the most important status of each transport
+        for(Transport trList:transportList)
+        {
+            int mostImportantStatus = trList.getMostImportantStatusMessageOfOneTransport();
+            list.add(mostImportantStatus);
+        }
+
+        //get most important status of one vehicle (from the list)
+
+        //for a 'red' status
+        if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
+        {
+            detail.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
+            NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+            return;
+        }
+
+        //for a 'yellow' status
+        detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
+        NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+        
+        //for a 'gray' status
+        if(detail.isOutOfOrder() |! detail.isReadyForAction())
+        	detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+        
+    }
 }	
