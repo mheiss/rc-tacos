@@ -1,110 +1,193 @@
-Installation
+Running under Eclipse
 ------------------------------------------------
 
-To set up Tomcat, SSL and Eclipse for rc-tacos do the following:
+1. Checkout project.
 
-1. Checkout project (be aware of dependencies to at.rc.tacos.server at.rc.tacos.core.net, at.rc.tacos.model).
-   For this reason check out all projects into same root folder/workspace.
+2. Install Java SDK 1.6.x.
 
-2. Install Apache Tomcat 6.0.
+3. Install Tomcat 6.x.
 
-3. If you want to use Eclipse to run the application import Tomcat into Eclipse.
-   Use Project-Properties to set J2EE module dependencies to at.rc.tacos.model and at.rc.tacos.core.net)
+4. Install SQL Server 2005 and run db creation scripts if you run database on same machine.
 
-4. If you use the Sysdeo Tomcat Plugin for Eclipse, do the following in Eclipse:
-   in Window / Preferences / Tomcat set tomcat home to e.g. D:\Devel\tomcat-6.0.10
+4. Install OpenSSL if you plan to use AJP. It is used if tcnative-1.dll is in you Tomcat /bin directory.
+
+5. File->New->Server I tested it with Tomcat 6.0 but it should work on 5.0
+   You have to choose a java virtual machine when you import the server. For Tomcat 6.0 you need JRE 1.6.
+
+6. Be aware of dependencies to projects at.rc.tacos.core.net and at.rc.tacos.model.
+   Use Project->Properties->J2EE Module Dependencies to resolve dependencies dynamically.
    
-   Then add the following JVM parameter in Window / Preferences / Tomcat / JVM Settings:
-   -Djava.library.path=E:\tomcat-6.0.10\bin
+   If you want to run server on same machine you have another dependency to at.rc.tacos.server.
+   Checkout the project.
+      
+7. Rename _build.properties to build.properties and be aware that the following paths are set:
    
-5. Rename _build.properties in root directory to build.properties. Check the following properties in build.properties:
+   Enter the path to you Eclipse appserver. You can find it in workspace.
+   eclipse.appserver.home = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0
    
-   appserver.home (directory of your appserver - needed libraries for compilation)
-   eclipse.appserver.home (directory of your appserver in eclipse, can be found in workspace/.plugins/org.eclipse.wst.server.core/tmp0 - must be set if you want to create keys for eclipse integrated tomcat)
-   
-   production.appserver.home (directory of your production appserver - must be set if you want to deploy to production system or create keys for production system)
-   
-   production.ftp.ip
-   production.ftp.port
-   production.ftp.username
-   production.ftp.password
-   production.ftp.dir
-   (These properties must be set if you want to deploy to production system via FTP.)
-   
-   openssl.bin = E:/OpenSSL/bin (path to you OpenSSL installation directory, must be set if you want to generate OpenSSL keys.)
-   
+   Enter the path to your OpenSSL installation directory if you use Tomcat with tcnative-1.dll in /bin directory:
+   openssl.bin = E:/OpenSSL/bin
+
+   You can use those default values:
    ssl.key.validity = 1095
    ssl.key.pass = xu7nrAv
-   (use these values)
-   
    ssl.key.dname.openssl = ""/C=AT/ST=CA/L=Graz/CN=localhost/O=Rotes Kreuz""
-   (use this value - must be set if you want to generate keys with OpenSSL, OpenSSL must be installed)
-   
    ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=localhost,O=Rotes Kreuz""
-   (use this value - must be set if you want to generate keys with J2SSE, Java must be installed)
    
-6. Rename the file _server.properties (WebServer Settings) in package at.rc.tacos.web.controller to server.properties and check the values. Must be the same ports as in server.xml.
+8. Go to package at.rc.tacos.web.config and edit net.properties. Be sure that
+   that localhost is used as primary server if you run tacos server on same machine.
+   Be sure that you use the same ports like in tacos server configuration.
 
-7. Rename the file _net.properties (Connection to Server Settings)= in package at.rc.tacos.web.config to net.properties and check the values. You must run at.rc.tacos.server somewhere to use at.rc.tacos.web.
-   Be sure that configuration of the server is equivalent to net configuration of the webserver.
+   # Primary server connection
+   server.host = localhost
+   server.port = 4711
+   server.description = Primärer Server
 
-a.)
-If APR is used with Tomcat (it's used when tcnative-1.dll is in tomcat-6.0.10\bin) then
-you should use OpenSSL with Tomcat instead of the standard java security tools (JSSE).
-So you will need to:
+   # Fallback server connection
+   failover.host = 81.189.52.155
+   failover.port = 4711
+   failover.description = Backup Server
+   
+9. Go to package at.rc.tacos.web.config and edit server.properties.
 
-7a.) Install OpenSSL
-    to e.g. C:\Tools\OpenSSL
-    (download it from http://www.openssl.org/related/binaries.html) 
+   Enter ports that Tomcat uses here:
+   server.default.port = 8080
+   server.secure.port = 8443
 
-8a.) Run ssl-genkey-openssl Ant build task or run production-ssl-genkey-openssl (to create key for production system).
+   You can use these default values:
+   server.http.url.pattern = http://.*?
+   server.https.prefix = https://
 
-9a.) Make sure the HTTPS connector in server.xml looks like the following (the port
-    number can vary):
+   Enter regex Pattern for reverse proy here. You can use this value:
+   server.reverseProxy.address.pattern = 172.16.0.2
+   
+   Enter regex Pattern for internal network here. You can use this value:
+   server.network.address.pattern = 127.0.0.\\d{1,3}
 
-	Under Eclipse:
-    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+10. Go to Run/Debug Setting->Apache Tomcat and add the following value:
+   -Djava.library.path=E:\tomcat-6.0.10\bin
+   
+11.Try to run application on server. (won't work but that's ok :-)).
+
+12.Run ants target ssl-genkey-jsse if you want to use Java server certificate.
+   
+   Run ants target ssl-genkey-openssl if you want to use OpenSSL server certificate.
+
+13.Edit server.xml under Eclipse
+
+   OpenSSL:
+   <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
                SSLCertificateFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/server.crt" 
                SSLCertificateKeyFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/server.key"
                />
                
-    On Production System:
-    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
-               maxThreads="150" scheme="https" secure="true" 
-               clientAuth="false" sslProtocol="TLS"
-               SSLCertificateFile="conf/server.crt" 
-               SSLCertificateKeyFile="conf/server.key"
-               />
-
-b.)
-Otherwise if the standard java security libs are used then you will have to do
-the following: 
-
-7b). Make sure that tcnative-1.dll is NOT in the tomcat-6.0.10\bin directory,
-    otherwise SSLEngine won't work.
-
-8b). Run ssl-genkey-jsse Ant build task or production-ssl-genkey-jsse (to create key for production system).
-
-9b). Make sure the HTTPS connector in server.xml looks like the following:
-
-	Under Eclipse:
-    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+   JSSE:        
+   <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
                keystoreFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/.keystore" keystorePass="xu7nrAv"
                />
-    On Production System:
-    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+
+14.Try to run application on server again. It should work now.
+   If you run Tacos server on same machine be sure that it runs (run as Java application).
+
+
+Running application on production system
+------------------------------------------------
+
+If you want to install the application on production system, you need network access to
+the machine the application will be running to. You can do all steps of the build
+proccess by running ant targets out of your development environment (for example Eclipse).
+A special feature is the possibility to deploy the application via FTP if you haven't
+got direct access to the server network.
+
+1. Checkout project into your development environment (the machine you run the build proccess from).
+
+2. Install Java SDK 1.6.x on the same machine and install it on production system.
+
+3. Install Tomcat (best 6.x) on the same machine and install it on production system.
+
+4. Install OpenSSL if you plan to use AJP on the machine your development environment is running on. It is used if tcnative-1.dll is in you Tomcat /bin directory.
+
+5. Be aware of dependencies to projects at.rc.tacos.core.net and at.rc.tacos.model.
+   For this reason use same workspace for all projects.
+
+6. Rename _build.properties in root directory to build.properties. Check the following properties in build.properties:
+   
+   Enter installation directory of your appserver on the machine development environment. The path is needed for compilation via Ants:
+   appserver.home=E:/tomcat-6.0
+   
+   Enter installation directory of your appserver on production server:
+   production.appserver.home=E:/tomcat-6.0
+   production.deploy.path=${appserver.home}/webapps
+
+   Enter these properties if you want to deploy via FTP:
+   production.ftp.ip = 
+   production.ftp.port =
+   production.ftp.username =
+   production.ftp.password =
+   production.ftp.dir =
+
+   Enter Tomcat properties if you want to use tomcat manager on production system:
+   production.tomcat.manager.url=http://localhost:8080/manager
+   production.tomcat.manager.username=
+   production.tomcat.manager.password=
+
+   Enter SSL data for production system:
+   production.ssl.key.validity = 1095
+   production.ssl.key.pass = xu7nrAv
+   production.ssl.key.dname.openssl = ""/C=AT/ST=CA/L=Graz/CN=localhost/O=Rotes Kreuz""
+   production.ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=localhost,O=Rotes Kreuz""
+   
+7. Go to folder production-specific and edit net.properties.
+   Be sure that you use the same ports like in tacos server configuration.
+
+   Primary server connection --- red cross station primary server ip
+   server.host = 172.16.10.7
+   server.port = 4711
+   server.description = Primärer Server
+
+   Fallback server connection --- red cross station failback server ip
+   failover.host = 172.16.10.8
+   failover.port = 4711
+   failover.description = Backup Server
+   
+8. Go to folder production-specific at.rc.tacos.web.config and edit server.properties.
+
+   Enter ports that you appserver on production system uses for HTTP Connector and HTTPS Connector.
+   If you don't no go to server.xml
+   server.default.port = 80
+   server.secure.port = 443
+
+   You can use these default values:
+   server.http.url.pattern = http://.*?
+   server.https.prefix = https://
+
+   You can use these values:
+   server.reverseProxy.address = 172.16.0.2
+   server.network.address.pattern = 172.16.0.\\d{1,3}
+   
+9. Run ants target production-ssl-genkey-jsse if you want to use Java server certificate.
+   
+   Run ants target production-ssl-genkey-openssl if you want to use OpenSSL server certificate.
+
+10.Edit server.xml under Eclipse:
+               
+   OpenSSL:
+   <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
+               maxThreads="150" scheme="https" secure="true" 
+               clientAuth="false" sslProtocol="TLS"
+               SSLCertificateFile="conf/server.crt" 
+               SSLCertificateKeyFile="conf/server.key"
+               /
+
+   JSSE:
+   <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
                keystoreFile="conf/.keystore" keystorePass="xu7nrAv"
                />
                
-10.
-Under Eclipse:
-If you want to run the application under Eclipse choose Run on Server and choose your imported Server.
-
-On Production System:
-If you want to run the application on producation system run ant targets production-compile, production-deploy or production-deploy-ftp to deploy via FTP. Start Tomcat.)
+11.Run production-compile, production-deploy (production-deploy-ftp) and start Tomcat.            
