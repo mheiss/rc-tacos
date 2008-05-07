@@ -104,7 +104,7 @@
 							title="${rosterEntryContainer.rosterEntry.rosterNotes}"
 							src="<c:url value="/image/info.gif"/>" /></td>
 						<td><c:choose>
-							<c:when test="${params.authorization eq 'Benutzer'}">
+							<c:when test="${authorization eq 'Benutzer'}">
 								<c:choose>
 									<c:when
 										test="${params.currentDate gt rosterEntryContainer.deadline}">
@@ -152,7 +152,7 @@
 									</c:choose>
 								</c:if>
 							</c:when>
-							<c:when test="${params.authorization eq 'Administrator'}">
+							<c:when test="${authorization eq 'Administrator'}">
 								<c:url var="url" value="/Dispatcher/editRosterEntry.do">
 									<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 								</c:url>

@@ -231,6 +231,11 @@ public class Dispatcher extends HttpServlet
 						final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
 						final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
 						request.setAttribute("params", params);
+						
+						//Put authorization to request context
+						if (userSession.getLoggedIn()) {
+							request.setAttribute("authorization", userSession.getLoginInformation().getAuthorization());
+						}
 						//Forward to view if response is not commited and view is found in views.properties
 						if (!response.isCommitted() && viewFound) {
 							//Differentiate if View uses model.jsp or not
