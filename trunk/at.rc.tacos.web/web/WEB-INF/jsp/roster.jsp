@@ -1,19 +1,17 @@
 <%@ include file="includes.jsp"%>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
-	<c:choose>
-		<c:when test="${editedCount gt 0}">
-			<div id="submitSuccess">
-				Sie haben einen Dienstplaneintrag erfolgreich bearbeitet
-			</div>
-			<br />
-		</c:when>
-		<c:when test="${deletedCount gt 0}">
-			<div id="submitSuccess">
-				Sie haben einen Dienstplaneintrag erfolgreich gelöscht
-			</div>
-			<br />
-		</c:when>
-	</c:choose>
+<c:choose>
+	<c:when test="${editedCount gt 0}">
+		<div id="submitSuccess">Sie haben einen Dienstplaneintrag
+		erfolgreich bearbeitet</div>
+		<br />
+	</c:when>
+	<c:when test="${deletedCount gt 0}">
+		<div id="submitSuccess">Sie haben einen Dienstplaneintrag
+		erfolgreich gelöscht</div>
+		<br />
+	</c:when>
+</c:choose>
 <table class="standardForm"">
 	<tr>
 		<td>Ortsstelle:</td>
@@ -112,12 +110,32 @@
 											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										</c:url>
 										<a href="${url}">Löschen</a>
+										<br />
 									</c:when>
 									<c:otherwise>
 									</c:otherwise>
 								</c:choose>
+								<c:choose>
+									<c:when
+										test="${rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
+										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+											<c:param name="action">register</c:param>
+											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										</c:url>
+										<a href="${url}">Anmelden</a>
+									</c:when>
+									<c:when
+										test="${rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.plannedEndOfWork}">
+										<br />
+										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+											<c:param name="action">signOff</c:param>
+											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										</c:url>
+										<a href="${url}">Abmelden</a>
+									</c:when>
+								</c:choose>
 							</c:when>
-							<c:otherwise>
+							<c:when test="${params.authorization eq 'Administrator'}">
 								<c:url var="url" value="/Dispatcher/editRosterEntry.do">
 									<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 								</c:url>
@@ -127,7 +145,27 @@
 									<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 								</c:url>
 								<a href="${url}">Löschen</a>
-							</c:otherwise>
+								<c:choose>
+									<c:when
+										test="${rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
+										<br />
+										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+											<c:param name="action">register</c:param>
+											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										</c:url>
+										<a href="${url}">Anmelden</a>
+									</c:when>
+									<c:when
+										test="${rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null}">
+										<br />
+										<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+											<c:param name="action">signoff</c:param>
+											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										</c:url>
+										<a href="${url}">Abmelden</a>
+									</c:when>
+								</c:choose>
+							</c:when>
 						</c:choose></td>
 					</tr>
 				</c:forEach>
