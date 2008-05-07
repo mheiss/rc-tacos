@@ -27,9 +27,9 @@ import at.rc.tacos.web.session.UserSession;
 public class Dispatcher extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
-	public static final String VIEWS_BUNDLE_PATH = "at/rc/tacos/web/config/urls";
-	public static final String SERVER_BUNDLE_PATH = "at/rc/tacos/web/config/server";
-	public static final String NET_BUNDLE_PATH = "at/rc/tacos/web/config/net";
+	public static final String VIEWS_BUNDLE_PATH = "at.rc.tacos.web.config.urls";
+	public static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.config.server";
+	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.config.net";
 
 
 	/**
