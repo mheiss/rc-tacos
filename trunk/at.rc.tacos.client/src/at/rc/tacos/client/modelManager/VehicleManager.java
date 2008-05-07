@@ -472,7 +472,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             Calendar calToday = Calendar.getInstance();
             
             if(checkedInEntry != null && ((MyUtils.isEqualDate(calToday.getTimeInMillis(), checkedInEntry.getPlannedEndOfWork()) ||
-            		(MyUtils.isEqualDate(calToday.getTimeInMillis(), checkedInEntry.getPlannedEndOfWork())))))
+            		(MyUtils.isEqualDate(calToday.getTimeInMillis(), checkedInEntry.getPlannedStartOfWork())))))
             	return;
             
             //detach the staff member from the car
