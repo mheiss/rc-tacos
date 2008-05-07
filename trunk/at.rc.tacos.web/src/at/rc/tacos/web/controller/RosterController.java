@@ -134,6 +134,12 @@ public class RosterController extends Controller {
 				deadlineCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
 				deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
 				rosterEntryContainer.setDeadline(deadlineCalendar.getTime());
+				
+				final Calendar registerStartCalendar = Calendar.getInstance();
+				registerStartCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
+				registerStartCalendar.set(Calendar.HOUR, registerStartCalendar.get(Calendar.HOUR) - 24);
+				rosterEntryContainer.setRegisterStart(registerStartCalendar.getTime());
+				
 				rosterEntryContainerList.add(rosterEntryContainer);
 			}
 			params.put("rosterEntryContainerList", rosterEntryContainerList);

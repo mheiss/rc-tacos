@@ -12,6 +12,7 @@ public class RosterEntryContainer {
 	private Date realStartOfWork;
 	private Date realEndOfWork;
 	private Date deadline;
+	private Date registerStart;
 	private RosterEntry rosterEntry;
 	public Date getPlannedStartOfWork() {
 		return plannedStartOfWork;
@@ -48,5 +49,11 @@ public class RosterEntryContainer {
 	}
 	public void setDeadline(Date deadline) {
 		this.deadline = deadline;
+	}
+	public Date getRegisterStart() {
+		return registerStart;
+	}
+	public void setRegisterStart(Date registerStart) {
+		this.registerStart = registerStart;
 	}
 }

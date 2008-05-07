@@ -34,7 +34,7 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class AddRosterEntryController extends Controller {
 
-	public static final String ACTION_ADD_ROSTER_ENTRY = "addRosterEntry";
+	private static final String ACTION_ADD_ROSTER_ENTRY = "addRosterEntry";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
