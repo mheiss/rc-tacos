@@ -23,6 +23,11 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
+/**
+ * Roster Controller
+ * @author Payer Martin
+ * @version 1.0
+ */
 public class RosterController extends Controller {
 
 	
@@ -37,7 +42,7 @@ public class RosterController extends Controller {
 		
 		// Put authorization to parameter map to use it in view
 		final String authorization = userSession.getLoginInformation().getAuthorization();
-		params.put("authorization", authorization);
+		//params.put("authorization", authorization);
 		
 		// Put to model if request was internal or external
 		params.put("isInternalSession", userSession.isInternalSession());
@@ -153,8 +158,6 @@ public class RosterController extends Controller {
 			params.put("messageCode", request.getParameter("messageCode"));
 		}
 		
-		return params;
-		
+		return params;	
 	}
-
 }

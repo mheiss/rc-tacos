@@ -21,6 +21,16 @@ UserSession user = (UserSession)session.getAttribute("userSession");
 </table>
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
+		<td id="BlockHead" colspan="2"><b>Fahrzeuge</b></td>
+	</tr>
+	<c:url var="url" value="/Dispatcher/roster.do" />
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Fahrzeugzuweisungen</a>
+		</td>
+	</tr>
+</table>
+<table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
 		<td id="BlockHead" colspan="2"><b>Navigation</b></td>
 	</tr>
 	<tr>
