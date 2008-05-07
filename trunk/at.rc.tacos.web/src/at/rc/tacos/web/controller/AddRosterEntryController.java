@@ -28,7 +28,7 @@ import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
 
 /**
- * 
+ * Add Roster Entry Controller
  * @author Payer Martin
  * @version 1.0
  */

@@ -21,7 +21,7 @@ import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
- * Register Roster Entry
+ * Register Roster Entry Controller
  * @author Payer Martin
  * @version 1.0
  */

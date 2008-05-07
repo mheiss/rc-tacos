@@ -5,7 +5,7 @@ import java.util.Date;
 import at.rc.tacos.model.Location;
 
 /**
- * 
+ * Default form values are stored. This user specific object is stored in the class UserSession.
  * @author Payer Martin
  * @version 1.0
  */

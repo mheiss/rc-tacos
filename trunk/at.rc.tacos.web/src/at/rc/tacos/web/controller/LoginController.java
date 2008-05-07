@@ -20,12 +20,12 @@ import at.rc.tacos.model.Login;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
+
 /**
- * This controller is responsible for creating Login View and for doing Login and Logout.
+ * This class is responsible for creating Login View and for doing Login and Logout.
  * @author Payer Martin
  * @version 1.0
  */
-
 public class LoginController extends Controller {
 	
 	public Map<String, Object> doLogin(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception {

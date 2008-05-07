@@ -7,6 +7,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Not Found Controller
+ * @author Payer Martin
+ * @version 1.0
+ */
 public class NotFoundController extends Controller {
 
 	public Map<String, Object> handleRequest(HttpServletRequest request, HttpServletResponse response, ServletContext context) throws Exception

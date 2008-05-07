@@ -21,6 +21,11 @@ import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
+/**
+ * Delete Roster Entry Controller
+ * @author Payer Martin
+ * @version 1.0
+ */
 public class DeleteRosterEntryController extends Controller {
 
 	private static final String MESSAGE_CODE_DELETED = "deleted";

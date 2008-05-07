@@ -4,6 +4,11 @@ import java.util.Date;
 
 import at.rc.tacos.model.RosterEntry;
 
+/**
+ * This class serves as view container for class RosterEntry.
+ * @author Payer Martin
+ * @version 1.0
+ */
 public class RosterEntryContainer {
 	public static final int DEADLINE_HOURS = 72;
 	

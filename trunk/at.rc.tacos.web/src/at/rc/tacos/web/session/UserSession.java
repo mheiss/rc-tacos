@@ -12,6 +12,11 @@ import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.DayInfoMessage;
 
+/**
+ * Stores user (session) specific values.
+ * @author Payer Martin
+ * @version 1.0
+ */
 public class UserSession 
 {
 	private Boolean loggedIn;
