@@ -14,6 +14,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import at.rc.tacos.client.controller.CreateBackTransportFromDialysis;
 import at.rc.tacos.client.controller.CreateTransportFromDialysis;
 import at.rc.tacos.client.listeners.*;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -304,7 +305,7 @@ public class Activator extends AbstractUIPlugin
 							log("Automatically moved the transport "+ transport+" to the outstanding transports",IStatus.INFO);
 						}
 					}
-					//check the dialysis patients
+					//check the (to) dialysis patients
 					for(DialysisPatient patient:ModelFactory.getInstance().getDialyseManager().getDialysisList())
 					{
 						Calendar currentDialysis = Calendar.getInstance();
@@ -361,6 +362,68 @@ public class Activator extends AbstractUIPlugin
 							NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, patient);
 							//create and run the action
 							CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,currentDialysis);
+							createAction.run();
+						}
+					}
+					
+					//check the (from) dialysis patients
+					for(DialysisPatient patient:ModelFactory.getInstance().getDialyseManager().getDialysisList())
+					{
+						Calendar currentDialysis = Calendar.getInstance();
+						//first check: do we have already generated a back transport for today?
+						if(MyUtils.isEqualDate(patient.getLastBackTransporDate(),currentDialysis.getTimeInMillis()))
+							continue;
+
+						//after the date check we can add 2 hours
+						currentDialysis.add(Calendar.HOUR_OF_DAY, +2);
+						//second check: is the day correct?
+						int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+						switch(day)
+						{
+						case Calendar.MONDAY: 
+							if(!patient.isMonday())
+								continue;
+							break;
+						case Calendar.TUESDAY:
+							if(!patient.isTuesday())
+								continue;
+							break;
+						case Calendar.WEDNESDAY:
+							if(!patient.isWednesday())
+								continue;
+							break;
+						case Calendar.FRIDAY:
+							if(!patient.isFriday())
+								continue;
+							break;
+						case Calendar.SATURDAY:
+							if(!patient.isSaturday())
+								continue;
+							break;
+						case Calendar.SUNDAY:
+							if(!patient.isSunday())
+								continue;
+							break;
+						default:
+							continue;
+						}
+						//construct a calendar object with the start time (HH:mm)
+						Calendar patientCal = Calendar.getInstance();
+						patientCal.setTimeInMillis(patient.getPlannedStartForBackTransport());
+						//now add the current year,month and day
+						patientCal.set(Calendar.YEAR, currentDialysis.get(Calendar.YEAR));
+						patientCal.set(Calendar.MONTH, currentDialysis.get(Calendar.MONTH));
+						patientCal.set(Calendar.DAY_OF_MONTH, currentDialysis.get(Calendar.DAY_OF_MONTH));
+
+						//third check: is within the next two hour?
+						if(currentDialysis.getTimeInMillis() > patientCal.getTimeInMillis())
+						{
+							//set the last generated transport date to now
+							patient.setLastBackTransportDate(Calendar.getInstance().getTimeInMillis());
+							NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, patient);
+							//create and run the action
+//							CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,currentDialysis);
+							CreateBackTransportFromDialysis createAction = new CreateBackTransportFromDialysis(patient, currentDialysis);
 							createAction.run();
 						}
 					}
