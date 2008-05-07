@@ -42,7 +42,7 @@ public class FilterView extends ViewPart
 	private ScrolledForm form;
 
 	//text fields for the filter
-	private Text from,patient,to,location;
+	private Text from,patient,to,location, transportNumber, priority, vehicle, disease;
 	//to apply the filter
 	private ImageHyperlink applyFilter,resetFilter;
 
@@ -136,7 +136,7 @@ public class FilterView extends ViewPart
 		Composite calendar = createSection(parent,"Datum der Transporte");
 
 		//Calendar field
-		dateTime = new DateTime(calendar, SWT.CALENDAR);
+		dateTime = new DateTime(calendar, SWT.DATE);
 		dateTime.setToolTipText("Datum der anzuzeigenden Transporte auswählen");
 		dateTime.addSelectionListener (new SelectionAdapter () 
 		{
@@ -163,6 +163,10 @@ public class FilterView extends ViewPart
 		Composite filter = createSection(parent,"Filterfunktion");
 
 		//create the input fields, from street
+		final Label labelTransportNumber = toolkit.createLabel(filter, "Transportnummer");
+		transportNumber = toolkit.createText(filter, "");
+		
+		//create the input fields, from street
 		final Label labelFrom = toolkit.createLabel(filter, "von");
 		from = toolkit.createText(filter, "");
 
@@ -177,6 +181,18 @@ public class FilterView extends ViewPart
 		//the location
 		final Label labelLocation = toolkit.createLabel(filter, "Ortsstelle");
 		location = toolkit.createText(filter, "");
+		
+		//the priority
+		final Label labelPriority = toolkit.createLabel(filter, "Priorität");
+		priority = toolkit.createText(filter, "");
+		
+		//the vehicle
+		final Label labelVehicle = toolkit.createLabel(filter, "Fahrzeug");
+		vehicle = toolkit.createText(filter, "");
+		
+		//the disease
+		final Label labelDisease = toolkit.createLabel(filter, "Erkrankung");
+		disease = toolkit.createText(filter, "");
 
 		//Create the hyperlink to import the data
 		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
@@ -201,10 +217,14 @@ public class FilterView extends ViewPart
 			public void linkActivated(HyperlinkEvent e) 
 			{
 				//reset the fields
+				transportNumber.setText("");
 				from.setText("");
 				patient.setText("");
 				to.setText("");
 				location.setText("");
+				priority.setText("");
+				vehicle.setText("");
+				disease.setText("");
 				//apply the filter
 				inputChanged();
 			}
@@ -212,19 +232,30 @@ public class FilterView extends ViewPart
 
 		//set the layout for the composites
 		GridData data = new GridData();
+		data.widthHint = 90;
+		labelTransportNumber.setLayoutData(data);
+		data = new GridData();
 		data.widthHint = 50;
 		labelFrom.setLayoutData(data);
-		data = new GridData();
 		data.widthHint = 50;
 		labelPatient.setLayoutData(data);
 		data.widthHint = 50;
 		labelTo.setLayoutData(data);
 		labelPatient.setLayoutData(data);
-		data.widthHint = 50;
+		data.widthHint = 70;
 		labelLocation.setLayoutData(data);
 		data.widthHint = 50;
+		labelPriority.setLayoutData(data);
+		data.widthHint = 50;
+		labelVehicle.setLayoutData(data);
+		data.widthHint = 90;
+		labelDisease.setLayoutData(data);
+		data.widthHint = 70;
 		//layout for the text fields
 		GridData data2 = new GridData();
+		data2.widthHint = 120;
+		transportNumber.setLayoutData(data2);
+		data2 = new GridData();
 		data2.widthHint = 120;
 		from.setLayoutData(data2);
 		data2 = new GridData();
@@ -236,6 +267,15 @@ public class FilterView extends ViewPart
 		data2 = new GridData();
 		data2.widthHint = 120;
 		location.setLayoutData(data2);
+		data2 = new GridData();
+		data2.widthHint = 120;
+		priority.setLayoutData(data2);
+		data2 = new GridData();
+		data2.widthHint = 120;
+		vehicle.setLayoutData(data2);
+		data2 = new GridData();
+		data2.widthHint = 120;
+		disease.setLayoutData(data2);
 	}
 
 	//Helper methods
@@ -276,11 +316,15 @@ public class FilterView extends ViewPart
 	{
 		TransportManager manager = ModelFactory.getInstance().getTransportManager();
 		//get the values
+		final String strTrNr = transportNumber.getText();
 		final String strFrom = from.getText();
 		final String strPat = patient.getText();
 		final String strTo = to.getText();
 		final String strLocation = location.getText();
+		final String strPriority = priority.getText();
+		final String strVehicle = vehicle.getText();
+		final String strDisease = disease.getText();
 		//inform the viewer
-		manager.fireTransportFilterChanged(new TransportViewFilter(strFrom,strPat,strTo,strLocation));
+		manager.fireTransportFilterChanged(new TransportViewFilter(strTrNr, strFrom,strPat,strTo,strLocation, strPriority, strVehicle, strDisease));
 	}
 }
