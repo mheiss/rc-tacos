@@ -136,7 +136,7 @@ public class FilterView extends ViewPart
 		Composite calendar = createSection(parent,"Datum der Transporte");
 
 		//Calendar field
-		dateTime = new DateTime(calendar, SWT.DATE);
+		dateTime = new DateTime(calendar, SWT.CALENDAR);
 		dateTime.setToolTipText("Datum der anzuzeigenden Transporte auswählen");
 		dateTime.addSelectionListener (new SelectionAdapter () 
 		{
