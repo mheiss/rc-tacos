@@ -22,7 +22,7 @@ public class LogoutController extends Controller {
 		
 		/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH).getString("login.url")));
 		context.getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
-		return new HashMap();
+		return new HashMap<String, Object>();
 	}
 	
 	@Override

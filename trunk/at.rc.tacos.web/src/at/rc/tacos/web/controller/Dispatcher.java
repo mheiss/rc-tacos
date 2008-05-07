@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +29,7 @@ public class Dispatcher extends HttpServlet
 	private static final long serialVersionUID = 1L;
 	public static final String VIEWS_BUNDLE_PATH = "at.rc.tacos.web.controller.urls";
 	public static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.controller.server";
-	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.net.net";
+	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.config.net";
 
 
 	/**
@@ -64,7 +65,14 @@ public class Dispatcher extends HttpServlet
 			session.setAttribute("userSession", userSession);
 		}
 		
-		//Set default form values
+		//Check if the request came from an internal IP
+		if (Pattern.matches(server.getString("server.reverseProxy.address"), request.getRemoteAddr())) {
+			userSession.setInternalSession(true);
+		} else {
+			userSession.setInternalSession(false);
+		}
+		
+		//Set default form values if not set
 		if (userSession.getLoggedIn()) {
 			if (userSession.getFormDefaultValues().getDefaultDate() == null) {
 				final Date rosterDefaultDate = new Date();
@@ -74,7 +82,19 @@ public class Dispatcher extends HttpServlet
 				userSession.getFormDefaultValues().setDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
 			}
 		}
-		String remoteAdr =  request.getRemoteAddr();
+		/*if (userSession.getLoggedIn()) {
+		// Get current login information from server
+		final WebClient connection = userSession.getConnection();
+		Login login = null;
+		final QueryFilter usernameFilter = new QueryFilter();
+		usernameFilter.add(IFilterTypes.USERNAME_FILTER, userSession.getLoginInformation().getUsername());
+		final List<AbstractMessage> loginList = connection.sendListingRequest(Login.ID, usernameFilter);
+		if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
+			login = (Login)loginList.get(0);
+		}
+		userSession.getLoginInformation().setAuthorization(login.getAuthorization());
+		userSession.getLoginInformation().setUserInformation(login.getUserInformation());
+		}*/
 		
 		//Get the relative Path from request URL
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
@@ -97,6 +117,7 @@ public class Dispatcher extends HttpServlet
 		String localAddr = request.getLocalAddr();
 		String localName = request.getLocalName();
 		int localPort = request.getLocalPort();
+		String remoteAdr = request.getRemoteAddr();
 		String remoteHost = request.getRemoteHost();
 		String remoteUser = request.getRemoteUser();
 		int remotePort = request.getRemotePort();
@@ -132,7 +153,7 @@ public class Dispatcher extends HttpServlet
 		System.out.println("servletContextServerInfo: " + servletContextServerInfo + "\n");
 		
 		//Redirect if request is not send over SSL connection
-		if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
+		if (Pattern.matches(server.getString("server.http.url.pattern"), request.getRequestURL().toString()) || request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
 			System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
 			System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
@@ -204,20 +225,6 @@ public class Dispatcher extends HttpServlet
 					getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 				} else {
 					try {
-						
-						/*if (userSession.getLoggedIn()) {
-							// Get current login information from server
-							final WebClient connection = userSession.getConnection();
-							Login login = null;
-							final QueryFilter usernameFilter = new QueryFilter();
-							usernameFilter.add(IFilterTypes.USERNAME_FILTER, userSession.getLoginInformation().getUsername());
-							final List<AbstractMessage> loginList = connection.sendListingRequest(Login.ID, usernameFilter);
-							if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
-								login = (Login)loginList.get(0);
-							}
-							userSession.getLoginInformation().setAuthorization(login.getAuthorization());
-							userSession.getLoginInformation().setUserInformation(login.getUserInformation());
-						}*/
 						
 						final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
 						final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());

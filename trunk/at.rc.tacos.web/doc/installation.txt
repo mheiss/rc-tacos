@@ -45,7 +45,7 @@ To set up Tomcat, SSL and Eclipse for rc-tacos do the following:
    
 6. Rename the file _server.properties (WebServer Settings) in package at.rc.tacos.web.controller to server.properties and check the values. Must be the same ports as in server.xml.
 
-7. Rename the file _net.properties (Connection to Server Settings)= in package at.rc.tacos.web.net to net.properties and check the values. You must run at.rc.tacos.server somewhere to use at.rc.tacos.web.
+7. Rename the file _net.properties (Connection to Server Settings)= in package at.rc.tacos.web.config to net.properties and check the values. You must run at.rc.tacos.server somewhere to use at.rc.tacos.web.
    Be sure that configuration of the server is equivalent to net configuration of the webserver.
 
 a.)

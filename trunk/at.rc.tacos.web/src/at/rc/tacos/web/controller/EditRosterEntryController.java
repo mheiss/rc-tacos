@@ -36,7 +36,8 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class EditRosterEntryController extends Controller {
 
-	public static final String ACTION_UPDATE_ROSTER_ENTRY = "updateRosterEntry";
+	private static final String ACTION_UPDATE_ROSTER_ENTRY = "updateRosterEntry";
+	private static final String MESSAGE_CODE_EDITED = "edited";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
@@ -64,7 +65,7 @@ public class EditRosterEntryController extends Controller {
 		int rosterEntryId = 0;
 		final String paramRosterEntryId = request.getParameter("rosterEntryId");
 		if (paramRosterEntryId == null || paramRosterEntryId.equals("")) {
-			throw new IllegalArgumentException("Fehler: Diese URL muss mit einer gültigen RosterEntry.rosterId als Parameter aufgerufen werden.");
+			throw new IllegalArgumentException("Error: This URL must be called with Roster Entry ID.");
 		}
 		rosterEntryId = Integer.parseInt(paramRosterEntryId);
 		
@@ -79,12 +80,12 @@ public class EditRosterEntryController extends Controller {
 		
 		// Roster Entry must not be null
 		if (rosterEntry == null) {
-			throw new IllegalArgumentException("Fehler: Roster Entry darf nicht null sein.");
+			throw new IllegalArgumentException("Error: Roster Entry must not be null.");
 		}
 		
 		// If authorization eq Benutzer and ServiceType neq Freiwillig throw Exception
 		if (authorization.equals(Login.AUTH_USER) && !rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
-			throw new IllegalArgumentException("Fehler: Benutzer hat keine Objektberechtigung.");
+			throw new IllegalArgumentException("Error: User has no permission for object.");
 		}
 		
 		// Check deadline if authorization eq Benutzer
@@ -94,7 +95,7 @@ public class EditRosterEntryController extends Controller {
 			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
 			final Date currDate = new Date();
 			if (currDate.getTime() > deadlineCalendar.getTimeInMillis()) {
-				throw new IllegalArgumentException("Fehler: Roster Entry darf nicht editiert werden. Deadline wurde überschritten.");
+				throw new IllegalArgumentException("Error: Deadline for Roster Entry exceeded.");
 			}
 		}
 		
@@ -412,7 +413,7 @@ public class EditRosterEntryController extends Controller {
 				rosterEntry.setStandby(standby);
 				connection.sendUpdateRequest(RosterEntry.ID, rosterEntry);
 
-				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?editedCount=1";
+				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?messageCode=" + MESSAGE_CODE_EDITED;
 				
 				System.out.println("Redirect: " + response.encodeRedirectURL(url));
 				System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");

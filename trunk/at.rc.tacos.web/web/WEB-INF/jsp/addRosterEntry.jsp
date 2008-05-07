@@ -5,7 +5,7 @@
 	<c:choose>
 		<c:when test="${params.addedCount gt 0}">
 			<div id="submitSuccess">
-				Sie haben sich einen neuen Dienstplaneintrag erstellt
+				Sie haben einen neuen Dienstplaneintrag erstellt
 			</div>
 			<br />
 		</c:when>

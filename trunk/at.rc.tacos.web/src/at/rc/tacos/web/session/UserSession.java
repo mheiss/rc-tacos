@@ -19,6 +19,7 @@ public class UserSession
 	private WebClient connection;
 	private Login loginInfo;
 	private FormDefaultValues formDefaultValues;
+	private boolean internalSession;
 	private List<Competence> competenceList;
 	private List<Job> jobList;
 	private List<ServiceType> serviceTypeList;
@@ -257,5 +258,13 @@ public class UserSession
 
 	public void setFormDefaultValues(FormDefaultValues formDefaultValues) {
 		this.formDefaultValues = formDefaultValues;
+	}
+
+	public boolean isInternalSession() {
+		return internalSession;
+	}
+
+	public void setInternalSession(boolean internalSession) {
+		this.internalSession = internalSession;
 	}
 }
