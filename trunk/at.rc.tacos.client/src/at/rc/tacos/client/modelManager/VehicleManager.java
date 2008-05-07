@@ -409,16 +409,16 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 
 
             //TODO this is the reason for the automatically vehicle updates (triggered from the DateTime (SWT.CALENDAR)- Field
-            //do we need this calculation??????? --> the color status system seems to work without it
+            //without this calculation the status green is not set correctly
             
             //simplest calculation comes first ;)
             //green (30) is for a 'underway'(program status) vehicle not possible
-//            if(transportList.isEmpty())
-//            {
-//                detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
-////                NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
-//                return;
-//            }
+            if(transportList.isEmpty())
+            {
+                detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+                NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+                return;
+            }
 
             //status list
             ArrayList<Integer> list = new ArrayList<Integer>();
