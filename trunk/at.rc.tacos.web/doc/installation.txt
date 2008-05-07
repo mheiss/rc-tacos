@@ -181,7 +181,7 @@ got direct access to the server network.
                clientAuth="false" sslProtocol="TLS"
                SSLCertificateFile="conf/server.crt" 
                SSLCertificateKeyFile="conf/server.key"
-               /
+               />
 
    JSSE:
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
