@@ -2,23 +2,19 @@
 <c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 <c:choose>
 	<c:when test="${params.messageCode eq 'edited'}">
-		<div id="submitSuccess">Sie haben einen Dienstplaneintrag
-		erfolgreich bearbeitet</div>
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;Dienstplaneintrag&nbsp;erfolgreich&nbsp;bearbeitet</div>
 		<br />
 	</c:when>
 	<c:when test="${params.messageCode eq 'deleted'}">
-		<div id="submitSuccess">Sie haben einen Dienstplaneintrag
-		erfolgreich gelöscht</div>
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;Dienstplaneintrag&nbsp;erfolgreich&nbsp;gelöscht</div>
 		<br />
 	</c:when>
 	<c:when test="${params.messageCode eq 'registered'}">
-		<div id="submitSuccess">Sie haben erfolgreich einen Dienst
-		angemeldet</div>
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;erfolgreich&nbsp;einen&nbsp;Dienst&nbsp;angemeldet</div>
 		<br />
 	</c:when>
 	<c:when test="${params.messageCode eq 'signedOff'}">
-		<div id="submitSuccess">Sie haben erfolgreich einen Dienst
-		abgemeldet</div>
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;erfolgreich&nbsp;einen&nbsp;Dienst&nbsp;abgemeldet</div>
 		<br />
 	</c:when>
 </c:choose>
@@ -46,10 +42,10 @@
 <c:set var="fieldHeadersRow">
 	<tr class="subhead2">
 		<th nowrap="nowrap">Name</th>
-		<th nowrap="nowrap">von (geplant)</th>
-		<th nowrap="nowrap">bis (geplant)</th>
-		<th nowrap="nowrap">von (real)</th>
-		<th nowrap="nowrap">bis (real)</th>
+		<th nowrap="nowrap">von&nbsp;(geplant)</th>
+		<th nowrap="nowrap">bis&nbsp;(geplant)</th>
+		<th nowrap="nowrap">von&nbsp;(real)</th>
+		<th nowrap="nowrap">bis&nbsp;(real)</th>
 		<th nowrap="nowrap">Verwendung</th>
 		<th nowrap="nowrap">Dienstverhältnis</th>
 		<th nowrap="nowrap">Bereitschaft</th>
@@ -57,7 +53,6 @@
 		<th nowrap="nowrap">&nbsp;</th>
 	</tr>
 </c:set>
-<br />
 <br />
 <c:choose>
 	<c:when test="${fn:length(params.rosterEntryContainerList) gt 0}">

@@ -4,14 +4,12 @@
 <form action="${url}" method="post" accept-charset="ISO-8859-1">
 	<c:choose>
 		<c:when test="${params.addedCount gt 0}">
-			<div id="submitSuccess">
-				Sie haben einen neuen Dienstplaneintrag erstellt
-			</div>
+			<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;neuen&nbsp;Dienstplaneintrag&nbsp;erstellt</div>
 			<br />
 		</c:when>
 	</c:choose>
 	<table class="standardForm">
-		<tr><td>Allgemeine Daten:</td></tr>
+		<tr><td>Allgemeine&nbsp;Daten:</td></tr>
 		<tr>
 			<td>Mitarbeiter:<sup class="reqMark">*</sup></td>
 			<td>
@@ -84,7 +82,7 @@
 		<tr><td>Dienstzeiten:</td></tr>
 		<tr>
 			<td>
-				Dienst von:<sup class="reqMark">*</sup> 
+				Dienst&nbsp;von:<sup class="reqMark">*</sup> 
 			</td>
 			<td>
 				<input id="dateFrom" name="dateFrom" type="text" size="10" maxlength="10" value="${params.dateFrom}" />
@@ -141,7 +139,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" class="reqComment">Mit * markierte Felder sind Pflichtfelder.</td>
+			<td colspan="2" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
 		</tr>
 		<tr>
 			<td class="hButtonArea" colspan="2">
