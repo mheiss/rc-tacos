@@ -10,20 +10,20 @@
 	</tr>
 </c:set>
 <c:choose>
-	<c:when test="${fn:length(params.rosterEntryContainerList) gt 0}">
+	<c:when test="${fn:length(params.vehicleContainerListContainer) gt 0}">
 		<table cellpadding="3" cellspacing="0" class="list">
-			<c:forEach var="locationVehicleDetailList" items="${params.vehicleListContainer.vehicleDetailMap}">
-				<c:set var="location" value="${locationVehicleDetailList.key}"/>
+			<c:forEach var="locationVehicleContainerList" items="${params.vehicleContainerListContainer.vehicleContainerMap}">
+				<c:set var="location" value="${locationVehicleContainerList.key}"/>
 				<tr>
 					<th class="header2" colspan="6">${location.locationName}</th>
 				</tr>
-				<c:forEach var="vehicleDetail" items="${locationVehicleDetailList.value}" varStatus="loop">
+				<c:forEach var="vehicleContainer" items="${locationVehicleContainerList.value}" varStatus="loop">
 					<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-						<td nowrap="nowrap">${vehicleDetail.vehicleName}</td>
-						<td nowrap="nowrap">${vehicleDetail.driver.lastName}&nbsp;${vehicleDetail.driver.firstName}</td>
-						<td nowrap="nowrap">${vehicleDetail.firstParamedic.lastName}&nbsp;${vehicleDetail.firstParamedic.firstName}</td>
-						<td nowrap="nowrap">${vehicleDetail.secondParamedic.lastName}&nbsp;${vehicleDetail.secondParamedic.firstName}</td>
-						<td nowrap="nowrap">${vehicleDetail.mobilePhone.mobilePhoneName}</td>
+						<td nowrap="nowrap">${vehicleContainer.vehicleName}</td>
+						<td nowrap="nowrap">${vehicleContainer.driver.lastName}&nbsp;${vehicleDetailContainer.driver.firstName}</td>
+						<td nowrap="nowrap">${vehicleContainer.firstParamedic.lastName}&nbsp;${vehicleDetailContainer.firstParamedic.firstName}</td>
+						<td nowrap="nowrap">${vehicleContainer.secondParamedic.lastName}&nbsp;${vehicleDetailContainer.secondParamedic.firstName}</td>
+						<td nowrap="nowrap">${vehicleContainer.mobilePhone.mobilePhoneName}</td>
 					</tr>
 				</c:forEach>
 			</c:forEach>	

@@ -17,7 +17,8 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.web.form.VehicleListContainer;
+import at.rc.tacos.web.form.VehicleContainer;
+import at.rc.tacos.web.form.VehicleContainerListContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
@@ -41,19 +42,33 @@ public class VehiclesAllocationController extends Controller {
 		if (!connection.getContentType().equalsIgnoreCase(VehicleDetail.ID)) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}		
-		final List<VehicleDetail> vehicleDetailList = new ArrayList<VehicleDetail>();
+		final List<VehicleContainer> vehicleDetailList = new ArrayList<VehicleContainer>();
 		for (final Iterator<AbstractMessage> itVehicleDetailList = abstractVehicleList.iterator(); itVehicleDetailList.hasNext();) {
 			final VehicleDetail vehicleDetail = (VehicleDetail)itVehicleDetailList.next();
-			vehicleDetailList.add(vehicleDetail);
+			final VehicleContainer vehicleContainer = new VehicleContainer();
+			vehicleContainer.setBasicStation(vehicleDetail.getBasicStation());
+			vehicleContainer.setCurrentStation(vehicleDetail.getCurrentStation());
+			vehicleContainer.setDriver(vehicleDetail.getDriver());
+			vehicleContainer.setFirstParamedic(vehicleDetail.getFirstParamedic());
+			vehicleContainer.setMobilePhone(vehicleContainer.getMobilePhone());
+			vehicleContainer.setOutOfOrder(vehicleDetail.isOutOfOrder());
+			vehicleContainer.setReadyForAction(vehicleDetail.isReadyForAction());
+			vehicleContainer.setSecondParamedic(vehicleDetail.getSecondParamedic());
+			vehicleContainer.setTransportStatus(vehicleDetail.getTransportStatus());
+			vehicleContainer.setVehicleName(vehicleDetail.getVehicleName());
+			vehicleContainer.setVehicleNotes(vehicleDetail.getVehicleNotes());
+			vehicleContainer.setVehicleType(vehicleDetail.getVehicleType());
+			vehicleDetailList.add(vehicleContainer);
 		}
 		
+		
 		// Group
-		final VehicleListContainer vehicleListContainer = new VehicleListContainer(vehicleDetailList);	
+		final VehicleContainerListContainer vehicleContainerListContainer = new VehicleContainerListContainer(vehicleDetailList);	
 		final Comparator<Location> locationComparator = new PropertyComparator("locationName", true, true);
-		final Comparator<VehicleDetail> vehicleDetailComparator = new PropertyComparator("vehicleName", true, true);
-		vehicleListContainer.groupVehiclesBy(locationComparator);
-		vehicleListContainer.sortVehicles(vehicleDetailComparator);
-		params.put("vehicleListContainer", vehicleListContainer);
+		final Comparator<VehicleContainer> vehicleContainerComparator = new PropertyComparator("vehicleName", true, true);
+		vehicleContainerListContainer.groupVehiclesBy(locationComparator);
+		vehicleContainerListContainer.sortVehicles(vehicleContainerComparator);
+		params.put("vehicleContainerListContainer", vehicleContainerListContainer);
 		
 		return params;
 	}

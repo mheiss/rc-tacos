@@ -23,7 +23,7 @@ UserSession user = (UserSession)session.getAttribute("userSession");
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Fahrzeuge</b></td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/roster.do" />
+	<c:url var="url" value="/Dispatcher/vehiclesAllocation.do" />
 	<tr>
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Fahrzeugzuweisungen</a>
 		</td>
