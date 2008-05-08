@@ -11,6 +11,7 @@ import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 
 /**
  * Sets the given transport status
@@ -48,8 +49,11 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 		transport.addStatus(status, timestamp);
 		
 		if(status == TRANSPORT_STATUS_DESTINATION_FREE)
+		{
 			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-		
+			transport.getVehicleDetail().setLastDestinationFree(transport.getToStreet() +"/" +transport.getToCity());
+			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, transport.getVehicleDetail());
+		}
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
