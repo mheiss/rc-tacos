@@ -477,6 +477,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 					//get the selected object
 					Object selectedPhone = ((IStructuredSelection)selection).getFirstElement();
 					phoneViewer.remove(selectedPhone);
+					staffMember.getPhonelist().remove(selectedPhone);
 				}
 				else
 				{
@@ -613,6 +614,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 					//get the selected object
 					Object selectedCompetence = ((IStructuredSelection)selection).getFirstElement();
 					competenceViewer.remove(selectedCompetence);
+					staffMember.getCompetenceList().remove(selectedCompetence);
 				}
 				else
 				{
