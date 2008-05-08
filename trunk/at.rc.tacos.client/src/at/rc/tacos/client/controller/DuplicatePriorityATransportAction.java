@@ -70,6 +70,10 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         	newTransport.setKindOfTransport(transport.getKindOfTransport());
         if(transport.getCallerDetail() != null)
             newTransport.setCallerDetail(transport.getCallerDetail());
+        if(transport.getNotes() != null)
+        	newTransport.setNotes(transport.getNotes());
+        if(transport.getFeedback() != null)
+        	newTransport.setFeedback(transport.getFeedback());
        
         //destionation and target
         newTransport.setPlanedLocation(transport.getPlanedLocation());
@@ -83,6 +87,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         //assig nef vehicle
         VehicleDetail nef = ModelFactory.getInstance().getVehicleManager().getNEFVehicle();
         newTransport.setVehicleDetail(nef);
+        newTransport.setDisposedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
         //mark transport number (no number for the nef)
         newTransport.setTransportNumber(Transport.TRANSPORT_NEF);
   
