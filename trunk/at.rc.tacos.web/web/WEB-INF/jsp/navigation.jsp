@@ -25,7 +25,7 @@ UserSession user = (UserSession)session.getAttribute("userSession");
 	</tr>
 	<c:url var="url" value="/Dispatcher/vehiclesAllocation.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Fahrzeugzuweisungen</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Fahrzeugbesetzungen</a>
 		</td>
 	</tr>
 </table>

@@ -50,7 +50,7 @@ public class VehiclesAllocationController extends Controller {
 			vehicleContainer.setCurrentStation(vehicleDetail.getCurrentStation());
 			vehicleContainer.setDriver(vehicleDetail.getDriver());
 			vehicleContainer.setFirstParamedic(vehicleDetail.getFirstParamedic());
-			vehicleContainer.setMobilePhone(vehicleContainer.getMobilePhone());
+			vehicleContainer.setMobilePhone(vehicleDetail.getMobilePhone());
 			vehicleContainer.setOutOfOrder(vehicleDetail.isOutOfOrder());
 			vehicleContainer.setReadyForAction(vehicleDetail.isReadyForAction());
 			vehicleContainer.setSecondParamedic(vehicleDetail.getSecondParamedic());
