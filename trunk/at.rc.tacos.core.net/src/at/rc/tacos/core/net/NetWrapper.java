@@ -142,6 +142,7 @@ public class NetWrapper extends Plugin
 		//create a new job if we do not have one
 		ListenJob listenJob = new ListenJob();
 		listenJob.setSystem(true);
+		listenJob.setPriority(Job.LONG);
 		listenJob.addJobChangeListener(new JobChangeAdapter()
 		{
 			@Override
@@ -164,6 +165,7 @@ public class NetWrapper extends Plugin
 		//create the job if we do not have one
 		MonitorJob monitorJob = new MonitorJob();	
 		monitorJob.setSystem(true);
+		monitorJob.setPriority(Job.SHORT);
 		monitorJob.schedule();
 	}
 
@@ -290,7 +292,7 @@ public class NetWrapper extends Plugin
 		//create the send kob and put it to wait
 		SendJob sendJob = new SendJob(info);
 		sendJob.setRule(new SendJobRule());
-		sendJob.setPriority(Job.INTERACTIVE); 
+		sendJob.setPriority(Job.SHORT); 
 		sendJob.setSystem(true);
 		sendJob.addJobChangeListener(new JobChangeAdapter()
 		{
@@ -416,6 +418,8 @@ public class NetWrapper extends Plugin
 				
 				//start the job to proccess the data
 				ProcessDataJob dataJob = new ProcessDataJob(contentType,queryString,newObjects);
+				dataJob.setSystem(true);
+				dataJob.setPriority(Job.BUILD);
 				dataJob.setRule(new ProcessDataJobRule(contentType));
 				dataJob.setName("In Bearbeitung: "+contentType+" Empfangene Datensätze:"+newObjects.size());
 				dataJob.schedule();				
