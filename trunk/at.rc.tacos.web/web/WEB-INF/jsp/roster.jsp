@@ -125,7 +125,7 @@
 									<c:otherwise>
 									</c:otherwise>
 								</c:choose>
-								<c:if test="${params.isInternalSession eq true}">
+								<c:if test="${isInternalSession eq true}">
 									<c:choose>
 										<c:when
 											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
@@ -163,7 +163,7 @@
 								</c:url>
 								<a href="${url}">Löschen</a>
 								<c:set var="breakRow">true</c:set>
-								<c:if test="${params.isInternalSession eq true}">
+								<c:if test="${isInternalSession eq true}">
 									<c:choose>
 										<c:when
 											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
