@@ -1,5 +1,6 @@
 package at.rc.tacos.web.controller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +15,9 @@ import org.springframework.beans.support.PropertyComparator;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.Location;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.web.form.VehicleListContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
@@ -34,14 +37,23 @@ public class VehiclesAllocationController extends Controller {
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
 		
-		final List<AbstractMessage> vehicleList = connection.sendListingRequest(VehicleDetail.ID, null);
+		final List<AbstractMessage> abstractVehicleList = connection.sendListingRequest(VehicleDetail.ID, null);
 		if (!connection.getContentType().equalsIgnoreCase(VehicleDetail.ID)) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}		
+		final List<VehicleDetail> vehicleDetailList = new ArrayList<VehicleDetail>();
+		for (final Iterator<AbstractMessage> itVehicleDetailList = abstractVehicleList.iterator(); itVehicleDetailList.hasNext();) {
+			final VehicleDetail vehicleDetail = (VehicleDetail)itVehicleDetailList.next();
+			vehicleDetailList.add(vehicleDetail);
 		}
-		for (Iterator<AbstractMessage> itVehicleList = vehicleList.iterator(); itVehicleList.hasNext();) {
-			
-		}
-		final Comparator vehicleComp = new PropertyComparator();
+		
+		// Group
+		final VehicleListContainer vehicleListContainer = new VehicleListContainer(vehicleDetailList);	
+		final Comparator<Location> locationComparator = new PropertyComparator("locationName", true, true);
+		final Comparator<VehicleDetail> vehicleDetailComparator = new PropertyComparator("vehicleName", true, true);
+		vehicleListContainer.groupVehiclesBy(locationComparator);
+		vehicleListContainer.sortVehicles(vehicleDetailComparator);
+		params.put("vehicleListContainer", vehicleListContainer);
 		
 		return params;
 	}

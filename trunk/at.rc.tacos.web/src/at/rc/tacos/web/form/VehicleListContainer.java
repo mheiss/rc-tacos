@@ -1,6 +1,7 @@
 package at.rc.tacos.web.form;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.SortedMap;
@@ -38,7 +39,7 @@ public class VehicleListContainer {
 		this.vehicleDetailMap = vehicleDetailMap;
 	}
 	
-	public void groupMarksBy(final Comparator<Location> locationComparator)
+	public void groupVehiclesBy(final Comparator<Location> locationComparator)
 	{
 		SortedMap<Location, List<VehicleDetail>> map = new TreeMap<Location, List<VehicleDetail>>(locationComparator);
 		for (VehicleDetail vehicleDetail : vehicleDetailList) {
@@ -48,8 +49,15 @@ public class VehicleListContainer {
 				locationVehicleDetailList = new ArrayList<VehicleDetail>();
 				map.put(location, locationVehicleDetailList);
 			}
+			
 		}
 		vehicleDetailMap = map;
+	}
+	
+	public void sortVehicles(final Comparator<VehicleDetail> vehicleDetailComparator) {
+		for (List<VehicleDetail> vehicleDetailList : vehicleDetailMap.values()) {
+			Collections.sort(vehicleDetailList, vehicleDetailComparator);		
+		}
 	}
 
 }
