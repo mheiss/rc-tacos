@@ -73,6 +73,7 @@ public class Dispatcher extends HttpServlet
 		} else {
 			userSession.setInternalSession(false);
 		}
+		request.setAttribute("isInternal", userSession.isInternalSession());
 		
 		//Set default form values if not set
 		if (userSession.getLoggedIn()) {
@@ -83,6 +84,7 @@ public class Dispatcher extends HttpServlet
 			if (userSession.getFormDefaultValues().getDefaultLocation() == null) {
 				userSession.getFormDefaultValues().setDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
 			}
+			request.setAttribute("authorization", userSession.getLoginInformation().getAuthorization());
 		}
 		/*if (userSession.getLoggedIn()) {
 		// Get current login information from server
@@ -232,10 +234,6 @@ public class Dispatcher extends HttpServlet
 						final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
 						request.setAttribute("params", params);
 						
-						//Put authorization to request context
-						if (userSession.getLoggedIn()) {
-							request.setAttribute("authorization", userSession.getLoginInformation().getAuthorization());
-						}
 						//Forward to view if response is not commited and view is found in views.properties
 						if (!response.isCommitted() && viewFound) {
 							//Differentiate if View uses model.jsp or not

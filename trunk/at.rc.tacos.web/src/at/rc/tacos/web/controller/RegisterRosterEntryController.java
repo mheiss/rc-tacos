@@ -57,9 +57,10 @@ public class RegisterRosterEntryController extends Controller {
 		final QueryFilter rosterFilter = new QueryFilter();
 		rosterFilter.add(IFilterTypes.ID_FILTER, Integer.toString(rosterEntryId));
 		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
-		if (RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
-			rosterEntry = (RosterEntry)rosterEntryList.get(0);
+		if (!RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
+		rosterEntry = (RosterEntry)rosterEntryList.get(0);
 		
 		// Roster Entry must not be null
 		if (rosterEntry == null) {
@@ -108,7 +109,7 @@ public class RegisterRosterEntryController extends Controller {
 			rosterEntry.setRealStartOfWork(currDate.getTime());
 			connection.sendUpdateRequest(RosterEntry.ID, rosterEntry);
 			if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
-				
+				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 			}
 			messageCode = MESSAGE_CODE_REGISTERED;
 			

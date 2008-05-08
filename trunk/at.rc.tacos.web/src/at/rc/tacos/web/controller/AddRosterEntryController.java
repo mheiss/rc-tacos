@@ -64,15 +64,16 @@ public class AddRosterEntryController extends Controller {
 			jobId = Integer.parseInt(paramJobId);	
 		}
 		final List<AbstractMessage> jobList = connection.sendListingRequest(Job.ID, null);
-		if (Job.ID.equalsIgnoreCase(connection.getContentType())) {
-			params.put("jobList", jobList);
-			for (final Iterator<AbstractMessage> itJobList = jobList.iterator(); itJobList.hasNext();) {
-				final Job j = (Job)itJobList.next();
-				if (j.getId() == jobId) {
-					job = j;
-				}
+		if (!Job.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		for (final Iterator<AbstractMessage> itJobList = jobList.iterator(); itJobList.hasNext();) {
+			final Job j = (Job)itJobList.next();
+			if (j.getId() == jobId) {
+				job = j;
 			}
 		}
+		params.put("jobList", jobList);
 		if (job != null || (paramJobId != null && paramJobId.equals("noValue"))) {
 			params.put("job", job);
 		} else {
@@ -90,32 +91,33 @@ public class AddRosterEntryController extends Controller {
 		}
 		final List<AbstractMessage> staffList = new ArrayList<AbstractMessage>();
 		final List<AbstractMessage> staffListTemp = connection.sendListingRequest(StaffMember.ID, null);
-		if (StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
-			for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
-				final StaffMember sm = (StaffMember)itStaffList.next();
-				if (job != null) {
-					boolean hasCompetence = false;
-					final List<Competence> competenceList = sm.getCompetenceList();
-					for (final Iterator<Competence> itCompetenceList = competenceList.iterator(); itCompetenceList.hasNext();) {
-						if (itCompetenceList.next().getId() == job.getId()) {
-							hasCompetence = true;
-						}
+		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
+			final StaffMember sm = (StaffMember)itStaffList.next();
+			if (job != null) {
+				boolean hasCompetence = false;
+				final List<Competence> competenceList = sm.getCompetenceList();
+				for (final Iterator<Competence> itCompetenceList = competenceList.iterator(); itCompetenceList.hasNext();) {
+					if (itCompetenceList.next().getId() == job.getId()) {
+						hasCompetence = true;
 					}
-					if (hasCompetence) {
-						staffList.add(sm);
-						if (sm.getStaffMemberId() == staffMemberId) {
-							staffMember = sm;
-						}
-					}
-				} else {
+				}
+				if (hasCompetence) {
 					staffList.add(sm);
 					if (sm.getStaffMemberId() == staffMemberId) {
 						staffMember = sm;
 					}
 				}
+			} else {
+				staffList.add(sm);
+				if (sm.getStaffMemberId() == staffMemberId) {
+					staffMember = sm;
+				}
 			}
-			params.put("staffList", staffList);
 		}
+		params.put("staffList", staffList);
 		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals("noValue"))) {
 			params.put("staffMember", staffMember);
 		} else {
@@ -132,15 +134,16 @@ public class AddRosterEntryController extends Controller {
 			locationId = Integer.parseInt(paramLocationId);
 		}
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
-		if (Location.ID.equalsIgnoreCase(connection.getContentType())) {
-			params.put("locationList", locationList);
-			for (final Iterator<AbstractMessage> itLoactionList = locationList.iterator(); itLoactionList.hasNext();) {
-				final Location l = (Location)itLoactionList.next();
-				if (l.getId() == locationId) {
-					location = l;
-				}
+		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		for (final Iterator<AbstractMessage> itLoactionList = locationList.iterator(); itLoactionList.hasNext();) {
+			final Location l = (Location)itLoactionList.next();
+			if (l.getId() == locationId) {
+				location = l;
 			}
 		}
+		params.put("locationList", locationList);
 		if (location != null || (paramLocationId != null && paramLocationId.equals("noValue"))) {
 			params.put("location", location);
 		} else {
@@ -164,15 +167,16 @@ public class AddRosterEntryController extends Controller {
 			filter.add(IFilterTypes.SERVICETYPE_SERVICENAME_FILTER, ServiceType.SERVICETYPE_FREIWILLIG);
 			serviceTypeList = connection.sendListingRequest(ServiceType.ID, filter);
 		}	
-		if (ServiceType.ID.equalsIgnoreCase(connection.getContentType())) {
-			params.put("serviceTypeList", serviceTypeList);
-			for (final Iterator<AbstractMessage> itServiceTypeList = serviceTypeList.iterator(); itServiceTypeList.hasNext();) {
-				final ServiceType st = (ServiceType)itServiceTypeList.next();
-				if (st.getId() == serviceTypeId) {
-					serviceType = st;
-				}
+		if (!ServiceType.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		for (final Iterator<AbstractMessage> itServiceTypeList = serviceTypeList.iterator(); itServiceTypeList.hasNext();) {
+			final ServiceType st = (ServiceType)itServiceTypeList.next();
+			if (st.getId() == serviceTypeId) {
+				serviceType = st;
 			}
 		}
+		params.put("serviceTypeList", serviceTypeList);
 		if (serviceType != null || (paramServiceTypeId != null && paramServiceTypeId.equals("noValue"))) {
 			params.put("serviceType", serviceType);
 		} else {
@@ -367,7 +371,7 @@ public class AddRosterEntryController extends Controller {
 				rosterEntry.setStandby(standby);
 				connection.sendAddRequest(RosterEntry.ID, rosterEntry);
 				if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
-					
+					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}
 				params.put("addedCount", 1);
 				userSession.getFormDefaultValues().setDefaultLocation(location);

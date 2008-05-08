@@ -39,13 +39,6 @@ public class RosterController extends Controller {
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
 		
-		// Put authorization to parameter map to use it in view
-		final String authorization = userSession.getLoginInformation().getAuthorization();
-		//params.put("authorization", authorization);
-		
-		// Put to model if request was internal or external
-		params.put("isInternalSession", userSession.isInternalSession());
-		
 		// Put current date to parameter to parameter list
 		params.put("currentDate", new Date());
 		
@@ -61,13 +54,14 @@ public class RosterController extends Controller {
 			}
 		}
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
-		if (Location.ID.equalsIgnoreCase(connection.getContentType())) {
-			params.put("locationList", locationList);
-			for (final Iterator<AbstractMessage> itLoactionList = locationList.iterator(); itLoactionList.hasNext();) {
-				final Location l = (Location)itLoactionList.next();
-				if (l.getId() == locationId) {
-					location = l;
-				}
+		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		params.put("locationList", locationList);
+		for (final Iterator<AbstractMessage> itLoactionList = locationList.iterator(); itLoactionList.hasNext();) {
+			final Location l = (Location)itLoactionList.next();
+			if (l.getId() == locationId) {
+				location = l;
 			}
 		}
 		userSession.getFormDefaultValues().setDefaultLocation(location);
@@ -120,37 +114,38 @@ public class RosterController extends Controller {
 		// Form RosterEntryContainerList for Table
 		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
 		final List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
-		if (RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
-			for (Iterator<AbstractMessage> itRosterEntryList = rosterEntryList.iterator(); itRosterEntryList.hasNext();) {
-				final RosterEntry rosterEntry = (RosterEntry)itRosterEntryList.next();
-				final RosterEntryContainer rosterEntryContainer = new RosterEntryContainer();
-				rosterEntryContainer.setRosterEntry(rosterEntry);
-				rosterEntryContainer.setPlannedStartOfWork(new Date(rosterEntry.getPlannedStartOfWork()));
-				rosterEntryContainer.setPlannedEndOfWork(new Date(rosterEntry.getPlannedEndOfWork()));
-				if (rosterEntry.getRealStartOfWork() == 0) {
-					rosterEntryContainer.setRealStartOfWork(null);
-				} else {
-					rosterEntryContainer.setRealStartOfWork(new Date(rosterEntry.getRealStartOfWork()));
-				}
-				if (rosterEntry.getRealEndOfWork() == 0) {
-					rosterEntryContainer.setRealEndOfWork(null);
-				} else {
-					rosterEntryContainer.setRealEndOfWork(new Date(rosterEntry.getRealEndOfWork()));
-				}
-				final Calendar deadlineCalendar = Calendar.getInstance();
-				deadlineCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
-				deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
-				rosterEntryContainer.setDeadline(deadlineCalendar.getTime());
-				
-				final Calendar registerStartCalendar = Calendar.getInstance();
-				registerStartCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
-				registerStartCalendar.set(Calendar.HOUR, registerStartCalendar.get(Calendar.HOUR) - 24);
-				rosterEntryContainer.setRegisterStart(registerStartCalendar.getTime());
-				
-				rosterEntryContainerList.add(rosterEntryContainer);
-			}
-			params.put("rosterEntryContainerList", rosterEntryContainerList);
+		if (!RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
+		for (Iterator<AbstractMessage> itRosterEntryList = rosterEntryList.iterator(); itRosterEntryList.hasNext();) {
+			final RosterEntry rosterEntry = (RosterEntry)itRosterEntryList.next();
+			final RosterEntryContainer rosterEntryContainer = new RosterEntryContainer();
+			rosterEntryContainer.setRosterEntry(rosterEntry);
+			rosterEntryContainer.setPlannedStartOfWork(new Date(rosterEntry.getPlannedStartOfWork()));
+			rosterEntryContainer.setPlannedEndOfWork(new Date(rosterEntry.getPlannedEndOfWork()));
+			if (rosterEntry.getRealStartOfWork() == 0) {
+				rosterEntryContainer.setRealStartOfWork(null);
+			} else {
+				rosterEntryContainer.setRealStartOfWork(new Date(rosterEntry.getRealStartOfWork()));
+			}
+			if (rosterEntry.getRealEndOfWork() == 0) {
+				rosterEntryContainer.setRealEndOfWork(null);
+			} else {
+				rosterEntryContainer.setRealEndOfWork(new Date(rosterEntry.getRealEndOfWork()));
+			}
+			final Calendar deadlineCalendar = Calendar.getInstance();
+			deadlineCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
+			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
+			rosterEntryContainer.setDeadline(deadlineCalendar.getTime());
+			
+			final Calendar registerStartCalendar = Calendar.getInstance();
+			registerStartCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
+			registerStartCalendar.set(Calendar.HOUR, registerStartCalendar.get(Calendar.HOUR) - 24);
+			rosterEntryContainer.setRegisterStart(registerStartCalendar.getTime());
+			
+			rosterEntryContainerList.add(rosterEntryContainer);
+		}
+		params.put("rosterEntryContainerList", rosterEntryContainerList);
 		
 		// Parse message code from other controllers
 		if (request.getParameter("messageCode") != null && !request.getParameter("messageCode").equals("")) {
