@@ -61,7 +61,7 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
 	private VehicleTableAtStationAction vehicleAtStationAction;
 
     /**
-     * Constructs a new persoal view.
+     * Constructs a new vehicle view.
      */
     public VehiclesViewTable()
     {
