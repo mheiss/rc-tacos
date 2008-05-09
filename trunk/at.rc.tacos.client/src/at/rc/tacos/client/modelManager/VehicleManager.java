@@ -288,6 +288,9 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             int index = objectList.indexOf(vehicle);
             VehicleDetail detail = objectList.get(index);
             
+            if(detail == null)
+            	return;
+            
             //get the list of transports
             List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
 
@@ -299,7 +302,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     	}
         if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	
-        	System.out.println("im TRANSPORT_UPDATE vom VehicleManager");
             //the transport manager
             TransportManager transportManager = ModelFactory.getInstance().getTransportManager();
 
@@ -312,54 +314,42 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             
             VehicleDetail vehicle = null;
             
-            
-            //to update the vheicle color status in case of detaching a vehicle from a transport
+            //to update the vehicle color status in case of detaching a vehicle from a transport
             if(transport.getNotes() != null)
             {
 	            if(transport.getProgramStatus() == PROGRAM_STATUS_OUTSTANDING && transport.getNotes().contains("Fahrzeugabzug"))
 	            {
-	            	System.out.println("transport: "+transport.getFromStreet());
-	            	System.out.println("1");
 	            	List<VehicleDetail> vehicleList = new ArrayList<VehicleDetail>();
 	                vehicleList = this.getReadyVehicleList();
-	                for(VehicleDetail veh : vehicleList)
-	                	System.out.println("vehicle in ready vehicle list: " +veh.getVehicleName());
 	                for(VehicleDetail detachedVehicle : vehicleList)
 	                {
-	                	System.out.println("2");
 	                	//get the list of transports
 	                    List<Transport> vehicleDetachedTransportList = transportManager.getTransportsByVehicle(detachedVehicle.getVehicleName());
 	                	//simplest calculation comes first ;)
 	                    //green (30) is for a 'underway'(program status) vehicle not possible
 	                    if(vehicleDetachedTransportList.isEmpty())
 	                    {
-	                    	System.out.println("4");
 	                    	detachedVehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 	                        NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);
 	                        continue;
 	                    }
-	                    System.out.println("5");
 	                    //status list
 	                    ArrayList<Integer> list = new ArrayList<Integer>();
 	                    //get the most important status of each transport
 	                    for(Transport trList:vehicleDetachedTransportList)
 	                    {
-	                    	System.out.println("6");
 	                        int mostImportantStatus = trList.getMostImportantStatusMessageOfOneTransport();
 	                        list.add(mostImportantStatus);
 	                    }
 	
 	                    //get most important status of one vehicle (from the list)
-	                    System.out.println("7");
 	                    //for a 'red' status
 	                    if (list.contains(TRANSPORT_STATUS_START_WITH_PATIENT) || list.contains(TRANSPORT_STATUS_OUT_OF_OPERATION_AREA))
 	                    {
-	                    	System.out.println("8");
 	                    	detachedVehicle.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); //10
 	                        NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);
 	                        continue;
 	                    }
-	                    System.out.println("9");
 	                    //for a 'yellow' status
 	                    detachedVehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
 	                    NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);	
@@ -391,7 +381,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             //TODO this is the reason for the automatically vehicle updates (triggered from the DateTime (SWT.CALENDAR)- Field
             //without this calculation the status green is not set correctly
             
-            System.out.println("VehicleManager UPDATE vor checkVehicleColorState");
             this.checkVehicleColorState(transportList, detail);
         }
         
@@ -452,16 +441,14 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     
     private void checkVehicleColorState(List<Transport> transportList, VehicleDetail detail)
     {
-    	System.out.println("vehDetail: " +detail.getVehicleName());
-    	for(Transport tr : transportList)
-    	{
-    		System.out.println("transport from street: " +tr.getFromStreet());
-    	}
         //simplest calculation comes first ;)
         //green (30) is for a 'underway'(program status) vehicle not possible
         if(transportList.isEmpty())
         {
-            detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+        	if(!detail.getLastDestinationFree().equalsIgnoreCase(""))
+        		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_BLUE);
+        	else if(detail.getLastDestinationFree().equalsIgnoreCase(""))
+        		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
             NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
             return;
         }
