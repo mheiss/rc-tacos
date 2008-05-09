@@ -184,9 +184,24 @@ public class VehicleForm extends TitleAreaDialog
 		if(vehicleDetail.isOutOfOrder())
 			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		vehicleDetail.setReadyForAction(readyButton.getSelection());
-		//if the vehicle was out of order -> set the vehicle image to green
-		if(vehicleDetail.isReadyForAction())
-			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+		//if the vehicle was(!) out of order -> set the vehicle image to green
+		if(vehicleDetail.isReadyForAction() &! vehicleDetail.isOutOfOrder())
+		{
+			if(vehicleDetail.getLastDestinationFree() != null)
+			{
+				if(!vehicleDetail.getLastDestinationFree().equalsIgnoreCase(""))
+				{
+					vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_BLUE);
+				}
+			}
+			else
+			{
+				vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+			}
+			
+		}
+		else
+			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		//phone
 		index = mobilePhoneComboViewer.getCombo().getSelectionIndex();
 		vehicleDetail.setMobilPhone((MobilePhoneDetail)mobilePhoneComboViewer.getElementAt(index));
@@ -207,7 +222,7 @@ public class VehicleForm extends TitleAreaDialog
 		getShell().close();
 		
 		//overwrite the vehicle details of all outstanding transports
-		transportList = transportManager.getUnderwayTransportsByVehicle(vehicleDetail.getVehicleName());
+		transportList = transportManager.getTransportsByVehicle(vehicleDetail.getVehicleName());
 		for(Transport transport: transportList)
 		{
 			transport.setVehicleDetail(vehicleDetail);
