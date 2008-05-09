@@ -107,6 +107,14 @@
       </view>
       
       <view
+            name="Fahrzeugdetail-Tabelle"
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.VehiclesViewTableDetailed"
+            icon="icons/resources/vehicle.png"
+            id="at.rc.tacos.client.view.vehiclestabledetailed_view">
+      </view>
+      
+      <view
             name="Personalübersicht"
             allowMultiple="false"
             class="at.rc.tacos.client.view.PersonalView"
