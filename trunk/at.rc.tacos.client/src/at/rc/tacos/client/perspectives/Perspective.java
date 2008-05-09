@@ -33,8 +33,9 @@ public class Perspective implements IPerspectiveFactory
        
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
         layout.addStandaloneView(FilterView.ID,true, IPageLayout.LEFT, 0.11f, editorArea);
-        layout.addStandaloneView(VehiclesViewTable.ID,false, IPageLayout.LEFT, 0.055f, editorArea);
-        layout.addStandaloneView(VehiclesView.ID,false, IPageLayout.LEFT, 0.512f, editorArea);
+        layout.addStandaloneView(VehiclesViewTable.ID,true, IPageLayout.LEFT, 0.055f, editorArea);
+        layout.addStandaloneView(VehiclesViewTableDetailed.ID, true, IPageLayout.LEFT, 0.3f, editorArea);
+        layout.addStandaloneView(VehiclesView.ID,true, IPageLayout.LEFT, 0.512f, editorArea);
         layout.addStandaloneView(PersonalView.ID,false, IPageLayout.LEFT, 0.243f, editorArea);
         layout.addStandaloneView(InfoView.ID, false, IPageLayout.TOP, 0.35f, PersonalView.ID); 
        
