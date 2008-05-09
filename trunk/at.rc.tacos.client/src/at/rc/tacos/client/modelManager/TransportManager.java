@@ -209,7 +209,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	 * @param vehicleName the name of the vehicle to list the transports
 	 * @return transport list filtered by vehicle
 	 */
-	public List<Transport> getTransportsByVehicle(String vehicleName)
+	public List<Transport> getUnderwayTransportsByVehicle(String vehicleName)
 	{
 		//the result list
 		List<Transport> filteredList = new ArrayList<Transport>();
