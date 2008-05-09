@@ -207,7 +207,7 @@ public class VehicleForm extends TitleAreaDialog
 		getShell().close();
 		
 		//overwrite the vehicle details of all outstanding transports
-		transportList = transportManager.getTransportsByVehicle(vehicleDetail.getVehicleName());
+		transportList = transportManager.getUnderwayTransportsByVehicle(vehicleDetail.getVehicleName());
 		for(Transport transport: transportList)
 		{
 			transport.setVehicleDetail(vehicleDetail);
