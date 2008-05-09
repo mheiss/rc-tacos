@@ -340,6 +340,7 @@ CREATE TABLE vehicles (
   phonenumber_ID BIGINT NOT NULL,
   primaryLocation BIGINT NOT NULL,
   note TEXT NULL,
+  lastDestinationFree TEXT NULL,
   vehicletype VARCHAR(30) NULL,
   readyForAction BIT NULL,
   outOfOrder BIT NULL,
