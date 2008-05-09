@@ -77,13 +77,7 @@ public class VehicleEncoder  implements MessageEncoder
 	        writer.writeEndElement();
         }
         
-        if(vehicle.getLastDestinationFree() != null)
-        {
-        	writer.writeStartElement("lastDestinationFree");
-	        writer.writeCharacters(vehicle.getLastDestinationFree());
-	        writer.writeEndElement();
-        }
-        
+        //write the elements and attributes
         if(vehicle.getCurrentStation() != null)
         {
             vehicle.getCurrentStation().type = "current";
