@@ -21,7 +21,6 @@ public class VehicleDetail extends AbstractMessage
     private StaffMember secondParamedic;
     private MobilePhoneDetail mobilePhone;
     private String vehicleNotes;
-    private String lastDestinationFree;
     private Location basicStation;
     private Location currentStation;
     private boolean readyForAction;
@@ -41,7 +40,6 @@ public class VehicleDetail extends AbstractMessage
     public final static int TRANSPORT_STATUS_YELLOW = 20;
     public final static int TRANSPROT_STATUS_RED = 10;
     public final static int TRANSPORT_STATUS_NA = 0;
-    public final static int TRANSPORT_STATUS_BLUE = 40;
 
     /**
      * Default class constructor
@@ -79,19 +77,10 @@ public class VehicleDetail extends AbstractMessage
     @Override
     public String toString()
     {
-    	String detail;
-        detail =  "vehicleName: "+vehicleName+"; vehicleType: "+vehicleType+"; " ;
-        if(driver != null)
-        		detail = detail + "driver: "+driver.getUserName()+";";
-        if(firstParamedic != null)
-        	detail = detail +"firstParamedic: "+firstParamedic.getUserName() +"; ";
-        if(secondParamedic != null)
-        	detail = detail +"secondParamedic: "+secondParamedic.getUserName();
-        detail = detail +"; mobilePhone: "+mobilePhone
-        +"; vehicleNotes: "+vehicleNotes+"; basicStation: "+basicStation.getLocationName()+"; currentStation: "+currentStation.getLocationName() +"; readyforAction: "
+        return "vehicleName: "+vehicleName+"; vehicleType: "+vehicleType+"; driver: "+driver
+        +"; firstParamedic: "+firstParamedic +"; secondParamedic: "+secondParamedic +"; mobilePhone: "+mobilePhone
+        +"; vehicleNotes: "+vehicleNotes+"; basicStation: "+basicStation+"; currentStation: "+currentStation +"; readyforAction: "
         +readyForAction+"; outOfOrder: "+outOfOrder+"; transportStatus: "+transportStatus;
-        
-        return detail;
     }
 
 
@@ -221,29 +210,6 @@ public class VehicleDetail extends AbstractMessage
     {
         return vehicleNotes;
     }
-    
-    /**
-     * Returns the last destination free for this vehicle
-     * @return the vehicleNotes
-     */
-    public String getLastDestinationFree() 
-    {
-        return lastDestinationFree;
-    }
-    
-    /**
-	 * Returns whether or not this transport has notes
-	 * @return true if the transport has notes
-	 */
-	public boolean hasLastDestinationFree()
-	{
-		if (lastDestinationFree == null)
-			return false;
-		if(lastDestinationFree.equalsIgnoreCase(""))
-			return false;
-		//we have a last destination free :)
-		return true;
-	}
 
     /**
      * Returns wheter or not this vehicle is ready for action
@@ -352,17 +318,6 @@ public class VehicleDetail extends AbstractMessage
         String oldNotes = this.vehicleNotes;
         this.vehicleNotes = vehicleNotes;
         firePropertyChange("vehicleNotes", oldNotes, vehicleNotes);
-    }
-    
-    /**
-     * Sets the last destination free for this vehicle to display.
-     * @param lastDestinationFree the lastDestinationFree to set
-     */
-    public void setLastDestinationFree(String lastDestinationFree) 
-    {
-        String oldLastDestinationFree = this.lastDestinationFree;
-        this.lastDestinationFree = lastDestinationFree;
-        firePropertyChange("lastDestinationFree", oldLastDestinationFree, lastDestinationFree);
     }
     
     /**
@@ -568,9 +523,6 @@ public class VehicleDetail extends AbstractMessage
         break;
         //the green Image 
         case 30: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.green");  
-        break;
-        //the blue Image
-        case 40: transportStatusImage = ImageFactory.getInstance().getRegisteredImage("vehicle.status.blue");
         break;
         //out of range
         default: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.na"); 
