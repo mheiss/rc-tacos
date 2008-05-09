@@ -75,17 +75,6 @@ public class VehicleTableAtStationAction extends Action implements ITransportSta
 		//get the selected entry
 		VehicleDetail detail = (VehicleDetail)((IStructuredSelection)selection).getFirstElement();
 		
-		
-		//the vehicle
-		//set the vehicle status to green and update the vehicle
-		if(detail.getDriver() != null && detail.isReadyForAction())
-		{
-			detail.setLastDestinationFree("");
-			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
-		}
-		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
-		
-		
 		objectList = ModelFactory.getInstance().getTransportManager().getJournalTransportsByVehicleAndStatusSix(detail.getVehicleName());
 		//create a timestamp for the transport state S6
 		GregorianCalendar gcal = new GregorianCalendar();
@@ -96,6 +85,9 @@ public class VehicleTableAtStationAction extends Action implements ITransportSta
 			transport.addStatus(TRANSPORT_STATUS_CAR_IN_STATION, timestamp );
 			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 		}
-
+		
+		//set the vehicle status to green and update the vehicle
+		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
 	}
 }
