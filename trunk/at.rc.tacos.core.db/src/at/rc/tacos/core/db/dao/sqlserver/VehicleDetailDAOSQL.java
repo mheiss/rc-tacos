@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.*;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Location;
@@ -19,7 +19,7 @@ public class VehicleDetailDAOSQL implements VehicleDAO
 {
 	//The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final SQLQueries queries = SQLQueries.getInstance();
 	//the dependent dao classes
 	private final LocationDAO locationDAO = DaoFactory.SQL.createLocationDAO();
 	private final StaffMemberDAO staffMemberDAO = DaoFactory.SQL.createStaffMemberDAO();
