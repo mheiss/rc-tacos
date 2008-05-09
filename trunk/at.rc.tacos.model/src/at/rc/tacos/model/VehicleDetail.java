@@ -21,6 +21,7 @@ public class VehicleDetail extends AbstractMessage
     private StaffMember secondParamedic;
     private MobilePhoneDetail mobilePhone;
     private String vehicleNotes;
+    private String lastDestinationFree;
     private Location basicStation;
     private Location currentStation;
     private boolean readyForAction;
@@ -40,6 +41,7 @@ public class VehicleDetail extends AbstractMessage
     public final static int TRANSPORT_STATUS_YELLOW = 20;
     public final static int TRANSPROT_STATUS_RED = 10;
     public final static int TRANSPORT_STATUS_NA = 0;
+    public final static int TRANSPORT_STATUS_BLUE = 40;
 
     /**
      * Default class constructor
@@ -210,6 +212,32 @@ public class VehicleDetail extends AbstractMessage
     {
         return vehicleNotes;
     }
+    
+    /**
+     * Returns the last destination free for this vehicle
+     * @return the vehicleNotes
+     */
+    public String getLastDestinationFree() 
+    {
+        return lastDestinationFree;
+    }
+    
+    /**
+	 * Returns whether or not this transport has notes
+	 * @return true if the transport has notes
+	 */
+	public boolean hasLastDestinationFree()
+	{
+		System.out.println("..............in hasLastDestinationFree");
+		if (lastDestinationFree == null || lastDestinationFree.equalsIgnoreCase(""))
+		{
+			System.out.println("... false");
+			return false;
+		}
+		System.out.println(".... true");
+		//we have a last destination free :)
+		return true;
+	}
 
     /**
      * Returns wheter or not this vehicle is ready for action
@@ -318,6 +346,17 @@ public class VehicleDetail extends AbstractMessage
         String oldNotes = this.vehicleNotes;
         this.vehicleNotes = vehicleNotes;
         firePropertyChange("vehicleNotes", oldNotes, vehicleNotes);
+    }
+    
+    /**
+     * Sets the last destination free for this vehicle to display.
+     * @param lastDestinationFree the lastDestinationFree to set
+     */
+    public void setLastDestinationFree(String lastDestinationFree) 
+    {
+        String oldLastDestinationFree = this.lastDestinationFree;
+        this.lastDestinationFree = lastDestinationFree;
+        firePropertyChange("lastDestinationFree", oldLastDestinationFree, lastDestinationFree);
     }
     
     /**
@@ -523,6 +562,9 @@ public class VehicleDetail extends AbstractMessage
         break;
         //the green Image 
         case 30: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.green");  
+        break;
+        //the blue Image
+        case 40: transportStatusImage = ImageFactory.getInstance().getRegisteredImage("vehicle.status.blue");
         break;
         //out of range
         default: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.na"); 
