@@ -84,6 +84,15 @@ public class VehicleTooltip extends ToolTip
 		if(!text.equalsIgnoreCase(""))
 			addTitleAndLabel(composite, "Besatzung: ", text);
 		
+		if(vehicleDetail.getLastDestinationFree() != null)
+			if(!vehicleDetail.getLastDestinationFree().equalsIgnoreCase(""))
+			{
+				text = vehicleDetail.getLastDestinationFree();
+				addTitleAndLabel(composite, "Letztes Ziel frei", text);
+			
+			}
+		
+		
 		//ready for action
 		if(vehicleDetail.isReadyForAction())
 			text = "ja";
