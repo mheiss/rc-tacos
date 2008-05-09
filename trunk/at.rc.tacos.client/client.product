@@ -14,7 +14,9 @@ Time and Configuration Management
 
    <launcherArgs>
       <vmArgs>-Xms512m
--Xmx512m</vmArgs>
+-Xmx512m
+-XX:PermSize=128m
+-XX:MaxPermSize=128m</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
