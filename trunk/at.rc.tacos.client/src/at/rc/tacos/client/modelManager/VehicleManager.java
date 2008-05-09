@@ -55,8 +55,8 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         {
             public void run ()       
             {
-            	if(vehicle.isOutOfOrder() |! vehicle.isReadyForAction())
-            		vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+//            	if(vehicle.isOutOfOrder() |! vehicle.isReadyForAction())
+//            		vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
                 objectList.add(vehicle);
                 firePropertyChange("VEHICLE_ADD", null, vehicle);
             }
@@ -75,8 +75,8 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     		{
     			for(VehicleDetail detail:vehicleList)
     			{
-    				if(detail.isOutOfOrder() |! detail.isReadyForAction())
-                		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+//    				if(detail.isOutOfOrder() |! detail.isReadyForAction())
+//                		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
     				objectList.add(detail);
     			}
 				firePropertyChange("VEHICLE_ADD_ALL", null, vehicleList);
@@ -112,8 +112,8 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             	//assert we have this vehicle
             	if(!objectList.contains(vehicle))
             		return;
-            	if(vehicle.isOutOfOrder() |! vehicle.isReadyForAction())
-            		vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+//            	if(vehicle.isOutOfOrder() |! vehicle.isReadyForAction())
+//            		vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
                 //get the position of the entry
                 int index = objectList.indexOf(vehicle);
                 objectList.set(index, vehicle);
@@ -292,7 +292,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             	return;
             
             //get the list of transports
-            List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
+            List<Transport> transportList = transportManager.getUnderwayTransportsByVehicle(detail.getVehicleName());
 
             this.checkVehicleColorState(transportList, detail);
 
@@ -324,7 +324,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 	                for(VehicleDetail detachedVehicle : vehicleList)
 	                {
 	                	//get the list of transports
-	                    List<Transport> vehicleDetachedTransportList = transportManager.getTransportsByVehicle(detachedVehicle.getVehicleName());
+	                    List<Transport> vehicleDetachedTransportList = transportManager.getUnderwayTransportsByVehicle(detachedVehicle.getVehicleName());
 	                	//simplest calculation comes first ;)
 	                    //green (30) is for a 'underway'(program status) vehicle not possible
 	                    if(vehicleDetachedTransportList.isEmpty())
@@ -375,7 +375,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             VehicleDetail detail = objectList.get(index);
 
             //get the list of transports
-            List<Transport> transportList = transportManager.getTransportsByVehicle(detail.getVehicleName());
+            List<Transport> transportList = transportManager.getUnderwayTransportsByVehicle(detail.getVehicleName());
 
 
             //TODO this is the reason for the automatically vehicle updates (triggered from the DateTime (SWT.CALENDAR)- Field
