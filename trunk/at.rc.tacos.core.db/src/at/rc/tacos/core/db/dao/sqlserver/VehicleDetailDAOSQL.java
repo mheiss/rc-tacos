@@ -38,8 +38,9 @@ public class VehicleDetailDAOSQL implements VehicleDAO
 			query.setInt(4, vehicle.getCurrentStation().getId());
 			query.setInt(5, vehicle.getMobilePhone().getId());
 			query.setString(6, vehicle.getVehicleNotes());
-			query.setBoolean(7, vehicle.isReadyForAction());
-			query.setBoolean(8, vehicle.isOutOfOrder());
+			query.setString(7, vehicle.getLastDestinationFree());
+			query.setBoolean(8, vehicle.isReadyForAction());
+			query.setBoolean(9, vehicle.isOutOfOrder());
 			//assert the vehicle was added
 			if(query.executeUpdate() == 0)
 				return false;
@@ -71,6 +72,7 @@ public class VehicleDetailDAOSQL implements VehicleDAO
 				vehicle.setReadyForAction(rs.getBoolean("readyForAction"));
 				vehicle.setOutOfOrder(rs.getBoolean("outOfOrder"));
 				vehicle.setVehicleNotes(rs.getString("note"));
+				vehicle.setLastDestinationFree(rs.getString("lastDestinationFree"));
 				vehicle.setTransportStatus(rs.getInt("transportStatus"));
 				//the mobile phone for the vehicle
 				MobilePhoneDetail phone = new MobilePhoneDetail();
@@ -128,6 +130,7 @@ public class VehicleDetailDAOSQL implements VehicleDAO
 				vehicle.setReadyForAction(rs.getBoolean("readyForAction"));
 				vehicle.setOutOfOrder(rs.getBoolean("outOfOrder"));
 				vehicle.setVehicleNotes(rs.getString("note"));
+				vehicle.setLastDestinationFree(rs.getString("lastDestinationFree"));
 				vehicle.setTransportStatus(rs.getInt("transportStatus"));
 
 				MobilePhoneDetail phone = new MobilePhoneDetail();
@@ -218,10 +221,11 @@ public class VehicleDetailDAOSQL implements VehicleDAO
 			query.setInt(6, vehicle.getCurrentStation().getId());
 			query.setInt(7, vehicle.getBasicStation().getId());
 			query.setString(8, vehicle.getVehicleNotes());
-			query.setBoolean(9, vehicle.isReadyForAction());
-			query.setBoolean(10, vehicle.isOutOfOrder());
-			query.setInt(11, vehicle.getTransportStatus());
-			query.setString(12, vehicle.getVehicleName());
+			query.setString(9, vehicle.getLastDestinationFree());
+			query.setBoolean(10, vehicle.isReadyForAction());
+			query.setBoolean(11, vehicle.isOutOfOrder());
+			query.setInt(12, vehicle.getTransportStatus());
+			query.setString(13, vehicle.getVehicleName());
 			if(query.executeUpdate() == 0)
 				return false;
 			return true;
