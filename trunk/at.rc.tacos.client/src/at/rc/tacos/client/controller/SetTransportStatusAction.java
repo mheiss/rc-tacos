@@ -51,7 +51,7 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 		if(status == TRANSPORT_STATUS_DESTINATION_FREE)
 		{
 			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-			transport.getVehicleDetail().setLastDestinationFree(transport.getToStreet() +"/" +transport.getToCity());
+//			transport.getVehicleDetail().setLastDestinationFree(transport.getToStreet() +"/" +transport.getToCity());
 			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, transport.getVehicleDetail());
 		}
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
