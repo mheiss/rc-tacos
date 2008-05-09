@@ -21,6 +21,7 @@ public class VehicleDetail extends AbstractMessage
     private StaffMember secondParamedic;
     private MobilePhoneDetail mobilePhone;
     private String vehicleNotes;
+    private String lastDestinationFree;
     private Location basicStation;
     private Location currentStation;
     private boolean readyForAction;
@@ -538,4 +539,12 @@ public class VehicleDetail extends AbstractMessage
     {
         return transportStatusImage;
     }
+
+	public String getLastDestinationFree() {
+		return lastDestinationFree;
+	}
+
+	public void setLastDestinationFree(String lastDestinationFree) {
+		this.lastDestinationFree = lastDestinationFree;
+	}
 }
