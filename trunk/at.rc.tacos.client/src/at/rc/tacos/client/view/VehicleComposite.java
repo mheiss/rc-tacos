@@ -78,8 +78,8 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		updateColors();
 
 		//context menue
-		makeActions();
-		hookContextMenu();
+//		makeActions();
+//		hookContextMenu();
 
 		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 	}
@@ -175,8 +175,8 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		medicIILabel.setBounds(88, 19, 44, 13);
 
 		//create the actions
-		makeActions();
-		hookContextMenu();
+//		makeActions();
+//		hookContextMenu();
 	}
 
 	/**
