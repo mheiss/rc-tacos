@@ -148,6 +148,7 @@ public class VehicleDetailDAOSQLTest extends DBTestBase
         	vehicle.setOutOfOrder(true);
         	vehicle.setReadyForAction(true);
         	vehicle.setVehicleNotes("newNotes");
+        	vehicle.setLastDestinationFree("letztes Ziel frei");
         	vehicleDAO.updateVehicle(vehicle);
         }
         {
@@ -155,6 +156,7 @@ public class VehicleDetailDAOSQLTest extends DBTestBase
         	assertEquals("vehicle1",vehicle.getVehicleName());
         	assertEquals("newType",vehicle.getVehicleType());
         	assertEquals("newNotes",vehicle.getVehicleNotes());
+        	assertEquals("letztes Ziel frei", vehicle.getLastDestinationFree());
         	assertTrue(vehicle.isOutOfOrder());
         	assertTrue(vehicle.isReadyForAction());
         }
