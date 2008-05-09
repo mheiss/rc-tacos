@@ -237,13 +237,10 @@ public class VehicleDetail extends AbstractMessage
 	 */
 	public boolean hasLastDestinationFree()
 	{
-		System.out.println("..............in hasLastDestinationFree");
-		if (lastDestinationFree == null || lastDestinationFree.equalsIgnoreCase(""))
-		{
-			System.out.println("... false");
+		if (lastDestinationFree == null)
 			return false;
-		}
-		System.out.println(".... true");
+		if(lastDestinationFree.equalsIgnoreCase(""))
+			return false;
 		//we have a last destination free :)
 		return true;
 	}
