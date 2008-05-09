@@ -243,6 +243,8 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		//loop
 		for(Transport transport:objectList)
 		{
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
+				continue;
 			//get the vehicle
 			VehicleDetail vehicle = transport.getVehicleDetail();
 			int programStatus = transport.getProgramStatus();
@@ -250,7 +252,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 			if(vehicle == null)
 				continue;
 			//check the vehicle
-			if(vehicle.getVehicleName().equalsIgnoreCase(vehicleName) && programStatus == PROGRAM_STATUS_JOURNAL )
+			if(vehicle.getVehicleName().equalsIgnoreCase(vehicleName) && programStatus == PROGRAM_STATUS_JOURNAL)
 				filteredList.add(transport);
 		}
 		return filteredList;
