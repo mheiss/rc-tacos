@@ -67,6 +67,15 @@ public class VehicleAtStationAction extends Action implements ITransportStatus, 
 	public void run()
 	{	
 		objectList = ModelFactory.getInstance().getTransportManager().getJournalTransportsByVehicleAndStatusSix(detail.getVehicleName());
+		
+		//set the vehicle status to green and update the vehicle
+		if(detail.getDriver() != null && detail.isReadyForAction())
+		{
+			detail.setLastDestinationFree("");
+			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+		}
+		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+		
 		//create a timestamp for the transport state S6
 		GregorianCalendar gcal = new GregorianCalendar();
 		long timestamp = gcal.getTimeInMillis();
@@ -77,10 +86,6 @@ public class VehicleAtStationAction extends Action implements ITransportStatus, 
 			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 		}
 		
-		//set the vehicle status to green and update the vehicle
-		if(detail.getDriver() != null && detail.isReadyForAction())
-			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 		
-		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
 	}
 }
