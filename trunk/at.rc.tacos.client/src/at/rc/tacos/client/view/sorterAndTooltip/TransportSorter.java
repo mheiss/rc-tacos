@@ -42,6 +42,7 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 	public final static String AUFG_SORTER = "aufgenommen";
 	public final static String TA_SORTER = "t";
 	public final static String RT_SORTER = "rt";
+	public final static String NOTES_SORTER = "notes";
 
 	// sort the data based on column and direction
 
@@ -498,6 +499,18 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 				return 1 * sortDir;
 			String ta1 = transport1.getKindOfTransport();
 			String ta2 = transport2.getKindOfTransport();
+			return  ta1.compareTo(ta2) * sortDir;
+		}
+		
+		//sort by the notes
+		if (column == NOTES_SORTER) 
+		{
+			if(transport1.getNotes() == null)
+				return -1 * sortDir;
+			if(transport2.getNotes() == null)
+				return 1 * sortDir;
+			String ta1 = transport1.getNotes();
+			String ta2 = transport2.getNotes();
 			return  ta1.compareTo(ta2) * sortDir;
 		}
 
