@@ -147,7 +147,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 
 		statusLabel = new Label(compositeCarIcons, SWT.NONE);
 		statusLabel.setBackground(CustomColors.COLOR_BLUE);
-		statusLabel.setBounds(116, 0, 14, 22);
+		statusLabel.setBounds(115, 0, 16, 22);
 
 		// .. staff
 		final Composite compositeCarStaff = new Composite(compositeCarBottom, SWT.NONE);
