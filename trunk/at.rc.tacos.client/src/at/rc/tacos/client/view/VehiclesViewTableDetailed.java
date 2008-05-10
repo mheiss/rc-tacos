@@ -35,6 +35,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleViewTableDetailLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleViewTableSorter;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -203,6 +204,16 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
                     sortIdentifier = VehicleViewTableSorter.STATUS_SORTER;
                 if (currentColumn == columnVehicleName) 
                     sortIdentifier = VehicleViewTableSorter.VEHICLE_SORTER;
+                if (currentColumn == columnDriver)
+                	sortIdentifier = VehicleViewTableSorter.DRIVER_SORTER;
+                if(currentColumn == columnMedicI)
+                	sortIdentifier = VehicleViewTableSorter.PARAMEDIC_I_SORTER;
+                if(currentColumn == columnMedicII)
+                	sortIdentifier = VehicleViewTableSorter.PARAMEDIC_II_SORTER;
+                if(currentColumn == columnNotes)
+                	sortIdentifier = VehicleViewTableSorter.NOTES_SORTER;
+                if(currentColumn == columnLastDestinationFree)
+                	sortIdentifier = VehicleViewTableSorter.LDF_SORTER;
                
                 //apply the filter
                 viewer.getTable().setSortDirection(dir);
@@ -213,6 +224,11 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         //attach the listener
         columnVehicleName.addListener(SWT.Selection, sortListener);
         columnVehicleStatus.addListener(SWT.Selection, sortListener);
+        columnDriver.addListener(SWT.Selection, sortListener);
+        columnMedicI.addListener(SWT.Selection, sortListener);
+        columnMedicII.addListener(SWT.Selection, sortListener);
+        columnNotes.addListener(SWT.Selection, sortListener);
+        columnLastDestinationFree.addListener(SWT.Selection, sortListener);
         
         //create the actions
         makeActions();
