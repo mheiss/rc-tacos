@@ -328,6 +328,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		s2DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		s3DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		s4DisponierteTransporte.addListener(SWT.Selection, sortListener);
+		erkrankungVerletzungDisponierteTransporte.addListener(SWT.Selection, sortListener);
 		
 		//create the actions
 		makeActions();
