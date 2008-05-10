@@ -131,7 +131,7 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
 
         final TableColumn columnVehicleName = new TableColumn(table, SWT.NONE);
         columnVehicleName.setToolTipText("Fahrzeugname");
-        columnVehicleName.setWidth(60);
+        columnVehicleName.setWidth(40);
 //        columnVehicleName.setText("Fzg.");
 
         final TableColumn columnVehicleStatus = new TableColumn(table, SWT.NONE);
@@ -172,7 +172,7 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         
         final TableColumn columnLastDestinationFree = new TableColumn(table, SWT.NONE);
         columnLastDestinationFree.setToolTipText("Zeigt den Standort der letzten Meldung \"Ziel frei\" (S6)an");
-        columnLastDestinationFree.setWidth(100);
+        columnLastDestinationFree.setWidth(150);
         columnLastDestinationFree.setText("Letzter Status S5"); 
 
         //make the columns sortable
