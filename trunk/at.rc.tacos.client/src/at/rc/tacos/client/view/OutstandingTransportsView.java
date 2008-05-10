@@ -311,6 +311,9 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 					sortIdentifier = TransportSorter.TA_SORTER;
 				if(currentColumn == erkrankungVerletzungOffeneTransporte)
 					sortIdentifier = TransportSorter.KIND_OF_ILLNESS_SORTER;
+				if(currentColumn == anmerkungOffeneTransporte)
+					sortIdentifier = TransportSorter.NOTES_SORTER;
+				
 				//apply the filter
 				viewerOffTrans.getTable().setSortDirection(dir);
 				viewerOffTrans.setSorter(new TransportSorter(sortIdentifier,dir));
@@ -329,6 +332,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		aufgOffeneTransporte.addListener(SWT.Selection, sortListener);
 		tOffeneTransporte.addListener(SWT.Selection, sortListener);
 		erkrankungVerletzungOffeneTransporte.addListener(SWT.Selection, sortListener);
+		anmerkungOffeneTransporte.addListener(SWT.Selection, sortListener);
 		
 		viewerOffTrans.resetFilters();
 		//apply the filter to show only outstanding transports
