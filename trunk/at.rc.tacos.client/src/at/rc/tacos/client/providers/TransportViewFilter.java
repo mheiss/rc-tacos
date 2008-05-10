@@ -58,8 +58,8 @@ public class TransportViewFilter  extends ViewerFilter
 		if(from != null &! from.trim().isEmpty())
 		{
 			//check the street name
-			if(!transport.getFromCity().contains(from) &! transport.getFromCity().startsWith(from) 
-					&!transport.getFromStreet().contains(from) &! transport.getFromStreet().startsWith(from))
+			if(!transport.getFromCity().toLowerCase().contains(from.toLowerCase()) &! transport.getFromCity().toLowerCase().startsWith(from.toLowerCase()) 
+					&!transport.getFromStreet().toLowerCase().contains(from.toLowerCase()) &! transport.getFromStreet().toLowerCase().startsWith(from.toLowerCase()))
 				return false;
 		}
 		//check the patient
