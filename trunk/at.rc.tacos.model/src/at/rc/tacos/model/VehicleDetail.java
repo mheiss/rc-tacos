@@ -41,6 +41,7 @@ public class VehicleDetail extends AbstractMessage
     public final static int TRANSPORT_STATUS_YELLOW = 20;
     public final static int TRANSPROT_STATUS_RED = 10;
     public final static int TRANSPORT_STATUS_NA = 0;
+    public final static int TRANSPORT_STATUS_BLUE = 40;
 
     /**
      * Default class constructor
@@ -321,6 +322,13 @@ public class VehicleDetail extends AbstractMessage
         firePropertyChange("vehicleNotes", oldNotes, vehicleNotes);
     }
     
+    public void setLastDestinationFree(String lastDestinationFree) 
+    {
+    	String oldLastDestinationFree = this.lastDestinationFree;
+        this.lastDestinationFree = lastDestinationFree;
+        firePropertyChange("LastDestinationFree", oldLastDestinationFree, lastDestinationFree);
+	}
+    
     /**
      * Sets the basic station of the vehicle. 
      * @param basicStation the basicStation to set
@@ -544,7 +552,5 @@ public class VehicleDetail extends AbstractMessage
 		return lastDestinationFree;
 	}
 
-	public void setLastDestinationFree(String lastDestinationFree) {
-		this.lastDestinationFree = lastDestinationFree;
-	}
+	
 }
