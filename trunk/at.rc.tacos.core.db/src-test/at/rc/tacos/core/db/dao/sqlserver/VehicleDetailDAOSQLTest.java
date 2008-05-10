@@ -105,14 +105,14 @@ public class VehicleDetailDAOSQLTest extends DBTestBase
     @After
     public void tearDown() throws SQLException
     {
-    	deleteTable(MobilePhoneDAO.TABLE_NAME);
-    	deleteTable(MobilePhoneDAO.TABLE_DEPENDENT_NAME);
-    	deleteTable(StaffMemberDAO.TABLE_NAME);
-    	deleteTable(UserLoginDAO.TABLE_NAME);
-    	deleteTable(LocationDAO.TABLE_NAME);
-        deleteTable(VehicleDAO.TABLE_NAME);
-        deleteTable(CompetenceDAO.TABLE_NAME);
-        deleteTable(CompetenceDAO.TABLE_DEPENDENT_NAME);
+//    	deleteTable(MobilePhoneDAO.TABLE_NAME);
+//    	deleteTable(MobilePhoneDAO.TABLE_DEPENDENT_NAME);
+//    	deleteTable(StaffMemberDAO.TABLE_NAME);
+//    	deleteTable(UserLoginDAO.TABLE_NAME);
+//    	deleteTable(LocationDAO.TABLE_NAME);
+//        deleteTable(VehicleDAO.TABLE_NAME);
+//        deleteTable(CompetenceDAO.TABLE_NAME);
+//        deleteTable(CompetenceDAO.TABLE_DEPENDENT_NAME);
     }
     
     @Test
