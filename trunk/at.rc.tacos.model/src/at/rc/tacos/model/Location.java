@@ -66,7 +66,7 @@ public class Location extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return "locationName: "+locationName;
+		return "OS: "+locationName;
 	}
 
 	/**
