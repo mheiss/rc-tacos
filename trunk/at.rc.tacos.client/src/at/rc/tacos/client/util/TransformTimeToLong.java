@@ -23,7 +23,6 @@ public class TransformTimeToLong
 	{
 		if (!stringTime.equalsIgnoreCase(""))
 		{
-			System.out.println("TransformTimeToLong, im !\"\", die übergebene zeit als string: " +stringTime );
 			String[] theTerm = stringTime.split(":");
 			
 			int hoursTerm = Integer.valueOf(theTerm[0]).intValue();
