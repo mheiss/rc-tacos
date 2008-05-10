@@ -465,6 +465,9 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_BLUE);
         	else if(detail.getLastDestinationFree().equalsIgnoreCase(""))
         		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+        	
+        	if(!detail.isReadyForAction() || detail.isOutOfOrder())
+        		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
             NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
             return;
         }
@@ -490,11 +493,13 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 
         //for a 'yellow' status
         detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
-        NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+        
         
         //for a 'gray' status
-        if(detail.isOutOfOrder() |! detail.isReadyForAction())
+        if(detail.isOutOfOrder() |! detail.isReadyForAction() || detail.getDriver() == null)
         	detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+        
+        NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
         
     }
 }	
