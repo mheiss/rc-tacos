@@ -37,14 +37,12 @@ public class TimeValidator
 			Matcher m51= p5.matcher(time);
 				if(m41.matches())
 				{
-					System.out.println("TimeValidator---- im matcher für \"1234\"");
 					int hour = Integer.parseInt(m41.group(1));
 					int minutes = Integer.parseInt(m41.group(2));
 					
 					if(hour >= 0 && hour <=23 && minutes >= 0 && minutes <=59)
 					{
 						time = hour + ":" +minutes;//for the splitter
-						System.out.println("TimeValidator---- im matcher für \"1234\"- die time nach ergänzung des doppelpunktes: " +time);
 						this.setTime(time);
 					}
 					else
@@ -54,7 +52,6 @@ public class TimeValidator
 				}
 				else if(m51.matches())
 				{
-					System.out.println("TimeValidator---- im matcher für \"12:34\"");
 						int hour = Integer.parseInt(m51.group(1));
 						int minutes = Integer.parseInt(m51.group(2));
 					
@@ -65,7 +62,6 @@ public class TimeValidator
 				}
 				else
 				{
-					System.out.println("TimeValidator---- im else - also nix matcht");
 					checkStatus = " " +field;
 				}
 		}
