@@ -81,12 +81,43 @@ public class DialysisPatient extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return "id: "+id+"; patient: "+patient +"; location: " +location +"; plannedStartofTransport: " +plannedStartOfTransport
-		+"; plannedTimeAtPatient: " +plannedTimeAtPatient +"; appointmentTimeAtDialysis: " +appointmentTimeAtDialysis
-		+"; plannedStartForBackTransport: " +plannedStartForBackTransport +"; readyTime: "+readyTime +" ; fromStreet: "+fromStreet
-		+ "; fromCity: " +fromCity +"; toStreet: "+toStreet +"; toCity: "+toCity +"; insurance: "+insurance+"; kindofTransport: "+kindOfTransport
-		+"; assistantPerson: "+assistantPerson+"; Monday: "+monday+"; Tuesday: "+tuesday+"; Wednesday: "+wednesday+"; Thursday: "+thursday+"; Friday: "+friday
-		+"; Saturday: "+saturday+"; Sunday: "+sunday+"; lastTransportDate: "+lastTransportDate+"; lastBackTransportDate: "+lastBackTransportDate;
+		String dia = null;
+		if(patient != null)
+			dia = patient.getLastname() +" " +patient.getFirstname() +";";
+		if(location != null)
+			dia = dia +"OS: " +location.getLocationName() +";";
+		if(plannedStartOfTransport != 0)
+			dia = dia +"Abf: " + MyUtils.timestampToString(plannedStartOfTransport, MyUtils.timeFormat) +";";
+		if(plannedTimeAtPatient != 0)
+			dia = dia +"BeiPat: " +MyUtils.timestampToString(plannedTimeAtPatient, MyUtils.timeFormat) +";";
+		if(appointmentTimeAtDialysis != 0)
+			dia = dia +"Termin: " +MyUtils.timestampToString(appointmentTimeAtDialysis, MyUtils.timeFormat) +";";
+		if(plannedStartForBackTransport != 0)
+			dia = dia +"RT: " +MyUtils.timestampToString(plannedStartForBackTransport, MyUtils.timeFormat) +";";
+		if(readyTime != 0)
+			dia = dia +"fertig: " +MyUtils.timestampToString(readyTime, MyUtils.timeFormat) +";";
+		dia = dia +"von: " +fromStreet +"/" +fromCity +";";
+		dia = dia +"nach: " +toStreet +"/" +toCity +";";
+		if(kindOfTransport != null)
+			dia = dia +"TA: " +kindOfTransport +";";
+		if(assistantPerson)
+			dia = dia +"BeglPers" +";";
+		if(monday)
+			dia = dia +"Mo" +";";
+		if(tuesday)
+			dia = dia +"Di" +";";
+		if(wednesday)
+			dia = dia +"Mi" +";";
+		if(thursday)
+			dia = dia +"Do" +";";
+		if(friday)
+			dia = dia +"Fr" +";";
+		if(saturday)
+			dia = dia +"Sa" +";";
+		if(sunday)
+			dia = dia +"So" +";";
+		
+		return dia;
 	}
 
 	/**
