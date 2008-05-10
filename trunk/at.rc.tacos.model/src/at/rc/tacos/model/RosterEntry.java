@@ -100,10 +100,18 @@ public class RosterEntry extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return "id: " +rosterId +";" +staffMember.getLastName() +" " +staffMember.getFirstName() +";" +"standby: " +standby +";"
-		+"station: " +station.getLocationName() +";" +"job: " +job.getJobName() +";" +"serviceType: " +serviceType.getServiceName() +";" +"notes: " +rosterNotes +";"
-		+"plannedTime: " +MyUtils.timestampToString(plannedStartOfWork,MyUtils.timeAndDateFormat)+" bis "+MyUtils.timestampToString(plannedEndOfWork,MyUtils.timeAndDateFormat) +";"
-		+"realTime: " +MyUtils.timestampToString(realStartOfWork, MyUtils.timeAndDateFormat) +" bis " +MyUtils.timestampToString(realEndOfWork, MyUtils.timeAndDateFormat) +";";
+		String entry = staffMember.getLastName() +" " +staffMember.getFirstName() +";";
+		if(standby)
+			entry = entry +"B";
+		entry = entry +"OS: " +station.getLocationName() +";" +"Verw: " +job.getJobName() +";" +"DV: " +" " +serviceType.getServiceName();
+		if(rosterNotes != null)
+			entry = entry +rosterNotes +";";
+		entry = entry +"Dienst: " +MyUtils.timestampToString(plannedStartOfWork,MyUtils.timeAndDateFormat)+" bis "+MyUtils.timestampToString(plannedEndOfWork,MyUtils.timeAndDateFormat) +";";
+		if(realStartOfWork != 0)
+			entry = entry +"Anm: " +MyUtils.timestampToString(realStartOfWork, MyUtils.timeAndDateFormat) +";";
+		if(realEndOfWork != 0)
+			entry = entry +"Abm: " +MyUtils.timestampToString(realEndOfWork, MyUtils.timeAndDateFormat) +";";
+		return entry;
 	}
 
 	/**
