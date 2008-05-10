@@ -40,6 +40,8 @@ public class FilterView extends ViewPart
 	private DateTime dateTime;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
+	private Composite calendar;
+	private Composite filter;
 
 	//text fields for the filter
 	private Text from,patient,to,location, transportNumber, priority, vehicle, disease;
@@ -133,7 +135,7 @@ public class FilterView extends ViewPart
 	private void createCalendarSection(Composite parent)
 	{
 		//create the section
-		Composite calendar = createSection(parent,"Datum der Transporte");
+		calendar = createSection(parent,"Datum der Transporte");
 
 		//Calendar field
 		dateTime = new DateTime(calendar, SWT.DATE);
@@ -160,7 +162,7 @@ public class FilterView extends ViewPart
 	 */
 	private void createFilterSection(Composite parent)
 	{
-		Composite filter = createSection(parent,"Filterfunktion");
+		filter = createSection(parent,"Filterfunktion");
 
 		//create the input fields, from street
 		final Label labelTransportNumber = toolkit.createLabel(filter, "Transportnummer");
@@ -203,6 +205,10 @@ public class FilterView extends ViewPart
 			@Override
 			public void linkActivated(HyperlinkEvent e) 
 			{
+				calendar.setBackground(CustomColors.BACKGROUND_RED);
+				applyFilter.setBackground(CustomColors.BACKGROUND_RED);
+				
+				
 				inputChanged();
 			}
 		});
@@ -225,6 +231,9 @@ public class FilterView extends ViewPart
 				priority.setText("");
 				vehicle.setText("");
 				disease.setText("");
+				//reset the background color
+				applyFilter.setBackground(CustomColors.SECTION_BACKGROUND);
+				calendar.setBackground(CustomColors.SECTION_BACKGROUND);
 				//apply the filter
 				inputChanged();
 			}
