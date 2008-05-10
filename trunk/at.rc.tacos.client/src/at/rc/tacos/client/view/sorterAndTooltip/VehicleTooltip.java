@@ -82,17 +82,7 @@ public class VehicleTooltip extends ToolTip
 		if(vehicleDetail.getSecondParamedic() != null)
 			text = text +vehicleDetail.getSecondParamedic().getLastName() +" " + vehicleDetail.getSecondParamedic().getFirstName();
 		if(!text.equalsIgnoreCase(""))
-			addTitleAndLabel(composite, "Besatzung: ", text);
-		
-//		if(vehicleDetail.getLastDestinationFree() != null)
-//			if(!vehicleDetail.getLastDestinationFree().equalsIgnoreCase(""))
-//			{
-//				text = vehicleDetail.getLastDestinationFree();
-//				addTitleAndLabel(composite, "Letztes Ziel frei", text);
-//			
-//			}
-		
-		
+			addTitleAndLabel(composite, "Besatzung: ", text);	
 		//ready for action
 		if(vehicleDetail.isReadyForAction())
 			text = "ja";
@@ -119,6 +109,13 @@ public class VehicleTooltip extends ToolTip
 			text = vehicleDetail.getMobilePhone().getMobilePhoneName();
 			addTitleAndLabel(composite, "Handy: ", text);
 		}
+		//last destination free
+		if(vehicleDetail.getLastDestinationFree() != null)
+			if(!vehicleDetail.getLastDestinationFree().equalsIgnoreCase(""))
+			{
+				text = vehicleDetail.getLastDestinationFree();
+				addTitleAndLabel(composite, "Letztes Ziel frei: ", text);
+			}
 		return composite;
 	}  
 	
