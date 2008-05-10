@@ -51,8 +51,8 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.yellow");
 				if (vehicle.getTransportStatus() == VehicleDetail.TRANSPROT_STATUS_RED)
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.red");
-//				if (vehicle.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_BLUE)
-//					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.blue");
+				if (vehicle.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_BLUE)
+					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.blue");
 				else return null;
 				
 			case COLUMN_PHONE:
