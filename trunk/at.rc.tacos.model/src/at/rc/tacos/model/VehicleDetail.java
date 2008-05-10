@@ -79,10 +79,26 @@ public class VehicleDetail extends AbstractMessage
     @Override
     public String toString()
     {
-        return "vehicleName: "+vehicleName+"; vehicleType: "+vehicleType+"; driver: "+driver
-        +"; firstParamedic: "+firstParamedic +"; secondParamedic: "+secondParamedic +"; mobilePhone: "+mobilePhone
-        +"; vehicleNotes: "+vehicleNotes+"; basicStation: "+basicStation+"; currentStation: "+currentStation +"; readyforAction: "
-        +readyForAction+"; outOfOrder: "+outOfOrder+"; transportStatus: "+transportStatus;
+    	String vehicle;
+    	vehicle = vehicleName +";" +vehicleType +";";
+    	//staff
+		if(driver != null)
+			vehicle = vehicle + "Fahrer: " +driver+";";
+		if(firstParamedic != null)
+			vehicle = vehicle + "SaniI: " +firstParamedic+";";
+		if(secondParamedic != null)
+			vehicle = vehicle +"SaniII: "+secondParamedic +";";
+		if(mobilePhone != null)
+			vehicle = vehicle +"Handy: " +mobilePhone +";";
+		if(vehicleNotes != null)
+			vehicle = vehicle +"Notizen: " +vehicleNotes +";";
+    	vehicle = vehicle +"OS1: " +basicStation +";" +"OS2: " +currentStation +";";
+    	if(readyForAction)
+    		vehicle = vehicle +"EB" +";";
+    	if(outOfOrder)
+    		vehicle = vehicle +"AD";
+    	
+    	return vehicle;
     }
 
 
