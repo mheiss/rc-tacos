@@ -15,6 +15,11 @@ public class VehicleViewTableSorter extends ViewerSorter
 	//columns that are sortable
 	public final static String STATUS_SORTER = "job";
 	public final static String VEHICLE_SORTER = "vehicle";
+	public final static String NOTES_SORTER = "notes";
+	public final static String LDF_SORTER = "ldf";
+	public final static String DRIVER_SORTER = "driver";
+	public final static String PARAMEDIC_I_SORTER = "paramedici";
+	public final static String PARAMEDIC_II_SORTER = "paramedicii";
 	
 	//column to sort
 	private String column = null;
@@ -75,6 +80,85 @@ public class VehicleViewTableSorter extends ViewerSorter
         	if (status1 == status2)
         		returnValue =  0;
         }
+        
+      //sort by the notes
+		if (column == NOTES_SORTER) 
+		{
+			if(veh1.getVehicleNotes() == null)
+				return -1 * sortDir;
+			if(veh2.getVehicleNotes() == null)
+				return 1 * sortDir;
+			String ta1 = veh1.getVehicleNotes();
+			String ta2 = veh2.getVehicleNotes();
+			return  ta1.compareTo(ta2) * sortDir;
+		}
+        
+        //sort by the last destination free
+        if(column == LDF_SORTER)
+        {
+        	if(veh1.getLastDestinationFree() == null)
+				return -1 * sortDir;
+			if(veh2.getLastDestinationFree() == null)
+				return 1 * sortDir;
+			String ta1 = veh1.getLastDestinationFree();
+			String ta2 = veh2.getLastDestinationFree();
+			return  ta1.compareTo(ta2) * sortDir;
+        }
+        
+      //sort by the driver name
+		if (column == DRIVER_SORTER) 
+		{
+			//assert the vehicle and the driver is valid
+			if(veh1 == null)
+				return -1 * sortDir;
+			if(veh1.getDriver() == null)
+				return -1 * sortDir;
+			//assert the vehicle and the driver is valid
+			if(veh2 == null)
+				return 1 * sortDir;
+			if(veh2.getDriver() == null)
+				return 1 * sortDir;
+			String d1 = veh1.getDriver().getLastName();
+			String d2 = veh2.getDriver().getLastName();
+			return d1.compareTo(d2) * sortDir;
+		}
+
+		//sort by the paramedic I name
+		if (column == PARAMEDIC_I_SORTER) 
+		{
+			//assert the vehicle and the medic is valid
+			if(veh1 == null)
+				return -1 * sortDir;
+			if(veh1.getFirstParamedic() == null)
+				return -1 * sortDir;
+			//assert the vehicle and the medic is valid
+			if(veh2 == null)
+				return 1 * sortDir;
+			if(veh2.getFirstParamedic() == null)
+				return 1 * sortDir;
+			String p1 = veh1.getFirstParamedic().getLastName();
+			String p2 = veh2.getFirstParamedic().getLastName();
+			return p1.compareTo(p2) * sortDir;
+		}
+
+		//sort by the paramedic II name
+		if (column == PARAMEDIC_II_SORTER) 
+		{
+			//assert the vehicle and the medic is valid
+			if(veh1 == null)
+				return -1 * sortDir;
+			if(veh1.getSecondParamedic() == null)
+				return -1 * sortDir;
+			//assert the vehicle and the medic is valid
+			if(veh2 == null)
+				return 1 * sortDir;
+			if(veh2.getSecondParamedic() == null)
+				return 1 * sortDir;
+			String p1 = veh1.getSecondParamedic().getLastName();
+			String p2 = veh2.getSecondParamedic().getLastName();
+			return p1.compareTo(p2) * sortDir;
+		}
+		
         return returnValue;
     }
 }
