@@ -68,6 +68,10 @@ public class VehicleDecoder  implements MessageDecoder
                 }
                 if("vehicleNotes".equalsIgnoreCase(startName))
                     vehicle.setVehicleNotes(reader.getElementText());
+                
+                if("lastDestinationFree".equalsIgnoreCase(startName))
+                	vehicle.setLastDestinationFree(reader.getElementText());
+                
                 if(Location.ID.equalsIgnoreCase(startName))
                 {
                     MessageDecoder decoder = ProtocolCodecFactory.getDefault().getDecoder(Location.ID);
