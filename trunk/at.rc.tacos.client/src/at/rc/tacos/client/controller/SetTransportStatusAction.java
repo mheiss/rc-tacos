@@ -7,6 +7,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
+import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
@@ -38,6 +40,8 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 	@Override
 	public void run()
 	{
+		
+
 		//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
@@ -45,15 +49,19 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 		//create the time stamp
 		GregorianCalendar gcal = new GregorianCalendar();
 		long timestamp = gcal.getTimeInMillis();
-		//set the status
+		//set the status 
 		transport.addStatus(status, timestamp);
 		
 		if(status == TRANSPORT_STATUS_DESTINATION_FREE)
 		{
+			VehicleManager manager = ModelFactory.getInstance().getVehicleManager();
+			VehicleDetail vehicle = manager.getVehicleByName(transport.getVehicleDetail().getVehicleName());
 			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-//			transport.getVehicleDetail().setLastDestinationFree(transport.getToStreet() +"/" +transport.getToCity());
-			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, transport.getVehicleDetail());
+			vehicle.setLastDestinationFree(transport.getToStreet() +"/" +transport.getToCity());
+			System.out.println("SetTransportStatusAction, transport.getVehicleDetail()" +transport.getVehicleDetail());
+			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
 		}
+		
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 }
