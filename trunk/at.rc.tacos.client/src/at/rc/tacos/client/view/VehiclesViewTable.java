@@ -257,11 +257,16 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
 		
 		//enable or disable the actions
 		if(vehicle.isReadyForAction())
+		{
 			readyStatus.setEnabled(false);
+		}
 		else
 			readyStatus.setEnabled(true);
 		if(vehicle.isOutOfOrder())
+		{
+			readyStatus.setEnabled(false);
 			repairStatus.setEnabled(false);
+		}
 		else 
 			repairStatus.setEnabled(true);
     }
