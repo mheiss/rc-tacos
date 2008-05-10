@@ -204,6 +204,22 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         //no assigned vehicle
         return null;
     }
+    
+    /**
+     * Returns the vehicle to the given vehicle name
+     * @param vehicleName the vehicle name to check
+     * @return the vehicle if the given vehicleName matches no vehicle
+     */
+    public VehicleDetail getVehicleByName(String vehicleName)
+    {
+        for(VehicleDetail detail:objectList)
+        {
+            if(detail.getVehicleName().equalsIgnoreCase(vehicleName))
+                return detail;
+        }
+        //no vehicle
+        return null;
+    }
 
     /**
      * Returns a list of all vehicles which have NOT the status <code>VehicleDetail.outOfOrder</code><br>
