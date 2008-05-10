@@ -98,9 +98,9 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 	        		return detail.getSecondParamedic().getLastName() +" " +detail.getSecondParamedic().getFirstName();
 	        	else return null;
 	        case COLUMN_LAST_DESTINATION_FREE:
-//	        	if(detail.getLastDestinationFree() != null)
-//	        		return detail.getLastDestinationFree();
-//	        	else return null;
+	        	if(detail.getLastDestinationFree() != null)
+	        		return detail.getLastDestinationFree();
+	        	else return null;
 	        	
 	    }
         
