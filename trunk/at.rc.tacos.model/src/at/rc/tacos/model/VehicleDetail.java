@@ -533,6 +533,9 @@ public class VehicleDetail extends AbstractMessage
         //the green Image 
         case 30: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.green");  
         break;
+        //the blue Image = green arrow(!)
+        case 40: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.blue");  
+        break;
         //out of range
         default: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.na"); 
         }
