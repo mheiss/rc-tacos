@@ -246,8 +246,6 @@ public class TransportStatiForm implements ITransportStatus
 					tv.checkTime(s1,"S1");
 					formatOfTransportStati = tv.getCheckStatus();
 					s1 = tv.getTime();
-					System.out.println("TransportForm, checkFormatOfTransportStatusTimeFields- die zurückgegebene Zeit für s1 über tv.getTime(): " +tv.getTime());
-					System.out.println("TransportForm, checkFormatOfTransportStatusTimeFields- die zurückgegebene Zeit für s1: " +s1);
 				}
 				
 				if(s2 != null)
@@ -325,10 +323,7 @@ public class TransportStatiForm implements ITransportStatus
 			     mb.setMessage(fields);
 			     mb.open();
 			     if(event.type == SWT.Close) event.doit = false;
-			}
-
-			
-			
+			}	
 		});
 	}
 	
