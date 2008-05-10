@@ -6,16 +6,13 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -24,7 +21,6 @@ import org.eclipse.swt.widgets.Menu;
 
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
@@ -38,9 +34,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleViewTableDetailLabelProvider;
-import at.rc.tacos.client.providers.VehicleViewTableLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.view.sorterAndTooltip.VehicleTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleViewTableSorter;
 import at.rc.tacos.model.VehicleDetail;
 
@@ -52,7 +46,6 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableViewer viewer;
-    private VehicleTooltip tooltip;
 
     //the actions for the context menu
 	private VehicleTableEditAction editAction;
@@ -112,22 +105,6 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         viewer.getTable().setLinesVisible(true);
         
         viewer.refresh();
-
-        //set the tooltip
-        tooltip = new VehicleTooltip(viewer.getControl());
-        //show the tooltip when the selection has changed
-        viewer.addSelectionChangedListener(new ISelectionChangedListener() 
-        {
-            public void selectionChanged(SelectionChangedEvent event) 
-            {
-                TableItem[] selection = viewer.getTable().getSelection();
-                if (selection != null && selection.length > 0) 
-                {
-                    Rectangle bounds = selection[0].getBounds();
-                    tooltip.show(new Point(bounds.x, bounds.y));
-                }
-            }
-        }); 
         
         viewer.getTable().addMouseListener(new MouseAdapter() 
 		{
