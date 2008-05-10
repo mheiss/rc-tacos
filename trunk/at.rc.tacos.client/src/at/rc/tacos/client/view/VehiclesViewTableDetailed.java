@@ -280,7 +280,10 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
 		else
 			readyStatus.setEnabled(true);
 		if(vehicle.isOutOfOrder())
+		{
+			readyStatus.setEnabled(false);
 			repairStatus.setEnabled(false);
+		}
 		else 
 			repairStatus.setEnabled(true);
     }
