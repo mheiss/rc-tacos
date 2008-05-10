@@ -302,7 +302,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//Create the content of the dialog
 		createTransportSection(composite);
 		//disable some buttons
-		System.out.println("transportType: " +transportType);
+		System.out.println("transporttype: " +transportType);
 		if(transportType.equalsIgnoreCase("emergencyTransport"))
 		{
 			buttonMehrfachtransport.setEnabled(false);
@@ -310,6 +310,20 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if(transportType.equalsIgnoreCase("prebooking"))
 			buttonAssignCar.setEnabled(false);
 
+		//do not allow editing longer than 4 days after the transport
+		if(transportType.equalsIgnoreCase("both"))
+		{
+			Calendar fourDaysAgo = Calendar.getInstance();
+			fourDaysAgo.set(Calendar.DAY_OF_YEAR, fourDaysAgo.get(Calendar.DAY_OF_YEAR) -4);
+			
+			Calendar transportDate = Calendar.getInstance();
+			transportDate.setTimeInMillis(transport.getDateOfTransport());
+			if(transportDate.getTimeInMillis() < fourDaysAgo.getTimeInMillis())
+			{
+				composite.setEnabled(false);
+			}	
+		}
+		
 		//Simple date format for the alarming timestamps
 		SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 
@@ -2196,7 +2210,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					newCaller.setCallerName(transport.getCallerDetail().getCallerName());
 					newCaller.setCallerTelephoneNumber(transport.getCallerDetail().getCallerTelephoneNumber());
 				}
-				Transport newTransport = Util.copyTransport(transport);//TODO
+				Transport newTransport = Util.copyTransport(transport);
 				newTransport.setPatient(newPatient);
 				newTransport.setCallerDetail(newCaller);
 				//add the created transport to the table object list
