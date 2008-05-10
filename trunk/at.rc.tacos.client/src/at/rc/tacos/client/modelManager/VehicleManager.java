@@ -461,9 +461,9 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         //green (30) is for a 'underway'(program status) vehicle not possible
         if(transportList.isEmpty())
         {
-//        	if(!detail.getLastDestinationFree().equalsIgnoreCase(""))
-//        		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_BLUE);
-//        	else if(detail.getLastDestinationFree().equalsIgnoreCase(""))
+        	if(!detail.getLastDestinationFree().equalsIgnoreCase(""))
+        		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_BLUE);
+        	else if(detail.getLastDestinationFree().equalsIgnoreCase(""))
         		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
             NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
             return;
