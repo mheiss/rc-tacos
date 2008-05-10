@@ -49,7 +49,7 @@ public class TransportViewFilter  extends ViewerFilter
 		if(trNr != null &! trNr.trim().isEmpty())
 		{
 			//check the transort number
-			if(!String.valueOf(transport.getTransportNumber()).contains(trNr) &! String.valueOf(transport.getTransportNumber()).startsWith(trNr))
+			if(!String.valueOf(transport.getTransportNumber()).toLowerCase().contains(trNr.toLowerCase()) &! String.valueOf(transport.getTransportNumber()).toLowerCase().startsWith(trNr.toLowerCase()))
 				return false;
 		}
 		
@@ -66,14 +66,14 @@ public class TransportViewFilter  extends ViewerFilter
 		if(patient != null &! patient.trim().isEmpty())
 		{
 			//check the patient last name
-			if(!transport.getPatient().getLastname().contains(patient) &! transport.getPatient().getLastname().startsWith(patient)
-					&!transport.getPatient().getFirstname().contains(patient) &! transport.getPatient().getFirstname().startsWith(patient))
+			if(!transport.getPatient().getLastname().toLowerCase().contains(patient.toLowerCase()) &! transport.getPatient().getLastname().toLowerCase().startsWith(patient.toLowerCase())
+					&!transport.getPatient().getFirstname().toLowerCase().contains(patient.toLowerCase()) &! transport.getPatient().getFirstname().toLowerCase().startsWith(patient.toLowerCase()))
 				return false;
 		}
 		if(to != null &! to.trim().isEmpty())
 		{
-			if(!transport.getToStreet().contains(to) &! transport.getToStreet().startsWith(to)
-					&!transport.getToCity().contains(to) &! transport.getToCity().startsWith(to))
+			if(!transport.getToStreet().toLowerCase().contains(to.toLowerCase()) &! transport.getToStreet().toLowerCase().startsWith(to.toLowerCase())
+					&!transport.getToCity().toLowerCase().contains(to.toLowerCase()) &! transport.getToCity().toLowerCase().startsWith(to.toLowerCase()))
 				return false;
 		}
 		if(location != null &! location.trim().isEmpty())
@@ -84,7 +84,7 @@ public class TransportViewFilter  extends ViewerFilter
 				{
 					String locationToCheck = this.getLocationToCheck(transport.getVehicleDetail().getCurrentStation().getLocationName());
 					
-					if(!locationToCheck.contains(location) &! locationToCheck.startsWith(location))
+					if(!locationToCheck.toLowerCase().contains(location.toLowerCase()) &! locationToCheck.toLowerCase().startsWith(location.toLowerCase()))
 					return false;
 				}
 			}
@@ -92,14 +92,14 @@ public class TransportViewFilter  extends ViewerFilter
 		if(priority != null &! priority.trim().isEmpty())
 		{
 			String priorityToCheck = this.getPriorityToCheck(transport.getTransportPriority());
-			if(!priorityToCheck.contains(priority) &! priorityToCheck.startsWith(priority))
+			if(!priorityToCheck.toLowerCase().contains(priority.toLowerCase()) &! priorityToCheck.toLowerCase().startsWith(priority.toLowerCase()))
 			return false;
 		}
 		if(vehicle != null &! vehicle.trim().isEmpty())
 		{
 			if(transport.getVehicleDetail() != null)
 			{
-				if(!transport.getVehicleDetail().getVehicleName().contains(vehicle) &! transport.getVehicleDetail().getVehicleName().startsWith(vehicle))
+				if(!transport.getVehicleDetail().getVehicleName().toLowerCase().contains(vehicle.toLowerCase()) &! transport.getVehicleDetail().getVehicleName().toLowerCase().startsWith(vehicle.toLowerCase()))
 				return false;
 			}
 		}
@@ -107,7 +107,7 @@ public class TransportViewFilter  extends ViewerFilter
 		{
 			if(transport.getKindOfIllness() != null)
 			{
-				if(!transport.getKindOfIllness().getDiseaseName().contains(disease) &! transport.getKindOfIllness().getDiseaseName().startsWith(disease))
+				if(!transport.getKindOfIllness().getDiseaseName().toLowerCase().contains(disease.toLowerCase()) &! transport.getKindOfIllness().getDiseaseName().toLowerCase().startsWith(disease.toLowerCase()))
 				return false;
 			}
 		}
