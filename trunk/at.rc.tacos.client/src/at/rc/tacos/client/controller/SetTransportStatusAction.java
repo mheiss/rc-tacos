@@ -58,7 +58,6 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 			VehicleDetail vehicle = manager.getVehicleByName(transport.getVehicleDetail().getVehicleName());
 			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
 			vehicle.setLastDestinationFree(transport.getToStreet() +"/" +transport.getToCity());
-			System.out.println("SetTransportStatusAction, transport.getVehicleDetail()" +transport.getVehicleDetail());
 			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
 		}
 		
