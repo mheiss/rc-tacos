@@ -2,8 +2,6 @@ package at.rc.tacos.model;
 
 import java.util.Map;
 import java.util.TreeMap;
-
-
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IKindOfTransport;
@@ -231,14 +229,105 @@ public class Transport extends AbstractMessage implements ITransportPriority,IDi
 	@Override
 	public String toString()
 	{
-		return "transportId: "+transportId+"; fromStreet: "+fromStreet+"; fromCity: "+fromCity+"; patient: "+patient+"; toStreet: "+toStreet+"; toCity: "+toCity
-		+"; kindofTransport: "+kindOfTransport+"; transportPriority: "+transportPriority+"; longDistanceTrip: "+longDistanceTrip+"; Direction: "+direction+"; kindOfIlness: "
-		+kindOfIllness+"; backTransport: "+backTransport+"; assistandPerson: "+assistantPerson+"; emergencyPhone: "+emergencyPhone+"; feedback: "+feedback+"; creationTime: "
-		+creationTime+"; dateOfTransport: "+dateOfTransport+"; plannedStartOfTransport: "+ plannedStartOfTransport +"; plannedTimeAtPatient: "+plannedTimeAtPatient+"; appointmentTimeAtDestination: "
-		+appointmentTimeAtDestination+"; planedLocation: "+planedLocation+"; notes: "+notes+"; programStatus: "+programStatus+"; createdByUser: "+createdByUser+"; disposedByUser: "+disposedByUser+"; emergencyDoctorAlarming: "
-		+emergencyDoctorAlarming+"; helicoperterAlarming: "+helicopterAlarming+"; blueLighttoGoal: "+blueLightToGoal+"; blueLight1: "+blueLight1+"; dfAlarming: "+dfAlarming+"; brkdtAlarming: "+brkdtAlarming+"; firebrigadeAlarming: "
-		+firebrigadeAlarming+"; mountainRescueServiceAlarming: "+mountainRescueServiceAlarming+"; policeAlarming: "+policeAlarming+"; KITAlarming: "+KITAlarming+"; timestampNA: "+timestampNA+"; timestampRTH: "+timestampRTH+"; timestampDF: "+timestampDF
-		+"; timestampBRKDT: "+timestampBRKDT+"; timestampFW: "+timestampFW+"; timestampPolizei: "+timestampPolizei+"; timestampBergrettung: "+timestampBergrettung+"; timestampKIT: "+timestampKIT+"; vehicleDetail: "+vehicleDetail+"; statusMessages: "+statusMessages;
+		String transport;
+		//common transport details
+		transport = "von" +fromStreet +"/" +fromCity +";";
+		if(patient != null)
+			transport = transport + "Patient: " +patient.getLastname() +" " +patient.getFirstname()+";";
+		transport = transport + "nach" +toStreet +"/" +toCity+";";
+		if(kindOfTransport != null)
+			transport = transport +kindOfTransport+";";
+		transport = transport +";" +"Pr: " +transportPriority +";";
+		if(longDistanceTrip)
+			transport = transport +"FF" +";";
+		transport = transport +"Ri: " +direction+";";
+		if(kindOfIllness != null)
+			transport = transport +"Erkr/Verl: " +kindOfIllness.getDiseaseName() +";";
+		if(backTransport)
+			transport = transport +"RT möglich" +";";
+		if(assistantPerson)
+			transport = transport +"BeglPers" +";";
+		if(emergencyPhone)
+			transport = transport +"Rufhilfe" +";";
+		if(feedback != null && !feedback.isEmpty())
+			transport = transport +"RM: " +feedback +";";
+		transport = transport +"Erstellt: " +MyUtils.timestampToString(creationTime, MyUtils.timeAndDateFormat) +";"
+		+"TrDatum: " +MyUtils.timestampToString(dateOfTransport, MyUtils.dateFormat) +";";
+		if(plannedStartOfTransport != 0)
+			transport = transport +"Abf: " +MyUtils.timestampToString(plannedStartOfTransport, MyUtils.timeFormat) +";";
+		if(plannedTimeAtPatient != 0)
+			transport = transport +"Pat: " +MyUtils.timestampToString(plannedTimeAtPatient, MyUtils.timeFormat) +";";
+		if(appointmentTimeAtDestination != 0)
+			transport = transport +"Term: " +MyUtils.timestampToString(appointmentTimeAtDestination, MyUtils.timeFormat) +";";
+		transport = transport +"OS: " +planedLocation.getLocationName() +";";
+		if(notes != null)
+			transport = transport + "Anm: " +notes +";";
+		transport = transport +"LSD1: " +createdByUser +";";
+		if(disposedByUser != null)
+			transport = transport +"LSD2: " +disposedByUser +";";
+		if(blueLight1)
+			transport = transport +"BD1"+";";
+		if(blueLightToGoal)
+			transport = transport +"BD2" +";";
+		//caller
+		if(callerDetail != null)
+			transport = transport +"Melder: " +callerDetail.getCallerName() +";" +callerDetail.getCallerTelephoneNumber() +";";
+		//alarming
+		if(emergencyDoctorAlarming)
+			transport = transport +"NA: " +MyUtils.timestampToString(timestampNA, MyUtils.timeAndDateFormat)+";";
+		if(helicopterAlarming)
+			transport = transport +"RTH: " +MyUtils.timestampToString(timestampRTH, MyUtils.timeAndDateFormat)+";";
+		if(dfAlarming)
+			transport = transport +"DF: " +MyUtils.timestampToString(timestampDF, MyUtils.timeAndDateFormat)+";";
+		if(brkdtAlarming)
+			transport = transport +"BRKDT: " +MyUtils.timestampToString(timestampBRKDT, MyUtils.timeAndDateFormat)+";";
+		if(firebrigadeAlarming)
+			transport = transport +"FW: " +MyUtils.timestampToString(timestampFW, MyUtils.timeAndDateFormat)+";";
+		if(mountainRescueServiceAlarming)
+			transport = transport +"BR: " +MyUtils.timestampToString(timestampBergrettung, MyUtils.timeAndDateFormat)+";";
+		if(policeAlarming)
+			transport = transport +"Pol: " +MyUtils.timestampToString(timestampPolizei, MyUtils.timeAndDateFormat)+";";
+		if(KITAlarming)
+			transport = transport +"KIT: " +MyUtils.timestampToString(timestampKIT, MyUtils.timeAndDateFormat)+";";
+		//vehicleDetail
+		if(vehicleDetail != null)
+		{
+			transport = transport +"Fzg: " +vehicleDetail.getVehicleName() +";";
+			if(vehicleDetail.getDriver() != null)
+				transport = transport +"F: " +vehicleDetail.getDriver().getUserName() +";";
+			if(vehicleDetail.getFirstParamedic() != null)
+				transport = transport +"SaniI: " +vehicleDetail.getFirstParamedic().getUserName() +";";
+			if(vehicleDetail.getSecondParamedic() != null)
+				transport = transport +"SaniII: " +vehicleDetail.getSecondParamedic().getUserName() +";";
+			if(vehicleDetail.getMobilePhone() != null)
+				transport = transport +"H: " +vehicleDetail.getMobilePhone() +";";
+		}
+		//status messages
+		if(statusMessages != null)
+		{
+			//SO
+			if(statusMessages.containsKey(TRANSPORT_STATUS_ORDER_PLACED))
+				transport = transport +MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_ORDER_PLACED),MyUtils.timeFormat);
+			//S1
+			if(statusMessages.containsKey(TRANSPORT_STATUS_ON_THE_WAY))
+				transport = transport +MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_ON_THE_WAY),MyUtils.timeFormat);
+			//S2
+			if(statusMessages.containsKey(TRANSPORT_STATUS_AT_PATIENT))
+				transport = transport +MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_AT_PATIENT),MyUtils.timeFormat);
+			//S3
+			if(statusMessages.containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
+				transport = transport +MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_START_WITH_PATIENT),MyUtils.timeFormat);
+			//S4
+			if(statusMessages.containsKey(TRANSPORT_STATUS_AT_DESTINATION))
+				transport = transport +MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_AT_DESTINATION),MyUtils.timeFormat);
+			//S5
+			if(statusMessages.containsKey(TRANSPORT_STATUS_DESTINATION_FREE))
+				transport = transport +MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_DESTINATION_FREE),MyUtils.timeFormat);
+			//S6
+			if(statusMessages.containsKey(TRANSPORT_STATUS_CAR_IN_STATION))
+				transport = transport +MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_CAR_IN_STATION),MyUtils.timeFormat);
+		}
+		return transport;
 	}
 
 	/**
