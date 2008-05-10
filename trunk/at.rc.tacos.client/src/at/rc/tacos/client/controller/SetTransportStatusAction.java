@@ -1,5 +1,6 @@
 package at.rc.tacos.client.controller;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.eclipse.jface.action.Action;
@@ -14,6 +15,7 @@ import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.util.MyUtils;
 
 /**
  * Sets the given transport status
@@ -54,10 +56,12 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 		
 		if(status == TRANSPORT_STATUS_DESTINATION_FREE)
 		{
+			Calendar cal = Calendar.getInstance();
+			String now = MyUtils.timestampToString(cal.getTimeInMillis(), MyUtils.timeFormat);
 			VehicleManager manager = ModelFactory.getInstance().getVehicleManager();
 			VehicleDetail vehicle = manager.getVehicleByName(transport.getVehicleDetail().getVehicleName());
 			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-			vehicle.setLastDestinationFree(transport.getToStreet() +"/" +transport.getToCity());
+			vehicle.setLastDestinationFree(now + " " +transport.getToStreet() +"/" +transport.getToCity());
 			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
 		}
 		
