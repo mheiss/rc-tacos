@@ -35,7 +35,6 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleViewTableDetailLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleViewTableSorter;
 import at.rc.tacos.model.VehicleDetail;
 
