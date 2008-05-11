@@ -620,6 +620,10 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		bTableColumnTA.setToolTipText("Transportart");
 		bTableColumnTA.setWidth(20);
 		bTableColumnTA.setText("T");
+		
+		final TableColumn anmerkungTransporte = new TableColumn(table, SWT.NONE);
+		anmerkungTransporte.setWidth(100);
+		anmerkungTransporte.setText("Anmerkung");
 
 		Listener sortListener = new Listener() 
 		{
@@ -660,6 +664,9 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
 				if(currentColumn == bTableColumnTA)
 					sortIdentifier = TransportSorter.TA_SORTER;
+				if(currentColumn == anmerkungTransporte)
+					sortIdentifier = TransportSorter.NOTES_SORTER;
+				
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
 				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
@@ -675,6 +682,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		bTtableColumnPatient.addListener(SWT.Selection, sortListener);
 		bTableColumnTransportNach.addListener(SWT.Selection, sortListener);
 		bTableColumnTA.addListener(SWT.Selection, sortListener);
+		anmerkungTransporte.addListener(SWT.Selection, sortListener);
 
 		return viewer;
 	}
