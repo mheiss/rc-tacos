@@ -44,6 +44,11 @@ public class RegisterRosterEntryController extends Controller {
 		
 		final String authorization = userSession.getLoginInformation().getAuthorization();
 		
+		// Check if request is internal
+		if (!userSession.isInternalSession()) {
+			throw new IllegalArgumentException("Error: This URL must be called from internal net.");
+		}
+		
 		// Get Id
 		int rosterEntryId = 0;
 		final String paramRosterEntryId = request.getParameter("rosterEntryId");
