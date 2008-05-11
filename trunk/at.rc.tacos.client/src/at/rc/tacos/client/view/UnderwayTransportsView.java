@@ -202,16 +202,16 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 
 		final TableColumn transportVonDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		transportVonDisponierteTransporte.setMoveable(true);
-		transportVonDisponierteTransporte.setWidth(300);
+		transportVonDisponierteTransporte.setWidth(250);
 		transportVonDisponierteTransporte.setText("Transport von");
 
 		final TableColumn patientDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		patientDisponierteTransporte.setMoveable(true);
-		patientDisponierteTransporte.setWidth(250);
+		patientDisponierteTransporte.setWidth(200);
 		patientDisponierteTransporte.setText("Patient");
 
 		final TableColumn transportNachDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		transportNachDisponierteTransporte.setWidth(300);
+		transportNachDisponierteTransporte.setWidth(250);
 		transportNachDisponierteTransporte.setText("Transport nach");
 
 		final TableColumn aeDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -250,8 +250,12 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		taDisponierteTransporte.setText("T");
 		
 		final TableColumn erkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		erkrankungVerletzungDisponierteTransporte.setWidth(250);
+		erkrankungVerletzungDisponierteTransporte.setWidth(200);
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
+		
+		final TableColumn anmerkungUnderwayTransporte = new TableColumn(tableDisp, SWT.NONE);
+		anmerkungUnderwayTransporte.setWidth(352);
+		anmerkungUnderwayTransporte.setText("Anmerkung");
 		
 		
 		
@@ -307,6 +311,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 					sortIdentifier = TransportSorter.S4_SORTER;
 				if(currentColumn == erkrankungVerletzungDisponierteTransporte)
 					sortIdentifier = TransportSorter.KIND_OF_ILLNESS_SORTER;
+				if(currentColumn == anmerkungUnderwayTransporte)
+					sortIdentifier = TransportSorter.NOTES_SORTER;
 				
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
@@ -329,6 +335,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		s3DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		s4DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		erkrankungVerletzungDisponierteTransporte.addListener(SWT.Selection, sortListener);
+		anmerkungUnderwayTransporte.addListener(SWT.Selection, sortListener);
 		
 		//create the actions
 		makeActions();
