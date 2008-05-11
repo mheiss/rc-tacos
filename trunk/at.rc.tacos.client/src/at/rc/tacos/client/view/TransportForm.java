@@ -2857,7 +2857,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 
 			/**duplicate the transport if the priority is changed to A*/
-			if(!oldPriority.equalsIgnoreCase("A") && transport.getTransportPriority().equalsIgnoreCase("A"))
+			if(!oldPriority.equalsIgnoreCase("A") && transport.getTransportPriority().equalsIgnoreCase("A") &! editingType.equalsIgnoreCase("journal"))
 			{
 				DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
 				duplicateAction.run();
