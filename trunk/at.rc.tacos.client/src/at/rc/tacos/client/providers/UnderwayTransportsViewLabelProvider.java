@@ -32,6 +32,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     public static final int COLUMN_FZG = 12;
     public static final int COLUMN_T = 13;
     public static final int COLUMN_ERKR_VERL = 14;
+	public static final int COLUMN_ANMERKUNG = 15;
 
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
@@ -150,6 +151,10 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        	if(transport.getKindOfIllness() != null)
 					return transport.getKindOfIllness().getDiseaseName();
 				else return "";
+	        case COLUMN_ANMERKUNG:
+	        	if(transport.getNotes() != null)
+	        		return transport.getNotes();
+	        	else return "";
         }
         
         return null;
