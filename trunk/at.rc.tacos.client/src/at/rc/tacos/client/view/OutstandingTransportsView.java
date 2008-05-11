@@ -262,7 +262,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		erkrankungVerletzungOffeneTransporte.setText("Erkrankung/Verletzung");
 	
 		final TableColumn anmerkungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		anmerkungOffeneTransporte.setWidth(595);
+		anmerkungOffeneTransporte.setWidth(585);
 		anmerkungOffeneTransporte.setText("Anmerkung");
 	
 		//make the columns sortable
