@@ -358,11 +358,14 @@ public class Activator extends AbstractUIPlugin
 						if(currentDialysis.getTimeInMillis() > patientCal.getTimeInMillis())
 						{
 							//set the last generated transport date to now
-							patient.setLastTransportDate(Calendar.getInstance().getTimeInMillis());
-							NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, patient);
-							//create and run the action
-							CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,currentDialysis);
-							createAction.run();
+							if(!patient.isStationary())
+							{
+								patient.setLastTransportDate(Calendar.getInstance().getTimeInMillis());
+								NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, patient);
+								//create and run the action
+								CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,currentDialysis);
+								createAction.run();
+							}
 						}
 					}
 					
@@ -418,13 +421,16 @@ public class Activator extends AbstractUIPlugin
 						//third check: is within the next two hour?
 						if(currentDialysis.getTimeInMillis() > patientCal.getTimeInMillis())
 						{
-							//set the last generated transport date to now
-							patient.setLastBackTransportDate(Calendar.getInstance().getTimeInMillis());
-							NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, patient);
-							//create and run the action
-//							CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,currentDialysis);
-							CreateBackTransportFromDialysis createAction = new CreateBackTransportFromDialysis(patient, currentDialysis);
-							createAction.run();
+							if(!patient.isStationary())
+							{
+								//set the last generated transport date to now
+								patient.setLastBackTransportDate(Calendar.getInstance().getTimeInMillis());
+								NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, patient);
+								//create and run the action
+	//							CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(patient,currentDialysis);
+								CreateBackTransportFromDialysis createAction = new CreateBackTransportFromDialysis(patient, currentDialysis);
+								createAction.run();
+							}
 						}
 					}
 					return Status.OK_STATUS;
