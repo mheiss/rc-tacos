@@ -24,6 +24,7 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 	public static final int COLUMN_PATIENT = 6;
 	public static final int COLUMN_TO = 7;
 	public static final int COLUMN_T = 8;  
+	public static final int Column_NOTES = 9;
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) 
@@ -107,6 +108,10 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 					return "R";
 				else return "";
 			}
+		case Column_NOTES:
+			if(transport.getNotes() != null)
+				return transport.getNotes();
+			else return "";
 		default: return null;
 		}
 
