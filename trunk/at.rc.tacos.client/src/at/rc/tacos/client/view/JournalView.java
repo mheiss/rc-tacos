@@ -168,26 +168,26 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnTNrJournal.setText("TNr");
 
 		final TableColumn columnPrioritaetJournal = new TableColumn(table, SWT.NONE);
-		columnPrioritaetJournal.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
+		columnPrioritaetJournal.setToolTipText("1 (NEF), 2 (Transport), 3 (Terminfahrt), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
 		columnPrioritaetJournal.setWidth(20);
 		columnPrioritaetJournal.setText("Pr");
 
 		final TableColumn columnTransportVonJournal = new TableColumn(table, SWT.NONE);
 		columnTransportVonJournal.setMoveable(true);
-		columnTransportVonJournal.setWidth(190);
+		columnTransportVonJournal.setWidth(250);
 		columnTransportVonJournal.setText("Transport von");
 
 		final TableColumn columnPatientJournal = new TableColumn(table, SWT.NONE);
 		columnPatientJournal.setMoveable(true);
-		columnPatientJournal.setWidth(160);
+		columnPatientJournal.setWidth(200);
 		columnPatientJournal.setText("Patient");
 
 		final TableColumn columnTransportNachJournal = new TableColumn(table, SWT.NONE);
-		columnTransportNachJournal.setWidth(190);
+		columnTransportNachJournal.setWidth(250);
 		columnTransportNachJournal.setText("Transport nach");
 
 		final TableColumn columnErkrVerlJournal = new TableColumn(table, SWT.NONE);
-		columnErkrVerlJournal.setWidth(120);
+		columnErkrVerlJournal.setWidth(150);
 		columnErkrVerlJournal.setText("Erkr/Verl");
 
 		final TableColumn columnAEJournal = new TableColumn(table, SWT.NONE);
@@ -230,15 +230,15 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnFzgJournal.setText("Fzg");
 
 		final TableColumn columnFahrerJournal = new TableColumn(table, SWT.NONE);
-		columnFahrerJournal.setWidth(70);
+		columnFahrerJournal.setWidth(120);
 		columnFahrerJournal.setText("Fahrer");
 
 		final TableColumn columnSaniIJournal = new TableColumn(table, SWT.NONE);
-		columnSaniIJournal.setWidth(70);
+		columnSaniIJournal.setWidth(120);
 		columnSaniIJournal.setText("Sanitäter I");
 
 		final TableColumn columnSaniIIJournal = new TableColumn(table, SWT.NONE);
-		columnSaniIIJournal.setWidth(70);
+		columnSaniIIJournal.setWidth(120);
 		columnSaniIIJournal.setText("Sanitäter II");
 
 		//make the columns sort able
