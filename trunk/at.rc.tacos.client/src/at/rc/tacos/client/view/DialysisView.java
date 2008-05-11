@@ -106,7 +106,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		
 		final TableColumn newColumnTableColumnStationDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnStationDialyse.setToolTipText("Zuständige Ortsstelle");
-		newColumnTableColumnStationDialyse.setWidth(68);
+		newColumnTableColumnStationDialyse.setWidth(100);
 		newColumnTableColumnStationDialyse.setText("OS");
 
 		final TableColumn newColumnTableColumnAnkDialyse = new TableColumn(table_2, SWT.NONE);
@@ -130,15 +130,15 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnAbholbereitDialyse.setText("Abholbereit");
 
 		final TableColumn newColumnTableColumnWohnortDialyse = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnWohnortDialyse.setWidth(167);
+		newColumnTableColumnWohnortDialyse.setWidth(250);
 		newColumnTableColumnWohnortDialyse.setText("Wohnort");
 
 		final TableColumn newColumnTableColumnNameDialyse = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnNameDialyse.setWidth(133);
+		newColumnTableColumnNameDialyse.setWidth(200);
 		newColumnTableColumnNameDialyse.setText("Name");
 		
 		final TableColumn newColumnTableColumnDialyseort = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnDialyseort.setWidth(167);
+		newColumnTableColumnDialyseort.setWidth(250);
 		newColumnTableColumnDialyseort.setText("Dialyseort");
 
 		final TableColumn newColumnTableColumnMontag = new TableColumn(table_2, SWT.NONE);
