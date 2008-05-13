@@ -68,6 +68,5 @@ public class OpenTransportAction extends Action
 
 		//now open the window
 		myShell.open();
-		myShell.setVisible(true);
 	}
 }
