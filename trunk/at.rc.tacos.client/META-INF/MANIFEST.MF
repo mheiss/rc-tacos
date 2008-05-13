@@ -14,5 +14,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  at.rc.tacos.core.net
 Eclipse-LazyStart: true
-Bundle-ClassPath: .,
- lib/sleak.jar
+Bundle-ClassPath: .
