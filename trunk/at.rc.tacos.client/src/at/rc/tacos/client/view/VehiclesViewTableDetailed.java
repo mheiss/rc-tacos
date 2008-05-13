@@ -98,7 +98,7 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         form.getBody().setLayout(new FillLayout());
 
         final Composite composite = form.getBody();
-        viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+        viewer = new TableViewer(composite, SWT.SINGLE| SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
         viewer.setContentProvider(new VehicleContentProvider());
         viewer.setLabelProvider(new VehicleViewTableDetailLabelProvider());
         viewer.setInput(ModelFactory.getInstance().getVehicleManager().toArray());
@@ -124,6 +124,11 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
         
+        final TableColumn columnLock = new TableColumn(table, SWT.NONE);
+        columnLock.setToolTipText("Gesperrt");
+        columnLock.setWidth(1);
+        columnLock.setText("EB");
+        
         final TableColumn columnReady = new TableColumn(table, SWT.NONE);
         columnReady.setToolTipText("Einsatzbereit");
         columnReady.setWidth(20);
@@ -131,7 +136,7 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
 
         final TableColumn columnVehicleName = new TableColumn(table, SWT.NONE);
         columnVehicleName.setToolTipText("Fahrzeugname");
-        columnVehicleName.setWidth(40);
+        columnVehicleName.setWidth(45);
 //        columnVehicleName.setText("Fzg.");
 
         final TableColumn columnVehicleStatus = new TableColumn(table, SWT.NONE);
@@ -172,7 +177,7 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         
         final TableColumn columnLastDestinationFree = new TableColumn(table, SWT.NONE);
         columnLastDestinationFree.setToolTipText("Zeigt den Standort der letzten Meldung \"Ziel frei\" (S6)an");
-        columnLastDestinationFree.setWidth(150);
+        columnLastDestinationFree.setWidth(250);
         columnLastDestinationFree.setText("Letzter Status S5"); 
 
         //make the columns sortable
