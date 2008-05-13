@@ -233,6 +233,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -250,6 +251,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -270,6 +272,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -2239,11 +2242,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				buttonMehrfachtransport.setEnabled(false);
 				buttonADDMehrfachtransport.setEnabled(false);
 				multiTransportGroup.setVisible(false); 
-				assignVehicleContentProvider = new AssignVehicleContentProvider();
-				viewerAssign.setContentProvider(assignVehicleContentProvider);
-				viewerAssign.setLabelProvider(new VehicleAssignLabelProvider());
-//				assignCarLocation = ModelFactory.getInstance().getLocationManager().getLocationByName("Bezirk: Bruck - Kapfenberg");
-				viewerAssign.setInput(ModelFactory.getInstance().getVehicleManager().getReadyVehicleList());
+				
 				viewerAssign.refresh();
 				assignCarGroup.setVisible(true);
 			}
@@ -2877,6 +2876,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	private void createAssignCarTable()
 	{
 		viewerAssign = new TableViewer(assignCarGroup, SWT.VIRTUAL | SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		assignVehicleContentProvider = new AssignVehicleContentProvider();
+		viewerAssign.setContentProvider(assignVehicleContentProvider);
+		viewerAssign.setLabelProvider(new VehicleAssignLabelProvider());
+		viewerAssign.setInput(ModelFactory.getInstance().getVehicleManager().getReadyVehicleList());
 		final Table table_1 = viewerAssign.getTable();
 		final FormData fd_table_1 = new FormData();
 		fd_table_1.right = new FormAttachment(0, 824);
