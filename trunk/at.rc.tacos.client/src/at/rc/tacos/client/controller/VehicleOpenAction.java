@@ -74,6 +74,5 @@ public class VehicleOpenAction extends Action
 
 		//now open it
 		myShell.open();
-		myShell.setVisible(false);
 	}
 }
