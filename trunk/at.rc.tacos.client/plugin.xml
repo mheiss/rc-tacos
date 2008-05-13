@@ -91,14 +91,6 @@
       </view>
       
       <view
-            name="Transporte"
-            allowMultiple="false"
-            class="at.rc.tacos.client.view.TransportView"
-            icon="icons/resources/vehicle.png"
-            id="at.rc.tacos.client.view.transport_view">
-      </view>
-      
-      <view
             name="Fahrzeugübersicht-Tabelle"
             allowMultiple="false"
             class="at.rc.tacos.client.view.VehiclesViewTable"
@@ -169,26 +161,13 @@
             class="at.rc.tacos.client.view.PrebookingView"
             icon="icons/toolbar/viewTransportPrebooking.png"
             id="at.rc.tacos.client.view.prebooking_view">
-      </view>
-      <view
-            name="SearchView"
-            allowMultiple="false"
-            class="at.rc.tacos.client.view.SearchView"
-            id="at.rc.tacos.client.view.searchView">
-      </view>      
+      </view>     
       <view
             name="Dialyse"
             allowMultiple="false"
             class="at.rc.tacos.client.view.DialysisView"
             icon="icons/toolbar/viewTransportDialyse.png"
             id="at.rc.tacos.client.view.dialysis_view">
-      </view>
-      <view
-            allowMultiple="false"
-            class="at.rc.tacos.client.view.LogHeaderView"
-            id="at.rc.tacos.client.view.logHeader"
-            icon="icons/toolbar/viewLog.png"
-            name="Logging">
       </view>
       <view
             allowMultiple="false"
@@ -241,21 +220,9 @@
       </view>
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.view.NavigationTransportView"
-            id="at.rc.tacos.client.view.navigationTransport"
-            name="Navigation Transport">
-      </view>
-      <view
-            allowMultiple="false"
             class="at.rc.tacos.client.view.InfoView"
             id="at.rc.tacos.client.view.info"
             name="Informationen">
-      </view>
-      <view
-            allowMultiple="false"
-            class="at.rc.tacos.client.view.NavigationAdminView"
-            id="at.rc.tacos.client.view.navigationAdmin"
-            name="Navigation Admin">
       </view>
       <view
             allowMultiple="false"
