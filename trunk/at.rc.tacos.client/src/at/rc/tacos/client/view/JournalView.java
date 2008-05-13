@@ -14,6 +14,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -452,9 +453,12 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 			//get the new filter
 			TransportViewFilter searchFilter = (TransportViewFilter)evt.getNewValue();
 			//remove all filters and apply the new
-			viewer.resetFilters();
-			viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
-			viewer.addFilter(new TransportDateFilter(filteredDate));
+			for(ViewerFilter filter:viewer.getFilters())
+			{
+				if(!(filter instanceof TransportViewFilter))
+					continue;
+				viewer.removeFilter(filter);	
+			}
 			if(searchFilter != null)
 			{
 				viewer.addFilter(searchFilter);
