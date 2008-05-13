@@ -13,6 +13,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -39,6 +40,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
 import at.rc.tacos.client.providers.OutstandingTransportsViewLabelProvider;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
+import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.util.CustomColors;
 //import at.rc.tacos.client.view.sorterAndTooltip.OutstandingTransportsTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
@@ -81,7 +83,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	{
 		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
 	}
-
+	
 	/**
 	 * Call back method to create the control and initialize them.
 	 * @param parent the parent composite to add
@@ -354,7 +356,26 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
 				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{ 
-			this.viewerOffTrans.refresh();
+			if(!viewerOffTrans.getTable().isDisposed())
+				viewerOffTrans.refresh();
+		}
+		//listen to filter events
+		if("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the new filter
+			TransportViewFilter searchFilter = (TransportViewFilter)evt.getNewValue();
+			//remove all filters and apply the new
+			for(ViewerFilter filter:viewerOffTrans.getFilters())
+			{
+				if(!(filter instanceof TransportViewFilter))
+					continue;
+				viewerOffTrans.removeFilter(filter);
+					
+			}
+			if(searchFilter != null)
+			{
+				viewerOffTrans.addFilter(searchFilter);
+			}	
 		}
 	}
 }
