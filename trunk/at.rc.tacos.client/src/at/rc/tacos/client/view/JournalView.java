@@ -332,6 +332,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 
 		//show only transport with the status journal
 		viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
+		viewer.addFilter(new TransportDateFilter(Calendar.getInstance()));
 		viewer.refresh();
 	}
 
