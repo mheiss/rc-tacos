@@ -35,8 +35,6 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
     public Image getColumnImage(Object element, int columnIndex) 
     {
     	VehicleDetail vehicle = (VehicleDetail)element;
-    	
-
 		//determine the column and return a image if needed
 		switch(columnIndex)
 		{
@@ -76,8 +74,7 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 				if(vehicle.getVehicleNotes() != null)
 					if(!vehicle.getVehicleNotes().isEmpty())
 						return ImageFactory.getInstance().getRegisteredImage("vehicle.notes");
-				
-				
+	
 			default: return null; 
 		}
     }
