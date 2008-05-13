@@ -17,6 +17,7 @@ public final class CustomColors
     public static final Font SUBHEADER_FONT = new Font(null,"Arial", 8, SWT.ITALIC);
     public static final Font VEHICLE_NAME = new Font(null,"Arial", 18, SWT.BOLD);
     public static final Font VEHICLE_TEXT = new Font(null,"Arial", 8, SWT.NORMAL);
+    public static final Font VEHICLE_TABLE = new Font(null, "Arial", 9, SWT.NORMAL);
     
     /** Set the main color scheme */
     public static final Color RED_COLOR = new Color(null,186,15,23);
