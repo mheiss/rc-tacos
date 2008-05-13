@@ -11,12 +11,14 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -24,6 +26,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.modelManager.AddressManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -100,6 +103,19 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
      */
 	public void open()
 	{
+		//get the active shell
+		Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+
+		//get the shell and resize
+		shell.setSize(1083, 223);
+
+		//calculate and draw centered
+		Rectangle workbenchSize = parent.getBounds();
+		Rectangle mySize = shell.getBounds();
+		int locationX, locationY;
+		locationX = (workbenchSize.width - mySize.width)/2+workbenchSize.x;
+		locationY = (workbenchSize.height - mySize.height)/2+workbenchSize.y;
+		shell.setLocation(locationX,locationY);
 		shell.open();
 	}
 	
@@ -198,10 +214,9 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 	 * Create contents of the window
 	 */
 	protected void createContents() {
-		shell = new Shell(SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
+		shell = new Shell(Display.getCurrent(),SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell.setLayout(new FormLayout());
 		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		shell.setSize(1083, 223);
 		shell.setText("Dialysetransport");
 
 		transportdatenGroup = new Group(shell, SWT.NONE);
