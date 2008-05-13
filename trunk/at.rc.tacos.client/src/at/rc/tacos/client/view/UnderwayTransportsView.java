@@ -10,6 +10,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
@@ -42,6 +43,7 @@ import at.rc.tacos.client.controller.SetBackTransportPossibleAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
+import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -475,6 +477,24 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
 		{ 
 			this.viewer.refresh();
+		}
+		//listen to filter events
+		if("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//get the new filter
+			TransportViewFilter searchFilter = (TransportViewFilter)evt.getNewValue();
+			//remove all filters and apply the new
+			for(ViewerFilter filter:viewer.getFilters())
+			{
+				if(!(filter instanceof TransportViewFilter))
+					continue;
+				viewer.removeFilter(filter);
+					
+			}
+			if(searchFilter != null)
+			{
+				viewer.addFilter(searchFilter);
+			}	
 		}
 	}
 }
