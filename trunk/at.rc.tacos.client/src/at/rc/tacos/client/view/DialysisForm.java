@@ -611,25 +611,25 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 			        	return;
 			        }
 				   
-				   if (viewerToCity.getCombo().getText().length() >30)
+				   if (viewerToCity.getCombo().getText().length() >50)
 			        {
-			        	this.displayMessageBox(event, "Bitte geben Sie einen Stadt (nach) ein, der kürzer 30 Zeichen ist, ein", toCommunity);
+			        	this.displayMessageBox(event, "Bitte geben Sie einen Stadt (nach) ein, der kürzer 50Zeichen ist, ein", toCommunity);
 			        	return;
 			        }
-				   if (viewerToStreet.getCombo().getText().length() >50)
+				   if (viewerToStreet.getCombo().getText().length() >100)
 			        {
-			        	this.displayMessageBox(event, "Bitte geben Sie eine Straße (zu), der kürzer 50 Zeichen ist, ein", toStreet);
+			        	this.displayMessageBox(event, "Bitte geben Sie eine Straße (zu), der kürzer 100 Zeichen ist, ein", toStreet);
 			        	return;
 			        }
 				   
-				   if (viewerFromCity.getCombo().getText().length() >30)
+				   if (viewerFromCity.getCombo().getText().length() >50)
 			        {
-			        	this.displayMessageBox(event, "Bitte geben Sie einen Stadt (von) ein, der kürzer 30 Zeichen ist, ein", fromCommunity);
+			        	this.displayMessageBox(event, "Bitte geben Sie einen Stadt (von) ein, der kürzer 50 Zeichen ist, ein", fromCommunity);
 			        	return;
 			        }
-				   if (viewerFromStreet.getCombo().getText().length() >50)
+				   if (viewerFromStreet.getCombo().getText().length() >100)
 			        {
-			        	this.displayMessageBox(event, "Bitte geben Sie eine Straße (von), der kürzer 50 Zeichen ist, ein", fromStreet);
+			        	this.displayMessageBox(event, "Bitte geben Sie eine Straße (von), der kürzer 100 Zeichen ist, ein", fromStreet);
 			        	return;
 			        }
 				  
