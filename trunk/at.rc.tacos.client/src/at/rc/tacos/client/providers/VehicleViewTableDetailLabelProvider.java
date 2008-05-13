@@ -2,8 +2,10 @@ package at.rc.tacos.client.providers;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
+import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.client.util.CustomColors;
@@ -12,20 +14,21 @@ import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
 
-public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus, IKindOfTransport
+public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus, IKindOfTransport, ITableFontProvider
 {
     //define the columns
-    public static final int COLUMN_READY = 0;
-    public static final int COLUMN_VEHICLE_NAME = 1;
-    public static final int COLUMN_STATUS = 2;
-    public static final int COLUMN_DRIVER = 3;
-    public static final int COLUMN_MEDIC_I = 4;
-    public static final int COLUMN_MEDIC_II = 5;
-    public static final int COLUMN_PHONE = 6;
-    public static final int COLUMN_STATION = 7;
-    public static final int COLUMN_OUTOFORDER = 8;
-    public static final int COLUMN_NOTES = 9;
-    public static final int COLUMN_LAST_DESTINATION_FREE = 10;
+	public static final int COLUMN_LOCK = 0;
+    public static final int COLUMN_READY = 1;
+    public static final int COLUMN_VEHICLE_NAME = 2;
+    public static final int COLUMN_STATUS = 3;
+    public static final int COLUMN_DRIVER = 4;
+    public static final int COLUMN_MEDIC_I = 5;
+    public static final int COLUMN_MEDIC_II = 6;
+    public static final int COLUMN_PHONE = 7;
+    public static final int COLUMN_STATION = 8;
+    public static final int COLUMN_OUTOFORDER = 9;
+    public static final int COLUMN_NOTES = 10;
+    public static final int COLUMN_LAST_DESTINATION_FREE = 11;
     
 
     @Override
@@ -37,6 +40,8 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 		//determine the column and return a image if needed
 		switch(columnIndex)
 		{
+		case COLUMN_LOCK:
+			return ImageFactory.getInstance().getRegisteredImage("resource.refresh20");
 			case COLUMN_READY:
 				if(vehicle.isReadyForAction())
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.ready");
@@ -136,5 +141,11 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 		if(detail.isOutOfOrder())
 			return CustomColors.GREY_COLOR;
 		return null;
+	}
+
+	@Override
+	public Font getFont(Object element, int columnIndex) {
+		// TODO Auto-generated method stub
+		return CustomColors.VEHICLE_TABLE;
 	}
 }
