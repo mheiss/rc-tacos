@@ -119,10 +119,12 @@ a:active {
 
 div#submitSuccess { font-weight:bold; color:black; background-color:#DFFF80; text-align:center; border:1px solid #516D00; padding:4px; margin-bottom:7px; width:400px; }
 
-.standardForm td { padding:2px; }
+.standardForm td { padding:5px; }
 .standardForm td.hButtonArea { padding-top:15px; text-align:left; }
 
 .showRosterEntryInfo { cursor:pointer !important; }
+
+a.smallLink { color:#00f;font-size:8pt;text-decoration:underline }
 
 /** List **/
 table.list { empty-cells:show; border-collapse:separate; border-spacing:0px 0px; border-left:#999999 solid 1px; }

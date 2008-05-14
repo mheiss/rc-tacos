@@ -145,7 +145,7 @@ public class EditRosterEntryController extends Controller {
 		}		
 		params.put(MODEL_ROSTER_ENTRY_NAME, rosterEntry);
 		
-		// Job List
+		// Job
 		final String paramJobId = request.getParameter(PARAM_JOB_NAME);
 		int jobId = 0;
 		final Job defaultJob = rosterEntry.getJob();
@@ -171,7 +171,7 @@ public class EditRosterEntryController extends Controller {
 		}
 		
 		
-		// Staff Member List
+		// Staff Member
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		final StaffMember defaultStaffMember = rosterEntry.getStaffMember();
@@ -190,7 +190,8 @@ public class EditRosterEntryController extends Controller {
 				boolean hasCompetence = false;
 				final List<Competence> competenceList = sm.getCompetenceList();
 				for (final Iterator<Competence> itCompetenceList = competenceList.iterator(); itCompetenceList.hasNext();) {
-					if (itCompetenceList.next().getId() == job.getId()) {
+					final Competence competence = itCompetenceList.next();
+					if (competence.getId() == job.getId() || competence.getCompetenceName().equals(job.getJobName())) {
 						hasCompetence = true;
 					}
 				}
@@ -214,7 +215,7 @@ public class EditRosterEntryController extends Controller {
 			params.put(MODEL_STAFF_MEMBER_NAME, defaultStaffMember);
 		}
 				
-		// Location List
+		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
 		final Location defaultLocation = rosterEntry.getStation();
@@ -240,7 +241,7 @@ public class EditRosterEntryController extends Controller {
 		}
 		
 		
-		// Service Type List
+		// Service Type
 		final String paramServiceTypeId = request.getParameter(PARAM_SERVICE_TYPE_NAME);
 		int serviceTypeId = 0;
 		final ServiceType defaultServiceType = rosterEntry.getServicetype();
@@ -369,7 +370,7 @@ public class EditRosterEntryController extends Controller {
 		}
 		final String to = dateToString + " " + timeToHoursString + ":" + timeToMinutesString;
 				
-		// Get Action
+		// Do Action
 		final String action = request.getParameter(ACTION_NAME);
 		final Map<String, String> errors = new HashMap<String, String>();
 		boolean valid = true;
