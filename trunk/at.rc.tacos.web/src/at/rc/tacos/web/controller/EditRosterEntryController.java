@@ -36,8 +36,60 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class EditRosterEntryController extends Controller {
 
+	private static final String ACTION_NAME = "action";
 	private static final String ACTION_UPDATE_ROSTER_ENTRY = "updateRosterEntry";
-	private static final String MESSAGE_CODE_EDITED = "edited";
+	
+	private static final String PARAM_ROSTER_ENTRY_NAME = "rosterEntryId";
+	private static final String MODEL_ROSTER_ENTRY_NAME = "rosterEntry";
+	
+	private static final String PARAM_JOB_NAME = "jobId";
+	private static final String PARAM_JOB_NO_VALUE = "noValue";
+	private static final String MODEL_JOB_NAME = "job";
+	private static final String MODEL_JOB_LIST_NAME = "jobList";
+	
+	private static final String PARAM_STAFF_MEMBER_NAME = "staffMemberId";
+	private static final String PARAM_STAFF_MEMBER_NO_VALUE = "noValue";
+	private static final String MODEL_STAFF_MEMBER_NAME = "staffMember";
+	private static final String MODEL_STAFF_MEMBER_LIST_NAME = "staffList";
+	
+	private static final String PARAM_LOCATION_NAME = "locationId";
+	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
+	private static final String MODEL_LOCATION_NAME = "location";
+	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
+	
+	private static final String PARAM_SERVICE_TYPE_NAME = "serviceTypeId";
+	private static final String PARAM_SERVICE_TYPE_NO_VALUE = "noValue";
+	private static final String MODEL_SERVICE_TYPE_NAME = "serviceType";
+	private static final String MODEL_SERVICE_TYPE_LIST_NAME = "serviceTypeList";
+	
+	private static final String PARAM_STANDBY_NAME = "standby";
+	private static final String MODEL_STANDBY_NAME = "standby";
+	
+	private static final String PARAM_COMMENT_NAME = "comment";
+	private static final String MODEL_COMMENT_NAME = "comment";
+	
+	private static final String MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME = "calendarDefaultDateMilliseconds";
+	private static final String MODEL_CALENDAR_RANGE_START_NAME = "calendarRangeStart";
+	private static final String MODEL_CALENDAR_RANGE_END_NAME = "calendarRangeEnd";
+	private static final int MODEL_CALENDAR_RANGE_START_OFFSET = 10;
+	private static final int MODEL_CALENDAR_RANGE_END_OFFSET = 1;
+	
+	private static final String PARAM_DATE_FROM_NAME = "dateFrom";
+	private static final String PARAM_TIME_FROM_HOURS_NAME = "timeFromHours";
+	private static final String PARAM_TIME_FROM_MINUTES_NAME = "timeFromMinutes";
+	private static final String MODEL_DATE_FROM_NAME = "dateFrom";
+	private static final String MODEL_TIME_FROM_HOURS_NAME = "timeFromHours";
+	private static final String MODEL_TIME_FROM_MINUTES_NAME = "timeFromMinutes";
+	
+	private static final String PARAM_DATE_TO_NAME = "dateTo";
+	private static final String PARAM_TIME_TO_HOURS_NAME = "timeToHours";
+	private static final String PARAM_TIME_TO_MINUTES_NAME= "timeToMinutes";
+	private static final String MODEL_DATE_TO_NAME = "dateTo";
+	private static final String MODEL_TIME_TO_HOURS_NAME = "timeToHours";
+	private static final String MODEL_TIME_TO_MINUTES_NAME= "timeToMinutes";
+	
+	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
+	private static final String PARAM_MESSAGE_CODE_EDITED = "edited";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
@@ -53,17 +105,9 @@ public class EditRosterEntryController extends Controller {
 		
 		final String authorization = userSession.getLoginInformation().getAuthorization();
 		
-		// Create Calendar for DatePicker
-		final Calendar calendar = Calendar.getInstance();
-		final int rangeStart = calendar.get(Calendar.YEAR) - 10;
-		final int rangeEnd = calendar.get(Calendar.YEAR) + 1;
-		params.put("calendarDefaultDateMilliseconds", calendar.getTimeInMillis());
-		params.put("calendarRangeStart", rangeStart);
-		params.put("calendarRangeEnd", rangeEnd);
-		
 		// Get Id
 		int rosterEntryId = 0;
-		final String paramRosterEntryId = request.getParameter("rosterEntryId");
+		final String paramRosterEntryId = request.getParameter(PARAM_ROSTER_ENTRY_NAME);
 		if (paramRosterEntryId == null || paramRosterEntryId.equals("")) {
 			throw new IllegalArgumentException("Error: This URL must be called with Roster Entry ID.");
 		}
@@ -98,16 +142,15 @@ public class EditRosterEntryController extends Controller {
 			if (currDate.getTime() > deadlineCalendar.getTimeInMillis()) {
 				throw new IllegalArgumentException("Error: Deadline for Roster Entry exceeded.");
 			}
-		}
-		
-		params.put("rosterEntry", rosterEntry);
+		}		
+		params.put(MODEL_ROSTER_ENTRY_NAME, rosterEntry);
 		
 		// Job List
-		final String paramJobId = request.getParameter("jobId");
+		final String paramJobId = request.getParameter(PARAM_JOB_NAME);
 		int jobId = 0;
 		final Job defaultJob = rosterEntry.getJob();
 		Job job = null;
-		if (paramJobId != null && !paramJobId.equals("") && !paramJobId.equals("noValue")) {
+		if (paramJobId != null && !paramJobId.equals("") && !paramJobId.equals(PARAM_JOB_NO_VALUE)) {
 			jobId = Integer.parseInt(paramJobId);	
 		}
 		final List<AbstractMessage> jobList = connection.sendListingRequest(Job.ID, null);
@@ -120,20 +163,20 @@ public class EditRosterEntryController extends Controller {
 				job = j;
 			}
 		}
-		params.put("jobList", jobList);
-		if (job != null || (paramJobId != null && paramJobId.equals("noValue"))) {
-			params.put("job", job);
+		params.put(MODEL_JOB_LIST_NAME, jobList);
+		if (job != null || (paramJobId != null && paramJobId.equals(PARAM_JOB_NO_VALUE))) {
+			params.put(MODEL_JOB_NAME, job);
 		} else {
-			params.put("job", defaultJob);
+			params.put(MODEL_JOB_NAME, defaultJob);
 		}
 		
 		
 		// Staff Member List
-		final String paramStaffMemberId = request.getParameter("staffMemberId");
+		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		final StaffMember defaultStaffMember = rosterEntry.getStaffMember();
 		StaffMember staffMember = null;
-		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase("noValue")) {
+		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
 		}
 		final List<AbstractMessage> staffList = new ArrayList<AbstractMessage>();
@@ -164,19 +207,19 @@ public class EditRosterEntryController extends Controller {
 				}
 			}
 		}
-		params.put("staffList", staffList);
-		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals("noValue"))) {
-			params.put("staffMember", staffMember);
+		params.put(MODEL_STAFF_MEMBER_LIST_NAME, staffList);
+		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals(PARAM_STAFF_MEMBER_NO_VALUE))) {
+			params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
 		} else {
-			params.put("staffMember", defaultStaffMember);
+			params.put(MODEL_STAFF_MEMBER_NAME, defaultStaffMember);
 		}
 				
 		// Location List
-		final String paramLocationId = request.getParameter("locationId");
+		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
 		final Location defaultLocation = rosterEntry.getStation();
 		Location location = null;
-		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals("noValue")) {
+		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);
 		}
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
@@ -189,20 +232,20 @@ public class EditRosterEntryController extends Controller {
 				location = l;
 			}
 		}
-		params.put("locationList", locationList);
-		if (location != null || (paramLocationId != null && paramLocationId.equals("noValue"))) {
-			params.put("location", location);
+		params.put(MODEL_LOCATION_LIST_NAME, locationList);
+		if (location != null || (paramLocationId != null && paramLocationId.equals(PARAM_LOCATION_NO_VALUE))) {
+			params.put(MODEL_LOCATION_NAME, location);
 		} else {
-			params.put("location", defaultLocation);
+			params.put(MODEL_LOCATION_NAME, defaultLocation);
 		}
 		
 		
 		// Service Type List
-		final String paramServiceTypeId = request.getParameter("serviceTypeId");
+		final String paramServiceTypeId = request.getParameter(PARAM_SERVICE_TYPE_NAME);
 		int serviceTypeId = 0;
 		final ServiceType defaultServiceType = rosterEntry.getServicetype();
 		ServiceType serviceType = null;
-		if (paramServiceTypeId != null && !paramServiceTypeId.equals("") &&!paramServiceTypeId.equals("noValue")) {
+		if (paramServiceTypeId != null && !paramServiceTypeId.equals("") &&!paramServiceTypeId.equals(PARAM_SERVICE_TYPE_NO_VALUE)) {
 			serviceTypeId = Integer.parseInt(paramServiceTypeId);		
 		}
 		List<AbstractMessage> serviceTypeList = new ArrayList<AbstractMessage>();
@@ -216,33 +259,41 @@ public class EditRosterEntryController extends Controller {
 		if (!ServiceType.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
-		params.put("serviceTypeList", serviceTypeList);
+		params.put(MODEL_SERVICE_TYPE_LIST_NAME, serviceTypeList);
 		for (final Iterator<AbstractMessage> itServiceTypeList = serviceTypeList.iterator(); itServiceTypeList.hasNext();) {
 			final ServiceType st = (ServiceType)itServiceTypeList.next();
 			if (st.getId() == serviceTypeId) {
 				serviceType = st;
 			}
 		}
-		if (serviceType != null || (paramServiceTypeId != null && paramServiceTypeId.equals("noValue"))) {
-			params.put("serviceType", serviceType);
+		if (serviceType != null || (paramServiceTypeId != null && paramServiceTypeId.equals(PARAM_SERVICE_TYPE_NO_VALUE))) {
+			params.put(MODEL_SERVICE_TYPE_NAME, serviceType);
 		} else {
-			params.put("serviceType", defaultServiceType);
+			params.put(MODEL_SERVICE_TYPE_NAME, defaultServiceType);
 		}
 		
 		// Get Standby
 		boolean standby = rosterEntry.getStandby();
-		final String paramStandby = request.getParameter("standby");
+		final String paramStandby = request.getParameter(PARAM_STANDBY_NAME);
 		if (paramStandby != null) {
 			standby = true;
 		}
-		params.put("standby", standby);
+		params.put(MODEL_STANDBY_NAME, standby);
 		
 		// Get Comment
 		String comment = rosterEntry.getRosterNotes();
-		if (request.getParameter("comment")!= null) {
-			comment = request.getParameter("comment");
+		if (request.getParameter(PARAM_COMMENT_NAME)!= null) {
+			comment = request.getParameter(PARAM_COMMENT_NAME);
 		}
-		params.put("comment", comment);
+		params.put(MODEL_COMMENT_NAME, comment);
+		
+		// Create Calendar for DatePicker
+		final Calendar calendar = Calendar.getInstance();
+		final int rangeStart = calendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET;
+		final int rangeEnd = calendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET;
+		params.put(MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME, calendar.getTimeInMillis());
+		params.put(MODEL_CALENDAR_RANGE_START_NAME, rangeStart);
+		params.put(MODEL_CALENDAR_RANGE_END_NAME, rangeEnd);
 		
 		// Get From
 		final SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy");
@@ -257,29 +308,29 @@ public class EditRosterEntryController extends Controller {
 		final String defaultTimeFromHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedStartOfWork()));
 		final String defaultTimeFromMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedStartOfWork()));
 		
-		if (request.getParameter("dateFrom") != null) {
-			dateFromString = request.getParameter("dateFrom");
+		if (request.getParameter(PARAM_DATE_FROM_NAME) != null) {
+			dateFromString = request.getParameter(PARAM_DATE_FROM_NAME);
 		} 
-		if (request.getParameter("timeFromHours") != null) {
-			timeFromHoursString = request.getParameter("timeFromHours");
+		if (request.getParameter(PARAM_TIME_FROM_HOURS_NAME) != null) {
+			timeFromHoursString = request.getParameter(PARAM_TIME_FROM_HOURS_NAME);
 		}
-		if (request.getParameter("timeFromMinutes") != null) {
-			timeFromMinutesString = request.getParameter("timeFromMinutes");
+		if (request.getParameter(PARAM_TIME_FROM_MINUTES_NAME) != null) {
+			timeFromMinutesString = request.getParameter(PARAM_TIME_FROM_MINUTES_NAME);
 		}
 		if (dateFromString != null) {
-			params.put("dateFrom", dateFromString);
+			params.put(MODEL_DATE_FROM_NAME, dateFromString);
 		} else {
-			params.put("dateFrom", defaultDateFromString);
+			params.put(MODEL_DATE_FROM_NAME, defaultDateFromString);
 		}
 		if (timeFromHoursString != null) {
-			params.put("timeFromHours", timeFromHoursString);
+			params.put(MODEL_TIME_FROM_HOURS_NAME, timeFromHoursString);
 		} else {
-			params.put("timeFromHours", defaultTimeFromHoursString);
+			params.put(MODEL_TIME_FROM_HOURS_NAME, defaultTimeFromHoursString);
 		}
 		if (timeFromMinutesString != null) {
-			params.put("timeFromMinutes", timeFromMinutesString);
+			params.put(MODEL_TIME_FROM_MINUTES_NAME, timeFromMinutesString);
 		} else {
-			params.put("timeFromMinutes", defaultTimeFromMinutesString);
+			params.put(MODEL_TIME_FROM_MINUTES_NAME, defaultTimeFromMinutesString);
 		}
 		final String from = dateFromString + " " + timeFromHoursString + ":" + timeFromMinutesString;
 			
@@ -292,34 +343,34 @@ public class EditRosterEntryController extends Controller {
 		final String defaultTimeToHoursString = sdfTimeHours.format(new Date(rosterEntry.getPlannedEndOfWork()));
 		final String defaultTimeToMinutesString = sdfTimeMinutes.format(new Date(rosterEntry.getPlannedEndOfWork()));
 		
-		if (request.getParameter("dateTo") != null) {
-			dateToString = request.getParameter("dateTo");
+		if (request.getParameter(PARAM_DATE_TO_NAME) != null) {
+			dateToString = request.getParameter(PARAM_DATE_TO_NAME);
 		} 
-		if (request.getParameter("timeToHours") != null) {
-			timeToHoursString = request.getParameter("timeToHours");
+		if (request.getParameter(PARAM_TIME_TO_HOURS_NAME) != null) {
+			timeToHoursString = request.getParameter(PARAM_TIME_TO_HOURS_NAME);
 		}
-		if (request.getParameter("timeToMinutes") != null) {
-			timeToMinutesString = request.getParameter("timeToMinutes");
+		if (request.getParameter(PARAM_TIME_TO_MINUTES_NAME) != null) {
+			timeToMinutesString = request.getParameter(PARAM_TIME_TO_MINUTES_NAME);
 		}
 		if (dateToString != null) {
-			params.put("dateTo", dateToString);
+			params.put(MODEL_DATE_TO_NAME, dateToString);
 		} else {
-			params.put("dateTo", defaultDateToString);
+			params.put(MODEL_DATE_TO_NAME, defaultDateToString);
 		}
 		if (timeToHoursString != null) {
-			params.put("timeToHours", timeToHoursString);
+			params.put(MODEL_TIME_TO_HOURS_NAME, timeToHoursString);
 		} else {
-			params.put("timeToHours", defaultTimeToHoursString);
+			params.put(MODEL_TIME_TO_HOURS_NAME, defaultTimeToHoursString);
 		}
 		if (timeToMinutesString != null) {
-			params.put("timeToMinutes", timeToMinutesString);
+			params.put(MODEL_TIME_TO_MINUTES_NAME, timeToMinutesString);
 		} else {
-			params.put("timeToMinutes", defaultTimeToMinutesString);
+			params.put(MODEL_TIME_TO_MINUTES_NAME, defaultTimeToMinutesString);
 		}
 		final String to = dateToString + " " + timeToHoursString + ":" + timeToMinutesString;
 				
 		// Get Action
-		final String action = request.getParameter("action");
+		final String action = request.getParameter(ACTION_NAME);
 		final Map<String, String> errors = new HashMap<String, String>();
 		boolean valid = true;
 		if (action != null && action.equals(ACTION_UPDATE_ROSTER_ENTRY)) {
@@ -421,7 +472,7 @@ public class EditRosterEntryController extends Controller {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}
 
-				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?messageCode=" + MESSAGE_CODE_EDITED;
+				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?" + PARAM_MESSAGE_CODE_NAME + "=" + PARAM_MESSAGE_CODE_EDITED;
 				
 				System.out.println("Redirect: " + response.encodeRedirectURL(url));
 				System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");

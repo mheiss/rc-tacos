@@ -1,15 +1,15 @@
 <%@ include file="includes.jsp" %>
 <c:url var="url" value="/Dispatcher/addRosterEntry.do">
 </c:url>
+<c:choose>
+	<c:when test="${params.addedCount gt 0}">
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;neuen&nbsp;Dienstplaneintrag&nbsp;erstellt</div>
+		<br />
+	</c:when>
+</c:choose>
 <form action="${url}" method="post" accept-charset="ISO-8859-1">
-	<c:choose>
-		<c:when test="${params.addedCount gt 0}">
-			<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;neuen&nbsp;Dienstplaneintrag&nbsp;erstellt</div>
-			<br />
-		</c:when>
-	</c:choose>
 	<table class="standardForm">
-		<tr><td>Allgemeine&nbsp;Daten:</td></tr>
+		<tr><td colspan="2">Allgemeine&nbsp;Daten:</td><td /></tr>
 		<tr>
 			<td>Mitarbeiter:<sup class="reqMark">*</sup></td>
 			<td>
@@ -72,7 +72,7 @@
 			<td />
 			<td><label for="standby" style="cursor:pointer"/><input id="standby" name="standby" type="checkbox" value="true"${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} />Bereitschaft</td>
 		</tr>
-		<tr><td>Anmerkungen:</td></tr>
+		<tr><td colspan="3">Anmerkungen:</td></tr>
 		<tr>
 			<td colspan="2">
 				<textarea id="comment" name="comment" cols="40" rows="7" wrap="soft">${params.comment}</textarea>
@@ -140,6 +140,7 @@
 		</tr>
 		<tr>
 			<td colspan="2" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
+			<td />
 		</tr>
 		<tr>
 			<td class="hButtonArea" colspan="2">
@@ -155,7 +156,7 @@ $(document).ready(function() {
 	Calendar.setup ({
 		inputField : "dateFrom",
 		button : "dateFromCalendarTrigger",
-		date : new Date(${params.defaultDateMilliseconds}),
+		date : new Date(${params.calendarDefaultDateMilliseconds}),
 		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
 		align : "Tr",
 		ifFormat : "%d.%m.%Y",
@@ -164,7 +165,7 @@ $(document).ready(function() {
 	Calendar.setup ({
 		inputField : "dateTo",
 		button : "dateToCalendarTrigger",
-		date : new Date(${params.defaultDateMilliseconds}),
+		date : new Date(${params.calendarDefaultDateMilliseconds}),
 		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
 		align : "Tr",
 		ifFormat : "%d.%m.%Y",

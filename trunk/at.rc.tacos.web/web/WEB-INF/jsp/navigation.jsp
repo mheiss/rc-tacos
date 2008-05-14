@@ -29,6 +29,18 @@ UserSession user = (UserSession)session.getAttribute("userSession");
 		</td>
 	</tr>
 </table>
+<table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td id="BlockHead" colspan="2"><b>Mitarbeiter</b></td>
+	</tr>
+	<c:if test="${authorization eq 'Administrator'}">
+		<c:url var="url" value="/Dispatcher/addStaffMember.do" />
+		<tr>
+			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter anlegen</a>
+			</td>
+		</tr>
+	</c:if>
+</table>
 
 
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
