@@ -3,7 +3,7 @@
 	<table class="standardForm">
 		<tr><td colspan="2">Allgemeine&nbsp;Daten:</td><td /></tr>
 		<tr>
-			<td>Personalnummer:<sup class="reqMark">*</sup></td>
+			<td>Personalnummer&nbsp;(5xxxxxxx):<sup class="reqMark">*</sup></td>
 			<td>
 				<input name="staffMemberId" type="text" size="30" maxlength="8" />
 			</td>

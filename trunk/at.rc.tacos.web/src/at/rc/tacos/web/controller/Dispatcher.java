@@ -53,6 +53,44 @@ public class Dispatcher extends HttpServlet
 		//Set charakter encoding
 		request.setCharacterEncoding("ISO-8859-1");
 		
+		String localAddr = request.getLocalAddr();
+		String localName = request.getLocalName();
+		int localPort = request.getLocalPort();
+		String remoteAdr = request.getRemoteAddr();
+		String remoteHost = request.getRemoteHost();
+		String remoteUser = request.getRemoteUser();
+		int remotePort = request.getRemotePort();
+		String serverName = request.getServerName();
+		int serverPort = request.getServerPort();
+		String servletPath = request.getServletPath();
+		String requestUrl = request.getRequestURL().toString();
+		String requestUri = request.getRequestURI();
+		String requestContextPath = request.getContextPath();
+		String pathInfo = request.getPathInfo();
+		String pathTranslated = request.getPathTranslated();	
+		String servletContextPath = getServletContext().getContextPath();
+		String servletContextContextName = getServletContext().getServletContextName();
+		String servletContextServerInfo = getServletContext().getServerInfo();
+		
+		System.out.println("localAddr: " + localAddr + "\n");
+		System.out.println("localName: " + localName + "\n");
+		System.out.println("localPort: " + localPort + "\n");
+		System.out.println("remoteAdr: " + remoteAdr + "\n");
+		System.out.println("remoteHost: " + remoteHost + "\n");
+		System.out.println("remoteUser: " + remoteUser + "\n");
+		System.out.println("remotePort: " + remotePort + "\n");
+		System.out.println("serverName: " + serverName + "\n"); 
+		System.out.println("serverPort: " + serverPort + "\n");
+		System.out.println("servletPath: " + servletPath + "\n");
+		System.out.println("requestUrl: " + requestUrl + "\n");
+		System.out.println("requestUri: " + requestUri + "\n");
+		System.out.println("requestContextPath: " + requestContextPath + "\n");
+		System.out.println("pathInfo: " + pathInfo + "\n");
+		System.out.println("pathTranslated: " + pathTranslated + "\n");		
+		System.out.println("servletContextPath: " + servletContextPath + "\n");
+		System.out.println("servletContextContextName: " + servletContextContextName + "\n");
+		System.out.println("servletContextServerInfo: " + servletContextServerInfo + "\n");
+		
 		//Assert we have a valid session
 		final HttpSession session = request.getSession(true);
 		UserSession userSession = (UserSession) session.getAttribute("userSession");
@@ -117,44 +155,6 @@ public class Dispatcher extends HttpServlet
 		String viewHeaderTitle = null;
 		String js = null;
 		String css = null;
-		
-		String localAddr = request.getLocalAddr();
-		String localName = request.getLocalName();
-		int localPort = request.getLocalPort();
-		String remoteAdr = request.getRemoteAddr();
-		String remoteHost = request.getRemoteHost();
-		String remoteUser = request.getRemoteUser();
-		int remotePort = request.getRemotePort();
-		String serverName = request.getServerName();
-		int serverPort = request.getServerPort();
-		String servletPath = request.getServletPath();
-		String requestUrl = request.getRequestURL().toString();
-		String requestUri = request.getRequestURI();
-		String requestContextPath = request.getContextPath();
-		String pathInfo = request.getPathInfo();
-		String pathTranslated = request.getPathTranslated();	
-		String servletContextPath = getServletContext().getContextPath();
-		String servletContextContextName = getServletContext().getServletContextName();
-		String servletContextServerInfo = getServletContext().getServerInfo();
-		
-		System.out.println("localAddr: " + localAddr + "\n");
-		System.out.println("localName: " + localName + "\n");
-		System.out.println("localPort: " + localPort + "\n");
-		System.out.println("remoteAdr: " + remoteAdr + "\n");
-		System.out.println("remoteHost: " + remoteHost + "\n");
-		System.out.println("remoteUser: " + remoteUser + "\n");
-		System.out.println("remotePort: " + remotePort + "\n");
-		System.out.println("serverName: " + serverName + "\n"); 
-		System.out.println("serverPort: " + serverPort + "\n");
-		System.out.println("servletPath: " + servletPath + "\n");
-		System.out.println("requestUrl: " + requestUrl + "\n");
-		System.out.println("requestUri: " + requestUri + "\n");
-		System.out.println("requestContextPath: " + requestContextPath + "\n");
-		System.out.println("pathInfo: " + pathInfo + "\n");
-		System.out.println("pathTranslated: " + pathTranslated + "\n");		
-		System.out.println("servletContextPath: " + servletContextPath + "\n");
-		System.out.println("servletContextContextName: " + servletContextContextName + "\n");
-		System.out.println("servletContextServerInfo: " + servletContextServerInfo + "\n");
 		
 		//Redirect if request is not send over SSL connection
 		if (Pattern.matches(server.getString("server.http.url.pattern"), request.getRequestURL().toString()) || request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
