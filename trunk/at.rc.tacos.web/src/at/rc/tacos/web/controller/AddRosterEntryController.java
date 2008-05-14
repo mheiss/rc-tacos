@@ -223,7 +223,7 @@ public class AddRosterEntryController extends Controller {
 			params.put(MODEL_SERVICE_TYPE_NAME, defaultServiceType);
 		}
 		
-		// Get Standby
+		// Standby
 		final String paramStandby = request.getParameter(PARAM_STANDBY_NAME);
 		boolean standby = false;
 		if (paramStandby != null) {
@@ -231,7 +231,7 @@ public class AddRosterEntryController extends Controller {
 		}
 		params.put(MODEL_STANDBY_NAME, standby);
 		
-		// Get Comment
+		// Comment
 		String comment = null;
 		if (request.getParameter(PARAM_COMMENT_NAME) != null) {
 			comment = request.getParameter(PARAM_COMMENT_NAME);
