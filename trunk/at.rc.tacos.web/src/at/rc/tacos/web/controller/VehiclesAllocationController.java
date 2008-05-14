@@ -28,6 +28,8 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class VehiclesAllocationController extends Controller {
 
+	private static final String VEHICLE_CONTAINER_LIST_CONTAINER = "vehicleContainerListContainer";
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -68,7 +70,7 @@ public class VehiclesAllocationController extends Controller {
 		final Comparator<VehicleContainer> vehicleContainerComparator = new PropertyComparator("vehicleName", true, true);
 		vehicleContainerListContainer.groupVehiclesBy(locationComparator);
 		vehicleContainerListContainer.sortVehicles(vehicleContainerComparator);
-		params.put("vehicleContainerListContainer", vehicleContainerListContainer);
+		params.put(VEHICLE_CONTAINER_LIST_CONTAINER, vehicleContainerListContainer);
 		
 		return params;
 	}

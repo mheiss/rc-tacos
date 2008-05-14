@@ -7,7 +7,7 @@
 </c:url>
 <form action="${url}" method="post" accept-charset="ISO-8859-1">
 	<table class="standardForm">
-		<tr><td>Allgemeine&nbsp;Daten:</td></tr>
+		<tr><td colspan="2">Allgemeine&nbsp;Daten:</td><td /></tr>
 		<tr>
 			<td>Mitarbeiter:<sup class="reqMark">*</sup></td>
 			<td>
@@ -155,7 +155,7 @@ $(document).ready(function() {
 	Calendar.setup ({
 		inputField : "dateFrom",
 		button : "dateFromCalendarTrigger",
-		date : new Date(${params.defaultDateMilliseconds}),
+		date : new Date(${params.calendarDefaultDateMilliseconds}),
 		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
 		align : "Tr",
 		ifFormat : "%d.%m.%Y",
@@ -164,7 +164,7 @@ $(document).ready(function() {
 	Calendar.setup ({
 		inputField : "dateTo",
 		button : "dateToCalendarTrigger",
-		date : new Date(${params.defaultDateMilliseconds}),
+		date : new Date(${params.calendarDefaultDateMilliseconds}),
 		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
 		align : "Tr",
 		ifFormat : "%d.%m.%Y",

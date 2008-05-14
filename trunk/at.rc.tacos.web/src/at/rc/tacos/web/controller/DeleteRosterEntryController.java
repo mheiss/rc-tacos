@@ -28,7 +28,10 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class DeleteRosterEntryController extends Controller {
 
-	private static final String MESSAGE_CODE_DELETED = "deleted";
+	private static final String PARAM_ROSTER_ENTRY_NAME = "rosterEntryId";
+	
+	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
+	private static final String PARAM_MESSAGE_CODE_DELETED = "deleted";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
@@ -44,7 +47,7 @@ public class DeleteRosterEntryController extends Controller {
 		
 		// Get Id
 		int rosterEntryId = 0;
-		final String paramRosterEntryId = request.getParameter("rosterEntryId");
+		final String paramRosterEntryId = request.getParameter(PARAM_ROSTER_ENTRY_NAME);
 		if (paramRosterEntryId == null || paramRosterEntryId.equals("")) {
 			throw new IllegalArgumentException("Error: This URL must be called with Roster Entry ID.");
 		}
@@ -86,7 +89,7 @@ public class DeleteRosterEntryController extends Controller {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		
-		String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?messageCode=" + MESSAGE_CODE_DELETED;
+		String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?" + PARAM_MESSAGE_CODE_NAME + "=" + PARAM_MESSAGE_CODE_DELETED;
 		
 		System.out.println("Redirect: " + response.encodeRedirectURL(url));
 		System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");

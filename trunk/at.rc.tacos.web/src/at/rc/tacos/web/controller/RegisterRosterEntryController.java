@@ -27,10 +27,15 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class RegisterRosterEntryController extends Controller {
 
+	private static final String ACTION_NAME = "action";
 	private static final String ACTION_REGISTER = "register";
 	private static final String ACTION_SIGN_OFF = "signOff";
-	private static final String MESSAGE_CODE_REGISTERED = "registered";
-	private static final String MESSAGE_CODE_SIGNED_OFF = "signedOff";
+	
+	private static final String PARAM_ROSTER_ENTRY_NAME = "rosterEntryId";
+	
+	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
+	private static final String PARAM_MESSAGE_CODE_REGISTERED = "registered";
+	private static final String PARAM_MESSAGE_CODE_SIGNED_OFF = "signedOff";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
@@ -51,7 +56,7 @@ public class RegisterRosterEntryController extends Controller {
 		
 		// Get Id
 		int rosterEntryId = 0;
-		final String paramRosterEntryId = request.getParameter("rosterEntryId");
+		final String paramRosterEntryId = request.getParameter(PARAM_ROSTER_ENTRY_NAME);
 		if (paramRosterEntryId == null || paramRosterEntryId.equals("")) {
 			throw new IllegalArgumentException("Error: This URL must be called with Roster Entry ID.");
 		}
@@ -96,7 +101,7 @@ public class RegisterRosterEntryController extends Controller {
 		final Date currDate = new Date();
 		
 		// Get Action
-		final String action = request.getParameter("action");
+		final String action = request.getParameter(ACTION_NAME);
 		String messageCode = "";
 		
 		if (action.equals(ACTION_REGISTER)) {
@@ -116,7 +121,7 @@ public class RegisterRosterEntryController extends Controller {
 			if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
 				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 			}
-			messageCode = MESSAGE_CODE_REGISTERED;
+			messageCode = PARAM_MESSAGE_CODE_REGISTERED;
 			
 		} else if (action.equals(ACTION_SIGN_OFF)) {
 			// Check state of roster entry
@@ -135,10 +140,10 @@ public class RegisterRosterEntryController extends Controller {
 			if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
 				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 			}
-			messageCode = MESSAGE_CODE_SIGNED_OFF;
+			messageCode = PARAM_MESSAGE_CODE_SIGNED_OFF;
 		}
 		
-		String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?messageCode=" + messageCode;
+		String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?" + PARAM_MESSAGE_CODE_NAME + "=" + messageCode;
 		
 		System.out.println("Redirect: " + response.encodeRedirectURL(url));
 		System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
