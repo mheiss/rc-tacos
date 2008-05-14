@@ -94,7 +94,7 @@ public class AddRosterEntryController extends Controller {
 		
 		final String authorization = userSession.getLoginInformation().getAuthorization();
 		
-		// Job List
+		// Job
 		final String paramJobId = request.getParameter(PARAM_JOB_NAME);
 		int jobId = 0;
 		final Job defaultJob = null;
@@ -120,7 +120,7 @@ public class AddRosterEntryController extends Controller {
 		}
 		
 		
-		// Staff Member List
+		// Staff Member
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		final StaffMember defaultStaffMember = null;
@@ -139,7 +139,8 @@ public class AddRosterEntryController extends Controller {
 				boolean hasCompetence = false;
 				final List<Competence> competenceList = sm.getCompetenceList();
 				for (final Iterator<Competence> itCompetenceList = competenceList.iterator(); itCompetenceList.hasNext();) {
-					if (itCompetenceList.next().getId() == job.getId()) {
+					final Competence competence = itCompetenceList.next();
+					if (competence.getId() == job.getId() || competence.getCompetenceName().equals(job.getJobName())) {
 						hasCompetence = true;
 					}
 				}
@@ -164,7 +165,7 @@ public class AddRosterEntryController extends Controller {
 		}
 		
 		
-		// Location List
+		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
 		final Location defaultLocation = userSession.getFormDefaultValues().getDefaultLocation();
@@ -190,7 +191,7 @@ public class AddRosterEntryController extends Controller {
 		}
 		
 		
-		// Service Type List
+		// Service Type
 		final String paramServiceTypeId = request.getParameter(PARAM_SERVICE_TYPE_NAME);
 		int serviceTypeId = 0;
 		final ServiceType defaultServiceType = null;
@@ -317,7 +318,7 @@ public class AddRosterEntryController extends Controller {
 		}
 		final String to = dateToString + " " + timeToHoursString + ":" + timeToMinutesString;
 				
-		// Get Action
+		// Do Action
 		final String action = request.getParameter(ACTION_NAME);
 		final Map<String, String> errors = new HashMap<String, String>();
 		boolean valid = true;

@@ -211,8 +211,7 @@ $(document).ready(function() {
 		daFormat : "%d.%m.%Y",
 		onClose : update
 	});
-});
-$(function() {			
+	
 	$('#locationId').change(function() {
 		var url = '?locationId=' + $(this).val();
 		var date = $('#date').val();
@@ -221,14 +220,16 @@ $(function() {
 		}
 		document.location = url;
 	});
+	
 	$('#rosterEntryTable .showRosterEntryInfo').Tooltip({ delay: 100, showURL: false });
-});
-function update(cal) {
-	var url = '?date=' + $('#date').val();
-	var locationId = $('#locationId').val();
-	if (locationId) {
-		url += '&locationId=' + locationId;
+	
+	function update(cal) {
+		var url = '?date=' + $('#date').val();
+		var locationId = $('#locationId').val();
+		if (locationId) {
+			url += '&locationId=' + locationId;
+		}
+		document.location = url;
 	}
-	document.location = url;
-}
+});
 </script>

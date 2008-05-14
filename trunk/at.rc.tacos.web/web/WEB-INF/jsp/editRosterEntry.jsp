@@ -68,7 +68,8 @@
 		</tr>
 		<tr>
 			<td />
-			<td><label for="standby" style="cursor:pointer"/><input id="standby" name="standby" type="checkbox" value="true"${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} />Bereitschaft</td>
+			<td><input id="standby" name="standby" type="checkbox" value="true"${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} /><label for="standby" style="cursor:pointer">Bereitschaft</label></td>
+			<td />
 		</tr>
 		<tr><td>Anmerkungen:</td></tr>
 		<tr>
@@ -170,8 +171,6 @@ $(document).ready(function() {
 		ifFormat : "%d.%m.%Y",
 		daFormat : "%d.%m.%Y"
 	});
-});
-$(function() {			
 	$('#jobId').change(function() {
 		var staffMemberId = $('#staffMemberId').val();
 		var locationId = $('#locationId').val();
