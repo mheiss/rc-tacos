@@ -105,7 +105,7 @@ public class EditRosterEntryController extends Controller {
 		
 		final String authorization = userSession.getLoginInformation().getAuthorization();
 		
-		// Get Id
+		// Roster Entry Id
 		int rosterEntryId = 0;
 		final String paramRosterEntryId = request.getParameter(PARAM_ROSTER_ENTRY_NAME);
 		if (paramRosterEntryId == null || paramRosterEntryId.equals("")) {
@@ -113,7 +113,7 @@ public class EditRosterEntryController extends Controller {
 		}
 		rosterEntryId = Integer.parseInt(paramRosterEntryId);
 		
-		// Get Roster Entry By Id
+		// Roster Enty
 		RosterEntry rosterEntry = null;
 		final QueryFilter rosterFilter = new QueryFilter();
 		rosterFilter.add(IFilterTypes.ID_FILTER, Integer.toString(rosterEntryId));
@@ -273,7 +273,7 @@ public class EditRosterEntryController extends Controller {
 			params.put(MODEL_SERVICE_TYPE_NAME, defaultServiceType);
 		}
 		
-		// Get Standby
+		// Standby
 		boolean standby = rosterEntry.getStandby();
 		final String paramStandby = request.getParameter(PARAM_STANDBY_NAME);
 		if (paramStandby != null) {
@@ -281,7 +281,7 @@ public class EditRosterEntryController extends Controller {
 		}
 		params.put(MODEL_STANDBY_NAME, standby);
 		
-		// Get Comment
+		// Comment
 		String comment = rosterEntry.getRosterNotes();
 		if (request.getParameter(PARAM_COMMENT_NAME)!= null) {
 			comment = request.getParameter(PARAM_COMMENT_NAME);
@@ -296,7 +296,7 @@ public class EditRosterEntryController extends Controller {
 		params.put(MODEL_CALENDAR_RANGE_START_NAME, rangeStart);
 		params.put(MODEL_CALENDAR_RANGE_END_NAME, rangeEnd);
 		
-		// Get From
+		// From
 		final SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy");
 		final SimpleDateFormat sdfTimeHours = new SimpleDateFormat("HH");
 		final SimpleDateFormat sdfTimeMinutes = new SimpleDateFormat("mm");
@@ -335,7 +335,7 @@ public class EditRosterEntryController extends Controller {
 		}
 		final String from = dateFromString + " " + timeFromHoursString + ":" + timeFromMinutesString;
 			
-		// Get To
+		// To
 		String dateToString = null;
 		String timeToHoursString = null;
 		String timeToMinutesString = null;
