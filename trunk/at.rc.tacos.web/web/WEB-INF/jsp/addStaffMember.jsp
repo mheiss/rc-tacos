@@ -68,17 +68,18 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="mobilePhoneIds" value="" type="hidden" />
+				<input id="mobilePhoneIds" type="hidden" />
 			</td>
 			<td>
 				<table id="mobilePhoneTable" class="list">
 					<thead>
 						<tr>
-							<th class="header2" colspan="2">Telefonnummern</th>
+							<th class="header2" colspan="3">Telefonnummern</th>
 						</tr>
 						<tr class="subhead2">
 							<th>Handy&nbsp;Bezeichnung</th>
 							<th>Handynummer</th>
+							<th>&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -114,7 +115,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Kompetenzen:<sup class="reqMark">*</sup></td>
+			<td>Kompetenzen&nbsp;(zumindest&nbsp;Volont&auml;r):<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="competence">
 					<option value="">-- Kompetenz wählen --</option>
@@ -128,13 +129,13 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="competenceIds" value="" type="hidden" />
+				<input id="competenceIds" type="hidden" />
 			</td>
 			<td>
 				<table id="competenceTable" class="list">
 					<thead>
 						<tr>
-							<th class="header2">Kompetenzen</th>
+							<th class="header2" colspan="2">Kompetenzen</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -217,6 +218,7 @@ $(document).ready(function() {
 		ifFormat : "%d.%m.%Y",
 		daFormat : "%d.%m.%Y"
 	});
+	
 	$('#addMobilePhone').click(function() {
 		m++;
 		var mobilePhoneId = $('select#mobilePhone').val();
@@ -224,43 +226,140 @@ $(document).ready(function() {
 		var mobilePhoneStringArray = mobilePhoneString.split(' - ');
 		var mobilePhoneName = mobilePhoneStringArray[0];
 		var mobilePhoneNumber = mobilePhoneStringArray[1];
-		var tr = null;
 		if (mobilePhoneId) {
-			if (m % 2 == 0) {
-				tr = '<tr class="even"><td>' + mobilePhoneName + '</td><td>' + mobilePhoneNumber + '</td></tr>';
-			} else {
-				tr = '<tr class="odd"><td>' + mobilePhoneName + '</td><td>' + mobilePhoneNumber + '</td></tr>';
+			var doubleMobilePhoneId = $('tr#mobilePhone-' + mobilePhoneId).attr('id');
+			if (!doubleMobilePhoneId) {
+				var a = '<a id="deleteMobilePhone-' + mobilePhoneId + '" class="smallLink" style="cursor:pointer">L&ouml;schen</a>';
+				var tr = null;
+				if (m % 2 == 0) {
+					tr = '<tr id="mobilePhone-' + mobilePhoneId + '" class="even"><td id="mobilePhoneName-' + mobilePhoneId + '">' + mobilePhoneName + '</td><td id="mobilePhoneNumber-' + mobilePhoneId + '">' + mobilePhoneNumber + '</td><td>' + a + '</td></tr>';
+				} else {
+					tr = '<tr id="mobilePhone-' + mobilePhoneId + '" class="odd"><td id="mobilePhoneName-' + mobilePhoneId + '">' + mobilePhoneName + '</td><td id="mobilePhoneNumber-' + mobilePhoneId + '">' + mobilePhoneNumber + '</td><td>' + a + '</td></tr>';
+				}
+				$('table#mobilePhoneTable > tbody').append(tr);
+				var mobilePhoneIds = $('input#mobilePhoneIds').val()
+				if (mobilePhoneIds) {
+					$('input#mobilePhoneIds').val(mobilePhoneIds + ',' + mobilePhoneId);
+				} else {
+					$('input#mobilePhoneIds').val(mobilePhoneId);
+				}
+				$('#deleteMobilePhone-' + mobilePhoneId).click(function() {
+					var mobilePhoneIdString = $(this).attr('id');
+					var mobilePhoneId = mobilePhoneIdString.split('-')[1];
+					var mobilePhoneIds = $('input#mobilePhoneIds').val();
+					var mobilePhoneIdsArray = mobilePhoneIds.split(',');
+					var newMobilePhoneIds = null;
+					for (var i = 0; i < mobilePhoneIdsArray.length; i++) {
+						if (mobilePhoneIdsArray[i] != mobilePhoneId) {
+							if (newMobilePhoneIds) {
+								newMobilePhoneIds = newMobilePhoneIds + ',' + mobilePhoneIdsArray[i];
+							} else {
+								newMobilePhoneIds = mobilePhoneIdsArray[i];
+							}
+						}
+					}
+					if (newMobilePhoneIds) {
+						$('input#mobilePhoneIds').val(newMobilePhoneIds);
+					} else {
+						$('input#mobilePhoneIds').removeAttr('value');
+					}
+					$('tr#mobilePhone-' + mobilePhoneId).remove();
+				});
 			}
-			$('table#mobilePhoneTable > tbody').append(tr);
-			var mobilePhoneIds = $('input#mobilePhoneIds').val()
-			if (mobilePhoneIds) {
-				$('input#mobilePhoneIds').val(mobilePhoneIds + ',' + mobilePhoneId);
-			} else {
-				$('input#mobilePhoneIds').val(mobilePhoneId);
-			}
-			$('select#mobilePhone option:selected').remove();
 		}
 	});
+	
 	$('#addCompetence').click(function() {
 		c++;
 		var competenceId = $('select#competence').val();
 		var competenceString = $('select#competence option:selected').text();
 		if (competenceId) {
-			var tr = null;
-			if (c % 2 == 0) {
-				tr = '<tr class="even"><td>' + competenceString + '</td></tr>';
-			} else {
-				tr = '<tr class="odd"><td>' + competenceString + '</td></tr>';
+			var doubleCompetenceId = $('tr#competence-' + competenceId).attr('id');
+			if (!doubleCompetenceId) {
+				var a = '<a id="deleteCompetence-' + competenceId + '" class="smallLink" style="cursor:pointer">L&ouml;schen</a>';
+				var tr = null;
+				if (c % 2 == 0) {
+					tr = '<tr id="competence-' + competenceId + '" class="even"><td id="competenceName-' + competenceId + '">' + competenceString + '</td><td>' + a + '</td></tr>';
+				} else {
+					tr = '<tr id="competence-' + competenceId + '" class="odd"><td id="competenceName-' + competenceId + '">' + competenceString + '</td><td>' + a + '</td></tr>';
+				}
+				$('table#competenceTable > tbody').append(tr);
+				var competenceIds = $('input#competenceIds').val();
+				if (competenceIds) {
+					$('input#competenceIds').val(competenceIds + ',' + competenceId);
+				} else {
+					$('input#competenceIds').val(competenceId);
+				}
+				$('#deleteCompetence-' + competenceId).click(function() {
+					var competenceIdString = $(this).attr('id');
+					var competenceId = competenceIdString.split('-')[1];
+					var competenceIds = $('input#competenceIds').val();
+					var competenceIdsArray = competenceIds.split(',');
+					var newCompetenceIds = null;
+					for (var i = 0; i < competenceIdsArray.length; i++) {
+						if (competenceIdsArray[i] != competenceId) {
+							if (newCompetenceIds) {
+								newCompetenceIds = newCompetenceIds + ',' + competenceIdsArray[i];
+							} else {
+								newCompetenceIds = competenceIdsArray[i];
+							}
+						}
+					}
+					if (newCompetenceIds) {
+						$('input#competenceIds').val(newCompetenceIds);
+					} else {
+						$('input#competenceIds').removeAttr('value');
+					}
+					$('tr#competence-' + competenceId).remove();
+				});
 			}
-			$('table#competenceTable > tbody').append(tr);
-			var competenceIds = $('input#competenceIds').val();
-			if (competenceIds) {
-				$('input#competenceIds').val(competenceIds + ',' + competenceId);
-			} else {
-				$('input#competenceIds').val(competenceId);
-			}
-			$('select#competence option:selected').remove();
 		}
+	});
+	
+	$('[id^=deleteMobilePhone]').click(function() {
+		var mobilePhoneIdString = $(this).attr('id');
+		var mobilePhoneId = mobilePhoneIdString.split('-')[1];
+		var mobilePhoneIds = $('#mobilePhoneIds').val();
+		var mobilePhoneIdsArray = mobilePhoneIds.split(',');
+		var newMobilePhoneIds = null;
+		for (var i = 0; i < mobilePhoneIdsArray.length; i++) {
+			if (mobilePhoneIdsArray[i] != mobilePhoneId) {
+				if (newMobilePhoneIds) {
+					newMobilePhoneIds = newMobilePhoneIds + ',' + mobilePhoneIdsArray[i];
+				} else {
+					newMobilePhoneIds = mobilePhoneIdsArray[i];
+				}
+			}
+		}
+		if (newMobilePhoneIds) {
+			$('#mobilePhoneIds').val(newMobilePhoneIds);
+		} else {
+			$('#mobilePhoneIds').removeAttr('value');
+		}
+		$('tr#' + mobilePhoneId).remove();
+	});
+	
+	$('[id^=deleteCompetence]').click(function() {
+		var competenceIdString = $(this).attr('id');
+		var competenceId = competenceIdString.split('-')[1];
+		var competenceIds = $('#competenceIds').val();
+		var competenceIdsArray = competenceIds.split(',');
+		var newCompetenceIds = null;
+		for (var i = 0; i < competenceIdsArray.length; i++) {
+			if (competenceIdsArray[i] != competenceId) {
+				if (newCompetenceIds) {
+					newCompetenceIds = newCompetenceIds + ',' + competenceIdsArray[i];
+				} else {
+					newCompetenceIds = competenceIdsArray[i];
+				}
+			}
+		}
+		if (newCompetenceIds) {
+			$('#competenceIds').val(newCompetenceIds);
+		} else {
+			$('#competenceIds').removeAttr('value');
+		}
+		$('tr#' + competenceId).remove();
 	});
 });
 </script>
