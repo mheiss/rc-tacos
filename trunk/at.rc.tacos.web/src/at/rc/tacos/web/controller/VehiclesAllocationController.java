@@ -43,7 +43,7 @@ public class VehiclesAllocationController extends Controller {
 		final List<AbstractMessage> abstractVehicleList = connection.sendListingRequest(VehicleDetail.ID, null);
 		if (!connection.getContentType().equalsIgnoreCase(VehicleDetail.ID)) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-		}		
+		}	
 		final List<VehicleContainer> vehicleDetailList = new ArrayList<VehicleContainer>();
 		for (final Iterator<AbstractMessage> itVehicleDetailList = abstractVehicleList.iterator(); itVehicleDetailList.hasNext();) {
 			final VehicleDetail vehicleDetail = (VehicleDetail)itVehicleDetailList.next();
