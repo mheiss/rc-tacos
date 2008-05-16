@@ -1,5 +1,5 @@
 <%@ include file="includes.jsp" %>
-<form action="${url}" method="post" accept-charset="ISO-8859-1">
+<form action="${url}" method="post" accept-charset="ISO-8859-1" enctype="multipart/form-data">
 	<table class="standardForm">
 		<tr><td colspan="2">Allgemeine&nbsp;Daten:</td><td /></tr>
 		<tr>
@@ -93,7 +93,7 @@
 		<tr>
 			<td>Photo:</td>
 			<td>
-				<input type="file" name="foto" accept="image/*" size="10">
+				<input name="image" type="file" />
 			</td>
 			<td>
 				<span class="errorText">${params.errors.photo}</span>
