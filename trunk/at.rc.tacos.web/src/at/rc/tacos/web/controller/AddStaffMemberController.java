@@ -1,13 +1,21 @@
 package at.rc.tacos.web.controller;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.net.internal.WebClient;
@@ -23,7 +31,7 @@ import at.rc.tacos.web.session.UserSession;
  * @version 1.0
  */
 public class AddStaffMemberController extends Controller {
-
+	
 	private static final String ACTION_NAME = "action";
 	private static final String ACTION_UPDATE_ROSTER_ENTRY = "addStaffMember";
 	
@@ -34,6 +42,7 @@ public class AddStaffMemberController extends Controller {
 	
 	private static final String PARAM_MOBILE_PHONE_LIST_NAME = "mobilePhoneList";
 	private static final String MODEL_MOBILE_PHONE_LIST_NAME = "mobilePhoneList";
+	private static final String MODEL_MOBILE_PHONE_TABLE_NAME = "mobilePhoneTable";
 	
 	private static final String PARAM_LOCATION_NAME = "locationId";
 	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
@@ -42,11 +51,14 @@ public class AddStaffMemberController extends Controller {
 	
 	private static final String PARAM_COMPETENCE_LIST_NAME = "competenceList";
 	private static final String MODEL_COMPETENCE_LIST_NAME = "competenceList";
+	private static final String MODEL_COMPETENCE_TABLE_NAME = "competenceTable";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
 			throws Exception {
+		final ResourceBundle fileUpload = ResourceBundle.getBundle(Dispatcher.FILEUPLOAD_BUNDLE_PATH);
+		
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
@@ -54,6 +66,37 @@ public class AddStaffMemberController extends Controller {
 		
 		final String authorization = userSession.getLoginInformation().getAuthorization();	
 		
+		// Parse Image
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+		if (isMultipart) {
+			final DiskFileItemFactory factory = new DiskFileItemFactory();
+			factory.setSizeThreshold(Integer.parseInt(fileUpload.getString("memory.maxsize")));
+			factory.setRepository(new File(fileUpload.getString("tmp.dir")));
+			final ServletFileUpload upload = new ServletFileUpload(factory);
+			upload.setSizeMax(Long.parseLong(fileUpload.getString("request.maxsize")));
+			final List<FileItem> items = upload.parseRequest(request);
+			
+			// Process the uploaded items
+			final Iterator<FileItem> iter = items.iterator();
+			while (iter.hasNext()) {
+			    final FileItem item = (FileItem) iter.next();
+			    if (!item.isFormField()) {
+			        final String contentType = item.getContentType();
+			        final String fileName = item.getName();
+			        final String extension = "." + fileName.replaceAll(".*\\.", "");
+			        long sizeInBytes = item.getSize();
+			        if (sizeInBytes > Long.parseLong(fileUpload.getString("addStaffMember.image.maxsize"))) {
+			        	throw new IllegalArgumentException("Error: Uploaded image is too big.");
+			        }
+			        if (!Pattern.matches(fileUpload.getString("addStaffMember.image.contentType"), contentType)) {
+			        	throw new IllegalArgumentException("Error: Uploaded image has wrong content type.");
+			        }
+			        final File uploadedFile = new File(fileUpload.getString("addStaffMember.image.absolute.dir") + "/" + userSession.getLoginInformation().getUserInformation().getStaffMemberId() + extension);
+			        item.write(uploadedFile);
+			    } 
+			}
+		}
+	
 		// Check authorization
 		if (!authorization.equals(Login.AUTH_ADMIN)) {
 			throw new IllegalArgumentException("Error: User has no permission for functionality.");
