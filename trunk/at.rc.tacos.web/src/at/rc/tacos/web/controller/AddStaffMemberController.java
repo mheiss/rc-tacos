@@ -59,7 +59,8 @@ public class AddStaffMemberController extends Controller {
 	private static final String PARAM_SEX_NO_VALUE = "noValue";
 	private static final String MODEL_SEX_NAME = "sex";
 	
-	private static final String PARAM_MOBILE_PHONE_TABLE_NAME = "mobilePhoneTable";
+	private static final String PARAM_MOBILE_PHONE_HIDDEN_NAME = "mobilePhoneHidden";
+	private static final String MODEL_MOBILE_PHONE_HIDDEN_NAME = "mobilePhoneHidden";
 	private static final String MODEL_MOBILE_PHONE_LIST_NAME = "mobilePhoneList";
 	private static final String MODEL_MOBILE_PHONE_TABLE_NAME = "mobilePhoneTable";
 	
@@ -68,7 +69,8 @@ public class AddStaffMemberController extends Controller {
 	private static final String MODEL_LOCATION_NAME = "location";
 	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
 	
-	private static final String PARAM_COMPETENCE_TABLE_NAME = "competenceTable";
+	private static final String PARAM_COMPETENCE_HIDDEN_NAME = "competenceHidden";
+	private static final String MODEL_COMPETENCE_HIDDEN_NAME = "competenceHidden";
 	private static final String MODEL_COMPETENCE_LIST_NAME = "competenceList";
 	private static final String MODEL_COMPETENCE_TABLE_NAME = "competenceTable";
 	
@@ -150,25 +152,32 @@ public class AddStaffMemberController extends Controller {
 		}
 		
 		// Mobile Phone
-		final String paramMobilePhoneTable = request.getParameter(PARAM_MOBILE_PHONE_TABLE_NAME);
+		final String paramMobilePhoneHidden = request.getParameter(PARAM_MOBILE_PHONE_HIDDEN_NAME);
 		final List<MobilePhoneDetail> mobilePhoneTable = new ArrayList<MobilePhoneDetail>();
+		String mobilePhoneHidden = null;
 		final List<AbstractMessage> mobilePhoneList = connection.sendListingRequest(MobilePhoneDetail.ID, null);
 		if (!MobilePhoneDetail.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		params.put(MODEL_MOBILE_PHONE_LIST_NAME, mobilePhoneList);
-		if (paramMobilePhoneTable != null) {
-			final String[] mobilePhoneTableArray = paramMobilePhoneTable.split(",");
+		if (paramMobilePhoneHidden != null) {
+			final String[] mobilePhoneTableArray = paramMobilePhoneHidden.split(",");
 			for (int i=0; i < mobilePhoneTableArray.length; i++) {
 				for (final Iterator<AbstractMessage> itMobilePhoneList = mobilePhoneList.iterator(); itMobilePhoneList.hasNext();) {
 					final MobilePhoneDetail mobilePhone = (MobilePhoneDetail)itMobilePhoneList.next();
 					if (mobilePhone.getId() == Integer.parseInt(mobilePhoneTableArray[i])) {
 						mobilePhoneTable.add(mobilePhone);
+						if (mobilePhoneHidden == null) {
+							mobilePhoneHidden = Integer.toString(mobilePhone.getId());
+						} else {
+							mobilePhoneHidden = mobilePhoneHidden + "," + Integer.toString(mobilePhone.getId());
+						}
 					}
 				}
 			}
 		}
 		params.put(MODEL_MOBILE_PHONE_TABLE_NAME, mobilePhoneTable);
+		params.put(MODEL_MOBILE_PHONE_HIDDEN_NAME, mobilePhoneHidden);
 		
 		// Parse Image
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -221,12 +230,32 @@ public class AddStaffMemberController extends Controller {
 		}
 		
 		// Competences
+		final String paramCompetenceHidden = request.getParameter(PARAM_COMPETENCE_HIDDEN_NAME);
+		final List<Competence> competenceTable = new ArrayList<Competence>();
+		String competenceHidden = null;
 		final List<AbstractMessage> competenceList = connection.sendListingRequest(Competence.ID, null);
 		if (!Competence.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		params.put(MODEL_COMPETENCE_LIST_NAME, competenceList);
-		 
+		if (paramCompetenceHidden != null) {
+			final String[] competenceTableArray = paramCompetenceHidden.split(",");
+			for (int i=0; i < competenceTableArray.length; i++) {
+				for (final Iterator<AbstractMessage> itCompetence = competenceList.iterator(); itCompetence.hasNext();) {
+					final Competence competence = (Competence)itCompetence.next();
+					if (competence.getId() == Integer.parseInt(competenceTableArray[i])) {
+						competenceTable.add(competence);
+					}
+					if (competenceHidden == null) {
+						competenceHidden = Integer.toString(competence.getId());
+					} else {
+						competenceHidden = competenceHidden + "," + Integer.toString(competence.getId());
+					}
+				}
+			}
+		}
+		params.put(MODEL_COMPETENCE_HIDDEN_NAME, competenceHidden);
+		params.put(MODEL_COMPETENCE_TABLE_NAME, competenceTable); 
 		
 		return params;
 	}
