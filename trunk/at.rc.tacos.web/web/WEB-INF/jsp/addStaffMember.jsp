@@ -5,16 +5,16 @@
 		<tr>
 			<td>Personalnummer&nbsp;(5xxxxxxx):<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="staffMemberId" type="text" size="30" maxlength="8" />
+				<input name="staffMemberId" type="text" size="30" maxlength="8" value="${params.personnelNumber}" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.staffMemberId}</span>
+				<span class="errorText">${params.errors.personnelNumber}</span>
 			</td>
 		</tr>
 		<tr>
 			<td>Vorname:<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="firstName" type="text" size="30" maxlength="30" />
+				<input name="firstName" type="text" size="30" maxlength="30" value="${params.firstName}" />
 			</td>
 			<td>
 				<span class="errorText">${params.errors.firstName}</span>
@@ -23,7 +23,7 @@
 		<tr>
 			<td>Nachname:<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="lastName" type="text" size="30" maxlength="30" />
+				<input name="lastName" type="text" size="30" maxlength="30" value="${params.lastName}" />
 			</td>
 			<td>
 				<span class="errorText">${params.errors.firstName}</span>
@@ -45,8 +45,8 @@
 			<td>
 				<select size="1" name="sex">
 					<option value="noValue">-- Geschlecht wählen --</option>
-					<option value="m">männlich</option>
-					<option value="w">weiblich</option>
+					<option ${(not empty params.sex) and (params.sex == 'männlich') ? ' selected="selected"' : ''}>männlich</option>
+					<option ${(not empty params.sex) and (params.sex == 'weiblich') ? ' selected="selected"' : ''}>weiblich</option>
 				</select>
 			</td>
 			<td>
