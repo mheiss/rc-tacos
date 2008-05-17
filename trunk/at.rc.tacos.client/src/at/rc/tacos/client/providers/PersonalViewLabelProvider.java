@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Image;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.modelManager.VehicleManager;
@@ -34,6 +35,7 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
     
     //the vehicle manager
     private VehicleManager vehicleManager = ModelFactory.getInstance().getVehicleManager(); 
+    private LockManager lockManager = ModelFactory.getInstance().getLockManager();
     
 
     @Override
@@ -44,7 +46,10 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         switch(columnIndex)
         {
         //show lock if the entry is locked
-        case COLUMN_LOCK: return null;
+        case COLUMN_LOCK: 
+        	if(lockManager.containsLock(RosterEntry.ID, entry.getRosterId()))
+        		return ImageFactory.getInstance().getRegisteredImage("resource.lock");
+        	return null;
         //show house symbol if the person is at home
         case COLUMN_STANDBY: 
             if(entry.getStandby())

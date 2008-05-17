@@ -35,6 +35,8 @@ import at.rc.tacos.codec.JobDecoder;
 import at.rc.tacos.codec.JobEncoder;
 import at.rc.tacos.codec.LocationDecoder;
 import at.rc.tacos.codec.LocationEncoder;
+import at.rc.tacos.codec.LockDecoder;
+import at.rc.tacos.codec.LockEncoder;
 import at.rc.tacos.codec.LoginDecoder;
 import at.rc.tacos.codec.LoginEncoder;
 import at.rc.tacos.codec.LogoutDecoder;
@@ -67,6 +69,7 @@ import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.Lock;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
 import at.rc.tacos.model.MobilePhoneDetail;
@@ -181,6 +184,7 @@ public class Activator extends AbstractUIPlugin
 		factory.registerListener(ServiceType.ID, new ServiceTypeListener());
 		factory.registerListener(Disease.ID, new DiseaseListener());
 		factory.registerListener(Address.ID, new AddressListener());
+		factory.registerListener(Lock.ID, new LockListener());
 	}
 
 	/**
@@ -226,6 +230,8 @@ public class Activator extends AbstractUIPlugin
 		protFactory.registerEncoder(Disease.ID, new DiseaseEncoder());
 		protFactory.registerDecoder(Address.ID, new AddressDecoder());
 		protFactory.registerEncoder(Address.ID, new AddressEncoder());
+		protFactory.registerDecoder(Lock.ID, new LockDecoder());
+		protFactory.registerEncoder(Lock.ID,new LockEncoder());
 	}
 
 	/**

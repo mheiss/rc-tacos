@@ -26,6 +26,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.JobContentProvider;
@@ -70,6 +71,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 
 	//determine wheter to update or to create a new entry
 	private boolean createNew;
+	
 
 	/**
 	 * Default class constructor used to create a new roster entry.
@@ -110,6 +112,21 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	@Override
 	public boolean close()
 	{
+		//check if the user wants to close the window
+		if(getReturnCode() == CANCEL)
+		{
+			MessageBox dialog = new MessageBox(getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+			dialog.setText("Abbrechen");
+			dialog.setMessage("Wollen Sie wirklich abbrechen?");
+			//check the result
+			if (dialog.open() == SWT.NO)
+				return false;
+		}
+		
+		//remove the lock from the object
+		LockManager.removeLock(RosterEntry.ID, rosterEntry.getRosterId());
+			
+		//cleanup the listeners
 		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
@@ -194,12 +211,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	@Override
 	protected void cancelPressed()
 	{
-		MessageBox dialog = new MessageBox(getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-		dialog.setText("Abbrechen");
-		dialog.setMessage("Wollen Sie wirklich abbrechen?");
-		//check the result
-		if (dialog.open() != SWT.NO)
-			getShell().close();
+		super.cancelPressed();
 	}
 
 	/**
@@ -241,9 +253,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		            setErrorMessage("Die Anmerkungen dürfen nicht länger als 400 Zeichen sein.");
 		            return;
 		        }
-			
-			
-			
+
 			rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
 			rosterEntry.setStandby(bereitschaftButton.getSelection());
 			rosterEntry.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
@@ -253,9 +263,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 				NetWrapper.getDefault().sendAddMessage(RosterEntry.ID, rosterEntry);
 			else
 				NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, rosterEntry);
-		
-			getShell().close();
-			return;
+			
+			//closes the sehll
+			super.okPressed();
 		}
 		//beep
 		getShell().getDisplay().beep();

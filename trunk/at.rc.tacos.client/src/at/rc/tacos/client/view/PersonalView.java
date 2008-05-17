@@ -85,6 +85,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		ModelFactory.getInstance().getRosterEntryManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 		//listen to changes of jobs, serviceTypes and staff member updates
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
@@ -100,6 +101,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		ModelFactory.getInstance().getRosterEntryManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 		//remove again
 		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
@@ -189,7 +191,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 		final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(0);
+		lockColumn.setWidth(24);
 		lockColumn.setText("L");
 
 		final TableColumn columnStandby = new TableColumn(table, SWT.NONE);
@@ -535,6 +537,11 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 			}
 			//apply the new date filter
 			viewer.addFilter(new PersonalDateFilter(newDate));		
+		}
+		//listen to lock changes
+		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			viewer.refresh();
 		}
 	}
 }
