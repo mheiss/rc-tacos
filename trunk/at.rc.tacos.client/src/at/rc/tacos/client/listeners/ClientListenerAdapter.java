@@ -18,98 +18,63 @@ public abstract class ClientListenerAdapter implements IModelListener
      *  Add request to handle
      */
     @Override
-    public void add(AbstractMessage addMessage)
-    {
-                
-    }
+    public void add(AbstractMessage addMessage) { }
     
     /**
      * Add request containint more elements
      */
     @Override
-    public void addAll(List<AbstractMessage> addList)
-    {
-    	
-    }
+    public void addAll(List<AbstractMessage> addList) { }
 
     /**
      * Listing of items to handle
      */
     @Override
-    public void list(List<AbstractMessage> listMessage)
-    {
-
-    }
+    public void list(List<AbstractMessage> listMessage) { }
 
     /**
      * Login response to handle
      */
     @Override
-    public void loginMessage(AbstractMessage message)
-    {
-
-    }
+    public void loginMessage(AbstractMessage message) { }
 
     /**
      * Logout response to handle
      */
     @Override
-    public void logoutMessage(AbstractMessage message)
-    {
-               
-    }
+    public void logoutMessage(AbstractMessage message) { }
 
     /**
      * Remove request to handle
      */
     @Override
-    public void remove(AbstractMessage removeMessage)
-    {
-                
-    }
-
+    public void remove(AbstractMessage removeMessage) { }
     /**
      * System message to handle
      */
     @Override
-    public void systemMessage(AbstractMessage message)
-    {
-                
-    }
-
+    public void systemMessage(AbstractMessage message) { }
     /**
      * Update message to handle
      */
     @Override
-    public void update(AbstractMessage updateMessage)
-    {
-                
-    }
+    public void update(AbstractMessage updateMessage) { }
     
     /**
      * Connection status change to handle
      */
     @Override
-    public void connectionChange(int status)
-    {
-    	
-    }
+    public void connectionChange(int status) { }
     
     /**
      * Message failed to send
      */
     @Override
-    public void transferFailed(AbstractMessageInfo info)
-    {
-    	
-    }
-    
+    public void transferFailed(AbstractMessageInfo info) { }
+
     /**
      * Logs the message on the client
      */
     @Override
-    public void log(String message, int stauts)
-    {
-    	
-    }
+    public void log(String message, int stauts) { }
 }

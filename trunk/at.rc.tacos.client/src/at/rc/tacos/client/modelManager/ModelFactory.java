@@ -44,6 +44,7 @@ public class ModelFactory
 	private final ServiceTypeManager serviceManager = new ServiceTypeManager();
 	private final DiseaseManager diseaseManager = new DiseaseManager();
 	private final AddressManager addressManager = new AddressManager();
+	private final LockManager lockManager = new LockManager();
 
 	/**
 	 * Private class constructor.
@@ -154,5 +155,10 @@ public class ModelFactory
 	public final AddressManager getAddressManager()
 	{
 		return addressManager;
+	}
+	
+	public final LockManager getLockManager()
+	{
+		return lockManager;
 	}
 }
