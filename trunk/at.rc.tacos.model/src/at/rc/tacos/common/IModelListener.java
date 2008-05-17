@@ -3,8 +3,7 @@ package at.rc.tacos.common;
 import java.util.List;
 
 /**
- * This interface describes methods that the UI listeners must provide to
- * get model updates from the network.
+ * This interface describes methods that the UI listeners must provide to get model updates from the network.
  * @author Michael
  */
 public interface IModelListener
