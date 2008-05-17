@@ -30,7 +30,7 @@ public class ClientSession
     @Override
     public String toString()
     {
-    	return username + ", webClient = "+webClient + " , " + "connection = "+connection;
+    	return username + ", webClient = "+webClient;
     }
     
     /**

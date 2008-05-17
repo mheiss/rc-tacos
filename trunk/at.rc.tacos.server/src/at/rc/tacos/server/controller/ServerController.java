@@ -3,7 +3,6 @@ package at.rc.tacos.server.controller;
 import java.util.*;
 
 import org.apache.log4j.Logger;
-
 import at.rc.tacos.common.AbstractMessageInfo;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.core.net.internal.*;
@@ -31,7 +30,7 @@ public class ServerController
     private ServerController()
     {
         //init the pools
-        connClientPool = new ArrayList<ClientSession>();
+        connClientPool = Collections.synchronizedList(new ArrayList<ClientSession>());
         //register the encoders and decoders
         registerEncoderAndDecoder();
         registerModelListeners();
@@ -91,6 +90,35 @@ public class ServerController
         }
         //remove the user session
         connClientPool.remove(session);
+        
+        //assert valid
+        String user = session.getUsername();
+        if(user == null)
+        	return;
+  
+        logger.info("Checking locked objects from user:"+user);
+        LockListener listener = (LockListener)ServerListenerFactory.getInstance().getListener(Lock.ID);
+        //get the managed lock objects
+        ListIterator<Lock> iter = listener.getLockObjects().listIterator();
+        while(iter.hasNext())
+        {
+        	Lock lock = iter.next();
+        	if(lock.getLockedBy().equalsIgnoreCase(user))
+        	{
+        		logger.info("Removing the lock from the object: "+lock.getContentId()+":"+lock.getLockedId());
+        		//remove the lock from the object
+        		lock.setHasLock(false);
+        		//create a new message info
+        		AbstractMessageInfo info = new AbstractMessageInfo();
+    			info.setSequenceId("1");
+    			info.setContentType(Lock.ID);
+    			info.setQueryString(IModelActions.REMOVE);
+    			info.setMessage(lock);
+    			//brodcast to all connected clients
+        		brodcastMessage(session, info);
+        		iter.remove();
+        	}
+        }
     }
 
     /**
@@ -213,6 +241,8 @@ public class ServerController
         protFactory.registerEncoder(Disease.ID, new DiseaseEncoder());
         protFactory.registerDecoder(Address.ID, new AddressDecoder());
         protFactory.registerEncoder(Address.ID, new AddressEncoder());
+        protFactory.registerDecoder(Lock.ID, new LockDecoder());
+        protFactory.registerEncoder(Lock.ID, new LockEncoder());
         //system events
         protFactory.registerDecoder(Login.ID, new LoginDecoder());
         protFactory.registerEncoder(Login.ID, new LoginEncoder());
@@ -246,5 +276,6 @@ public class ServerController
         factory.registerModelListener(ServiceType.ID, new ServiceTypeListener());
         factory.registerModelListener(Address.ID, new AddressListener());
         factory.registerModelListener(Disease.ID, new DiseaseListener());
+        factory.registerModelListener(Lock.ID, new LockListener());
     }
 }
