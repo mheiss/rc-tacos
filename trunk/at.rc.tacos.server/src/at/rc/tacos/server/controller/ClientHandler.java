@@ -27,7 +27,7 @@ public class ClientHandler implements INetListener
 	private static Logger logger = Logger.getLogger(ClientHandler.class);
 
 	@Override
-	public synchronized void dataReceived(NetEvent ne)
+	public void dataReceived(NetEvent ne)
 	{
 		//set up the factory and decode decode
 		XMLFactory xmlFactory = new XMLFactory();
@@ -194,13 +194,13 @@ public class ClientHandler implements INetListener
 	}
 
 	@Override
-	public synchronized void dataTransferFailed(NetEvent ne)
+	public void dataTransferFailed(NetEvent ne)
 	{
 		logger.error("Failed to send the message to the client: "+ne.getClient());
 	}
 
 	@Override
-	public synchronized void socketStatusChanged(MyClient client, int status)
+	public void socketStatusChanged(MyClient client, int status)
 	{
 		//check the status
 		if (status == IConnectionStates.STATE_CONNECTED)
