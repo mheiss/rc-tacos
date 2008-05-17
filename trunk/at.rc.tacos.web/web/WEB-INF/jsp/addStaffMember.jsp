@@ -5,7 +5,7 @@
 		<tr>
 			<td>Personalnummer&nbsp;(5xxxxxxx):<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="staffMemberId" type="text" size="30" maxlength="8" value="${params.personnelNumber}" />
+				<input name="personnelNumber" type="text" size="30" maxlength="8" value="${params.personnelNumber}" />
 			</td>
 			<td>
 				<span class="errorText">${params.errors.personnelNumber}</span>
@@ -56,10 +56,10 @@
 		<tr>
 			<td>Telefonnummern:</td>
 			<td>
-				<select size="1" id="mobilePhone">
+				<select size="1" id="mobilePhone" name="mobilePhoneId">
 					<option value="">-- Telefonnummer wählen --</option>
 					<c:forEach var="mobilePhone" items="${params.mobilePhoneList}">
-						<option value="${mobilePhone.id}">${mobilePhone.mobilePhoneName} - ${mobilePhone.mobilePhoneNumber}</option>
+						<option value="${mobilePhone.id}" ${(not empty params.mobilePhone) and (params.mobilePhone.id == mobilePhone.id) ? ' selected="selected"' : ''}>${mobilePhone.mobilePhoneName} - ${mobilePhone.mobilePhoneNumber}</option>
 					</c:forEach>
 				</select>
 				<a id="addMobilePhone" class="smallLink" style="cursor:pointer">Telefonnummer&nbsp;hinzuf&uuml;gen</a>
@@ -68,7 +68,7 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="mobilePhoneIds" type="hidden" />
+				<input id="mobilePhoneIds" name="mobilePhoneIds" type="hidden" value="${params.mobilePhoneIds}" />
 			</td>
 			<td>
 				<table id="mobilePhoneTable" class="list">
@@ -83,6 +83,9 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:forEach var="mobilePhone" items="${params.mobilePhoneTable}" varStatus="loop">
+							<tr id="mobilePhone-${mobilePhone.id}" class="${loop.count % 2 == 0 ? 'even' : 'odd'}"><td id="mobilePhoneName-${mobilePhone.id}">${mobilePhone.mobilePhoneName}</td><td id="mobilePhoneNumber-${mobilePhone.id}">${mobilePhone.mobilePhoneNumber}</td><td><a id="deleteMobilePhone-${mobilePhone.id}" class="smallLink" style="cursor:pointer">L&ouml;schen</a></td></tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</td>
@@ -106,7 +109,7 @@
 				<select name="locationId" size="1">
 					<option value="noValue">-- Dienststelle auswählen --</option>
 					<c:forEach var="location" items="${params.locationList}">
-						<option value="${location.id}">${location.locationName}</option>
+						<option value="${location.id}" ${(not empty params.location) and (params.location.id == location.id) ? ' selected="selected"' : ''}>${location.locationName}</option>
 					</c:forEach>
 				</select>
 			</td>
@@ -117,10 +120,10 @@
 		<tr>
 			<td>Kompetenzen&nbsp;(zumindest&nbsp;Volont&auml;r):<sup class="reqMark">*</sup></td>
 			<td>
-				<select size="1" id="competence">
+				<select size="1" id="competence" name="competenceId">
 					<option value="">-- Kompetenz wählen --</option>
 					<c:forEach var="competence" items="${params.competenceList}">
-						<option value="${competence.id}">${competence.competenceName}</option>
+						<option value="${competence.id}" ${(not empty params.competence) and (params.competence.id == competence.id) ? ' selected="selected"' : ''}>${competence.competenceName}</option>
 					</c:forEach>
 				</select>
 				<a id="addCompetence" class="smallLink" style="cursor:pointer">Kompetenz&nbsp;hinzuf&uuml;gen</a>
@@ -129,7 +132,7 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="competenceIds" type="hidden" />
+				<input id="competenceIds" name="competenceIds" type="hidden" value="${params.competenceIds}" />
 			</td>
 			<td>
 				<table id="competenceTable" class="list">
@@ -139,6 +142,9 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:forEach var="competence" items="${params.competenceTable}" varStatus="loop">
+							<tr id="competence-${competence.id}" class="${loop.count % 2 == 0 ? 'even' : 'odd'}"><td id="competenceName-${competence.id}">${competence.competenceName}</td><td><a id="deleteCompetence-${competence.id}" class="smallLink" style="cursor:pointer">L&ouml;schen</a></td></tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</td>
@@ -150,7 +156,7 @@
 		<tr>
 			<td>Benutzername:<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="username" type="text" size="30" maxlength="30" />
+				<input name="username" type="text" size="30" maxlength="30" value="${params.username}" />
 			</td>
 			<td>
 				<span class="errorText">${params.errors.username}</span>
@@ -159,7 +165,7 @@
 		<tr>
 			<td>Passwort:<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="password" type="password" size="30" maxlength="255" />
+				<input name="password" type="password" size="30" maxlength="255" value="${params.password}" />
 			</td>
 			<td>
 				<span class="errorText">${params.errors.password}</span>
@@ -168,7 +174,7 @@
 		<tr>
 			<td>Passwort&nbsp;(wiederholen):<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="repeatedPassword" type="password" size="30" maxlength="255" />
+				<input name="repeatedPassword" type="password" size="30" maxlength="255" value="${params.repeatedPassword}" />
 			</td>
 			<td>
 				<span class="errorText">${params.errors.repeatedPassword}</span>
@@ -184,8 +190,8 @@
 			<td>
 				<select name="authorization" size="1">
 					<option value="noValue">-- Authorisierung wählen --</option>
-					<option value="Benutzer">Benutzer</option>
-					<option value="Administrator">Administrator</option>
+					<option value="Benutzer" ${(not empty params.authorization) and (params.authorization == 'Benutzer') ? ' selected="selected"' : ''}>Benutzer</option>
+					<option value="Administrator" ${(not empty params.authorization) and (params.authorization == 'Administrator') ? ' selected="selected"' : ''}>Administrator</option>
 				</select>
 			</td>
 			<td>
@@ -336,7 +342,7 @@ $(document).ready(function() {
 		} else {
 			$('#mobilePhoneIds').removeAttr('value');
 		}
-		$('tr#' + mobilePhoneId).remove();
+		$('tr#mobilePhone-' + mobilePhoneId).remove();
 	});
 	
 	$('[id^=deleteCompetence]').click(function() {
@@ -359,7 +365,7 @@ $(document).ready(function() {
 		} else {
 			$('#competenceIds').removeAttr('value');
 		}
-		$('tr#' + competenceId).remove();
+		$('tr#competence-' + competenceId).remove();
 	});
 });
 </script>
