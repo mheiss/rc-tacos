@@ -1,9 +1,11 @@
 package at.rc.tacos.web.controller;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -99,6 +101,7 @@ public class AddStaffMemberController extends Controller {
 			HttpServletResponse response, ServletContext context)
 			throws Exception {
 		final ResourceBundle fileUpload = ResourceBundle.getBundle(Dispatcher.FILEUPLOAD_BUNDLE_PATH);
+		final ResourceBundle validation = ResourceBundle.getBundle(Dispatcher.VALIDATION_BUNDLE_PATH);
 		
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -121,7 +124,7 @@ public class AddStaffMemberController extends Controller {
 		String paramSex = null;
 		String paramMobilePhoneId = null;
 		String paramMobilePhoneHidden = null;
-		FileItem image = null;
+		FileItem photo = null;
 		String paramLocationId = null;
 		String paramCompetenceId = null;
 		String paramCompetenceHidden = null;
@@ -143,7 +146,7 @@ public class AddStaffMemberController extends Controller {
 			while (iter.hasNext()) {
 			    final FileItem item = (FileItem) iter.next();
 			    if (!item.isFormField()) {
-			        image = item;
+			        photo = item;
 			    } else {
 			    	if (item.getFieldName().equals(ACTION_NAME)) {
 			    		paramAction = item.getString();
@@ -183,25 +186,34 @@ public class AddStaffMemberController extends Controller {
 		}
 		
 		// Personnel Number
+		final String defaultPersonnelNumber = null;
 		String personnelNumber = null;
-		if (paramPersonnelNumber != null) {
-			personnelNumber = paramPersonnelNumber;
+		personnelNumber = paramPersonnelNumber;
+		if (personnelNumber != null) {
+			params.put(MODEL_PERSONNEL_NUMBER_NAME, personnelNumber);
+		} else {
+			params.put(MODEL_PERSONNEL_NUMBER_NAME, defaultPersonnelNumber);
 		}
-		params.put(MODEL_PERSONNEL_NUMBER_NAME, personnelNumber);
 		
 		// First Name
+		final String defaultFirstName = null;
 		String firstName = null;
-		if (paramFirstName != null) {
-			firstName = paramFirstName;
+		firstName = paramFirstName;
+		if (firstName != null) {
+			params.put(MODEL_FIRSTNAME_NAME, firstName);
+		} else {
+			params.put(MODEL_FIRSTNAME_NAME, defaultFirstName);
 		}
-		params.put(MODEL_FIRSTNAME_NAME, firstName);
 		
 		// Last Name
+		final String defaultLastName = null;
 		String lastName = null;
-		if (paramLastName != null) {
-			lastName = paramLastName;
+		lastName = paramLastName;
+		if (lastName != null) {
+			params.put(MODEL_LASTNAME_NAME, lastName);
+		} else {
+			params.put(MODEL_LASTNAME_NAME, defaultLastName);
 		}
-		params.put(MODEL_LASTNAME_NAME, lastName);
 		
 		// Create Calendar for DatePicker
 		final Calendar calendar = Calendar.getInstance();
@@ -247,8 +259,6 @@ public class AddStaffMemberController extends Controller {
 		if (paramMobilePhoneId != null && !paramMobilePhoneId.equals("") && !paramMobilePhoneId.equals(PARAM_MOBILE_PHONE_NO_VALUE)) {
 			mobilePhoneId = Integer.parseInt(paramMobilePhoneId);
 		}
-		final List<MobilePhoneDetail> mobilePhoneTable = new ArrayList<MobilePhoneDetail>();
-		String mobilePhoneHidden = null;
 		final List<AbstractMessage> mobilePhoneList = connection.sendListingRequest(MobilePhoneDetail.ID, null);
 		if (!MobilePhoneDetail.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
@@ -259,13 +269,23 @@ public class AddStaffMemberController extends Controller {
 				mobilePhone = m;
 			}
 		}
+		if (mobilePhone != null || (paramMobilePhoneId != null && paramMobilePhoneId.equals(PARAM_MOBILE_PHONE_NO_VALUE))) {
+			params.put(MODEL_MOBILE_PHONE_NAME, mobilePhone);
+		} else {
+			params.put(MODEL_MOBILE_PHONE_NAME, defaultMobilePhone);
+		}
+		
 		params.put(MODEL_MOBILE_PHONE_LIST_NAME, mobilePhoneList);
+		final List<MobilePhoneDetail> mobilePhoneTable = new ArrayList<MobilePhoneDetail>();
+		final List<MobilePhoneDetail> defaultMobilePhoneTable = new ArrayList<MobilePhoneDetail>();
+		String mobilePhoneHidden = null;
+		String defaultMobilePhoneHidden = null;
 		if (paramMobilePhoneHidden != null && !paramMobilePhoneHidden.equals("")) {
-			final String[] mobilePhoneTableArray = paramMobilePhoneHidden.split(",");
-			for (int i=0; i < mobilePhoneTableArray.length; i++) {
+			final String[] paramMobilePhoneTableArray = paramMobilePhoneHidden.split(",");
+			for (int i=0; i < paramMobilePhoneTableArray.length; i++) {
 				for (final Iterator<AbstractMessage> itMobilePhoneList = mobilePhoneList.iterator(); itMobilePhoneList.hasNext();) {
 					final MobilePhoneDetail mb = (MobilePhoneDetail)itMobilePhoneList.next();
-					if (mb.getId() == Integer.parseInt(mobilePhoneTableArray[i])) {
+					if (mb.getId() == Integer.parseInt(paramMobilePhoneTableArray[i])) {
 						mobilePhoneTable.add(mb);
 						if (mobilePhoneHidden == null) {
 							mobilePhoneHidden = Integer.toString(mb.getId());
@@ -276,17 +296,21 @@ public class AddStaffMemberController extends Controller {
 				}
 			}
 		}
-		params.put(MODEL_MOBILE_PHONE_TABLE_NAME, mobilePhoneTable);
-		params.put(MODEL_MOBILE_PHONE_HIDDEN_NAME, mobilePhoneHidden);
-		if (mobilePhone != null || (paramMobilePhoneId != null && paramMobilePhoneId.equals(PARAM_MOBILE_PHONE_NO_VALUE))) {
-			params.put(MODEL_MOBILE_PHONE_NAME, mobilePhone);
+		if (mobilePhoneTable.size() > 0) {
+			params.put(MODEL_MOBILE_PHONE_TABLE_NAME, mobilePhoneTable);
 		} else {
-			params.put(MODEL_MOBILE_PHONE_NAME, defaultMobilePhone);
+			params.put(MODEL_MOBILE_PHONE_TABLE_NAME, defaultMobilePhoneTable);
 		}
+		if (mobilePhoneHidden != null) {
+			params.put(MODEL_MOBILE_PHONE_HIDDEN_NAME, mobilePhoneHidden);
+		} else {
+			params.put(MODEL_MOBILE_PHONE_HIDDEN_NAME, defaultMobilePhoneHidden);
+		}
+
 		
 		// Location
 		int locationId = 0;
-		final Location defaultLocation = userSession.getFormDefaultValues().getDefaultLocation();
+		final Location defaultLocation = userSession.getDefaultFormValues().getRosterDefaultLocation();
 		Location location = null;
 		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);
@@ -312,11 +336,10 @@ public class AddStaffMemberController extends Controller {
 		int competenceId = 0;
 		final Competence defaultCompetence = null;
 		Competence competence = null;
+		Competence volunteerCompetence = null;
 		if (paramCompetenceId != null && !paramCompetenceId.equals("") && !paramCompetenceId.equals(PARAM_COMPETENCE_NO_VALUE)) {
 			competenceId = Integer.parseInt(paramCompetenceId);
 		}
-		final List<Competence> competenceTable = new ArrayList<Competence>();
-		String competenceHidden = null;
 		final List<AbstractMessage> competenceList = connection.sendListingRequest(Competence.ID, null);
 		if (!Competence.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
@@ -326,14 +349,36 @@ public class AddStaffMemberController extends Controller {
 			if (c.getId() == competenceId) {
 				competence = c;
 			}
+			if (c.getCompetenceName().equals(Competence.COMPETENCE_NAME_VOLUNTEER)) {
+				volunteerCompetence = c;
+			}
 		}
 		params.put(MODEL_COMPETENCE_LIST_NAME, competenceList);
+		if (competence != null || (paramCompetenceId != null && paramCompetenceId.equals(PARAM_COMPETENCE_NO_VALUE))) {
+			params.put(MODEL_COMPETENCE_NAME, competence);
+		} else {
+			params.put(MODEL_COMPETENCE_NAME, defaultCompetence);
+		}
+		
+		final List<Competence> competenceTable = new ArrayList<Competence>();
+		final List<Competence> defaultCompetenceTable = new ArrayList<Competence>();
+		String competenceHidden = null;
+		String defaultCompetenceHidden = null;
+		defaultCompetenceTable.add(volunteerCompetence);
+		for (final Iterator<Competence> itCompTable = defaultCompetenceTable.iterator(); itCompTable.hasNext();) {
+			final Competence co = (Competence)itCompTable.next();
+			if (defaultCompetenceHidden == null) {
+				defaultCompetenceHidden = Integer.toString(co.getId());
+			} else {
+				defaultCompetenceHidden = defaultCompetenceHidden + "," + Integer.toString(co.getId());
+			}
+		}
 		if (paramCompetenceHidden != null && !paramCompetenceHidden.equals("")) {
-			final String[] competenceTableArray = paramCompetenceHidden.split(",");
-			for (int i=0; i < competenceTableArray.length; i++) {
+			final String[] paramCompetenceTableArray = paramCompetenceHidden.split(",");
+			for (int i=0; i < paramCompetenceTableArray.length; i++) {
 				for (final Iterator<AbstractMessage> itCompetence = competenceList.iterator(); itCompetence.hasNext();) {
 					final Competence co = (Competence)itCompetence.next();
-					if (co.getId() == Integer.parseInt(competenceTableArray[i])) {
+					if (co.getId() == Integer.parseInt(paramCompetenceTableArray[i])) {
 						competenceTable.add(co);
 						if (competenceHidden == null) {
 							competenceHidden = Integer.toString(co.getId());
@@ -345,20 +390,26 @@ public class AddStaffMemberController extends Controller {
 			}
 			
 		}
-		params.put(MODEL_COMPETENCE_HIDDEN_NAME, competenceHidden);
-		params.put(MODEL_COMPETENCE_TABLE_NAME, competenceTable);
-		if (competence != null || (paramCompetenceId != null && paramCompetenceId.equals(PARAM_COMPETENCE_NO_VALUE))) {
-			params.put(MODEL_COMPETENCE_NAME, competence);
+		if (competenceHidden != null) {
+			params.put(MODEL_COMPETENCE_HIDDEN_NAME, competenceHidden);
 		} else {
-			params.put(MODEL_COMPETENCE_NAME, defaultCompetence);
+			params.put(MODEL_COMPETENCE_HIDDEN_NAME, defaultCompetenceHidden);
+		}
+		if (competenceTable.size() > 0) {
+			params.put(MODEL_COMPETENCE_TABLE_NAME, competenceTable);
+		} else {
+			params.put(MODEL_COMPETENCE_TABLE_NAME, defaultCompetenceTable);
 		}
 		
 		// Username
+		final String defaultUsername = null;
 		String username = null;
-		if (paramUsername != null) {
-			username = paramUsername;
+		username = paramUsername;
+		if (username != null) {
+			params.put(MODEL_USERNAME_NAME, username);
+		} else {
+			params.put(MODEL_USERNAME_NAME, defaultUsername);
 		}
-		params.put(MODEL_USERNAME_NAME, username);
 		
 		// Password
 		String password = null;
@@ -400,23 +451,197 @@ public class AddStaffMemberController extends Controller {
 		final Map<String, String> errors = new HashMap<String, String>();
 		boolean valid = true;
 		if (action != null && action.equals(ACTION_ADD_STAFF_MEMBER)) {
-	        /*final String contentType = image.getContentType();
-	        final String fileName = image.getName();
-	        long sizeInBytes = image.getSize();
-	        if (sizeInBytes > Long.parseLong(fileUpload.getString("addStaffMember.image.maxsize"))) {
-	        	throw new IllegalArgumentException("Error: Uploaded image is too big.");
-	        }
-	        if (!Pattern.matches(fileUpload.getString("addStaffMember.image.contentType"), contentType)) {
-	        	throw new IllegalArgumentException("Error: Uploaded image has wrong content type.");
-	        }*/
 	        
-			valid = false;
+			// Validate personnel number
+			if (!Pattern.matches(validation.getString("staffMember.staffMemberId.pattern"), personnelNumber)) {
+				valid = false;
+				errors.put("personnelNumber", "Die angegebene Nummer hat nicht das richtige Format.");
+			}
 			
-			if (valid) {
-				// Write image to disk
-		        final File uploadedFile = new File(fileUpload.getString("addStaffMember.image.absolute.dir") + "/" + userSession.getLoginInformation().getUserInformation().getStaffMemberId());
-		        image.write(uploadedFile);
-		        image.delete();
+			// Validate firstname
+			if (firstName == null || firstName.trim().equals("")) {
+				valid = false;
+				errors.put("firstNameMissing", "Vorname ist ein Pflichtfeld.");
+			}
+			if (firstName.length() > 30) {
+				valid = false;
+				errors.put("firstNameTooLong", "Vorname ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
+			}
+			
+			// Validate lastname
+			if (lastName == null || lastName.trim().equals("")) {
+				valid = false;
+				errors.put("lastNameMissing", "Nachname ist ein Pflichtfeld.");
+			}			
+			if (lastName.length() > 30) {
+				valid = false;
+				errors.put("lastNameTooLong", "Nachname ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
+			}
+			
+			// Validate birthdate
+			final Calendar rangeStartCalendar = Calendar.getInstance();
+			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - Integer.parseInt(validation.getString("staffMember.maxAge")));
+			
+			final Calendar rangeEndCalendar = Calendar.getInstance();
+			rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR));
+			
+			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+			Date birthdate = null;
+			try {
+				birthdate = df.parse(birthdateString);
+			} catch (ParseException e) {
+				valid = false;
+				errors.put("birthdate", "Das Datumsformat von Geburtsdatum ist nicht korrekt.");
+			}
+			
+			if (birthdate.getTime() < rangeStartCalendar.getTimeInMillis()) {
+				valid = false;
+				errors.put("birthdateTooSmall", "Der Wert von Geburtsdatum ist zu klein.");
+			}
+			
+			if (birthdate.getTime() > rangeEndCalendar.getTimeInMillis()) {
+				valid = false;
+				errors.put("birthdateTooBig", "Der Wert von Geburtsdatum ist zu groß.");
+			}
+						
+			// Validate sex
+			if (sex == null) {
+				valid = false;
+				errors.put("sex", "Geschlecht ist ein Pflichtfeld.");
+			}
+						
+			// Validate photo
+			final String contentType = photo.getContentType();
+	        final String fileName = photo.getName();
+	        long sizeInBytes = photo.getSize();
+	        if (sizeInBytes > Long.parseLong(fileUpload.getString("addStaffMember.photo.maxsize"))) {
+	        	valid = false;
+	        	errors.put("photoTooBig", "Die angegebene Datei ist zu groß.");
+	        }
+	        if (!Pattern.matches(fileUpload.getString("addStaffMember.photo.contentType"), contentType)) {
+	        	valid = false;
+	        	errors.put("photoWrongFormat", "Die angegebene Datei hat das falsche Format.");
+	        }
+	        
+			// Validate location
+	        if (location == null) {
+	        	valid = false;
+	        	errors.put("location", "Dienststelle ist ein Pflichtfeld.");
+	        }
+			
+			// Validate competences
+	        boolean volunteerFound = false;
+	        for (final Iterator<Competence> itCT = competenceTable.iterator(); itCT.hasNext();) {
+	        	final Competence co = itCT.next();
+	        	if (co.getCompetenceName().equals(Competence.COMPETENCE_NAME_VOLUNTEER)) {
+	        		volunteerFound = true;
+	        	}
+	        }
+	        if (!volunteerFound) {
+	        	valid = false;
+	        	errors.put("competences", "Kompetenz Volontär ist verpflichtend.");
+	        }
+	        
+	        // Validate username
+	        if (username == null) {
+	        	valid = false;
+	        	errors.put("usernameMissing", "Benutzername ist ein Pflichtfeld.");
+	        }
+	        if (username.length() > 30) {
+	        	valid = false;
+	        	errors.put("usernameTooLong", "Benutzername ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
+	        }
+	        
+	        // Validate password
+	        if (password == null) {
+	        	valid = false;
+	        	errors.put("passwordMissing", "Passwort ist ein Pflichtfeld");
+	        }
+	        if (password.length() > 255) {
+	        	valid = false;
+	        	errors.put("passwordTooLong", "Passwort ist zu lang. Es sind maximal 255 Zeichen erlaubt.");
+	        }
+	        
+	        // Validate repeated password
+	        if (repeatedPassword == null) {
+	        	valid = false;
+	        	errors.put("repeatedPasswordMissing", "Passwort wiederholen ist ein Pflichtfeld.");
+	        }
+	        if (repeatedPassword.length() > 255) {
+	        	valid = false;
+	        	errors.put("repeatedPassword", "Passwort wiederholen ist zu lang. Es sind maximal 255 Zeichen erlaubt.");
+	        }
+	        
+	        // Validate passwords
+	        if (password.equals(repeatedPassword)) {
+	        	valid = false;
+	        	errors.put("passwordsNotEqual", "Die zwei eingegebenen Passwörter stimmen nicht übereich.");
+	        }
+	        
+	        // Validate authorization
+	        if (staffMemberAuthorization == null) {
+	        	valid = false;
+	        	errors.put("authorization", "Authorisierung ist ein Pflichtfeld.");
+	        }
+	        
+			if (valid) {				
+				// Create Staff Member
+				final Login login = new Login();
+				final StaffMember staffMember = new StaffMember();
+				
+				staffMember.setStaffMemberId(Integer.parseInt(personnelNumber));
+				
+				staffMember.setFirstName(firstName);
+				
+				staffMember.setLastName(lastName);
+				
+				final SimpleDateFormat dfServer = new SimpleDateFormat("dd-MM-yyyy");
+				staffMember.setBirthday(dfServer.format(birthdate));
+				
+				if (sex.equals(StaffMember.STAFF_MALE)) {
+					staffMember.setMale(true);
+				} else if (sex.equals(StaffMember.STAFF_FEMALE)) {
+					staffMember.setMale(false);
+				}
+				
+				staffMember.setPhonelist(mobilePhoneTable);
+				
+				// Write photo to disk
+		        final File uploadedFile = new File(fileUpload.getString("addStaffMember.photo.absolute.dir") + "/" + userSession.getLoginInformation().getUserInformation().getStaffMemberId());
+		        photo.write(uploadedFile);
+		        photo.delete();
+		        
+		        staffMember.setPrimaryLocation(location);
+		        
+		        staffMember.setCompetenceList(competenceTable);
+		        
+		        staffMember.setUserName(username);
+		        
+				connection.sendAddRequest(StaffMember.ID, staffMember);
+				if(!connection.getContentType().equalsIgnoreCase(StaffMember.ID)) {
+					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+				}
+		        
+				// Create login for staff member
+				
+		        login.setUserInformation(staffMember);
+		        
+		        login.setUsername(username);
+		        
+		        login.setPassword(password);
+		        
+		        login.setIslocked(lockUser);
+		        
+		        login.setAuthorization(staffMemberAuthorization);
+		        
+				connection.sendAddRequest(Login.ID, login);
+				if(!connection.getContentType().equalsIgnoreCase(Login.ID)) {
+					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+				}
+				
+				userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(staffMember);
+				
+				params.put("addedCount", 1);
 			}
 		}
 		

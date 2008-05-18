@@ -282,11 +282,16 @@ public class EditRosterEntryController extends Controller {
 		params.put(MODEL_STANDBY_NAME, standby);
 		
 		// Comment
-		String comment = rosterEntry.getRosterNotes();
+		final String defaultComment = rosterEntry.getRosterNotes();
+		String comment = null;
 		if (request.getParameter(PARAM_COMMENT_NAME)!= null) {
 			comment = request.getParameter(PARAM_COMMENT_NAME);
 		}
-		params.put(MODEL_COMMENT_NAME, comment);
+		if (comment != null) {
+			params.put(MODEL_COMMENT_NAME, comment);
+		} else {
+			params.put(MODEL_COMMENT_NAME, defaultComment);
+		}
 		
 		// Create Calendar for DatePicker
 		final Calendar calendar = Calendar.getInstance();
@@ -409,7 +414,7 @@ public class EditRosterEntryController extends Controller {
 					plannedStartOfWork = df.parse(from);
 				}
 				catch (ParseException e) {
-					errors.put("plannedStartOfWorkError", "Das Datumsformat von Dienst von ist nicht korreckt.");
+					errors.put("plannedStartOfWorkError", "Das Datumsformat von Dienst von ist nicht korrekt.");
 					valid = false;
 				}
 			}
@@ -422,7 +427,7 @@ public class EditRosterEntryController extends Controller {
 				try {
 					plannedEndOfWork = df.parse(to);
 				} catch (ParseException e) {	
-					errors.put("plannedEndOfWorkError", "Das Datumsformat von Dienst bis ist nicht korreckt.");
+					errors.put("plannedEndOfWorkError", "Das Datumsformat von Dienst bis ist nicht korrekt.");
 					valid = false;
 				}
 			}

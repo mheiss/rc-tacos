@@ -168,7 +168,7 @@ public class AddRosterEntryController extends Controller {
 		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
-		final Location defaultLocation = userSession.getFormDefaultValues().getDefaultLocation();
+		final Location defaultLocation = userSession.getDefaultFormValues().getRosterDefaultLocation();
 		Location location = null;
 		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);
@@ -232,11 +232,16 @@ public class AddRosterEntryController extends Controller {
 		params.put(MODEL_STANDBY_NAME, standby);
 		
 		// Comment
+		final String defaultComment = null;
 		String comment = null;
-		if (request.getParameter(PARAM_COMMENT_NAME) != null) {
+		if (request.getParameter(PARAM_COMMENT_NAME)!= null) {
 			comment = request.getParameter(PARAM_COMMENT_NAME);
 		}
-		params.put(MODEL_COMMENT_NAME, comment);
+		if (comment != null) {
+			params.put(MODEL_COMMENT_NAME, comment);
+		} else {
+			params.put(MODEL_COMMENT_NAME, defaultComment);
+		}
 		
 		// Create Calendar for DatePicker
 		final Calendar calendar = Calendar.getInstance();
@@ -253,7 +258,7 @@ public class AddRosterEntryController extends Controller {
 		String timeFromHoursString = null;
 		String timeFromMinutesString = null;
 		
-		final String defaultDateFromString = sdfDate.format(userSession.getFormDefaultValues().getDefaultDate());
+		final String defaultDateFromString = sdfDate.format(userSession.getDefaultFormValues().getRosterDefaultDate());
 		final String defaultTimeFromHoursString = "00";
 		final String defaultTimeFromMinutesString = "00";
 		
@@ -288,7 +293,7 @@ public class AddRosterEntryController extends Controller {
 		String timeToHoursString = null;
 		String timeToMinutesString = null;
 		
-		final String defaultDateToString = sdfDate.format(userSession.getFormDefaultValues().getDefaultDate());
+		final String defaultDateToString = sdfDate.format(userSession.getDefaultFormValues().getRosterDefaultDate());
 		final String defaultTimeToHoursString = "00";
 		final String defaultTimeToMinutesString = "00";
 		
@@ -357,7 +362,7 @@ public class AddRosterEntryController extends Controller {
 					plannedStartOfWork = df.parse(from);
 				}
 				catch (ParseException e) {
-					errors.put("plannedStartOfWorkError", "Das Datumsformat von Dienst von ist nicht korreckt.");
+					errors.put("plannedStartOfWorkError", "Das Datumsformat von Dienst von ist nicht korrekt.");
 					valid = false;
 				}
 			}
@@ -370,7 +375,7 @@ public class AddRosterEntryController extends Controller {
 				try {
 					plannedEndOfWork = df.parse(to);
 				} catch (ParseException e) {	
-					errors.put("plannedEndOfWorkError", "Das Datumsformat von Dienst bis ist nicht korreckt.");
+					errors.put("plannedEndOfWorkError", "Das Datumsformat von Dienst bis ist nicht korrekt.");
 					valid = false;
 				}
 			}
@@ -406,24 +411,35 @@ public class AddRosterEntryController extends Controller {
 			
 			if (valid) {
 				final RosterEntry rosterEntry = new RosterEntry();
+				
 				rosterEntry.setStation(location);
+				
 				rosterEntry.setStaffMember(staffMember);
+				
 				rosterEntry.setPlannedStartOfWork(plannedStartOfWork.getTime());
+				
 				rosterEntry.setPlannedEndOfWork(plannedEndOfWork.getTime());
+				
 				rosterEntry.setServicetype(serviceType);
+				
 				rosterEntry.setJob(job);
+				
 				rosterEntry.setCreatedByUsername(userSession.getUsername());
+				
 				if (comment != null && !comment.equals("")) {
 					rosterEntry.setRosterNotes(comment);
 				}
+				
 				rosterEntry.setStandby(standby);
+				
 				connection.sendAddRequest(RosterEntry.ID, rosterEntry);
 				if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}
+				
 				params.put("addedCount", 1);
-				userSession.getFormDefaultValues().setDefaultLocation(location);
-				userSession.getFormDefaultValues().setDefaultDate(plannedStartOfWork);
+				userSession.getDefaultFormValues().setRosterDefaultLocation(location);
+				userSession.getDefaultFormValues().setRosterDefaultDate(plannedStartOfWork);
 			}
 		}
 		params.put("errors", errors);
