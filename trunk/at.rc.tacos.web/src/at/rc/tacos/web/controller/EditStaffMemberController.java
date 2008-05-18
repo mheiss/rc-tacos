@@ -39,6 +39,10 @@ import at.rc.tacos.web.utils.ValidationPatterns;
  * @version 1.0
  */
 public class EditStaffMemberController extends Controller {
+
+	private static final String PARAM_STAFF_MEMBER_NAME = "staffMemberId";
+	private static final String MODEL_STAFF_MEMBER_NAME = "staffMember";
+	private static final String MODEL_STAFF_MEMBER_LIST_NAME = "staffMemberList";
 	
 	private static final String ACTION_NAME = "action";
 	private static final String ACTION_ADD_STAFF_MEMBER = "addStaffMember";
@@ -121,7 +125,8 @@ public class EditStaffMemberController extends Controller {
 			throw new IllegalArgumentException("Error: User has no permission for functionality.");
 		}
 		
-		// Parse Parameters	
+		// Parse Parameters
+		String paramStaffMemberId = null;
 		String paramAction = null;
 		String paramPersonnelNumber = null;
 		String paramFirstName = null;
@@ -157,7 +162,9 @@ public class EditStaffMemberController extends Controller {
 			    		params.put(MODEL_PHOTO_PATH_NAME, item.getName());
 			    	}
 			    } else {
-			    	if (item.getFieldName().equals(ACTION_NAME)) {
+			    	if (item.getFieldName().equals(PARAM_STAFF_MEMBER_NAME)) {
+			    		paramStaffMemberId = item.getString();	    		
+			    	} else if (item.getFieldName().equals(ACTION_NAME)) {
 			    		paramAction = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_PERSONNEL_NUMBER_NAME)) {
 			    		paramPersonnelNumber = item.getString();
@@ -193,6 +200,30 @@ public class EditStaffMemberController extends Controller {
 			    }
 			}
 		}
+		
+		// Staff Member List
+		int staffMemberId = 0;
+		StaffMember staffMember = userSession.getDefaultFormValues().getStaffMemberDefaultStaffMember();
+		if (paramStaffMemberId != null && !paramStaffMemberId.equals("")) {
+			if (paramStaffMemberId.equalsIgnoreCase("noValue")) {
+				staffMember = null;
+			} else {
+				staffMemberId = Integer.parseInt(paramStaffMemberId);
+			}
+		}
+		final List<AbstractMessage> staffMemberList = connection.sendListingRequest(StaffMember.ID, null);
+		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		params.put(MODEL_STAFF_MEMBER_LIST_NAME, staffMemberList);
+		for (final Iterator<AbstractMessage> itStaffMemberList = staffMemberList.iterator(); itStaffMemberList.hasNext();) {
+			final StaffMember sm = (StaffMember)itStaffMemberList.next();
+			if (sm.getStaffMemberId() == staffMemberId) {
+				staffMember = sm;
+			}
+		}
+		userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(staffMember);
+		params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
 		
 		// Personnel Number
 		final String defaultPersonnelNumber = null;
@@ -624,7 +655,6 @@ public class EditStaffMemberController extends Controller {
 			if (valid) {				
 				// Create Staff Member
 				final Login login = new Login();
-				final StaffMember staffMember = new StaffMember();
 				
 				// Create login for staff member
 		        
