@@ -14,7 +14,19 @@
 				<input name="personnelNumber" type="text" size="30" maxlength="8" value="${params.personnelNumber}" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.personnelNumber}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.personnelNumberMissing}">
+							${params.errors.personnelNumberMissing}
+						</c:when>
+						<c:when test="${not empty params.errors.personnelNumber}">
+							${params.errors.personnelNumber}
+						</c:when>
+						<c:when test="${not empty params.errors.personnelNumberExists}">
+							${params.errors.personnelNumberExists}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -23,7 +35,16 @@
 				<input name="firstName" type="text" size="30" maxlength="30" value="${params.firstName}" />
 			</td>
 			<td>
-				<span class="errorText">${not empty params.errors.firstNameMissing ? params.errors.firstNameMissing + ' ' : ''}${not empty params.errors.firstNameTooLong ? params.errors.firstNameTooLong : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.firstNameMissing}">
+							${params.errors.firstNameMissing}
+						</c:when>
+						<c:when test="${not empty params.errors.firstNameTooLong}">
+							${params.errors.firstNameTooLong}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -32,7 +53,16 @@
 				<input name="lastName" type="text" size="30" maxlength="30" value="${params.lastName}" />
 			</td>
 			<td>
-				<span class="errorText">${not empty params.errors.lastNameMissing ? params.errors.lastNameMissing + ' ' : ''}${not empty params.errors.lastNameTooLong ? params.errors.lastNameTooLong : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.lastNameMissing}">
+							${params.errors.lastNameMissing}
+						</c:when>
+						<c:when test="${not empty params.errors.lastNameTooLong}">
+							${params.errors.lastNameTooLong}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -43,7 +73,19 @@
 				<img src="${url}" border="0" id="birthDateCalendarTrigger" style="cursor:pointer" />
 			</td>
 			<td>
-				<span class="errorText">${not empty params.errors.birthdate ? params.errors.birthdate + ' ' : ''}${not empty params.errors.birthdateTooSmall ? params.errors.birthdateTooSmall + ' ': ''}${not empty params.errors.birthdateTooBig ? params.errors.birthdateTooBig : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.birthdate}">
+							${params.errors.birthdate}
+						</c:when>
+						<c:when test="${not empty params.errors.birthdateTooSmall}">
+							${params.errors.birthdateTooSmall}
+						</c:when>
+						<c:when test="${not empty params.errors.birthdateTooBig}">
+							${params.errors.birthdateTooBig}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -98,12 +140,21 @@
 			<td />
 		</tr>
 		<tr>
-			<td>Photo:</td>
+			<td>Photo: ${params.photo}</td>
 			<td>
-				<input name="image" type="file" />
+				<input name="photo" type="file" />
 			</td>
 			<td>
-				<span class="errorText">${not empty params.errors.photoTooBig ? params.errors.photoTooBig + ' ' : ''}${not empty params.errors.photoTooSmall ? params.errors.photoTooSmall : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.photoWrongFormat}">
+							${params.errors.photoWrongFormat}
+						</c:when>
+						<c:when test="${not empty params.errors.photoTooBig}">
+							${params.errors.photoTooBig}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr><td colspan="2">Ausbildung&nbsp;und&nbsp;Dienststelle:</td><td /></tr>
@@ -163,7 +214,19 @@
 				<input name="username" type="text" size="30" maxlength="30" value="${params.username}" />
 			</td>
 			<td>
-				<span class="errorText">${not empty params.errors.usernameMissing ? params.errors.usernameMissing + ' ' : ''}${not empty params.errors.usernameTooLong ? params.errors.usernameTooLong : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.usernameMissing}">
+							${params.errors.usernameMissing}
+						</c:when>
+						<c:when test="${not empty params.errors.usernameTooLong}">
+							${params.errors.usernameTooLong}
+						</c:when>
+						<c:when test="${not empty params.errors.usernameExists}">
+							${params.errors.usernameExists}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -172,7 +235,16 @@
 				<input name="password" type="password" size="30" maxlength="255" value="${params.password}" />
 			</td>
 			<td>
-				<span class="errorText">${not empty params.errors.passwordMissing ? params.errors.passwordMissing + ' ' : ''}${not empty params.errors.passwordTooLong ? params.errors.passwordTooLong : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.passwordMissing}">
+							${params.errors.passwordMissing}
+						</c:when>
+						<c:when test="${not empty params.errors.passwordTooLong}">
+							${params.errors.passwordTooLong}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -181,7 +253,19 @@
 				<input name="repeatedPassword" type="password" size="30" maxlength="255" value="${params.repeatedPassword}" />
 			</td>
 			<td>
-				<span class="errorText">${not empty params.errors.repeatedPasswordMissing ? params.errors.repeatedPasswordMissing + ' ' : ''}${not empty params.errors.repeatedPasswordTooLong ? params.errors.repeatedPasswordTooLong + ' ' : ''}${not empty params.errors.passwordsNotEqual ? params.errors.passwordsNotEqual : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.repeatedPasswordMissing}">
+							${params.errors.repeatedPasswordMissing}
+						</c:when>
+						<c:when test="${not empty params.errors.repeatedPasswordTooLong}">
+							${params.errors.repeatedPasswordTooLong}
+						</c:when>
+						<c:when test="${not empty params.errors.passwordsNotEqual}">
+							${params.errors.passwordsNotEqual}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>
