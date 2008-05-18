@@ -56,6 +56,7 @@ import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.RemoveTransportFromMultiTransportList;
 import at.rc.tacos.client.modelManager.AddressManager;
 import at.rc.tacos.client.modelManager.DiseaseManager;
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.AssignVehicleContentProvider;
@@ -650,7 +651,17 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		boolean result = MessageDialog.openConfirm(getShell(), "Abbrechen", "Wollen Sie wirklich abbrechen?"); 
 		//check the result
 		if(result)
+		{
+			LockManager.removeLock(Transport.ID, transport.getTransportId());
 			getShell().close();
+		}
+		
+//		//cleanup the listeners
+//		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
+//		ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
+//		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
+//		ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
+//		
 	}
 
 	/**
@@ -2298,7 +2309,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				|| "VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
 				|| "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName()))
 		{
-			viewerAssign.refresh();
+//			viewerAssign.refresh(); //TODO: refresh the assignViewer!!!!!!!!!1
 		}
 	}
 
@@ -2870,6 +2881,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			getShell().close();
 		finalMultiTransportKlick = true;
 
+		LockManager.removeLock(Transport.ID, transport.getTransportId());
 		return true;
 	}
 
