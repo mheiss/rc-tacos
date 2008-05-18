@@ -105,7 +105,22 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${not empty params.errors.plannedStartOfWorkMissing ? params.errors.plannedStartOfWorkMissing + ' ' : ''}${not empty params.errors.plannedStartOfWorkError ? params.errors.plannedStartOfWorkError + ' ' : ''}${not empty params.errors.plannedStartOfWorkTooSmall ? params.errors.plannedStartOfWorkTooSmall + ' ' : ''}${not empty params.errors.plannedStartOfWorkTooBig ? params.errors.plannedStartOfWorkTooBig + ' ' : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.plannedStartOfWorkMissing}">
+							${params.errors.plannedStartOfWorkMissing}
+						</c:when>
+						<c:when test="${not empty params.errors.plannedStartOfWorkError}">
+							${params.errors.plannedStartOfWorkError}
+						</c:when>
+						<c:when test="${not empty params.errors.plannedStartOfWorkTooSmall}">
+							${params.errors.plannedStartOfWorkTooSmall}
+						</c:when>
+						<c:when test="${not empty params.errors.plannedStartOfWorkTooBig}">
+							${params.errors.plannedStartOfWorkTooBig}
+						</c:when>
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -134,7 +149,25 @@
 				</select>
 			</td>
 			<td>
-			<span class="errorText">${not empty params.errors.plannedEndOfWorkMissing ? params.errors.plannedEndOfWorkMissing + ' ' : ''}${not empty params.errors.plannedEndOfWorkError ? params.errors.plannedEndOfWorkError + ' ' : ''}${not empty params.errors.plannedEndOfWorkTooSmall ? params.errors.plannedEndOfWorkTooSmall + ' ' : ''}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig + ' ' : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
+				<span class="errorText">
+					<c:choose>
+						<c:when test="${not empty params.errors.plannedEndOfWorkMissing}">
+							${params.errors.plannedEndOfWorkMissing}
+						</c:when>
+						<c:when test="${not empty params.errors.plannedEndOfWorkError}">
+							${params.errors.plannedEndOfWorkError}
+						</c:when>
+						<c:when test="${not empty params.errors.plannedEndOfWorkTooSmall}">
+							${params.errors.plannedEndOfWorkTooSmall}
+						</c:when>
+						<c:when test="${not empty params.errors.plannedEndOfWorkTooBig}">
+							${params.errors.plannedEndOfWorkTooBig}
+						</c:when>
+						<c:when test="${not empty params.errors.period}">
+							${params.errors.period}
+						</c:when>	
+					</c:choose>
+				</span>
 			</td>
 		</tr>
 		<tr>

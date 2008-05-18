@@ -22,11 +22,13 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
 
@@ -68,6 +70,8 @@ public class AddStaffMemberController extends Controller {
 	private static final String MODEL_MOBILE_PHONE_HIDDEN_NAME = "mobilePhoneIds";
 	private static final String MODEL_MOBILE_PHONE_LIST_NAME = "mobilePhoneList";
 	private static final String MODEL_MOBILE_PHONE_TABLE_NAME = "mobilePhoneTable";
+	
+	private static final String MODEL_PHOTO_PATH_NAME = "photo";
 	
 	private static final String PARAM_LOCATION_NAME = "locationId";
 	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
@@ -146,7 +150,10 @@ public class AddStaffMemberController extends Controller {
 			while (iter.hasNext()) {
 			    final FileItem item = (FileItem) iter.next();
 			    if (!item.isFormField()) {
-			        photo = item;
+			    	if (item.getSize() > 0) {
+			    		photo = item;
+			    		params.put(MODEL_PHOTO_PATH_NAME, item.getName());
+			    	}
 			    } else {
 			    	if (item.getFieldName().equals(ACTION_NAME)) {
 			    		paramAction = item.getString();
@@ -453,17 +460,31 @@ public class AddStaffMemberController extends Controller {
 		if (action != null && action.equals(ACTION_ADD_STAFF_MEMBER)) {
 	        
 			// Validate personnel number
-			if (!Pattern.matches(validation.getString("staffMember.staffMemberId.pattern"), personnelNumber)) {
+			if (personnelNumber == null || personnelNumber.trim().equals("")) {
+				valid = false;
+				errors.put("personnelNumberMissing", "Personalnummer ist ein Pflichtfeld.");
+			} else if (!Pattern.matches(validation.getString("staffMember.staffMemberId.pattern"), personnelNumber)) {
 				valid = false;
 				errors.put("personnelNumber", "Die angegebene Nummer hat nicht das richtige Format.");
+			} else {		
+				// Check double staff member Ids
+				final QueryFilter staffMemberIdFilter = new QueryFilter();
+				staffMemberIdFilter.add(IFilterTypes.ID_FILTER, personnelNumber);
+				final List<AbstractMessage> doubleStaffMemberIdList = connection.sendListingRequest(StaffMember.ID, staffMemberIdFilter);
+				if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
+					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+				}
+				if (doubleStaffMemberIdList.size() > 0) {
+					valid = false;
+					errors.put("personnelNumberExists", "Die angegebene Personalnummer existiert bereits.");
+				}
 			}
 			
 			// Validate firstname
 			if (firstName == null || firstName.trim().equals("")) {
 				valid = false;
 				errors.put("firstNameMissing", "Vorname ist ein Pflichtfeld.");
-			}
-			if (firstName.length() > 30) {
+			} else if (firstName.length() > 30) {
 				valid = false;
 				errors.put("firstNameTooLong", "Vorname ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
 			}
@@ -472,36 +493,40 @@ public class AddStaffMemberController extends Controller {
 			if (lastName == null || lastName.trim().equals("")) {
 				valid = false;
 				errors.put("lastNameMissing", "Nachname ist ein Pflichtfeld.");
-			}			
-			if (lastName.length() > 30) {
+			} else if (lastName.length() > 30) {
 				valid = false;
 				errors.put("lastNameTooLong", "Nachname ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
 			}
 			
 			// Validate birthdate
+			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+			Date birthdate = null;
+			
 			final Calendar rangeStartCalendar = Calendar.getInstance();
 			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - Integer.parseInt(validation.getString("staffMember.maxAge")));
 			
 			final Calendar rangeEndCalendar = Calendar.getInstance();
 			rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR));
 			
-			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-			Date birthdate = null;
-			try {
-				birthdate = df.parse(birthdateString);
-			} catch (ParseException e) {
-				valid = false;
-				errors.put("birthdate", "Das Datumsformat von Geburtsdatum ist nicht korrekt.");
-			}
-			
-			if (birthdate.getTime() < rangeStartCalendar.getTimeInMillis()) {
-				valid = false;
-				errors.put("birthdateTooSmall", "Der Wert von Geburtsdatum ist zu klein.");
-			}
-			
-			if (birthdate.getTime() > rangeEndCalendar.getTimeInMillis()) {
-				valid = false;
-				errors.put("birthdateTooBig", "Der Wert von Geburtsdatum ist zu groß.");
+			if (birthdateString != null && !birthdateString.trim().equals("")) {
+				try {
+					birthdate = df.parse(birthdateString);
+				} catch (ParseException e) {
+					valid = false;
+					errors.put("birthdate", "Das Datumsformat von Geburtsdatum ist nicht korrekt.");
+				}
+				
+				if (birthdate != null) {
+					if (birthdate.getTime() < rangeStartCalendar.getTimeInMillis()) {
+						valid = false;
+						errors.put("birthdateTooSmall", "Der Wert von Geburtsdatum ist zu klein.");
+					}
+					
+					if (birthdate.getTime() > rangeEndCalendar.getTimeInMillis()) {
+						valid = false;
+						errors.put("birthdateTooBig", "Der Wert von Geburtsdatum ist zu groß.");
+					}
+				}
 			}
 						
 			// Validate sex
@@ -511,17 +536,18 @@ public class AddStaffMemberController extends Controller {
 			}
 						
 			// Validate photo
-			final String contentType = photo.getContentType();
-	        final String fileName = photo.getName();
-	        long sizeInBytes = photo.getSize();
-	        if (sizeInBytes > Long.parseLong(fileUpload.getString("addStaffMember.photo.maxsize"))) {
-	        	valid = false;
-	        	errors.put("photoTooBig", "Die angegebene Datei ist zu groß.");
-	        }
-	        if (!Pattern.matches(fileUpload.getString("addStaffMember.photo.contentType"), contentType)) {
-	        	valid = false;
-	        	errors.put("photoWrongFormat", "Die angegebene Datei hat das falsche Format.");
-	        }
+			if (photo != null) {
+				final String contentType = photo.getContentType();
+		        final String fileName = photo.getName();
+		        long sizeInBytes = photo.getSize();
+		        if (sizeInBytes > Long.parseLong(fileUpload.getString("addStaffMember.photo.maxsize"))) {
+		        	valid = false;
+		        	errors.put("photoTooBig", "Die angegebene Datei ist zu groß.");
+		        } else if (!Pattern.matches(fileUpload.getString("addStaffMember.photo.contentType"), contentType)) {
+		        	valid = false;
+		        	errors.put("photoWrongFormat", "Die angegebene Datei hat das falsche Format.");
+		        }
+			}
 	        
 			// Validate location
 	        if (location == null) {
@@ -543,37 +569,46 @@ public class AddStaffMemberController extends Controller {
 	        }
 	        
 	        // Validate username
-	        if (username == null) {
+	        if (username == null || username.trim().equals("")) {
 	        	valid = false;
 	        	errors.put("usernameMissing", "Benutzername ist ein Pflichtfeld.");
-	        }
-	        if (username.length() > 30) {
+	        } else if (username.length() > 30) {
 	        	valid = false;
 	        	errors.put("usernameTooLong", "Benutzername ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
 	        }
 	        
+			// Check double username
+			final QueryFilter loginUsernameFilter = new QueryFilter();
+			loginUsernameFilter.add(IFilterTypes.USERNAME_FILTER, username);
+			final List<AbstractMessage> doubleUsername = connection.sendListingRequest(Login.ID, loginUsernameFilter);
+			if (!Login.ID.equalsIgnoreCase(connection.getContentType())) {
+				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+			}
+			if (doubleUsername.size() > 0) {
+				valid = false;
+				errors.put("usernameExists", "Der angegebene Benutzername existiert bereits.");
+			}
+	        
 	        // Validate password
-	        if (password == null) {
+	        if (password == null || password.trim().equals("")) {
 	        	valid = false;
 	        	errors.put("passwordMissing", "Passwort ist ein Pflichtfeld");
-	        }
-	        if (password.length() > 255) {
+	        } else if (password.length() > 255) {
 	        	valid = false;
 	        	errors.put("passwordTooLong", "Passwort ist zu lang. Es sind maximal 255 Zeichen erlaubt.");
 	        }
 	        
 	        // Validate repeated password
-	        if (repeatedPassword == null) {
+	        if (repeatedPassword == null || repeatedPassword.trim().equals("")) {
 	        	valid = false;
 	        	errors.put("repeatedPasswordMissing", "Passwort wiederholen ist ein Pflichtfeld.");
-	        }
-	        if (repeatedPassword.length() > 255) {
+	        } else if (repeatedPassword.length() > 255) {
 	        	valid = false;
-	        	errors.put("repeatedPassword", "Passwort wiederholen ist zu lang. Es sind maximal 255 Zeichen erlaubt.");
+	        	errors.put("repeatedPasswordTooLong", "Passwort wiederholen ist zu lang. Es sind maximal 255 Zeichen erlaubt.");
 	        }
 	        
 	        // Validate passwords
-	        if (password.equals(repeatedPassword)) {
+	        if (!password.equals(repeatedPassword)) {
 	        	valid = false;
 	        	errors.put("passwordsNotEqual", "Die zwei eingegebenen Passwörter stimmen nicht übereich.");
 	        }
@@ -589,14 +624,26 @@ public class AddStaffMemberController extends Controller {
 				final Login login = new Login();
 				final StaffMember staffMember = new StaffMember();
 				
+				// Create login for staff member
+		        
+		        login.setUsername(username);
+		        
+		        login.setPassword(password);
+		        
+		        login.setIslocked(lockUser);
+		        
+		        login.setAuthorization(staffMemberAuthorization);
+				
 				staffMember.setStaffMemberId(Integer.parseInt(personnelNumber));
 				
 				staffMember.setFirstName(firstName);
 				
 				staffMember.setLastName(lastName);
 				
-				final SimpleDateFormat dfServer = new SimpleDateFormat("dd-MM-yyyy");
-				staffMember.setBirthday(dfServer.format(birthdate));
+				if (birthdate != null) {
+					final SimpleDateFormat dfServer = new SimpleDateFormat("dd-MM-yyyy");
+					staffMember.setBirthday(dfServer.format(birthdate));
+				}
 				
 				if (sex.equals(StaffMember.STAFF_MALE)) {
 					staffMember.setMale(true);
@@ -607,9 +654,11 @@ public class AddStaffMemberController extends Controller {
 				staffMember.setPhonelist(mobilePhoneTable);
 				
 				// Write photo to disk
-		        final File uploadedFile = new File(fileUpload.getString("addStaffMember.photo.absolute.dir") + "/" + userSession.getLoginInformation().getUserInformation().getStaffMemberId());
-		        photo.write(uploadedFile);
-		        photo.delete();
+				if (photo != null) {
+			        final File uploadedFile = new File(fileUpload.getString("addStaffMember.photo.absolute.dir") + "/" + userSession.getLoginInformation().getUserInformation().getStaffMemberId());
+			        photo.write(uploadedFile);
+			        photo.delete();
+				}
 		        
 		        staffMember.setPrimaryLocation(location);
 		        
@@ -617,25 +666,15 @@ public class AddStaffMemberController extends Controller {
 		        
 		        staffMember.setUserName(username);
 		        
-				connection.sendAddRequest(StaffMember.ID, staffMember);
-				if(!connection.getContentType().equalsIgnoreCase(StaffMember.ID)) {
-					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-				}
-		        
-				// Create login for staff member
-				
 		        login.setUserInformation(staffMember);
-		        
-		        login.setUsername(username);
-		        
-		        login.setPassword(password);
-		        
-		        login.setIslocked(lockUser);
-		        
-		        login.setAuthorization(staffMemberAuthorization);
 		        
 				connection.sendAddRequest(Login.ID, login);
 				if(!connection.getContentType().equalsIgnoreCase(Login.ID)) {
+					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+				}
+		        
+				connection.sendAddRequest(StaffMember.ID, staffMember);
+				if(!connection.getContentType().equalsIgnoreCase(StaffMember.ID)) {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}
 				
