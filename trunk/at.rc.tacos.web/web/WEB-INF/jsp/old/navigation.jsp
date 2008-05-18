@@ -39,6 +39,11 @@ UserSession user = (UserSession)session.getAttribute("userSession");
 			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter anlegen</a>
 			</td>
 		</tr>
+		<c:url var="url" value="/Dispatcher/editStaffMember.do" />
+		<tr>
+			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter bearbeiten</a>
+			</td>
+		</tr>
 	</c:if>
 </table>
 
