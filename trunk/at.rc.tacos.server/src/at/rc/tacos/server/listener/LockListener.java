@@ -29,7 +29,7 @@ public class LockListener extends ServerListenerAdapter
 		{
 			int index = lockedList.indexOf(lock);
 			System.out.println("The lock is existing, editing is denied");
-			//check if the user is the same 
+			//set the username and return the message
 			Lock existingLock = lockedList.get(index);
 			lock.setLockedBy(existingLock.getLockedBy());
 		}
