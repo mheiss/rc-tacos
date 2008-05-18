@@ -59,6 +59,10 @@ public class LockManager extends PropertyManager
 			else
 				lockStatus = LOCK_DENIED;
 		}
+		
+		//check if the lock is allowed
+		if(!newLock.isHasLock())
+			return;
 
 		//process the lock
 		Display.getDefault().syncExec(new Runnable ()    
@@ -83,6 +87,7 @@ public class LockManager extends PropertyManager
 			int index = lockList.indexOf(updateLock);
 			lockList.set(index, updateLock);
 		}
+		
 		//inform the listeners
 		Display.getDefault().syncExec(new Runnable ()    
 		{

@@ -10,6 +10,7 @@ import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Job;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.Lock;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
@@ -89,6 +90,7 @@ public class ModelFactory
 		net.requestListing(StaffMember.ID, null);
 		net.requestListing(Transport.ID, dateFilter);
 		net.requestListing(DialysisPatient.ID, null);
+		net.requestListing(Lock.ID, null);
 	}
 
 	//GETTERS FOR THE MANAGER
