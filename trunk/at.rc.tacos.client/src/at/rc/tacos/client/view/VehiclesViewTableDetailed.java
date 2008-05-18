@@ -161,19 +161,19 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         
         final TableColumn columnPhone = new TableColumn(table, SWT.NONE);
         columnPhone.setToolTipText("Anderes als prim‰res Handy");
-        columnPhone.setWidth(15);
+        columnPhone.setWidth(18);
         
         final TableColumn columnStation = new TableColumn(table, SWT.NONE);
         columnStation.setToolTipText("Andere als prim‰res Ortsstelle");
-        columnStation.setWidth(15);
+        columnStation.setWidth(18);
         
         final TableColumn columnOutOfOrder = new TableColumn(table, SWT.NONE);
         columnOutOfOrder.setToolTipText("Fahrzeug ist auﬂer Dienst");
-        columnOutOfOrder.setWidth(15);
+        columnOutOfOrder.setWidth(18);
         
         final TableColumn columnNotes = new TableColumn(table, SWT.NONE);
         columnNotes.setToolTipText("Notizen zum Fahrzeug vorhanden");
-        columnNotes.setWidth(15);
+        columnNotes.setWidth(18);
         
         final TableColumn columnLastDestinationFree = new TableColumn(table, SWT.NONE);
         columnLastDestinationFree.setToolTipText("Zeigt den Standort der letzten Meldung \"Ziel frei\" (S6)an");
