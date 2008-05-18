@@ -45,7 +45,7 @@ public class RosterController extends Controller {
 		// Location List
 		final String paramLocationId = request.getParameter("locationId");
 		int locationId = 0;
-		Location location = userSession.getFormDefaultValues().getDefaultLocation();
+		Location location = userSession.getDefaultFormValues().getRosterDefaultLocation();
 		if (paramLocationId != null && !paramLocationId.equals("")) {
 			if (paramLocationId.equalsIgnoreCase("noValue")) {
 				location = null;
@@ -64,11 +64,11 @@ public class RosterController extends Controller {
 				location = l;
 			}
 		}
-		userSession.getFormDefaultValues().setDefaultLocation(location);
+		userSession.getDefaultFormValues().setRosterDefaultLocation(location);
 		params.put("location", location);
 		
 		// Get Date and create calendar for datepicker
-		Date date = userSession.getFormDefaultValues().getDefaultDate();	
+		Date date = userSession.getDefaultFormValues().getRosterDefaultDate();	
 		final Calendar calendar = Calendar.getInstance();
 		final int rangeStart = calendar.get(Calendar.YEAR) - 10;
 		final int rangeEnd = calendar.get(Calendar.YEAR) + 1;
@@ -100,7 +100,7 @@ public class RosterController extends Controller {
 				date = dateTemp;
 			}
 		}
-		userSession.getFormDefaultValues().setDefaultDate(date);
+		userSession.getDefaultFormValues().setRosterDefaultDate(date);
 		params.put("date", date);
 		
 		final String dateForServerString = formatDateForServer.format(date);

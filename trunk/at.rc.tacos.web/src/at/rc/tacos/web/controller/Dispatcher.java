@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import at.rc.tacos.web.session.FormDefaultValues;
+import at.rc.tacos.web.session.DefaultFormValues;
 import at.rc.tacos.web.session.UserSession;
 
 /**
@@ -31,6 +31,7 @@ public class Dispatcher extends HttpServlet
 	public static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.config.server";
 	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.config.net";
 	public static final String FILEUPLOAD_BUNDLE_PATH = "at.rc.tacos.web.config.fileupload";
+	public static final String VALIDATION_BUNDLE_PATH = "at.rc.tacos.web.validation.validation";
 
 
 	/**
@@ -99,8 +100,8 @@ public class Dispatcher extends HttpServlet
 		//Assert that there is valid user session
 		if (userSession == null) {
 			userSession = new UserSession();
-			final FormDefaultValues formDefaultValues = new FormDefaultValues();
-			userSession.setFormDefaultValues(formDefaultValues);
+			final DefaultFormValues defaultFormValues = new DefaultFormValues();
+			userSession.setDefaultFormValues(defaultFormValues);
 			session.setAttribute("userSession", userSession);
 		}
 		
@@ -114,15 +115,21 @@ public class Dispatcher extends HttpServlet
 		}
 		request.setAttribute("isInternal", userSession.isInternalSession());
 		
-		//Set default form values if not set
+		//Do some actions if user is logged in
 		if (userSession.getLoggedIn()) {
-			if (userSession.getFormDefaultValues().getDefaultDate() == null) {
+			// Set initial default form values for user
+			if (userSession.getDefaultFormValues().getRosterDefaultDate() == null) {
 				final Date rosterDefaultDate = new Date();
-				userSession.getFormDefaultValues().setDefaultDate(rosterDefaultDate);
+				userSession.getDefaultFormValues().setRosterDefaultDate(rosterDefaultDate);
 			}
-			if (userSession.getFormDefaultValues().getDefaultLocation() == null) {
-				userSession.getFormDefaultValues().setDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
+			if (userSession.getDefaultFormValues().getRosterDefaultLocation() == null) {
+				userSession.getDefaultFormValues().setRosterDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
 			}
+			if (userSession.getDefaultFormValues().getStaffMemberDefaultStaffMember() == null) {
+				userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(userSession.getLoginInformation().getUserInformation());
+			}
+			
+			//Set authorization to request
 			request.setAttribute("authorization", userSession.getLoginInformation().getAuthorization());
 		}
 		/*if (userSession.getLoggedIn()) {

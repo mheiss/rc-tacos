@@ -23,7 +23,7 @@ public class UserSession
 	private String username;
 	private WebClient connection;
 	private Login loginInfo;
-	private FormDefaultValues formDefaultValues;
+	private DefaultFormValues defaultFormValues;
 	private boolean internalSession;
 	private List<Competence> competenceList;
 	private List<Job> jobList;
@@ -257,12 +257,12 @@ public class UserSession
 		this.dayInfoList = dayInfoList;
 	}
 
-	public FormDefaultValues getFormDefaultValues() {
-		return formDefaultValues;
+	public DefaultFormValues getDefaultFormValues() {
+		return defaultFormValues;
 	}
 
-	public void setFormDefaultValues(FormDefaultValues formDefaultValues) {
-		this.formDefaultValues = formDefaultValues;
+	public void setDefaultFormValues(DefaultFormValues defaultFormValues) {
+		this.defaultFormValues = defaultFormValues;
 	}
 
 	public boolean isInternalSession() {

@@ -1,4 +1,10 @@
 <%@ include file="includes.jsp" %>
+<c:choose>
+	<c:when test="${params.addedCount gt 0}">
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;neuen&nbsp;Mitarbeiter&nbsp;angelegt</div>
+		<br />
+	</c:when>
+</c:choose>
 <form action="${url}" method="post" accept-charset="ISO-8859-1" enctype="multipart/form-data">
 	<table class="standardForm">
 		<tr><td colspan="2">Allgemeine&nbsp;Daten:</td><td /></tr>
@@ -17,7 +23,7 @@
 				<input name="firstName" type="text" size="30" maxlength="30" value="${params.firstName}" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.firstName}</span>
+				<span class="errorText">${not empty params.errors.firstNameMissing ? params.errors.firstNameMissing + ' ' : ''}${not empty params.errors.firstNameTooLong ? params.errors.firstNameTooLong : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -26,7 +32,7 @@
 				<input name="lastName" type="text" size="30" maxlength="30" value="${params.lastName}" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.firstName}</span>
+				<span class="errorText">${not empty params.errors.lastNameMissing ? params.errors.lastNameMissing + ' ' : ''}${not empty params.errors.lastNameTooLong ? params.errors.lastNameTooLong : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -37,7 +43,7 @@
 				<img src="${url}" border="0" id="birthDateCalendarTrigger" style="cursor:pointer" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.birthDate}</span>
+				<span class="errorText">${not empty params.errors.birthdate ? params.errors.birthdate + ' ' : ''}${not empty params.errors.birthdateTooSmall ? params.errors.birthdateTooSmall + ' ': ''}${not empty params.errors.birthdateTooBig ? params.errors.birthdateTooBig : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -89,9 +95,7 @@
 					</tbody>
 				</table>
 			</td>
-			<td>
-				<span class="errorText">${params.errors.mobilePhone}</span>
-			</td>
+			<td />
 		</tr>
 		<tr>
 			<td>Photo:</td>
@@ -99,7 +103,7 @@
 				<input name="image" type="file" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.photo}</span>
+				<span class="errorText">${not empty params.errors.photoTooBig ? params.errors.photoTooBig + ' ' : ''}${not empty params.errors.photoTooSmall ? params.errors.photoTooSmall : ''}</span>
 			</td>
 		</tr>
 		<tr><td colspan="2">Ausbildung&nbsp;und&nbsp;Dienststelle:</td><td /></tr>
@@ -149,7 +153,7 @@
 				</table>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.competence}</span>
+				<span class="errorText">${params.errors.competences}</span>
 			</td>
 		</tr>
 		<tr><td colspan="2">Daten&nbsp;zum&nbsp;Anmelden&nbsp;am&nbsp;System&nbsp;und&nbsp;Online-Dienstplan:</td><td /></tr>
@@ -159,7 +163,7 @@
 				<input name="username" type="text" size="30" maxlength="30" value="${params.username}" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.username}</span>
+				<span class="errorText">${not empty params.errors.usernameMissing ? params.errors.usernameMissing + ' ' : ''}${not empty params.errors.usernameTooLong ? params.errors.usernameTooLong : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -168,7 +172,7 @@
 				<input name="password" type="password" size="30" maxlength="255" value="${params.password}" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.password}</span>
+				<span class="errorText">${not empty params.errors.passwordMissing ? params.errors.passwordMissing + ' ' : ''}${not empty params.errors.passwordTooLong ? params.errors.passwordTooLong : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -177,7 +181,7 @@
 				<input name="repeatedPassword" type="password" size="30" maxlength="255" value="${params.repeatedPassword}" />
 			</td>
 			<td>
-				<span class="errorText">${params.errors.repeatedPassword}</span>
+				<span class="errorText">${not empty params.errors.repeatedPasswordMissing ? params.errors.repeatedPasswordMissing + ' ' : ''}${not empty params.errors.repeatedPasswordTooLong ? params.errors.repeatedPasswordTooLong + ' ' : ''}${not empty params.errors.passwordsNotEqual ? params.errors.passwordsNotEqual : ''}</span>
 			</td>
 		</tr>
 		<tr>

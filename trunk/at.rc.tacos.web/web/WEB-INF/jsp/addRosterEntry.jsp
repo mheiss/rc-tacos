@@ -107,7 +107,7 @@
 				</select>
 			</td>
 			<td>
-				<span class="errorText">${params.errors.plannedStartOfWorkMissing}${not empty params.errors.plannedStartOfWorkError ? params.errors.plannedStartOfWorkError : ''}${not empty params.errors.plannedStartOfWorkTooSmall ? params.errors.plannedStartOfWorkTooSmall : ''}${not empty params.errors.plannedStartOfWorkTooBig ? params.errors.plannedStartOfWorkTooBig : ''}</span>
+				<span class="errorText">${not empty params.errors.plannedStartOfWorkMissing ? params.errors.plannedStartOfWorkMissing + ' ' : ''}${not empty params.errors.plannedStartOfWorkError ? params.errors.plannedStartOfWorkError + ' ' : ''}${not empty params.errors.plannedStartOfWorkTooSmall ? params.errors.plannedStartOfWorkTooSmall + ' ' : ''}${not empty params.errors.plannedStartOfWorkTooBig ? params.errors.plannedStartOfWorkTooBig + ' ' : ''}</span>
 			</td>
 		</tr>
 		<tr>
@@ -136,7 +136,7 @@
 				</select>
 			</td>
 			<td>
-			<span class="errorText">${params.errors.plannedEndOfWorkMissing}${not empty params.errors.plannedEndOfWorkError ? params.errors.plannedEndOfWorkError : ''}${not empty params.errors.plannedEndOfWorkTooSmall ? params.errors.plannedEndOfWorkTooSmall : ''}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
+			<span class="errorText">${not empty params.errors.plannedEndOfWorkMissing ? params.errors.plannedEndOfWorkMissing + ' ' : ''}${not empty params.errors.plannedEndOfWorkError ? params.errors.plannedEndOfWorkError + ' ': ''}${not empty params.errors.plannedEndOfWorkTooSmall ? params.errors.plannedEndOfWorkTooSmall + ' ' : ''}${not empty params.errors.plannedEndOfWorkTooBig ? params.errors.plannedEndOfWorkTooBig + ' ' : ''}${not empty params.errors.period ? params.errors.period : ''}</span>
 			</td>
 		</tr>
 		<tr>
