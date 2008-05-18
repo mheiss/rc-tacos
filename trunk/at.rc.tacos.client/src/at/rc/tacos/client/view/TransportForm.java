@@ -84,6 +84,7 @@ import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
+import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -292,6 +293,15 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		getShell().pack(true);
 		setShellStyle(SWT.SYSTEM_MODAL);
 		return contents;
+	}
+	
+	
+	@Override
+	public boolean close()
+	{
+		//remove the lock from the object
+		LockManager.removeLock(Transport.ID, transport.getTransportId());
+		return super.close();
 	}
 
 	/**
