@@ -230,7 +230,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Passwort:<sup class="reqMark">*</sup></td>
+			<td>Passwort:</td>
 			<td>
 				<input name="password" type="password" size="30" maxlength="255" value="${params.password}" />
 			</td>
@@ -248,7 +248,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Passwort&nbsp;(wiederholen):<sup class="reqMark">*</sup></td>
+			<td>Passwort&nbsp;(wiederholen):</td>
 			<td>
 				<input name="repeatedPassword" type="password" size="30" maxlength="255" value="${params.repeatedPassword}" />
 			</td>
