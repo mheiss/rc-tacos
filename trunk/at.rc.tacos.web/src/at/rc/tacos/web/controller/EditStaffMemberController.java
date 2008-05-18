@@ -659,7 +659,6 @@ public class EditStaffMemberController extends Controller {
 				if (photo != null) {
 			        final File uploadedFile = new File(fileUpload.getString("addStaffMember.photo.absolute.dir") + "/" + userSession.getLoginInformation().getUserInformation().getStaffMemberId());
 			        photo.write(uploadedFile);
-			        photo.delete();
 				}
 		        
 		        staffMember.setPrimaryLocation(location);
@@ -686,6 +685,10 @@ public class EditStaffMemberController extends Controller {
 			}
 		}
 		
+		// Delete temporary path to image
+		if (photo != null) {
+			photo.delete();
+		}
 		
 		params.put("errors", errors);
 		return params;
