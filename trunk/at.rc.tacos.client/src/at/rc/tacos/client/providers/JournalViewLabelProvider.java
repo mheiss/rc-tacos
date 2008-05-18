@@ -9,9 +9,12 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
+import at.rc.tacos.client.modelManager.LockManager;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 
 public class JournalViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus
@@ -37,6 +40,9 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 	public static final int COLUMN_PARAMEDIC_I = 17;
 	public static final int COLUMN_PARAMEDIC_II = 18;
 	public static final int COLUMN_CALLER_NAME = 19;
+	
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) 
@@ -46,6 +52,10 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 		//determine the colum and return a image if needed
 		switch(columnIndex)
 		{
+			case COLUMN_LOCK:
+				if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+		    		return ImageFactory.getInstance().getRegisteredImage("resource.lock");
+		    	return null;
 			case COLUMN_TRANSPORT_FROM:
 				//return when we do not have the status destination free
 				if(!transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
