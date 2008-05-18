@@ -76,6 +76,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	public JournalView()
 	{
 		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -85,6 +86,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	public void dispose() 
 	{
 		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -154,7 +156,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 
 		final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(0);
+		lockColumn.setWidth(24);
 		lockColumn.setText("L");
 
 		final TableColumn realOSJournal = new TableColumn(table, SWT.NONE);
@@ -464,6 +466,12 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 			{
 				viewer.addFilter(searchFilter);
 			}	
+		}
+		
+		//listen to lock changes
+		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			viewer.refresh();
 		}
 	}
 }
