@@ -31,6 +31,7 @@ import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
+import at.rc.tacos.web.utils.ValidationPatterns;
 
 /**
  * Add Staff Member Controller
@@ -100,12 +101,13 @@ public class AddStaffMemberController extends Controller {
 	private static final String PARAM_AUTHORIZATION_NO_VALUE = "noValue";
 	private static final String MODEL_AUTHORIZATION_NAME = "authorization";
 	
+	private static final int STAFF_MEMBER_MAX_AGE = 100;
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
 			throws Exception {
 		final ResourceBundle fileUpload = ResourceBundle.getBundle(Dispatcher.FILEUPLOAD_BUNDLE_PATH);
-		final ResourceBundle validation = ResourceBundle.getBundle(Dispatcher.VALIDATION_BUNDLE_PATH);
 		
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -463,7 +465,7 @@ public class AddStaffMemberController extends Controller {
 			if (personnelNumber == null || personnelNumber.trim().equals("")) {
 				valid = false;
 				errors.put("personnelNumberMissing", "Personalnummer ist ein Pflichtfeld.");
-			} else if (!Pattern.matches(validation.getString("staffMember.staffMemberId.pattern"), personnelNumber)) {
+			} else if (!Pattern.matches(ValidationPatterns.STAFF_MEMBER_ID_VALIDATION_PATTERN, personnelNumber)) {
 				valid = false;
 				errors.put("personnelNumber", "Die angegebene Nummer hat nicht das richtige Format.");
 			} else {		
@@ -503,7 +505,7 @@ public class AddStaffMemberController extends Controller {
 			Date birthdate = null;
 			
 			final Calendar rangeStartCalendar = Calendar.getInstance();
-			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - Integer.parseInt(validation.getString("staffMember.maxAge")));
+			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - STAFF_MEMBER_MAX_AGE);
 			
 			final Calendar rangeEndCalendar = Calendar.getInstance();
 			rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR));

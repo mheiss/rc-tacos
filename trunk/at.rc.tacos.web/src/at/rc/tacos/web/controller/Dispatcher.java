@@ -31,7 +31,6 @@ public class Dispatcher extends HttpServlet
 	public static final String SERVER_BUNDLE_PATH = "at.rc.tacos.web.config.server";
 	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.config.net";
 	public static final String FILEUPLOAD_BUNDLE_PATH = "at.rc.tacos.web.config.fileupload";
-	public static final String VALIDATION_BUNDLE_PATH = "at.rc.tacos.web.validation.validation";
 
 
 	/**
