@@ -14,7 +14,6 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 
 public class JournalViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus
