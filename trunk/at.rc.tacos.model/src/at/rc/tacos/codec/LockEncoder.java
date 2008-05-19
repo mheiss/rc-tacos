@@ -30,7 +30,7 @@ public class LockEncoder implements MessageEncoder
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("lockedId");
-        writer.writeCharacters(String.valueOf(lock.getLockedId()));
+        writer.writeCharacters(lock.getLockedId());
         writer.writeEndElement();
         //write the elements and attributes
         writer.writeStartElement("lockedBy");

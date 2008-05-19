@@ -31,7 +31,7 @@ public class LockDecoder implements MessageDecoder
 				if("contentId".equalsIgnoreCase(startName))
 					lock.setContentId(reader.getElementText());
 				if("lockedId".equalsIgnoreCase(startName))
-					lock.setLockedId(Integer.valueOf(reader.getElementText()));
+					lock.setLockedId(reader.getElementText());
 				if("lockedBy".equalsIgnoreCase(startName))
 					lock.setLockedBy(reader.getElementText());
 				if("hasLock".equalsIgnoreCase(startName))

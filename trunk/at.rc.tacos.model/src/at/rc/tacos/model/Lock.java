@@ -13,7 +13,7 @@ public class Lock extends AbstractMessage
 	
 	//properties
 	private String contentId;
-	private int lockedId;
+	private String lockedId;
 	private String lockedBy;
 	private boolean hasLock;
 	
@@ -26,7 +26,23 @@ public class Lock extends AbstractMessage
 	}
 	
 	/**
-	 * Default class constructor for a complete lock object
+	 * Class constructor to set up a new lock object using a string value to identify a locked entry
+	 * @param contentId the type of the object to lock
+	 * @param lockedBy the username who owns the lock
+	 * @param lockedId the id of the element to lock
+	 * @param hasLock a flag indication whether the lock is valid or not
+	 */
+	public Lock(String contentId,String lockedBy,String lockedId,boolean hasLock)
+	{
+		super(ID);
+		this.contentId = contentId;
+		this.lockedBy = lockedBy;
+		this.lockedId = lockedId;
+		this.hasLock = hasLock;
+	}
+	
+	/**
+	 * Class constructor to set up a new lock object using a integer value to identify a locked entry
 	 * @param contentId the type of the object to lock
 	 * @param lockedBy the username who owns the lock
 	 * @param lockedId the id of the element to lock
@@ -37,7 +53,7 @@ public class Lock extends AbstractMessage
 		super(ID);
 		this.contentId = contentId;
 		this.lockedBy = lockedBy;
-		this.lockedId = lockedId;
+		this.lockedId = String.valueOf(lockedId);
 		this.hasLock = hasLock;
 	}
 	
@@ -59,8 +75,10 @@ public class Lock extends AbstractMessage
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
-		result = prime * result + lockedId;
+		result = prime * result
+				+ ((contentId == null) ? 0 : contentId.hashCode());
+		result = prime * result
+				+ ((lockedId == null) ? 0 : lockedId.hashCode());
 		return result;
 	}
 
@@ -70,8 +88,7 @@ public class Lock extends AbstractMessage
      * @return true if the lock is the same otherwise false.
      */
 	@Override
-	public boolean equals(Object obj) 
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -84,10 +101,14 @@ public class Lock extends AbstractMessage
 				return false;
 		} else if (!contentId.equals(other.contentId))
 			return false;
-		if (lockedId != other.lockedId)
+		if (lockedId == null) {
+			if (other.lockedId != null)
+				return false;
+		} else if (!lockedId.equals(other.lockedId))
 			return false;
 		return true;
 	}
+
 	
 	//GETTERS AND SETTERS
 	public String getContentId() {
@@ -106,11 +127,11 @@ public class Lock extends AbstractMessage
 		this.lockedBy = lockedBy;
 	}
 
-	public int getLockedId() {
+	public String getLockedId() {
 		return lockedId;
 	}
 
-	public void setLockedId(int lockedId) {
+	public void setLockedId(String lockedId) {
 		this.lockedId = lockedId;
 	}
 
