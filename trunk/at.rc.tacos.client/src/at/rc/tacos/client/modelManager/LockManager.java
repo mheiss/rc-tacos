@@ -200,9 +200,7 @@ public class LockManager extends PropertyManager
 		}
 		catch(InterruptedException ie)
 		{
-			System.out.println("Failed to wait for the lockJob");
-			ie.printStackTrace();
-			return "<undefiniert>";
+			lockStatus = LOCK_ERROR;
 		}
 
 		//check the result of the job
@@ -245,16 +243,28 @@ public class LockManager extends PropertyManager
 	 * Returns whether or not a lock is existing for the specified content and id
 	 * @param contentId the content id to check for lock
 	 * @param objectId the id of the object to check
+	 * @return true if the object is in the list of the locked object
 	 */
-	public boolean containsLock(String contentId,int objectId)
+	public boolean containsLock(String contentId,String objectId)
 	{
 		//loop and check
 		for(Lock lock:lockList)
 		{
-			if(lock.getContentId().equalsIgnoreCase(contentId) && lock.getLockedId() == objectId)
+			if(lock.getContentId().equalsIgnoreCase(contentId) && lock.getLockedId().equalsIgnoreCase(objectId))
 				return true;
 		}
 		//nothing matched 
 		return false;
+	}
+	
+	/**
+	 * Returns whether or not a lock is existing fpr the specified content and id string
+	 * @param contentId the content id to check for lock
+	 * @param objectString the string value to identify a entry
+	 * @return true if the object is in the list of the locked object
+	 */
+	public boolean containsLock(String contentId,int objectId)
+	{
+		return containsLock(contentId, String.valueOf(objectId));
 	}
 }
