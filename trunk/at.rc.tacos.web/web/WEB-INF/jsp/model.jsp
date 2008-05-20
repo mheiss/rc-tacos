@@ -14,6 +14,9 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<c:if test="${useHtmlCache eq false}">
+		<meta http-equiv="cache-control" content="no-cache" />
+	</c:if>
 	<link rel="stylesheet" type="text/css" href="<c:url value="/css/stylesheet.css"/>" />
 	<c:if test="${not empty css}"><c:forTokens var="item" items="${css}" delims="|"><link rel="stylesheet" href="<c:url value="/css/${item}"/>" type="text/css" /></c:forTokens></c:if>
 	<link rel="icon" type="image/x-icon" href="<c:url value="/favicon.ico"/>" />

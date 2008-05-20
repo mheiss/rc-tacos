@@ -140,7 +140,7 @@
 			<td />
 		</tr>
 		<tr>
-			<td>Photo: ${params.photo}</td>
+			<td>Photo:</td>
 			<td>
 				<input name="photo" type="file" />
 			</td>
@@ -183,7 +183,9 @@
 				</select>
 				<a id="addCompetence" class="smallLink" style="cursor:pointer">Kompetenz&nbsp;hinzuf&uuml;gen</a>
 			</td>
-			<td />
+			<td>
+				<span class="errorText">${params.errors.competences}</span>
+			</td>
 		</tr>
 		<tr>
 			<td>
@@ -203,9 +205,7 @@
 					</tbody>
 				</table>
 			</td>
-			<td>
-				<span class="errorText">${params.errors.competences}</span>
-			</td>
+			<td />
 		</tr>
 		<tr><td colspan="2">Daten&nbsp;zum&nbsp;Anmelden&nbsp;am&nbsp;System&nbsp;und&nbsp;Online-Dienstplan:</td><td /></tr>
 		<tr>
@@ -232,7 +232,7 @@
 		<tr>
 			<td>Passwort:<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="password" type="password" size="30" maxlength="255" value="${params.password}" />
+				<input name="password" type="password" size="30" maxlength="255" />
 			</td>
 			<td>
 				<span class="errorText">
@@ -250,7 +250,7 @@
 		<tr>
 			<td>Passwort&nbsp;(wiederholen):<sup class="reqMark">*</sup></td>
 			<td>
-				<input name="repeatedPassword" type="password" size="30" maxlength="255" value="${params.repeatedPassword}" />
+				<input name="repeatedPassword" type="password" size="30" maxlength="255" />
 			</td>
 			<td>
 				<span class="errorText">
