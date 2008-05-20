@@ -319,7 +319,7 @@ public class AddStaffMemberController extends Controller {
 		
 		// Location
 		int locationId = 0;
-		final Location defaultLocation = userSession.getDefaultFormValues().getRosterDefaultLocation();
+		final Location defaultLocation = null;
 		Location location = null;
 		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);
@@ -473,12 +473,11 @@ public class AddStaffMemberController extends Controller {
 				final QueryFilter staffMemberIdFilter = new QueryFilter();
 				staffMemberIdFilter.add(IFilterTypes.ID_FILTER, personnelNumber);
 				final List<AbstractMessage> doubleStaffMemberIdList = connection.sendListingRequest(StaffMember.ID, staffMemberIdFilter);
-				if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
-					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-				}
-				if (doubleStaffMemberIdList.size() > 0) {
-					valid = false;
-					errors.put("personnelNumberExists", "Die angegebene Personalnummer existiert bereits.");
+				if (StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
+					if (doubleStaffMemberIdList.size() > 0) {
+						valid = false;
+						errors.put("personnelNumberExists", "Die angegebene Personalnummer existiert bereits.");
+					}
 				}
 			}
 			
@@ -577,24 +576,23 @@ public class AddStaffMemberController extends Controller {
 	        } else if (username.length() > 30) {
 	        	valid = false;
 	        	errors.put("usernameTooLong", "Benutzername ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
+	        } else {
+				// Check double username
+				final QueryFilter loginUsernameFilter = new QueryFilter();
+				loginUsernameFilter.add(IFilterTypes.USERNAME_FILTER, username);
+				final List<AbstractMessage> doubleUsername = connection.sendListingRequest(Login.ID, loginUsernameFilter);
+				if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
+					if (doubleUsername.size() > 0) {
+						valid = false;
+						errors.put("usernameExists", "Der angegebene Benutzername existiert bereits.");
+					}
+				}
 	        }
-	        
-			// Check double username
-			final QueryFilter loginUsernameFilter = new QueryFilter();
-			loginUsernameFilter.add(IFilterTypes.USERNAME_FILTER, username);
-			final List<AbstractMessage> doubleUsername = connection.sendListingRequest(Login.ID, loginUsernameFilter);
-			if (!Login.ID.equalsIgnoreCase(connection.getContentType())) {
-				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-			}
-			if (doubleUsername.size() > 0) {
-				valid = false;
-				errors.put("usernameExists", "Der angegebene Benutzername existiert bereits.");
-			}
 	        
 	        // Validate password
 	        if (password == null || password.trim().equals("")) {
 	        	valid = false;
-	        	errors.put("passwordMissing", "Passwort ist ein Pflichtfeld");
+	        	errors.put("passwordMissing", "Passwort ist ein Pflichtfeld.");
 	        } else if (password.length() > 255) {
 	        	valid = false;
 	        	errors.put("passwordTooLong", "Passwort ist zu lang. Es sind maximal 255 Zeichen erlaubt.");
@@ -612,7 +610,7 @@ public class AddStaffMemberController extends Controller {
 	        // Validate passwords
 	        if (!password.equals(repeatedPassword)) {
 	        	valid = false;
-	        	errors.put("passwordsNotEqual", "Die zwei eingegebenen Passwörter stimmen nicht übereich.");
+	        	errors.put("passwordsNotEqual", "Die zwei eingegebenen Passwörter stimmen nicht überein.");
 	        }
 	        
 	        // Validate authorization
@@ -657,7 +655,7 @@ public class AddStaffMemberController extends Controller {
 				
 				// Write photo to disk
 				if (photo != null) {
-			        final File uploadedFile = new File(fileUpload.getString("addStaffMember.photo.absolute.dir") + "/" + userSession.getLoginInformation().getUserInformation().getStaffMemberId());
+			        final File uploadedFile = new File(fileUpload.getString("addStaffMember.photo.absolute.dir") + "/" + personnelNumber);
 			        photo.write(uploadedFile);
 				}
 		        
@@ -683,11 +681,6 @@ public class AddStaffMemberController extends Controller {
 				
 				params.put("addedCount", 1);
 			}
-		}
-		
-		// Delete temporary path to image
-		if (photo != null) {
-			photo.delete();
 		}
 		
 		params.put("errors", errors);

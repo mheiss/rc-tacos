@@ -95,7 +95,6 @@ public class LoginController extends Controller {
 						/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
 						context.getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 					} else {
-						final Enumeration<Object> e = request.getParameterNames();
 						String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + request.getParameter("savedUrl");
 						
 						System.out.println("Redirect: " + response.encodeRedirectURL(url));
@@ -132,8 +131,8 @@ public class LoginController extends Controller {
 				} else {
 					savedUrl += "&" + parameterName + "=" + parameterValue;
 				}
+				i++;
 			}
-			i++;
 		}
 		request.setAttribute("savedUrl", savedUrl);
 		
