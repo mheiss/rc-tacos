@@ -127,7 +127,7 @@ public class LockManager extends PropertyManager
 	/**
 	 * Sends the lock object to the server and waits for the response
 	 */
-	public static String sendLock(String contentId,int lockedId)
+	public static String sendLock(String contentId,String lockedId)
 	{
 		//get the authenticated user
 		String user = SessionManager.getInstance().getLoginInformation().getUsername();
@@ -227,7 +227,7 @@ public class LockManager extends PropertyManager
 	/**
 	 * Sends the request to the server to remove the lock from the object
 	 */
-	public static void removeLock(String contentId,int lockedId)
+	public static void removeLock(String contentId,String lockedId)
 	{
 		//get the authenticated user
 		String user = SessionManager.getInstance().getLoginInformation().getUsername();
@@ -255,6 +255,23 @@ public class LockManager extends PropertyManager
 		}
 		//nothing matched 
 		return false;
+	}
+	
+	//WRAPPER CLASSES TO USE INTEGER VALUES FOR THE OBJECT ID
+	/**
+	 * Sends the request to the server to remove the lock from the object
+	 */
+	public static void removeLock(String contentId,int lockedId)
+	{
+		removeLock(contentId,String.valueOf(lockedId));
+	}
+	
+	/**
+	 * Sends the lock object to the server and waits for the response
+	 */
+	public static String sendLock(String contentId,int lockedId)
+	{
+		return sendLock(contentId, String.valueOf(lockedId));
 	}
 	
 	/**
