@@ -30,6 +30,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.TransportManager;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
@@ -148,6 +149,15 @@ public class VehicleForm extends TitleAreaDialog
 		return composite;
 	}
 
+	
+	@Override
+	public boolean close()
+	{
+		//remove the lock from the object
+		LockManager.removeLock(VehicleDetail.ID, vehicleDetail.getVehicleName());
+		return super.close();
+	}
+	
 	/**
 	 * The user pressed the cancel button
 	 */
@@ -159,7 +169,11 @@ public class VehicleForm extends TitleAreaDialog
 		dialog.setMessage("Wollen Sie wirklich abbrechen?");
 		//check the result
 		if (dialog.open() != SWT.NO)
+		{
+			//remove the lock from the object
+			LockManager.removeLock(VehicleDetail.ID, vehicleDetail.getVehicleName());
 			getShell().close();
+		}
 	}
 
 	/**
@@ -231,6 +245,8 @@ public class VehicleForm extends TitleAreaDialog
 			transport.setVehicleDetail(vehicleDetail);
 			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 		}
+		
+		LockManager.removeLock(VehicleDetail.ID, vehicleDetail.getVehicleName());
 	}
 
 	/**

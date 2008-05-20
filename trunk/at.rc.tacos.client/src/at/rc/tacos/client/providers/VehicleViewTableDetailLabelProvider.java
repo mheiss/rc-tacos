@@ -8,10 +8,13 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
+import at.rc.tacos.client.modelManager.LockManager;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.VehicleDetail;
 
 public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus, IKindOfTransport, ITableFontProvider
@@ -30,7 +33,9 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
     public static final int COLUMN_NOTES = 10;
     public static final int COLUMN_LAST_DESTINATION_FREE = 11;
     
-
+    //the lock manager
+    private LockManager lockManager = ModelFactory.getInstance().getLockManager();
+    
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
@@ -38,8 +43,11 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 		//determine the column and return a image if needed
 		switch(columnIndex)
 		{
-		case COLUMN_LOCK:
-			return ImageFactory.getInstance().getRegisteredImage("resource.refresh20");
+			case COLUMN_LOCK:
+				if(lockManager.containsLock(VehicleDetail.ID, vehicle.getVehicleName()))
+					return ImageFactory.getInstance().getRegisteredImage("resource.lock");
+				else return null;
+//			return ImageFactory.getInstance().getRegisteredImage("resource.refresh20");
 			case COLUMN_READY:
 				if(vehicle.isReadyForAction())
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.ready");

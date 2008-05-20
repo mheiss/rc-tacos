@@ -190,7 +190,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnTransportNachJournal.setText("Transport nach");
 
 		final TableColumn columnErkrVerlJournal = new TableColumn(table, SWT.NONE);
-		columnErkrVerlJournal.setWidth(150);
+		columnErkrVerlJournal.setWidth(126);
 		columnErkrVerlJournal.setText("Erkr/Verl");
 
 		final TableColumn columnAEJournal = new TableColumn(table, SWT.NONE);

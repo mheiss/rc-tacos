@@ -100,6 +100,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	{
 		//add listener to model to keep on track
 		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -109,6 +110,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	public void dispose() 
 	{
 		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 	}
 	
 	/**
@@ -181,7 +183,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 			
 		final TableColumn lockColumn = new TableColumn(tableDisp, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(0);
+		lockColumn.setWidth(24);
 		lockColumn.setText("L");
 	
 		//create the tab items for the disposition view
@@ -256,7 +258,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 		
 		final TableColumn anmerkungUnderwayTransporte = new TableColumn(tableDisp, SWT.NONE);
-		anmerkungUnderwayTransporte.setWidth(352);
+		anmerkungUnderwayTransporte.setWidth(328);
 		anmerkungUnderwayTransporte.setText("Anmerkung");
 		
 		
@@ -495,6 +497,12 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 			{
 				viewer.addFilter(searchFilter);
 			}	
+		}
+		
+		//listen to lock changes
+		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			viewer.refresh();
 		}
 	}
 }

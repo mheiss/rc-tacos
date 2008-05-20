@@ -114,6 +114,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	{
 		// add listener to model to keep on track. 
 		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -123,6 +124,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	public void dispose() 
 	{
 		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -545,6 +547,18 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			applyFilters(filteredDate);
 			applySearchFilter(filter);
 		}
+		
+		//listen to lock changes
+		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			//refresh the views
+			viewerBruck.refresh();
+			viewerGraz.refresh();
+			viewerKapfenberg.refresh();
+			viewerLeoben.refresh();
+			viewerMariazell.refresh();
+			viewerWien.refresh();
+		}
 	}
 
 	/***********************************
@@ -581,7 +595,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 		final TableColumn blockColumn = new TableColumn(table, SWT.NONE);
 		blockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		blockColumn.setWidth(0);
+		blockColumn.setWidth(24);
 		blockColumn.setText("L");
 	
 
@@ -622,7 +636,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		bTableColumnTA.setText("T");
 		
 		final TableColumn anmerkungTransporte = new TableColumn(table, SWT.NONE);
-		anmerkungTransporte.setWidth(100);
+		anmerkungTransporte.setWidth(76);
 		anmerkungTransporte.setText("Anmerkung");
 
 		Listener sortListener = new Listener() 
