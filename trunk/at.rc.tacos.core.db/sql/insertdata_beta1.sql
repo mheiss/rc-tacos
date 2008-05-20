@@ -123,9 +123,11 @@ INSERT INTO phone_staffmember(staffmember_ID, phonenumber_ID) VALUES(50100003, 4
 -- assign the competences to staff members
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100001,1);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100003,3);
+INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100004,5);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100003,5);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,6);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,1);
+INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,5);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100002,2);
 INSERT INTO staffmember_competence(staffmember_ID, competence_ID) VALUES(50100004,6);
 
