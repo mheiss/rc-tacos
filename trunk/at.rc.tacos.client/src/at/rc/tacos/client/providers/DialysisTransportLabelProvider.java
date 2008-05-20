@@ -12,7 +12,6 @@ import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.DialysisPatient;
-import at.rc.tacos.model.Transport;
 
 public class DialysisTransportLabelProvider implements ITableLabelProvider, ITableColorProvider
 {
