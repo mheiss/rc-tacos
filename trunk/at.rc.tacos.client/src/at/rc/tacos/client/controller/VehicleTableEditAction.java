@@ -17,7 +17,6 @@ import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.view.VehicleForm;
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.VehicleDetail;
 
 public class VehicleTableEditAction extends Action

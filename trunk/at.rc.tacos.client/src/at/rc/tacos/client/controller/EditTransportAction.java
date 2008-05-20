@@ -14,7 +14,6 @@ import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.view.TransportForm;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 
 /**
