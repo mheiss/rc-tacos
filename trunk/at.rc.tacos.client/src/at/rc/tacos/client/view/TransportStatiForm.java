@@ -3,6 +3,8 @@ package at.rc.tacos.client.view;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -11,6 +13,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.util.TimeValidator;
 import at.rc.tacos.client.util.TransformTimeToLong;
 import at.rc.tacos.common.ITransportStatus;
@@ -53,6 +56,12 @@ public class TransportStatiForm implements ITransportStatus
 	protected void createContents() 
 	{
 		shell = new Shell();
+		shell.addShellListener(new ShellAdapter() {
+			public void shellClosed(final ShellEvent e) 
+			{
+				LockManager.removeLock(Transport.ID, transport.getTransportId());
+			}
+		});
 		shell.setSize(533, 300);
 		shell.setText("Transportstati bearbeiten");
 		
@@ -60,6 +69,7 @@ public class TransportStatiForm implements ITransportStatus
 		exitListener = new Listener() {
 			public void handleEvent(Event e) 
 			{
+				LockManager.removeLock(Transport.ID, transport.getTransportId());
 				shell.dispose();
 			}
 		};
@@ -222,7 +232,8 @@ public class TransportStatiForm implements ITransportStatus
             		transport.removeStatus(TRANSPORT_STATUS_CAR_IN_STATION);
             	
             	NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
-            	     
+            	    
+            	LockManager.removeLock(Transport.ID, transport.getTransportId());
                 shell.close();
 			}
 			
