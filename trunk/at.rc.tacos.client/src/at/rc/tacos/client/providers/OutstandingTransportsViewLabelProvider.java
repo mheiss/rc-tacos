@@ -8,8 +8,11 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.client.modelManager.LockManager;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.IKindOfTransport;
+import at.rc.tacos.factory.ImageFactory;
 
 public class OutstandingTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider, IKindOfTransport
 {
@@ -28,12 +31,24 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 	public static final int COLUMN_ERKR_VERL = 11;
 	public static final int COLUMN_NOTES = 12;
 
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) 
 	{
-		return null;
+		Transport transport = (Transport)element;
+		
+		//determine the colum and return a image if needed
+		switch(columnIndex)
+		{
+			case COLUMN_LOCK:
+				if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+					return ImageFactory.getInstance().getRegisteredImage("resource.lock");
+				else return null;
+			default: return null;
+		}
 //		Transport transport = (Transport)element;
 //		//determine the colum and return a image if needed
 //		switch(columnIndex)

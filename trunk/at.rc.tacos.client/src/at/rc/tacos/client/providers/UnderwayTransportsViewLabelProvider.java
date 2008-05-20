@@ -9,9 +9,12 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
+import at.rc.tacos.client.modelManager.LockManager;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.ITransportStatus;
+import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
 public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus, IKindOfTransport
@@ -34,10 +37,25 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     public static final int COLUMN_ERKR_VERL = 14;
 	public static final int COLUMN_ANMERKUNG = 15;
 
+	
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
+
+	
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
-    	return null;   
+    	Transport transport = (Transport)element;
+    	
+    	//determine the colum and return a image if needed
+		switch(columnIndex)
+		{
+		    case COLUMN_LOCK:
+				if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+					return ImageFactory.getInstance().getRegisteredImage("resource.lock");
+				else return null;
+		    default: return null;  
+		}
     }
 
     @Override
@@ -49,7 +67,6 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
         String patient = "";
         switch(columnIndex)
         {
-	        case COLUMN_LOCK:return null;
 	        case COLUMN_PRIORITY: 
 	        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
 	        		return "1";

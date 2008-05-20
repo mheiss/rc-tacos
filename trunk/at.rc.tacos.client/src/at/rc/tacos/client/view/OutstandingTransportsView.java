@@ -73,6 +73,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	public OutstandingTransportsView()
 	{
 		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -82,6 +83,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	public void dispose() 
 	{
 		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 	}
 	
 	/**
@@ -209,7 +211,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 		final TableColumn lockColumn = new TableColumn(tableOff, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(0);
+		lockColumn.setWidth(24);
 		lockColumn.setText("L");
 	
 		final TableColumn prioritaetOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
@@ -264,7 +266,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		erkrankungVerletzungOffeneTransporte.setText("Erkrankung/Verletzung");
 	
 		final TableColumn anmerkungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		anmerkungOffeneTransporte.setWidth(585);
+		anmerkungOffeneTransporte.setWidth(561);
 		anmerkungOffeneTransporte.setText("Anmerkung");
 	
 		//make the columns sortable
@@ -376,6 +378,12 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 			{
 				viewerOffTrans.addFilter(searchFilter);
 			}	
+		}
+		
+		//listen to lock changes
+		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			viewerOffTrans.refresh();
 		}
 	}
 }

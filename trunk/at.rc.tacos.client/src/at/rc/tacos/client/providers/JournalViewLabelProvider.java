@@ -54,7 +54,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 			case COLUMN_LOCK:
 				if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		    		return ImageFactory.getInstance().getRegisteredImage("resource.lock");
-		    	return null;
+				else return null;
 			case COLUMN_TRANSPORT_FROM:
 				//return when we do not have the status destination free
 				if(!transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))

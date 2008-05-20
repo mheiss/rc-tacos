@@ -11,6 +11,8 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -29,6 +31,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.modelManager.AddressManager;
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
@@ -209,12 +212,18 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
         	combokindOfTransport.setText(dia.getKindOfTransport());
 		
 	}
-
+	
 	/**
 	 * Create contents of the window
 	 */
 	protected void createContents() {
 		shell = new Shell(Display.getCurrent(),SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
+		shell.addShellListener(new ShellAdapter() {
+			public void shellClosed(final ShellEvent e) 
+			{
+				LockManager.removeLock(DialysisPatient.ID, dia.getId());
+			}
+		});
 		shell.setLayout(new FormLayout());
 		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 		shell.setText("Dialysetransport");
@@ -510,6 +519,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					e.doit = false;
 				if (dialog.open() != SWT.YES) 
 					return;
+				LockManager.removeLock(DialysisPatient.ID, dia.getId());
 				shell.dispose();
 			}
 		};
@@ -726,12 +736,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					dia.setSunday(sonntag);
 					
 					dia.setAssistantPerson(assistant);
-					System.out.println("......... start: " +dia.getPlannedStartOfTransport());
-					System.out.println("......... bei pat: " +dia.getPlannedTimeAtPatient());
-					System.out.println("......... termin: " +dia.getAppointmentTimeAtDialysis());
-					System.out.println("......... start rt: " +dia.getPlannedStartForBackTransport());
-					System.out.println("......... ready: " +dia.getReadyTime());
-					
 					NetWrapper.getDefault().sendAddMessage(DialysisPatient.ID, dia);
 				}
 				else
@@ -766,6 +770,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					
 					NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, dia);
 				}
+				LockManager.removeLock(DialysisPatient.ID, dia.getId());
 				shell.close();
 			}
 			

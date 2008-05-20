@@ -84,7 +84,6 @@ import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -177,7 +176,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 	private ComboViewer zustaendigeOrtsstelle;
 	private DateTime dateTime;
-	protected Shell shell;
 	private Composite client;
 
 	private MultiTransportContentProvider multiTransportProvider;

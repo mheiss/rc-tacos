@@ -6,6 +6,8 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
+import at.rc.tacos.client.modelManager.LockManager;
+import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.factory.ImageFactory;
@@ -14,8 +16,12 @@ import at.rc.tacos.model.VehicleDetail;
 public class VehicleViewTableLabelProvider implements ITableLabelProvider, ITableColorProvider, ITransportStatus, IKindOfTransport
 {
     //define the columns
-    public static final int COLUMN_NAME = 0;
-    public static final int COLUMN_STATUS = 1;
+	public static final int COLUMN_LOCK = 0;
+	public static final int COLUMN_NAME = 1;
+    public static final int COLUMN_STATUS = 2;
+    
+    //the lock manager
+    private LockManager lockManager = ModelFactory.getInstance().getLockManager();
     
 
     @Override
@@ -27,6 +33,10 @@ public class VehicleViewTableLabelProvider implements ITableLabelProvider, ITabl
 		//determine the column and return a image if needed
 		switch(columnIndex)
 		{
+			case COLUMN_LOCK:
+				if(lockManager.containsLock(VehicleDetail.ID, vehicle.getVehicleName()))
+					return ImageFactory.getInstance().getRegisteredImage("resource.lock");
+				else return null;
 			case COLUMN_STATUS:
 				if (vehicle.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_GREEN)
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.green");
@@ -38,7 +48,6 @@ public class VehicleViewTableLabelProvider implements ITableLabelProvider, ITabl
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.red");
 				if (vehicle.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_BLUE)
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.blue");
-				
 				
 			default: return null; 
 		}

@@ -67,10 +67,6 @@ public class EditTransportAction extends Action
 			Activator.getDefault().log("Der Eintrag "+transport+" wird trotz Sperrung durch "+resultLockMessage +" von "+username+" bearbeitet",Status.WARNING);
 		}
 		
-		
-		
-		
-		
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		//open the editor
 		TransportForm form = new TransportForm(shell,transport,editingType);

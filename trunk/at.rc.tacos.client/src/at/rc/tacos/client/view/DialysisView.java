@@ -57,6 +57,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	public DialysisView()
 	{
 		ModelFactory.getInstance().getDialyseManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -66,6 +67,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	public void dispose() 
 	{
 		ModelFactory.getInstance().getDialyseManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 	}
 	
 	/**
@@ -96,22 +98,22 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	
 		final TableColumn lockColumn = new TableColumn(table_2, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(30);
+		lockColumn.setWidth(24);
 		lockColumn.setText("L");
+		
+		final TableColumn newColumnTableColumnStationDialyse = new TableColumn(table_2, SWT.NONE);
+		newColumnTableColumnStationDialyse.setToolTipText("Zuständige Ortsstelle");
+		newColumnTableColumnStationDialyse.setWidth(200);
+		newColumnTableColumnStationDialyse.setText("OS");
 	
 		final TableColumn newColumnTableColumnAbfDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnAbfDialyse.setToolTipText("Geplante Abfahrt an Ortsstelle");
 		newColumnTableColumnAbfDialyse.setWidth(68);
 		newColumnTableColumnAbfDialyse.setText("Abf");
-		
-		final TableColumn newColumnTableColumnStationDialyse = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnStationDialyse.setToolTipText("Zuständige Ortsstelle");
-		newColumnTableColumnStationDialyse.setWidth(100);
-		newColumnTableColumnStationDialyse.setText("OS");
 
 		final TableColumn newColumnTableColumnAnkDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnAnkDialyse.setToolTipText("Geplante Ankunft beim Patienten");
-		newColumnTableColumnAnkDialyse.setWidth(65);
+		newColumnTableColumnAnkDialyse.setWidth(68);
 		newColumnTableColumnAnkDialyse.setText("Ank");
 
 		final TableColumn newColumnTableColumnTerminDialyse = new TableColumn(table_2, SWT.NONE);
@@ -121,12 +123,12 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 
 		final TableColumn newColumnTableColumnRTAbfahrtDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnRTAbfahrtDialyse.setToolTipText("Abfahrt an der Ortsstelle");
-		newColumnTableColumnRTAbfahrtDialyse.setWidth(84);
+		newColumnTableColumnRTAbfahrtDialyse.setWidth(68);
 		newColumnTableColumnRTAbfahrtDialyse.setText("RT Abfahrt");
 
 		final TableColumn newColumnTableColumnAbholbereitDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnAbholbereitDialyse.setToolTipText("Patient ist mit Dialyse fertig, abholbereit im LKH");
-		newColumnTableColumnAbholbereitDialyse.setWidth(100);
+		newColumnTableColumnAbholbereitDialyse.setWidth(68);
 		newColumnTableColumnAbholbereitDialyse.setText("Abholbereit");
 
 		final TableColumn newColumnTableColumnWohnortDialyse = new TableColumn(table_2, SWT.NONE);
@@ -134,7 +136,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnWohnortDialyse.setText("Wohnort");
 
 		final TableColumn newColumnTableColumnNameDialyse = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnNameDialyse.setWidth(200);
+		newColumnTableColumnNameDialyse.setWidth(250);
 		newColumnTableColumnNameDialyse.setText("Name");
 		
 		final TableColumn newColumnTableColumnDialyseort = new TableColumn(table_2, SWT.NONE);
@@ -143,40 +145,40 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 
 		final TableColumn newColumnTableColumnMontag = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnMontag.setData("newKey", null);
-		newColumnTableColumnMontag.setWidth(40);
+		newColumnTableColumnMontag.setWidth(30);
 		newColumnTableColumnMontag.setText("Mo");
 
 		final TableColumn newColumnTableColumnDienstag = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnDienstag.setWidth(37);
+		newColumnTableColumnDienstag.setWidth(30);
 		newColumnTableColumnDienstag.setText("Di");
 
 		final TableColumn newColumnTableColumnMittwoch = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnMittwoch.setWidth(36);
+		newColumnTableColumnMittwoch.setWidth(30);
 		newColumnTableColumnMittwoch.setText("Mi");
 
 		final TableColumn newColumnTableColumnDonnerstag = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnDonnerstag.setWidth(35);
+		newColumnTableColumnDonnerstag.setWidth(30);
 		newColumnTableColumnDonnerstag.setText("Do");
 
 		final TableColumn newColumnTableColumnFreitag = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnFreitag.setWidth(38);
+		newColumnTableColumnFreitag.setWidth(30);
 		newColumnTableColumnFreitag.setText("Fr");
 
 		final TableColumn newColumnTableColumnSamstag = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnSamstag.setWidth(42);
+		newColumnTableColumnSamstag.setWidth(30);
 		newColumnTableColumnSamstag.setText("Sa");
 
 		final TableColumn newColumnTableColumnSonntag = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnSonntag.setWidth(43);
+		newColumnTableColumnSonntag.setWidth(30);
 		newColumnTableColumnSonntag.setText("So");
 		
 		final TableColumn newColumnTableColumnTA = new TableColumn(table_2, SWT.NONE);
-		newColumnTableColumnTA.setWidth(43);
+		newColumnTableColumnTA.setWidth(90);
 		newColumnTableColumnTA.setText("TA");
 
 		final TableColumn newColumnTableColumnStationaer = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnStationaer.setToolTipText("Patient wird derzeit nicht transportiert");
-		newColumnTableColumnStationaer.setWidth(49);
+		newColumnTableColumnStationaer.setWidth(40);
 		newColumnTableColumnStationaer.setText("Stat");
 		
 		viewer.getTable().addMouseListener(new MouseAdapter() 
@@ -325,6 +327,12 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		{ 
 			viewer.refresh();
 		}
+		
+		//listen to lock changes
+		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			viewer.refresh();
+		}
 	}
 	
 	/**
@@ -338,4 +346,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		form.getToolBarManager().add(viewAction);
 		form.getToolBarManager().update(true);
 	}
+	
+	
+	
 }

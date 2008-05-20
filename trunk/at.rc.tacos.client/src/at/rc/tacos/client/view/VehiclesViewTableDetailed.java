@@ -62,6 +62,7 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         // add listener to model to keep on track. 
         ModelFactory.getInstance().getRosterEntryManager().addPropertyChangeListener(this);
         ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+        ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
         //listen to changes of jobs, serviceTypes and staff member updates
         ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
         ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
@@ -77,6 +78,7 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         ModelFactory.getInstance().getRosterEntryManager().removePropertyChangeListener(this);
         ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
         ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
+        ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
         //remove again
         ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
         ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
@@ -126,8 +128,8 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         
         final TableColumn columnLock = new TableColumn(table, SWT.NONE);
         columnLock.setToolTipText("Gesperrt");
-        columnLock.setWidth(1);
-        columnLock.setText("EB");
+        columnLock.setWidth(24);
+        columnLock.setText("L");
         
         final TableColumn columnReady = new TableColumn(table, SWT.NONE);
         columnReady.setToolTipText("Einsatzbereit");
@@ -177,7 +179,7 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         
         final TableColumn columnLastDestinationFree = new TableColumn(table, SWT.NONE);
         columnLastDestinationFree.setToolTipText("Zeigt den Standort der letzten Meldung \"Ziel frei\" (S6)an");
-        columnLastDestinationFree.setWidth(250);
+        columnLastDestinationFree.setWidth(226);
         columnLastDestinationFree.setText("Letzter Status S5"); 
 
         //make the columns sortable
@@ -325,5 +327,11 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         {
             viewer.refresh();
         }
+        
+      //listen to lock changes
+		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
+		{
+			viewer.refresh();
+		}
     }
 }
