@@ -71,9 +71,9 @@ public class OldRosterWeekController extends Controller
 					RosterEntry entry = (RosterEntry)object;  
 					if(station.equalsIgnoreCase("primary"))
 					{
-						if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation())){
+						/*if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation())){
 							filterdByLocation.add(entry); 
-						}
+						}*/
 					}
                     else 
                     { 

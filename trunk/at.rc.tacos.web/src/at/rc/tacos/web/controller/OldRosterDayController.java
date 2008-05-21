@@ -44,8 +44,8 @@ public class OldRosterDayController extends Controller
 		for(AbstractMessage object:dayResult)   
 		{  
 			RosterEntry entry = (RosterEntry)object;  
-			if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
-				filterdByLocation.add(entry); 
+			//if(entry.getStation().equals(userSession.getStaffMember().getPrimaryLocation()))
+				//filterdByLocation.add(entry); 
 		}
 		params.put("rosterList", filterdByLocation);
 		return params;

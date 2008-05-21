@@ -57,36 +57,6 @@ public class LoginController extends Controller {
 				if (loginResult.isLoggedIn()) {
 					UserSession userSession = (UserSession) session.getAttribute("userSession");
 					userSession.setLoggedIn(true, loginResult, client);
-
-					List<AbstractMessage> stationList = client.sendListingRequest(Location.ID, null);
-					if (Location.ID.equalsIgnoreCase(client.getContentType())) {
-						for (AbstractMessage abstractLoaction : stationList)
-							userSession.addLocation((Location) abstractLoaction);
-					}
-
-					List<AbstractMessage> jobList = client.sendListingRequest(Job.ID, null);
-					if (Job.ID.equalsIgnoreCase(client.getContentType())) {
-						for (AbstractMessage abstractJob : jobList)
-							userSession.addJob((Job) abstractJob);
-					}
-
-					List<AbstractMessage> compList = client.sendListingRequest(Competence.ID, null);
-					if (Competence.ID.equalsIgnoreCase(client.getContentType())) {
-						for (AbstractMessage abstractCompetence : compList)
-							userSession.addCompetence((Competence) abstractCompetence);
-					}
-
-					List<AbstractMessage> serviceList = client.sendListingRequest(ServiceType.ID, null);
-					if (ServiceType.ID.equalsIgnoreCase(client.getContentType())) {
-						for (AbstractMessage abstractServiceType : serviceList)
-							userSession.addServiceType((ServiceType) abstractServiceType);
-					}
-
-					List<AbstractMessage> staffList = client.sendListingRequest(StaffMember.ID, null);
-					if (StaffMember.ID.equalsIgnoreCase(client.getContentType())) {
-						for (AbstractMessage abstractStaffMember : staffList)
-							userSession.addStaffMember((StaffMember) abstractStaffMember);
-					}
 					if (request.getParameter("savedUrl") == null) {
 						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
 						System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");

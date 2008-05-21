@@ -45,8 +45,8 @@ final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 					<table width="100%" id="userInfo">
 						<c:url var="url" value="/Dispatcher/logout.do" />
 						<tr>
-							<td width="33%" align="left">Willkommen : <%=userSession.getStaffMember().getFirstName() + " "
-							+ userSession.getStaffMember().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
+							<td width="33%" align="left">Willkommen : <%=userSession.getLoginInformation().getUserInformation().getFirstName() + " "
+							+ userSession.getLoginInformation().getUserInformation().getLastName().replaceAll("ä","&auml;").replaceAll("ö","&ouml;").replaceAll("ü","&uuml;").replaceAll("ß","ss")%>
 							&nbsp;&nbsp;( <a
 								href="${url}">Logout</a>
 							)</td>
