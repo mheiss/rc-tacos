@@ -8,8 +8,11 @@ import at.rc.tacos.common.AbstractMessage;
  */
 public class Competence extends AbstractMessage
 {
+	
     //unique identification string
     public final static String ID = "competence";
+    
+    public static final String COMPETENCE_NAME_VOLUNTEER = "Volontär";
     
     //properties   
     private int id;
