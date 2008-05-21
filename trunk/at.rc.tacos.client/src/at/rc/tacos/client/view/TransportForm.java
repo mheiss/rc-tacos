@@ -1981,7 +1981,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_buttonNotfall.left = new FormAttachment(0, 104);
 		buttonNotfall.setLayoutData(fd_buttonNotfall);
 		buttonNotfall.setToolTipText("Blendet alle für einen Notfall nicht relevanten Felder aus");
-		buttonNotfall.addSelectionListener(new SelectionAdapter() 
+		buttonNotfall.addSelectionListener(new SelectionAdapter() //TODO
 		{
 			int index;
 			public void widgetSelected(final SelectionEvent e) 
@@ -2020,6 +2020,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 					comboPrioritaet.setText(tmpPriority);
 				}
+				
+				//remove all transports from the multi transport list
+				multiTransportProvider.removeAllTransports();
+				viewer.refresh();
 			}
 		});
 		buttonNotfall.setText("Notfall");
@@ -2195,6 +2199,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				multiTransportGroup.setVisible(true);
 				assignCarGroup.setVisible(false);
 				buttonAssignCar.setEnabled(false);
+				
+				//remove all transports from the multi transport list
+				multiTransportProvider.removeAllTransports();
+				viewer.refresh();
 			}
 		});
 
@@ -2262,6 +2270,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				buttonADDMehrfachtransport.setEnabled(false);
 				multiTransportGroup.setVisible(false); 
 				
+				//remove all transports from the multi transport list
+				multiTransportProvider.removeAllTransports();
+				viewer.refresh();
+				
 				viewerAssign.refresh();
 				assignCarGroup.setVisible(true);
 			}
@@ -2317,7 +2329,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				|| "VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
 				|| "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName()))
 		{
-//			viewerAssign.refresh(); //TODO: refresh the assignViewer!!!!!!!!!1
+			if(!viewerAssign.getTable().isDisposed())
+				viewerAssign.refresh();
 		}
 	}
 
@@ -2441,15 +2454,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		transport.setFromCity(viewerFromCity.getCombo().getText());
 
-
 		if (viewerToStreet.getCombo().getText().length() > 100)
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Der Straßenname (nach) darf höchstens 100 Zeichen lang sein");
 			return false;
 		}
-
-
 
 		if (viewerToCity.getCombo().getText().length() > 50)
 		{
@@ -2458,13 +2468,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			return false;
 		}
 
-
-
-
 		//the planned location
-
-
-
 		int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
 		if (index == -1)
 		{
@@ -2539,28 +2543,42 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		else
 			transport.setAppointmentTimeAtDestination(0);
 
+		//calendar to allow transport times around midnight
+		Calendar calMid = Calendar.getInstance();
+		calMid.setTimeInMillis(transport.getPlannedStartOfTransport());
+		int hour = calMid.get(Calendar.HOUR_OF_DAY);
+		
 		//validate: start before atPatient
 		if(transport.getPlannedTimeAtPatient() < transport.getPlannedStartOfTransport() &!(transport.getPlannedTimeAtPatient()==0))
 		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen.");
-			return false;
+			if(hour < 22)
+			{
+				getShell().getDisplay().beep();
+				setErrorMessage("Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen.");
+				return false;
+			}
 		}				
 
 		//validate: atPatient before term
 		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedTimeAtPatient() &!(transport.getAppointmentTimeAtDestination()==0)&!(transport.getPlannedTimeAtPatient()==0))
 		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Termin kann nicht vor Ankunft bei Patient sein");
-			return false;
+			if(hour < 22)
+			{
+				getShell().getDisplay().beep();
+				setErrorMessage("Termin kann nicht vor Ankunft bei Patient sein");
+				return false;
+			}
 		}
 
 		//validate: start before term
 		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedStartOfTransport() &!(transport.getAppointmentTimeAtDestination() ==0))
 		{
-			getShell().getDisplay().beep();
-			setErrorMessage("Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen");
-			return false;
+			if(hour < 22)
+			{
+				getShell().getDisplay().beep();
+				setErrorMessage("Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen");
+				return false;
+			}
 		}
 
 		//kind of illness
@@ -2729,7 +2747,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
 			if(!mehrfachtransport)
 			{
-				//assign the vehicle if one is selected	//TODO
+				//assign the vehicle if one is selected	
 				if(viewerAssign.getTable().getSelectionIndex() != -1)
 				{
 					//the selection
@@ -2908,7 +2926,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_table_1.bottom = new FormAttachment(0, 122);
 		table_1.setLayoutData(fd_table_1);
 
-
 		viewerAssign.getTable().addMouseListener(new MouseAdapter() 
 		{
 			public void mouseDown(MouseEvent e) 
@@ -2919,7 +2936,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				}
 			}
 		});
-
 
 		final Table table = viewerAssign.getTable();
 		table.setLinesVisible(true);
