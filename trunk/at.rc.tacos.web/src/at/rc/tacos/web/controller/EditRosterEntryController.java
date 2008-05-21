@@ -93,6 +93,41 @@ public class EditRosterEntryController extends Controller {
 	
 	private static final String MODEL_ERRORS_NAME = "errors";
 	
+	private static final String ERRORS_JOB = "job";
+	private static final String ERRORS_JOB_VALUE = "Verwendung ist ein Pflichtfeld.";
+	
+	private static final String ERRORS_LOCATION = "location";
+	private static final String ERRORS_LOCATION_VALUE = "Ortstelle ist ein Pflichtfeld.";
+	
+	private static final String ERRORS_STAFF_MEMBER = "staffMember";
+	private static final String ERRORS_STAFF_MEMBER_VALUE = "Mitarbeiter ist ein Pflichtfeld.";
+	
+	private static final String ERRORS_SERVICE_TYPE = "serviceType";
+	private static final String ERRORS_SERVICE_TYPE_VALUE = "Dienstverh‰ltnis ist ein Pflichtfeld.";
+	
+	private static final String ERRORS_PLANNED_START_OF_WORK_MISSING = "plannedStartOfWorkMissing";
+	private static final String ERRORS_PLANNED_START_OF_WORK_MISSING_VALUE = "Dienst von ist ein Pflichtfeld.";	
+	private static final String ERRORS_PLANNED_START_OF_WORK_ERROR = "plannedStartOfWorkError";
+	private static final String ERRORS_PLANNED_START_OF_WORK_ERROR_VALUE = "Das Datumsformat von Dienst von ist nicht korrekt.";
+	
+	private static final String ERRORS_PLANNED_END_OF_WORK_MISSING = "plannedEndOfWorkMissing";
+	private static final String ERRORS_PLANNED_END_OF_WORK_MISSING_VALUE = "Dienst bis ist ein Pflichtfeld.";
+	private static final String ERRORS_PLANNED_END_OF_WORK_ERROR = "plannedEndOfWorkError";
+	private static final String ERRORS_PLANNED_END_OF_WORK_ERROR_VALUE = "Das Datumsformat von Dienst bis ist nicht korrekt.";
+	
+	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_SMALL = "plannedStartOfWorkTooSmall";
+	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_SMALL_VALUE = "Der Wert von Dienst von ist zu klein.";
+	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_BIG = "plannedStartOfWorkTooBig";
+	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_BIG_VALUE = "Der Wert von Dienst von ist zu groﬂ.";
+	
+	private static final String ERRORS_PLANNED_END_OF_WORK_TOO_SMALL = "plannedEndOfWorkTooSmall";
+	private static final String ERRORS_PLANNED_END_OF_WORK_TOO_SMALL_VALUE = "plannedEndOfWorkTooSmall";
+	private static final String ERRORS_PLANNED_END_OF_WORK_TOO_BIG = "plannedEndOfWorkTooBig";
+	private static final String ERRORS_PLANNED_END_OF_WORK_TOO_BIG_VALUE = "Der Wert von Dienst bis ist zu groﬂ.";
+	
+	private static final String ERRORS_PERIOD = "period";
+	private static final String ERRORS_PERIOD_VALUE = "Dienst von muss grˆﬂer sein als Dienst bis.";
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -383,19 +418,19 @@ public class EditRosterEntryController extends Controller {
 		boolean valid = true;
 		if (action != null && action.equals(ACTION_UPDATE_ROSTER_ENTRY)) {
 			if (job == null) {
-				errors.put("job", "Verwendung ist ein Pflichtfeld.");
+				errors.put(ERRORS_JOB, ERRORS_JOB_VALUE);
 				valid = false;
 			}
 			if (location == null) {
-				errors.put("location", "Ortstelle ist ein Pflichtfeld.");
+				errors.put(ERRORS_LOCATION, ERRORS_LOCATION_VALUE);
 				valid = false;
 			}
 			if (staffMember == null) {
-				errors.put("staffMember", "Mitarbeiter ist ein Pflichtfeld.");
+				errors.put(ERRORS_STAFF_MEMBER, ERRORS_STAFF_MEMBER_VALUE);
 				valid = false;
 			}
 			if (serviceType == null) {
-				errors.put("serviceType", "Dienstverh‰ltnis ist ein Pflichtfeld.");
+				errors.put(ERRORS_SERVICE_TYPE, ERRORS_SERVICE_TYPE_VALUE);
 				valid = false;
 			}
 			
@@ -409,54 +444,54 @@ public class EditRosterEntryController extends Controller {
 			
 			Date plannedStartOfWork = null;
 			if (dateFromString == null || dateFromString.equals("") || timeFromHoursString == null || timeFromMinutesString == null) {
-				errors.put("plannedStartOfWorkMissing", "Dienst von ist ein Pflichtfeld.");
+				errors.put(ERRORS_PLANNED_START_OF_WORK_MISSING, ERRORS_PLANNED_START_OF_WORK_MISSING_VALUE);
 				valid = false;
 			} else {
 				try {
 					plannedStartOfWork = df.parse(from);
 				}
 				catch (ParseException e) {
-					errors.put("plannedStartOfWorkError", "Das Datumsformat von Dienst von ist nicht korrekt.");
+					errors.put(ERRORS_PLANNED_START_OF_WORK_ERROR, ERRORS_PLANNED_START_OF_WORK_ERROR_VALUE);
 					valid = false;
 				}
 			}
 				
 			Date plannedEndOfWork = null;
 			if (dateToString == null || dateToString.equals("") || timeToHoursString == null || timeToMinutesString == null) {
-				errors.put("plannedEndOfWorkMissing", "Dienst bis ist ein Pflichtfeld.");
+				errors.put(ERRORS_PLANNED_END_OF_WORK_MISSING, ERRORS_PLANNED_END_OF_WORK_MISSING_VALUE);
 				valid = false;
 			} else {
 				try {
 					plannedEndOfWork = df.parse(to);
 				} catch (ParseException e) {	
-					errors.put("plannedEndOfWorkError", "Das Datumsformat von Dienst bis ist nicht korrekt.");
+					errors.put(ERRORS_PLANNED_END_OF_WORK_ERROR, ERRORS_PLANNED_END_OF_WORK_ERROR_VALUE);
 					valid = false;
 				}
 			}
 			
 			if (plannedStartOfWork != null) {
 				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
-					errors.put("plannedStartOfWorkTooSmall", "Der Wert von Dienst von ist zu klein.");
+					errors.put(ERRORS_PLANNED_START_OF_WORK_TOO_SMALL, ERRORS_PLANNED_START_OF_WORK_TOO_SMALL_VALUE);
 					valid = false;
 				} else if (plannedStartOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
-					errors.put("plannedStartOfWorkTooBig", "Der Wert von Dienst von ist zu groﬂ.");
+					errors.put(ERRORS_PLANNED_START_OF_WORK_TOO_BIG, ERRORS_PLANNED_START_OF_WORK_TOO_BIG_VALUE);
 					valid = false;
 				}
 			}
 			
 			if (plannedEndOfWork != null) {
 				if (plannedEndOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
-					errors.put("plannedEndOfWorkTooSmall", "Der Wert von Dienst bis ist zu klein.");
+					errors.put(ERRORS_PLANNED_END_OF_WORK_TOO_SMALL, ERRORS_PLANNED_END_OF_WORK_TOO_SMALL_VALUE);
 					valid = false;
 				} else if (plannedEndOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
-					errors.put("plannedEndOfWorkTooBig", "Der Wert von Dienst bis ist zu groﬂ.");
+					errors.put(ERRORS_PLANNED_END_OF_WORK_TOO_BIG, ERRORS_PLANNED_END_OF_WORK_TOO_BIG_VALUE);
 					valid = false;
 				}
 			}
 			
 			if (plannedStartOfWork != null && plannedEndOfWork != null) {
 				if (plannedStartOfWork.getTime() >= plannedEndOfWork.getTime()) {
-					errors.put("period", "Dienst von muss grˆﬂer sein als Dienst bis.");
+					errors.put(ERRORS_PERIOD, ERRORS_PERIOD_VALUE);
 					valid = false;
 				}
 			}
