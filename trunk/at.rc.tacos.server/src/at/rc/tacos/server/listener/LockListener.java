@@ -30,7 +30,7 @@ public class LockListener extends ServerListenerAdapter
 		Lock lock = (Lock)addObject;
 		logger.debug("New lock request: "+lock);
 		//check if the list already contains the lock 
-		if(lockedList.contains(addObject))
+		if(lockedList.contains(lock))
 		{
 			int index = lockedList.indexOf(lock);
 			logger.debug("The lock is existing, editing is denied");

@@ -128,6 +128,7 @@ public class AuthenticationListener extends ServerListenerAdapter
 		{
 			login.setLoggedIn(false);
 			login.setErrorMessage("Unexpected error occured");	
+			logger.error("Unexpectet login result: "+loginResult+". Failed to check the login for the username: "+username);
 			throw new DAOException("AuthenticationListener","Failed to check the login for the username: "+username);
 		}
 	}
