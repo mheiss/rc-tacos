@@ -23,7 +23,7 @@ public class UserLoginDAOMySQL implements UserLoginDAO
 	private final StaffMemberDAO staffDAO = DaoFactory.MYSQL.createStaffMemberDAO();
 
 	@Override
-	public int checkLogin(String username, String pwdHash) throws SQLException
+	public int checkLogin(String username, String pwdHash, boolean isWebClient) throws SQLException
 	{
 		Connection connection = source.getConnection();
 		try

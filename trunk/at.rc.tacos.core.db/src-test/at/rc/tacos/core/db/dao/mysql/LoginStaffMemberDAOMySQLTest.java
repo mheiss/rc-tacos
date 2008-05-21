@@ -105,21 +105,21 @@ public class LoginStaffMemberDAOMySQLTest extends DBTestBase
     @Test
     public void testCheckLogin() throws SQLException
     {
-        int result = loginDAO.checkLogin("user1", "password1");
+        int result = loginDAO.checkLogin("user1", "password1", false);
         Assert.assertEquals(UserLoginDAO.LOGIN_SUCCESSFULL, result);
     }
     
     @Test
     public void testCheckWrongPassword() throws SQLException
     {
-        int result = loginDAO.checkLogin("user1", "password2");
+        int result = loginDAO.checkLogin("user1", "password2", false);
         Assert.assertEquals(UserLoginDAO.LOGIN_FAILED, result); 
     }
     
     @Test
     public void testCheckLoginLocked() throws SQLException
     {
-        int result = loginDAO.checkLogin("user2", "password2");
+        int result = loginDAO.checkLogin("user2", "password2", false);
         Assert.assertEquals(UserLoginDAO.LOGIN_DENIED, result); 
     }
     
