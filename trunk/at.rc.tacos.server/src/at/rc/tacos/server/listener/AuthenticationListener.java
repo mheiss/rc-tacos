@@ -91,7 +91,7 @@ public class AuthenticationListener extends ServerListenerAdapter
 		String password = login.getPassword();
 		boolean isWebClient = login.isWebClient();
 		//check agains the database        
-		int loginResult = userDao.checkLogin(username, password);
+		int loginResult = userDao.checkLogin(username, password, isWebClient);
 		//for security reset the password
 		login.resetPassword();
 		if(loginResult == UserLoginDAO.LOGIN_SUCCESSFULL)
@@ -118,7 +118,7 @@ public class AuthenticationListener extends ServerListenerAdapter
 			login.setErrorMessage("Ihr Account ist gesperrt, bitte kontaktieren Sie den Administrator.");
 			return login;
 		}
-		else if(loginResult == UserLoginDAO.LOGIN_NO_DISPONENT &! isWebClient)
+		else if(loginResult == UserLoginDAO.LOGIN_NO_DISPONENT)
 		{
 			login.setLoggedIn(false);
 			login.setErrorMessage("Ihr Account ist nicht freigeschaltet, bitte wenden Sie sich an den Leitstellenleiter.");
