@@ -414,6 +414,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionBruck);
 		
+		//disable actions if the transport is locked
 		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
 			moveToOutstandingTransportsActionBruck.setEnabled(false);
@@ -440,6 +441,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionKapfenberg);
 		
+		//disable actions if the transport is locked
 		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
 			moveToOutstandingTransportsActionKapfenberg.setEnabled(false);
@@ -466,6 +468,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionLeoben);
 		
+		//disable actions if the transport is locked
 		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
 			moveToOutstandingTransportsActionLeoben.setEnabled(false);
@@ -492,6 +495,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionMariazell);
 		
+		//disable actions if the transport is locked
 		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
 			moveToOutstandingTransportsActionMariazell.setEnabled(false);
@@ -518,6 +522,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionGraz);
 		
+		//disable actions if the transport is locked
 		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
 			moveToOutstandingTransportsActionGraz.setEnabled(false);
@@ -544,6 +549,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionWien);
 		
+		//disable actions if the transport is locked
 		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
 			moveToOutstandingTransportsActionWien.setEnabled(false);

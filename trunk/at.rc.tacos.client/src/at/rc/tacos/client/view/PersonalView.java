@@ -42,6 +42,7 @@ import at.rc.tacos.client.controller.PersonalDeleteEntryAction;
 import at.rc.tacos.client.controller.PersonalEditEntryAction;
 import at.rc.tacos.client.controller.PersonalSignInAction;
 import at.rc.tacos.client.controller.PersonalSignOutAction;
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.PersonalDateFilter;
 import at.rc.tacos.client.providers.PersonalViewContentProvider;
@@ -75,6 +76,10 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	private PersonalSignOutAction signOutAction;
 	private PersonalEditEntryAction editEntryAction;
 	private PersonalDeleteEntryAction deleteEntryAction;
+	
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
+
 
 	/**
 	 * Constructs a new personal view.
@@ -380,6 +385,16 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		else
 		{
 			signOutAction.setEnabled(true);
+			cancelSignOutAction.setEnabled(false);
+		}
+		
+		//disable actions if the vehicle is locked
+		if(lockManager.containsLock(RosterEntry.ID, entry.getRosterId()))
+		{
+			signInAction.setEnabled(false);
+			signOutAction.setEnabled(false);
+			deleteEntryAction.setEnabled(false);
+			cancelSignInAction.setEnabled(false);
 			cancelSignOutAction.setEnabled(false);
 		}
 	}

@@ -392,6 +392,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		manager.add(new Separator());
 		manager.add(createBackTransportAction);
 		
+		//disable actions if the transport is locked
 		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
 			moveToOutstandingTransportsAction.setEnabled(false);

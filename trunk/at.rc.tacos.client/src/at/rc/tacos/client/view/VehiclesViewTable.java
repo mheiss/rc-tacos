@@ -34,6 +34,7 @@ import at.rc.tacos.client.controller.VehicleTableDetachAllStaffMembersAction;
 import at.rc.tacos.client.controller.VehicleTableEditAction;
 import at.rc.tacos.client.controller.VehicleTableSetReadyAction;
 import at.rc.tacos.client.controller.VehicleTableSetRepairStatusAction;
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.VehicleContentProvider;
@@ -41,6 +42,7 @@ import at.rc.tacos.client.providers.VehicleViewTableLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleViewTableSorter;
+import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
 public class VehiclesViewTable extends ViewPart implements PropertyChangeListener
@@ -59,6 +61,10 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
 	private VehicleTableSetReadyAction readyStatus;
 	private VehicleTableSetRepairStatusAction repairStatus;
 	private VehicleTableAtStationAction vehicleAtStationAction;
+	
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
+
 
     /**
      * Constructs a new vehicle view.
@@ -276,6 +282,14 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
 		}
 		else 
 			repairStatus.setEnabled(true);
+		
+		if(lockManager.containsLock(VehicleDetail.ID, vehicle.getVehicleName()))
+		{
+			detachAction.setEnabled(false);
+			vehicleAtStationAction.setEnabled(false);
+			readyStatus.setEnabled(false);
+			repairStatus.setEnabled(false);
+		}
     }
 
     /**

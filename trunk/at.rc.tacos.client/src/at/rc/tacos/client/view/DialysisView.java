@@ -37,7 +37,6 @@ import at.rc.tacos.client.providers.DialysisTransportLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.DialysisTransportSorter;
 import at.rc.tacos.model.DialysisPatient;
-import at.rc.tacos.model.Transport;
 
 public class DialysisView extends ViewPart implements PropertyChangeListener
 {
