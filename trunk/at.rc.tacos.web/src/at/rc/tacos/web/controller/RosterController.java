@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +15,9 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.support.PropertyComparator;
+import org.springframework.util.comparator.CompoundComparator;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
@@ -67,7 +72,7 @@ public class RosterController extends Controller {
 		// Location List
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
-		Location location = userSession.getDefaultFormValues().getRosterDefaultLocation();
+		Location location = userSession.getDefaultFormValues().getDefaultLocation();
 		if (paramLocationId != null && !paramLocationId.equals("")) {
 			if (paramLocationId.equalsIgnoreCase(PARAM_LOCATION_NO_VALUE)) {
 				location = null;
@@ -86,11 +91,11 @@ public class RosterController extends Controller {
 				location = l;
 			}
 		}
-		userSession.getDefaultFormValues().setRosterDefaultLocation(location);
+		userSession.getDefaultFormValues().setDefaultLocation(location);
 		params.put(MODEL_LOCATION_NAME, location);
 		
 		// Get Date and create calendar for datepicker
-		Date date = userSession.getDefaultFormValues().getRosterDefaultDate();	
+		Date date = userSession.getDefaultFormValues().getDefaultDate();	
 		final Calendar calendar = Calendar.getInstance();
 		final int rangeStart = calendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET;
 		final int rangeEnd = calendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET;
@@ -122,7 +127,7 @@ public class RosterController extends Controller {
 				date = dateTemp;
 			}
 		}
-		userSession.getDefaultFormValues().setRosterDefaultDate(date);
+		userSession.getDefaultFormValues().setDefaultDate(date);
 		params.put(MODEL_DATE_NAME, date);
 		
 		final String dateForServerString = formatDateForServer.format(date);
@@ -167,6 +172,14 @@ public class RosterController extends Controller {
 			
 			rosterEntryContainerList.add(rosterEntryContainer);
 		}
+		
+		final Comparator comp = new CompoundComparator(new Comparator[] {
+				new PropertyComparator("plannedStartOfWork", false, true),
+				new PropertyComparator("rosterEntry.staffMember.lastName", false, true),
+				new PropertyComparator("rosterEntry.staffMember.firstName", false, true)
+		});
+		Collections.sort(rosterEntryContainerList, comp);
+		
 		params.put(PARAM_ROSTER_ENTRY_CONTAINER_LIST, rosterEntryContainerList);
 		
 		// Parse message code from other controllers

@@ -44,11 +44,10 @@ public class EditStaffMemberController extends Controller {
 	private static final String MODEL_STAFF_MEMBER_NAME = "staffMember";
 	private static final String MODEL_STAFF_MEMBER_LIST_NAME = "staffMemberList";
 	
+	private static final String MODEL_LOGIN_NAME = "login";
+	
 	private static final String ACTION_NAME = "action";
 	private static final String ACTION_UPDATE_STAFF_MEMBER = "updateStaffMember";
-
-	private static final String PARAM_PERSONNEL_NUMBER_NAME = "personnelNumber";
-	private static final String MODEL_PERSONNEL_NUMBER_NAME = "personnelNumber";
 	
 	private static final String PARAM_FIRSTNAME_NAME = "firstName";
 	private static final String MODEL_FIRSTNAME_NAME = "firstName";
@@ -91,9 +90,6 @@ public class EditStaffMemberController extends Controller {
 	private static final String MODEL_COMPETENCE_LIST_NAME = "competenceList";
 	private static final String MODEL_COMPETENCE_TABLE_NAME = "competenceTable";
 	
-	private static final String PARAM_USERNAME_NAME = "username";
-	private static final String MODEL_USERNAME_NAME = "username";
-	
 	private static final String PARAM_PASSWORD_NAME = "passwd";
 	
 	private static final String PARAM_REPEATED_PASSWORD_NAME = "repeatedPassword";
@@ -109,13 +105,6 @@ public class EditStaffMemberController extends Controller {
 	private static final String MODEL_EDITED_COUNT_NAME = "editedCount";
 	
 	private static final String MODEL_ERRORS_NAME = "errors";
-	
-	private static final String ERRORS_PERSONNEL_NUMBER = "personnelNumber";
-	private static final String ERRORS_PERSONNEL_NUMBER_VALUE = "Die angegebene Nummer hat nicht das richtige Format.";
-	private static final String ERRORS_PERSONNEL_NUMBER_MISSING = "personnelNumberMissing";
-	private static final String ERRORS_PERSONNEL_NUMBER_MISSING_VALUE = "Personalnummer ist ein Pflichtfeld.";
-	private static final String ERRORS_PERSONNEL_NUMBER_EXISTS = "personnelNumberExists";
-	private static final String ERRORS_PERSONNEL_NUMBER_EXISTS_VALUE = "Die angegebene Personalnummer existiert bereits.";
 	
 	private static final String ERRORS_FIRST_NAME_MISSING = "firstNameMissing";
 	private static final String ERRORS_FIRST_NAME_MISSING_VALUE = "Vorname ist ein Pflichtfeld.";
@@ -147,13 +136,6 @@ public class EditStaffMemberController extends Controller {
 	
 	private static final String ERRORS_COMPETENCES = "competences";
 	private static final String ERRORS_COMPETENCES_VALUE = "Kompetenz Volontär ist verpflichtend.";
-	
-	private static final String ERRORS_USERNAME_MISSING = "usernameMissing";
-	private static final String ERRORS_USERNAME_MISSING_VALUE = "Benutzername ist ein Pflichtfeld.";
-	private static final String ERRORS_USERNAME_TOO_LONG = "usernameTooLong";
-	private static final String ERRORS_USERNAME_TOO_LONG_VALUE = "Benutzername ist zu lang. Es sind maximal 30 Zeichen erlaubt.";
-	private static final String ERRORS_USERNAME_EXISTS = "usernameExists";
-	private static final String ERRORS_USERNAME_EXISTS_VALUE = "Der angegebene Benutzername existiert bereits.";
 	
 	private static final String ERRORS_PASSWORD_MISSING = "passwordMissing";
 	private static final String ERRORS_PASSWORD_MISSING_VALUE = "Passwort ist ein Pflichtfeld.";
@@ -229,8 +211,6 @@ public class EditStaffMemberController extends Controller {
 			    } else {
 			    	if (item.getFieldName().equals(ACTION_NAME)) {
 			    		paramAction = item.getString();
-			    	} else if (item.getFieldName().equals(PARAM_PERSONNEL_NUMBER_NAME)) {
-			    		paramPersonnelNumber = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_FIRSTNAME_NAME)) {
 			    		paramFirstName = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_LASTNAME_NAME)) {
@@ -249,8 +229,6 @@ public class EditStaffMemberController extends Controller {
 			    		paramCompetenceId = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_COMPETENCE_HIDDEN_NAME)) {
 			    		paramCompetenceHidden = item.getString();
-			    	} else if (item.getFieldName().equals(PARAM_USERNAME_NAME)) {
-			    		paramUsername = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_PASSWORD_NAME)) {
 			    		paramPassword = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_REPEATED_PASSWORD_NAME)) {
@@ -274,7 +252,7 @@ public class EditStaffMemberController extends Controller {
 			paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		}
 		int staffMemberId = 0;
-		StaffMember staffMember = userSession.getDefaultFormValues().getStaffMemberDefaultStaffMember();
+		StaffMember staffMember = userSession.getDefaultFormValues().getDefaultStaffMember();
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("")) {
 			if (paramStaffMemberId.equalsIgnoreCase("noValue")) {
 				staffMember = null;
@@ -293,7 +271,7 @@ public class EditStaffMemberController extends Controller {
 				staffMember = sm;
 			}
 		}
-		userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(staffMember);
+		userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
 		params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
 		
 		final QueryFilter loginUsernameF = new QueryFilter();
@@ -303,19 +281,10 @@ public class EditStaffMemberController extends Controller {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		final Login login = (Login)loginList.get(0);
+		params.put(MODEL_LOGIN_NAME, login);
 		
 		// Check if Staff Member is selected
-		if (staffMember != null && login != null) {
-			// Personnel Number
-			final String defaultPersonnelNumber = Integer.toString(staffMember.getStaffMemberId());
-			String personnelNumber = null;
-			personnelNumber = paramPersonnelNumber;
-			if (personnelNumber != null) {
-				params.put(MODEL_PERSONNEL_NUMBER_NAME, personnelNumber);
-			} else {
-				params.put(MODEL_PERSONNEL_NUMBER_NAME, defaultPersonnelNumber);
-			}
-			
+		if (staffMember != null && login != null) {			
 			// First Name
 			final String defaultFirstName = staffMember.getFirstName();
 			String firstName = null;
@@ -531,17 +500,7 @@ public class EditStaffMemberController extends Controller {
 				params.put(MODEL_COMPETENCE_TABLE_NAME, competenceTable);
 			} else {
 				params.put(MODEL_COMPETENCE_TABLE_NAME, defaultCompetenceTable);
-			}
-			
-			// Username
-			final String defaultUsername = login.getUsername();
-			String username = null;
-			username = paramUsername;
-			if (username != null) {
-				params.put(MODEL_USERNAME_NAME, username);
-			} else {
-				params.put(MODEL_USERNAME_NAME, defaultUsername);
-			}
+			}			
 			
 			// Password
 			String password = null;
@@ -601,28 +560,6 @@ public class EditStaffMemberController extends Controller {
 				}
 				if (login == null) {
 					throw new IllegalArgumentException("Login must not be null.");
-				}
-				// Validate personnel number
-				if (personnelNumber == null || personnelNumber.trim().equals("")) {
-					valid = false;
-					errors.put(ERRORS_PERSONNEL_NUMBER_MISSING, ERRORS_PERSONNEL_NUMBER_MISSING_VALUE);
-				} else if (!Pattern.matches(ValidationPatterns.STAFF_MEMBER_ID_VALIDATION_PATTERN, personnelNumber)) {
-					valid = false;
-					errors.put(ERRORS_PERSONNEL_NUMBER, ERRORS_PERSONNEL_NUMBER_VALUE);
-				} else {
-					//
-					params.put(MODEL_LOCK_USER_NAME, lockUser);
-					
-					// Check double staff member Ids
-					final QueryFilter staffMemberIdFilter = new QueryFilter();
-					staffMemberIdFilter.add(IFilterTypes.ID_FILTER, personnelNumber);
-					final List<AbstractMessage> doubleStaffMemberIdList = connection.sendListingRequest(StaffMember.ID, staffMemberIdFilter);
-					if (StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
-						if (doubleStaffMemberIdList.size() > 1) {
-							valid = false;
-							errors.put(ERRORS_PERSONNEL_NUMBER_EXISTS, ERRORS_PERSONNEL_NUMBER_EXISTS_VALUE);
-						}
-					}
 				}
 				
 				// Validate firstname
@@ -710,28 +647,7 @@ public class EditStaffMemberController extends Controller {
 		        	valid = false;
 		        	errors.put(ERRORS_COMPETENCES, ERRORS_COMPETENCES_VALUE);
 		        }
-		        
-		        // Validate username
-		        if (username == null || username.trim().equals("")) {
-		        	valid = false;
-		        	errors.put(ERRORS_USERNAME_MISSING, ERRORS_USERNAME_MISSING_VALUE);
-		        } else if (username.length() > 30) {
-		        	valid = false;
-		        	errors.put(ERRORS_USERNAME_TOO_LONG, ERRORS_USERNAME_TOO_LONG_VALUE);
-		        } else {
-					// Check double username
-					final QueryFilter loginUsernameFilter = new QueryFilter();
-					loginUsernameFilter.add(IFilterTypes.USERNAME_FILTER, username);
-					final List<AbstractMessage> doubleUsername = connection.sendListingRequest(Login.ID, loginUsernameFilter);
-					if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
-						if (doubleUsername.size() > 1) {
-							valid = false;
-							errors.put(ERRORS_USERNAME_EXISTS, ERRORS_USERNAME_EXISTS_VALUE);
-						}
-					}
-		        }
-		        
-		        
+		        	        
 				if (password != null && !password.trim().equals("") && repeatedPassword != null && !repeatedPassword.trim().equals("")) {
 			        // Validate password
 			        if (password == null || password.trim().equals("")) {
@@ -767,8 +683,6 @@ public class EditStaffMemberController extends Controller {
 				if (valid) {					
 					// Create login for staff member
 			        
-			        login.setUsername(username);
-			        
 			        if (password != null && !password.trim().equals("")) {
 			        	login.setPassword(password);
 			        }
@@ -776,8 +690,6 @@ public class EditStaffMemberController extends Controller {
 			        login.setIslocked(lockUser);
 			        
 			        login.setAuthorization(staffMemberAuthorization);
-					
-					staffMember.setStaffMemberId(Integer.parseInt(personnelNumber));
 					
 					staffMember.setFirstName(firstName);
 					
@@ -798,15 +710,13 @@ public class EditStaffMemberController extends Controller {
 					
 					// Write photo to disk
 					if (photo != null) {
-				        final File uploadedFile = new File(fileUpload.getString("editStaffMember.photo.absolute.dir") + "/" + personnelNumber);
+				        final File uploadedFile = new File(fileUpload.getString("editStaffMember.photo.absolute.dir") + "/" + staffMember.getStaffMemberId());
 				        photo.write(uploadedFile);
 					}
 			        
 			        staffMember.setPrimaryLocation(location);
 			        
 			        staffMember.setCompetenceList(competenceTable);
-			        
-			        staffMember.setUserName(username);
 			        
 			        login.setUserInformation(staffMember);
 			        
@@ -819,6 +729,9 @@ public class EditStaffMemberController extends Controller {
 					if(!connection.getContentType().equalsIgnoreCase(StaffMember.ID)) {
 						throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 					}
+					
+					userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
+					userSession.getDefaultFormValues().setDefaultLocation(location);
 					
 					// Create new staff member list and put staff member and staff member list to model.
 					// Must be done like this because staff member id could be changed and the id's in

@@ -382,7 +382,7 @@ public class AddStaffMemberController extends Controller {
 		
 		// Location
 		int locationId = 0;
-		final Location defaultLocation = null;
+		final Location defaultLocation = userSession.getDefaultFormValues().getDefaultLocation();
 		Location location = null;
 		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);
@@ -737,7 +737,8 @@ public class AddStaffMemberController extends Controller {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}
 				
-				userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(staffMember);
+				userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
+				userSession.getDefaultFormValues().setDefaultLocation(location);
 				
 				params.put(MODEL_ADDED_COUNT_NAME, 1);
 			}
