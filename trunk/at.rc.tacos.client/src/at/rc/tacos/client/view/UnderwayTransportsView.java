@@ -467,9 +467,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(copyTransportAction);
 		manager.add(copyTransportDetailsIntoClipboardAction);
 		
-		//create a list of ready vehicles and disable the selection if the transport is locked
-		boolean locked = lockManager.containsLock(Transport.ID, transport.getTransportId());
-		if(locked)
+		//disable the selection if the transport is locked
+		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
 			//transport detail actions
 			setAccompanyingPersonAction.setEnabled(false);
