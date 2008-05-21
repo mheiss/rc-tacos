@@ -2445,7 +2445,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if (viewerToStreet.getCombo().getText().length() > 100)
 		{
 			getShell().getDisplay().beep();
-			setErrorMessage("Der Straßenname (nach)darf höchstens 100 Zeichen lang sein");
+			setErrorMessage("Der Straßenname (nach) darf höchstens 100 Zeichen lang sein");
 			return false;
 		}
 
@@ -2454,7 +2454,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if (viewerToCity.getCombo().getText().length() > 50)
 		{
 			getShell().getDisplay().beep();
-			setErrorMessage("Der Stadtname (nach)darf höchstens 50 Zeichen lang sein");
+			setErrorMessage("Der Stadtname (nach) darf höchstens 50 Zeichen lang sein");
 			return false;
 		}
 
