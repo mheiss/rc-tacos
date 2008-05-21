@@ -77,7 +77,7 @@ public class DeleteRosterEntryController extends Controller {
 		if (authorization.equals(Login.AUTH_USER)) {
 			final Calendar deadlineCalendar = Calendar.getInstance();
 			deadlineCalendar.setTime(new Date(rosterEntry.getPlannedStartOfWork()));
-			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
+			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);
 			final Date currDate = new Date();
 			if (currDate.getTime() > deadlineCalendar.getTimeInMillis()) {
 				throw new IllegalArgumentException("Error: Deadline for Roster Entry exceeded.");

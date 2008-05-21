@@ -105,7 +105,70 @@ public class EditStaffMemberController extends Controller {
 	private static final String PARAM_AUTHORIZATION_NO_VALUE = "noValue";
 	private static final String MODEL_AUTHORIZATION_NAME = "authorization";
 	
-	private static final int STAFF_MEMBER_MAX_AGE = 100;
+	private static final String MODEL_EDITED_COUNT_NAME = "editedCount";
+	
+	private static final String MODEL_ERRORS_NAME = "errors";
+	
+	private static final String ERRORS_PERSONNEL_NUMBER = "personnelNumber";
+	private static final String ERRORS_PERSONNEL_NUMBER_VALUE = "Die angegebene Nummer hat nicht das richtige Format.";
+	private static final String ERRORS_PERSONNEL_NUMBER_MISSING = "personnelNumberMissing";
+	private static final String ERRORS_PERSONNEL_NUMBER_MISSING_VALUE = "Personalnummer ist ein Pflichtfeld.";
+	private static final String ERRORS_PERSONNEL_NUMBER_EXISTS = "personnelNumberExists";
+	private static final String ERRORS_PERSONNEL_NUMBER_EXISTS_VALUE = "Die angegebene Personalnummer existiert bereits.";
+	
+	private static final String ERRORS_FIRST_NAME_MISSING = "firstNameMissing";
+	private static final String ERRORS_FIRST_NAME_MISSING_VALUE = "Vorname ist ein Pflichtfeld.";
+	private static final String ERRORS_FIRST_NAME_TOO_LONG = "firstNameTooLong";
+	private static final String ERRORS_FIRST_NAME_TOO_LONG_VALUE = "Vorname ist zu lang. Es sind maximal 30 Zeichen erlaubt.";
+	
+	private static final String ERRORS_LAST_NAME_MISSING = "lastNameMissing";
+	private static final String ERRORS_LAST_NAME_MISSING_VALUE = "Nachname ist ein Pflichtfeld.";
+	private static final String ERRORS_LAST_NAME_TOO_LONG = "lastNameTooLong";
+	private static final String ERRORS_LAST_NAME_TOO_LONG_VALUE = "Nachname ist zu lang. Es sind maximal 30 Zeichen erlaubt.";
+	
+	private static final String ERRORS_BIRTHDATE = "birthdate";
+	private static final String ERRORS_BIRTHDATE_VALUE = "Das Datumsformat von Geburtsdatum ist nicht korrekt.";
+	private static final String ERRORS_BIRTHDATE_TOO_SMALL = "birthdateTooSmall";
+	private static final String ERRORS_BIRTHDATE_TOO_SMALL_VALUE = "Der Wert von Geburtsdatum ist zu klein.";
+	private static final String ERRORS_BIRTHDATE_TOO_BIG = "birthdateTooBig";
+	private static final String ERRORS_BIRTHDATE_TOO_BIG_VALUE = "Der Wert von Geburtsdatum ist zu groß.";
+	
+	private static final String ERRORS_SEX = "sex";
+	private static final String ERRORS_SEX_VALUE = "Geschlecht ist ein Pflichtfeld.";
+	
+	private static final String ERRORS_PHOTO_TOO_BIG = "photoTooBig";
+	private static final String ERRORS_PHOTO_TOO_BIG_VALUE = "Die angegebene Datei ist zu groß.";
+	private static final String ERRORS_PHOTO_WRONG_FORMAT = "photoWrongFormat";
+	private static final String ERRORS_PHOTO_WRONG_FORMAT_VALUE = "Die angegebene Datei hat das falsche Format.";
+	
+	private static final String ERRORS_LOCATION = "location";
+	private static final String ERRORS_LOCATION_VALUE = "Dienststelle ist ein Pflichtfeld.";
+	
+	private static final String ERRORS_COMPETENCES = "competences";
+	private static final String ERRORS_COMPETENCES_VALUE = "Kompetenz Volontär ist verpflichtend.";
+	
+	private static final String ERRORS_USERNAME_MISSING = "usernameMissing";
+	private static final String ERRORS_USERNAME_MISSING_VALUE = "Benutzername ist ein Pflichtfeld.";
+	private static final String ERRORS_USERNAME_TOO_LONG = "usernameTooLong";
+	private static final String ERRORS_USERNAME_TOO_LONG_VALUE = "Benutzername ist zu lang. Es sind maximal 30 Zeichen erlaubt.";
+	private static final String ERRORS_USERNAME_EXISTS = "usernameExists";
+	private static final String ERRORS_USERNAME_EXISTS_VALUE = "Der angegebene Benutzername existiert bereits.";
+	
+	private static final String ERRORS_PASSWORD_MISSING = "passwordMissing";
+	private static final String ERRORS_PASSWORD_MISSING_VALUE = "Passwort ist ein Pflichtfeld.";
+	private static final String ERRORS_PASSWORD_TOO_LONG = "passwordTooLong";
+	private static final String ERRORS_PASSWORD_TOO_LONG_VALUE = "Passwort ist zu lang. Es sind maximal 255 Zeichen erlaubt.";
+	
+	private static final String ERRORS_REPEATED_PASSWORD_MISSING = "repeatedPasswordMissing";
+	private static final String ERRORS_REPEATED_PASSWORD_MISSING_VALUE = "Passwort wiederholen ist ein Pflichtfeld.";
+	private static final String ERRORS_REPEATED_PASSWORD_TOO_LONG = "repeatedPasswordTooLong";
+	private static final String ERRORS_REPEATED_PASSWORD_TOO_LONG_VALUE = "Passwort wiederholen ist zu lang. Es sind maximal 255 Zeichen erlaubt.";
+	
+	private static final String ERRORS_PASSWORDS_NOT_EQUAL = "passwordsNotEqual";
+	private static final String ERRORS_PASSWORDS_NOT_EQUAL_VALUE = "Die zwei eingegebenen Passwörter stimmen nicht überein.";
+	
+	private static final String ERRORS_AUTHORIZATION = "authorization";
+	private static final String ERRORS_AUTHORIZATION_VALUE = "Authorisierung ist ein Pflichtfeld.";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
@@ -527,10 +590,10 @@ public class EditStaffMemberController extends Controller {
 				// Validate personnel number
 				if (personnelNumber == null || personnelNumber.trim().equals("")) {
 					valid = false;
-					errors.put("personnelNumberMissing", "Personalnummer ist ein Pflichtfeld.");
+					errors.put(ERRORS_PERSONNEL_NUMBER_MISSING, ERRORS_PERSONNEL_NUMBER_MISSING_VALUE);
 				} else if (!Pattern.matches(ValidationPatterns.STAFF_MEMBER_ID_VALIDATION_PATTERN, personnelNumber)) {
 					valid = false;
-					errors.put("personnelNumber", "Die angegebene Nummer hat nicht das richtige Format.");
+					errors.put(ERRORS_PERSONNEL_NUMBER, ERRORS_PERSONNEL_NUMBER_VALUE);
 				} else {		
 					// Check double staff member Ids
 					final QueryFilter staffMemberIdFilter = new QueryFilter();
@@ -539,7 +602,7 @@ public class EditStaffMemberController extends Controller {
 					if (StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 						if (doubleStaffMemberIdList.size() > 1) {
 							valid = false;
-							errors.put("personnelNumberExists", "Die angegebene Personalnummer existiert bereits.");
+							errors.put(ERRORS_PERSONNEL_NUMBER_EXISTS, ERRORS_PERSONNEL_NUMBER_EXISTS_VALUE);
 						}
 					}
 				}
@@ -547,19 +610,19 @@ public class EditStaffMemberController extends Controller {
 				// Validate firstname
 				if (firstName == null || firstName.trim().equals("")) {
 					valid = false;
-					errors.put("firstNameMissing", "Vorname ist ein Pflichtfeld.");
+					errors.put(ERRORS_FIRST_NAME_MISSING, ERRORS_FIRST_NAME_MISSING_VALUE);
 				} else if (firstName.length() > 30) {
 					valid = false;
-					errors.put("firstNameTooLong", "Vorname ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
+					errors.put(ERRORS_FIRST_NAME_TOO_LONG, ERRORS_FIRST_NAME_TOO_LONG_VALUE);
 				}
 				
 				// Validate lastname
 				if (lastName == null || lastName.trim().equals("")) {
 					valid = false;
-					errors.put("lastNameMissing", "Nachname ist ein Pflichtfeld.");
+					errors.put(ERRORS_LAST_NAME_MISSING, ERRORS_LAST_NAME_MISSING_VALUE);
 				} else if (lastName.length() > 30) {
 					valid = false;
-					errors.put("lastNameTooLong", "Nachname ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
+					errors.put(ERRORS_LAST_NAME_TOO_LONG, ERRORS_LAST_NAME_TOO_LONG_VALUE);
 				}
 				
 				// Validate birthdate
@@ -567,7 +630,7 @@ public class EditStaffMemberController extends Controller {
 				Date birthdate = null;
 				
 				final Calendar rangeStartCalendar = Calendar.getInstance();
-				rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - STAFF_MEMBER_MAX_AGE);
+				rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - MODEL_CALENDAR_MAX_AGE);
 				
 				final Calendar rangeEndCalendar = Calendar.getInstance();
 				rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR));
@@ -577,18 +640,16 @@ public class EditStaffMemberController extends Controller {
 						birthdate = df.parse(birthdateString);
 					} catch (ParseException e) {
 						valid = false;
-						errors.put("birthdate", "Das Datumsformat von Geburtsdatum ist nicht korrekt.");
+						errors.put(ERRORS_BIRTHDATE, ERRORS_BIRTHDATE_VALUE);
 					}
 					
 					if (birthdate != null) {
 						if (birthdate.getTime() < rangeStartCalendar.getTimeInMillis()) {
 							valid = false;
-							errors.put("birthdateTooSmall", "Der Wert von Geburtsdatum ist zu klein.");
-						}
-						
-						if (birthdate.getTime() > rangeEndCalendar.getTimeInMillis()) {
+							errors.put(ERRORS_BIRTHDATE_TOO_SMALL, ERRORS_BIRTHDATE_TOO_SMALL_VALUE);
+						} else if (birthdate.getTime() > rangeEndCalendar.getTimeInMillis()) {
 							valid = false;
-							errors.put("birthdateTooBig", "Der Wert von Geburtsdatum ist zu groß.");
+							errors.put(ERRORS_BIRTHDATE_TOO_BIG, ERRORS_BIRTHDATE_TOO_BIG_VALUE);
 						}
 					}
 				}
@@ -596,7 +657,7 @@ public class EditStaffMemberController extends Controller {
 				// Validate sex
 				if (sex == null) {
 					valid = false;
-					errors.put("sex", "Geschlecht ist ein Pflichtfeld.");
+					errors.put(ERRORS_SEX, ERRORS_SEX_VALUE);
 				}
 							
 				// Validate photo
@@ -606,17 +667,17 @@ public class EditStaffMemberController extends Controller {
 			        long sizeInBytes = photo.getSize();
 			        if (sizeInBytes > Long.parseLong(fileUpload.getString("editStaffMember.photo.maxsize"))) {
 			        	valid = false;
-			        	errors.put("photoTooBig", "Die angegebene Datei ist zu groß.");
+			        	errors.put(ERRORS_PHOTO_TOO_BIG, ERRORS_PHOTO_TOO_BIG_VALUE);
 			        } else if (!Pattern.matches(fileUpload.getString("editStaffMember.photo.contentType"), contentType)) {
 			        	valid = false;
-			        	errors.put("photoWrongFormat", "Die angegebene Datei hat das falsche Format.");
+			        	errors.put(ERRORS_PHOTO_WRONG_FORMAT, ERRORS_PHOTO_WRONG_FORMAT_VALUE);
 			        }
 				}
 		        
 				// Validate location
 		        if (location == null) {
 		        	valid = false;
-		        	errors.put("location", "Dienststelle ist ein Pflichtfeld.");
+		        	errors.put(ERRORS_LOCATION, ERRORS_LOCATION_VALUE);
 		        }
 				
 				// Validate competences
@@ -629,16 +690,16 @@ public class EditStaffMemberController extends Controller {
 		        }
 		        if (!volunteerFound) {
 		        	valid = false;
-		        	errors.put("competences", "Kompetenz Volontär ist verpflichtend.");
+		        	errors.put(ERRORS_COMPETENCES, ERRORS_COMPETENCES_VALUE);
 		        }
 		        
 		        // Validate username
 		        if (username == null || username.trim().equals("")) {
 		        	valid = false;
-		        	errors.put("usernameMissing", "Benutzername ist ein Pflichtfeld.");
+		        	errors.put(ERRORS_USERNAME_MISSING, ERRORS_USERNAME_MISSING_VALUE);
 		        } else if (username.length() > 30) {
 		        	valid = false;
-		        	errors.put("usernameTooLong", "Benutzername ist zu lang. Es sind maximal 30 Zeichen erlaubt.");
+		        	errors.put(ERRORS_USERNAME_TOO_LONG, ERRORS_USERNAME_TOO_LONG_VALUE);
 		        } else {
 					// Check double username
 					final QueryFilter loginUsernameFilter = new QueryFilter();
@@ -647,7 +708,7 @@ public class EditStaffMemberController extends Controller {
 					if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
 						if (doubleUsername.size() > 1) {
 							valid = false;
-							errors.put("usernameExists", "Der angegebene Benutzername existiert bereits.");
+							errors.put(ERRORS_USERNAME_EXISTS, ERRORS_USERNAME_EXISTS_VALUE);
 						}
 					}
 		        }
@@ -657,32 +718,32 @@ public class EditStaffMemberController extends Controller {
 			        // Validate password
 			        if (password == null || password.trim().equals("")) {
 			        	valid = false;
-			        	errors.put("passwordMissing", "Passwort ist ein Pflichtfeld.");
+			        	errors.put(ERRORS_PASSWORD_MISSING, ERRORS_PASSWORD_MISSING_VALUE);
 			        } else if (password.length() > 255) {
 			        	valid = false;
-			        	errors.put("passwordTooLong", "Passwort ist zu lang. Es sind maximal 255 Zeichen erlaubt.");
+			        	errors.put(ERRORS_PASSWORD_TOO_LONG, ERRORS_PASSWORD_TOO_LONG_VALUE);
 			        }
 			        
 			        // Validate repeated password
 			        if (repeatedPassword == null || repeatedPassword.trim().equals("")) {
 			        	valid = false;
-			        	errors.put("repeatedPasswordMissing", "Passwort wiederholen ist ein Pflichtfeld.");
+			        	errors.put(ERRORS_REPEATED_PASSWORD_MISSING, ERRORS_REPEATED_PASSWORD_MISSING_VALUE);
 			        } else if (repeatedPassword.length() > 255) {
 			        	valid = false;
-			        	errors.put("repeatedPasswordTooLong", "Passwort wiederholen ist zu lang. Es sind maximal 255 Zeichen erlaubt.");
+			        	errors.put(ERRORS_REPEATED_PASSWORD_TOO_LONG, ERRORS_REPEATED_PASSWORD_TOO_LONG_VALUE);
 			        }
 			        
 			        // Validate passwords
 			        if (!password.equals(repeatedPassword)) {
 			        	valid = false;
-			        	errors.put("passwordsNotEqual", "Die zwei eingegebenen Passwörter stimmen nicht überein.");
+			        	errors.put(ERRORS_PASSWORDS_NOT_EQUAL, ERRORS_PASSWORDS_NOT_EQUAL_VALUE);
 			        }
 				}
 		        
 		        // Validate authorization
 		        if (staffMemberAuthorization == null) {
 		        	valid = false;
-		        	errors.put("authorization", "Authorisierung ist ein Pflichtfeld.");
+		        	errors.put(ERRORS_AUTHORIZATION, ERRORS_AUTHORIZATION);
 		        }
 		        
 				if (valid) {					
@@ -743,10 +804,10 @@ public class EditStaffMemberController extends Controller {
 					
 					userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(staffMember);
 					
-					params.put("editedCount", 1);
+					params.put(MODEL_EDITED_COUNT_NAME, 1);
 				}
 			}
-			params.put("errors", errors);
+			params.put(MODEL_ERRORS_NAME, errors);
 		}
 		
 		return params;

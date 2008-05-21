@@ -83,6 +83,10 @@ public class AddRosterEntryController extends Controller {
 	private static final String MODEL_TIME_TO_HOURS_NAME = "timeToHours";
 	private static final String MODEL_TIME_TO_MINUTES_NAME= "timeToMinutes";
 	
+	private static final String MODEL_ADDED_COUNT_NAME = "addedCount";
+	
+	private static final String MODEL_ERRORS_NAME = "errors";
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -346,10 +350,10 @@ public class AddRosterEntryController extends Controller {
 			}
 			
 			final Calendar rangeStartCalendar = Calendar.getInstance();
-			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - 10);
+			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET);
 			
 			final Calendar rangeEndCalendar = Calendar.getInstance();
-			rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR) + 1);
+			rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET);
 			
 			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			
@@ -384,8 +388,7 @@ public class AddRosterEntryController extends Controller {
 				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
 					errors.put("plannedStartOfWorkTooSmall", "Der Wert von Dienst von ist zu klein.");
 					valid = false;
-				}
-				if (plannedStartOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
+				} else if (plannedStartOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
 					errors.put("plannedStartOfWorkTooBig", "Der Wert von Dienst von ist zu groﬂ.");
 					valid = false;
 				}
@@ -395,8 +398,7 @@ public class AddRosterEntryController extends Controller {
 				if (plannedEndOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
 					errors.put("plannedEndOfWorkTooSmall", "Der Wert von Dienst bis ist zu klein.");
 					valid = false;
-				}
-				if (plannedEndOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
+				} else if (plannedEndOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
 					errors.put("plannedEndOfWorkTooBig", "Der Wert von Dienst bis ist zu groﬂ.");
 					valid = false;
 				}
@@ -437,12 +439,12 @@ public class AddRosterEntryController extends Controller {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}
 				
-				params.put("addedCount", 1);
+				params.put(MODEL_ADDED_COUNT_NAME, 1);
 				userSession.getDefaultFormValues().setRosterDefaultLocation(location);
 				userSession.getDefaultFormValues().setRosterDefaultDate(plannedStartOfWork);
 			}
 		}
-		params.put("errors", errors);
+		params.put(MODEL_ERRORS_NAME, errors);
 		return params;
 	}
 }

@@ -91,6 +91,8 @@ public class EditRosterEntryController extends Controller {
 	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
 	private static final String PARAM_MESSAGE_CODE_EDITED = "edited";
 	
+	private static final String MODEL_ERRORS_NAME = "errors";
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -137,7 +139,7 @@ public class EditRosterEntryController extends Controller {
 		if (authorization.equals(Login.AUTH_USER)) {
 			final Calendar deadlineCalendar = Calendar.getInstance();
 			deadlineCalendar.setTime(new Date(rosterEntry.getPlannedStartOfWork()));
-			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
+			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);
 			final Date currDate = new Date();
 			if (currDate.getTime() > deadlineCalendar.getTimeInMillis()) {
 				throw new IllegalArgumentException("Error: Deadline for Roster Entry exceeded.");
@@ -398,10 +400,10 @@ public class EditRosterEntryController extends Controller {
 			}
 			
 			final Calendar rangeStartCalendar = Calendar.getInstance();
-			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - 10);
+			rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET);
 			
 			final Calendar rangeEndCalendar = Calendar.getInstance();
-			rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR) + 1);
+			rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET);
 			
 			final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			
@@ -436,8 +438,7 @@ public class EditRosterEntryController extends Controller {
 				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
 					errors.put("plannedStartOfWorkTooSmall", "Der Wert von Dienst von ist zu klein.");
 					valid = false;
-				}
-				if (plannedStartOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
+				} else if (plannedStartOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
 					errors.put("plannedStartOfWorkTooBig", "Der Wert von Dienst von ist zu groﬂ.");
 					valid = false;
 				}
@@ -447,8 +448,7 @@ public class EditRosterEntryController extends Controller {
 				if (plannedEndOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
 					errors.put("plannedEndOfWorkTooSmall", "Der Wert von Dienst bis ist zu klein.");
 					valid = false;
-				}
-				if (plannedEndOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
+				} else if (plannedEndOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
 					errors.put("plannedEndOfWorkTooBig", "Der Wert von Dienst bis ist zu groﬂ.");
 					valid = false;
 				}
@@ -488,7 +488,7 @@ public class EditRosterEntryController extends Controller {
 				context.getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 			} 
 		}
-		params.put("errors", errors);
+		params.put(MODEL_ERRORS_NAME, errors);
 		return params;
 	}
 }
