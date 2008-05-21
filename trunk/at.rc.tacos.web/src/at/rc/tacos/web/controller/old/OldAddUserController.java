@@ -1,4 +1,4 @@
-package at.rc.tacos.web.controller;
+package at.rc.tacos.web.controller.old;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.controller.Controller;
 import at.rc.tacos.web.session.UserSession;
 
 public class OldAddUserController extends Controller

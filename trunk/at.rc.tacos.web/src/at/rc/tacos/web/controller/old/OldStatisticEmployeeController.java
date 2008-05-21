@@ -1,4 +1,4 @@
-package at.rc.tacos.web.controller;
+package at.rc.tacos.web.controller.old;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.web.controller.Controller;
 import at.rc.tacos.web.session.UserSession;
 
 
