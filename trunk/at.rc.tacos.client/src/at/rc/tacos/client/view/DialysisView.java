@@ -29,6 +29,7 @@ import at.rc.tacos.client.controller.DialysisDeleteAction;
 import at.rc.tacos.client.controller.DialysisEditAction;
 import at.rc.tacos.client.controller.DialysisTransportNowAction;
 import at.rc.tacos.client.controller.RefreshViewAction;
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.DialysisTransportContentProvider;
@@ -36,6 +37,7 @@ import at.rc.tacos.client.providers.DialysisTransportLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.DialysisTransportSorter;
 import at.rc.tacos.model.DialysisPatient;
+import at.rc.tacos.model.Transport;
 
 public class DialysisView extends ViewPart implements PropertyChangeListener
 {
@@ -50,6 +52,10 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 	private DialysisEditAction dialysisEditAction;
 	private DialysisDeleteAction dialysisDeleteAction;
 	private DialysisTransportNowAction dialysisTransportNowAction;
+	
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
+
 
 	/**
 	 * Constructs a new outstanding transports view adds listeners.
@@ -310,6 +316,12 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		manager.add(dialysisDeleteAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(dialysisTransportNowAction);
+		
+		if(lockManager.containsLock(DialysisPatient.ID, dia.getId()))
+		{
+			dialysisDeleteAction.setEnabled(false);
+			dialysisTransportNowAction.setEnabled(false);
+		}
 	}
 	/**
 	 * Passing the focus request to the viewer's control.

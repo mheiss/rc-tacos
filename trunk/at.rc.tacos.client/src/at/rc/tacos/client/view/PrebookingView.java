@@ -38,6 +38,7 @@ import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.PrebookingViewContentProvider;
 import at.rc.tacos.client.providers.PrebookingViewLabelProvider;
@@ -106,6 +107,9 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 	//the currently filtered date
 	private Calendar filteredDate = Calendar.getInstance();
+	
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
 	/**
 	 * Constructs a new journal view.
@@ -409,6 +413,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(cancelTransportActionBruck);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionBruck);
+		
+		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+		{
+			moveToOutstandingTransportsActionBruck.setEnabled(false);
+			cancelTransportActionBruck.setEnabled(false);
+			copyTransportActionBruck.setEnabled(false);
+		}
 	}
 	private void fillContextMenuKapfenberg(IMenuManager manager, TableViewer viewer)
 	{
@@ -428,6 +439,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(cancelTransportActionKapfenberg);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionKapfenberg);
+		
+		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+		{
+			moveToOutstandingTransportsActionKapfenberg.setEnabled(false);
+			cancelTransportActionKapfenberg.setEnabled(false);
+			copyTransportActionKapfenberg.setEnabled(false);
+		}
 	}
 	private void fillContextMenuLeoben(IMenuManager manager, TableViewer viewer)
 	{
@@ -447,6 +465,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(cancelTransportActionLeoben);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionLeoben);
+		
+		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+		{
+			moveToOutstandingTransportsActionLeoben.setEnabled(false);
+			cancelTransportActionLeoben.setEnabled(false);
+			copyTransportActionLeoben.setEnabled(false);
+		}
 	}
 	private void fillContextMenuMariazell(IMenuManager manager, TableViewer viewer)
 	{
@@ -466,6 +491,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(cancelTransportActionMariazell);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionMariazell);
+		
+		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+		{
+			moveToOutstandingTransportsActionMariazell.setEnabled(false);
+			cancelTransportActionMariazell.setEnabled(false);
+			copyTransportActionMariazell.setEnabled(false);
+		}
 	}
 	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer)
 	{
@@ -485,6 +517,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(cancelTransportActionGraz);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionGraz);
+		
+		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+		{
+			moveToOutstandingTransportsActionGraz.setEnabled(false);
+			cancelTransportActionGraz.setEnabled(false);
+			copyTransportActionGraz.setEnabled(false);
+		}
 	}
 	private void fillContextMenuWien(IMenuManager manager, TableViewer viewer)
 	{
@@ -504,6 +543,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(cancelTransportActionWien);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionWien);
+		
+		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+		{
+			moveToOutstandingTransportsActionWien.setEnabled(false);
+			cancelTransportActionWien.setEnabled(false);
+			copyTransportActionWien.setEnabled(false);
+		}
 	}
 
 	/**

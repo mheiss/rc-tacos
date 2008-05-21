@@ -38,6 +38,7 @@ import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.JournalMoveToRunningTransportsAction;
 import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
@@ -69,6 +70,9 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 
 	//the currently filtered date
 	private Calendar filteredDate = Calendar.getInstance();
+	
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
 	/**
 	 * Constructs a new journal view and adds listeners 
@@ -387,6 +391,12 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		manager.add(moveToRunningTransportsAction);
 		manager.add(new Separator());
 		manager.add(createBackTransportAction);
+		
+		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
+		{
+			moveToOutstandingTransportsAction.setEnabled(false);
+			moveToRunningTransportsAction.setEnabled(false);
+		}
 	}
 
 	/**
