@@ -72,7 +72,8 @@ public class Lock extends AbstractMessage
      * @return the calculated hash code
      */
 	@Override
-	public int hashCode() {
+	public int hashCode() 
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
@@ -88,7 +89,8 @@ public class Lock extends AbstractMessage
      * @return true if the lock is the same otherwise false.
      */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) 
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -96,50 +98,62 @@ public class Lock extends AbstractMessage
 		if (getClass() != obj.getClass())
 			return false;
 		final Lock other = (Lock) obj;
-		if (contentId == null) {
+		if (contentId == null) 
+		{
 			if (other.contentId != null)
 				return false;
-		} else if (!contentId.equals(other.contentId))
+		} 
+		else if (!contentId.equalsIgnoreCase(other.contentId))
 			return false;
-		if (lockedId == null) {
+		if (lockedId == null) 
+		{
 			if (other.lockedId != null)
 				return false;
-		} else if (!lockedId.equals(other.lockedId))
+		} 
+		else if (!lockedId.equalsIgnoreCase(other.lockedId))
 			return false;
 		return true;
 	}
 
 	
 	//GETTERS AND SETTERS
-	public String getContentId() {
+	public String getContentId() 
+	{
 		return contentId;
 	}
 
-	public void setContentId(String contentId) {
+	public void setContentId(String contentId) 
+	{
 		this.contentId = contentId;
 	}
 
-	public String getLockedBy() {
+	public String getLockedBy() 
+	{
 		return lockedBy;
 	}
 
-	public void setLockedBy(String lockedBy) {
+	public void setLockedBy(String lockedBy) 
+	{
 		this.lockedBy = lockedBy;
 	}
 
-	public String getLockedId() {
+	public String getLockedId() 
+	{
 		return lockedId;
 	}
 
-	public void setLockedId(String lockedId) {
+	public void setLockedId(String lockedId) 
+	{
 		this.lockedId = lockedId;
 	}
 
-	public boolean isHasLock() {
+	public boolean isHasLock() 
+	{
 		return hasLock;
 	}
 
-	public void setHasLock(boolean hasLock) {
+	public void setHasLock(boolean hasLock) 
+	{
 		this.hasLock = hasLock;
 	}
 }
