@@ -1,4 +1,4 @@
-package at.rc.tacos.web.controller;
+package at.rc.tacos.web.controller.old;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -16,6 +16,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.controller.Controller;
 import at.rc.tacos.web.session.UserSession;
 
 public class OldUpdateEntryController extends Controller

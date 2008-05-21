@@ -1,4 +1,4 @@
-package at.rc.tacos.web.controller;
+package at.rc.tacos.web.controller.old;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.web.controller.Controller;
 import at.rc.tacos.web.session.UserSession;
 
 public class OldRosterDayController extends Controller

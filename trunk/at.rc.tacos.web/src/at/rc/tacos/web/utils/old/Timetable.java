@@ -2,7 +2,7 @@
  * 2007 - 2008
  * @author hade - Hannes Derler
  */
-package at.rc.tacos.web.utils;
+package at.rc.tacos.web.utils.old;
 
 import java.text.DateFormat;
 import java.text.ParseException;

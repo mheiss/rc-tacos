@@ -1,4 +1,4 @@
-package at.rc.tacos.web.utils;
+package at.rc.tacos.web.utils.old;
 
 import java.awt.Color;
 import java.awt.Font;

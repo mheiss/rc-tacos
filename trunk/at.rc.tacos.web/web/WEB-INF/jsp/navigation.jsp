@@ -1,9 +1,4 @@
 <%@ include file="includes.jsp" %>
-<%@ page import="at.rc.tacos.model.Login"%>
-<%@ page import="at.rc.tacos.web.session.UserSession" %>
-<%
-UserSession user = (UserSession)session.getAttribute("userSession");
-%>
 <table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Dienste</b></td>
@@ -15,7 +10,7 @@ UserSession user = (UserSession)session.getAttribute("userSession");
 	</tr>
 	<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienst eintragen</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienst&nbsp;eintragen</a>
 		</td>
 	</tr>
 </table>
@@ -33,15 +28,20 @@ UserSession user = (UserSession)session.getAttribute("userSession");
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Mitarbeiter</b></td>
 	</tr>
+	<c:url var="url" value="/Dispatcher/personalData.do" />
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Pers&ouml;nliche&nbsp;Daten</a>
+		</td>
+	</tr>
 	<c:if test="${authorization eq 'Administrator'}">
 		<c:url var="url" value="/Dispatcher/addStaffMember.do" />
 		<tr>
-			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter anlegen</a>
+			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter&nbsp;anlegen</a>
 			</td>
 		</tr>
 		<c:url var="url" value="/Dispatcher/editStaffMember.do" />
 		<tr>
-			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter bearbeiten</a>
+			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter&nbsp;bearbeiten</a>
 			</td>
 		</tr>
 	</c:if>
