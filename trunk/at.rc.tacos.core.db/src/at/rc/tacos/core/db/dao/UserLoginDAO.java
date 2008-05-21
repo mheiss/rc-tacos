@@ -90,7 +90,7 @@ public interface UserLoginDAO
 	 *  	   <code>UserDAOMemory.LOGIN_FAILED</code> if password or username was wrong
 	 *		   <code>UserDAOMemory.LOGIN_DENIED</code> if the user is locked
 	 */
-    public int checkLogin(String username,String pwdHash) throws SQLException;
+    public int checkLogin(String username,String pwdHash, boolean isWebClient) throws SQLException;
 
     /**
      * Returns the accociated login object identified by the username

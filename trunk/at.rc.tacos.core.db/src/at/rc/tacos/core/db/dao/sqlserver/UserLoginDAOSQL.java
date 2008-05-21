@@ -27,7 +27,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 	private final CompetenceDAO competenceDAO = DaoFactory.SQL.createCompetenceDAO();
 
 	@Override
-	public int checkLogin(String username, String pwdHash) throws SQLException
+	public int checkLogin(String username, String pwdHash, boolean isWebClient) throws SQLException
 	{
 		Connection connection = source.getConnection();
 		try
@@ -52,7 +52,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 					if (comp.getCompetenceName().equalsIgnoreCase("Leitstellendisponent"))
 						isDispo = true;
 				}
-				if(!isDispo)
+				if(!isDispo && !isWebClient)
 				{
 					System.out.println("im is kein dispo");
 					return -3;
