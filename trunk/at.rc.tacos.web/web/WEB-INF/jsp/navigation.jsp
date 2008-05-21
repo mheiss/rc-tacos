@@ -28,12 +28,12 @@
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Mitarbeiter</b></td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/personnelData.do" />
-	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Pers&ouml;nliche&nbsp;Daten</a>
-		</td>
-	</tr>
 	<c:if test="${userSession.loginInformation.authorization eq 'Administrator'}">
+		<c:url var="url" value="/Dispatcher/staffMembers.do" />
+		<tr>
+			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter</a>
+			</td>
+		</tr>
 		<c:url var="url" value="/Dispatcher/addStaffMember.do" />
 		<tr>
 			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter&nbsp;anlegen</a>
@@ -45,4 +45,9 @@
 			</td>
 		</tr>
 	</c:if>
+	<c:url var="url" value="/Dispatcher/personnelData.do" />
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Pers&ouml;nliche&nbsp;Daten</a>
+		</td>
+	</tr>
 </table>

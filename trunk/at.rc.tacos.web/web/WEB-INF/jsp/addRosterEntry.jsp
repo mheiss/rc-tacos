@@ -9,9 +9,9 @@
 </c:choose>
 <form action="${url}" method="post" accept-charset="ISO-8859-1">
 	<table class="standardForm">
-		<tr><td colspan="2">Allgemeine&nbsp;Daten:</td><td /></tr>
+		<tr><td colspan="3" style="font-weight:bold">Allgemeine&nbsp;Daten:</td></tr>
 		<tr>
-			<td>Mitarbeiter:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Mitarbeiter:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="staffMemberId" name="staffMemberId">
 					<option value="noValue">-- Mitarbeiter wählen--</option>
@@ -27,7 +27,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Ortsstelle:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Ortsstelle:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="locationId" name="locationId">
 					<option value="noValue">-- Ortsstelle wählen --</option>
@@ -41,7 +41,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Verwendung:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Verwendung:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="jobId" name="jobId">
 					<option value="noValue">-- Verwendung wählen --</option>
@@ -55,7 +55,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Dienstverhältnis:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Dienstverhältnis:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="serviceTypeId" name="serviceTypeId">
 					<option value="noValue">-- Dienstverhältnis wählen --</option>
@@ -73,16 +73,16 @@
 			<td><input id="standby" name="standby" type="checkbox" value="true"${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} /><label for="standby" style="cursor:pointer">Bereitschaft</label></td>
 			<td />
 		</tr>
-		<tr><td colspan="3">Anmerkungen:</td></tr>
+		<tr><td style="font-weight:bold" colspan="3">Anmerkungen:</td></tr>
 		<tr>
 			<td colspan="2">
 				<textarea id="comment" name="comment" cols="40" rows="7" wrap="soft">${params.comment}</textarea>
 			</td>
 			<td />
 		</tr>
-		<tr><td>Dienstzeiten:</td></tr>
+		<tr><td style="font-weight:bold" colspan="3">Dienstzeiten:</td></tr>
 		<tr>
-			<td>
+			<td style="font-weight:bold">
 				Dienst&nbsp;von:<sup class="reqMark">*</sup> 
 			</td>
 			<td>
@@ -94,7 +94,7 @@
 		</tr>
 		<tr>
 			<td />
-			<td>
+			<td style="font-weight:bold">
 				<select size="1" id="timeFromHours" name="timeFromHours">
 					<c:forTokens var="i" items="00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23" delims=",">
 						<option ${(not empty params.timeFromHours) and (params.timeFromHours == i) ? ' selected="selected"' : ''}>${i}</option>
@@ -126,7 +126,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td style="font-weight:bold">
 				bis:<sup class="reqMark">*</sup>
 			</td>
 			<td>
@@ -138,7 +138,7 @@
 		</tr>
 		<tr>
 			<td />
-			<td>
+			<td style="font-weight:bold">
 				<select size="1" id="timeToHours" name="timeToHours">
 					<c:forTokens var="i" items="00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23" delims=",">
 						<option ${(not empty params.timeToHours) and (params.timeToHours == i) ? ' selected="selected"' : ''}>${i}</option>
@@ -173,15 +173,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
-			<td />
+			<td colspan="3" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
 		</tr>
 		<tr>
-			<td class="hButtonArea" colspan="2">
+			<td class="hButtonArea" colspan="3">
 				<input type="submit" value="Anlegen" />
 				<input name="action" type="hidden" value="addRosterEntry" />
 			</td>
-			<td />
 		</tr>
 	</table>
 </form>

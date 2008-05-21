@@ -132,19 +132,19 @@ public class Dispatcher extends HttpServlet
 			userSession.setLoginInformation(login);
 			
 			// Set initial default form values for user
-			if (userSession.getDefaultFormValues().getRosterDefaultDate() == null) {
+			if (userSession.getDefaultFormValues().getDefaultDate() == null) {
 				final Date rosterDefaultDate = new Date();
-				userSession.getDefaultFormValues().setRosterDefaultDate(rosterDefaultDate);
+				userSession.getDefaultFormValues().setDefaultDate(rosterDefaultDate);
 			}
-			if (userSession.getDefaultFormValues().getRosterDefaultLocation() == null) {
-				userSession.getDefaultFormValues().setRosterDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
+			if (userSession.getDefaultFormValues().getDefaultLocation() == null) {
+				userSession.getDefaultFormValues().setDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
 			}
-			if (userSession.getDefaultFormValues().getStaffMemberDefaultStaffMember() == null) {
-				userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(userSession.getLoginInformation().getUserInformation());
+			if (userSession.getDefaultFormValues().getDefaultStaffMember() == null) {
+				userSession.getDefaultFormValues().setDefaultStaffMember(userSession.getLoginInformation().getUserInformation());
 			}
 			
 			//Set authorization to request context
-			request.setAttribute("authorization", userSession.getLoginInformation().getAuthorization());
+			//request.setAttribute("authorization", userSession.getLoginInformation().getAuthorization());
 		}
 		
 		//Get the relative Path from request URL

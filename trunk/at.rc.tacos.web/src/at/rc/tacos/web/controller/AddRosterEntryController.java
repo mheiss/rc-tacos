@@ -207,7 +207,7 @@ public class AddRosterEntryController extends Controller {
 		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
-		final Location defaultLocation = userSession.getDefaultFormValues().getRosterDefaultLocation();
+		final Location defaultLocation = userSession.getDefaultFormValues().getDefaultLocation();
 		Location location = null;
 		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);
@@ -297,7 +297,7 @@ public class AddRosterEntryController extends Controller {
 		String timeFromHoursString = null;
 		String timeFromMinutesString = null;
 		
-		final String defaultDateFromString = sdfDate.format(userSession.getDefaultFormValues().getRosterDefaultDate());
+		final String defaultDateFromString = sdfDate.format(userSession.getDefaultFormValues().getDefaultDate());
 		final String defaultTimeFromHoursString = "00";
 		final String defaultTimeFromMinutesString = "00";
 		
@@ -332,7 +332,7 @@ public class AddRosterEntryController extends Controller {
 		String timeToHoursString = null;
 		String timeToMinutesString = null;
 		
-		final String defaultDateToString = sdfDate.format(userSession.getDefaultFormValues().getRosterDefaultDate());
+		final String defaultDateToString = sdfDate.format(userSession.getDefaultFormValues().getDefaultDate());
 		final String defaultTimeToHoursString = "00";
 		final String defaultTimeToMinutesString = "00";
 		
@@ -475,8 +475,8 @@ public class AddRosterEntryController extends Controller {
 				}
 				
 				params.put(MODEL_ADDED_COUNT_NAME, 1);
-				userSession.getDefaultFormValues().setRosterDefaultLocation(location);
-				userSession.getDefaultFormValues().setRosterDefaultDate(plannedStartOfWork);
+				userSession.getDefaultFormValues().setDefaultLocation(location);
+				userSession.getDefaultFormValues().setDefaultDate(plannedStartOfWork);
 			}
 		}
 		params.put(MODEL_ERRORS_NAME, errors);

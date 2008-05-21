@@ -11,29 +11,29 @@ import at.rc.tacos.model.StaffMember;
  * @version 1.0
  */
 public class DefaultFormValues {
-	private Date rosterDefaultDate;
-	private Location rosterDefaultLocation;
-	private StaffMember staffMemberDefaultStaffMember;
+	private Date defaultDate;
+	private Location defaultLocation;
+	private StaffMember defaultStaffMember;
 	public DefaultFormValues() {
-		rosterDefaultDate = null;
+		defaultDate = null;
 	}
-	public Date getRosterDefaultDate() {
-		return rosterDefaultDate;
+	public Date getDefaultDate() {
+		return defaultDate;
 	}
-	public void setRosterDefaultDate(Date rosterDefaultDate) {
-		this.rosterDefaultDate = rosterDefaultDate;
+	public void setDefaultDate(Date rosterDefaultDate) {
+		this.defaultDate = rosterDefaultDate;
 	}
-	public Location getRosterDefaultLocation() {
-		return rosterDefaultLocation;
+	public Location getDefaultLocation() {
+		return defaultLocation;
 	}
-	public void setRosterDefaultLocation(Location defaultLocation) {
-		this.rosterDefaultLocation = defaultLocation;
+	public void setDefaultLocation(Location defaultLocation) {
+		this.defaultLocation = defaultLocation;
 	}
-	public StaffMember getStaffMemberDefaultStaffMember() {
-		return staffMemberDefaultStaffMember;
+	public StaffMember getDefaultStaffMember() {
+		return defaultStaffMember;
 	}
-	public void setStaffMemberDefaultStaffMember(
+	public void setDefaultStaffMember(
 			StaffMember staffMemberDefaultStaffMember) {
-		this.staffMemberDefaultStaffMember = staffMemberDefaultStaffMember;
+		this.defaultStaffMember = staffMemberDefaultStaffMember;
 	}
 }

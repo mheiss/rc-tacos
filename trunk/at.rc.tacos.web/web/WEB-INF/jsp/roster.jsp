@@ -18,9 +18,9 @@
 		<br />
 	</c:when>
 </c:choose>
-<table class="standardForm"">
+<table class="standardForm">
 	<tr>
-		<td>Ortsstelle:</td>
+		<td style="font-weight:bold">Ortsstelle:</td>
 		<td><select size="1" id="locationId" name="locationId">
 			<option value="noValue">-- Ortsstelle wählen --</option>
 			<c:forEach var="location" items="${params.locationList}">
@@ -31,7 +31,7 @@
 		</select></td>
 	</tr>
 	<tr>
-		<td>Datum:</td>
+		<td style="font-weight:bold">Datum:</td>
 		<td><input id="date" name="date" type="text" size="10"
 			maxlength="10"
 			value="<fmt:formatDate type="date" value="${params.date}"/>" /> <c:url
@@ -175,7 +175,7 @@
 										<c:when
 											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null}">
 											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-												<c:param name="action">signoff</c:param>
+												<c:param name="action">signOff</c:param>
 												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 											</c:url>
 											<c:if test="${breakRow eq true}">

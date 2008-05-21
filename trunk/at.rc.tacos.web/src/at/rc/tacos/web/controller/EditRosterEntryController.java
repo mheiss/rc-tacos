@@ -525,6 +525,9 @@ public class EditRosterEntryController extends Controller {
 				if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}
+				
+				userSession.getDefaultFormValues().setDefaultLocation(location);
+				userSession.getDefaultFormValues().setDefaultDate(plannedStartOfWork);
 
 				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?" + PARAM_MESSAGE_CODE_NAME + "=" + PARAM_MESSAGE_CODE_EDITED;
 				

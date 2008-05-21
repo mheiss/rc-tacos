@@ -3,28 +3,28 @@
 <tr>
 <td colspan="2" valign="top">
 	<c:url var="url" value="/image/staffmembers/${userSession.loginInformation.userInformation.staffMemberId}" />
-	<img src="${url}" width="110" height="138" alt="No photo found." content="no-cache" />
+	<img src="${url}" width="110" height="138" alt="No photo found." />
 </td>
 <td>
 <table class="standardForm">
 	<tr>
-		<td>Personalnummer:</td>
+		<td style="font-weight:bold">Personalnummer:</td>
 		<td>${userSession.loginInformation.userInformation.staffMemberId}</td>
 	</tr>
 	<tr>
-		<td>Vorname:</td>
+		<td style="font-weight:bold">Vorname:</td>
 		<td>${userSession.loginInformation.userInformation.firstName}</td>
 	</tr>
 	<tr>
-		<td>Nachname:</td>
+		<td style="font-weight:bold">Nachname:</td>
 		<td>${userSession.loginInformation.userInformation.lastName}</td>
 	</tr>
 	<tr>
-		<td>Geburtsdatum:</td>
+		<td style="font-weight:bold">Geburtsdatum:</td>
 		<td><fmt:formatDate type="date" dateStyle="medium" value="${params.date}"></fmt:formatDate></td>
 	</tr>
 	<tr>
-		<td>Geschlecht:</td>
+		<td style="font-weight:bold">Geschlecht:</td>
 		<td>
 		<c:choose>
 			<c:when test="${userSession.loginInformation.userInformation.male}">
@@ -37,7 +37,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Telefonnummern:</td>
+		<td style="font-weight:bold">Telefonnummern:</td>
 		<td>
 			<table id="mobilePhoneTable" class="list">
 				<thead>
@@ -58,13 +58,13 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Dienststelle:</td>
+		<td style="font-weight:bold">Dienststelle:</td>
 		<td>
 			${userSession.loginInformation.userInformation.primaryLocation.locationName}
 		</td>
 	</tr>
 	<tr>
-		<td>Kompetenzen:</td>
+		<td style="font-weight:bold">Kompetenzen:</td>
 		<td>
 			<table id="competenceTable" class="list">
 				<thead>
@@ -81,11 +81,11 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Benutzername:</td>
+		<td style="font-weight:bold">Benutzername:</td>
 		<td>${userSession.loginInformation.username}</td>
 	</tr>
 	<tr>
-		<td>Authorisierung:</td>
+		<td style="font-weight:bold">Authorisierung:</td>
 		<td>${userSession.loginInformation.authorization}</td>
 	</tr>
 </table>

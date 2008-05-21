@@ -7,9 +7,9 @@
 </c:choose>
 <form action="${url}" method="post" accept-charset="ISO-8859-1" enctype="multipart/form-data">
 	<table class="standardForm">
-		<tr><td colspan="2">Allgemeine&nbsp;Daten:</td><td /></tr>
+		<tr><td colspan="3" style="font-weight:bold">Allgemeine&nbsp;Daten:</td></tr>
 		<tr>
-			<td>Personalnummer&nbsp;(5xxxxxxx):<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Personalnummer&nbsp;(5xxxxxxx):<sup class="reqMark">*</sup></td>
 			<td>
 				<input name="personnelNumber" type="text" size="30" maxlength="8" value="${params.personnelNumber}" />
 			</td>
@@ -30,7 +30,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Vorname:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Vorname:<sup class="reqMark">*</sup></td>
 			<td>
 				<input name="firstName" type="text" size="30" maxlength="30" value="${params.firstName}" />
 			</td>
@@ -48,7 +48,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Nachname:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Nachname:<sup class="reqMark">*</sup></td>
 			<td>
 				<input name="lastName" type="text" size="30" maxlength="30" value="${params.lastName}" />
 			</td>
@@ -66,7 +66,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Geburtsdatum:</td>
+			<td style="font-weight:bold">Geburtsdatum:</td>
 			<td>
 				<input id="birthDate" name="birthDate" type="text" size="10" maxlength="10" value="${params.birthDate}" />
 				<c:url var="url" value="/image/calendar_edit.gif" />
@@ -89,7 +89,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Geschlecht:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Geschlecht:<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" name="sex">
 					<option value="noValue">-- Geschlecht wählen --</option>
@@ -102,7 +102,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Telefonnummern:</td>
+			<td style="font-weight:bold">Telefonnummern:</td>
 			<td>
 				<select size="1" id="mobilePhone" name="mobilePhoneId">
 					<option value="">-- Telefonnummer wählen --</option>
@@ -140,7 +140,7 @@
 			<td />
 		</tr>
 		<tr>
-			<td>Photo:</td>
+			<td style="font-weight:bold">Photo:</td>
 			<td>
 				<input name="photo" type="file" />
 			</td>
@@ -157,9 +157,9 @@
 				</span>
 			</td>
 		</tr>
-		<tr><td colspan="2">Ausbildung&nbsp;und&nbsp;Dienststelle:</td><td /></tr>
+		<tr><td colspan="3" style="font-weight:bold">Ausbildung&nbsp;und&nbsp;Dienststelle:</td></tr>
 		<tr>
-			<td>Dienststelle:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Dienststelle:<sup class="reqMark">*</sup></td>
 			<td>
 				<select name="locationId" size="1">
 					<option value="noValue">-- Dienststelle auswählen --</option>
@@ -173,7 +173,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Kompetenzen&nbsp;(zumindest&nbsp;Volont&auml;r):<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Kompetenzen&nbsp;(zumindest&nbsp;Volont&auml;r):<sup class="reqMark">*</sup></td>
 			<td>
 				<select size="1" id="competence" name="competenceId">
 					<option value="">-- Kompetenz wählen --</option>
@@ -207,9 +207,9 @@
 			</td>
 			<td />
 		</tr>
-		<tr><td colspan="2">Daten&nbsp;zum&nbsp;Anmelden&nbsp;am&nbsp;System&nbsp;und&nbsp;Online-Dienstplan:</td><td /></tr>
+		<tr><td colspan="3" style="font-weight:bold">Daten&nbsp;zum&nbsp;Anmelden&nbsp;am&nbsp;System&nbsp;und&nbsp;Online-Dienstplan:</td></tr>
 		<tr>
-			<td>Benutzername:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Benutzername:<sup class="reqMark">*</sup></td>
 			<td>
 				<input name="username" type="text" size="30" maxlength="30" value="${params.username}" />
 			</td>
@@ -230,7 +230,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Passwort:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Passwort:<sup class="reqMark">*</sup></td>
 			<td>
 				<input name="password" type="password" size="30" maxlength="255" />
 			</td>
@@ -248,7 +248,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Passwort&nbsp;(wiederholen):<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Passwort&nbsp;(wiederholen):<sup class="reqMark">*</sup></td>
 			<td>
 				<input name="repeatedPassword" type="password" size="30" maxlength="255" />
 			</td>
@@ -274,7 +274,7 @@
 			<td />
 		</tr>
 		<tr>
-			<td>Authorisierung:<sup class="reqMark">*</sup></td>
+			<td style="font-weight:bold">Authorisierung:<sup class="reqMark">*</sup></td>
 			<td>
 				<select name="authorization" size="1">
 					<option value="noValue">-- Authorisierung wählen --</option>
@@ -287,11 +287,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
+			<td colspan="3" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
 			<td />
 		</tr>
 		<tr>
-			<td class="hButtonArea" colspan="2">
+			<td class="hButtonArea" colspan="3">
 				<input type="submit" value="Anlegen" />
 				<input name="action" type="hidden" value="addStaffMember" />
 			</td>
