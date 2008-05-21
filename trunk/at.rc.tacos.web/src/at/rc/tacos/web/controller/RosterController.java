@@ -174,9 +174,9 @@ public class RosterController extends Controller {
 		}
 		
 		final Comparator comp = new CompoundComparator(new Comparator[] {
-				new PropertyComparator("plannedStartOfWork", false, true),
 				new PropertyComparator("rosterEntry.staffMember.lastName", false, true),
-				new PropertyComparator("rosterEntry.staffMember.firstName", false, true)
+				new PropertyComparator("rosterEntry.staffMember.firstName", false, true),
+				new PropertyComparator("plannedStartOfWork", false, true)
 		});
 		Collections.sort(rosterEntryContainerList, comp);
 		

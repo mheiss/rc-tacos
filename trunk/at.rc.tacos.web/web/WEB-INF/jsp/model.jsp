@@ -94,10 +94,10 @@ $(document).ready(function() {
 			<table width="100%">
 				<tr>
 					<!-- #### LEFT CONTAINER NAVIGATION-->
-					<td id="LeftContainerPanel" valign="top" width="25%"><%@ include
+					<td id="LeftContainerPanel" valign="top" width="22%"><%@ include
 						file="navigation.jsp"%></td>
 					<!-- #### CONTENT -->
-					<td id="ContentContainer" valign="top" width="75%"><jsp:include
+					<td id="ContentContainer" valign="top" width="78%"><jsp:include
 						page="${view}" /></td>
 				</tr>
 			</table>
