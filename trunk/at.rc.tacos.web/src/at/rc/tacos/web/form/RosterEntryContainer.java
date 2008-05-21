@@ -10,7 +10,8 @@ import at.rc.tacos.model.RosterEntry;
  * @version 1.0
  */
 public class RosterEntryContainer {
-	public static final int DEADLINE_HOURS = 72;
+	public static final int EDIT_ROSTER_ENTRY_DEADLINE_HOURS = 72;
+	public static final int REGISTER_ROSTER_ENTRY_DEADLINE_HOURS = 24;
 	
 	private Date plannedStartOfWork;
 	private Date plannedEndOfWork;

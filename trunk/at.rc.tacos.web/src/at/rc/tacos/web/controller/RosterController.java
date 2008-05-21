@@ -30,24 +30,46 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class RosterController extends Controller {
 
+	private static final String PARAM_CURRENT_DATE_NAME = "currentDate";
+	
+	private static final String PARAM_LOCATION_NAME = "locationId";
+	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
+	private static final String MODEL_LOCATION_NAME = "location";
+	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
+	
+	private static final String MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME = "calendarDefaultDateMilliseconds";
+	private static final String MODEL_CALENDAR_RANGE_START_NAME = "calendarRangeStart";
+	private static final String MODEL_CALENDAR_RANGE_END_NAME = "calendarRangeEnd";
+	private static final int MODEL_CALENDAR_RANGE_START_OFFSET = 10;
+	private static final int MODEL_CALENDAR_RANGE_END_OFFSET = 1;
+	
+	private static final String PARAM_DATE_NAME = "date";
+	private static final String MODEL_DATE_NAME = "date";
+	
+	private static final String PARAM_ROSTER_ENTRY_CONTAINER_LIST = "rosterEntryContainerList";
+	
+	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
+	private static final String MODEL_MESSAGE_CODE_NAME = "messageCode";
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
 			throws Exception {
+		
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
 		
 		// Put current date to parameter to parameter list
-		params.put("currentDate", new Date());
+		params.put(PARAM_CURRENT_DATE_NAME, new Date());
 		
 		// Location List
-		final String paramLocationId = request.getParameter("locationId");
+		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
 		Location location = userSession.getDefaultFormValues().getRosterDefaultLocation();
 		if (paramLocationId != null && !paramLocationId.equals("")) {
-			if (paramLocationId.equalsIgnoreCase("noValue")) {
+			if (paramLocationId.equalsIgnoreCase(PARAM_LOCATION_NO_VALUE)) {
 				location = null;
 			} else {
 				locationId = Integer.parseInt(paramLocationId);
@@ -57,7 +79,7 @@ public class RosterController extends Controller {
 		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
-		params.put("locationList", locationList);
+		params.put(MODEL_LOCATION_LIST_NAME, locationList);
 		for (final Iterator<AbstractMessage> itLoactionList = locationList.iterator(); itLoactionList.hasNext();) {
 			final Location l = (Location)itLoactionList.next();
 			if (l.getId() == locationId) {
@@ -65,23 +87,23 @@ public class RosterController extends Controller {
 			}
 		}
 		userSession.getDefaultFormValues().setRosterDefaultLocation(location);
-		params.put("location", location);
+		params.put(MODEL_LOCATION_NAME, location);
 		
 		// Get Date and create calendar for datepicker
 		Date date = userSession.getDefaultFormValues().getRosterDefaultDate();	
 		final Calendar calendar = Calendar.getInstance();
-		final int rangeStart = calendar.get(Calendar.YEAR) - 10;
-		final int rangeEnd = calendar.get(Calendar.YEAR) + 1;
-		params.put("calendarDefaultDateMilliseconds", date.getTime());
-		params.put("calendarRangeStart", rangeStart);
-		params.put("calendarRangeEnd", rangeEnd);
+		final int rangeStart = calendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET;
+		final int rangeEnd = calendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET;
+		params.put(MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME, date.getTime());
+		params.put(MODEL_CALENDAR_RANGE_START_NAME, rangeStart);
+		params.put(MODEL_CALENDAR_RANGE_END_NAME, rangeEnd);
 		
 		final Calendar rangeStartCalendar = Calendar.getInstance();
-		rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - 10);
+		rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET);
 		
 		final Calendar rangeEndCalendar = Calendar.getInstance();
-		rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR) + 1);
-		final String paramDate = request.getParameter("date");
+		rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET);
+		final String paramDate = request.getParameter(PARAM_DATE_NAME);
 		
 		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
@@ -101,7 +123,7 @@ public class RosterController extends Controller {
 			}
 		}
 		userSession.getDefaultFormValues().setRosterDefaultDate(date);
-		params.put("date", date);
+		params.put(MODEL_DATE_NAME, date);
 		
 		final String dateForServerString = formatDateForServer.format(date);
 		
@@ -135,21 +157,21 @@ public class RosterController extends Controller {
 			}
 			final Calendar deadlineCalendar = Calendar.getInstance();
 			deadlineCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
-			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.DEADLINE_HOURS);
+			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);
 			rosterEntryContainer.setDeadline(deadlineCalendar.getTime());
 			
 			final Calendar registerStartCalendar = Calendar.getInstance();
 			registerStartCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
-			registerStartCalendar.set(Calendar.HOUR, registerStartCalendar.get(Calendar.HOUR) - 24);
+			registerStartCalendar.set(Calendar.HOUR, registerStartCalendar.get(Calendar.HOUR) - RosterEntryContainer.REGISTER_ROSTER_ENTRY_DEADLINE_HOURS);
 			rosterEntryContainer.setRegisterStart(registerStartCalendar.getTime());
 			
 			rosterEntryContainerList.add(rosterEntryContainer);
 		}
-		params.put("rosterEntryContainerList", rosterEntryContainerList);
+		params.put(PARAM_ROSTER_ENTRY_CONTAINER_LIST, rosterEntryContainerList);
 		
 		// Parse message code from other controllers
-		if (request.getParameter("messageCode") != null && !request.getParameter("messageCode").equals("")) {
-			params.put("messageCode", request.getParameter("messageCode"));
+		if (request.getParameter(PARAM_MESSAGE_CODE_NAME) != null && !request.getParameter(PARAM_MESSAGE_CODE_NAME).equals("")) {
+			params.put(MODEL_MESSAGE_CODE_NAME, request.getParameter(PARAM_MESSAGE_CODE_NAME));
 		}
 		
 		return params;	
