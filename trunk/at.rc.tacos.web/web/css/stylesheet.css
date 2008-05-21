@@ -124,6 +124,9 @@ div#submitSuccess { font-weight:bold; color:black; background-color:#DFFF80; tex
 
 .showRosterEntryInfo { cursor:pointer !important; }
 
+div#messageOfTheDay { padding:4px; position:absolute; top:160px; right:10px; }
+.showMessageOfTheDay { cursor:pointer !important; }
+
 a.smallLink { color:#00f;font-size:8pt;text-decoration:underline }
 
 /** List **/

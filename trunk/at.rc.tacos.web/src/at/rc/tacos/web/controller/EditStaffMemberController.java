@@ -282,7 +282,7 @@ public class EditStaffMemberController extends Controller {
 				staffMemberId = Integer.parseInt(paramStaffMemberId);
 			}
 		}
-		final List<AbstractMessage> staffMemberList = connection.sendListingRequest(StaffMember.ID, null);
+		List<AbstractMessage> staffMemberList = connection.sendListingRequest(StaffMember.ID, null);
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
@@ -820,7 +820,15 @@ public class EditStaffMemberController extends Controller {
 						throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 					}
 					
-					userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(staffMember);
+					// Create new staff member list and put staff member and staff member list to model.
+					// Must be done like this because staff member id could be changed and the id's in
+					// staff member selectbox must be updated.
+					//params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
+					staffMemberList = connection.sendListingRequest(StaffMember.ID, null);
+					if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
+						throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+					}
+					params.put(MODEL_STAFF_MEMBER_LIST_NAME, staffMemberList);
 					
 					params.put(MODEL_EDITED_COUNT_NAME, 1);
 				}

@@ -1,5 +1,5 @@
 <%@ include file="includes.jsp" %>
-<table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
+<table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Dienste</b></td>
 	</tr>
@@ -14,7 +14,7 @@
 		</td>
 	</tr>
 </table>
-<table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
+<table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Fahrzeuge</b></td>
 	</tr>
@@ -24,16 +24,16 @@
 		</td>
 	</tr>
 </table>
-<table id="Block" width="100%" border="0" cellpadding="0" cellspacing="0">
+<table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Mitarbeiter</b></td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/personalData.do" />
+	<c:url var="url" value="/Dispatcher/personnelData.do" />
 	<tr>
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Pers&ouml;nliche&nbsp;Daten</a>
 		</td>
 	</tr>
-	<c:if test="${authorization eq 'Administrator'}">
+	<c:if test="${userSession.loginInformation.authorization eq 'Administrator'}">
 		<c:url var="url" value="/Dispatcher/addStaffMember.do" />
 		<tr>
 			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Mitarbeiter&nbsp;anlegen</a>
