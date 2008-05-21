@@ -35,6 +35,7 @@ import at.rc.tacos.client.controller.CancelTransportAction;
 import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.ForwardTransportAction;
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 
 import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
@@ -65,6 +66,9 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	private CancelTransportAction cancelTransportAction;
 	private EditTransportAction editTransportAction;
 
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
+	
 	ArrayList<AssignCarAction> actionList = new ArrayList<AssignCarAction>();
 	
 	/**
@@ -186,10 +190,18 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 
 				//add the actions
 				manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+				
 				manager.add(menuManagerSub);
+				
+				//create a list of ready vehicles and disable the selection if the transport is locked
+				boolean locked = lockManager.containsLock(Transport.ID, transport.getTransportId());
 				for(AssignCarAction ac : actionList)
 				{
 					menuManagerSub.add(ac);
+					if(locked)
+					{
+						ac.setEnabled(false);
+					}
 				}
 				
 				manager.add(new Separator());
@@ -199,6 +211,11 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 				manager.add(forwardTransportAction);
 				manager.add(new Separator());
 				manager.add(copyTransportAction);
+				
+				if(locked)
+				{
+					copyTransportAction.setEnabled(false);
+				}
 			}
 		});  
 		

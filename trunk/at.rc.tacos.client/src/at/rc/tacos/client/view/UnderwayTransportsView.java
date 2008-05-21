@@ -41,6 +41,7 @@ import at.rc.tacos.client.controller.SetBD1Action;
 import at.rc.tacos.client.controller.SetBD2Action;
 import at.rc.tacos.client.controller.SetBackTransportPossibleAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
+import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
 import at.rc.tacos.client.providers.TransportViewFilter;
@@ -92,6 +93,9 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private SetAlarmingAction setAlarmingActionPO;
 	private SetAlarmingAction setAlarmingActionBR;
 	private SetAlarmingAction setAlarmingActionKIT;
+	
+	//the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
 	/**
 	 * Defaul class constructor
@@ -462,6 +466,36 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(new Separator());
 		manager.add(copyTransportAction);
 		manager.add(copyTransportDetailsIntoClipboardAction);
+		
+		//create a list of ready vehicles and disable the selection if the transport is locked
+		boolean locked = lockManager.containsLock(Transport.ID, transport.getTransportId());
+		if(locked)
+		{
+			//transport detail actions
+			setAccompanyingPersonAction.setEnabled(false);
+			setBD1Action.setEnabled(false);
+			setBD2Action.setEnabled(false);
+			setBackTransportPossibleAction.setEnabled(false);
+			createBackTransportAction.setEnabled(false);
+			copyTransportAction.setEnabled(false);
+			
+			//transport stati
+			setTransportStatusS1Action.setEnabled(false);
+			setTransportStatusS2Action.setEnabled(false);
+			setTransportStatusS3Action.setEnabled(false);
+			setTransportStatusS4Action.setEnabled(false);
+			setTransportStatusS5Action.setEnabled(false);
+			
+			//alarmings
+			setAlarmingActionNA.setEnabled(false);
+			setAlarmingActionRTH.setEnabled(false);
+			setAlarmingActionDF.setEnabled(false);
+			setAlarmingActionBRKDT.setEnabled(false);
+			setAlarmingActionFW.setEnabled(false);
+			setAlarmingActionPO.setEnabled(false);
+			setAlarmingActionBR.setEnabled(false);
+			setAlarmingActionKIT.setEnabled(false);
+		}
 	}
 	
 	/**
