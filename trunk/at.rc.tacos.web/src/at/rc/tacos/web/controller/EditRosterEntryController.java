@@ -63,6 +63,7 @@ public class EditRosterEntryController extends Controller {
 	private static final String MODEL_SERVICE_TYPE_LIST_NAME = "serviceTypeList";
 	
 	private static final String PARAM_STANDBY_NAME = "standby";
+	private static final String PARAM_STANDBY_HIDDEN_NAME = "standbyHidden";
 	private static final String MODEL_STANDBY_NAME = "standby";
 	
 	private static final String PARAM_COMMENT_NAME = "comment";
@@ -311,12 +312,24 @@ public class EditRosterEntryController extends Controller {
 		}
 		
 		// Standby
-		boolean standby = rosterEntry.getStandby();
-		final String paramStandby = request.getParameter(PARAM_STANDBY_NAME);
-		if (paramStandby != null) {
-			standby = true;
+		String paramStandby = request.getParameter(PARAM_STANDBY_NAME);
+		final String paramStandbyHidden = request.getParameter(PARAM_STANDBY_HIDDEN_NAME);
+		boolean defaultStandby = rosterEntry.getStandby();
+		boolean standby = false;
+		if (paramStandby != null || paramStandbyHidden != null) {
+			if (paramStandby != null) {
+				if (paramStandby.equalsIgnoreCase("true")) {
+					standby = true;
+				}
+			} else if (paramStandbyHidden != null) {
+				if (paramStandbyHidden.equalsIgnoreCase("false")) {
+					standby = false;
+				}
+			}
+			params.put(MODEL_STANDBY_NAME, standby);
+		} else {
+			params.put(MODEL_STANDBY_NAME, defaultStandby);
 		}
-		params.put(MODEL_STANDBY_NAME, standby);
 		
 		// Comment
 		final String defaultComment = rosterEntry.getRosterNotes();
@@ -503,7 +516,7 @@ public class EditRosterEntryController extends Controller {
 				rosterEntry.setPlannedEndOfWork(plannedEndOfWork.getTime());
 				rosterEntry.setServicetype(serviceType);
 				rosterEntry.setJob(job);
-				rosterEntry.setCreatedByUsername(userSession.getUsername());
+				rosterEntry.setCreatedByUsername(userSession.getLoginInformation().getUsername());
 				if (comment != null && !comment.equals("")) {
 					rosterEntry.setRosterNotes(comment);
 				}

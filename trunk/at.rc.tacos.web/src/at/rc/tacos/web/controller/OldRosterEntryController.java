@@ -49,10 +49,15 @@ public class OldRosterEntryController extends Controller
 			String endMinute = request.getParameter("endMinute");
 
 			//get the objects from the session
-			Location location = userSession.getLocationById(Integer.valueOf(request.getParameter("station")));
-			Job job = userSession.getJobById(Integer.valueOf(request.getParameter("job")));
-			ServiceType service = userSession.getServiceTypeById(Integer.valueOf(request.getParameter("service")));
-			StaffMember member = userSession.getStaffMemberById(Integer.valueOf(request.getParameter("employee")));
+			Location location = null;
+			Job job = null;
+			ServiceType service = null;
+			StaffMember member = null;
+			
+			/*location = userSession.getLocationById(Integer.valueOf(request.getParameter("station")));
+			job = userSession.getJobById(Integer.valueOf(request.getParameter("job")));
+			service = userSession.getServiceTypeById(Integer.valueOf(request.getParameter("service")));
+			member = userSession.getStaffMemberById(Integer.valueOf(request.getParameter("employee")));*/
 
 			String startDate = startDay + "-" + startMonth + "-" + startYear;
 			//get roster entries
@@ -112,7 +117,7 @@ public class OldRosterEntryController extends Controller
 				} 
 
 				RosterEntry entry = new RosterEntry(member,service,job, location,plannedStartOfWork, plannedEndOfWork);
-				entry.setCreatedByUsername(userSession.getUsername());
+				//entry.setCreatedByUsername(userSession.getUsername());
 				client.sendAddRequest(RosterEntry.ID, entry);
 				if(client.getContentType().equalsIgnoreCase(RosterEntry.ID))
 				{

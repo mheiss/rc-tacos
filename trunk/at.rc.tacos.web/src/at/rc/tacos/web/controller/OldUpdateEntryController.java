@@ -56,11 +56,17 @@ public class OldUpdateEntryController extends Controller
 			String endYear =  request.getParameter("endYear");
 			String endHour = request.getParameter("endHour");
 			String endMinute = request.getParameter("endMinute");
+			
 			//get the objects from the session
-			Location location = userSession.getLocationById(Integer.valueOf(request.getParameter("station")));
+			Location location = null;
+			Job job = null;
+			ServiceType service = null;
+			StaffMember member = null;
+			/*Location location = userSession.getLocationById(Integer.valueOf(request.getParameter("station")));
 			Job job = userSession.getJobById(Integer.valueOf(request.getParameter("job")));
 			ServiceType service = userSession.getServiceTypeById(Integer.valueOf(request.getParameter("service")));
-			StaffMember member = userSession.getStaffMemberById(Integer.valueOf(request.getParameter("employee")));
+			StaffMember member = userSession.getStaffMemberById(Integer.valueOf(request.getParameter("employee")));*/
+			
 			//construct a startCalendar
 			Calendar startEntry = Calendar.getInstance();
 			startEntry.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
@@ -104,7 +110,7 @@ public class OldUpdateEntryController extends Controller
 			entry.setStaffMember(member);
 			entry.setPlannedStartOfWork(plannedStartOfWork);
 			entry.setPlannedEndOfWork(plannedEndOfWork);
-			entry.setCreatedByUsername(userSession.getUsername());
+			//entry.setCreatedByUsername(userSession.getUsername());
 			//update the entry
 			client.sendUpdateRequest(RosterEntry.ID, entry);
 		}

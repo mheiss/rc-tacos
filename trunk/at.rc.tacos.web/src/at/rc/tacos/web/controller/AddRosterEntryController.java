@@ -461,7 +461,7 @@ public class AddRosterEntryController extends Controller {
 				
 				rosterEntry.setJob(job);
 				
-				rosterEntry.setCreatedByUsername(userSession.getUsername());
+				rosterEntry.setCreatedByUsername(userSession.getLoginInformation().getUsername());
 				
 				if (comment != null && !comment.equals("")) {
 					rosterEntry.setRosterNotes(comment);

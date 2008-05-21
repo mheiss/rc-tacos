@@ -20,7 +20,7 @@ public class OldEditUserController extends Controller
 		String action = request.getParameter("id");
 
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
-		params.put("editStaffMember", userSession.getStaffMemberById(Integer.valueOf(action)));
+		//params.put("editStaffMember", userSession.getStaffMemberById(Integer.valueOf(action)));
 
 		return params;
 	}

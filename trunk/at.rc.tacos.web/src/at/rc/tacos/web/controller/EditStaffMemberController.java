@@ -99,6 +99,7 @@ public class EditStaffMemberController extends Controller {
 	private static final String PARAM_REPEATED_PASSWORD_NAME = "repeatedPassword";
 	
 	private static final String PARAM_LOCK_USER_NAME = "lockUser";
+	private static final String PARAM_LOCK_USER_HIDDEN_NAME = "lockUserHidden";
 	private static final String MODEL_LOCK_USER_NAME = "lockUser";
 	
 	private static final String PARAM_AUTHORIZATION_NAME = "authorization";
@@ -206,6 +207,7 @@ public class EditStaffMemberController extends Controller {
 		String paramPassword = null;
 		String paramRepeatedPassword = null;
 		String paramLockUser = null;
+		String paramLockUserHidden = null;
 		String paramStaffMemberAuthorization = null;
 		
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -255,6 +257,8 @@ public class EditStaffMemberController extends Controller {
 			    		paramRepeatedPassword = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_LOCK_USER_NAME)) {
 			    		paramLockUser = item.getString();
+			    	} else if (item.getFieldName().equals(PARAM_LOCK_USER_HIDDEN_NAME)) {
+			    		paramLockUserHidden = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_AUTHORIZATION_NAME)) {
 			    		paramStaffMemberAuthorization = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_STAFF_MEMBER_NAME)) {
@@ -552,11 +556,22 @@ public class EditStaffMemberController extends Controller {
 			}
 			
 			// Lock User
-			boolean lockUser = login.isIslocked();
-			if (paramLockUser != null) {
-				lockUser = true;
+			boolean defaultLockUser = login.isIslocked();
+			boolean lockUser = false;
+			if (paramLockUser != null || paramLockUserHidden != null) {
+				if (paramLockUser != null) {
+					if (paramLockUser.equalsIgnoreCase("true")) {
+						lockUser = true;
+					}
+				} else if (paramLockUserHidden != null) {
+					if (paramLockUserHidden.equalsIgnoreCase("false")) {
+						lockUser = false;
+					}
+				}
+				params.put(MODEL_LOCK_USER_NAME, lockUser);
+			} else {
+				params.put(MODEL_LOCK_USER_NAME, defaultLockUser);
 			}
-			params.put(MODEL_LOCK_USER_NAME, lockUser);
 			
 			// Authorization for New Staff Member
 			final String defaultStaffMemberAuthorization = login.getAuthorization();
@@ -594,7 +609,10 @@ public class EditStaffMemberController extends Controller {
 				} else if (!Pattern.matches(ValidationPatterns.STAFF_MEMBER_ID_VALIDATION_PATTERN, personnelNumber)) {
 					valid = false;
 					errors.put(ERRORS_PERSONNEL_NUMBER, ERRORS_PERSONNEL_NUMBER_VALUE);
-				} else {		
+				} else {
+					//
+					params.put(MODEL_LOCK_USER_NAME, lockUser);
+					
 					// Check double staff member Ids
 					final QueryFilter staffMemberIdFilter = new QueryFilter();
 					staffMemberIdFilter.add(IFilterTypes.ID_FILTER, personnelNumber);
@@ -743,7 +761,7 @@ public class EditStaffMemberController extends Controller {
 		        // Validate authorization
 		        if (staffMemberAuthorization == null) {
 		        	valid = false;
-		        	errors.put(ERRORS_AUTHORIZATION, ERRORS_AUTHORIZATION);
+		        	errors.put(ERRORS_AUTHORIZATION, ERRORS_AUTHORIZATION_VALUE);
 		        }
 		        
 				if (valid) {					

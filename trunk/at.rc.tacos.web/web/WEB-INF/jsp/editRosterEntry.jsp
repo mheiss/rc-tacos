@@ -68,7 +68,12 @@
 		</tr>
 		<tr>
 			<td />
-			<td><input id="standby" name="standby" type="checkbox" value="true"${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} /><label for="standby" style="cursor:pointer">Bereitschaft</label></td>
+			<td>
+				<input id="standby" name="standby" type="checkbox" value="true"${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} /><label for="standby" style="cursor:pointer">Bereitschaft</label>
+				<c:if test="${not empty params.standby and params.standby eq false}">
+					<input name="standbyHidden" type="hidden" value="false" />
+				</c:if>
+			</td>
 			<td />
 		</tr>
 		<tr><td>Anmerkungen:</td></tr>

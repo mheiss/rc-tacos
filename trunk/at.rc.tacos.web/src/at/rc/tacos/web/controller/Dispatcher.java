@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -15,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
+import at.rc.tacos.model.Login;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.web.session.DefaultFormValues;
 import at.rc.tacos.web.session.UserSession;
 
@@ -112,10 +117,20 @@ public class Dispatcher extends HttpServlet
 		} else {
 			userSession.setInternalSession(false);
 		}
-		request.setAttribute("isInternal", userSession.isInternalSession());
+		request.setAttribute("userSession", userSession);
 		
 		//Do some actions if user is logged in
 		if (userSession.getLoggedIn()) {
+			// Get current login data
+			final QueryFilter loginUsernameF = new QueryFilter();
+			loginUsernameF.add(IFilterTypes.USERNAME_FILTER, userSession.getLoginInformation().getUsername());
+			final List<AbstractMessage> loginList = userSession.getConnection().sendListingRequest(Login.ID, loginUsernameF);
+			if (!Login.ID.equalsIgnoreCase(userSession.getConnection().getContentType())) {
+				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+			}
+			final Login login = (Login)loginList.get(0);
+			userSession.setLoginInformation(login);
+			
 			// Set initial default form values for user
 			if (userSession.getDefaultFormValues().getRosterDefaultDate() == null) {
 				final Date rosterDefaultDate = new Date();
@@ -128,22 +143,9 @@ public class Dispatcher extends HttpServlet
 				userSession.getDefaultFormValues().setStaffMemberDefaultStaffMember(userSession.getLoginInformation().getUserInformation());
 			}
 			
-			//Set authorization to request
+			//Set authorization to request context
 			request.setAttribute("authorization", userSession.getLoginInformation().getAuthorization());
 		}
-		/*if (userSession.getLoggedIn()) {
-		// Get current login information from server
-		final WebClient connection = userSession.getConnection();
-		Login login = null;
-		final QueryFilter usernameFilter = new QueryFilter();
-		usernameFilter.add(IFilterTypes.USERNAME_FILTER, userSession.getLoginInformation().getUsername());
-		final List<AbstractMessage> loginList = connection.sendListingRequest(Login.ID, usernameFilter);
-		if (Login.ID.equalsIgnoreCase(connection.getContentType())) {
-			login = (Login)loginList.get(0);
-		}
-		userSession.getLoginInformation().setAuthorization(login.getAuthorization());
-		userSession.getLoginInformation().setUserInformation(login.getUserInformation());
-		}*/
 		
 		//Get the relative Path from request URL
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");

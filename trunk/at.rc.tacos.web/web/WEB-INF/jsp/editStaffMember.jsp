@@ -292,7 +292,12 @@
 			</tr>
 			<tr>
 				<td />
-				<td><input id="lockUser" name="lockUser" type="checkbox" value="true"${(not empty params.lockUser) and (params.lockUser == true) ? ' checked="checked"' : ''} /><label for="lockUser" style="cursor:pointer">Benutzer sperren</label></td>
+				<td>
+					<input id="lockUser" name="lockUser" type="checkbox" value="true"${(not empty params.lockUser) and (params.lockUser == true) ? ' checked="checked"' : ''} /><label for="lockUser" style="cursor:pointer">Benutzer sperren</label>
+					<c:if test="${not empty params.lockUser and params.lockUser eq false}">
+						<input name="lockUserHidden" type="hidden" value="false" />
+					</c:if>
+				</td>
 				<td />
 			</tr>
 			<tr>
@@ -315,8 +320,6 @@
 			<tr>
 				<td class="hButtonArea" colspan="2">
 					<input type="submit" value="Speichern" />
-					<c:url var="url" value="/Dispatcher/editStaffMember.do" />
-					<input type="button" name="cancel" value="Abbrechen" onclick="document.location='${url}'">
 					<input name="action" type="hidden" value="updateStaffMember" />
 					<input name="staffMemberId" type="hidden" value="${params.staffMember.staffMemberId}" />
 				</td>
