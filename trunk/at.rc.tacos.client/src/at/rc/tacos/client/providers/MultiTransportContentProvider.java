@@ -44,4 +44,9 @@ public class MultiTransportContentProvider implements IStructuredContentProvider
 	{
 		objectList.remove(transport);
 	}
+	
+	public void removeAllTransports()
+	{
+		objectList.clear();
+	}
 }
