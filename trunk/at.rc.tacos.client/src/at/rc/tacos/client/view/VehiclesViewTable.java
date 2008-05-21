@@ -42,7 +42,6 @@ import at.rc.tacos.client.providers.VehicleViewTableLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleViewTableSorter;
-import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
 public class VehiclesViewTable extends ViewPart implements PropertyChangeListener
