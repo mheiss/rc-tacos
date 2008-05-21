@@ -56,7 +56,7 @@ public class EditTransportAction extends Action
 			boolean forceEdit =  MessageDialog.openQuestion(
 					Display.getCurrent().getActiveShell(), 
 					"Information: Eintrag wird bearbeitet", 
-					"Der Transport den Sie bearbeiten möchten wird bereits von "+ resultLockMessage+ " bearbeitet\n"+
+					"Der Transport den Sie bearbeiten möchten wird bereits von "+ resultLockMessage+ " bearbeitet.\n"+
 					"Ein gleichzeitiges Bearbeiten kann zu unerwarteten Fehlern führen!\n\n"+
 					"Möchten Sie den Eintrag trotzdem bearbeiten?");
 			if(!forceEdit)
