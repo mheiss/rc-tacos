@@ -16,11 +16,11 @@
 </table>
 <table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td id="BlockHead" colspan="2"><b>Fahrzeuge</b></td>
+		<td id="BlockHead" colspan="2"><b>Transporte</b></td>
 	</tr>
 	<c:url var="url" value="/Dispatcher/vehiclesAllocation.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Fahrzeugbesetzungen</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Fahrzeugzuweisung</a>
 		</td>
 	</tr>
 </table>
