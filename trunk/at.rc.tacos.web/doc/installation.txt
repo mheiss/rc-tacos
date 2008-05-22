@@ -19,7 +19,7 @@ Running local under Eclipse
 
 4. Install SQL Server 2005 and run db creation scripts if you run database on same machine.
 
-4. Install OpenSSL if you plan to use AJP. It is used if tcnative-1.dll is in you Tomcat /bin directory.
+4. Install OpenSSL if you plan to use AJP. It is used if tcnative-1.dll is in your Tomcat /bin directory.
 
 5. File->New->Server I tested it with Tomcat 6.0 but it should work on 5.0
    You have to choose a java virtual machine when you import the server. For Tomcat 6.0 you need JRE 1.6.
@@ -162,7 +162,7 @@ got direct access to the server network.
 
 3. Install Tomcat (best 6.x) on the same machine and install it on production system.
 
-4. Install OpenSSL if you plan to use AJP on the machine your development environment is running on. It is used if tcnative-1.dll is in you Tomcat /bin directory.
+4. Install OpenSSL if you plan to use AJP on the machine your development environment is running on. It is used if tcnative-1.dll is in your Tomcat /bin directory.
 
 5. Be aware of dependencies to projects at.rc.tacos.core.net and at.rc.tacos.model.
    For this reason use same workspace for all projects.
