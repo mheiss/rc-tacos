@@ -17,16 +17,24 @@ import at.rc.tacos.model.Location;
 public class RosterEntryContainerListContainer {
 	private List<RosterEntryContainer> rosterEntryContainerList;
 	private SortedMap<Location, List<RosterEntryContainer>> rosterEntryContainerMap;
+	
+	public RosterEntryContainerListContainer(List<RosterEntryContainer> rosterEntryContainerList) {
+		this.rosterEntryContainerList = rosterEntryContainerList;
+	}
+	
 	public List<RosterEntryContainer> getRosterEntryContainerList() {
 		return rosterEntryContainerList;
 	}
+	
 	public void setRosterEntryContainerList(
 			List<RosterEntryContainer> rosterEntryContainerList) {
 		this.rosterEntryContainerList = rosterEntryContainerList;
 	}
+	
 	public SortedMap<Location, List<RosterEntryContainer>> getRosterEntryContainerMap() {
 		return rosterEntryContainerMap;
 	}
+	
 	public void setRosterEntryContainerMap(
 			SortedMap<Location, List<RosterEntryContainer>> rosterEntryContainerMap) {
 		this.rosterEntryContainerMap = rosterEntryContainerMap;
@@ -47,7 +55,7 @@ public class RosterEntryContainerListContainer {
 		rosterEntryContainerMap = map;
 	}
 	
-	public void sortRosterEntries(final Comparator<RosterEntryContainer> rosterEntryContainerComparator) {
+	public void sortRosterEntries(final Comparator rosterEntryContainerComparator) {
 		for (List<RosterEntryContainer> vehicleContainerList : rosterEntryContainerMap.values()) {
 			Collections.sort(vehicleContainerList, rosterEntryContainerComparator);		
 		}

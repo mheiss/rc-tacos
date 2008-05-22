@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,13 +25,14 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.form.RosterEntryContainer;
+import at.rc.tacos.web.form.RosterEntryContainerListContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
  * Roster Controller.
  * @author Payer Martin
  * @version 1.0
- * TODO: Roster Entries mit falschem Datum rausfiltern, Gruppierung machen, nur Time darstellen in der view
+ * TODO: Roster Entries mit falschem Datum rausfiltern, nur Time darstellen in der view
  */
 public class RosterController extends Controller {
 
@@ -52,7 +52,7 @@ public class RosterController extends Controller {
 	private static final String PARAM_DATE_NAME = "date";
 	private static final String MODEL_DATE_NAME = "date";
 	
-	private static final String PARAM_ROSTER_ENTRY_CONTAINER_LIST = "rosterEntryContainerList";
+	private static final String PARAM_ROSTER_ENTRY_CONTAINER_LIST_CONTAINER = "rosterEntryContainerListContainer";
 	
 	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
 	private static final String MODEL_MESSAGE_CODE_NAME = "messageCode";
@@ -174,14 +174,18 @@ public class RosterController extends Controller {
 			rosterEntryContainerList.add(rosterEntryContainer);
 		}
 		
-		final Comparator comp = new CompoundComparator(new Comparator[] {
-				new PropertyComparator("rosterEntry.staffMember.lastName", false, true),
-				new PropertyComparator("rosterEntry.staffMember.firstName", false, true),
-				new PropertyComparator("plannedStartOfWork", false, true)
+		// Group and Sort
+		final RosterEntryContainerListContainer container = new RosterEntryContainerListContainer(rosterEntryContainerList);
+		final Comparator<Location> locationComparator = new PropertyComparator("locationName", true, true);
+		final Comparator sortComp = new CompoundComparator(new Comparator[] {
+				new PropertyComparator("rosterEntry.staffMember.lastName", true, true),
+				new PropertyComparator("rosterEntry.staffMember.firstName", true, true),
+				new PropertyComparator("plannedStartOfWork", true, true)
 		});
-		Collections.sort(rosterEntryContainerList, comp);
-		
-		params.put(PARAM_ROSTER_ENTRY_CONTAINER_LIST, rosterEntryContainerList);
+		container.groupRosterEntriesBy(locationComparator);
+		container.sortRosterEntries(sortComp);
+			
+		params.put(PARAM_ROSTER_ENTRY_CONTAINER_LIST_CONTAINER, container);
 		
 		// Parse message code from other controllers
 		if (request.getParameter(PARAM_MESSAGE_CODE_NAME) != null && !request.getParameter(PARAM_MESSAGE_CODE_NAME).equals("")) {

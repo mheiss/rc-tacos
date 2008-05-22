@@ -2,7 +2,6 @@ package at.rc.tacos.web.controller;
 
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -13,12 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.net.internal.WebClient;
-import at.rc.tacos.model.Competence;
-import at.rc.tacos.model.Job;
-import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
-import at.rc.tacos.model.ServiceType;
-import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
 
 /**
