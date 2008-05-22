@@ -1,11 +1,11 @@
 <%@ include file="includes.jsp" %>
 <table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td id="BlockHead" colspan="2"><b>Dienste</b></td>
+		<td id="BlockHead" colspan="2"><b>Dienstplan</b></td>
 	</tr>
 	<c:url var="url" value="/Dispatcher/roster.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienstplan</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Tagesansicht</a>
 		</td>
 	</tr>
 	<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
@@ -26,7 +26,7 @@
 </table>
 <table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td id="BlockHead" colspan="2"><b>Mitarbeiter</b></td>
+		<td id="BlockHead" colspan="2"><b>Verwaltung</b></td>
 	</tr>
 	<c:if test="${userSession.loginInformation.authorization eq 'Administrator'}">
 		<c:url var="url" value="/Dispatcher/staffMembers.do" />

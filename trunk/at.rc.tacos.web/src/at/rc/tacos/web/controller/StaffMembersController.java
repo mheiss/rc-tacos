@@ -22,6 +22,7 @@ import at.rc.tacos.web.session.UserSession;
  * Staff Members Controller
  * @author Payer Martin
  * @version 1.0
+ * TODO: Gruppierung um Location
  */
 public class StaffMembersController extends Controller {
 
