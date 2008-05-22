@@ -15,7 +15,7 @@ Running local under Eclipse
 
 2. Install Java SDK 1.6.x.
 
-3. Install Tomcat 6.x.
+3. Install Tomcat 6.x (!!!!!!! DO NOT USE SPACES IN YOU INSTALLATION PATH BECAUSE THIS CAUSES PROBLEMS !!!!!!!).
 
 4. Install SQL Server 2005 and run db creation scripts if you run database on same machine.
 
