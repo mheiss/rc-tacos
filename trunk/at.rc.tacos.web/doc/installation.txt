@@ -1,4 +1,9 @@
-Running under Eclipse
+This application supports two independent build proccesses.
+
+1. Build proccess local (with or without Eclipse support)
+2. Production build proccess
+
+Running local under Eclipse
 ------------------------------------------------
 
 1. Checkout project.
@@ -22,60 +27,98 @@ Running under Eclipse
       
 7. Rename _build.properties to build.properties and be aware that the following paths are set:
    
-   Enter the path to you Eclipse appserver. You can find it in workspace.
+   #Directory of internal eclipse appserver (important for local build proccess under Eclipse)
    eclipse.appserver.home = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0
-   
-   Enter the path to your OpenSSL installation directory if you use Tomcat with tcnative-1.dll in /bin directory:
+
+   #Installation directory of appserver (important for local build proccess without Eclipse and production build)
+   appserver.home = E:/tomcat-6.0
+   deploy.path = ${appserver.home}/webapps
+
+   #Installation directory of appserver (important for production build proccess)
+   production.appserver.home = E:/tomcat-6.0
+   production.deploy.path = ${production.appserver.home}/webapps
+
+   #Installation directory of OpenSSL (important if you use tomcat-native and OpenSSL)
    openssl.bin = E:/OpenSSL/bin
 
-   You can use those default values:
+   #SSL data for local build proccess with Eclipse and local build proccess without Eclipse
    ssl.key.validity = 1095
    ssl.key.pass = xu7nrAv
    ssl.key.dname.openssl = ""/C=AT/ST=CA/L=Graz/CN=localhost/O=Rotes Kreuz""
    ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=localhost,O=Rotes Kreuz""
+
+   #SSL data for production build
+   production.ssl.key.validity = 1095
+   production.ssl.key.pass = xu7nrAv
+   production.ssl.key.dname.openssl = ""/C=AT/ST=CA/L=Graz/CN=www.bm.st.redcross.or.at/O=Rotes Kreuz""
+   production.ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=www.bm.st.redcross.or.at,O=Rotes Kreuz""
+
+   #FTP properties for deployment to production system via FTP
+   production.ftp.ip = 
+   production.ftp.port =
+   production.ftp.username =
+   production.ftp.password =
+   production.ftp.dir =
+
+   #Tomcat properties on production system
+   production.tomcat.manager.url = http://localhost:8080/manager
+   production.tomcat.manager.username =
+   production.tomcat.manager.password =
    
 8. Go to package at.rc.tacos.web.config and edit net.properties. Be sure that
    that localhost is used as primary server if you run tacos server on same machine.
    Be sure that you use the same ports like in tacos server configuration.
+   Normally you can use these values
 
-   # Primary server connection
+   #Primary server connection
    server.host = localhost
    server.port = 4711
    server.description = Primärer Server
 
-   # Fallback server connection
+   #Fallback server connection
    failover.host = 81.189.52.155
    failover.port = 4711
    failover.description = Backup Server
    
 9. Go to package at.rc.tacos.web.config and edit server.properties.
+   Normally you can use these values.
 
-   Enter ports that Tomcat uses here:
    server.default.port = 8080
    server.secure.port = 8443
 
-   You can use these default values:
    server.http.url.pattern = http://.*?
    server.https.prefix = https://
 
-   Enter regex Pattern for reverse proy here. You can use this value:
    server.reverseProxy.address.pattern = 172.16.0.2
-   
-   Enter regex Pattern for internal network here. You can use this value:
    server.network.address.pattern = 127.0.0.\\d{1,3}
+   
+10.Go to package at.rc.tacos.web.config and edit fileupload.properties.
+   Normally you can use these values.
 
-10. Go to Run/Debug Setting->Apache Tomcat and add the following value:
+   memory.maxsize = 10240
+   request.maxsize = -1
+   tmp.dir = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/at.rc.tacos.web/image/tmp
+
+   addStaffMember.photo.maxsize = 10485760
+   addStaffMember.photo.absolute.dir = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/at.rc.tacos.web/image/staffmembers
+   addStaffMember.photo.contentType = image/.*
+
+   editStaffMember.photo.maxsize = 10485760
+   editStaffMember.photo.absolute.dir = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/at.rc.tacos.web/image/staffmembers
+   editStaffMember.photo.contentType = image/.*
+
+11. Go to Run/Debug Setting->Apache Tomcat and add the following value:
    -Djava.library.path=E:\tomcat-6.0.10\bin
    
-11.Try to run application on server. (won't work but that's ok :-)).
+12.Try to run application on server. (won't work but that's ok :-)).
 
-12.Run ants target ssl-genkey-jsse if you want to use Java server certificate.
-   
-   Run ants target ssl-genkey-openssl if you want to use OpenSSL server certificate.
+13.Run ants target elipse-ssl-genkey-openssl if you use tomcat native.
 
-13.Edit server.xml under Eclipse
+   Run ants target eclipse-ssl-genkey-jsse if you DON'T use tomcat native.
 
-   OpenSSL:
+14.Edit server.xml under Eclipse
+
+   OpenSSL (if you use tomcat native):
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
@@ -83,18 +126,18 @@ Running under Eclipse
                SSLCertificateKeyFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/server.key"
                />
                
-   JSSE:        
+   JSSE (if you DON'T use tomcat native):        
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
                keystoreFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/.keystore" keystorePass="xu7nrAv"
                />
 
-14.Try to run application on server again. It should work now.
+15.Try to run application on server again. It should work now.
    If you run Tacos server on same machine be sure that it runs (run as Java application).
 
 
-Running application on production system
+Running on production system
 ------------------------------------------------
 
 If you want to install the application on production system, you need network access to
@@ -116,66 +159,92 @@ got direct access to the server network.
 
 6. Rename _build.properties in root directory to build.properties. Check the following properties in build.properties:
    
-   Enter installation directory of your appserver on the machine development environment. The path is needed for compilation via Ants:
-   appserver.home=E:/tomcat-6.0
-   
-   Enter installation directory of your appserver on production server:
-   production.appserver.home=E:/tomcat-6.0
-   production.deploy.path=${appserver.home}/webapps
+   #Directory of internal eclipse appserver (important for local build proccess under Eclipse)
+   eclipse.appserver.home = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0
 
-   Enter these properties if you want to deploy via FTP:
+   #Installation directory of appserver (important for local build proccess without Eclipse and production build)
+   appserver.home = E:/tomcat-6.0
+   deploy.path = ${appserver.home}/webapps
+
+   #Installation directory of appserver (important for production build proccess)
+   production.appserver.home = E:/tomcat-6.0
+   production.deploy.path = ${production.appserver.home}/webapps
+
+   #Installation directory of OpenSSL (important if you use tomcat-native and OpenSSL)
+   openssl.bin = E:/OpenSSL/bin
+
+   #SSL data for local build proccess with Eclipse and local build proccess without Eclipse
+   ssl.key.validity = 1095
+   ssl.key.pass = xu7nrAv
+   ssl.key.dname.openssl = ""/C=AT/ST=CA/L=Graz/CN=localhost/O=Rotes Kreuz""
+   ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=localhost,O=Rotes Kreuz""
+
+   #SSL data for production build
+   production.ssl.key.validity = 1095
+   production.ssl.key.pass = xu7nrAv
+   production.ssl.key.dname.openssl = ""/C=AT/ST=CA/L=Graz/CN=www.bm.st.redcross.or.at/O=Rotes Kreuz""
+   production.ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=www.bm.st.redcross.or.at,O=Rotes Kreuz""
+
+   #FTP properties for deployment to production system via FTP
    production.ftp.ip = 
    production.ftp.port =
    production.ftp.username =
    production.ftp.password =
    production.ftp.dir =
 
-   Enter Tomcat properties if you want to use tomcat manager on production system:
-   production.tomcat.manager.url=http://localhost:8080/manager
-   production.tomcat.manager.username=
-   production.tomcat.manager.password=
-
-   Enter SSL data for production system:
-   production.ssl.key.validity = 1095
-   production.ssl.key.pass = xu7nrAv
-   production.ssl.key.dname.openssl = ""/C=AT/ST=CA/L=Graz/CN=localhost/O=Rotes Kreuz""
-   production.ssl.key.dname.jsse = ""C=AT,ST=CA,L=Graz,CN=localhost,O=Rotes Kreuz""
+   #Tomcat properties on production system
+   production.tomcat.manager.url = http://localhost:8080/manager
+   production.tomcat.manager.username =
+   production.tomcat.manager.password =
    
 7. Go to folder production-specific and edit net.properties.
    Be sure that you use the same ports like in tacos server configuration.
+   Normally you should use these values.
 
-   Primary server connection --- red cross station primary server ip
+   #Primary server connection --- red cross station primary server ip
    server.host = 172.16.10.7
    server.port = 4711
    server.description = Primärer Server
 
-   Fallback server connection --- red cross station failback server ip
+   #Fallback server connection --- red cross station failback server ip
    failover.host = 172.16.10.8
    failover.port = 4711
    failover.description = Backup Server
    
-8. Go to folder production-specific at.rc.tacos.web.config and edit server.properties.
+8. Go to folder production-specific and edit server.properties.
+   Normally you should use these values.
 
-   Enter ports that you appserver on production system uses for HTTP Connector and HTTPS Connector.
-   If you don't no go to server.xml
    server.default.port = 80
    server.secure.port = 443
 
-   You can use these default values:
    server.http.url.pattern = http://.*?
    server.https.prefix = https://
 
-   You can use these values:
-   server.reverseProxy.address = 172.16.0.2
+   server.reverseProxy.address.pattern = 172.16.0.2
    server.network.address.pattern = 172.16.0.\\d{1,3}
    
-9. Run ants target production-ssl-genkey-jsse if you want to use Java server certificate.
-   
-   Run ants target production-ssl-genkey-openssl if you want to use OpenSSL server certificate.
+9. Go to folder production-specific and edit fileupload.properties.
+   Normally you should use these values
 
+   memory.maxsize = 10240
+   request.maxsize = -1
+   tmp.dir = D:/tomcat-6.0/webapps/rc-tacos/image/tmp
+
+   addStaffMember.photo.maxsize = 10485760
+   addStaffMember.photo.absolute.dir = D:/tomcat-6.0/webapps/rc-tacos/image/staffmembers
+   addStaffMember.photo.contentType = image/.*
+
+   editStaffMember.photo.maxsize = 10485760
+   editStaffMember.photo.absolute.dir = D:/tomcat-6.0/webapps/rc-tacos/image/staffmembers
+   editStaffMember.photo.contentType = image/.*
+   
+9. Run ants target production-ssl-genkey-openssl if you use tomcat native.
+
+   Run ants target production-ssl-genkey-jsse if you DON'T use tomcat native.
+   
 10.Edit server.xml under Eclipse:
                
-   OpenSSL:
+   OpenSSL (if you use tomcat native):
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
@@ -183,11 +252,26 @@ got direct access to the server network.
                SSLCertificateKeyFile="conf/server.key"
                />
 
-   JSSE:
+   JSSE (if you DON'T use tomcat native):
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
                keystoreFile="conf/.keystore" keystorePass="xu7nrAv"
                />
                
-11.Run production-compile, production-deploy (production-deploy-ftp) and start Tomcat.            
+11.Run compile, production-deploy (production-deploy-ftp if you deploy via ftp) and start Tomcat.
+
+
+Running local without Eclipse
+------------------------------------------------
+
+In general it's the same procedure like on production system but there
+are some differences:
+
+1. You don't edit fileupload.properties, net.properties and server.properties
+   in production-specific folder. You edit them in package at.rc.tacos.web.config.
+
+2. Instead of running production-ssl-genkey-jsse or production-ssl-genkey-openssl
+   you run ssl-genkey-jsse or ssl-genkey-openssl.
+   
+3. Instead of running production-deploy you run deploy.         
