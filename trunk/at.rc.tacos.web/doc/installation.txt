@@ -1,7 +1,12 @@
-This application supports two independent build proccesses.
+This application supports two independent and cofigureable build proccesses.
 
-1. Build proccess local (with or without Eclipse support)
+1. Build proccess local
+   - with or without Eclipse deployment
+   - with or without tomcat native
+	
 2. Production build proccess
+   - via network or via FTP
+   - with our without tomcat native
 
 Running local under Eclipse
 ------------------------------------------------
