@@ -7,7 +7,7 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.*"%>
 <%
-	final Map<String, Object> params = (Map<String, Object>) request
+			final Map<String, Object> params = (Map<String, Object>) request
 			.getAttribute("params");
 	final UserSession userSession = (UserSession) session
 			.getAttribute("userSession");
@@ -18,7 +18,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <c:if test="${useHtmlCache eq false}">
-	<meta http-equiv="cache-control" content="no-cache" />
+	<!--<meta http-equiv="cache-control" content="no-cache" />-->
+	<meta http-equiv="Expires" content="Fri, 05 Mar 1999 06:00:00 GMT" />
+    <meta http-equiv="Pragma" content="no-cache" />
 </c:if>
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/stylesheet.css"/>" />
@@ -54,8 +56,8 @@ $(document).ready(function() {
 </head>
 <body>
 <div id="messageOfTheDay"><img class="showMessageOfTheDay"
-	title="Test Test Test Test dfj lksdfj lkdsfj lksjfkl sdjfkls djfkdsjf kfjdska jfklsdjfk ljfklsd jfklsdjfk jkdjfkdjf kjfkdj k jfkdjsakfjf kdjfksdjf kdsjfk jdskjf kdsjf kfdjs kjfsdkj kfsjk fjsdkf jkdjf kdsjfk dj" src="<c:url value="/image/info.gif"/>" />
-</div>
+	title="Test Test Test Test dfj lksdfj lkdsfj lksjfkl sdjfkls djfkdsjf kfjdska jfklsdjfk ljfklsd jfklsdjfk jkdjfkdjf kjfkdj k jfkdjsakfjf kdjfksdjf kdsjfk jdskjf kdsjf kfdjs kjfsdkj kfsjk fjsdkf jkdjf kdsjfk dj"
+	src="<c:url value="/image/info.gif"/>" /></div>
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
 	id="MainTab">
 	<thead>
