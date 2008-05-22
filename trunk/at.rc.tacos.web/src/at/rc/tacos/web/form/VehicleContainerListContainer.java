@@ -54,7 +54,7 @@ public class VehicleContainerListContainer {
 		vehicleContainerMap = map;
 	}
 	
-	public void sortVehicles(final Comparator<VehicleContainer> vehicleContainerComparator) {
+	public void sortVehicles(final Comparator vehicleContainerComparator) {
 		for (List<VehicleContainer> vehicleContainerList : vehicleContainerMap.values()) {
 			Collections.sort(vehicleContainerList, vehicleContainerComparator);		
 		}
