@@ -128,7 +128,7 @@ Running local under Eclipse
 
 14.Edit server.xml under Eclipse
 
-   OpenSSL (if you use tomcat native):
+   OpenSSL (if you use tomcat native with OpenSSL):
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
@@ -136,7 +136,7 @@ Running local under Eclipse
                SSLCertificateKeyFile="E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/conf/server.key"
                />
                
-   JSSE (if you DON'T use tomcat native):        
+   JSSE (if you DON'T use tomcat native with Java Keytool):        
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
@@ -254,7 +254,7 @@ got direct access to the server network.
    
 10.Edit server.xml under Eclipse:
                
-   OpenSSL (if you use tomcat native):
+   OpenSSL (if you use tomcat native with OpenSSL):
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
@@ -262,7 +262,7 @@ got direct access to the server network.
                SSLCertificateKeyFile="conf/server.key"
                />
 
-   JSSE (if you DON'T use tomcat native):
+   JSSE (if you DON'T use tomcat native with Java Keytool):
    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true" 
                maxThreads="150" scheme="https" secure="true" 
                clientAuth="false" sslProtocol="TLS"
