@@ -267,6 +267,13 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
 		manager.add(readyStatus);
 		manager.add(repairStatus);
 		
+		//default
+		detachAction.setEnabled(true);
+		vehicleAtStationAction.setEnabled(true);
+		readyStatus.setEnabled(true);
+		repairStatus.setEnabled(true);
+		
+		
 		//enable or disable the actions
 		if(vehicle.isReadyForAction())
 		{
