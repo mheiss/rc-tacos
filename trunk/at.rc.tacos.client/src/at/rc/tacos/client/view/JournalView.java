@@ -398,6 +398,11 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 			moveToOutstandingTransportsAction.setEnabled(false);
 			moveToRunningTransportsAction.setEnabled(false);
 		}
+		else
+		{
+			moveToOutstandingTransportsAction.setEnabled(true);
+			moveToRunningTransportsAction.setEnabled(true);
+		}
 	}
 
 	/**

@@ -366,6 +366,13 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		manager.add(cancelSignOutAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
+		//default
+		signInAction.setEnabled(true);
+		signOutAction.setEnabled(true);
+		deleteEntryAction.setEnabled(true);
+		cancelSignInAction.setEnabled(true);
+		cancelSignOutAction.setEnabled(true);
+		
 		//enable or disable the actions
 		if(entry.getRealStartOfWork() > 0)
 		{

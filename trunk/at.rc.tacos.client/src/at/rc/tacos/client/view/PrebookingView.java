@@ -421,6 +421,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			cancelTransportActionBruck.setEnabled(false);
 			copyTransportActionBruck.setEnabled(false);
 		}
+		else
+		{
+			moveToOutstandingTransportsActionBruck.setEnabled(true);
+			cancelTransportActionBruck.setEnabled(true);
+			copyTransportActionBruck.setEnabled(true);
+		}
+			
 	}
 	private void fillContextMenuKapfenberg(IMenuManager manager, TableViewer viewer)
 	{
@@ -447,6 +454,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			moveToOutstandingTransportsActionKapfenberg.setEnabled(false);
 			cancelTransportActionKapfenberg.setEnabled(false);
 			copyTransportActionKapfenberg.setEnabled(false);
+		}
+		else
+		{
+			moveToOutstandingTransportsActionKapfenberg.setEnabled(true);
+			cancelTransportActionKapfenberg.setEnabled(true);
+			copyTransportActionKapfenberg.setEnabled(true);
 		}
 	}
 	private void fillContextMenuLeoben(IMenuManager manager, TableViewer viewer)
@@ -475,6 +488,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			cancelTransportActionLeoben.setEnabled(false);
 			copyTransportActionLeoben.setEnabled(false);
 		}
+		else
+		{
+			moveToOutstandingTransportsActionLeoben.setEnabled(true);
+			cancelTransportActionLeoben.setEnabled(true);
+			copyTransportActionLeoben.setEnabled(true);
+		}
 	}
 	private void fillContextMenuMariazell(IMenuManager manager, TableViewer viewer)
 	{
@@ -501,6 +520,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			moveToOutstandingTransportsActionMariazell.setEnabled(false);
 			cancelTransportActionMariazell.setEnabled(false);
 			copyTransportActionMariazell.setEnabled(false);
+		}
+		else
+		{
+			moveToOutstandingTransportsActionMariazell.setEnabled(true);
+			cancelTransportActionMariazell.setEnabled(true);
+			copyTransportActionMariazell.setEnabled(true);
 		}
 	}
 	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer)
@@ -529,6 +554,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			cancelTransportActionGraz.setEnabled(false);
 			copyTransportActionGraz.setEnabled(false);
 		}
+		else
+		{
+			moveToOutstandingTransportsActionGraz.setEnabled(true);
+			cancelTransportActionGraz.setEnabled(true);
+			copyTransportActionGraz.setEnabled(true);
+		}
 	}
 	private void fillContextMenuWien(IMenuManager manager, TableViewer viewer)
 	{
@@ -555,6 +586,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			moveToOutstandingTransportsActionWien.setEnabled(false);
 			cancelTransportActionWien.setEnabled(false);
 			copyTransportActionWien.setEnabled(false);
+		}
+		else
+		{
+			moveToOutstandingTransportsActionWien.setEnabled(true);
+			cancelTransportActionWien.setEnabled(true);
+			copyTransportActionWien.setEnabled(true);
 		}
 	}
 

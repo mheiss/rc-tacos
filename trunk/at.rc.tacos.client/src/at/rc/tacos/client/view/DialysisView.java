@@ -321,6 +321,11 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 			dialysisDeleteAction.setEnabled(false);
 			dialysisTransportNowAction.setEnabled(false);
 		}
+		else
+		{
+			dialysisDeleteAction.setEnabled(true);
+			dialysisTransportNowAction.setEnabled(true);
+		}
 	}
 	/**
 	 * Passing the focus request to the viewer's control.

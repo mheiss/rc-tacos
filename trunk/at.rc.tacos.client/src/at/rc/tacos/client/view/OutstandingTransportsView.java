@@ -212,10 +212,13 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 				manager.add(new Separator());
 				manager.add(copyTransportAction);
 				
+				//if locked
 				if(locked)
 				{
 					copyTransportAction.setEnabled(false);
 				}
+				else
+					copyTransportAction.setEnabled(true);
 			}
 		});  
 		
