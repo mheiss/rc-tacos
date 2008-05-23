@@ -467,6 +467,32 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(copyTransportAction);
 		manager.add(copyTransportDetailsIntoClipboardAction);
 		
+		//default action = true
+		//transport detail actions
+		setAccompanyingPersonAction.setEnabled(true);
+		setBD1Action.setEnabled(true);
+		setBD2Action.setEnabled(true);
+		setBackTransportPossibleAction.setEnabled(true);
+		createBackTransportAction.setEnabled(true);
+		copyTransportAction.setEnabled(true);
+		
+		//transport stati
+		setTransportStatusS1Action.setEnabled(true);
+		setTransportStatusS2Action.setEnabled(true);
+		setTransportStatusS3Action.setEnabled(true);
+		setTransportStatusS4Action.setEnabled(true);
+		setTransportStatusS5Action.setEnabled(true);
+		
+		//alarmings
+		setAlarmingActionNA.setEnabled(true);
+		setAlarmingActionRTH.setEnabled(true);
+		setAlarmingActionDF.setEnabled(true);
+		setAlarmingActionBRKDT.setEnabled(true);
+		setAlarmingActionFW.setEnabled(true);
+		setAlarmingActionPO.setEnabled(true);
+		setAlarmingActionBR.setEnabled(true);
+		setAlarmingActionKIT.setEnabled(true);
+		
 		//disable the selection if the transport is locked
 		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
 		{
