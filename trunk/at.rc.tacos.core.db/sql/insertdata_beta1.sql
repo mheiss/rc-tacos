@@ -2,21 +2,20 @@
 -- last changed:
 -- moved the transport states to the createTable script. 
 
--- Sercive types
+-- Sercive types (Dienstverhältnis)
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(1, 'Hauptamtlich');
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(2, 'Freiwillig');
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(3, 'Ersatzeinstellung');
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(4, 'Zivildiener');
 INSERT INTO servicetype(servicetype_ID, servicetype) VALUES(5, 'Sonstiges');
 
--- Available jobs
+-- Available jobs (Verwendung)
 INSERT INTO job(job_ID, jobname) VALUES(1, 'Fahrer');
 INSERT INTO job(job_ID, jobname) VALUES(2, 'Sanitäter');
 INSERT INTO job(job_ID, jobname) VALUES(3, 'Notfallsanitäter');
-INSERT INTO job(job_ID, jobname) VALUES(4, 'Rettungssanitäter');
 INSERT INTO job(job_ID, jobname) VALUES(5, 'Notarzt');
 INSERT INTO job(job_ID, jobname) VALUES(6, 'Leitstellendisponent');
-INSERT INTO job(job_ID, jobname) VALUES(7, 'Dienststellenführender');
+INSERT INTO job(job_ID, jobname) VALUES(7, 'Dienstführender');
 INSERT INTO job(job_ID, jobname) VALUES(8, 'Inspektionsdienst');
 INSERT INTO job(job_ID, jobname) VALUES(9, 'BKTW-Fahrer');
 INSERT INTO job(job_ID, jobname) VALUES(10, 'Journaldienst');
@@ -66,19 +65,21 @@ INSERT INTO disease(disease_ID, disease) VALUES(1, 'Knochenbruch');
 INSERT INTO disease(disease_ID, disease) VALUES(2, 'Kreislauf');
 INSERT INTO disease(disease_ID, disease) VALUES(3, 'Neuronale Beschwerden');
 
--- competences
+-- competences (Kompetenz = Ausbildung)
 INSERT INTO competences(competence_ID, competence) VALUES(1, 'Fahrer');
 INSERT INTO competences(competence_ID, competence) VALUES(2, 'Sanitäter');
 INSERT INTO competences(competence_ID, competence) VALUES(3, 'Notfallsanitäter');
-INSERT INTO competences(competence_ID, competence) VALUES(4, 'Rettungssanitäter');
-INSERT INTO competences(competence_ID, competence) VALUES(5, 'Notarzt');
-INSERT INTO competences(competence_ID, competence) VALUES(6, 'Leitstellendisponent');
-INSERT INTO competences(competence_ID, competence) VALUES(7, 'Dienststellenführender');
-INSERT INTO competences(competence_ID, competence) VALUES(8, 'Inspektionsdienst');
-INSERT INTO competences(competence_ID, competence) VALUES(9, 'BKTW-Fahrer');
-INSERT INTO competences(competence_ID, competence) VALUES(10, 'Journaldienst');
-INSERT INTO competences(competence_ID, competence) VALUES(11, 'Volontär');
-INSERT INTO competences(competence_ID, competence) VALUES(12, 'Sonstiges');
+INSERT INTO competences(competence_ID, competence) VALUES(4, 'Notarzt');
+INSERT INTO competences(competence_ID, competence) VALUES(5, 'Leitstellendisponent');
+INSERT INTO competences(competence_ID, competence) VALUES(6, 'Dienstführender');
+INSERT INTO competences(competence_ID, competence) VALUES(7, 'Inspektionsdienst');
+INSERT INTO competences(competence_ID, competence) VALUES(8, 'BKTW-Fahrer');
+INSERT INTO competences(competence_ID, competence) VALUES(9, 'Journaldienst');
+INSERT INTO competences(competence_ID, competence) VALUES(10, 'Volontär');
+INSERT INTO competences(competence_ID, competence) VALUES(11, 'Sonstiges');
+INSERT INTO competences(competence_ID, competence) VALUES(12, '_HA');
+INSERT INTO competences(competence_ID, competence) VALUES(13, '_ZD');
+INSERT INTO competences(competence_ID, competence) VALUES(14, '_LS');
 
 -- locations
 INSERT INTO location(location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID)
