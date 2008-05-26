@@ -225,3 +225,9 @@ INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID
 VALUES('NEF', null, null, null, 2, 'NEF(0)', 1, 1, null, 0, 0, 0);
 INSERT INTO vehicles(vehicle_ID, driver_ID, medic1_ID, medic2_ID, phonenumber_ID, vehicletype, currentLocation, primaryLocation, note, readyForAction, outOfOrder, transportStatus) 
 VALUES('KDO', null, null, null, 2, 'KDO(0)', 1, 1, null, 0, 0, 0);
+
+-- sick persons
+INSERT INTO sickperson(sickperson_ID, lastname, firstname)
+VALUES (1, null, 'Franz');
+INSERT INTO sickperson(sickperson_ID, lastname, firstname)
+VALUES (2, 'Huber', 'Sepp');
