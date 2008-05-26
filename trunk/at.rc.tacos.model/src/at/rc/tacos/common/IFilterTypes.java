@@ -27,7 +27,9 @@ public interface IFilterTypes
     /** Filter roster by location */
     public final static String ROSTER_LOCATION_FILTER = "rosterLocationFilter";
     
+    /** Filter by lastname */
+    public final static String SICK_PERSON_LASTNAME_FILTER = "lastnameFilter";
+    
     /** Filter staff member by primary location */
     public final static String STAFF_MEMBER_LOCATION_FILTER = "staffMemberLocationFilter";
-    
 }
