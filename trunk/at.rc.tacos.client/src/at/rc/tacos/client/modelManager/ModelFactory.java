@@ -16,6 +16,7 @@ import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
+import at.rc.tacos.model.SickPerson;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
@@ -46,6 +47,7 @@ public class ModelFactory
 	private final DiseaseManager diseaseManager = new DiseaseManager();
 	private final AddressManager addressManager = new AddressManager();
 	private final LockManager lockManager = new LockManager();
+	private final SickPersonManager sickPersonManager = new SickPersonManager();
 
 	/**
 	 * Private class constructor.
@@ -91,6 +93,9 @@ public class ModelFactory
 		net.requestListing(Transport.ID, dateFilter);
 		net.requestListing(DialysisPatient.ID, null);
 		net.requestListing(Lock.ID, null);
+		QueryFilter lastNameFilter = new QueryFilter();
+		lastNameFilter.add(IFilterTypes.SICK_PERSON_LASTNAME_FILTER, "");
+		net.requestListing(SickPerson.ID, lastNameFilter);
 	}
 
 	//GETTERS FOR THE MANAGER
@@ -162,5 +167,10 @@ public class ModelFactory
 	public final LockManager getLockManager()
 	{
 		return lockManager;
+	}
+	
+	public final SickPersonManager getSickPersonManager()
+	{
+		return sickPersonManager;
 	}
 }

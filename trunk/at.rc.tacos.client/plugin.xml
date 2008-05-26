@@ -183,6 +183,23 @@
             icon="icons/resources/location.png"
             name="Dienststellen">
       </view>
+      
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.SickPersonAdminView"
+            id="at.rc.tacos.client.view.admin.sickpersonAdminView"
+            icon="icons/admin/patient.gif"
+            name="Patientendatenbank">
+      </view>
+      
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.view.admin.SickPersonAdminViewN"
+            id="at.rc.tacos.client.view.admin.sickpersonAdminViewN"
+            icon="icons/admin/patient.gif"
+            name="Patientendatenbank">
+      </view>
+      
       <view
             allowMultiple="false"
             class="at.rc.tacos.client.view.admin.StaffMemberAdminView"
@@ -280,6 +297,14 @@
             id="at.rc.tacos.client.editors.locationEditor"
             name="Dienststellen">
       </editor>
+      
+      <editor
+            class="at.rc.tacos.client.editors.SickPersonEditor"
+            icon="icons/resources/person.png"
+            id="at.rc.tacos.client.editors.sickpersonEditor"
+            name="Dienststellen">
+      </editor>
+      
       <editor
             class="at.rc.tacos.client.editors.ServiceTypeEditor"
             icon="icons/resources/serviceType.png"
