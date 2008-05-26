@@ -454,3 +454,17 @@ CREATE TABLE transport_selected (
 )
 Create NONCLUSTERED Index notyfied_has_transports_FKIndex1 ON transport_selected (selected_ID)
 Create NONCLUSTERED Index notyfied_has_transports_FKIndex2 ON transport_selected (transport_ID)
+
+CREATE TABLE sickperson (
+  sickperson_ID BIGINT NOT NULL,
+  lastname VARCHAR(30)  NULL,
+  firstname VARCHAR(30) NULL,
+  sex BIT NULL,
+  street VARCHAR(50) NULL,
+  city VARCHAR(50) NULL,
+  svnr VARCHAR(30) NULL,
+  kindoftransport VARCHAR(50) NULL,
+  notes TEXT NULL,
+  PRIMARY KEY(sickperson_ID),
+
+)

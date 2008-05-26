@@ -41,3 +41,5 @@ DELETE FROM job;
 
 DELETE FROM servicetype;
 
+DELETE FROM sickperson;
+
