@@ -40,6 +40,7 @@ public class ListenerFactory
      */
     public void registerListener(String id, IModelListener listener)
     {
+    	System.out.println("ListenerFactory in factory vom client/model, resiterListener: " +listener.toString());
         listenerList.put(id, listener);
     }
     
