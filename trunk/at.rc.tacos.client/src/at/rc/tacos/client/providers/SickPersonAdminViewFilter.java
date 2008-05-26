@@ -2,8 +2,6 @@ package at.rc.tacos.client.providers;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-
-import at.rc.tacos.model.Address;
 import at.rc.tacos.model.SickPerson;
 
 public class SickPersonAdminViewFilter  extends ViewerFilter
