@@ -36,6 +36,7 @@ import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.CompetenceContentProvider;
 import at.rc.tacos.client.providers.CompetenceLabelProvider;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
@@ -146,6 +147,16 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 
 		//force redraw
 		form.pack(true);
+		
+		//access authority only for admins and the own (logged in) staffMember
+		Login user = SessionManager.getInstance().getLoginInformation();
+		StaffMember loggedInMember = user.getUserInformation();			
+		if(loggedInMember.getStaffMemberId() == staffMember.getStaffMemberId())
+			form.setEnabled(true);
+		else
+			form.setEnabled(false);
+		if(user.getAuthorization().equalsIgnoreCase("Administrator"))
+			form.setEnabled(true);
 	}
 
 	/**
@@ -189,6 +200,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//update the phone and competence view
 		phoneViewer.refresh(true);
 		competenceViewer.refresh(true);
+		
+		
+		
 	}
 
 	/**
