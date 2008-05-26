@@ -20,10 +20,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -3242,16 +3240,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		final TableColumn lastnameColumn = new TableColumn(table, SWT.NONE);
 		lastnameColumn.setToolTipText("Nachname");
-		lastnameColumn.setWidth(30);
+		lastnameColumn.setWidth(130);
 		lastnameColumn.setText("Nachname");
 
 		final TableColumn firstnameColumn = new TableColumn(table, SWT.NONE);
 		firstnameColumn.setToolTipText("Vorname");
-		firstnameColumn.setWidth(60);
+		firstnameColumn.setWidth(130);
 		firstnameColumn.setText("Vorname");
 
 		final TableColumn streetColumn = new TableColumn(table, SWT.NONE);
-		streetColumn.setWidth(60);
+		streetColumn.setWidth(180);
 		streetColumn.setText("Straﬂe");
 
 		final TableColumn cityColumn = new TableColumn(table, SWT.NONE);
@@ -3261,65 +3259,65 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		final TableColumn sexColumn = new TableColumn(table, SWT.NONE);
 		sexColumn.setToolTipText("Geschlecht");
-		sexColumn.setWidth(30);
+		sexColumn.setWidth(40);
 		sexColumn.setText("Geschlecht");
 
 		final TableColumn svnrColumn = new TableColumn(table, SWT.NONE);
 		svnrColumn.setToolTipText("SVNR");
-		svnrColumn.setWidth(30);
+		svnrColumn.setWidth(50);
 		svnrColumn.setText("SVNR");
 		
 		final TableColumn taColumn = new TableColumn(table, SWT.NONE);
 		taColumn.setToolTipText("Transportart");
-		taColumn.setWidth(30);
+		taColumn.setWidth(20);
 		taColumn.setText("TA");
 		
 		final TableColumn notesColumn = new TableColumn(table, SWT.NONE);
 		notesColumn.setToolTipText("Notizen");
-		notesColumn.setWidth(100);
+		notesColumn.setWidth(140);
 		notesColumn.setText("Notizen");
 
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
-				// determine new sort column and direction
-				TableColumn sortColumn = viewerSickPerson.getTable().getSortColumn();
-				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewerSickPerson.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
-						dir = SWT.DOWN;
-					else
-						dir = SWT.UP;
-				} 
-				else 
-				{
-					viewerSickPerson.getTable().setSortColumn(currentColumn);
-					dir = SWT.UP;
-				}
-//				// sort the data based on column and direction
-//				String sortIdentifier = null;
-//				if (currentColumn == stationColumn) 
-//					sortIdentifier = VehicleSorter.CURRENT_STATION_SORTER;
-//				if (currentColumn == nameColumn) 
-//					sortIdentifier = VehicleSorter.VEHICLE_SORTER;
-//				if (currentColumn == typeColumn) 
-//					sortIdentifier = VehicleSorter.VEHICLE_TYPE_SORTER;
-//				if (currentColumn == driverColumn)
-//					sortIdentifier = VehicleSorter.DRIVER_SORTER;
-//				if (currentColumn == medicIColumn)
-//					sortIdentifier = VehicleSorter.PARAMEDIC_I_SORTER;
-//				if(currentColumn == medicIIColumn)
-//					sortIdentifier = VehicleSorter.PARAMEDIC_II_SORTER;
-				//apply the filter
-//				viewerSickPerson.getTable().setSortDirection(dir);
-//				viewerSickPerson.setSorter(new VehicleSorter(sortIdentifier,dir));
-				viewerSickPerson.refresh();
-			}
-		};
+//		Listener sortListener = new Listener() 
+//		{
+//			public void handleEvent(Event e) 
+//			{
+//				// determine new sort column and direction
+//				TableColumn sortColumn = viewerSickPerson.getTable().getSortColumn();
+//				TableColumn currentColumn = (TableColumn) e.widget;
+//				int dir = viewerSickPerson.getTable().getSortDirection();
+//				//revert the sort order if the column is the same
+//				if (sortColumn == currentColumn) 
+//				{
+//					if(dir == SWT.UP)
+//						dir = SWT.DOWN;
+//					else
+//						dir = SWT.UP;
+//				} 
+//				else 
+//				{
+//					viewerSickPerson.getTable().setSortColumn(currentColumn);
+//					dir = SWT.UP;
+//				}
+////				// sort the data based on column and direction
+////				String sortIdentifier = null;
+////				if (currentColumn == stationColumn) 
+////					sortIdentifier = VehicleSorter.CURRENT_STATION_SORTER;
+////				if (currentColumn == nameColumn) 
+////					sortIdentifier = VehicleSorter.VEHICLE_SORTER;
+////				if (currentColumn == typeColumn) 
+////					sortIdentifier = VehicleSorter.VEHICLE_TYPE_SORTER;
+////				if (currentColumn == driverColumn)
+////					sortIdentifier = VehicleSorter.DRIVER_SORTER;
+////				if (currentColumn == medicIColumn)
+////					sortIdentifier = VehicleSorter.PARAMEDIC_I_SORTER;
+////				if(currentColumn == medicIIColumn)
+////					sortIdentifier = VehicleSorter.PARAMEDIC_II_SORTER;
+//				//apply the filter
+////				viewerSickPerson.getTable().setSortDirection(dir);
+////				viewerSickPerson.setSorter(new VehicleSorter(sortIdentifier,dir));
+//				viewerSickPerson.refresh();
+//			}
+//		};
 
 		//attach the listener
 //		stationColumn.addListener(SWT.Selection, sortListener);
