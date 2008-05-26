@@ -12,6 +12,8 @@ import at.rc.tacos.client.view.admin.JobAdminView;
 import at.rc.tacos.client.view.admin.LocationAdminView;
 import at.rc.tacos.client.view.admin.PhoneAdminView;
 import at.rc.tacos.client.view.admin.ServiceTypeAdminView;
+import at.rc.tacos.client.view.admin.SickPersonAdminView;
+import at.rc.tacos.client.view.admin.SickPersonAdminViewN;
 import at.rc.tacos.client.view.admin.StaffMemberAdminView;
 import at.rc.tacos.client.view.admin.VehicleAdminView;
 
@@ -45,7 +47,10 @@ public class AdminPerspective implements IPerspectiveFactory
         left.addView(CompetenceAdminView.ID);
         left.addView(JobAdminView.ID);
         left.addView(ServiceTypeAdminView.ID);
+        left.addView(SickPersonAdminViewN.ID);
         left.addView(AddressAdminView.ID);
         left.addView(DiseaseAdminView.ID);
+        left.addView(SickPersonAdminView.ID);
+        
     }
 }

@@ -49,6 +49,8 @@ import at.rc.tacos.codec.RosterEntryDecoder;
 import at.rc.tacos.codec.RosterEntryEncoder;
 import at.rc.tacos.codec.ServiceTypeDecoder;
 import at.rc.tacos.codec.ServiceTypeEncoder;
+import at.rc.tacos.codec.SickPersonDecoder;
+import at.rc.tacos.codec.SickPersonEncoder;
 import at.rc.tacos.codec.StaffMemberDecoder;
 import at.rc.tacos.codec.StaffMemberEncoder;
 import at.rc.tacos.codec.SystemMessageDecoder;
@@ -76,6 +78,7 @@ import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
+import at.rc.tacos.model.SickPerson;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.model.Transport;
@@ -185,6 +188,7 @@ public class Activator extends AbstractUIPlugin
 		factory.registerListener(Disease.ID, new DiseaseListener());
 		factory.registerListener(Address.ID, new AddressListener());
 		factory.registerListener(Lock.ID, new LockListener());
+		factory.registerListener(SickPerson.ID, new SickPersonListener());
 	}
 
 	/**
@@ -232,6 +236,8 @@ public class Activator extends AbstractUIPlugin
 		protFactory.registerEncoder(Address.ID, new AddressEncoder());
 		protFactory.registerDecoder(Lock.ID, new LockDecoder());
 		protFactory.registerEncoder(Lock.ID,new LockEncoder());
+		protFactory.registerDecoder(SickPerson.ID, new SickPersonDecoder());
+		protFactory.registerEncoder(SickPerson.ID, new SickPersonEncoder());
 	}
 
 	/**
