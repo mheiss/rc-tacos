@@ -243,6 +243,8 @@ public class ServerController
         protFactory.registerEncoder(Address.ID, new AddressEncoder());
         protFactory.registerDecoder(Lock.ID, new LockDecoder());
         protFactory.registerEncoder(Lock.ID, new LockEncoder());
+        protFactory.registerDecoder(SickPerson.ID, new SickPersonDecoder());
+        protFactory.registerEncoder(SickPerson.ID, new SickPersonEncoder());
         //system events
         protFactory.registerDecoder(Login.ID, new LoginDecoder());
         protFactory.registerEncoder(Login.ID, new LoginEncoder());
@@ -277,5 +279,6 @@ public class ServerController
         factory.registerModelListener(Address.ID, new AddressListener());
         factory.registerModelListener(Disease.ID, new DiseaseListener());
         factory.registerModelListener(Lock.ID, new LockListener());
+        factory.registerModelListener(SickPerson.ID, new SickPersonListener());
     }
 }
