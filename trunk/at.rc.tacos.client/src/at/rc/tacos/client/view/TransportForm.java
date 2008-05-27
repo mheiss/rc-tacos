@@ -48,6 +48,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.controller.AssignCarAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
@@ -222,6 +223,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	 * possible values: prebooking, emergencyTransport, ?wholeTransportDetails?- possible?
 	 */
 	private String transportType;
+	
+	String authorization;
 
 	/**
 	 * Default class constructor used to create a new Transport.
@@ -271,6 +274,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		this.transport = transport;
 		this.editingType = editingType;
 		transportType = "both";
+		
+		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
 		//bind the staff to this view
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
@@ -867,6 +872,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboVorname.left = new FormAttachment(0, 641);
 		comboVorname.setLayoutData(fd_comboVorname);
 
+		
+		
+		
 		final Button buttonPatientendatenPruefen = new Button(transportdatenGroup, SWT.NONE);
 		final FormData fd_buttonPatientendatenPruefen = new FormData();
 		fd_buttonPatientendatenPruefen.bottom = new FormAttachment(0, 47);
@@ -877,15 +885,53 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		buttonPatientendatenPruefen.setText("...");
 		buttonPatientendatenPruefen.addSelectionListener(new SelectionAdapter() 
 		{
+			
 			public void widgetSelected(final SelectionEvent e) 
 			{
-//				hookContextMenu();
-				multiTransportGroup.setVisible(false); 
-				assignCarGroup.setVisible(false);
-				sickPersonGroup.setVisible(true);
-				viewerSickPerson.refresh();
+//				hookContextMenu();//TODO
+				if(authorization.equalsIgnoreCase("Administrator") && editingType.equalsIgnoreCase("journal") )
+				{
+					//confirm the cancel
+					boolean cancelConfirmed = MessageDialog.openQuestion(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+							"Patient hinzufügen", "Möchten Sie diesen Patienten zur Patientendatenbank hinzufügen?");
+					if (!cancelConfirmed) 
+						return;
+					
+					
+					//TODO: add the patient data as new sick person, but check before
+					SickPerson person = new SickPerson();
+					person.setLastName(comboNachname.getText());
+					person.setFirstName(comboVorname.getText());
+					person.setCityname(viewerFromCity.getCombo().getText());
+					person.setStreetname(viewerFromStreet.getCombo().getText());
+					person.setKindOfTransport(combokindOfTransport.getText());					
+					
+					NetWrapper.getDefault().sendAddMessage(SickPerson.ID, person);
+				}
+				else
+				{
+					multiTransportGroup.setVisible(false); 
+					assignCarGroup.setVisible(false);
+					sickPersonGroup.setVisible(true);
+					viewerSickPerson.refresh();
+				}
 			}
 		});
+		
+		if(!createNew)
+			buttonPatientendatenPruefen.setEnabled(false);
+			
+		if(authorization != null && transportType != null)
+		{
+			
+				
+			if(authorization.equalsIgnoreCase("Administrator") && editingType.equalsIgnoreCase("journal") )
+			{
+				buttonPatientendatenPruefen.setImage(ImageFactory.getInstance().getRegisteredImage("admin.patientAdd"));
+				buttonPatientendatenPruefen.setEnabled(true);
+			}
+		}
 
 		final Label nachnameLabel_1 = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_nachnameLabel_1 = new FormData();
