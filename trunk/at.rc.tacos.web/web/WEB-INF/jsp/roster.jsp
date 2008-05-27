@@ -72,26 +72,56 @@
 						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 							<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName}
 							${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
-							<td><fmt:formatDate type="both" dateStyle="short"
-								timeStyle="short"
-								value="${rosterEntryContainer.plannedStartOfWork}" /></td>
-							<td><fmt:formatDate type="both" dateStyle="short"
-								timeStyle="short"
-								value="${rosterEntryContainer.plannedEndOfWork}" /></td>
-							<td><c:choose>
-								<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
-								<c:otherwise>
-									<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
-										value="${rosterEntryContainer.realStartOfWork}" />
-								</c:otherwise>
-							</c:choose></td>
-							<td><c:choose>
-								<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
-								<c:otherwise>
-									<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
-										value="${rosterEntryContainer.realEndOfWork}" />
-								</c:otherwise>
-							</c:choose></td>
+							<td>
+								<c:choose>
+									<c:when test="${rosterEntryContainer.plannedStartOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.plannedStartOfWorkMonth ne params.dateMonth or rosterEntryContainer.plannedStartOfWorkYear ne params.dateYear}">
+										<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
+									</c:when>
+									<c:otherwise>
+										<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${rosterEntryContainer.plannedEndOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.plannedEndOfWorkMonth ne params.dateMonth or rosterEntryContainer.plannedEndOfWorkYear ne params.dateYear}">
+										<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
+									</c:when>
+									<c:otherwise>
+										<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
+									<c:otherwise>
+										<c:choose>
+											<c:when test="${rosterEntryContainer.realStartOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realStartOfWorkMonth ne params.dateMonth or rosterEntryContainer.realStartOfWorkYear ne params.dateYear}">
+												<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
+											</c:when>
+											<c:otherwise>
+												<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
+											</c:otherwise>
+										</c:choose>
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
+									<c:otherwise>
+										<c:choose>
+											<c:when test="${rosterEntryContainer.realEndOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realEndOfWorkMonth ne params.dateMonth or rosterEntryContainer.realEndOfWorkYear ne params.dateYear}">
+												<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
+											</c:when>
+											<c:otherwise>
+												<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
+											</c:otherwise>
+										</c:choose>
+									</c:otherwise>
+								</c:choose>
+							</td>
 							<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
 							<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
 							<td nowrap="nowrap"><c:choose>

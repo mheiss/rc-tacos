@@ -1,5 +1,6 @@
 package at.rc.tacos.web.form;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import at.rc.tacos.model.RosterEntry;
@@ -62,4 +63,89 @@ public class RosterEntryContainer {
 	public void setRegisterStart(Date registerStart) {
 		this.registerStart = registerStart;
 	}
+	
+	public int getPlannedStartOfWorkDayOfYear() {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(plannedStartOfWork);
+		return calendar.get(Calendar.DAY_OF_YEAR);
+	}
+	
+	public int getPlannedStartOfWorkMonth() {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(plannedStartOfWork);
+		return calendar.get(Calendar.MONTH);
+	}
+	
+	public int getPlannedStartOfWorkYear() {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(plannedStartOfWork);
+		return calendar.get(Calendar.YEAR);
+	}
+	
+	public int getPlannedEndOfWorkDayOfYear() {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(plannedEndOfWork);
+		return calendar.get(Calendar.DAY_OF_YEAR);
+	}
+	
+	public int getPlannedEndOfWorkMonth() {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(plannedEndOfWork);
+		return calendar.get(Calendar.MONTH);
+	}
+	
+	public int getPlannedEndOfWorkYear() {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(plannedEndOfWork);
+		return calendar.get(Calendar.YEAR);
+	}
+	
+	public int getRealStartOfWorkDayOfYear() {
+		if (realStartOfWork != null) {
+			final Calendar calendar = Calendar.getInstance();
+			calendar.setTime(realStartOfWork);
+			return calendar.get(Calendar.DAY_OF_YEAR);
+		} else return -1;
+	}
+	
+	public int getRealStartOfWorkMonth() {
+		if (realStartOfWork != null) {
+			final Calendar calendar = Calendar.getInstance();
+			calendar.setTime(realStartOfWork);
+			return calendar.get(Calendar.MONTH);
+		} else return -1;
+	}
+	
+	public int getRealStartOfWorkYear() {
+		if (realStartOfWork != null) {
+			final Calendar calendar = Calendar.getInstance();
+			calendar.setTime(realStartOfWork);
+			return calendar.get(Calendar.YEAR);
+		} else return -1;
+	}
+	
+	public int getRealEndOfWorkDayOfYear() {
+		if (realEndOfWork != null) {
+			final Calendar calendar = Calendar.getInstance();
+			calendar.setTime(realEndOfWork);
+			return calendar.get(Calendar.DAY_OF_YEAR);
+		} else return -1;
+	}
+	
+	public int getRealEndOfWorkMonth() {
+		if (realEndOfWork != null) {
+			final Calendar calendar = Calendar.getInstance();
+			calendar.setTime(realEndOfWork);
+			return calendar.get(Calendar.MONTH);
+		} else return -1;
+	}
+	
+	public int getRealEndOfWorkYear() {
+		if (realEndOfWork != null) {
+			final Calendar calendar = Calendar.getInstance();
+			calendar.setTime(realEndOfWork);
+			return calendar.get(Calendar.YEAR);
+		} else return -1;
+	}
+	
 }
