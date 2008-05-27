@@ -1,5 +1,6 @@
 package at.rc.tacos.web.controller;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +10,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.support.PropertyComparator;
+import org.springframework.util.comparator.CompoundComparator;
+
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
@@ -16,6 +20,8 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.form.RosterEntryContainerListContainer;
+import at.rc.tacos.web.form.StaffMemberListContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
@@ -31,7 +37,7 @@ public class StaffMembersController extends Controller {
 	private static final String MODEL_LOCATION_NAME = "location";
 	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
 	
-	private static final String MODEL_STAFF_MEMBER_LIST_NAME = "staffMemberList";
+	private static final String MODEL_STAFF_MEMBER_LIST_CONTAINER = "staffMemberListContainer";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
@@ -87,7 +93,18 @@ public class StaffMembersController extends Controller {
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
-		params.put(MODEL_STAFF_MEMBER_LIST_NAME, staffMemberList);
+		
+		// Group and Sort
+		final StaffMemberListContainer container = new StaffMemberListContainer(staffMemberList);
+		final Comparator<Location> locationComparator = new PropertyComparator("locationName", true, true);
+		final Comparator sortComp = new CompoundComparator(new Comparator[] {
+				new PropertyComparator("lastName", true, true),
+				new PropertyComparator("firstName", true, true)
+		});
+		container.groupStaffMembersBy(locationComparator);
+		container.sortRosterEntries(sortComp);
+		
+		params.put(MODEL_STAFF_MEMBER_LIST_CONTAINER, staffMemberList);
 		
 		return params;
 	}

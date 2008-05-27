@@ -47,7 +47,7 @@
 	</c:if>
 	<c:url var="url" value="/Dispatcher/personnelData.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Pers&ouml;nliche&nbsp;Daten</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Profil</a>
 		</td>
 	</tr>
 </table>
