@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
@@ -18,7 +19,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.events.IExpansionListener;
@@ -105,32 +105,32 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
 	}	
-
-	/**
-	 * Cleanup the dialog when it is closed
-	 */
+	
 	@Override
-	public boolean close()
+	public boolean close() 
 	{
 		//check if the user wants to close the window
 		if(getReturnCode() == CANCEL)
 		{
-			MessageBox dialog = new MessageBox(getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-			dialog.setText("Abbrechen");
-			dialog.setMessage("Wollen Sie wirklich abbrechen?");
+			//confirm exit
+			boolean exit = MessageDialog.openQuestion(
+					getShell(), 
+					"Abbrechen", "Wollen Sie wirklich abbrechen?");
 			//check the result
-			if (dialog.open() == SWT.NO)
+			if (!exit)
 				return false;
 		}
 		
 		//remove the lock from the object
-		LockManager.removeLock(RosterEntry.ID, rosterEntry.getRosterId());
+		if(!createNew)
+			LockManager.removeLock(RosterEntry.ID, rosterEntry.getRosterId());
 			
 		//cleanup the listeners
 		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
+		
 		return super.close();
 	}
 
@@ -206,15 +206,6 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	}
 
 	/**
-	 * The user pressed the cancel button
-	 */
-	@Override
-	protected void cancelPressed()
-	{
-		super.cancelPressed();
-	}
-
-	/**
 	 * The user pressed the ok button
 	 */
 	@Override
@@ -266,6 +257,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 			
 			//closes the sehll
 			super.okPressed();
+			return;
 		}
 		//beep
 		getShell().getDisplay().beep();
