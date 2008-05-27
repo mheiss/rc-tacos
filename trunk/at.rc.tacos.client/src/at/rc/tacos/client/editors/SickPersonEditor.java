@@ -303,13 +303,18 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			saveHyperlink.setText("Änderungen speichern");
 		}
 		lastname.setText(person.getLastName());
-		firstname.setText(person.getFirstName());
-		street.setText(person.getStreetname());
-		city.setText(person.getCityname());
-		svnr.setText(person.getSVNR());
+		if(person.getFirstName() != null)
+			firstname.setText(person.getFirstName());
+		if(person.getStreetname() != null)
+			street.setText(person.getStreetname());
+		if(person.getCityname() != null)
+			city.setText(person.getCityname());
+		if(person.getSVNR() != null)
+			svnr.setText(person.getSVNR());
 		if(person.getKindOfTransport() != null)
 			kindOfTransportComboViewer.setSelection(new StructuredSelection(person.getKindOfTransport()));
-		notesViewer.getTextWidget().setText(person.getNotes());
+		if(person.getNotes() != null)
+			notesViewer.getTextWidget().setText(person.getNotes());
 		if(person.isMale())
 			sexComboViewer.setSelection(new StructuredSelection(SickPerson.SICKPERSON_MALE));
 		else
