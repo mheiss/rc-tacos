@@ -97,7 +97,7 @@
 									<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
 									<c:otherwise>
 										<c:choose>
-											<c:when test="${rosterEntryContainer.realStartOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realStartOfWorkMonth ne params.dateMonth or rosterEntryContainer.realStartOfWorkYear ne params.dateYear}">
+											<c:when test="${(rosterEntryContainer.realStartOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realStartOfWorkMonth ne params.dateMonth or rosterEntryContainer.realStartOfWorkYear ne params.dateYear) and (rosterEntryContainer.realStartOfWorkDayOfYear ne -1 and rosterEntryContainer.realStartOfWorkMonth ne -1 and rosterEntryContainer.realStartOfWorkYear ne -1)}">
 												<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
 											</c:when>
 											<c:otherwise>
@@ -112,7 +112,7 @@
 									<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
 									<c:otherwise>
 										<c:choose>
-											<c:when test="${rosterEntryContainer.realEndOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realEndOfWorkMonth ne params.dateMonth or rosterEntryContainer.realEndOfWorkYear ne params.dateYear}">
+											<c:when test="${(rosterEntryContainer.realEndOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realEndOfWorkMonth ne params.dateMonth or rosterEntryContainer.realEndOfWorkYear ne params.dateYear) and (rosterEntryContainer.realEndOfWorkDayOfYear ne -1 and rosterEntryContainer.realEndOfWorkMonth ne -1 and rosterEntryContainer.realEndOfWorkYear ne -1)}">
 												<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
 											</c:when>
 											<c:otherwise>
