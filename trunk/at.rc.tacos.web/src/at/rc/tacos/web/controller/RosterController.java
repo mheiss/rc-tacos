@@ -32,7 +32,7 @@ import at.rc.tacos.web.session.UserSession;
  * Roster Controller.
  * @author Payer Martin
  * @version 1.0
- * TODO: Roster Entries mit falschem Datum rausfiltern, nur Time darstellen in der view
+ * TODO: nur Time darstellen in der view
  */
 public class RosterController extends Controller {
 
@@ -52,7 +52,7 @@ public class RosterController extends Controller {
 	private static final String PARAM_DATE_NAME = "date";
 	private static final String MODEL_DATE_NAME = "date";
 	
-	private static final String PARAM_ROSTER_ENTRY_CONTAINER_LIST_CONTAINER = "rosterEntryContainerListContainer";
+	private static final String MODEL_ROSTER_ENTRY_CONTAINER_LIST_CONTAINER = "rosterEntryContainerListContainer";
 	
 	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
 	private static final String MODEL_MESSAGE_CODE_NAME = "messageCode";
@@ -70,7 +70,7 @@ public class RosterController extends Controller {
 		// Put current date to parameter to parameter list
 		params.put(PARAM_CURRENT_DATE_NAME, new Date());
 		
-		// Location List
+		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
 		Location location = userSession.getDefaultFormValues().getDefaultLocation();
@@ -185,7 +185,7 @@ public class RosterController extends Controller {
 		container.groupRosterEntriesBy(locationComparator);
 		container.sortRosterEntries(sortComp);
 			
-		params.put(PARAM_ROSTER_ENTRY_CONTAINER_LIST_CONTAINER, container);
+		params.put(MODEL_ROSTER_ENTRY_CONTAINER_LIST_CONTAINER, container);
 		
 		// Parse message code from other controllers
 		if (request.getParameter(PARAM_MESSAGE_CODE_NAME) != null && !request.getParameter(PARAM_MESSAGE_CODE_NAME).equals("")) {
