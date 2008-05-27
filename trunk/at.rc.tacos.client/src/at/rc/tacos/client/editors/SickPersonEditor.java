@@ -435,8 +435,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 				return;
 
 			//if this sick person is the current -> update it
-			if(person.equals(updatePerson) 
-					|| person.getSickPersonId() == updatePerson.getSickPersonId())
+			if(person.equals(updatePerson) || updatePerson.getLastName().equalsIgnoreCase(updatePerson.getLastName()))
 			{
 				//save the updated sick person
 				setInput(new SickPersonEditorInput(updatePerson,false));
