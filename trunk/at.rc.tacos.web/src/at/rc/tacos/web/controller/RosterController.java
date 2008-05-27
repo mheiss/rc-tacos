@@ -51,6 +51,9 @@ public class RosterController extends Controller {
 	
 	private static final String PARAM_DATE_NAME = "date";
 	private static final String MODEL_DATE_NAME = "date";
+	private static final String MODEL_DATE_DAY_OF_YEAR_NAME = "dateDayOfYear";
+	private static final String MODEL_DATE_MONTH_NAME = "dateMonth";
+	private static final String MODEL_DATE_YEAR_NAME = "dateYear";
 	
 	private static final String MODEL_ROSTER_ENTRY_CONTAINER_LIST_CONTAINER = "rosterEntryContainerListContainer";
 	
@@ -130,6 +133,14 @@ public class RosterController extends Controller {
 		}
 		userSession.getDefaultFormValues().setDefaultDate(date);
 		params.put(MODEL_DATE_NAME, date);
+		
+		if (date != null) {
+			final Calendar c = Calendar.getInstance();
+			c.setTime(date);
+			params.put(MODEL_DATE_DAY_OF_YEAR_NAME, c.get(Calendar.DAY_OF_YEAR));
+			params.put(MODEL_DATE_MONTH_NAME, c.get(Calendar.MONTH));
+			params.put(MODEL_DATE_YEAR_NAME, c.get(Calendar.YEAR));
+		}
 		
 		final String dateForServerString = formatDateForServer.format(date);
 		

@@ -20,7 +20,6 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.web.form.RosterEntryContainerListContainer;
 import at.rc.tacos.web.form.StaffMemberListContainer;
 import at.rc.tacos.web.session.UserSession;
 
@@ -28,7 +27,6 @@ import at.rc.tacos.web.session.UserSession;
  * Staff Members Controller
  * @author Payer Martin
  * @version 1.0
- * TODO: Gruppierung um Location
  */
 public class StaffMembersController extends Controller {
 
