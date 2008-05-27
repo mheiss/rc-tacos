@@ -38,9 +38,9 @@ import at.rc.tacos.client.editors.SickPersonEditor;
 import at.rc.tacos.client.editors.SickPersonEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.client.providers.SickPersonAdminTableLabelProvider;
 import at.rc.tacos.client.providers.SickPersonAdminViewFilter;
 import at.rc.tacos.client.providers.SickPersonContentProvider;
-import at.rc.tacos.client.providers.SickPersonLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.SickPerson;
@@ -176,7 +176,7 @@ public class SickPersonAdminViewN  extends ViewPart implements PropertyChangeLis
 			}
 		});
 		viewer.setContentProvider(new SickPersonContentProvider());
-		viewer.setLabelProvider(new SickPersonLabelProvider());
+		viewer.setLabelProvider(new SickPersonAdminTableLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getSickPersonManager().toArray());
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
