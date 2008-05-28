@@ -867,7 +867,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			public void widgetSelected(final SelectionEvent e) 
 			{
 				//TODO: hookContextMenu();
-				if(authorization.equalsIgnoreCase(Login.AUTH_ADMIN) && editingType.equalsIgnoreCase("journal") )
+				if(Login.AUTH_ADMIN.equalsIgnoreCase(authorization) && "journal".equalsIgnoreCase(editingType))
 				{
 					//confirm the cancel
 					boolean cancelConfirmed = MessageDialog.openQuestion(
@@ -889,7 +889,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				else
 				{
 					//open the selection dialog to choose a patient
-					PatientSelectionDialog selectionDialog = new PatientSelectionDialog(getShell());
+					PatientSelectionDialog selectionDialog = new PatientSelectionDialog(patientLastName.getText(),getShell());
 					selectionDialog.open();
 					SickPerson selectedPerson = (SickPerson)selectionDialog.getResult()[0];
 
@@ -912,9 +912,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				}
 			}
 		});
-
-		if(!createNew)
-			buttonPatientendatenPruefen.setEnabled(false);
 
 		if(authorization != null && transportType != null)
 		{		
