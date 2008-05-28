@@ -6,6 +6,7 @@ import at.rc.tacos.model.SickPerson;
 
 public class SickPersonLabelProvider extends LabelProvider 
 {
+	String sickPerson;
     /**
      * Returns the image to use for this element.
      * @param object the object to get the image for
@@ -24,6 +25,17 @@ public class SickPersonLabelProvider extends LabelProvider
     public String getText(Object object)
     {
     	SickPerson person = (SickPerson)object;
-    	return person.getLastName() + " " +person.getFirstName();
+    	sickPerson = person.getLastName();
+    	if(person.getFirstName() != null)
+    		sickPerson = sickPerson + " " +person.getFirstName();
+    	if(person.getStreetname() != null)
+    		sickPerson = sickPerson + " " +person.getStreetname();
+    	if(person.getCityname() != null)
+    		sickPerson = sickPerson + " " +person.getCityname();
+    	if(person.getSVNR() != null)
+    		sickPerson = sickPerson + " " +person.getSVNR();
+    	if(person.getNotes() != null)
+    		sickPerson = sickPerson + " " +person.getNotes();
+    	return sickPerson;
     }
 }
