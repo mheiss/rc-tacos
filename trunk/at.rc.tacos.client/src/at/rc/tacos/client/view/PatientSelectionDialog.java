@@ -49,15 +49,17 @@ import at.rc.tacos.model.SickPerson;
 public class PatientSelectionDialog extends SelectionStatusDialog implements PropertyChangeListener
 {
 	private TableViewer viewer;
+	private String initValue;
 
 	/**
 	 * Defaul class constructor to set up a new patient select dialog
 	 * @param parent
 	 */
-	public PatientSelectionDialog(final Shell parent) 
+	public PatientSelectionDialog(String initValue,final Shell parent) 
 	{
 		super(parent);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
+		this.initValue = initValue;
 		//listen to sick person updates
 		ModelFactory.getInstance().getSickPersonManager().addPropertyChangeListener(this);
 	}
@@ -149,6 +151,9 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Pro
         });
         
         setStatusLineAboveButtons(true);
+        
+        //setup the initial value
+        filterText.setText(initValue);
         
 		return area;
 	}
