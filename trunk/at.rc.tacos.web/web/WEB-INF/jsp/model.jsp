@@ -18,7 +18,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <c:if test="${useHtmlCache eq false}">
-	<!--<meta http-equiv="cache-control" content="no-cache" />-->
+	<meta http-equiv="cache-control" content="no-cache" />
 	<meta http-equiv="Expires" content="Fri, 05 Mar 1999 06:00:00 GMT" />
     <meta http-equiv="Pragma" content="no-cache" />
 </c:if>
