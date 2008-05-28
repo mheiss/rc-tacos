@@ -38,17 +38,16 @@ public class SickPersonListener extends ClientListenerAdapter
 	
     @Override
     public void list(List<AbstractMessage> listMessage)
-    {
+    {    	
+    	//remove all elements
+    	manager.removeAllEntries();
+
         //loop and add all sick persons
         for(AbstractMessage detailObject:listMessage)
         {
         	//cast to a sick person and add it
         	SickPerson person = (SickPerson)detailObject;
-            //assert we do not have this sick person
-            if(manager.contains(person))
-            	manager.update(person);
-            else
-            	manager.add(person);
+        	manager.add(person);
         }
     }
 }
