@@ -230,6 +230,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		super(parentShell);
 		createNew = true;
 		transport = new Transport();
+		//the authorization status of the authenticated person (admin or user)
+		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
+
 	}
 
 	/**
@@ -243,6 +246,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		createNew = true;
 		this.transportType = transportType;
 		this.transport = new Transport();
+		//the authorization status of the authenticated person (admin or user)
+		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
+
 	}
 
 	/**
@@ -259,6 +265,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		this.transport = transport;
 		this.editingType = editingType;
 		transportType = "both";	
+		//the authorization status of the authenticated person (admin or user)
+		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
+
 	}
 
 	/**
@@ -277,9 +286,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		getShell().pack(true);
 		setShellStyle(SWT.SYSTEM_MODAL);
 
-		//the authorization status of the authenticated person (admin or user)
-		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
-
+		
 		//add some listeners to this view
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
@@ -913,13 +920,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			}
 		});
 
-		if(authorization != null && transportType != null)
-		{		
-			if(authorization.equalsIgnoreCase(Login.AUTH_ADMIN) && editingType.equalsIgnoreCase("journal") )
-			{
+		//no sick person editing from the journal transport form if the user is a normal user
+		if("journal".equalsIgnoreCase(editingType))
+			buttonPatientendatenPruefen.setEnabled(false);
+		
+		if(Login.AUTH_ADMIN.equalsIgnoreCase(authorization) && "journal".equalsIgnoreCase(editingType))
+		{
 				buttonPatientendatenPruefen.setImage(ImageFactory.getInstance().getRegisteredImage("admin.patientAdd"));
 				buttonPatientendatenPruefen.setEnabled(true);
-			}
 		}
 
 		final Label nachnameLabel_1 = new Label(transportdatenGroup, SWT.NONE);
