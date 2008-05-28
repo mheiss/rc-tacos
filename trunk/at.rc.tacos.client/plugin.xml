@@ -194,14 +194,6 @@
       
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.view.admin.SickPersonAdminViewN"
-            id="at.rc.tacos.client.view.admin.sickpersonAdminViewN"
-            icon="icons/admin/patient.gif"
-            name="Patientendatenbank">
-      </view>
-      
-      <view
-            allowMultiple="false"
             class="at.rc.tacos.client.view.admin.StaffMemberAdminView"
             id="at.rc.tacos.client.view.admin.staffMemberAdminView"
             icon="icons/resources/user.png"

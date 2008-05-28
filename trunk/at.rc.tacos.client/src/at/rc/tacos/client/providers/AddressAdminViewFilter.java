@@ -38,21 +38,21 @@ public class AddressAdminViewFilter  extends ViewerFilter
 		if(street != null &! street.trim().isEmpty())
 		{
 			//check the street name
-			if(!address.getStreet().contains(street) &! address.getStreet().startsWith(street))
+			if(!address.getStreet().toLowerCase().contains(street) &! address.getStreet().toLowerCase().startsWith(street))
 					return false;
 		}
 		//check the city
 		if(city != null &! city.trim().isEmpty())
 		{
 			//chekc the city name
-			if(!address.getCity().contains(city) &! address.getCity().startsWith(city))
+			if(!address.getCity().toLowerCase().contains(city) &! address.getCity().toLowerCase().startsWith(city))
 				return false;
 		}
 		if(number != null &! number.trim().isEmpty())
 		{
 			//convert to string
 			String addNumber = String.valueOf(address.getZip());
-			if(!addNumber.contains(number) &! addNumber.startsWith(number))
+			if(!addNumber.toLowerCase().contains(number) &! addNumber.toLowerCase().startsWith(number))
 				return false;
 		}
 		//nothing matched
