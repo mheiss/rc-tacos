@@ -31,7 +31,6 @@ import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
-import at.rc.tacos.web.utils.old.ValidationPatterns;
 
 /**
  * Edit Staff Member Controller
@@ -174,7 +173,6 @@ public class EditStaffMemberController extends Controller {
 		// Parse Parameters
 		String paramStaffMemberId = null;
 		String paramAction = null;
-		String paramPersonnelNumber = null;
 		String paramFirstName = null;
 		String paramLastName = null;
 		String paramBirthdate = null;
@@ -185,7 +183,6 @@ public class EditStaffMemberController extends Controller {
 		String paramLocationId = null;
 		String paramCompetenceId = null;
 		String paramCompetenceHidden = null;
-		String paramUsername = null;
 		String paramPassword = null;
 		String paramRepeatedPassword = null;
 		String paramLockUser = null;
@@ -271,7 +268,6 @@ public class EditStaffMemberController extends Controller {
 				staffMember = sm;
 			}
 		}
-		userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
 		params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
 		
 		final QueryFilter loginUsernameF = new QueryFilter();
@@ -732,16 +728,6 @@ public class EditStaffMemberController extends Controller {
 					
 					userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
 					userSession.getDefaultFormValues().setDefaultLocation(location);
-					
-					// Create new staff member list and put staff member and staff member list to model.
-					// Must be done like this because staff member id could be changed and the id's in
-					// staff member selectbox must be updated.
-					//params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
-					staffMemberList = connection.sendListingRequest(StaffMember.ID, null);
-					if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
-						throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-					}
-					params.put(MODEL_STAFF_MEMBER_LIST_NAME, staffMemberList);
 					
 					params.put(MODEL_EDITED_COUNT_NAME, 1);
 				}

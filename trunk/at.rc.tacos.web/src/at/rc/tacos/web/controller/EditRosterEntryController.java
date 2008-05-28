@@ -151,7 +151,7 @@ public class EditRosterEntryController extends Controller {
 		}
 		rosterEntryId = Integer.parseInt(paramRosterEntryId);
 		
-		// Roster Enty
+		// Roster Entry
 		RosterEntry rosterEntry = null;
 		final QueryFilter rosterFilter = new QueryFilter();
 		rosterFilter.add(IFilterTypes.ID_FILTER, Integer.toString(rosterEntryId));
@@ -209,10 +209,25 @@ public class EditRosterEntryController extends Controller {
 		}
 		
 		
-		// Staff Member
+		// Staff Member (depends on Job)
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
-		final StaffMember defaultStaffMember = rosterEntry.getStaffMember();
+		
+		StaffMember defaultStaffMember = rosterEntry.getStaffMember();
+		if (defaultStaffMember != null) {
+			boolean defaultStaffMemberHasCompetence = false;
+			final List <Competence> defaultStaffMemberCompetenceList = defaultStaffMember.getCompetenceList();
+			for (final Iterator<Competence> itDefaulStaffMemberCompetenceList = defaultStaffMemberCompetenceList.iterator(); itDefaulStaffMemberCompetenceList.hasNext();) {
+				final Competence competence = itDefaulStaffMemberCompetenceList.next();
+				if (competence.getId() == job.getId() || competence.getCompetenceName().equals(job.getJobName())) {
+					defaultStaffMemberHasCompetence = true;
+				}
+			}
+			if (!defaultStaffMemberHasCompetence) {
+				defaultStaffMember = null;
+			}
+		}
+		
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
@@ -526,7 +541,11 @@ public class EditRosterEntryController extends Controller {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}
 				
+				userSession.getDefaultFormValues().setDefaultJob(job);
+				userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
 				userSession.getDefaultFormValues().setDefaultLocation(location);
+				userSession.getDefaultFormValues().setDefaultServiceType(serviceType);
+				userSession.getDefaultFormValues().setDefaultStandBy(standby);
 				userSession.getDefaultFormValues().setDefaultDate(plannedStartOfWork);
 
 				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?" + PARAM_MESSAGE_CODE_NAME + "=" + PARAM_MESSAGE_CODE_EDITED;

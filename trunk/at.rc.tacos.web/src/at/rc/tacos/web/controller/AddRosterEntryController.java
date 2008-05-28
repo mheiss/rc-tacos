@@ -58,6 +58,7 @@ public class AddRosterEntryController extends Controller {
 	private static final String MODEL_SERVICE_TYPE_LIST_NAME = "serviceTypeList";
 	
 	private static final String PARAM_STANDBY_NAME = "standby";
+	private static final String PARAM_STANDBY_HIDDEN_NAME = "standbyHidden";
 	private static final String MODEL_STANDBY_NAME = "standby";
 	
 	private static final String PARAM_COMMENT_NAME = "comment";
@@ -136,7 +137,7 @@ public class AddRosterEntryController extends Controller {
 		// Job
 		final String paramJobId = request.getParameter(PARAM_JOB_NAME);
 		int jobId = 0;
-		final Job defaultJob = null;
+		final Job defaultJob = userSession.getDefaultFormValues().getDefaultJob();
 		Job job = null;
 		if (paramJobId != null && !paramJobId.equals("") && !paramJobId.equals(PARAM_JOB_NO_VALUE)) {
 			jobId = Integer.parseInt(paramJobId);	
@@ -159,10 +160,25 @@ public class AddRosterEntryController extends Controller {
 		}
 		
 		
-		// Staff Member
+		// staff member (depends on job)
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
-		final StaffMember defaultStaffMember = null;
+		
+		StaffMember defaultStaffMember = userSession.getDefaultFormValues().getDefaultStaffMember();
+		if (defaultStaffMember != null) {
+			boolean defaultStaffMemberHasCompetence = false;
+			final List <Competence> defaultStaffMemberCompetenceList = defaultStaffMember.getCompetenceList();
+			for (final Iterator<Competence> itDefaulStaffMemberCompetenceList = defaultStaffMemberCompetenceList.iterator(); itDefaulStaffMemberCompetenceList.hasNext();) {
+				final Competence competence = itDefaulStaffMemberCompetenceList.next();
+				if (competence.getId() == job.getId() || competence.getCompetenceName().equals(job.getJobName())) {
+					defaultStaffMemberHasCompetence = true;
+				}
+			}
+			if (!defaultStaffMemberHasCompetence) {
+				defaultStaffMember = null;
+			}
+		}
+		
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
@@ -263,12 +279,24 @@ public class AddRosterEntryController extends Controller {
 		}
 		
 		// Standby
-		final String paramStandby = request.getParameter(PARAM_STANDBY_NAME);
+		String paramStandby = request.getParameter(PARAM_STANDBY_NAME);
+		final String paramStandbyHidden = request.getParameter(PARAM_STANDBY_HIDDEN_NAME);
+		boolean defaultStandby = userSession.getDefaultFormValues().isDefaultStandBy();
 		boolean standby = false;
-		if (paramStandby != null) {
-			standby = true;
+		if (paramStandby != null || paramStandbyHidden != null) {
+			if (paramStandby != null) {
+				if (paramStandby.equalsIgnoreCase("true")) {
+					standby = true;
+				}
+			} else if (paramStandbyHidden != null) {
+				if (paramStandbyHidden.equalsIgnoreCase("false")) {
+					standby = false;
+				}
+			}
+			params.put(MODEL_STANDBY_NAME, standby);
+		} else {
+			params.put(MODEL_STANDBY_NAME, defaultStandby);
 		}
-		params.put(MODEL_STANDBY_NAME, standby);
 		
 		// Comment
 		final String defaultComment = null;
@@ -475,7 +503,11 @@ public class AddRosterEntryController extends Controller {
 				}
 				
 				params.put(MODEL_ADDED_COUNT_NAME, 1);
+				userSession.getDefaultFormValues().setDefaultJob(job);
+				userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
 				userSession.getDefaultFormValues().setDefaultLocation(location);
+				userSession.getDefaultFormValues().setDefaultServiceType(serviceType);
+				userSession.getDefaultFormValues().setDefaultStandBy(standby);
 				userSession.getDefaultFormValues().setDefaultDate(plannedStartOfWork);
 			}
 		}
