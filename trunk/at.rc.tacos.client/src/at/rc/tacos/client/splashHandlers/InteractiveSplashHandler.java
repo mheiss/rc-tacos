@@ -35,8 +35,8 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	private Composite fCompositeLogin;
 
 	//the login status
-	int loginStatus;
-	Login login;
+	private int loginStatus;
+	private Login login;
 
 	//position of the composite
 	private final static int MARING_LEFT = 180;
@@ -264,9 +264,9 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		// the label for the username
 		fLabelUsername = new Label(fCompositeLogin, SWT.NONE);
 		fLabelUsername.setText("&Benutzername:"); 
-
 		// the text widget for the username
 		fTextUsername = new Text(fCompositeLogin, SWT.BORDER);
+		
 		// configure layout data
 		data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_TEXT_WIDTH_HINT;
@@ -279,6 +279,14 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 
 		// the text widget for the password
 		fTextPassword = new Text(fCompositeLogin, SWT.PASSWORD | SWT.BORDER);
+		fTextPassword.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusGained(FocusEvent e) 
+			{
+				fTextPassword.setSelection(0, fTextPassword.getText().length());
+			}
+		});
 		// Configure layout data
 		data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_TEXT_WIDTH_HINT;
@@ -307,8 +315,10 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		data.verticalIndent = 10;
 		fButtonCancel.setLayoutData(data);
 
-		//init values //TODO- delete
+		//init values 
+		//TODO: delete
 		fTextUsername.setText("user3");
+		fTextUsername.setSelection(0,5);
 		fTextPassword.setText("P@ssw0rd");
 	}
 

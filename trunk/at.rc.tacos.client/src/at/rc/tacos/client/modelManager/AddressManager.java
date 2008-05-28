@@ -202,7 +202,6 @@ public class AddressManager extends PropertyManager
 		//loop and add the streets
 		for(Address add:objectList)
 			streets.add(add.getStreet());
-		System.out.println("zahl:"+streets.size());
 		return streets.toArray();
 	}
 
@@ -220,7 +219,6 @@ public class AddressManager extends PropertyManager
 				continue;
 			cities.add(add.getCity());
 		}
-		System.out.println("cities:"+cities.size());
 		return cities.toArray();
 	}
 }
