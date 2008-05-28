@@ -3,14 +3,19 @@
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Dienstplan</b></td>
 	</tr>
+	<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienst&nbsp;eintragen</a>
+		</td>
+	</tr>
 	<c:url var="url" value="/Dispatcher/roster.do" />
 	<tr>
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Tagesansicht</a>
 		</td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/addRosterEntry.do" />
+	<c:url var="url" value="/Dispatcher/rosterMonth.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Dienst&nbsp;eintragen</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Monatsansicht</a>
 		</td>
 	</tr>
 </table>

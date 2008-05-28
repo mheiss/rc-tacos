@@ -32,7 +32,7 @@ import at.rc.tacos.web.session.UserSession;
  * Roster Controller.
  * @author Payer Martin
  * @version 1.0
- * TODO: nur Time darstellen in der view
+ * TODO: Einträge mit falschem Datum herausfiltern
  */
 public class RosterController extends Controller {
 
