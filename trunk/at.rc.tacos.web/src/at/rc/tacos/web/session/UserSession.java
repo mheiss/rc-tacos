@@ -22,6 +22,7 @@ public class UserSession
 	public UserSession()
 	{
 		loggedIn = false;
+		defaultFormValues = new DefaultFormValues();
 	}
 
 	/**

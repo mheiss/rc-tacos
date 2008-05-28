@@ -95,7 +95,6 @@ public class RosterController extends Controller {
 				location = l;
 			}
 		}
-		userSession.getDefaultFormValues().setDefaultLocation(location);
 		params.put(MODEL_LOCATION_NAME, location);
 		
 		// Get Date and create calendar for datepicker
@@ -131,7 +130,6 @@ public class RosterController extends Controller {
 				date = dateTemp;
 			}
 		}
-		userSession.getDefaultFormValues().setDefaultDate(date);
 		params.put(MODEL_DATE_NAME, date);
 		
 		if (date != null) {
@@ -202,6 +200,9 @@ public class RosterController extends Controller {
 		if (request.getParameter(PARAM_MESSAGE_CODE_NAME) != null && !request.getParameter(PARAM_MESSAGE_CODE_NAME).equals("")) {
 			params.put(MODEL_MESSAGE_CODE_NAME, request.getParameter(PARAM_MESSAGE_CODE_NAME));
 		}
+		
+		userSession.getDefaultFormValues().setDefaultLocation(location);
+		userSession.getDefaultFormValues().setDefaultDate(date);
 		
 		return params;	
 	}

@@ -1,7 +1,6 @@
 package at.rc.tacos.web.controller;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +36,9 @@ public class Dispatcher extends HttpServlet
 	public static final String NET_BUNDLE_PATH = "at.rc.tacos.web.config.net";
 	public static final String FILEUPLOAD_BUNDLE_PATH = "at.rc.tacos.web.config.fileupload";
 
+	public void init() throws ServletException {
+		
+	}
 
 	/**
 	 * Calls doPost.
@@ -130,21 +132,7 @@ public class Dispatcher extends HttpServlet
 			}
 			final Login login = (Login)loginList.get(0);
 			userSession.setLoginInformation(login);
-			
-			// Set initial default form values for user
-			if (userSession.getDefaultFormValues().getDefaultDate() == null) {
-				final Date rosterDefaultDate = new Date();
-				userSession.getDefaultFormValues().setDefaultDate(rosterDefaultDate);
-			}
-			if (userSession.getDefaultFormValues().getDefaultLocation() == null) {
-				userSession.getDefaultFormValues().setDefaultLocation(userSession.getLoginInformation().getUserInformation().getPrimaryLocation());
-			}
-			if (userSession.getDefaultFormValues().getDefaultStaffMember() == null) {
-				userSession.getDefaultFormValues().setDefaultStaffMember(userSession.getLoginInformation().getUserInformation());
-			}
-			
-			//Set authorization to request context
-			//request.setAttribute("authorization", userSession.getLoginInformation().getAuthorization());
+						
 		}
 		
 		//Get the relative Path from request URL

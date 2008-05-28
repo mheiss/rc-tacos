@@ -84,24 +84,60 @@ public class RosterMonthController extends Controller {
 				location = l;
 			}
 		}
-		userSession.getDefaultFormValues().setDefaultLocation(location);
 		params.put(MODEL_LOCATION_NAME, location);
 		
 		// Month
-		String paramMonth = request.getParameter(PARAM_MONTH_NAME);	
-		int month = 1;
+		String paramMonth = request.getParameter(PARAM_MONTH_NAME);
+		final Calendar cal = Calendar.getInstance();
+		cal.setTime(userSession.getDefaultFormValues().getDefaultDate());
+		int month = cal.get(Calendar.MONTH);
+		switch (month) {
+			case 1:
+				paramMonth = Month.JANUARY.toString();
+				break;
+			case 2:
+				paramMonth = Month.FEBRUARY.toString();
+				break;
+			case 3:
+				paramMonth = Month.MARCH.toString();
+				break;
+			case 4:
+				paramMonth = Month.APRIL.toString();
+				break;
+			case 5:
+				paramMonth = Month.MAY.toString();
+				break;
+			case 6:
+				paramMonth = Month.JUNE.toString();
+				break;
+			case 7:
+				paramMonth = Month.JULY.toString();
+				break;
+			case 8:
+				paramMonth = Month.AUGUST.toString();
+				break;
+			case 9:
+				paramMonth = Month.SEPTEMBER.toString();
+				break;
+			case 10:
+				paramMonth = Month.OCTOBER.toString();
+				break;
+			case 11:
+				paramMonth = Month.NOVEMBER.toString();
+				break;
+			case 12:
+				paramMonth = Month.DECEMBER.toString();
+				break;
+		}
 		if (paramMonth != null && !paramMonth.equals("")) {
 			month = Month.valueOf(paramMonth).getProperty();
-		} else {
-			month = 1;
-			paramMonth = Month.JANUARY.toString();
 		}
 		params.put(MODEL_MONTH_NAME, paramMonth);
 		
 		// Function
 		final String paramFunctionId = request.getParameter(PARAM_FUNCTION_NAME);
 		int functionId = 0;
-		final Competence defaultFunction = null;
+		final Competence defaultFunction = userSession.getDefaultFormValues().getDefaultFunction();
 		Competence function = null;
 		if (paramFunctionId != null && !paramFunctionId.equals("") && !paramFunctionId.equals(PARAM_FUNCTION_NO_VALUE)) {
 			functionId = Integer.parseInt(paramFunctionId);	
@@ -129,10 +165,25 @@ public class RosterMonthController extends Controller {
 			params.put(MODEL_FUNCTION_NAME, defaultFunction);
 		}
 		
-		// Staff Member (depends on competence)
+		// Staff Member (depends on function)
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
-		final StaffMember defaultStaffMember = null;
+		
+		StaffMember defaultStaffMember = userSession.getDefaultFormValues().getDefaultStaffMember();
+		if (defaultStaffMember != null) {
+			boolean defaultStaffMemberHasCompetence = false;
+			final List <Competence> defaultStaffMemberCompetenceList = defaultStaffMember.getCompetenceList();
+			for (final Iterator<Competence> itDefaulStaffMemberCompetenceList = defaultStaffMemberCompetenceList.iterator(); itDefaulStaffMemberCompetenceList.hasNext();) {
+				final Competence competence = itDefaulStaffMemberCompetenceList.next();
+				if (competence.getCompetenceName().equals(function.getCompetenceName())) {
+					defaultStaffMemberHasCompetence = true;
+				}
+			}
+			if (!defaultStaffMemberHasCompetence) {
+				defaultStaffMember = null;
+			}
+		}
+		
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
@@ -246,7 +297,15 @@ public class RosterMonthController extends Controller {
 		});
 		rosterMonthContainer.sortRosterEntries(sortComp);
 		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);
-			
+		
+		userSession.getDefaultFormValues().setDefaultLocation(location);
+		final Calendar cale = Calendar.getInstance();
+		cale.setTime(userSession.getDefaultFormValues().getDefaultDate());
+		cale.set(Calendar.MONTH, month);
+		userSession.getDefaultFormValues().setDefaultDate(cale.getTime());	
+		userSession.getDefaultFormValues().setDefaultFunction(function);
+		userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
+		
 		return params;
 	}
 
