@@ -15,9 +15,9 @@
 </table>
 <c:set var="fieldHeadersRow">
 	<tr class="subhead2">
-		<th nowrap="nowrap">&nbsp;</th>
 		<th nowrap="nowrap">Nachname</th>
 		<th nowrap="nowrap">Vorname</th>
+		<th nowrap="nowrap">Photo</th>
 		<th nowrap="nowrap">Telefonnummern</th>
 		<th nowrap="nowrap">Kompetenzen</th>
 		<th nowrap="nowrap">&nbsp;</th>
@@ -26,23 +26,23 @@
 <br />
 <br />
 <c:choose>
-	<c:when test="${fn:length(params.staffMemberList) gt 0}">
+	<c:when test="${fn:length(staffMemberMap) gt 0}">
 		<table id="rosterEntryTable" class="list">
 			<c:forEach var="staffMemberMapEntry" items="${staffMemberMap}">
-				<c:set var="location" value="${staffMemberMapEntrystaffMemberMapEntry.key}"/>	
+				<c:set var="location" value="${staffMemberMapEntry.key}"/>	
 				<tr>
 					<th class="header2" colspan="6">${location.locationName}</th>
 				</tr>
 				${fieldHeadersRow}
 				<tbody>
-					<c:forEach var="staffMember" items="${params.staffMemberList}" varStatus="loop">
+					<c:forEach var="staffMember" items="${staffMemberMapEntry.value}" varStatus="loop">
 						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-							<td nowrap="nowrap">
-								<c:url var="url" value="/image/staffmembers/${staffMember.staffMemberId}" />
-								<img src="${url}" width="110" height="138" alt="No photo found." />
-							</td>
 							<td nowrap="nowrap">${staffMember.lastName}</td>
 							<td nowrap="nowrap">${staffMember.firstName}</td>
+							<td nowrap="nowrap">
+								<c:url var="url" value="/image/staffmembers/${staffMember.staffMemberId}" />
+								<img src="${url}" width="55" height="69" alt="No photo found." />
+							</td>
 							<td>
 								<c:forEach var="mobilePhone" items="${staffMember.phonelist}" varStatus="loop2"><c:if test="${loop2.count gt 1}"><br /></c:if>${mobilePhone.mobilePhoneName}&nbsp;${mobilePhone.mobilePhoneNumber}</c:forEach>
 							</td>

@@ -7,7 +7,7 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.*"%>
 <%
-			final Map<String, Object> params = (Map<String, Object>) request
+	final Map<String, Object> params = (Map<String, Object>) request
 			.getAttribute("params");
 	final UserSession userSession = (UserSession) session
 			.getAttribute("userSession");
@@ -80,7 +80,7 @@ $(document).ready(function() {
 			<table width="100%" id="userInfo">
 				<c:url var="url" value="/Dispatcher/logout.do" />
 				<tr>
-					<td width="33%" align="left">Willkommen : <%=userSession.getLoginInformation().getUserInformation()
+					<td width="33%" align="left">Willkommen&nbsp;<%=userSession.getLoginInformation().getUserInformation()
 							.getFirstName()
 					+ " "
 					+ userSession.getLoginInformation().getUserInformation()

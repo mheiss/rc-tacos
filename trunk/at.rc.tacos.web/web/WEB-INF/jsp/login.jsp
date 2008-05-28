@@ -11,7 +11,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/css/stylesheetLog.css"/>" />
 	<link rel="icon" type="image/x-icon" href="<c:url value="/favicon.ico"/>" />
-	<title>TACOS : Login</title>
+	<title>TACOS :: Login</title>
 </head>
 <body onload="document.loginPanel.username.focus()">
 <%

@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" />
 	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
-<title>Seite nicht gefunden</title>
+<title>TACOS :: Seite nicht gefunden</title>
 </head>
 <body>
 <table align="center" width="350" height="350" style="border-width:1px; border-style:solid; border-color:#8F0022; margin-top:10%;">

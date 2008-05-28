@@ -20,6 +20,7 @@ public class StaffMemberListContainer {
 	private List<StaffMember> staffMemberList;
 	private SortedMap<Location, List<StaffMember>> staffMemberContainerMap;
 	public StaffMemberListContainer(List<AbstractMessage> staffMemberList) {
+		this.staffMemberList = new ArrayList<StaffMember>();
 		for (AbstractMessage abstractMessage : staffMemberList) {
 			final StaffMember staffMember = (StaffMember)abstractMessage;
 			this.staffMemberList.add(staffMember);
@@ -43,7 +44,7 @@ public class StaffMemberListContainer {
 		SortedMap<Location, List<StaffMember>> map = new TreeMap<Location, List<StaffMember>>(locationComparator);
 		for (StaffMember staffMember : staffMemberList) {
 			final Location location = staffMember.getPrimaryLocation();
-			List<StaffMember> locationStaffMemberList = map.get(staffMember);
+			List<StaffMember> locationStaffMemberList = map.get(location);
 			if (locationStaffMemberList == null) {
 				locationStaffMemberList = new ArrayList<StaffMember>();
 				map.put(location, locationStaffMemberList);

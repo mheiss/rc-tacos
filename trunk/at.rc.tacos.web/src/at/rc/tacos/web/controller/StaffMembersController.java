@@ -102,7 +102,7 @@ public class StaffMembersController extends Controller {
 		container.groupStaffMembersBy(locationComparator);
 		container.sortRosterEntries(sortComp);
 		
-		params.put(MODEL_STAFF_MEMBER_LIST_CONTAINER, staffMemberList);
+		params.put(MODEL_STAFF_MEMBER_LIST_CONTAINER, container);
 		
 		return params;
 	}

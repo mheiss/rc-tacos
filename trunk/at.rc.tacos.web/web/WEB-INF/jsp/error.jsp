@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" /> 
 	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
-<title>Server Fehler</title>
+<title>TACOS :: Server Fehler</title>
 </head>
 <body>
 <body>

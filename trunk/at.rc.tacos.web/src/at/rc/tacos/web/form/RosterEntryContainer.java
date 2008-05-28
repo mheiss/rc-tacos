@@ -21,6 +21,16 @@ public class RosterEntryContainer {
 	private Date deadline;
 	private Date registerStart;
 	private RosterEntry rosterEntry;
+	
+	private String function;
+	
+	public String getFunction() {
+		return function;
+	}
+	public void setFunction(String function) {
+		this.function = function;
+	}
+	// Additional field
 	public Date getPlannedStartOfWork() {
 		return plannedStartOfWork;
 	}
