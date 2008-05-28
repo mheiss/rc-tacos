@@ -37,20 +37,20 @@ public class SickPersonAdminViewFilter  extends ViewerFilter
 		if(lastname != null &! lastname.trim().isEmpty())
 		{
 			//check the street name
-			if(!person.getLastName().contains(lastname) &! person.getLastName().startsWith(lastname))
+			if(!person.getLastName().toLowerCase().contains(lastname) &! person.getLastName().toLowerCase().startsWith(lastname))
 					return false;
 		}
 		//check the city
 		if(firstname != null &! firstname.trim().isEmpty())
 		{
 			//chekc the city name
-			if(!person.getFirstName().contains(firstname) &! person.getFirstName().startsWith(firstname))
+			if(!person.getFirstName().toLowerCase().contains(firstname) &! person.getFirstName().toLowerCase().startsWith(firstname))
 				return false;
 		}
 		if(svnr != null &! svnr.trim().isEmpty())
 		{
 			//convert to string
-			if(!person.getSVNR().contains(svnr) &! person.getSVNR().startsWith(svnr))
+			if(!person.getSVNR().toLowerCase().contains(svnr) &! person.getSVNR().toLowerCase().startsWith(svnr))
 				return false;
 		}
 		//nothing matched
