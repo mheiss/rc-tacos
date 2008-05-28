@@ -132,9 +132,6 @@ public class SickPersonDAOSQL implements SickPersonDAO
 		}
 	}
 
-
-	
-
 	@Override
 	public boolean removeSickPerson(int id) throws SQLException
 	{
@@ -160,7 +157,6 @@ public class SickPersonDAOSQL implements SickPersonDAO
 		Connection connection = source.getConnection();
 		try
 		{
-			System.out.println("person id: " +person.getSickPersonId());
 //			UPDATE sickperson SET firstname = ?, lastname = ?, sex = ?, street = ?, 
 //			city = ?, svnr = ?, kindoftransport = ?, notes = ? WHERE sickperson_ID = ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.sickperson"));
