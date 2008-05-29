@@ -1,5 +1,6 @@
 package at.rc.tacos.core.db.dao.factory;
 
+import at.rc.tacos.core.db.dao.AddressDAO;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.core.db.dao.CompetenceDAO;
 import at.rc.tacos.core.db.dao.DayInfoDAO;
@@ -46,4 +47,5 @@ public interface DaoFactory
     public CompetenceDAO createCompetenceDAO();
     public DiseaseDAO createDiseaseDAO();
     public SickPersonDAO createSickPersonDAO();
+    public AddressDAO createAddressDAO();
 }
