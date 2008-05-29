@@ -43,7 +43,10 @@ public class LockListener extends ServerListenerAdapter
 			logger.debug("The lock is not in the list of objects, editing is granted");
 			//set the lock for this user
 			lock.setHasLock(true);
-			lockedList.listIterator().add(lock);
+			synchronized (lockedList) 
+			{
+				lockedList.listIterator().add(lock);
+			}
 			return lock;
 		}
 		logger.debug("The lock was not allowed: "+lock);
@@ -57,9 +60,13 @@ public class LockListener extends ServerListenerAdapter
 	{
 		//create a new list of abstract messages
 		List<AbstractMessage> abstractLockList = new ArrayList<AbstractMessage>();
-		ListIterator<Lock> iter = lockedList.listIterator();
-		while(iter.hasNext())
-			abstractLockList.add(iter.next());
+		synchronized (lockedList) 
+		{
+			ListIterator<Lock> iter = lockedList.listIterator();
+			while(iter.hasNext())
+				abstractLockList.add(iter.next());
+		}
+		
 		//return the list of current locks
 		return abstractLockList;
 	}
@@ -70,17 +77,20 @@ public class LockListener extends ServerListenerAdapter
 		Lock lock = (Lock)removeObject;
 		logger.debug("Request to remove the lock:"+lock);
 		//remove the lock from the list
-		ListIterator<Lock> iter = lockedList.listIterator();
-		while(iter.hasNext())
+		synchronized(lockedList) 
 		{
-			Lock listLock = iter.next();
-			//check the object and remove it from the list
-			if(listLock.equals(lock))
+			ListIterator<Lock> iter = lockedList.listIterator();
+			while(iter.hasNext())
 			{
-				logger.debug("Removing lock:"+lock);
-				iter.remove();
-				lock.setHasLock(false);
-				return lock;
+				Lock listLock = iter.next();
+				//check the object and remove it from the list
+				if(listLock.equals(lock))
+				{
+					logger.debug("Removing lock:"+lock);
+					iter.remove();
+					lock.setHasLock(false);
+					return lock;
+				}
 			}
 		}
 		//the lock has not been removed
