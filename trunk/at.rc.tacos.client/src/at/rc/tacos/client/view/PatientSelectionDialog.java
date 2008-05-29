@@ -133,7 +133,7 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Pro
 				updateStatus(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Bitte wählen Sie einen Patienten aus"));
 				
 				//send a request to the server to list all matching patients
-				NetWrapper.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SICK_PERSON_LASTNAME_FILTER,filterValue));
+				NetWrapper.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SEARCH_STRING,filterValue));
 				//apply the filter
 				filter.setFilterText(filterText.getText()); 
 			}

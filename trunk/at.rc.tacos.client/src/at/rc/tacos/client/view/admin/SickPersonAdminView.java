@@ -326,7 +326,7 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 			return;
 		}
 
-		NetWrapper.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SICK_PERSON_LASTNAME_FILTER,strLastname));
+		NetWrapper.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SEARCH_STRING,strLastname));
 
 
 		//filter the values
