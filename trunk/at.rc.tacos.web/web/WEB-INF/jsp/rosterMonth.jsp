@@ -28,6 +28,16 @@
 		</select></td>
 	</tr>
 	<tr>
+		<td style="font-weight: bold">Jahr:</td>
+		<td><select size="1" id="year" name="year">
+			<c:forEach var="year" items="${params.yearList}">
+				<option value="${year}" ${(not empty
+					params.year) and (params.year==
+					year) ? ' selected="selected"' : ''}>${year}</option>
+			</c:forEach>
+		</select></td>
+	</tr>
+	<tr>
 		<td style="font-weight: bold">Funktion:</td>
 		<td><select size="1" id="functionId" name="functionId">
 			<option value="noValue">-- Funktion wählen --</option>
@@ -69,19 +79,26 @@ $(document).ready(function() {
 		var url = '?month=' + $(this).val();
 		update(url, 'm');
 	});
+	$('#year').change(function() {
+		var url = '?year=' + $(this).val();
+		update(url, 'y');
+	});
 	function update(url, code) {
 		var locationId = $('#locationId').val();
 		var functionId = $('#functionId').val();
 		var staffMemberId = $('#staffMemberId').val();
 		var month = $('#month').val();
+		var year = $('#year').val();
 		if (code == 'l') {
-			url = url + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&month=' + month;
+			url = url + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
 		} else if (code == 'f') {
-			url = url + '&locationId=' + locationId + '&staffMemberId=' + staffMemberId + '&month=' + month;
+			url = url + '&locationId=' + locationId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
 		} else if (code == 's') {
-			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&month=' + month;
+			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&month=' + month + '&year=' + year;
 		} else if (code == 'm') {
-			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId;
+			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&year=' + year;
+		} else if (code == 'y') {
+			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&month=' + month;
 		}
 		document.location = url;
 	}
