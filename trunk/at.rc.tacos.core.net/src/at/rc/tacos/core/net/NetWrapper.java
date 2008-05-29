@@ -47,10 +47,11 @@ public class NetWrapper extends Plugin
 	//the list of send items, which have currently no answer from the server
 	//if a answere from the server is recevied the items is deleted from the list
 	private ConcurrentHashMap<String,AbstractMessageInfo> messageList;
+	private String lastSendSequence;
 
 	//the system listener for logging messages
 	private IModelListener logService = ListenerFactory.getDefault().getListener(SystemMessage.ID);
-	
+
 	//the running jobs
 	private final static String JOB_MONITOR = "MonitorJob";
 	private final static String JOB_LISTEN = "ListenJob";
@@ -305,6 +306,9 @@ public class NetWrapper extends Plugin
 			}
 		});
 		sendJob.schedule();
+
+		//save the last generated sequence
+		lastSendSequence = info.getSequenceId();
 	}
 
 	/**
@@ -344,7 +348,6 @@ public class NetWrapper extends Plugin
 			//show the connection wizard
 			if(showWizard)
 			{
-				System.out.println("show");
 				logService.log("Starting network wizard",Status.INFO);
 				logService.connectionChange(IConnectionStates.STATE_DISCONNECTED);	
 			}
@@ -392,14 +395,14 @@ public class NetWrapper extends Plugin
 			{
 				//get the reader to get new data
 				BufferedReader in = client.getBufferedInputStream();
-				
+
 				//wait and read the next new line from the stream
 				String newData = in.readLine();
 
 				//assert valid
 				if(newData == null)
 					return Status.OK_STATUS;
-				
+
 				//set up the factory to decode
 				XMLFactory xmlFactory = new XMLFactory();
 				//replace all characters
@@ -411,11 +414,19 @@ public class NetWrapper extends Plugin
 				final String contentType = xmlFactory.getContentType();
 				final String queryString = xmlFactory.getQueryString();
 				final String sequenceId = xmlFactory.getSequenceId();
-				
+
+				//check if the sequence is a error message
+				if(sequenceId.equalsIgnoreCase("ERROR"))
+				{
+					//remove the last send message from the list
+					messageList.remove(lastSendSequence);
+					logService.log("Removed the last send sequenceId, the server reported a error", IStatus.ERROR);
+				}
+
 				//remove the package from the list
 				if(messageList.containsKey(sequenceId))
 					messageList.remove(sequenceId);
-				
+
 				//start the job to proccess the data
 				ProcessDataJob dataJob = new ProcessDataJob(contentType,queryString,newObjects);
 				dataJob.setSystem(true);
@@ -423,7 +434,7 @@ public class NetWrapper extends Plugin
 				dataJob.setRule(new ProcessDataJobRule(contentType));
 				dataJob.setName("In Bearbeitung: "+contentType+" Empfangene Datensätze:"+newObjects.size());
 				dataJob.schedule();				
-				
+
 				return Status.OK_STATUS;
 			}
 			catch(SocketTimeoutException timeout)
@@ -591,7 +602,7 @@ public class NetWrapper extends Plugin
 			return Status.OK_STATUS;
 		}
 	}
-	
+
 	/**
 	 * This job is responsible to process the received data.
 	 */
@@ -601,7 +612,7 @@ public class NetWrapper extends Plugin
 		private String contentType;
 		private String queryString;
 		private List<AbstractMessage> messageList;
-		
+
 		/**
 		 * Default class constructor for the data to process
 		 * @param newData the received message
@@ -618,7 +629,7 @@ public class NetWrapper extends Plugin
 		protected IStatus run(IProgressMonitor monitor) 
 		{
 			monitor.beginTask("Processing the received data:"+contentType,IProgressMonitor.UNKNOWN);
-				
+
 			//try to get a listener for this message
 			ListenerFactory listenerFactory = ListenerFactory.getDefault();
 			if(!listenerFactory.hasListeners(contentType))
@@ -645,7 +656,7 @@ public class NetWrapper extends Plugin
 				listener.logoutMessage(messageList.get(0));
 			if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
 				listener.systemMessage(messageList.get(0));
-			
+
 			return Status.OK_STATUS;
 		}
 	}
