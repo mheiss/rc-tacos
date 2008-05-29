@@ -150,7 +150,7 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 
 		//create the section to hold the table
 		Composite tableComp = createSection(form.getBody(), "Filter") ;
-		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER);
+		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		viewer = new TableViewer(table);
 		viewer.setUseHashlookup(true);
 		viewer.getTable().setLayout(new GridLayout());

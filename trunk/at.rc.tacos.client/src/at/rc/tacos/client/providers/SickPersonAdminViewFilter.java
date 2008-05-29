@@ -7,9 +7,9 @@ import at.rc.tacos.model.SickPerson;
 public class SickPersonAdminViewFilter  extends ViewerFilter
 {
 	//the criteria to filter
-	private String lastname;
-	private String firstname;
-	private String svnr;
+	private String filterLastname;
+	private String filterFirstname;
+	private String filterSvnr;
 	
 	/**
 	 * Default class constructor for the address filter.
@@ -17,9 +17,9 @@ public class SickPersonAdminViewFilter  extends ViewerFilter
 	 */
 	public SickPersonAdminViewFilter(String lastname,String firstname,String svnr)
 	{
-		this.lastname = lastname;
-		this.firstname = firstname;
-		this.svnr = svnr;
+		this.filterLastname = lastname.toLowerCase();
+		this.filterFirstname = firstname.toLowerCase();
+		this.filterSvnr = svnr.toLowerCase();
 	}
 	
 	/**
@@ -31,26 +31,30 @@ public class SickPersonAdminViewFilter  extends ViewerFilter
 	@Override
 	public boolean select(Viewer arg0, Object parentElement, Object element) 
 	{
-		//cast to a address
 		SickPerson person = (SickPerson)element;
-		//check the street
-		if(lastname != null &! lastname.trim().isEmpty())
+		//setup the filter values
+		String lastName = person.getLastName() != null ? person.getLastName().toLowerCase() : "";
+		String firstName = person.getFirstName() != null ? person.getFirstName().toLowerCase() : "";
+		String svnr = person.getSVNR() != null ? person.getSVNR().toLowerCase() : "";
+		
+		//check the last name
+		if(!filterLastname.trim().isEmpty())
 		{
 			//check the street name
-			if(!person.getLastName().toLowerCase().contains(lastname) &! person.getLastName().toLowerCase().startsWith(lastname))
-					return false;
-		}
-		//check the city
-		if(firstname != null &! firstname.trim().isEmpty())
-		{
-			//chekc the city name
-			if(!person.getFirstName().toLowerCase().contains(firstname) &! person.getFirstName().toLowerCase().startsWith(firstname))
+			if(!lastName.contains(filterLastname) &! lastName.startsWith(filterLastname))
 				return false;
 		}
-		if(svnr != null &! svnr.trim().isEmpty())
+		//check the city
+		if(!filterFirstname.isEmpty())
+		{
+			//chekc the city name
+			if(!firstName.contains(filterFirstname) &! firstName.startsWith(filterFirstname))
+				return false;
+		}
+		if(!filterSvnr.isEmpty())
 		{
 			//convert to string
-			if(!person.getSVNR().toLowerCase().contains(svnr) &! person.getSVNR().toLowerCase().startsWith(svnr))
+			if(!svnr.contains(filterSvnr) &! svnr.startsWith(filterSvnr))
 				return false;
 		}
 		//nothing matched

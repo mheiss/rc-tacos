@@ -4,13 +4,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.controller.ConnectionWizardAction;
-import at.rc.tacos.common.AbstractMessageInfo;
 import at.rc.tacos.common.IConnectionStates;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.DayInfoMessage;
@@ -188,33 +186,5 @@ public class SessionManager extends PropertyManager
 				connectionWizard.run();
 			}
 		});
-	}
-
-	public void fireTransferFailed(final AbstractMessageInfo info)
-	{
-		//the message to display
-		final StringBuffer msg = new StringBuffer();
-		msg.append("Die folgende Nachricht konnte nicht an den Server übertragen werden. (Zeitüberschreitung).\n");
-		msg.append(info.getContentType()+" -> "+info.getQueryString());
-
-		//show a message
-        Display.getDefault().syncExec(new Runnable ()    
-        {
-            public void run ()       
-            {
-        		//show the message to the user
-        		MessageDialog.openError(
-        				PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
-        				"Netzwerkfehler",
-        				msg.toString());
-        		//retry
-        		boolean retryConfirmed = MessageDialog.openConfirm(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-        				"Senden wiederholen",
-        		"Wollen sie die Nachricht noch einmal senden?");
-        		if (!retryConfirmed) 
-        			return;
-        		NetWrapper.getDefault().sheduleAndSend(info);
-            }
-        });
 	}
 }

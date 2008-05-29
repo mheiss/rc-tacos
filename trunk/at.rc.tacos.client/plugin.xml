@@ -56,7 +56,7 @@
             name="TACOS-Client">
          <property
                name="aboutText"
-               value="Austrian Red Cross.&#x0A;Time and Configuration Management">
+               value="Austrian Red Cross.&#x0D;&#x0A;Time and Coordination System - Client Software.&#x0D;&#x0A;Developed by Birgit Thek and Heiß Michael.&#x0D;&#x0A;(c) 2007-2008">
          </property>
          <property
                name="windowImages"
@@ -69,6 +69,10 @@
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/application/alt_window_64.gif">
          </property>
       </product>
    </extension>
@@ -292,9 +296,9 @@
       
       <editor
             class="at.rc.tacos.client.editors.SickPersonEditor"
-            icon="icons/resources/person.png"
+            icon="icons/admin/patient.gif"
             id="at.rc.tacos.client.editors.sickpersonEditor"
-            name="Dienststellen">
+            name="Patienten">
       </editor>
       
       <editor

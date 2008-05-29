@@ -8,9 +8,12 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -44,6 +47,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
+	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name;
 
@@ -76,6 +80,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	{	
 		serviceType = ((ServiceTypeEditorInput)getEditorInput()).getServiceType();
 		isNew = ((ServiceTypeEditorInput)getEditorInput()).isNew();
+		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -92,7 +97,10 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		if(!isNew)
 			loadData();
 		else
+		{
 			form.setText("Neues Dienstverhältnis anlegen");
+			removeHyperlink.setVisible(false);
+		}
 
 		//force redraw
 		form.pack(true);
@@ -106,7 +114,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		Composite client = createSection(parent, "Dienstverhältnis verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
-		CLabel infoLabel = new CLabel(client,SWT.NONE);
+		infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie das aktuelle Dienstverhältnis verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
@@ -147,6 +155,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
+		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
 		//save hyperlink should span over two
 		data = new GridData(GridData.FILL_BOTH);
@@ -171,6 +180,13 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		
 		final Label labelCompName = toolkit.createLabel(client, "Dienstverhältnis");
 		name = toolkit.createText(client, "");
+		name.addModifyListener(new ModifyListener() 
+		{ 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 		
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -194,7 +210,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		form.setText("Details des Dienstverhältnisses "+serviceType.getServiceName());
 		if(!isNew)
 		{
-			//adjust the links
+			removeHyperlink.setVisible(true);
 			saveHyperlink.setText("Änderungen speichern");
 		}
 		id.setText(String.valueOf(serviceType.getId()));
@@ -259,8 +275,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("SERVICETYPE_UPDATE".equals(evt.getPropertyName())
-				|| "SERVICETYPE_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		if("SERVICETYPE_UPDATE".equals(evt.getPropertyName()) || "SERVICETYPE_ADD".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			ServiceType updateService = null;
 			//get the new value
@@ -272,8 +287,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 				return;
 
 			//is this service type is the current -> update it
-			if(serviceType.equals(updateService) 
-					|| serviceType.getServiceName().equals(updateService.getServiceName()))
+			if(serviceType.equals(updateService) || serviceType.getServiceName().equals(updateService.getServiceName()))
 			{
 				//save the updated service type
 				setInput(new ServiceTypeEditorInput(updateService,false));
@@ -282,6 +296,11 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 				isNew = false;
 				//update the editor
 				loadData();
+				//show the result
+				isDirty = false;
+				infoLabel.setText("Änderungen gespeichert");
+				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
+				Display.getCurrent().beep();
 			}
 		}
 		if("SERVICETYPE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
@@ -329,5 +348,40 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		client.setLayoutData(clientDataLayout);
 
 		return client;
+	}
+	
+	/**
+	 * This is called when the input of a text box or a combo box was changes
+	 */
+	private void inputChanged()
+	{
+		//When the service type is new we need no checks
+		if(isNew)
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			return;
+		}
+
+		//reset the flag
+		isDirty = false;
+
+		//get the current input
+		ServiceTypeEditorInput serviceInput = (ServiceTypeEditorInput)getEditorInput();
+		ServiceType persistantService = serviceInput.getServiceType();
+
+		//check the service type name
+		if(!name.getText().equalsIgnoreCase(persistantService.getServiceName()))
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+		}
+		else
+		{
+			infoLabel.setText("Hier können sie das aktuelle Dienstverhältnis verwalten und die Änderungen speichern.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		}
 	}
 }

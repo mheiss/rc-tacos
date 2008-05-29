@@ -2,7 +2,6 @@ package at.rc.tacos.client.view.admin;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -10,24 +9,22 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
@@ -42,7 +39,10 @@ import at.rc.tacos.client.providers.SickPersonAdminTableLabelProvider;
 import at.rc.tacos.client.providers.SickPersonAdminViewFilter;
 import at.rc.tacos.client.providers.SickPersonContentProvider;
 import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.common.IFilterTypes;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.SickPerson;
 
 public class SickPersonAdminView  extends ViewPart implements PropertyChangeListener
@@ -57,7 +57,7 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	private Text lastname, firstname, svnr;
 
 	//to apply the filter
-	private ImageHyperlink applyFilter,resetFilter;
+	private CLabel infoLabel;
 
 	/**
 	 * Default class constructor
@@ -106,49 +106,44 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		//create the input fields
 		final Label labelLastname = toolkit.createLabel(filter, "Nachname");
 		lastname = toolkit.createText(filter, "");
+		lastname.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(final ModifyEvent e) 
+			{
+				inputChanged();
+			}
+		});
 
 		//the firstname
 		final Label labelFirstname = toolkit.createLabel(filter, "Vorname");
 		firstname = toolkit.createText(filter, "");
+		firstname.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(final ModifyEvent e) 
+			{
+				inputChanged();
+			}
+		});
 
 		//the svnr
 		final Label labelSVNR = toolkit.createLabel(filter, "SVNR");
 		svnr = toolkit.createText(filter, "");
-
-		//Create the hyperlink to import the data
-		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
-		applyFilter.setText("Patiententabelle filtern");
-		applyFilter.setImage(ImageFactory.getInstance().getRegisteredImage("resource.import"));
-		applyFilter.addHyperlinkListener(new HyperlinkAdapter() 
+		svnr.addModifyListener(new ModifyListener() 
 		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
+			public void modifyText(final ModifyEvent e) 
 			{
 				inputChanged();
 			}
 		});
 
 		//create the hyperlink to add a new job
-		resetFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
-		resetFilter.setText("Einschränkungen entfernen");
-		resetFilter.setImage(ImageFactory.getInstance().getRegisteredImage("admin.addressAdd"));
-		resetFilter.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				//reset the fields
-				lastname.setText("");
-				firstname.setText("");
-				svnr.setText("");
-				//apply the filter
-				inputChanged();
-			}
-		});
+		infoLabel = new CLabel(filter,SWT.NONE);
+		infoLabel.setText("Bitte geben sie mindestens ein Zeichen des Nachnamens ein");
+		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.info"));
 
 		//create the section to hold the table
 		Composite tableComp = createSection(form.getBody(), "Filter") ;
-		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER);
+		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		viewer = new TableViewer(table);
 		viewer.setUseHashlookup(true);
 		viewer.getTable().setLayout(new GridLayout());
@@ -203,47 +198,6 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		streetColumn.setWidth(180);
 		streetColumn.setText("Vorname");
 
-		//make the columns sortable
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
-//				// determine new sort column and direction
-//				TableColumn sortColumn = viewer.getTable().getSortColumn();
-//				TableColumn currentColumn = (TableColumn) e.widget;
-//				int dir = viewer.getTable().getSortDirection();
-//				//revert the sortorder if the column is the same
-//				if (sortColumn == currentColumn) 
-//				{
-//					if(dir == SWT.UP)
-//						dir = SWT.DOWN;
-//					else
-//						dir = SWT.UP;
-//				} 
-//				else 
-//				{
-//					viewer.getTable().setSortColumn(currentColumn);
-//					dir = SWT.UP;
-//				}
-//				// sort the data based on column and direction
-//				String sortIdentifier = null;
-//				if (currentColumn == zipColumn) 
-//					sortIdentifier = AddressViewSorter.ZIP_SORTER;
-//				if (currentColumn == cityColumn) 
-//					sortIdentifier = AddressViewSorter.CITY_SORTER;
-//				if (currentColumn == streetColumn) 
-//					sortIdentifier = AddressViewSorter.STREET_SORTER;
-//				//apply the filter
-//				viewer.getTable().setSortDirection(dir);
-//				viewer.setSorter(new AddressViewSorter(sortIdentifier,dir));
-			}
-		};
-
-		//attach the listener
-		zipColumn.addListener(SWT.Selection, sortListener);
-		cityColumn.addListener(SWT.Selection, sortListener);
-		streetColumn.addListener(SWT.Selection, sortListener);
-
 		//add actions to the toolbar
 		createToolBarActions();
 
@@ -274,8 +228,10 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		data2 = new GridData(GridData.FILL_BOTH);
 		Section tableSection = (Section)tableComp.getParent();
 		tableSection.setLayoutData(data2);
-
-		viewer.refresh();
+		//the info label
+		data2 = new GridData(GridData.FILL_BOTH);
+		data2.horizontalSpan = 2;
+		infoLabel.setLayoutData(data2);
 		
 		//reflow
 		form.reflow(true);
@@ -302,6 +258,8 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		{
 			//just refresh the viewer
 			viewer.refresh();
+			infoLabel.setText("Es wurden "+ ModelFactory.getInstance().getSickPersonManager().getSickPersons().size() +" Patienten gefunden");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.info"));
 		}
 	}
 
@@ -312,12 +270,10 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	{
 		//create the action
 		EditorNewSickPersonAction addAction = new EditorNewSickPersonAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
-		RefreshViewAction refreshAction = new RefreshViewAction(SickPerson.ID);
-//		ImportAddressAction importAction = new ImportAddressAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());	
+		RefreshViewAction refreshAction = new RefreshViewAction(SickPerson.ID);	
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().add(refreshAction);
-//		form.getToolBarManager().add(importAction);
 		form.getToolBarManager().update(true);
 	}
 
@@ -358,9 +314,21 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	public void inputChanged()
 	{
 		//get the values
-		final String strLastname = lastname.getText();
-		final String strFirstname = firstname.getText();
-		final String strSVNR = svnr.getText();
+		final String strLastname = lastname.getText().trim().toLowerCase();
+		final String strFirstname = firstname.getText().trim().toLowerCase();
+		final String strSVNR = svnr.getText().trim().toLowerCase();
+		
+		if(strLastname.length() < 1)
+		{
+			infoLabel.setText("Bitte geben Sie mindestens ein Zeichen des Nachnamens ein.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.error"));
+			Display.getCurrent().beep();
+			return;
+		}
+
+		NetWrapper.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SICK_PERSON_LASTNAME_FILTER,strLastname));
+
+
 		//filter the values
 		viewer.getTable().setRedraw(false);
 		Display.getDefault().asyncExec(new Runnable ()    

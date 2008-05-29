@@ -53,7 +53,6 @@ public class LocationManager extends PropertyManager
         }); 
     }
     
-    
     /**
      * Updates the location in the list
      * @param location the location to update

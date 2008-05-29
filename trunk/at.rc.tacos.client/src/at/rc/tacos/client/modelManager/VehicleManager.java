@@ -55,8 +55,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         {
             public void run ()       
             {
-//            	if(vehicle.isOutOfOrder() |! vehicle.isReadyForAction())
-//            		vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
                 objectList.add(vehicle);
                 firePropertyChange("VEHICLE_ADD", null, vehicle);
             }
@@ -75,8 +73,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     		{
     			for(VehicleDetail detail:vehicleList)
     			{
-//    				if(detail.isOutOfOrder() |! detail.isReadyForAction())
-//                		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
     				objectList.add(detail);
     			}
 				firePropertyChange("VEHICLE_ADD_ALL", null, vehicleList);
@@ -112,8 +108,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             	//assert we have this vehicle
             	if(!objectList.contains(vehicle))
             		return;
-//            	if(vehicle.isOutOfOrder() |! vehicle.isReadyForAction())
-//            		vehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
                 //get the position of the entry
                 int index = objectList.indexOf(vehicle);
                 objectList.set(index, vehicle);
@@ -311,10 +305,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             List<Transport> transportList = transportManager.getUnderwayTransportsByVehicle(detail.getVehicleName());
 
             this.checkVehicleColorState(transportList, detail);
-
-            
-            
-            
     	}
         if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	
