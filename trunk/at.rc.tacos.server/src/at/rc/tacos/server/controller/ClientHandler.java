@@ -29,25 +29,46 @@ public class ClientHandler implements INetListener
 	@Override
 	public void dataReceived(NetEvent ne)
 	{
+		//the server controller,
+		final ServerController server = ServerController.getDefault();
+		final ClientSession session = server.getSession(ne.getClient());
+		
 		//set up the factory and decode decode
 		XMLFactory xmlFactory = new XMLFactory();
-		xmlFactory.setupDecodeFactory(ne.getMessage());
-		ArrayList<AbstractMessage> objects = xmlFactory.decode();
-
+		ArrayList<AbstractMessage> objects = new ArrayList<AbstractMessage>();
+		
+		try
+		{
+			xmlFactory.setupDecodeFactory(ne.getMessage());
+			objects = xmlFactory.decode();
+		}
+		catch(Exception e)
+		{
+			//log the error
+			logger.fatal("Cannot decode the message send by the client: "+session.getUsername());
+			logger.fatal("The request will be aborted:"+e.getMessage(),e.getCause());
+			
+			//create a new fatal error message
+			SystemMessage system = new SystemMessage("Ausnahmefehler: Die zuletzt gesendete Anforderung kann nicht bearbeitet werden",SystemMessage.TYPE_ERROR);
+			//setup the message
+			AbstractMessageInfo error = new AbstractMessageInfo();
+			error.setSequenceId("ERROR");
+			error.setContentType(SystemMessage.ID);
+			error.setQueryString(IModelActions.SYSTEM);
+			error.setMessage(system);
+			//send back to the client
+			server.sendMessage(session, error);
+			return;
+		}
+		
 		//get the type of the item
 		final String sequenceId = xmlFactory.getSequenceId();
 		final String contentType = xmlFactory.getContentType();
 		final String queryString = xmlFactory.getQueryString();
 		final QueryFilter queryFilter = xmlFactory.getQueryFilter();
 
-		//the server controller,
-		final ServerController server = ServerController.getDefault();
 		final ServerListenerFactory factory = ServerListenerFactory.getInstance();
 		final IServerListener listener = factory.getListener(contentType);
-
-		//the client connection
-		final ClientSession session = server.getSession(ne.getClient());
-		
 
 		//the client is not authenticated, no login request -> not accepted
 		if(!session.isAuthenticated() &! Login.ID.equalsIgnoreCase(contentType))

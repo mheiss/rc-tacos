@@ -17,7 +17,7 @@ public class ServerController
     private static ServerController serverController;
 
     //this pool contains all client connections form the application
-    private List<ClientSession> connClientPool;
+    private final List<ClientSession> connClientPool = Collections.synchronizedList(new ArrayList<ClientSession>());
     
     //the logger
     private static Logger logger = Logger.getLogger(ServerController.class);
@@ -29,8 +29,6 @@ public class ServerController
      */
     private ServerController()
     {
-        //init the pools
-        connClientPool = Collections.synchronizedList(new ArrayList<ClientSession>());
         //register the encoders and decoders
         registerEncoderAndDecoder();
         registerModelListeners();
@@ -58,7 +56,10 @@ public class ServerController
     {
     	logger.info("Creating new session for client: "+client.getSocket().getInetAddress());
         ClientSession session = new ClientSession(client);
-        connClientPool.add(session);
+        synchronized(connClientPool)
+        {
+        	connClientPool.listIterator().add(session);
+        }
     }
 
     /**
@@ -88,9 +89,19 @@ public class ServerController
         		logger.error("Failed to close the input and output streams");
         	}
         }
-        //remove the user session
-        connClientPool.remove(session);
         
+        //remove the user session
+        synchronized(connClientPool) 
+        {
+            ListIterator<ClientSession> listIter = connClientPool.listIterator();
+            while(listIter.hasNext())
+            {
+            	ClientSession listItem = listIter.next();
+            	if(listItem.equals(session))
+            		listIter.remove();
+            }
+		}
+
         //assert valid
         String user = session.getUsername();
         if(user == null)
@@ -98,27 +109,31 @@ public class ServerController
   
         logger.info("Checking locked objects from user:"+user);
         LockListener listener = (LockListener)ServerListenerFactory.getInstance().getListener(Lock.ID);
+        
         //get the managed lock objects
-        ListIterator<Lock> iter = listener.getLockObjects().listIterator();
-        while(iter.hasNext())
+        synchronized (listener.getLockObjects()) 
         {
-        	Lock lock = iter.next();
-        	if(lock.getLockedBy().equalsIgnoreCase(user))
-        	{
-        		logger.info("Removing the lock from the object: "+lock.getContentId()+":"+lock.getLockedId());
-        		//remove the lock from the object
-        		lock.setHasLock(false);
-        		//create a new message info
-        		AbstractMessageInfo info = new AbstractMessageInfo();
-    			info.setSequenceId("1");
-    			info.setContentType(Lock.ID);
-    			info.setQueryString(IModelActions.REMOVE);
-    			info.setMessage(lock);
-    			//brodcast to all connected clients
-        		brodcastMessage(session, info);
-        		iter.remove();
-        	}
-        }
+            ListIterator<Lock> iter = listener.getLockObjects().listIterator();
+            while(iter.hasNext())
+            {
+            	Lock lock = iter.next();
+            	if(lock.getLockedBy().equalsIgnoreCase(user))
+            	{
+            		logger.info("Removing the lock from the object: "+lock.getContentId()+":"+lock.getLockedId());
+            		//remove the lock from the object
+            		lock.setHasLock(false);
+            		//create a new message info
+            		AbstractMessageInfo info = new AbstractMessageInfo();
+        			info.setSequenceId("1");
+        			info.setContentType(Lock.ID);
+        			info.setQueryString(IModelActions.REMOVE);
+        			info.setMessage(lock);
+        			//brodcast to all connected clients
+            		brodcastMessage(session, info);
+            		iter.remove();
+            	}
+            }
+		}
     }
 
     /**
@@ -128,12 +143,17 @@ public class ServerController
      */
     public ClientSession getSession(MyClient connection)
     {
-        for(ClientSession session:connClientPool)
-        {
-            if(session.getConnection() == connection)
-                return session;
-        }
-        return null;
+    	synchronized (connClientPool) 
+    	{
+    		ListIterator<ClientSession> listIter = connClientPool.listIterator();
+        	while(listIter.hasNext())
+        	{
+        		ClientSession nextSession = listIter.next();
+        		if(nextSession.getConnection() == connection)
+        			return nextSession;
+        	}
+        	return null;
+		} 
     }
 
     /**
@@ -141,7 +161,7 @@ public class ServerController
      *  @param username the source of the message
      *  @param messageInfo the information to send to the clients
      */
-    public synchronized void brodcastMessage(ClientSession session,AbstractMessageInfo messageInfo)
+    public void brodcastMessage(ClientSession session,AbstractMessageInfo messageInfo)
     {
         //is the source of the message a web client?
         if(session.isWebClient())
@@ -169,15 +189,20 @@ public class ServerController
         String message = factory.encode(messageInfo.getMessageList());
         
         //loop over the client pool and send the message
-        for(ClientSession clientSession:connClientPool)
+        synchronized (connClientPool) 
         {
-            //Send the message to all authenticated clients, except the web clients
-            if(clientSession.isAuthenticated() &! clientSession.isWebClient())
-            {
-                MyClient client = clientSession.getConnection();
-                client.sendMessage(message);
+            ListIterator<ClientSession> listIter = connClientPool.listIterator();
+        	while(listIter.hasNext())
+        	{
+        		ClientSession nextSession = listIter.next();
+                //Send the message to all authenticated clients, except the web clients
+                if(nextSession.isAuthenticated() &! nextSession.isWebClient())
+                {
+                    MyClient client = nextSession.getConnection();
+                    client.sendMessage(message);
+                }
             }
-        }
+		}
     }
 
     /**
@@ -185,7 +210,7 @@ public class ServerController
      *  @param session the client session to send the message back to
      *  @param messageInfo the information to send to the clients
      */
-    public synchronized void sendMessage(ClientSession session,AbstractMessageInfo messageInfo)
+    public void sendMessage(ClientSession session,AbstractMessageInfo messageInfo)
     {
         MyClient connection = session.getConnection();
         String userId = session.getUsername();
