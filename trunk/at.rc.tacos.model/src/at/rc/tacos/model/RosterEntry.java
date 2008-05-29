@@ -29,7 +29,7 @@ public class RosterEntry extends AbstractMessage
 	private boolean standby;	
 
 	/**
-	 * Default class construtor
+	 * Default class constructor
 	 */
 	public RosterEntry()
 	{
