@@ -67,10 +67,34 @@ public class RosterEntryListener extends ServerListenerAdapter
 			
 			int filterLocationId = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
 			
-			rosterList = rosterDao.listRosterEntryiesByDateAndLocation(dateStart, dateEnd, filterLocationId);
+			rosterList = rosterDao.listRosterEntriesByDateAndLocation(dateStart, dateEnd, filterLocationId);
 			if(rosterList == null)
 			{
 				String time = MyUtils.timestampToString(dateStart, MyUtils.dateFormat) +" bis " +MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
+				throw new DAOException("RosterEntryListener","Failed to list the roster entries by date from "+time);
+			}
+			list.addAll(rosterList);
+		}
+		else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_MONTH_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_YEAR_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_LOCATION_FILTER)) {
+			int locationFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
+			int monthFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_MONTH_FILTER));
+			int yearFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_YEAR_FILTER));
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
+				String functionFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_FILTER);
+				int staffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER));
+				rosterList = rosterDao.listRosterEntriesForRosterMonthFilterFunctionAndStaffMember(locationFilter, monthFilter, yearFilter, functionFilter, staffMemberFilter);
+			} else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_FILTER)) {
+				String functionFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_FILTER);
+				rosterList = rosterDao.listRosterEntriesForRosterMonthFilterFunction(locationFilter, monthFilter, yearFilter, functionFilter);
+			} else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
+				int staffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER));
+				rosterList = rosterDao.listRosterEntriesForRosterFilterStaffMember(locationFilter, monthFilter, yearFilter, staffMemberFilter);
+			} else {
+				rosterList = rosterDao.listRosterEntriesForRosterMonth(locationFilter, monthFilter, yearFilter);
+			}
+			if(rosterList == null)
+			{
+				String time = "";
 				throw new DAOException("RosterEntryListener","Failed to list the roster entries by date from "+time);
 			}
 			list.addAll(rosterList);
