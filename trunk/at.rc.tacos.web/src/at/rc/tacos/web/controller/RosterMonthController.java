@@ -84,53 +84,64 @@ public class RosterMonthController extends Controller {
 				location = l;
 			}
 		}
+		if (location == null) {
+			if (locationList.size() > 0) {
+				location = (Location)locationList.get(0);
+			} else {
+				throw new IllegalArgumentException("Error: Location has an illegal state.");
+			}
+		} 
 		params.put(MODEL_LOCATION_NAME, location);
 		
 		// Month
 		String paramMonth = request.getParameter(PARAM_MONTH_NAME);
 		final Calendar cal = Calendar.getInstance();
-		cal.setTime(userSession.getDefaultFormValues().getDefaultDate());
-		int month = cal.get(Calendar.MONTH);
-		switch (month) {
-			case 1:
-				paramMonth = Month.JANUARY.toString();
-				break;
-			case 2:
-				paramMonth = Month.FEBRUARY.toString();
-				break;
-			case 3:
-				paramMonth = Month.MARCH.toString();
-				break;
-			case 4:
-				paramMonth = Month.APRIL.toString();
-				break;
-			case 5:
-				paramMonth = Month.MAY.toString();
-				break;
-			case 6:
-				paramMonth = Month.JUNE.toString();
-				break;
-			case 7:
-				paramMonth = Month.JULY.toString();
-				break;
-			case 8:
-				paramMonth = Month.AUGUST.toString();
-				break;
-			case 9:
-				paramMonth = Month.SEPTEMBER.toString();
-				break;
-			case 10:
-				paramMonth = Month.OCTOBER.toString();
-				break;
-			case 11:
-				paramMonth = Month.NOVEMBER.toString();
-				break;
-			case 12:
-				paramMonth = Month.DECEMBER.toString();
-				break;
+		if (userSession.getDefaultFormValues().getDefaultDate() != null) {
+			cal.setTime(userSession.getDefaultFormValues().getDefaultDate());
+		} else {
+			cal.setTime(new Date());
 		}
+		int month = cal.get(Calendar.MONTH);
 		if (paramMonth != null && !paramMonth.equals("")) {
 			month = Month.valueOf(paramMonth).getProperty();
+		}
+		switch (month) {
+			case 0:
+				paramMonth = Month.JANUARY.toString();
+				break;
+			case 1:
+				paramMonth = Month.FEBRUARY.toString();
+				break;
+			case 2:
+				paramMonth = Month.MARCH.toString();
+				break;
+			case 3:
+				paramMonth = Month.APRIL.toString();
+				break;
+			case 4:
+				paramMonth = Month.MAY.toString();
+				break;
+			case 5:
+				paramMonth = Month.JUNE.toString();
+				break;
+			case 6:
+				paramMonth = Month.JULY.toString();
+				break;
+			case 7:
+				paramMonth = Month.AUGUST.toString();
+				break;
+			case 8:
+				paramMonth = Month.SEPTEMBER.toString();
+				break;
+			case 9:
+				paramMonth = Month.OCTOBER.toString();
+				break;
+			case 10:
+				paramMonth = Month.NOVEMBER.toString();
+				break;
+			case 11:
+				paramMonth = Month.DECEMBER.toString();
+				break;
 		}
 		params.put(MODEL_MONTH_NAME, paramMonth);
 		
@@ -169,21 +180,7 @@ public class RosterMonthController extends Controller {
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		
-		StaffMember defaultStaffMember = userSession.getDefaultFormValues().getDefaultStaffMember();
-		if (defaultStaffMember != null) {
-			boolean defaultStaffMemberHasCompetence = false;
-			final List <Competence> defaultStaffMemberCompetenceList = defaultStaffMember.getCompetenceList();
-			for (final Iterator<Competence> itDefaulStaffMemberCompetenceList = defaultStaffMemberCompetenceList.iterator(); itDefaulStaffMemberCompetenceList.hasNext();) {
-				final Competence competence = itDefaulStaffMemberCompetenceList.next();
-				if (competence.getCompetenceName().equals(function.getCompetenceName())) {
-					defaultStaffMemberHasCompetence = true;
-				}
-			}
-			if (!defaultStaffMemberHasCompetence) {
-				defaultStaffMember = null;
-			}
-		}
-		
+		StaffMember defaultStaffMember = userSession.getDefaultFormValues().getDefaultStaffMember();		
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
@@ -193,14 +190,15 @@ public class RosterMonthController extends Controller {
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
+		final Competence functionTemp = (Competence)params.get(MODEL_FUNCTION_NAME);
 		for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
 			final StaffMember sm = (StaffMember)itStaffList.next();
-			if (function != null) {
+			if (functionTemp != null) {
 				boolean hasCompetence = false;
 				final List<Competence> cL = sm.getCompetenceList();
 				for (final Iterator<Competence> itCL = cL.iterator(); itCL.hasNext();) {
 					final Competence c = itCL.next();
-					if (c.getCompetenceName().equals(function.getCompetenceName())) {
+					if (c.getId() ==  functionTemp.getId() || c.getCompetenceName().equals(functionTemp.getCompetenceName())) {
 						hasCompetence = true;
 					}
 				}
@@ -227,7 +225,7 @@ public class RosterMonthController extends Controller {
 		// Get Roster Entries
 		final QueryFilter rosterFilter = new QueryFilter();
 		rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
-		rosterFilter.add(IFilterTypes.ROSTER_MONTH_FILTER, Integer.toString(month));
+		rosterFilter.add(IFilterTypes.ROSTER_MONTH_FILTER, Integer.toString(month + 1));
 		if (function != null) {
 			if (function.getCompetenceName().equals(Competence.FUNCTION_LS)) {
 				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_FILTER, Job.JOB_LEITSTELLENDISPONENT);

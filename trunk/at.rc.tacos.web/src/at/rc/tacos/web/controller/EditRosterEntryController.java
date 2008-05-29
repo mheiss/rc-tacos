@@ -211,23 +211,8 @@ public class EditRosterEntryController extends Controller {
 		
 		// Staff Member (depends on Job)
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
-		int staffMemberId = 0;
-		
-		StaffMember defaultStaffMember = rosterEntry.getStaffMember();
-		if (defaultStaffMember != null) {
-			boolean defaultStaffMemberHasCompetence = false;
-			final List <Competence> defaultStaffMemberCompetenceList = defaultStaffMember.getCompetenceList();
-			for (final Iterator<Competence> itDefaulStaffMemberCompetenceList = defaultStaffMemberCompetenceList.iterator(); itDefaulStaffMemberCompetenceList.hasNext();) {
-				final Competence competence = itDefaulStaffMemberCompetenceList.next();
-				if (competence.getId() == job.getId() || competence.getCompetenceName().equals(job.getJobName())) {
-					defaultStaffMemberHasCompetence = true;
-				}
-			}
-			if (!defaultStaffMemberHasCompetence) {
-				defaultStaffMember = null;
-			}
-		}
-		
+		int staffMemberId = 0;	
+		StaffMember defaultStaffMember = rosterEntry.getStaffMember();	
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
@@ -237,14 +222,15 @@ public class EditRosterEntryController extends Controller {
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
+		final Job defaulJob = (Job)params.get(MODEL_JOB_NAME);
 		for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
 			final StaffMember sm = (StaffMember)itStaffList.next();
-			if (job != null) {
+			if (defaulJob != null) {
 				boolean hasCompetence = false;
 				final List<Competence> competenceList = sm.getCompetenceList();
 				for (final Iterator<Competence> itCompetenceList = competenceList.iterator(); itCompetenceList.hasNext();) {
 					final Competence competence = itCompetenceList.next();
-					if (competence.getId() == job.getId() || competence.getCompetenceName().equals(job.getJobName())) {
+					if (competence.getId() == defaulJob.getId() || competence.getCompetenceName().equals(defaulJob.getJobName())) {
 						hasCompetence = true;
 					}
 				}

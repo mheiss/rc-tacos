@@ -30,6 +30,8 @@ public class DefaultFormValues {
 		defaultLocation = null;
 		defaultServiceType = null;
 		defaultDate = null;
+		defaultStandBy = false;
+		defaultFunction = null;
 	}
 	public Date getDefaultDate() {
 		return defaultDate;
