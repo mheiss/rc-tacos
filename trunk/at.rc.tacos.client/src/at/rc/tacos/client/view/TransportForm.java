@@ -731,6 +731,38 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
 		});
 		viewerToStreet.setInput(addressManager.toStreetArray());
+		
+		final Button buttonAddressFrom = new Button(transportdatenGroup, SWT.NONE);
+		final FormData fd_buttonAddressFrom = new FormData();
+		fd_buttonAddressFrom.bottom = new FormAttachment(0, 47);
+		fd_buttonAddressFrom.top = new FormAttachment(0, 26);
+		fd_buttonAddressFrom.right = new FormAttachment(0, 452);
+		fd_buttonAddressFrom.left = new FormAttachment(0, 422);
+		buttonAddressFrom.setLayoutData(fd_buttonAddressFrom);
+		buttonAddressFrom.setText("...");
+		buttonAddressFrom.addSelectionListener(new SelectionAdapter() 
+		{		
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				//TODO
+			}
+		});
+		
+		final Button buttonAddressTo = new Button(transportdatenGroup, SWT.NONE);
+		final FormData fd_buttonAddressTo = new FormData();
+		fd_buttonAddressTo.bottom = new FormAttachment(0, 74);
+		fd_buttonAddressTo.top = new FormAttachment(0, 53);
+		fd_buttonAddressTo.right = new FormAttachment(0, 452);
+		fd_buttonAddressTo.left = new FormAttachment(0, 422);
+		buttonAddressTo.setLayoutData(fd_buttonAddressTo);
+		buttonAddressTo.setText("...");
+		buttonAddressTo.addSelectionListener(new SelectionAdapter() 
+		{		
+			public void widgetSelected(final SelectionEvent e) 
+			{
+				//TODO
+			}
+		});
 
 		Combo comboVonStrasse = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonStrasse = new FormData();
@@ -778,10 +810,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		Combo comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonOrt = new FormData();
-		fd_comboVonOrt.left = new FormAttachment(0, 274);
+		fd_comboVonOrt.left = new FormAttachment(0, 264);
 		fd_comboVonOrt.bottom = new FormAttachment(0, 47);
 		fd_comboVonOrt.top = new FormAttachment(0, 26);
-		fd_comboVonOrt.right = new FormAttachment(0, 430);
+		fd_comboVonOrt.right = new FormAttachment(0, 420);
 		comboVonOrt.setLayoutData(fd_comboVonOrt);
 		viewerFromCity = new ComboViewer(comboVonOrt);
 		viewerFromCity.setContentProvider(new IStructuredContentProvider()
@@ -799,13 +831,15 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
 		});
 		viewerFromCity.setInput(addressManager.toCityArray());
+		
+		
 
 		Combo comboNachOrt = new Combo(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachOrt = new FormData();
-		fd_comboNachOrt.left = new FormAttachment(0, 274);
+		fd_comboNachOrt.left = new FormAttachment(0, 264);
 		fd_comboNachOrt.bottom = new FormAttachment(0, 74);
 		fd_comboNachOrt.top = new FormAttachment(0, 53);
-		fd_comboNachOrt.right = new FormAttachment(0, 430);
+		fd_comboNachOrt.right = new FormAttachment(0, 420);
 		comboNachOrt.setLayoutData(fd_comboNachOrt);
 		viewerToCity = new ComboViewer(comboNachOrt);
 		viewerToCity.setContentProvider(new IStructuredContentProvider()
@@ -872,9 +906,15 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		{		
 			public void widgetSelected(final SelectionEvent e) 
 			{
-				//TODO: hookContextMenu();
 				if(Login.AUTH_ADMIN.equalsIgnoreCase(authorization) && "journal".equalsIgnoreCase(editingType))
 				{
+					if(patientLastName.getText() == null || patientLastName.getText().trim().isEmpty())
+					{
+						getShell().getDisplay().beep();
+						setErrorMessage("Der Nachname kann beim Anlegen eines Patienten in der Patientendatenbank nicht leer gelassen werden.");
+						return;
+					}
+					
 					//confirm the cancel
 					boolean cancelConfirmed = MessageDialog.openQuestion(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
@@ -882,7 +922,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					if (!cancelConfirmed) 
 						return;
 
-					//TODO: add the patient data as new sick person, but check before
+					
+					//TODO: add the patient data as new sick person, but check before!!
 					SickPerson person = new SickPerson();
 					person.setLastName(patientLastName.getText());
 					person.setFirstName(patientFirstName.getText());
@@ -894,6 +935,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				}
 				else
 				{
+					System.out.println("--------------!!!!!!!!!!!!!");
 					//open the selection dialog to choose a patient
 					PatientSelectionDialog selectionDialog = new PatientSelectionDialog(patientLastName.getText(),getShell());
 					selectionDialog.open();
