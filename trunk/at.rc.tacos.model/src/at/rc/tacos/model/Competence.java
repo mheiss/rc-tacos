@@ -12,6 +12,10 @@ public class Competence extends AbstractMessage
     //unique identification string
     public final static String ID = "competence";
     
+	public static final String FUNCTION_HA = "_HA";
+	public static final String FUNCTION_ZD = "_ZD";
+	public static final String FUNCTION_LS = "_LS";
+    
     public static final String COMPETENCE_NAME_VOLUNTEER = "Volontär";
     
     //properties   

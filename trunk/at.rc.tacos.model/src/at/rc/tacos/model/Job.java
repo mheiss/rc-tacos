@@ -11,6 +11,8 @@ public class Job extends AbstractMessage
     //unique identification string
     public final static String ID = "jobs";
     
+    public static final String JOB_LEITSTELLENDISPONENT = "Leitstellendisponent";
+    
     //properties   
     private int id;
     private String jobName;

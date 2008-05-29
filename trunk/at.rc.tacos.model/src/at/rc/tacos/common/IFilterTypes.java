@@ -27,6 +27,18 @@ public interface IFilterTypes
     /** Filter roster by location */
     public final static String ROSTER_LOCATION_FILTER = "rosterLocationFilter";
     
+    /** Filter roster by month */
+    public final static String ROSTER_MONTH_FILTER = "rosterMonthFilter";
+    
+    /** Filter roster by year */
+    public final static String ROSTER_YEAR_FILTER = "rosterYearFilter";
+    
+    /** Filter roster by competence */
+    public final static String ROSTER_FUNCTION_FILTER = "rosterCompetenceFilter";
+    
+    /** Filter roster by staff member */
+    public final static String ROSTER_STAFF_MEMBER_FILTER = "rosterStaffMemberFilter";
+    
     /** Filter by lastname */
     public final static String SICK_PERSON_LASTNAME_FILTER = "lastnameFilter";
     
