@@ -25,7 +25,7 @@ public class SickPersonListener extends ServerListenerAdapter
         //add the location
         int id = personDao.addSickPerson(person);
         if(id == -1)
-        	throw new DAOException("SickPersonDAO","Failed to add the sick person: "+person);
+        	throw new DAOException("SickPersonListener","Failed to add the sick person: "+person);
         //set the id
         person.setSickPersonId(id);
         logger.info("added by:" +username +";" +person);
@@ -44,15 +44,15 @@ public class SickPersonListener extends ServerListenerAdapter
 			System.out.println("WARNING: Listing of all sick persons is denied.");
 			throw new DAOException("SickPersonListener","Listing of all sick persons is denied");
 		} 
-		else if(queryFilter.containsFilterType(IFilterTypes.SICK_PERSON_LASTNAME_FILTER))
+		else if(queryFilter.containsFilterType(IFilterTypes.SEARCH_STRING))
 		{
 			//get the query filter
-			final String lastNameFilter = queryFilter.getFilterValue(IFilterTypes.SICK_PERSON_LASTNAME_FILTER);
+			final String lastNameFilter = queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING);
 		
 			personList = personDao.getSickPersonList(lastNameFilter);
 			if(personList == null)
 			{
-				throw new DAOException("RosterEntryListener","Failed to list the sick persons by lastname: "+lastNameFilter);
+				throw new DAOException("SickPersonListener","Failed to list the sick persons by lastname: "+lastNameFilter);
 			}
 			list.addAll(personList);
 		} 
@@ -66,7 +66,8 @@ public class SickPersonListener extends ServerListenerAdapter
     {
     	SickPerson person = (SickPerson)removeObject;
     	if(!personDao.removeSickPerson(person.getSickPersonId()))
-    		throw new DAOException("SickPersonDAO","Failed to remove the sick person "+person);
+    		throw new DAOException("SickPersonListener","Failed to remove the sick person "+person);
+    	logger.info("removed " + person);
     	return person;
     }
 
@@ -75,7 +76,7 @@ public class SickPersonListener extends ServerListenerAdapter
     {
     	SickPerson person = (SickPerson)updateObject;
     	if(!personDao.updateSickPerson(person))
-    		throw new DAOException("SickPersonDAO","Failed to update the sick person "+person);
+    		throw new DAOException("SickPersonListener","Failed to update the sick person "+person);
     	logger.info("updated by: " +username +";" +person);
     	return person;
     }
