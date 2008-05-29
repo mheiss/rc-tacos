@@ -36,7 +36,6 @@ public class SickPerson extends AbstractMessage
 		sickPersonId = -1;
 		lastName = "";
 		firstName = "";
-		
 	}
 
 	/**
@@ -59,8 +58,7 @@ public class SickPerson extends AbstractMessage
 	@Override
 	public String toString()
 	{
-		return "id: "+sickPersonId+";"
-		+"; Nachn: "+lastName+"; Vorn: "+firstName;
+		return "id: "+sickPersonId+"; Nachn: "+lastName+"; Vorn: "+firstName;
 	}
 
 	/**
