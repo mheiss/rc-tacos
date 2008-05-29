@@ -55,6 +55,10 @@ public class RosterMonthController extends Controller {
 	private static final String PARAM_MONTH_NAME = "month";
 	private static final String MODEL_MONTH_NAME = "month";
 	
+	private static final String PARAM_YEAR_NAME = "year";
+	private static final String MODEL_YEAR_NAME = "year";
+	private static final String MODEL_YEAR_LIST_NAME = "yearList";
+	
 	private static final String MODEL_ROSTER_MONTH_CONTAINER_NAME = "rosterMonthContainer";
 	
 	@Override
@@ -145,6 +149,24 @@ public class RosterMonthController extends Controller {
 		}
 		params.put(MODEL_MONTH_NAME, paramMonth);
 		
+		// Year
+		final Calendar yearCal = Calendar.getInstance();
+		Integer year = yearCal.get(Calendar.YEAR);
+		Integer yearP = 0;
+		final String yearParam = request.getParameter(PARAM_YEAR_NAME);
+		if (yearParam != null && !yearParam.equals("")) {			
+			yearP = Integer.valueOf(yearParam);
+		}		
+		final List<Integer> yearList = new ArrayList<Integer>();
+		for (int i = 0; i <= 4; i++) {
+			yearList.add(yearCal.get(Calendar.YEAR) - i);
+			if (yearP == yearCal.get(Calendar.YEAR) - i) {
+				year = yearP;
+			}
+		}
+		params.put(MODEL_YEAR_NAME, year);
+		params.put(MODEL_YEAR_LIST_NAME, yearList);
+		
 		// Function
 		final String paramFunctionId = request.getParameter(PARAM_FUNCTION_NAME);
 		int functionId = 0;
@@ -226,6 +248,7 @@ public class RosterMonthController extends Controller {
 		final QueryFilter rosterFilter = new QueryFilter();
 		rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
 		rosterFilter.add(IFilterTypes.ROSTER_MONTH_FILTER, Integer.toString(month + 1));
+		rosterFilter.add(IFilterTypes.ROSTER_YEAR_FILTER, year.toString());
 		if (function != null) {
 			if (function.getCompetenceName().equals(Competence.FUNCTION_LS)) {
 				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_FILTER, Job.JOB_LEITSTELLENDISPONENT);
@@ -282,19 +305,20 @@ public class RosterMonthController extends Controller {
 		}
 		
 		// Group and Sort
-		final RosterMonthContainer rosterMonthContainer = new RosterMonthContainer(rosterEntryContainerList);
+		/*final RosterMonthContainer rosterMonthContainer = new RosterMonthContainer(rosterEntryContainerList);
 		final Comparator dayComparator = new PropertyComparator("day", true, true);
 		final Comparator staffMemberComparator = new CompoundComparator(new Comparator[] {
 			new PropertyComparator("firstName", true, true),
 			new PropertyComparator("lastName", true, true)
 		});
-		rosterMonthContainer.groupRosterEntriesBy(dayComparator, staffMemberComparator);
+		rosterMonthContainer.createTimetable(dayComparator, staffMemberComparator, month, year.intValue());
 		final Comparator sortComp = new CompoundComparator(new Comparator[] {
 			new PropertyComparator("function", true, true),
 			new PropertyComparator("plannedStartOfWork", true, true)
 		});
 		rosterMonthContainer.sortRosterEntries(sortComp);
-		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);
+		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);*/
+		
 		
 		userSession.getDefaultFormValues().setDefaultLocation(location);
 		final Calendar cale = Calendar.getInstance();
