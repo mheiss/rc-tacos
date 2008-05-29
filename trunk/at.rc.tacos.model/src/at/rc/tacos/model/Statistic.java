@@ -9,7 +9,7 @@ import at.rc.tacos.common.AbstractMessage;
 public class Statistic extends AbstractMessage
 {
 	//unique identification string
-	public final static String ID = "rosterEntry";
+	public final static String ID = "statistic";
 	
 	//Properties    
 	private int statisticId;
