@@ -7,13 +7,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -54,13 +58,10 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	private ScrolledForm form;
 
 	//changeable values
+	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink, removeHyperlink;
 	private Text vehicleType,vehicleName;
-	private ComboViewer basicLocationViewer;
-	//read only values - are changed in the vehicleForm
-	private ComboViewer driverViewer,firstParamedicViewer,secondParamedicViewer;
-	private ComboViewer phoneViewer,currentLocationViewer;
-
+	private ComboViewer basicLocationViewer, phoneViewer,currentLocationViewer;
 
 	//managed data
 	private VehicleDetail detail;
@@ -72,7 +73,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	public VehicleDetailEditor()
 	{
 		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
 	}
 
@@ -83,7 +83,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	public void dispose()
 	{
 		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getPhoneManager().removePropertyChangeListener(this);
 	}
 
@@ -95,6 +94,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	{	
 		detail = ((VehicleDetailEditorInput)getEditorInput()).getVehicle();
 		isNew = ((VehicleDetailEditorInput)getEditorInput()).isNew();
+		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -111,7 +111,10 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		if(!isNew)
 			loadData();
 		else
+		{
 			form.setText("Neues Fahrzeug anlegen");
+			removeHyperlink.setVisible(false);
+		}
 
 		//force redraw
 		form.pack(true);
@@ -122,10 +125,10 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	 */
 	private void createManageSection(Composite parent)
 	{
-		Composite client = createSection(parent, "Kompetenz verwalten");
+		Composite client = createSection(parent, "Fahrzeuge verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
-		CLabel infoLabel = new CLabel(client,SWT.NONE);
+		infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie das aktuelle Fahrzeug verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
@@ -142,7 +145,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 				saveAction.run();
 			}
 		});
-		
+
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Fahrzeug löschen");
@@ -166,6 +169,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
+		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
 		//save hyperlink should span over two
 		data = new GridData(GridData.FILL_BOTH);
@@ -184,9 +188,21 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		//label and the text field
 		final Label labelVehicleType = toolkit.createLabel(client,"Fahrzeug Typ");
 		vehicleType = toolkit.createText(client, "");
+		vehicleType.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelVehicleName = toolkit.createLabel(client, "Fahrzeug Name");
 		vehicleName = toolkit.createText(client, "");
+		vehicleName.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelBasicLoaction = toolkit.createLabel(client, "Basis Dienststelle");
 		Combo stationCombo = new Combo(client, SWT.READ_ONLY);
@@ -194,7 +210,13 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		basicLocationViewer.setContentProvider(new StationContentProvider());
 		basicLocationViewer.setLabelProvider(new StationLabelProvider());
 		basicLocationViewer.setInput(ModelFactory.getInstance().getLocationManager());
-		
+		stationCombo.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
 		//mobile phone
 		final Label labelPhone = toolkit.createLabel(client, "Mobiltelefon");
 		Combo phoneCombo = new Combo(client,SWT.READ_ONLY);
@@ -202,7 +224,13 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		phoneViewer.setContentProvider(new MobilePhoneContentProvider());
 		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
 		phoneViewer.setInput(ModelFactory.getInstance().getPhoneManager().getMobilePhoneList());
-		
+		phoneCombo.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
 		//current location
 		final Label locationLabel = toolkit.createLabel(client, "Aktuelle Ortsstelle");
 		Combo currentLocationCombo = new Combo(client, SWT.READ_ONLY);
@@ -210,6 +238,12 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		currentLocationViewer.setContentProvider(new StationContentProvider());
 		currentLocationViewer.setLabelProvider(new StationLabelProvider());
 		currentLocationViewer.setInput(ModelFactory.getInstance().getLocationManager());
+		currentLocationCombo.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -227,7 +261,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		data = new GridData();
 		data.widthHint = 150;
 		locationLabel.setLayoutData(data);
-		
+
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		vehicleName.setLayoutData(data2);
@@ -251,7 +285,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		form.setText("Details des Fahrzeugs: " + detail.getVehicleType() + " " + detail.getVehicleName());
 		if(!isNew)
 		{
-			//adjust the links
+			removeHyperlink.setVisible(true);
 			saveHyperlink.setText("Änderungen speichern");
 		}
 		//load all the data
@@ -299,7 +333,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		}
 		detail.setBasicStation((Location)basicLocationViewer.getElementAt(index));
 
-		
+
 		//mobile phone
 		int index2 = phoneViewer.getCombo().getSelectionIndex();
 		if(index2 == -1)
@@ -309,8 +343,8 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 			return;
 		}
 		detail.setMobilPhone((MobilePhoneDetail)phoneViewer.getElementAt(index2));
-		
-		
+
+
 		//current location
 		int index3 = currentLocationViewer.getCombo().getSelectionIndex();
 		if(index3 == -1)
@@ -319,8 +353,8 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 			form.setMessage("Bitte ordnen Sie diesem Fahrzeug eine aktuelle Ortsstelle zu", IMessageProvider.ERROR);
 		}
 		detail.setCurrentStation((Location)currentLocationViewer.getElementAt(index3));
-		
-		
+
+
 		//the other fields are read only and must not be set explicite
 		if(isNew)
 			NetWrapper.getDefault().sendAddMessage(VehicleDetail.ID, detail);
@@ -364,8 +398,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("VEHICLE_UPDATE".equals(evt.getPropertyName())
-				|| "VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		if("VEHICLE_UPDATE".equals(evt.getPropertyName()) || "VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			VehicleDetail updateVehicle = null;
 			//get the new value
@@ -388,6 +421,11 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 				isNew = false;
 				//update the editor
 				loadData();
+				//show the result
+				isDirty = false;
+				infoLabel.setText("Änderungen gespeichert");
+				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
+				Display.getCurrent().beep();
 			}
 		}
 		if("VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
@@ -399,7 +437,7 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Fahrzeug wurde gelöscht",
-						"Das Fahrzeug welches Sie gerade editieren wurde gelöscht");
+				"Das Fahrzeug welches Sie gerade editieren wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
@@ -412,15 +450,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 			//just refresh the combo so that the new data is loaded
 			basicLocationViewer.refresh(true);
 			currentLocationViewer.refresh(true);
-		}
-		//keep on track on staff changes
-		if("STAFF_ADD".equalsIgnoreCase(evt.getPropertyName())
-				|| "STAFF_UPDATE".equalsIgnoreCase(evt.getPropertyName())
-				|| "STAFF_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			driverViewer.refresh(true);
-			firstParamedicViewer.refresh(true);
-			secondParamedicViewer.refresh(true);
 		}
 		//keep on track on phone changes
 		if("PHONE_ADD".equalsIgnoreCase(evt.getPropertyName())
@@ -459,5 +488,75 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		client.setLayoutData(clientDataLayout);
 
 		return client;
+	}
+	
+
+	/**
+	 * This is called when the input of a text box or a combo box was changes
+	 */
+	private void inputChanged()
+	{
+		//When the vehicle is new we need no checks
+		if(isNew)
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			return;
+		}
+
+		//reset the flag		
+		isDirty = false;
+
+		//get the current input
+		VehicleDetailEditorInput vehicleInput = (VehicleDetailEditorInput)getEditorInput();
+		VehicleDetail persistantVehicle = vehicleInput.getVehicle();
+
+		//check the vehicle name
+		if(!vehicleName.getText().equalsIgnoreCase(persistantVehicle.getVehicleName()))
+		{
+			isDirty = true;
+		}
+		//check the vehicle type
+		if(!vehicleType.getText().equalsIgnoreCase(persistantVehicle.getVehicleType()))
+		{
+			isDirty = true;
+		}
+		//check the basic location
+		if(!basicLocationViewer.getSelection().isEmpty())
+		{
+			IStructuredSelection structuredSelection = (IStructuredSelection)basicLocationViewer.getSelection();
+			Location selectedLocation = (Location)structuredSelection.getFirstElement();
+			if(!selectedLocation.equals(persistantVehicle.getBasicStation()))
+				isDirty = true;
+		}
+		//check the current location
+		if(!currentLocationViewer.getSelection().isEmpty())
+		{
+			IStructuredSelection structuredSelection = (IStructuredSelection)currentLocationViewer.getSelection();
+			Location selectedLocation = (Location)structuredSelection.getFirstElement();
+			if(!selectedLocation.equals(persistantVehicle.getCurrentStation()))
+				isDirty = true;
+		}
+		//check the phone
+		if(!phoneViewer.getSelection().isEmpty())
+		{
+			IStructuredSelection structuredSelection = (IStructuredSelection)phoneViewer.getSelection();
+			MobilePhoneDetail selectedPhone = (MobilePhoneDetail)structuredSelection.getFirstElement();
+			if(!selectedPhone.equals(persistantVehicle.getMobilePhone()))
+				isDirty = true;
+		}
+
+		//notify the user that the input has changes
+		if(isDirty)
+		{
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+		}
+		else
+		{
+			infoLabel.setText("Hier können sie das aktuelle Fahrzeug verwalten und die Änderungen speichern.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		}
 	}
 }

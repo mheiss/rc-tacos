@@ -8,9 +8,12 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -44,13 +47,14 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
+	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name;
 
 	//managed data
 	private Competence competence;
 	private boolean isNew;
-	
+
 	/**
 	 * Default class constructor
 	 */
@@ -58,7 +62,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	{
 		ModelFactory.getInstance().getCompetenceManager().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup
 	 */
@@ -76,6 +80,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	{	
 		competence = ((CompetenceEditorInput)getEditorInput()).getCompetence();
 		isNew = ((CompetenceEditorInput)getEditorInput()).isNew();
+		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -83,7 +88,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		//create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
@@ -92,7 +97,10 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 		if(!isNew)
 			loadData();
 		else
+		{
 			form.setText("Neue Kompetenz anlegen");
+			removeHyperlink.setVisible(false);
+		}
 
 		//force redraw
 		form.pack(true);
@@ -106,7 +114,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 		Composite client = createSection(parent, "Kompetenz verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
-		CLabel infoLabel = new CLabel(client,SWT.NONE);
+		infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie die aktuelle Kompetenz verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
@@ -147,6 +155,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
+		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
 		//save hyperlink should span over two
 		data = new GridData(GridData.FILL_BOTH);
@@ -171,6 +180,12 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 
 		final Label labelCompName = toolkit.createLabel(client, "Kompetenz Bezeichnung");
 		name = toolkit.createText(client, "");
+		name.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -196,7 +211,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 		{
 			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
-//			addHyperlink.setVisible(true);
+			removeHyperlink.setVisible(true);
 		}
 		//load the data
 		id.setText(String.valueOf(competence.getId()));
@@ -261,8 +276,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("COMPETENCE_UPDATE".equals(evt.getPropertyName())
-				|| "COMPETENCE_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		if("COMPETENCE_UPDATE".equals(evt.getPropertyName()) || "COMPETENCE_ADD".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			Competence updateCompetence = null;
 			//get the new value
@@ -274,8 +288,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 				return;
 
 			//is this competence is the current one -> update it
-			if(competence.equals(updateCompetence) 
-					|| competence.getCompetenceName().equals(updateCompetence.getCompetenceName()))
+			if(competence.equals(updateCompetence) || competence.getCompetenceName().equals(updateCompetence.getCompetenceName()))
 			{
 				//save the updated competence
 				setInput(new CompetenceEditorInput(updateCompetence,false));
@@ -284,6 +297,11 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 				isNew = false;
 				//update the editor
 				loadData();
+				//show the result
+				isDirty = false;
+				infoLabel.setText("Änderungen gespeichert");
+				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
+				Display.getCurrent().beep();
 			}
 		}
 		if("COMPETENCE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
@@ -295,7 +313,7 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Kompetenz wurde gelöscht",
-						"Die Kompetenz, welche Sie gerade editieren, wurde gelöscht");
+				"Die Kompetenz, welche Sie gerade editieren, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
@@ -331,5 +349,40 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 		client.setLayoutData(clientDataLayout);
 
 		return client;
+	}
+
+	/**
+	 * This is called when the input of a text box or a combo box was changes
+	 */
+	private void inputChanged()
+	{
+		//When the competence is new we need no checks
+		if(isNew)
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			return;
+		}
+
+		//reset the flag		
+		isDirty = false;
+
+		//get the current input
+		CompetenceEditorInput competenceInput = (CompetenceEditorInput)getEditorInput();
+		Competence competence = competenceInput.getCompetence();
+
+		//check the competence name
+		if(!name.getText().equalsIgnoreCase(competence.getCompetenceName()))
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+		}
+		else
+		{
+			infoLabel.setText("Hier können sie die aktuelle Kompetenz verwalten und die Änderungen speichern.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		}
 	}
 }

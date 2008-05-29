@@ -8,9 +8,12 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -43,14 +46,15 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
-	
+
+	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name;
 
 	//managed data
 	private Job job;
 	private boolean isNew;
-	
+
 	/**
 	 * Default class constructor
 	 */
@@ -58,7 +62,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 	{
 		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup
 	 */
@@ -76,6 +80,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 	{	
 		job = ((JobEditorInput)getEditorInput()).getJob();
 		isNew = ((JobEditorInput)getEditorInput()).isNew();
+		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -83,7 +88,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		//create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
@@ -92,12 +97,15 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 		if(!isNew)
 			loadData();
 		else
+		{
 			form.setText("Neue Verwendung anlegen");
+			removeHyperlink.setVisible(false);
+		}
 
 		//force redraw
 		form.pack(true);
 	}
-	
+
 	/**
 	 * Creates the section to manage the changes
 	 */
@@ -106,7 +114,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 		Composite client = createSection(parent, "Verwendung verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
-		CLabel infoLabel = new CLabel(client,SWT.NONE);
+		infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie die aktuelle Verwendung verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
@@ -123,7 +131,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 				saveAction.run();
 			}
 		});
-		
+
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Verwendung löschen");
@@ -147,13 +155,14 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
+		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
 		//save hyperlink should span over two
 		data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		saveHyperlink.setLayoutData(data);
 	}
-	
+
 	/**
 	 * Creates the section containing the job details
 	 * @param parent the parent composite
@@ -161,17 +170,24 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 	private void createDetailSection(Composite parent)
 	{
 		Composite client = createSection(parent, "Verwendungs Details");
-		
+
 		//label and the text field
 		final Label labelId = toolkit.createLabel(client, "Verwendungs ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
 		id.setBackground(CustomColors.GREY_COLOR);
 		id.setToolTipText("Die ID wird automatisch generiert");
-		
+
 		final Label labelCompName = toolkit.createLabel(client, "Verwendungs Bezeichnung");
 		name = toolkit.createText(client, "");
-		
+		name.addModifyListener(new ModifyListener() 
+		{ 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
@@ -194,7 +210,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 		form.setText("Details der Verwendung "+job.getJobName());
 		if(!isNew)
 		{
-			//adjust the links
+			removeHyperlink.setVisible(true);
 			saveHyperlink.setText("Änderungen speichern");
 		}
 		id.setText(String.valueOf(job.getId()));
@@ -206,7 +222,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 	{
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
-		
+
 		//name must be provided
 		if(name.getText().length() >30 || name.getText().trim().isEmpty())
 		{
@@ -215,7 +231,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		job.setJobName(name.getText());
-		
+
 		//add or update the job
 		if(isNew)
 			NetWrapper.getDefault().sendAddMessage(Job.ID, job);
@@ -259,8 +275,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("JOB_UPDATE".equals(evt.getPropertyName())
-				|| "JOB_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		if("JOB_UPDATE".equals(evt.getPropertyName()) || "JOB_ADD".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			Job updateJob = null;
 			//get the new value
@@ -272,8 +287,7 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 				return;
 
 			//is this job the current -> update it
-			if(job.equals(updateJob)
-					|| job.getJobName().equals(updateJob.getJobName()))
+			if(job.equals(updateJob) || job.getJobName().equals(updateJob.getJobName()))
 			{
 				//save the updated job
 				setInput(new JobEditorInput(updateJob,false));
@@ -282,6 +296,11 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 				isNew = false;
 				//update the editor
 				loadData();
+				//show the result
+				isDirty = false;
+				infoLabel.setText("Änderungen gespeichert");
+				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
+				Display.getCurrent().beep();
 			}
 		}
 		if("JOB_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
@@ -293,13 +312,13 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Verwendung wurde gelöscht",
-						"Die Verwendung, welches Sie gerade editieren, wurde gelöscht");
+				"Die Verwendung, welches Sie gerade editieren, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
 		}
 	}
-	
+
 	//Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
@@ -329,5 +348,40 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 		client.setLayoutData(clientDataLayout);
 
 		return client;
+	}
+
+	/**
+	 * This is called when the input of a text box or a combo box was changes
+	 */
+	private void inputChanged()
+	{
+		//When the job is new we need no checks
+		if(isNew)
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			return;
+		}
+
+		//reset the flag		
+		isDirty = false;
+
+		//get the current input
+		JobEditorInput jobInput = (JobEditorInput)getEditorInput();
+		Job persistantJob = jobInput.getJob();
+
+		//check the first name
+		if(!name.getText().equalsIgnoreCase(persistantJob.getJobName()))
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+		}
+		else
+		{
+			infoLabel.setText("Hier können sie die aktuelle Verwendung verwalten und die Änderungen speichern.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		}
 	}
 }

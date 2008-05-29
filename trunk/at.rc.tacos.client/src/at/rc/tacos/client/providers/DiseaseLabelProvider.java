@@ -24,7 +24,6 @@ public class DiseaseLabelProvider extends LabelProvider
     public String getText(Object object)
     {
     	Disease disease = (Disease)object;
-    	System.out.println("Erkrankung: "+disease);
     	return disease.getDiseaseName();
     }
 }

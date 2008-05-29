@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
+
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.LoginManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -90,15 +94,51 @@ public class SessionListener extends ClientListenerAdapter
 	}
 
 	@Override
-	public void transferFailed(AbstractMessageInfo info) 
+	public void transferFailed(final AbstractMessageInfo info) 
 	{
-		session.fireTransferFailed(info);
+		//the message to display
+		final StringBuffer msg = new StringBuffer();
+		msg.append("Die folgende Nachricht konnte nicht an den Server übertragen werden. (Zeitüberschreitung).\n");
+		msg.append(info.getContentType()+" -> "+info.getQueryString());
+
+		//show a message
+		Display.getDefault().syncExec(new Runnable ()    
+		{
+			public void run ()       
+			{
+				//show the message to the user
+				MessageDialog.openError(
+						PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
+						"Netzwerkfehler",
+						msg.toString());
+				//retry
+				boolean retryConfirmed = MessageDialog.openConfirm(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+						"Senden wiederholen",
+				"Wollen sie die Nachricht noch einmal senden?");
+				if (!retryConfirmed) 
+					return;
+				NetWrapper.getDefault().sheduleAndSend(info);
+			}
+		});
 	} 
 
 	@Override
-	public void systemMessage(AbstractMessage message)
+	public void systemMessage(final AbstractMessage message)
 	{
-		SystemMessage sysMessage = (SystemMessage)message;
+		final SystemMessage sysMessage = (SystemMessage)message;
+
+		//show a message
+		Display.getDefault().syncExec(new Runnable ()    
+		{
+			public void run ()       
+			{
+				MessageDialog.openError(
+					PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
+					"Schwerwiegender Fehler",
+					sysMessage.getMessage());
+			}
+		});
+
 		//the log message
 		Status status;
 

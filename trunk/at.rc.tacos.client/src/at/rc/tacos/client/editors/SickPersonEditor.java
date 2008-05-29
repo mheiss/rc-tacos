@@ -7,17 +7,23 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -52,7 +58,8 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
-	
+
+	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text lastname, firstname,street,city, svnr;
 	private TextViewer notesViewer;
@@ -61,7 +68,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	//managed data
 	private SickPerson person;
 	private boolean isNew;
-	
+
 	/**
 	 * Default class constructor
 	 */
@@ -69,7 +76,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	{
 		ModelFactory.getInstance().getSickPersonManager().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup
 	 */
@@ -87,14 +94,16 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	{	
 		person = ((SickPersonEditorInput)getEditorInput()).getSickPerson();
 		isNew = ((SickPersonEditorInput)getEditorInput()).isNew();
+		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
-		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+		GridData data = new GridData(GridData.FILL_BOTH);
+		form.getBody().setLayoutData(data);
+
 		//create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
@@ -103,12 +112,15 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 		if(!isNew)
 			loadData();
 		else
+		{
 			form.setText("Neuen Patienten anlegen");
+			removeHyperlink.setVisible(false);
+		}
 
 		//force redraw
 		form.pack(true);
 	}
-	
+
 	/**
 	 * Creates the section to manage the changes
 	 */
@@ -117,7 +129,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 		Composite client = createSection(parent, "Patient verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
-		CLabel infoLabel = new CLabel(client,SWT.NONE);
+		infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie den aktuellen Patienten verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
@@ -158,13 +170,14 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
+		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
 		//save hyperlink should span over two
 		data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		saveHyperlink.setLayoutData(data);
 	}
-	
+
 	/**
 	 * Creates the section containing the job details
 	 * @param parent the parent composite
@@ -172,13 +185,25 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	private void createDetailSection(Composite parent)
 	{
 		Composite client = createSection(parent, "Patienten-Details");
-		
+
 		//label and the text field
 		final Label labelLastname = toolkit.createLabel(client, "Nachname");
 		lastname = toolkit.createText(client, "");
+		lastname.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 		final Label labelFirstname = toolkit.createLabel(client, "Vorname");
 		firstname = toolkit.createText(client, "");
-		
+		firstname.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
 		//the sex combo
 		final Label labelSex = toolkit.createLabel(client, "Geschlecht");
 		Combo sexCombo = new Combo(client,SWT.READ_ONLY);
@@ -198,12 +223,23 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
 		});
 		sexComboViewer.setInput(new String[] { StaffMember.STAFF_MALE, StaffMember.STAFF_FEMALE });
-		
-		
+		sexCombo.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
 		final Label labelSVNR = toolkit.createLabel(client, "Sozialversicherungsnummer");
 		svnr = toolkit.createText(client, "");
-		
-		
+		svnr.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
+
 		//the kind of transport combo
 		final Label labelKindOfTransport = toolkit.createLabel(client, "Transportart");
 		Combo kindOfTransportCombo = new Combo(client,SWT.READ_ONLY);
@@ -223,46 +259,68 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
 		});
 		kindOfTransportComboViewer.setInput(new String[] { IKindOfTransport.TRANSPORT_KIND_GEHEND, IKindOfTransport.TRANSPORT_KIND_TRAGSESSEL, IKindOfTransport.TRANSPORT_KIND_KRANKENTRAGE, IKindOfTransport.TRANSPORT_KIND_ROLLSTUHL});
+		kindOfTransportCombo.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
-		
 		final Label labelStreet = toolkit.createLabel(client, "Straße");
 		street = toolkit.createText(client, "");
+		street.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 		final Label labelCity = toolkit.createLabel(client, "Stadt");
 		city = toolkit.createText(client, "");
-		
-		
+		city.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
 		//the notes section
 		final Label labelNotes = toolkit.createLabel(client,"Notizen zum Patienten");
 		notesViewer = new TextViewer(client, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 		notesViewer.setDocument(new Document());
 		notesViewer.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		notesViewer.setEditable(true);
-		
+		notesViewer.addTextListener(new ITextListener() {
+			@Override
+			public void textChanged(TextEvent te) {
+				inputChanged();
+			}
+		});
+
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
 		labelLastname.setLayoutData(data);
-		
+
 		data = new GridData();
 		data.widthHint = 150;
 		labelFirstname.setLayoutData(data);
-		
+
 		data = new GridData();
 		data.widthHint = 150;
 		labelSex.setLayoutData(data);
-		
+
 		data = new GridData();
 		data.widthHint = 150;
 		labelSVNR.setLayoutData(data);
-		
+
 		data = new GridData();
 		data.widthHint = 150;
 		labelStreet.setLayoutData(data);
-		
+
 		data = new GridData();
 		data.widthHint = 150;
 		labelCity.setLayoutData(data);
-		
+
 		data = new GridData();
 		data.widthHint = 150;
 		labelKindOfTransport.setLayoutData(data);
@@ -298,10 +356,10 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 		form.setText("Details des Patienten "+person.getLastName());
 		if(!isNew)
 		{
-			//adjust the links
-			saveHyperlink.setEnabled(true);
 			saveHyperlink.setText("Änderungen speichern");
+			removeHyperlink.setVisible(true);
 		}
+
 		lastname.setText(person.getLastName());
 		if(person.getFirstName() != null)
 			firstname.setText(person.getFirstName());
@@ -326,7 +384,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	{
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
-		
+
 		//save the name
 		if(lastname.getText().length() > 30 || lastname.getText().trim().isEmpty())
 		{
@@ -335,7 +393,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			return;
 		}
 		person.setLastName(lastname.getText());
-		
+
 		if(firstname.getText().length() > 30 || firstname.getText().trim().isEmpty())
 		{
 			form.getDisplay().beep();
@@ -343,7 +401,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			return;
 		}
 		person.setFirstName(firstname.getText());
-		
+
 		//save the street
 		if(street.getText().length() > 30 || street.getText().trim().isEmpty())
 		{
@@ -352,7 +410,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			return;
 		}
 		person.setStreetname(street.getText());
-		
+
 		//save the city
 		if(city.getText().trim().isEmpty())
 		{
@@ -361,8 +419,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			return;
 		}
 		person.setCityname(city.getText());
-		
-		
+
 		//sex
 		int index = sexComboViewer.getCombo().getSelectionIndex();
 		if(index != -1)
@@ -373,17 +430,17 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			else
 				person.setMale(false);
 		}
-		
+
 		//save the svnr
 		person.setSVNR(svnr.getText());
-		
+
 		//the notes can be empty
 		person.setNotes(notesViewer.getTextWidget().getText());
-		
+
 		index = kindOfTransportComboViewer.getCombo().getSelectionIndex();
 		if(index != -1)
 			person.setKindOfTransport((String)kindOfTransportComboViewer.getElementAt(index));
-		
+
 		//add or update the person
 		if(isNew)
 			NetWrapper.getDefault().sendAddMessage(SickPerson.ID, person);
@@ -427,8 +484,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("SICKPERSON_UPDATE".equals(evt.getPropertyName())
-				|| "SICKPERSON_ADD".equalsIgnoreCase(evt.getPropertyName()))
+		if("SICKPERSON_UPDATE".equals(evt.getPropertyName()) || "SICKPERSON_ADD".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			SickPerson updatePerson = null;
 			//get the new value
@@ -440,7 +496,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 				return;
 
 			//if this sick person is the current -> update it
-			if(person.equals(updatePerson) || updatePerson.getLastName().equalsIgnoreCase(updatePerson.getLastName()))
+			if(person.equals(updatePerson) || updatePerson.getLastName().equalsIgnoreCase(person.getLastName()))
 			{
 				//save the updated sick person
 				setInput(new SickPersonEditorInput(updatePerson,false));
@@ -449,6 +505,11 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 				isNew = false;
 				//update the editor
 				loadData();
+				//show the result
+				isDirty = false;
+				infoLabel.setText("Änderungen gespeichert");
+				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
+				Display.getCurrent().beep();
 			}
 		}
 		if("SICKPERSON_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
@@ -460,13 +521,13 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Patient wurde gelöscht",
-						"Der Patient, welchen sie gerade bearbeiten, wurde gelöscht");
+				"Der Patient, welchen sie gerade bearbeiten, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
 		}
 	}
-	
+
 	//Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
@@ -496,5 +557,88 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 		client.setLayoutData(clientDataLayout);
 
 		return client;
+	}
+
+	/**
+	 * This is called when the input of a text box or a combo box was changes
+	 */
+	private void inputChanged()
+	{
+		//When the person is new we need no checks
+		if(isNew)
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			return;
+		}
+
+		//reset the flag		
+		isDirty = false;
+
+		//get the current input
+		SickPersonEditorInput sickPersonInput = (SickPersonEditorInput)getEditorInput();
+		SickPerson persistantPerson = sickPersonInput.getSickPerson();
+
+		//check the first name
+		if(!lastname.getText().equalsIgnoreCase(persistantPerson.getLastName()))
+		{
+			isDirty = true;
+		}
+		//check the lastname
+		if(!firstname.getText().equalsIgnoreCase(persistantPerson.getFirstName()))
+		{
+			isDirty = true;
+		}
+		//check the sex
+		if(!sexComboViewer.getSelection().isEmpty())
+		{
+			IStructuredSelection structuredSelection = (IStructuredSelection)sexComboViewer.getSelection();
+			String selectedSex = (String)structuredSelection.getFirstElement();
+			if(selectedSex.equalsIgnoreCase(StaffMember.STAFF_MALE) &! persistantPerson.isMale())
+				isDirty = true;
+		}
+		//check the svnr
+		if(!svnr.getText().equalsIgnoreCase(persistantPerson.getSVNR()))
+		{
+			isDirty = true;
+		}
+		//check the kind of transport
+		if(!kindOfTransportComboViewer.getSelection().isEmpty())
+		{
+			IStructuredSelection structuredSelection = (IStructuredSelection)kindOfTransportComboViewer.getSelection();
+			String selectedTransport = (String)structuredSelection.getFirstElement();
+			if(!selectedTransport.equalsIgnoreCase(persistantPerson.getKindOfTransport()))
+			{
+				isDirty = true;
+			}			
+		}
+		//check the street
+		if(!street.getText().equalsIgnoreCase(persistantPerson.getStreetname()))
+		{
+			isDirty = true;
+		}
+		//check the city
+		if(!city.getText().equalsIgnoreCase(persistantPerson.getCityname()))
+		{
+			isDirty = true;
+		}
+		//check the notes
+		if(!notesViewer.getTextWidget().getText().equalsIgnoreCase(persistantPerson.getNotes()))
+		{
+			isDirty = true;
+		}
+
+		//notify the user that the input has changes
+		if(isDirty)
+		{
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+		}
+		else
+		{
+			infoLabel.setText("Hier können sie den aktuellen Patienten verwalten und die Änderungen speichern.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		}
 	}
 }

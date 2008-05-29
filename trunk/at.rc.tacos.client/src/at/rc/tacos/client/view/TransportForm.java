@@ -230,9 +230,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		super(parentShell);
 		createNew = true;
 		transport = new Transport();
-		//the authorization status of the authenticated person (admin or user)
-		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
-
 	}
 
 	/**
@@ -246,8 +243,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		createNew = true;
 		this.transportType = transportType;
 		this.transport = new Transport();
-		//the authorization status of the authenticated person (admin or user)
-		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
 
 	}
 
@@ -265,8 +260,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		this.transport = transport;
 		this.editingType = editingType;
 		transportType = "both";	
-		//the authorization status of the authenticated person (admin or user)
-		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
 
 	}
 
@@ -292,6 +285,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+		
+		//the authorization status of the authenticated person (admin or user)
+		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
 
 		return contents;
 	}
@@ -300,8 +296,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	@Override
 	public boolean close()
 	{
-		//remove the lock from the object
-		LockManager.removeLock(Transport.ID, transport.getTransportId());
+		//remove the lock again, only if the transport is existing
+		if(!createNew)
+		{
+			LockManager.removeLock(Transport.ID, transport.getTransportId());
+		}
 		return super.close();
 	}
 

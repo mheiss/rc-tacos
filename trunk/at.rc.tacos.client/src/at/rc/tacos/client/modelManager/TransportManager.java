@@ -34,8 +34,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
     /**
      * Initializes the vehicle manager and adds the needed listeners
      */
-    protected void init()
-    { }
+    protected void init() { }
 
 	/**
 	 * Adds a new transport to the list

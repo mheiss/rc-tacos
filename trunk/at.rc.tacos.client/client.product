@@ -4,9 +4,12 @@
 <product name="TACOS-Client" id="at.rc.tacos.client.product" application="at.rc.tacos.client.application" useFeatures="false">
 
    <aboutInfo>
+      <image path="/at.rc.tacos.client/icons/application/alt_window_64.gif"/>
       <text>
          Austrian Red Cross.
-Time and Configuration Management
+Time and Coordination System - Client Software.
+Developed by Birgit Thek and Heiß Michael.
+(c) 2007-2008
       </text>
    </aboutInfo>
 
@@ -35,6 +38,7 @@ Time and Configuration Management
       </win>
    </launcher>
 
+
    <vm>
    </vm>
 
@@ -44,7 +48,6 @@ Time and Configuration Management
       <plugin id="at.rc.tacos.model"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.ibm.icu36.data.update" fragment="true"/>
-      <plugin id="com.swtdesigner.gwt.saf.browser"/>
       <plugin id="javax.servlet"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>

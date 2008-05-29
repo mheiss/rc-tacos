@@ -14,11 +14,14 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -62,6 +65,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private ScrolledForm form;
 
 	//the values that can be changed
+	private CLabel infoLabel;
 	private Text staffId,fName,lName,dateOfBirth;
 	private Text uName,pwd,pwdRetype;
 	private TableViewer phoneViewer,competenceViewer;
@@ -83,9 +87,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	 */
 	public StaffMemberEditor()
 	{
+		//keep on track when new locations or competences are added,updated or removed
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLoginManager().addPropertyChangeListener(this);
-		//keep on track when new locations or competences are added,updated or removed
 		ModelFactory.getInstance().getCompetenceManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
 	}
@@ -120,6 +124,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		staffMember = ((StaffMemberEditorInput)getEditorInput()).getStaffMember();
 		loginInfo = ((StaffMemberEditorInput)getEditorInput()).getLoginInformation();
 		isNew = ((StaffMemberEditorInput)getEditorInput()).isNew();
+		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -143,11 +148,13 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		if(!isNew)
 			loadData();
 		else
+		{
 			form.setText("Neuen Mitarbeiter anlegen");
+		}
 
 		//force redraw
 		form.pack(true);
-		
+
 		//access authority only for admins and the own (logged in) staffMember
 		Login user = SessionManager.getInstance().getLoginInformation();
 		StaffMember loggedInMember = user.getUserInformation();			
@@ -200,9 +207,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//update the phone and competence view
 		phoneViewer.refresh(true);
 		competenceViewer.refresh(true);
-		
-		
-		
 	}
 
 	/**
@@ -268,8 +272,8 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			else
 				staffMember.setMale(false);
 		}
-		
-		
+
+
 
 		//the location
 		index = primaryLocationComboViewer.getCombo().getSelectionIndex();
@@ -368,7 +372,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		Composite client = createSection(parent, "Mitarbeiter verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
-		CLabel infoLabel = new CLabel(client,SWT.NONE);
+		infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie den aktuellen Mitarbeiter verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
@@ -389,6 +393,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
+		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
 		//save hyperlink should span over two
 		data = new GridData(GridData.FILL_BOTH);
@@ -408,15 +413,39 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//create the label and the input field
 		final Label labelStaffId = toolkit.createLabel(client,"Personalnummer");
 		staffId = toolkit.createText(client, "");
+		staffId.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelFName = toolkit.createLabel(client, "Vorname");
 		fName = toolkit.createText(client, "");
+		fName.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelLName = toolkit.createLabel(client, "Nachname");
 		lName = toolkit.createText(client, "");
+		lName.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelDateOfBirth = toolkit.createLabel(client, "Geburtsdatum");
 		dateOfBirth = toolkit.createText(client, "");
+		dateOfBirth.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelSex = toolkit.createLabel(client, "Geschlecht");
 		Combo sexCombo = new Combo(client,SWT.READ_ONLY);
@@ -436,6 +465,12 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
 		});
 		sexComboViewer.setInput(new String[] { StaffMember.STAFF_MALE, StaffMember.STAFF_FEMALE });
+		sexCombo.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		//phone list 
 		final Label labelPhone = toolkit.createLabel(client, "Telefonnummern",SWT.LEFT | SWT.TOP);
@@ -460,7 +495,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				form.setMessage(null, IMessageProvider.NONE);
 				//get the selected phone
 				ISelection selection = phoneComboViewer.getSelection();
-				
+
 				//get the selected phone
 				StructuredSelection structuredSelection = (StructuredSelection)selection;
 				MobilePhoneDetail phone = (MobilePhoneDetail)structuredSelection.getFirstElement();
@@ -517,7 +552,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			public void dispose() { }
 
 			@Override
-			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) 
+			{ 
+				isDirty = true;
+			}
 		});
 		phoneViewer.setInput(staffMember.getPhonelist().toArray());	
 
@@ -576,6 +614,12 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		primaryLocationComboViewer.setContentProvider(new StationContentProvider());
 		primaryLocationComboViewer.setLabelProvider(new StationLabelProvider());
 		primaryLocationComboViewer.setInput(ModelFactory.getInstance().getLocationManager());
+		stationCombo.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		//phone list 
 		final Label labelCompetence = toolkit.createLabel(client, "Verfügbare Kompetenzen: ");
@@ -655,7 +699,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			public void dispose() { }
 
 			@Override
-			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) 
+			{ 
+				isDirty = true;
+			}
 		});
 		competenceViewer.setInput(staffMember.getCompetenceList().toArray());
 
@@ -698,14 +745,32 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		final Label labelUsername = toolkit.createLabel(client, "Username: ");
 		uName = toolkit.createText(client, "");
 		uName.setToolTipText("Der Benutzername mit dem sich der Mitarbeiter am OnlineDienstplan und am Client anmelden kann");
+		uName.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelPwd = toolkit.createLabel(client, "Passwort: ");
 		pwd = toolkit.createText(client, "");
 		pwd.setEchoChar('*');
+		pwd.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				isDirty = true;
+			}
+		});
 
 		final Label labelPwdRetype= toolkit.createLabel(client, "Passwort (wiederholen): ");
 		pwdRetype = toolkit.createText(client, "");
 		pwdRetype.setEchoChar('*');
+		pwdRetype.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				isDirty = true;
+			}
+		});
 
 		locked = toolkit.createButton(client, "Benutzer sperren: ", SWT.CHECK);
 		locked.setToolTipText("Wenn der Benutzer gesperrt ist, kann er sich nit mehr am Client und am OnlineDienstplan anmelden");
@@ -728,6 +793,12 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { } 		
 		});
 		authorisationComboViewer.setInput(Login.AUTHORIZATION);
+		authCombo.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -796,6 +867,11 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				isNew = false;
 				//update the editor
 				loadData();
+				//show the result
+				isDirty = false;
+				infoLabel.setText("Änderungen gespeichert");
+				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
+				Display.getCurrent().beep();
 			}
 		}
 		//refresh the comboview when locations are added,updated or removed
@@ -860,5 +936,90 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		nameValueComp.setLayout(layout);
 		nameValueComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return nameValueComp;
+	}
+
+	/**
+	 * This is called when the input of a text box or a combo box was changes
+	 */
+	private void inputChanged()
+	{
+		//When the person is new we need no checks
+		if(isNew)
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			return;
+		}
+
+		//reset the flag		
+		isDirty = false;
+
+		//get the current input
+		StaffMemberEditorInput staffInput = (StaffMemberEditorInput)getEditorInput();
+		StaffMember persistantMember = staffInput.getStaffMember();
+		Login persistantLogin = staffInput.getLoginInformation();
+
+		//check the id
+		if(!staffId.getText().equalsIgnoreCase(String.valueOf(persistantMember.getStaffMemberId())))
+		{
+			isDirty = true;
+		}
+		//check the lastname
+		if(!lName.getText().equalsIgnoreCase(persistantMember.getLastName()))
+		{
+			isDirty = true;
+		}
+		//check the firstname
+		if(!fName.getText().equalsIgnoreCase(persistantMember.getFirstName()))
+		{
+			isDirty = true;
+		}
+		//check the date of birth
+		if(!dateOfBirth.getText().equalsIgnoreCase(persistantMember.getBirthday()))
+		{
+			isDirty = true;
+		}
+		//check the username
+		if(!uName.getText().equalsIgnoreCase(persistantLogin.getUsername()))
+		{
+			isDirty = true;
+		}
+		//check the sex
+		if(!sexComboViewer.getSelection().isEmpty())
+		{
+			IStructuredSelection structuredSelection = (IStructuredSelection)sexComboViewer.getSelection();
+			String selectedSex = (String)structuredSelection.getFirstElement();
+			if(selectedSex.equalsIgnoreCase(StaffMember.STAFF_MALE) &! persistantMember.isMale())
+				isDirty = true;
+		}
+		//check the primary location
+		if(!primaryLocationComboViewer.getSelection().isEmpty())
+		{
+			IStructuredSelection structuredSelection = (IStructuredSelection)primaryLocationComboViewer.getSelection();
+			Location selectedLocation = (Location)structuredSelection.getFirstElement();
+			if(!selectedLocation.equals(persistantMember.getPrimaryLocation()))
+				isDirty = true;
+		}
+		//check the authorization
+		if(!authorisationComboViewer.getSelection().isEmpty())
+		{
+			IStructuredSelection structuredSelection = (IStructuredSelection)authorisationComboViewer.getSelection();
+			String selectedAuthorization = (String)structuredSelection.getFirstElement();
+			if(!selectedAuthorization.equalsIgnoreCase(persistantLogin.getAuthorization()))
+				isDirty = true;
+		}
+
+		//notify the user that the input has changes
+		if(isDirty)
+		{
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+		}
+		else
+		{
+			infoLabel.setText("Hier können sie den aktuellen Mitarbeiter verwalten und die Änderungen speichern.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		}
 	}
 }

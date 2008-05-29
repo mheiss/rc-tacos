@@ -8,9 +8,12 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -38,19 +41,20 @@ import at.rc.tacos.model.Disease;
 public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 {
 	public static final String ID = "at.rc.tacos.client.editors.diseaseEditor";
-	
+
 	//properties
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
-	
+
+	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name;
-	
+
 	//managed data
 	private Disease disease;
 	private boolean isNew;
-	
+
 	/**
 	 * Default class constructor for a new disease editor
 	 */
@@ -58,7 +62,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 	{
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup
 	 */
@@ -75,6 +79,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 	{	
 		disease = ((DiseaseEditorInput)getEditorInput()).getDisease();
 		isNew = ((DiseaseEditorInput)getEditorInput()).isNew();
+		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -82,7 +87,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		//create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
@@ -91,12 +96,15 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		if(!isNew)
 			loadData();
 		else
+		{
 			form.setText("Neue Erkrankung anlegen");
+			removeHyperlink.setVisible(false);
+		}
 
 		//force redraw
 		form.pack(true);
 	}
-	
+
 	/**
 	 * Creates the section to manage the changes
 	 */
@@ -105,7 +113,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		Composite client = createSection(parent, "Erkrankung verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
-		CLabel infoLabel = new CLabel(client,SWT.NONE);
+		infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie die aktuelle Erkrankung verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
@@ -122,7 +130,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 				saveAction.run();
 			}
 		});
-			
+
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Erkrankung löschen");
@@ -146,13 +154,14 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
+		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
 		//save hyperlink should span over two
 		data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		saveHyperlink.setLayoutData(data);
 	}
-	
+
 	/**
 	 * Creates the section containing the disease details
 	 * @param parent the parent composite
@@ -160,17 +169,24 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 	private void createDetailSection(Composite parent)
 	{
 		Composite client = createSection(parent, "Erkrankungs Details");
-		
+
 		//label and the text field
 		final Label labelId = toolkit.createLabel(client, "Erkrankungs ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
 		id.setBackground(CustomColors.GREY_COLOR);
 		id.setToolTipText("Die ID wird automatisch generiert");
-		
+
 		final Label labelCompName = toolkit.createLabel(client, "Erkrankungs Bezeichnung");
 		name = toolkit.createText(client, "");
-		
+		name.addModifyListener(new ModifyListener() 
+		{ 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
@@ -193,7 +209,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		form.setText("Details der Erkrankung "+disease.getDiseaseName());
 		if(!isNew)
 		{
-			//adjust the links
+			removeHyperlink.setVisible(true);
 			saveHyperlink.setText("Änderungen speichern");
 		}
 		id.setText(String.valueOf(disease.getId()));
@@ -205,7 +221,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 	{
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
-		
+
 		//name must be provided
 		if(name.getText().length() > 30 || name.getText().trim().isEmpty())
 		{
@@ -214,7 +230,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		disease.setDiseaseName(name.getText());
-		
+
 		//add or update the disease
 		if(isNew)
 			NetWrapper.getDefault().sendAddMessage(Disease.ID, disease);
@@ -271,8 +287,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 				return;
 
 			//is this job the current -> update it
-			if(disease.equals(updateDisease)
-					|| disease.getDiseaseName().equals(updateDisease.getDiseaseName()))
+			if(disease.equals(updateDisease) || disease.getDiseaseName().equals(updateDisease.getDiseaseName()))
 			{
 				//save the updated disease
 				setInput(new DiseaseEditorInput(updateDisease,false));
@@ -281,6 +296,11 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 				isNew = false;
 				//update the editor
 				loadData();
+				//show the result
+				isDirty = false;
+				infoLabel.setText("Änderungen gespeichert");
+				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
+				Display.getCurrent().beep();
 			}
 		}
 		if("DISEASE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
@@ -292,13 +312,13 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Erkrankung wurde gelöscht",
-						"Die Erkrankung, welches Sie gerade editieren, wurde gelöscht");
+				"Die Erkrankung, welches Sie gerade editieren, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
 		}
 	}
-	
+
 	//Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
@@ -328,5 +348,40 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		client.setLayoutData(clientDataLayout);
 
 		return client;
+	}
+	
+	/**
+	 * This is called when the input of a text box or a combo box was changes
+	 */
+	private void inputChanged()
+	{
+		//When the disease is new we need no checks
+		if(isNew)
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			return;
+		}
+
+		//reset the flag		
+		isDirty = false;
+
+		//get the current input
+		DiseaseEditorInput diseaseInput = (DiseaseEditorInput)getEditorInput();
+		Disease persistantDisease = diseaseInput.getDisease();
+
+		//check the disease name
+		if(!name.getText().equalsIgnoreCase(persistantDisease.getDiseaseName()))
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+		}
+		else
+		{
+			infoLabel.setText("Hier können sie die aktuelle Erkrankung verwalten und die Änderungen speichern.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		}
 	}
 }

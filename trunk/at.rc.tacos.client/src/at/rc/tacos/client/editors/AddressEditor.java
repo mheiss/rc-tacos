@@ -8,9 +8,12 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -45,6 +48,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
+	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink,importHyperlink;
 	private Text zip,city,street;
 
@@ -77,6 +81,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	{	
 		address = ((AddressEditorInput)getEditorInput()).getAddress();
 		isNew = ((AddressEditorInput)getEditorInput()).isNew();
+		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -93,7 +98,10 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		if(!isNew)
 			loadData();
 		else
+		{
 			form.setText("Neue Addresse anlegen");
+			removeHyperlink.setVisible(false);
+		}
 
 		//force redraw
 		form.pack(true);
@@ -107,7 +115,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		Composite client = createSection(parent, "Adresse verwalten");
 
 		//create info label and hyperlinks to save and revert the changes
-		CLabel infoLabel = new CLabel(client,SWT.NONE);
+		infoLabel = new CLabel(client,SWT.NONE);
 		infoLabel.setText("Hier können sie die aktuelle Adresse verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
@@ -124,7 +132,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 				saveAction.run();
 			}
 		});
-		
+
 		//Create the hyperlink to import the data
 		importHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		importHyperlink.setText("Straßendaten importieren");
@@ -162,6 +170,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
+		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
 	}
 
@@ -176,12 +185,31 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		//label and the text field
 		final Label labelStreet = toolkit.createLabel(client, "Straße");
 		street = toolkit.createText(client, "");
+		street.addModifyListener(new ModifyListener() 
+		{ 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelCity = toolkit.createLabel(client, "Stadt");
 		city = toolkit.createText(client, "");
-		
+		city.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+
 		final Label labelZip = toolkit.createLabel(client, "Gemeindekennzeichend");
 		zip = toolkit.createText(client, "");
+		zip.addModifyListener(new ModifyListener() { 
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -192,7 +220,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		labelCity.setLayoutData(data);
 		data.widthHint = 150;
 		labelZip.setLayoutData(data);
-		
+
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		street.setLayoutData(data2);
@@ -210,12 +238,12 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		form.setText("Details der Adresse "+address.getZip()+","+address.getCity()+","+address.getStreet());
 		if(!isNew)
 		{
-			//adjust the links
 			saveHyperlink.setText("Änderungen speichern");
+			removeHyperlink.setVisible(true);
 		}
 		street.setText(address.getStreet());
 		city.setText(address.getCity());
-		zip.setText(String.valueOf(address.getCity()));
+		zip.setText(String.valueOf(address.getZip()));
 	}
 
 	@Override
@@ -223,7 +251,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	{
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
-		
+
 		//name must be provided
 		if(street.getText().trim().isEmpty())
 		{
@@ -232,7 +260,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		address.setStreet(street.getText());
-		
+
 		//city must be provided
 		if(city.getText().trim().isEmpty())
 		{
@@ -241,7 +269,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		address.setCity(city.getText());
-		
+
 		//zip must be provided and a number
 		if(zip.getText().trim().isEmpty())
 		{
@@ -258,7 +286,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		address.setZip(Integer.valueOf(zip.getText()));
-		
+
 		//add or update the staff member and the login
 		if(isNew)
 		{
@@ -306,8 +334,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) 
 	{
-		if("ADDRESS_ADD".equals(evt.getPropertyName())
-				|| "ADDRESS_UPDATE".equals(evt.getPropertyName()))
+		if("ADDRESS_ADD".equals(evt.getPropertyName()) || "ADDRESS_UPDATE".equals(evt.getPropertyName()))
 		{
 			Address updateAddress = null;
 			//get the new value
@@ -328,6 +355,11 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 				isNew = false;
 				//update the editor
 				loadData();
+				//show the result
+				isDirty = false;
+				infoLabel.setText("Änderungen gespeichert");
+				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
+				Display.getCurrent().beep();
 			}
 
 		}
@@ -347,7 +379,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 			}
 		}
 	}
-	
+
 	//Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
@@ -377,5 +409,55 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		client.setLayoutData(clientDataLayout);
 
 		return client;
+	}
+
+	/**
+	 * This is called when the input of a text box or a combo box was changes
+	 */
+	private void inputChanged()
+	{
+		//When the address is new we need no checks
+		if(isNew)
+		{
+			isDirty = true;
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			return;
+		}
+
+		//reset the flag
+		isDirty = false;
+
+		//get the current input
+		AddressEditorInput addressInput = (AddressEditorInput)getEditorInput();
+		Address persistantAddress = addressInput.getAddress();
+
+		//check the street
+		if(!street.getText().equalsIgnoreCase(persistantAddress.getStreet()))
+		{
+			isDirty = true;
+		}
+		//check the city
+		if(!city.getText().equalsIgnoreCase(persistantAddress.getCity()))
+		{
+			isDirty = true;
+		}
+		//check the zip
+		if(!zip.getText().equalsIgnoreCase(String.valueOf(persistantAddress.getZip())))
+		{
+			isDirty = true;
+		}
+
+		//notify the user that the input has changes
+		if(isDirty)
+		{
+			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+		}
+		else
+		{
+			infoLabel.setText("Hier können sie die aktuelle Adresse verwalten und die Änderungen speichern.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		}
 	}
 }
