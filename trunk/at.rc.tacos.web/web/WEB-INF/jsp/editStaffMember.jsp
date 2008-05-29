@@ -9,7 +9,6 @@
 	<tr>
 		<td style="font-weight:bold">Mitarbeiter:</td>
 		<td><select size="1" id="staffMemberId" name="staffMemberId">
-			<option value="noValue">-- Mitarbeiter wählen --</option>
 			<c:forEach var="staffMember" items="${params.staffMemberList}">
 				<option value="${staffMember.staffMemberId}" ${(not empty
 					params.staffMember) and (params.staffMember.staffMemberId==

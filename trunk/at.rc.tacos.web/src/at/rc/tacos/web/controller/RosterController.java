@@ -98,11 +98,17 @@ public class RosterController extends Controller {
 		params.put(MODEL_LOCATION_NAME, location);
 		
 		// Get Date and create calendar for datepicker
-		Date date = userSession.getDefaultFormValues().getDefaultDate();	
+		Date date = userSession.getDefaultFormValues().getDefaultDate();
+		if (date == null) {
+			date = new Date();
+		}
 		final Calendar calendar = Calendar.getInstance();
 		final int rangeStart = calendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET;
 		final int rangeEnd = calendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET;
+		
+
 		params.put(MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME, date.getTime());
+		
 		params.put(MODEL_CALENDAR_RANGE_START_NAME, rangeStart);
 		params.put(MODEL_CALENDAR_RANGE_END_NAME, rangeEnd);
 		
@@ -132,14 +138,13 @@ public class RosterController extends Controller {
 		}
 		params.put(MODEL_DATE_NAME, date);
 		
-		if (date != null) {
-			final Calendar c = Calendar.getInstance();
-			c.setTime(date);
-			params.put(MODEL_DATE_DAY_OF_YEAR_NAME, c.get(Calendar.DAY_OF_YEAR));
-			params.put(MODEL_DATE_MONTH_NAME, c.get(Calendar.MONTH));
-			params.put(MODEL_DATE_YEAR_NAME, c.get(Calendar.YEAR));
-		}
-		
+
+		final Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		params.put(MODEL_DATE_DAY_OF_YEAR_NAME, c.get(Calendar.DAY_OF_YEAR));
+		params.put(MODEL_DATE_MONTH_NAME, c.get(Calendar.MONTH));
+		params.put(MODEL_DATE_YEAR_NAME, c.get(Calendar.YEAR));
+				
 		final String dateForServerString = formatDateForServer.format(date);
 		
 		// Get Roster Entries

@@ -164,21 +164,7 @@ public class AddRosterEntryController extends Controller {
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		
-		StaffMember defaultStaffMember = userSession.getDefaultFormValues().getDefaultStaffMember();
-		if (defaultStaffMember != null) {
-			boolean defaultStaffMemberHasCompetence = false;
-			final List <Competence> defaultStaffMemberCompetenceList = defaultStaffMember.getCompetenceList();
-			for (final Iterator<Competence> itDefaulStaffMemberCompetenceList = defaultStaffMemberCompetenceList.iterator(); itDefaulStaffMemberCompetenceList.hasNext();) {
-				final Competence competence = itDefaulStaffMemberCompetenceList.next();
-				if (competence.getId() == job.getId() || competence.getCompetenceName().equals(job.getJobName())) {
-					defaultStaffMemberHasCompetence = true;
-				}
-			}
-			if (!defaultStaffMemberHasCompetence) {
-				defaultStaffMember = null;
-			}
-		}
-		
+		StaffMember defaultStaffMember = userSession.getDefaultFormValues().getDefaultStaffMember();		
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
@@ -188,14 +174,15 @@ public class AddRosterEntryController extends Controller {
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
+		final Job jobTemp = (Job)params.get(MODEL_JOB_NAME);
 		for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
 			final StaffMember sm = (StaffMember)itStaffList.next();
-			if (job != null) {
+			if (jobTemp != null) {
 				boolean hasCompetence = false;
 				final List<Competence> competenceList = sm.getCompetenceList();
 				for (final Iterator<Competence> itCompetenceList = competenceList.iterator(); itCompetenceList.hasNext();) {
 					final Competence competence = itCompetenceList.next();
-					if (competence.getId() == job.getId() || competence.getCompetenceName().equals(job.getJobName())) {
+					if (competence.getId() == jobTemp.getId() || competence.getCompetenceName().equals(jobTemp.getJobName())) {
 						hasCompetence = true;
 					}
 				}
@@ -249,7 +236,7 @@ public class AddRosterEntryController extends Controller {
 		// Service Type
 		final String paramServiceTypeId = request.getParameter(PARAM_SERVICE_TYPE_NAME);
 		int serviceTypeId = 0;
-		final ServiceType defaultServiceType = null;
+		final ServiceType defaultServiceType = userSession.getDefaultFormValues().getDefaultServiceType();
 		ServiceType serviceType = null;
 		if (paramServiceTypeId != null && !paramServiceTypeId.equals("") &&!paramServiceTypeId.equals(PARAM_SERVICE_TYPE_NO_VALUE)) {
 			serviceTypeId = Integer.parseInt(paramServiceTypeId);		

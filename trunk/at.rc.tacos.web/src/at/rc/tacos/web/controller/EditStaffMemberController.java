@@ -244,30 +244,32 @@ public class EditStaffMemberController extends Controller {
 		}
 		
 		// Staff Member
-		// Get Id if request doesnt't comes over multipart
 		if (request.getParameter(PARAM_STAFF_MEMBER_NAME) != null) {
 			paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		}
 		int staffMemberId = 0;
 		StaffMember staffMember = userSession.getDefaultFormValues().getDefaultStaffMember();
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("")) {
-			if (paramStaffMemberId.equalsIgnoreCase("noValue")) {
-				staffMember = null;
-			} else {
-				staffMemberId = Integer.parseInt(paramStaffMemberId);
-			}
+			staffMemberId = Integer.parseInt(paramStaffMemberId);		
 		}
-		List<AbstractMessage> staffMemberList = connection.sendListingRequest(StaffMember.ID, null);
+		final List<AbstractMessage> staffMemberList = connection.sendListingRequest(StaffMember.ID, null);
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		params.put(MODEL_STAFF_MEMBER_LIST_NAME, staffMemberList);
-		for (final Iterator<AbstractMessage> itSMList = staffMemberList.iterator(); itSMList.hasNext();) {
-			final StaffMember sm = (StaffMember)itSMList.next();
+		for (final Iterator<AbstractMessage> itStaffMemberList = staffMemberList.iterator(); itStaffMemberList.hasNext();) {
+			final StaffMember sm = (StaffMember)itStaffMemberList.next();
 			if (sm.getStaffMemberId() == staffMemberId) {
 				staffMember = sm;
 			}
 		}
+		if (staffMember == null) {
+			if (staffMemberList.size() > 0) {
+				staffMember = (StaffMember)staffMemberList.get(0);
+			} else {
+				throw new IllegalArgumentException("Error: Location has an illegal state.");
+			}
+		} 
 		params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
 		
 		final QueryFilter loginUsernameF = new QueryFilter();
@@ -726,7 +728,6 @@ public class EditStaffMemberController extends Controller {
 						throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 					}
 					
-					userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
 					userSession.getDefaultFormValues().setDefaultLocation(location);
 					
 					params.put(MODEL_EDITED_COUNT_NAME, 1);
@@ -734,6 +735,8 @@ public class EditStaffMemberController extends Controller {
 			}
 			params.put(MODEL_ERRORS_NAME, errors);
 		}
+		
+		userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
 		
 		return params;
 	}
