@@ -51,5 +51,13 @@ public interface RosterDAO
 	 */
 	public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime) throws SQLException;
 	
-	public List<RosterEntry> listRosterEntryiesByDateAndLocation(long startTime, long endTime, int filterLocationId) throws SQLException;
+	public List<RosterEntry> listRosterEntriesByDateAndLocation(long startTime, long endTime, int filterLocationId) throws SQLException;
+	
+	public List<RosterEntry> listRosterEntriesForRosterMonth(int locationFilter, int monthFilter, int yearFilter) throws SQLException;
+	
+	public List<RosterEntry> listRosterEntriesForRosterMonthFilterFunction(int locationFilter, int monthFilter, int yearFilter, String functionFilter) throws SQLException;
+	
+	public List<RosterEntry> listRosterEntriesForRosterFilterStaffMember(int locationFilter, int monthFilter, int yearFilter, int staffMemberFilter) throws SQLException;
+	
+	public List<RosterEntry> listRosterEntriesForRosterMonthFilterFunctionAndStaffMember(int locationFilter, int monthFilter, int yearFilter, String functionFilter, int staffMemberFilter) throws SQLException;
 }
