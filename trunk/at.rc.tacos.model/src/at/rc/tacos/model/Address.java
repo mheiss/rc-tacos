@@ -17,14 +17,6 @@ public class Address extends AbstractMessage
 	private String city;
 	private String street;
 	private String streetNumber;
-	
-	public String getStreetNumber() {
-		return streetNumber;
-	}
-
-	public void setStreetNumber(String streetNumber) {
-		this.streetNumber = streetNumber;
-	}
 
 	/**
 	 * Default class constructor
@@ -162,7 +154,7 @@ public class Address extends AbstractMessage
 	{
 		this.street = street;
 	}
-
+	
 	public int getAddressId() {
 		return addressId;
 	}
@@ -170,5 +162,12 @@ public class Address extends AbstractMessage
 	public void setAddressId(int addressId) {
 		this.addressId = addressId;
 	}
+	
+	public String getStreetNumber() {
+		return streetNumber;
+	}
 
+	public void setStreetNumber(String streetNumber) {
+		this.streetNumber = streetNumber;
+	}
 }

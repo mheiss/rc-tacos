@@ -27,6 +27,9 @@ public interface IFilterTypes
     /** Filter roster by location */
     public final static String ROSTER_LOCATION_FILTER = "rosterLocationFilter";
     
+    /** Filter by search string */
+    public final static String SEARCH_STRING = "searchFilter";
+
     /** Filter roster by month */
     public final static String ROSTER_MONTH_FILTER = "rosterMonthFilter";
     
