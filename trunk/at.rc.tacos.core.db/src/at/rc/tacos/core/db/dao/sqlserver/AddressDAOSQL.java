@@ -9,7 +9,6 @@ import java.util.List;
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.AddressDAO;
-import at.rc.tacos.core.db.dao.SickPersonDAO;
 import at.rc.tacos.model.*;
 
 public class AddressDAOSQL implements AddressDAO
@@ -18,7 +17,6 @@ public class AddressDAOSQL implements AddressDAO
 	private final DataSource source = DataSource.getInstance();
 	private final SQLQueries queries = SQLQueries.getInstance();
 
-	
 	@Override
 	public Address getAddress(int addressID) throws SQLException
 	{
@@ -50,7 +48,7 @@ public class AddressDAOSQL implements AddressDAO
 			connection.close();
 		}
 	}
-	
+
 	@Override
 	public int addAddress(Address address) throws SQLException
 	{
@@ -63,22 +61,22 @@ public class AddressDAOSQL implements AddressDAO
 			final ResultSet rs = stmt.executeQuery();
 			if(!rs.next())
 				return -1;
-			
+
 			id = rs.getInt(1);
-			
-			
-//			INSERT INTO address(address_ID, street, streetnumber, city, gkz) \
-//			 VALUES(?, ?, ?, ?, ?);
+
+
+			//INSERT INTO address(address_ID, street, streetnumber, city, gkz) \
+			//VALUES(?, ?, ?, ?, ?);
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.address"));
 			query.setInt(1, id);
 			query.setString(2, address.getStreet());
 			query.setString(3, address.getStreetNumber());
 			query.setString(4, address.getCity());
 			query.setInt(5, address.getZip());
-			
+
 			if(query.executeUpdate() == 0)
 				return -1;
-			
+
 			return id;
 		}
 		finally
@@ -93,15 +91,15 @@ public class AddressDAOSQL implements AddressDAO
 		Connection connection = source.getConnection();
 		try
 		{
-//			SELECT a.address_ID,a.street, a.streetnumber, a.city, a.gkz 
-//			FROM address a \
-//			WHERE a.street like ? or a.streetnumber like ? or a.city like ? or a.gkz like ?;
+			//SELECT a.address_ID,a.street, a.streetnumber, a.city, a.gkz 
+			//FROM address a \
+			//WHERE a.street like ? or a.streetnumber like ? or a.city like ? or a.gkz like ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.addressesBySearchString"));
 			query.setString(1, "%" +searchString +"%");
 			query.setString(2, "%" +searchString +"%");
 			query.setString(3, "%" +searchString +"%");
 			query.setString(4, "%" +searchString +"%");
-			
+
 			final ResultSet rs = query.executeQuery();
 			//assert we have a result
 			List<Address> addresses = new ArrayList<Address>();
@@ -113,7 +111,7 @@ public class AddressDAOSQL implements AddressDAO
 				address.setStreetNumber(rs.getString("streetnumber"));
 				address.setCity(rs.getString("city"));
 				address.setZip(rs.getInt("gkz"));
-				
+
 				addresses.add(address);
 			}
 			return addresses;
