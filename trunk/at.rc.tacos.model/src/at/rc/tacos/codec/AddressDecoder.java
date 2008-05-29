@@ -34,6 +34,8 @@ public class AddressDecoder implements MessageDecoder
                     address.setCity(reader.getElementText());
                 if("street".equalsIgnoreCase(startName))
                     address.setStreet(reader.getElementText());
+                if("streetNumber".equalsIgnoreCase(startName))
+                	address.setStreetNumber(reader.getElementText());
             }
             //check for the end element, and return the object
             if(event.isEndElement())

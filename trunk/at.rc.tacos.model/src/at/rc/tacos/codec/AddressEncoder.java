@@ -42,6 +42,12 @@ public class AddressEncoder implements MessageEncoder
 			writer.writeCharacters(address.getStreet());
 			writer.writeEndElement();
 		}
+		if(address.getStreetNumber() != null)
+		{
+			writer.writeStartElement("streetNumber");
+			writer.writeCharacters(address.getStreetNumber());
+			writer.writeEndElement();
+		}
 
 		//end
 		writer.writeEndElement();

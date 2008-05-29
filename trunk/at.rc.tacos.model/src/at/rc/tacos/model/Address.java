@@ -12,10 +12,20 @@ public class Address extends AbstractMessage
 	public final static String ID = "address";
 	
 	//properties
+	private int addressId;
 	private int zip;
 	private String city;
 	private String street;
+	private String streetNumber;
 	
+	public String getStreetNumber() {
+		return streetNumber;
+	}
+
+	public void setStreetNumber(String streetNumber) {
+		this.streetNumber = streetNumber;
+	}
+
 	/**
 	 * Default class constructor
 	 */
@@ -152,4 +162,13 @@ public class Address extends AbstractMessage
 	{
 		this.street = street;
 	}
+
+	public int getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
+	}
+
 }
