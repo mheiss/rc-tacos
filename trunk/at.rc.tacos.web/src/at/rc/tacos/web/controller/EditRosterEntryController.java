@@ -62,7 +62,6 @@ public class EditRosterEntryController extends Controller {
 	private static final String MODEL_SERVICE_TYPE_NAME = "serviceType";
 	private static final String MODEL_SERVICE_TYPE_LIST_NAME = "serviceTypeList";
 	
-	private static final String PARAM_STANDBY_NAME = "standby";
 	private static final String PARAM_STANDBY_HIDDEN_NAME = "standbyHidden";
 	private static final String MODEL_STANDBY_NAME = "standby";
 	
@@ -313,20 +312,15 @@ public class EditRosterEntryController extends Controller {
 		}
 		
 		// Standby
-		String paramStandby = request.getParameter(PARAM_STANDBY_NAME);
 		final String paramStandbyHidden = request.getParameter(PARAM_STANDBY_HIDDEN_NAME);
 		boolean defaultStandby = rosterEntry.getStandby();
 		boolean standby = false;
-		if (paramStandby != null || paramStandbyHidden != null) {
-			if (paramStandby != null) {
-				if (paramStandby.equalsIgnoreCase("true")) {
-					standby = true;
-				}
-			} else if (paramStandbyHidden != null) {
-				if (paramStandbyHidden.equalsIgnoreCase("false")) {
-					standby = false;
-				}
-			}
+		if (paramStandbyHidden != null) {
+			if (paramStandbyHidden.equalsIgnoreCase("true")) {
+				standby = true;
+			} else {
+				standby = false;
+			}		
 			params.put(MODEL_STANDBY_NAME, standby);
 		} else {
 			params.put(MODEL_STANDBY_NAME, defaultStandby);

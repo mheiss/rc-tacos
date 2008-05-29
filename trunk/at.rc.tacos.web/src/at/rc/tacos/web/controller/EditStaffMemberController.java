@@ -93,7 +93,6 @@ public class EditStaffMemberController extends Controller {
 	
 	private static final String PARAM_REPEATED_PASSWORD_NAME = "repeatedPassword";
 	
-	private static final String PARAM_LOCK_USER_NAME = "lockUser";
 	private static final String PARAM_LOCK_USER_HIDDEN_NAME = "lockUserHidden";
 	private static final String MODEL_LOCK_USER_NAME = "lockUser";
 	
@@ -185,7 +184,6 @@ public class EditStaffMemberController extends Controller {
 		String paramCompetenceHidden = null;
 		String paramPassword = null;
 		String paramRepeatedPassword = null;
-		String paramLockUser = null;
 		String paramLockUserHidden = null;
 		String paramStaffMemberAuthorization = null;
 		
@@ -230,8 +228,6 @@ public class EditStaffMemberController extends Controller {
 			    		paramPassword = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_REPEATED_PASSWORD_NAME)) {
 			    		paramRepeatedPassword = item.getString();
-			    	} else if (item.getFieldName().equals(PARAM_LOCK_USER_NAME)) {
-			    		paramLockUser = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_LOCK_USER_HIDDEN_NAME)) {
 			    		paramLockUserHidden = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_AUTHORIZATION_NAME)) {
@@ -515,15 +511,11 @@ public class EditStaffMemberController extends Controller {
 			// Lock User
 			boolean defaultLockUser = login.isIslocked();
 			boolean lockUser = false;
-			if (paramLockUser != null || paramLockUserHidden != null) {
-				if (paramLockUser != null) {
-					if (paramLockUser.equalsIgnoreCase("true")) {
-						lockUser = true;
-					}
-				} else if (paramLockUserHidden != null) {
-					if (paramLockUserHidden.equalsIgnoreCase("false")) {
-						lockUser = false;
-					}
+			if (paramLockUserHidden != null) {
+				if (paramLockUserHidden.equalsIgnoreCase("true")) {
+					lockUser = true;
+				} else {
+					lockUser = false;
 				}
 				params.put(MODEL_LOCK_USER_NAME, lockUser);
 			} else {

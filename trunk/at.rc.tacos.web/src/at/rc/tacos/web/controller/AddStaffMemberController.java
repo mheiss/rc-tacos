@@ -94,7 +94,7 @@ public class AddStaffMemberController extends Controller {
 	
 	private static final String PARAM_REPEATED_PASSWORD_NAME = "repeatedPassword";
 	
-	private static final String PARAM_LOCK_USER_NAME = "lockUser";
+	private static final String PARAM_LOCK_USER_HIDDEN_NAME = "lockUserHidden";
 	private static final String MODEL_LOCK_USER_NAME = "lockUser";
 	
 	private static final String PARAM_AUTHORIZATION_NAME = "authorization";
@@ -200,7 +200,7 @@ public class AddStaffMemberController extends Controller {
 		String paramUsername = null;
 		String paramPassword = null;
 		String paramRepeatedPassword = null;
-		String paramLockUser = null;
+		String paramLockUserHidden = null;
 		String paramStaffMemberAuthorization = null;
 		
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -248,9 +248,10 @@ public class AddStaffMemberController extends Controller {
 			    		paramPassword = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_REPEATED_PASSWORD_NAME)) {
 			    		paramRepeatedPassword = item.getString();
-			    	} else if (item.getFieldName().equals(PARAM_LOCK_USER_NAME)) {
-			    		paramLockUser = item.getString();
-			    	} else if (item.getFieldName().equals(PARAM_AUTHORIZATION_NAME)) {
+			    	} else if (item.getFieldName().equals(PARAM_LOCK_USER_HIDDEN_NAME)) {
+			    		paramLockUserHidden = item.getString();
+			    	}
+			    	else if (item.getFieldName().equals(PARAM_AUTHORIZATION_NAME)) {
 			    		paramStaffMemberAuthorization = item.getString();
 			    	}
 			    }
@@ -496,11 +497,18 @@ public class AddStaffMemberController extends Controller {
 		}
 		
 		// Lock User
+		boolean defaultLockUser = false;
 		boolean lockUser = false;
-		if (paramLockUser != null) {
-			lockUser = true;
+		if (paramLockUserHidden != null) {
+			if (paramLockUserHidden.equalsIgnoreCase("true")) {
+				lockUser = true;
+			} else {
+				lockUser = false;
+			}
+			params.put(MODEL_LOCK_USER_NAME, lockUser);
+		} else {
+			params.put(MODEL_LOCK_USER_NAME, defaultLockUser);
 		}
-		params.put(MODEL_LOCK_USER_NAME, lockUser);
 		
 		// Authorization for New Staff Member
 		final String defaultStaffMemberAuthorization = null;

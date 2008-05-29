@@ -71,10 +71,16 @@
 		<tr>
 			<td />
 			<td>
-				<input id="standby" name="standby" type="checkbox" value="true"${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} /><label for="standby" style="cursor:pointer">Bereitschaft</label>
-				<c:if test="${not empty params.standby and params.standby eq false}">
-					<input name="standbyHidden" type="hidden" value="false" />
-				</c:if>
+				<input id="standby" name="standby" type="checkbox" ${(not empty params.standby) and (params.standby == true) ? ' checked="checked"' : ''} /><label for="standby" style="cursor:pointer">Bereitschaft</label>
+				<c:choose>
+					<c:when test="${not empty params.standby and params.standby eq true}">
+						<c:set var="value">true</c:set>
+					</c:when>
+					<c:otherwise>
+						<c:set var="value">false</c:set>
+					</c:otherwise>
+				</c:choose>
+				<input id="standbyHidden" name="standbyHidden" type="hidden" value="${value}" />
 			</td>
 			<td />
 		</tr>
@@ -213,7 +219,7 @@ $(document).ready(function() {
 		var locationId = $('#locationId').val();
 		var jobId = $('#jobId').val();
 		var serviceTypeId = $('#serviceTypeId').val();
-		var standby = $('#standby').attr('checked');
+		var standbyHidden = $('#standbyHidden').val();
 		var comment = $('#comment').val();
 		var dateFrom = $('#dateFrom').val();
 		var timeFromHours = $('#timeFromHours').val();
@@ -234,8 +240,8 @@ $(document).ready(function() {
 		if (serviceTypeId) {
 			url += '&serviceTypeId=' + serviceTypeId;
 		}
-		if (standby) {
-			url += '&standby=' + standby;
+		if (standbyHidden) {
+			url += '&standbyHidden=' + standbyHidden;
 		}
 		url += '&comment=' + comment;
 		
@@ -247,6 +253,14 @@ $(document).ready(function() {
 		url += '&timeToMinutes=' + timeToMinutes;
 		
 		document.location = url;
+	});
+	$('#standby').change(function() {
+		var inputHiddenVal = $('#standbyHidden').val();
+		if (inputHiddenVal == 'false') {
+			$('#standbyHidden').val('true');
+		} else {
+			$('#standbyHidden').val('false');
+		}
 	});
 });
 </script>
