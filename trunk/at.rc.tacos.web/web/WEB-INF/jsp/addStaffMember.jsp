@@ -270,7 +270,18 @@
 		</tr>
 		<tr>
 			<td />
-			<td><input id="lockUser" name="lockUser" type="checkbox" value="true"${(not empty params.lockUser) and (params.lockUser == true) ? ' checked="checked"' : ''} /><label for="lockUser" style="cursor:pointer">Benutzer sperren</label></td>
+			<td>
+				<input id="lockUser" name="lockUser" type="checkbox" ${(not empty params.lockUser) and (params.lockUser == true) ? ' checked="checked"' : ''} /><label for="lockUser" style="cursor:pointer">Bereitschaft</label>
+				<c:choose>
+					<c:when test="${not empty params.lockUser and params.lockUser eq true}">
+						<c:set var="value">true</c:set>
+					</c:when>
+					<c:otherwise>
+						<c:set var="value">false</c:set>
+					</c:otherwise>
+				</c:choose>
+				<input id="lockUserHidden" name="lockUserHidden" type="hidden" value="${value}" />
+			</td>
 			<td />
 		</tr>
 		<tr>
@@ -454,6 +465,15 @@ $(document).ready(function() {
 			$('#competenceIds').removeAttr('value');
 		}
 		$('tr#competence-' + competenceId).remove();
+	});
+	
+	$('#lockUser').change(function() {
+		var inputHiddenVal = $('#lockUserHidden').val();
+		if (inputHiddenVal == 'false') {
+			$('#lockUserHidden').val('true');
+		} else {
+			$('#lockUserHidden').val('false');
+		}
 	});
 });
 </script>
