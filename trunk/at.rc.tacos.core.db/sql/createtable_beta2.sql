@@ -466,5 +466,14 @@ CREATE TABLE sickperson (
   kindoftransport VARCHAR(50) NULL,
   notes TEXT NULL,
   PRIMARY KEY(sickperson_ID),
-
 )
+
+CREATE TABLE address (
+  address_ID BIGINT NOT NULL,
+  street VARCHAR(50)  NULL,
+  streetnumber VARCHAR(10) NULL,
+  city VARCHAR(50) NULL,
+  GKZ BIGINT NULL,
+  PRIMARY KEY(address_ID),
+)
+
