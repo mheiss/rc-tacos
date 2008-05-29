@@ -322,9 +322,42 @@ public class RosterDAOMySQL implements RosterDAO
 	}
 
 	@Override
-	public List<RosterEntry> listRosterEntryiesByDateAndLocation(
+	public List<RosterEntry> listRosterEntriesByDateAndLocation(
 			long startTime, long endTime, int filterLocationId) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<RosterEntry> listRosterEntriesForRosterFilterStaffMember(
+			int locationFilter, int monthFilter, int yearFilter,
+			int staffMemberFilter) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<RosterEntry> listRosterEntriesForRosterMonth(
+			int locationFilter, int monthFilter, int yearFilter)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<RosterEntry> listRosterEntriesForRosterMonthFilterFunction(
+			int locationFilter, int monthFilter, int yearFilter,
+			String functionFilter) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<RosterEntry> listRosterEntriesForRosterMonthFilterFunctionAndStaffMember(
+			int locationFilter, int monthFilter, int yearFilter,
+			String functionFilter, int staffMemberFilter) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
