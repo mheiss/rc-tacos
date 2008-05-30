@@ -23,7 +23,12 @@ public class AddressEncoder implements MessageEncoder
 
 		writer.writeStartElement(Address.ID);
 
-		//write the id
+		//write the elements and attributes
+        writer.writeStartElement("addressId");
+        writer.writeCharacters(String.valueOf(address.getAddressId()));
+        writer.writeEndElement();
+        
+		//write the zip
 		writer.writeStartElement("zip");
 		writer.writeCharacters(String.valueOf(address.getZip()));
 		writer.writeEndElement();
