@@ -119,6 +119,9 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 		viewer.setInput(ModelFactory.getInstance().getAddressManager().getAddressList());
 		Table table = viewer.getTable();
 		
+		viewer.getTable().setLinesVisible(true);
+		viewer.getTable().setHeaderVisible(true);
+		
 		//create the columns
 		final TableColumn imageColumn = new TableColumn(table, SWT.NONE);
 		imageColumn.setToolTipText("");
