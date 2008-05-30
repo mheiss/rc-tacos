@@ -24,6 +24,9 @@ public class Address extends AbstractMessage
 	public Address()
 	{
 		super(ID);
+		city = "";
+		street = "";
+		streetNumber = "-";
 	}
 	
 	/**
@@ -38,6 +41,7 @@ public class Address extends AbstractMessage
 		this.zip = zip;
 		this.city = city;
 		this.street = street;
+		streetNumber = "-";
 	}
 	
 	/**

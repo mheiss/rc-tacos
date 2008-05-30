@@ -29,7 +29,13 @@ public interface IFilterTypes
     
     /** Filter by search string */
     public final static String SEARCH_STRING = "searchFilter";
-
+    
+    /** Search filter for the address */
+    public final static String SEARCH_STRING_STREET = "searchFilterStreet";
+    public final static String SEARCH_STRING_CITY = "searchFilterCity";
+    public final static String SEARCH_STRING_ZIP = "searchFilterZip";
+    public final static String SEARCH_STRING_STREETNUMBER = "searchFilterStreetNumber";
+    
     /** Filter roster by month */
     public final static String ROSTER_MONTH_FILTER = "rosterMonthFilter";
     
