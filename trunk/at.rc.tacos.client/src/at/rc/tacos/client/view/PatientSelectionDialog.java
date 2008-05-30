@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 
@@ -101,12 +103,15 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Pro
 		final Label matches = new Label(area, SWT.NONE);
 		matches.setText("&Gefundene Patienten:"); 
 		
-		viewer = new TableViewer(area, SWT.SINGLE | SWT.BORDER);
+		Table table = new Table(area, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		viewer = new TableViewer(table);
 		final Control control = this.viewer.getControl();final GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		control.setLayoutData(gd);
 		gd.widthHint = 400;
 		gd.heightHint = 200;
         
+		viewer.getTable().setLinesVisible(true);
+		viewer.getTable().setHeaderVisible(true);
 		viewer.setLabelProvider(new SickPersonLabelProvider());
 		viewer.setContentProvider(new SickPersonContentProvider());
 		viewer.setInput(ModelFactory.getInstance().getSickPersonManager().getSickPersons());
@@ -121,6 +126,37 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Pro
             }
         });
         
+        //create the columns
+		final TableColumn nameColumn = new TableColumn(table, SWT.NONE);
+		nameColumn.setToolTipText("Nachname");
+		nameColumn.setWidth(80);
+		nameColumn.setText("Nachname");
+
+		final TableColumn firstNameColumn = new TableColumn(table, SWT.NONE);
+		firstNameColumn.setToolTipText("Vorname");
+		firstNameColumn.setWidth(80);
+		firstNameColumn.setText("Vorname");
+		
+		final TableColumn streetColumn = new TableColumn(table, SWT.NONE);
+		streetColumn.setToolTipText("Straﬂe");
+		streetColumn.setWidth(100);
+		streetColumn.setText("Straﬂe");
+		
+		final TableColumn cityColumn = new TableColumn(table, SWT.NONE);
+		cityColumn.setToolTipText("Stadt");
+		cityColumn.setWidth(70);
+		cityColumn.setText("Stadt");
+
+		final TableColumn svnrColumn = new TableColumn(table, SWT.NONE);
+		svnrColumn.setToolTipText("Sozialversicherungsnummer");
+		svnrColumn.setWidth(60);
+		svnrColumn.setText("SVNR");
+		
+		final TableColumn notesColumn = new TableColumn(table, SWT.NONE);
+		notesColumn.setToolTipText("Notizen");
+		notesColumn.setWidth(80);
+		notesColumn.setText("Notizen");
+
         setStatusLineAboveButtons(true);
         
         //setup the initial value
