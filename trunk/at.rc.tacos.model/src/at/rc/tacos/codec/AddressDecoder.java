@@ -28,6 +28,8 @@ public class AddressDecoder implements MessageDecoder
                     address = new Address();
                 
                 //get the type of the element and set the corresponding value
+                if("addressId".equalsIgnoreCase(startName))
+                    address.setAddressId(Integer.valueOf(reader.getElementText()));
                 if("zip".equalsIgnoreCase(startName))
                     address.setZip(Integer.valueOf(reader.getElementText()));
                 if("city".equalsIgnoreCase(startName))
