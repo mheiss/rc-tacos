@@ -147,7 +147,7 @@ public class AddressDAOSQL implements AddressDAO
 		Connection connection = source.getConnection();
 		try
 		{
-			//UPDATE address SET street = ?, streetname = ?, city = ?, gkz = ? WHERE address_ID = ?;
+			//UPDATE address SET street = ?, streetnumber = ?, city = ?, gkz = ? WHERE address_ID = ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.address"));
 			query.setString(1, address.getStreet());
 			query.setString(2, address.getStreetNumber());
