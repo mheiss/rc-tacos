@@ -32,7 +32,6 @@ import org.eclipse.ui.part.EditorPart;
 import at.rc.tacos.client.controller.EditorCloseAction;
 import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
-import at.rc.tacos.client.controller.ImportAddressAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.core.net.NetWrapper;
@@ -49,7 +48,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	private ScrolledForm form;
 
 	private CLabel infoLabel;
-	private ImageHyperlink saveHyperlink,removeHyperlink,importHyperlink;
+	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text zip,city,street;
 
 	//managed data
@@ -130,20 +129,6 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 			{
 				EditorSaveAction saveAction = new EditorSaveAction();
 				saveAction.run();
-			}
-		});
-
-		//Create the hyperlink to import the data
-		importHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		importHyperlink.setText("Straﬂendaten importieren");
-		importHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("resource.import"));
-		importHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				ImportAddressAction importAction = new ImportAddressAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				importAction.run();
 			}
 		});
 
