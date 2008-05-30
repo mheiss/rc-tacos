@@ -133,20 +133,20 @@ public class AddressManager extends PropertyManager
 	 * Converts all the streets in the manager to an array and returns it
 	 * @return the list of streets as array
 	 */
-	public Object[] toStreetArray()
+	public String[] toStreetArray()
 	{
 		List<String> streets = new ArrayList<String>();
 		//loop and add the streets
 		for(Address add:objectList)
 			streets.add(add.getStreet());
-		return streets.toArray();
+		return streets.toArray(new String[0]);
 	}
 
 	/**
 	 * Converts all the cities in the manager to an array and returns it
 	 * @return the list of cities as array
 	 */
-	public Object[] toCityArray()
+	public String[] toCityArray()
 	{
 		List<String> cities = new ArrayList<String>();
 		//loop and add the streets
@@ -156,6 +156,6 @@ public class AddressManager extends PropertyManager
 				continue;
 			cities.add(add.getCity());
 		}
-		return cities.toArray();
+		return cities.toArray(new String[0]);
 	}
 }

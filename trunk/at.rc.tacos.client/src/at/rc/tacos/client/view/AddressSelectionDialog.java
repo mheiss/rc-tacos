@@ -25,6 +25,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -238,8 +239,23 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 	 */
 	private void inputChanged()
 	{
+		//get the values
+		final String strStreet = filterStreet.getText().toLowerCase();
+		final String strCity = filterCity.getText().toLowerCase();
+		final String strZip = "";
+		
+		//create a new instance of the filter job if we do not have one
 		if(filterJob == null)
 			filterJob = new FilterAddressJob(viewer);
+		
+		//check the length of the entered text
+		if(strStreet.length() < 1 && strCity.length() < 1)
+		{
+			updateStatus(new Status(Status.WARNING,Activator.PLUGIN_ID,"Bitte geben sie mindestens ein Zeichen"));
+			Display.getCurrent().beep();
+			return;
+		}
+		updateStatus(new Status(IStatus.INFO,Activator.PLUGIN_ID,"Bitte wählen Sie eine Addresse aus"));
 		
 		//check the state
 		if(filterJob.getState() == Job.RUNNING)
@@ -249,9 +265,9 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 		}
 		
 		//pass the entered text
-		filterJob.setStrCity(filterCity.getText().toLowerCase());
-		filterJob.setStrStreet(filterStreet.getText().toLowerCase());
-		filterJob.setStrZip("");
+		filterJob.setStrStreet(strStreet);
+		filterJob.setStrCity(strCity);
+		filterJob.setStrZip(strZip);
 		filterJob.schedule(FilterAddressJob.INTERVAL_KEY_PRESSED);
 	}
 }

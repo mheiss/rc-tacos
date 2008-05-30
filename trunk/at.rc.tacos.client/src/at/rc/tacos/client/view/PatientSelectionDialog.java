@@ -48,7 +48,6 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Pro
 	private Text filterText;
 	private String initValue;
 	
-	
 	/**
 	 * The scheduler job to start the filter
 	 */
@@ -198,6 +197,15 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Pro
 	 */
 	private void inputChanged()
 	{
+		//get the entered text
+		String filterValue = filterText.getText().toLowerCase();
+		if(filterValue.trim().length() < 1)
+		{
+			updateStatus(new Status(Status.WARNING,Activator.PLUGIN_ID,"Bitte geben sie mindestens ein Zeichen des Nachnamens ein"));
+			return;
+		}
+		updateStatus(new Status(IStatus.INFO,Activator.PLUGIN_ID,"Bitte wählen Sie einen Patienten aus"));
+		
 		if(filterJob == null)
 			filterJob = new FilterPatientJob(viewer);
 		
@@ -209,7 +217,7 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Pro
 		}
 		
 		//pass the entered text
-		filterJob.setSearchString(filterText.getText().toLowerCase());
+		filterJob.setSearchString(filterValue);
 		filterJob.schedule(FilterAddressJob.INTERVAL_KEY_PRESSED);
 	}
 }

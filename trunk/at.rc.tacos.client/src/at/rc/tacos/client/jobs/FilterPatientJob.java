@@ -22,7 +22,7 @@ public class FilterPatientJob extends Job
 	/**
 	 * The time in milliseconds between two keystrokes
 	 */
-	public static final int INTERVAL_KEY_PRESSED = 1500;
+	public static final int INTERVAL_KEY_PRESSED = 1000;
 	
 	/**
 	 * Default class construcotor
