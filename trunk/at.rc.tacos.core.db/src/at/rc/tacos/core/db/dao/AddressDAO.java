@@ -34,7 +34,7 @@ public interface AddressDAO
 	 * Returns a list of all addresses in the database if one of the fields contains the given string
 	 * @return the address list with matched entries
 	 */
-	public List<Address> getAddressList(String searchString) throws SQLException;
+	public List<Address> getAddressList(String streetFilter,String streetNumberFilter,String cityFilter, String plzFilter) throws SQLException;
 	
 	/**
 	 * Returns a specific id identified by the address id
