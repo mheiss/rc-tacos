@@ -248,6 +248,7 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 		//pass the entered text
 		filterJob.setStrCity(filterCity.getText().toLowerCase());
 		filterJob.setStrStreet(filterStreet.getText().toLowerCase());
+		filterJob.setStrZip("");
 		filterJob.schedule(FilterAddressJob.INTERVAL_KEY_PRESSED);
 	}
 }

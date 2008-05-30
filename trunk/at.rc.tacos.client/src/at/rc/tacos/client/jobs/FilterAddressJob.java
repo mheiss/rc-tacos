@@ -47,11 +47,11 @@ public class FilterAddressJob extends Job
 		//setup the filter to send to the server
 		QueryFilter queryFilter = new QueryFilter();
 		//add the filter value if at least on char is entered
-		if(!strStreet.isEmpty())
+		if(strStreet != null &! strStreet.isEmpty())
 			queryFilter.add(IFilterTypes.SEARCH_STRING_STREET, strStreet);
-		if(!strCity.isEmpty())
+		if(strCity != null &! strCity.isEmpty())
 			queryFilter.add(IFilterTypes.SEARCH_STRING_CITY, strCity);
-		if(!strZip.isEmpty())
+		if(strZip != null &! strZip.isEmpty())
 			queryFilter.add(IFilterTypes.SEARCH_STRING_ZIP, strZip);
 		
 		//send a request to the server to list all matching address records
@@ -65,7 +65,7 @@ public class FilterAddressJob extends Job
 				//get the values and create the filter
 				viewer.resetFilters();
 				//create new filter and apply
-				AddressAdminViewFilter filter = new AddressAdminViewFilter(strStreet,strCity,"");
+				AddressAdminViewFilter filter = new AddressAdminViewFilter(strStreet,strCity,strZip);
 				viewer.addFilter(filter);
 			}
 		});
