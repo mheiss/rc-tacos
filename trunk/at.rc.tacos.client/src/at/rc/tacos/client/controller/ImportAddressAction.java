@@ -94,13 +94,9 @@ public class ImportAddressAction extends Action
 			//ask again ;)
 			boolean result = MessageDialog.openConfirm(window.getShell(), 
 					"Straßen importieren", 
-					"Wollen Sie wirklich die Straßen importieren? ("+elementList.size()+" Einträge)\n"+
-			"Alle bisherigen Einträge werden überschrieben!");
+					"Möchten Sie wirklich die Adressen importieren? ("+elementList.size()+" Einträge)");
 			if(!result)
 				return;
-
-			//send a request to delete the current files
-			NetWrapper.getDefault().requestListing(Address.ID, null);
 
 			//Start a new job
 			final Job job = new Job("AddressMonitor") 
@@ -115,21 +111,14 @@ public class ImportAddressAction extends Action
 						for(int i = 0; i<elementList.size(); i++)
 						{
 							Map<String, Object> line = elementList.get(i);			
+							
 							//access every element of the line			
 							int gkz = Integer.parseInt((String)line.get("GKZ"));
 							String city = (String)line.get("Gemeindename");
 							String street = (String)line.get("BEZEICHNUNG");
-							//create the address and add to the list
-							addressList.add(new Address(gkz,city,street));
-
-							//only add 200 address items at time
-							if(i%200 == 0)
-							{
-								//send the request to add
-								NetWrapper.getDefault().sendAddAllMessage(Address.ID, addressList);
-								addressList.clear();
-							}
-
+							
+							//send the request to add
+							NetWrapper.getDefault().sendAddMessage(Address.ID, new Address(gkz,city,street));
 						}
 						return Status.OK_STATUS;
 					}

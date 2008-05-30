@@ -2,7 +2,6 @@ package at.rc.tacos.client.view.admin;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -10,6 +9,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -23,18 +25,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewAddressAction;
 import at.rc.tacos.client.controller.ImportAddressAction;
-import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.AddressEditor;
 import at.rc.tacos.client.editors.AddressEditorInput;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -44,8 +42,11 @@ import at.rc.tacos.client.providers.AddressContentProvider;
 import at.rc.tacos.client.providers.AddressLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.AddressViewSorter;
+import at.rc.tacos.common.IFilterTypes;
+import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Address;
+import at.rc.tacos.model.QueryFilter;
 
 public class AddressAdminView  extends ViewPart implements PropertyChangeListener
 {
@@ -58,8 +59,8 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	//text fields for the filter
 	private Text zip,city,street;
 
-	//to apply the filter
-	private ImageHyperlink applyFilter,resetFilter;
+	//to show some messages
+	private CLabel infoLabel;
 
 	/**
 	 * Default class constructor
@@ -108,45 +109,40 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		//create the input fields
 		final Label labelStreet = toolkit.createLabel(filter, "Straﬂe");
 		street = toolkit.createText(filter, "");
+		street.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(final ModifyEvent e) 
+			{
+				inputChanged();
+			}
+		});
 
 		//the city
 		final Label labelCity = toolkit.createLabel(filter, "Stadt");
 		city = toolkit.createText(filter, "");
+		city.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(final ModifyEvent e) 
+			{
+				inputChanged();
+			}
+		});
 
 		//the zip code
 		final Label labelZip = toolkit.createLabel(filter, "GKZ");
 		zip = toolkit.createText(filter, "");
-
-		//Create the hyperlink to import the data
-		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
-		applyFilter.setText("Adresstabelle filtern");
-		applyFilter.setImage(ImageFactory.getInstance().getRegisteredImage("resource.import"));
-		applyFilter.addHyperlinkListener(new HyperlinkAdapter() 
+		zip.addModifyListener(new ModifyListener() 
 		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
+			public void modifyText(final ModifyEvent e) 
 			{
 				inputChanged();
 			}
 		});
 
-		//create the hyperlink to add a new job
-		resetFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
-		resetFilter.setText("Einschr‰nkungen entfernen");
-		resetFilter.setImage(ImageFactory.getInstance().getRegisteredImage("admin.addressAdd"));
-		resetFilter.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				//reset the fields
-				street.setText("");
-				city.setText("");
-				zip.setText("");
-				//apply the filter
-				inputChanged();
-			}
-		});
+		//create the info label
+		infoLabel = new CLabel(filter,SWT.NONE);
+		infoLabel.setText("Bitte geben sie mindestens ein Zeichen ein um die Daten vom Server abzurufen");
+		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.info"));
 
 		//create the section to hold the table
 		Composite tableComp = createSection(form.getBody(), "Filter") ;
@@ -276,12 +272,13 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		data2 = new GridData(GridData.FILL_BOTH);
 		Section tableSection = (Section)tableComp.getParent();
 		tableSection.setLayoutData(data2);
+		//the info label
+		data2 = new GridData(GridData.FILL_BOTH);
+		data2.horizontalSpan = 2;
+		infoLabel.setLayoutData(data2);
 
-		viewer.refresh();
-		
 		//reflow
 		form.reflow(true);
-		form.update();
 	}
 
 	/**
@@ -305,6 +302,8 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		{
 			//just refresh the viewer
 			viewer.refresh();
+			infoLabel.setText("Es wurden "+ ModelFactory.getInstance().getAddressManager().getAddressList().size() +" Addressen gefunden");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.info"));
 		}
 	}
 
@@ -315,11 +314,9 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	{
 		//create the action
 		EditorNewAddressAction addAction = new EditorNewAddressAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
-		RefreshViewAction refreshAction = new RefreshViewAction(Address.ID);
 		ImportAddressAction importAction = new ImportAddressAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());	
 		//add to the toolbar
 		form.getToolBarManager().add(addAction);
-		form.getToolBarManager().add(refreshAction);
 		form.getToolBarManager().add(importAction);
 		form.getToolBarManager().update(true);
 	}
@@ -361,9 +358,32 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 	public void inputChanged()
 	{
 		//get the values
-		final String strStreet = street.getText();
-		final String strCity = city.getText();
-		final String strZip = zip.getText();
+		final String strStreet = street.getText().trim().toLowerCase();
+		final String strCity = city.getText().trim().toLowerCase();
+		final String strZip = zip.getText().trim().toLowerCase();
+		
+		//check the length of the entered text
+		if(strStreet.length() < 1 && strCity.length() < 1 && strZip.length() <1)
+		{
+			infoLabel.setText("Bitte geben Sie mindestens ein Zeichen ein.");
+			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.error"));
+			Display.getCurrent().beep();
+			return;
+		}
+		
+		//setup the filter to send to the server
+		QueryFilter filter = new QueryFilter();
+		
+		//add the filter value if at least on char is entered
+		if(!strStreet.isEmpty())
+			filter.add(IFilterTypes.SEARCH_STRING_STREET, strStreet);
+		if(!strCity.isEmpty())
+			filter.add(IFilterTypes.SEARCH_STRING_CITY, strCity);
+		if(!strZip.isEmpty())
+			filter.add(IFilterTypes.SEARCH_STRING_ZIP, strZip);
+		
+		NetWrapper.getDefault().requestListing(Address.ID, filter);
+		
 		//filter the values
 		viewer.getTable().setRedraw(false);
 		Display.getDefault().asyncExec(new Runnable ()    

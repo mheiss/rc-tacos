@@ -56,7 +56,7 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	//text fields for the filter
 	private Text lastname, firstname, svnr;
 
-	//to apply the filter
+	//to show some messages
 	private CLabel infoLabel;
 
 	/**
@@ -136,7 +136,7 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 			}
 		});
 
-		//create the hyperlink to add a new job
+		//create the info label
 		infoLabel = new CLabel(filter,SWT.NONE);
 		infoLabel.setText("Bitte geben sie mindestens ein Zeichen des Nachnamens ein");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.info"));
@@ -235,7 +235,6 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		
 		//reflow
 		form.reflow(true);
-		form.update();
 	}
 
 	/**
@@ -326,8 +325,8 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 			return;
 		}
 
+		//request the listing from the sserver
 		NetWrapper.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SEARCH_STRING,strLastname));
-
 
 		//filter the values
 		viewer.getTable().setRedraw(false);

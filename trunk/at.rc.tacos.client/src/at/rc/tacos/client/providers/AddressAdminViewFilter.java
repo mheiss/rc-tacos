@@ -39,7 +39,7 @@ public class AddressAdminViewFilter  extends ViewerFilter
 		{
 			//check the street name
 			if(!address.getStreet().toLowerCase().contains(street) &! address.getStreet().toLowerCase().startsWith(street))
-					return false;
+				return false;
 		}
 		//check the city
 		if(city != null &! city.trim().isEmpty())
