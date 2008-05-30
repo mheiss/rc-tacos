@@ -10,7 +10,6 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
@@ -26,7 +25,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -35,14 +33,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 
 import at.rc.tacos.client.Activator;
+import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.providers.AddressAdminViewFilter;
 import at.rc.tacos.client.providers.AddressContentProvider;
 import at.rc.tacos.client.providers.AddressLabelProvider;
-import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Address;
-import at.rc.tacos.model.QueryFilter;
 
 /**
  * Provides a selection dialog to choose a address
@@ -52,11 +47,6 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 	private TableViewer viewer;
 	private String initStreetValue,initCityValue;
 	private Text filterStreet,filterCity;
-	
-	/**
-	 * The time in milliseconds between two keystrokes
-	 */
-	public static final int INTERVAL_KEY_PRESSED = 1500;
 	
 	/**
 	 * The scheduler job to start the filter
@@ -214,28 +204,6 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 		setResult(((IStructuredSelection) viewer.getSelection()).toList());
 	}
 	
-	//PRIVATE METHODS
-	/**
-	 * Called when the input text of a filter is changes
-	 */
-	private void inputChanged()
-	{
-		if(filterJob == null)
-			filterJob = new FilterAddressJob();
-		
-		//check the state
-		if(filterJob.getState() == Job.RUNNING)
-		{
-			System.out.println("Job is currently running");
-			return;
-		}
-		
-		//pass the entered text
-		filterJob.setStrCity(filterCity.getText().toLowerCase());
-		filterJob.setStrStreet(filterStreet.getText().toLowerCase());
-		filterJob.schedule(INTERVAL_KEY_PRESSED);
-	}
-	
 	/**
 	 * This listener will be informed when the server sends new address recoreds based on the entered text
 	 */
@@ -261,70 +229,25 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 		}
 	}
 	
+	//PRIVATE METHODS
 	/**
-	 * The filter job to execute the query of the address data
+	 * Called when the input text of a filter is changes
 	 */
-	private class FilterAddressJob extends Job
+	private void inputChanged()
 	{
-		//the properties
-		private String strStreet,strCity;
+		if(filterJob == null)
+			filterJob = new FilterAddressJob(viewer);
 		
-		/**
-		 * Default class constructor
-		 */
-		public FilterAddressJob()
+		//check the state
+		if(filterJob.getState() == Job.RUNNING)
 		{
-			super("filterJob");
+			System.out.println("Job is currently running");
+			return;
 		}
-
-		@Override
-		protected IStatus run(IProgressMonitor monitor)
-		{		
-			//assert valid text
-			if(strStreet.length() < 1 && strCity.length() < 1)
-				return Status.OK_STATUS;
-			
-			//setup the filter to send to the server
-			QueryFilter queryFilter = new QueryFilter();
-			//add the filter value if at least on char is entered
-			if(!strStreet.isEmpty())
-				queryFilter.add(IFilterTypes.SEARCH_STRING_STREET, strStreet);
-			if(!strCity.isEmpty())
-				queryFilter.add(IFilterTypes.SEARCH_STRING_CITY, strCity);
-			
-			//send a request to the server to list all matching address records
-			NetWrapper.getDefault().requestListing(Address.ID,queryFilter);
-			
-			//apply the filter
-			Display.getDefault().asyncExec(new Runnable ()    
-			{
-				public void run ()       
-				{
-					updateStatus(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Bitte wählen Sie eine Adresse aus"));
-					
-					//get the values and create the filter
-					viewer.resetFilters();
-					//create new filter and apply
-					AddressAdminViewFilter filter = new AddressAdminViewFilter(strStreet,strCity,"");
-					viewer.addFilter(filter);
-				}
-			});
-			
-			return Status.OK_STATUS;
-		}
-
-		/**
-		 * @param strStreet the strStreet to set
-		 */
-		public void setStrStreet(String strStreet) {
-			this.strStreet = strStreet;
-		}
-
-		/**
-		 * @param strCity the strCity to set
-		 */
-		public void setStrCity(String strCity) {
-			this.strCity = strCity;
-		}
+		
+		//pass the entered text
+		filterJob.setStrCity(filterCity.getText().toLowerCase());
+		filterJob.setStrStreet(filterStreet.getText().toLowerCase());
+		filterJob.schedule(FilterAddressJob.INTERVAL_KEY_PRESSED);
 	}
 }

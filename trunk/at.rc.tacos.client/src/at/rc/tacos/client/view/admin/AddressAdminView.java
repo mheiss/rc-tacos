@@ -3,6 +3,7 @@ package at.rc.tacos.client.view.admin;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,18 +36,15 @@ import at.rc.tacos.client.controller.EditorNewAddressAction;
 import at.rc.tacos.client.controller.ImportAddressAction;
 import at.rc.tacos.client.editors.AddressEditor;
 import at.rc.tacos.client.editors.AddressEditorInput;
+import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
-import at.rc.tacos.client.providers.AddressAdminViewFilter;
 import at.rc.tacos.client.providers.AddressContentProvider;
 import at.rc.tacos.client.providers.AddressLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.AddressViewSorter;
-import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Address;
-import at.rc.tacos.model.QueryFilter;
 
 public class AddressAdminView  extends ViewPart implements PropertyChangeListener
 {
@@ -61,6 +59,11 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 
 	//to show some messages
 	private CLabel infoLabel;
+	
+	/**
+	 * The scheduler job to start the filter
+	 */
+	private FilterAddressJob filterJob;
 
 	/**
 	 * Default class constructor
@@ -371,32 +374,20 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 			return;
 		}
 		
-		//setup the filter to send to the server
-		QueryFilter filter = new QueryFilter();
+		if(filterJob == null)
+			filterJob = new FilterAddressJob(viewer);
 		
-		//add the filter value if at least on char is entered
-		if(!strStreet.isEmpty())
-			filter.add(IFilterTypes.SEARCH_STRING_STREET, strStreet);
-		if(!strCity.isEmpty())
-			filter.add(IFilterTypes.SEARCH_STRING_CITY, strCity);
-		if(!strZip.isEmpty())
-			filter.add(IFilterTypes.SEARCH_STRING_ZIP, strZip);
-		
-		NetWrapper.getDefault().requestListing(Address.ID, filter);
-		
-		//filter the values
-		viewer.getTable().setRedraw(false);
-		Display.getDefault().asyncExec(new Runnable ()    
+		//check the state
+		if(filterJob.getState() == Job.RUNNING)
 		{
-			public void run ()       
-			{
-				//get the values and create the filter
-				viewer.resetFilters();
-				//create new filter and apply
-				AddressAdminViewFilter filter = new AddressAdminViewFilter(strStreet,strCity,strZip);
-				viewer.addFilter(filter);
-			}
-		});
-		viewer.getTable().setRedraw(true);
+			System.out.println("Job is currently running");
+			return;
+		}
+		
+		//pass the entered text
+		filterJob.setStrCity(strCity);
+		filterJob.setStrStreet(strStreet);
+		filterJob.setStrZip(strZip);
+		filterJob.schedule(FilterAddressJob.INTERVAL_KEY_PRESSED);
 	}
 }

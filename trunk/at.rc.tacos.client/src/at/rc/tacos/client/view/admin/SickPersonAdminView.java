@@ -3,6 +3,7 @@ package at.rc.tacos.client.view.admin;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -33,16 +34,14 @@ import at.rc.tacos.client.controller.EditorNewSickPersonAction;
 import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.editors.SickPersonEditor;
 import at.rc.tacos.client.editors.SickPersonEditorInput;
+import at.rc.tacos.client.jobs.FilterAddressJob;
+import at.rc.tacos.client.jobs.FilterPatientJob;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.SickPersonAdminTableLabelProvider;
-import at.rc.tacos.client.providers.SickPersonAdminViewFilter;
 import at.rc.tacos.client.providers.SickPersonContentProvider;
 import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.SickPerson;
 
 public class SickPersonAdminView  extends ViewPart implements PropertyChangeListener
@@ -58,6 +57,11 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 
 	//to show some messages
 	private CLabel infoLabel;
+	
+	/**
+	 * The scheduler job to start the filter
+	 */
+	private FilterPatientJob filterJob;
 
 	/**
 	 * Default class constructor
@@ -325,22 +329,18 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 			return;
 		}
 
-		//request the listing from the sserver
-		NetWrapper.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SEARCH_STRING,strLastname));
-
-		//filter the values
-		viewer.getTable().setRedraw(false);
-		Display.getDefault().asyncExec(new Runnable ()    
+		if(filterJob == null)
+			filterJob = new FilterPatientJob(viewer);
+		
+		//check the state
+		if(filterJob.getState() == Job.RUNNING)
 		{
-			public void run ()       
-			{
-				//get the values and create the filter
-				viewer.resetFilters();
-				//create new filter and apply
-				SickPersonAdminViewFilter filter = new SickPersonAdminViewFilter(strLastname,strFirstname,strSVNR);
-				viewer.addFilter(filter);
-			}
-		});
-		viewer.getTable().setRedraw(true);
+			System.out.println("Job is currently running");
+			return;
+		}
+		
+		//pass the entered text
+		filterJob.setSearchString(strLastname);
+		filterJob.schedule(FilterAddressJob.INTERVAL_KEY_PRESSED);
 	}
 }
