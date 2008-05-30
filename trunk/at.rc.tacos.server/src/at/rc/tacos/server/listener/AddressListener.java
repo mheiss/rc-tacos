@@ -20,7 +20,7 @@ public class AddressListener extends ServerListenerAdapter
 	private AddressDAO addressDao = DaoFactory.SQL.createAddressDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(AddressListener.class);
-	
+
 	@Override
 	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException 
 	{
@@ -29,13 +29,13 @@ public class AddressListener extends ServerListenerAdapter
 		int id = addressDao.addAddress(newAddress);
 		if(id == -1)
 			throw new DAOException("AddressListener","Failed to add the address record: "+newAddress);
-		
+
 		//set the id
 		newAddress.setAddressId(id);
 		logger.info("added by:" +username +";" +addObject);
 		return newAddress;
 	}
-	
+
 	@Override
 	public List<AbstractMessage> handleAddAllRequest(List<AbstractMessage> addList) throws DAOException,SQLException
 	{
@@ -79,24 +79,51 @@ public class AddressListener extends ServerListenerAdapter
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		List<Address> addressList;
-		
+
 		//if there is no filter -> request all
 		if(queryFilter == null || queryFilter.getFilterList().isEmpty())
 		{
 			System.out.println("WARNING: Listing of all address records is denied.");
 			throw new DAOException("AddressListener","Listing of all address records is denied");
-		} 
-		else if(queryFilter.containsFilterType(IFilterTypes.SEARCH_STRING))
+		}
+
+		//the filter types for the database
+		String streetFilter = new String("%");
+		String streetNumberFilter = new String("%");
+		String cityFilter = new String("%");
+		String zipFilter = new String("%");
+		
+
+		//get the passed filter values and add some wildcards
+		if(queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING_STREET) != null)
 		{
-			//get the query filter
-			final String addressFilter = queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING);
-		
-			addressList = addressDao.getAddressList(addressFilter);
-			if(addressList == null)
-				throw new DAOException("AddressListener","Failed to list the address records by search string: "+addressFilter);
-			list.addAll(addressList);
-		} 
-		
+			streetFilter = queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING_STREET);
+			streetFilter = "%" +streetFilter + "%";
+		}
+		if(queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING_CITY) != null)
+		{
+			cityFilter = queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING_CITY);
+			cityFilter = "%" +cityFilter + "%";
+		}
+		if(queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING_ZIP) != null)
+		{
+			zipFilter = queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING_ZIP);
+			zipFilter = "%" + zipFilter + "%";
+		}
+		if(queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING_STREETNUMBER) != null)
+		{
+			streetNumberFilter = queryFilter.getFilterValue(IFilterTypes.SEARCH_STRING_STREETNUMBER);
+			streetNumberFilter = "%" + streetNumberFilter + "%";
+		}
+
+		//get the query filter
+		final String addressFilter = "Street: "+streetFilter+" | City: "+cityFilter + " | Zip: " +zipFilter;
+
+		addressList = addressDao.getAddressList(streetFilter,streetNumberFilter,cityFilter,zipFilter);
+		if(addressList == null)
+			throw new DAOException("AddressListener","Failed to list the address records by search string: "+addressFilter);
+		list.addAll(addressList);
+
 		//return the list
 		return list;
 	}
