@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.client.providers.AddressAdminViewFilter;
@@ -20,18 +20,18 @@ public class FilterAddressJob extends Job
 {
 	//the properties
 	private String strStreet,strCity,strZip;
-	private TableViewer viewer;
+	private StructuredViewer viewer;
 	
 	/**
 	 * The time in milliseconds between two keystrokes
 	 */
-	public static final int INTERVAL_KEY_PRESSED = 1500;
+	public static final int INTERVAL_KEY_PRESSED = 1000;
 	
 	/**
 	 * Default class construcotor
 	 * @param viewer the viewer to update and apply the filter
 	 */
-	public FilterAddressJob(TableViewer viewer)
+	public FilterAddressJob(StructuredViewer viewer)
 	{
 		super("filterAddressJob");
 		this.viewer = viewer;
@@ -57,18 +57,22 @@ public class FilterAddressJob extends Job
 		//send a request to the server to list all matching address records
 		NetWrapper.getDefault().requestListing(Address.ID,queryFilter);
 		
-		//apply the filter
-		Display.getDefault().asyncExec(new Runnable ()    
+		//assert we have a valid viewer to show the results
+		if(viewer != null)
 		{
-			public void run ()       
+			//apply the filter
+			Display.getDefault().asyncExec(new Runnable ()    
 			{
-				//get the values and create the filter
-				viewer.resetFilters();
-				//create new filter and apply
-				AddressAdminViewFilter filter = new AddressAdminViewFilter(strStreet,strCity,strZip);
-				viewer.addFilter(filter);
-			}
-		});
+				public void run ()       
+				{
+					//get the values and create the filter
+					viewer.resetFilters();
+					//create new filter and apply
+					AddressAdminViewFilter filter = new AddressAdminViewFilter(strStreet,strCity,strZip);
+					viewer.addFilter(filter);
+				}
+			});
+		}
 		
 		return Status.OK_STATUS;
 	}

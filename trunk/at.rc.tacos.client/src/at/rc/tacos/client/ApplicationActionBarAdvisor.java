@@ -15,6 +15,7 @@ import at.rc.tacos.client.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
 import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
 import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
+import at.rc.tacos.client.test.OpenTestDialogAction;
 
 
 /**
@@ -83,6 +84,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 	{
 		//the file menu
 		MenuManager fileMenu = new MenuManager("&Datei");
+		fileMenu.add(new OpenTestDialogAction());
 		fileMenu.add(exitAction);
 		
 		MenuManager newMenu = new MenuManager("&Anlegen");
