@@ -44,14 +44,14 @@ public class AddressDAOSQLTest extends DBTestBase
     public void testRemoveAddress() throws SQLException
     {
     	addressDao.removeAddress(address1.getAddressId());
-    	List<Address> list = addressDao.getAddressList("Bruck");
-        Assert.assertEquals(0, list.size());
+    	Address address = addressDao.getAddress(address1.getAddressId());
+        Assert.assertNull(address);
     }
 
     @Test
     public void testListAddress() throws SQLException
     {
-        List<Address> list = addressDao.getAddressList("Bruck");
+        List<Address> list = addressDao.getAddressList("D%","%","%Bruck%","%");
         Assert.assertEquals(1, list.size());
     }
     

@@ -86,7 +86,7 @@ public class AddressDAOSQL implements AddressDAO
 	}
 
 	@Override
-	public List<Address> getAddressList(String searchString) throws SQLException
+	public List<Address> getAddressList(String streetFilter,String streetNumberFilter,String cityFilter, String plzFilter) throws SQLException
 	{
 		Connection connection = source.getConnection();
 		try
@@ -95,10 +95,10 @@ public class AddressDAOSQL implements AddressDAO
 			//FROM address a \
 			//WHERE a.street like ? or a.streetnumber like ? or a.city like ? or a.gkz like ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.addressesBySearchString"));
-			query.setString(1, "%" +searchString +"%");
-			query.setString(2, "%" +searchString +"%");
-			query.setString(3, "%" +searchString +"%");
-			query.setString(4, "%" +searchString +"%");
+			query.setString(1, streetFilter);
+			query.setString(2, streetNumberFilter);
+			query.setString(3, cityFilter);
+			query.setString(4, plzFilter);
 
 			final ResultSet rs = query.executeQuery();
 			//assert we have a result
