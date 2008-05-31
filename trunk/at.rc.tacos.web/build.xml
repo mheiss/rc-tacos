@@ -9,6 +9,7 @@
 	<property name="web.dir" value="web" />
 	<property name="lib.dir" value="${web.dir}/WEB-INF/lib" />
 	<property name="build.dir" value="${web.dir}/WEB-INF/classes" />
+	<property name="dist.dir" value="dist" />
 	<property name="name" value="rc-tacos" />
 	<property name="at.rc.tacos.core.net.classes" value="../at.rc.tacos.core.net/bin" />
 	<property name="at.rc.tacos.model.classes" value="../at.rc.tacos.model/bin" />
@@ -35,6 +36,7 @@
 	
 	<target name="clean" description="Cleans the build and dist directories">
 		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
 		<delete dir="${deploy.path}/${name}" />
 	</target>
 
@@ -68,6 +70,11 @@
 				<include name="**/*.*" />
 			</fileset>
 		</jar>
+		<copy verbose="true" todir="${deploy.path}/${name}">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
 		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
 		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
 	</target>
@@ -84,18 +91,42 @@
 				<include name="**/*.*" />
 			</fileset>
 		</jar>
+		<copy verbose="true" todir="${web.dir}/WEB-INF/classes/at/rc/tacos/web/config" overwrite="true">
+			<fileset dir="${production-specific.dir}">
+				<include name="*.properties" />
+			</fileset>
+		</copy>
 		<copy verbose="true" todir="${production.deploy.path}/${name}">
 			<fileset dir="${web.dir}">
 				<include name="**/*.*" />
 			</fileset>
 		</copy>
-		<copy verbose="true" todir="${production.deploy.path}/${name}/WEB-INF/classes/at/rc/tacos/web/config" overwrite="true">
+		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
+		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
+	</target>
+	
+	<target name="dist" description="Deploy application as war file">
+		<mkdir dir="${dist.dir}" />
+		<jar destfile="${lib.dir}/at.rc.tacos.core.net.jar">
+			<fileset dir="${at.rc.tacos.core.net.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<jar destfile="${lib.dir}/at.rc.tacos.model.jar">
+			<fileset dir="${at.rc.tacos.model.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<copy verbose="true" todir="${web.dir}/WEB-INF/classes/at/rc/tacos/web/config" overwrite="true">
 			<fileset dir="${production-specific.dir}">
 				<include name="*.properties" />
 			</fileset>
 		</copy>
-		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
-		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
+		<war destfile="${dist.dir}/${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</war>
 	</target>
 	
 	<target name="production-deploy-ftp" description="Deploy application to producation system via FTP">
@@ -109,14 +140,14 @@
 				<include name="**/*.*" />
 			</fileset>
 		</jar>
-		<ftp server="${ftp.ip}" port="${ftp.port}" remotedir="${ftp.dir}/${name}" userid="${ftp.username}" password="${ftp.password}" depends="yes" binary="no" passive="yes" systemTypeKey="Windows" verbose="true">
-			<fileset dir="${web.dir}">
-				<include name="**/*.*" />
-			</fileset>
-		</ftp>
-		<ftp server="${ftp.ip}" port="${ftp.port}" remotedir="${ftp.dir}/${name}/WEB-INF/classes/at/rc/tacos/web/config" userid="${ftp.username}" password="${ftp.password}" depends="yes" binary="no" passive="yes" systemTypeKey="Windows" verbose="true" overwrite="true">
+		<copy verbose="true" todir="${web.dir}/WEB-INF/classes/at/rc/tacos/web/config" overwrite="true">
 			<fileset dir="${production-specific.dir}">
 				<include name="*.properties" />
+			</fileset>
+		</copy>
+		<ftp server="${production.ftp.ip}" port="${production.ftp.port}" remotedir="${production.ftp.dir}/${name}" userid="${production.ftp.username}" password="${production.ftp.password}" depends="yes" binary="no" passive="yes" verbose="true">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
 			</fileset>
 		</ftp>
 		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />

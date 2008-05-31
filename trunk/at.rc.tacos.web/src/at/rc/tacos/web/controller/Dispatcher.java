@@ -156,12 +156,25 @@ public class Dispatcher extends HttpServlet
 		String css = null;
 		
 		//Redirect if request is not send over SSL connection
-		if (Pattern.matches(server.getString("server.http.url.pattern"), request.getRequestURL().toString()) || request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
-			System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
+		if (request.getServerPort() == Integer.parseInt(server.getString("server.default.port"))) {
+			final Enumeration<Object> e = request.getParameterNames();
+			String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath;
+			int i = 0;
+			while (e.hasMoreElements()) {
+				final String parameterName = (String)e.nextElement();
+				final String parameterValue = request.getParameter(parameterName);
+				if (i == 0) {
+					url += "?" + parameterName + "=" + parameterValue;
+				} else {
+					url += "&" + parameterName + "=" + parameterValue;
+				}
+				i++;
+			}
+			System.out.println("Redirect: " + response.encodeRedirectURL(url));
 			System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
-			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
+			response.sendRedirect(response.encodeRedirectURL(url));
 			
-			/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + relativePath));
+			/*request.setAttribute("redirectUrl", response.encodeRedirectURL(url));
 			getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/
 
 		}
