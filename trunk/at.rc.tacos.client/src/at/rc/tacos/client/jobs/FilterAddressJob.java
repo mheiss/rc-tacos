@@ -35,6 +35,9 @@ public class FilterAddressJob extends Job
 	{
 		super("filterAddressJob");
 		this.viewer = viewer;
+		strStreet = new String("");
+		strCity = new String("");
+		strZip = new String("");
 	}
 
 	@Override

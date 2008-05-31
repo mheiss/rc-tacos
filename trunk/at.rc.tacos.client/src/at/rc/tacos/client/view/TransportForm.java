@@ -11,20 +11,23 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.fieldassist.AutoCompleteField;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -38,6 +41,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -52,7 +56,7 @@ import org.eclipse.ui.PlatformUI;
 import at.rc.tacos.client.controller.AssignCarAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.RemoveTransportFromMultiTransportList;
-import at.rc.tacos.client.modelManager.AddressManager;
+import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.modelManager.DiseaseManager;
 import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -72,6 +76,7 @@ import at.rc.tacos.client.util.Util;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleSorter;
 import at.rc.tacos.common.IDirectness;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
@@ -185,7 +190,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 	private Transport transport;
 
-	private ComboViewer viewerFromStreet,viewerToStreet,viewerFromCity,viewerToCity;
+	private Text textFromStreet,textToStreet,textFromCity,textToCity;
+	private AutoCompleteField acFromStreet,acToStreet,acFromCity,acToCity;
 	private ComboViewer setTextFahrer,setTextSaniI,setTextSaniII;
 	private ComboViewer setErkrVerl;
 
@@ -205,9 +211,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	private String oldPriority;
 	private String tmpPriority = "";//save the priority when the type of transport is switched (e.g. from prebooking to emergency)
 
-	//address manager
-	private AddressManager addressManager = ModelFactory.getInstance().getAddressManager();
-	
 	//determine whether to update or to create a new entry
 	private boolean createNew;
 	/**
@@ -222,6 +225,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	private String transportType;
 
 	private String authorization;
+	
+	/**
+	 * The scheduler job to start the filter
+	 */
+	private FilterAddressJob filterJob;
 
 	/**
 	 * Default class constructor used to create a new Transport.
@@ -510,10 +518,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			}
 
 			if(transport.getToCity() != null)
-				 viewerToCity.getCombo().setText(transport.getToCity());
+				textToCity.setText(transport.getToCity());
 
 			if(transport.getToStreet() != null)
-				 viewerToStreet.getCombo().setText(transport.getToStreet());
+				textToStreet.setText(transport.getToStreet());
 
 			//mandatory fields
 			if(transport.getTransportPriority() != null)
@@ -522,13 +530,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				comboPrioritaet.setText(this.priorityToString(transport.getTransportPriority()));
 			}
 
-			viewerFromStreet.getCombo().setText(transport.getFromStreet());
+			textFromStreet.setText(transport.getFromStreet());
 
 			if(transport.getPlanedLocation() != null)
 				this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(transport.getPlanedLocation()));//mandatory!! default: Bezirk
 
 			if(transport.getFromCity() != null)
-				 viewerFromCity.getCombo().setText(transport.getFromCity());
+				textFromCity.setText(transport.getFromCity());
 
 			this.dfButton.setSelection(transport.isDfAlarming());
 			this.fernfahrtButton.setSelection(transport.isLongDistanceTrip());
@@ -710,29 +718,21 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		vonLabel.setForeground(Util.getColor(0,0,255));
 		vonLabel.setText("von:");
 
-		Combo comboNachStrasse = new Combo(transportdatenGroup, SWT.NONE);
+		textToStreet = new Text(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachStrasse = new FormData();
 		fd_comboNachStrasse.right = new FormAttachment(0, 260);
 		fd_comboNachStrasse.bottom = new FormAttachment(0, 74);
 		fd_comboNachStrasse.top = new FormAttachment(0, 53);
 		fd_comboNachStrasse.left = new FormAttachment(0, 38);
-		 comboNachStrasse.setLayoutData(fd_comboNachStrasse); 	                
-         viewerToStreet = new ComboViewer(comboNachStrasse); 	 
-         viewerToStreet.setContentProvider(new IStructuredContentProvider() 	 
-         { 	 
-                 @Override 	 
-                 public Object[] getElements(Object arg0) 	 
-                 { 	 
-                         return addressManager.toStreetArray(); 	 
-                 } 	 
-
-                 @Override 	 
-                 public void dispose() { } 	 
-
-                 @Override 	 
-                 public void inputChanged(Viewer arg0, Object arg1, Object arg2) { } 	 
-         }); 	 
-         viewerToStreet.setInput(addressManager.toStreetArray());
+		textToStreet.setLayoutData(fd_comboNachStrasse);
+		textToStreet.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(final ModifyEvent e) 
+			{
+				inputChanged(textToStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
+			}
+		});
+		acToStreet = new AutoCompleteField(textToStreet, new TextContentAdapter(), new String[] {} );
 		
 		final Button buttonAddressFrom = new Button(transportdatenGroup, SWT.NONE);
 		final FormData fd_buttonAddressFrom = new FormData();
@@ -747,8 +747,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			public void widgetSelected(final SelectionEvent e) 
 			{
 				//setup and prepare the initial value
-				String initStreetValue = viewerFromStreet.getCombo().getText();
-				String initCityValue = viewerFromCity.getCombo().getText();
+				String initStreetValue = textFromStreet.getText();
+				String initCityValue = textFromCity.getText();
 				
 				//open the selection dialog to choose a address
 				AddressSelectionDialog selectionDialog = new AddressSelectionDialog(initStreetValue,initCityValue,getShell());
@@ -761,9 +761,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				
 				//fill in the form fields
 				if(selectedAddress.getStreet() != null)
-					viewerFromStreet.getCombo().setText(selectedAddress.getStreet());
+					textFromStreet.setText(selectedAddress.getStreet());
 				if(selectedAddress.getCity() != null)
-					viewerFromCity.getCombo().setText(selectedAddress.getCity());
+					textFromCity.setText(selectedAddress.getCity());
 			}
 		});
 		
@@ -780,8 +780,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			public void widgetSelected(final SelectionEvent e) 
 			{
 				//setup and prepare the initial value
-				String initStreetValue = viewerToStreet.getCombo().getText();
-				String initCityValue = viewerToCity.getCombo().getText();
+				String initStreetValue = textToStreet.getText();
+				String initCityValue = textToCity.getText();
 				
 				//open the selection dialog to choose a address
 				AddressSelectionDialog selectionDialog = new AddressSelectionDialog(initStreetValue,initCityValue,getShell());
@@ -794,35 +794,28 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				
 				//fill in the form fields
 				if(selectedAddress.getStreet() != null)
-					viewerToStreet.getCombo().setText(selectedAddress.getStreet());
+					textToStreet.setText(selectedAddress.getStreet());
 				if(selectedAddress.getCity() != null)
-					viewerToCity.getCombo().setText(selectedAddress.getCity());
+					textToCity.setText(selectedAddress.getCity());
 			}
 		});
 
-		 Combo comboVonStrasse = new Combo(transportdatenGroup, SWT.NONE);
+		textFromStreet = new Text(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonStrasse = new FormData();
 		fd_comboVonStrasse.right = new FormAttachment(0, 260);
 		fd_comboVonStrasse.bottom = new FormAttachment(0, 47);
 		fd_comboVonStrasse.top = new FormAttachment(0, 26);
 		fd_comboVonStrasse.left = new FormAttachment(0, 38);
-		 comboVonStrasse.setLayoutData(fd_comboVonStrasse);
-         viewerFromStreet = new ComboViewer(comboVonStrasse); 	 
-         viewerFromStreet.setContentProvider(new IStructuredContentProvider() 	 
-         { 	 
-                 @Override 	 
-                 public Object[] getElements(Object arg0) 	 
-                 { 	 
-                         return addressManager.toStreetArray(); 	 
-                 } 	 
-
-                 @Override 	 
-                 public void dispose() { } 	 
-
-                 @Override 	 
-                 public void inputChanged(Viewer arg0, Object arg1, Object arg2) { } 	 
-         }); 	 
-         viewerFromStreet.setInput(addressManager.toStreetArray());
+		textFromStreet.setLayoutData(fd_comboVonStrasse);
+		textFromStreet.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(final ModifyEvent e) 
+			{
+				inputChanged(textFromStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
+			}
+		});
+		acFromStreet = new AutoCompleteField(textFromStreet,new TextContentAdapter(), new String[] {} );
+		
 
 		final Label nachLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_nachLabel = new FormData();
@@ -844,53 +837,37 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		label.setForeground(Util.getColor(128, 128, 128));
 		label.setText("Straße");
 
-		 Combo comboVonOrt = new Combo(transportdatenGroup, SWT.NONE);
+		textFromCity = new Text(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboVonOrt = new FormData();
 		fd_comboVonOrt.left = new FormAttachment(0, 264);
 		fd_comboVonOrt.bottom = new FormAttachment(0, 47);
 		fd_comboVonOrt.top = new FormAttachment(0, 26);
 		fd_comboVonOrt.right = new FormAttachment(0, 420);
-		 comboVonOrt.setLayoutData(fd_comboVonOrt);
-         viewerFromCity = new ComboViewer(comboVonOrt); 	 
-         viewerFromCity.setContentProvider(new IStructuredContentProvider() 	 
-         { 	 
-                 @Override 	 
-                 public Object[] getElements(Object arg0) 	 
-                 { 	 
-                         return addressManager.toCityArray(); 	 
-                 } 	 
+		textFromCity.setLayoutData(fd_comboVonOrt);
+		textFromCity.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(final ModifyEvent e) 
+			{
+				inputChanged(textFromCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
+			}
+		});
+		acFromCity = new AutoCompleteField(textFromCity, new TextContentAdapter(), new String[] {} );
 
-                 @Override 	 
-                 public void dispose() { } 	 
-
-                 @Override 	 
-                 public void inputChanged(Viewer arg0, Object arg1, Object arg2) { } 	 
-         }); 	 
-         viewerFromCity.setInput(addressManager.toCityArray());
-
-         Combo comboNachOrt = new Combo(transportdatenGroup, SWT.NONE);
+		textToCity = new Text(transportdatenGroup, SWT.NONE);
 		final FormData fd_comboNachOrt = new FormData();
 		fd_comboNachOrt.left = new FormAttachment(0, 264);
 		fd_comboNachOrt.bottom = new FormAttachment(0, 74);
 		fd_comboNachOrt.top = new FormAttachment(0, 53);
 		fd_comboNachOrt.right = new FormAttachment(0, 420);
-		 comboNachOrt.setLayoutData(fd_comboNachOrt);
-         viewerToCity = new ComboViewer(comboNachOrt); 	 
-         viewerToCity.setContentProvider(new IStructuredContentProvider() 	 
-         { 	 
-                 @Override 	 
-                 public Object[] getElements(Object arg0) 	 
-                 { 	 
-                         return addressManager.toCityArray(); 	 
-                 } 	 
-
-                 @Override 	 
-                 public void dispose() { } 	 
-
-                 @Override 	 
-                 public void inputChanged(Viewer arg0, Object arg1, Object arg2) { } 	 
-         }); 	 
-         viewerToCity.setInput(addressManager.toCityArray());
+		textToCity.setLayoutData(fd_comboNachOrt);
+		textToCity.addModifyListener(new ModifyListener() 
+		{
+			public void modifyText(final ModifyEvent e) 
+			{
+				inputChanged(textToCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
+			}
+		});
+		acToCity = new AutoCompleteField(textToCity, new TextContentAdapter(), new String[] {} );
 
 		final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_ortLabel = new FormData();
@@ -961,8 +938,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					SickPerson person = new SickPerson();
 					person.setLastName(patientLastName.getText());
 					person.setFirstName(patientFirstName.getText());
-					person.setCityname(viewerFromCity.getCombo().getText());
-					person.setStreetname(viewerFromStreet.getCombo().getText());
+					person.setCityname(textFromCity.getText());
+					person.setStreetname(textFromStreet.getText());
 					person.setKindOfTransport(combokindOfTransport.getText());					
 
 					NetWrapper.getDefault().sendAddMessage(SickPerson.ID, person);
@@ -984,9 +961,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					if(selectedPerson.getLastName() != null)
 						patientLastName.setText(selectedPerson.getLastName());
 					if(selectedPerson.getStreetname() != null)
-						 viewerFromStreet.getCombo().setText(selectedPerson.getStreetname());
+						textFromStreet.setText(selectedPerson.getStreetname());
 					if(selectedPerson.getCityname() != null)
-						viewerFromCity.getCombo().setText(selectedPerson.getCityname());
+						textFromCity.setText(selectedPerson.getCityname());
 					if(selectedPerson.getKindOfTransport() != null)
 						combokindOfTransport.setText(selectedPerson.getKindOfTransport());
 					if(selectedPerson.getNotes() != null)
@@ -1125,8 +1102,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboZustaendigeOrtsstelle.left = new FormAttachment(0, 319);
 		comboZustaendigeOrtsstelle.setLayoutData(fd_comboZustaendigeOrtsstelle);
 
-		transportdatenGroup.setTabList(new Control[] {comboVonStrasse,comboVonOrt, patientLastName, patientFirstName, combokindOfTransport, 
-				comboNachStrasse, comboNachOrt, ruecktransportMoeglichButton, rufhilfepatientButton,  begleitpersonButton, 
+		transportdatenGroup.setTabList(new Control[] {textFromStreet, textFromCity, patientLastName, patientFirstName, combokindOfTransport, 
+				textToStreet, textToCity, ruecktransportMoeglichButton, rufhilfepatientButton,  begleitpersonButton, 
 				textAnrufer, textTelefonAnrufer,comboZustaendigeOrtsstelle});
 
 		planungGroup = new Group(client, SWT.NONE);
@@ -2227,19 +2204,19 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			public void widgetSelected(final SelectionEvent e) 
 			{
 				DialysisPatient dia = new DialysisPatient();
-				 if(!viewerFromStreet.getCombo().getText().equalsIgnoreCase(""))
-					 dia.setFromStreet(viewerFromStreet.getCombo().getText());
+				if(!textFromStreet.getText().equalsIgnoreCase(""))
+					dia.setFromStreet(textFromStreet.getText());
 				else
 					dia.setFromStreet("<bitte ausfüllen>");
 
-				 if(!viewerFromCity.getCombo().getText().equalsIgnoreCase(""))
-					 dia.setFromCity(viewerFromCity.getCombo().getText());
+				if(!textFromCity.getText().equalsIgnoreCase(""))
+					dia.setFromCity(textFromCity.getText());
 				else
 					dia.setFromCity("<bitte ausfüllen>");
 
-				 dia.setToStreet(viewerToStreet.getCombo().getText());
+				dia.setToStreet(textToStreet.getText());
 
-				 dia.setToCity(viewerToCity.getCombo().getText());
+				dia.setToCity(textToCity.getText());
 				int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
 				if(index != -1)
 					dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
@@ -2438,20 +2415,19 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			if(!viewerAssign.getTable().isDisposed())
 				viewerAssign.refresh();
 		}
-		
-		 //update the view when a address has changed 	 
-        if ("ADDRESS_ADD".equals(evt.getPropertyName()) 	 
-                        || "ADDRESS_REMOVE".equalsIgnoreCase(evt.getPropertyName()) 	 
-                        || "ADDRESS_UPDATE".equalsIgnoreCase(evt.getPropertyName()) 	 
-                        || "ADDRESS_CLEARED".equalsIgnoreCase(evt.getPropertyName()) 	 
-                        || "ADDRESS_ADD_ALL".equalsIgnoreCase(evt.getPropertyName())) 	 
-        { 	 
-                //update the address data 	 
-                viewerFromCity.refresh(); 	 
-                viewerToCity.refresh(); 	 
-                viewerToStreet.refresh(); 	 
-                viewerFromStreet.refresh(); 	 
-        }
+		String event = evt.getPropertyName();
+		if("ADDRESS_ADD".equalsIgnoreCase(event) ||
+				"ADDRESS_REMOVE".equalsIgnoreCase(event) ||
+				"ADDRESS_UPDATE".equalsIgnoreCase(event) ||
+				"ADDRESS_CLEARED".equalsIgnoreCase(event) ||
+				"ADDRESS_ADD_ALL".equalsIgnoreCase(event))
+		{
+			//update the proposal listeners
+			acFromStreet.setProposals(ModelFactory.getInstance().getAddressManager().toStreetArray());
+			acFromCity.setProposals(ModelFactory.getInstance().getAddressManager().toCityArray());
+			acToStreet.setProposals(ModelFactory.getInstance().getAddressManager().toStreetArray());
+			acToCity.setProposals(ModelFactory.getInstance().getAddressManager().toCityArray());
+		}
 	}
 
 	/**
@@ -2537,7 +2513,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		setMessage("Hier können Sie einen neuen Transport anlegen");
 
 		//the street
-		   if (viewerFromStreet.getCombo().getText().length() > 100)
+		if (textFromStreet.getText().length() > 100)
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Der Straßenname (von)darf höchstens 100 Zeichen lang sein");
@@ -2545,17 +2521,17 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		}
 
 
-		   if (viewerFromStreet.getCombo().getText().trim().isEmpty())
+		if (textFromStreet.getText().trim().isEmpty())
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
 			return false;
 		}
 
-		transport.setFromStreet(viewerFromStreet.getCombo().getText());
+		transport.setFromStreet(textFromStreet.getText());
 
 		//the from city
-		   if(viewerFromCity.getCombo().getText().length() > 50 )
+		if(textFromCity.getText().length() > 50 )
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Der Stadtname (von)darf höchstens 50 Zeichen lang sein");
@@ -2563,7 +2539,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		}
 
 		//the city--> can be empty if the street is LKH or PH
-		   if (viewerFromCity.getCombo().getText().trim().isEmpty() &!
+		if (textFromCity.getText().trim().isEmpty() &!
 				(transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")
 						|| transport.getFromStreet().contains("PH") || transport.getFromStreet().startsWith("PH") ))
 		{
@@ -2572,16 +2548,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			return false;
 		}
 
-		   transport.setFromCity(viewerFromCity.getCombo().getText());
+		transport.setFromCity(textFromCity.getText());
 
-		   if (viewerToStreet.getCombo().getText().length() > 100)
+		if (textToStreet.getText().length() > 100)
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Der Straßenname (nach) darf höchstens 100 Zeichen lang sein");
 			return false;
 		}
 
-		   if (viewerToCity.getCombo().getText().length() > 50)
+		if (textToCity.getText().length() > 50)
 		{
 			getShell().getDisplay().beep();
 			setErrorMessage("Der Stadtname (nach) darf höchstens 50 Zeichen lang sein");
@@ -2793,8 +2769,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		transport.setFeedback(textRueckmeldung.getText());
 
 		//the destination
-		 transport.setToStreet(viewerToStreet.getCombo().getText());
-		 transport.setToCity(viewerToCity.getCombo().getText());
+		transport.setToStreet(textToStreet.getText());
+		transport.setToCity(textToCity.getText());
 
 		//the boolean values
 		transport.setAssistantPerson(begleitpersonButton.getSelection());
@@ -3305,5 +3281,53 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		//add the actions			
 		manager.add(removeAction);
+	}
+	
+	//PRIVATE METHODS
+	/**
+	 * Called when the input text of a filter is changes
+	 */
+	private void inputChanged(String changedText,String filterType)
+	{
+		//assert valid
+		if(changedText == null)
+			return;
+		
+		//get the entered text
+		if(changedText.trim().length() < 1)
+		{
+			setErrorMessage("Bitte geben sie mindestens ein Zeiche ein um die Autovervollständigung zu nutzen");
+			Display.getCurrent().beep();
+			return;
+		}
+		setErrorMessage(null);
+		
+		if(filterJob == null)
+			filterJob = new FilterAddressJob(null);
+		
+		//check the state
+		if(filterJob.getState() == Job.RUNNING)
+		{
+			System.out.println("Job is currently running");
+			return;
+		}
+		
+		//check if the filter should return streets
+		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_STREET))
+			filterJob.setStrStreet(changedText);
+		else
+			filterJob.setStrStreet("");
+		//check if the filter should return cities
+		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_CITY))
+			filterJob.setStrCity("");
+		filterJob.setStrCity(changedText);
+		//check if the filter should return zip codes
+		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_ZIP))
+			filterJob.setStrZip(changedText);
+		else
+			filterJob.setStrZip("");
+		
+		//schedule the thread to run now
+		filterJob.schedule(0);
 	}
 }
