@@ -107,6 +107,7 @@ public class ImportAddressAction extends Action
 					try
 					{
 						List<AbstractMessage> addressList = new ArrayList<AbstractMessage>();
+						monitor.beginTask("Importiere die Adressdaten", elementList.size());
 						//loop an import
 						for(int i = 0; i<elementList.size(); i++)
 						{
@@ -116,9 +117,25 @@ public class ImportAddressAction extends Action
 							int gkz = Integer.parseInt((String)line.get("GKZ"));
 							String city = (String)line.get("Gemeindename");
 							String street = (String)line.get("BEZEICHNUNG");
+							Address newAddress = new Address(gkz,city,street);
+							monitor.setTaskName("Importiere Datensatz #"+i+" ("+newAddress+")");
 							
-							//send the request to add
-							NetWrapper.getDefault().sendAddMessage(Address.ID, new Address(gkz,city,street));
+							//add to the list
+							addressList.add(newAddress);
+							
+							//commit 100 entries at one time
+							if(addressList.size() > 100)
+							{
+								monitor.setTaskName("Sende Daten an Server");
+								NetWrapper.getDefault().sendAddAllMessage(Address.ID, addressList);
+								addressList = new ArrayList<AbstractMessage>();
+							}
+						}
+						//commit the remaining entries
+						if(!addressList.isEmpty())
+						{
+							monitor.setTaskName("Sende Daten an Server");
+							NetWrapper.getDefault().sendAddAllMessage(Address.ID, addressList);
 						}
 						return Status.OK_STATUS;
 					}
@@ -126,6 +143,10 @@ public class ImportAddressAction extends Action
 					{
 						Activator.getDefault().log("Failed to parse the given csv file :"+path, IStatus.ERROR);
 						return Status.CANCEL_STATUS;
+					}
+					finally
+					{
+						monitor.done();
 					}
 				}
 			};
@@ -138,7 +159,8 @@ public class ImportAddressAction extends Action
 						Activator.getDefault().log("Failed to import the addresses",IStatus.ERROR);
 				}
 			});
-			job.setSystem(true);
+			job.setUser(true);
+			job.setSystem(false);
 			// start immediate
 			job.schedule(); 
 		}
