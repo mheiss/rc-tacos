@@ -250,7 +250,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		vonLabel.setText("von:");
 		vonLabel.setBounds(10, 42, 25, 13);
 
-		textToStreet = new Text(transportdatenGroup, SWT.NONE);
+		textToStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textToStreet.setBounds(41, 66, 230, 21);
 		textToStreet.addModifyListener(new ModifyListener() 
 		{
@@ -261,7 +261,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		});
 		acToStreet = new AutoCompleteField(textToStreet, new TextContentAdapter(), new String[] {} );
 
-		textFromStreet = new Text(transportdatenGroup, SWT.NONE);
+		textFromStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textFromStreet.setBounds(41, 39, 230, 21);
 		textFromStreet.addModifyListener(new ModifyListener() 
 		{
@@ -282,7 +282,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		label.setText("Straﬂe");
 		label.setBounds(41, 20, 56, 13);
 
-		textFromCity = new Text(transportdatenGroup, SWT.NONE);
+		textFromCity = new Text(transportdatenGroup,SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textFromCity.setBounds(277, 39, 156, 21);
 		textFromCity.addModifyListener(new ModifyListener() 
 		{
@@ -293,7 +293,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		});
 		acFromCity = new AutoCompleteField(textFromCity, new TextContentAdapter(), new String[] {} );
 
-		textToCity = new Text(transportdatenGroup, SWT.NONE);
+		textToCity = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textToCity.setBounds(277, 66, 156, 21);
 		textToCity.addModifyListener(new ModifyListener() 
 		{
@@ -309,7 +309,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		ortLabel.setText("Ort");
 		ortLabel.setBounds(322, 20, 25, 13);
 
-		textPatientLastName = new Text(transportdatenGroup, SWT.NONE);
+		textPatientLastName = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textPatientLastName.setBounds(467, 39, 171, 21);
 
 		final Label nachnameLabel = new Label(transportdatenGroup, SWT.NONE);
@@ -317,7 +317,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		nachnameLabel.setText("Nachname");
 		nachnameLabel.setBounds(467, 20, 56, 13);
 
-		textPatientFirstName = new Text(transportdatenGroup, SWT.NONE);
+		textPatientFirstName = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textPatientFirstName.setBounds(644, 39, 171, 21);
 
 		button = new Button(transportdatenGroup, SWT.NONE);
