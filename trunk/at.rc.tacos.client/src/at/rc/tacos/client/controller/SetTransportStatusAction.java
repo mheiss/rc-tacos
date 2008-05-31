@@ -78,8 +78,6 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		System.out.println("transport: " +transport);
-		System.out.println("trmessage: " +transport.getStatusMessages());
 		if(transport.getStatusMessages().containsKey(status))
 		{
 				return ImageFactory.getInstance().getRegisteredImageDescriptor("vehicle.ready");
