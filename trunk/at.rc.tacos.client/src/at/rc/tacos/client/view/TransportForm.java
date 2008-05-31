@@ -718,7 +718,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		vonLabel.setForeground(Util.getColor(0,0,255));
 		vonLabel.setText("von:");
 
-		textToStreet = new Text(transportdatenGroup, SWT.NONE);
+		textToStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_comboNachStrasse = new FormData();
 		fd_comboNachStrasse.right = new FormAttachment(0, 260);
 		fd_comboNachStrasse.bottom = new FormAttachment(0, 74);
@@ -800,7 +800,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			}
 		});
 
-		textFromStreet = new Text(transportdatenGroup, SWT.NONE);
+		textFromStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_comboVonStrasse = new FormData();
 		fd_comboVonStrasse.right = new FormAttachment(0, 260);
 		fd_comboVonStrasse.bottom = new FormAttachment(0, 47);
@@ -837,7 +837,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		label.setForeground(Util.getColor(128, 128, 128));
 		label.setText("Straﬂe");
 
-		textFromCity = new Text(transportdatenGroup, SWT.NONE);
+		textFromCity = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_comboVonOrt = new FormData();
 		fd_comboVonOrt.left = new FormAttachment(0, 264);
 		fd_comboVonOrt.bottom = new FormAttachment(0, 47);
@@ -853,7 +853,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		});
 		acFromCity = new AutoCompleteField(textFromCity, new TextContentAdapter(), new String[] {} );
 
-		textToCity = new Text(transportdatenGroup, SWT.NONE);
+		textToCity = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_comboNachOrt = new FormData();
 		fd_comboNachOrt.left = new FormAttachment(0, 264);
 		fd_comboNachOrt.bottom = new FormAttachment(0, 74);
@@ -879,7 +879,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ortLabel.setForeground(Util.getColor(128, 128, 128));
 		ortLabel.setText("Ort");
 
-		patientLastName = new Text(transportdatenGroup, SWT.NONE);
+		patientLastName = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_comboNachname = new FormData();
 		fd_comboNachname.bottom = new FormAttachment(0, 47);
 		fd_comboNachname.top = new FormAttachment(0, 26);
@@ -897,7 +897,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		nachnameLabel.setForeground(Util.getColor(128, 128, 128));
 		nachnameLabel.setText("Nachname");
 
-		patientFirstName = new Text(transportdatenGroup, SWT.NONE);
+		patientFirstName = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_vornameVorname = new FormData();
 		fd_vornameVorname.bottom = new FormAttachment(0, 47);
 		fd_vornameVorname.top = new FormAttachment(0, 26);
