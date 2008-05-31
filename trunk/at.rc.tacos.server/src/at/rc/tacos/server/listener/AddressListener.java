@@ -39,6 +39,7 @@ public class AddressListener extends ServerListenerAdapter
 	@Override
 	public List<AbstractMessage> handleAddAllRequest(List<AbstractMessage> addList) throws DAOException,SQLException
 	{
+		logger.info("Address records added: "+addList.size()+ " Einträge");
 		//loop and add all address recors
 		for(AbstractMessage abstractAddress: addList)
 		{
