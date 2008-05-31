@@ -24,6 +24,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import com.swtdesigner.SWTResourceManager;
 
 import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.modelManager.LockManager;
@@ -56,6 +58,9 @@ import at.rc.tacos.model.SickPerson;
  */
 public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 {
+	private Composite composite;
+	private Label dialysetransportBearbeitenLabel;
+	private Label dialysetransportLabel;
 	private Text textFertig;
 	private Label abfLabel_1;
 	private Button abbrechenButton;
@@ -205,7 +210,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 
 		//get the shell and resize
-		shell.setSize(1083, 223);
+		shell.setSize(1083, 370);
 
 		//calculate and draw centered
 		Rectangle workbenchSize = parent.getBounds();
@@ -235,12 +240,14 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		});
 		shell.setLayout(new FormLayout());
 		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		shell.setText("Dialysetransport");
+		shell.setText("Dialysepatient");
 
 		transportdatenGroup = new Group(shell, SWT.NONE);
 		final FormData fd_transportdatenGroup = new FormData();
-		fd_transportdatenGroup.right = new FormAttachment(0, 1067);
-		fd_transportdatenGroup.left = new FormAttachment(0, 205);
+		fd_transportdatenGroup.bottom = new FormAttachment(0, 293);
+		fd_transportdatenGroup.top = new FormAttachment(0, 111);
+		fd_transportdatenGroup.right = new FormAttachment(0, 1066);
+		fd_transportdatenGroup.left = new FormAttachment(0, 204);
 		transportdatenGroup.setLayoutData(fd_transportdatenGroup);
 		transportdatenGroup.setForeground(Util.getColor(128, 128, 128));
 		transportdatenGroup.setText("Transportdaten");
@@ -437,8 +444,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, textAbfRT, textFertig});
 
 		patientenzustandGroup = new Group(shell, SWT.NONE);
-		fd_transportdatenGroup.bottom = new FormAttachment(patientenzustandGroup, 150, SWT.TOP);
-		fd_transportdatenGroup.top = new FormAttachment(patientenzustandGroup, 0, SWT.TOP);
 		transportdatenGroup.setTabList(new Control[] {
 				textFromStreet, textFromCity, textPatientLastName, textPatientFirstName, combokindOfTransport, 
 				textToStreet, textToCity, begleitpersonButton, 
@@ -504,10 +509,10 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		abbrechenButton = new Button(shell, SWT.NONE);
 		final FormData fd_abbrechenButton = new FormData();
-		fd_abbrechenButton.top = new FormAttachment(patientenzustandGroup, -23, SWT.BOTTOM);
-		fd_abbrechenButton.bottom = new FormAttachment(patientenzustandGroup, 0, SWT.BOTTOM);
-		fd_abbrechenButton.left = new FormAttachment(transportdatenGroup, -96, SWT.RIGHT);
-		fd_abbrechenButton.right = new FormAttachment(transportdatenGroup, 0, SWT.RIGHT);
+		fd_abbrechenButton.left = new FormAttachment(0, 967);
+		fd_abbrechenButton.right = new FormAttachment(0, 1063);
+		fd_abbrechenButton.bottom = new FormAttachment(0, 326);
+		fd_abbrechenButton.top = new FormAttachment(0, 303);
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
 		abbrechenButton.setText("Abbrechen");
 		//listener
@@ -530,10 +535,10 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		okButton = new Button(shell, SWT.NONE);
 		final FormData fd_okButton = new FormData();
-		fd_okButton.top = new FormAttachment(abbrechenButton, -23, SWT.BOTTOM);
-		fd_okButton.bottom = new FormAttachment(abbrechenButton, 0, SWT.BOTTOM);
-		fd_okButton.left = new FormAttachment(abbrechenButton, -101, SWT.LEFT);
-		fd_okButton.right = new FormAttachment(abbrechenButton, -5, SWT.LEFT);
+		fd_okButton.bottom = new FormAttachment(0, 326);
+		fd_okButton.top = new FormAttachment(0, 303);
+		fd_okButton.right = new FormAttachment(0, 961);
+		fd_okButton.left = new FormAttachment(0, 865);
 		okButton.setLayoutData(fd_okButton);
 		okButton.setText("OK");
 		okButton.addListener(SWT.Selection, new Listener()
@@ -1092,7 +1097,47 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 			}
 
 		});
-		shell.setTabList(new Control[] {planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton});
+
+		dialysetransportLabel = new Label(shell, SWT.NONE);
+		dialysetransportLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		dialysetransportLabel.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD));
+		final FormData fd_dialysetransportLabel = new FormData();
+		fd_dialysetransportLabel.bottom = new FormAttachment(0, 26);
+		fd_dialysetransportLabel.right = new FormAttachment(0, 122);
+		fd_dialysetransportLabel.top = new FormAttachment(0, 10);
+		fd_dialysetransportLabel.left = new FormAttachment(0, 9);
+		dialysetransportLabel.setLayoutData(fd_dialysetransportLabel);
+		dialysetransportLabel.setText("Dialysepatient");
+
+		dialysetransportBearbeitenLabel = new Label(shell, SWT.NONE);
+		dialysetransportBearbeitenLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		final FormData fd_dialysetransportBearbeitenLabel = new FormData();
+		fd_dialysetransportBearbeitenLabel.right = new FormAttachment(0, 481);
+		fd_dialysetransportBearbeitenLabel.bottom = new FormAttachment(0, 65);
+		fd_dialysetransportBearbeitenLabel.top = new FormAttachment(0, 47);
+		fd_dialysetransportBearbeitenLabel.left = new FormAttachment(0, 9);
+		dialysetransportBearbeitenLabel.setLayoutData(fd_dialysetransportBearbeitenLabel);
+		dialysetransportBearbeitenLabel.setText("Hier können sie Dialysepatienten und die zugehörigen Transportdaten anlegen oder bearbeiten.");
+
+		composite = new Composite(shell, SWT.NONE);
+		composite.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		final FormData fd_composite = new FormData();
+		fd_composite.right = new FormAttachment(0, 1076);
+		fd_composite.bottom = new FormAttachment(0, 76);
+		fd_composite.top = new FormAttachment(0, 0);
+		fd_composite.left = new FormAttachment(0, 0);
+		composite.setLayoutData(fd_composite);
+		composite.setLayout(new FormLayout());
+
+		final Label label_1 = new Label(composite, SWT.NONE);
+		final FormData fd_label_1 = new FormData();
+		fd_label_1.left = new FormAttachment(0, 986);
+		fd_label_1.right = new FormAttachment(0, 1075);
+		fd_label_1.bottom = new FormAttachment(0, 75);
+		fd_label_1.top = new FormAttachment(0, 1);
+		label_1.setLayoutData(fd_label_1);
+		label_1.setBackgroundImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
+		shell.setTabList(new Control[] {planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton, dialysetransportLabel, dialysetransportBearbeitenLabel, composite});
 
 	}
 
