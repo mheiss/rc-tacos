@@ -40,7 +40,7 @@ public class SetBD1Action extends Action implements IProgramStatus
 		//get the selected transport
 		transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 
-		transport.setBlueLight1(true);
+		transport.setBlueLight1(!transport.isBlueLight1());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 	
