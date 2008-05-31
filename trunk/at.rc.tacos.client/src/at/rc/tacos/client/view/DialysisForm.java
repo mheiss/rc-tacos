@@ -1100,11 +1100,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent evt)
 	{
 		String event = evt.getPropertyName();
-		if("ADDRESS_ADD".equalsIgnoreCase(event) ||
-				"ADDRESS_REMOVE".equalsIgnoreCase(event) ||
-				"ADDRESS_UPDATE".equalsIgnoreCase(event) ||
-				"ADDRESS_CLEARED".equalsIgnoreCase(event) ||
-				"ADDRESS_ADD_ALL".equalsIgnoreCase(event))
+		if("ADDRESS_ADD".equalsIgnoreCase(event) || "ADDRESS_ADD_ALL".equalsIgnoreCase(event))
 		{
 			//update the proposal listeners
 			acFromStreet.setProposals(ModelFactory.getInstance().getAddressManager().toStreetArray());
@@ -1148,8 +1144,9 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 			filterJob.setStrStreet("");
 		//check if the filter should return cities
 		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_CITY))
+			filterJob.setStrCity(changedText);
+		else
 			filterJob.setStrCity("");
-		filterJob.setStrCity(changedText);
 		//check if the filter should return zip codes
 		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_ZIP))
 			filterJob.setStrZip(changedText);

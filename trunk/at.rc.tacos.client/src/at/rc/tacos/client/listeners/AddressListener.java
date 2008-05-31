@@ -39,11 +39,14 @@ public class AddressListener extends ClientListenerAdapter
 	{
 		//remove all elements
 		manager.removeAllElements();
-		//loop and add
-		for(AbstractMessage listObject:listMessage)
+		//create a new list and add all addresses
+		List<Address> addressList = new ArrayList<Address>();
+		for(AbstractMessage addObject:listMessage)
 		{
-			manager.add((Address)listObject);
+			Address address = (Address)addObject;
+			addressList.add(address);
 		}
+		manager.addAll(addressList);
 	}
 
 	@Override
