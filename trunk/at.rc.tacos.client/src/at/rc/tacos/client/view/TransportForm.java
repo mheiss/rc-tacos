@@ -2379,6 +2379,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	@Override
 	public void propertyChange(PropertyChangeEvent evt)
 	{
+		String event = evt.getPropertyName();
 		// the viewer represents simple model. refresh should be enough.
 		if ("STAFF_ADD".equals(evt.getPropertyName())
 				|| "STAFF_REMOVE".equals(evt.getPropertyName())
@@ -2415,12 +2416,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			if(!viewerAssign.getTable().isDisposed())
 				viewerAssign.refresh();
 		}
-		String event = evt.getPropertyName();
-		if("ADDRESS_ADD".equalsIgnoreCase(event) ||
-				"ADDRESS_REMOVE".equalsIgnoreCase(event) ||
-				"ADDRESS_UPDATE".equalsIgnoreCase(event) ||
-				"ADDRESS_CLEARED".equalsIgnoreCase(event) ||
-				"ADDRESS_ADD_ALL".equalsIgnoreCase(event))
+		if("ADDRESS_ADD".equalsIgnoreCase(event) || "ADDRESS_ADD_ALL".equalsIgnoreCase(event))
 		{
 			//update the proposal listeners
 			acFromStreet.setProposals(ModelFactory.getInstance().getAddressManager().toStreetArray());
@@ -3293,6 +3289,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if(changedText == null)
 			return;
 		
+		System.out.println("Input chagend to: "+changedText);
+		
 		//get the entered text
 		if(changedText.trim().length() < 1)
 		{
@@ -3319,8 +3317,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			filterJob.setStrStreet("");
 		//check if the filter should return cities
 		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_CITY))
+			filterJob.setStrCity(changedText);
+		else
 			filterJob.setStrCity("");
-		filterJob.setStrCity(changedText);
 		//check if the filter should return zip codes
 		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_ZIP))
 			filterJob.setStrZip(changedText);

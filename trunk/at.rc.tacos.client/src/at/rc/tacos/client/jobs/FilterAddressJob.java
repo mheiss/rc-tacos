@@ -84,20 +84,20 @@ public class FilterAddressJob extends Job
 	 * @param strStreet the strStreet to set
 	 */
 	public void setStrStreet(String strStreet) {
-		this.strStreet = strStreet;
+		this.strStreet = strStreet.trim().toLowerCase();
 	}
 
 	/**
 	 * @param strCity the strCity to set
 	 */
 	public void setStrCity(String strCity) {
-		this.strCity = strCity;
+		this.strCity = strCity.trim().toLowerCase();
 	}
 
 	/**
 	 * @return the strZip
 	 */
 	public void setStrZip(String strZip) {
-		this.strZip = strZip;
+		this.strZip = strZip.trim().toLowerCase();
 	}
 }
