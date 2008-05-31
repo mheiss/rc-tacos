@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -25,10 +26,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
-import org.eclipse.ui.forms.widgets.Section;
 
 import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -121,13 +120,13 @@ public class VehicleForm extends TitleAreaDialog
 	{
 		//setup the composite
 		Composite composite = (Composite) super.createDialogArea(parent);
+		composite.setBackground(CustomColors.SECTION_BACKGROUND);
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 
 		//create the sections
 		createDetailSection(composite);
 		createStatusSection(composite);
 		createCrewSection(composite);
-		createNotesSection(composite);
 
 		//init if we have a vehicle
 		if(vehicleDetail != null)
@@ -255,21 +254,16 @@ public class VehicleForm extends TitleAreaDialog
 	 */
 	private void createDetailSection(Composite parent)
 	{
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText("Fahrzeugdetails");
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setExpanded(true);
-
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
+		Composite client = new Composite(parent, SWT.NONE);
 		//layout
 		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginLeft = 15;
 		gridLayout.numColumns = 2;
 		client.setLayout(gridLayout);
+		client.setBackground(CustomColors.SECTION_BACKGROUND);
 
 		final Label labelStaff = new Label(client, SWT.NONE);
+		labelStaff.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelStaff.setText("Fahrzeug:");
 
 		Combo vehicleCombo = new Combo(client, SWT.READ_ONLY);
@@ -281,6 +275,7 @@ public class VehicleForm extends TitleAreaDialog
 
 		//Mobile Phone
 		final Label labelPhone = new Label(client, SWT.NONE);
+		labelPhone.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelPhone.setText("Handy :");
 
 		Combo mobilePhoneCombo = new Combo(client, SWT.READ_ONLY);
@@ -291,6 +286,7 @@ public class VehicleForm extends TitleAreaDialog
 
 		//Station
 		final Label labelStation = new Label(client, SWT.NONE);
+		labelStation.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelStation.setText("Aktuelle Ortsstelle :");
 
 		Combo stationCombo = new Combo(client, SWT.READ_ONLY);
@@ -326,13 +322,13 @@ public class VehicleForm extends TitleAreaDialog
 		labelStation.setLayoutData(data);
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
-		data2.widthHint= 200;
+		data2.widthHint= 215;
 		vehicleCombo.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		data2.widthHint= 200;
+		data2.widthHint= 215;
 		mobilePhoneCombo.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		data2.widthHint= 200;
+		data2.widthHint= 215;
 		stationCombo.setLayoutData(data2);
 	}
 
@@ -342,23 +338,14 @@ public class VehicleForm extends TitleAreaDialog
 	 */
 	private void createStatusSection(Composite parent)
 	{
-		//create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText("Einsatzstatus");
-		section.setDescription("Der aktuelle Einsatzstatus des Fahrzeuges");
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setExpanded(true);
-
 		//composite to add the client area
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
+		Composite client = new Composite(parent, SWT.NONE);
+		client.setBackground(CustomColors.SECTION_BACKGROUND);
 
 		//layout
 		GridLayout layout = new GridLayout();
+		layout.marginLeft = 15;
 		layout.numColumns = 2;
-		layout.horizontalSpacing = 15;
 		layout.makeColumnsEqualWidth = false;
 		client.setLayout(layout);
 		GridData clientDataLayout = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
@@ -390,6 +377,7 @@ public class VehicleForm extends TitleAreaDialog
 
 		//Ready for action
 		readyButton = new Button(client, SWT.CHECK);
+		readyButton.setBackground(CustomColors.SECTION_BACKGROUND);
 		readyButton.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -418,6 +406,7 @@ public class VehicleForm extends TitleAreaDialog
 
 		//Out of Order
 		outOfOrder = new Button(client, SWT.CHECK); 
+		outOfOrder.setBackground(CustomColors.SECTION_BACKGROUND);
 		outOfOrder.addSelectionListener(listener);
 		outOfOrder.setText("Auﬂer Dienst");
 	}
@@ -428,22 +417,14 @@ public class VehicleForm extends TitleAreaDialog
 	 */
 	private void createCrewSection(Composite parent)
 	{
-		//create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText("Fahrzeugbesatzung");
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setExpanded(true);
-
 		//composite to add the client area
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
+		Composite client = new Composite(parent, SWT.NONE);
+		client.setBackground(CustomColors.SECTION_BACKGROUND);
 
 		//layout
 		GridLayout layout = new GridLayout();
+		layout.marginLeft = 15;
 		layout.numColumns = 2;
-		layout.horizontalSpacing = 15;
 		layout.makeColumnsEqualWidth = false;
 		client.setLayout(layout);
 		GridData clientDataLayout = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
@@ -451,6 +432,7 @@ public class VehicleForm extends TitleAreaDialog
 
 		//driver
 		final Label labelDriver = new Label(client, SWT.NONE);
+		labelDriver.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelDriver.setText("Fahrer :");
 
 		//create composite for the combo and the image
@@ -485,6 +467,7 @@ public class VehicleForm extends TitleAreaDialog
 
 		//medic1
 		final Label labelMedic1 = new Label(client, SWT.NONE);
+		labelMedic1.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelMedic1.setText("Sanit‰ter :");
 
 		//create composite for the combo and the image
@@ -518,6 +501,7 @@ public class VehicleForm extends TitleAreaDialog
 
 		//medic2
 		final Label labelMedic2 = new Label(client, SWT.NONE);
+		labelMedic2.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelMedic2.setText("Sanit‰ter :");
 
 		//create composite for the combo and the image
@@ -552,55 +536,35 @@ public class VehicleForm extends TitleAreaDialog
 
 		//layout for the labels
 		GridData data = new GridData();
-		data.widthHint = 100;
+		data.widthHint = 50;
 		labelDriver.setLayoutData(data);
 		data = new GridData();
-		data.widthHint = 100;
+		data.widthHint = 50;
 		labelMedic1.setLayoutData(data);
 		data = new GridData();
-		data.widthHint = 100;
+		data.widthHint = 50;
 		labelMedic2.setLayoutData(data);
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint= 180;
 		driverCombo.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint= 180;
 		medic1Combo.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint= 180;
 		medic2Combo.setLayoutData(data2);
-	}
 
-	/**
-	 * Creates the notes section
-	 * @param parent the parent composite
-	 */
-	private void createNotesSection(Composite parent)
-	{
-		//create the section
-		Section dayInfoSection = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR);
-		toolkit.createCompositeSeparator(dayInfoSection);
-		dayInfoSection.setText("Anmerkungen");
-		dayInfoSection.setExpanded(true);
-		dayInfoSection.setLayout(new GridLayout());
-		//info should span over two
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
-		dayInfoSection.setLayoutData(data);
-
-		//create the container for the notes
-		Composite notesField = toolkit.createComposite(dayInfoSection);
-		dayInfoSection.setClient(notesField);
-		notesField.setLayout(new GridLayout());
-		GridData notesData = new GridData(GridData.FILL_BOTH);
-		notesData.heightHint = 80;
-		notesData.grabExcessVerticalSpace = true;
-		notesData.grabExcessHorizontalSpace = true;
-		notesField.setLayoutData(notesData);
-
-		noteEditor = new TextViewer(notesField, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		noteEditor = new TextViewer(client, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		final StyledText styledText = noteEditor.getTextWidget();
+		final GridData gd_styledText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 10);
+		gd_styledText.heightHint = 57;
+		gd_styledText.widthHint = 330;
+		styledText.setLayoutData(gd_styledText);
 		noteEditor.setDocument(new Document());
-		noteEditor.getControl().setLayoutData(notesData);
 		noteEditor.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		noteEditor.setEditable(true);
+	
 	}
 
 	/**
@@ -646,5 +610,9 @@ public class VehicleForm extends TitleAreaDialog
 			return false;
 		}
 		return true;
+	}
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText(vehicleDetail.getVehicleName());
 	}
 }
