@@ -78,7 +78,7 @@ public class DetachCarAction extends Action implements IProgramStatus
 		{
 			transport.getStatusMessages().clear();
 			transport.clearVehicleDetail();
-			transport.setNotes(transport.getNotes() +"Fahrzeugabzug: " +dlg.getValue());
+			transport.setNotes(transport.getNotes() +"Fahrzeugabzug: " +dlg.getValue() +"; ");
 			transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
 			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 		}
