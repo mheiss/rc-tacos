@@ -415,6 +415,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	 */
 	private void fillContextMenu(IMenuManager manager)
 	{
+		makeActions();
 		//get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 			
