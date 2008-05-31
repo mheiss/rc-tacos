@@ -12,6 +12,7 @@ import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,11 +21,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.events.IExpansionListener;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
+
+
 
 import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
@@ -156,7 +155,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	protected Control createDialogArea(Composite parent)
 	{
 		//setup the composite
+		parent.setBackground(CustomColors.SECTION_BACKGROUND);
 		Composite composite = (Composite) super.createDialogArea(parent);
+		composite.setBackground(CustomColors.SECTION_BACKGROUND);
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 
 		//create the content of the dialog
@@ -268,33 +269,20 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	 */
 	private void createGeneralSection(Composite parent)
 	{
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText("Allgemeine Daten");
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setExpanded(true);
-		section.addExpansionListener(new IExpansionListener() 
-		{
-			public void expansionStateChanging(ExpansionEvent e) 
-			{
-				getShell().pack(true);
-			}
-
-			public void expansionStateChanged(ExpansionEvent e) 
-			{
-				getShell().pack(true);
-			}
-		});
-
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
+		Composite client = new Composite(parent, SWT.NONE);
+		client.setLayoutData(new GridData(484, SWT.DEFAULT));
+		client.setBackground(CustomColors.SECTION_BACKGROUND);
 		//layout
 		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 10;
+		gridLayout.marginBottom = 20;
+		gridLayout.marginTop = 10;
+		gridLayout.marginLeft = 0;
 		gridLayout.numColumns = 2;
 		client.setLayout(gridLayout);
 
 		final Label labelStaff = new Label(client, SWT.NONE);
+		labelStaff.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelStaff.setText("Mitarbeiter:");
 
 		Combo combo = new Combo(client, SWT.READ_ONLY);
@@ -304,6 +292,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		employeenameCombo.setInput(ModelFactory.getInstance().getStaffManager());
 
 		final Label labelStation = new Label(client, SWT.NONE);
+		labelStation.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelStation.setText("Ortsstelle:");
 
 		Combo comboOrts = new Combo(client, SWT.READ_ONLY);
@@ -313,13 +302,15 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		comboOrtsstelle.setInput(ModelFactory.getInstance().getJobList());
 
 		bereitschaftButton = new Button(client, SWT.CHECK);
+		bereitschaftButton.setBackground(CustomColors.SECTION_BACKGROUND);
 		bereitschaftButton.setText("Bereitschaft");
 		//should span over two
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
+		GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		data.widthHint = 429;
 		bereitschaftButton.setLayoutData(data);
 
 		final Label labelJob = new Label(client, SWT.NONE);
+		labelJob.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelJob.setText("Verwendung:");
 
 		Combo comboVerw = new Combo(client, SWT.READ_ONLY);
@@ -329,6 +320,7 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		comboVerwendung.setInput(ModelFactory.getInstance().getJobList());
 
 		final Label labelService = new Label(client, SWT.NONE);
+		labelService.setBackground(CustomColors.SECTION_BACKGROUND);
 		labelService.setText("Dienstverhältnis:");
 
 		Combo comboDienstv = new Combo(client,SWT.READ_ONLY);
@@ -337,32 +329,13 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		comboDienstverhaeltnis.setLabelProvider(new ServiceTypeLabelProvider());
 		comboDienstverhaeltnis.setInput(ModelFactory.getInstance().getServiceManager());
 
-		//create the section
-		Section dayInfoSection = toolkit.createSection(client, ExpandableComposite.TITLE_BAR);
-		toolkit.createCompositeSeparator(dayInfoSection);
-		
-		
-		dayInfoSection.setText("Anmerkungen");
-		dayInfoSection.setExpanded(true);
-		dayInfoSection.setLayout(new GridLayout());
-		//info should span over two
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
-		dayInfoSection.setLayoutData(data);
-
-		//create the container for the notes
-		Composite notesField = toolkit.createComposite(dayInfoSection);
-		dayInfoSection.setClient(notesField);
-		notesField.setLayout(new GridLayout());
-		GridData notesData = new GridData(GridData.FILL_BOTH);
-		notesData.heightHint = 80;
-		notesData.grabExcessVerticalSpace = true;
-		notesData.grabExcessHorizontalSpace = true;
-		notesField.setLayoutData(notesData);
-
-		noteEditor = new TextViewer(notesField, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		noteEditor = new TextViewer(client, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		final StyledText styledText = noteEditor.getTextWidget();
+		final GridData gd_styledText = new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1);
+		gd_styledText.heightHint = 57;
+		gd_styledText.widthHint = 428;
+		styledText.setLayoutData(gd_styledText);
 		noteEditor.setDocument(new Document());
-		noteEditor.getControl().setLayoutData(notesData);
 		noteEditor.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		noteEditor.setEditable(true);
 
@@ -380,13 +353,17 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 		data.widthHint = 100;
 		labelService.setLayoutData(data);
 		//layout for the text fields
-		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+		GridData data2 = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		data2.widthHint = 269;
 		combo.setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2 = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		data2.widthHint = 271;
 		comboOrts.setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2 = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		data2.widthHint = 257;
 		comboVerw.setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2 = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		data2.widthHint = 260;
 		comboDienstv.setLayoutData(data2);
 	}
 
@@ -395,37 +372,42 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	 */
 	private void createPlaningSection(Composite parent)
 	{
-		//create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText("Dienstzeiten");
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setExpanded(true);
 		//composite to add the client area
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
+		Composite client = new Composite(parent, SWT.NONE);
+		client.setBackground(CustomColors.SECTION_BACKGROUND);
+		client.setLayoutData(new GridData(474, SWT.DEFAULT));
 
 		//layout
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.horizontalSpacing = 15;
-		layout.makeColumnsEqualWidth = false;
+		layout.makeColumnsEqualWidth = true;
 		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+		GridData clientDataLayout = new GridData();
 		client.setLayoutData(clientDataLayout);
 
 		//start time
 		Composite valueComp = makeComposite(client, 2);
+		valueComp.setBackground(CustomColors.SECTION_BACKGROUND);
 		final Label vonLabel = new Label(valueComp, SWT.NONE);
 		vonLabel.setText("Dienst von:");
-		dienstVon = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
+		vonLabel.setBackground(CustomColors.SECTION_BACKGROUND);
+		dienstVon = new DatePicker(valueComp, SWT.BORDER, DatePicker.LABEL_CHOOSE);
 
 		//end time
 		valueComp = makeComposite(client, 2);
 		final Label bisLabel = new Label(valueComp, SWT.NONE);
-		bisLabel.setText(" bis: ");
-		dienstBis = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
+		bisLabel.setText("Dienst bis: ");
+		bisLabel.setBackground(CustomColors.SECTION_BACKGROUND);
+		dienstBis = new DatePicker(valueComp, SWT.BORDER, DatePicker.LABEL_CHOOSE);
+		
+		GridData data = new GridData(GridData.VERTICAL_ALIGN_CENTER);
+		data = new GridData();
+		data.widthHint = 53;
+		vonLabel.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 53;
+		bisLabel.setLayoutData(data);
 	}
 
 	private Composite makeComposite(Composite parent, int col) 
@@ -442,20 +424,17 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 	 */
 	private void createSignSection(Composite parent)
 	{
-		//create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText("Anmeldung zum Dienst / Abmeldung vom Dienst");
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		if (createNew)
-			section.setExpanded(false);
-		else
-			section.setExpanded(true);
-
 		//composite to add the client area
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
+		Composite client = new Composite(parent, SWT.NONE);
+		client.setBackground(CustomColors.SECTION_BACKGROUND);
+		
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 10;
+		gridLayout.marginBottom = 20;
+		gridLayout.marginTop = 10;
+		gridLayout.marginLeft = 0;
+		gridLayout.numColumns = 2;
+		client.setLayout(gridLayout);
 
 		//layout
 		GridLayout layout = new GridLayout();
@@ -468,15 +447,27 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 
 		//real start of work and real end of work
 		Composite valueComp = makeComposite(client, 2);
+		valueComp.setBackground(CustomColors.SECTION_BACKGROUND);
 		Label anmeldungLabel = new Label(valueComp, SWT.NONE);
 		anmeldungLabel.setText("Anmeldung:");
-		anmeldung = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
+		anmeldungLabel.setBackground(CustomColors.SECTION_BACKGROUND);
+		anmeldung = new DatePicker(valueComp, SWT.BORDER, DatePicker.LABEL_CHOOSE);
 
 		//label 
 		valueComp = makeComposite(client, 2);
 		Label abmeldungLabel = new Label(valueComp, SWT.NONE);
 		abmeldungLabel.setText("Abmeldung:");
-		abmeldung = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
+		abmeldungLabel.setBackground(CustomColors.SECTION_BACKGROUND);
+		abmeldung = new DatePicker(valueComp, SWT.BORDER, DatePicker.LABEL_CHOOSE);
+		
+		GridData data = new GridData(GridData.VERTICAL_ALIGN_CENTER);
+		data = new GridData();
+		data.widthHint = 53;
+		anmeldungLabel.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 53;
+		abmeldungLabel.setLayoutData(data);
+		data = new GridData();
 	}
 
 	/**
