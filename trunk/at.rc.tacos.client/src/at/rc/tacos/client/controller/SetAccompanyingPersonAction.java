@@ -40,7 +40,7 @@ public class SetAccompanyingPersonAction extends Action implements IProgramStatu
 		//get the selected transport
 		transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 
-		transport.setAssistantPerson(true);
+		transport.setAssistantPerson(!transport.isAssistantPerson());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 	
