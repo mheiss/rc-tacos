@@ -69,8 +69,9 @@ public class VehicleEditAction extends Action
 
         //get the shell and resize
 		Shell myShell = window.getShell();
-	    myShell.setSize(500, 600);
+	    myShell.setSize(400, 500);
 		
+	    System.out.println(".........................drinnen");
 		//calculate and draw centered
 		Rectangle workbenchSize = parent.getBounds();
 		Rectangle mySize = myShell.getBounds();
