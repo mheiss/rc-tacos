@@ -103,7 +103,7 @@ public class VehicleTableEditAction extends Action
 
         //get the shell and resize
 		Shell myShell = window.getShell();
-		 myShell.setSize(400, 480);
+		myShell.setSize(500, 620);
 		
 		//calculate and draw centered
 		Rectangle workbenchSize = parent.getBounds();
@@ -115,6 +115,5 @@ public class VehicleTableEditAction extends Action
 		
 		//now open the window
 		myShell.open();
-		myShell.setVisible(true);
 	}
 }

@@ -74,7 +74,7 @@ public class PersonalEditEntryAction extends Action
 
 		//get the shell and resize
 		Shell myShell = window.getShell();
-		myShell.setSize(500, 500);
+		myShell.setSize(540, 620);
 
 		//calculate and draw centered
 		Rectangle workbenchSize = parent.getBounds();
