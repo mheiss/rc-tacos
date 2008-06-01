@@ -31,6 +31,7 @@ import at.rc.tacos.web.session.UserSession;
  * Add Roster Entry Controller
  * @author Payer Martin
  * @version 1.0
+ * TODO: Implement Deadline for non admins
  */
 public class AddRosterEntryController extends Controller {
 
