@@ -5,12 +5,7 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.*"%>
-<c:if test="${useHtmlCache eq false}">
-	<%
-	response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-	response.setHeader("Pragma","no-cache"); //HTTP 1.0
-	response.setDateHeader ("Expires", -1);
-	%>
+<c:if test="${useCache eq false}">
 </c:if>
 <%
 	final Map<String, Object> params = (Map<String, Object>) request
@@ -23,7 +18,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<c:if test="${useHtmlCache eq false}">
+<c:if test="${useCache eq false}">
 	<meta http-equiv="PRAGMA" content="NO-CACHE" />
 </c:if>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />

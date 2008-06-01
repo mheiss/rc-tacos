@@ -3,17 +3,14 @@
 <%@ page import="java.util.*,java.text.*"%>
 <%@ page session="true"%>
 <%
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", -1);
-%>
-<%
 	Map<String, Object> params = (Map<String, Object>) request.getAttribute("params");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+	<c:if test="${useCache eq false}">
+		<meta http-equiv="PRAGMA" content="NO-CACHE" />
+	</c:if>
 	<link rel="stylesheet" type="text/css" href="<c:url value="/css/stylesheetLog.css"/>" />
 	<link rel="icon" type="image/x-icon" href="<c:url value="/favicon.ico"/>" />
 	<title>TACOS :: Login</title>

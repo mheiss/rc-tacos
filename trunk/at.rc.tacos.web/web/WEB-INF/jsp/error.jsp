@@ -1,13 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
-<%
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", -1);
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+	<c:if test="${useCache eq false}">
+		<meta http-equiv="PRAGMA" content="NO-CACHE" />
+	</c:if>
 	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" /> 
 	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
 <title>TACOS :: Server Fehler</title>
