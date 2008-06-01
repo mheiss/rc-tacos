@@ -149,7 +149,7 @@ public class Dispatcher extends HttpServlet
 		String viewPath = null;
 		boolean templateFound = false;
 		String templatePath = null;
-		boolean useHtmlCache = true;
+		boolean useCache = true;
 		String viewTitle = null;
 		String viewHeaderTitle = null;
 		String js = null;
@@ -207,9 +207,9 @@ public class Dispatcher extends HttpServlet
 				} else if (prefix.equals(relativePathPrefix) && key.contains(".template")) {
 					templateFound = true;
 					templatePath = views.getString(key).trim();
-				} else if (prefix.equals(relativePathPrefix) && key.contains(".useHtmlCache")) {
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".useCache")) {
 					if (views.getString(key).equalsIgnoreCase("false")) {
-						useHtmlCache = false;
+						useCache = false;
 					}
 				} else if (prefix.equals(relativePathPrefix) && key.contains(".title")) {
 					viewTitle = views.getString(key);
@@ -248,13 +248,21 @@ public class Dispatcher extends HttpServlet
 						
 						final Controller controller = (Controller)Class.forName(controllerClassName).newInstance();
 						final Map<String, Object> params = controller.handleRequest(request, response, this.getServletContext());
-						request.setAttribute("params", params);
 						
 						//Forward to view if response is not commited and view is found in views.properties
 						if (!response.isCommitted() && viewFound) {
+							request.setAttribute("params", params);
+							
+							//Prevent proxy and browser caching
+							request.setAttribute("useCache", useCache);
+							if (!useCache) { 
+								response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
+								response.setHeader("Pragma","no-cache"); //HTTP 1.0
+								response.setDateHeader ("Expires", -1);
+							}
+							
 							//Differentiate if View uses model.jsp or not
 							if (templateFound) {
-								request.setAttribute("useHtmlCache", useHtmlCache);
 								request.setAttribute("title", viewTitle);
 								request.setAttribute("htitle", viewHeaderTitle);
 								request.setAttribute("view", viewPath);
