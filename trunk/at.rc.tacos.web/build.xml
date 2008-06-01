@@ -129,6 +129,8 @@
 				<include name="**/*.*" />
 			</fileset>
 		</war>
+		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
+		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
 	</target>
 	
 	<target name="production-deploy-ftp" description="Deploy application to producation system via FTP">
