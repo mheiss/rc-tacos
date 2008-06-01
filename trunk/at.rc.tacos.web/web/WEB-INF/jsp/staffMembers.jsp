@@ -27,7 +27,7 @@
 <br />
 <c:choose>
 	<c:when test="${fn:length(staffMemberMap) gt 0}">
-		<table id="rosterEntryTable" class="list">
+		<table id="rosterEntryTable" class="list" cellpadding="3" cellspacing="0">
 			<c:forEach var="staffMemberMapEntry" items="${staffMemberMap}">
 				<c:set var="location" value="${staffMemberMapEntry.key}"/>	
 				<tr>

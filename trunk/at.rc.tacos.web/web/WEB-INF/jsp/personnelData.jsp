@@ -39,7 +39,7 @@
 	<tr>
 		<td style="font-weight:bold">Telefonnummern:</td>
 		<td>
-			<table id="mobilePhoneTable" class="list">
+			<table id="mobilePhoneTable" class="list" cellpadding="3" cellspacing="0">
 				<thead>
 					<tr>
 						<th class="header2" colspan="3">Telefonnummern</th>
@@ -66,7 +66,7 @@
 	<tr>
 		<td style="font-weight:bold">Kompetenzen:</td>
 		<td>
-			<table id="competenceTable" class="list">
+			<table id="competenceTable" class="list" cellpadding="3" cellspacing="0">
 				<thead>
 					<tr>
 						<th class="header2" colspan="2">Kompetenzen</th>

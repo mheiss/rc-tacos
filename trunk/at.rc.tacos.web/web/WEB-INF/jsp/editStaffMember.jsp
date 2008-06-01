@@ -117,7 +117,7 @@
 					<input id="mobilePhoneIds" name="mobilePhoneIds" type="hidden" value="${params.mobilePhoneIds}" />
 				</td>
 				<td>
-					<table id="mobilePhoneTable" class="list">
+					<table id="mobilePhoneTable" class="list" cellpadding="3" cellspacing="0">
 						<thead>
 							<tr>
 								<th class="header2" colspan="3">Telefonnummern</th>
@@ -197,7 +197,7 @@
 					<input id="competenceIds" name="competenceIds" type="hidden" value="${params.competenceIds}" />
 				</td>
 				<td>
-					<table id="competenceTable" class="list">
+					<table id="competenceTable" class="list" cellpadding="3" cellspacing="0">
 						<thead>
 							<tr>
 								<th class="header2" colspan="2">Kompetenzen</th>

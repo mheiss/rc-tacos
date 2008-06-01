@@ -58,7 +58,7 @@
 <c:set var="rosterEntryContainerMap" value="${params.rosterEntryContainerListContainer.rosterEntryContainerMap}"/>
 <c:choose>
 	<c:when test="${fn:length(rosterEntryContainerMap) gt 0}">
-		<table id="rosterEntryTable" class="list">
+		<table id="rosterEntryTable" class="list" cellpadding="3" cellspacing="0">
 			<c:forEach var="rosterEntryContainerMapEntry" items="${rosterEntryContainerMap}">
 				<c:set var="location" value="${rosterEntryContainerMapEntry.key}"/>	
 				<tr>
