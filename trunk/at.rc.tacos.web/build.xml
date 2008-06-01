@@ -38,6 +38,8 @@
 		<delete dir="${build.dir}" />
 		<delete dir="${dist.dir}" />
 		<delete dir="${deploy.path}/${name}" />
+		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
+		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
 	</target>
 
 	<target name="production-clean" description="Cleans the build and dist directories on production system">
