@@ -44,10 +44,20 @@
 								<img src="${url}" width="55" height="69" alt="No photo found." />
 							</td>
 							<td>
-								<c:forEach var="mobilePhone" items="${staffMember.phonelist}" varStatus="loop2"><c:if test="${loop2.count gt 1}"><br /></c:if>${mobilePhone.mobilePhoneName}&nbsp;${mobilePhone.mobilePhoneNumber}</c:forEach>
+								<c:choose>
+									<c:when test="${staffMember.phonelist.size gt 0}">
+										<c:forEach var="mobilePhone" items="${staffMember.phonelist}" varStatus="loop2"><c:if test="${loop2.count gt 1}"><br /></c:if>${mobilePhone.mobilePhoneName}&nbsp;${mobilePhone.mobilePhoneNumber}</c:forEach>
+									</c:when>
+									<c:otherwise>&nbsp;</c:otherwise>
+								</c:choose>
 							</td>
 							<td>
-								<c:forEach var="competence" items="${staffMember.competenceList}" varStatus="loop3"><c:if test="${loop3.count gt 1}"><br /></c:if>${competence.competenceName}</c:forEach>
+								<c:choose>
+									<c:when test="${staffMember.competenceList gt 0}">
+										<c:forEach var="competence" items="${staffMember.competenceList}" varStatus="loop3"><c:if test="${loop3.count gt 1}"><br /></c:if>${competence.competenceName}</c:forEach>
+									</c:when>
+									<c:otherwise>&nbsp;</c:otherwise>
+								</c:choose>
 							</td>
 							<td>
 								<c:url var="url" value="/Dispatcher/editStaffMember.do?staffMemberId=${staffMember.staffMemberId}"></c:url>
