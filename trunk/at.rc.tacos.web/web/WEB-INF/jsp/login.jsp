@@ -1,17 +1,19 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ include file="includes.jsp" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ page import="java.util.*,java.text.*"%>
 <%@ page session="true"%>
 <%
+response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
+response.setHeader("Pragma","no-cache"); //HTTP 1.0
+response.setDateHeader ("Expires", -1);
+%>
+<%
 	Map<String, Object> params = (Map<String, Object>) request.getAttribute("params");
 %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<meta http-equiv="cache-control" content="no-cache" />
-	<meta http-equiv="Expires" content="Fri, 01 Jan 1999 06:00:00 GMT" />
-    <meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/css/stylesheetLog.css"/>" />
 	<link rel="icon" type="image/x-icon" href="<c:url value="/favicon.ico"/>" />
 	<title>TACOS :: Login</title>
