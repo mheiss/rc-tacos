@@ -9,6 +9,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="Expires" content="Fri, 01 Jan 1999 06:00:00 GMT" />
+    <meta http-equiv="Pragma" content="no-cache" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/css/stylesheetLog.css"/>" />
 	<link rel="icon" type="image/x-icon" href="<c:url value="/favicon.ico"/>" />
 	<title>TACOS :: Login</title>
