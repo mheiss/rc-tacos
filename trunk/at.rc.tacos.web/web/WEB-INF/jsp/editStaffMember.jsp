@@ -140,7 +140,7 @@
 			<tr>
 				<td style="font-weight:bold">Photo:</td>
 				<td colspan="2">
-					<c:url var="url" value="/image/staffmembers/${params.staffMember.staffMemberId}" />
+					<c:url var="url" value="/image/staffmembers/${params.staffMember.staffMemberId}?refresh=1" />
 					<img src="${url}" width="110" height="138" alt="No photo found." />
 				</td>
 			</tr>

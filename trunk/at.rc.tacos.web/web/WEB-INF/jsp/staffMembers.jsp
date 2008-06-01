@@ -40,12 +40,12 @@
 							<td nowrap="nowrap">${staffMember.lastName}</td>
 							<td nowrap="nowrap">${staffMember.firstName}</td>
 							<td nowrap="nowrap">
-								<c:url var="url" value="/image/staffmembers/${staffMember.staffMemberId}" />
+								<c:url var="url" value="/image/staffmembers/${staffMember.staffMemberId}?refresh=1" />
 								<img src="${url}" width="55" height="69" alt="No photo found." />
 							</td>
 							<td>
 								<c:choose>
-									<c:when test="${staffMember.phonelist.size gt 0}">
+									<c:when test="${fn:length(staffMember.phonelist) gt 0}">
 										<c:forEach var="mobilePhone" items="${staffMember.phonelist}" varStatus="loop2"><c:if test="${loop2.count gt 1}"><br /></c:if>${mobilePhone.mobilePhoneName}&nbsp;${mobilePhone.mobilePhoneNumber}</c:forEach>
 									</c:when>
 									<c:otherwise>&nbsp;</c:otherwise>
@@ -53,7 +53,7 @@
 							</td>
 							<td>
 								<c:choose>
-									<c:when test="${staffMember.competenceList gt 0}">
+									<c:when test="${fn:length(staffMember.competenceList) gt 0}">
 										<c:forEach var="competence" items="${staffMember.competenceList}" varStatus="loop3"><c:if test="${loop3.count gt 1}"><br /></c:if>${competence.competenceName}</c:forEach>
 									</c:when>
 									<c:otherwise>&nbsp;</c:otherwise>
