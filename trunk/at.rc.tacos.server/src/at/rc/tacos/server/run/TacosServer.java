@@ -58,7 +58,7 @@ public class TacosServer
             //parse
             port = Integer.parseInt(strPort);
             //start the server
-            logger.info("TACOS-Server Build: 16.03.2008"); 
+            logger.info("TACOS-Server Build: 01.06.2008"); 
             logger.info("Open a connection to the database server");
             //try to get a connection to the database
             if(DataSource.getInstance().getConnection() == null)
