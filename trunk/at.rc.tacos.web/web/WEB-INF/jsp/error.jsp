@@ -5,6 +5,10 @@
 	<c:if test="${useCache eq false}">
 		<meta http-equiv="PRAGMA" content="NO-CACHE" />
 	</c:if>
+	<c:if test="${refresh ne -1}">
+		<c:url var="url" value="/Dispatcher/vehiclesAllocation.do" />
+		<meta http-equiv="refresh" content="${refresh};url=${url}" />
+	</c:if>
 	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" /> 
 	<link rel="icon" type="image/x-icon" href="../favicon.ico" />
 <title>TACOS :: Server Fehler</title>

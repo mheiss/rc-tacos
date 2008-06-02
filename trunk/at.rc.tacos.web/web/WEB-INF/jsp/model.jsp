@@ -5,8 +5,6 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.*"%>
-<c:if test="${useCache eq false}">
-</c:if>
 <%
 	final Map<String, Object> params = (Map<String, Object>) request
 			.getAttribute("params");
@@ -20,6 +18,10 @@
 <head>
 <c:if test="${useCache eq false}">
 	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+</c:if>
+<c:if test="${refresh ne -1}">
+	<c:url var="url" value="/Dispatcher/vehiclesAllocation.do" />
+	<meta http-equiv="refresh" content="${refresh};url=${url}" />
 </c:if>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" type="text/css"
