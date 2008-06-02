@@ -154,7 +154,7 @@
 										<c:otherwise>
 										</c:otherwise>
 									</c:choose>
-									<c:if test="${userSession.internalSession eq true}">
+									<%--<c:if test="${userSession.internalSession eq true}">--%>
 										<c:choose>
 											<c:when
 												test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
@@ -179,7 +179,7 @@
 												<a href="${url}">Abmelden</a>
 											</c:when>
 										</c:choose>
-									</c:if>
+									<%--</c:if>--%>
 								</c:when>
 								<c:when test="${userSession.loginInformation.authorization eq 'Administrator'}">
 									<c:url var="url" value="/Dispatcher/editRosterEntry.do">
@@ -192,7 +192,7 @@
 									</c:url>
 									<a href="${url}">Löschen</a>
 									<c:set var="breakRow">true</c:set>
-									<c:if test="${userSession.internalSession eq true}">
+									<%--<c:if test="${userSession.internalSession eq true}">--%>
 										<c:choose>
 											<c:when
 												test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
@@ -217,7 +217,7 @@
 												<a href="${url}">Abmelden</a>
 											</c:when>
 										</c:choose>
-									</c:if>
+									<%--</c:if>--%>
 								</c:when>
 							</c:choose></td>
 						</tr>
