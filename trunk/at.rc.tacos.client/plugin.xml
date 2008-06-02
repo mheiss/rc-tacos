@@ -56,7 +56,7 @@
             name="TACOS-Client">
          <property
                name="aboutText"
-               value="Austrian Red Cross.&#x0D;&#x0A;Time and Coordination System - Client Software.&#x0D;&#x0A;Developed by Birgit Thek and Heiß Michael.&#x0D;&#x0A;(c) 2007-2008">
+               value="Austrian Red Cross.&#x0A;Time and Coordination System - Client Software.&#x0A;Developed by Birgit Thek and Heiß Michael.&#x0A;(c) 2007-2008">
          </property>
          <property
                name="windowImages"
