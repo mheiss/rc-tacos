@@ -150,6 +150,7 @@ public class Dispatcher extends HttpServlet
 		boolean templateFound = false;
 		String templatePath = null;
 		boolean useCache = true;
+		int refresh = -1;
 		String viewTitle = null;
 		String viewHeaderTitle = null;
 		String js = null;
@@ -211,6 +212,8 @@ public class Dispatcher extends HttpServlet
 					if (views.getString(key).equalsIgnoreCase("false")) {
 						useCache = false;
 					}
+				} else if (prefix.equals(relativePathPrefix) && key.contains(".refresh")) {
+					refresh = Integer.parseInt(views.getString(key).trim());	
 				} else if (prefix.equals(relativePathPrefix) && key.contains(".title")) {
 					viewTitle = views.getString(key);
 				} else if (prefix.equals(relativePathPrefix) && key.contains(".htitle")) {
@@ -260,6 +263,9 @@ public class Dispatcher extends HttpServlet
 								response.setHeader("Pragma","no-cache"); //HTTP 1.0
 								response.setDateHeader ("Expires", -1);
 							}
+							
+							//Add refresh value
+							request.setAttribute("refresh", refresh);
 							
 							//Differentiate if View uses model.jsp or not
 							if (templateFound) {
