@@ -437,7 +437,7 @@ public class AddRosterEntryController extends Controller {
 			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);
 			
 			if (plannedStartOfWork != null) {
-				if (authorization.equals(Login.AUTH_ADMIN) && plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
+				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
 					errors.put(ERRORS_PLANNED_START_OF_WORK_TOO_SMALL, ERRORS_PLANNED_START_OF_WORK_TOO_SMALL_VALUE);
 					valid = false;
 				} else if (authorization.equals(Login.AUTH_USER) && new Date().getTime() > deadlineCalendar.getTimeInMillis()) {
