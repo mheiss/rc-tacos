@@ -138,7 +138,7 @@ public class Dispatcher extends HttpServlet
 		
 		//Get the relative Path from request URL
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
-		final String relativePathPrefix = relativePath.replaceFirst("/", "").replaceFirst(".do", "");
+		final String relativePathPrefix = relativePath.replaceFirst("/", "").replaceFirst("\\.do", "");
 		
 		final Set<String> set = views.keySet();
 		boolean urlFound = false;
