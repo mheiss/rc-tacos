@@ -127,6 +127,9 @@
 						<c:when test="${not empty params.errors.plannedStartOfWorkTooSmall}">
 							${params.errors.plannedStartOfWorkTooSmall}
 						</c:when>
+						<c:when test="${not empty params.errors.plannedStartOfWorkDeadlineExceeded}">
+							${params.errors.plannedStartOfWorkDeadlineExceeded}
+						</c:when>
 						<c:when test="${not empty params.errors.plannedStartOfWorkTooBig}">
 							${params.errors.plannedStartOfWorkTooBig}
 						</c:when>

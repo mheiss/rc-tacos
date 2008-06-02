@@ -25,6 +25,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
@@ -114,6 +115,8 @@ public class AddRosterEntryController extends Controller {
 	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_SMALL_VALUE = "Der Wert von Dienst von ist zu klein.";
 	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_BIG = "plannedStartOfWorkTooBig";
 	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_BIG_VALUE = "Der Wert von Dienst von ist zu groﬂ.";
+	private static final String ERRORS_PLANNED_START_OF_WORK_DEADLINE_EXCEEDED = "plannedStartOfWorkDeadlineExceeded";
+	private static final String ERRORS_PLANNED_START_OF_WORK_DEADLINE_EXCEEDED_VALUE = "Von muss mindestens 72 Stunden in der Zukunft liegen.";
 	
 	private static final String ERRORS_PLANNED_END_OF_WORK_TOO_SMALL = "plannedEndOfWorkTooSmall";
 	private static final String ERRORS_PLANNED_END_OF_WORK_TOO_SMALL_VALUE = "plannedEndOfWorkTooSmall";
@@ -429,9 +432,16 @@ public class AddRosterEntryController extends Controller {
 				}
 			}
 			
+			final Calendar deadlineCalendar = Calendar.getInstance();
+			deadlineCalendar.setTime(plannedStartOfWork);
+			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);
+			
 			if (plannedStartOfWork != null) {
-				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
+				if (authorization.equals(Login.AUTH_ADMIN) && plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
 					errors.put(ERRORS_PLANNED_START_OF_WORK_TOO_SMALL, ERRORS_PLANNED_START_OF_WORK_TOO_SMALL_VALUE);
+					valid = false;
+				} else if (authorization.equals(Login.AUTH_USER) && new Date().getTime() > deadlineCalendar.getTimeInMillis()) {
+					errors.put(ERRORS_PLANNED_START_OF_WORK_DEADLINE_EXCEEDED, ERRORS_PLANNED_START_OF_WORK_DEADLINE_EXCEEDED_VALUE);
 					valid = false;
 				} else if (plannedStartOfWork.getTime() > rangeEndCalendar.getTimeInMillis()) {
 					errors.put(ERRORS_PLANNED_START_OF_WORK_TOO_BIG, ERRORS_PLANNED_START_OF_WORK_TOO_BIG_VALUE);
