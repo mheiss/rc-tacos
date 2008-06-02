@@ -50,9 +50,9 @@ public class RegisterRosterEntryController extends Controller {
 		final String authorization = userSession.getLoginInformation().getAuthorization();
 		
 		// Check if request is internal
-		if (!userSession.isInternalSession()) {
+		/*if (!userSession.isInternalSession()) {
 			throw new IllegalArgumentException("Error: This URL must be called from internal net.");
-		}
+		}*/
 		
 		// Get Id
 		int rosterEntryId = 0;
