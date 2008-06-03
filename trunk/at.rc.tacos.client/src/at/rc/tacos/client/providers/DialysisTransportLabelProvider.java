@@ -120,12 +120,12 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
 			if (dia.getReadyTime() != 0)
 				return sdf.format(dia.getReadyTime());
 			else return "";
-		case COLUMN_FROM: return dia.getFromStreet() +"/" +dia.getFromCity();
+		case COLUMN_FROM: return dia.getFromStreet() +" / " +dia.getFromCity();
 		case COLUMN_PATIENT:
 			if(dia.getPatient() != null)
 				return dia.getPatient().getLastname() +" " +dia.getPatient().getFirstname();
 			else return "";
-		case COLUMN_TO: return dia.getToStreet() + "/"+ dia.getToCity();
+		case COLUMN_TO: return dia.getToStreet() + " / "+ dia.getToCity();
 		case COLUMN_TA:
 			if(dia.getKindOfTransport() != null)
 				return dia.getKindOfTransport();
