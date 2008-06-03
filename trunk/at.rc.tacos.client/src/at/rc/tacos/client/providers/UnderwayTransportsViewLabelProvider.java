@@ -91,7 +91,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        case COLUMN_TERM:if (transport.getAppointmentTimeAtDestination() != 0)
         		return sdf.format(transport.getAppointmentTimeAtDestination());
         	else return "";
-	        case COLUMN_TRANSPORT_FROM:return transport.getFromStreet() +"/" +transport.getFromCity();
+	        case COLUMN_TRANSPORT_FROM:return transport.getFromStreet() +" / " +transport.getFromCity();
 	        case COLUMN_PATIENT:
 	        	if(transport.isAssistantPerson())
 	        		patient = "+";
