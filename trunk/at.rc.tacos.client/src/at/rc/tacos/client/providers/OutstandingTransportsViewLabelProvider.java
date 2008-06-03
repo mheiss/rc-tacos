@@ -135,7 +135,7 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 			if (transport.getAppointmentTimeAtDestination() != 0)
 				return sdf.format(transport.getAppointmentTimeAtDestination());
 			else return "";
-		case COLUMN_FROM:return transport.getFromStreet() +"/" +transport.getFromCity();
+		case COLUMN_FROM:return transport.getFromStreet() +" / " +transport.getFromCity();
 		case COLUMN_PATIENT:
 			if(transport.isAssistantPerson())
 				patient = "+";
@@ -149,7 +149,7 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 			if(transport.getToCity() == null)
 				city = "";
 			else city = transport.getToCity();
-			return street +"/" +city;
+			return street +" / " +city;
 		case COLUMN_AUFG:
 			if (transport.getCreationTime() != 0)
 				return sdf.format(transport.getCreationTime());
