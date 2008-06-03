@@ -104,7 +104,7 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 				if(transport.getToCity() == null)
 					city = "";
 				else city = transport.getToCity();
-				return street +"/" +city;
+				return street +" / " +city;
 			case COLUMN_T:
 				if(transport.getKindOfTransport() != null)
 				{
