@@ -92,7 +92,7 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 				if (transport.getAppointmentTimeAtDestination() != 0)
 					return sdf.format(transport.getAppointmentTimeAtDestination());
 				else return "";
-			case COLUMN_FROM:return transport.getFromStreet() +"/" +transport.getFromCity();
+			case COLUMN_FROM:return transport.getFromStreet() +" / " +transport.getFromCity();
 			case COLUMN_PATIENT:
 				if(transport.getPatient() != null)
 					return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
