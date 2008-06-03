@@ -139,7 +139,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
         	else if(transport.getTransportPriority().equalsIgnoreCase("G"))
         		return "7";
         	else return null;
-		case COLUMN_TRANSPORT_FROM: return transport.getFromStreet() +"/" +transport.getFromCity();
+		case COLUMN_TRANSPORT_FROM: return transport.getFromStreet() +" / " +transport.getFromCity();
 		case COLUMN_PATIENT:
 			if(transport.isAssistantPerson())
 				patient = "+";
