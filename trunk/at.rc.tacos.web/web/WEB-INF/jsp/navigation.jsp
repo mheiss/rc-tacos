@@ -28,6 +28,16 @@
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Fahrzeugzuweisung</a>
 		</td>
 	</tr>
+	<c:url var="url" value="/Dispatcher/transportsTo.do" />
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Offene Transporte</a>
+		</td>
+	</tr>
+	<c:url var="url" value="/Dispatcher/journal.do" />
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Journal</a>
+		</td>
+	</tr>
 </table>
 <table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>

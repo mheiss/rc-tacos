@@ -77,7 +77,8 @@ public class RosterController extends Controller {
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
 		Location location = userSession.getDefaultFormValues().getDefaultLocation();
-		if (paramLocationId != null && !paramLocationId.equals("")) {
+		if (paramLocationId != null && !paramLocationId.equals("")) 
+		{
 			if (paramLocationId.equalsIgnoreCase(PARAM_LOCATION_NO_VALUE)) {
 				location = null;
 			} else {
