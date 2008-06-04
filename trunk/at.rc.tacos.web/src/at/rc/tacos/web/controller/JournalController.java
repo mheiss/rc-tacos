@@ -30,6 +30,7 @@ import at.rc.tacos.web.form.JournalContainerListContainer;
 import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.form.RosterEntryContainerListContainer;
 import at.rc.tacos.web.form.TransportsToContainerListContainer;
+import at.rc.tacos.web.form.VehicleContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
@@ -172,9 +173,11 @@ public class JournalController extends Controller {
 		for (final Iterator<AbstractMessage> itJournalList = abstractJournalList.iterator(); itJournalList.hasNext();) {
 			final Transport transport = (Transport)itJournalList.next();
 			final JournalContainer journalContainer = new JournalContainer();
-			journalContainer.setVehicleDetail(transport.getVehicleDetail());
+			final VehicleContainer vehicleContainer = new VehicleContainer();
+//			vehicleContainer.setVehicleName(transport.getVehicleDetail().getVehicleName());
+			journalContainer.setVehicleContainer(vehicleContainer);
 //			if(transport.getVehicleDetail() != null)
-				journalContainer.setRealLocation(transport.getPlanedLocation());//!!! real station- got from the vehicle
+				journalContainer.setRealLocation(transport.getPlanedLocation());//!!! real station- got from the vehicle //TODO!!!
 			journalContainer.setTransportNumber(transport.getTransportNumber());
 			journalContainer.setDisposedByUser(transport.getDisposedByUsername());
 			journalContainer.setFeedback(transport.getFeedback());
