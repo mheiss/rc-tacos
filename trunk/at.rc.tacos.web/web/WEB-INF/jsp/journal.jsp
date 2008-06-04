@@ -62,7 +62,7 @@
 						items="${journalContainerMapEntry.value}" varStatus="loop">
 						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 							<td nowrap="nowrap">${journalContainer.transportNumber}</td>
-							<td nowrap="nowrap">${journalContainer.vehicleDetail.vehicleName}</td>
+							<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
 							<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp; ${journalContainer.fromCity}</td>
 							<td nowrap="nowrap">${journalContainer.patient.lastname} &nbsp; ${journalContainer.patient.firstname }</td>
 							<td nowrap="nowrap">${journalContainer.toStreet} &nbsp; ${journalContainer.toCity }</td>
@@ -70,7 +70,7 @@
 							<td nowrap="nowrap">${journalContainer.kindOfTransport}</td>
 							<td nowrap="nowrap">${journalContainer.disposedByUser}</td>
 							<td nowrap="nowrap">${journalContainer.feedback}</td>
-							<td nowrap="nowrap">${journalContainer.caller.callerName} &nbsp; ${journalContainer.caller.callerNumber}</td>
+							<td nowrap="nowrap">${journalContainer.caller.callerName} &nbsp; ${journalContainer.caller.callerTelephoneNumber}</td>
 							<td nowrap="nowrap">${journalContainer.kindOfIllness}</td>
 						</tr>
 					</c:forEach>
