@@ -17,7 +17,7 @@ public class JournalContainer
 {
 	private Location realLocation; //for the drop down
 	private int transportNumber;
-	private VehicleDetail vehicleDetail;
+	private VehicleContainer vehicleContainer;
     private String fromStreet;
     private String fromCity;
     private Patient patient;
@@ -33,17 +33,17 @@ public class JournalContainer
     
    
     
+	public VehicleContainer getVehicleContainer() {
+		return vehicleContainer;
+	}
+	public void setVehicleContainer(VehicleContainer vehicleContainer) {
+		this.vehicleContainer = vehicleContainer;
+	}
 	public int getTransportNumber() {
 		return transportNumber;
 	}
 	public void setTransportNumber(int transportNumber) {
 		this.transportNumber = transportNumber;
-	}
-	public VehicleDetail getVehicleDetail() {
-		return vehicleDetail;
-	}
-	public void setVehicleDetail(VehicleDetail vehicleDetail) {
-		this.vehicleDetail = vehicleDetail;
 	}
 	public String getDisposedByUser() {
 		return disposedByUser;
