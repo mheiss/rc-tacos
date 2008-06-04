@@ -26,8 +26,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -734,10 +734,24 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboNachStrasse.top = new FormAttachment(0, 53);
 		fd_comboNachStrasse.left = new FormAttachment(0, 38);
 		textToStreet.setLayoutData(fd_comboNachStrasse);
-		textToStreet.addModifyListener(new ModifyListener() 
+		textToStreet.addKeyListener(new KeyAdapter()
 		{
-			public void modifyText(final ModifyEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e) 
 			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					textToCity.setFocus();
+					e.doit = false;
+					return;
+				}
 				inputChanged(textToStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
 			}
 		});
@@ -816,10 +830,24 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboVonStrasse.top = new FormAttachment(0, 26);
 		fd_comboVonStrasse.left = new FormAttachment(0, 38);
 		textFromStreet.setLayoutData(fd_comboVonStrasse);
-		textFromStreet.addModifyListener(new ModifyListener() 
+		textFromStreet.addKeyListener(new KeyAdapter()
 		{
-			public void modifyText(final ModifyEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e) 
 			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					textFromCity.setFocus();
+					e.doit = false;
+					return;
+				}
 				inputChanged(textFromStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
 			}
 		});
@@ -853,10 +881,24 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboVonOrt.top = new FormAttachment(0, 26);
 		fd_comboVonOrt.right = new FormAttachment(0, 420);
 		textFromCity.setLayoutData(fd_comboVonOrt);
-		textFromCity.addModifyListener(new ModifyListener() 
+		textFromCity.addKeyListener(new KeyAdapter()
 		{
-			public void modifyText(final ModifyEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e) 
 			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					patientLastName.setFocus();
+					e.doit = false;
+					return;
+				}
 				inputChanged(textFromCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
 			}
 		});
@@ -869,10 +911,24 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboNachOrt.top = new FormAttachment(0, 53);
 		fd_comboNachOrt.right = new FormAttachment(0, 420);
 		textToCity.setLayoutData(fd_comboNachOrt);
-		textToCity.addModifyListener(new ModifyListener() 
+		textToCity.addKeyListener(new KeyAdapter()
 		{
-			public void modifyText(final ModifyEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e) 
 			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					ruecktransportMoeglichButton.setFocus();
+					e.doit = false;
+					return;
+				}
 				inputChanged(textToCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
 			}
 		});
@@ -895,6 +951,26 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboNachname.right = new FormAttachment(0, 635);
 		fd_comboNachname.left = new FormAttachment(0, 464);
 		patientLastName.setLayoutData(fd_comboNachname);
+		patientLastName.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					patientFirstName.setFocus();
+					e.doit = false;
+					return;
+				}
+			}
+		});
 
 		final Label nachnameLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_nachnameLabel = new FormData();
@@ -913,6 +989,26 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_vornameVorname.right = new FormAttachment(0, 812);
 		fd_vornameVorname.left = new FormAttachment(0, 641);
 		patientFirstName.setLayoutData(fd_vornameVorname);
+		patientFirstName.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					combokindOfTransport.setFocus();
+					e.doit = false;
+					return;
+				}
+			}
+		});
 
 		final Button buttonPatientendatenPruefen = new Button(transportdatenGroup, SWT.NONE);
 		final FormData fd_buttonPatientendatenPruefen = new FormData();
@@ -941,7 +1037,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 							"Patient hinzufügen", "Möchten Sie diesen Patienten zur Patientendatenbank hinzufügen?");
 					if (!cancelConfirmed) 
 						return;
-
 					
 					//TODO: add the patient data as new sick person, but check before!!
 					SickPerson person = new SickPerson();
@@ -955,7 +1050,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				}
 				else
 				{
-					System.out.println("--------------!!!!!!!!!!!!!");
 					//open the selection dialog to choose a patient
 					PatientSelectionDialog selectionDialog = new PatientSelectionDialog(patientLastName.getText(),getShell());
 					selectionDialog.open();
