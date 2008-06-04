@@ -12,8 +12,8 @@ import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
@@ -259,10 +259,24 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textToStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textToStreet.setBounds(41, 66, 230, 21);
-		textToStreet.addModifyListener(new ModifyListener() 
+		textToStreet.addKeyListener(new KeyAdapter()
 		{
-			public void modifyText(final ModifyEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e) 
 			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					textToCity.setFocus();
+					e.doit = false;
+					return;
+				}
 				inputChanged(textToStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
 			}
 		});
@@ -270,10 +284,24 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textFromStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textFromStreet.setBounds(41, 39, 230, 21);
-		textFromStreet.addModifyListener(new ModifyListener() 
+		textFromStreet.addKeyListener(new KeyAdapter()
 		{
-			public void modifyText(final ModifyEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e) 
 			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					textFromCity.setFocus();
+					e.doit = false;
+					return;
+				}
 				inputChanged(textFromStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
 			}
 		});
@@ -291,10 +319,24 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textFromCity = new Text(transportdatenGroup,SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textFromCity.setBounds(277, 39, 156, 21);
-		textFromCity.addModifyListener(new ModifyListener() 
+		textFromCity.addKeyListener(new KeyAdapter()
 		{
-			public void modifyText(final ModifyEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e) 
 			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					textPatientLastName.setFocus();
+					e.doit = false;
+					return;
+				}
 				inputChanged(textFromCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
 			}
 		});
@@ -302,10 +344,24 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textToCity = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textToCity.setBounds(277, 66, 156, 21);
-		textToCity.addModifyListener(new ModifyListener() 
+		textToCity.addKeyListener(new KeyAdapter()
 		{
-			public void modifyText(final ModifyEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e) 
 			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					begleitpersonButton.setFocus();
+					e.doit = false;
+					return;
+				}
 				inputChanged(textToCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
 			}
 		});
@@ -318,6 +374,26 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textPatientLastName = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textPatientLastName.setBounds(467, 39, 171, 21);
+		textPatientLastName.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					textPatientFirstName.setFocus();
+					e.doit = false;
+					return;
+				}
+			}
+		});
 
 		final Label nachnameLabel = new Label(transportdatenGroup, SWT.NONE);
 		nachnameLabel.setForeground(Util.getColor(128, 128, 128));
@@ -326,6 +402,26 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textPatientFirstName = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textPatientFirstName.setBounds(644, 39, 171, 21);
+		textPatientFirstName.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				//no action when the enter key is pressed
+				if(e.keyCode == 13)
+				{
+					e.doit = false;
+					return;
+				}
+				//go to the next field when the tab is pressed
+				if(e.keyCode == 9)
+				{
+					combokindOfTransport.setFocus();
+					e.doit = false;
+					return;
+				}
+			}
+		});
 
 		button = new Button(transportdatenGroup, SWT.NONE);
 		button.setBounds(821, 37,32, 23);
