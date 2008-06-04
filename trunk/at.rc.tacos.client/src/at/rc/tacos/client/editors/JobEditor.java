@@ -102,6 +102,13 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 			removeHyperlink.setVisible(false);
 		}
 
+		//disable editing of system jobs
+		if(job.getId() <= 11 && job.getId() > 0)
+		{
+			form.setText("Vom System vorgegebene Verwendungen können nicht bearbeitet werden.");
+			form.setEnabled(false);
+		}
+		
 		//force redraw
 		form.pack(true);
 	}

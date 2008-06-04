@@ -101,6 +101,13 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 			form.setText("Neues Dienstverhältnis anlegen");
 			removeHyperlink.setVisible(false);
 		}
+		
+		//disable editing of system serviceTypes
+		if(serviceType.getId() <= 5 && serviceType.getId() > 0)
+		{
+			form.setText("Vom System vorgegebene Dienstverhältnisse können nicht bearbeitet werden.");
+			form.setEnabled(false);
+		}
 
 		//force redraw
 		form.pack(true);
