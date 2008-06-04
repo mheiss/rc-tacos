@@ -101,6 +101,13 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 			form.setText("Neue Kompetenz anlegen");
 			removeHyperlink.setVisible(false);
 		}
+		
+		//disable editing of system competences
+		if(competence.getId() <= 14 && competence.getId() > 0)
+		{
+			form.setText("Vom System vorgegebene Kompetenzen können nicht bearbeitet werden.");
+			form.setEnabled(false);
+		}
 
 		//force redraw
 		form.pack(true);
