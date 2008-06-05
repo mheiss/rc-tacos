@@ -20,7 +20,7 @@
 			<c:forEach var="transportsToMapEntry" items="${transportsToMap}">
 				<c:set var="location" value="${transportsToMapEntry.key}"/>
 				<tr>
-					<th class="header2" colspan="9">${plannedLocation.locationName}</th>
+					<th class="header2" colspan="9">${location.locationName}</th>
 				</tr>
 				${fieldHeadersRow}
 				<c:forEach var="transportsToContainer" items="${transportsToMapEntry.value}" varStatus="loop">
@@ -29,7 +29,7 @@
 						<td nowrap="nowrap">${transportsToContainer.patient.lastname} &nbsp; ${transportsToContainer.patient.firstname }</td>
 						<td nowrap="nowrap">${transportsToContainer.toStreet} &nbsp; ${transportsToContainer.toCity }</td>
 						<td nowrap="nowrap">
-							<fmt:formatDate type="time" timeStyle="short" value="${transportsToContainer.plannedStartOfTransport}" />
+							<fmt:formatDate type="both" timeStyle="short" value="${transportsToContainer.plannedStartOfTransport}" />
 						<td nowrap="nowrap">
 							<fmt:formatDate type="time" timeStyle="short" value="${transportsToContainer.plannedTimeAtPatient}" />
 						<td nowrap="nowrap">
