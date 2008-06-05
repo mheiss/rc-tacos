@@ -82,4 +82,20 @@ public interface TransportDAO
      * @return transport
      */
     public Transport getTransportById(int transportId) throws SQLException;
+    
+    /**
+     * Returns alle transports in the given interval by the given location (location_ID of the assignedVehicle (based on the vehicle current location))
+     * @param startdate the start date
+     * @param enddate the end date
+     * @param locationId the locationId (real location of transports with a vehicle, planned location of transports without location (Storno, Leerfahrt, Weiterleitung)
+     */
+    public List<Transport> listArchivedTransportsByVehicleLocationAndDate(long startdate, long enddate, int locationId) throws SQLException;
+    
+    /**
+     * Returns alle transports in the given interval by the given location (planned location of the transport)
+     * @param startdate the start date
+     * @param enddate the end date
+     * @param locationId the locationId (real location of transports with a vehicle, planned location of transports without location (Storno, Leerfahrt, Weiterleitung)
+     */
+    public List<Transport> listArchivedTransportsByTransportLocationAndDate(long startdate, long enddate, int locationId) throws SQLException;
 }
