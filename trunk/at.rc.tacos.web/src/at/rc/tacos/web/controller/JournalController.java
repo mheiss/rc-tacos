@@ -34,7 +34,7 @@ import at.rc.tacos.web.form.VehicleContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
- * Roster Controller.
+ * Journal Controller.
  * @author Birgit
  * @version 1.0
  * TODO: Einträge mit falschem Datum herausfiltern
@@ -171,6 +171,9 @@ public class JournalController extends Controller {
 			final Transport transport = (Transport)itJournalList.next();
 			final JournalContainer journalContainer = new JournalContainer();
 			final VehicleContainer vehicleContainer = new VehicleContainer();
+			if(transport.getVehicleDetail() != null)
+				vehicleContainer.setVehicleName(transport.getVehicleDetail().getVehicleName());
+			//TODO staff of the vehicle
 			journalContainer.setVehicleContainer(vehicleContainer);
 			if(transport.getVehicleDetail() != null)
 				journalContainer.setRealLocation(transport.getVehicleDetail().getCurrentStation());
