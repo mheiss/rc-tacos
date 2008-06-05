@@ -30,7 +30,7 @@
 	</tr>
 	<c:url var="url" value="/Dispatcher/transportsTo.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Offene Transporte</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Vormerkungen</a>
 		</td>
 	</tr>
 	<c:url var="url" value="/Dispatcher/journal.do" />
