@@ -53,4 +53,16 @@ public interface IFilterTypes
     
     /** Filter staff member by primary location */
     public final static String STAFF_MEMBER_LOCATION_FILTER = "staffMemberLocationFilter";
+    
+    /** Filter prebooked transports */
+    public final static String TRANSPORT_PREBOOKING_FILTER = "transportPrebookingFilter";
+    
+    /** Filter running transports */
+    public final static String TRANSPORT_RUNNING_FILTER = "transportRunningFilter";
+    
+    /** Filter archived transports */
+    public final static String TRANSPORT_ARCHIVED_FILTER = "transportArchivedFilter";
+
+    /** Filter archived transports by location */
+    public final static String TRANSPORT_LOCATION_FILTER = "transportLocationFilter";
 }
