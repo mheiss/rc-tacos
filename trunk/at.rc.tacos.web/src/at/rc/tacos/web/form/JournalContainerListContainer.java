@@ -33,13 +33,11 @@ public class JournalContainerListContainer {
 
 	public SortedMap<Location, List<JournalContainer>> getJournalContainerMap() 
 	{
-		System.out.println("journalContainerMap");
 		return journalContainerMap;
 	}
 
 	public void setJournalContainerMap(SortedMap<Location, List<JournalContainer>> journalContainerMap) 
 	{
-		System.out.println("journalContainerMap im JournalContainerListContainer: " +journalContainerMap);
 		this.journalContainerMap = journalContainerMap;
 	}
 	
@@ -47,7 +45,7 @@ public class JournalContainerListContainer {
 	{
 		SortedMap<Location, List<JournalContainer>> map = new TreeMap<Location, List<JournalContainer>>(locationComparator);
 		for (JournalContainer journalContainer : journalContainerList) {
-			final Location location =journalContainer.getRealLocation();
+			final Location location = journalContainer.getRealLocation();
 			List<JournalContainer> locationJournalContainerList = map.get(location);
 			if (locationJournalContainerList == null) {
 				locationJournalContainerList = new ArrayList<JournalContainer>();
