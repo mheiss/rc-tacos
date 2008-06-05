@@ -256,15 +256,15 @@ public class TransportListener extends ServerListenerAdapter
 				|| transport.getTransportNumber() == Transport.TRANSPORT_FORWARD)
 		{
 			System.out.println("CANCEL OR FORWARD TRANSPORT");
-			if(!transportDao.cancelTransport(transport))
+			if(!transportDao.cancelTransport(transport)) //set the transportNumber to -1 or -2 and set program status journal
 				throw new DAOException("TransportListner","Failed to cancle the transport "+transport);
 		}
 
-		//Vehicle is removed but we have a transport number -> cancle
+		//Vehicle is removed but we have a transport number -> cancel
 		if(transport.getVehicleDetail() == null && transport.getTransportNumber() > 0)
 		{
 			System.out.println("vehicle removed, but transport number-> removeVehicle");
-			if(!transportDao.removeVehicleFromTransport(transport))
+			if(!transportDao.removeVehicleFromTransport(transport)) //remove assigned vehicle, reset the transport number (to 0 and restore the given number), set program status to outstanding 
 				throw new DAOException("TransportListener","Failed to remove the transport from the vehicle");
 		}
 
