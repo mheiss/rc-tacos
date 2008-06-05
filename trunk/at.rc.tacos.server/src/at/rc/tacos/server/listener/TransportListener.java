@@ -67,6 +67,118 @@ public class TransportListener extends ServerListenerAdapter
 			System.out.println("WARNING: Listing of all transport entries is denied.");
 			throw new DAOException("TransportListener","Listing of all transport entries is denied");
 		}
+		
+		//online transport listing *** only prebookings ***
+		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_PREBOOKING_FILTER))
+		{
+			//for online transport listing
+			//list only the prebooked transports
+			//show the prebooked transports
+			List<Transport> prebookedList = transportDao.listPrebookedTransports();
+			//check the prebooked
+			if(prebookedList == null)
+			{
+				throw new DAOException("TransportListener","Failed to list the prebooked transports");
+			}
+			list.addAll(prebookedList);
+		}
+		//online transport listing *** only running transports (outstanding and underway) ***
+		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_RUNNING_FILTER))
+		{
+			//for online transport listing
+			//list only the running transports (outstanding and underway)
+			//show the running transports
+			//show current transports that are in progress
+			List<Transport> transportList = transportDao.listRunningTransports();
+			if(transportList == null)
+			{
+				throw new DAOException("TransportListener","Failed to list the running and open transports");
+			}
+			list.addAll(transportList);
+			
+		}
+		//online transport listing *** archived by location ***
+		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_ARCHIVED_FILTER) && queryFilter.containsFilterType(IFilterTypes.TRANSPORT_LOCATION_FILTER))
+		{
+			//for online transport listing
+			//list only the archived transports (journal)
+			//get the query filter and parse it to a date time
+			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.TRANSPORT_ARCHIVED_FILTER);
+			final String locationFilter = queryFilter.getFilterValue(IFilterTypes.TRANSPORT_LOCATION_FILTER);
+			final int locationId = Integer.valueOf(locationFilter).intValue();
+			long dateStart = MyUtils.stringToTimestamp(dateFilter,MyUtils.dateFormat);
+			Calendar calEnd = Calendar.getInstance();
+			calEnd.setTimeInMillis(dateStart);
+			calEnd.add(Calendar.DAY_OF_MONTH, 1);
+			long dateEnd = calEnd.getTimeInMillis();
+			
+			//show the transports in the journal which have a assigned vehicle
+			List<Transport> journalListVehicleLocation = transportDao.listArchivedTransportsByVehicleLocationAndDate(dateStart, dateEnd, locationId);
+			System.out.println("zwei filter, size der journalVEHICLEList: " +journalListVehicleLocation.size());
+			//check archived
+			if(journalListVehicleLocation == null)
+			{
+				String time = MyUtils.timestampToString(dateStart, MyUtils.dateFormat) +" bis " +MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
+				throw new DAOException("TransportListener","Failed to list the archived transports by date from "+time);
+			}
+			
+			//show the transports in the journal which have no assigned vehicle - so the location is the planned location
+			
+			List<Transport> journalListTransportLocation = transportDao.listArchivedTransportsByTransportLocationAndDate(dateStart, dateEnd, locationId);
+			System.out.println("zwei filter, size der journalTRANSPORTList: " +journalListTransportLocation.size());
+			//check archived
+			if(journalListTransportLocation == null)
+			{
+				String time = MyUtils.timestampToString(dateStart, MyUtils.dateFormat) +" bis " +MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
+				throw new DAOException("TransportListener","Failed to list the archived transports by date from "+time);
+			}
+			
+			//immediate list to pick the needed transports
+			List<Transport> journalList = new ArrayList<Transport>();
+			
+			//transports without a vehicle
+			for(Transport transport : journalListTransportLocation)
+			{
+				//
+				if(transport.getVehicleDetail() == null)
+				{
+					journalList.add(transport);
+				}	
+			}
+			
+			//transports with vehicle
+			for(Transport transport : journalListVehicleLocation)
+			{
+				journalList.add(transport);
+			}		
+			list.addAll(journalList);	
+		}
+		//online transport listing *** only archived transports ***
+		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_ARCHIVED_FILTER))
+		{
+			//for online transport listing
+			//list only the archived transports (journal)
+			//get the query filter and parse it to a date time
+			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.TRANSPORT_ARCHIVED_FILTER);
+			long dateStart = MyUtils.stringToTimestamp(dateFilter,MyUtils.dateFormat);
+			Calendar calEnd = Calendar.getInstance();
+			calEnd.setTimeInMillis(dateStart);
+			calEnd.add(Calendar.DAY_OF_MONTH, 1);
+			long dateEnd = calEnd.getTimeInMillis();
+			
+			//show the transports in the journal
+			List<Transport> journalList = transportDao.listArchivedTransports(dateStart, dateEnd);
+			System.out.println("ein filter, size der journalList: " +journalList.size());
+			
+			//check archived
+			if(journalList == null)
+			{
+				String time = MyUtils.timestampToString(dateStart, MyUtils.dateFormat) +" bis " +MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
+				throw new DAOException("TransportListener","Failed to list the archived transports by date from "+time);
+			}
+			list.addAll(journalList);
+		}
+		
 		else if(queryFilter.containsFilterType(IFilterTypes.DATE_FILTER))
 		{
 			//get the query filter and parse it to a date time
