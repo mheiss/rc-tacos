@@ -78,6 +78,7 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 				null,null);
 		if (dlg.open() == Window.OK) 
 		{
+			transport.clearVehicleDetail();
 			transport.setNotes(transport.getNotes() +" Stornoinformation: " +dlg.getValue());
 			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
 			transport.setTransportNumber(Transport.TRANSPORT_CANCLED);
