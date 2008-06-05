@@ -44,16 +44,9 @@ public class TransportsToController extends Controller {
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
-		
-		Calendar cal = Calendar.getInstance();
-		long date = cal.getTimeInMillis();
-		
-		 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-	     String strDate = sdf.format(date);
-	        
-	     System.out.println(".................strDate: " +strDate);
+	     
 		QueryFilter filter = new QueryFilter();
-		filter.add(IFilterTypes.DATE_FILTER, strDate);
+		filter.add(IFilterTypes.TRANSPORT_PREBOOKING_FILTER, "dummy");
 		final List<AbstractMessage> abstractTransportsToList = connection.sendListingRequest(Transport.ID, filter);//TODO - set FilterType
 		if (!connection.getContentType().equalsIgnoreCase(Transport.ID)) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
@@ -96,7 +89,6 @@ public class TransportsToController extends Controller {
 			transportList.add(transportsToContainer);
 		}
 		
-		
 		// Group
 		final TransportsToContainerListContainer transportsToContainerListContainer = new TransportsToContainerListContainer(transportList);	
 		final Comparator<Location> locationComparator = new PropertyComparator("locationName", true, true);
@@ -107,5 +99,4 @@ public class TransportsToController extends Controller {
 		
 		return params;
 	}
-
 }
