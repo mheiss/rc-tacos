@@ -251,21 +251,29 @@ public class TransportListener extends ServerListenerAdapter
 			transport.setTransportNumber(transportNr);
 		}
 
-		//STORNO OR FORWARD
-		if(transport.getTransportNumber() == Transport.TRANSPORT_CANCLED 
-				|| transport.getTransportNumber() == Transport.TRANSPORT_FORWARD)
-		{
-			System.out.println("CANCEL OR FORWARD TRANSPORT");
-			if(!transportDao.cancelTransport(transport)) //set the transportNumber to -1 or -2 and set program status journal
-				throw new DAOException("TransportListner","Failed to cancle the transport "+transport);
-		}
-
 		//Vehicle is removed but we have a transport number -> cancel
 		if(transport.getVehicleDetail() == null && transport.getTransportNumber() > 0)
 		{
 			System.out.println("vehicle removed, but transport number-> removeVehicle");
 			if(!transportDao.removeVehicleFromTransport(transport)) //remove assigned vehicle, reset the transport number (to 0 and restore the given number), set program status to outstanding 
 				throw new DAOException("TransportListener","Failed to remove the transport from the vehicle");
+		}
+		
+		//STORNO OR FORWARD
+		if(transport.getTransportNumber() == Transport.TRANSPORT_CANCLED 
+				|| transport.getTransportNumber() == Transport.TRANSPORT_FORWARD)
+		{
+			if(transport.getVehicleDetail() != null)
+			{
+				if(!transportDao.removeVehicleFromTransport(transport))
+					throw new DAOException("TransportListener", "Failed to remove the transport from the vehicle");
+				transport.clearVehicleDetail();
+				transport.setTransportNumber(Transport.TRANSPORT_CANCLED);//reset the transportNumber to CANCELED
+			}
+			System.out.println("CANCEL OR FORWARD TRANSPORT");
+			System.out.println("..... TransportListener, transportnumber des transports: " +transport.getTransportNumber());
+			if(!transportDao.cancelTransport(transport)) //set the transportNumber to -1 or -2 (to the value in the transport) and set program status journal
+				throw new DAOException("TransportListner","Failed to cancle the transport "+transport);
 		}
 
 		//send a simple update request to the dao
