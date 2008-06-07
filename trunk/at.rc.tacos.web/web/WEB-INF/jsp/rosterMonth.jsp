@@ -62,8 +62,48 @@
 	</tr>
 </table>
 <br />
-<table>
-</table>
+<br />
+<c:set var="rosterEntryContainerMap" value="${params.rosterMonthContainer.rosterEntryContainerMap}"/>
+<c:set var="staffMemberList" value="${params.rosterMonthContainer.staffMemberList}" />
+<c:set var="functionList" value="${params.rosterMonthContainer.functionList}" />
+<c:choose>
+<c:when test="${fn:length(staffMemberList) gt 0}">
+	<table id="rosterEntryTable" class="list" cellpadding="3" cellspacing="0">
+		<c:forEach var="function" items="${functionList}">
+			<tr>
+				<th class="header2" colspan="${fn:length(staffMemberList)*2+2}">${function.competenceName}</th>
+			</tr>
+			<tr class="subhead2">
+				<th nowrap="nowrap">&nbsp;</th>
+				<th nowrap="nowrap">&nbsp;</th>
+				<c:forEach var="staffMember" items="${staffMemberList}">
+					<th nowrap="nowrap">${staffMember.lastName}&nbsp;${staffMember.firstName}</th>
+				</c:forEach>
+			</tr>
+			<c:forEach var="functionRosterEntryContainerMapTemp" items="${rosterEntryContainerMap}">
+				<c:set var="functionTemp" value="${functionRosterEntryContainerMapTemp.key}" />
+				<c:if test="${function.competenceName eq functionTemp.function}">
+					<c:set var="functionRosterEntryContainerMap" value="${functionRosterEntryContainerMapTemp}" />
+				</c:if>
+			</c:forEach>
+			<c:forEach var="dayRosterEntryContainerMap" items="${functionRosterEntryContainerMap.value}">
+				<c:set var="day" value="${dayRosterEntryContainerMap.key}" />
+				<tr>
+					<td>${day.day}</td>
+				</tr>
+			</c:forEach>
+			
+		</c:forEach>
+	</table>
+</c:when>
+<c:otherwise>
+	<table cellpadding="3" cellspacing="0" class="list">
+		<tr>
+			<td class="nodata">Keine&nbsp;Mitarbeiter&nbsp;mit&nbsp;entsprechenden&nbsp;Kompetenzen&nbsp;gefunden</td>
+		</tr>
+	</table>
+</c:otherwise>
+</c:choose>
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#locationId').change(function() {
