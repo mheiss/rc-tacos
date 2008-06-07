@@ -19,8 +19,8 @@
 <c:if test="${useCache eq false}">
 	<meta http-equiv="PRAGMA" content="NO-CACHE" />
 </c:if>
-<c:if test="${refresh ne -1}">
-	<c:url var="url" value="/Dispatcher/vehiclesAllocation.do" />
+<c:if test="${refresh ne -1 and refreshUrl ne null}">
+	<c:url var="url" value="/Dispatcher${refreshUrl}" />
 	<meta http-equiv="refresh" content="${refresh};url=${url}" />
 </c:if>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
