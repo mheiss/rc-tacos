@@ -2,6 +2,7 @@ package at.rc.tacos.web.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -198,7 +199,7 @@ public class RosterMonthController extends Controller {
 			params.put(MODEL_FUNCTION_NAME, defaultFunction);
 		}
 		
-		// Staff Member (depends on function)
+		// Staff Member (depends on function)		
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		
@@ -237,6 +238,7 @@ public class RosterMonthController extends Controller {
 				}
 			}
 		}
+		
 		params.put(MODEL_STAFF_MEMBER_LIST_NAME, staffList);
 		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals(PARAM_STAFF_MEMBER_NO_VALUE))) {
 			params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
@@ -305,21 +307,31 @@ public class RosterMonthController extends Controller {
 		}
 		
 		// Group and Sort
-		/*final RosterMonthContainer rosterMonthContainer = new RosterMonthContainer(rosterEntryContainerList);
+		// Create Comparators
+		final Comparator functionComparator = new PropertyComparator("function", true, true);
 		final Comparator dayComparator = new PropertyComparator("day", true, true);
 		final Comparator staffMemberComparator = new CompoundComparator(new Comparator[] {
-			new PropertyComparator("firstName", true, true),
-			new PropertyComparator("lastName", true, true)
+			new PropertyComparator("lastName", true, true),
+			new PropertyComparator("firstName", true, true)
 		});
-		rosterMonthContainer.createTimetable(dayComparator, staffMemberComparator, month, year.intValue());
 		final Comparator sortComp = new CompoundComparator(new Comparator[] {
-			new PropertyComparator("function", true, true),
 			new PropertyComparator("plannedStartOfWork", true, true)
 		});
+		
+		// Create Staff Member List
+		final List<StaffMember> staffMemberList = new ArrayList<StaffMember>();
+		for (final AbstractMessage am : staffList) {
+			final StaffMember staffM = (StaffMember)am;
+			staffMemberList.add(staffM);
+		}
+		// Sort Staff Member List with staffMemberComparator
+		Collections.sort(staffMemberList, staffMemberComparator);
+		
+		final RosterMonthContainer rosterMonthContainer = new RosterMonthContainer(rosterEntryContainerList, staffMemberList);
+		rosterMonthContainer.createTimetable(functionComparator, dayComparator, staffMemberComparator, month, year.intValue());
 		rosterMonthContainer.sortRosterEntries(sortComp);
-		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);*/
-		
-		
+		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);
+				
 		userSession.getDefaultFormValues().setDefaultLocation(location);
 		final Calendar cale = Calendar.getInstance();
 		cale.setTime(userSession.getDefaultFormValues().getDefaultDate());
