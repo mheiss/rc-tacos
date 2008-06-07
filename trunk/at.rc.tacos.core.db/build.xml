@@ -32,6 +32,7 @@
 	<property name="db.sql_create_f_vehicle.script" value="${sql.dir}/sql_create_f_vehicle.sql" />
 	<property name="db.sql_create_f_sickperson.script" value="${sql.dir}/sql_create_f_sickperson.sql" />
 	<property name="db.sql_create_f_address.script" value="${sql.dir}/sql_create_f_address.sql" />
+	<property name="db.sql_create_f_periods.script" value="${sql.dir}/sql_create_f_periods.sql" />
 	
 	<!-- The classpath including the needed libraries for the database -->
 	<path id="master-classpath">
@@ -197,6 +198,13 @@
 					<classpath refid="master-classpath" />
 				</sql>
 			</target>
+	
+	<target name="sql_create_f_periods">
+					<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+					<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_periods.script}">
+						<classpath refid="master-classpath" />
+					</sql>
+				</target>
 
 	<target name="sql_create_f_transport">
 		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
