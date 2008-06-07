@@ -231,3 +231,76 @@ INSERT INTO sickperson(sickperson_ID, lastname, firstname)
 VALUES (1, null, 'Franz');
 INSERT INTO sickperson(sickperson_ID, lastname, firstname)
 VALUES (2, 'Huber', 'Sepp');
+
+-- roster periods
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (1, '06:00 - 14:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (2, '06:00 - 15:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (3, '07:00 - 15:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (4, '07:00 - 16:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (5, '08:00 - 12:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (6, '08:00 - 16:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (7, '08:00 - 17:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (8, '09:00 - 18:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (9, '12:00 - 20:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (10, '20:00 - 06:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (11, '06:00 - 18:00', '_HA');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (12, '18:00 - 06:00', '_HA');
+
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (13, '06:00 - 14:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (14, '06:00 - 15:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (15, '07:00 - 15:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (16, '07:00 - 16:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (17, '08:00 - 12:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (18, '08:00 - 16:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (19, '08:00 - 17:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (20, '09:00 - 18:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (21, '12:00 - 20:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (22, '20:00 - 06:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (23, '06:00 - 18:00', '_ZD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (24, '18:00 - 06:00', '_ZD');
+
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (25, '06:00 - 15:00', '_LSD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (26, '07:00 - 16:00', '_LSD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (27, '15:00 - 22:00', '_LSD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (28, '15:00 - 20:00', '_LSD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (29, '20:00 - 07:00', '_LSD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (30, '22:00 - 07:00', '_LSD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (31, '07:00 - 19:00', '_LSD');
+INSERT INTO periods(period_ID, period, servicetypecompetence)
+VALUES (32, '19:00 - 07:00', '_LSD');
+
+
+
+
+
