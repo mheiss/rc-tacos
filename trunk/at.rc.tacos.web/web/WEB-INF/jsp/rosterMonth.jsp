@@ -61,6 +61,9 @@
 		</select></td>
 	</tr>
 </table>
+<br />
+<table>
+</table>
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#locationId').change(function() {
