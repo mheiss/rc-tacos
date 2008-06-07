@@ -90,18 +90,18 @@ public class PeriodListener extends ServerListenerAdapter
 			throw new DAOException("PeriodListener","Listing of all period records is denied");
 		}
 
-//		else if(queryFilter.containsFilterType(IFilterTypes.SERVICETYPE_COMPETENCE_FILTER))
-//		{
-//			//get the query filter
-//			final String serviceTypeCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.SERVICETYPE_COMPETENCE_FILTER);
-//		
-//			periodList = periodsDao.getPeriodListByServiceTypeCompetence(serviceTypeCompetenceFilter);
-//			if(periodList == null)
-//			{
-//				throw new DAOException("PeriodListener","Failed to list the periods by serviceTypeCompetence: "+serviceTypeCompetenceFilter);
-//			}
-//			list.addAll(periodList);
-//		} 
+		else if(queryFilter.containsFilterType(IFilterTypes.SERVICETYPE_COMPETENCE_FILTER))
+		{
+			//get the query filter
+			final String serviceTypeCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.SERVICETYPE_COMPETENCE_FILTER);
+		
+			periodList = periodsDao.getPeriodListByServiceTypeCompetence(serviceTypeCompetenceFilter);
+			if(periodList == null)
+			{
+				throw new DAOException("PeriodListener","Failed to list the periods by serviceTypeCompetence: "+serviceTypeCompetenceFilter);
+			}
+			list.addAll(periodList);
+		} 
 		return list;
 	}
 }
