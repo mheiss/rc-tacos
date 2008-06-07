@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.StaffMember;
 
 /**
@@ -19,8 +20,9 @@ import at.rc.tacos.model.StaffMember;
  * @version 1.0
  */
 public class RosterMonthContainer {
-	private final List<RosterEntryContainer> rosterEntryContainerList;
-	private final List<StaffMember> staffMemberList;
+	private List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
+	private List<StaffMember> staffMemberList = new ArrayList<StaffMember>();
+	private List<Competence> functionList = new ArrayList<Competence>();
 	private SortedMap<Function, SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>> rosterEntryContainerMap;
 	
 	public enum Month {
@@ -201,11 +203,6 @@ public class RosterMonthContainer {
 			}
 		}
 	}
-	
-	public RosterMonthContainer(List<RosterEntryContainer> rosterEntryContainerList, List<StaffMember> staffMemberList) {
-		this.rosterEntryContainerList = rosterEntryContainerList;
-		this.staffMemberList = staffMemberList;
-	}
 
 
 	public SortedMap<Function, SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>> getRosterEntryContainerMap() {
@@ -223,6 +220,23 @@ public class RosterMonthContainer {
 
 	public List<StaffMember> getStaffMemberList() {
 		return staffMemberList;
+	}
+
+	public List<Competence> getFunctionList() {
+		return functionList;
+	}
+
+	public void setFunctionList(List<Competence> functionList) {
+		this.functionList = functionList;
+	}
+
+	public void setRosterEntryContainerList(
+			List<RosterEntryContainer> rosterEntryContainerList) {
+		this.rosterEntryContainerList = rosterEntryContainerList;
+	}
+
+	public void setStaffMemberList(List<StaffMember> staffMemberList) {
+		this.staffMemberList = staffMemberList;
 	}
 
 

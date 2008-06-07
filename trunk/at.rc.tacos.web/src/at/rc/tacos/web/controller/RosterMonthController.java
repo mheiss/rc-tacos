@@ -199,7 +199,7 @@ public class RosterMonthController extends Controller {
 			params.put(MODEL_FUNCTION_NAME, defaultFunction);
 		}
 		
-		// Staff Member (depends on function)		
+		// Staff Member (depends on function and location filter)		
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		
@@ -225,16 +225,26 @@ public class RosterMonthController extends Controller {
 						hasCompetence = true;
 					}
 				}
-				if (hasCompetence) {
+				if (hasCompetence && sm.getPrimaryLocation().getId() == location.getId()) {
 					staffList.add(sm);
 					if (sm.getStaffMemberId() == staffMemberId) {
 						staffMember = sm;
 					}
 				}
 			} else {
-				staffList.add(sm);
-				if (sm.getStaffMemberId() == staffMemberId) {
-					staffMember = sm;
+				boolean hasAnyCompetence = false;
+				final List<Competence> cL = sm.getCompetenceList();
+				for (final Iterator<Competence> itCL = cL.iterator(); itCL.hasNext();) {
+					final Competence c = itCL.next();
+					if (c.getCompetenceName().startsWith("_")) {
+						hasAnyCompetence = true;
+					}
+				}
+				if (hasAnyCompetence && sm.getPrimaryLocation().getId() == location.getId()) {
+					staffList.add(sm);
+					if (sm.getStaffMemberId() == staffMemberId) {
+						staffMember = sm;
+					}
 				}
 			}
 		}
@@ -327,7 +337,22 @@ public class RosterMonthController extends Controller {
 		// Sort Staff Member List with staffMemberComparator
 		Collections.sort(staffMemberList, staffMemberComparator);
 		
-		final RosterMonthContainer rosterMonthContainer = new RosterMonthContainer(rosterEntryContainerList, staffMemberList);
+		final RosterMonthContainer rosterMonthContainer = new RosterMonthContainer();
+		rosterMonthContainer.setRosterEntryContainerList(rosterEntryContainerList);
+		if (staffMember == null) {
+			rosterMonthContainer.setStaffMemberList(staffMemberList);
+		} else {
+			final List<StaffMember> smList = new ArrayList<StaffMember>();
+			smList.add(staffMember);
+			rosterMonthContainer.setStaffMemberList(smList);
+		}
+		if (function == null) {
+			rosterMonthContainer.setFunctionList(functionList);
+		} else {
+			final List<Competence> fList = new ArrayList<Competence>();
+			fList.add(function);
+			rosterMonthContainer.setFunctionList(fList);
+		}
 		rosterMonthContainer.createTimetable(functionComparator, dayComparator, staffMemberComparator, month, year.intValue());
 		rosterMonthContainer.sortRosterEntries(sortComp);
 		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);

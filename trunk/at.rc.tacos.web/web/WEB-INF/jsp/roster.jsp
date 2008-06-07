@@ -39,6 +39,8 @@
 			border="0" id="dateCalendarTrigger" style="cursor: pointer" /></td>
 	</tr>
 </table>
+<br />
+<br />
 <c:set var="fieldHeadersRow">
 	<tr class="subhead2">
 		<th nowrap="nowrap">Name</th>
@@ -53,8 +55,6 @@
 		<th nowrap="nowrap">&nbsp;</th>
 	</tr>
 </c:set>
-<br />
-<br />
 <c:set var="rosterEntryContainerMap" value="${params.rosterEntryContainerListContainer.rosterEntryContainerMap}"/>
 <c:choose>
 	<c:when test="${fn:length(rosterEntryContainerMap) gt 0}">
