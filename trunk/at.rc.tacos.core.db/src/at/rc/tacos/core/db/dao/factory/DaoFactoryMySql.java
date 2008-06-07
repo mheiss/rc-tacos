@@ -9,6 +9,7 @@ import at.rc.tacos.core.db.dao.DiseaseDAO;
 import at.rc.tacos.core.db.dao.JobDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
+import at.rc.tacos.core.db.dao.PeriodsDAO;
 import at.rc.tacos.core.db.dao.RosterDAO;
 import at.rc.tacos.core.db.dao.ServiceTypeDAO;
 import at.rc.tacos.core.db.dao.SickPersonDAO;
@@ -117,6 +118,12 @@ public class DaoFactoryMySql implements DaoFactory
 	@Override
 	public AddressDAO createAddressDAO()
 	{
+		return null;
+	}
+
+	@Override
+	public PeriodsDAO createPeriodsDAO() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
