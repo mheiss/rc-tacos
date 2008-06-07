@@ -99,7 +99,7 @@ public class RosterMonthContainer {
 			}
 			SortedMap<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap = functionRosterEntryContainerMap.get(day);
 			if (dayRosterEntryContainerMap == null) {
-				dayRosterEntryContainerMap = new TreeMap<StaffMember, List<RosterEntryContainer>>(dayComparator);
+				dayRosterEntryContainerMap = new TreeMap<StaffMember, List<RosterEntryContainer>>(staffMemberComparator);
 				functionRosterEntryContainerMap.put(day, dayRosterEntryContainerMap);
 			}
 			List<RosterEntryContainer> staffMemberRosterEntryContainerList = dayRosterEntryContainerMap.get(staffMember);
@@ -112,7 +112,7 @@ public class RosterMonthContainer {
 		rosterEntryContainerMap = map;
 		
 		// Fill in days without roster entries with keys (depens on month and year)
-		for (SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> functionRosterEntryContainerMap: rosterEntryContainerMap.values()) {
+		for (SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> functionRosterEntryContainerMap : rosterEntryContainerMap.values()) {
 			final Set<Day> daySet = functionRosterEntryContainerMap.keySet();
 			int daysOfMonth = 31;
 			switch (month) {
@@ -166,11 +166,14 @@ public class RosterMonthContainer {
 				}
 				if (!dayFound) {
 					final Day d = new Day(i);
-					final SortedMap<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap = new TreeMap<StaffMember, List<RosterEntryContainer>>(dayComparator);
+					final SortedMap<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap = new TreeMap<StaffMember, List<RosterEntryContainer>>(staffMemberComparator);
 					functionRosterEntryContainerMap.put(d, dayRosterEntryContainerMap);
 				}
 			}
-			// Fill in StaffMembers without roster entries
+		}
+		
+		// Fill in staff members without roster entries
+		for (final SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> functionRosterEntryContainerMap : rosterEntryContainerMap.values()) {
 			for (final SortedMap<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap : functionRosterEntryContainerMap.values()) {
 				final Set<StaffMember> staffMemberSet = dayRosterEntryContainerMap.keySet();
 				for (final StaffMember sm1 : staffMemberList) {

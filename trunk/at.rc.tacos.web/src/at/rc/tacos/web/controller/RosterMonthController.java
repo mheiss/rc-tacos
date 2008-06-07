@@ -334,7 +334,9 @@ public class RosterMonthController extends Controller {
 				
 		userSession.getDefaultFormValues().setDefaultLocation(location);
 		final Calendar cale = Calendar.getInstance();
-		cale.setTime(userSession.getDefaultFormValues().getDefaultDate());
+		if (userSession.getDefaultFormValues().getDefaultDate() != null) {
+			cale.setTime(userSession.getDefaultFormValues().getDefaultDate());
+		}
 		cale.set(Calendar.MONTH, month);
 		userSession.getDefaultFormValues().setDefaultDate(cale.getTime());	
 		userSession.getDefaultFormValues().setDefaultFunction(function);
