@@ -6,7 +6,7 @@
 		<meta http-equiv="PRAGMA" content="NO-CACHE" />
 	</c:if>
 	<c:if test="${refresh ne -1}">
-		<c:url var="url" value="/Dispatcher/vehiclesAllocation.do" />
+		<c:url var="url" value="/Dispatcher/error.do" />
 		<meta http-equiv="refresh" content="${refresh};url=${url}" />
 	</c:if>
 	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" /> 

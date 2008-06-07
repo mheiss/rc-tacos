@@ -27,7 +27,7 @@ import at.rc.tacos.web.session.UserSession;
  * This class is responsible for URL resolving, security, forwarding to view and loads template.
  * @author Payer Martin
  * @version 1.0
- * TODO: Checkboxen "reparieren", Abhängige Selects anpassen
+ * TODO: Refresh fixen
  */
 public class Dispatcher extends HttpServlet 
 {
@@ -274,6 +274,7 @@ public class Dispatcher extends HttpServlet
 								request.setAttribute("view", viewPath);
 								request.setAttribute("js", js);
 								request.setAttribute("css", css);
+								request.setAttribute("refreshUrl", relativePath);
 								System.out.println("Forward: " + response.encodeURL(templatePath));
 								System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
 								getServletContext().getRequestDispatcher(response.encodeURL(templatePath)).forward(request, response);
