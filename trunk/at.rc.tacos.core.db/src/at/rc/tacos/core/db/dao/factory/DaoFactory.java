@@ -8,6 +8,7 @@ import at.rc.tacos.core.db.dao.DialysisPatientDAO;
 import at.rc.tacos.core.db.dao.DiseaseDAO;
 import at.rc.tacos.core.db.dao.JobDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
+import at.rc.tacos.core.db.dao.PeriodsDAO;
 import at.rc.tacos.core.db.dao.ServiceTypeDAO;
 import at.rc.tacos.core.db.dao.SickPersonDAO;
 import at.rc.tacos.core.db.dao.StaffMemberDAO;
@@ -48,4 +49,5 @@ public interface DaoFactory
     public DiseaseDAO createDiseaseDAO();
     public SickPersonDAO createSickPersonDAO();
     public AddressDAO createAddressDAO();
+    public PeriodsDAO createPeriodsDAO();
 }
