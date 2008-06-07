@@ -65,4 +65,7 @@ public interface IFilterTypes
 
     /** Filter archived transports by location */
     public final static String TRANSPORT_LOCATION_FILTER = "transportLocationFilter";
+    
+    /** Filter periods for the roster overview by serviceTypeCompetence (_HA, _ZD, _LSD) */
+    public final static String TRANSPORT_SERVICETYPE_COMPETENCE_FILTER = "seriveTypeCompetenceFilter";
 }
