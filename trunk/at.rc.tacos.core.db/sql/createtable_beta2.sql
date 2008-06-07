@@ -477,3 +477,10 @@ CREATE TABLE address (
   PRIMARY KEY(address_ID),
 )
 
+CREATE TABLE periods (
+	period_ID BIGINT NOT NULL,
+ 	period VARCHAR(15) NULL,
+	servicetypecompetence VARCHAR(5),
+	PRIMARY KEY(period_ID),
+)
+
