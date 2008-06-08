@@ -3,7 +3,9 @@ package at.rc.tacos.web.form;
 import java.util.Calendar;
 import java.util.Date;
 
+import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.web.form.Function;
 
 /**
  * This class serves as view container for class RosterEntry.
@@ -22,13 +24,13 @@ public class RosterEntryContainer {
 	private Date registerStart;
 	private RosterEntry rosterEntry;
 	
-	private String function;
+	private Function function;
 	
-	public String getFunction() {
+	public Function getFunction() {
 		return function;
 	}
-	public void setFunction(String function) {
-		this.function = function;
+	public void setFunction(Competence function) {
+		this.function = new Function(function);
 	}
 	// Additional field
 	public Date getPlannedStartOfWork() {

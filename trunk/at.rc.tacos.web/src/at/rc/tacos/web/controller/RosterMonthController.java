@@ -2,7 +2,6 @@ package at.rc.tacos.web.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,13 +28,14 @@ import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.form.RosterEntryContainer;
 import at.rc.tacos.web.form.RosterMonthContainer;
-import at.rc.tacos.web.form.RosterMonthContainer.Month;
+import at.rc.tacos.web.form.Month;
 import at.rc.tacos.web.session.UserSession;
 
 /**
  * Roster Month Controller
  * @author Payer Martin
  * @version 1.0
+ * TODO: Location Filter must filter the primary location of staff members
  */
 public class RosterMonthController extends Controller {
 
@@ -196,7 +196,8 @@ public class RosterMonthController extends Controller {
 		if (function != null || (paramFunctionId != null && paramFunctionId.equals(PARAM_FUNCTION_NO_VALUE))) {
 			params.put(MODEL_FUNCTION_NAME, function);
 		} else {
-			params.put(MODEL_FUNCTION_NAME, defaultFunction);
+			function = defaultFunction;
+			params.put(MODEL_FUNCTION_NAME, function);
 		}
 		
 		// Staff Member (depends on function and location filter)		
@@ -213,15 +214,14 @@ public class RosterMonthController extends Controller {
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
-		final Competence functionTemp = (Competence)params.get(MODEL_FUNCTION_NAME);
 		for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
 			final StaffMember sm = (StaffMember)itStaffList.next();
-			if (functionTemp != null) {
+			if (function != null) {
 				boolean hasCompetence = false;
 				final List<Competence> cL = sm.getCompetenceList();
 				for (final Iterator<Competence> itCL = cL.iterator(); itCL.hasNext();) {
 					final Competence c = itCL.next();
-					if (c.getId() ==  functionTemp.getId() || c.getCompetenceName().equals(functionTemp.getCompetenceName())) {
+					if (c.getId() ==  function.getId() || c.getCompetenceName().equals(function.getCompetenceName())) {
 						hasCompetence = true;
 					}
 				}
@@ -253,7 +253,8 @@ public class RosterMonthController extends Controller {
 		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals(PARAM_STAFF_MEMBER_NO_VALUE))) {
 			params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
 		} else {
-			params.put(MODEL_STAFF_MEMBER_NAME, defaultStaffMember);
+			staffMember = defaultStaffMember;
+			params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
 		}
 		
 		// Get Roster Entries
@@ -263,12 +264,13 @@ public class RosterMonthController extends Controller {
 		rosterFilter.add(IFilterTypes.ROSTER_YEAR_FILTER, year.toString());
 		if (function != null) {
 			if (function.getCompetenceName().equals(Competence.FUNCTION_LS)) {
-				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_FILTER, Job.JOB_LEITSTELLENDISPONENT);
+				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER, Job.JOB_LEITSTELLENDISPONENT);
 			} else if (function.getCompetenceName().equals(Competence.FUNCTION_HA)) {
-				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_FILTER, ServiceType.SERVICETYPE_HAUPTAMTLICH);
+				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER, ServiceType.SERVICETYPE_HAUPTAMTLICH);
 			} else if (function.getCompetenceName().equals(Competence.FUNCTION_ZD)) {
-				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_FILTER, ServiceType.SERIVCETYPE_ZIVILDIENER);
+				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER, ServiceType.SERIVCETYPE_ZIVILDIENER);
 			}
+			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER, function.getCompetenceName());
 		}
 		if (staffMember != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER, Integer.toString(staffMember.getStaffMemberId()));
@@ -306,11 +308,26 @@ public class RosterMonthController extends Controller {
 			rosterEntryContainer.setRegisterStart(registerStartCalendar.getTime());
 			
 			if (rosterEntry.getJob().getJobName().equals(Job.JOB_LEITSTELLENDISPONENT)) {
-				rosterEntryContainer.setFunction(Competence.FUNCTION_LS);
+				for (final Iterator<Competence> itFl = functionList.iterator(); itFl.hasNext();) {
+					final Competence f = (Competence)itFl.next();
+					if (f.getCompetenceName().equals(Competence.FUNCTION_LS)) {
+						rosterEntryContainer.setFunction(f);
+					}
+				}
 			} else if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_HAUPTAMTLICH)) {
-				rosterEntryContainer.setFunction(Competence.FUNCTION_HA);
+				for (final Iterator<Competence> itFl = functionList.iterator(); itFl.hasNext();) {
+					final Competence f = (Competence)itFl.next();
+					if (f.getCompetenceName().equals(Competence.FUNCTION_HA)) {
+						rosterEntryContainer.setFunction(f);
+					}
+				}
 			} else if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERIVCETYPE_ZIVILDIENER)) {
-				rosterEntryContainer.setFunction(Competence.FUNCTION_ZD);
+				for (final Iterator<Competence> itFl = functionList.iterator(); itFl.hasNext();) {
+					final Competence f = (Competence)itFl.next();
+					if (f.getCompetenceName().equals(Competence.FUNCTION_ZD)) {
+						rosterEntryContainer.setFunction(f);
+					}
+				}
 			}
 			
 			rosterEntryContainerList.add(rosterEntryContainer);
@@ -318,7 +335,7 @@ public class RosterMonthController extends Controller {
 		
 		// Group and Sort
 		// Create Comparators
-		final Comparator functionComparator = new PropertyComparator("function", true, true);
+		final Comparator functionComparator = new PropertyComparator("function.competenceName", true, true);
 		final Comparator dayComparator = new PropertyComparator("day", true, true);
 		final Comparator staffMemberComparator = new CompoundComparator(new Comparator[] {
 			new PropertyComparator("lastName", true, true),
@@ -334,18 +351,14 @@ public class RosterMonthController extends Controller {
 			final StaffMember staffM = (StaffMember)am;
 			staffMemberList.add(staffM);
 		}
-		// Sort Staff Member List with staffMemberComparator
-		Collections.sort(staffMemberList, staffMemberComparator);
 		
+		// Create roster month container
 		final RosterMonthContainer rosterMonthContainer = new RosterMonthContainer();
+		
+		// Set roster entry list
 		rosterMonthContainer.setRosterEntryContainerList(rosterEntryContainerList);
-		if (staffMember == null) {
-			rosterMonthContainer.setStaffMemberList(staffMemberList);
-		} else {
-			final List<StaffMember> smList = new ArrayList<StaffMember>();
-			smList.add(staffMember);
-			rosterMonthContainer.setStaffMemberList(smList);
-		}
+		
+		// Set function list
 		if (function == null) {
 			rosterMonthContainer.setFunctionList(functionList);
 		} else {
@@ -353,8 +366,27 @@ public class RosterMonthController extends Controller {
 			fList.add(function);
 			rosterMonthContainer.setFunctionList(fList);
 		}
-		rosterMonthContainer.createTimetable(functionComparator, dayComparator, staffMemberComparator, month, year.intValue());
+		rosterMonthContainer.sortFunctionList(functionComparator);
+		
+		// Fill day list
+		rosterMonthContainer.fillDayList(month, year.intValue());
+		
+		// Fill staff member list
+		if (staffMember == null) {
+			rosterMonthContainer.setStaffMemberList(staffMemberList);
+		} else {
+			final List<StaffMember> smList = new ArrayList<StaffMember>();
+			smList.add(staffMember);
+			rosterMonthContainer.setStaffMemberList(smList);
+		}
+		rosterMonthContainer.sortStaffMemberList(staffMemberComparator);
+		
+		// Create timetable
+		rosterMonthContainer.createTimetable(functionComparator, dayComparator, staffMemberComparator);
+		
+		// Sort roster entries in timetable
 		rosterMonthContainer.sortRosterEntries(sortComp);
+		
 		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);
 				
 		userSession.getDefaultFormValues().setDefaultLocation(location);
