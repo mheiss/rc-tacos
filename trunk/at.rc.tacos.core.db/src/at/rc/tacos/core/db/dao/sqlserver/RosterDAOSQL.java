@@ -464,7 +464,7 @@ public class RosterDAOSQL implements RosterDAO
 	
 	@Override
 	public List<RosterEntry> listRosterEntriesForRosterMonthFilterFunction(
-			int locationFilter, int monthFilter, int yearFilter, String functionFilter) throws SQLException {
+			int locationFilter, int monthFilter, int yearFilter, String functionJobServiceTypeFilter, String functionStaffMemberCompetenceFilter) throws SQLException {
 		Connection connection = source.getConnection();
 		try
 		{
@@ -474,9 +474,9 @@ public class RosterDAOSQL implements RosterDAO
 			query.setInt(1, locationFilter);
 			query.setInt(2, monthFilter);
 			query.setInt(3, yearFilter);
-			query.setString(4, functionFilter);
-			query.setString(5, functionFilter);
-			query.setString(6, functionFilter);
+			query.setString(4, functionJobServiceTypeFilter);
+			query.setString(5, functionJobServiceTypeFilter);
+			query.setString(6, functionStaffMemberCompetenceFilter);
 			final ResultSet rs = query.executeQuery();
 			//create the result list and loop over the result
 			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
@@ -600,7 +600,7 @@ public class RosterDAOSQL implements RosterDAO
 
 	@Override
 	public List<RosterEntry> listRosterEntriesForRosterMonthFilterFunctionAndStaffMember(
-			int locationFilter, int monthFilter, int yearFilter, String functionFilter,
+			int locationFilter, int monthFilter, int yearFilter, String functionJobServiceTypeFilter, String functionStaffMemberCompetenceFilter,
 			int staffMemberFilter) throws SQLException {
 		Connection connection = source.getConnection();
 		try
@@ -611,10 +611,10 @@ public class RosterDAOSQL implements RosterDAO
 			query.setInt(1, locationFilter);
 			query.setInt(2, monthFilter);
 			query.setInt(3, yearFilter);
-			query.setString(4, functionFilter);
-			query.setString(5, functionFilter);
-			query.setInt(6, staffMemberFilter);
-			query.setString(7, functionFilter);
+			query.setString(4, functionJobServiceTypeFilter);
+			query.setString(5, functionJobServiceTypeFilter);
+			query.setString(6, functionStaffMemberCompetenceFilter);
+			query.setInt(7, staffMemberFilter);
 			final ResultSet rs = query.executeQuery();
 			//create the result list and loop over the result
 			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
