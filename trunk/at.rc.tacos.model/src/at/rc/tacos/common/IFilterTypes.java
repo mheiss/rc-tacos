@@ -6,8 +6,9 @@ package at.rc.tacos.common;
  */
 public interface IFilterTypes
 {
+	
     /** Filter by id */
-    public final static String ID_FILTER = "ID";
+	public final static String ID_FILTER = "ID";
     
     /** Filter by single date */
     public final static String DATE_FILTER = "singleDate";
@@ -42,8 +43,11 @@ public interface IFilterTypes
     /** Filter roster by year */
     public final static String ROSTER_YEAR_FILTER = "rosterYearFilter";
     
-    /** Filter roster by competence */
-    public final static String ROSTER_FUNCTION_FILTER = "rosterCompetenceFilter";
+    /** Filter roster by function (job/serviceType) */
+    public final static String ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER = "rosterFunctionJobServiceTypeFilter";
+    
+    /** Filter roster by function (staffMember's competence) */
+    public final static String ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER = "rosterFunctionStaffMemberCompetenceFilter";
     
     /** Filter roster by staff member */
     public final static String ROSTER_STAFF_MEMBER_FILTER = "rosterStaffMemberFilter";
@@ -66,6 +70,5 @@ public interface IFilterTypes
     /** Filter archived transports by location */
     public final static String TRANSPORT_LOCATION_FILTER = "transportLocationFilter";
     
-    /** Filter periods for the roster overview by serviceTypeCompetence (_HA, _ZD, _LSD) */
-    public final static String TRANSPORT_SERVICETYPE_COMPETENCE_FILTER = "seriveTypeCompetenceFilter";
+    public final static String SERVICETYPE_COMPETENCE_FILTER = "serviceTypeCompetenceFilter";
 }
