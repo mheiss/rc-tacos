@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import at.rc.tacos.model.Location;
 
 /**
- * Roster Entry Container List Container
+ * Container for Roster View
  * @author Payer Martin
  * @version 1.0
  */

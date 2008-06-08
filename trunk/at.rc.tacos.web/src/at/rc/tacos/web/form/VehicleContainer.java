@@ -5,7 +5,7 @@ import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 
 /**
- * Container for VehicleDetail cause PropertyComparator has problem with swt Images
+ * Replaces VehicleDetail because PropertyComparator has problem with SWT Image
  * @author Payer Martin
  * @version 1.0
  */

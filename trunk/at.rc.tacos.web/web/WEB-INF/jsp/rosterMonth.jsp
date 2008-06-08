@@ -1,6 +1,40 @@
 <%@ include file="includes.jsp"%>
 <table class="standardForm">
 	<tr>
+		<td style="font-weight: bold">Funktion:</td>
+		<td><select size="1" id="functionId" name="functionId">
+			<option value="noValue">-- Funktion wählen --</option>
+			<c:forEach var="function" items="${params.functionList}">
+				<option value="${function.id}" ${(not empty
+					params.function) and (params.function.id==
+					function.id) ? ' selected="selected"' : ''}>${function.competenceName}</option>
+			</c:forEach>
+		</select></td>
+	</tr>
+	<tr>
+		<td style="font-weight: bold">Ortsstelle&nbsp;(Mitarbeiter):</td>
+		<td><select size="1" id="locationStaffMemberId" name="locationStaffMemberId">
+			<option value="noValue">-- Ortsstelle (Mitarbeiter) wählen --</option>
+			<c:forEach var="locationStaffMember" items="${params.locationStaffMemberList}">
+				<option value="${locationStaffMember.id}" ${(not empty
+					params.locationStaffMember) and (params.locationStaffMember.id==
+					locationStaffMember.id) ? ' selected="selected"' : ''}>${locationStaffMember.locationName}</option>
+			</c:forEach>
+		</select></td>
+	</tr>
+	<tr>
+		<td style="font-weight: bold">Mitarbeiter:</td>
+		<td><select size="1" id="staffMemberId" name="staffMemberId">
+			<option value="noValue">-- Mitarbeiter wählen--</option>
+			<c:forEach var="staffMember" items="${params.staffList}">
+				<option value="${staffMember.staffMemberId}" ${(not empty
+					params.staffMember) and (params.staffMember.staffMemberId==
+					staffMember.staffMemberId) ? ' selected="selected"' : ''}>
+				${staffMember.lastName}&nbsp;${staffMember.firstName}</option>
+			</c:forEach>
+		</select></td>
+	</tr>
+	<tr>
 		<td style="font-weight: bold">Ortsstelle&nbsp;(Dienste):</td>
 		<td><select size="1" id="locationId" name="locationId">
 			<c:forEach var="location" items="${params.locationList}">
@@ -34,40 +68,6 @@
 				<option value="${year}" ${(not empty
 					params.year) and (params.year==
 					year) ? ' selected="selected"' : ''}>${year}</option>
-			</c:forEach>
-		</select></td>
-	</tr>
-	<tr>
-		<td style="font-weight: bold">Funktion:</td>
-		<td><select size="1" id="functionId" name="functionId">
-			<option value="noValue">-- Funktion wählen --</option>
-			<c:forEach var="function" items="${params.functionList}">
-				<option value="${function.id}" ${(not empty
-					params.function) and (params.function.id==
-					function.id) ? ' selected="selected"' : ''}>${function.competenceName}</option>
-			</c:forEach>
-		</select></td>
-	</tr>
-	<tr>
-		<td style="font-weight: bold">Ortsstelle&nbsp;(Mitarbeiter):</td>
-		<td><select size="1" id="locationStaffMemberId" name="locationStaffMemberId">
-			<option value="noValue">-- Ortsstelle (Mitarbeiter) wählen --</option>
-			<c:forEach var="locationStaffMember" items="${params.locationStaffMemberList}">
-				<option value="${locationStaffMember.id}" ${(not empty
-					params.locationStaffMember) and (params.locationStaffMember.id==
-					locationStaffMember.id) ? ' selected="selected"' : ''}>${locationStaffMember.locationName}</option>
-			</c:forEach>
-		</select></td>
-	</tr>
-	<tr>
-		<td style="font-weight: bold">Mitarbeiter:</td>
-		<td><select size="1" id="staffMemberId" name="staffMemberId">
-			<option value="noValue">-- Mitarbeiter wählen--</option>
-			<c:forEach var="staffMember" items="${params.staffList}">
-				<option value="${staffMember.staffMemberId}" ${(not empty
-					params.staffMember) and (params.staffMember.staffMemberId==
-					staffMember.staffMemberId) ? ' selected="selected"' : ''}>
-				${staffMember.lastName}&nbsp;${staffMember.firstName}</option>
 			</c:forEach>
 		</select></td>
 	</tr>

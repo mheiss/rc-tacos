@@ -1,5 +1,10 @@
 package at.rc.tacos.web.form;
 
+/**
+ * Container for Day
+ * @author Payer Martin
+ * @version 1.0
+ */
 public class Day {
 	private int day;
 	private int dayOfWeek;
