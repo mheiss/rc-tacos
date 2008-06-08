@@ -15,6 +15,7 @@ import at.rc.tacos.web.session.UserSession;
  * Personnel Data Controller
  * @author Payer Martin
  * @version 1.0
+ * TODO: Check if date is null
  */
 public class PersonnelDataController extends Controller {
 

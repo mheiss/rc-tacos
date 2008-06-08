@@ -13,11 +13,13 @@
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Tagesansicht</a>
 		</td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/rosterMonth.do" />
-	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Monatsansicht</a>
-		</td>
-	</tr>
+	<c:if test="${userSession.loginInformation.authorization eq 'Administrator'}">
+		<c:url var="url" value="/Dispatcher/rosterMonth.do" />
+		<tr>
+			<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Monatsansicht</a>
+			</td>
+		</tr>
+	</c:if>
 </table>
 <table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
