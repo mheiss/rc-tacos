@@ -218,7 +218,7 @@ public class RosterMonthController extends Controller {
 		int locationStaffMemberId = 0;
 		final Location defaultLocationStaffMember = userSession.getDefaultFormValues().getDefaultLocation();
 		Location locationStaffMember = null;
-		if (paramLocationStaffMemberId != null && !paramLocationStaffMemberId.equals("")) {
+		if (paramLocationStaffMemberId != null && !paramLocationStaffMemberId.equals("") && !paramLocationStaffMemberId.equals(PARAM_LOCATION_STAFF_MEMBER_NO_VALUE)) {
 			locationStaffMemberId = Integer.parseInt(paramLocationStaffMemberId);		
 		}
 		final List<AbstractMessage> locationStaffMemberList = connection.sendListingRequest(Location.ID, null);

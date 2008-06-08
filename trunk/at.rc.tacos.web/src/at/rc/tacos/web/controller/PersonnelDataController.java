@@ -15,7 +15,6 @@ import at.rc.tacos.web.session.UserSession;
  * Personnel Data Controller
  * @author Payer Martin
  * @version 1.0
- * TODO: Check if date is null
  */
 public class PersonnelDataController extends Controller {
 
@@ -28,9 +27,10 @@ public class PersonnelDataController extends Controller {
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
 		
-		final Date date = sdf1.parse(userSession.getLoginInformation().getUserInformation().getBirthday());
-		
-		params.put("date", date);
+		if (userSession.getLoginInformation().getUserInformation().getBirthday() != null) {
+			final Date date = sdf1.parse(userSession.getLoginInformation().getUserInformation().getBirthday());
+			params.put("date", date);
+		}
 		
 		return params;
 	}

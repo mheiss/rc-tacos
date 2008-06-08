@@ -2,6 +2,15 @@ package at.rc.tacos.web.form;
 
 public class Day {
 	private int day;
+	private int dayOfWeek;
+
+	public int getDayOfWeek() {
+		return dayOfWeek;
+	}
+
+	public void setDayOfWeek(int dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
+	}
 
 	public Day(int day) {
 		this.day = day;
