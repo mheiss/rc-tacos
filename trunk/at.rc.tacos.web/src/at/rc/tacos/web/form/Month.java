@@ -1,5 +1,10 @@
 package at.rc.tacos.web.form;
 
+/**
+ * Enum for Month
+ * @author Payer Martin
+ * @version 1.0
+ */
 public enum Month {
 	JANUARY(0),
 	FEBRUARY(1),

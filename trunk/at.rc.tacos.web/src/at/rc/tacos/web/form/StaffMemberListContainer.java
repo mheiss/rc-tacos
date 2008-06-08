@@ -12,7 +12,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.StaffMember;
 
 /**
- * Staff Member List Container
+ * Container for Staff Members View
  * @author Payer Martin
  * @version 1.0
  */

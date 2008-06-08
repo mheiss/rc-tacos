@@ -14,7 +14,7 @@ import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.StaffMember;
 
 /**
- * Roster Month Container
+ * Container for Roster Month View
  * @author Payer Martin
  * @version 1.0
  */

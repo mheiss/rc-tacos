@@ -1,12 +1,9 @@
 package at.rc.tacos.web.form;
 
-import java.util.Date;
-
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
-import at.rc.tacos.model.VehicleDetail;
 
 /**
  * Container 

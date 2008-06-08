@@ -8,7 +8,7 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.form.Function;
 
 /**
- * This class serves as view container for class RosterEntry.
+ * Container for RosterEntry.
  * @author Payer Martin
  * @version 1.0
  */
