@@ -36,7 +36,7 @@ import at.rc.tacos.web.session.UserSession;
  * Roster Month Controller
  * @author Payer Martin
  * @version 1.0
- * TODO: Beim function job service type filter über die Id gehen
+ * TODO: Default Values verwenden
  */
 public class RosterMonthController extends Controller {
 
@@ -216,7 +216,7 @@ public class RosterMonthController extends Controller {
 		// Location staff member
 		final String paramLocationStaffMemberId = request.getParameter(PARAM_LOCATION_STAFF_MEMBER_NAME);
 		int locationStaffMemberId = 0;
-		final Location defaultLocationStaffMember = userSession.getDefaultFormValues().getDefaultLocation();
+		final Location defaultLocationStaffMember = null;
 		Location locationStaffMember = null;
 		if (paramLocationStaffMemberId != null && !paramLocationStaffMemberId.equals("") && !paramLocationStaffMemberId.equals(PARAM_LOCATION_STAFF_MEMBER_NO_VALUE)) {
 			locationStaffMemberId = Integer.parseInt(paramLocationStaffMemberId);		

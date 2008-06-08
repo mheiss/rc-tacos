@@ -106,14 +106,20 @@
 							<c:when test="${day.dayOfWeek eq 7}"><span style="color:red">So</span></c:when>
 						</c:choose>
 					</td>
+					<c:forEach var="functionRosterEntryContainerMapTemp" items="${rosterEntryContainerMap}">
+						<c:set var="functionTemp" value="${functionRosterEntryContainerMapTemp.key}" />
+						<c:if test="${function.function.id eq functionTemp.function.id}">
+							<c:set var="functionRosterEntryContainerMap" value="${functionRosterEntryContainerMapTemp}" />
+						</c:if>
+						<c:forEach var="dayRosterEntryContainerMapTemp" items="${functionRosterEntryContainerMap.value}">
+							<c:set var="dayTemp" value="${dayRosterEntryContainerMapTemp.key}" />
+							<c:if test="${day.day eq dayTemp.day}">
+								<c:set var="dayRosterEntryContainerMap" value="${dayRosterEntryContainerMapTemp}" />
+							</c:if>
+						</c:forEach>
+					</c:forEach>
 				</tr>
-			</c:forEach>
-			<c:forEach var="functionRosterEntryContainerMap" items="${rosterEntryContainerMap}">
-				<c:set var="function2" value="${functionRosterEntryContainerMap.key}" />
-				<c:if test="${function.function.id eq function2.function.id}">
-					<c:set var="functionRosterEntryContainerMap" value="${functionRosterEntryContainerMapTemp}" />
-				</c:if>
-			</c:forEach>			
+			</c:forEach>		
 		</c:forEach>
 	</table>
 </c:when>
