@@ -79,21 +79,23 @@ public class RosterEntryListener extends ServerListenerAdapter
 			int locationFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
 			int monthFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_MONTH_FILTER));
 			int yearFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_YEAR_FILTER));
-			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
-				String functionFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER);
-				String functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
-				int staffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER));
-				rosterList = rosterDao.listRosterEntriesForRosterMonthFilterFunctionAndStaffMember(locationFilter, monthFilter, yearFilter, functionFilter, functionStaffMemberCompetenceFilter, staffMemberFilter);
-			} else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER)) {
-				String functionJobServiceTypeFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER);
-				String functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
-				rosterList = rosterDao.listRosterEntriesForRosterMonthFilterFunction(locationFilter, monthFilter, yearFilter, functionJobServiceTypeFilter, functionStaffMemberCompetenceFilter);
-			} else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
-				int staffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER));
-				rosterList = rosterDao.listRosterEntriesForRosterFilterStaffMember(locationFilter, monthFilter, yearFilter, staffMemberFilter);
-			} else {
-				rosterList = rosterDao.listRosterEntriesForRosterMonth(locationFilter, monthFilter, yearFilter);
+			int locationStaffMemberFilter = -1;
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER)) {
+				locationStaffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER));
 			}
+			String functionFilter = null;
+			String functionStaffMemberCompetenceFilter = null;
+			int staffMemberFilter = -1;
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER)) {
+				functionFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER);
+			}
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER)) {
+				functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
+			}
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
+				staffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER));
+			}
+			rosterList = rosterDao.listRosterEntriesForRosterMonth(locationFilter, monthFilter, yearFilter, locationStaffMemberFilter, functionFilter, functionStaffMemberCompetenceFilter, staffMemberFilter);
 			if(rosterList == null)
 			{
 				String time = "";
