@@ -196,9 +196,9 @@ public class RosterMonthController extends Controller {
 		if (function != null || (paramFunctionId != null && paramFunctionId.equals(PARAM_FUNCTION_NO_VALUE))) {
 			params.put(MODEL_FUNCTION_NAME, function);
 		} else {
-			function = defaultFunction;
-			params.put(MODEL_FUNCTION_NAME, function);
+			params.put(MODEL_FUNCTION_NAME, defaultFunction);
 		}
+		function = (Competence)params.get(MODEL_FUNCTION_NAME);
 		
 		// Staff Member (depends on function and location filter)		
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
@@ -253,9 +253,9 @@ public class RosterMonthController extends Controller {
 		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals(PARAM_STAFF_MEMBER_NO_VALUE))) {
 			params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
 		} else {
-			staffMember = defaultStaffMember;
-			params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
+			params.put(MODEL_STAFF_MEMBER_NAME, defaultStaffMember);
 		}
+		staffMember = (StaffMember)params.get(MODEL_STAFF_MEMBER_NAME);
 		
 		// Get Roster Entries
 		final QueryFilter rosterFilter = new QueryFilter();
