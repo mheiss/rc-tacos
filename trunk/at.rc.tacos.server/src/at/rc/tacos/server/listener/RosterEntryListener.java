@@ -79,13 +79,15 @@ public class RosterEntryListener extends ServerListenerAdapter
 			int locationFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
 			int monthFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_MONTH_FILTER));
 			int yearFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_YEAR_FILTER));
-			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
-				String functionFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_FILTER);
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
+				String functionFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER);
+				String functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
 				int staffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER));
-				rosterList = rosterDao.listRosterEntriesForRosterMonthFilterFunctionAndStaffMember(locationFilter, monthFilter, yearFilter, functionFilter, staffMemberFilter);
-			} else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_FILTER)) {
-				String functionFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_FILTER);
-				rosterList = rosterDao.listRosterEntriesForRosterMonthFilterFunction(locationFilter, monthFilter, yearFilter, functionFilter);
+				rosterList = rosterDao.listRosterEntriesForRosterMonthFilterFunctionAndStaffMember(locationFilter, monthFilter, yearFilter, functionFilter, functionStaffMemberCompetenceFilter, staffMemberFilter);
+			} else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER)) {
+				String functionJobServiceTypeFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER);
+				String functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
+				rosterList = rosterDao.listRosterEntriesForRosterMonthFilterFunction(locationFilter, monthFilter, yearFilter, functionJobServiceTypeFilter, functionStaffMemberCompetenceFilter);
 			} else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
 				int staffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER));
 				rosterList = rosterDao.listRosterEntriesForRosterFilterStaffMember(locationFilter, monthFilter, yearFilter, staffMemberFilter);
