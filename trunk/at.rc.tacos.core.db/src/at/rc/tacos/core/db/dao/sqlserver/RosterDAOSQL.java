@@ -397,17 +397,53 @@ public class RosterDAOSQL implements RosterDAO
 	}
 	
 	@Override
-	public List<RosterEntry> listRosterEntriesForRosterMonth (
-			int locationFilter, int monthFilter, int yearFilter) throws SQLException {
+	public List<RosterEntry> listRosterEntriesForRosterMonth (int locationFilter, int monthFilter, int yearFilter, int locationStaffMemberFilter, String functionJobServiceTypeFilter, String functionStaffMemberCompetenceFilter, int staffMemberFilter) throws SQLException {
 		Connection connection = source.getConnection();
 		try
 		{
-			//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
-			//st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note, ro.standby
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterForRosterMonth"));
+			String queryString = queries.getStatment("list.RosterForRosterMonth");
+			
+			if (locationStaffMemberFilter != -1) {
+				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.primaryLocationCondition"); 
+			}
+			
+			if (functionJobServiceTypeFilter != null) {
+				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.functionJobServiceTypeCondition") + " " + queries.getStatment("list.RosterForRosterMonth.functionStaffMemberCondition");
+			} else {
+				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.defaultFunctionCondition");
+			}
+			
+			if (staffMemberFilter != -1) {
+				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.staffMemberCondition");
+			}
+			
+			final PreparedStatement query = connection.prepareStatement(queryString);
+			
 			query.setInt(1, locationFilter);
 			query.setInt(2, monthFilter);
 			query.setInt(3, yearFilter);
+			
+			int i = 3;
+			
+			if (locationStaffMemberFilter != -1) {
+				i++;
+				query.setInt(i, locationStaffMemberFilter);
+			}		
+			if (functionJobServiceTypeFilter != null) {
+				i++;
+				query.setString(i, functionJobServiceTypeFilter);
+				i++;
+				query.setString(i, functionJobServiceTypeFilter);
+			}
+			if (functionStaffMemberCompetenceFilter != null) {
+				i++;
+				query.setString(i, functionStaffMemberCompetenceFilter);
+			}
+			if (staffMemberFilter != -1) {
+				i++;
+				query.setInt(i, staffMemberFilter);
+			}
+			
 			final ResultSet rs = query.executeQuery();
 			//create the result list and loop over the result
 			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
@@ -461,212 +497,4 @@ public class RosterDAOSQL implements RosterDAO
 			connection.close();
 		}
 	}
-	
-	@Override
-	public List<RosterEntry> listRosterEntriesForRosterMonthFilterFunction(
-			int locationFilter, int monthFilter, int yearFilter, String functionJobServiceTypeFilter, String functionStaffMemberCompetenceFilter) throws SQLException {
-		Connection connection = source.getConnection();
-		try
-		{
-			//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
-			//st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note, ro.standby
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterForRosterMonthFilterFunction"));
-			query.setInt(1, locationFilter);
-			query.setInt(2, monthFilter);
-			query.setInt(3, yearFilter);
-			query.setString(4, functionJobServiceTypeFilter);
-			query.setString(5, functionJobServiceTypeFilter);
-			query.setString(6, functionStaffMemberCompetenceFilter);
-			final ResultSet rs = query.executeQuery();
-			//create the result list and loop over the result
-			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-			while(rs.next())
-			{
-				RosterEntry entry = new RosterEntry();
-				entry.setRosterId(rs.getInt("roster_ID"));
-				entry.setCreatedByUsername(rs.getString("entry_createdBy"));
-				if(rs.getString("starttime") == null)
-					entry.setPlannedStartOfWork(0);
-				else
-					entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
-				if(rs.getString("endtime") == null)
-					entry.setPlannedEndOfWork(0);
-				else
-					entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
-				if(rs.getString("checkIn") == null)
-					entry.setRealStartOfWork(0);
-				else
-					entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
-				if(rs.getString("checkOut") == null)
-					entry.setRealEndOfWork(0);
-				else
-					entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
-				//Set the location
-				int locationId = rs.getInt("location_ID");
-				entry.setStation(locationDAO.getLocation(locationId));
-				//set the service type
-				ServiceType service = new ServiceType();
-				service.setId(rs.getInt("servicetype_ID"));
-				service.setServiceName(rs.getString("servicetype"));
-				entry.setServicetype(service);
-				//Set the job
-				Job job = new Job();
-				job.setId(rs.getInt("job_ID"));
-				job.setJobName(rs.getString("jobname"));
-				entry.setJob(job);
-				//set the notes
-				if(rs.getString("note") != null)
-					entry.setRosterNotes(rs.getString("note"));
-				entry.setStandby(rs.getBoolean("standby"));
-				//get the staff member
-				int staffId = rs.getInt("staffmember_ID");
-				entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
-				entrylist.add(entry);
-			}
-			return entrylist;
-		}
-		finally
-		{
-			connection.close();
-		}
-	}
-
-	@Override
-	public List<RosterEntry> listRosterEntriesForRosterFilterStaffMember(
-			int locationFilter, int monthFilter, int yearFilter, int staffMemberFilter) throws SQLException {
-		Connection connection = source.getConnection();
-		try
-		{
-			//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
-			//st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note, ro.standby
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterForRosterMonthFilterStaffMember"));
-			query.setInt(1, locationFilter);
-			query.setInt(2, monthFilter);
-			query.setInt(3, yearFilter);
-			query.setInt(4, staffMemberFilter);
-			final ResultSet rs = query.executeQuery();
-			//create the result list and loop over the result
-			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-			while(rs.next())
-			{
-				RosterEntry entry = new RosterEntry();
-				entry.setRosterId(rs.getInt("roster_ID"));
-				entry.setCreatedByUsername(rs.getString("entry_createdBy"));
-				if(rs.getString("starttime") == null)
-					entry.setPlannedStartOfWork(0);
-				else
-					entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
-				if(rs.getString("endtime") == null)
-					entry.setPlannedEndOfWork(0);
-				else
-					entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
-				if(rs.getString("checkIn") == null)
-					entry.setRealStartOfWork(0);
-				else
-					entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
-				if(rs.getString("checkOut") == null)
-					entry.setRealEndOfWork(0);
-				else
-					entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
-				//Set the location
-				int locationId = rs.getInt("location_ID");
-				entry.setStation(locationDAO.getLocation(locationId));
-				//set the service type
-				ServiceType service = new ServiceType();
-				service.setId(rs.getInt("servicetype_ID"));
-				service.setServiceName(rs.getString("servicetype"));
-				entry.setServicetype(service);
-				//Set the job
-				Job job = new Job();
-				job.setId(rs.getInt("job_ID"));
-				job.setJobName(rs.getString("jobname"));
-				entry.setJob(job);
-				//set the notes
-				if(rs.getString("note") != null)
-					entry.setRosterNotes(rs.getString("note"));
-				entry.setStandby(rs.getBoolean("standby"));
-				//get the staff member
-				int staffId = rs.getInt("staffmember_ID");
-				entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
-				entrylist.add(entry);
-			}
-			return entrylist;
-		}
-		finally
-		{
-			connection.close();
-		}
-	}
-
-	@Override
-	public List<RosterEntry> listRosterEntriesForRosterMonthFilterFunctionAndStaffMember(
-			int locationFilter, int monthFilter, int yearFilter, String functionJobServiceTypeFilter, String functionStaffMemberCompetenceFilter,
-			int staffMemberFilter) throws SQLException {
-		Connection connection = source.getConnection();
-		try
-		{
-			//ro.roster_ID, ro.location_ID, lo.locationname, ro.entry_createdBy, e.username, , ro.staffmember_ID, ro.servicetype_ID, 
-			//st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime, ro.checkIn, ro.checkOut, ro.note, ro.standby
-			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterForRosterMonthFilterFunctionAndStaffMember"));
-			query.setInt(1, locationFilter);
-			query.setInt(2, monthFilter);
-			query.setInt(3, yearFilter);
-			query.setString(4, functionJobServiceTypeFilter);
-			query.setString(5, functionJobServiceTypeFilter);
-			query.setString(6, functionStaffMemberCompetenceFilter);
-			query.setInt(7, staffMemberFilter);
-			final ResultSet rs = query.executeQuery();
-			//create the result list and loop over the result
-			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-			while(rs.next())
-			{
-				RosterEntry entry = new RosterEntry();
-				entry.setRosterId(rs.getInt("roster_ID"));
-				entry.setCreatedByUsername(rs.getString("entry_createdBy"));
-				if(rs.getString("starttime") == null)
-					entry.setPlannedStartOfWork(0);
-				else
-					entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
-				if(rs.getString("endtime") == null)
-					entry.setPlannedEndOfWork(0);
-				else
-					entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
-				if(rs.getString("checkIn") == null)
-					entry.setRealStartOfWork(0);
-				else
-					entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
-				if(rs.getString("checkOut") == null)
-					entry.setRealEndOfWork(0);
-				else
-					entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
-				//Set the location
-				int locationId = rs.getInt("location_ID");
-				entry.setStation(locationDAO.getLocation(locationId));
-				//set the service type
-				ServiceType service = new ServiceType();
-				service.setId(rs.getInt("servicetype_ID"));
-				service.setServiceName(rs.getString("servicetype"));
-				entry.setServicetype(service);
-				//Set the job
-				Job job = new Job();
-				job.setId(rs.getInt("job_ID"));
-				job.setJobName(rs.getString("jobname"));
-				entry.setJob(job);
-				//set the notes
-				if(rs.getString("note") != null)
-					entry.setRosterNotes(rs.getString("note"));
-				entry.setStandby(rs.getBoolean("standby"));
-				//get the staff member
-				int staffId = rs.getInt("staffmember_ID");
-				entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
-				entrylist.add(entry);
-			}
-			return entrylist;
-		}
-		finally
-		{
-			connection.close();
-		}
-	}
-
 }
