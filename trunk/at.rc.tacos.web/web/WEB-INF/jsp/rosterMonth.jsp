@@ -1,7 +1,7 @@
 <%@ include file="includes.jsp"%>
 <table class="standardForm">
 	<tr>
-		<td style="font-weight: bold">Ortsstelle:</td>
+		<td style="font-weight: bold">Ortsstelle&nbsp;(Dienste):</td>
 		<td><select size="1" id="locationId" name="locationId">
 			<c:forEach var="location" items="${params.locationList}">
 				<option value="${location.id}" ${(not empty
@@ -45,6 +45,17 @@
 				<option value="${function.id}" ${(not empty
 					params.function) and (params.function.id==
 					function.id) ? ' selected="selected"' : ''}>${function.competenceName}</option>
+			</c:forEach>
+		</select></td>
+	</tr>
+	<tr>
+		<td style="font-weight: bold">Ortsstelle&nbsp;(Mitarbeiter):</td>
+		<td><select size="1" id="locationStaffMemberId" name="locationStaffMemberId">
+			<option value="noValue">-- Ortsstelle (Mitarbeiter) wählen --</option>
+			<c:forEach var="locationStaffMember" items="${params.locationStaffMemberList}">
+				<option value="${locationStaffMember.id}" ${(not empty
+					params.locationStaffMember) and (params.locationStaffMember.id==
+					locationStaffMember.id) ? ' selected="selected"' : ''}>${locationStaffMember.locationName}</option>
 			</c:forEach>
 		</select></td>
 	</tr>
@@ -113,6 +124,10 @@ $(document).ready(function() {
 		var url = '?functionId=' + $(this).val();
 		update(url, 'f');
 	});
+	$('#locationStaffMemberId').change(function() {
+		var url = '?locationStaffMemberId=' + $(this).val();
+		update(url, 'lsm');
+	});
 	$('#staffMemberId').change(function() {
 		var url = '?staffMemberId=' + $(this).val();
 		update(url, 's');
@@ -128,19 +143,22 @@ $(document).ready(function() {
 	function update(url, code) {
 		var locationId = $('#locationId').val();
 		var functionId = $('#functionId').val();
+		var locationStaffMemberId = $('#locationStaffMemberId').val();
 		var staffMemberId = $('#staffMemberId').val();
 		var month = $('#month').val();
 		var year = $('#year').val();
 		if (code == 'l') {
-			url = url + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
+			url = url + '&functionId=' + functionId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
 		} else if (code == 'f') {
-			url = url + '&locationId=' + locationId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
+			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
+		} else if (code == 'lsm') {
+			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
 		} else if (code == 's') {
-			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&month=' + month + '&year=' + year;
+			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&locationStaffMemberId=' + locationStaffMemberId + '&month=' + month + '&year=' + year;
 		} else if (code == 'm') {
-			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&year=' + year;
+			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&year=' + year;
 		} else if (code == 'y') {
-			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&month=' + month;
+			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month;
 		}
 		document.location = url;
 	}

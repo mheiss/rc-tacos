@@ -36,6 +36,7 @@ import at.rc.tacos.web.session.UserSession;
  * Edit Staff Member Controller
  * @author Payer Martin
  * @version 1.0
+ * TODO: Check if date is null
  */
 public class EditStaffMemberController extends Controller {
 

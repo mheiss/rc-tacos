@@ -22,6 +22,7 @@ import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
@@ -35,7 +36,6 @@ import at.rc.tacos.web.session.UserSession;
  * Roster Month Controller
  * @author Payer Martin
  * @version 1.0
- * TODO: Location Filter must filter the primary location of staff members
  * TODO: Beim function job service type filter über die Id gehen
  */
 public class RosterMonthController extends Controller {
@@ -48,6 +48,11 @@ public class RosterMonthController extends Controller {
 	private static final String PARAM_FUNCTION_NO_VALUE = "noValue";
 	private static final String MODEL_FUNCTION_NAME = "function";
 	private static final String MODEL_FUNCTION_LIST_NAME = "functionList";
+	
+	private static final String PARAM_LOCATION_STAFF_MEMBER_NAME = "locationStaffMemberId";
+	private static final String PARAM_LOCATION_STAFF_MEMBER_NO_VALUE = "noValue";
+	private static final String MODEL_LOCATION_STAFF_MEMBER_NAME = "locationStaffMember";
+	private static final String MODEL_LOCATION_STAFF_MEMBER_LIST_NAME = "locationStaffMemberList";
 	
 	private static final String PARAM_STAFF_MEMBER_NAME = "staffMemberId";
 	private static final String PARAM_STAFF_MEMBER_NO_VALUE = "noValue";
@@ -71,6 +76,13 @@ public class RosterMonthController extends Controller {
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
+		
+		final String authorization = userSession.getLoginInformation().getAuthorization();
+		
+		// Check authorization
+		if (!authorization.equals(Login.AUTH_ADMIN)) {
+			throw new IllegalArgumentException("Error: User has no permission for functionality.");
+		}
 		
 		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
@@ -160,7 +172,7 @@ public class RosterMonthController extends Controller {
 			yearP = Integer.valueOf(yearParam);
 		}		
 		final List<Integer> yearList = new ArrayList<Integer>();
-		for (int i = 0; i <= 4; i++) {
+		for (int i = -1; i <= 10; i++) {
 			yearList.add(yearCal.get(Calendar.YEAR) - i);
 			if (yearP == yearCal.get(Calendar.YEAR) - i) {
 				year = yearP;
@@ -201,7 +213,33 @@ public class RosterMonthController extends Controller {
 		}
 		function = (Competence)params.get(MODEL_FUNCTION_NAME);
 		
-		// Staff Member (depends on function and location filter)		
+		// Location staff member
+		final String paramLocationStaffMemberId = request.getParameter(PARAM_LOCATION_STAFF_MEMBER_NAME);
+		int locationStaffMemberId = 0;
+		final Location defaultLocationStaffMember = userSession.getDefaultFormValues().getDefaultLocation();
+		Location locationStaffMember = null;
+		if (paramLocationStaffMemberId != null && !paramLocationStaffMemberId.equals("")) {
+			locationStaffMemberId = Integer.parseInt(paramLocationStaffMemberId);		
+		}
+		final List<AbstractMessage> locationStaffMemberList = connection.sendListingRequest(Location.ID, null);
+		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		params.put(MODEL_LOCATION_STAFF_MEMBER_LIST_NAME, locationStaffMemberList);
+		for (final Iterator<AbstractMessage> itLocationStaffMemberList = locationStaffMemberList.iterator(); itLocationStaffMemberList.hasNext();) {
+			final Location l = (Location)itLocationStaffMemberList.next();
+			if (l.getId() == locationStaffMemberId) {
+				locationStaffMember = l;
+			}
+		}
+		if (locationStaffMember != null || (paramLocationStaffMemberId != null && paramLocationStaffMemberId.equals(PARAM_LOCATION_STAFF_MEMBER_NO_VALUE))) {
+			params.put(MODEL_LOCATION_STAFF_MEMBER_NAME, locationStaffMember);
+		} else {
+			params.put(MODEL_LOCATION_STAFF_MEMBER_NAME, defaultLocationStaffMember);
+		}
+		locationStaffMember = (Location)params.get(MODEL_LOCATION_STAFF_MEMBER_NAME);
+		
+		// Staff Member (depends on function and location staff member filter)		
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		
@@ -226,8 +264,14 @@ public class RosterMonthController extends Controller {
 						hasCompetence = true;
 					}
 				}
-				if (hasCompetence && sm.getPrimaryLocation().getId() == location.getId()) {
-					staffList.add(sm);
+				if (hasCompetence) {
+					if (locationStaffMember != null) {
+						if (sm.getPrimaryLocation().getId() == locationStaffMember.getId()) {
+							staffList.add(sm);
+						}
+					} else {
+						staffList.add(sm);
+					}
 					if (sm.getStaffMemberId() == staffMemberId) {
 						staffMember = sm;
 					}
@@ -241,15 +285,20 @@ public class RosterMonthController extends Controller {
 						hasAnyCompetence = true;
 					}
 				}
-				if (hasAnyCompetence && sm.getPrimaryLocation().getId() == location.getId()) {
-					staffList.add(sm);
+				if (hasAnyCompetence) {
+					if (locationStaffMember != null) {
+						if (sm.getPrimaryLocation().getId() == locationStaffMember.getId()) {
+							staffList.add(sm);
+						}
+					} else {
+						staffList.add(sm);
+					}
 					if (sm.getStaffMemberId() == staffMemberId) {
 						staffMember = sm;
 					}
 				}
 			}
-		}
-		
+		}		
 		params.put(MODEL_STAFF_MEMBER_LIST_NAME, staffList);
 		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals(PARAM_STAFF_MEMBER_NO_VALUE))) {
 			params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
@@ -273,9 +322,13 @@ public class RosterMonthController extends Controller {
 			}
 			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER, function.getCompetenceName());
 		}
+		if (locationStaffMember != null) {
+			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER, Integer.toString(locationStaffMember.getId()));
+		}
 		if (staffMember != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER, Integer.toString(staffMember.getStaffMemberId()));
 		}
+		
 		// Form RosterEntryContainerList for Table
 		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
 		final List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
@@ -402,5 +455,4 @@ public class RosterMonthController extends Controller {
 		
 		return params;
 	}
-
 }
