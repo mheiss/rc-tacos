@@ -476,6 +476,7 @@ public class RosterDAOSQL implements RosterDAO
 			query.setInt(3, yearFilter);
 			query.setString(4, functionFilter);
 			query.setString(5, functionFilter);
+			query.setString(6, functionFilter);
 			final ResultSet rs = query.executeQuery();
 			//create the result list and loop over the result
 			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
@@ -613,6 +614,7 @@ public class RosterDAOSQL implements RosterDAO
 			query.setString(4, functionFilter);
 			query.setString(5, functionFilter);
 			query.setInt(6, staffMemberFilter);
+			query.setString(7, functionFilter);
 			final ResultSet rs = query.executeQuery();
 			//create the result list and loop over the result
 			List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
