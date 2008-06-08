@@ -89,7 +89,7 @@
 				<th nowrap="nowrap">&nbsp;</th>
 				<th nowrap="nowrap">&nbsp;</th>
 				<c:forEach var="staffMember" items="${staffMemberList}">
-					<th nowrap="nowrap">${staffMember.lastName}&nbsp;${staffMember.firstName}</th>
+					<th nowrap="nowrap" colspan="2">${staffMember.lastName}&nbsp;${staffMember.firstName}</th>
 				</c:forEach>
 			</tr>
 			<c:forEach var="day" items="${dayList}">
@@ -111,14 +111,35 @@
 						<c:if test="${function.function.id eq functionTemp.function.id}">
 							<c:set var="functionRosterEntryContainerMap" value="${functionRosterEntryContainerMapTemp}" />
 						</c:if>
-						<c:forEach var="dayRosterEntryContainerMapTemp" items="${functionRosterEntryContainerMap.value}">
-							<c:set var="dayTemp" value="${dayRosterEntryContainerMapTemp.key}" />
-							<c:if test="${day.day eq dayTemp.day}">
-								<c:set var="dayRosterEntryContainerMap" value="${dayRosterEntryContainerMapTemp}" />
+					</c:forEach>
+					<c:forEach var="dayRosterEntryContainerMapTemp" items="${functionRosterEntryContainerMap.value}">
+						<c:set var="dayTemp" value="${dayRosterEntryContainerMapTemp.key}" />
+						<c:if test="${day.day eq dayTemp.day}">
+							<c:set var="dayRosterEntryContainerMap" value="${dayRosterEntryContainerMapTemp}" />
+						</c:if>
+					</c:forEach>
+				
+					<c:forEach var="staffMember" items="${staffMemberList}">
+						<c:forEach var="staffMemberRosterEntryContainerMap" items="${dayRosterEntryContainerMap.value}">
+							<c:set var="staffMemberTemp" value="${staffMemberRosterEntryContainerMap.key}" />
+							<c:if test="${staffMember.staffMemberId eq staffMemberTemp.staffMemberId}">
+								<c:set var="rosterEntryContainerList" value="${staffMemberRosterEntryContainerMap.value}" />
+								<c:set var="staffMemberTemp2" value="${staffMemberTemp}" />
 							</c:if>
 						</c:forEach>
+						<c:choose>
+							<c:when test="${staffMemberTemp2 ne null}">
+								<td>${staffMember.lastName}&nbsp;${staffMember.firstName}</td><td>&nbsp;</td>
+							</c:when>
+							<c:otherwise>
+								<td>&nbsp;</td><td>&nbsp;</td>
+							</c:otherwise>
+						</c:choose>
+						<c:remove var="staffMemberTemp2" />
 					</c:forEach>
 				</tr>
+				<c:remove var="functionRosterEntryContainerMap" />
+				<c:remove var="dayRosterEntryContainerMap" />
 			</c:forEach>		
 		</c:forEach>
 	</table>
