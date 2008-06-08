@@ -135,6 +135,7 @@
 								<td>&nbsp;</td><td>&nbsp;</td>
 							</c:otherwise>
 						</c:choose>
+						<c:remove var="rosterEntryContainerList" />
 						<c:remove var="staffMemberTemp2" />
 					</c:forEach>
 				</tr>
