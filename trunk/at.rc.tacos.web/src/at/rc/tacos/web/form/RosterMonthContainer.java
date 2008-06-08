@@ -72,6 +72,8 @@ public class RosterMonthContainer {
 	}
 	
 	public void fillDayList(int month, int year) {
+		Calendar calendar = Calendar.getInstance();
+		
 		int daysOfMonth = 31;
 		switch (month) {
 			case 0:
@@ -115,8 +117,14 @@ public class RosterMonthContainer {
 				daysOfMonth = 31;
 				break;
 		}
-		for (int i = 1; i <= daysOfMonth; i++) {
+
+		for (int i = 0; i < daysOfMonth; i++) {
+			calendar = Calendar.getInstance();
+			calendar.set(Calendar.YEAR, year);
+			calendar.set(Calendar.MONTH, month);
+			calendar.set(Calendar.DAY_OF_MONTH, i);
 			final Day day = new Day(i);
+			day.setDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK));
 			dayList.add(day);
 		}
 	}

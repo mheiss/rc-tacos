@@ -36,7 +36,6 @@ import at.rc.tacos.web.session.UserSession;
  * Edit Staff Member Controller
  * @author Payer Martin
  * @version 1.0
- * TODO: Check if date is null
  */
 public class EditStaffMemberController extends Controller {
 
@@ -310,7 +309,12 @@ public class EditStaffMemberController extends Controller {
 			
 			// Birthdate	
 			String birthdateString = null;		
-			final String defaultBirthdateString = staffMember.getBirthday().replaceAll("-", ".");		
+			String defaultBirthdateString;
+			if (staffMember.getBirthday() != null) {
+				defaultBirthdateString = staffMember.getBirthday().replaceAll("-", ".");
+			} else {
+				defaultBirthdateString = null;
+			}
 			if (paramBirthdate != null) {
 				birthdateString = paramBirthdate;
 			}

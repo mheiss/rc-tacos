@@ -94,7 +94,18 @@
 			</tr>
 			<c:forEach var="day" items="${dayList}">
 				<tr>
-					<td>${day.day}</td>
+					<td>${day.day+1}</td>
+					<td>
+						<c:choose>
+							<c:when test="${day.dayOfWeek eq 1}">Mo</c:when>
+							<c:when test="${day.dayOfWeek eq 2}">Di</c:when>
+							<c:when test="${day.dayOfWeek eq 3}">Mi</c:when>
+							<c:when test="${day.dayOfWeek eq 4}">Do</c:when>
+							<c:when test="${day.dayOfWeek eq 5}">Fr</c:when>
+							<c:when test="${day.dayOfWeek eq 6}">Sa</c:when>
+							<c:when test="${day.dayOfWeek eq 7}"><span style="color:red">So</span></c:when>
+						</c:choose>
+					</td>
 				</tr>
 			</c:forEach>
 			<c:forEach var="functionRosterEntryContainerMap" items="${rosterEntryContainerMap}">

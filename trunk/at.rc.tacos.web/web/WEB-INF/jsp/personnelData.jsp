@@ -21,7 +21,14 @@
 	</tr>
 	<tr>
 		<td style="font-weight:bold">Geburtsdatum:</td>
-		<td><fmt:formatDate type="date" dateStyle="medium" value="${params.date}"></fmt:formatDate></td>
+		<td>
+			<c:choose>
+				<c:when test="${params.date ne null}">
+					<fmt:formatDate type="date" dateStyle="medium" value="${params.date}"></fmt:formatDate>
+				</c:when>
+				<c:otherwise>&nbsp;</c:otherwise>
+			</c:choose>
+		</td>
 	</tr>
 	<tr>
 		<td style="font-weight:bold">Geschlecht:</td>
