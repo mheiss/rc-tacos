@@ -36,6 +36,7 @@ import at.rc.tacos.web.session.UserSession;
  * @author Payer Martin
  * @version 1.0
  * TODO: Location Filter must filter the primary location of staff members
+ * TODO: Beim function job service type filter über die Id gehen
  */
 public class RosterMonthController extends Controller {
 
