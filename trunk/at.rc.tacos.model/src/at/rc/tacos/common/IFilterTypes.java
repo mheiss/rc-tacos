@@ -25,9 +25,6 @@ public interface IFilterTypes
     /** Filter by username */
     public final static String USERNAME_FILTER = "userNameFilter";
     
-    /** Filter roster by location */
-    public final static String ROSTER_LOCATION_FILTER = "rosterLocationFilter";
-    
     /** Filter by search string */
     public final static String SEARCH_STRING = "searchFilter";
     
@@ -36,6 +33,9 @@ public interface IFilterTypes
     public final static String SEARCH_STRING_CITY = "searchFilterCity";
     public final static String SEARCH_STRING_ZIP = "searchFilterZip";
     public final static String SEARCH_STRING_STREETNUMBER = "searchFilterStreetNumber";
+    
+    /** Filter roster by location */
+    public final static String ROSTER_LOCATION_FILTER = "rosterLocationFilter";
     
     /** Filter roster by month */
     public final static String ROSTER_MONTH_FILTER = "rosterMonthFilter";
@@ -48,6 +48,9 @@ public interface IFilterTypes
     
     /** Filter roster by function (staffMember's competence) */
     public final static String ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER = "rosterFunctionStaffMemberCompetenceFilter";
+    
+    /** Filter roster by primary location of staff member */
+    public final static String ROSTER_LOCATION_STAFF_MEMBER_FILTER = "rosterLocationStaffMemberFilter";
     
     /** Filter roster by staff member */
     public final static String ROSTER_STAFF_MEMBER_FILTER = "rosterStaffMemberFilter";
