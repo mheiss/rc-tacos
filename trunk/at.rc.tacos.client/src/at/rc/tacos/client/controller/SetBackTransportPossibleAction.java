@@ -40,7 +40,7 @@ public class SetBackTransportPossibleAction extends Action implements IProgramSt
 		//get the selected transport
 		transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 
-		transport.setBackTransport(transport.isBackTransport());
+		transport.setBackTransport(!transport.isBackTransport());
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 	
