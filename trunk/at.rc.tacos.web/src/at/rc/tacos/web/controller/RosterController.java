@@ -106,9 +106,7 @@ public class RosterController extends Controller {
 		final int rangeStart = calendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET;
 		final int rangeEnd = calendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET;
 		
-
-		params.put(MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME, date.getTime());
-		
+		params.put(MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME, date.getTime());	
 		params.put(MODEL_CALENDAR_RANGE_START_NAME, rangeStart);
 		params.put(MODEL_CALENDAR_RANGE_END_NAME, rangeEnd);
 		
