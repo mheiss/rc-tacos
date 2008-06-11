@@ -234,6 +234,13 @@
 		</table>
 	</c:otherwise>
 </c:choose>
+<br />
+<br />
+<c:url var="url" value="/Dispatcher/printRoster.do">
+	<c:param name="locationId">${params.location.id}</c:param>
+	<c:param name="date"><fmt:formatDate type="date" value="${params.date}" /></c:param>
+</c:url>
+<a href="${url}">Dienstplan&nbsp;drucken</a>
 <script type="text/javascript">
 $(document).ready(function() {
 	Calendar.setup ({

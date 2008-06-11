@@ -1,8 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ include file="includes.jsp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<c:if test="${useCache eq false}">
+		<meta http-equiv="PRAGMA" content="NO-CACHE" />
+	</c:if>
+	<c:if test="${refresh ne -1 and refreshUrl ne null}">
+		<c:url var="url" value="/Dispatcher${refreshUrl}" />
+		<meta http-equiv="refresh" content="${refresh};url=${url}" />
+	</c:if>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/css/stylesheet.css"/>" />
 	<c:if test="${not empty css}"><c:forTokens var="item" items="${css}" delims="|"><link rel="stylesheet" href="<c:url value="/css/${item}"/>" type="text/css" /></c:forTokens></c:if>
@@ -15,11 +22,9 @@
 <body>
 	<table width="100%">
 		<tr>
-			<td valign="top" width="33%"></td>
-				<td id="ContentContainer" valign="top" width="33%">
-					<jsp:include page="${view}" />
-				</td>
-			<td valign="top" width="33%"></td>
+			<td id="ContentContainer" valign="top" width="33%">
+				<jsp:include page="${view}" />
+			</td>
 		</tr>
 	</table>
 </body>
