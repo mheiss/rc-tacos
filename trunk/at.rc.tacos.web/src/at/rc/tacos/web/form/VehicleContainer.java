@@ -24,12 +24,10 @@ public class VehicleContainer {
     private int transportStatus;
 	public String getVehicleName() 
 	{
-		System.out.println("im vehicle container, getVehicleName: " +vehicleName);
 		return vehicleName;
 	}
 	public void setVehicleName(String vehicleName) 
 	{
-		System.out.println("im vehicle dontainer, setVehicleName: " +vehicleName);
 		this.vehicleName = vehicleName;
 	}
 	public String getVehicleType() {
