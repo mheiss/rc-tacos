@@ -22,10 +22,14 @@ public class VehicleContainer {
     private boolean readyForAction;
     private boolean outOfOrder;
     private int transportStatus;
-	public String getVehicleName() {
+	public String getVehicleName() 
+	{
+		System.out.println("im vehicle container, getVehicleName: " +vehicleName);
 		return vehicleName;
 	}
-	public void setVehicleName(String vehicleName) {
+	public void setVehicleName(String vehicleName) 
+	{
+		System.out.println("im vehicle dontainer, setVehicleName: " +vehicleName);
 		this.vehicleName = vehicleName;
 	}
 	public String getVehicleType() {

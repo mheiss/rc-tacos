@@ -25,17 +25,19 @@
 <c:set var="fieldHeadersRow">
 	<tr class="subhead2">	
 		<th nowrap="nowrap">TrNr</th>
-		<th nowrap="nowrap">Fahrzeug</th>
 		<th nowrap="nowrap">Von</th>
 		<th nowrap="nowrap">Patient&nbsp;1</th>
 		<th nowrap="nowrap">Nach</th>
 		<th nowrap="nowrap">Anmerkungen</th>
 		<th nowrap="nowrap">Transportart</th>
-		
 		<th nowrap="nowrap">Disponent</th>
 		<th nowrap="nowrap">Rückmeldung</th>
 		<th nowrap="nowrap">Anrufer</th>
 		<th nowrap="nowrap">Erkr/Verl</th>
+		<th nowrap="nowrap">Fahrzeug</th>
+		<th nowrap="nowrap">Fahrer</th>
+		<th nowrap="nowrap">Sanitäter I</th>
+		<th nowrap="nowrap">Sanitäter II</th>
 		<th nowrap="nowrap">S1</th>
 		<th nowrap="nowrap">S2</th>
 		<th nowrap="nowrap">S3</th>
@@ -53,7 +55,7 @@
 			<c:forEach var="journalContainerMapEntry" items="${journalContainerMap}">
 				<c:set var="location" value="${journalContainerMapEntry.key}"/>	
 				<tr>
-					<th class="header2" colspan="17">${location.locationName}&nbsp;am&nbsp;<fmt:formatDate
+					<th class="header2" colspan="20">${location.locationName}&nbsp;am&nbsp;<fmt:formatDate
 						type="date" dateStyle="medium" value="${params.date}" /></th>
 				</tr>
 				${fieldHeadersRow}
@@ -61,8 +63,15 @@
 					<c:forEach var="journalContainer"
 						items="${journalContainerMapEntry.value}" varStatus="loop">
 						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-							<td nowrap="nowrap">${journalContainer.transportNumber}</td>
-							<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
+							<td nowrap="nowrap"><c:choose>
+								<c:when
+									test="${journalContainer.transportNumber eq -4}"> NEF</c:when>
+								<c:when
+									test="${journalContainer.transportNumber eq -1}"> STORNO</c:when>
+								<c:when
+									test="${journalContainer.transportNumber eq -2}"> WTGL</c:when>
+								<c:otherwise>${journalContainer.transportNumber}</c:otherwise>
+							</c:choose></td>
 							<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp; ${journalContainer.fromCity}</td>
 							<td nowrap="nowrap">${journalContainer.patient.lastname} &nbsp; ${journalContainer.patient.firstname }</td>
 							<td nowrap="nowrap">${journalContainer.toStreet} &nbsp; ${journalContainer.toCity }</td>
@@ -72,6 +81,10 @@
 							<td nowrap="nowrap">${journalContainer.feedback}</td>
 							<td nowrap="nowrap">${journalContainer.caller.callerName} &nbsp; ${journalContainer.caller.callerTelephoneNumber}</td>
 							<td nowrap="nowrap">${journalContainer.kindOfIllness}</td>
+							<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
+							<td nowrap="nowrap">${journalContainer.vehicleContainer.driver.lastName}&nbsp;${journalContainer.vehicleContainer.driver.firstName}</td>
+							<td nowrap="nowrap">${journalContainer.vehicleContainer.firstParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.firstParamedic.firstName}</td>
+							<td nowrap="nowrap">${journalContainer.vehicleContainer.secondParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.secondParamedic.firstName}</td>
 							<td nowrap="nowrap">
 								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s1}" />
 							<td nowrap="nowrap">

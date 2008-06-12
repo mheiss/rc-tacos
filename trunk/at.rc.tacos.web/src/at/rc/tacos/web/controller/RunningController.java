@@ -20,6 +20,7 @@ import org.springframework.util.comparator.CompoundComparator;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
+import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.QueryFilter;
@@ -156,7 +157,7 @@ public class RunningController extends Controller {
 		
 		//get transports	        
 		QueryFilter filter = new QueryFilter();
-		filter.add(IFilterTypes.TRANSPORT_RUNNING_FILTER, dateForServerString);
+		filter.add(IFilterTypes.TRANSPORT_UNDERWAY_FILTER, dateForServerString);
 		System.out.println("locationId: " +locationId);
 		if(locationId > 0)
 		{
@@ -172,8 +173,12 @@ public class RunningController extends Controller {
 			final JournalContainer journalContainer = new JournalContainer();
 			final VehicleContainer vehicleContainer = new VehicleContainer();
 			if(transport.getVehicleDetail() != null)
+			{
 				vehicleContainer.setVehicleName(transport.getVehicleDetail().getVehicleName());
-			//TODO staff of the vehicle
+				vehicleContainer.setDriver(transport.getVehicleDetail().getDriver());
+				vehicleContainer.setFirstParamedic(transport.getVehicleDetail().getFirstParamedic());
+				vehicleContainer.setSecondParamedic(transport.getVehicleDetail().getSecondParamedic());
+			}
 			journalContainer.setVehicleContainer(vehicleContainer);
 			if(transport.getVehicleDetail() != null)
 				journalContainer.setRealLocation(transport.getVehicleDetail().getCurrentStation());
@@ -190,7 +195,36 @@ public class RunningController extends Controller {
 			journalContainer.setToStreet(transport.getToStreet());
 			journalContainer.setToCity(transport.getToCity());
 			journalContainer.setNotes(transport.getNotes());
-			//TODO S1 - S6
+			//S1
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
+				journalContainer.setS1(new Date(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY)));
+			else
+				journalContainer.setS1(null);
+			//S2
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
+				journalContainer.setS2(new Date(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT)));
+			else
+				journalContainer.setS2(null);
+			//S3
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
+				journalContainer.setS3(new Date(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT)));
+			else
+				journalContainer.setS3(null);
+			//S4
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
+				journalContainer.setS4(new Date(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION)));
+			else
+				journalContainer.setS4(null);
+			//S5
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
+				journalContainer.setS5(new Date(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE)));
+			else
+				journalContainer.setS5(null);
+			//S6
+			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
+				journalContainer.setS6(new Date(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION)));
+			else
+				journalContainer.setS6(null);
 			journalContainer.setKindOfTransport(transport.getKindOfTransport());
 			
 			journalList.add(journalContainer);

@@ -40,7 +40,15 @@
 					<c:forEach var="journalContainer"
 						items="${journalContainerMapEntry.value}" varStatus="loop">
 						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-							<td nowrap="nowrap">${journalContainer.transportNumber}</td>
+							<td nowrap="nowrap"><c:choose>
+								<c:when
+									test="${journalContainer.transportNumber eq -4}"> NEF</c:when>
+								<c:when
+									test="${journalContainer.transportNumber eq -1}"> STORNO</c:when>
+								<c:when
+									test="${journalContainer.transportNumber eq -2}"> WTGL</c:when>
+								<c:otherwise>${journalContainer.transportNumber}</c:otherwise>
+							</c:choose></td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
 							<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp; ${journalContainer.fromCity}</td>
 							<td nowrap="nowrap">${journalContainer.patient.lastname} &nbsp; ${journalContainer.patient.firstname }</td>
