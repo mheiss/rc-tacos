@@ -98,4 +98,12 @@ public interface TransportDAO
      * @param locationId the locationId (real location of transports with a vehicle, planned location of transports without location (Storno, Leerfahrt, Weiterleitung)
      */
     public List<Transport> listArchivedTransportsByTransportLocationAndDate(long startdate, long enddate, int locationId) throws SQLException;
+    
+    /**
+     * Returns all transports todo (prebooked and outstanding). Transports Todo are identified by the
+     * status <code>IProgramStatus.PROGRAM_STATUS_OUTSTANDING</code> or <code>IProgramStatus.PROGRAM_STATUS_PREBOOKED</code>.
+     * The transports are independend from the current date.
+     * @return the list of all transports todo in the database
+     */
+    public List<Transport> listTransportsTodo() throws SQLException;
 }
