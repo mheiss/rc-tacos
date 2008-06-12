@@ -46,7 +46,7 @@ public class TransportsToController extends Controller {
 		final WebClient connection = userSession.getConnection();
 	     
 		QueryFilter filter = new QueryFilter();
-		filter.add(IFilterTypes.TRANSPORT_PREBOOKING_FILTER, "dummy");
+		filter.add(IFilterTypes.TRANSPORT_TODO_FILTER, "dummy");
 		final List<AbstractMessage> abstractTransportsToList = connection.sendListingRequest(Transport.ID, filter);//TODO - set FilterType
 		if (!connection.getContentType().equalsIgnoreCase(Transport.ID)) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
