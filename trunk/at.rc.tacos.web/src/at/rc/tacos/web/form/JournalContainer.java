@@ -1,5 +1,7 @@
 package at.rc.tacos.web.form;
 
+import java.util.Date;
+
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Location;
@@ -22,6 +24,12 @@ public class JournalContainer
     private String toCity;
     private String notes;
     private String kindOfTransport;
+    private Date s1;
+    private Date s2;
+    private Date s3;
+    private Date s4;
+    private Date s5;
+    private Date s6;
     //TODO S1 - S6
     private String disposedByUser;
     private String feedback;
@@ -115,7 +123,42 @@ public class JournalContainer
 	public void setKindOfTransport(String kindOfTransport) {
 		this.kindOfTransport = kindOfTransport;
 	}
-	
+	public Date getS1() {
+		return s1;
+	}
+	public void setS1(Date s1) {
+		this.s1 = s1;
+	}
+	public Date getS2() {
+		return s2;
+	}
+	public void setS2(Date s2) {
+		this.s2 = s2;
+	}
+	public Date getS3() {
+		return s3;
+	}
+	public void setS3(Date s3) {
+		this.s3 = s3;
+	}
+	public Date getS4() {
+		return s4;
+	}
+	public void setS4(Date s4) {
+		this.s4 = s4;
+	}
+	public Date getS5() {
+		return s5;
+	}
+	public void setS5(Date s5) {
+		this.s5 = s5;
+	}
+	public Date getS6() {
+		return s6;
+	}
+	public void setS6(Date s6) {
+		this.s6 = s6;
+	}
 
 	
 }
