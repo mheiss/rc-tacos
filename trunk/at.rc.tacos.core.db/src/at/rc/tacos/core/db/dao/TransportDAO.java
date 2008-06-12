@@ -67,6 +67,12 @@ public interface TransportDAO
      * @return the list of all prebooked transports in the database
      */
     public List<Transport> listPrebookedTransports() throws SQLException;
+    
+    /**
+     * Returns all underway transports: <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>.
+     * @return the list of all prebooked transports in the database
+     */
+    public List<Transport> listUnderwayTransports() throws SQLException;
         
     /**
      * Returns all transports in the given intervall with the status <code>IProgramStatus.PROGRAM_STATUS_JOURNAL</code>.
@@ -106,4 +112,6 @@ public interface TransportDAO
      * @return the list of all transports todo in the database
      */
     public List<Transport> listTransportsTodo() throws SQLException;
+    
+    
 }
