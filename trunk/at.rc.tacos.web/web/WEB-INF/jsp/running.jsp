@@ -20,6 +20,10 @@
 		<th nowrap="nowrap">Rückmeldung</th>
 		<th nowrap="nowrap">Anrufer</th>
 		<th nowrap="nowrap">Erkr/Verl</th>
+				<th nowrap="nowrap">S1</th>
+		<th nowrap="nowrap">S2</th>
+		<th nowrap="nowrap">S3</th>
+		<th nowrap="nowrap">S4</th>
 		
 	</tr>
 </c:set>
@@ -32,7 +36,7 @@
 			<c:forEach var="journalContainerMapEntry" items="${journalContainerMap}">
 				<c:set var="location" value="${journalContainerMapEntry.key}"/>	
 				<tr>
-					<th class="header2" colspan="11">${location.locationName}&nbsp;am&nbsp;<fmt:formatDate
+					<th class="header2" colspan="15">${location.locationName}&nbsp;am&nbsp;<fmt:formatDate
 						type="date" dateStyle="medium" value="${params.date}" /></th>
 				</tr>
 				${fieldHeadersRow}
@@ -59,6 +63,14 @@
 							<td nowrap="nowrap">${journalContainer.feedback}</td>
 							<td nowrap="nowrap">${journalContainer.caller.callerName} &nbsp; ${journalContainer.caller.callerTelephoneNumber}</td>
 							<td nowrap="nowrap">${journalContainer.kindOfIllness}</td>
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s1}" />
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s2}" />
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s3}" />
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s4}" />
 						</tr>
 					</c:forEach>
 				</tbody>
