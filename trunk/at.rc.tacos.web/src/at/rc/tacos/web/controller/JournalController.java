@@ -26,6 +26,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.web.form.JournalContainer;
 import at.rc.tacos.web.form.JournalContainerListContainer;
 import at.rc.tacos.web.form.RosterEntryContainer;
@@ -45,9 +46,13 @@ public class JournalController extends Controller {
 	private static final String PARAM_CURRENT_DATE_NAME = "currentDate";
 	
 	private static final String PARAM_LOCATION_NAME = "locationId";
+	private static final String PARAM_VEHICLEDETAIL_NAME = "vehicleName";
 	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
+	private static final String PARAM_VEHICLEDETAIL_NO_VALUE = "no Value";
 	private static final String MODEL_LOCATION_NAME = "location";
 	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
+	private static final String MODEL_VEHICLEDETAIL_LIST_NAME = "vehicleDetailList";
+	private static final String MODEL_VEHICLEDETAIL_NAME = "vehicleDetailName";
 	
 	private static final String MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME = "calendarDefaultDateMilliseconds";
 	private static final String MODEL_CALENDAR_RANGE_START_NAME = "calendarRangeStart";
@@ -80,9 +85,12 @@ public class JournalController extends Controller {
 		params.put(PARAM_CURRENT_DATE_NAME, new Date());
 		
 		// Location
+		//param location name holen
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
+		System.out.println("paramLocationId: " +paramLocationId);
 		int locationId = 0;
 		Location location = userSession.getDefaultFormValues().getDefaultLocation();
+		//wenn param location leer ist, location null setzen, sonst locationId = paramLocationId
 		if (paramLocationId != null && !paramLocationId.equals("")) 
 		{
 			if (paramLocationId.equalsIgnoreCase(PARAM_LOCATION_NO_VALUE)) {
@@ -91,6 +99,8 @@ public class JournalController extends Controller {
 				locationId = Integer.parseInt(paramLocationId);
 			}
 		}
+		
+		//locationList enthält alle Locations
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
 		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
@@ -103,6 +113,39 @@ public class JournalController extends Controller {
 			}
 		}
 		params.put(MODEL_LOCATION_NAME, location);
+		
+		// Vehicle
+		final String paramVehicleDetailId = request.getParameter(PARAM_VEHICLEDETAIL_NAME);
+		System.out.println("-- journalController, paramVehicleDetailId: " +paramVehicleDetailId);
+		String vehicleDetailName = null;
+//		Location location = userSession.getDefaultFormValues().getDefaultLocation();
+		if (paramVehicleDetailId != null && !paramVehicleDetailId.equals("")) 
+		{
+				vehicleDetailName = paramVehicleDetailId;
+		}
+		final List<AbstractMessage> abstractVehicleDetailList = connection.sendListingRequest(VehicleDetail.ID, null);
+		if (!VehicleDetail.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		final List<VehicleContainer> vehicleDetailList = new ArrayList<VehicleContainer>();
+		for (final Iterator<AbstractMessage> itVehicleDetailList = abstractVehicleDetailList.iterator(); itVehicleDetailList.hasNext();) {
+			final VehicleDetail vehicleDetail = (VehicleDetail)itVehicleDetailList.next();
+			final VehicleContainer vehicleContainer = new VehicleContainer();
+			vehicleContainer.setVehicleName(vehicleDetail.getVehicleName());
+			vehicleDetailList.add(vehicleContainer);
+		}
+		params.put(MODEL_VEHICLEDETAIL_LIST_NAME, vehicleDetailList);
+//		for (final Iterator<AbstractMessage> itVehicleDetailList = locationList.iterator(); itVehicleDetailList.hasNext();) {
+//			final VehicleContainer vd = (VehicleContainer)itVehicleDetailList.next();
+//			if (vd.getId() == vehicleDetailId) {
+//				location = l;
+//			}
+//		}
+//		params.put(MODEL_LOCATION_NAME, location);
+		
+		
+		
+		
 		
 		// Get Date and create calendar for datepicker
 		Date date = userSession.getDefaultFormValues().getDefaultDate();
@@ -167,6 +210,7 @@ public class JournalController extends Controller {
 		if (!connection.getContentType().equalsIgnoreCase(Transport.ID)) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}	
+		//TODO
 		final ArrayList<JournalContainer> journalList = new ArrayList<JournalContainer>();
 		for (final Iterator<AbstractMessage> itJournalList = abstractJournalList.iterator(); itJournalList.hasNext();) {
 			final Transport transport = (Transport)itJournalList.next();
@@ -196,7 +240,6 @@ public class JournalController extends Controller {
 			journalContainer.setToStreet(transport.getToStreet());
 			journalContainer.setToCity(transport.getToCity());
 			journalContainer.setNotes(transport.getNotes());
-			//TODO S1 - S6
 			//S1
 			if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
 				journalContainer.setS1(new Date(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY)));
