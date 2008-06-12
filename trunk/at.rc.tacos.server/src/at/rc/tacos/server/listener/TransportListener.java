@@ -83,16 +83,16 @@ public class TransportListener extends ServerListenerAdapter
 			list.addAll(prebookedList);
 		}
 		//online transport listing *** only running transports (outstanding and underway) ***
-		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_RUNNING_FILTER))
+		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_UNDERWAY_FILTER))
 		{
 			//for online transport listing
 			//list only the running transports (outstanding and underway)
 			//show the running transports
 			//show current transports that are in progress
-			List<Transport> transportList = transportDao.listRunningTransports();
+			List<Transport> transportList = transportDao.listUnderwayTransports();
 			if(transportList == null)
 			{
-				throw new DAOException("TransportListener","Failed to list the running and open transports");
+				throw new DAOException("TransportListener","Failed to list the underway transports");
 			}
 			list.addAll(transportList);
 			
