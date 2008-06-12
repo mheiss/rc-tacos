@@ -33,7 +33,6 @@ public class TransportsToContainerListContainer {
 
 	public SortedMap<Location, List<TransportsToContainer>> getTransportsToContainerMap() 
 	{
-		System.out.println("transportsToContainerMap");
 		return transportsToContainerMap;
 	}
 
