@@ -31,17 +31,17 @@
 		<th nowrap="nowrap">Nach</th>
 		<th nowrap="nowrap">Anmerkungen</th>
 		<th nowrap="nowrap">Transportart</th>
-		<%-- <th nowrap="nowrap">S1</th>
-		<th nowrap="nowrap">S2</th>
-		<th nowrap="nowrap">S3</th>
-		<th nowrap="nowrap">S4</th>
-		<th nowrap="nowrap">S5</th>
-		<th nowrap="nowrap">S6</th> --%>
+		
 		<th nowrap="nowrap">Disponent</th>
 		<th nowrap="nowrap">Rückmeldung</th>
 		<th nowrap="nowrap">Anrufer</th>
 		<th nowrap="nowrap">Erkr/Verl</th>
-		
+		<th nowrap="nowrap">S1</th>
+		<th nowrap="nowrap">S2</th>
+		<th nowrap="nowrap">S3</th>
+		<th nowrap="nowrap">S4</th>
+		<th nowrap="nowrap">S5</th>
+		<th nowrap="nowrap">S6</th>
 	</tr>
 </c:set>
 <br />
@@ -53,7 +53,7 @@
 			<c:forEach var="journalContainerMapEntry" items="${journalContainerMap}">
 				<c:set var="location" value="${journalContainerMapEntry.key}"/>	
 				<tr>
-					<th class="header2" colspan="11">${location.locationName}&nbsp;am&nbsp;<fmt:formatDate
+					<th class="header2" colspan="17">${location.locationName}&nbsp;am&nbsp;<fmt:formatDate
 						type="date" dateStyle="medium" value="${params.date}" /></th>
 				</tr>
 				${fieldHeadersRow}
@@ -72,6 +72,18 @@
 							<td nowrap="nowrap">${journalContainer.feedback}</td>
 							<td nowrap="nowrap">${journalContainer.caller.callerName} &nbsp; ${journalContainer.caller.callerTelephoneNumber}</td>
 							<td nowrap="nowrap">${journalContainer.kindOfIllness}</td>
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s1}" />
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s2}" />
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s3}" />
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s4}" />
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s5}" />
+							<td nowrap="nowrap">
+								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s6}" />
 						</tr>
 					</c:forEach>
 				</tbody>
