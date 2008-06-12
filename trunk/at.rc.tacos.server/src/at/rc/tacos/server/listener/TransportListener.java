@@ -68,17 +68,17 @@ public class TransportListener extends ServerListenerAdapter
 			throw new DAOException("TransportListener","Listing of all transport entries is denied");
 		}
 		
-		//online transport listing *** only prebookings ***
-		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_PREBOOKING_FILTER))
+		//online transport listing *** transports todo (prebooking and outstanding) ***
+		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_TODO_FILTER))
 		{
 			//for online transport listing
 			//list only the prebooked transports
 			//show the prebooked transports
-			List<Transport> prebookedList = transportDao.listPrebookedTransports();
+			List<Transport> prebookedList = transportDao.listTransportsTodo();
 			//check the prebooked
 			if(prebookedList == null)
 			{
-				throw new DAOException("TransportListener","Failed to list the prebooked transports");
+				throw new DAOException("TransportListener","Failed to list the transports todo (prebooked and outstanding)");
 			}
 			list.addAll(prebookedList);
 		}
