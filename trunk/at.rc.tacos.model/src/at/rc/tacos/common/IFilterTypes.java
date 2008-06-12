@@ -64,6 +64,9 @@ public interface IFilterTypes
     /** Filter prebooked transports */
     public final static String TRANSPORT_PREBOOKING_FILTER = "transportPrebookingFilter";
     
+    /** Filter transports todo (prebooked and outstanding) */
+    public final static String TRANSPORT_TODO_FILTER = "transportTodoFilter";
+    
     /** Filter running transports */
     public final static String TRANSPORT_RUNNING_FILTER = "transportRunningFilter";
     
