@@ -114,7 +114,6 @@ public class TransportListener extends ServerListenerAdapter
 			
 			//show the transports in the journal which have a assigned vehicle
 			List<Transport> journalListVehicleLocation = transportDao.listArchivedTransportsByVehicleLocationAndDate(dateStart, dateEnd, locationId);
-			System.out.println("zwei filter, size der journalVEHICLEList: " +journalListVehicleLocation.size());
 			//check archived
 			if(journalListVehicleLocation == null)
 			{
@@ -125,7 +124,6 @@ public class TransportListener extends ServerListenerAdapter
 			//show the transports in the journal which have no assigned vehicle - so the location is the planned location
 			
 			List<Transport> journalListTransportLocation = transportDao.listArchivedTransportsByTransportLocationAndDate(dateStart, dateEnd, locationId);
-			System.out.println("zwei filter, size der journalTRANSPORTList: " +journalListTransportLocation.size());
 			//check archived
 			if(journalListTransportLocation == null)
 			{
@@ -168,7 +166,6 @@ public class TransportListener extends ServerListenerAdapter
 			
 			//show the transports in the journal
 			List<Transport> journalList = transportDao.listArchivedTransports(dateStart, dateEnd);
-			System.out.println("ein filter, size der journalList: " +journalList.size());
 			
 			//check archived
 			if(journalList == null)
@@ -234,11 +231,6 @@ public class TransportListener extends ServerListenerAdapter
 	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username)  throws DAOException,SQLException
 	{
 		Transport transport = (Transport)updateObject;
-		//
-		System.out.println("Update request for the transport");
-		System.out.println("car: "+transport.getVehicleDetail());
-		System.out.println("id: "+transport.getTransportId());
-		System.out.println("nummer: "+transport.getTransportNumber());
 		//generate a transport id if we do not have one
 		if(transport.getVehicleDetail() != null && transport.getTransportNumber() == 0)
 		{
@@ -271,7 +263,6 @@ public class TransportListener extends ServerListenerAdapter
 				transport.setTransportNumber(Transport.TRANSPORT_CANCLED);//reset the transportNumber to CANCELED
 			}
 			System.out.println("CANCEL OR FORWARD TRANSPORT");
-			System.out.println("..... TransportListener, transportnumber des transports: " +transport.getTransportNumber());
 			if(!transportDao.cancelTransport(transport)) //set the transportNumber to -1 or -2 (to the value in the transport) and set program status journal
 				throw new DAOException("TransportListner","Failed to cancle the transport "+transport);
 		}
