@@ -35,14 +35,19 @@
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Vormerkungen</a>
 		</td>
 	</tr>
+	<c:url var="url" value="/Dispatcher/running.do" />
+	<tr>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Laufende Transporte</a>
+		</td>
+	</tr>
 	<c:url var="url" value="/Dispatcher/journal.do" />
 	<tr>
 		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Journal</a>
 		</td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/running.do" />
+	<c:url var="url" value="/Dispatcher/journalShort.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Laufende Transporte</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Kurzjournal</a>
 		</td>
 	</tr>
 </table>
