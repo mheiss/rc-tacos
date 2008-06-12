@@ -77,4 +77,6 @@ public interface IFilterTypes
     public final static String TRANSPORT_LOCATION_FILTER = "transportLocationFilter";
     
     public final static String SERVICETYPE_COMPETENCE_FILTER = "serviceTypeCompetenceFilter";
+    
+    public final static String TRANSPORT_UNDERWAY_FILTER = "transportUnderwayFilter";
 }
