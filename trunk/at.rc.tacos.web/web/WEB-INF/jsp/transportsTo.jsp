@@ -2,7 +2,7 @@
 <c:set var="fieldHeadersRow">
 	<tr class="subhead2">
 		<th nowrap="nowrap">Von</th>
-		<th nowrap="nowrap">Patient&nbsp;1</th>
+		<th nowrap="nowrap">Patient</th>
 		<th nowrap="nowrap">Nach</th>
 		<th nowrap="nowrap">Abfahrt</th>
 		<th nowrap="nowrap">Bei Patient</th>
