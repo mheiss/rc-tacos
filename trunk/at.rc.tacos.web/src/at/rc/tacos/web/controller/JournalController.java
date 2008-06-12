@@ -173,8 +173,13 @@ public class JournalController extends Controller {
 			final JournalContainer journalContainer = new JournalContainer();
 			final VehicleContainer vehicleContainer = new VehicleContainer();
 			if(transport.getVehicleDetail() != null)
+			{
+				System.out.println("JournalController, vehicle Detail != null: " +transport.getVehicleDetail().getVehicleName());
 				vehicleContainer.setVehicleName(transport.getVehicleDetail().getVehicleName());
-			//TODO staff of the vehicle
+				vehicleContainer.setDriver(transport.getVehicleDetail().getDriver());
+				vehicleContainer.setFirstParamedic(transport.getVehicleDetail().getFirstParamedic());
+				vehicleContainer.setSecondParamedic(transport.getVehicleDetail().getSecondParamedic());
+			}
 			journalContainer.setVehicleContainer(vehicleContainer);
 			if(transport.getVehicleDetail() != null)
 				journalContainer.setRealLocation(transport.getVehicleDetail().getCurrentStation());

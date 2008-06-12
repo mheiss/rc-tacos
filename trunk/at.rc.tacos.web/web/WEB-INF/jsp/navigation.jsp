@@ -42,7 +42,7 @@
 	</tr>
 	<c:url var="url" value="/Dispatcher/running.do" />
 	<tr>
-		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Aktuelle Transporte</a>
+		<td id="navIcon"></td><td id="BlockContentNav"><a href="${url}">Laufende Transporte</a>
 		</td>
 	</tr>
 </table>

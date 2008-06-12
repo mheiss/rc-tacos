@@ -30,7 +30,6 @@ public class JournalContainer
     private Date s4;
     private Date s5;
     private Date s6;
-    //TODO S1 - S6
     private String disposedByUser;
     private String feedback;
     private CallerDetail caller;
