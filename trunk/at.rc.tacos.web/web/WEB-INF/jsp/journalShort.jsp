@@ -13,6 +13,19 @@
 			</c:forEach>
 		</select></td>
 	</tr>
+	
+	<tr>
+		<td style="font-weight:bold">Fahrzeug:</td>
+		<td><select size="1" id="vehicleId" name="vehicleName">
+			<option value="noValue">-- Fahrzeug wählen --</option>
+			<c:forEach var="vehicleDetail" items="${params.vehicleDetailList}">
+				<option value="${vehicleDetail.vehicleName}" ${(not empty
+					params.vehicleDetail) and (params.vehicleDetail.vehicleName==
+					vehicleDetail.vehicleName) ? ' selected="selected"' : ''}>${vehicleDetail.vehicleName}</option>
+			</c:forEach>
+		</select></td>
+	</tr>
+	
 	<tr>
 		<td style="font-weight:bold">Datum:</td>
 		<td><input id="date" name="date" type="text" size="10"
@@ -117,11 +130,17 @@ $(document).ready(function() {
 		document.location = url;
 	});
 	
+	$('#vehicleId').change(function() {
+		var url = '?vehicleName=' + $(this).val();
+		update(url, 'vehicleName');
+	});
+	
 	$('#journalTable .showJournalInfo').Tooltip({ delay: 100, showURL: false });
 	
 	function update(cal) {
 		var url = '?date=' + $('#date').val();
 		var locationId = $('#locationId').val();
+		var vehicleId = $('#vehicleName').val();
 		if (locationId) {
 			url += '&locationId=' + locationId;
 		}
