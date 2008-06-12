@@ -3397,7 +3397,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//get the entered text
 		if(changedText.trim().length() < 1)
 		{
-			setErrorMessage("Bitte geben sie mindestens ein Zeiche ein um die Autovervollständigung zu nutzen");
+			setErrorMessage("Bitte geben sie mindestens drei Zeichen ein, um die Autovervollständigung zu nutzen");
 			Display.getCurrent().beep();
 			return;
 		}
