@@ -218,7 +218,6 @@ public class JournalController extends Controller {
 			final VehicleContainer vehicleContainer = new VehicleContainer();
 			if(transport.getVehicleDetail() != null)
 			{
-				System.out.println("JournalController, vehicle Detail != null: " +transport.getVehicleDetail().getVehicleName());
 				vehicleContainer.setVehicleName(transport.getVehicleDetail().getVehicleName());
 				vehicleContainer.setDriver(transport.getVehicleDetail().getDriver());
 				vehicleContainer.setFirstParamedic(transport.getVehicleDetail().getFirstParamedic());
