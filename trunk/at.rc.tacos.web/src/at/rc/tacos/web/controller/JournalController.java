@@ -141,16 +141,6 @@ public class JournalController extends Controller {
 		}
 		params.put(MODEL_VEHICLEDETAIL_LIST_NAME, vehicleDetailList);
 		params.put(MODEL_VEHICLE_CONTAINER_NAME, vehicleContainer);
-//		for (final Iterator<AbstractMessage> itVehicleDetailList = locationList.iterator(); itVehicleDetailList.hasNext();) {
-//			final VehicleContainer vd = (VehicleContainer)itVehicleDetailList.next();
-//			if (vd.getId() == vehicleDetailId) {
-//				location = l;
-//			}
-//		}
-//		params.put(MODEL_LOCATION_NAME, location);
-		
-		
-		
 		
 		
 		// Get Date and create calendar for datepicker
@@ -212,6 +202,8 @@ public class JournalController extends Controller {
 		{
 			filter.add(IFilterTypes.TRANSPORT_LOCATION_FILTER, String.valueOf(locationId));
 		}
+		if(vehicleContainer != null)
+			filter.add(IFilterTypes.TRANSPORT_JOURNAL_SHORT_VEHICLE_FILTER, vehicleContainer.getVehicleName());
 		final List<AbstractMessage> abstractJournalList = connection.sendListingRequest(Transport.ID, filter);//TODO - set FilterType
 		if (!connection.getContentType().equalsIgnoreCase(Transport.ID)) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
