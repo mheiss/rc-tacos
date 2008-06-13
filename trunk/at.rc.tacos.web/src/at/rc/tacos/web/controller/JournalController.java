@@ -46,13 +46,14 @@ public class JournalController extends Controller {
 	private static final String PARAM_CURRENT_DATE_NAME = "currentDate";
 	
 	private static final String PARAM_LOCATION_NAME = "locationId";
-	private static final String PARAM_VEHICLEDETAIL_NAME = "vehicleName";
 	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
-	private static final String PARAM_VEHICLEDETAIL_NO_VALUE = "no Value";
 	private static final String MODEL_LOCATION_NAME = "location";
 	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
-	private static final String MODEL_VEHICLEDETAIL_LIST_NAME = "vehicleDetailList";
-	private static final String MODEL_VEHICLEDETAIL_NAME = "vehicleDetailName";
+	
+	private static final String PARAM_VEHICLEDETAIL_NAME = "vehicleName";
+	private static final String PARAM_VEHICLEDETAIL_NO_VALUE = "noValue";
+	private static final String MODEL_VEHICLEDETAIL_LIST_NAME = "vehicleDetailList";	
+	private static final String MODEL_VEHICLE_CONTAINER_NAME = "vehicleContainer";
 	
 	private static final String MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME = "calendarDefaultDateMilliseconds";
 	private static final String MODEL_CALENDAR_RANGE_START_NAME = "calendarRangeStart";
@@ -116,6 +117,7 @@ public class JournalController extends Controller {
 		
 		// Vehicle
 		final String paramVehicleDetailId = request.getParameter(PARAM_VEHICLEDETAIL_NAME);
+		VehicleContainer vehicleContainer = null;
 		System.out.println("-- journalController, paramVehicleDetailId: " +paramVehicleDetailId);
 		String vehicleDetailName = null;
 //		Location location = userSession.getDefaultFormValues().getDefaultLocation();
@@ -130,11 +132,15 @@ public class JournalController extends Controller {
 		final List<VehicleContainer> vehicleDetailList = new ArrayList<VehicleContainer>();
 		for (final Iterator<AbstractMessage> itVehicleDetailList = abstractVehicleDetailList.iterator(); itVehicleDetailList.hasNext();) {
 			final VehicleDetail vehicleDetail = (VehicleDetail)itVehicleDetailList.next();
-			final VehicleContainer vehicleContainer = new VehicleContainer();
-			vehicleContainer.setVehicleName(vehicleDetail.getVehicleName());
-			vehicleDetailList.add(vehicleContainer);
+			final VehicleContainer vC = new VehicleContainer();
+			vC.setVehicleName(vehicleDetail.getVehicleName());
+			vehicleDetailList.add(vC);
+			if (vC.getVehicleName().equals(paramVehicleDetailId)) {
+				vehicleContainer = vC;
+			}
 		}
 		params.put(MODEL_VEHICLEDETAIL_LIST_NAME, vehicleDetailList);
+		params.put(MODEL_VEHICLE_CONTAINER_NAME, vehicleContainer);
 //		for (final Iterator<AbstractMessage> itVehicleDetailList = locationList.iterator(); itVehicleDetailList.hasNext();) {
 //			final VehicleContainer vd = (VehicleContainer)itVehicleDetailList.next();
 //			if (vd.getId() == vehicleDetailId) {
@@ -215,15 +221,15 @@ public class JournalController extends Controller {
 		for (final Iterator<AbstractMessage> itJournalList = abstractJournalList.iterator(); itJournalList.hasNext();) {
 			final Transport transport = (Transport)itJournalList.next();
 			final JournalContainer journalContainer = new JournalContainer();
-			final VehicleContainer vehicleContainer = new VehicleContainer();
+			final VehicleContainer vCo = new VehicleContainer();
 			if(transport.getVehicleDetail() != null)
 			{
-				vehicleContainer.setVehicleName(transport.getVehicleDetail().getVehicleName());
-				vehicleContainer.setDriver(transport.getVehicleDetail().getDriver());
-				vehicleContainer.setFirstParamedic(transport.getVehicleDetail().getFirstParamedic());
-				vehicleContainer.setSecondParamedic(transport.getVehicleDetail().getSecondParamedic());
+				vCo.setVehicleName(transport.getVehicleDetail().getVehicleName());
+				vCo.setDriver(transport.getVehicleDetail().getDriver());
+				vCo.setFirstParamedic(transport.getVehicleDetail().getFirstParamedic());
+				vCo.setSecondParamedic(transport.getVehicleDetail().getSecondParamedic());
 			}
-			journalContainer.setVehicleContainer(vehicleContainer);
+			journalContainer.setVehicleContainer(vCo);
 			if(transport.getVehicleDetail() != null)
 				journalContainer.setRealLocation(transport.getVehicleDetail().getCurrentStation());
 			else
