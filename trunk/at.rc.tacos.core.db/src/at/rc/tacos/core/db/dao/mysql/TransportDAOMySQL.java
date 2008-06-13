@@ -1787,4 +1787,27 @@ public class TransportDAOMySQL implements TransportDAO, IProgramStatus
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Transport> listArchivedTransportsByTransportLocationAndDateAndVehicle(
+			long startdate, long enddate, int locationId, String vehicleName)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Transport> listArchivedTransportsByVehicle(long startdate,
+			long enddate, String vehicleName) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Transport> listArchivedTransportsByVehicleLocationAndDateAndVehicle(
+			long startdate, long enddate, int locationId, String vehicleName)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
