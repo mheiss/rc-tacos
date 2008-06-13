@@ -28,12 +28,17 @@
 	
 	<tr>
 		<td style="font-weight:bold">Datum:</td>
-		<td><input id="date" name="date" type="text" size="10"
-			maxlength="10"
-			value="<fmt:formatDate type="date" value="${params.date}"/>" /> <c:url
-			var="url" value="/image/calendar_edit.gif" /> <img src="${url}"
-			border="0" id="dateCalendarTrigger" style="cursor: pointer" /></td>
+		<td><select size="1" id="restrictedDate" name="restrictedDate">
+			<option value="noValue">-- Datum wählen --</option>
+			<c:forEach var="date" items="${params.restrictedDateList}">
+				<option value="<fmt:formatDate type="date" dateStyle="short" value="${date}"/>" ${(not empty
+					params.restrictedDate) and (params.restrictedDate==
+					date) ? ' selected="selected"' : ''}>${date}</option>
+			</c:forEach>
+		</select></td>
 	</tr>
+
+						
 </table>
 <c:set var="fieldHeadersRow">
 	<tr class="subhead2">	
@@ -110,16 +115,6 @@
 </c:choose>
 <script type="text/javascript">
 $(document).ready(function() {
-	Calendar.setup ({
-		inputField : "date",
-		button : "dateCalendarTrigger",
-		date : new Date(${params.calendarDefaultDateMilliseconds}),
-		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
-		align : "Br",
-		ifFormat : "%d.%m.%Y",
-		daFormat : "%d.%m.%Y",
-		onClose : update
-	});
 	
 	$('#locationId').change(function() {
 		var url = '?locationId=' + $(this).val();
@@ -131,15 +126,23 @@ $(document).ready(function() {
 		update(url, 'v');
 	});
 	
+	$('#restrictedDate').change(function() {
+		var url = '?restrictedDate=' + $(this).val();		
+		update(url, 'r');
+	});
+	
 	$('#journalTable .showJournalInfo').Tooltip({ delay: 100, showURL: false });
 	
 	function update(url, code) {
 		var locationId = $('#locationId').val();
 		var vehicleName = $('#vehicleName').val();
+		var restrictedDate = $('#restrictedDate').val();
 		if (code == 'l') {
 			url += '&vehicleName=' + vehicleName;
 		} else if (code == 'v') {
 			url += '&locationId=' + locationId;
+		} else if (code == 'r') {
+			url += '&restrictedDate=' +restrictedDate;
 		}
 		document.location = url;
 	}
