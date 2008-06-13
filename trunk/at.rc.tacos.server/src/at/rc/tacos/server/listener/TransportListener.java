@@ -61,7 +61,6 @@ public class TransportListener extends ServerListenerAdapter
 	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter)  throws DAOException,SQLException
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-		System.out.println("********** listing************");
 		//if there is no filter -> request all
 		if(queryFilter == null || queryFilter.getFilterList().isEmpty())
 		{
@@ -73,14 +72,12 @@ public class TransportListener extends ServerListenerAdapter
 				queryFilter.containsFilterType(IFilterTypes.TRANSPORT_ARCHIVED_FILTER) &&
 						queryFilter.containsFilterType(IFilterTypes.TRANSPORT_LOCATION_FILTER))
 		{
-			System.out.println("********* TransportListener, mit die 3 filter");
 			//for online transport listing
 			//list only the archived transports (journal)
 			//get the query filter and parse it to a date time
 			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.TRANSPORT_ARCHIVED_FILTER);
 			final String locationFilter = queryFilter.getFilterValue(IFilterTypes.TRANSPORT_LOCATION_FILTER);
 			final String vehicleFilter = queryFilter.getFilterValue(IFilterTypes.TRANSPORT_JOURNAL_SHORT_VEHICLE_FILTER);
-			System.out.println("***********************vehicleFilter: " +vehicleFilter);
 			final int locationId = Integer.valueOf(locationFilter).intValue();
 			long dateStart = MyUtils.stringToTimestamp(dateFilter,MyUtils.dateFormat);
 			Calendar calEnd = Calendar.getInstance();
@@ -131,13 +128,11 @@ public class TransportListener extends ServerListenerAdapter
 		else if(queryFilter.containsFilterType(IFilterTypes.TRANSPORT_JOURNAL_SHORT_VEHICLE_FILTER) &&
 				queryFilter.containsFilterType(IFilterTypes.TRANSPORT_ARCHIVED_FILTER))
 		{
-			System.out.println("************TransportListener mit die 2 filter!!!!!");
 			//for online transport listing
 			//list only the archived transports (journal)
 			//get the query filter and parse it to a date time
 			final String dateFilter = queryFilter.getFilterValue(IFilterTypes.TRANSPORT_ARCHIVED_FILTER);
 			final String vehicleFilter = queryFilter.getFilterValue(IFilterTypes.TRANSPORT_JOURNAL_SHORT_VEHICLE_FILTER);
-			System.out.println("*******vehicleFilter: " +vehicleFilter);
 			long dateStart = MyUtils.stringToTimestamp(dateFilter,MyUtils.dateFormat);
 			Calendar calEnd = Calendar.getInstance();
 			calEnd.setTimeInMillis(dateStart);
@@ -146,7 +141,6 @@ public class TransportListener extends ServerListenerAdapter
 			
 			//show the transports in the journal
 			List<Transport> journalList = transportDao.listArchivedTransportsByVehicle(dateStart, dateEnd, vehicleFilter);
-			System.out.println(".......");
 			
 			//check archived
 			if(journalList == null)
