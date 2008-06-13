@@ -98,12 +98,32 @@ public interface TransportDAO
     public List<Transport> listArchivedTransportsByVehicleLocationAndDate(long startdate, long enddate, int locationId) throws SQLException;
     
     /**
+     * Returns alle transports in the given interval by the given location (location_ID of the assignedVehicle (based on the vehicle current location)) and vehicle
+     * @param startdate the start date
+     * @param enddate the end date
+     * @param vehicleName the vehicleName
+     * @param locationId the locationId (real location of transports with a vehicle, planned location of transports without location (Storno, Leerfahrt, Weiterleitung)
+     */
+    public List<Transport> listArchivedTransportsByVehicleLocationAndDateAndVehicle(long startdate, long enddate, int locationId, String vehicleName) throws SQLException;
+    
+    /**
      * Returns alle transports in the given interval by the given location (planned location of the transport)
      * @param startdate the start date
      * @param enddate the end date
      * @param locationId the locationId (real location of transports with a vehicle, planned location of transports without location (Storno, Leerfahrt, Weiterleitung)
      */
     public List<Transport> listArchivedTransportsByTransportLocationAndDate(long startdate, long enddate, int locationId) throws SQLException;
+    
+    
+    /**
+     * Returns alle transports in the given interval by the given location (planned location of the transport)and vehicle
+     * @param startdate the start date
+     * @param enddate the end date
+     * @param locationId the locationId (real location of transports with a vehicle, planned location of transports without location (Storno, Leerfahrt, Weiterleitung)
+     * @param vehicleName the vehicleName
+     */
+    public List<Transport> listArchivedTransportsByTransportLocationAndDateAndVehicle(long startdate, long enddate, int locationId, String vehicleName) throws SQLException;
+    
     
     /**
      * Returns all transports todo (prebooked and outstanding). Transports Todo are identified by the
@@ -112,6 +132,15 @@ public interface TransportDAO
      * @return the list of all transports todo in the database
      */
     public List<Transport> listTransportsTodo() throws SQLException;
+    
+    /**
+     * Returns all transports of the given vehicle in the given intervall with the status <code>IProgramStatus.PROGRAM_STATUS_JOURNAL</code>. 
+     * @param startdate the start date
+     * @param enddate the end date
+     * @param vehicleName the vehicleName
+     * @return the list of archived transports of the given vehicle
+     */
+    public List<Transport> listArchivedTransportsByVehicle(long startdate,long enddate, String vehicleName) throws SQLException;
     
     
 }
