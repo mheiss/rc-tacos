@@ -23,6 +23,7 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
@@ -55,6 +56,12 @@ public class JournalController extends Controller {
 	private static final String MODEL_VEHICLEDETAIL_LIST_NAME = "vehicleDetailList";	
 	private static final String MODEL_VEHICLE_CONTAINER_NAME = "vehicleContainer";
 	
+	private static final String PARAM_RESTRICTED_DATE_NAME = "restrictedDate";
+	private static final String PARAM_RESTRICTED_DATE_NO_VALUE = "noValue";
+	private static final String MODEL_RESTRICTED_DATE_NAME = "restricted";
+	private static final String MODEL_RESTRICTED_DATE_LIST_NAME = "restrictedDateList";
+	
+	
 	private static final String MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME = "calendarDefaultDateMilliseconds";
 	private static final String MODEL_CALENDAR_RANGE_START_NAME = "calendarRangeStart";
 	private static final String MODEL_CALENDAR_RANGE_END_NAME = "calendarRangeEnd";
@@ -81,6 +88,7 @@ public class JournalController extends Controller {
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
+		
 		
 		// Put current date to parameter to parameter list
 		params.put(PARAM_CURRENT_DATE_NAME, new Date());
@@ -115,12 +123,35 @@ public class JournalController extends Controller {
 		}
 		params.put(MODEL_LOCATION_NAME, location);
 		
+		//set the possible dates
+		final String paramRestrictedDateId = request.getParameter(PARAM_RESTRICTED_DATE_NAME);
+		System.out.println("......paramRestrictedDateId: " +paramRestrictedDateId);
+		Date restrictedDateId = null;
+		Date restrictedDate = new Date();
+		if(paramRestrictedDateId != null && !paramRestrictedDateId.equals(""))
+		{
+			if(paramRestrictedDateId.equalsIgnoreCase(PARAM_RESTRICTED_DATE_NO_VALUE)) {
+				restrictedDate = null;
+			} else{
+//				restrictedDateId = paramRestrictedDateId;
+			}
+		}
+		params.put(MODEL_RESTRICTED_DATE_NAME,restrictedDate);
+		
+		final List<Date> restrictedDateList = new ArrayList<Date>();
+		restrictedDateList.add(new Date());
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) -1);
+		Date yesterday = cal.getTime();
+		restrictedDateList.add(yesterday);
+		params.put(MODEL_RESTRICTED_DATE_LIST_NAME, restrictedDateList);
+
+		
 		// Vehicle
 		final String paramVehicleDetailId = request.getParameter(PARAM_VEHICLEDETAIL_NAME);
 		VehicleContainer vehicleContainer = null;
 		System.out.println("-- journalController, paramVehicleDetailId: " +paramVehicleDetailId);
 		String vehicleDetailName = null;
-//		Location location = userSession.getDefaultFormValues().getDefaultLocation();
 		if (paramVehicleDetailId != null && !paramVehicleDetailId.equals("")) 
 		{
 				vehicleDetailName = paramVehicleDetailId;
@@ -142,8 +173,9 @@ public class JournalController extends Controller {
 		params.put(MODEL_VEHICLEDETAIL_LIST_NAME, vehicleDetailList);
 		params.put(MODEL_VEHICLE_CONTAINER_NAME, vehicleContainer);
 		
+	
 		
-		// Get Date and create calendar for datepicker
+		// Get Date and create calendar for datepicker //TODO --> remove? the date picker is no longer used
 		Date date = userSession.getDefaultFormValues().getDefaultDate();
 		if (date == null) {
 			date = new Date();
