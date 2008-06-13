@@ -16,11 +16,11 @@
 	
 	<tr>
 		<td style="font-weight:bold">Fahrzeug:</td>
-		<td><select size="1" id="vehicleId" name="vehicleName">
+		<td><select size="1" id="vehicleName" name="vehicleName">
 			<option value="noValue">-- Fahrzeug wählen --</option>
 			<c:forEach var="vehicleDetail" items="${params.vehicleDetailList}">
 				<option value="${vehicleDetail.vehicleName}" ${(not empty
-					params.vehicleDetail) and (params.vehicleDetail.vehicleName==
+					params.vehicleContainer) and (params.vehicleContainer.vehicleName==
 					vehicleDetail.vehicleName) ? ' selected="selected"' : ''}>${vehicleDetail.vehicleName}</option>
 			</c:forEach>
 		</select></td>
@@ -123,25 +123,22 @@ $(document).ready(function() {
 	
 	$('#locationId').change(function() {
 		var url = '?locationId=' + $(this).val();
-		var date = $('#date').val();
-		if (date) {
-			url += '&date=' + date;
-		}
-		document.location = url;
+		update(url, 'l');
 	});
 	
-	$('#vehicleId').change(function() {
-		var url = '?vehicleName=' + $(this).val();
-		update(url, 'vehicleName');
+	$('#vehicleName').change(function() {
+		var url = '?vehicleName=' + $(this).val();		
+		update(url, 'v');
 	});
 	
 	$('#journalTable .showJournalInfo').Tooltip({ delay: 100, showURL: false });
 	
-	function update(cal) {
-		var url = '?date=' + $('#date').val();
+	function update(url, code) {
 		var locationId = $('#locationId').val();
-		var vehicleId = $('#vehicleName').val();
-		if (locationId) {
+		var vehicleName = $('#vehicleName').val();
+		if (code == 'l') {
+			url += '&vehicleName=' + vehicleName;
+		} else if (code == 'v') {
 			url += '&locationId=' + locationId;
 		}
 		document.location = url;
