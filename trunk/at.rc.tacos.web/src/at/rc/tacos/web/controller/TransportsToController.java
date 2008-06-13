@@ -20,6 +20,7 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.web.form.TransportsToContainer;
@@ -44,6 +45,12 @@ public class TransportsToController extends Controller {
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
+		
+		// Check authorization
+		final String authorization = userSession.getLoginInformation().getAuthorization();
+		if (!authorization.equals(Login.AUTH_ADMIN)) {
+			throw new IllegalArgumentException("Error: User has no permission for functionality.");
+		}
 	     
 		QueryFilter filter = new QueryFilter();
 		filter.add(IFilterTypes.TRANSPORT_TODO_FILTER, "dummy");
