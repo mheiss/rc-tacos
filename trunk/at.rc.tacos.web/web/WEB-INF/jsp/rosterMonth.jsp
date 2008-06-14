@@ -83,13 +83,13 @@
 	<table id="rosterEntryTable" class="list" cellpadding="3" cellspacing="0">
 		<c:forEach var="function" items="${functionList}">
 			<tr>
-				<th class="header2" colspan="${fn:length(staffMemberList)*2+2}">${function.function.competenceName}</th>
+				<th class="header2" colspan="${fn:length(staffMemberList)*3+2}">${function.function.competenceName}</th>
 			</tr>
 			<tr class="subhead2">
 				<th nowrap="nowrap">&nbsp;</th>
 				<th nowrap="nowrap">&nbsp;</th>
 				<c:forEach var="staffMember" items="${staffMemberList}">
-					<th nowrap="nowrap" colspan="2">${staffMember.lastName}&nbsp;${staffMember.firstName}</th>
+					<th nowrap="nowrap" colspan="3">${staffMember.lastName}&nbsp;${staffMember.firstName}</th>
 				</c:forEach>
 			</tr>
 			<c:forEach var="day" items="${dayList}">
@@ -130,16 +130,41 @@
 							<c:when test="${fn:length(rosterEntryContainerList) gt 0}">
 								<td>
 									<c:forEach var="rosterEntryContainer" items="${rosterEntryContainerList}">
-										${rosterEntryContainer.rosterEntry.job.jobName}
+										<c:choose>
+											<c:when test="${fn:length(rosterEntryContainer.rosterEntry.job.jobName) gt 6}">
+												<c:set var="truncatedTitle">
+													<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.job.jobName}</str:truncateNicely>
+												</c:set>
+												<span class="showJobName" style="cursor:pointer" title="${rosterEntryContainer.rosterEntry.job.jobName}">${truncatedTitle}</span>
+											</c:when>
+											<c:otherwise>
+												<span>${rosterEntryContainer.rosterEntry.job.jobName}</span>
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
 								</td>
 								<td>
 									<c:forEach var="rosterEntryContainer" items="${rosterEntryContainerList}">
-										<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" /><br />
+										<span><fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" /></span><br />
+									</c:forEach>
+								</td>
+								<td nowrap="nowrap">
+									<c:forEach var="rosterEntryContainer" items="${rosterEntryContainerList}">
+										<c:set var="title">
+											<ul>
+												<li>Planzeiten:&nbsp;<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" /></li>
+												<li>Reale Zeiten:&nbsp;<c:if test="${rosterEntryContainer.realStartOfWork ne null}"><fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" /></c:if>-<c:if test="${rosterEntryContainer.realEndOfWork ne null}"><fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" /></c:if></li>
+												<li>Dienstverh&auml;ltnis:&nbsp;${rosterEntryContainer.rosterEntry.servicetype.serviceName}</li>
+												<li>Bereitschaft:<c:choose><c:when test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when><c:otherwise>Nein</c:otherwise></c:choose></li>
+											</ul>
+											<p>${rosterEntryContainer.rosterEntry.rosterNotes}</p>
+										</c:set>
+										<img class="showRosterEntryInfo" title="${title}" src="<c:url value="/image/info.gif"/>" /><img class="addRosterEntry" title="Hinzufügen"  src="<c:url value="/image/b_add.gif"/>" /><img class="editRosterEntry" title="Bearbeiten"  src="<c:url value="/image/b_edit.png"/>" /><img class="deleteRosterEntry" title="L&ouml;schen" src="<c:url value="/image/b_drop.png"/>" /><br />
 									</c:forEach>
 								</td>
 							</c:when>
 							<c:otherwise>
+								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 							</c:otherwise>
@@ -209,5 +234,10 @@ $(document).ready(function() {
 		}
 		document.location = url;
 	}
+	$('#rosterEntryTable .showJobName').Tooltip({ delay: 100, showURL: false });
+	$('#rosterEntryTable .showRosterEntryInfo').Tooltip({ delay: 100, showURL: false });
+	$('#rosterEntryTable .addRosterEntry').Tooltip({ delay: 100, showURL: false });
+	$('#rosterEntryTable .editRosterEntry').Tooltip({ delay: 100, showURL: false });
+	$('#rosterEntryTable .deleteRosterEntry').Tooltip({ delay: 100, showURL: false });
 });
 </script>
