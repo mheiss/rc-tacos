@@ -128,10 +128,20 @@
 						</c:forEach>
 						<c:choose>
 							<c:when test="${fn:length(rosterEntryContainerList) gt 0}">
-								<td>${staffMember.lastName}&nbsp;${staffMember.firstName}</td><td>&nbsp;</td>
+								<td>
+									<c:forEach var="rosterEntryContainer" items="${rosterEntryContainerList}">
+										${rosterEntryContainer.rosterEntry.job.jobName}
+									</c:forEach>
+								</td>
+								<td>
+									<c:forEach var="rosterEntryContainer" items="${rosterEntryContainerList}">
+										<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" /><br />
+									</c:forEach>
+								</td>
 							</c:when>
 							<c:otherwise>
-								<td>&nbsp;</td><td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
 							</c:otherwise>
 						</c:choose>
 						<c:remove var="rosterEntryContainerList" />
