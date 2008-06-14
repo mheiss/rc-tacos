@@ -310,7 +310,10 @@ public class AddRosterEntryController extends Controller {
 		String timeFromHoursString = null;
 		String timeFromMinutesString = null;
 		
-		final String defaultDateFromString = sdfDate.format(userSession.getDefaultFormValues().getDefaultDate());
+		String defaultDateFromString = null;
+		if (userSession.getDefaultFormValues().getDefaultDate() != null) {
+			defaultDateFromString = sdfDate.format(userSession.getDefaultFormValues().getDefaultDate());
+		}
 		final String defaultTimeFromHoursString = "00";
 		final String defaultTimeFromMinutesString = "00";
 		
@@ -345,7 +348,10 @@ public class AddRosterEntryController extends Controller {
 		String timeToHoursString = null;
 		String timeToMinutesString = null;
 		
-		final String defaultDateToString = sdfDate.format(userSession.getDefaultFormValues().getDefaultDate());
+		String defaultDateToString = null;
+		if (userSession.getDefaultFormValues().getDefaultDate() != null) {
+			defaultDateToString = sdfDate.format(userSession.getDefaultFormValues().getDefaultDate());
+		}
 		final String defaultTimeToHoursString = "00";
 		final String defaultTimeToMinutesString = "00";
 		
