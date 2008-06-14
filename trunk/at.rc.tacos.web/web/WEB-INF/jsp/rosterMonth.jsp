@@ -124,11 +124,10 @@
 							<c:set var="staffMemberTemp" value="${staffMemberRosterEntryContainerMap.key}" />
 							<c:if test="${staffMember.staffMemberId eq staffMemberTemp.staffMemberId}">
 								<c:set var="rosterEntryContainerList" value="${staffMemberRosterEntryContainerMap.value}" />
-								<c:set var="staffMemberTemp2" value="${staffMemberTemp}" />
 							</c:if>
 						</c:forEach>
 						<c:choose>
-							<c:when test="${staffMemberTemp2 ne null}">
+							<c:when test="${fn:length(rosterEntryContainerList) gt 0}">
 								<td>${staffMember.lastName}&nbsp;${staffMember.firstName}</td><td>&nbsp;</td>
 							</c:when>
 							<c:otherwise>
@@ -136,7 +135,6 @@
 							</c:otherwise>
 						</c:choose>
 						<c:remove var="rosterEntryContainerList" />
-						<c:remove var="staffMemberTemp2" />
 					</c:forEach>
 				</tr>
 				<c:remove var="functionRosterEntryContainerMap" />
