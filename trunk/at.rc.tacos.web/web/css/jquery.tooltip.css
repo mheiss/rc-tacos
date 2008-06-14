@@ -7,8 +7,12 @@
 	opacity: 0.95;
 	font-size:8pt;
 }
+
 #tooltip h3, #tooltip div {
 	margin: 0;
 	font-size:8pt;
 	font-weight:normal;
 }
+
+#tooltip li { white-space: nowrap; }
+#tooltip ul { padding: 2px 2px 2px 13px; margin:0px; list-style-position:inside;}
