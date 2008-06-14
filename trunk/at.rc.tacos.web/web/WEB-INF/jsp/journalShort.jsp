@@ -33,11 +33,10 @@
 			<c:forEach var="date" items="${params.restrictedDateList}">
 				<option value="<fmt:formatDate type="date" dateStyle="short" value="${date}"/>" ${(not empty
 					params.restrictedDate) and (params.restrictedDate==
-					date) ? ' selected="selected"' : ''}>${date}</option>
+					date) ? ' selected="selected"' : ''}><fmt:formatDate type="date" dateStyle="short" value="${date}"/></option>
 			</c:forEach>
 		</select></td>
 	</tr>
-
 						
 </table>
 <c:set var="fieldHeadersRow">
