@@ -118,7 +118,7 @@ public class RosterMonthContainer {
 				break;
 		}
 
-		for (int i = 0; i < daysOfMonth; i++) {
+		for (int i = 1; i <= daysOfMonth; i++) {
 			calendar = Calendar.getInstance();
 			calendar.set(Calendar.YEAR, year);
 			calendar.set(Calendar.MONTH, month);

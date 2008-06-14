@@ -705,7 +705,7 @@ public class EditStaffMemberController extends Controller {
 					
 					// Write photo to disk
 					if (photo != null) {
-				        final File uploadedFile = new File(fileUpload.getString("editStaffMember.photo.absolute.dir") + "/" + staffMember.getStaffMemberId());
+				        final File uploadedFile = new File(fileUpload.getString("editStaffMember.photo.absolute.dir") + "/" + staffMember.getStaffMemberId() + ".jpg");
 				        photo.write(uploadedFile);
 					}
 			        

@@ -271,7 +271,7 @@
 		<tr>
 			<td />
 			<td>
-				<input id="lockUser" name="lockUser" type="checkbox" ${(not empty params.lockUser) and (params.lockUser == true) ? ' checked="checked"' : ''} /><label for="lockUser" style="cursor:pointer">Bereitschaft</label>
+				<input id="lockUser" name="lockUser" type="checkbox" ${(not empty params.lockUser) and (params.lockUser == true) ? ' checked="checked"' : ''} /><label for="lockUser" style="cursor:pointer">Benutzer&nbsp;sperren</label>
 				<c:choose>
 					<c:when test="${not empty params.lockUser and params.lockUser eq true}">
 						<c:set var="value">true</c:set>

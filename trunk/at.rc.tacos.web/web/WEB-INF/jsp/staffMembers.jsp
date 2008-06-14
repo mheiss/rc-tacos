@@ -40,7 +40,7 @@
 							<td nowrap="nowrap">${staffMember.lastName}</td>
 							<td nowrap="nowrap">${staffMember.firstName}</td>
 							<td nowrap="nowrap">
-								<c:url var="url" value="/image/staffmembers/${staffMember.staffMemberId}?refresh=1" />
+								<c:url var="url" value="/image/staffmembers/${staffMember.staffMemberId}.jpg?refresh=1" />
 								<img src="${url}" width="55" height="69" alt="No photo found." />
 							</td>
 							<td>
