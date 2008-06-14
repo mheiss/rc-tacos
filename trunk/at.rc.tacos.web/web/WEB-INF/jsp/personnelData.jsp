@@ -2,7 +2,7 @@
 <table class="standardForm">
 <tr>
 <td colspan="2" valign="top">
-	<c:url var="url" value="/image/staffmembers/${userSession.loginInformation.userInformation.staffMemberId}?refresh=1" />
+	<c:url var="url" value="/image/staffmembers/${userSession.loginInformation.userInformation.staffMemberId}.jpg?refresh=1" />
 	<img src="${url}" width="110" height="138" alt="No photo found." />
 </td>
 <td>

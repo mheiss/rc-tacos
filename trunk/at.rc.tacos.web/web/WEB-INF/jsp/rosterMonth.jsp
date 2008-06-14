@@ -12,7 +12,7 @@
 		</select></td>
 	</tr>
 	<tr>
-		<td style="font-weight: bold">Ortsstelle&nbsp;(Mitarbeiter):</td>
+		<td style="font-weight: bold">Ortsstelle&nbsp;(Prim&auml;re&nbsp;Ortsstelle&nbsp;des&nbsp;Mitarbeiter):</td>
 		<td><select size="1" id="locationStaffMemberId" name="locationStaffMemberId">
 			<option value="noValue">-- Ortsstelle (Mitarbeiter) wählen --</option>
 			<c:forEach var="locationStaffMember" items="${params.locationStaffMemberList}">
@@ -94,16 +94,16 @@
 			</tr>
 			<c:forEach var="day" items="${dayList}">
 				<tr>
-					<td>${day.day+1}</td>
+					<td>${day.day}</td>
 					<td>
 						<c:choose>
-							<c:when test="${day.dayOfWeek eq 1}">Mo</c:when>
-							<c:when test="${day.dayOfWeek eq 2}">Di</c:when>
-							<c:when test="${day.dayOfWeek eq 3}">Mi</c:when>
-							<c:when test="${day.dayOfWeek eq 4}">Do</c:when>
-							<c:when test="${day.dayOfWeek eq 5}">Fr</c:when>
-							<c:when test="${day.dayOfWeek eq 6}">Sa</c:when>
-							<c:when test="${day.dayOfWeek eq 7}"><span style="color:red">So</span></c:when>
+							<c:when test="${day.dayOfWeek eq 1}"><span style="color:red">So</span></c:when>
+							<c:when test="${day.dayOfWeek eq 2}">Mo</c:when>
+							<c:when test="${day.dayOfWeek eq 3}">Di</c:when>
+							<c:when test="${day.dayOfWeek eq 4}">Mi</c:when>
+							<c:when test="${day.dayOfWeek eq 5}">Do</c:when>
+							<c:when test="${day.dayOfWeek eq 6}">Fr</c:when>
+							<c:when test="${day.dayOfWeek eq 7}">Sa</c:when>
 						</c:choose>
 					</td>
 					<c:forEach var="functionRosterEntryContainerMapTemp" items="${rosterEntryContainerMap}">

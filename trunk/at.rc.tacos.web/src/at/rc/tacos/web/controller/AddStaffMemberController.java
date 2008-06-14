@@ -723,7 +723,7 @@ public class AddStaffMemberController extends Controller {
 				
 				// Write photo to disk
 				if (photo != null) {
-			        final File uploadedFile = new File(fileUpload.getString("addStaffMember.photo.absolute.dir") + "/" + personnelNumber);
+			        final File uploadedFile = new File(fileUpload.getString("addStaffMember.photo.absolute.dir") + "/" + personnelNumber + ".jpg");
 			        photo.write(uploadedFile);
 				}
 		        

@@ -140,7 +140,7 @@
 			<tr>
 				<td style="font-weight:bold">Photo:</td>
 				<td colspan="2">
-					<c:url var="url" value="/image/staffmembers/${params.staffMember.staffMemberId}?refresh=1" />
+					<c:url var="url" value="/image/staffmembers/${params.staffMember.staffMemberId}.jpg?refresh=1" />
 					<img src="${url}" width="110" height="138" alt="No photo found." />
 				</td>
 			</tr>
@@ -260,7 +260,7 @@
 			<tr>
 				<td />
 				<td>
-					<input id="lockUser" name="lockUser" type="checkbox" ${(not empty params.lockUser) and (params.lockUser == true) ? ' checked="checked"' : ''} /><label for="lockUser" style="cursor:pointer">Bereitschaft</label>
+					<input id="lockUser" name="lockUser" type="checkbox" ${(not empty params.lockUser) and (params.lockUser == true) ? ' checked="checked"' : ''} /><label for="lockUser" style="cursor:pointer">Benutzer&nbsp;sperren</label>
 					<c:choose>
 						<c:when test="${not empty params.lockUser and params.lockUser eq true}">
 							<c:set var="value">true</c:set>
