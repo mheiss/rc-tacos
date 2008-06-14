@@ -87,7 +87,7 @@ public class RosterMonthController extends Controller {
 		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
-		Location location = userSession.getDefaultFormValues().getDefaultLocation();
+		Location location = userSession.getDefaultFormValues().getRosterMonthLocation();
 		if (paramLocationId != null && !paramLocationId.equals("")) {
 			locationId = Integer.parseInt(paramLocationId);		
 		}
@@ -114,12 +114,10 @@ public class RosterMonthController extends Controller {
 		// Month
 		String paramMonth = request.getParameter(PARAM_MONTH_NAME);
 		final Calendar cal = Calendar.getInstance();
-		if (userSession.getDefaultFormValues().getDefaultDate() != null) {
-			cal.setTime(userSession.getDefaultFormValues().getDefaultDate());
-		} else {
-			cal.setTime(new Date());
-		}
 		int month = cal.get(Calendar.MONTH);
+		if (userSession.getDefaultFormValues().getRosterMonthMonth() != null) {
+			month = userSession.getDefaultFormValues().getRosterMonthMonth();
+		}
 		if (paramMonth != null && !paramMonth.equals("")) {
 			month = Month.valueOf(paramMonth).getProperty();
 		}
@@ -166,6 +164,9 @@ public class RosterMonthController extends Controller {
 		// Year
 		final Calendar yearCal = Calendar.getInstance();
 		Integer year = yearCal.get(Calendar.YEAR);
+		if (userSession.getDefaultFormValues().getRosterMonthYear() != null) {
+			year = userSession.getDefaultFormValues().getRosterMonthYear();
+		}
 		Integer yearP = 0;
 		final String yearParam = request.getParameter(PARAM_YEAR_NAME);
 		if (yearParam != null && !yearParam.equals("")) {			
@@ -184,7 +185,7 @@ public class RosterMonthController extends Controller {
 		// Function
 		final String paramFunctionId = request.getParameter(PARAM_FUNCTION_NAME);
 		int functionId = 0;
-		final Competence defaultFunction = userSession.getDefaultFormValues().getDefaultFunction();
+		final Competence defaultFunction = userSession.getDefaultFormValues().getRosterMonthFunction();
 		Competence function = null;
 		if (paramFunctionId != null && !paramFunctionId.equals("") && !paramFunctionId.equals(PARAM_FUNCTION_NO_VALUE)) {
 			functionId = Integer.parseInt(paramFunctionId);	
@@ -216,7 +217,7 @@ public class RosterMonthController extends Controller {
 		// Location staff member
 		final String paramLocationStaffMemberId = request.getParameter(PARAM_LOCATION_STAFF_MEMBER_NAME);
 		int locationStaffMemberId = 0;
-		final Location defaultLocationStaffMember = null;
+		final Location defaultLocationStaffMember = userSession.getDefaultFormValues().getRosterMonthLocationStaffMember();
 		Location locationStaffMember = null;
 		if (paramLocationStaffMemberId != null && !paramLocationStaffMemberId.equals("") && !paramLocationStaffMemberId.equals(PARAM_LOCATION_STAFF_MEMBER_NO_VALUE)) {
 			locationStaffMemberId = Integer.parseInt(paramLocationStaffMemberId);		
@@ -243,7 +244,7 @@ public class RosterMonthController extends Controller {
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		
-		StaffMember defaultStaffMember = userSession.getDefaultFormValues().getDefaultStaffMember();		
+		final StaffMember defaultStaffMember = userSession.getDefaultFormValues().getRosterMonthStaffMember();		
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
@@ -443,15 +444,12 @@ public class RosterMonthController extends Controller {
 		
 		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);
 				
-		userSession.getDefaultFormValues().setDefaultLocation(location);
-		final Calendar cale = Calendar.getInstance();
-		if (userSession.getDefaultFormValues().getDefaultDate() != null) {
-			cale.setTime(userSession.getDefaultFormValues().getDefaultDate());
-		}
-		cale.set(Calendar.MONTH, month);
-		userSession.getDefaultFormValues().setDefaultDate(cale.getTime());	
-		userSession.getDefaultFormValues().setDefaultFunction(function);
-		userSession.getDefaultFormValues().setDefaultStaffMember(staffMember);
+		userSession.getDefaultFormValues().setRosterMonthLocation(location);
+		userSession.getDefaultFormValues().setRosterMonthMonth(month);
+		userSession.getDefaultFormValues().setRosterMonthYear(year);
+		userSession.getDefaultFormValues().setRosterMonthFunction(function);
+		userSession.getDefaultFormValues().setRosterMonthLocationStaffMember(locationStaffMember);
+		userSession.getDefaultFormValues().setRosterMonthStaffMember(staffMember);
 		
 		return params;
 	}

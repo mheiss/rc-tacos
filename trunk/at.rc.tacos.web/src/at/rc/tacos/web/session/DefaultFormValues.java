@@ -22,8 +22,22 @@ public class DefaultFormValues {
 	private ServiceType defaultServiceType;
 	private Date defaultDate;
 	private boolean defaultStandBy;
-	private Competence defaultFunction;
 	
+	// Default values for Roster Month
+	private Location rosterMonthLocation;
+	private Integer rosterMonthMonth;
+	private Integer rosterMonthYear;
+	private Competence rosterMonthFunction;
+	private Location rosterMonthLocationStaffMember;
+	private StaffMember rosterMonthStaffMember;
+	
+	public Location getRosterMonthLocationStaffMember() {
+		return rosterMonthLocationStaffMember;
+	}
+	public void setRosterMonthLocationStaffMember(
+			Location rosterMonthLocationStaffMember) {
+		this.rosterMonthLocationStaffMember = rosterMonthLocationStaffMember;
+	}
 	public DefaultFormValues() {
 		defaultJob = null;
 		defaultStaffMember = null;
@@ -31,7 +45,13 @@ public class DefaultFormValues {
 		defaultServiceType = null;
 		defaultDate = null;
 		defaultStandBy = false;
-		defaultFunction = null;
+		
+		rosterMonthLocation = null;
+		rosterMonthMonth = null;
+		rosterMonthYear = null;
+		rosterMonthFunction = null;
+		rosterMonthLocationStaffMember = null;
+		rosterMonthStaffMember = null;
 	}
 	public Date getDefaultDate() {
 		return defaultDate;
@@ -70,10 +90,34 @@ public class DefaultFormValues {
 	public void setDefaultStandBy(boolean defaultStandBy) {
 		this.defaultStandBy = defaultStandBy;
 	}
-	public Competence getDefaultFunction() {
-		return defaultFunction;
+	public Competence getRosterMonthFunction() {
+		return rosterMonthFunction;
 	}
-	public void setDefaultFunction(Competence defaultFunction) {
-		this.defaultFunction = defaultFunction;
+	public void setRosterMonthFunction(Competence defaultFunction) {
+		this.rosterMonthFunction = defaultFunction;
+	}
+	public Location getRosterMonthLocation() {
+		return rosterMonthLocation;
+	}
+	public void setRosterMonthLocation(Location rosterMonthLocation) {
+		this.rosterMonthLocation = rosterMonthLocation;
+	}
+	public Integer getRosterMonthMonth() {
+		return rosterMonthMonth;
+	}
+	public void setRosterMonthMonth(Integer rosterMonthMonth) {
+		this.rosterMonthMonth = rosterMonthMonth;
+	}
+	public Integer getRosterMonthYear() {
+		return rosterMonthYear;
+	}
+	public void setRosterMonthYear(Integer rosterMonthYear) {
+		this.rosterMonthYear = rosterMonthYear;
+	}
+	public StaffMember getRosterMonthStaffMember() {
+		return rosterMonthStaffMember;
+	}
+	public void setRosterMonthStaffMember(StaffMember rosterMonthStaffMember) {
+		this.rosterMonthStaffMember = rosterMonthStaffMember;
 	}
 }
