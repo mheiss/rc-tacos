@@ -84,14 +84,52 @@
 <c:when test="${fn:length(staffMemberList) gt 0}">
 	<table id="rosterEntryTable" class="list" cellpadding="3" cellspacing="0">
 		<c:forEach var="function" items="${functionList}">
+			<c:choose>
+				<c:when test="${function.function.competenceName eq '_LS'}">
+					<c:forEach var="jobIterator" items="${jobList}">
+						<c:if test="${jobIterator.jobName eq 'Leitstellendisponent'}">
+							<c:set var="job" value="${jobIterator}" />
+						</c:if>
+					</c:forEach>
+					<c:forEach var="serviceTypeIterator" items="${serviceTypeList}">
+						<c:if test="${serviceTypeIterator.serviceName eq 'Hauptamtlich'}">
+							<c:set var="serviceType" value="${serviceTypeIterator}" />
+						</c:if>
+					</c:forEach>
+				</c:when>
+				<c:when test="${function.function.competenceName eq '_HA'}">
+					<c:forEach var="jobIterator" items="${jobList}">
+						<c:if test="${jobIterator.jobName eq 'Fahrer'}">
+							<c:set var="job" value="${jobIterator}" />
+						</c:if>
+					</c:forEach>
+					<c:forEach var="serviceTypeIterator" items="${serviceTypeList}">
+						<c:if test="${serviceTypeIterator.serviceName eq 'Hauptamtlich'}">
+							<c:set var="serviceType" value="${serviceTypeIterator}" />
+						</c:if>
+					</c:forEach>
+				</c:when>
+				<c:when test="${function.function.competenceName eq '_ZD'}">
+					<c:forEach var="jobIterator" items="${jobList}">
+						<c:if test="${jobIterator.jobName eq 'Sanitäter'}">
+							<c:set var="job" value="${jobIterator}" />
+						</c:if>
+					</c:forEach>
+					<c:forEach var="serviceTypeIterator" items="${serviceTypeList}">
+						<c:if test="${serviceTypeIterator.serviceName eq 'Zivildiener'}">
+							<c:set var="serviceType" value="${serviceTypeIterator}" />
+						</c:if>
+					</c:forEach>
+				</c:when>
+			</c:choose>
 			<tr>
 				<th class="header2" colspan="${fn:length(staffMemberList)*3+2}">${function.function.competenceName}</th>
 			</tr>
 			<tr class="subhead2">
 				<th nowrap="nowrap">&nbsp;</th>
 				<th nowrap="nowrap">&nbsp;</th>
-				<c:forEach var="staffMember" items="${staffMemberList}">
-					<th nowrap="nowrap" colspan="3">${staffMember.lastName}&nbsp;${staffMember.firstName}</th>
+				<c:forEach var="staffMemberIterator" items="${staffMemberList}">
+					<th nowrap="nowrap" colspan="3">${staffMemberIterator.lastName}&nbsp;${staffMemberIterator.firstName}</th>
 				</c:forEach>
 			</tr>
 			<c:forEach var="day" items="${dayList}">
@@ -121,11 +159,16 @@
 						</c:if>
 					</c:forEach>
 				
-					<c:forEach var="staffMember" items="${staffMemberList}">
+					<c:forEach var="staffMemberIterator" items="${staffMemberList}">
 						<c:forEach var="staffMemberRosterEntryContainerMap" items="${dayRosterEntryContainerMap.value}">
 							<c:set var="staffMemberTemp" value="${staffMemberRosterEntryContainerMap.key}" />
-							<c:if test="${staffMember.staffMemberId eq staffMemberTemp.staffMemberId}">
+							<c:if test="${staffMemberIterator.staffMemberId eq staffMemberTemp.staffMemberId}">
 								<c:set var="rosterEntryContainerList" value="${staffMemberRosterEntryContainerMap.value}" />
+							</c:if>
+						</c:forEach>
+						<c:forEach var="competenceIterator" items="${staffMemberIterator.competenceList}">
+							<c:if test="${job.id eq competenceIterator.id or job.jobName eq competenceIterator.competenceName}">
+								<c:set var="staffMemberHasCompetence" value="true" />
 							</c:if>
 						</c:forEach>
 						<c:choose>
@@ -161,52 +204,33 @@
 											</ul>
 											<p>${rosterEntryContainer.rosterEntry.rosterNotes}</p>
 										</c:set>
-										<img class="showRosterEntryInfo" title="${title}" src="<c:url value="/image/info.gif"/>" /><img class="editRosterEntry" title="Bearbeiten"  src="<c:url value="/image/b_edit.png"/>" /><img class="deleteRosterEntry" title="L&ouml;schen" src="<c:url value="/image/b_drop.png"/>" /><br />
+										<c:url var="addRosterEntryUrl" value="/Dispatcher/addRosterEntry.do">
+											<c:param name="jobId">${job.id}</c:param>
+											<c:param name="staffMemberId">${staffMemberIterator.staffMemberId}</c:param>
+											<c:param name="locationId">${params.location.id}</c:param>
+											<c:param name="serviceTypeId">${serviceType.id}</c:param>
+											<c:param name="dateFrom">
+												<fmt:formatDate type="date" dateStyle="medium" value="${day.dateOfDay}" />
+											</c:param>
+											<c:param name="dateTo">
+												<fmt:formatDate type ="date" dateStyle="medium" value="${day.dateOfDay}" />
+											</c:param>
+										</c:url>
+										<img class="showRosterEntryInfo" border="0" title="${title}" src="<c:url value="/image/info.gif"/>" />
+										<c:if test="${staffMemberHasCompetence ne null}">
+											<a href="${addRosterEntryUrl}"><img class="addRosterEntry" border="0" title="Dienst&nbsp;anlegen" src="<c:url value="/image/b_add.gif"/>" /></a>
+										</c:if>
+										<img class="editRosterEntry" border="0" title="Bearbeiten"  src="<c:url value="/image/b_edit.png"/>" />
+										<img class="deleteRosterEntry" border="0" title="L&ouml;schen" src="<c:url value="/image/b_drop.png"/>" /><br />
 									</c:forEach>
 								</td>
 							</c:when>
 							<c:otherwise>
 								<c:url var="url" value="/Dispatcher/addRosterEntry.do">
-									<c:param name="jobId">
-										<c:choose>
-											<c:when test="${params.function.competenceName eq '_LS'}">
-												<c:forEach var="job" items="${jobList}">
-													<c:if test="${job.jobName eq 'Leitstellendisponent'}">${job.id}</c:if>
-												</c:forEach>
-											</c:when>
-											<c:when test="${params.function.competenceName eq '_HA'}">
-												<c:forEach var="job" items="${jobList}">
-													<c:if test="${job.jobName eq 'Fahrer'}">${job.id}</c:if>
-												</c:forEach>
-											</c:when>
-											<c:when test="${params.function.competenceName eq '_ZD'}">
-												<c:forEach var="job" items="${jobList}">
-													<c:if test="${job.jobName eq 'Sanitäter'}">${job.id}</c:if>
-												</c:forEach>
-											</c:when>
-										</c:choose>
-									</c:param>
-									<c:param name="staffMemberId">${staffMember.staffMemberId}</c:param>
+									<c:param name="jobId">${job.id}</c:param>
+									<c:param name="staffMemberId">${staffMemberIterator.staffMemberId}</c:param>
 									<c:param name="locationId">${params.location.id}</c:param>
-									<c:param name="serviceTypeId">
-										<c:choose>
-											<c:when test="${params.function.competenceName eq '_LS'}">
-												<c:forEach var="serviceType" items="${serviceTypeList}">
-													<c:if test="${serviceType.serviceName eq 'Hauptamtlich'}">${serviceType.id}</c:if>
-												</c:forEach>
-											</c:when>
-											<c:when test="${params.function.competenceName eq '_HA'}">
-												<c:forEach var="serviceType" items="${serviceTypeList}">
-													<c:if test="${serviceType.serviceName eq 'Hauptamtlich'}">${serviceType.id}</c:if>
-												</c:forEach>
-											</c:when>
-											<c:when test="${params.function.competenceName eq '_ZD'}">
-												<c:forEach var="serviceType" items="${serviceTypeList}">
-													<c:if test="${serviceType.serviceName eq 'Zivildiener'}">${serviceType.id}</c:if>
-												</c:forEach>
-											</c:when>
-										</c:choose>
-									</c:param>
+									<c:param name="serviceTypeId">${serviceType.id}</c:param>
 									<c:param name="dateFrom">
 										<fmt:formatDate type="date" dateStyle="medium" value="${day.dateOfDay}" />
 									</c:param>
@@ -214,15 +238,27 @@
 										<fmt:formatDate type ="date" dateStyle="medium" value="${day.dateOfDay}" />
 									</c:param>
 								</c:url>
-								<td><a href="${url}">Dienst&nbsp;anlegen</a></td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>
+									<c:choose>
+										<c:when test="${staffMemberHasCompetence ne null}">
+											<a href="${url}"><img class="addRosterEntry" border="0" title="Dienst&nbsp;anlegen" src="<c:url value="/image/b_add.gif"/>" /></a>
+										</c:when>
+										<c:otherwise>&nbsp;</c:otherwise>
+									</c:choose>
+								</td>
 							</c:otherwise>
 						</c:choose>
+						<c:remove var="staffMemberHasCompetence" />
 						<c:remove var="rosterEntryContainerList" />
 					</c:forEach>
 				</tr>
 				<c:remove var="functionRosterEntryContainerMap" />
 				<c:remove var="dayRosterEntryContainerMap" />
-			</c:forEach>		
+			</c:forEach>
+			<c:remove var="job"	/>
+			<c:remove var="serviceType" />
 		</c:forEach>
 	</table>
 </c:when>
