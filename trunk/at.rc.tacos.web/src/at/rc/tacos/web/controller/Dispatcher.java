@@ -120,7 +120,8 @@ public class Dispatcher extends HttpServlet
 		} else {
 			userSession.setInternalSession(false);
 		}
-		request.setAttribute("userSession", userSession);
+		//request.setAttribute("userSession", userSession);
+		System.out.println("internal: " + userSession.isInternalSession() + "\n");
 		
 		//Do some actions if user is logged in
 		if (userSession.getLoggedIn()) {
@@ -138,7 +139,10 @@ public class Dispatcher extends HttpServlet
 		
 		//Get the relative Path from request URL
 		final String relativePath = request.getRequestURI().replace(request.getContextPath(), "").replace(request.getServletPath(), "");
-		final String relativePathPrefix = relativePath.replaceFirst("/", "").replaceFirst("\\.do", "");
+		final String relativePathPrefix = relativePath.replaceFirst("/", "").replaceFirst("\\.do", "");		
+		
+		System.out.println("relativePath: " + relativePath + "\n");
+		System.out.println("relativePathPrefix: " + relativePathPrefix + "\n");
 		
 		final Set<String> set = views.keySet();
 		boolean urlFound = false;
