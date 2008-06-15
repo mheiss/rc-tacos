@@ -68,6 +68,9 @@ public class RosterMonthController extends Controller {
 	
 	private static final String MODEL_ROSTER_MONTH_CONTAINER_NAME = "rosterMonthContainer";
 	
+	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
+	private static final String MODEL_MESSAGE_CODE_NAME = "messageCode";
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -466,8 +469,14 @@ public class RosterMonthController extends Controller {
 		// Sort roster entries in timetable
 		rosterMonthContainer.sortRosterEntries(sortComp);
 		
+		// Put timetable to map
 		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, rosterMonthContainer);
-				
+		
+		// Parse message code from other controllers
+		if (request.getParameter(PARAM_MESSAGE_CODE_NAME) != null && !request.getParameter(PARAM_MESSAGE_CODE_NAME).equals("")) {
+			params.put(MODEL_MESSAGE_CODE_NAME, request.getParameter(PARAM_MESSAGE_CODE_NAME));
+		}
+		
 		userSession.getDefaultFormValues().setRosterMonthLocation(location);
 		userSession.getDefaultFormValues().setRosterMonthMonth(month);
 		userSession.getDefaultFormValues().setRosterMonthYear(year);
