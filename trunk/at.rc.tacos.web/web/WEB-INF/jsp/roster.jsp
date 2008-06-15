@@ -20,7 +20,7 @@
 </c:choose>
 <table class="standardForm">
 	<tr>
-		<td style="font-weight:bold">Ortsstelle:</td>
+		<td style="font-weight: bold">Ortsstelle:</td>
 		<td><select size="1" id="locationId" name="locationId">
 			<option value="noValue">-- Ortsstelle wählen --</option>
 			<c:forEach var="location" items="${params.locationList}">
@@ -31,7 +31,7 @@
 		</select></td>
 	</tr>
 	<tr>
-		<td style="font-weight:bold">Datum:</td>
+		<td style="font-weight: bold">Datum:</td>
 		<td><input id="date" name="date" type="text" size="10"
 			maxlength="10"
 			value="<fmt:formatDate type="date" value="${params.date}"/>" /> <c:url
@@ -55,12 +55,15 @@
 		<th nowrap="nowrap">&nbsp;</th>
 	</tr>
 </c:set>
-<c:set var="rosterEntryContainerMap" value="${params.rosterEntryContainerListContainer.rosterEntryContainerMap}"/>
+<c:set var="rosterEntryContainerMap"
+	value="${params.rosterEntryContainerListContainer.rosterEntryContainerMap}" />
 <c:choose>
 	<c:when test="${fn:length(rosterEntryContainerMap) gt 0}">
-		<table id="rosterEntryTable" class="list" cellpadding="3" cellspacing="0">
-			<c:forEach var="rosterEntryContainerMapEntry" items="${rosterEntryContainerMap}">
-				<c:set var="location" value="${rosterEntryContainerMapEntry.key}"/>	
+		<table id="rosterEntryTable" class="list" cellpadding="3"
+			cellspacing="0">
+			<c:forEach var="rosterEntryContainerMapEntry"
+				items="${rosterEntryContainerMap}">
+				<c:set var="location" value="${rosterEntryContainerMapEntry.key}" />
 				<tr>
 					<th class="header2" colspan="10">${location.locationName}&nbsp;am&nbsp;<fmt:formatDate
 						type="date" dateStyle="medium" value="${params.date}" /></th>
@@ -72,56 +75,62 @@
 						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 							<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.staffMember.lastName}
 							${rosterEntryContainer.rosterEntry.staffMember.firstName}</td>
-							<td>
-								<c:choose>
-									<c:when test="${rosterEntryContainer.plannedStartOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.plannedStartOfWorkMonth ne params.dateMonth or rosterEntryContainer.plannedStartOfWorkYear ne params.dateYear}">
-										<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
-									</c:when>
-									<c:otherwise>
-										<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:choose>
-									<c:when test="${rosterEntryContainer.plannedEndOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.plannedEndOfWorkMonth ne params.dateMonth or rosterEntryContainer.plannedEndOfWorkYear ne params.dateYear}">
-										<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
-									</c:when>
-									<c:otherwise>
-										<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:choose>
-									<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
-									<c:otherwise>
-										<c:choose>
-											<c:when test="${(rosterEntryContainer.realStartOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realStartOfWorkMonth ne params.dateMonth or rosterEntryContainer.realStartOfWorkYear ne params.dateYear) and (rosterEntryContainer.realStartOfWorkDayOfYear ne -1 and rosterEntryContainer.realStartOfWorkMonth ne -1 and rosterEntryContainer.realStartOfWorkYear ne -1)}">
-												<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
-											</c:when>
-											<c:otherwise>
-												<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
-											</c:otherwise>
-										</c:choose>
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:choose>
-									<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
-									<c:otherwise>
-										<c:choose>
-											<c:when test="${(rosterEntryContainer.realEndOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realEndOfWorkMonth ne params.dateMonth or rosterEntryContainer.realEndOfWorkYear ne params.dateYear) and (rosterEntryContainer.realEndOfWorkDayOfYear ne -1 and rosterEntryContainer.realEndOfWorkMonth ne -1 and rosterEntryContainer.realEndOfWorkYear ne -1)}">
-												<fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
-											</c:when>
-											<c:otherwise>
-												<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
-											</c:otherwise>
-										</c:choose>
-									</c:otherwise>
-								</c:choose>
-							</td>
+							<td><c:choose>
+								<c:when
+									test="${rosterEntryContainer.plannedStartOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.plannedStartOfWorkMonth ne params.dateMonth or rosterEntryContainer.plannedStartOfWorkYear ne params.dateYear}">
+									<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
+										value="${rosterEntryContainer.plannedStartOfWork}" />
+								</c:when>
+								<c:otherwise>
+									<fmt:formatDate type="time" timeStyle="short"
+										value="${rosterEntryContainer.plannedStartOfWork}" />
+								</c:otherwise>
+							</c:choose></td>
+							<td><c:choose>
+								<c:when
+									test="${rosterEntryContainer.plannedEndOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.plannedEndOfWorkMonth ne params.dateMonth or rosterEntryContainer.plannedEndOfWorkYear ne params.dateYear}">
+									<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
+										value="${rosterEntryContainer.plannedEndOfWork}" />
+								</c:when>
+								<c:otherwise>
+									<fmt:formatDate type="time" timeStyle="short"
+										value="${rosterEntryContainer.plannedEndOfWork}" />
+								</c:otherwise>
+							</c:choose></td>
+							<td><c:choose>
+								<c:when test="${rosterEntryContainer.realStartOfWork eq null}">-</c:when>
+								<c:otherwise>
+									<c:choose>
+										<c:when
+											test="${(rosterEntryContainer.realStartOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realStartOfWorkMonth ne params.dateMonth or rosterEntryContainer.realStartOfWorkYear ne params.dateYear) and (rosterEntryContainer.realStartOfWorkDayOfYear ne -1 and rosterEntryContainer.realStartOfWorkMonth ne -1 and rosterEntryContainer.realStartOfWorkYear ne -1)}">
+											<fmt:formatDate type="both" dateStyle="short"
+												timeStyle="short"
+												value="${rosterEntryContainer.realStartOfWork}" />
+										</c:when>
+										<c:otherwise>
+											<fmt:formatDate type="time" timeStyle="short"
+												value="${rosterEntryContainer.realStartOfWork}" />
+										</c:otherwise>
+									</c:choose>
+								</c:otherwise>
+							</c:choose></td>
+							<td><c:choose>
+								<c:when test="${rosterEntryContainer.realEndOfWork eq null}">-</c:when>
+								<c:otherwise>
+									<c:choose>
+										<c:when
+											test="${(rosterEntryContainer.realEndOfWorkDayOfYear ne params.dateDayOfYear or rosterEntryContainer.realEndOfWorkMonth ne params.dateMonth or rosterEntryContainer.realEndOfWorkYear ne params.dateYear) and (rosterEntryContainer.realEndOfWorkDayOfYear ne -1 and rosterEntryContainer.realEndOfWorkMonth ne -1 and rosterEntryContainer.realEndOfWorkYear ne -1)}">
+											<fmt:formatDate type="both" dateStyle="short"
+												timeStyle="short"
+												value="${rosterEntryContainer.realEndOfWork}" />
+										</c:when>
+										<c:otherwise>
+											<fmt:formatDate type="time" timeStyle="short"
+												value="${rosterEntryContainer.realEndOfWork}" />
+										</c:otherwise>
+									</c:choose>
+								</c:otherwise>
+							</c:choose></td>
 							<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
 							<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
 							<td nowrap="nowrap"><c:choose>
@@ -133,7 +142,8 @@
 								title="${rosterEntryContainer.rosterEntry.rosterNotes}"
 								src="<c:url value="/image/info.gif"/>" /></td>
 							<td><c:choose>
-								<c:when test="${userSession.loginInformation.authorization eq 'Benutzer'}">
+								<c:when
+									test="${userSession.loginInformation.authorization eq 'Benutzer'}">
 									<c:choose>
 										<c:when
 											test="${params.currentDate gt rosterEntryContainer.deadline}">
@@ -157,33 +167,34 @@
 										</c:otherwise>
 									</c:choose>
 									<%--<c:if test="${userSession.internalSession eq true}">--%>
-										<c:choose>
-											<c:when
-												test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
-												<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-													<c:param name="action">register</c:param>
-													<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-												</c:url>
-												<c:if test="${breakRow eq true}">
-													<br />
-												</c:if>
-												<a href="${url}">Anmelden</a>
-											</c:when>
-											<c:when
-												test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.plannedEndOfWork}">
-												<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-													<c:param name="action">signOff</c:param>
-													<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-												</c:url>
-												<c:if test="${breakRow eq true}">
-													<br />
-												</c:if>
-												<a href="${url}">Abmelden</a>
-											</c:when>
-										</c:choose>
+									<c:choose>
+										<c:when
+											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.registerStart}">
+											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+												<c:param name="action">register</c:param>
+												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+											</c:url>
+											<c:if test="${breakRow eq true}">
+												<br />
+											</c:if>
+											<a href="${url}">Anmelden</a>
+										</c:when>
+										<c:when
+											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null and params.currentDate ge rosterEntryContainer.plannedEndOfWork}">
+											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+												<c:param name="action">signOff</c:param>
+												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+											</c:url>
+											<c:if test="${breakRow eq true}">
+												<br />
+											</c:if>
+											<a href="${url}">Abmelden</a>
+										</c:when>
+									</c:choose>
 									<%--</c:if>--%>
 								</c:when>
-								<c:when test="${userSession.loginInformation.authorization eq 'Administrator'}">
+								<c:when
+									test="${userSession.loginInformation.authorization eq 'Administrator'}">
 									<c:url var="url" value="/Dispatcher/editRosterEntry.do">
 										<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										<c:param name="savedUrl">/roster.do</c:param>
@@ -197,30 +208,30 @@
 									<a href="${url}">Löschen</a>
 									<c:set var="breakRow">true</c:set>
 									<%--<c:if test="${userSession.internalSession eq true}">--%>
-										<c:choose>
-											<c:when
-												test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
-												<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-													<c:param name="action">register</c:param>
-													<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-												</c:url>
-												<c:if test="${breakRow eq true}">
-													<br />
-												</c:if>
-												<a href="${url}">Anmelden</a>
-											</c:when>
-											<c:when
-												test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null}">
-												<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
-													<c:param name="action">signOff</c:param>
-													<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-												</c:url>
-												<c:if test="${breakRow eq true}">
-													<br />
-												</c:if>
-												<a href="${url}">Abmelden</a>
-											</c:when>
-										</c:choose>
+									<c:choose>
+										<c:when
+											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork eq null and rosterEntryContainer.realEndOfWork eq null}">
+											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+												<c:param name="action">register</c:param>
+												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+											</c:url>
+											<c:if test="${breakRow eq true}">
+												<br />
+											</c:if>
+											<a href="${url}">Anmelden</a>
+										</c:when>
+										<c:when
+											test="${rosterEntryContainer.plannedStartOfWork ne null and rosterEntryContainer.plannedEndOfWork ne null and rosterEntryContainer.realStartOfWork ne null and rosterEntryContainer.realEndOfWork eq null}">
+											<c:url var="url" value="/Dispatcher/registerRosterEntry.do">
+												<c:param name="action">signOff</c:param>
+												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+											</c:url>
+											<c:if test="${breakRow eq true}">
+												<br />
+											</c:if>
+											<a href="${url}">Abmelden</a>
+										</c:when>
+									</c:choose>
 									<%--</c:if>--%>
 								</c:when>
 							</c:choose></td>
@@ -242,7 +253,9 @@
 <br />
 <c:url var="url" value="/Dispatcher/printRoster.do">
 	<c:param name="locationId">${params.location.id}</c:param>
-	<c:param name="date"><fmt:formatDate type="date" value="${params.date}" /></c:param>
+	<c:param name="date">
+		<fmt:formatDate type="date" value="${params.date}" />
+	</c:param>
 </c:url>
 <a href="${url}">Dienstplan&nbsp;drucken</a>
 <script type="text/javascript">

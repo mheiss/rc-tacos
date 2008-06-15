@@ -203,8 +203,7 @@ public class RosterMonthController extends Controller {
 				}
 				functionList.add(c);
 			}
-		}
-		
+		}	
 		params.put(MODEL_FUNCTION_LIST_NAME, functionList);
 		if (function != null || (paramFunctionId != null && paramFunctionId.equals(PARAM_FUNCTION_NO_VALUE))) {
 			params.put(MODEL_FUNCTION_NAME, function);

@@ -1,8 +1,9 @@
-<%@ include file="includes.jsp" %>
-<c:set var="staffMemberMap" value="${params.staffMemberListContainer.staffMemberContainerMap}"/>
+<%@ include file="includes.jsp"%>
+<c:set var="staffMemberMap"
+	value="${params.staffMemberListContainer.staffMemberContainerMap}" />
 <table class="standardForm">
 	<tr>
-		<td style="font-weight:bold">Ortsstelle:</td>
+		<td style="font-weight: bold">Ortsstelle:</td>
 		<td><select size="1" id="locationId" name="locationId">
 			<option value="noValue">-- Ortsstelle wählen --</option>
 			<c:forEach var="location" items="${params.locationList}">
@@ -27,42 +28,47 @@
 <br />
 <c:choose>
 	<c:when test="${fn:length(staffMemberMap) gt 0}">
-		<table id="rosterEntryTable" class="list" cellpadding="3" cellspacing="0">
+		<table id="rosterEntryTable" class="list" cellpadding="3"
+			cellspacing="0">
 			<c:forEach var="staffMemberMapEntry" items="${staffMemberMap}">
-				<c:set var="location" value="${staffMemberMapEntry.key}"/>	
+				<c:set var="location" value="${staffMemberMapEntry.key}" />
 				<tr>
 					<th class="header2" colspan="6">${location.locationName}</th>
 				</tr>
 				${fieldHeadersRow}
 				<tbody>
-					<c:forEach var="staffMember" items="${staffMemberMapEntry.value}" varStatus="loop">
+					<c:forEach var="staffMember" items="${staffMemberMapEntry.value}"
+						varStatus="loop">
 						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 							<td nowrap="nowrap">${staffMember.lastName}</td>
 							<td nowrap="nowrap">${staffMember.firstName}</td>
-							<td nowrap="nowrap">
-								<c:url var="url" value="/image/staffmembers/${staffMember.staffMemberId}.jpg?refresh=1" />
-								<img src="${url}" width="55" height="69" alt="No photo found." />
+							<td nowrap="nowrap"><c:url var="url"
+								value="/image/staffmembers/${staffMember.staffMemberId}.jpg?refresh=1" />
+							<img src="${url}" width="55" height="69" alt="No photo found." />
 							</td>
-							<td>
-								<c:choose>
-									<c:when test="${fn:length(staffMember.phonelist) gt 0}">
-										<c:forEach var="mobilePhone" items="${staffMember.phonelist}" varStatus="loop2"><c:if test="${loop2.count gt 1}"><br /></c:if>${mobilePhone.mobilePhoneName}&nbsp;${mobilePhone.mobilePhoneNumber}</c:forEach>
-									</c:when>
-									<c:otherwise>&nbsp;</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:choose>
-									<c:when test="${fn:length(staffMember.competenceList) gt 0}">
-										<c:forEach var="competence" items="${staffMember.competenceList}" varStatus="loop3"><c:if test="${loop3.count gt 1}"><br /></c:if>${competence.competenceName}</c:forEach>
-									</c:when>
-									<c:otherwise>&nbsp;</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:url var="url" value="/Dispatcher/editStaffMember.do?staffMemberId=${staffMember.staffMemberId}"></c:url>
-								<a href="${url}">Mitarbeiter bearbeiten</a>
-							</td>
+							<td><c:choose>
+								<c:when test="${fn:length(staffMember.phonelist) gt 0}">
+									<c:forEach var="mobilePhone" items="${staffMember.phonelist}"
+										varStatus="loop2">
+										<c:if test="${loop2.count gt 1}">
+											<br />
+										</c:if>${mobilePhone.mobilePhoneName}&nbsp;${mobilePhone.mobilePhoneNumber}</c:forEach>
+								</c:when>
+								<c:otherwise>&nbsp;</c:otherwise>
+							</c:choose></td>
+							<td><c:choose>
+								<c:when test="${fn:length(staffMember.competenceList) gt 0}">
+									<c:forEach var="competence"
+										items="${staffMember.competenceList}" varStatus="loop3">
+										<c:if test="${loop3.count gt 1}">
+											<br />
+										</c:if>${competence.competenceName}</c:forEach>
+								</c:when>
+								<c:otherwise>&nbsp;</c:otherwise>
+							</c:choose></td>
+							<td><c:url var="url"
+								value="/Dispatcher/editStaffMember.do?staffMemberId=${staffMember.staffMemberId}"></c:url>
+							<a href="${url}">Mitarbeiter bearbeiten</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>

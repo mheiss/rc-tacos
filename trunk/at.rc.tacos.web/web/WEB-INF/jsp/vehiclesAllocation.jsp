@@ -9,17 +9,19 @@
 		<th nowrap="nowrap">Handynummer</th>
 	</tr>
 </c:set>
-<c:set var="vehicleMap" value="${params.vehicleContainerListContainer.vehicleContainerMap}"/>
+<c:set var="vehicleMap"
+	value="${params.vehicleContainerListContainer.vehicleContainerMap}" />
 <c:choose>
 	<c:when test="${fn:length(vehicleMap) gt 0}">
 		<table cellpadding="3" cellspacing="0" class="list">
 			<c:forEach var="vehicleMapEntry" items="${vehicleMap}">
-				<c:set var="location" value="${vehicleMapEntry.key}"/>
+				<c:set var="location" value="${vehicleMapEntry.key}" />
 				<tr>
 					<th class="header2" colspan="6">${location.locationName}</th>
 				</tr>
 				${fieldHeadersRow}
-				<c:forEach var="vehicleContainer" items="${vehicleMapEntry.value}" varStatus="loop">
+				<c:forEach var="vehicleContainer" items="${vehicleMapEntry.value}"
+					varStatus="loop">
 					<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 						<td nowrap="nowrap">${vehicleContainer.vehicleName}</td>
 						<td nowrap="nowrap">${vehicleContainer.driver.lastName}&nbsp;${vehicleDetailContainer.driver.firstName}</td>
@@ -29,7 +31,7 @@
 						<td nowrap="nowrap">${vehicleContainer.mobilePhone.mobilePhoneNumber}</td>
 					</tr>
 				</c:forEach>
-			</c:forEach>	
+			</c:forEach>
 		</table>
 	</c:when>
 	<c:otherwise>
