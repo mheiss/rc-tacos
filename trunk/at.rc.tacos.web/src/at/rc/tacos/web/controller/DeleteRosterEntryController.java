@@ -18,7 +18,7 @@ import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
-import at.rc.tacos.web.form.RosterEntryContainer;
+import at.rc.tacos.web.container.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**

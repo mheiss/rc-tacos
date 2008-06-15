@@ -24,8 +24,8 @@ import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.web.form.RosterEntryContainer;
-import at.rc.tacos.web.form.RosterEntryContainerListContainer;
+import at.rc.tacos.web.container.RosterEntryContainer;
+import at.rc.tacos.web.container.RosterEntryContainerListContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**

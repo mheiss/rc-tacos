@@ -23,8 +23,8 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.web.form.TransportsToContainer;
-import at.rc.tacos.web.form.TransportsToContainerListContainer;
+import at.rc.tacos.web.container.TransportsToContainer;
+import at.rc.tacos.web.container.TransportsToContainerListContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**

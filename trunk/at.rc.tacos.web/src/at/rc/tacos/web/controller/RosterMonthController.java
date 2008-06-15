@@ -27,9 +27,9 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.web.form.RosterEntryContainer;
-import at.rc.tacos.web.form.RosterMonthContainer;
-import at.rc.tacos.web.form.Month;
+import at.rc.tacos.web.container.Month;
+import at.rc.tacos.web.container.RosterEntryContainer;
+import at.rc.tacos.web.container.RosterMonthContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**

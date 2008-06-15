@@ -25,9 +25,9 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.Transport;
-import at.rc.tacos.web.form.JournalContainer;
-import at.rc.tacos.web.form.JournalContainerListContainer;
-import at.rc.tacos.web.form.VehicleContainer;
+import at.rc.tacos.web.container.JournalContainer;
+import at.rc.tacos.web.container.JournalContainerListContainer;
+import at.rc.tacos.web.container.VehicleContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**

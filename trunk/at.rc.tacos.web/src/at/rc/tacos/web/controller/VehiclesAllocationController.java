@@ -17,8 +17,8 @@ import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.web.form.VehicleContainer;
-import at.rc.tacos.web.form.VehicleContainerListContainer;
+import at.rc.tacos.web.container.VehicleContainer;
+import at.rc.tacos.web.container.VehicleContainerListContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
