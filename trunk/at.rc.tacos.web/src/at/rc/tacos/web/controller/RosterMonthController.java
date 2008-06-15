@@ -106,11 +106,7 @@ public class RosterMonthController extends Controller {
 			}
 		}
 		if (location == null) {
-			if (locationList.size() > 0) {
-				location = (Location)locationList.get(0);
-			} else {
-				throw new IllegalArgumentException("Error: Location has an illegal state.");
-			}
+			location = userSession.getLoginInformation().getUserInformation().getPrimaryLocation();
 		} 
 		params.put(MODEL_LOCATION_NAME, location);
 		
