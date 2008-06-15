@@ -28,12 +28,12 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.web.form.JournalContainer;
-import at.rc.tacos.web.form.JournalContainerListContainer;
-import at.rc.tacos.web.form.RosterEntryContainer;
-import at.rc.tacos.web.form.RosterEntryContainerListContainer;
-import at.rc.tacos.web.form.TransportsToContainerListContainer;
-import at.rc.tacos.web.form.VehicleContainer;
+import at.rc.tacos.web.container.JournalContainer;
+import at.rc.tacos.web.container.JournalContainerListContainer;
+import at.rc.tacos.web.container.RosterEntryContainer;
+import at.rc.tacos.web.container.RosterEntryContainerListContainer;
+import at.rc.tacos.web.container.TransportsToContainerListContainer;
+import at.rc.tacos.web.container.VehicleContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**

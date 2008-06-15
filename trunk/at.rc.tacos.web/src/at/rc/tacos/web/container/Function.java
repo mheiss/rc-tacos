@@ -1,4 +1,4 @@
-package at.rc.tacos.web.form;
+package at.rc.tacos.web.container;
 
 import at.rc.tacos.model.Competence;
 

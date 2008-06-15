@@ -20,7 +20,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
-import at.rc.tacos.web.form.StaffMemberListContainer;
+import at.rc.tacos.web.container.StaffMemberListContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**

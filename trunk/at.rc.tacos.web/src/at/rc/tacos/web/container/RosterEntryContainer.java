@@ -1,11 +1,11 @@
-package at.rc.tacos.web.form;
+package at.rc.tacos.web.container;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.RosterEntry;
-import at.rc.tacos.web.form.Function;
+import at.rc.tacos.web.container.Function;
 
 /**
  * Container for RosterEntry.
