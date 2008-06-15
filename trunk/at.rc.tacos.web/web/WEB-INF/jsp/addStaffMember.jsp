@@ -303,7 +303,7 @@
 		</tr>
 		<tr>
 			<td class="hButtonArea" colspan="3">
-				<input type="submit" value="Anlegen" />
+				<input type="submit" value="Mitarbeiter anlegen" />
 				<input name="action" type="hidden" value="addStaffMember" />
 			</td>
 			<td />

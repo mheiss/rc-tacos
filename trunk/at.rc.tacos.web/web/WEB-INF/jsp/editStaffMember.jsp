@@ -291,7 +291,7 @@
 			</tr>
 			<tr>
 				<td class="hButtonArea" colspan="3">
-					<input type="submit" value="Speichern" />
+					<input type="submit" value="Mitarbeiter speichern" />
 					<input name="action" type="hidden" value="updateStaffMember" />
 					<input name="staffMemberId" type="hidden" value="${params.staffMember.staffMemberId}" />
 				</td>

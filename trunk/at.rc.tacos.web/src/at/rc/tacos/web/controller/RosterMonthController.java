@@ -436,6 +436,30 @@ public class RosterMonthController extends Controller {
 		}
 		rosterMonthContainer.sortStaffMemberList(staffMemberComparator);
 		
+		// Fill job list
+		final List<AbstractMessage> jobListTemp = connection.sendListingRequest(Job.ID, null);
+		final List<Job> jobList = new ArrayList<Job>();
+		if (!Job.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		for (final Iterator<AbstractMessage> itJobList = jobListTemp.iterator(); itJobList.hasNext();) {
+			final Job job = (Job)itJobList.next();
+			jobList.add(job);
+		}
+		rosterMonthContainer.setJobList(jobList);
+		
+		// Fill service type list
+		final List<AbstractMessage> serviceTypeListTemp = connection.sendListingRequest(ServiceType.ID, null);
+		final List<ServiceType> serviceTypeList = new ArrayList<ServiceType>();
+		if (!ServiceType.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		for (final Iterator<AbstractMessage> itServiceTypeList = serviceTypeListTemp.iterator(); itServiceTypeList.hasNext();) {
+			final ServiceType serviceType = (ServiceType)itServiceTypeList.next();
+			serviceTypeList.add(serviceType);
+		}
+		rosterMonthContainer.setServiceTypeList(serviceTypeList);
+		
 		// Create timetable
 		rosterMonthContainer.createTimetable(functionComparator, dayComparator, staffMemberComparator);
 		

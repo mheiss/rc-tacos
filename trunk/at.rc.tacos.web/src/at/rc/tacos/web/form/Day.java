@@ -1,5 +1,7 @@
 package at.rc.tacos.web.form;
 
+import java.util.Date;
+
 /**
  * Container for Day
  * @author Payer Martin
@@ -8,6 +10,7 @@ package at.rc.tacos.web.form;
 public class Day {
 	private int day;
 	private int dayOfWeek;
+	private Date dateOfDay;
 
 	public int getDayOfWeek() {
 		return dayOfWeek;
@@ -27,5 +30,13 @@ public class Day {
 
 	public void setDay(int day) {
 		this.day = day;
+	}
+
+	public Date getDateOfDay() {
+		return dateOfDay;
+	}
+
+	public void setDateOfDay(Date dateOfDay) {
+		this.dateOfDay = dateOfDay;
 	}
 }
