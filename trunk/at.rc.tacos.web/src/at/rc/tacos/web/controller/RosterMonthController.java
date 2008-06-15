@@ -45,7 +45,6 @@ public class RosterMonthController extends Controller {
 	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
 	
 	private static final String PARAM_FUNCTION_NAME = "functionId";
-	private static final String PARAM_FUNCTION_NO_VALUE = "noValue";
 	private static final String MODEL_FUNCTION_NAME = "function";
 	private static final String MODEL_FUNCTION_LIST_NAME = "functionList";
 	
@@ -184,9 +183,8 @@ public class RosterMonthController extends Controller {
 		// Function
 		final String paramFunctionId = request.getParameter(PARAM_FUNCTION_NAME);
 		int functionId = 0;
-		final Competence defaultFunction = userSession.getDefaultFormValues().getRosterMonthFunction();
-		Competence function = null;
-		if (paramFunctionId != null && !paramFunctionId.equals("") && !paramFunctionId.equals(PARAM_FUNCTION_NO_VALUE)) {
+		Competence function = userSession.getDefaultFormValues().getRosterMonthFunction();;
+		if (paramFunctionId != null && !paramFunctionId.equals("")) {
 			functionId = Integer.parseInt(paramFunctionId);	
 		}
 		
@@ -205,12 +203,15 @@ public class RosterMonthController extends Controller {
 			}
 		}	
 		params.put(MODEL_FUNCTION_LIST_NAME, functionList);
-		if (function != null || (paramFunctionId != null && paramFunctionId.equals(PARAM_FUNCTION_NO_VALUE))) {
-			params.put(MODEL_FUNCTION_NAME, function);
-		} else {
-			params.put(MODEL_FUNCTION_NAME, defaultFunction);
+		if (function == null) {
+			if (functionList.size() > 0) {
+				function = functionList.get(0);
+			} else {
+				throw new IllegalArgumentException("Error: Function must not be null.");
+			}
 		}
-		function = (Competence)params.get(MODEL_FUNCTION_NAME);
+		params.put(MODEL_FUNCTION_NAME, function);
+
 		
 		// Location staff member
 		final String paramLocationStaffMemberId = request.getParameter(PARAM_LOCATION_STAFF_MEMBER_NAME);
