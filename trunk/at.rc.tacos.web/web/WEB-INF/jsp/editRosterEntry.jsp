@@ -189,7 +189,7 @@
 		</tr>
 		<tr>
 			<td class="hButtonArea" colspan="3">
-				<input type="submit" value="Speichern" />
+				<input type="submit" value="Dienst Speichern" />
 				<c:url var="url" value="/Dispatcher/roster.do" />
 				<input type="button" name="cancel" value="Abbrechen" onclick="document.location='${url}'">
 				<input name="action" type="hidden" value="updateRosterEntry" />

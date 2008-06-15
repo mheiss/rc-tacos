@@ -11,6 +11,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import at.rc.tacos.model.Competence;
+import at.rc.tacos.model.Job;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
 /**
@@ -20,9 +22,11 @@ import at.rc.tacos.model.StaffMember;
  */
 public class RosterMonthContainer {
 	private List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
-	private List<StaffMember> staffMemberList = new ArrayList<StaffMember>();
-	private List<Function> functionList = new ArrayList<Function>();
-	private List<Day> dayList = new ArrayList<Day>();
+	private List<StaffMember>staffMemberList = new ArrayList<StaffMember>();
+	private List<Function>functionList = new ArrayList<Function>();
+	private List<Day>dayList = new ArrayList<Day>();
+	private List<Job>jobList = new ArrayList<Job>();
+	private List<ServiceType>serviceTypeList = new ArrayList<ServiceType>();
 	private SortedMap<Function, SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>> rosterEntryContainerMap;
 	
 	// Insert function comparator
@@ -125,6 +129,7 @@ public class RosterMonthContainer {
 			calendar.set(Calendar.DAY_OF_MONTH, i);
 			final Day day = new Day(i);
 			day.setDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK));
+			day.setDateOfDay(calendar.getTime());
 			dayList.add(day);
 		}
 	}
@@ -176,6 +181,22 @@ public class RosterMonthContainer {
 
 	public void setDayList(List<Day> dayList) {
 		this.dayList = dayList;
+	}
+
+	public List<Job> getJobList() {
+		return jobList;
+	}
+
+	public void setJobList(List<Job> jobList) {
+		this.jobList = jobList;
+	}
+
+	public List<ServiceType> getServiceTypeList() {
+		return serviceTypeList;
+	}
+
+	public void setServiceTypeList(List<ServiceType> serviceTypeList) {
+		this.serviceTypeList = serviceTypeList;
 	}
 
 

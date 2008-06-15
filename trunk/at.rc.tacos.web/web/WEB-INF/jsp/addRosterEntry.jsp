@@ -191,7 +191,7 @@
 		</tr>
 		<tr>
 			<td class="hButtonArea" colspan="3">
-				<input type="submit" value="Anlegen" />
+				<input type="submit" value="Dienst eintragen" />
 				<input name="action" type="hidden" value="addRosterEntry" />
 			</td>
 		</tr>
