@@ -94,7 +94,7 @@ public class DeleteRosterEntryController extends Controller {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		
-		String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?" + PARAM_MESSAGE_CODE_NAME + "=" + PARAM_MESSAGE_CODE_DELETED;
+		String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + savedUrl + "?" + PARAM_MESSAGE_CODE_NAME + "=" + PARAM_MESSAGE_CODE_DELETED;
 		
 		System.out.println("Redirect: " + response.encodeRedirectURL(url));
 		System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");

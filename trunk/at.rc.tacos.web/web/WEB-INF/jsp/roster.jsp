@@ -141,11 +141,13 @@
 										<c:when
 											test="${rosterEntryContainer.rosterEntry.servicetype.serviceName eq 'Freiwillig'}">
 											<c:url var="url" value="/Dispatcher/editRosterEntry.do">
+												<c:param name="savedUrl">/roster.do</c:param>
 												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 											</c:url>
 											<a href="${url}">Bearbeiten</a>
 											<br />
 											<c:url var="url" value="/Dispatcher/deleteRosterEntry.do">
+												<c:param name="savedUrl">/roster.do</c:param>
 												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 											</c:url>
 											<a href="${url}">Löschen</a>
@@ -184,11 +186,13 @@
 								<c:when test="${userSession.loginInformation.authorization eq 'Administrator'}">
 									<c:url var="url" value="/Dispatcher/editRosterEntry.do">
 										<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										<c:param name="savedUrl">/roster.do</c:param>
 									</c:url>
 									<a href="${url}">Bearbeiten</a>
 									<br />
 									<c:url var="url" value="/Dispatcher/deleteRosterEntry.do">
 										<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										<c:param name="savedUrl">/roster.do</c:param>
 									</c:url>
 									<a href="${url}">Löschen</a>
 									<c:set var="breakRow">true</c:set>

@@ -544,7 +544,7 @@ public class EditRosterEntryController extends Controller {
 				userSession.getDefaultFormValues().setDefaultStandBy(standby);
 				userSession.getDefaultFormValues().setDefaultDate(plannedStartOfWork);
 
-				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + views.getString("roster.url") + "?" + PARAM_MESSAGE_CODE_NAME + "=" + PARAM_MESSAGE_CODE_EDITED;
+				String url = server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath() + savedUrl + "?" + PARAM_MESSAGE_CODE_NAME + "=" + PARAM_MESSAGE_CODE_EDITED;
 				
 				System.out.println("Redirect: " + response.encodeRedirectURL(url));
 				System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
