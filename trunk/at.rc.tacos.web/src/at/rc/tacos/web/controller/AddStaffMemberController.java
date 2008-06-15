@@ -31,6 +31,7 @@ import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
+import at.rc.tacos.web.utils.ValidationPatterns;
 
 /**
  * Add Staff Member Controller

@@ -37,8 +37,6 @@
 <link rel="icon" type="image/x-icon"
 	href="<c:url value="/favicon.ico"/>" />
 <script type="text/javascript"
-	src="<c:url value="/js/windowActions.js"/>"></script>
-<script type="text/javascript"
 	src="<c:url value="/js/jquery-1.2.3.js"/>"></script>
 <script type="text/javascript"
 	src="<c:url value="/js/jquery.dimensions.js"/>"></script>
