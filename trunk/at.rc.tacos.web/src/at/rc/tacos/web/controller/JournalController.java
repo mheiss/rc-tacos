@@ -127,16 +127,28 @@ public class JournalController extends Controller {
 		final String paramRestrictedDateId = request.getParameter(PARAM_RESTRICTED_DATE_NAME);
 		System.out.println("......paramRestrictedDateId: " +paramRestrictedDateId);
 		Date restrictedDateId = null;
-		Date restrictedDate = new Date();
+		
+		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yy");
+		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
+		Date requestDate = new Date();
+		if(paramRestrictedDateId != null)
+			requestDate = df.parse(paramRestrictedDateId);
+		else
+			requestDate = new Date();
+		
 		if(paramRestrictedDateId != null && !paramRestrictedDateId.equals(""))
 		{
 			if(paramRestrictedDateId.equalsIgnoreCase(PARAM_RESTRICTED_DATE_NO_VALUE)) {
-				restrictedDate = null;
+				requestDate = null;
 			} else{
-//				restrictedDateId = paramRestrictedDateId;
+				requestDate = df.parse(paramRestrictedDateId);
 			}
 		}
-		params.put(MODEL_RESTRICTED_DATE_NAME,restrictedDate);
+		System.out.println("'''''''' requestDate: " +requestDate);
+		params.put(MODEL_RESTRICTED_DATE_NAME,requestDate);
+		
+		final String dateForServerString = formatDateForServer.format(requestDate);
+		System.out.println("############### dateForServerString: " +dateForServerString);
 		
 		final List<Date> restrictedDateList = new ArrayList<Date>();
 		restrictedDateList.add(new Date());
@@ -145,6 +157,9 @@ public class JournalController extends Controller {
 		Date yesterday = cal.getTime();
 		restrictedDateList.add(yesterday);
 		params.put(MODEL_RESTRICTED_DATE_LIST_NAME, restrictedDateList);
+		
+		
+		
 
 		
 		// Vehicle
@@ -174,56 +189,6 @@ public class JournalController extends Controller {
 		params.put(MODEL_VEHICLE_CONTAINER_NAME, vehicleContainer);
 		
 	
-		
-		// Get Date and create calendar for datepicker //TODO --> remove? the date picker is no longer used
-		Date date = userSession.getDefaultFormValues().getDefaultDate();
-		if (date == null) {
-			date = new Date();
-		}
-		final Calendar calendar = Calendar.getInstance();
-		final int rangeStart = calendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET;
-		final int rangeEnd = calendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET;
-		
-
-		params.put(MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME, date.getTime());
-		
-		params.put(MODEL_CALENDAR_RANGE_START_NAME, rangeStart);
-		params.put(MODEL_CALENDAR_RANGE_END_NAME, rangeEnd);
-		
-		final Calendar rangeStartCalendar = Calendar.getInstance();
-		rangeStartCalendar.set(Calendar.YEAR, rangeStartCalendar.get(Calendar.YEAR) - MODEL_CALENDAR_RANGE_START_OFFSET);
-		
-		final Calendar rangeEndCalendar = Calendar.getInstance();
-		rangeEndCalendar.set(Calendar.YEAR, rangeEndCalendar.get(Calendar.YEAR) + MODEL_CALENDAR_RANGE_END_OFFSET);
-		final String paramDate = request.getParameter(PARAM_DATE_NAME);
-		
-		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
-		
-		Date dateTemp = null;
-		if (paramDate != null) {
-			try {
-				dateTemp = df.parse(paramDate);
-			}
-			catch (ParseException e) {
-				
-			}
-			if (dateTemp!= null && dateTemp.getTime() < rangeStartCalendar.getTimeInMillis() || dateTemp.getTime() > rangeEndCalendar.getTimeInMillis()) {
-				//throw new IllegalArgumentException();
-			} else {
-				date = dateTemp;
-			}
-		}
-		params.put(MODEL_DATE_NAME, date);
-		
-
-		final Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		params.put(MODEL_DATE_DAY_OF_YEAR_NAME, c.get(Calendar.DAY_OF_YEAR));
-		params.put(MODEL_DATE_MONTH_NAME, c.get(Calendar.MONTH));
-		params.put(MODEL_DATE_YEAR_NAME, c.get(Calendar.YEAR));
-				
-		final String dateForServerString = formatDateForServer.format(date);
 		
 		
 		//get transports	        
