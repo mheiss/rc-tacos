@@ -13,7 +13,6 @@
 	<tr>
 		<td style="font-weight: bold">Funktion:</td>
 		<td><select size="1" id="functionId" name="functionId">
-			<option value="noValue">-- Funktion wählen --</option>
 			<c:forEach var="function" items="${params.functionList}">
 				<option value="${function.id}" ${(not empty
 					params.function) and (params.function.id==
@@ -61,8 +60,7 @@
 		<td style="font-weight: bold">Monat:</td>
 		<td><select size="1" id="month" name="month">
 			<option value="JANUARY" ${(not empty
-				params.month) and (params.month==
-				'JANUARY') ? ' selected="selected"' : ''}>Jänner</option>
+				params.month) and (params.month== 'JANUARY') ? ' selected="selected"' : ''}>Jänner</option>
 			<option value="FEBRUARY" ${(not empty
 				params.month) and (params.month==
 				'FEBRUARY') ? ' selected="selected"' : ''}>Februar</option>
@@ -158,22 +156,20 @@
 				</c:choose>
 				<tr>
 					<th class="header2" colspan="${fn:length(staffMemberList)*3+2}">${function.function.competenceName}&nbsp;im
-						<c:choose>
-							<c:when test="${params.month eq 'JANUARY'}">J&auml;nner</c:when>
-							<c:when test="${params.month eq 'FEBRUARY'}">Februar</c:when>
-							<c:when test="${params.month eq 'MARCH'}">M&auml;rz</c:when>
-							<c:when test="${params.month eq 'APRIL'}">April</c:when>
-							<c:when test="${params.month eq 'MAY'}">Mai</c:when>
-							<c:when test="${params.month eq 'JUNE'}">Juni</c:when>
-							<c:when test="${params.month eq 'JULY'}">Juli</c:when>
-							<c:when test="${params.month eq 'AUGUST'}">August</c:when>
-							<c:when test="${params.month eq 'SEPTEMBER'}">September</c:when>
-							<c:when test="${params.month eq 'OCTOBER'}">Oktober</c:when>
-							<c:when test="${params.month eq 'NOVEMBER'}">November</c:when>
-							<c:when test="${params.month eq 'DECEMBER'}">Dezember</c:when>
-						</c:choose>
-						${params.year}&nbsp;in&nbsp;${params.location.locationName}
-					</th>
+					<c:choose>
+						<c:when test="${params.month eq 'JANUARY'}">J&auml;nner</c:when>
+						<c:when test="${params.month eq 'FEBRUARY'}">Februar</c:when>
+						<c:when test="${params.month eq 'MARCH'}">M&auml;rz</c:when>
+						<c:when test="${params.month eq 'APRIL'}">April</c:when>
+						<c:when test="${params.month eq 'MAY'}">Mai</c:when>
+						<c:when test="${params.month eq 'JUNE'}">Juni</c:when>
+						<c:when test="${params.month eq 'JULY'}">Juli</c:when>
+						<c:when test="${params.month eq 'AUGUST'}">August</c:when>
+						<c:when test="${params.month eq 'SEPTEMBER'}">September</c:when>
+						<c:when test="${params.month eq 'OCTOBER'}">Oktober</c:when>
+						<c:when test="${params.month eq 'NOVEMBER'}">November</c:when>
+						<c:when test="${params.month eq 'DECEMBER'}">Dezember</c:when>
+					</c:choose> ${params.year}&nbsp;in&nbsp;${params.location.locationName}</th>
 				</tr>
 				<tr class="subhead2">
 					<th nowrap="nowrap">&nbsp;</th>
@@ -344,14 +340,9 @@
 									</c:url>
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
-									<td><c:choose>
-										<c:when test="${staffMemberHasCompetence ne null}">
-											<a href="${url}"><img class="addRosterEntry" border="0"
-												title="Dienst&nbsp;anlegen"
-												src="<c:url value="/image/b_add.gif"/>" /></a>
-										</c:when>
-										<c:otherwise>&nbsp;</c:otherwise>
-									</c:choose></td>
+									<td><a href="${url}"><img class="addRosterEntry"
+										border="0" title="Dienst&nbsp;anlegen"
+										src="<c:url value="/image/b_add.gif"/>" /></a></td>
 								</c:otherwise>
 							</c:choose>
 							<c:remove var="staffMemberHasCompetence" />
