@@ -10,7 +10,9 @@
 		<description></description>
 		<display-name>Dispatcher</display-name>
 		<servlet-name>Dispatcher</servlet-name>
-		<servlet-class>at.rc.tacos.web.controller.Dispatcher</servlet-class>
+		<servlet-class>
+			at.rc.tacos.web.controller.Dispatcher
+		</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -21,7 +23,7 @@
 	<session-config>
 		<session-timeout>15</session-timeout>
 	</session-config>
-       
+
 	<welcome-file-list>
 		<welcome-file>Dispatcher</welcome-file>
 	</welcome-file-list>

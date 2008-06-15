@@ -1,8 +1,7 @@
 /* Used Styles */
-
 body {
-    margin:0;
-    padding:0;
+	margin: 0;
+	padding: 0;
 	font-family: Verdana;
 	font-size: 12px;
 }
@@ -10,32 +9,36 @@ body {
 a {
 	font-family: Verdana;
 	font-size: 12px;
-	text-decoration:none;
-	color:black;
+	text-decoration: none;
+	color: black;
 }
+
 a:link {
 	text-decoration: none;
 }
+
 a:visited {
 	text-decoration: none;
 }
+
 a:hover {
 	text-decoration: underline;
 }
+
 a:active {
-	text-decoration:none;
+	text-decoration: none;
 }
 
 #MainTab {
-	overflow:hidden; 	
+	overflow: hidden;
 }
 
 #MainBodyContent {
-	padding-left:5px;
+	padding-left: 5px;
 }
 
 #LeftContainerPanel {
-	padding-left:5px;	
+	padding-left: 5px;
 }
 
 #ContentContainer {
@@ -46,127 +49,319 @@ a:active {
 }
 
 #userInfo {
-	width:100%;
-	
-	border-top-width:1px;
-	border-top-style:solid;
-	border-top-color:#B5B5B5;
-	
-	border-bottom-width:1px;
-	border-bottom-style:solid;
-	border-bottom-color:#B5B5B5;		
+	width: 100%;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #B5B5B5;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #B5B5B5;
 }
 
 #buttonLogout {
-	background-image:url(../image/logout.jpg);
-	
-	background-repeat:no-repeat;	
-	width:29px;
-	height:10px;
-	border-width:0px;
-	background-color:#000000;
-	color:#000000;
+	background-image: url(../image/logout.jpg);
+	background-repeat: no-repeat;
+	width: 29px;
+	height: 10px;
+	border-width: 0px;
+	background-color: #000000;
+	color: #000000;
 }
 
 /* Navigation Styles */
 #Block {
-	border-left-width:1px;
-	border-left-style:solid;
-	border-left-color:#B5B5B5;
-	
-	border-right-width:1px;
-	border-right-style:solid;
-	border-right-color:#B5B5B5;
-	
-	border-bottom-width:1px;
-	border-bottom-style:solid;
-	border-bottom-color:#B5B5B5;	
-	
-	margin-top:5px;	
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #B5B5B5;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #B5B5B5;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #B5B5B5;
+	margin-top: 5px;
 }
 
 #BlockHead {
-		
 	background-image: url('../image/blockhead.jpg');
-	background-repeat:repeat-x;
-	background-position:top left;
-	padding-left:16px;
-	height:15px;
+	background-repeat: repeat-x;
+	background-position: top left;
+	padding-left: 16px;
+	height: 15px;
 }
 
 #BlockContentNav {
-    vertical-align:middle;
-    text-align:left;
-    padding:2px;
-    width:100%;
-    font-size: 150%;
+	vertical-align: middle;
+	text-align: left;
+	padding: 2px;
+	width: 100%;
+	font-size: 150%;
 }
 
 #navIcon {
-	vertical-align:middle;
-    text-align:left;
-    padding:2px;
+	vertical-align: middle;
+	text-align: left;
+	padding: 2px;
 }
 
 /* New Styles */
+#headerTitle {
+	font-size: 14px;
+	font-weight: bold;
+}
 
-#headerTitle { font-size:14px; font-weight:bold; } 
+.reqMark {
+	color: red;
+}
 
-.reqMark { color:red; }
-.reqComment { font-size:10px; color:red; }
+.reqComment {
+	font-size: 10px;
+	color: red;
+}
 
-.errorText { color:red; }
+.errorText {
+	color: red;
+}
 
-div#submitSuccess { font-weight:bold; color:black; background-color:#DFFF80; text-align:center; border:1px solid #516D00; padding:4px; margin-bottom:7px; width:400px; }
+div#submitSuccess {
+	font-weight: bold;
+	color: black;
+	background-color: #DFFF80;
+	text-align: center;
+	border: 1px solid #516D00;
+	padding: 4px;
+	margin-bottom: 7px;
+	width: 400px;
+}
 
-.standardForm td { padding:5px; }
-.standardForm td.hButtonArea { padding-top:15px; text-align:left; }
+.standardForm td {
+	padding: 5px;
+}
 
-.showRosterEntryInfo { cursor:pointer !important; }
-.addRosterEntry { cursor:pointer !important; }
-.editRosterEntry { cursor:pointer !important; }
-.deleteRosterEntry { cursor:pointer !important; }
+.standardForm td.hButtonArea {
+	padding-top: 15px;
+	text-align: left;
+}
 
-div#messageOfTheDay { padding:4px; position:absolute; top:160px; right:10px; }
-.showMessageOfTheDay { cursor:pointer !important; }
+.showRosterEntryInfo {
+	cursor: pointer !important;
+}
 
-a.smallLink { color:#00f;font-size:8pt;text-decoration:underline }
+.addRosterEntry {
+	cursor: pointer !important;
+}
+
+.editRosterEntry {
+	cursor: pointer !important;
+}
+
+.deleteRosterEntry {
+	cursor: pointer !important;
+}
+
+div#messageOfTheDay {
+	padding: 4px;
+	position: absolute;
+	top: 160px;
+	right: 10px;
+}
+
+.showMessageOfTheDay {
+	cursor: pointer !important;
+}
+
+a.smallLink {
+	color: #00f;
+	font-size: 8pt;
+	text-decoration: underline
+}
 
 /** List **/
-table.list { empty-cells:show; border-collapse:separate; border-spacing:0px 0px; border-left:#999999 solid 1px; }
-.list tbody tr.even { background-color:#f7f7f7; }
-.list tbody tr.odd { background-color:#ffffff; }
-.list.selectable tbody tr { cursor:pointer; }
-.list.selectable tbody tr.selected { background-color:#FFBFBF; }
-.list.selectable tbody tr.selected td { border-top-color:#FFBFBF;  }
-.list tbody td { padding:2px 6px; vertical-align:middle; text-align:center;
-border-right:#999999 solid 1px; border-bottom:#999999 solid 1px;
-border-left:white solid 1px; border-top:white solid 1px;
+table.list {
+	empty-cells: show;
+	border-collapse: separate;
+	border-spacing: 0px 0px;
+	border-left: #999999 solid 1px;
 }
-table.list tbody td { height:1.9em; }
-.list tbody td.desc { text-align:left; }
-.listButtonArea { text-align:left; }
 
-.list th a, .list th a:visited  { text-decoration:none; color:white; cursor:pointer; }
-.list tr.filter table { margin:4px 4px 2px 7px; }
-.list tr.filter td { color:black; background-color:#BFE9FF; border-right:#999999 solid 1px; border-top:#999999 solid 1px; }
-.list option.filterDefItem { color:#999999; }
-.list tr.filter td table td label { margin-right:3px; }
-.list tr.filter td table td { border:none; padding:3px 0px; }
-.list label.filter { font-size:8pt; }
-.list select.filter { font-size:8pt; margin:0px; }
-.list th { text-align:center; background-color:#00669C; color:white; padding:3px 5px; border-right:#999999 solid 1px; border-bottom:#999999 solid 1px; border-top:#999999 solid 1px; cursor:default; }
-.list th.header2 { text-align:center; color:black; background-color:#BFE9FF; padding:3px 5px; border-right:#999999 solid 1px; border-bottom:#999999 solid 1px; border-top:#999999 solid 1px; font-size:12px; }
-.list th.header2 a { color:black; cursor:pointer }
-.list tr.subhead2 th { color:black; background-color:#BFE9FF; padding:2px 5px; border-top:none; border-right:#999999 solid 1px; cursor:default; font-size:12px; }
-.list tr.subhead2 th a { color:black; cursor:pointer }
-.list tr.subhead th { padding:2px 5px; border-top:none; border-right:#999999 solid 1px; cursor:default; }
-.list tr.subfooter { color:#666666; background-color:#BFE9FF; }
-.list.selectable tbody tr.selected.subfooter { background-color:#BFE9FF; cursor:default; }
-.list.selectable tbody tr.selected.subfooter td { border-top-color:#ffffff;  }
-.list th.progress { padding:5px 6px 2px 0px; vertical-align:middle; text-align:right; }
-.list tfoot td { color:black; background-color:#BFE9FF; border-right:#999999 solid 1px; border-bottom:#999999 solid 1px; height:23px }
+.list tbody tr.even {
+	background-color: #f7f7f7;
+}
 
-.list td.listEmpty { background-color:white; border-left:none; border-top:none; font-weight:bold; padding:5px; }
-.list td.comment { color:#999999;font-size:8pt; }
-.list td.nodata { border-top:#999999 solid 1px; border-left:none; padding:5px; font-weight:bold; text-align:center; width:500px; background-color:#00669C; color:white; }
+.list tbody tr.odd {
+	background-color: #ffffff;
+}
+
+.list.selectable tbody tr {
+	cursor: pointer;
+}
+
+.list.selectable tbody tr.selected {
+	background-color: #FFBFBF;
+}
+
+.list.selectable tbody tr.selected td {
+	border-top-color: #FFBFBF;
+}
+
+.list tbody td {
+	padding: 2px 6px;
+	vertical-align: middle;
+	text-align: center;
+	border-right: #999999 solid 1px;
+	border-bottom: #999999 solid 1px;
+	border-left: white solid 1px;
+	border-top: white solid 1px;
+}
+
+table.list tbody td {
+	height: 1.9em;
+}
+
+.list tbody td.desc {
+	text-align: left;
+}
+
+.listButtonArea {
+	text-align: left;
+}
+
+.list th a,.list th a:visited {
+	text-decoration: none;
+	color: white;
+	cursor: pointer;
+}
+
+.list tr.filter table {
+	margin: 4px 4px 2px 7px;
+}
+
+.list tr.filter td {
+	color: black;
+	background-color: #BFE9FF;
+	border-right: #999999 solid 1px;
+	border-top: #999999 solid 1px;
+}
+
+.list option.filterDefItem {
+	color: #999999;
+}
+
+.list tr.filter td table td label {
+	margin-right: 3px;
+}
+
+.list tr.filter td table td {
+	border: none;
+	padding: 3px 0px;
+}
+
+.list label.filter {
+	font-size: 8pt;
+}
+
+.list select.filter {
+	font-size: 8pt;
+	margin: 0px;
+}
+
+.list th {
+	text-align: center;
+	background-color: #00669C;
+	color: white;
+	padding: 3px 5px;
+	border-right: #999999 solid 1px;
+	border-bottom: #999999 solid 1px;
+	border-top: #999999 solid 1px;
+	cursor: default;
+}
+
+.list th.header2 {
+	text-align: center;
+	color: black;
+	background-color: #BFE9FF;
+	padding: 3px 5px;
+	border-right: #999999 solid 1px;
+	border-bottom: #999999 solid 1px;
+	border-top: #999999 solid 1px;
+	font-size: 12px;
+}
+
+.list th.header2 a {
+	color: black;
+	cursor: pointer
+}
+
+.list tr.subhead2 th {
+	color: black;
+	background-color: #BFE9FF;
+	padding: 2px 5px;
+	border-top: none;
+	border-right: #999999 solid 1px;
+	cursor: default;
+	font-size: 12px;
+}
+
+.list tr.subhead2 th a {
+	color: black;
+	cursor: pointer
+}
+
+.list tr.subhead th {
+	padding: 2px 5px;
+	border-top: none;
+	border-right: #999999 solid 1px;
+	cursor: default;
+}
+
+.list tr.subfooter {
+	color: #666666;
+	background-color: #BFE9FF;
+}
+
+.list.selectable tbody tr.selected.subfooter {
+	background-color: #BFE9FF;
+	cursor: default;
+}
+
+.list.selectable tbody tr.selected.subfooter td {
+	border-top-color: #ffffff;
+}
+
+.list th.progress {
+	padding: 5px 6px 2px 0px;
+	vertical-align: middle;
+	text-align: right;
+}
+
+.list tfoot td {
+	color: black;
+	background-color: #BFE9FF;
+	border-right: #999999 solid 1px;
+	border-bottom: #999999 solid 1px;
+	height: 23px
+}
+
+.list td.listEmpty {
+	background-color: white;
+	border-left: none;
+	border-top: none;
+	font-weight: bold;
+	padding: 5px;
+}
+
+.list td.comment {
+	color: #999999;
+	font-size: 8pt;
+}
+
+.list td.nodata {
+	border-top: #999999 solid 1px;
+	border-left: none;
+	padding: 5px;
+	font-weight: bold;
+	text-align: center;
+	width: 500px;
+	background-color: #00669C;
+	color: white;
+}

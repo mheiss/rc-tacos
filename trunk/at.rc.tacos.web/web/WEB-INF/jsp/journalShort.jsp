@@ -3,7 +3,7 @@
 
 <table class="standardForm">
 	<tr>
-		<td style="font-weight:bold">Ortsstelle:</td>
+		<td style="font-weight: bold">Ortsstelle:</td>
 		<td><select size="1" id="locationId" name="locationId">
 			<option value="noValue">-- Ortsstelle wählen --</option>
 			<c:forEach var="location" items="${params.locationList}">
@@ -13,9 +13,9 @@
 			</c:forEach>
 		</select></td>
 	</tr>
-	
+
 	<tr>
-		<td style="font-weight:bold">Fahrzeug:</td>
+		<td style="font-weight: bold">Fahrzeug:</td>
 		<td><select size="1" id="vehicleName" name="vehicleName">
 			<option value="noValue">-- Fahrzeug wählen --</option>
 			<c:forEach var="vehicleDetail" items="${params.vehicleDetailList}">
@@ -25,22 +25,24 @@
 			</c:forEach>
 		</select></td>
 	</tr>
-	
+
 	<tr>
-		<td style="font-weight:bold">Datum:</td>
+		<td style="font-weight: bold">Datum:</td>
 		<td><select size="1" id="restrictedDate" name="restrictedDate">
 			<option value="noValue">-- Datum wählen --</option>
 			<c:forEach var="date" items="${params.restrictedDateList}">
-				<option value="<fmt:formatDate type="date" dateStyle="short" value="${date}"/>" ${(not empty
-					params.restrictedDate) and (params.restrictedDate==
-					date) ? ' selected="selected"' : ''}><fmt:formatDate type="date" dateStyle="short" value="${date}"/></option>
+				<option
+					value="<fmt:formatDate type="date" dateStyle="short" value="${date}"/>"
+					${(not empty params.restrictedDate) and (params.restrictedDate==
+					date) ? ' selected="selected"' : ''}><fmt:formatDate
+					type="date" dateStyle="short" value="${date}" /></option>
 			</c:forEach>
 		</select></td>
 	</tr>
-						
+
 </table>
 <c:set var="fieldHeadersRow">
-	<tr class="subhead2">	
+	<tr class="subhead2">
 		<th nowrap="nowrap">TrNr</th>
 		<th nowrap="nowrap">Fahrzeug</th>
 		<th nowrap="nowrap">Fahrer</th>
@@ -54,17 +56,19 @@
 		<th nowrap="nowrap">Nach</th>
 		<th nowrap="nowrap">Transportart</th>
 		<th nowrap="nowrap">Disponent</th>
-		
+
 	</tr>
 </c:set>
 <br />
 <br />
-<c:set var="journalContainerMap" value="${params.journalContainerListContainer.journalContainerMap}"/>
+<c:set var="journalContainerMap"
+	value="${params.journalContainerListContainer.journalContainerMap}" />
 <c:choose>
 	<c:when test="${fn:length(journalContainerMap) gt 0}">
 		<table id="journalTable" class="list" cellpadding="3" cellspacing="0">
-			<c:forEach var="journalContainerMapEntry" items="${journalContainerMap}">
-				<c:set var="location" value="${journalContainerMapEntry.key}"/>	
+			<c:forEach var="journalContainerMapEntry"
+				items="${journalContainerMap}">
+				<c:set var="location" value="${journalContainerMapEntry.key}" />
 				<tr>
 					<th class="header2" colspan="13">${location.locationName}&nbsp;am&nbsp;<fmt:formatDate
 						type="date" dateStyle="medium" value="${params.date}" /></th>
@@ -75,27 +79,27 @@
 						items="${journalContainerMapEntry.value}" varStatus="loop">
 						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 							<td nowrap="nowrap"><c:choose>
-								<c:when
-									test="${journalContainer.transportNumber eq -4}"> NEF</c:when>
-								<c:when
-									test="${journalContainer.transportNumber eq -1}"> STORNO</c:when>
-								<c:when
-									test="${journalContainer.transportNumber eq -2}"> WTGL</c:when>
+								<c:when test="${journalContainer.transportNumber eq -4}"> NEF</c:when>
+								<c:when test="${journalContainer.transportNumber eq -1}"> STORNO</c:when>
+								<c:when test="${journalContainer.transportNumber eq -2}"> WTGL</c:when>
 								<c:otherwise>${journalContainer.transportNumber}</c:otherwise>
 							</c:choose></td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.driver.lastName}&nbsp;${journalContainer.vehicleContainer.driver.firstName}</td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.firstParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.firstParamedic.firstName}</td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.secondParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.secondParamedic.firstName}</td>
-							<td nowrap="nowrap">
-								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s1}" />
-							<td nowrap="nowrap">
-								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s2}" />
-							<td nowrap="nowrap">
-								<fmt:formatDate type="time" timeStyle="short" value="${journalContainer.s5}" />
-							<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp; ${journalContainer.fromCity}</td>
-							<td nowrap="nowrap">${journalContainer.patient.lastname} &nbsp; ${journalContainer.patient.firstname }</td>
-							<td nowrap="nowrap">${journalContainer.toStreet} &nbsp; ${journalContainer.toCity }</td>
+							<td nowrap="nowrap"><fmt:formatDate type="time"
+								timeStyle="short" value="${journalContainer.s1}" />
+							<td nowrap="nowrap"><fmt:formatDate type="time"
+								timeStyle="short" value="${journalContainer.s2}" />
+							<td nowrap="nowrap"><fmt:formatDate type="time"
+								timeStyle="short" value="${journalContainer.s5}" />
+							<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp;
+							${journalContainer.fromCity}</td>
+							<td nowrap="nowrap">${journalContainer.patient.lastname}
+							&nbsp; ${journalContainer.patient.firstname }</td>
+							<td nowrap="nowrap">${journalContainer.toStreet} &nbsp;
+							${journalContainer.toCity }</td>
 							<td nowrap="nowrap">${journalContainer.kindOfTransport}</td>
 							<td nowrap="nowrap">${journalContainer.disposedByUser}</td>
 						</tr>
