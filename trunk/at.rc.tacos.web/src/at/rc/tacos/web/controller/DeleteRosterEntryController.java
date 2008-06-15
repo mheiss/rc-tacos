@@ -30,6 +30,8 @@ public class DeleteRosterEntryController extends Controller {
 
 	private static final String PARAM_ROSTER_ENTRY_NAME = "rosterEntryId";
 	
+	private static final String PARAM_SAVED_URL_NAME = "savedUrl";
+	
 	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
 	private static final String PARAM_MESSAGE_CODE_DELETED = "deleted";
 	
@@ -83,6 +85,9 @@ public class DeleteRosterEntryController extends Controller {
 				throw new IllegalArgumentException("Error: Deadline for Roster Entry exceeded.");
 			}
 		}
+		
+		// Get saved url
+		final String savedUrl = request.getParameter(PARAM_SAVED_URL_NAME);
 		
 		connection.sendRemoveRequest(RosterEntry.ID, rosterEntry);
 		if(!connection.getContentType().equalsIgnoreCase(RosterEntry.ID)) {

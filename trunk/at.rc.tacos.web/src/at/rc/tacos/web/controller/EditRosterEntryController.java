@@ -42,6 +42,9 @@ public class EditRosterEntryController extends Controller {
 	private static final String PARAM_ROSTER_ENTRY_NAME = "rosterEntryId";
 	private static final String MODEL_ROSTER_ENTRY_NAME = "rosterEntry";
 	
+	private static final String PARAM_SAVED_URL_NAME = "savedUrl";
+	private static final String MODEL_SAVED_URL_NAME = "savedUrl";
+	
 	private static final String PARAM_JOB_NAME = "jobId";
 	private static final String PARAM_JOB_NO_VALUE = "noValue";
 	private static final String MODEL_JOB_NAME = "job";
@@ -183,6 +186,10 @@ public class EditRosterEntryController extends Controller {
 			}
 		}		
 		params.put(MODEL_ROSTER_ENTRY_NAME, rosterEntry);
+		
+		// Get saved url
+		final String savedUrl = request.getParameter(PARAM_SAVED_URL_NAME);
+		params.put(MODEL_SAVED_URL_NAME, savedUrl);
 		
 		// Job
 		final String paramJobId = request.getParameter(PARAM_JOB_NAME);

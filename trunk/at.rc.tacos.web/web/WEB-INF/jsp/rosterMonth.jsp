@@ -1,4 +1,14 @@
 <%@ include file="includes.jsp"%>
+<c:choose>
+	<c:when test="${params.messageCode eq 'edited'}">
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;Dienstplaneintrag&nbsp;erfolgreich&nbsp;bearbeitet</div>
+		<br />
+	</c:when>
+	<c:when test="${params.messageCode eq 'deleted'}">
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;Dienstplaneintrag&nbsp;erfolgreich&nbsp;gelöscht</div>
+		<br />
+	</c:when>
+</c:choose>
 <table class="standardForm">
 	<tr>
 		<td style="font-weight: bold">Funktion:</td>
