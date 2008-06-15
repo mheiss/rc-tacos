@@ -11,8 +11,7 @@ public class ServiceType extends AbstractMessage
 	//unique identification string
 	public final static String ID = "serviceType";
 	
-	public final static String SERVICETYPE_FREIWILLIG = "Freiwillig";
-	
+	public final static String SERVICETYPE_FREIWILLIG = "Freiwillig";	
 	public final static String SERVICETYPE_HAUPTAMTLICH = "Hauptamtlich";
 	public final static String SERIVCETYPE_ZIVILDIENER = "Zivildiener";
 
