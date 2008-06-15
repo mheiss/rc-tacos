@@ -230,8 +230,16 @@
 										<c:if test="${staffMemberHasCompetence ne null}">
 											<a href="${addRosterEntryUrl}"><img class="addRosterEntry" border="0" title="Dienst&nbsp;anlegen" src="<c:url value="/image/b_add.gif"/>" /></a>
 										</c:if>
-										<img class="editRosterEntry" border="0" title="Bearbeiten"  src="<c:url value="/image/b_edit.png"/>" />
-										<img class="deleteRosterEntry" border="0" title="L&ouml;schen" src="<c:url value="/image/b_drop.png"/>" /><br />
+										<c:url var="editRosterEntryUrl" value="/Dispatcher/editRosterEntry.do">
+											<c:param name="savedUrl">/rosterMonth.do</c:param>
+											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										</c:url>
+										<a href="${editRosterEntryUrl}"><img class="editRosterEntry" border="0" title="Bearbeiten"  src="<c:url value="/image/b_edit.png"/>" /></a>
+										<c:url var="deleteRosterEntryUrl" value="/Dispatcher/deleteRosterEntry.do">
+											<c:param name="savedUrl">/rosterMonth.do</c:param>
+											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+										</c:url>
+										<a href="${deleteRosterEntryUrl}"><img class="deleteRosterEntry" border="0" title="L&ouml;schen" src="<c:url value="/image/b_drop.png"/>" /></a><br />
 									</c:forEach>
 								</td>
 							</c:when>
