@@ -338,6 +338,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if(transportType.equalsIgnoreCase("emergencyTransport"))
 		{
 			buttonMehrfachtransport.setEnabled(false);
+			buttonAssignCar.setEnabled(true);
 		}
 		if(transportType.equalsIgnoreCase("prebooking"))
 			buttonAssignCar.setEnabled(false);
