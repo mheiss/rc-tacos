@@ -18,6 +18,8 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class PersonnelDataController extends Controller {
 
+	private static final String MODEL_TIMESTAMP_NAME = "timestamp";
+	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -26,6 +28,9 @@ public class PersonnelDataController extends Controller {
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+		
+		// Create timestamp
+		params.put(MODEL_TIMESTAMP_NAME, new Date().getTime());
 		
 		if (userSession.getLoginInformation().getUserInformation().getBirthday() != null) {
 			final Date date = sdf1.parse(userSession.getLoginInformation().getUserInformation().getBirthday());

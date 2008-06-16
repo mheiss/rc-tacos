@@ -39,6 +39,8 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class EditStaffMemberController extends Controller {
 
+	private static final String MODEL_TIMESTAMP_NAME = "timestamp";
+	
 	private static final String PARAM_STAFF_MEMBER_NAME = "staffMemberId";
 	private static final String MODEL_STAFF_MEMBER_NAME = "staffMember";
 	private static final String MODEL_STAFF_MEMBER_LIST_NAME = "staffMemberList";
@@ -238,6 +240,9 @@ public class EditStaffMemberController extends Controller {
 			    }
 			}
 		}
+		
+		// Create timestamp
+		params.put(MODEL_TIMESTAMP_NAME, new Date().getTime());
 		
 		// Staff Member
 		if (request.getParameter(PARAM_STAFF_MEMBER_NAME) != null) {

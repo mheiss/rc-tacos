@@ -136,7 +136,7 @@
 			<td style="font-weight: bold">Photo:</td>
 			<td colspan="2"><c:url var="url"
 				value="/image/staffmembers/${params.staffMember.staffMemberId}.jpg">
-				<c:param name="refresh">1</c:param>
+				<c:param name="refresh">${params.timestamp}</c:param>
 			</c:url><img src="${url}" width="110" height="138" alt="No photo found." />
 			</td>
 		</tr>

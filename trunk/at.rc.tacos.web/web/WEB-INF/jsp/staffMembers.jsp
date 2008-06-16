@@ -44,7 +44,7 @@
 							<td nowrap="nowrap">${staffMember.firstName}</td>
 							<td nowrap="nowrap"><c:url var="url"
 								value="/image/staffmembers/${staffMember.staffMemberId}.jpg">
-								<c:param name="refresh">1</c:param>
+								<c:param name="refresh">${params.timestamp}</c:param>
 							</c:url><img src="${url}" width="55" height="69" alt="No photo found." />
 							</td>
 							<td><c:choose>
