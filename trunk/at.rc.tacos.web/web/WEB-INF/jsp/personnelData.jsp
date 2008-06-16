@@ -2,8 +2,9 @@
 <table class="standardForm">
 	<tr>
 		<td colspan="2" valign="top"><c:url var="url"
-			value="/image/staffmembers/${userSession.loginInformation.userInformation.staffMemberId}.jpg?refresh=1" />
-		<img src="${url}" width="110" height="138" alt="No photo found." /></td>
+			value="/image/staffmembers/${userSession.loginInformation.userInformation.staffMemberId}.jpg">
+			<c:param name="refresh">1</c:param>
+		</c:url><img src="${url}" width="110" height="138" alt="No photo found." /></td>
 		<td>
 		<table class="standardForm">
 			<tr>
