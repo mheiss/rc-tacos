@@ -3,7 +3,7 @@
 	<tr>
 		<td colspan="2" valign="top"><c:url var="url"
 			value="/image/staffmembers/${userSession.loginInformation.userInformation.staffMemberId}.jpg">
-			<c:param name="refresh">1</c:param>
+			<c:param name="refresh">${params.timestamp}</c:param>
 		</c:url><img src="${url}" width="110" height="138" alt="No photo found." /></td>
 		<td>
 		<table class="standardForm">

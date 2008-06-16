@@ -1,6 +1,7 @@
 package at.rc.tacos.web.controller;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,8 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class StaffMembersController extends Controller {
 
+	private static final String MODEL_TIMESTAMP_NAME = "timestamp";
+	
 	private static final String PARAM_LOCATION_NAME = "locationId";
 	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
 	private static final String MODEL_LOCATION_NAME = "location";
@@ -52,6 +55,9 @@ public class StaffMembersController extends Controller {
 		if (!authorization.equals(Login.AUTH_ADMIN)) {
 			throw new IllegalArgumentException("Error: User has no permission for functionality.");
 		}
+		
+		// Create timestamp
+		params.put(MODEL_TIMESTAMP_NAME, new Date().getTime());
 		
 		// Location List
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
