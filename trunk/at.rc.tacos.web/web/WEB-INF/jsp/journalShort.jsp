@@ -29,7 +29,6 @@
 	<tr>
 		<td style="font-weight: bold">Datum:</td>
 		<td><select size="1" id="restrictedDate" name="restrictedDate">
-			<option value="noValue">-- Datum wählen --</option>
 			<c:forEach var="date" items="${params.restrictedDateList}">
 				<option
 					value="<fmt:formatDate type="date" dateStyle="short" value="${date}"/>"
@@ -141,11 +140,11 @@ $(document).ready(function() {
 		var vehicleName = $('#vehicleName').val();
 		var restrictedDate = $('#restrictedDate').val();
 		if (code == 'l') {
-			url += '&vehicleName=' + vehicleName;
+			url += '&vehicleName=' + vehicleName + '&restrictedDate=' + restrictedDate;
 		} else if (code == 'v') {
-			url += '&locationId=' + locationId;
+			url += '&locationId=' + locationId + '&restrictedDate=' + restrictedDate;
 		} else if (code == 'r') {
-			url += '&restrictedDate=' +restrictedDate;
+			url += '&vehicleName=' + vehicleName + '&locationId=' + locationId;
 		}
 		document.location = url;
 	}
