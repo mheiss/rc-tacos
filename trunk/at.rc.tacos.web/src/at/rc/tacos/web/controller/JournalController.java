@@ -126,26 +126,19 @@ public class JournalController extends Controller {
 		//set the possible dates
 		final String paramRestrictedDateId = request.getParameter(PARAM_RESTRICTED_DATE_NAME);
 		System.out.println("......paramRestrictedDateId: " +paramRestrictedDateId);
-		Date restrictedDateId = null;
 		
 		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yy");
 		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
+		
 		Date requestDate = new Date();
-		if(paramRestrictedDateId != null)
-			requestDate = df.parse(paramRestrictedDateId);
-		else
-			requestDate = new Date();
 		
 		if(paramRestrictedDateId != null && !paramRestrictedDateId.equals(""))
 		{
-			if(paramRestrictedDateId.equalsIgnoreCase(PARAM_RESTRICTED_DATE_NO_VALUE)) {
-				requestDate = null;
-			} else{
-				requestDate = df.parse(paramRestrictedDateId);
-			}
+			requestDate = df.parse(paramRestrictedDateId);		
 		}
+		
 		System.out.println("'''''''' requestDate: " +requestDate);
-		params.put(MODEL_RESTRICTED_DATE_NAME,requestDate);
+		params.put(MODEL_RESTRICTED_DATE_NAME, requestDate);
 		
 		final String dateForServerString = formatDateForServer.format(requestDate);
 		System.out.println("############### dateForServerString: " +dateForServerString);
