@@ -28,10 +28,8 @@
 		<th nowrap="nowrap">Von</th>
 		<th nowrap="nowrap">Patient&nbsp;1</th>
 		<th nowrap="nowrap">Nach</th>
-		<th nowrap="nowrap">Anmerkungen</th>
 		<th nowrap="nowrap">Transportart</th>
 		<th nowrap="nowrap">Disponent</th>
-		<th nowrap="nowrap">Rückmeldung</th>
 		<th nowrap="nowrap">Anrufer</th>
 		<th nowrap="nowrap">Erkr/Verl</th>
 		<th nowrap="nowrap">Fahrzeug</th>
@@ -77,13 +75,11 @@
 							&nbsp; ${journalContainer.patient.firstname }</td>
 							<td nowrap="nowrap">${journalContainer.toStreet} &nbsp;
 							${journalContainer.toCity }</td>
-							<td nowrap="nowrap">${journalContainer.notes}</td>
 							<td nowrap="nowrap">${journalContainer.kindOfTransport}</td>
 							<td nowrap="nowrap">${journalContainer.disposedByUser}</td>
-							<td nowrap="nowrap">${journalContainer.feedback}</td>
 							<td nowrap="nowrap">${journalContainer.caller.callerName}
 							&nbsp; ${journalContainer.caller.callerTelephoneNumber}</td>
-							<td nowrap="nowrap">${journalContainer.kindOfIllness}</td>
+							<td nowrap="nowrap">${journalContainer.kindOfIllness.diseaseName}</td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.driver.lastName}&nbsp;${journalContainer.vehicleContainer.driver.firstName}</td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.firstParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.firstParamedic.firstName}</td>
@@ -114,6 +110,17 @@
 		</table>
 	</c:otherwise>
 </c:choose>
+<br />
+<br />
+<c:url var="url" value="/Dispatcher/printJournal.do">
+	<c:param name="locationId">${params.location.id}</c:param>
+	<c:param name="date">
+		<fmt:formatDate type="date" value="${params.date}" />
+	</c:param>
+</c:url>
+<a href="${url}">Journal&nbsp;drucken</a>
+
+
 <script type="text/javascript">
 $(document).ready(function() {
 	Calendar.setup ({
