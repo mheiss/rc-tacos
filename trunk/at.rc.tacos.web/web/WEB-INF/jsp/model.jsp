@@ -56,7 +56,7 @@ $(document).ready(function() {
 </head>
 <body>
 <div id="messageOfTheDay"><img class="showMessageOfTheDay"
-	title="Test Test Test Test dfj lksdfj lkdsfj lksjfkl sdjfkls djfkdsjf kfjdska jfklsdjfk ljfklsd jfklsdjfk jkdjfkdjf kjfkdj k jfkdjsakfjf kdjfksdjf kdsjfk jdskjf kdsjf kfdjs kjfsdkj kfsjk fjsdkf jkdjf kdsjfk dj"
+	title="${messageOfTheDay}"
 	src="<c:url value="/image/info.gif"/>" /></div>
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
 	id="MainTab">

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
+import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.web.session.DefaultFormValues;
@@ -124,6 +125,7 @@ public class Dispatcher extends HttpServlet
 		System.out.println("internal: " + userSession.isInternalSession() + "\n");
 		
 		//Do some actions if user is logged in
+		//TODO: Get message of the day and write to request context
 		if (userSession.getLoggedIn()) {
 			// Get current login data
 			final QueryFilter loginUsernameF = new QueryFilter();
@@ -133,8 +135,8 @@ public class Dispatcher extends HttpServlet
 				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 			}
 			final Login login = (Login)loginList.get(0);
-			userSession.setLoginInformation(login);
-						
+			userSession.setLoginInformation(login);	
+			//final WebClient connection = userSession.getConnection();
 		}
 		
 		//Get the relative Path from request URL
