@@ -41,11 +41,11 @@ Running local under Eclipse
    eclipse.appserver.home = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0
 
    #Installation directory of appserver (important for local build proccess without Eclipse and production build)
-   appserver.home = E:/tomcat-6.0
+   appserver.home = E:/tomcat-6.0.16
    deploy.path = ${appserver.home}/webapps
 
    #Installation directory of appserver (important for production build proccess)
-   production.appserver.home = E:/tomcat-6.0
+   production.appserver.home = E:/tomcat-6.0.16
    production.deploy.path = ${production.appserver.home}/webapps
 
    #Installation directory of OpenSSL (important if you use tomcat-native and OpenSSL)
@@ -118,7 +118,7 @@ Running local under Eclipse
    editStaffMember.photo.contentType = image/.*
 
 11. Go to Run/Debug Setting->Apache Tomcat and add the following value:
-   -Djava.library.path=E:\tomcat-6.0.10\bin
+   -Djava.library.path=E:\tomcat-6.0.16\bin
    
 12.Try to run application on server. (won't work but that's ok :-)).
 
@@ -173,11 +173,11 @@ got direct access to the server network.
    eclipse.appserver.home = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0
 
    #Installation directory of appserver (important for local build proccess without Eclipse and production build)
-   appserver.home = E:/tomcat-6.0
+   appserver.home = E:/tomcat-6.0.16
    deploy.path = ${appserver.home}/webapps
 
    #Installation directory of appserver (important for production build proccess)
-   production.appserver.home = E:/tomcat-6.0
+   production.appserver.home = E:/tomcat-6.0.16
    production.deploy.path = ${production.appserver.home}/webapps
 
    #Installation directory of OpenSSL (important if you use tomcat-native and OpenSSL)
@@ -241,11 +241,11 @@ got direct access to the server network.
    tmp.dir = D:/tomcat-6.0/webapps/rc-tacos/image/tmp
 
    addStaffMember.photo.maxsize = 10485760
-   addStaffMember.photo.absolute.dir = D:/tomcat-6.0/webapps/rc-tacos/image/staffmembers
+   addStaffMember.photo.absolute.dir = D:/tomcat-6.0.16/webapps/rc-tacos/image/staffmembers
    addStaffMember.photo.contentType = image/.*
 
    editStaffMember.photo.maxsize = 10485760
-   editStaffMember.photo.absolute.dir = D:/tomcat-6.0/webapps/rc-tacos/image/staffmembers
+   editStaffMember.photo.absolute.dir = D:/tomcat-6.0.16/webapps/rc-tacos/image/staffmembers
    editStaffMember.photo.contentType = image/.*
    
 9. Run ants target production-ssl-genkey-openssl if you use tomcat native.
