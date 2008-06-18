@@ -28,6 +28,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.util.MyUtils;
 import at.rc.tacos.web.container.JournalContainer;
 import at.rc.tacos.web.container.JournalContainerListContainer;
 import at.rc.tacos.web.container.RosterEntryContainer;
@@ -151,9 +152,16 @@ public class JournalController extends Controller {
 		restrictedDateList.add(yesterday);
 		params.put(MODEL_RESTRICTED_DATE_LIST_NAME, restrictedDateList);
 		
+		System.out.println("paramRestrictedDateId: " +paramRestrictedDateId);
+		System.out.println("requestDate: " +requestDate);
+		System.out.println("0: " +restrictedDateList.get(0));
+		System.out.println("1: " +restrictedDateList.get(1));
 		
+		if((!MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(0).getTime()) &! (MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(1).getTime()))))
+		{
+			throw new IllegalArgumentException("Error: Date is not in the Datelist. Access denied.");
+		}	
 		
-
 		
 		// Vehicle
 		final String paramVehicleDetailId = request.getParameter(PARAM_VEHICLEDETAIL_NAME);
