@@ -157,6 +157,8 @@ public class JournalController extends Controller {
 		System.out.println("0: " +restrictedDateList.get(0));
 		System.out.println("1: " +restrictedDateList.get(1));
 		
+		
+		//allow only requests of the dates in the date list
 		if((!MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(0).getTime()) &! (MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(1).getTime()))))
 		{
 			throw new IllegalArgumentException("Error: Date is not in the Datelist. Access denied.");
