@@ -1,6 +1,8 @@
 package at.rc.tacos.web.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.web.session.DefaultFormValues;
@@ -59,6 +62,7 @@ public class Dispatcher extends HttpServlet
 	{
 		final ResourceBundle views = ResourceBundle.getBundle(VIEWS_BUNDLE_PATH);
 		final ResourceBundle server = ResourceBundle.getBundle(SERVER_BUNDLE_PATH);
+		final ResourceBundle netBundle = ResourceBundle.getBundle(Dispatcher.NET_BUNDLE_PATH);
 		
 		//Set charakter encoding
 		request.setCharacterEncoding("ISO-8859-1");
@@ -113,6 +117,16 @@ public class Dispatcher extends HttpServlet
 			session.setAttribute("userSession", userSession);
 		}
 		
+		//Assert that there is a valid connection to server
+		if (userSession.getConnection().getSocket() == null) {
+			boolean serverListening = false;
+			serverListening = userSession.getConnection().connect(netBundle.getString("server.host"), Integer.parseInt(netBundle.getString("server.port")));
+			if (!serverListening) {
+				serverListening = userSession.getConnection().connect(netBundle.getString("failover.host"), Integer.parseInt(netBundle.getString("failover.port")));
+			}
+			if (!serverListening) throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+			
+		}
 		//Check if the request came from an internal IP
 		if (Pattern.matches(server.getString("server.reverseProxy.address.pattern"), request.getRemoteAddr())) {
 			userSession.setInternalSession(false);
@@ -124,8 +138,9 @@ public class Dispatcher extends HttpServlet
 		//request.setAttribute("userSession", userSession);
 		System.out.println("internal: " + userSession.isInternalSession() + "\n");
 		
+
+		
 		//Do some actions if user is logged in
-		//TODO: Get message of the day and write to request context
 		if (userSession.getLoggedIn()) {
 			// Get current login data
 			final QueryFilter loginUsernameF = new QueryFilter();
@@ -136,7 +151,19 @@ public class Dispatcher extends HttpServlet
 			}
 			final Login login = (Login)loginList.get(0);
 			userSession.setLoginInformation(login);	
-			//final WebClient connection = userSession.getConnection();
+			
+			//TODO: Get message of the day and write to request context
+			final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
+			formatDateForServer.format(new Date());
+			final QueryFilter dateFilter = new QueryFilter();
+			dateFilter.add(IFilterTypes.DATE_FILTER, formatDateForServer.format(new Date()));
+			final List<AbstractMessage> messageOfTheDayList = userSession.getConnection().sendListingRequest(DayInfoMessage.ID, dateFilter);
+			DayInfoMessage message = null;
+			if (messageOfTheDayList != null)
+			if (messageOfTheDayList.size() > 0) {
+				message = (DayInfoMessage)messageOfTheDayList.get(0);
+			}
+			request.setAttribute("messageOfTheDay", message);		
 		}
 		
 		//Get the relative Path from request URL
@@ -188,9 +215,9 @@ public class Dispatcher extends HttpServlet
 		//If no URL is specified send redirect to home.do.
 		else if (relativePath.equals("") || relativePath.equals("/")) {
 
-			System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("roster.url")));
+			System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("personnelData.url")));
 			System.out.println("\n+++++++++++++++++++++++++++++++++++++++\n");
-			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("roster.url")));
+			response.sendRedirect(response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath()+ request.getServletPath() + views.getString("personnelData.url")));
 			
 			/*request.setAttribute("redirectUrl", response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + getServletContext().getContextPath() + request.getServletPath() + views.getString("addRosterEntry.url"));
 			getServletContext().getRequestDispatcher(response.encodeURL("/WEB-INF/jsp/redirect.jsp")).forward(request, response);*/

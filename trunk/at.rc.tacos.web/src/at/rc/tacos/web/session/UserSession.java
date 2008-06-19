@@ -23,6 +23,7 @@ public class UserSession
 	{
 		loggedIn = false;
 		defaultFormValues = new DefaultFormValues();
+		connection = new WebClient();
 	}
 
 	/**
