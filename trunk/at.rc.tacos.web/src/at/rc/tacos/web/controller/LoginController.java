@@ -26,8 +26,9 @@ public class LoginController extends Controller {
 		final HttpSession session = request.getSession();
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
-		final ResourceBundle netBundle = ResourceBundle.getBundle(Dispatcher.NET_BUNDLE_PATH);
 		final ResourceBundle server = ResourceBundle.getBundle(Dispatcher.SERVER_BUNDLE_PATH);
+		
+		final UserSession userSession = (UserSession)session.getAttribute("userSession");
 		
 		final String username = request.getParameter("username");
 		final String password = request.getParameter("password");
@@ -37,19 +38,13 @@ public class LoginController extends Controller {
 			return params;
 		}
 
-		final WebClient client = new WebClient();
-		boolean serverListening = false;
-		serverListening = client.connect(netBundle.getString("server.host"), Integer.parseInt(netBundle.getString("server.port")));
-		if (!serverListening) {
-			serverListening = client.connect(netBundle.getString("failover.host"), Integer.parseInt(netBundle.getString("failover.port")));
-		}
-		if (!serverListening) throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-		else {
+		final WebClient client = userSession.getConnection();
+
+	
 			AbstractMessage result = client.sendLoginRequest(username, password);
 			if (Login.ID.equalsIgnoreCase(client.getContentType())) {
 				Login loginResult = (Login) result;
 				if (loginResult.isLoggedIn()) {
-					UserSession userSession = (UserSession) session.getAttribute("userSession");
 					userSession.setLoggedIn(true, loginResult, client);
 					if (request.getParameter("savedUrl") == null) {
 						System.out.println("Redirect: " + response.encodeRedirectURL(server.getString("server.https.prefix") + request.getServerName() + ":" + server.getString("server.secure.port") + context.getContextPath() + request.getServletPath()));
@@ -72,7 +67,7 @@ public class LoginController extends Controller {
 					params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
 				}
 			}
-		}
+		
 		return params;
 	}
 	
