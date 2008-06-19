@@ -93,6 +93,7 @@ public class WebClient
         //initialize the codec factory
         registerEncoderAndDecoder();
         factory = new XMLFactory();
+        
     }
 
     /**
@@ -403,4 +404,8 @@ public class WebClient
     {
         return timestamp;
     }
+
+	public MySocket getSocket() {
+		return socket;
+	}
 }
