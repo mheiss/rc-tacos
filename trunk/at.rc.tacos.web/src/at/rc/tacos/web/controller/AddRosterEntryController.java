@@ -440,7 +440,7 @@ public class AddRosterEntryController extends Controller {
 			
 			final Calendar deadlineCalendar = Calendar.getInstance();
 			deadlineCalendar.setTime(plannedStartOfWork);
-			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);
+			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.ADD_ROSTER_ENTRY_DEADLINE_HOURS);
 			
 			if (plannedStartOfWork != null) {
 				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
