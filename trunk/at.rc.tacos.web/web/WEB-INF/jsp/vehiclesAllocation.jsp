@@ -11,6 +11,7 @@
 </c:set>
 <c:set var="vehicleMap"
 	value="${params.vehicleContainerListContainer.vehicleContainerMap}" />
+<br />
 <c:choose>
 	<c:when test="${fn:length(vehicleMap) gt 0}">
 		<table cellpadding="3" cellspacing="0" class="list">

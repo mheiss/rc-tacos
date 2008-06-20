@@ -113,7 +113,7 @@
 	value="${params.rosterMonthContainer.serviceTypeList}" />
 <c:choose>
 	<c:when test="${fn:length(staffMemberList) gt 0}">
-		<table id="rosterEntryTable" class="list" cellpadding="3"
+		<table id="rosterEntryTable" class="list" cellpadding="0"
 			cellspacing="0">
 			<c:forEach var="function" items="${functionList}">
 				<c:choose>
@@ -231,97 +231,147 @@
 							</c:forEach>
 							<c:choose>
 								<c:when test="${fn:length(rosterEntryContainerList) gt 0}">
-									<td><c:forEach var="rosterEntryContainer"
-										items="${rosterEntryContainerList}">
-										<c:choose>
-											<c:when
-												test="${fn:length(rosterEntryContainer.rosterEntry.job.jobName) gt 6}">
-												<c:set var="truncatedTitle">
-													<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.job.jobName}</str:truncateNicely>
-												</c:set>
-												<span class="showJobName" style="cursor: pointer"
-													title="${rosterEntryContainer.rosterEntry.job.jobName}">${truncatedTitle}</span>
-											</c:when>
-											<c:otherwise>
-												<span>${rosterEntryContainer.rosterEntry.job.jobName}</span>
-											</c:otherwise>
-										</c:choose>
-									</c:forEach></td>
-									<td><c:forEach var="rosterEntryContainer"
-										items="${rosterEntryContainerList}">
-										<span><fmt:formatDate type="time" timeStyle="short"
-											value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate
-											type="time" timeStyle="short"
-											value="${rosterEntryContainer.plannedEndOfWork}" /></span>
-										<br />
-									</c:forEach></td>
-									<td nowrap="nowrap"><c:forEach var="rosterEntryContainer"
-										items="${rosterEntryContainerList}">
-										<c:set var="title">
-											<ul>
-												<li>Planzeiten:&nbsp;<fmt:formatDate type="time"
+									<td>
+									<table class="innerTable" cellspacing="0" cellpadding="0">
+										<c:forEach var="rosterEntryContainer"
+											items="${rosterEntryContainerList}">
+											<c:choose>
+												<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
+													<c:set var="class">holiday</c:set>
+												</c:when>
+												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Leitstellendisponent'}">
+													<c:set var="class">controlOperator</c:set>
+												</c:when>
+												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Notfallsanitäter'}">
+													<c:set var="class">emergencyMedic</c:set>
+												</c:when>
+											</c:choose>
+											<tr class="${class}">
+												<td><c:choose>
+													<c:when
+														test="${fn:length(rosterEntryContainer.rosterEntry.job.jobName) gt 6}">
+														<c:set var="truncatedTitle">
+															<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.job.jobName}</str:truncateNicely>
+														</c:set>
+														<span class="showJobName" style="cursor: pointer"
+															title="${rosterEntryContainer.rosterEntry.job.jobName}">${truncatedTitle}</span>
+													</c:when>
+													<c:otherwise>
+														<span>${rosterEntryContainer.rosterEntry.job.jobName}</span>
+													</c:otherwise>
+												</c:choose></td>
+											</tr>
+											<c:remove var="class" />
+										</c:forEach>
+									</table>
+									</td>
+									<td>
+									<table class="innerTable" cellspacing="0" cellpadding="0">
+										<c:forEach var="rosterEntryContainer"
+											items="${rosterEntryContainerList}">
+											<c:choose>
+												<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
+													<c:set var="class">holiday</c:set>
+												</c:when>
+												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Notfallsanitäter'}">
+													<c:set var="class">emergencyMedic</c:set>
+												</c:when>
+												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Leitstellendisponent'}">
+													<c:set var="class">controlOperator</c:set>
+												</c:when>
+											</c:choose>
+											<tr class="${class}">
+												<td><span><fmt:formatDate type="time"
 													timeStyle="short"
 													value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate
 													type="time" timeStyle="short"
-													value="${rosterEntryContainer.plannedEndOfWork}" /></li>
-												<li>Reale Zeiten:&nbsp;<c:if
-													test="${rosterEntryContainer.realStartOfWork ne null}">
-													<fmt:formatDate type="time" timeStyle="short"
-														value="${rosterEntryContainer.realStartOfWork}" />
-												</c:if>-<c:if test="${rosterEntryContainer.realEndOfWork ne null}">
-													<fmt:formatDate type="time" timeStyle="short"
-														value="${rosterEntryContainer.realEndOfWork}" />
-												</c:if></li>
-												<li>Dienstverh&auml;ltnis:&nbsp;${rosterEntryContainer.rosterEntry.servicetype.serviceName}</li>
-												<li>Bereitschaft:<c:choose>
-													<c:when
-														test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
-													<c:otherwise>Nein</c:otherwise>
-												</c:choose></li>
-											</ul>
-											<p>${rosterEntryContainer.rosterEntry.rosterNotes}</p>
-										</c:set>
-										<c:url var="addRosterEntryUrl"
-											value="/Dispatcher/addRosterEntry.do">
-											<c:param name="jobId">${job.id}</c:param>
-											<c:param name="staffMemberId">${staffMemberIterator.staffMemberId}</c:param>
-											<c:param name="locationId">${params.location.id}</c:param>
-											<c:param name="serviceTypeId">${serviceType.id}</c:param>
-											<c:param name="dateFrom">
-												<fmt:formatDate type="date" dateStyle="medium"
-													value="${day.dateOfDay}" />
-											</c:param>
-											<c:param name="dateTo">
-												<fmt:formatDate type="date" dateStyle="medium"
-													value="${day.dateOfDay}" />
-											</c:param>
-										</c:url>
-										<img class="showRosterEntryInfo" border="0" title="${title}"
-											src="<c:url value="/image/info.gif"/>" />
-										<c:if test="${staffMemberHasCompetence ne null}">
-											<a href="${addRosterEntryUrl}"><img
-												class="addRosterEntry" border="0"
-												title="Dienst&nbsp;anlegen"
-												src="<c:url value="/image/b_add.gif"/>" /></a>
-										</c:if>
-										<c:url var="editRosterEntryUrl"
-											value="/Dispatcher/editRosterEntry.do">
-											<c:param name="savedUrl">/rosterMonth.do</c:param>
-											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-										</c:url>
-										<a href="${editRosterEntryUrl}"><img
-											class="editRosterEntry" border="0" title="Bearbeiten"
-											src="<c:url value="/image/b_edit.png"/>" /></a>
-										<c:url var="deleteRosterEntryUrl"
-											value="/Dispatcher/deleteRosterEntry.do">
-											<c:param name="savedUrl">/rosterMonth.do</c:param>
-											<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
-										</c:url>
-										<a href="${deleteRosterEntryUrl}"><img
-											class="deleteRosterEntry" border="0" title="L&ouml;schen"
-											src="<c:url value="/image/b_drop.png"/>" /></a>
-										<br />
-									</c:forEach></td>
+													value="${rosterEntryContainer.plannedEndOfWork}" /></span> <br />
+												</td>
+											</tr>
+											<c:remove var="class" />
+										</c:forEach>
+									</table>
+									</td>
+									<td>
+									<table class="innerTable" cellspacing="0" cellpadding="0">
+										<c:forEach var="rosterEntryContainer"
+											items="${rosterEntryContainerList}">
+											<c:choose>
+												<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
+													<c:set var="class">holiday</c:set>
+												</c:when>
+												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Notfallsanitäter'}">
+													<c:set var="class">emergencyMedic</c:set>
+												</c:when>
+												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Leitstellendisponent'}">
+													<c:set var="class">controlOperator</c:set>
+												</c:when>
+											</c:choose>
+											<tr class="${class}">
+												<td><c:set var="title">
+													<ul>
+														<li>Planzeiten:&nbsp;<fmt:formatDate type="time"
+															timeStyle="short"
+															value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate
+															type="time" timeStyle="short"
+															value="${rosterEntryContainer.plannedEndOfWork}" /></li>
+														<li>Reale Zeiten:&nbsp;<c:if
+															test="${rosterEntryContainer.realStartOfWork ne null}">
+															<fmt:formatDate type="time" timeStyle="short"
+																value="${rosterEntryContainer.realStartOfWork}" />
+														</c:if>-<c:if
+															test="${rosterEntryContainer.realEndOfWork ne null}">
+															<fmt:formatDate type="time" timeStyle="short"
+																value="${rosterEntryContainer.realEndOfWork}" />
+														</c:if></li>
+														<li>Dienstverh&auml;ltnis:&nbsp;${rosterEntryContainer.rosterEntry.servicetype.serviceName}</li>
+														<li>Bereitschaft:<c:choose>
+															<c:when
+																test="${rosterEntryContainer.rosterEntry.standby eq true}">Ja</c:when>
+															<c:otherwise>Nein</c:otherwise>
+														</c:choose></li>
+													</ul>
+													<p>${rosterEntryContainer.rosterEntry.rosterNotes}</p>
+												</c:set> <c:url var="addRosterEntryUrl"
+													value="/Dispatcher/addRosterEntry.do">
+													<c:param name="jobId">${job.id}</c:param>
+													<c:param name="staffMemberId">${staffMemberIterator.staffMemberId}</c:param>
+													<c:param name="locationId">${params.location.id}</c:param>
+													<c:param name="serviceTypeId">${serviceType.id}</c:param>
+													<c:param name="dateFrom">
+														<fmt:formatDate type="date" dateStyle="medium"
+															value="${day.dateOfDay}" />
+													</c:param>
+													<c:param name="dateTo">
+														<fmt:formatDate type="date" dateStyle="medium"
+															value="${day.dateOfDay}" />
+													</c:param>
+												</c:url> <img class="showRosterEntryInfo" border="0"
+													title="${title}" src="<c:url value="/image/info.gif"/>" />
+
+												<a href="${addRosterEntryUrl}"><img
+													class="addRosterEntry" border="0"
+													title="Dienst&nbsp;anlegen"
+													src="<c:url value="/image/b_add.gif"/>" /></a> <c:url
+													var="editRosterEntryUrl"
+													value="/Dispatcher/editRosterEntry.do">
+													<c:param name="savedUrl">/rosterMonth.do</c:param>
+													<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+												</c:url> <a href="${editRosterEntryUrl}"><img
+													class="editRosterEntry" border="0" title="Bearbeiten"
+													src="<c:url value="/image/b_edit.png"/>" /></a> <c:url
+													var="deleteRosterEntryUrl"
+													value="/Dispatcher/deleteRosterEntry.do">
+													<c:param name="savedUrl">/rosterMonth.do</c:param>
+													<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
+												</c:url> <a href="${deleteRosterEntryUrl}"><img
+													class="deleteRosterEntry" border="0" title="L&ouml;schen"
+													src="<c:url value="/image/b_drop.png"/>" /></a></td>
+											</tr>
+											<c:remove var="class" /> 
+										</c:forEach>
+									</table>
+									</td>
 								</c:when>
 								<c:otherwise>
 									<c:url var="url" value="/Dispatcher/addRosterEntry.do">
