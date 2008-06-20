@@ -291,6 +291,6 @@ table.list tbody td {
 	border-spacing: 0px 0px;
 }
 
-.list tbody .innerTable tr.holiday td { font-weight:bold; background-color:#FFFF00 }
-.list tbody .innerTable tr.controlOperator td { font-weight:bold; background-color:#FF99CC }
-.list tbody .innerTable tr.emergencyMedic td { font-weight:bold; background-color:#DFFF80 }
+.list tbody .innerTable tr.holiday td { font-weight:bold; background-color:#FFFF00; }
+.list tbody .innerTable tr.controlOperator td { font-weight:bold; background-color:#FF99CC; }
+.list tbody .innerTable tr.emergencyMedic td { font-weight:bold; background-color:#DFFF80; }
