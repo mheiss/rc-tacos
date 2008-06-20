@@ -65,25 +65,16 @@ public class EditorCloseAction extends Action implements IWorkbenchWindowActionD
 	{
 		//The active editor
 		IEditorPart editor = window.getActivePage().getActiveEditor();
-		//close the editor
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditor(editor, true);
 	}
 
 	@Override
-	public void dispose() 
-	{
-	}
+	public void dispose() { }
 
 	@Override
-	public void init(IWorkbenchWindow window) 
-	{
-	}
+	public void init(IWorkbenchWindow window) { }
 
-	public void run(IAction action) 
-	{
-	}
+	public void run(IAction action) { } 
 
-	public void selectionChanged(IAction action, ISelection selection) 
-	{
-	}
+	public void selectionChanged(IAction action, ISelection selection)  { }
 }

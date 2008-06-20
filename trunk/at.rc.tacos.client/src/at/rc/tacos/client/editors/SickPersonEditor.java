@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -40,7 +41,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
@@ -109,13 +109,7 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 		createDetailSection(form.getBody());
 
 		//load the data
-		if(!isNew)
-			loadData();
-		else
-		{
-			form.setText("Neuen Patienten anlegen");
-			removeHyperlink.setVisible(false);
-		}
+		loadData();
 
 		//force redraw
 		form.pack(true);
@@ -135,8 +129,10 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neuen Patienten anlegen");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setText("Änderungen speichern");
+		saveHyperlink.setEnabled(false);
+		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -161,9 +157,10 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 						"Möchten sie den Patienten " +person.getLastName() +" wirklich löschen?");
 				if(!result)
 					return;
+				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				isDirty = false;
 				//send the remove request
-				EditorDeleteAction deleteAction = new EditorDeleteAction(SickPerson.ID,person);
-				deleteAction.run();
+				NetWrapper.getDefault().sendRemoveMessage(SickPerson.ID,person);
 			}
 		});
 
@@ -172,10 +169,6 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
-		//save hyperlink should span over two
-		data = new GridData(GridData.FILL_BOTH);
-		data.horizontalSpan = 2;
-		saveHyperlink.setLayoutData(data);
 	}
 
 	/**
@@ -353,13 +346,19 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Patienten "+person.getLastName());
-		if(!isNew)
+		//init the editor
+		if(isNew)
 		{
-			saveHyperlink.setText("Änderungen speichern");
-			removeHyperlink.setVisible(true);
+			form.setText("Neuen Patienten anlegen");
+			removeHyperlink.setVisible(false);
+			return;
 		}
-
+		
+		//enable the remove link
+		removeHyperlink.setVisible(true);
+		
+		//load the data
+		form.setText("Details des Patienten "+person.getLastName());
 		lastname.setText(person.getLastName());
 		if(person.getFirstName() != null)
 			firstname.setText(person.getFirstName());
@@ -564,15 +563,6 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 	 */
 	private void inputChanged()
 	{
-		//When the person is new we need no checks
-		if(isNew)
-		{
-			isDirty = true;
-			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
-			return;
-		}
-
 		//reset the flag		
 		isDirty = false;
 
@@ -634,11 +624,20 @@ public class SickPersonEditor extends EditorPart implements PropertyChangeListen
 		{
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			saveHyperlink.setEnabled(true);
+			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		}
 		else
 		{
 			infoLabel.setText("Hier können sie den aktuellen Patienten verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			saveHyperlink.setEnabled(false);
+			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
+
+		//set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
 	}
 }

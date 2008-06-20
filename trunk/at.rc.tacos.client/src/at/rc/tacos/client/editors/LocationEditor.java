@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -37,7 +38,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
@@ -56,7 +56,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
-	
+
 	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text locationName,street,streetNumber,zipCode,city;
@@ -66,7 +66,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	//managed data
 	private Location location;
 	private boolean isNew;
-	
+
 	/**
 	 * Default class constructor
 	 */
@@ -75,7 +75,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		ModelFactory.getInstance().getLocationManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup
 	 */
@@ -102,24 +102,18 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		//create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
 
 		//load the data
-		if(!isNew)
-			loadData();
-		else
-		{
-			form.setText("Neue Dienststelle anlegen");
-			removeHyperlink.setEnabled(false);
-		}
+		loadData();
 
 		//force redraw
 		form.pack(true);
 	}
-	
+
 	/**
 	 * Creates the section to manage the changes
 	 */
@@ -135,7 +129,9 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Zum anlegen einer neuen Ortsstelle bitte die Systemadministratoren informieren");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setEnabled(false);
+		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -161,9 +157,10 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 						"Möchten sie die Ortsstelle " +location.getLocationName()+" wirklich löschen?");
 				if(!result)
 					return;
+				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				isDirty = false;
 				//send the remove request
-				EditorDeleteAction deleteAction = new EditorDeleteAction(Location.ID,location);
-				deleteAction.run();
+				NetWrapper.getDefault().sendRemoveMessage(Location.ID,location);
 			}
 		});
 
@@ -172,12 +169,8 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
-		//save hyperlink should span over two
-		data = new GridData(GridData.FILL_BOTH);
-		data.horizontalSpan = 2;
-		saveHyperlink.setLayoutData(data);
 	}
-	
+
 	/**
 	 * Creates the section containing the job details
 	 * @param parent the parent composite
@@ -185,7 +178,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	private void createDetailSection(Composite parent)
 	{
 		Composite client = createSection(parent, "Dienststellen Details");
-		
+
 		//label and the text field
 		final Label labelLocationName = toolkit.createLabel(client, "Name der Ortsstelle");
 		locationName = toolkit.createText(client, "");
@@ -254,7 +247,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 				inputChanged();
 			}
 		});
-		
+
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
@@ -277,7 +270,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		data = new GridData();
 		data.widthHint = 150;
 		labelNotes.setLayoutData(data);
-		
+
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		locationName.setLayoutData(data2);
@@ -301,12 +294,19 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Ortsstelle "+location.getLocationName());
-		if(!isNew)
+		//init the editor
+		if(isNew)
 		{
-			removeHyperlink.setVisible(true);
-			saveHyperlink.setText("Änderungen speichern");
+			form.setText("Neue Dienststelle anlegen");
+			removeHyperlink.setVisible(false);
+			return;
 		}
+		
+		//enable the remove link
+		removeHyperlink.setVisible(true);
+		
+		//load the data
+		form.setText("Details des Ortsstelle "+location.getLocationName());
 		locationName.setText(location.getLocationName());
 		street.setText(location.getStreet());
 		streetNumber.setText(location.getStreetNumber());
@@ -321,7 +321,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	{
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
-		
+
 		//save the name
 		if(locationName.getText().length() > 30 || locationName.getText().trim().isEmpty())
 		{
@@ -330,7 +330,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		location.setLocationName(locationName.getText());
-		
+
 		//save the street
 		if(street.getText().length() > 30 || street.getText().trim().isEmpty())
 		{
@@ -339,7 +339,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		location.setStreet(street.getText());
-		
+
 		//save the street number
 		if(streetNumber.getText().length() >10 || streetNumber.getText().trim().isEmpty())
 		{
@@ -348,7 +348,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		location.setStreetNumber(streetNumber.getText());
-		
+
 		//save the city
 		if(city.getText().trim().isEmpty())
 		{
@@ -357,7 +357,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		location.setCity(city.getText());
-		
+
 		//save the zip
 		if(zipCode.getText().trim().isEmpty())
 		{
@@ -374,10 +374,10 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		location.setZipcode(Integer.valueOf(zipCode.getText()));
-		
+
 		//the notes can be empty
 		location.setNotes(notesViewer.getTextWidget().getText());
-		
+
 		int index = phoneViewer.getCombo().getSelectionIndex();
 		if(index == -1)
 		{
@@ -387,7 +387,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			return;
 		}
 		location.setPhone((MobilePhoneDetail)phoneViewer.getElementAt(index));
-		
+
 		//add or update the location
 		if(isNew)
 			NetWrapper.getDefault().sendAddMessage(Location.ID, location);
@@ -469,7 +469,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Ortsstelle wurde gelöscht",
-						"Die Ortsstelle, welches Sie gerade editieren, wurde gelöscht");
+				"Die Ortsstelle, welches Sie gerade editieren, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
@@ -482,7 +482,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			phoneViewer.refresh(true);
 		}
 	}
-	
+
 	//Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
@@ -513,21 +513,12 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 
 		return client;
 	}
-	
+
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
 	private void inputChanged()
 	{
-		//When the location is new we need no checks
-		if(isNew)
-		{
-			isDirty = true;
-			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
-			return;
-		}
-
 		//reset the flag		
 		isDirty = false;
 
@@ -575,16 +566,25 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 				isDirty = true;
 			}
 		}
-		
+
 		if(isDirty)
 		{
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			saveHyperlink.setEnabled(true);
+			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		}
 		else
 		{
 			infoLabel.setText("Hier können sie die aktuelle Ortsstelle verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			saveHyperlink.setEnabled(false);
+			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
+
+		//set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
 	}
 }

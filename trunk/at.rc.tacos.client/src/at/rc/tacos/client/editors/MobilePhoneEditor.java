@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -30,7 +31,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
@@ -47,7 +47,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
-	
+
 	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name,number;
@@ -55,7 +55,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	//managed data
 	private MobilePhoneDetail detail;
 	private boolean isNew;
-	
+
 	/**
 	 * Default class constructor
 	 */
@@ -63,7 +63,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	{
 		ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup
 	 */
@@ -95,18 +95,12 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		createDetailSection(form.getBody());
 
 		//load the data
-		if(!isNew)
-			loadData();
-		else
-		{
-			form.setText("Neues Mobiltelefon anlegen");
-			removeHyperlink.setVisible(false);
-		}
-
+		loadData();
+		
 		//force redraw
 		form.pack(true);
 	}
-	
+
 	/**
 	 * Creates the section to manage the changes
 	 */
@@ -121,8 +115,10 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Mobiltelefon speichern");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setText("Änderungen speichern");
+		saveHyperlink.setEnabled(false);
+		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -147,21 +143,18 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 						"Möchten sie das Mobiltelefon " +detail.getMobilePhoneName() + "-"+detail.getMobilePhoneNumber()+" wirklich löschen?");
 				if(!result)
 					return;
+				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				isDirty = false;
 				//send the remove request
-				EditorDeleteAction deleteAction = new EditorDeleteAction(MobilePhoneDetail.ID,detail);
-				deleteAction.run();
+				NetWrapper.getDefault().sendRemoveMessage(MobilePhoneDetail.ID,detail);
 			}
 		});
-		
+
 		//info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
-		//save hyperlink should span over two
-		data = new GridData(GridData.FILL_BOTH);
-		data.horizontalSpan = 2;
-		saveHyperlink.setLayoutData(data);
 	}
 
 	/**
@@ -187,7 +180,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 				inputChanged();
 			}
 		});
-		
+
 		final Label labelPhoneNumber = toolkit.createLabel(client, "Nummer");
 		number = toolkit.createText(client, "");
 		number.addModifyListener(new ModifyListener() { 
@@ -221,13 +214,19 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Mobiltelefons: " + detail.getMobilePhoneName() + " " + detail.getMobilePhoneNumber());
-		if(!isNew)
+		//init the editor
+		if(isNew)
 		{
-			removeHyperlink.setVisible(true);
-			saveHyperlink.setText("Änderungen speichern");
+			form.setText("Neues Mobiltelefon anlegen");
+			removeHyperlink.setVisible(false);
+			return;
 		}
+		
+		//enable the remove link
+		removeHyperlink.setVisible(true);
+		
 		//load the data
+		form.setText("Details des Mobiltelefons: " + detail.getMobilePhoneName() + " " + detail.getMobilePhoneNumber());
 		id.setText(String.valueOf(detail.getId()));
 		name.setText(detail.getMobilePhoneName());
 		number.setText(detail.getMobilePhoneNumber());
@@ -238,7 +237,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	{
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
-		
+
 		//name must be provided
 		if(name.getText().length() >30 || name.getText().trim().isEmpty())
 		{
@@ -247,7 +246,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 			return;
 		}
 		detail.setMobilePhoneName(name.getText());
-		
+
 		//number must be provided
 		if(number.getText().length() > 30 || number.getText().trim().isEmpty())
 		{
@@ -265,7 +264,7 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 			return;
 		}
 		detail.setMobilePhoneNumber(number.getText());
-		
+
 		//add or update the phone
 		if(isNew)
 			NetWrapper.getDefault().sendAddMessage(MobilePhoneDetail.ID, detail);
@@ -348,13 +347,13 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Mobiletelefon wurde gelöscht",
-						"Das Mobiltelefon, welches Sie gerade editieren, wurde gelöscht");
+				"Das Mobiltelefon, welches Sie gerade editieren, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
 		}
 	}
-	
+
 	//Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
@@ -385,21 +384,12 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 
 		return client;
 	}
-	
+
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
 	private void inputChanged()
 	{
-		//When the phone is new we need no checks
-		if(isNew)
-		{
-			isDirty = true;
-			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
-			return;
-		}
-
 		//reset the flag
 		isDirty = false;
 
@@ -423,11 +413,20 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		{
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			saveHyperlink.setEnabled(true);
+			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		}
 		else
 		{
 			infoLabel.setText("Hier können sie das aktuelle Mobiltelefon verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			saveHyperlink.setEnabled(false);
+			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
+
+		//set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
 	}
 }

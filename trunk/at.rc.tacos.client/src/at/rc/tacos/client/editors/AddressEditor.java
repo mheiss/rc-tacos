@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -30,7 +31,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
@@ -94,13 +94,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		createDetailSection(form.getBody());
 
 		//load the data
-		if(!isNew)
-			loadData();
-		else
-		{
-			form.setText("Neue Addresse anlegen");
-			removeHyperlink.setVisible(false);
-		}
+		loadData();
 
 		//force redraw
 		form.pack(true);
@@ -120,8 +114,10 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neue Adresse speichern");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setText("Änderungen speichern");
+		saveHyperlink.setEnabled(false);
+		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -146,9 +142,10 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 						"Möchten sie die Adresse " +address.getZip()+","+address.getCity()+","+address.getStreet()+" wirklich löschen?");
 				if(!result)
 					return;
+				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				isDirty = false;
 				//send the remove request
-				EditorDeleteAction deleteAction = new EditorDeleteAction(Address.ID,address);
-				deleteAction.run();
+				NetWrapper.getDefault().sendRemoveMessage(Address.ID, address);
 			}
 		});
 
@@ -220,12 +217,19 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	 */
 	private void loadData()
 	{
-		form.setText("Details der Adresse "+address.getZip()+","+address.getCity()+","+address.getStreet());
-		if(!isNew)
+		//Initialize the editor
+		if(isNew)
 		{
-			saveHyperlink.setText("Änderungen speichern");
-			removeHyperlink.setVisible(true);
+			form.setText("Neue Addresse anlegen");
+			removeHyperlink.setVisible(false);
+			return;
 		}
+		
+		//enable the remove link
+		removeHyperlink.setVisible(true);
+		
+		//load the data
+		form.setText("Details der Adresse "+address.getZip()+","+address.getCity()+","+address.getStreet());
 		street.setText(address.getStreet());
 		city.setText(address.getCity());
 		zip.setText(String.valueOf(address.getZip()));
@@ -400,16 +404,7 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 	 * This is called when the input of a text box or a combo box was changes
 	 */
 	private void inputChanged()
-	{
-		//When the address is new we need no checks
-		if(isNew)
-		{
-			isDirty = true;
-			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
-			return;
-		}
-
+	{				
 		//reset the flag
 		isDirty = false;
 
@@ -438,11 +433,20 @@ public class AddressEditor extends EditorPart implements PropertyChangeListener
 		{
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			saveHyperlink.setEnabled(true);
+			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		}
 		else
 		{
 			infoLabel.setText("Hier können sie die aktuelle Adresse verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			saveHyperlink.setEnabled(false);
+			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
+		
+		//set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
 	}
 }
