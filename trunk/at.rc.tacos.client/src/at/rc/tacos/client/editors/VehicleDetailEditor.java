@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -34,7 +35,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
@@ -94,7 +94,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	{	
 		detail = ((VehicleDetailEditorInput)getEditorInput()).getVehicle();
 		isNew = ((VehicleDetailEditorInput)getEditorInput()).isNew();
-		isDirty = false;
 
 		//Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
@@ -108,13 +107,10 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		createDetailSection(form.getBody());
 
 		//load the data
-		if(!isNew)
-			loadData();
-		else
-		{
-			form.setText("Neues Fahrzeug anlegen");
-			removeHyperlink.setVisible(false);
-		}
+		loadData();
+
+		//reset the dirty flag
+		isDirty = false;
 
 		//force redraw
 		form.pack(true);
@@ -134,8 +130,10 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Fahrzeug speichern");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setText("Änderungen speichern");
+		saveHyperlink.setEnabled(false);
+		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -160,9 +158,10 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 						"Möchten sie das Fahrzeug "+detail.getVehicleType()+"-"+detail.getVehicleName()+" wirklich löschen?");
 				if(!result)
 					return;
+				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				isDirty = false;
 				//send the remove request
-				EditorDeleteAction deleteAction = new EditorDeleteAction(VehicleDetail.ID,detail);
-				deleteAction.run();
+				NetWrapper.getDefault().sendRemoveMessage(VehicleDetail.ID,detail);
 			}
 		});
 
@@ -171,10 +170,6 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
-		//save hyperlink should span over two
-		data = new GridData(GridData.FILL_BOTH);
-		data.horizontalSpan = 2;
-		saveHyperlink.setLayoutData(data);
 	}
 
 	/**
@@ -282,13 +277,19 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Fahrzeugs: " + detail.getVehicleType() + " " + detail.getVehicleName());
-		if(!isNew)
+		//init the editor
+		if(isNew)
 		{
-			removeHyperlink.setVisible(true);
-			saveHyperlink.setText("Änderungen speichern");
+			removeHyperlink.setVisible(false);
+			form.setText("Neues Fahrzeug anlegen");
+			return;
 		}
+		
+		//enable the remove link
+		removeHyperlink.setVisible(true);
+		
 		//load all the data
+		form.setText("Details des Fahrzeugs: " + detail.getVehicleType() + " " + detail.getVehicleName());
 		vehicleName.setText(detail.getVehicleName());
 		vehicleType.setText(detail.getVehicleType());
 		if(detail.getBasicStation() != null)
@@ -489,28 +490,19 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 
 		return client;
 	}
-	
+
 
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
 	private void inputChanged()
 	{
-		//When the vehicle is new we need no checks
-		if(isNew)
-		{
-			isDirty = true;
-			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
-			return;
-		}
-
-		//reset the flag		
-		isDirty = false;
-
 		//get the current input
 		VehicleDetailEditorInput vehicleInput = (VehicleDetailEditorInput)getEditorInput();
 		VehicleDetail persistantVehicle = vehicleInput.getVehicle();
+
+		//reset the flag
+		isDirty = false;
 
 		//check the vehicle name
 		if(!vehicleName.getText().equalsIgnoreCase(persistantVehicle.getVehicleName()))
@@ -552,11 +544,20 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		{
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			saveHyperlink.setEnabled(true);
+			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		}
 		else
 		{
 			infoLabel.setText("Hier können sie das aktuelle Fahrzeug verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			saveHyperlink.setEnabled(false);
+			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
+
+		//set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
 	}
 }

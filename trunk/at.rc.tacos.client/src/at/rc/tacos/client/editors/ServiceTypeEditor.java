@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -30,7 +31,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
@@ -46,7 +46,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
-	
+
 	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink,removeHyperlink;
 	private Text id,name;
@@ -54,7 +54,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	//managed data
 	private ServiceType serviceType;
 	private boolean isNew;
-	
+
 	/**
 	 * Default class constructor
 	 */
@@ -62,7 +62,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	{
 		ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup
 	 */
@@ -88,20 +88,14 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		//create the contence
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
 
 		//load the data
-		if(!isNew)
-			loadData();
-		else
-		{
-			form.setText("Neues Dienstverhältnis anlegen");
-			removeHyperlink.setVisible(false);
-		}
-		
+		loadData();
+
 		//disable editing of system serviceTypes
 		if(serviceType.getId() <= 5 && serviceType.getId() > 0)
 		{
@@ -112,7 +106,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		//force redraw
 		form.pack(true);
 	}
-	
+
 	/**
 	 * Creates the section to manage the changes
 	 */
@@ -127,8 +121,10 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neues Dienstverhältnis speichern");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setText("Änderungen speichern");
+		saveHyperlink.setEnabled(false);
+		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -138,7 +134,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 				saveAction.run();
 			}
 		});
-		
+
 		//Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Dienstverhältnis löschen");
@@ -153,9 +149,10 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 						"Möchten sie das Dienstverhältnis " +serviceType.getServiceName()+" wirklich löschen?");
 				if(!result)
 					return;
-				//send the remoe request
-				EditorDeleteAction deleteAction = new EditorDeleteAction(ServiceType.ID,serviceType);
-				deleteAction.run();
+				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				isDirty = false;
+				//send the remove request
+				NetWrapper.getDefault().sendRemoveMessage(ServiceType.ID,serviceType);
 			}
 		});
 
@@ -164,12 +161,8 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
-		//save hyperlink should span over two
-		data = new GridData(GridData.FILL_BOTH);
-		data.horizontalSpan = 2;
-		saveHyperlink.setLayoutData(data);
 	}
-	
+
 	/**
 	 * Creates the section containing the job details
 	 * @param parent the parent composite
@@ -177,14 +170,14 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	private void createDetailSection(Composite parent)
 	{
 		Composite client = createSection(parent, "Dienstverhältnis Details");
-		
+
 		//label and the text field
 		final Label labelId = toolkit.createLabel(client, "Dienstverhältnis ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
 		id.setBackground(CustomColors.GREY_COLOR);
 		id.setToolTipText("Die ID wird automatisch generiert");
-		
+
 		final Label labelCompName = toolkit.createLabel(client, "Dienstverhältnis");
 		name = toolkit.createText(client, "");
 		name.addModifyListener(new ModifyListener() 
@@ -194,7 +187,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 				inputChanged();
 			}
 		});
-		
+
 		//set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
@@ -214,12 +207,19 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Dienstverhältnisses "+serviceType.getServiceName());
-		if(!isNew)
+		//init the editor
+		if(isNew)
 		{
-			removeHyperlink.setVisible(true);
-			saveHyperlink.setText("Änderungen speichern");
+			form.setText("Details des Dienstverhältnisses "+serviceType.getServiceName());
+			removeHyperlink.setVisible(false);
+			return;
 		}
+		
+		//enable the remove link
+		removeHyperlink.setVisible(true);
+		
+		//load the data
+		form.setText("Neues Dienstverhältnis anlegen");
 		id.setText(String.valueOf(serviceType.getId()));
 		name.setText(serviceType.getServiceName());
 	}
@@ -229,7 +229,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 	{
 		//reset error message
 		form.setMessage(null, IMessageProvider.NONE);
-		
+
 		//name must be provided
 		if(name.getText().length() >30 || name.getText().trim().isEmpty())
 		{
@@ -238,7 +238,7 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 			return;
 		}
 		serviceType.setServiceName(name.getText());
-		
+
 		//add or update the service type
 		if(isNew)
 			NetWrapper.getDefault().sendAddMessage(ServiceType.ID, serviceType);
@@ -319,13 +319,13 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 			{
 				MessageDialog.openInformation(getSite().getShell(), 
 						"Dienstverhältnis wurde gelöscht",
-						"Das Dienstverhältnis, welches Sie gerade editieren, wurde gelöscht");
+				"Das Dienstverhältnis, welches Sie gerade editieren, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
 		}
 	}
-	
+
 	//Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
@@ -356,21 +356,12 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 
 		return client;
 	}
-	
+
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
 	private void inputChanged()
 	{
-		//When the service type is new we need no checks
-		if(isNew)
-		{
-			isDirty = true;
-			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
-			return;
-		}
-
 		//reset the flag
 		isDirty = false;
 
@@ -384,11 +375,20 @@ public class ServiceTypeEditor extends EditorPart implements PropertyChangeListe
 			isDirty = true;
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			saveHyperlink.setEnabled(true);
+			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		}
 		else
 		{
 			infoLabel.setText("Hier können sie das aktuelle Dienstverhältnis verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			saveHyperlink.setEnabled(false);
+			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
+
+		//set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
 	}
 }

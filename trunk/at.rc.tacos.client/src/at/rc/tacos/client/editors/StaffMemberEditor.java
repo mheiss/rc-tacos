@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
@@ -145,12 +146,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		manage.getParent().setLayoutData(data);
 
 		//load the data
-		if(!isNew)
-			loadData();
-		else
-		{
-			form.setText("Neuen Mitarbeiter anlegen");
-		}
+		loadData();
 
 		//force redraw
 		form.pack(true);
@@ -171,21 +167,14 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void loadData()
 	{
-		form.setText("Details des Mitarbeiters "+staffMember.getFirstName() + " "+staffMember.getLastName());
-		if(!isNew)
+		//init the editor
+		if(isNew)
 		{
-			//adjust the links
-			saveHyperlink.setText("Änderungen speichern");
-			//username is not editable
-			uName.setEditable(false);
-			uName.setBackground(CustomColors.GREY_COLOR);
-			uName.setToolTipText("Der Benutzername kann nicht verändert werden");
-			//personal numer is not changeable
-			//id is not changeable
-			staffId.setEditable(false);
-			staffId.setBackground(CustomColors.GREY_COLOR);
+			form.setText("Neuen Mitarbeiter anlegen");
+			return;
 		}
 		//set the data of the staff member
+		form.setText("Details des Mitarbeiters "+staffMember.getFirstName() + " "+staffMember.getLastName());
 		staffId.setText(String.valueOf(staffMember.getStaffMemberId()));
 		fName.setText(staffMember.getFirstName());
 		lName.setText(staffMember.getLastName());
@@ -207,6 +196,14 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		//update the phone and competence view
 		phoneViewer.refresh(true);
 		competenceViewer.refresh(true);
+		
+		//personal numer is not changeable
+		staffId.setEditable(false);
+		staffId.setBackground(CustomColors.GREY_COLOR);
+		//username is not editable
+		uName.setEditable(false);
+		uName.setBackground(CustomColors.GREY_COLOR);
+		uName.setToolTipText("Der Benutzername kann nicht verändert werden");
 	}
 
 	/**
@@ -272,8 +269,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			else
 				staffMember.setMale(false);
 		}
-
-
 
 		//the location
 		index = primaryLocationComboViewer.getCombo().getSelectionIndex();
@@ -378,8 +373,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neuen Mitarbeiter speichern");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setText("Änderungen speichern");
+		saveHyperlink.setEnabled(false);
+		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -395,10 +392,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
-		//save hyperlink should span over two
-		data = new GridData(GridData.FILL_BOTH);
-		data.horizontalSpan = 2;
-		saveHyperlink.setLayoutData(data);
 
 		return client;
 	}
@@ -943,15 +936,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private void inputChanged()
 	{
-		//When the person is new we need no checks
-		if(isNew)
-		{
-			isDirty = true;
-			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
-			return;
-		}
-
 		//reset the flag		
 		isDirty = false;
 
@@ -1015,11 +999,20 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		{
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			saveHyperlink.setEnabled(true);
+			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		}
 		else
 		{
 			infoLabel.setText("Hier können sie den aktuellen Mitarbeiter verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			saveHyperlink.setEnabled(false);
+			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
+
+		//set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
 	}
 }

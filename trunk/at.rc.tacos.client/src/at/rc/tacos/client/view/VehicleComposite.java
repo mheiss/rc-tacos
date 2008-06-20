@@ -97,7 +97,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		
 		// .. name of the ambulance
 		vehicleNameLabel = new Label(compositeCarTop, SWT.NONE);
-		vehicleNameLabel.setForeground(CustomColors.COLOR_DARK);
+		vehicleNameLabel.setForeground(CustomColors.COLOR_LINK);
 		vehicleNameLabel.setFont(CustomColors.VEHICLE_NAME);
 		vehicleNameLabel.setBackground(CustomColors.COLOR_BLUE);
 
@@ -328,7 +328,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		if(vehicle.isOutOfOrder())
 			vehicleNameLabel.setForeground(CustomColors.COLOR_WHITE);
 		else
-			vehicleNameLabel.setForeground(CustomColors.COLOR_DARK);
+			vehicleNameLabel.setForeground(CustomColors.COLOR_LINK);
 		//redraw the composite
 		layout(true);
 	}

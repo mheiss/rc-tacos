@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -30,7 +31,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
 import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorDeleteAction;
 import at.rc.tacos.client.controller.EditorSaveAction;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
@@ -93,13 +93,7 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		createDetailSection(form.getBody());
 
 		//load the data
-		if(!isNew)
-			loadData();
-		else
-		{
-			form.setText("Neue Erkrankung anlegen");
-			removeHyperlink.setVisible(false);
-		}
+		loadData();
 
 		//force redraw
 		form.pack(true);
@@ -119,8 +113,10 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Neue Erkrankung speichern");
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+		saveHyperlink.setText("Änderungen speichern");
+		saveHyperlink.setEnabled(false);
+		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
 		{
 			@Override
@@ -145,9 +141,10 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 						"Möchten sie die Erkrankung " +disease.getDiseaseName()+" wirklich löschen?");
 				if(!result)
 					return;
+				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				isDirty = false;
 				//send the remove request
-				EditorDeleteAction deleteAction = new EditorDeleteAction(Disease.ID,disease);
-				deleteAction.run();
+				NetWrapper.getDefault().sendRemoveMessage(Disease.ID,disease);
 			}
 		});
 
@@ -156,10 +153,6 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
 		infoLabel.setLayoutData(data);
-		//save hyperlink should span over two
-		data = new GridData(GridData.FILL_BOTH);
-		data.horizontalSpan = 2;
-		saveHyperlink.setLayoutData(data);
 	}
 
 	/**
@@ -206,12 +199,19 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 	 */
 	private void loadData()
 	{
-		form.setText("Details der Erkrankung "+disease.getDiseaseName());
-		if(!isNew)
+		//initialize the editor
+		if(isNew)
 		{
-			removeHyperlink.setVisible(true);
-			saveHyperlink.setText("Änderungen speichern");
+			form.setText("Neue Erkrankung anlegen");
+			removeHyperlink.setVisible(false);
+			return;
 		}
+		
+		//enable the remove link
+		removeHyperlink.setVisible(true);
+		
+		//load the data
+		form.setText("Details der Erkrankung "+disease.getDiseaseName());
 		id.setText(String.valueOf(disease.getId()));
 		name.setText(disease.getDiseaseName());
 	}
@@ -349,21 +349,12 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 
 		return client;
 	}
-	
+
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
 	private void inputChanged()
 	{
-		//When the disease is new we need no checks
-		if(isNew)
-		{
-			isDirty = true;
-			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
-			return;
-		}
-
 		//reset the flag		
 		isDirty = false;
 
@@ -377,11 +368,20 @@ public class DiseaseEditor extends EditorPart implements PropertyChangeListener
 			isDirty = true;
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			saveHyperlink.setEnabled(true);
+			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
 		}
 		else
 		{
 			infoLabel.setText("Hier können sie die aktuelle Erkrankung verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			saveHyperlink.setEnabled(false);
+			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
+
+		//set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
 	}
 }
