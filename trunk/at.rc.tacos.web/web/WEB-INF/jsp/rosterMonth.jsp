@@ -248,17 +248,36 @@
 											</c:choose>
 											<tr class="${class}">
 												<td><c:choose>
-													<c:when
-														test="${fn:length(rosterEntryContainer.rosterEntry.job.jobName) gt 6}">
-														<c:set var="truncatedTitle">
-															<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.job.jobName}</str:truncateNicely>
-														</c:set>
-														<span class="showJobName" style="cursor: pointer"
-															title="${rosterEntryContainer.rosterEntry.job.jobName}">${truncatedTitle}</span>
-													</c:when>
-													<c:otherwise>
-														<span>${rosterEntryContainer.rosterEntry.job.jobName}</span>
-													</c:otherwise>
+												<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
+													<c:choose>
+														<c:when
+															test="${fn:length(rosterEntryContainer.rosterEntry.rosterNotes) gt 6}">
+															<c:set var="truncatedTitle">
+																<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.rosterNotes}</str:truncateNicely>
+															</c:set>
+															<span class="showJobName" style="cursor:pointer"
+																title="${rosterEntryContainer.rosterEntry.rosterNotes}">${truncatedTitle}</span>
+														</c:when>
+														<c:otherwise>
+															<span>${rosterEntryContainer.rosterEntry.rosterNotes}</span>
+														</c:otherwise>
+													</c:choose>
+												</c:when>
+												<c:otherwise>
+													<c:choose>
+														<c:when
+															test="${fn:length(rosterEntryContainer.rosterEntry.job.jobName) gt 6}">
+															<c:set var="truncatedTitle">
+																<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.job.jobName}</str:truncateNicely>
+															</c:set>
+															<span class="showJobName" style="cursor:pointer"
+																title="${rosterEntryContainer.rosterEntry.job.jobName}">${truncatedTitle}</span>
+														</c:when>
+														<c:otherwise>
+															<span>${rosterEntryContainer.rosterEntry.job.jobName}</span>
+														</c:otherwise>
+													</c:choose>
+												</c:otherwise>
 												</c:choose></td>
 											</tr>
 											<c:remove var="class" />

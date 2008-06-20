@@ -87,7 +87,16 @@
 									</c:choose>
 								</c:otherwise>
 							</c:choose></td>
-							<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
+							<td nowrap="nowrap">
+								<c:choose>
+									<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
+										Urlaub
+									</c:when>
+									<c:otherwise>
+										${rosterEntryContainer.rosterEntry.job.jobName}
+									</c:otherwise>
+								</c:choose>
+							</td>
 							<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
 							<td nowrap="nowrap"><c:choose>
 								<c:when

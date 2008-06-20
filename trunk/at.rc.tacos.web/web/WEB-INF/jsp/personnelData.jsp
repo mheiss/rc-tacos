@@ -1,4 +1,12 @@
 <%@ include file="includes.jsp"%>
+<c:choose>
+	<c:when test="${params.editedCount gt 0}">
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;Mitarbeiter&nbsp;erfolgreich&nbsp;bearbeitet</div>
+		<br />
+	</c:when>
+</c:choose>
+<c:url var="url" value="/Dispatcher/personnelData.do" />
+<form action="${url}" method="post" accept-charset="ISO-8859-1">
 <table class="standardForm">
 	<tr>
 		<td colspan="2" valign="top"><c:url var="url"
@@ -103,7 +111,47 @@
 				<td style="font-weight: bold">Authorisierung:</td>
 				<td>${userSession.loginInformation.authorization}</td>
 			</tr>
+			<tr>
+				<td style="font-weight: bold">Passwort:<sup class="reqMark">*</sup></td>
+				<td><input name="passwd" type="password" size="30"
+					maxlength="255" /></td>
+				<td><span class="errorText"> <c:choose>
+					<c:when test="${not empty params.errors.passwordMissing}">
+									${params.errors.passwordMissing}
+								</c:when>
+					<c:when test="${not empty params.errors.passwordTooLong}">
+									${params.errors.passwordTooLong}
+								</c:when>
+				</c:choose> </span></td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold">Passwort&nbsp;(wiederholen):<sup class="reqMark">*</sup></td>
+				<td><input name="repeatedPassword" type="password" size="30"
+					maxlength="255" /></td>
+				<td><span class="errorText"> <c:choose>
+					<c:when test="${not empty params.errors.repeatedPasswordMissing}">
+									${params.errors.repeatedPasswordMissing}
+								</c:when>
+					<c:when test="${not empty params.errors.repeatedPasswordTooLong}">
+									${params.errors.repeatedPasswordTooLong}
+								</c:when>
+					<c:when test="${not empty params.errors.passwordsNotEqual}">
+									${params.errors.passwordsNotEqual}
+								</c:when>
+				</c:choose> </span></td>
+			</tr>
+			<tr>
+				<td colspan="3" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
+				<td />
+			</tr>
+			<tr>
+				<td class="hButtonArea" colspan="3"><input type="submit"
+					value="Passwort ändern" /> <input name="action" type="hidden"
+					value="updateStaffMember" /></td>
+				<td />
+			</tr>
 		</table>
 		</td>
 	</tr>
 </table>
+</form>
