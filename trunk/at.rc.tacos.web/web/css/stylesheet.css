@@ -184,85 +184,10 @@ table.list {
 	border-left: #999999 solid 1px;
 }
 
-.list tbody tr.even {
-	background-color: #f7f7f7;
-}
-
-.list tbody tr.odd {
-	background-color: #ffffff;
-}
-
-.list.selectable tbody tr {
-	cursor: pointer;
-}
-
-.list.selectable tbody tr.selected {
-	background-color: #FFBFBF;
-}
-
-.list.selectable tbody tr.selected td {
-	border-top-color: #FFBFBF;
-}
-
-.list tbody td {
-	padding: 2px 6px;
-	vertical-align: middle;
-	text-align: center;
-	border-right: #999999 solid 1px;
-	border-bottom: #999999 solid 1px;
-	border-left: white solid 1px;
-	border-top: white solid 1px;
-}
-
-table.list tbody td {
-	height: 1.9em;
-}
-
-.list tbody td.desc {
-	text-align: left;
-}
-
-.listButtonArea {
-	text-align: left;
-}
-
 .list th a,.list th a:visited {
 	text-decoration: none;
 	color: white;
 	cursor: pointer;
-}
-
-.list tr.filter table {
-	margin: 4px 4px 2px 7px;
-}
-
-.list tr.filter td {
-	color: black;
-	background-color: #BFE9FF;
-	border-right: #999999 solid 1px;
-	border-top: #999999 solid 1px;
-}
-
-.list option.filterDefItem {
-	color: #999999;
-}
-
-.list tr.filter td table td label {
-	margin-right: 3px;
-}
-
-.list tr.filter td table td {
-	border: none;
-	padding: 3px 0px;
-}
-
-.list label.filter {
-	font-size: 8pt;
-}
-
-.list select.filter {
-	font-size: 8pt;
-	margin: 0px;
 }
 
 .list th {
@@ -314,48 +239,38 @@ table.list tbody td {
 	cursor: default;
 }
 
-.list tr.subfooter {
-	color: #666666;
-	background-color: #BFE9FF;
+.list tbody tr.even {
+	background-color: #f7f7f7;
 }
 
-.list.selectable tbody tr.selected.subfooter {
-	background-color: #BFE9FF;
-	cursor: default;
+.list tbody tr.odd {
+	background-color: #ffffff;
 }
 
-.list.selectable tbody tr.selected.subfooter td {
-	border-top-color: #ffffff;
-}
-
-.list th.progress {
-	padding: 5px 6px 2px 0px;
+.list tbody td {
+	padding: 2px 6px;
 	vertical-align: middle;
-	text-align: right;
-}
-
-.list tfoot td {
-	color: black;
-	background-color: #BFE9FF;
+	text-align: center;
 	border-right: #999999 solid 1px;
 	border-bottom: #999999 solid 1px;
-	height: 23px
+	border-left: white solid 1px;
+	border-top: white solid 1px;
 }
 
-.list td.listEmpty {
-	background-color: white;
-	border-left: none;
-	border-top: none;
-	font-weight: bold;
-	padding: 5px;
+table.list tbody td {
+	height: 1.9em;
 }
 
-.list td.comment {
+.list tbody td.desc {
+	text-align: left;
+}
+
+.list tbody td.comment {
 	color: #999999;
 	font-size: 8pt;
 }
 
-.list td.nodata {
+.list tbody td.nodata {
 	border-top: #999999 solid 1px;
 	border-left: none;
 	padding: 5px;
@@ -365,3 +280,17 @@ table.list tbody td {
 	background-color: #00669C;
 	color: white;
 }
+
+.list tbody table.innerTable {
+}
+
+.list tbody table.innerTable td {
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	border-spacing: 0px 0px;
+}
+
+.list tbody .innerTable tr.holiday td { font-weight:bold; background-color:#FFFF00 }
+.list tbody .innerTable tr.controlOperator td { font-weight:bold; background-color:#FF99CC }
+.list tbody .innerTable tr.emergencyMedic td { font-weight:bold; background-color:#DFFF80 }

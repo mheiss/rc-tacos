@@ -28,7 +28,6 @@
 	</tr>
 </c:set>
 <br />
-<br />
 <c:set var="journalContainerMap"
 	value="${params.journalContainerListContainer.journalContainerMap}" />
 <c:choose>

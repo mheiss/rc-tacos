@@ -15,6 +15,7 @@
 </c:set>
 <c:set var="transportsToMap"
 	value="${params.transportsToContainerListContainer.transportsToContainerMap}" />
+<br />
 <c:choose>
 	<c:when test="${fn:length(transportsToMap) gt 0}">
 		<table cellpadding="3" cellspacing="0" class="list">
