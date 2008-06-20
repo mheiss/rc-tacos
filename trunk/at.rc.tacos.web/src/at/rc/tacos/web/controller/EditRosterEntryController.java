@@ -138,7 +138,6 @@ public class EditRosterEntryController extends Controller {
 			HttpServletResponse response, ServletContext context)
 			throws Exception {
 		final ResourceBundle server = ResourceBundle.getBundle(Dispatcher.SERVER_BUNDLE_PATH);
-		final ResourceBundle views = ResourceBundle.getBundle(Dispatcher.VIEWS_BUNDLE_PATH);
 		
 		final Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -488,7 +487,7 @@ public class EditRosterEntryController extends Controller {
 			
 			final Calendar deadlineCalendar = Calendar.getInstance();
 			deadlineCalendar.setTime(plannedStartOfWork);
-			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);
+			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.ADD_ROSTER_ENTRY_DEADLINE_HOURS);
 			
 			if (plannedStartOfWork != null) {
 				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
