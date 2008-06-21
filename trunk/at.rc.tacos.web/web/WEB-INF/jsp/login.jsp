@@ -58,7 +58,7 @@
 			<tr>
 				<td align="right">Passwort:</td>
 				<td align="left"><input type="password" name="password"
-					size="20" maxlength="12" id="password" /></td>
+					size="20" maxlength="255" id="password" /></td>
 			</tr>
 			<tr>
 				<td><input type="hidden" name="savedUrl" value="${savedUrl}" />

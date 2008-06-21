@@ -1,7 +1,7 @@
 <%@ include file="includes.jsp"%>
 <c:choose>
 	<c:when test="${params.editedCount gt 0}">
-		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;Mitarbeiter&nbsp;erfolgreich&nbsp;bearbeitet</div>
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;Ihr&nbsp;Passwort&nbsp;erfolgreich&nbsp;ge&auml;ndert</div>
 		<br />
 	</c:when>
 </c:choose>
