@@ -105,7 +105,11 @@ public class RosterMonthController extends Controller {
 			}
 		}
 		if (location == null) {
-			throw new IllegalArgumentException("Error: Location must not be null.");
+			if (locationList.size() > 0) {
+				location = (Location)locationList.get(0);
+			} else {
+				throw new IllegalArgumentException("Error: Location must not be null.");
+			}
 		} 
 		params.put(MODEL_LOCATION_NAME, location);
 		

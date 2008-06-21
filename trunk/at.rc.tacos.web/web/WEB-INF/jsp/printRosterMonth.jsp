@@ -33,7 +33,7 @@
 					<th nowrap="nowrap">&nbsp;</th>
 					<th nowrap="nowrap">&nbsp;</th>
 					<c:forEach var="staffMemberIterator" items="${staffMemberList}">
-						<th nowrap="nowrap" colspan="3">${staffMemberIterator.lastName}&nbsp;${staffMemberIterator.firstName}</th>
+						<th nowrap="nowrap" colspan="2">${staffMemberIterator.lastName}&nbsp;${staffMemberIterator.firstName}</th>
 					</c:forEach>
 				</tr>
 				<c:forEach var="day" items="${dayList}">
@@ -169,7 +169,6 @@
 										</c:forEach>
 									</table>
 									</td>
-									<td>&nbsp;</td>
 								</c:when>
 								<c:otherwise>
 									<td>&nbsp;</td>
