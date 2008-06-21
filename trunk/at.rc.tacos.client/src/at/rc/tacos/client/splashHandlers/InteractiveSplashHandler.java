@@ -317,9 +317,9 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 
 		//init values 
 		//TODO: delete
-		fTextUsername.setText("user3");
+//		fTextUsername.setText("user3");
 		fTextUsername.setSelection(0,5);
-		fTextPassword.setText("P@ssw0rd");
+//		fTextPassword.setText("P@ssw0rd");
 	}
 
 	/**
