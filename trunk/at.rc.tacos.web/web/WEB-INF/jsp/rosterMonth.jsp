@@ -169,7 +169,8 @@
 						<c:when test="${params.month eq 'OCTOBER'}">Oktober</c:when>
 						<c:when test="${params.month eq 'NOVEMBER'}">November</c:when>
 						<c:when test="${params.month eq 'DECEMBER'}">Dezember</c:when>
-					</c:choose> ${params.year}&nbsp;in&nbsp;${params.location.locationName}</th>
+					</c:choose> ${params.year}&nbsp;in&nbsp;${params.location.locationName}
+					</th>
 				</tr>
 				<tr class="subhead2">
 					<th nowrap="nowrap">&nbsp;</th>
@@ -434,6 +435,17 @@
 		</table>
 	</c:otherwise>
 </c:choose>
+<br />
+<br />
+<c:url var="url" value="/Dispatcher/printRosterMonth.do">
+	<c:param name="functionId">${params.function.id}</c:param>
+	<c:param name="locationStaffMemberId">${params.locationStaffMember.id}</c:param>
+	<c:param name="staffMemberId">${params.staffMember.id}</c:param>
+	<c:param name="locationId">${params.location.id}</c:param>
+	<c:param name="month">${params.month}</c:param>
+	<c:param name="year">${params.year}</c:param>
+</c:url>
+<a href="${url}">Dienstplan&nbsp;drucken</a>
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#locationId').change(function() {
