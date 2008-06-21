@@ -105,7 +105,7 @@ public class RosterMonthController extends Controller {
 			}
 		}
 		if (location == null) {
-			location = userSession.getLoginInformation().getUserInformation().getPrimaryLocation();
+			throw new IllegalArgumentException("Error: Location must not be null.");
 		} 
 		params.put(MODEL_LOCATION_NAME, location);
 		
