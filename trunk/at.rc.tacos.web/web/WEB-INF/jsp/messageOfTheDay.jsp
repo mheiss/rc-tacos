@@ -1,7 +1,7 @@
 <%@ include file="includes.jsp"%>
 <c:choose>
 	<c:when test="${params.addedCount gt 0}">
-		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;neuen&nbsp;Message&nbsp;of&nbsp;the&nbsp;day&nbsp;angelegt</div>
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;neue&nbsp;Message&nbsp;of&nbsp;the&nbsp;day&nbsp;angelegt</div>
 		<br />
 	</c:when>
 </c:choose>
@@ -14,14 +14,15 @@
 	<tr>
 		<td style="font-weight: bold">Datum:<sup class="reqMark">*</sup></td>
 		<td><input id="date" name="date" type="text" size="10"
-			maxlength="10" value="${params.date}" /> <c:url var="url"
+			maxlength="10" value="<fmt:formatDate type="date" dateStyle="medium" value="${params.date}" />" /> <c:url var="url"
 			value="/image/calendar_edit.gif" /> <img src="${url}" border="0"
 			id="dateCalendarTrigger" style="cursor: pointer" /></td>
 		<td />
 	</tr>
 	<tr>
-		<td colspan="2"><textarea id="comment" name="comment" cols="40"
-			rows="7" wrap="soft">${params.messageOfTheDay}</textarea><sup class="reqMark">*</sup></td>
+		<td style="font-weight: bold">Nachricht:<sup class="reqMark">*</sup></td>
+		<td><textarea id="messageOfTheDay" name="messageOfTheDay" cols="40"
+			rows="7" wrap="soft">${params.messageOfTheDay}</textarea></td>
 		<td />
 		<td><span class="errorText"> <c:choose>
 			<c:when test="${not empty params.errors.messageOfTheDayMissing}">
@@ -44,7 +45,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	Calendar.setup ({
-		inputField : "messageOfTheDayDate",
+		inputField : "date",
 		button : "dateCalendarTrigger",
 		date : new Date(${params.calendarDefaultDateMilliseconds}),
 		range : new Array (${params.calendarRangeStart}, ${params.calendarRangeEnd}),
@@ -56,10 +57,6 @@ $(document).ready(function() {
 	
 	function update(cal) {
 		var url = '?date=' + $('#date').val();
-		var locationId = $('#locationId').val();
-		if (messageOfTheDay) {
-			url += '&messageOfTheDay=' + messageOfTheDay;
-		}
 		document.location = url;
 	}
 });

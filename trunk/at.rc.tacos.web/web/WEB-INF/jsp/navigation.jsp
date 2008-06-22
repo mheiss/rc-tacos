@@ -1,4 +1,25 @@
 <%@ include file="includes.jsp"%>
+<c:if test="${messageOfTheDay ne null}">
+	<table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td id="BlockHead" colspan="2"><b>Message&nbsp;of&nbsp;the&nbsp;day&nbsp;am
+			<c:choose>
+				<c:when test="${userSession.defaultFormValues.defaultDate ne null}">
+					<fmt:formatDate type="date" dateStyle="medium" value="${userSession.defaultFormValues.defaultDate}" />
+				</c:when>
+				<c:otherwise>
+					<fmt:formatDate type="date" dateStyle="medium" value="${userSession.today}" />
+				</c:otherwise>
+			</c:choose>
+			</b></td>
+		</tr>
+			<c:url var="url" value="/Dispatcher/journalShort.do" />
+		<tr>
+			<td id="navIcon"></td>
+			<td id="BlockContentNav">${messageOfTheDay.message}</td>
+		</tr>
+	</table>
+</c:if>
 <table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Dienstplan</b></td>
@@ -90,7 +111,7 @@
 		<td id="BlockContentNav"><a href="${url}">Profil</a></td>
 	</tr>
 	<c:if test="${userSession.loginInformation.authorization eq 'Administrator'}">
-		<c:url var="url" value="/Dispatcher/addMessageOfTheDay.do" />
+		<c:url var="url" value="/Dispatcher/messageOfTheDay.do" />
 		<tr>
 			<td id="navIcon"></td>
 			<td id="BlockContentNav"><a href="${url}">Message&nbsp;of&nbsp;the&nbsp;day</a></td>

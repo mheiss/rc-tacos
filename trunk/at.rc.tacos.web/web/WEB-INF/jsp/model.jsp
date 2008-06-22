@@ -44,7 +44,7 @@ $(document).ready(function() {
 </head>
 <body>
 <div id="messageOfTheDay"><img class="showMessageOfTheDay"
-	title="${messageOfTheDay.dayInfo}"
+	title="${messageOfTheDay.message}"
 	src="<c:url value="/image/info.gif"/>" /></div>
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
 	id="MainTab">
@@ -68,18 +68,20 @@ $(document).ready(function() {
 			<table width="100%" id="userInfo">
 				<c:url var="url" value="/Dispatcher/logout.do" />
 				<tr>
-					<td width="33%" align="left">Willkommen&nbsp;${userSession.loginInformation.userInformation.firstName}&nbsp;${userSession.loginInformation.userInformation.lastName}&nbsp;(<a href="${url}">Logout</a>)</td>
+					<td width="33%" align="left">Willkommen&nbsp;${userSession.loginInformation.userInformation.firstName}&nbsp;${userSession.loginInformation.userInformation.lastName}&nbsp;(<a
+						href="${url}">Logout</a>)</td>
 					<td id="headerTitle" width="33%" align="center">${htitle}</td>
-					<td width="33%" align="right">Ausgew&auml;hltes&nbsp;Datum:
-						<c:choose>
-							<c:when test="${userSession.defaultFormValues.defaultDate ne null}">
-								<fmt:formatDate type="date" dateStyle="medium" value="${userSession.defaultFormValues.defaultDate}" />
-							</c:when>
-							<c:otherwise>
-								<fmt:formatDate type="date" dateStyle="medium" value="${userSession.today}" />
-							</c:otherwise>
-						</c:choose>
-					</td>
+					<td width="33%" align="right">Ausgew&auml;hltes&nbsp;Datum: <c:choose>
+						<c:when
+							test="${userSession.defaultFormValues.defaultDate ne null}">
+							<fmt:formatDate type="date" dateStyle="medium"
+								value="${userSession.defaultFormValues.defaultDate}" />
+						</c:when>
+						<c:otherwise>
+							<fmt:formatDate type="date" dateStyle="medium"
+								value="${userSession.today}" />
+						</c:otherwise>
+					</c:choose></td>
 					<td>
 				</tr>
 			</table>
