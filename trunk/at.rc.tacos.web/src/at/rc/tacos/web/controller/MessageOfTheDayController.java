@@ -126,10 +126,7 @@ public class MessageOfTheDayController extends Controller {
 			if (messageOfTheDay == null || messageOfTheDay.trim().equals("")) {
 				valid = false;
 				errors.put(ERRORS_MESSAGE_OF_THE_DAY_MISSING, ERRORS_MESSAGE_OF_THE_DAY_MISSING_VALUE);
-			} else if (messageOfTheDay.length() > 300) {
-				valid = false;
-				errors.put(ERRORS_MESSAGE_OF_THE_DAY_TOO_LONG, ERRORS_MESSAGE_OF_THE_DAY_TOO_LONG_VALUE);
-			}					
+			}				
       
 			if (valid) {				
 				

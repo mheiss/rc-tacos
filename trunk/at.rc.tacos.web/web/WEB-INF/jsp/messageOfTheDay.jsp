@@ -13,7 +13,7 @@
 	</tr>
 	<tr>
 		<td style="font-weight: bold">Datum:<sup class="reqMark">*</sup></td>
-		<td><input id="messageOfTheDayDate" name="messageOfTheDayDate" type="text" size="10"
+		<td><input id="date" name="date" type="text" size="10"
 			maxlength="10" value="${params.messageOfTheDayDate}" /> <c:url var="url"
 			value="/image/calendar_edit.gif" /> <img src="${url}" border="0"
 			id="dateCalendarTrigger" style="cursor: pointer" /></td>
@@ -21,14 +21,11 @@
 	</tr>
 	<tr>
 		<td colspan="2"><textarea id="comment" name="comment" cols="40"
-			rows="7" wrap="soft">${params.messageOfTheDay}</textarea></td>
+			rows="7" wrap="soft">${params.messageOfTheDay}</textarea><sup class="reqMark">*</sup></td>
 		<td />
 		<td><span class="errorText"> <c:choose>
 			<c:when test="${not empty params.errors.messageOfTheDayMissing}">
 							${params.errors.messageOfTheDayMissing}
-						</c:when>
-			<c:when test="${not empty params.errors.messageOfTheDayTooLong}">
-							${params.errors.messageOfTheDayTooLong}
 						</c:when>
 		</c:choose></span></td>
 	</tr>
