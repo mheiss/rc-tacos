@@ -89,9 +89,11 @@
 		<td id="navIcon"></td>
 		<td id="BlockContentNav"><a href="${url}">Profil</a></td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/addMessageOfTheDay.do" />
-	<tr>
-		<td id="navIcon"></td>
-		<td id="BlockContentNav"><a href="${url}">Message&nbsp;of&nbsp;the&nbsp;day</a></td>
-	</tr>
+	<c:if test="${userSession.loginInformation.authorization eq 'Administrator'}">
+		<c:url var="url" value="/Dispatcher/addMessageOfTheDay.do" />
+		<tr>
+			<td id="navIcon"></td>
+			<td id="BlockContentNav"><a href="${url}">Message&nbsp;of&nbsp;the&nbsp;day</a></td>
+		</tr>
+	</c:if>
 </table>
