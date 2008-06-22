@@ -1,11 +1,6 @@
 <%@ include file="includes.jsp"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.*,java.text.*"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page session="true"%>
-<%
-	Map<String, Object> params = (Map<String, Object>) request.getAttribute("params");
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -23,15 +18,10 @@
 <title>TACOS :: Login</title>
 </head>
 <body onload="document.loginPanel.username.focus()">
-<%
-	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-	Date current = new Date();
-%>
-
 <table cellpadding="0" border="0" cellspacing="0" width="800"
 	align="center" id="mainTabLogDate">
 	<tr>
-		<td align="right">Heute ist der <%= format.format(current) %></td>
+		<td align="right">Heute&nbsp;ist&nbsp;der&nbsp;<fmt:formatDate type="date" dateStyle="medium" value="${userSession.today}" /></td>
 	</tr>
 </table>
 <table cellpadding="0" border="0" cellspacing="0" width="800"
@@ -41,13 +31,10 @@
 			href="http://www.st.roteskreuz.at/">Rotes Kreuz Steiermark</a> <br />
 		</td>
 		<td align="right" valign="bottom" id="rightLogSite">
-		<%
-			if (params.containsKey("loginError")) {
-		%>
-		<div id="meldungstext"><%=params.get("loginError")%></div>
-		<%
-			}
-		%> <c:url var="url" value="/Dispatcher/login.do?action=login" />
+		<c:if test="${params.loginError ne null}">
+			<div id="meldungstext">${params.loginError}</div>
+		</c:if>
+		<c:url var="url" value="/Dispatcher/login.do?action=login" />
 		<form method="post" action="${url}" accept-charset="ISO-8859-1">
 		<table id="loginPanel">
 			<tr>

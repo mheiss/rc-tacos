@@ -105,7 +105,7 @@ public class MessageOfTheDayController extends Controller {
 		params.put(MODEL_DATE_NAME, date);
 		
 		// Message of the day
-		final String defaultMessageOfTheDay = null;
+		final String defaultMessageOfTheDay = (String)request.getAttribute("messageOfTheDay");
 		String messageOfTheDay = null;
 		messageOfTheDay = paramMessageOfTheDay;
 		if (messageOfTheDay != null) {

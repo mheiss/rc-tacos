@@ -1,18 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="includes.jsp"%>
-<%@ page import="at.rc.tacos.web.session.UserSession"%>
-<%@ page import="java.util.Map"%>
-<%@ page import="java.util.Date"%>
-<%@ page import="java.text.*"%>
-<%
-	final Map<String, Object> params = (Map<String, Object>) request
-			.getAttribute("params");
-	final UserSession userSession = (UserSession) session
-			.getAttribute("userSession");
-	final Date today = new Date();
-	final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -80,16 +68,18 @@ $(document).ready(function() {
 			<table width="100%" id="userInfo">
 				<c:url var="url" value="/Dispatcher/logout.do" />
 				<tr>
-					<td width="33%" align="left">Willkommen&nbsp;<%=userSession.getLoginInformation().getUserInformation()
-							.getFirstName()
-					+ " "
-					+ userSession.getLoginInformation().getUserInformation()
-							.getLastName().replaceAll("ä", "&auml;")
-							.replaceAll("ö", "&ouml;")
-							.replaceAll("ü", "&uuml;").replaceAll("ß", "ss")%> &nbsp;&nbsp;(
-					<a href="${url}">Logout</a> )</td>
+					<td width="33%" align="left">Willkommen&nbsp;${userSession.loginInformation.userInformation.firstName}&nbsp;${userSession.loginInformation.userInformation.lastName}&nbsp;(<a href="${url}">Logout</a>)</td>
 					<td id="headerTitle" width="33%" align="center">${htitle}</td>
-					<td width="33%" align="right">Heute ist der <%=format.format(today)%></td>
+					<td width="33%" align="right">Ausgew&auml;hltes&nbsp;Datum:
+						<c:choose>
+							<c:when test="${userSession.defaultFormValues.defaultDate ne null}">
+								<fmt:formatDate type="date" dateStyle="medium" value="${userSession.defaultFormValues.defaultDate}" />
+							</c:when>
+							<c:otherwise>
+								<fmt:formatDate type="date" dateStyle="medium" value="${userSession.today}" />
+							</c:otherwise>
+						</c:choose>
+					</td>
 					<td>
 				</tr>
 			</table>

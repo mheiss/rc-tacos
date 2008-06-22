@@ -1,5 +1,7 @@
 package at.rc.tacos.web.session;
 
+import java.util.Date;
+
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Login;
 
@@ -15,6 +17,7 @@ public class UserSession
 	private Login loginInfo;
 	private DefaultFormValues defaultFormValues;
 	private boolean internalSession;
+	private Date today;
 
 	/**
 	 * Default constructor
@@ -24,6 +27,7 @@ public class UserSession
 		loggedIn = false;
 		defaultFormValues = new DefaultFormValues();
 		connection = new WebClient();
+		today = new Date();
 	}
 
 	/**
@@ -85,5 +89,13 @@ public class UserSession
 
 	public void setInternalSession(boolean internalSession) {
 		this.internalSession = internalSession;
+	}
+
+	public Date getToday() {
+		return today;
+	}
+
+	public void setToday(Date today) {
+		this.today = today;
 	}
 }
