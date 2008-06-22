@@ -34,11 +34,13 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 			query.setString(3, staffMember.getFirstName());
 			query.setString(4, staffMember.getLastName());
 			query.setBoolean(5, staffMember.isMale());
-			query.setString(6, staffMember.getBirthday());
-			query.setString(7, staffMember.getEMail());
-			query.setString(8, staffMember.getStreetname());
-			query.setString(9, staffMember.getCityname());
-			query.setString(10, staffMember.getUserName());
+			query.setString(6, staffMember.getPhone1());
+			query.setString(7, staffMember.getPhone2());
+			query.setString(8, staffMember.getBirthday());
+			query.setString(9, staffMember.getEMail());
+			query.setString(10, staffMember.getStreetname());
+			query.setString(11, staffMember.getCityname());
+			query.setString(12, staffMember.getUserName());
 			if(query.executeUpdate() == 0)
 				return false;
 			//remove all competences from the staff member and assign them again
@@ -68,11 +70,13 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 			query1.setString(2, staffmember.getFirstName());
 			query1.setString(3, staffmember.getLastName());
 			query1.setBoolean(4, staffmember.isMale());
-			query1.setString(5, staffmember.getBirthday());
-			query1.setString(6, staffmember.getEMail());
-			query1.setString(7, staffmember.getStreetname());
-			query1.setString(8, staffmember.getCityname());
-			query1.setInt(9, staffmember.getStaffMemberId());
+			query1.setString(5, staffmember.getPhone1());
+			query1.setString(6, staffmember.getPhone2());
+			query1.setString(7, staffmember.getBirthday());
+			query1.setString(8, staffmember.getEMail());
+			query1.setString(9, staffmember.getStreetname());
+			query1.setString(10, staffmember.getCityname());
+			query1.setInt(11, staffmember.getStaffMemberId());
 			
 			//check if the update was successfully
 			if(query1.executeUpdate() == 0)
@@ -113,6 +117,8 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("street"));
 				staff.setCityname(rs.getString("city"));
 				staff.setMale(rs.getBoolean("sex"));
+				staff.setPhone1(rs.getString("phone1"));
+				staff.setPhone2(rs.getString("phone2"));
 				staff.setBirthday(rs.getString("birthday"));
 				staff.setEMail(rs.getString("email"));
 				staff.setUserName(rs.getString("username"));
@@ -152,6 +158,8 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("street"));
 				staff.setCityname(rs.getString("city"));
 				staff.setMale(rs.getBoolean("sex"));
+				staff.setPhone1(rs.getString("phone1"));
+				staff.setPhone2(rs.getString("phone2"));
 				staff.setBirthday(rs.getString("birthday"));
 				staff.setEMail(rs.getString("email"));
 				staff.setUserName(rs.getString("username"));
@@ -190,6 +198,8 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("street"));
 				staff.setCityname(rs.getString("city"));
 				staff.setMale(rs.getBoolean("sex"));
+				staff.setPhone1(rs.getString("phone1"));
+				staff.setPhone2(rs.getString("phone2"));
 				staff.setBirthday(rs.getString("birthday"));
 				staff.setEMail(rs.getString("email"));
 				staff.setUserName(rs.getString("username"));
@@ -228,6 +238,8 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 				staff.setStreetname(rs.getString("street"));
 				staff.setCityname(rs.getString("city"));
 				staff.setMale(rs.getBoolean("sex"));
+				staff.setPhone1(rs.getString("phone1"));
+				staff.setPhone2(rs.getString("phone2"));
 				staff.setBirthday(rs.getString("birthday"));
 				staff.setEMail(rs.getString("email"));
 				staff.setUserName(rs.getString("username"));
