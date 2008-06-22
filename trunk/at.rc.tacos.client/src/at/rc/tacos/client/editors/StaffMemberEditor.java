@@ -43,8 +43,6 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.providers.CompetenceContentProvider;
 import at.rc.tacos.client.providers.CompetenceLabelProvider;
-import at.rc.tacos.client.providers.MobilePhoneContentProvider;
-import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
@@ -53,7 +51,6 @@ import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
-import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 
 public class StaffMemberEditor extends EditorPart implements PropertyChangeListener
