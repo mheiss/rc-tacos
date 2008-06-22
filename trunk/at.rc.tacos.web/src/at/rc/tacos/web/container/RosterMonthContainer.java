@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Job;
 import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
@@ -23,32 +22,25 @@ import at.rc.tacos.model.StaffMember;
 public class RosterMonthContainer {
 	private List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
 	private List<StaffMember>staffMemberList = new ArrayList<StaffMember>();
-	private List<Function>functionList = new ArrayList<Function>();
 	private List<Day>dayList = new ArrayList<Day>();
 	private List<Job>jobList = new ArrayList<Job>();
 	private List<ServiceType>serviceTypeList = new ArrayList<ServiceType>();
-	private SortedMap<Function, SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>> rosterEntryContainerMap;
+	private SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> rosterEntryContainerMap;
 	
 	// Insert function comparator
-	public void createTimetable(final Comparator functionComparator, final Comparator dayComparator, final Comparator staffMemberComparator)
+	public void createTimetable(final Comparator dayComparator, final Comparator staffMemberComparator)
 	{
-		SortedMap<Function, SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>> map = new TreeMap<Function, SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>>(functionComparator);
+		SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> map = new TreeMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>(dayComparator);
 		for (RosterEntryContainer rosterEntryContainer : rosterEntryContainerList) {
-			final Function function = rosterEntryContainer.getFunction();
 			final Date plannedStartOfWork = rosterEntryContainer.getPlannedStartOfWork();
 			final Calendar calendar = Calendar.getInstance();
 			calendar.setTime(plannedStartOfWork);
 			final Day day = new Day(calendar.get(Calendar.DAY_OF_MONTH));		
 			final StaffMember staffMember = rosterEntryContainer.getRosterEntry().getStaffMember();
-			SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> functionRosterEntryContainerMap = map.get(function);
-			if (functionRosterEntryContainerMap == null) {
-				functionRosterEntryContainerMap = new TreeMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>(dayComparator);
-				map.put(function, functionRosterEntryContainerMap);
-			}
-			SortedMap<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap = functionRosterEntryContainerMap.get(day);
+			SortedMap<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap = map.get(day);
 			if (dayRosterEntryContainerMap == null) {
 				dayRosterEntryContainerMap = new TreeMap<StaffMember, List<RosterEntryContainer>>(staffMemberComparator);
-				functionRosterEntryContainerMap.put(day, dayRosterEntryContainerMap);
+				map.put(day, dayRosterEntryContainerMap);
 			}
 			List<RosterEntryContainer> staffMemberRosterEntryContainerList = dayRosterEntryContainerMap.get(staffMember);
 			if (staffMemberRosterEntryContainerList == null) {
@@ -62,17 +54,11 @@ public class RosterMonthContainer {
 	}
 	
 	public void sortRosterEntries(final Comparator rosterEntryContainerComparator) {
-		for (SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> functionRosterEntryContainerMap : rosterEntryContainerMap.values()) {
-			for (Map<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap : functionRosterEntryContainerMap.values()) {						
-				for (List<RosterEntryContainer> staffMemberRosterEntryContainerList : dayRosterEntryContainerMap.values()) {
-					Collections.sort(staffMemberRosterEntryContainerList, rosterEntryContainerComparator);
-				}
+		for (Map<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap : rosterEntryContainerMap.values()) {						
+			for (List<RosterEntryContainer> staffMemberRosterEntryContainerList : dayRosterEntryContainerMap.values()) {
+				Collections.sort(staffMemberRosterEntryContainerList, rosterEntryContainerComparator);
 			}
-		}
-	}
-
-	public void sortFunctionList(final Comparator functionComparator) {
-		Collections.sort(functionList, functionComparator);
+		}	
 	}
 	
 	public void fillDayList(int month, int year) {
@@ -138,12 +124,12 @@ public class RosterMonthContainer {
 		Collections.sort(staffMemberList, staffMemberComparator);
 	}
 
-	public SortedMap<Function, SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>> getRosterEntryContainerMap() {
+	public SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> getRosterEntryContainerMap() {
 		return rosterEntryContainerMap;
 	}
 
 	public void setRosterEntryContainerMap(
-			SortedMap<Function, SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>> rosterEntryContainerMap) {
+			SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> rosterEntryContainerMap) {
 		this.rosterEntryContainerMap = rosterEntryContainerMap;
 	}
 
@@ -153,17 +139,6 @@ public class RosterMonthContainer {
 
 	public List<StaffMember> getStaffMemberList() {
 		return staffMemberList;
-	}
-
-	public List<Function> getFunctionList() {
-		return functionList;
-	}
-
-	public void setFunctionList(List<Competence> functionList) {
-		for (final Competence competence : functionList) {
-			final Function function = new Function(competence);
-			this.functionList.add(function);
-		}
 	}
 
 	public void setRosterEntryContainerList(

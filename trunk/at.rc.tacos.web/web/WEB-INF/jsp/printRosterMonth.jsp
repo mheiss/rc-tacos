@@ -1,8 +1,6 @@
 <%@ include file="includes.jsp"%>
 <c:set var="rosterEntryContainerMap"
 	value="${params.rosterMonthContainer.rosterEntryContainerMap}" />
-<c:set var="functionList"
-	value="${params.rosterMonthContainer.functionList}" />
 <c:set var="dayList" value="${params.rosterMonthContainer.dayList}" />
 <c:set var="staffMemberList"
 	value="${params.rosterMonthContainer.staffMemberList}" />
@@ -10,7 +8,6 @@
 	<c:when test="${fn:length(staffMemberList) gt 0}">
 		<table id="rosterEntryTable" class="list" cellpadding="0"
 			cellspacing="0">
-			<c:forEach var="function" items="${functionList}">
 				<tr>
 					<th class="header2" colspan="${fn:length(staffMemberList)*2+2}">${function.function.competenceName}&nbsp;im
 					<c:choose>
@@ -50,17 +47,8 @@
 							<c:when test="${day.dayOfWeek eq 6}">Fr</c:when>
 							<c:when test="${day.dayOfWeek eq 7}">Sa</c:when>
 						</c:choose></td>
-						<c:forEach var="functionRosterEntryContainerMapTemp"
-							items="${rosterEntryContainerMap}">
-							<c:set var="functionTemp"
-								value="${functionRosterEntryContainerMapTemp.key}" />
-							<c:if test="${function.function.id eq functionTemp.function.id}">
-								<c:set var="functionRosterEntryContainerMap"
-									value="${functionRosterEntryContainerMapTemp}" />
-							</c:if>
-						</c:forEach>
 						<c:forEach var="dayRosterEntryContainerMapTemp"
-							items="${functionRosterEntryContainerMap.value}">
+							items="${rosterEntryContainerMap}">
 							<c:set var="dayTemp"
 								value="${dayRosterEntryContainerMapTemp.key}" />
 							<c:if test="${day.day eq dayTemp.day}">
@@ -68,7 +56,6 @@
 									value="${dayRosterEntryContainerMapTemp}" />
 							</c:if>
 						</c:forEach>
-
 						<c:forEach var="staffMemberIterator" items="${staffMemberList}">
 							<c:forEach var="staffMemberRosterEntryContainerMap"
 								items="${dayRosterEntryContainerMap.value}">
@@ -78,13 +65,6 @@
 									test="${staffMemberIterator.staffMemberId eq staffMemberTemp.staffMemberId}">
 									<c:set var="rosterEntryContainerList"
 										value="${staffMemberRosterEntryContainerMap.value}" />
-								</c:if>
-							</c:forEach>
-							<c:forEach var="competenceIterator"
-								items="${staffMemberIterator.competenceList}">
-								<c:if
-									test="${job.id eq competenceIterator.id or job.jobName eq competenceIterator.competenceName}">
-									<c:set var="staffMemberHasCompetence" value="true" />
 								</c:if>
 							</c:forEach>
 							<c:choose>
@@ -175,14 +155,11 @@
 									<td>&nbsp;</td>
 								</c:otherwise>
 							</c:choose>
-							<c:remove var="staffMemberHasCompetence" />
 							<c:remove var="rosterEntryContainerList" />
 						</c:forEach>
 					</tr>
-					<c:remove var="functionRosterEntryContainerMap" />
 					<c:remove var="dayRosterEntryContainerMap" />
 				</c:forEach>
-			</c:forEach>
 		</table>
 	</c:when>
 	<c:otherwise>
@@ -197,3 +174,8 @@
 <br />
 <c:url var="url" value="/Dispatcher/rosterMonth.do" />
 <a href="${url}">Zur&uuml;ck</a>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#rosterEntryTable .showJobName').Tooltip({ delay: 100, showURL: false });
+});
+</script>

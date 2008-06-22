@@ -257,16 +257,12 @@ public class PrintRosterMonthController extends Controller {
 		rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
 		rosterFilter.add(IFilterTypes.ROSTER_MONTH_FILTER, Integer.toString(month + 1));
 		rosterFilter.add(IFilterTypes.ROSTER_YEAR_FILTER, year.toString());
-		if (function != null) {
-			if (function.getCompetenceName().equals(Competence.FUNCTION_LS)) {
-				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER, Job.JOB_LEITSTELLENDISPONENT);
-			} else if (function.getCompetenceName().equals(Competence.FUNCTION_HA)) {
-				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER, ServiceType.SERVICETYPE_HAUPTAMTLICH);
-			} else if (function.getCompetenceName().equals(Competence.FUNCTION_ZD)) {
-				rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER, ServiceType.SERIVCETYPE_ZIVILDIENER);
-			}
-			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER, function.getCompetenceName());
+		if (function.getCompetenceName().equals(Competence.FUNCTION_HA)) {
+			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_SERVICE_TYPE_FILTER, ServiceType.SERVICETYPE_HAUPTAMTLICH);
+		} else if (function.getCompetenceName().equals(Competence.FUNCTION_ZD)) {
+			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_SERVICE_TYPE_FILTER, ServiceType.SERIVCETYPE_ZIVILDIENER);
 		}
+		rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER, function.getCompetenceName());
 		if (locationStaffMember != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER, Integer.toString(locationStaffMember.getId()));
 		}
@@ -306,29 +302,6 @@ public class PrintRosterMonthController extends Controller {
 			registerStartCalendar.set(Calendar.HOUR, registerStartCalendar.get(Calendar.HOUR) - RosterEntryContainer.REGISTER_ROSTER_ENTRY_DEADLINE_HOURS);
 			rosterEntryContainer.setRegisterStart(registerStartCalendar.getTime());
 			
-			if (rosterEntry.getJob().getJobName().equals(Job.JOB_LEITSTELLENDISPONENT)) {
-				for (final Iterator<Competence> itFl = functionList.iterator(); itFl.hasNext();) {
-					final Competence f = (Competence)itFl.next();
-					if (f.getCompetenceName().equals(Competence.FUNCTION_LS)) {
-						rosterEntryContainer.setFunction(f);
-					}
-				}
-			} else if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_HAUPTAMTLICH)) {
-				for (final Iterator<Competence> itFl = functionList.iterator(); itFl.hasNext();) {
-					final Competence f = (Competence)itFl.next();
-					if (f.getCompetenceName().equals(Competence.FUNCTION_HA)) {
-						rosterEntryContainer.setFunction(f);
-					}
-				}
-			} else if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERIVCETYPE_ZIVILDIENER)) {
-				for (final Iterator<Competence> itFl = functionList.iterator(); itFl.hasNext();) {
-					final Competence f = (Competence)itFl.next();
-					if (f.getCompetenceName().equals(Competence.FUNCTION_ZD)) {
-						rosterEntryContainer.setFunction(f);
-					}
-				}
-			}
-			
 			rosterEntryContainerList.add(rosterEntryContainer);
 		}
 		
@@ -356,16 +329,6 @@ public class PrintRosterMonthController extends Controller {
 		
 		// Set roster entry list
 		rosterMonthContainer.setRosterEntryContainerList(rosterEntryContainerList);
-		
-		// Set function list
-		if (function == null) {
-			rosterMonthContainer.setFunctionList(functionList);
-		} else {
-			final List<Competence> fList = new ArrayList<Competence>();
-			fList.add(function);
-			rosterMonthContainer.setFunctionList(fList);
-		}
-		rosterMonthContainer.sortFunctionList(functionComparator);
 		
 		// Fill day list
 		rosterMonthContainer.fillDayList(month, year.intValue());
@@ -405,7 +368,7 @@ public class PrintRosterMonthController extends Controller {
 		rosterMonthContainer.setServiceTypeList(serviceTypeList);
 		
 		// Create timetable
-		rosterMonthContainer.createTimetable(functionComparator, dayComparator, staffMemberComparator);
+		rosterMonthContainer.createTimetable(dayComparator, staffMemberComparator);
 		
 		// Sort roster entries in timetable
 		rosterMonthContainer.sortRosterEntries(sortComp);
