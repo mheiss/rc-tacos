@@ -44,7 +44,7 @@ public interface IFilterTypes
     public final static String ROSTER_YEAR_FILTER = "rosterYearFilter";
     
     /** Filter roster by function (job/serviceType) */
-    public final static String ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER = "rosterFunctionJobServiceTypeFilter";
+    public final static String ROSTER_FUNCTION_SERVICE_TYPE_FILTER = "rosterFunctionJobServiceTypeFilter";
     
     /** Filter roster by function (staffMember's competence) */
     public final static String ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER = "rosterFunctionStaffMemberCompetenceFilter";
