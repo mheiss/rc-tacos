@@ -14,7 +14,7 @@
 	<tr>
 		<td style="font-weight: bold">Datum:<sup class="reqMark">*</sup></td>
 		<td><input id="date" name="date" type="text" size="10"
-			maxlength="10" value="${params.messageOfTheDayDate}" /> <c:url var="url"
+			maxlength="10" value="${params.date}" /> <c:url var="url"
 			value="/image/calendar_edit.gif" /> <img src="${url}" border="0"
 			id="dateCalendarTrigger" style="cursor: pointer" /></td>
 		<td />
