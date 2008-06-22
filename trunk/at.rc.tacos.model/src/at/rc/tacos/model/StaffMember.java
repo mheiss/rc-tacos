@@ -48,6 +48,8 @@ public class StaffMember extends AbstractMessage
 		staffMemberId = -1;
 		lastName = "";
 		firstName = "";
+		phone1 = "";
+		phone2 = "";
 		phonelist = new ArrayList<MobilePhoneDetail>();
 		competenceList = new ArrayList<Competence>();
 	}
