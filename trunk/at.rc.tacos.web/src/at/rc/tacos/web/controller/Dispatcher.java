@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
@@ -152,11 +151,14 @@ public class Dispatcher extends HttpServlet
 			final Login login = (Login)loginList.get(0);
 			userSession.setLoginInformation(login);	
 			
-			//TODO: Get message of the day and write to request context
+			//Get message of the day and write to request context
 			final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
-			formatDateForServer.format(new Date());
+			Date messageOfTheDayDate = userSession.getDefaultFormValues().getDefaultDate();
+			if (messageOfTheDayDate == null) {
+				messageOfTheDayDate = new Date();
+			}
 			final QueryFilter dateFilter = new QueryFilter();
-			dateFilter.add(IFilterTypes.DATE_FILTER, formatDateForServer.format(new Date()));
+			dateFilter.add(IFilterTypes.DATE_FILTER, formatDateForServer.format(messageOfTheDayDate));
 			final List<AbstractMessage> messageOfTheDayList = userSession.getConnection().sendListingRequest(DayInfoMessage.ID, dateFilter);
 			DayInfoMessage message = null;
 			if (messageOfTheDayList != null)
