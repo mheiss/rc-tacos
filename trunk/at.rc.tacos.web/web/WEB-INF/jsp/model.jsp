@@ -56,7 +56,7 @@ $(document).ready(function() {
 </head>
 <body>
 <div id="messageOfTheDay"><img class="showMessageOfTheDay"
-	title="${messageOfTheDay}"
+	title="${messageOfTheDay.dayInfo}"
 	src="<c:url value="/image/info.gif"/>" /></div>
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
 	id="MainTab">
