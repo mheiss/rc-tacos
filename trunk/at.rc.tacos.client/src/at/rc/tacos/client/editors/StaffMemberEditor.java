@@ -69,11 +69,12 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private CLabel infoLabel;
 	private Text staffId,fName,lName,dateOfBirth;
 	private Text uName,pwd,pwdRetype;
-	private TableViewer phoneViewer,competenceViewer;
-	private ComboViewer phoneComboViewer,primaryLocationComboViewer,competenceComboViewer,authorisationComboViewer,sexComboViewer;
+	private TableViewer competenceViewer;
+	private ComboViewer primaryLocationComboViewer,competenceComboViewer,authorisationComboViewer,sexComboViewer;
 	private Button locked;
-	private Hyperlink addPhone,removePhone,removeCompetence,addCompetence;
+	private Hyperlink removeCompetence,addCompetence;
 	private ImageHyperlink saveHyperlink;
+	private Text phone1, phone2;
 
 	//indicates non-saved changes
 	protected boolean isDirty;
@@ -178,11 +179,12 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		staffId.setText(String.valueOf(staffMember.getStaffMemberId()));
 		fName.setText(staffMember.getFirstName());
 		lName.setText(staffMember.getLastName());
+		if(staffMember.getPhone1() != null)
+			phone1.setText(staffMember.getPhone1());
+		if(staffMember.getPhone2() != null)
+			phone2.setText(staffMember.getPhone2());
 		if(staffMember.getBirthday() != null)
 			dateOfBirth.setText(staffMember.getBirthday());
-		if(staffMember.getPhonelist() != null)
-			for(MobilePhoneDetail detail:staffMember.getPhonelist())
-				phoneViewer.add(detail);
 		if(staffMember.isMale())
 			sexComboViewer.setSelection(new StructuredSelection(StaffMember.STAFF_MALE));
 		else
@@ -194,7 +196,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		authorisationComboViewer.setSelection(new StructuredSelection(loginInfo.getAuthorization()));
 
 		//update the phone and competence view
-		phoneViewer.refresh(true);
 		competenceViewer.refresh(true);
 		
 		//personal numer is not changeable
@@ -248,6 +249,25 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			return;
 		}
 		staffMember.setLastName(lName.getText());
+		
+		//set the phone 1 and phone 2
+		if(phone1.getText().length() > 50)
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie eine gültige Telefonnummer(1) (max. 50 Zeichen) ein", IMessageProvider.ERROR);
+			return;
+		}
+		if(!phone1.getText().trim().isEmpty())
+			staffMember.setPhone1(phone1.getText());
+		
+		if(phone2.getText().length() > 50)
+		{
+			form.getDisplay().beep();
+			form.setMessage("Bitte geben Sie eine gültige Telefonnummer(2) (max. 50 Zeichen) ein", IMessageProvider.ERROR);
+			return;
+		}
+		if(!phone2.getText().trim().isEmpty())
+			staffMember.setPhone2(phone2.getText());
 
 		//date of birth
 		String patternDate = "\\d{2}\\-\\d{2}-\\d{4}";
@@ -430,6 +450,24 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				inputChanged();
 			}
 		});
+		
+		final Label labelPhone1 = toolkit.createLabel(client, "Telefon 1");
+		phone1 = toolkit.createText(client, "");
+		phone1.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
+		
+		final Label labelPhone2 = toolkit.createLabel(client, "Telefon 2");
+		phone2 = toolkit.createText(client, "");
+		phone2.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent me) {
+				inputChanged();
+			}
+		});
 
 		final Label labelDateOfBirth = toolkit.createLabel(client, "Geburtsdatum");
 		dateOfBirth = toolkit.createText(client, "");
@@ -463,94 +501,8 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
 			}
-		});
-
-		//phone list 
-		final Label labelPhone = toolkit.createLabel(client, "Telefonnummern",SWT.LEFT | SWT.TOP);
-
-		//make a subcomposite holding the Hyperlinks and the viewer
-		Composite phoneSub = makeComposite(client, 3);
-
-		//create the viewer
-		Combo comboPhone = new Combo(phoneSub, SWT.READ_ONLY);
-		phoneComboViewer = new ComboViewer(comboPhone);
-		phoneComboViewer.setContentProvider(new MobilePhoneContentProvider());
-		phoneComboViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		phoneComboViewer.setInput(ModelFactory.getInstance().getPhoneManager().getMobilePhoneList());
-
-		addPhone = toolkit.createHyperlink(phoneSub, "Nummer hinzufügen", SWT.NONE);
-		addPhone.setToolTipText("Mit diesem Link kann dem Mitarbeiter eine Telefonnummer zugewiesen werden");
-		addPhone.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				form.setMessage(null, IMessageProvider.NONE);
-				//get the selected phone
-				ISelection selection = phoneComboViewer.getSelection();
-
-				//get the selected phone
-				StructuredSelection structuredSelection = (StructuredSelection)selection;
-				MobilePhoneDetail phone = (MobilePhoneDetail)structuredSelection.getFirstElement();
-				//check if this member has already the phone
-				if(staffMember.getPhonelist().contains(phone))
-				{
-					form.getShell().getDisplay().beep();
-					form.setMessage("Dem Mitarbeiter wurde diese Telefonnummer bereits zugewiesen.", IMessageProvider.ERROR);
-					return;
-				}
-				staffMember.getPhonelist().add(phone);
-				phoneViewer.refresh();
-			}
-		});
-		//hyperlink to remove a phone
-		removePhone = toolkit.createHyperlink(phoneSub, "Nummer entfernen", SWT.LEFT);
-		removePhone.setToolTipText("Mit diesem Link wird die selektierte Telefonnummern entfernt");
-		removePhone.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e)
-			{
-				form.setMessage(null, IMessageProvider.NONE);
-				//get the selected element
-				ISelection selection = phoneViewer.getSelection();
-				if(!selection.isEmpty())
-				{
-					//get the selected object
-					Object selectedPhone = ((IStructuredSelection)selection).getFirstElement();
-					phoneViewer.remove(selectedPhone);
-					staffMember.getPhonelist().remove(selectedPhone);
-				}
-				else
-				{
-					form.getShell().getDisplay().beep();
-					form.setMessage("Bitte wählen Sie eine Telefonnummer aus die entfernt werden soll", IMessageProvider.ERROR);
-				}
-			}
 		});	
-
-		//the viewer, should span over two columns
-		phoneViewer = new TableViewer(phoneSub,SWT.BORDER);
-		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		//set this staff members phone list as content provider
-		phoneViewer.setContentProvider(new IStructuredContentProvider()
-		{
-			@Override
-			public Object[] getElements(Object arg0) 
-			{
-				return staffMember.getPhonelist().toArray();
-			}
-
-			@Override
-			public void dispose() { }
-
-			@Override
-			public void inputChanged(Viewer arg0, Object arg1, Object arg2) 
-			{ 
-				isDirty = true;
-			}
-		});
-		phoneViewer.setInput(staffMember.getPhonelist().toArray());	
+		
 
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -564,30 +516,38 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		labelLName.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
+		labelPhone1.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
+		labelPhone2.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 150;
 		labelDateOfBirth.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
 		labelSex.setLayoutData(data);
-		data = new GridData(GridData.BEGINNING);
-		data.widthHint = 150;
-		data.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
-		data.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-		labelPhone.setLayoutData(data);
+
 		//layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint = 150;
 		staffId.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint = 150;
 		fName.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint = 150;
 		lName.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint = 150;
 		dateOfBirth.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		sexComboViewer.getCombo().setLayoutData(data2);
-		data2 = new GridData(GridData.FILL_BOTH);
-		data2.horizontalSpan = 2;
-		data2.heightHint = 50;
-		phoneViewer.getTable().setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint = 150;
+		phone1.setLayoutData(data2);
+		data2 = new GridData(GridData.FILL_HORIZONTAL);
+		data2.widthHint = 150;
+		phone2.setLayoutData(data2);
 
 		return client;
 	}
@@ -732,7 +692,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	 */
 	private Composite createLoginSection(Composite parent)
 	{
-		Composite client = createSection(parent, "Daten zum anmelden am System und Online-Dienstplan");
+		Composite client = createSection(parent, "Daten zum Anmelden am System und Online-Dienstplan");
 
 		//create the label and the input field
 		final Label labelUsername = toolkit.createLabel(client, "Username: ");
@@ -956,6 +916,16 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		}
 		//check the firstname
 		if(!fName.getText().equalsIgnoreCase(persistantMember.getFirstName()))
+		{
+			isDirty = true;
+		}
+		//check the phone1
+		if(!phone1.getText().equalsIgnoreCase(persistantMember.getPhone1()))
+		{
+			isDirty = true;
+		}
+		//check the phone2
+		if(!phone2.getText().equalsIgnoreCase(persistantMember.getPhone2()))
 		{
 			isDirty = true;
 		}
