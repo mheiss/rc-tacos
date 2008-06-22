@@ -2,7 +2,7 @@
 <c:if test="${messageOfTheDay ne null}">
 	<table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td id="BlockHead" colspan="2"><b>Message&nbsp;of&nbsp;the&nbsp;day&nbsp;am
+			<td id="BlockHead" colspan="2"><b>Message&nbsp;of&nbsp;the&nbsp;day&nbsp;
 			<c:choose>
 				<c:when test="${userSession.defaultFormValues.defaultDate ne null}">
 					<fmt:formatDate type="date" dateStyle="medium" value="${userSession.defaultFormValues.defaultDate}" />
@@ -11,7 +11,8 @@
 					<fmt:formatDate type="date" dateStyle="medium" value="${userSession.today}" />
 				</c:otherwise>
 			</c:choose>
-			</b></td>
+			by
+			${messageOfTheDay.lastChangedBy}</b></td>
 		</tr>
 			<c:url var="url" value="/Dispatcher/journalShort.do" />
 		<tr>

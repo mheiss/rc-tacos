@@ -30,11 +30,6 @@
 	src="<c:url value="/js/jquery.dimensions.js"/>"></script>
 <script type="text/javascript"
 	src="<c:url value="/js/jquery.tooltip.js"/>"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-	$('.showMessageOfTheDay').Tooltip({ delay: 100, showURL: false });
-});
-</script>
 <c:if test="${not empty js}">
 	<c:forTokens var="item" items="${js}" delims="|">
 		<script type="text/javascript" src="<c:url value="/js/${item}"/>"></script>
@@ -43,9 +38,6 @@ $(document).ready(function() {
 <title>${title}</title>
 </head>
 <body>
-<div id="messageOfTheDay"><img class="showMessageOfTheDay"
-	title="${messageOfTheDay.message}"
-	src="<c:url value="/image/info.gif"/>" /></div>
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
 	id="MainTab">
 	<thead>

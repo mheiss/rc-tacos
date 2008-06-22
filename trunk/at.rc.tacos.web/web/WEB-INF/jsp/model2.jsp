@@ -14,6 +14,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/stylesheet.css"/>" />
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/css/jquery.tooltip.css"/>" />
 <c:if test="${not empty css}">
 	<c:forTokens var="item" items="${css}" delims="|">
 		<link rel="stylesheet" href="<c:url value="/css/${item}"/>"
@@ -24,6 +26,10 @@
 	href="<c:url value="/favicon.ico"/>" />
 <script type="text/javascript"
 	src="<c:url value="/js/jquery-1.2.3.js"/>"></script>
+<script type="text/javascript"
+	src="<c:url value="/js/jquery.dimensions.js"/>"></script>
+<script type="text/javascript"
+	src="<c:url value="/js/jquery.tooltip.js"/>"></script>
 <c:if test="${not empty js}">
 	<c:forTokens var="item" items="${js}" delims="|">
 		<script type="text/javascript" src="<c:url value="/js/${item}"/>"></script>

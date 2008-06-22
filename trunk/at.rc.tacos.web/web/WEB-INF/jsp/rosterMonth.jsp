@@ -103,8 +103,6 @@
 <br />
 <c:set var="rosterEntryContainerMap"
 	value="${params.rosterMonthContainer.rosterEntryContainerMap}" />
-<c:set var="functionList"
-	value="${params.rosterMonthContainer.functionList}" />
 <c:set var="dayList" value="${params.rosterMonthContainer.dayList}" />
 <c:set var="staffMemberList"
 	value="${params.rosterMonthContainer.staffMemberList}" />
@@ -115,9 +113,8 @@
 	<c:when test="${fn:length(staffMemberList) gt 0}">
 		<table id="rosterEntryTable" class="list" cellpadding="0"
 			cellspacing="0">
-			<c:forEach var="function" items="${functionList}">
 				<c:choose>
-					<c:when test="${function.function.competenceName eq '_LS'}">
+					<c:when test="${params.function.competenceName eq '_LS'}">
 						<c:forEach var="jobIterator" items="${jobList}">
 							<c:if test="${jobIterator.jobName eq 'Leitstellendisponent'}">
 								<c:set var="job" value="${jobIterator}" />
@@ -129,7 +126,7 @@
 							</c:if>
 						</c:forEach>
 					</c:when>
-					<c:when test="${function.function.competenceName eq '_HA'}">
+					<c:when test="${params.function.competenceName eq '_HA'}">
 						<c:forEach var="jobIterator" items="${jobList}">
 							<c:if test="${jobIterator.jobName eq 'Fahrer'}">
 								<c:set var="job" value="${jobIterator}" />
@@ -141,7 +138,7 @@
 							</c:if>
 						</c:forEach>
 					</c:when>
-					<c:when test="${function.function.competenceName eq '_ZD'}">
+					<c:when test="${params.function.competenceName eq '_ZD'}">
 						<c:forEach var="jobIterator" items="${jobList}">
 							<c:if test="${jobIterator.jobName eq 'Sanitäter'}">
 								<c:set var="job" value="${jobIterator}" />
@@ -155,7 +152,7 @@
 					</c:when>
 				</c:choose>
 				<tr>
-					<th class="header2" colspan="${fn:length(staffMemberList)*3+2}">${function.function.competenceName}&nbsp;im
+					<th class="header2" colspan="${fn:length(staffMemberList)*3+2}">${params.function.competenceName}&nbsp;im
 					<c:choose>
 						<c:when test="${params.month eq 'JANUARY'}">J&auml;nner</c:when>
 						<c:when test="${params.month eq 'FEBRUARY'}">Februar</c:when>
@@ -193,17 +190,8 @@
 							<c:when test="${day.dayOfWeek eq 6}">Fr</c:when>
 							<c:when test="${day.dayOfWeek eq 7}">Sa</c:when>
 						</c:choose></td>
-						<c:forEach var="functionRosterEntryContainerMapTemp"
-							items="${rosterEntryContainerMap}">
-							<c:set var="functionTemp"
-								value="${functionRosterEntryContainerMapTemp.key}" />
-							<c:if test="${function.function.id eq functionTemp.function.id}">
-								<c:set var="functionRosterEntryContainerMap"
-									value="${functionRosterEntryContainerMapTemp}" />
-							</c:if>
-						</c:forEach>
 						<c:forEach var="dayRosterEntryContainerMapTemp"
-							items="${functionRosterEntryContainerMap.value}">
+							items="${rosterEntryContainerMap}">
 							<c:set var="dayTemp"
 								value="${dayRosterEntryContainerMapTemp.key}" />
 							<c:if test="${day.day eq dayTemp.day}">
@@ -221,13 +209,6 @@
 									test="${staffMemberIterator.staffMemberId eq staffMemberTemp.staffMemberId}">
 									<c:set var="rosterEntryContainerList"
 										value="${staffMemberRosterEntryContainerMap.value}" />
-								</c:if>
-							</c:forEach>
-							<c:forEach var="competenceIterator"
-								items="${staffMemberIterator.competenceList}">
-								<c:if
-									test="${job.id eq competenceIterator.id or job.jobName eq competenceIterator.competenceName}">
-									<c:set var="staffMemberHasCompetence" value="true" />
 								</c:if>
 							</c:forEach>
 							<c:choose>
@@ -415,16 +396,11 @@
 										src="<c:url value="/image/b_add.gif"/>" /></a></td>
 								</c:otherwise>
 							</c:choose>
-							<c:remove var="staffMemberHasCompetence" />
 							<c:remove var="rosterEntryContainerList" />
 						</c:forEach>
 					</tr>
-					<c:remove var="functionRosterEntryContainerMap" />
 					<c:remove var="dayRosterEntryContainerMap" />
 				</c:forEach>
-				<c:remove var="job" />
-				<c:remove var="serviceType" />
-			</c:forEach>
 		</table>
 	</c:when>
 	<c:otherwise>
