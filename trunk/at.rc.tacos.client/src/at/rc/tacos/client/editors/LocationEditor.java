@@ -58,7 +58,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 	private ScrolledForm form;
 
 	private CLabel infoLabel;
-	private ImageHyperlink saveHyperlink,removeHyperlink;
+	private ImageHyperlink saveHyperlink;
 	private Text locationName,street,streetNumber,zipCode,city;
 	private TextViewer notesViewer;
 	private ComboViewer phoneViewer;
@@ -123,12 +123,12 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 
 		//create info label and hyperlinks to save and revert the changes
 		infoLabel = new CLabel(client,SWT.NONE);
-		infoLabel.setText("Hier können sie die aktuelle Ortsstelle verwalten und die Änderungen speichern.");
+		infoLabel.setText("Zum anlegen einer neuen Ortsstelle bitte die Systemadministratoren informieren");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
 		//Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		saveHyperlink.setText("Zum anlegen einer neuen Ortsstelle bitte die Systemadministratoren informieren");
+		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
 		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
@@ -139,28 +139,6 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 			{
 				EditorSaveAction saveAction = new EditorSaveAction();
 				saveAction.run();
-			}
-		});
-
-		//Create the hyperlink to remove the competence
-		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
-		removeHyperlink.setText("Ortsstelle löschen");
-		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.locationRemove"));
-		removeHyperlink.setEnabled(false);
-		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
-			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
-						"Löschen der Ortsstelle bestätigen", 
-						"Möchten sie die Ortsstelle " +location.getLocationName()+" wirklich löschen?");
-				if(!result)
-					return;
-				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
-				isDirty = false;
-				//send the remove request
-				NetWrapper.getDefault().sendRemoveMessage(Location.ID,location);
 			}
 		});
 
@@ -298,12 +276,8 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		if(isNew)
 		{
 			form.setText("Neue Dienststelle anlegen");
-			removeHyperlink.setVisible(false);
 			return;
 		}
-		
-		//enable the remove link
-		removeHyperlink.setVisible(true);
 		
 		//load the data
 		form.setText("Details des Ortsstelle "+location.getLocationName());
@@ -577,7 +551,7 @@ public class LocationEditor extends EditorPart implements PropertyChangeListener
 		}
 		else
 		{
-			infoLabel.setText("Hier können sie die aktuelle Ortsstelle verwalten und die Änderungen speichern.");
+			infoLabel.setText("Zum anlegen einer neuen Ortsstelle bitte die Systemadministratoren informieren");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 			saveHyperlink.setEnabled(false);
 			saveHyperlink.setForeground(CustomColors.GREY_COLOR);

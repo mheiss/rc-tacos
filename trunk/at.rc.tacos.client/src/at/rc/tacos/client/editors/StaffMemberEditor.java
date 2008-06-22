@@ -2,6 +2,8 @@ package at.rc.tacos.client.editors;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -16,6 +18,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -72,6 +76,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private Hyperlink removeCompetence,addCompetence;
 	private ImageHyperlink saveHyperlink;
 	private Text phone1, phone2;
+	
+	//temp competence
+	private List<Competence> compList;
 
 	//indicates non-saved changes
 	protected boolean isDirty;
@@ -118,7 +125,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	 */
 	@Override
 	public void createPartControl(final Composite parent) 
-	{	
+	{		
+		compList = new ArrayList<Competence>();
+		
 		//save the staff member 
 		staffMember = ((StaffMemberEditorInput)getEditorInput()).getStaffMember();
 		loginInfo = ((StaffMemberEditorInput)getEditorInput()).getLoginInformation();
@@ -156,7 +165,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			form.setEnabled(true);
 		else
 			form.setEnabled(false);
-		if(user.getAuthorization().equalsIgnoreCase("Administrator"))
+		if(user.getAuthorization().equalsIgnoreCase(Login.AUTH_ADMIN))
 			form.setEnabled(true);
 	}
 
@@ -171,6 +180,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			form.setText("Neuen Mitarbeiter anlegen");
 			return;
 		}
+		
 		//set the data of the staff member
 		form.setText("Details des Mitarbeiters "+staffMember.getFirstName() + " "+staffMember.getLastName());
 		staffId.setText(String.valueOf(staffMember.getStaffMemberId()));
@@ -192,7 +202,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		locked.setSelection(loginInfo.isIslocked());
 		authorisationComboViewer.setSelection(new StructuredSelection(loginInfo.getAuthorization()));
 
-		//update the phone and competence view
+		//update the competence view
+		compList.clear();
+		compList.addAll(staffMember.getCompetenceList());
 		competenceViewer.refresh(true);
 		
 		//personal numer is not changeable
@@ -202,6 +214,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		uName.setEditable(false);
 		uName.setBackground(CustomColors.GREY_COLOR);
 		uName.setToolTipText("Der Benutzername kann nicht verändert werden");
+		
+		//validate
+		inputChanged();
 	}
 
 	/**
@@ -297,9 +312,6 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		}
 		staffMember.setPrimaryLocation((Location)primaryLocationComboViewer.getElementAt(index));
 
-		//phones are already assigned, so we dont't need to assign them :)
-		//Competences are already assigned, so we dont' have to assign them :)
-
 		//check the username
 		if(uName.getText().length() >30 || uName.getText().trim().isEmpty())
 		{
@@ -344,6 +356,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 
 		//locked
 		loginInfo.setIslocked(locked.getSelection());
+		
+		//add the competences
+		staffMember.getCompetenceList().clear();
+		staffMember.getCompetenceList().addAll(compList);
 
 		//add or update the staff member and the login
 		if(isNew)
@@ -493,9 +509,11 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
 		});
 		sexComboViewer.setInput(new String[] { StaffMember.STAFF_MALE, StaffMember.STAFF_FEMALE });
-		sexCombo.addModifyListener(new ModifyListener() { 
+		sexCombo.addSelectionListener(new SelectionAdapter()
+		{
 			@Override
-			public void modifyText(ModifyEvent me) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				inputChanged();
 			}
 		});	
@@ -594,15 +612,16 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				//get the selected item
 				int index = competenceComboViewer.getCombo().getSelectionIndex();
 				Competence comp = (Competence)competenceComboViewer.getElementAt(index);
-				if(staffMember.getCompetenceList().contains(comp))
+				if(compList.contains(comp))
 				{
 					form.getShell().getDisplay().beep();
 					form.setMessage("Dem Mitarbeiter wurde diese Kompetenz bereits zugewiesen.",IMessageProvider.ERROR);
 				}
 				else
 				{
-					staffMember.getCompetenceList().add(comp);
+					compList.add(comp);
 					competenceViewer.refresh();
+					inputChanged();
 				}
 			}
 		});
@@ -621,8 +640,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				{
 					//get the selected object
 					Object selectedCompetence = ((IStructuredSelection)selection).getFirstElement();
-					competenceViewer.remove(selectedCompetence);
-					staffMember.getCompetenceList().remove(selectedCompetence);
+					compList.remove(selectedCompetence);
+					competenceViewer.refresh(true);
+					inputChanged();
 				}
 				else
 				{
@@ -642,19 +662,16 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			@Override
 			public Object[] getElements(Object arg0) 
 			{
-				return staffMember.getCompetenceList().toArray();
+				return compList.toArray();
 			}
 
 			@Override
 			public void dispose() { }
 
 			@Override
-			public void inputChanged(Viewer arg0, Object arg1, Object arg2) 
-			{ 
-				isDirty = true;
-			}
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
 		});
-		competenceViewer.setInput(staffMember.getCompetenceList().toArray());
+		competenceViewer.setInput(compList);
 
 		//layout the composites
 		GridData data = new GridData();
@@ -708,7 +725,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		pwd.addModifyListener(new ModifyListener() { 
 			@Override
 			public void modifyText(ModifyEvent me) {
-				isDirty = true;
+				inputChanged();
 			}
 		});
 
@@ -718,12 +735,18 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		pwdRetype.addModifyListener(new ModifyListener() { 
 			@Override
 			public void modifyText(ModifyEvent me) {
-				isDirty = true;
+				inputChanged();
 			}
 		});
 
 		locked = toolkit.createButton(client, "Benutzer sperren: ", SWT.CHECK);
 		locked.setToolTipText("Wenn der Benutzer gesperrt ist, kann er sich nit mehr am Client und am OnlineDienstplan anmelden");
+		locked.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				inputChanged();
+			}			
+		});
 
 		final Label labelAuth = toolkit.createLabel(client, "Authorisierung :");
 		Combo authCombo = new Combo(client,SWT.READ_ONLY);
@@ -743,12 +766,14 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { } 		
 		});
 		authorisationComboViewer.setInput(Login.AUTHORIZATION);
-		authCombo.addModifyListener(new ModifyListener() { 
+		authCombo.addSelectionListener(new SelectionAdapter()
+		{
 			@Override
-			public void modifyText(ModifyEvent me) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				inputChanged();
 			}
-		});
+		});	
 
 		//set the layout for the composites
 		GridData data = new GridData();
@@ -815,6 +840,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				staffMember = updateMember;
 				loginInfo = updateLogin;
 				isNew = false;
+				//reset the password fields
+				pwd.setText("");
+				pwdRetype.setText("");
 				//update the editor
 				loadData();
 				//show the result
@@ -942,7 +970,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			IStructuredSelection structuredSelection = (IStructuredSelection)sexComboViewer.getSelection();
 			String selectedSex = (String)structuredSelection.getFirstElement();
 			if(selectedSex.equalsIgnoreCase(StaffMember.STAFF_MALE) &! persistantMember.isMale())
+			{
 				isDirty = true;
+			}
 		}
 		//check the primary location
 		if(!primaryLocationComboViewer.getSelection().isEmpty())
@@ -950,7 +980,9 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			IStructuredSelection structuredSelection = (IStructuredSelection)primaryLocationComboViewer.getSelection();
 			Location selectedLocation = (Location)structuredSelection.getFirstElement();
 			if(!selectedLocation.equals(persistantMember.getPrimaryLocation()))
+			{
 				isDirty = true;
+			}
 		}
 		//check the authorization
 		if(!authorisationComboViewer.getSelection().isEmpty())
@@ -958,8 +990,30 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			IStructuredSelection structuredSelection = (IStructuredSelection)authorisationComboViewer.getSelection();
 			String selectedAuthorization = (String)structuredSelection.getFirstElement();
 			if(!selectedAuthorization.equalsIgnoreCase(persistantLogin.getAuthorization()))
+			{
+				isDirty = true;
+			}
+		}
+		
+		//loop and check the competences
+		for(Competence comp:compList)
+		{
+			if(!persistantMember.getCompetenceList().contains(comp))
 				isDirty = true;
 		}
+		for(Competence comp:persistantMember.getCompetenceList())
+		{
+			if(!compList.contains(comp))
+				isDirty = true;
+		}
+		
+		//check for a password change
+		if(!pwd.getText().trim().isEmpty() &! pwdRetype.getText().isEmpty())
+			isDirty = true;
+		
+		//check the lock
+		if(locked.getSelection() &! persistantLogin.isIslocked())
+			isDirty = true;
 
 		//notify the user that the input has changes
 		if(isDirty)
