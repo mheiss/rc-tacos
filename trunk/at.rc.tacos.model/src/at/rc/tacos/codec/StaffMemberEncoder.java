@@ -79,7 +79,19 @@ public class StaffMemberEncoder  implements MessageEncoder
             writer.writeCharacters(member.getEMail());
             writer.writeEndElement();
         }
-        //write the elements and attributes
+        
+        if(member.getPhone1() != null)
+        {
+        	writer.writeStartElement("phone1");
+            writer.writeCharacters(member.getPhone1());
+            writer.writeEndElement();
+        }
+        if(member.getPhone2() != null)
+        {
+        	writer.writeStartElement("phone2");
+            writer.writeCharacters(member.getPhone2());
+            writer.writeEndElement();
+        }
         writer.writeStartElement("sex");
         writer.writeCharacters(String.valueOf(member.isMale()));
         writer.writeEndElement();
