@@ -80,22 +80,19 @@ public class RosterEntryListener extends ServerListenerAdapter
 			int monthFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_MONTH_FILTER));
 			int yearFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_YEAR_FILTER));
 			int locationStaffMemberFilter = -1;
+			String functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
 			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER)) {
 				locationStaffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER));
 			}
-			String functionFilter = null;
-			String functionStaffMemberCompetenceFilter = null;
+			String functionServiceTypeFilter = null;
 			int staffMemberFilter = -1;
-			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER)) {
-				functionFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_JOB_SERVICE_TYPE_FILTER);
-			}
-			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER)) {
-				functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_SERVICE_TYPE_FILTER)) {
+				functionServiceTypeFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_SERVICE_TYPE_FILTER);
 			}
 			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER)) {
 				staffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER));
 			}
-			rosterList = rosterDao.listRosterEntriesForRosterMonth(locationFilter, monthFilter, yearFilter, locationStaffMemberFilter, functionFilter, functionStaffMemberCompetenceFilter, staffMemberFilter);
+			rosterList = rosterDao.listRosterEntriesForRosterMonth(locationFilter, monthFilter, yearFilter, locationStaffMemberFilter, functionServiceTypeFilter, functionStaffMemberCompetenceFilter, staffMemberFilter);
 			if(rosterList == null)
 			{
 				String time = "";
