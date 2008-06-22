@@ -15,7 +15,6 @@ public class CompetenceLabelProvider extends LabelProvider
     public Image getImage(Object object)
     {
     	return null;
-//        return ImageFactory.getInstance().getRegisteredImage("resource.competence");
     }
 
     /**
