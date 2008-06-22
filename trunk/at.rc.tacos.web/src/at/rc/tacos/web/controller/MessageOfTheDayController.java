@@ -42,8 +42,6 @@ public class MessageOfTheDayController extends Controller {
 	
 	private static final String ERRORS_MESSAGE_OF_THE_DAY_MISSING = "messageOfTheDayMissing";
 	private static final String ERRORS_MESSAGE_OF_THE_DAY_MISSING_VALUE = "Vorname ist ein Pflichtfeld.";
-	private static final String ERRORS_MESSAGE_OF_THE_DAY_TOO_LONG = "messageOfTheDayTooLong";
-	private static final String ERRORS_MESSAGE_OF_THE_DAY_TOO_LONG_VALUE = "Message of the day ist zu lang. Es sind maximal 300 Zeichen erlaubt.";
 	
 	private static final String MODEL_ADDED_COUNT_NAME = "addedCount";
 	
