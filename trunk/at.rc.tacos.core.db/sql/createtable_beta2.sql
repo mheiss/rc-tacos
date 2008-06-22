@@ -175,6 +175,8 @@ CREATE TABLE staffmembers (
   email VARCHAR(100) NULL,
   street VARCHAR(50) NULL,
   city VARCHAR(50) NULL,
+  phone1 VARCHAR(50) NULL,
+  phone2 VARCHAR(50) NULL,
   PRIMARY KEY(staffmember_ID),
   --INDEX staffmembers_FKIndex1(primaryLocation),
   --INDEX staffmembers_FKIndex2(username),
