@@ -397,7 +397,7 @@ public class RosterDAOSQL implements RosterDAO
 	}
 	
 	@Override
-	public List<RosterEntry> listRosterEntriesForRosterMonth (int locationFilter, int monthFilter, int yearFilter, int locationStaffMemberFilter, String functionJobServiceTypeFilter, String functionStaffMemberCompetenceFilter, int staffMemberFilter) throws SQLException {
+	public List<RosterEntry> listRosterEntriesForRosterMonth (int locationFilter, int monthFilter, int yearFilter, int locationStaffMemberFilter, String functionServiceTypeFilter, String functionStaffMemberCompetenceFilter, int staffMemberFilter) throws SQLException {
 		Connection connection = source.getConnection();
 		try
 		{
@@ -407,8 +407,8 @@ public class RosterDAOSQL implements RosterDAO
 				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.primaryLocationCondition"); 
 			}
 			
-			if (functionJobServiceTypeFilter != null) {
-				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.functionJobServiceTypeCondition") + " " + queries.getStatment("list.RosterForRosterMonth.functionStaffMemberCondition");
+			if (functionServiceTypeFilter != null) {
+				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.functionServiceTypeCondition");
 			} else {
 				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.defaultFunctionCondition");
 			}
@@ -429,16 +429,12 @@ public class RosterDAOSQL implements RosterDAO
 				i++;
 				query.setInt(i, locationStaffMemberFilter);
 			}		
-			if (functionJobServiceTypeFilter != null) {
+			if (functionServiceTypeFilter != null) {
 				i++;
-				query.setString(i, functionJobServiceTypeFilter);
-				i++;
-				query.setString(i, functionJobServiceTypeFilter);
+				query.setString(i, functionServiceTypeFilter);
 			}
-			if (functionStaffMemberCompetenceFilter != null) {
-				i++;
-				query.setString(i, functionStaffMemberCompetenceFilter);
-			}
+			i++;
+			query.setString(i, functionStaffMemberCompetenceFilter);
 			if (staffMemberFilter != -1) {
 				i++;
 				query.setInt(i, staffMemberFilter);
