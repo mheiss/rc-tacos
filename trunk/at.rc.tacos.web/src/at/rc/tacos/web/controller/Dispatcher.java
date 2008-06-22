@@ -136,9 +136,7 @@ public class Dispatcher extends HttpServlet
 		}
 		//request.setAttribute("userSession", userSession);
 		System.out.println("internal: " + userSession.isInternalSession() + "\n");
-		
-
-		
+				
 		//Do some actions if user is logged in
 		if (userSession.getLoggedIn()) {
 			// Get current login data
@@ -151,21 +149,6 @@ public class Dispatcher extends HttpServlet
 			final Login login = (Login)loginList.get(0);
 			userSession.setLoginInformation(login);	
 			
-			//Get message of the day and write to request context
-			final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
-			Date messageOfTheDayDate = userSession.getDefaultFormValues().getDefaultDate();
-			if (messageOfTheDayDate == null) {
-				messageOfTheDayDate = new Date();
-			}
-			final QueryFilter dateFilter = new QueryFilter();
-			dateFilter.add(IFilterTypes.DATE_FILTER, formatDateForServer.format(messageOfTheDayDate));
-			final List<AbstractMessage> messageOfTheDayList = userSession.getConnection().sendListingRequest(DayInfoMessage.ID, dateFilter);
-			DayInfoMessage message = null;
-			if (messageOfTheDayList != null)
-			if (messageOfTheDayList.size() > 0) {
-				message = (DayInfoMessage)messageOfTheDayList.get(0);
-			}
-			request.setAttribute("messageOfTheDay", message);		
 		}
 		
 		//Get the relative Path from request URL
@@ -301,6 +284,28 @@ public class Dispatcher extends HttpServlet
 							
 							//Add refresh value
 							request.setAttribute("refresh", refresh);
+							
+							if (userSession.getLoggedIn()) {						
+								//Get message of the day and write to request context
+								final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
+								Date messageOfTheDayDate = userSession.getDefaultFormValues().getDefaultDate();
+								if (messageOfTheDayDate == null) {
+									messageOfTheDayDate = new Date();
+								}
+								final QueryFilter dateFilter = new QueryFilter();
+								dateFilter.add(IFilterTypes.DATE_FILTER, formatDateForServer.format(messageOfTheDayDate));
+								final List<AbstractMessage> messageOfTheDayList = userSession.getConnection().sendListingRequest(DayInfoMessage.ID, dateFilter);
+								if (!DayInfoMessage.ID.equalsIgnoreCase(userSession.getConnection().getContentType())) {
+									throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+								}
+								DayInfoMessage message = null;
+								if (messageOfTheDayList != null) {
+									if (messageOfTheDayList.size() > 0) {
+										message = (DayInfoMessage)messageOfTheDayList.get(0);
+									}
+								}
+								request.setAttribute("messageOfTheDay", message);						
+							}
 							
 							//Differentiate if View uses model.jsp or not
 							if (templateFound) {

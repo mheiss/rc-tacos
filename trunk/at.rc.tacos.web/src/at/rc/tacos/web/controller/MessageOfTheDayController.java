@@ -5,15 +5,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import at.rc.tacos.common.AbstractMessage;
+import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.web.session.UserSession;
 
 /**
@@ -105,14 +109,23 @@ public class MessageOfTheDayController extends Controller {
 		params.put(MODEL_DATE_NAME, date);
 		
 		// Message of the day
-		final String defaultMessageOfTheDay = (String)request.getAttribute("messageOfTheDay");
-		String messageOfTheDay = null;
-		messageOfTheDay = paramMessageOfTheDay;
-		if (messageOfTheDay != null) {
-			params.put(MODEL_MESSAGE_OF_THE_DAY, messageOfTheDay);
-		} else {
-			params.put(MODEL_MESSAGE_OF_THE_DAY, defaultMessageOfTheDay);
+		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
+		final QueryFilter dateFilter = new QueryFilter();
+		dateFilter.add(IFilterTypes.DATE_FILTER, formatDateForServer.format(date));
+		final List<AbstractMessage> messageOfTheDayList = userSession.getConnection().sendListingRequest(DayInfoMessage.ID, dateFilter);
+		if (!DayInfoMessage.ID.equalsIgnoreCase(userSession.getConnection().getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
+		DayInfoMessage dayInfoMessage = null;
+		if (messageOfTheDayList != null)
+		if (messageOfTheDayList.size() > 0) {
+			dayInfoMessage = (DayInfoMessage)messageOfTheDayList.get(0);
+		}
+		final String defaultMessageOfTheDay = dayInfoMessage.getMessage();	
+		params.put(MODEL_MESSAGE_OF_THE_DAY, defaultMessageOfTheDay);
+		
+		final String messageOfTheDay = paramMessageOfTheDay;
+		
 
 		// Do Action
 		final String action = paramAction;
@@ -132,10 +145,8 @@ public class MessageOfTheDayController extends Controller {
 				
 				msgOfTheDay.setMessage(messageOfTheDay);
 				msgOfTheDay.setLastChangedBy(userSession.getLoginInformation().getUsername());
+				msgOfTheDay.setTimestamp(date.getTime());
 				
-				if (date != null) {
-					msgOfTheDay.setTimestamp(date.getTime());
-				}
 					        
 				connection.sendUpdateRequest(DayInfoMessage.ID, msgOfTheDay);
 				if(!connection.getContentType().equalsIgnoreCase(DayInfoMessage.ID)) {
@@ -145,6 +156,8 @@ public class MessageOfTheDayController extends Controller {
 				params.put(MODEL_ADDED_COUNT_NAME, 1);
 			}
 		}
+		
+		userSession.getDefaultFormValues().setDefaultDate(date);
 		
 		params.put(MODEL_ERRORS_NAME, errors);
 		return params;

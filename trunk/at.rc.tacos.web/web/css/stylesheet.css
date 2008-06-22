@@ -95,7 +95,8 @@ a:active {
 	text-align: left;
 	padding: 2px;
 	width: 100%;
-	font-size: 150%;
+	padding-top: 10px;
+	padding-bottom: 5px;
 }
 
 #navIcon {
