@@ -42,7 +42,7 @@
 	</path>
 
 	<!-- ============================================================== -->
-	<!-- Database Tasks                                                 -->
+	<!-- MYSQL Database Tasks                                           -->
 	<!-- ============================================================== -->
 
 	<target name="mysql_createTables">
@@ -72,149 +72,179 @@
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
+	
+	<!-- ============================================================== -->
+	<!-- SQL Database Tasks                                             -->
+	<!-- ============================================================== -->
+	
+	<target name="#sql_reset_tables" description="Full database reset">
+		<echo message="WARNING: This will reset (drop-create-insert-functions) the complete database. All data will be lost!" />
+		<input>Press Return key to continue...</input>
+		<antcall target="sql_cleardata" />
+		<antcall target="sql_dropFunctions" />
+		<antcall target="sql_droptables" />
+		<antcall target="sql_createtable" />
+		<antcall target="sql_insertdata" />
+		<antcall target="sql_create_f_address" />
+		<antcall target="sql_create_f_caller" />
+		<antcall target="sql_create_f_competence" />
+		<antcall target="sql_create_f_dialysis" />
+		<antcall target="sql_create_f_disease" />
+		<antcall target="sql_create_f_job" />
+		<antcall target="sql_create_f_location" />
+		<antcall target="sql_create_f_periods" />
+		<antcall target="sql_create_f_phone" />
+		<antcall target="sql_create_f_roster" />
+		<antcall target="sql_create_f_selected" />
+		<antcall target="sql_create_f_servicetype" />
+		<antcall target="sql_create_f_sickperson" />
+		<antcall target="sql_create_f_staffmember" />
+		<antcall target="sql_create_f_transport" />
+		<antcall target="sql_create_f_vehicle" />
+	</target>
 
-	<target name="sql_cleardata_beta1">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+	<target name="sql_cleardata">
+		<echo message="CLEAR TABLES USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.cleardata_beta1.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
-	<target name="sql_droptables_beta1">
-		<echo message="CLEAR DATA USING: ${db.driver} ${db.url}" />
+	<target name="sql_droptables">
+		<echo message="DROP TABLES USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.droptables_beta1.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
-	<target name="sql_createtable_beta2">
+	<target name="sql_createtable">
 		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.createtable_beta2.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
-	<target name="sql_insertdata_beta1">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+	<target name="sql_insertdata">
+		<echo message="INSERT DATA USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.insertdata_beta1.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_dropFunctions">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="DROP FUNCTIONS USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.dropFunctions.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_caller">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - caller - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_caller.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_competence">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - competence - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_competence.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_dialysis">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - dialysis - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_dialysis.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_disease">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - disease - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_disease.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_job">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - job - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_job.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_location">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - location - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_location.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_phone">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - phone- USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_phone.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_roster">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - roster - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_roster.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_selected">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - selected - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_selected.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_servicetype">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - servicetype - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_servicetype.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_staffmember">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - staffmember - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_staffmember.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 	
 	<target name="sql_create_f_sickperson">
-			<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+			<echo message="CREATE FUNCTION - sickperson - USING: ${db.driver} ${db.url}" />
 			<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_sickperson.script}">
 				<classpath refid="master-classpath" />
 			</sql>
 		</target>
 	
 	<target name="sql_create_f_address">
-				<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
-				<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_address.script}">
-					<classpath refid="master-classpath" />
-				</sql>
-			</target>
+		<echo message="CREATE FUNCTION - address - USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_address.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
 	
 	<target name="sql_create_f_periods">
-					<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
-					<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_periods.script}">
-						<classpath refid="master-classpath" />
-					</sql>
-				</target>
+		<echo message="CREATE FUNCTION - periods - USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_periods.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
 
 	<target name="sql_create_f_transport">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - transport - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_transport.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>
 
 	<target name="sql_create_f_vehicle">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
+		<echo message="CREATE FUNCTION - vehicle - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_vehicle.script}">
 			<classpath refid="master-classpath" />
 		</sql>
