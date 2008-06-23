@@ -41,6 +41,7 @@ import at.rc.tacos.web.session.UserSession;
 public class RosterMonthController extends Controller {
 
 	private static final String PARAM_LOCATION_NAME = "locationId";
+	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
 	private static final String MODEL_LOCATION_NAME = "location";
 	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
 	
@@ -89,8 +90,9 @@ public class RosterMonthController extends Controller {
 		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
-		Location location = userSession.getDefaultFormValues().getRosterMonthLocation();
-		if (paramLocationId != null && !paramLocationId.equals("")) {
+		Location location = null;
+		final Location defaultLocation = userSession.getDefaultFormValues().getRosterMonthLocation();
+		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);		
 		}
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
@@ -99,19 +101,17 @@ public class RosterMonthController extends Controller {
 		}
 		params.put(MODEL_LOCATION_LIST_NAME, locationList);
 		for (final Iterator<AbstractMessage> itLoactionList = locationList.iterator(); itLoactionList.hasNext();) {
-			final Location l = (Location)itLoactionList.next();
-			if (l.getId() == locationId) {
-				location = l;
+			final Location l2 = (Location)itLoactionList.next();
+			if (l2.getId() == locationId) {
+				location = l2;
 			}
 		}
-		if (location == null) {
-			if (locationList.size() > 0) {
-				location = (Location)locationList.get(0);
-			} else {
-				throw new IllegalArgumentException("Error: Location must not be null.");
-			}
-		} 
-		params.put(MODEL_LOCATION_NAME, location);
+		if (location != null || (paramLocationId != null && paramLocationId.equals(PARAM_LOCATION_NO_VALUE))) {
+			params.put(MODEL_LOCATION_NAME, location);
+		} else {
+			params.put(MODEL_LOCATION_NAME, defaultLocation);
+		}
+		location = (Location)params.get(MODEL_LOCATION_NAME);
 		
 		// Month
 		String paramMonth = request.getParameter(PARAM_MONTH_NAME);
@@ -313,7 +313,9 @@ public class RosterMonthController extends Controller {
 		
 		// Get Roster Entries
 		final QueryFilter rosterFilter = new QueryFilter();
-		rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
+		if (location != null) {
+			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
+		}
 		rosterFilter.add(IFilterTypes.ROSTER_MONTH_FILTER, Integer.toString(month + 1));
 		rosterFilter.add(IFilterTypes.ROSTER_YEAR_FILTER, year.toString());
 		if (function.getCompetenceName().equals(Competence.FUNCTION_HA)) {
