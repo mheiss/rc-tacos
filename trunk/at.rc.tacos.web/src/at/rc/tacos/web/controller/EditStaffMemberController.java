@@ -27,7 +27,6 @@ import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
-import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.session.UserSession;
@@ -56,6 +55,12 @@ public class EditStaffMemberController extends Controller {
 	private static final String PARAM_LASTNAME_NAME = "lastName";
 	private static final String MODEL_LASTNAME_NAME = "lastName";
 	
+	private static final String PARAM_PHONE1_NAME = "phone1";
+	private static final String MODEL_PHONE1_NAME = "phone1";
+	
+	private static final String PARAM_PHONE2_NAME = "phone2";
+	private static final String MODEL_PHONE2_NAME = "phone2";
+	
 	private static final String MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME = "calendarDefaultDateMilliseconds";
 	private static final String MODEL_CALENDAR_RANGE_START_NAME = "calendarRangeStart";
 	private static final String MODEL_CALENDAR_RANGE_END_NAME = "calendarRangeEnd";
@@ -67,14 +72,6 @@ public class EditStaffMemberController extends Controller {
 	private static final String PARAM_SEX_NAME = "sex";
 	private static final String PARAM_SEX_NO_VALUE = "noValue";
 	private static final String MODEL_SEX_NAME = "sex";
-	
-	private static final String PARAM_MOBILE_PHONE_NAME = "mobilePhoneId";
-	private static final String PARAM_MOBILE_PHONE_NO_VALUE = "noValue";
-	private static final String PARAM_MOBILE_PHONE_HIDDEN_NAME = "mobilePhoneIds";
-	private static final String MODEL_MOBILE_PHONE_NAME = "mobilePhone";
-	private static final String MODEL_MOBILE_PHONE_HIDDEN_NAME = "mobilePhoneIds";
-	private static final String MODEL_MOBILE_PHONE_LIST_NAME = "mobilePhoneList";
-	private static final String MODEL_MOBILE_PHONE_TABLE_NAME = "mobilePhoneTable";
 	
 	private static final String MODEL_PHOTO_PATH_NAME = "photo";
 	
@@ -115,6 +112,12 @@ public class EditStaffMemberController extends Controller {
 	private static final String ERRORS_LAST_NAME_MISSING_VALUE = "Nachname ist ein Pflichtfeld.";
 	private static final String ERRORS_LAST_NAME_TOO_LONG = "lastNameTooLong";
 	private static final String ERRORS_LAST_NAME_TOO_LONG_VALUE = "Nachname ist zu lang. Es sind maximal 30 Zeichen erlaubt.";
+	
+	private static final String ERRORS_PHONE1_TOO_LONG = "phone1TooLong";
+	private static final String ERRORS_PHONE1_TOO_LONG_VALUE = "Telefon 1 ist zu lang. Es sind maximal 50 Zeichen erlaubt";
+	
+	private static final String ERRORS_PHONE2_TOO_LONG = "phone2TooLong";
+	private static final String ERRORS_PHONE2_TOO_LONG_VALUE = "Telefon 2 ist zu lang. Es sind maximal 50 Zeichen erlaubt";
 	
 	private static final String ERRORS_BIRTHDATE = "birthdate";
 	private static final String ERRORS_BIRTHDATE_VALUE = "Das Datumsformat von Geburtsdatum ist nicht korrekt.";
@@ -176,10 +179,10 @@ public class EditStaffMemberController extends Controller {
 		String paramAction = null;
 		String paramFirstName = null;
 		String paramLastName = null;
+		String paramPhone1 = null;
+		String paramPhone2 = null;
 		String paramBirthdate = null;
 		String paramSex = null;
-		String paramMobilePhoneId = null;
-		String paramMobilePhoneHidden = null;
 		FileItem photo = null;
 		String paramLocationId = null;
 		String paramCompetenceId = null;
@@ -212,14 +215,14 @@ public class EditStaffMemberController extends Controller {
 			    		paramFirstName = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_LASTNAME_NAME)) {
 			    		paramLastName = item.getString();
+			    	} else if (item.getFieldName().equals(PARAM_PHONE1_NAME)) {
+			    		paramPhone1 = item.getString();
+			    	} else if (item.getFieldName().equals(PARAM_PHONE2_NAME)) {
+			    		paramPhone2 = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_BIRTHDATE_NAME)) {
 			    		paramBirthdate = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_SEX_NAME)) {
 			    		paramSex = item.getString();
-			    	} else if (item.getFieldName().equals(PARAM_MOBILE_PHONE_NAME)) {
-			    		paramMobilePhoneId = item.getString();
-			    	} else if (item.getFieldName().equals(PARAM_MOBILE_PHONE_HIDDEN_NAME)) {
-			    		paramMobilePhoneHidden = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_LOCATION_NAME)) {
 			    		paramLocationId = item.getString();
 			    	} else if (item.getFieldName().equals(PARAM_COMPETENCE_NAME)) {
@@ -304,6 +307,28 @@ public class EditStaffMemberController extends Controller {
 				params.put(MODEL_LASTNAME_NAME, defaultLastName);
 			}
 			
+			//phone1
+			final String defaultPhone1 = staffMember.getPhone1();
+			String phone1 = null;
+			phone1 = paramPhone1;
+			if(phone1 != null)
+			{
+				params.put(MODEL_PHONE1_NAME, phone1);
+			}
+			else
+				params.put(MODEL_PHONE1_NAME, defaultPhone1);
+			
+			//phone2
+			final String defaultPhone2 = staffMember.getPhone2();
+			String phone2 = null;
+			phone2 = paramPhone2;
+			if(phone2 != null)
+			{
+				params.put(MODEL_PHONE2_NAME, phone2);
+			}
+			else
+				params.put(MODEL_PHONE2_NAME, defaultPhone2);
+			
 			// Create Calendar for DatePicker
 			final Calendar calendar = Calendar.getInstance();
 			final int rangeStart = calendar.get(Calendar.YEAR) - MODEL_CALENDAR_MAX_AGE;
@@ -349,71 +374,7 @@ public class EditStaffMemberController extends Controller {
 			} else {
 				params.put(MODEL_SEX_NAME, defaultSex);
 			}
-			
-			// Mobile Phone
-			int mobilePhoneId = 0;
-			final MobilePhoneDetail defaultMobilePhone = null;
-			MobilePhoneDetail mobilePhone = null;
-			if (paramMobilePhoneId != null && !paramMobilePhoneId.equals("") && !paramMobilePhoneId.equals(PARAM_MOBILE_PHONE_NO_VALUE)) {
-				mobilePhoneId = Integer.parseInt(paramMobilePhoneId);
-			}
-			final List<AbstractMessage> mobilePhoneList = connection.sendListingRequest(MobilePhoneDetail.ID, null);
-			if (!MobilePhoneDetail.ID.equalsIgnoreCase(connection.getContentType())) {
-				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-			}
-			for (final Iterator<AbstractMessage> itMobilePhoneL = mobilePhoneList.iterator(); itMobilePhoneL.hasNext();) {
-				final MobilePhoneDetail m = (MobilePhoneDetail)itMobilePhoneL.next();
-				if (m.getId() == mobilePhoneId) {
-					mobilePhone = m;
-				}
-			}
-			if (mobilePhone != null || (paramMobilePhoneId != null && paramMobilePhoneId.equals(PARAM_MOBILE_PHONE_NO_VALUE))) {
-				params.put(MODEL_MOBILE_PHONE_NAME, mobilePhone);
-			} else {
-				params.put(MODEL_MOBILE_PHONE_NAME, defaultMobilePhone);
-			}
-			
-			params.put(MODEL_MOBILE_PHONE_LIST_NAME, mobilePhoneList);
-			final List<MobilePhoneDetail> mobilePhoneTable = new ArrayList<MobilePhoneDetail>();
-			final List<MobilePhoneDetail> defaultMobilePhoneTable = staffMember.getPhonelist();
-			String mobilePhoneHidden = null;
-			String defaultMobilePhoneHidden = null;
-			for (Iterator<MobilePhoneDetail> itMpd = defaultMobilePhoneTable.iterator(); itMpd.hasNext();) {
-				final MobilePhoneDetail mpd  = itMpd.next();
-				if (defaultMobilePhoneHidden == null) {
-					defaultMobilePhoneHidden = Integer.toString(mpd.getId());
-				} else {
-					defaultMobilePhoneHidden = defaultMobilePhoneHidden + "," + Integer.toString(mpd.getId());
-				}
-			}
-			if (paramMobilePhoneHidden != null && !paramMobilePhoneHidden.equals("")) {
-				final String[] paramMobilePhoneTableArray = paramMobilePhoneHidden.split(",");
-				for (int i=0; i < paramMobilePhoneTableArray.length; i++) {
-					for (final Iterator<AbstractMessage> itMobilePhoneList = mobilePhoneList.iterator(); itMobilePhoneList.hasNext();) {
-						final MobilePhoneDetail mb = (MobilePhoneDetail)itMobilePhoneList.next();
-						if (mb.getId() == Integer.parseInt(paramMobilePhoneTableArray[i])) {
-							mobilePhoneTable.add(mb);
-							if (mobilePhoneHidden == null) {
-								mobilePhoneHidden = Integer.toString(mb.getId());
-							} else {
-								mobilePhoneHidden = mobilePhoneHidden + "," + Integer.toString(mb.getId());
-							}
-						}
-					}
-				}
-			}
-			if (mobilePhoneTable.size() > 0) {
-				params.put(MODEL_MOBILE_PHONE_TABLE_NAME, mobilePhoneTable);
-			} else {
-				params.put(MODEL_MOBILE_PHONE_TABLE_NAME, defaultMobilePhoneTable);
-			}
-			if (mobilePhoneHidden != null) {
-				params.put(MODEL_MOBILE_PHONE_HIDDEN_NAME, mobilePhoneHidden);
-			} else {
-				params.put(MODEL_MOBILE_PHONE_HIDDEN_NAME, defaultMobilePhoneHidden);
-			}
-
-			
+						
 			// Location
 			int locationId = 0;
 			final Location defaultLocation = staffMember.getPrimaryLocation();
@@ -580,6 +541,18 @@ public class EditStaffMemberController extends Controller {
 					errors.put(ERRORS_LAST_NAME_TOO_LONG, ERRORS_LAST_NAME_TOO_LONG_VALUE);
 				}
 				
+				//Validate phone 1
+				if(phone1.length() > 50) {
+					valid = false;
+					errors.put(ERRORS_PHONE1_TOO_LONG, ERRORS_PHONE1_TOO_LONG_VALUE);
+				}
+				
+				//Validate phone 2
+				if(phone2.length() > 50) {
+					valid = false;
+					errors.put(ERRORS_PHONE2_TOO_LONG, ERRORS_PHONE2_TOO_LONG_VALUE);
+				}
+				
 				// Validate birthdate
 				final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 				Date birthdate = null;
@@ -695,6 +668,12 @@ public class EditStaffMemberController extends Controller {
 					
 					staffMember.setLastName(lastName);
 					
+					if(phone1 != null)
+						staffMember.setPhone1(phone1);
+					
+					if(phone2 != null)
+						staffMember.setPhone2(phone2);
+					
 					if (birthdate != null) {
 						final SimpleDateFormat dfServer = new SimpleDateFormat("dd-MM-yyyy");
 						staffMember.setBirthday(dfServer.format(birthdate));
@@ -705,8 +684,6 @@ public class EditStaffMemberController extends Controller {
 					} else if (sex.equals(StaffMember.STAFF_FEMALE)) {
 						staffMember.setMale(false);
 					}
-					
-					staffMember.setPhonelist(mobilePhoneTable);
 					
 					// Write photo to disk
 					if (photo != null) {
