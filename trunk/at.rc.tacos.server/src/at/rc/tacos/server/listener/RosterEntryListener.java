@@ -75,10 +75,13 @@ public class RosterEntryListener extends ServerListenerAdapter
 			}
 			list.addAll(rosterList);
 		}
-		else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_MONTH_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_YEAR_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_LOCATION_FILTER)) {
-			int locationFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
+		else if (queryFilter.containsFilterType(IFilterTypes.ROSTER_MONTH_FILTER) && queryFilter.containsFilterType(IFilterTypes.ROSTER_YEAR_FILTER)) {
 			int monthFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_MONTH_FILTER));
 			int yearFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_YEAR_FILTER));
+			int locationFilter = -1;
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_LOCATION_FILTER)) {
+				locationFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
+			}
 			int locationStaffMemberFilter = -1;
 			String functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
 			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER)) {
