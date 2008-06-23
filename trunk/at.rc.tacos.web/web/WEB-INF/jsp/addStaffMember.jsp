@@ -55,6 +55,26 @@
 		</c:choose> </span></td>
 	</tr>
 	<tr>
+		<td style="font-weight: bold">Telefon 1:</td>
+		<td><input name="phone1" type="text" size="50" maxlength="50"
+			value="${params.phone1}" /></td>
+		<td><span class="errorText"> <c:choose>
+			<c:when test="${not empty params.errors.phone1TooLong}">
+							${params.errors.phone1TooLong}
+						</c:when>
+		</c:choose> </span></td>
+	</tr>
+	<tr>
+		<td style="font-weight: bold">Telefon 2:</td>
+		<td><input name="phone2" type="text" size="50" maxlength="50"
+			value="${params.phone2}" /></td>
+		<td><span class="errorText"> <c:choose>
+			<c:when test="${not empty params.errors.phone2TooLong}">
+							${params.errors.phone2TooLong}
+						</c:when>
+		</c:choose> </span></td>
+	</tr>
+	<tr>
 		<td style="font-weight: bold">Geburtsdatum:</td>
 		<td><input id="birthDate" name="birthDate" type="text" size="10"
 			maxlength="10" value="${params.birthDate}" /> <c:url var="url"
@@ -82,52 +102,6 @@
 				'weiblich') ? ' selected="selected"' : ''}>weiblich</option>
 		</select></td>
 		<td><span class="errorText">${params.errors.sex}</span></td>
-	</tr>
-	<tr>
-		<td style="font-weight: bold">Telefonnummern:</td>
-		<td><select size="1" id="mobilePhone" name="mobilePhoneId">
-			<option value="">-- Telefonnummer wählen --</option>
-			<c:forEach var="mobilePhone" items="${params.mobilePhoneList}">
-				<option value="${mobilePhone.id}" ${(not empty
-					params.mobilePhone) and (params.mobilePhone.id==
-					mobilePhone.id) ? ' selected="selected"' : ''}>${mobilePhone.mobilePhoneName}
-				- ${mobilePhone.mobilePhoneNumber}</option>
-			</c:forEach>
-		</select> <a id="addMobilePhone" class="smallLink" style="cursor: pointer">Telefonnummer&nbsp;hinzuf&uuml;gen</a>
-		</td>
-		<td />
-	</tr>
-	<tr>
-		<td><input id="mobilePhoneIds" name="mobilePhoneIds"
-			type="hidden" value="${params.mobilePhoneIds}" /></td>
-		<td>
-		<table id="mobilePhoneTable" class="list" cellpadding="3"
-			cellspacing="0">
-			<thead>
-				<tr>
-					<th class="header2" colspan="3">Telefonnummern</th>
-				</tr>
-				<tr class="subhead2">
-					<th>Handy&nbsp;Bezeichnung</th>
-					<th>Handynummer</th>
-					<th>&nbsp;</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="mobilePhone" items="${params.mobilePhoneTable}"
-					varStatus="loop">
-					<tr id="mobilePhone-${mobilePhone.id}"
-						class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-						<td id="mobilePhoneName-${mobilePhone.id}">${mobilePhone.mobilePhoneName}</td>
-						<td id="mobilePhoneNumber-${mobilePhone.id}">${mobilePhone.mobilePhoneNumber}</td>
-						<td><a id="deleteMobilePhone-${mobilePhone.id}"
-							class="smallLink" style="cursor: pointer">L&ouml;schen</a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-		</td>
-		<td />
 	</tr>
 	<tr>
 		<td style="font-weight: bold">Photo:</td>

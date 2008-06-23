@@ -19,7 +19,8 @@
 		<th nowrap="nowrap">Nachname</th>
 		<th nowrap="nowrap">Vorname</th>
 		<th nowrap="nowrap">Photo</th>
-		<th nowrap="nowrap">Telefonnummern</th>
+		<th nowrap="nowrap">Telefon 1</th>
+		<th nowrap="nowrap">Telefon 2</th>
 		<th nowrap="nowrap">Kompetenzen</th>
 		<th nowrap="nowrap">&nbsp;</th>
 	</tr>
@@ -33,7 +34,7 @@
 			<c:forEach var="staffMemberMapEntry" items="${staffMemberMap}">
 				<c:set var="location" value="${staffMemberMapEntry.key}" />
 				<tr>
-					<th class="header2" colspan="6">${location.locationName}</th>
+					<th class="header2" colspan="7">${location.locationName}</th>
 				</tr>
 				${fieldHeadersRow}
 				<tbody>
@@ -47,16 +48,8 @@
 								<c:param name="refresh">${params.timestamp}</c:param>
 							</c:url><img src="${url}" width="55" height="69" alt="No photo found." />
 							</td>
-							<td><c:choose>
-								<c:when test="${fn:length(staffMember.phonelist) gt 0}">
-									<c:forEach var="mobilePhone" items="${staffMember.phonelist}"
-										varStatus="loop2">
-										<c:if test="${loop2.count gt 1}">
-											<br />
-										</c:if>${mobilePhone.mobilePhoneName}&nbsp;${mobilePhone.mobilePhoneNumber}</c:forEach>
-								</c:when>
-								<c:otherwise>&nbsp;</c:otherwise>
-							</c:choose></td>
+							<td nowrap="nowrap">${staffMember.phone1}</td>
+							<td nowrap="nowrap">${staffMember.phone2}</td>
 							<td><c:choose>
 								<c:when test="${fn:length(staffMember.competenceList) gt 0}">
 									<c:forEach var="competence"

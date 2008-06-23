@@ -85,52 +85,26 @@
 					'weiblich') ? ' selected="selected"' : ''}>weiblich</option>
 			</select></td>
 			<td><span class="errorText">${params.errors.sex}</span></td>
+		</tr>		
+		<tr>
+			<td style="font-weight: bold">Telefon 1:</td>
+			<td><input name="phone1" type="text" size="50" maxlength="50"
+				value="${params.phone1}" /></td>
+			<td><span class="errorText"> <c:choose>
+				<c:when test="${not empty params.errors.phone1TooLong}">
+								${params.errors.phone1TooLong}
+							</c:when>
+			</c:choose> </span></td>
 		</tr>
 		<tr>
-			<td style="font-weight: bold">Telefonnummern:</td>
-			<td><select size="1" id="mobilePhone" name="mobilePhoneId">
-				<option value="">-- Telefonnummer wählen --</option>
-				<c:forEach var="mobilePhone" items="${params.mobilePhoneList}">
-					<option value="${mobilePhone.id}" ${(not empty
-						params.mobilePhone) and (params.mobilePhone.id==
-						mobilePhone.id) ? ' selected="selected"' : ''}>${mobilePhone.mobilePhoneName}
-					- ${mobilePhone.mobilePhoneNumber}</option>
-				</c:forEach>
-			</select> <a id="addMobilePhone" class="smallLink" style="cursor: pointer">Telefonnummer&nbsp;hinzuf&uuml;gen</a>
-			</td>
-			<td />
-		</tr>
-		<tr>
-			<td><input id="mobilePhoneIds" name="mobilePhoneIds"
-				type="hidden" value="${params.mobilePhoneIds}" /></td>
-			<td>
-			<table id="mobilePhoneTable" class="list" cellpadding="3"
-				cellspacing="0">
-				<thead>
-					<tr>
-						<th class="header2" colspan="3">Telefonnummern</th>
-					</tr>
-					<tr class="subhead2">
-						<th>Handy&nbsp;Bezeichnung</th>
-						<th>Handynummer</th>
-						<th>&nbsp;</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="mobilePhone" items="${params.mobilePhoneTable}"
-						varStatus="loop">
-						<tr id="mobilePhone-${mobilePhone.id}"
-							class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-							<td id="mobilePhoneName-${mobilePhone.id}">${mobilePhone.mobilePhoneName}</td>
-							<td id="mobilePhoneNumber-${mobilePhone.id}">${mobilePhone.mobilePhoneNumber}</td>
-							<td><a id="deleteMobilePhone-${mobilePhone.id}"
-								class="smallLink" style="cursor: pointer">L&ouml;schen</a></td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			</td>
-			<td />
+			<td style="font-weight: bold">Telefon 2:</td>
+			<td><input name="phone2" type="text" size="50" maxlength="50"
+				value="${params.phone2}" /></td>
+			<td><span class="errorText"> <c:choose>
+				<c:when test="${not empty params.errors.phone2TooLong}">
+								${params.errors.phone2TooLong}
+							</c:when>
+			</c:choose> </span></td>
 		</tr>
 		<tr>
 			<td style="font-weight: bold">Photo:</td>
@@ -304,55 +278,6 @@ $(document).ready(function() {
 		daFormat : "%d.%m.%Y"
 	});
 	
-	$('#addMobilePhone').click(function() {
-		m++;
-		var mobilePhoneId = $('select#mobilePhone').val();
-		var mobilePhoneString = $('select#mobilePhone option:selected').text();
-		var mobilePhoneStringArray = mobilePhoneString.split(' - ');
-		var mobilePhoneName = mobilePhoneStringArray[0];
-		var mobilePhoneNumber = mobilePhoneStringArray[1];
-		if (mobilePhoneId) {
-			var doubleMobilePhoneId = $('tr#mobilePhone-' + mobilePhoneId).attr('id');
-			if (!doubleMobilePhoneId) {
-				var a = '<a id="deleteMobilePhone-' + mobilePhoneId + '" class="smallLink" style="cursor:pointer">L&ouml;schen</a>';
-				var tr = null;
-				if (m % 2 == 0) {
-					tr = '<tr id="mobilePhone-' + mobilePhoneId + '" class="even"><td id="mobilePhoneName-' + mobilePhoneId + '">' + mobilePhoneName + '</td><td id="mobilePhoneNumber-' + mobilePhoneId + '">' + mobilePhoneNumber + '</td><td>' + a + '</td></tr>';
-				} else {
-					tr = '<tr id="mobilePhone-' + mobilePhoneId + '" class="odd"><td id="mobilePhoneName-' + mobilePhoneId + '">' + mobilePhoneName + '</td><td id="mobilePhoneNumber-' + mobilePhoneId + '">' + mobilePhoneNumber + '</td><td>' + a + '</td></tr>';
-				}
-				$('table#mobilePhoneTable > tbody').append(tr);
-				var mobilePhoneIds = $('input#mobilePhoneIds').val()
-				if (mobilePhoneIds) {
-					$('input#mobilePhoneIds').val(mobilePhoneIds + ',' + mobilePhoneId);
-				} else {
-					$('input#mobilePhoneIds').val(mobilePhoneId);
-				}
-				$('#deleteMobilePhone-' + mobilePhoneId).click(function() {
-					var mobilePhoneIdString = $(this).attr('id');
-					var mobilePhoneId = mobilePhoneIdString.split('-')[1];
-					var mobilePhoneIds = $('input#mobilePhoneIds').val();
-					var mobilePhoneIdsArray = mobilePhoneIds.split(',');
-					var newMobilePhoneIds = null;
-					for (var i = 0; i < mobilePhoneIdsArray.length; i++) {
-						if (mobilePhoneIdsArray[i] != mobilePhoneId) {
-							if (newMobilePhoneIds) {
-								newMobilePhoneIds = newMobilePhoneIds + ',' + mobilePhoneIdsArray[i];
-							} else {
-								newMobilePhoneIds = mobilePhoneIdsArray[i];
-							}
-						}
-					}
-					if (newMobilePhoneIds) {
-						$('input#mobilePhoneIds').val(newMobilePhoneIds);
-					} else {
-						$('input#mobilePhoneIds').removeAttr('value');
-					}
-					$('tr#mobilePhone-' + mobilePhoneId).remove();
-				});
-			}
-		}
-	});
 	
 	$('#addCompetence').click(function() {
 		c++;
@@ -399,29 +324,6 @@ $(document).ready(function() {
 				});
 			}
 		}
-	});
-	
-	$('[id^=deleteMobilePhone]').click(function() {
-		var mobilePhoneIdString = $(this).attr('id');
-		var mobilePhoneId = mobilePhoneIdString.split('-')[1];
-		var mobilePhoneIds = $('#mobilePhoneIds').val();
-		var mobilePhoneIdsArray = mobilePhoneIds.split(',');
-		var newMobilePhoneIds = null;
-		for (var i = 0; i < mobilePhoneIdsArray.length; i++) {
-			if (mobilePhoneIdsArray[i] != mobilePhoneId) {
-				if (newMobilePhoneIds) {
-					newMobilePhoneIds = newMobilePhoneIds + ',' + mobilePhoneIdsArray[i];
-				} else {
-					newMobilePhoneIds = mobilePhoneIdsArray[i];
-				}
-			}
-		}
-		if (newMobilePhoneIds) {
-			$('#mobilePhoneIds').val(newMobilePhoneIds);
-		} else {
-			$('#mobilePhoneIds').removeAttr('value');
-		}
-		$('tr#mobilePhone-' + mobilePhoneId).remove();
 	});
 	
 	$('[id^=deleteCompetence]').click(function() {

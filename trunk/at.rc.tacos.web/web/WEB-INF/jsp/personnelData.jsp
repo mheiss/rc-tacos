@@ -49,31 +49,12 @@
 				</c:choose></td>
 			</tr>
 			<tr>
-				<td style="font-weight: bold">Telefonnummern:</td>
-				<td>
-				<table id="mobilePhoneTable" class="list" cellpadding="3"
-					cellspacing="0">
-					<thead>
-						<tr>
-							<th class="header2" colspan="3">Telefonnummern</th>
-						</tr>
-						<tr class="subhead2">
-							<th>Handy&nbsp;Bezeichnung</th>
-							<th>Handynummer</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="mobilePhone"
-							items="${userSession.loginInformation.userInformation.phonelist}"
-							varStatus="loop">
-							<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
-								<td>${mobilePhone.mobilePhoneName}</td>
-								<td>${mobilePhone.mobilePhoneNumber}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				</td>
+				<td style="font-weight: bold">Telefon 1:</td>
+				<td>${userSession.loginInformation.userInformation.phone1}</td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold">Telefon 2:</td>
+				<td>${userSession.loginInformation.userInformation.phone2}</td>
 			</tr>
 			<tr>
 				<td style="font-weight: bold">Dienststelle:</td>
