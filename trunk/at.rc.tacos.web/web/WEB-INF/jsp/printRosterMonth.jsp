@@ -9,21 +9,24 @@
 		<table id="rosterEntryTable" class="list" cellpadding="0"
 			cellspacing="0">
 				<tr>
-					<th class="header2" colspan="${fn:length(staffMemberList)*2+2}">${function.function.competenceName}&nbsp;im
-					<c:choose>
-						<c:when test="${params.month eq 'JANUARY'}">J&auml;nner</c:when>
-						<c:when test="${params.month eq 'FEBRUARY'}">Februar</c:when>
-						<c:when test="${params.month eq 'MARCH'}">M&auml;rz</c:when>
-						<c:when test="${params.month eq 'APRIL'}">April</c:when>
-						<c:when test="${params.month eq 'MAY'}">Mai</c:when>
-						<c:when test="${params.month eq 'JUNE'}">Juni</c:when>
-						<c:when test="${params.month eq 'JULY'}">Juli</c:when>
-						<c:when test="${params.month eq 'AUGUST'}">August</c:when>
-						<c:when test="${params.month eq 'SEPTEMBER'}">September</c:when>
-						<c:when test="${params.month eq 'OCTOBER'}">Oktober</c:when>
-						<c:when test="${params.month eq 'NOVEMBER'}">November</c:when>
-						<c:when test="${params.month eq 'DECEMBER'}">Dezember</c:when>
-					</c:choose> ${params.year}&nbsp;in&nbsp;${params.location.locationName}
+					<th class="header2" colspan="${fn:length(staffMemberList)*2+2}">${params.function.competenceName}&nbsp;im
+						<c:choose>
+							<c:when test="${params.month eq 'JANUARY'}">J&auml;nner</c:when>
+							<c:when test="${params.month eq 'FEBRUARY'}">Februar</c:when>
+							<c:when test="${params.month eq 'MARCH'}">M&auml;rz</c:when>
+							<c:when test="${params.month eq 'APRIL'}">April</c:when>
+							<c:when test="${params.month eq 'MAY'}">Mai</c:when>
+							<c:when test="${params.month eq 'JUNE'}">Juni</c:when>
+							<c:when test="${params.month eq 'JULY'}">Juli</c:when>
+							<c:when test="${params.month eq 'AUGUST'}">August</c:when>
+							<c:when test="${params.month eq 'SEPTEMBER'}">September</c:when>
+							<c:when test="${params.month eq 'OCTOBER'}">Oktober</c:when>
+							<c:when test="${params.month eq 'NOVEMBER'}">November</c:when>
+							<c:when test="${params.month eq 'DECEMBER'}">Dezember</c:when>
+						</c:choose>${params.year}
+						<c:if test="${params.location ne null}">
+							in&nbsp;${params.location.locationName}
+						</c:if>
 					</th>
 				</tr>
 				<tr class="subhead2">

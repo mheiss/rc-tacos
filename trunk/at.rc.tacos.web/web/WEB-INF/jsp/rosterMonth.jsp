@@ -154,20 +154,23 @@
 				</c:choose>
 				<tr>
 					<th class="header2" colspan="${fn:length(staffMemberList)*3+2}">${params.function.competenceName}&nbsp;im
-					<c:choose>
-						<c:when test="${params.month eq 'JANUARY'}">J&auml;nner</c:when>
-						<c:when test="${params.month eq 'FEBRUARY'}">Februar</c:when>
-						<c:when test="${params.month eq 'MARCH'}">M&auml;rz</c:when>
-						<c:when test="${params.month eq 'APRIL'}">April</c:when>
-						<c:when test="${params.month eq 'MAY'}">Mai</c:when>
-						<c:when test="${params.month eq 'JUNE'}">Juni</c:when>
-						<c:when test="${params.month eq 'JULY'}">Juli</c:when>
-						<c:when test="${params.month eq 'AUGUST'}">August</c:when>
-						<c:when test="${params.month eq 'SEPTEMBER'}">September</c:when>
-						<c:when test="${params.month eq 'OCTOBER'}">Oktober</c:when>
-						<c:when test="${params.month eq 'NOVEMBER'}">November</c:when>
-						<c:when test="${params.month eq 'DECEMBER'}">Dezember</c:when>
-					</c:choose> ${params.year}&nbsp;in&nbsp;${params.location.locationName}
+						<c:choose>
+							<c:when test="${params.month eq 'JANUARY'}">J&auml;nner</c:when>
+							<c:when test="${params.month eq 'FEBRUARY'}">Februar</c:when>
+							<c:when test="${params.month eq 'MARCH'}">M&auml;rz</c:when>
+							<c:when test="${params.month eq 'APRIL'}">April</c:when>
+							<c:when test="${params.month eq 'MAY'}">Mai</c:when>
+							<c:when test="${params.month eq 'JUNE'}">Juni</c:when>
+							<c:when test="${params.month eq 'JULY'}">Juli</c:when>
+							<c:when test="${params.month eq 'AUGUST'}">August</c:when>
+							<c:when test="${params.month eq 'SEPTEMBER'}">September</c:when>
+							<c:when test="${params.month eq 'OCTOBER'}">Oktober</c:when>
+							<c:when test="${params.month eq 'NOVEMBER'}">November</c:when>
+							<c:when test="${params.month eq 'DECEMBER'}">Dezember</c:when>
+						</c:choose>${params.year}
+						<c:if test="${params.location ne null}">
+							in&nbsp;${params.location.locationName}
+						</c:if>
 					</th>
 				</tr>
 				<tr class="subhead2">
@@ -312,6 +315,7 @@
 											<tr class="${class}">
 												<td><c:set var="title">
 													<ul>
+														<li>Ortsstelle:&nbsp;${rosterEntryContainer.rosterEntry.station.locationName}</li>
 														<li>Planzeiten:&nbsp;<fmt:formatDate type="time"
 															timeStyle="short"
 															value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate
