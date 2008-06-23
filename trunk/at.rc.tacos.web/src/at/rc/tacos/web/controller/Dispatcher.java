@@ -120,9 +120,10 @@ public class Dispatcher extends HttpServlet
 		if (userSession.getConnection().getSocket() == null) {
 			boolean serverListening = false;
 			serverListening = userSession.getConnection().connect(netBundle.getString("server.host"), Integer.parseInt(netBundle.getString("server.port")));
-			if (!serverListening) {
+			//Causes problems because of idiotic replication concept of tacos server
+			/*if (!serverListening) {
 				serverListening = userSession.getConnection().connect(netBundle.getString("failover.host"), Integer.parseInt(netBundle.getString("failover.port")));
-			}
+			}*/
 			if (!serverListening) throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 			
 		}
