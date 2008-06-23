@@ -49,6 +49,7 @@
 	<tr>
 		<td style="font-weight: bold">Ortsstelle&nbsp;(Dienste):</td>
 		<td><select size="1" id="locationId" name="locationId">
+			<option value="noValue">-- Ortsstelle wählen --</option>
 			<c:forEach var="location" items="${params.locationList}">
 				<option value="${location.id}" ${(not empty
 					params.location) and (params.location.id==
