@@ -403,6 +403,10 @@ public class RosterDAOSQL implements RosterDAO
 		{
 			String queryString = queries.getStatment("list.RosterForRosterMonth");
 			
+			if (locationFilter != -1) {
+				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.locationCondition");
+			}
+			
 			if (locationStaffMemberFilter != -1) {
 				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.primaryLocationCondition"); 
 			}
@@ -419,22 +423,30 @@ public class RosterDAOSQL implements RosterDAO
 			
 			final PreparedStatement query = connection.prepareStatement(queryString);
 			
-			query.setInt(1, locationFilter);
-			query.setInt(2, monthFilter);
-			query.setInt(3, yearFilter);
+			int i = 1;
+			query.setInt(i, monthFilter);
 			
-			int i = 3;
+			i++;
+			query.setInt(i, yearFilter);
+			
+			if (locationFilter != -1) {
+				i++;
+				query.setInt(i, locationFilter);
+			}
 			
 			if (locationStaffMemberFilter != -1) {
 				i++;
 				query.setInt(i, locationStaffMemberFilter);
-			}		
+			}
+			
 			if (functionServiceTypeFilter != null) {
 				i++;
 				query.setString(i, functionServiceTypeFilter);
 			}
+			
 			i++;
 			query.setString(i, functionStaffMemberCompetenceFilter);
+			
 			if (staffMemberFilter != -1) {
 				i++;
 				query.setInt(i, staffMemberFilter);
