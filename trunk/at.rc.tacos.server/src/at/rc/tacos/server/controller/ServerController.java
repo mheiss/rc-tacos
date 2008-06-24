@@ -254,6 +254,8 @@ public class ServerController
         protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
         protFactory.registerDecoder(DayInfoMessage.ID, new DayInfoMessageDecoder());
         protFactory.registerEncoder(DayInfoMessage.ID, new DayInfoMessageEncoder());
+        protFactory.registerDecoder(Link.ID, new LinkDecoder());
+        protFactory.registerEncoder(Link.ID, new LinkEncoder());
         protFactory.registerDecoder(Job.ID, new JobDecoder());
         protFactory.registerEncoder(Job.ID, new JobEncoder());
         protFactory.registerDecoder(Location.ID, new LocationDecoder());
@@ -299,6 +301,7 @@ public class ServerController
         factory.registerModelListener(Logout.ID, new AuthenticationListener());
         factory.registerModelListener(DialysisPatient.ID, new DialysisPatientListener());
         factory.registerModelListener(DayInfoMessage.ID, new DayInfoListener());
+        factory.registerModelListener(Link.ID, new LinkListener());
         factory.registerModelListener(Job.ID, new JobListener());
         factory.registerModelListener(Location.ID, new LocationListener());
         factory.registerModelListener(Competence.ID, new CompetenceListener());
