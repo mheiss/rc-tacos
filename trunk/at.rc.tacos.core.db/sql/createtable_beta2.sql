@@ -163,6 +163,18 @@ CREATE TABLE dayinfo (
 )
 Create NONCLUSTERED Index dayinfo_FKIndex1 ON dayinfo (username)
 
+CREATE TABLE link (
+	link_ID BIGINT NOT NULL,
+	link_inner_text VARCHAR(250) NOT NULL,
+	link_href VARCHAR(250) NOT NULL,
+	link_title VARCHAR(1000),
+	username VARCHAR(30) NOT NULL
+	PRIMARY KEY(link_ID),
+	FOREIGN KEY(username) REFERENCES userlogin(username)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+)
+
 
 CREATE TABLE staffmembers (
   staffmember_ID BIGINT NOT NULL,
