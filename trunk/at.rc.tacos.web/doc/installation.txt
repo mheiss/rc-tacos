@@ -117,8 +117,8 @@ Running local under Eclipse
    editStaffMember.photo.absolute.dir = E:/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/at.rc.tacos.web/image/staffmembers
    editStaffMember.photo.contentType = image/.*
 
-11. Go to Run/Debug Setting->Apache Tomcat and add the following value:
-   -Djava.library.path=E:\tomcat-6.0.16\bin
+11. Go to Run/Open Debug Dialog>Apache Tomcat and add the following value:
+   -Djava.library.path="E:\tomcat-6.0.16\bin"
    
 12.Try to run application on server. (won't work but that's ok :-)).
 
