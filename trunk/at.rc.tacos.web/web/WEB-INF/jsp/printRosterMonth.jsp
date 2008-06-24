@@ -38,8 +38,8 @@
 				</tr>
 				<c:forEach var="day" items="${dayList}">
 					<tr>
-						<td>${day.day}</td>
-						<td><c:choose>
+						<td nowrap="nowrap">${day.day}</td>
+						<td nowrap="nowrap"><c:choose>
 							<c:when test="${day.dayOfWeek eq 1}">
 								<span style="color: red">So</span>
 							</c:when>
@@ -72,7 +72,7 @@
 							</c:forEach>
 							<c:choose>
 								<c:when test="${fn:length(rosterEntryContainerList) gt 0}">
-									<td>
+									<td nowrap="nowrap">
 									<table class="innerTable" cellspacing="0" cellpadding="0">
 										<c:forEach var="rosterEntryContainer"
 											items="${rosterEntryContainerList}">
@@ -88,7 +88,7 @@
 												</c:when>
 											</c:choose>
 											<tr class="${class}">
-												<td><c:choose>
+												<td nowrap="nowrap"><c:choose>
 												<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
 													<c:choose>
 														<c:when
@@ -125,7 +125,7 @@
 										</c:forEach>
 									</table>
 									</td>
-									<td>
+									<td nowrap="nowrap">
 									<table class="innerTable" cellspacing="0" cellpadding="0">
 										<c:forEach var="rosterEntryContainer"
 											items="${rosterEntryContainerList}">
@@ -141,7 +141,7 @@
 												</c:when>
 											</c:choose>
 											<tr class="${class}">
-												<td><span><fmt:formatDate type="time"
+												<td nowrap="nowrap"><span><fmt:formatDate type="time"
 													timeStyle="short"
 													value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate
 													type="time" timeStyle="short"
@@ -154,8 +154,8 @@
 									</td>
 								</c:when>
 								<c:otherwise>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
+									<td nowrap="nowrap">&nbsp;</td>
+									<td nowrap="nowrap">&nbsp;</td>
 								</c:otherwise>
 							</c:choose>
 							<c:remove var="rosterEntryContainerList" />
@@ -168,7 +168,7 @@
 	<c:otherwise>
 		<table cellpadding="3" cellspacing="0" class="list">
 			<tr>
-				<td class="nodata">Keine&nbsp;Mitarbeiter&nbsp;mit&nbsp;entsprechenden&nbsp;Kompetenzen&nbsp;gefunden</td>
+				<td nowrap="nowrap" class="nodata">Keine&nbsp;Mitarbeiter&nbsp;mit&nbsp;entsprechenden&nbsp;Kompetenzen&nbsp;gefunden</td>
 			</tr>
 		</table>
 	</c:otherwise>
