@@ -7,6 +7,7 @@ import at.rc.tacos.core.db.dao.DayInfoDAO;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
 import at.rc.tacos.core.db.dao.DiseaseDAO;
 import at.rc.tacos.core.db.dao.JobDAO;
+import at.rc.tacos.core.db.dao.LinkDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
 import at.rc.tacos.core.db.dao.MobilePhoneDAO;
 import at.rc.tacos.core.db.dao.PeriodsDAO;
@@ -126,5 +127,11 @@ public class DaoFactorySQL implements DaoFactory
 	public PeriodsDAO createPeriodsDAO()
 	{
 		return new PeriodsDAOSQL();
+	}
+
+	@Override
+	public LinkDAO createLinkDAO() {
+		// TODO Auto-generated method stub
+		return new LinkDAOSQL();
 	}
 }
