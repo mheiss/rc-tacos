@@ -421,7 +421,7 @@
 <c:url var="url" value="/Dispatcher/printRosterMonth.do">
 	<c:param name="functionId">${params.function.id}</c:param>
 	<c:param name="locationStaffMemberId">${params.locationStaffMember.id}</c:param>
-	<c:param name="staffMemberId">${params.staffMember.id}</c:param>
+	<c:param name="staffMemberId">${params.staffMember.staffMemberId}</c:param>
 	<c:param name="locationId">${params.location.id}</c:param>
 	<c:param name="month">${params.month}</c:param>
 	<c:param name="year">${params.year}</c:param>
