@@ -17,4 +17,10 @@ public interface LinkDAO {
 	public int addLink(Link link) throws SQLException;
 	
 	public List<Link> listLinks() throws SQLException;
+	
+	public Link getLinkById(int linkId) throws SQLException;
+	
+	public boolean removeLink(int linkId) throws SQLException;
+	
+	public boolean updateLink(Link link) throws SQLException;
 }
