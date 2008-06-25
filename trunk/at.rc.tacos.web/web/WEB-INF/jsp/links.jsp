@@ -30,6 +30,17 @@
 					<td>${link.title}</td>
 					<td nowrap="nowrap">${link.username}</td>
 					<td>
+						<c:url var="url" value="/Dispatcher/editLink.do">
+							<c:param name="linkId">${link.id}</c:param>
+							<c:param name="savedUrl">/links.do</c:param>
+						</c:url>
+						<a href="${url}">Bearbeiten</a>
+						<br />
+						<c:url var="url" value="/Dispatcher/deleteLink.do">
+							<c:param name="linkId">${link.id}</c:param>
+							<c:param name="savedUrl">/links.do</c:param>
+						</c:url>
+						<a href="${url}">L&ouml;schen</a>
 					</td>
 				</tr>
 			</c:forEach>

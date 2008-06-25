@@ -169,7 +169,7 @@
 												<c:param name="savedUrl">/roster.do</c:param>
 												<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 											</c:url>
-											<a href="${url}">Löschen</a>
+											<a href="${url}">L&ouml;schen</a>
 											<c:set var="breakRow">true</c:set>
 										</c:when>
 										<c:otherwise>
@@ -214,7 +214,7 @@
 										<c:param name="rosterEntryId">${rosterEntryContainer.rosterEntry.rosterId}</c:param>
 										<c:param name="savedUrl">/roster.do</c:param>
 									</c:url>
-									<a href="${url}">Löschen</a>
+									<a href="${url}">L&ouml;schen</a>
 									<c:set var="breakRow">true</c:set>
 									<%--<c:if test="${userSession.internalSession eq true}">--%>
 									<c:choose>
