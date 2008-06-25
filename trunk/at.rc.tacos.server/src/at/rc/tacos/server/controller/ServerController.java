@@ -254,8 +254,6 @@ public class ServerController
         protFactory.registerEncoder(DialysisPatient.ID, new DialysisEncoder());
         protFactory.registerDecoder(DayInfoMessage.ID, new DayInfoMessageDecoder());
         protFactory.registerEncoder(DayInfoMessage.ID, new DayInfoMessageEncoder());
-        protFactory.registerDecoder(Link.ID, new LinkDecoder());
-        protFactory.registerEncoder(Link.ID, new LinkEncoder());
         protFactory.registerDecoder(Job.ID, new JobDecoder());
         protFactory.registerEncoder(Job.ID, new JobEncoder());
         protFactory.registerDecoder(Location.ID, new LocationDecoder());
@@ -281,6 +279,8 @@ public class ServerController
         protFactory.registerEncoder(Logout.ID, new LogoutEncoder());
         protFactory.registerDecoder(SystemMessage.ID, new SystemMessageDecoder());
         protFactory.registerEncoder(SystemMessage.ID, new SystemMessageEncoder());
+        protFactory.registerDecoder(Link.ID, new LinkDecoder());
+        protFactory.registerEncoder(Link.ID, new LinkEncoder());
     }
 
     /**
