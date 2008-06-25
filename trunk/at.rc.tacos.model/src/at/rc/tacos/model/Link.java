@@ -11,6 +11,7 @@ public class Link extends AbstractMessage {
 	public final static String ID = "link";
 	public Link() {
 		super(ID);
+		id = -1;
 	}
 	
 	private int id;
