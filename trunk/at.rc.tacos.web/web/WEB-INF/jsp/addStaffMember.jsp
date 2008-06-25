@@ -56,7 +56,7 @@
 	</tr>
 	<tr>
 		<td style="font-weight: bold">Telefon 1:</td>
-		<td><input name="phone1" type="text" size="50" maxlength="50"
+		<td><input name="phone1" type="text" size="30" maxlength="50"
 			value="${params.phone1}" /></td>
 		<td><span class="errorText"> <c:choose>
 			<c:when test="${not empty params.errors.phone1TooLong}">
@@ -66,7 +66,7 @@
 	</tr>
 	<tr>
 		<td style="font-weight: bold">Telefon 2:</td>
-		<td><input name="phone2" type="text" size="50" maxlength="50"
+		<td><input name="phone2" type="text" size="30" maxlength="50"
 			value="${params.phone2}" /></td>
 		<td><span class="errorText"> <c:choose>
 			<c:when test="${not empty params.errors.phone2TooLong}">
