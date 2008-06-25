@@ -2,6 +2,7 @@ package at.rc.tacos.server.listener;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -31,7 +32,7 @@ public class LinkListener extends ServerListenerAdapter {
         Link link = (Link)addObject;
         int id = linkDao.addLink(link);
         if(id == -1)
-        	throw new DAOException("LinkListener","Failed to add the job " + link);
+        	throw new DAOException("LinkListener","Failed to add the link " + link);
         link.setId(id);
         logger.info("added by:" +username +";" +link);
         return link;
@@ -41,9 +42,18 @@ public class LinkListener extends ServerListenerAdapter {
 	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
-		//listing by date
-		if(queryFilter.containsFilterType(IFilterTypes.DATE_FILTER))
-		{
+				
+		if(queryFilter.containsFilterType(IFilterTypes.ID_FILTER)) {
+			int linkId = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ID_FILTER));
+			final Link link = linkDao.getLinkById(linkId);
+			if (link != null) {
+				list.add(link);
+			}
+		} else {
+			final List<Link> linkList = linkDao.listLinks();
+	    	if(linkList == null)
+	    		throw new DAOException("LinkListener","Failed to list the links"); 
+	    	list.addAll(linkList);
 		}
 		return list;
 	}
@@ -51,6 +61,19 @@ public class LinkListener extends ServerListenerAdapter {
 	@Override
 	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
 	{
-		return null;
+		Link link = (Link)updateObject;
+		if(!linkDao.updateLink(link))
+			throw new DAOException("LinkListener","Failed to update the link:"+link);
+		logger.info("updated by: " +username +";" +link);
+		return link;
+	}
+	
+	@Override
+	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException,SQLException
+	{
+		Link link = (Link)removeObject;
+		if(!linkDao.removeLink(link.getId()))
+			throw new DAOException("LinkListener","Failed to remove the link:"+link);
+		return link;
 	}
 }
