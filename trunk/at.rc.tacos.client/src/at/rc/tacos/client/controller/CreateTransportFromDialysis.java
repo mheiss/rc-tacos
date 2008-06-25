@@ -43,16 +43,19 @@ public class CreateTransportFromDialysis extends Action
 		//In the dialysis patients is only the time stored, so we have to add the current year,month and day
 		Calendar start = Calendar.getInstance();
 		start.setTimeInMillis(patient.getPlannedStartOfTransport());
+		
 		//now add the current year,month and day
 		start.set(Calendar.YEAR, dateOfTransport.get(Calendar.YEAR));
 		start.set(Calendar.MONTH, dateOfTransport.get(Calendar.MONTH));
 		start.set(Calendar.DAY_OF_MONTH, dateOfTransport.get(Calendar.DAY_OF_MONTH));
+		
 		//time at patient
 		Calendar atPatient = Calendar.getInstance();
 		atPatient.setTimeInMillis(patient.getPlannedTimeAtPatient());
 		atPatient.set(Calendar.YEAR, dateOfTransport.get(Calendar.YEAR));
 		atPatient.set(Calendar.MONTH, dateOfTransport.get(Calendar.MONTH));
 		atPatient.set(Calendar.DAY_OF_MONTH, dateOfTransport.get(Calendar.DAY_OF_MONTH));
+		
 		//time at the destination
 		Calendar atDestination = Calendar.getInstance();
 		atDestination.setTimeInMillis(patient.getAppointmentTimeAtDialysis());
@@ -64,9 +67,11 @@ public class CreateTransportFromDialysis extends Action
 		Transport newTransport = new Transport();
 		newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 		newTransport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
+		
 		//the date time of the transport is the planed start of the transport
 		newTransport.setDateOfTransport(dateOfTransport.getTimeInMillis());
 		newTransport.setTransportPriority("C");
+		
 		//set the known fields of the dialyis patient
 		newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
 		newTransport.setFromStreet(patient.getFromStreet());
@@ -85,6 +90,7 @@ public class CreateTransportFromDialysis extends Action
 			newTransport.setKindOfIllness(disease);
 		if(patient.getKindOfTransport() != null)
 			newTransport.setKindOfTransport(patient.getKindOfTransport());
+		
 		//add the transport to the database
 		NetWrapper.getDefault().sendAddMessage(Transport.ID, newTransport);
 		

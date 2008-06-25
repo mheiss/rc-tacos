@@ -40,7 +40,7 @@ public class EditorNewJobAction extends Action
     }
 
     /**
-     * Retruns the text to show in the toolbar
+     * Returns the text to show in the toolbar
      * @return the text to render
      */
     @Override

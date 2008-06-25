@@ -12,7 +12,7 @@ import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
 /**
- * Sets the bd2 option for the transport
+ * Sets or clears the bd2 option for the transport
  * @author b.thek
  */
 public class SetBD2Action extends Action implements IProgramStatus

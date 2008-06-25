@@ -14,6 +14,10 @@ import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 
+/**
+ * Sets the transport status s6 (at station) for each transport of the day if the status is not already set
+ * @author b.thek
+ */
 public class VehicleAtStationAction extends Action implements ITransportStatus, IProgramStatus
 {
 	 private List<Transport> objectList = new ArrayList<Transport>();
@@ -28,7 +32,6 @@ public class VehicleAtStationAction extends Action implements ITransportStatus, 
 	{
 		this.detail = detail;
 	}
-
 
 	/**
 	 * Returns the tooltip text for the action
@@ -71,9 +74,9 @@ public class VehicleAtStationAction extends Action implements ITransportStatus, 
 		//set the vehicle status to green and update the vehicle
 		if(detail.getDriver() != null && detail.isReadyForAction())
 		{
-			detail.setLastDestinationFree("");
 			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
 		}
+		detail.setLastDestinationFree("");
 		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
 		
 		//create a timestamp for the transport state S6

@@ -10,6 +10,11 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
 
+/**
+ * Detaches all staff members of the given vehicle
+ * and sets the ready status to false and the vehicle status to not available
+ * @author b.thek
+ */
 public class VehicleTableDetachAllStaffMembersAction extends Action
 {
 	//properties
@@ -22,7 +27,6 @@ public class VehicleTableDetachAllStaffMembersAction extends Action
 	{
 		this.viewer = viewer;
 	}
-
 
 	/**
 	 * Returns the tooltip text for the action

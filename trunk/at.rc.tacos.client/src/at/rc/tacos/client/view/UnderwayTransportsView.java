@@ -148,24 +148,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		OutstandingTransportsView outstandingView = new OutstandingTransportsView();
 		outstandingView.createPartControl(sashForm);
 		
-		
 		viewer.refresh();
-		
-//		//create the tooltip text
-//		tooltip = new UnderwayTransportsTooltip(viewer.getControl());
-//		//show the tool tip when the selection has changed
-//		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
-//		{
-//			public void selectionChanged(SelectionChangedEvent event) 
-//			{
-//				TableItem[] selection = viewer.getTable().getSelection();
-//				if (selection != null && selection.length > 0) 
-//				{
-//					Rectangle bounds = selection[0].getBounds();
-//					tooltip.show(new Point(bounds.x, bounds.y));
-//				}
-//			}
-//		});  
 		
 		viewer.getTable().addMouseListener(new MouseAdapter() 
 		{
@@ -179,7 +162,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		});
 		//set a default sorter
 		viewer.setSorter(new TransportSorter(TransportSorter.PRIORITY_SORTER,SWT.UP));
-		
 		
 		final Table tableDisp = viewer.getTable();
 		tableDisp.setLinesVisible(true);
@@ -264,8 +246,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		final TableColumn anmerkungUnderwayTransporte = new TableColumn(tableDisp, SWT.NONE);
 		anmerkungUnderwayTransporte.setWidth(328);
 		anmerkungUnderwayTransporte.setText("Anmerkung");
-		
-		
 		
 		/** make columns sort able*/
 		Listener sortListener = new Listener() 
@@ -386,9 +366,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		setAlarmingActionPO = new SetAlarmingAction(this.viewer,"Polizei");
 		setAlarmingActionBR = new SetAlarmingAction(this.viewer,"Bergrettung");
 		setAlarmingActionKIT = new SetAlarmingAction(this.viewer,"KIT");
-		
-		
-		
 	}
 	
 	/**

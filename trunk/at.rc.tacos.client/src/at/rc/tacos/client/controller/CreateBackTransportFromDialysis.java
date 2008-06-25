@@ -43,10 +43,12 @@ public class CreateBackTransportFromDialysis extends Action
 		//In the dialysis patients is only the time stored, so we have to add the current year,month and day
 		Calendar start = Calendar.getInstance();
 		start.setTimeInMillis(patient.getPlannedStartForBackTransport());
+		
 		//now add the current year,month and day
 		start.set(Calendar.YEAR, dateOfTransport.get(Calendar.YEAR));
 		start.set(Calendar.MONTH, dateOfTransport.get(Calendar.MONTH));
 		start.set(Calendar.DAY_OF_MONTH, dateOfTransport.get(Calendar.DAY_OF_MONTH));
+		
 		//time at patient
 		Calendar ready = Calendar.getInstance();
 		ready.setTimeInMillis(patient.getReadyTime());
@@ -58,9 +60,11 @@ public class CreateBackTransportFromDialysis extends Action
 		Transport newTransport = new Transport();
 		newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 		newTransport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
+		
 		//the date time of the transport is the planed start of the transport
 		newTransport.setDateOfTransport(dateOfTransport.getTimeInMillis());
 		newTransport.setTransportPriority("D");
+		
 		//set the known fields of the dialyis patient
 		newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
 		newTransport.setFromStreet(patient.getToStreet());//!
@@ -78,6 +82,7 @@ public class CreateBackTransportFromDialysis extends Action
 			newTransport.setKindOfIllness(disease);
 		if(patient.getKindOfTransport() != null)
 			newTransport.setKindOfTransport(patient.getKindOfTransport());
+		
 		//add the transport to the database
 		NetWrapper.getDefault().sendAddMessage(Transport.ID, newTransport);
 		

@@ -1,6 +1,10 @@
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
+/**
+ * Removes a transport for the multi transport table within the transport form
+ * @author b.thek
+ */
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TableViewer;
 
@@ -59,5 +63,4 @@ public class RemoveTransportFromMultiTransportList extends Action
     	provider.removeTransport(transport);
     	viewer.refresh();
     }
-
 }

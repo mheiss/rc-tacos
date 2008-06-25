@@ -10,6 +10,10 @@ import at.rc.tacos.client.view.VehicleForm;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.VehicleDetail;
 
+/**
+ * Opens a form to edit the vehicle
+ * @author b.thek
+ */
 public class VehicleEditAction extends Action
 {
 	//properties
@@ -22,7 +26,6 @@ public class VehicleEditAction extends Action
 	{
 		this.detail = detail;
 	}
-
 
 	/**
 	 * Returns the tooltip text for the action

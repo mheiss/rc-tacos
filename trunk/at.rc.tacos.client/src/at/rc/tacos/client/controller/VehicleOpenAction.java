@@ -9,6 +9,10 @@ import org.eclipse.ui.PlatformUI;
 import at.rc.tacos.client.view.VehiclesSelectForm;
 import at.rc.tacos.factory.ImageFactory;
 
+/**
+ * Opens the form to edit a vehicle
+ * @author b.thek
+ */
 public class VehicleOpenAction extends Action
 {
 	/**

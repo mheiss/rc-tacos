@@ -36,10 +36,13 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
     {
         //the selection
         ISelection selection = viewer.getSelection();
+        
         //get the selected transport
-        Transport t1 = (Transport)((IStructuredSelection)selection).getFirstElement();         
+        Transport t1 = (Transport)((IStructuredSelection)selection).getFirstElement();  
+        
         //copy the transport
         Transport t2 = new Transport();
+        
         //reset the values for the second transport
         t2.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
         t2.setTransportId(0);
@@ -50,15 +53,18 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         t2.setTransportPriority("D");
         t2.getStatusMessages().clear();
         t2.setDirection(0);
+        
         //date and time
         t2.setYear(Calendar.getInstance().get(Calendar.YEAR));
         t2.setDateOfTransport(Calendar.getInstance().getTimeInMillis());
         t2.setPlannedStartOfTransport(Calendar.getInstance().getTimeInMillis());
+        
         //alarming
         t2.setAssistantPerson(t1.isAssistantPerson());
         t2.setBackTransport(false);
         t2.setEmergencyPhone(t1.isEmergencyPhone());
         t2.setLongDistanceTrip(t1.isLongDistanceTrip());
+        
         //assert valid
         if(t1.getKindOfIllness() != null)
         	t2.setKindOfIllness(t1.getKindOfIllness());
@@ -68,9 +74,11 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
             t2.setCallerDetail(t1.getCallerDetail());
         if(t1.getFeedback() != null)
             t2.setFeedback(t1.getFeedback());
+        
         //destination and target
         t2.setPlanedLocation(t1.getPlanedLocation());
         t2.setPatient(t1.getPatient());
+        
         //switch the address for the back transport
         if(t1.getToStreet() != null &! t1.getToStreet().trim().equalsIgnoreCase(""))
         	t2.setFromStreet(t1.getToStreet());
@@ -80,7 +88,6 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         	t2.setFromCity(t1.getToCity()); 
         else
         	t2.setFromCity("kein Eintrag");
-        
         t2.setToStreet(t1.getFromStreet()); 
         t2.setToCity(t1.getFromCity()); 
         

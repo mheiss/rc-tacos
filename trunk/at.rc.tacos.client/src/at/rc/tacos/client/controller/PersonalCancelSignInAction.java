@@ -10,10 +10,15 @@ import org.eclipse.ui.PlatformUI;
 import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.RosterEntry;
 
+/**
+ * Opens the form to confirm the cancel and sets the sign in cancel
+ * @author b.thek
+ */
 public class PersonalCancelSignInAction extends Action
 {
 	//properties
 	private TableViewer viewer;
+	
 	/**
 	 * Default class constructor.
 	 * @param viewer the table viewer
