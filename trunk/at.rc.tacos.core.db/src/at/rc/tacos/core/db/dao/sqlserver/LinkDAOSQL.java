@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import at.rc.tacos.core.db.DataSource;
@@ -24,8 +25,29 @@ public class LinkDAOSQL implements LinkDAO {
 
 	@Override
 	public List<Link> listLinks() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = source.getConnection();
+		try
+		{
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.links"));
+			final ResultSet rs = stmt.executeQuery();
+			//create the returned list and loop over the result set
+			List<Link> linkList = new ArrayList<Link>();
+			while(rs.next())
+			{
+				Link link = new Link();
+				link.setId(rs.getInt("link_ID"));
+				link.setInnerText(rs.getString("link_inner_text"));
+				link.setHref(rs.getString("link_href"));
+				link.setTitle(rs.getString("link_title"));
+				link.setUsername("username");
+				linkList.add(link);
+			}
+			return linkList;
+		}
+		finally
+		{
+			connection.close();
+		}
 	}
 
 	@Override
@@ -56,6 +78,72 @@ public class LinkDAOSQL implements LinkDAO {
 				return -1;
 			
 			return id;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public Link getLinkById(int linkId) throws SQLException {
+		Connection connection = source.getConnection();
+		try
+		{
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.linkByID"));
+			stmt.setInt(1, linkId);
+			final ResultSet rs = stmt.executeQuery();
+			//assert we have the job
+			if(!rs.next())
+				return null;
+			
+			Link link = new Link();
+			link.setId(rs.getInt("link_ID"));
+			link.setInnerText(rs.getString("link_inner_text"));
+			link.setHref(rs.getString("link_href"));
+			link.setTitle(rs.getString("link_title"));
+			link.setUsername("username");
+			
+			return link;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public boolean removeLink(int linkId) throws SQLException {
+		Connection connection = source.getConnection();
+		try
+		{
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("remove.link"));
+			stmt.setInt(1, linkId);
+			if(stmt.executeUpdate() == 0)
+				return false;
+			return true;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public boolean updateLink(Link link) throws SQLException {
+		Connection connection = source.getConnection();
+		try
+		{
+			// jobname, job_ID
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("update.link"));
+			stmt.setString(1, link.getInnerText());
+			stmt.setString(2, link.getHref());
+			stmt.setString(3, link.getTitle());
+			stmt.setString(4, link.getUsername());
+			stmt.setInt(5, link.getId());
+			if(stmt.executeUpdate() == 0)
+				return false;
+			return true;
 		}
 		finally
 		{
