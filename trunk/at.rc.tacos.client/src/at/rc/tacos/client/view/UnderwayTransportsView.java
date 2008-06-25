@@ -65,7 +65,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private FormToolkit toolkit;
 	private ScrolledForm formDisp;
 	private TableViewer viewer;
-//	private UnderwayTransportsTooltip tooltip;
 	
 	//the actions for the context menu
 	private SetTransportStatusAction setTransportStatusS1Action;
@@ -130,13 +129,10 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		formDisp.setText("Disponierte Transporte");
 		toolkit.decorateFormHeading(formDisp.getForm());
 		formDisp.getBody().setLayout(new FillLayout());
-		
-		
-		
+
 		final Composite composite = formDisp.getBody();
 		
 		SashForm sashForm = new SashForm(composite, SWT.VERTICAL);
-		
 		
 		viewer = new TableViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
@@ -384,7 +380,6 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		});
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-//		getSite().registerContextMenu(menuManager, viewer);
 	}
 	
 	/**

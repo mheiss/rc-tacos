@@ -12,7 +12,6 @@ import at.rc.tacos.model.DialysisPatient;
  */
 public class DialysisTransportSorter extends ViewerSorter 
 {
-
 	//columns that are sort able
 	public final static String TRANSPORT_FROM_SORTER = "transportfrom";
 	public final static String TRANSPORT_TO_SORTER = "transportto";
@@ -67,7 +66,7 @@ public class DialysisTransportSorter extends ViewerSorter
         	returnValue = from1.compareTo(from2);
         }
         
-      //sort by the transport to column
+     	//sort by the transport to column
         if(column == TRANSPORT_TO_SORTER)
         {
         	//TODO right to sort by the city?
@@ -174,10 +173,7 @@ public class DialysisTransportSorter extends ViewerSorter
         	String n2 = dia2.getKindOfTransport();
         	returnValue = n1.compareTo(n2);
         }
-        
-        
 
-        
         if (this.dir == SWT.DOWN) {
             returnValue = returnValue * -1;
         }

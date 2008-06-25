@@ -164,7 +164,6 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 		}
 
 		//sort by the time of the 'AE' field
-		//sort by the time of the 'AE' field
 		if(column == AE_SORTER)
 		{
 			if(!transport1.getStatusMessages().containsKey(TRANSPORT_STATUS_ORDER_PLACED))

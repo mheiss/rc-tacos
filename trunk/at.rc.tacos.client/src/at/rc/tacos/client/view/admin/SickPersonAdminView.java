@@ -318,8 +318,6 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	{
 		//get the values
 		final String strLastname = lastname.getText().trim().toLowerCase();
-		final String strFirstname = firstname.getText().trim().toLowerCase();
-		final String strSVNR = svnr.getText().trim().toLowerCase();
 		
 		if(strLastname.length() < 1)
 		{

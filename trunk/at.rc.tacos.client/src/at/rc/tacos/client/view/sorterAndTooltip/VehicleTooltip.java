@@ -119,8 +119,6 @@ public class VehicleTooltip extends ToolTip
 		return composite;
 	}  
 	
-	
-	
 	protected void addTitleAndLabel(Composite parent, String titel, String text)
 	{
 		if(text.trim().isEmpty())
@@ -138,9 +136,7 @@ public class VehicleTooltip extends ToolTip
 		textLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 		textLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
-		textLabel.setText(text);
-		
-		
+		textLabel.setText(text);	
 	}
 	
 	/**

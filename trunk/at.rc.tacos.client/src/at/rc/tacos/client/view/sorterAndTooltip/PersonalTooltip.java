@@ -115,8 +115,6 @@ public class PersonalTooltip extends ToolTip
 		textLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
 		textLabel.setText(text);
-		
-		
 	}
 	
 	/**

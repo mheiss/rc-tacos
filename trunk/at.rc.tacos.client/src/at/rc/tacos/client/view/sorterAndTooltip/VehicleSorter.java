@@ -72,10 +72,6 @@ public class VehicleSorter extends ViewerSorter implements ITransportStatus
 		if (column == VEHICLE_TYPE_SORTER) 
 		{
 			//assert the vehicle is valid
-//			if(veh1.getVehicleDetail() == null)
-//				return -1 * sortDir;
-//			if(veh2.getVehicleDetail() == null)
-//				return 1 * sortDir;
 			String v1 = veh1.getVehicleType();
 			String v2 = veh2.getVehicleType();
 			return v1.compareTo(v2) * sortDir;
@@ -85,13 +81,9 @@ public class VehicleSorter extends ViewerSorter implements ITransportStatus
 		if (column == DRIVER_SORTER) 
 		{
 			//assert the vehicle and the driver is valid
-//			if(veh1.getVehicleDetail() == null)
-//				return -1 * sortDir;
 			if(veh1.getDriver() == null)
 				return -1 * sortDir;
 			//assert the vehicle and the driver is valid
-//			if(veh2.getVehicleDetail() == null)
-//				return 1 * sortDir;
 			if(veh2.getDriver() == null)
 				return 1 * sortDir;
 			String d1 = veh1.getDriver().getLastName();
@@ -103,13 +95,9 @@ public class VehicleSorter extends ViewerSorter implements ITransportStatus
 		if (column == PARAMEDIC_I_SORTER) 
 		{
 			//assert the vehicle and the medic is valid
-//			if(veh1.getVehicleDetail() == null)
-//				return -1 * sortDir;
 			if(veh1.getFirstParamedic() == null)
 				return -1 * sortDir;
 			//assert the vehicle and the medic is valid
-//			if(veh2.getVehicleDetail() == null)
-//				return 1 * sortDir;
 			if(veh2.getFirstParamedic() == null)
 				return 1 * sortDir;
 			String p1 = veh1.getFirstParamedic().getLastName();
@@ -121,13 +109,9 @@ public class VehicleSorter extends ViewerSorter implements ITransportStatus
 		if (column == PARAMEDIC_II_SORTER) 
 		{
 			//assert the vehicle and the medic is valid
-//			if(veh1.getVehicleDetail() == null)
-//				return -1 * sortDir;
 			if(veh1.getSecondParamedic() == null)
 				return -1 * sortDir;
 			//assert the vehicle and the medic is valid
-//			if(veh2.getVehicleDetail() == null)
-//				return 1 * sortDir;
 			if(veh2.getSecondParamedic() == null)
 				return 1 * sortDir;
 			String p1 = veh1.getSecondParamedic().getLastName();
