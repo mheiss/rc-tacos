@@ -97,6 +97,9 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 		}
 	}
 
+	/**
+	 * Returns the not locked staff members
+	 */
 	public List<StaffMember> getAllStaffMembers() throws SQLException
 	{
 		Connection connection = source.getConnection();
@@ -137,6 +140,9 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 		}
 	}
 
+	/**
+	 * Returns the not locked staff members of the given lacation
+	 */
 	public List<StaffMember> getStaffMembersFromLocation(int locationId) throws SQLException
 	{
 		Connection connection = source.getConnection();

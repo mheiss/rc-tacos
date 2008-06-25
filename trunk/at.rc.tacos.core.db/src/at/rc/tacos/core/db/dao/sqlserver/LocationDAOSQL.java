@@ -113,7 +113,6 @@ public class LocationDAOSQL implements LocationDAO
 			
 			id = rs.getInt(1);
 			
-			
 			// location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.location"));
 			query.setInt(1, id);
