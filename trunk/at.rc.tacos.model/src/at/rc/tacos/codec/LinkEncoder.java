@@ -4,7 +4,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Link;
 
 /**
