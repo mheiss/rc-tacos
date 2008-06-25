@@ -99,7 +99,6 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         // Create the scrolled parent component
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
         form = toolkit.createScrolledForm(parent);
-//        form.setText("Fzg.");
         toolkit.decorateFormHeading(form.getForm());
         form.getBody().setLayout(new FillLayout());
 
@@ -143,12 +142,10 @@ public class VehiclesViewTableDetailed extends ViewPart implements PropertyChang
         final TableColumn columnVehicleName = new TableColumn(table, SWT.NONE);
         columnVehicleName.setToolTipText("Fahrzeugname");
         columnVehicleName.setWidth(45);
-//        columnVehicleName.setText("Fzg.");
 
         final TableColumn columnVehicleStatus = new TableColumn(table, SWT.NONE);
         columnVehicleStatus.setToolTipText("Verfügbarkeit des Fahrzeuges");
         columnVehicleStatus.setWidth(20);
-//        columnVehicleStatus.setText("Status");
         
         final TableColumn columnDriver = new TableColumn(table, SWT.NONE);
         columnDriver.setToolTipText("Fahrer");

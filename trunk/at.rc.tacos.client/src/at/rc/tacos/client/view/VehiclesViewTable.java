@@ -161,12 +161,10 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
         final TableColumn columnVehicleName = new TableColumn(table, SWT.NONE);
         columnVehicleName.setToolTipText("Fahrzeugname");
         columnVehicleName.setWidth(60);
-//        columnVehicleName.setText("Fzg.");
 
         final TableColumn columnVehicleStatus = new TableColumn(table, SWT.NONE);
         columnVehicleStatus.setToolTipText("Verfügbarkeit des Fahrzeuges");
         columnVehicleStatus.setWidth(50);
-//        columnVehicleStatus.setText("Status");
 
         //make the columns sortable
         Listener sortListener = new Listener() 

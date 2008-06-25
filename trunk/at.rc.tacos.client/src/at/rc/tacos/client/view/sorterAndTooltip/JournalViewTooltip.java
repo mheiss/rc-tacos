@@ -144,7 +144,6 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			addTitleAndLabel(composite,"Rückmeldung: ",text);
 		}
 
-		
 		//caller detail
 		if (transport.getCallerDetail() != null)
 		{

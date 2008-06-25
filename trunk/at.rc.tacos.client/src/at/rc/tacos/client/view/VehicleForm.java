@@ -417,7 +417,6 @@ public class VehicleForm extends TitleAreaDialog
 				}
 				else
 					checkRequiredFields();	
-
 			}
 		});
 		readyButton.setText("Einsatzbereit");

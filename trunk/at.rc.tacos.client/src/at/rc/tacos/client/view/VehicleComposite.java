@@ -16,6 +16,7 @@ import at.rc.tacos.model.VehicleDetail;
 
 /**
  * Creates CarComposite for the class VehiclesView, called from the CarCompositeManager
+ * no actions are provided in this view (problems with the given objects and not required)
  * @author b.thek
  */
 public class VehicleComposite extends Composite implements PropertyChangeListener
@@ -38,13 +39,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	private Label repairLabel;
 	private Label statusLabel;
 
-//	//the actions
-//	private VehicleEditAction editAction;
-//	private VehicleDetachAllStaffMembersAction detachAction;
-//	private VehicleSetReadyAction readyStatus;
-//	private VehicleSetRepairStatus repairStatus;
-//	private VehicleAtStationAction vehicleAtStationAction;
-
 	/**
 	 * Default constructor creating a new car composite
 	 * @param parent the parent control 
@@ -65,10 +59,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		vehicle.updateImages();
 		bindValues();
 		updateColors();
-
-		//context menue
-//		makeActions();
-//		hookContextMenu();
 
 		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
 	}
@@ -162,62 +152,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		medicIILabel.setBackground(CustomColors.COLOR_BLUE);
 		medicIILabel.setAlignment(SWT.RIGHT);
 		medicIILabel.setBounds(88, 19, 44, 13);
-
-		//create the actions
-//		makeActions();
-//		hookContextMenu();
 	}
-
-//	/**
-//	 * Creats and initializes all actions
-//	 */
-//	private void makeActions()
-//	{
-//		editAction = new VehicleEditAction(vehicle);
-//		detachAction = new VehicleDetachAllStaffMembersAction(vehicle);
-//		readyStatus = new VehicleSetReadyAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
-//		repairStatus = new VehicleSetRepairStatus(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),vehicle);
-//		vehicleAtStationAction = new VehicleAtStationAction(vehicle);
-//	}
-//
-//	/**
-//	 * Creates and hooks the context menue
-//	 */
-//	private void hookContextMenu()
-//	{
-//		MenuManager menuManager = new MenuManager("#PopupMenu");
-//		menuManager.setRemoveAllWhenShown(true);
-//		menuManager.addMenuListener(new IMenuListener() 
-//		{
-//			public void menuAboutToShow(IMenuManager manager) 
-//			{
-//				fillContextMenu(manager);
-//			}
-//		});
-//		Menu menu = menuManager.createContextMenu(vehicleNameLabel);
-//		vehicleNameLabel.setMenu(menu);
-//	}
-//
-//	private void fillContextMenu(IMenuManager manager)
-//	{
-//		manager.add(editAction);
-//		manager.add(detachAction);
-//		manager.add(new Separator());
-//		manager.add(vehicleAtStationAction);
-//		manager.add(new Separator());
-//		manager.add(readyStatus);
-//		manager.add(repairStatus);
-//
-//		//enable or disable the actions
-//		if(vehicle.isReadyForAction())
-//			readyStatus.setEnabled(false);
-//		else
-//			readyStatus.setEnabled(true);
-//		if(vehicle.isOutOfOrder())
-//			repairStatus.setEnabled(false);
-//		else 
-//			repairStatus.setEnabled(true);
-//	}
 
 	/**
 	 * Binds the values form the model to the labels and text fields.

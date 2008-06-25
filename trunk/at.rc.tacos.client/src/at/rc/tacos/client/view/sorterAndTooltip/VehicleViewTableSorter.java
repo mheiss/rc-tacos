@@ -105,7 +105,7 @@ public class VehicleViewTableSorter extends ViewerSorter
 			return  ta1.compareTo(ta2) * sortDir;
         }
         
-      //sort by the driver name
+        //sort by the driver name
 		if (column == DRIVER_SORTER) 
 		{
 			//assert the vehicle and the driver is valid
