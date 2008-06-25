@@ -11,5 +11,10 @@ import at.rc.tacos.model.Link;
  * @version 1.0
  */
 public interface LinkDAO {
+	
+	public static final String TABLE_NAME = "link";
+	
+	public int addLink(Link link) throws SQLException;
+	
 	public List<Link> listLinks() throws SQLException;
 }
