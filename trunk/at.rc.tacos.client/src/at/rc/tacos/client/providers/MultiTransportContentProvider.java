@@ -29,7 +29,6 @@ public class MultiTransportContentProvider implements IStructuredContentProvider
 		return objectList.toArray();
 	}
 	
-	
 	public void addTransport(Transport transport)
 	{
 		objectList.add(transport);
@@ -40,9 +39,9 @@ public class MultiTransportContentProvider implements IStructuredContentProvider
 		return objectList;
 	}
 	
-	public void removeTransport(Transport transport)
+	public void removeTransport(int index)
 	{
-		objectList.remove(transport);
+		objectList.remove(index);
 	}
 	
 	public void removeAllTransports()
