@@ -2,23 +2,25 @@ package at.rc.tacos.common;
 
 /**
  * The available priorities for a transport
+ * Available transport priorities in the system: A to G
+ * The user shown transort priorities are 1 to 7
  * @author b.thek
  */
 public interface ITransportPriority 
 {
-	/** NEF und RTW entsenden */
+	/** A (1) NEF und RTW entsenden */
 	public final static String TRANSPORT_PRIORITY_EMERGENCY_DOCTOR_INTERNAL = "A";	
-	/** RTW mit BD1 entsenden */
+	/** B (2) RTW mit BD1 entsenden */
 	public final static String TRANSPORT_PRIORITY_BLUELIGHT = "B";	
-	/** normaler Transport */
+	/** C (3) normaler Transport */
 	public final static String TRANSPORT_PRIORITY_TRANSPORT = "C";	
-	/** Rücktransport (von ambulant) */
+	/** D (4) Rücktransport (von ambulant) */
 	public final static String TRANSPORT_PRIORITY_BACK_TRANSPORT = "D";		
-	/** Heimtransport (von stationär) */
+	/** E (5) Heimtransport (von stationär) */
 	public final static String TRANSPORT_PRIORITY_HOME_TRANSPORT = "E";		
-	/** Sonstiges (Dienstfahrten,...) */
+	/** F (6) Sonstiges (Dienstfahrten,...) */
 	public final static String TRANSPORT_PRIORITY_OTHER = "F";	
-	/** NEF für andere Bezirksstelle entsenden */
+	/** G (7) NEF für andere Bezirksstelle entsenden */
 	public final static String TRANSPORT_PRIORITY_EMERGENCY_DOCTOR_EXTERNAL = "G";	
 }
 
