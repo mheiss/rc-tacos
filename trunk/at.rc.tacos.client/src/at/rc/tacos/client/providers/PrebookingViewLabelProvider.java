@@ -118,6 +118,7 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 						return "R";
 					else return "";
 				}
+				else return "";
 			case Column_NOTES:
 				if(transport.getNotes() != null)
 					return transport.getNotes();
