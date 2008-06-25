@@ -255,10 +255,10 @@
 			<td colspan="3" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
 		</tr>
 		<tr>
-			<td class="hButtonArea" colspan="3"><input type="submit"
-				value="Mitarbeiter speichern" /> <input name="action" type="hidden"
-				value="updateStaffMember" /> <input name="staffMemberId"
-				type="hidden" value="${params.staffMember.staffMemberId}" /></td>
+			<td class="hButtonArea" colspan="3">
+				<input type="submit" value="Mitarbeiter speichern" />
+				<input name="action" type="hidden" value="updateStaffMember" />
+				<input name="staffMemberId" type="hidden" value="${params.staffMember.staffMemberId}" /></td>
 			<td />
 		</tr>
 	</table>
