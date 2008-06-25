@@ -15,6 +15,8 @@ import at.rc.tacos.codec.DiseaseDecoder;
 import at.rc.tacos.codec.DiseaseEncoder;
 import at.rc.tacos.codec.JobDecoder;
 import at.rc.tacos.codec.JobEncoder;
+import at.rc.tacos.codec.LinkDecoder;
+import at.rc.tacos.codec.LinkEncoder;
 import at.rc.tacos.codec.LocationDecoder;
 import at.rc.tacos.codec.LocationEncoder;
 import at.rc.tacos.codec.LoginDecoder;
@@ -48,6 +50,7 @@ import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Job;
+import at.rc.tacos.model.Link;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
@@ -360,6 +363,8 @@ public class WebClient
         protFactory.registerEncoder(ServiceType.ID, new ServiceTypeEncoder());
         protFactory.registerDecoder(Disease.ID, new DiseaseDecoder());
         protFactory.registerEncoder(Disease.ID, new DiseaseEncoder());
+        protFactory.registerDecoder(Link.ID, new LinkDecoder());
+        protFactory.registerEncoder(Link.ID, new LinkEncoder());
     }
 
     /**
