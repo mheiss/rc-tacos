@@ -11,7 +11,7 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
 /**
- * Moves the transport to the outstanding transports
+ * Moves the given transport to the outstanding transports
  * @author b.thek
  */
 public class MoveToOutstandingTransportsAction extends Action implements ITransportStatus, IProgramStatus
@@ -20,7 +20,7 @@ public class MoveToOutstandingTransportsAction extends Action implements ITransp
 	private TableViewer viewer;
 	
 	/**
-	 * Default class construtor.
+	 * Default class constructor.
 	 * @param viewer the table viewer
 	 */
 	public MoveToOutstandingTransportsAction(TableViewer viewer)
@@ -40,6 +40,8 @@ public class MoveToOutstandingTransportsAction extends Action implements ITransp
 		//change transport program status to 'outstanding'
 		transport.getStatusMessages().clear();
 		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
+		//set the transport number to 0 - then the server will write the transport number into the 
+		//tmptransports table and the number will be assigned to the next transport of the same location
 		if(transport.getTransportNumber() <0 )
 			transport.setTransportNumber(0);
 		//remove the vehicle to release the transport number

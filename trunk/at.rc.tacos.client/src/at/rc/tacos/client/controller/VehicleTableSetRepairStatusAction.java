@@ -85,5 +85,4 @@ public class VehicleTableSetRepairStatusAction extends Action
     {
         return ImageFactory.getInstance().getRegisteredImageDescriptor("resource.vehicleOutOfOrder");
     }
-
 }

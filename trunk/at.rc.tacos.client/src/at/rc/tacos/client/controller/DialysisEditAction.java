@@ -61,7 +61,6 @@ public class DialysisEditAction extends Action
 			Activator.getDefault().log("Der Eintrag "+dia+" wird trotz Sperrung durch "+resultLockMessage +" von "+username+" bearbeitet",Status.WARNING);
 		}
 	
-		
 		//edit the entry
 		DialysisForm form = new DialysisForm(dia, false);
 		form.open();

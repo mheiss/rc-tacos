@@ -42,7 +42,7 @@ public class EditTransportStatusAction extends Action
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		
-		//check if the object is currenlty locked
+		//check if the object is currently locked
 		String resultLockMessage = LockManager.sendLock(Transport.ID, transport.getTransportId());
 		
 		//check the result of the lock

@@ -58,9 +58,11 @@ public class DialysisTransportNowAction extends Action
 				"Dialysetransport jetzt durchführen", "Möchten Sie den Dialysetransport wirklich jetzt durchführen?");
 		if (!cancelConfirmed) 
 			return;
+		
 		//set the time and send a update request to the server
-		dia.setLastTransportDate(Calendar.getInstance().getTimeInMillis());
+		dia.setLastTransportDate(Calendar.getInstance().getTimeInMillis());//to inform the system, that no further transport for this day should be created automatically (by the job)
 		NetWrapper.getDefault().sendUpdateMessage(DialysisPatient.ID, dia);
+		
 		//create a transport for this patient
 		CreateTransportFromDialysis createAction = new CreateTransportFromDialysis(dia,Calendar.getInstance());
 		createAction.run();

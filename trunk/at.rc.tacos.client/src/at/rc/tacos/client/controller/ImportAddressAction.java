@@ -25,6 +25,7 @@ import at.rc.tacos.model.Address;
 
 /**
  * Import action to load the new street names
+ * Is only once used ad system implementation phase
  * @author Michael
  */
 public class ImportAddressAction extends Action

@@ -20,7 +20,7 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
 /**
- * Opens the editor to edit the selected entry
+ * Assigns the transport as orwarded
  * @author b.thek
  */
 public class ForwardTransportAction extends Action implements ITransportStatus, IProgramStatus
@@ -56,17 +56,16 @@ public class ForwardTransportAction extends Action implements ITransportStatus, 
 			boolean forceEdit =  MessageDialog.openQuestion(
 					Display.getCurrent().getActiveShell(), 
 					"Information: Eintrag wird bearbeitet", 
-					"Der Transport den Sie stornieren möchten wird bereits von "+ resultLockMessage+ " bearbeitet.\n"+
+					"Der Transport den Sie weiterleiten möchten wird bereits von "+ resultLockMessage+ " bearbeitet.\n"+
 					"Ein gleichzeitiges Bearbeiten kann zu unerwarteten Fehlern führen!\n\n"+
 					"Es wird dringend empfohlen, den Eintrag erst nach Freigabe durch " +resultLockMessage +" zu stornieren!\n\n"+
-					"Möchten Sie den Eintrag trotzdem stornieren?");
+					"Möchten Sie den Eintrag trotzdem sofort weiterleiten?");
 			if(!forceEdit)
 				return;
 			//log the override of the lock
 			String username = SessionManager.getInstance().getLoginInformation().getUsername();
 			Activator.getDefault().log("Der Eintrag "+transport+" wird trotz Sperrung durch "+resultLockMessage +" von "+username+" bearbeitet",Status.WARNING);
 		}
-		
 		
 		//confirm the cancel
 		InputDialog dlg = new InputDialog(

@@ -74,7 +74,6 @@ public class DetachCarAction extends Action implements IProgramStatus
 				"Bitte geben Sie eine Begründung für das Abziehen des Fahrzeuges" +" " +transport.getVehicleDetail().getVehicleName() +" ein", 
 				null,null);
 		if (dlg.open() == Window.OK) 
-		//confirm the cancel
 		{
 			transport.getStatusMessages().clear();
 			transport.clearVehicleDetail();

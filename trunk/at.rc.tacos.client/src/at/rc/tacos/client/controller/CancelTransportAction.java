@@ -20,7 +20,7 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
 /**
- * Opens the editor to edit the selected entry (stornieren)
+ * Opens the editor to ask for a storno reason and set the needed transport properties for a storno
  * @author b.thek
  */
 public class CancelTransportAction extends Action implements ITransportStatus, IProgramStatus
@@ -47,7 +47,6 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
 		
-		
 		//check if the object is currently locked
 		String resultLockMessage = LockManager.sendLock(Transport.ID, transport.getTransportId());
 		
@@ -60,7 +59,7 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 					"Der Transport den Sie stornieren möchten wird bereits von "+ resultLockMessage+ " bearbeitet.\n"+
 					"Ein gleichzeitiges Bearbeiten kann zu unerwarteten Fehlern führen!\n\n"+
 					"Es wird dringend empfohlen, den Eintrag erst nach Freigabe durch " +resultLockMessage +" zu stornieren!\n\n"+
-					"Möchten Sie den Eintrag trotzdem stornieren?");
+					"Möchten Sie den Eintrag trotzdem sofort stornieren?");
 			if(!forceEdit)
 				return;
 			//log the override of the lock
@@ -68,8 +67,6 @@ public class CancelTransportAction extends Action implements ITransportStatus, I
 			Activator.getDefault().log("Der Eintrag "+transport+" wird trotz Sperrung durch "+resultLockMessage +" von "+username+" bearbeitet",Status.WARNING);
 		}
 		
-		
-
 		//confirm the cancel
 		InputDialog dlg = new InputDialog(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),

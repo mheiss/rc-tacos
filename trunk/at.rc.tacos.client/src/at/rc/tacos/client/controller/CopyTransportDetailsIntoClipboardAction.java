@@ -15,6 +15,7 @@ import at.rc.tacos.model.Transport;
 
 /**
  * Class to copy the details of the transport into the windows clipboard
+ * called from the context menu action
  * @author b.thek
  */
 public class CopyTransportDetailsIntoClipboardAction extends Action implements ITransportStatus
@@ -34,7 +35,8 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 	private String priority;
 	private String al = "";
 	private String smsData;	
-	private String kindOfTransport = "";	
+	private String kindOfTransport = "";
+	
 	/**
 	 * Default class constructor.
 	 * @param viewer the table viewer
@@ -46,7 +48,6 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 		setToolTipText("Kopiert die Transportdetails in die Windows Zwischenablage");
 	}
 	
-	
 	@Override
 	public void run()
 	{
@@ -54,27 +55,23 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		//copy the details into the windows clipboard
-		transportNumber = "TNr: " +String.valueOf(transport.getTransportNumber());
 		
+		//common transport priorities
+		transportNumber = "TNr: " +String.valueOf(transport.getTransportNumber());
 		fromStreet = "von: " +transport.getFromStreet();
 		if(transport.getFromCity() != null)
 			fromCity = " " +transport.getFromCity();
 		from = fromStreet + "/" +fromCity;
-	
 		if (transport.getPatient() != null)
 			patient = transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
-		
 		if(transport.getToStreet() != null)
 			toStreet = "nach: " +transport.getToStreet();
 		if(transport.getToCity() != null)
 			toCity = " " +transport.getToCity();
 		if(!toStreet.trim().isEmpty() |! toCity.trim().isEmpty())
 			to = toStreet +"/" +toCity;
-		
 		if(transport.getKindOfIllness() != null)
 			kindOfIllness = transport.getKindOfIllness().getDiseaseName();
-		
 		if(transport.getNotes() != null |! transport.getNotes().trim().isEmpty())
 			notes = transport.getNotes();
 		
@@ -93,12 +90,11 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 			priority = "6 Sonstiges";
 		else if (transport.getTransportPriority().equalsIgnoreCase("G"))
 			priority = "7 NEF extern";
-		
 		priority = "Pr: " +priority;
-		
 		if(transport.isBlueLight1())
 			priority = priority + " BD1";
 		
+		//alarming
 		if(transport.isBrkdtAlarming())
 			al = "BRKDT";
 		if(transport.isDfAlarming())
@@ -115,7 +111,6 @@ public class CopyTransportDetailsIntoClipboardAction extends Action implements I
 			al = al + "Polizei";
 		if(transport.getKindOfTransport()!= null)
 			kindOfTransport = transport.getKindOfTransport();
-		
 		if(!al.equalsIgnoreCase(""))
 			al = "alarmiert: " +al;
 		

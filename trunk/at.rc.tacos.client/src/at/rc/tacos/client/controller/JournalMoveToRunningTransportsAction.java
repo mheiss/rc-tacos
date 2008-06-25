@@ -11,7 +11,7 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.Transport;
 
 /**
- * Moves the transport to the running transports
+ * Moves the given transport to the running transports
  * @author b.thek
  */
 public class JournalMoveToRunningTransportsAction extends Action implements ITransportStatus, IProgramStatus
@@ -20,7 +20,7 @@ public class JournalMoveToRunningTransportsAction extends Action implements ITra
 	private TableViewer viewer;
 	
 	/**
-	 * Default class construtor.
+	 * Default class constructor.
 	 * @param viewer the table viewer
 	 */
 	public JournalMoveToRunningTransportsAction(TableViewer viewer)

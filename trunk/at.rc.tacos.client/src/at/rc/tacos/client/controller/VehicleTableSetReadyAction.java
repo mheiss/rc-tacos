@@ -40,8 +40,7 @@ public class VehicleTableSetReadyAction extends Action
     	//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected entry
-		VehicleDetail detail = (VehicleDetail)((IStructuredSelection)selection).getFirstElement();
-				
+		VehicleDetail detail = (VehicleDetail)((IStructuredSelection)selection).getFirstElement();	
 		
         //first check if we have at least a driver
         if(detail.getDriver() == null)
@@ -52,8 +51,6 @@ public class VehicleTableSetReadyAction extends Action
         	return;
         }
         	
-            
-        
         //reset the status
         detail.setOutOfOrder(false);
         detail.setReadyForAction(true);

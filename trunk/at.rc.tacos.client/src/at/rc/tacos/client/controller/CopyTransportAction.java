@@ -80,7 +80,7 @@ public class CopyTransportAction extends Action implements IProgramStatus
             t2.setCallerDetail(t1.getCallerDetail());
         if(t1.getFeedback() != null)
             t2.setFeedback(t1.getFeedback());
-        //destionation and target
+        //destination and target
         t2.setPlanedLocation(t1.getPlanedLocation());
         t2.setPatient(t1.getPatient());
         t2.setDirection(t1.getDirection());
@@ -89,7 +89,7 @@ public class CopyTransportAction extends Action implements IProgramStatus
         t2.setToCity(t1.getToCity());
         t2.setToStreet(t1.getToStreet());
 
-        //add the transport
+        //add the new transport
         NetWrapper.getDefault().sendAddMessage(Transport.ID, t2);
     }
 }

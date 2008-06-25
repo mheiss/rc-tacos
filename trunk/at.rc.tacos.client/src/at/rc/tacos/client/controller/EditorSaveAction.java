@@ -31,7 +31,7 @@ public class EditorSaveAction extends Action implements IWorkbenchWindowActionDe
     }
 
     /**
-     * Retruns the text to show in the toolbar
+     * Returns the text to show in the toolbar
      * @return the text to render
      */
     @Override

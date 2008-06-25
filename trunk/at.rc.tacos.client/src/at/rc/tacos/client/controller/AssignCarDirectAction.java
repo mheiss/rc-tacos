@@ -16,6 +16,10 @@ import at.rc.tacos.model.VehicleDetail;
 
 /**
  * Assigns the in the vehicle table of the transport form selected vehicle to the current transport
+ * Move the transport from the outstanding to the underway transports by setting the programStatus of the transport
+ * Set the transport status 'order placed' at the time
+ * Assign the vehicle
+ * Set the user which has execute this step (disposed user)
  * @author b.thek
  */
 public class AssignCarDirectAction extends Action implements IProgramStatus
@@ -41,7 +45,6 @@ public class AssignCarDirectAction extends Action implements IProgramStatus
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
 		VehicleDetail vehicle = (VehicleDetail)((IStructuredSelection)selection).getFirstElement();
-		System.out.println("............ AssignCarDirectAction, vehicle: " +vehicle.getVehicleName());
 		//open the editor
 		transport.setVehicleDetail(vehicle);
 		transport.setDisposedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
@@ -49,9 +52,6 @@ public class AssignCarDirectAction extends Action implements IProgramStatus
 		long now = cal.getTimeInMillis();
 		transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, now);
 		transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
-		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
-		
-		
-		
+		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);	
 	}
 }

@@ -9,6 +9,12 @@ import org.eclipse.ui.PlatformUI;
 import at.rc.tacos.client.view.TransportForm;
 import at.rc.tacos.factory.ImageFactory;
 
+/**
+ * Opens the form to open the transport form with transport type "prebooking"
+ * prebooking indicates a normal transport
+ * the transport type is used within the form to en- or disable buttons and show/hide groups
+ * @author b.thek
+ */
 public class OpenTransportAction extends Action
 {
 	/**

@@ -15,7 +15,7 @@ import at.rc.tacos.model.*;
 
 
 /**
- * The action that is triggered by creating a new transport
+ * The action that is triggered by creating a new transport if priority A (1 NEF) is choosen
  * @author b.thek
  */
 public class DuplicatePriorityATransportAction extends Action implements IProgramStatus
@@ -34,9 +34,9 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
     @Override
 	public void run() 
     {
-    	System.out.println("in der duplicate action");
         //copy the transport
         Transport newTransport = new Transport();
+        
         //reset the values for the second transport
         newTransport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
         newTransport.setTransportId(0);      
@@ -50,6 +50,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setAppointmentTimeAtDestination(transport.getAppointmentTimeAtDestination());
         newTransport.setPlannedStartOfTransport(transport.getPlannedStartOfTransport());
         newTransport.setPlannedTimeAtPatient(transport.getPlannedTimeAtPatient());
+        
         //alarming
         newTransport.setHelicopterAlarming(transport.isHelicopterAlarming());
         newTransport.setPoliceAlarming(transport.isPoliceAlarming());
@@ -63,6 +64,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setEmergencyPhone(transport.isEmergencyPhone());
         newTransport.setLongDistanceTrip(transport.isLongDistanceTrip());
         newTransport.setMountainRescueServiceAlarming(transport.isMountainRescueServiceAlarming());
+        
         //assert valid
         if(transport.getKindOfIllness() != null)
         	newTransport.setKindOfIllness(transport.getKindOfIllness());
@@ -75,7 +77,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         if(transport.getFeedback() != null)
         	newTransport.setFeedback(transport.getFeedback());
        
-        //destionation and target
+        //destination and target
         newTransport.setPlanedLocation(transport.getPlanedLocation());
         newTransport.setPatient(transport.getPatient());
         newTransport.setDirection(transport.getDirection());
@@ -84,11 +86,12 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setToCity(transport.getToCity());
         newTransport.setToStreet(transport.getToStreet());
         
-        //assig nef vehicle
+        //assign NEF vehicle
         VehicleDetail nef = ModelFactory.getInstance().getVehicleManager().getNEFVehicle();
         newTransport.setVehicleDetail(nef);
         newTransport.setDisposedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
-        //mark transport number (no number for the nef)
+       
+        //mark transport number (no number for the NEF)
         newTransport.setTransportNumber(Transport.TRANSPORT_NEF);
   
         //stati

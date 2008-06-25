@@ -45,8 +45,6 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 	@Override
 	public void run()
 	{
-		
-
 		//the selection
 		ISelection selection = viewer.getSelection();
 		//get the selected transport
@@ -67,7 +65,6 @@ public class SetTransportStatusAction extends Action implements ITransportStatus
 			vehicle.setLastDestinationFree(now + " " +transport.getToStreet() +"/" +transport.getToCity());
 			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
 		}
-		
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
 	

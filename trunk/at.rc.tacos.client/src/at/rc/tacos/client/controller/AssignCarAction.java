@@ -16,6 +16,10 @@ import at.rc.tacos.model.VehicleDetail;
 
 /**
  * Assigns the in the context menu selected car to the in the table viewer selected transport
+ * Move the transport from the outstanding to the underway transports by setting the programStatus of the transport
+ * Set the transport status 'order placed' at the time
+ * Assign the vehicle
+ * Set the user which has execute this step (disposed user)
  * @author b.thek
  */
 public class AssignCarAction extends Action implements IProgramStatus

@@ -29,7 +29,6 @@ public class EditorNewDiseaseAction extends Action
 		this.window = window;
 	}
 	
-
 	 /**
     * Returns the tooltip text for the action
     * @return the tooltip text

@@ -12,6 +12,7 @@ import at.rc.tacos.model.Transport;
 
 /**
  * Class to copy the details of the transport into the windows clipboard
+ * Called from the TransportManager if the old transport has no vehicle but the new transport = while car assigning
  * @author b.thek
  */
 public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implements ITransportStatus
@@ -32,6 +33,7 @@ public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implem
 	private String smsData;	
 	private String kindOfTransport = "";
 	private Transport transport;
+	
 	/**
 	 * Default class constructor.
 	 * @param viewer the table viewer
@@ -43,31 +45,25 @@ public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implem
 		setToolTipText("Kopiert die Transportdetails in die Windows Zwischenablage");
 	}
 	
-	
 	@Override
 	public void run()
 	{
-		//copy the details into the windows clipboard
+		//common transport properties
 		transportNumber = "TNr: " +String.valueOf(transport.getTransportNumber());
-		
 		fromStreet = "von: " +transport.getFromStreet();
 		if(transport.getFromCity() != null)
 			fromCity = " " +transport.getFromCity();
 		from = fromStreet + "/" +fromCity;
-	
 		if (transport.getPatient() != null)
 			patient = transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
-		
 		if(transport.getToStreet() != null)
 			toStreet = "nach: " +transport.getToStreet();
 		if(transport.getToCity() != null)
 			toCity = " " +transport.getToCity();
 		if(!toStreet.trim().isEmpty() |! toCity.trim().isEmpty())
 			to = toStreet +"/" +toCity;
-		
 		if(transport.getKindOfIllness() != null)
 			kindOfIllness = transport.getKindOfIllness().getDiseaseName();
-		
 		if(transport.getNotes() != null)
 			if(!transport.getNotes().trim().isEmpty())
 				notes = transport.getNotes();
@@ -87,12 +83,11 @@ public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implem
 			priority = "6 Sonstiges";
 		else if (transport.getTransportPriority().equalsIgnoreCase("G"))
 			priority = "7 NEF extern";
-		
 		priority = "Pr: " +priority;
-		
 		if(transport.isBlueLight1())
 			priority = priority + " BD1";
 		
+		//alarming
 		if(transport.isBrkdtAlarming())
 			al = "BRKDT";
 		if(transport.isDfAlarming())
@@ -109,7 +104,6 @@ public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implem
 			al = al + "Polizei";
 		if(transport.getKindOfTransport()!= null)
 			kindOfTransport = transport.getKindOfTransport();
-		
 		if(!al.equalsIgnoreCase(""))
 			al = "alarmiert: " +al;
 		
