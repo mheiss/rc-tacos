@@ -59,7 +59,7 @@ public class JournalViewLabelProvider implements ITableLabelProvider, ITableColo
 				//return when we do not have the status destination free
 				if(!transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
 					return null;
-				//display image only on a backtransport
+				//display image only on a back transport
 				if(!transport.isBackTransport())
 					return null;
 	

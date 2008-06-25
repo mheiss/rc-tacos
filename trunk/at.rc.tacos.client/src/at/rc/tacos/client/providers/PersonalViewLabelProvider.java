@@ -92,7 +92,6 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         String plannedStart;
         String plannedEnd;
         
-        
         switch(columnIndex)
         {
 	        case COLUMN_LOCK: return null;
@@ -133,7 +132,6 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 	        case COLUMN_SERVICE_TYPE: return entry.getServicetype().getServiceName();
 	        case COLUMN_JOB: return entry.getJob().getJobName();
 	        case COLUMN_VEHICLE: 
-	        	
 	        	VehicleDetail detail = vehicleManager.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId());
 	        	//assert valid (only the checked in members can be assigned to a vehicle
 	        	if(detail != null && entry.getRealStartOfWork() != 0 && entry.getRealEndOfWork() == 0)

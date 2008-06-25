@@ -46,7 +46,6 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 				if(lockManager.containsLock(VehicleDetail.ID, vehicle.getVehicleName()))
 					return ImageFactory.getInstance().getRegisteredImage("resource.lock");
 				else return null;
-//			return ImageFactory.getInstance().getRegisteredImage("resource.refresh20");
 			case COLUMN_READY:
 				if(vehicle.isReadyForAction())
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.ready");
@@ -81,7 +80,6 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 				if(vehicle.getVehicleNotes() != null)
 					if(!vehicle.getVehicleNotes().isEmpty())
 						return ImageFactory.getInstance().getRegisteredImage("vehicle.notes");
-	
 			default: return null; 
 		}
     }
@@ -109,12 +107,9 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 	        case COLUMN_LAST_DESTINATION_FREE:
 	        	if(detail.getLastDestinationFree() != null)
 	        		return detail.getLastDestinationFree();
-	        	else return null;
-	        	
+	        	else return null;	
 	    }
-        
         return null;
-        
     }
 
     @Override

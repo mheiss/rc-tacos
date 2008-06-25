@@ -50,9 +50,7 @@ public class SickPersonAdminTableLabelProvider implements ITableLabelProvider, I
 	        		return person.getSVNR();
 	        	else return null;
         }
-        
         return null;
-        
     }
 
     @Override

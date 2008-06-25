@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 public class AbstractPerspectiveSwitcher extends Action implements IPerspectiveListener 
 {
     /**
-     * Instanciates an action and registers a perspective-listener
+     * Instantiates an action and registers a perspective-listener
      * @param text
      */
     public AbstractPerspectiveSwitcher(String text) 

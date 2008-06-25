@@ -112,8 +112,6 @@ public class MultiTransportLabelProvider implements ITableLabelProvider, ITableC
 			
 		default: return null;
 		}
-
-
 	}
 
 	@Override
