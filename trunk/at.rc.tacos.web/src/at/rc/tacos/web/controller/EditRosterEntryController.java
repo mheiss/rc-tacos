@@ -485,11 +485,10 @@ public class EditRosterEntryController extends Controller {
 				}
 			}
 			
-			final Calendar deadlineCalendar = Calendar.getInstance();
-			deadlineCalendar.setTime(plannedStartOfWork);
-			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.ADD_ROSTER_ENTRY_DEADLINE_HOURS);
-			
 			if (plannedStartOfWork != null) {
+				final Calendar deadlineCalendar = Calendar.getInstance();
+				deadlineCalendar.setTime(plannedStartOfWork);
+				deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.ADD_ROSTER_ENTRY_DEADLINE_HOURS);
 				if (plannedStartOfWork.getTime() < rangeStartCalendar.getTimeInMillis()) {
 					errors.put(ERRORS_PLANNED_START_OF_WORK_TOO_SMALL, ERRORS_PLANNED_START_OF_WORK_TOO_SMALL_VALUE);
 					valid = false;
