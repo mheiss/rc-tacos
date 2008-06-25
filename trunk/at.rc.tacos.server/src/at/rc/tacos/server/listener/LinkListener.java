@@ -10,6 +10,7 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.db.dao.LinkDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
+import at.rc.tacos.model.Link;
 import at.rc.tacos.model.QueryFilter;
 
 /**
@@ -23,6 +24,18 @@ public class LinkListener extends ServerListenerAdapter {
 	private LinkDAO linkDao = DaoFactory.SQL.createLinkDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(DayInfoListener.class);
+	
+    @Override
+    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
+    {
+        Link link = (Link)addObject;
+        int id = linkDao.addLink(link);
+        if(id == -1)
+        	throw new DAOException("LinkListener","Failed to add the job " + link);
+        link.setId(id);
+        logger.info("added by:" +username +";" +link);
+        return link;
+    }
 	
 	@Override
 	public ArrayList<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException,SQLException
