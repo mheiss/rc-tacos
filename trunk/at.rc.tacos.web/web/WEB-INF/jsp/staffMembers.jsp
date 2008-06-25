@@ -48,8 +48,8 @@
 								<c:param name="refresh">${params.timestamp}</c:param>
 							</c:url><img src="${url}" width="55" height="69" alt="No photo found." />
 							</td>
-							<td nowrap="nowrap">${staffMember.phone1}</td>
-							<td nowrap="nowrap">${staffMember.phone2}</td>
+							<td nowrap="nowrap"> &nbsp;${staffMember.phone1}</td>
+							<td nowrap="nowrap"> &nbsp;${staffMember.phone2}</td>
 							<td><c:choose>
 								<c:when test="${fn:length(staffMember.competenceList) gt 0}">
 									<c:forEach var="competence"
