@@ -72,7 +72,6 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 		}); 
 	}
 
-
 	/**
 	 * Updates the transport at the list
 	 * @param transport the transport to update

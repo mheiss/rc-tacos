@@ -383,7 +383,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             //get the list of transports
             List<Transport> transportList = transportManager.getUnderwayTransportsByVehicle(detail.getVehicleName());
 
-
             //TODO this is the reason for the automatically vehicle updates (triggered from the DateTime (SWT.CALENDAR)- Field
             //without this calculation the status green is not set correctly
             
@@ -484,12 +483,10 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
         //for a 'yellow' status
         detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
         
-        
         //for a 'gray' status
         if(detail.isOutOfOrder() |! detail.isReadyForAction() || detail.getDriver() == null)
         	detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
         
         NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
-        
     }
 }	

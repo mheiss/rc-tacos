@@ -28,7 +28,6 @@ public class Perspective implements IPerspectiveFactory
         folder.addView(UnderwayTransportsView.ID);
         folder.addView(JournalView.ID);
         folder.addView(PrebookingView.ID);
-        
         folder.addView(DialysisView.ID);
        
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
@@ -39,14 +38,10 @@ public class Perspective implements IPerspectiveFactory
         layout.addStandaloneView(PersonalView.ID,false, IPageLayout.LEFT, 0.243f, editorArea);
         layout.addStandaloneView(InfoView.ID, false, IPageLayout.TOP, 0.35f, PersonalView.ID); 
        
-        
         //add the shortcuts to open the views
         layout.addShowViewShortcut(UnderwayTransportsView.ID);
         layout.addShowViewShortcut(PrebookingView.ID);
         layout.addShowViewShortcut(DialysisView.ID);
         layout.addShowViewShortcut(JournalView.ID);
-        
-        
-//        layout.getViewLayout(JournalView.ID).setCloseable(false);//doesn't work //TODO
 	}
 }

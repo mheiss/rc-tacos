@@ -78,9 +78,7 @@ public class SickPersonTableLabelProvider implements ITableLabelProvider, ITable
 	        		return person.getNotes();
 	        	else return "";
         }
-        
         return null;
-        
     }
 
     @Override

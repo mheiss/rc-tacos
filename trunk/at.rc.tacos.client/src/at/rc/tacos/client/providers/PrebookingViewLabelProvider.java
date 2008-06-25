@@ -28,7 +28,6 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 	public static final int COLUMN_T = 8;  
 	public static final int Column_NOTES = 9;
 
-	
 	//the lock manager
 	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
@@ -125,8 +124,6 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 				else return "";
 			default: return null;
 		}
-
-
 	}
 
 	@Override

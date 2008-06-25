@@ -82,7 +82,7 @@ public class DialysisTransportLabelProvider implements ITableLabelProvider, ITab
 				if(dia.isSunday() &! dia.isStationary())
 					return ImageFactory.getInstance().getRegisteredImage("transport.ok");
 				return null;
-				//no image by default
+			//no image by default
 			default:
 				return null;
 		}

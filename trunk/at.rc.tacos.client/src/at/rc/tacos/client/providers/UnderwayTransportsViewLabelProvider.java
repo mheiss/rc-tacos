@@ -37,11 +37,9 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
     public static final int COLUMN_ERKR_VERL = 14;
 	public static final int COLUMN_ANMERKUNG = 15;
 
-	
 	//the lock manager
 	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
-	
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
@@ -174,9 +172,7 @@ public class UnderwayTransportsViewLabelProvider implements ITableLabelProvider,
 	        		return transport.getNotes();
 	        	else return "";
         }
-        
         return null;
-        
     }
 
     @Override

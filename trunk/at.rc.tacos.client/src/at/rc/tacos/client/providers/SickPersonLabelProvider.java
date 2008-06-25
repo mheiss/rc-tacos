@@ -18,7 +18,6 @@ public class SickPersonLabelProvider implements ITableLabelProvider
     public static final int COLUMN_SVNR = 4;
     public static final int COLUMN_NOTES = 5;
     
-    
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
@@ -60,19 +59,16 @@ public class SickPersonLabelProvider implements ITableLabelProvider
 	        		return person.getNotes();  
         }
         return null;
-        
     }
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -84,6 +80,5 @@ public class SickPersonLabelProvider implements ITableLabelProvider
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
 		// TODO Auto-generated method stub
-		
 	}
 }

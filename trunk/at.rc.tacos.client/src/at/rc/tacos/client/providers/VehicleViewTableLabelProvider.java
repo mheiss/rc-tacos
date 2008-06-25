@@ -23,13 +23,11 @@ public class VehicleViewTableLabelProvider implements ITableLabelProvider, ITabl
     //the lock manager
     private LockManager lockManager = ModelFactory.getInstance().getLockManager();
     
-
     @Override
     public Image getColumnImage(Object element, int columnIndex) 
     {
     	VehicleDetail vehicle = (VehicleDetail)element;
-    	
-
+  
 		//determine the column and return a image if needed
 		switch(columnIndex)
 		{
@@ -48,7 +46,6 @@ public class VehicleViewTableLabelProvider implements ITableLabelProvider, ITabl
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.red");
 				if (vehicle.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_BLUE)
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.status.blue");
-				
 			default: return null; 
 		}
     }
@@ -62,9 +59,7 @@ public class VehicleViewTableLabelProvider implements ITableLabelProvider, ITabl
         {
 	        case COLUMN_NAME:return detail.getVehicleName();
 	    }
-        
         return null;
-        
     }
 
     @Override

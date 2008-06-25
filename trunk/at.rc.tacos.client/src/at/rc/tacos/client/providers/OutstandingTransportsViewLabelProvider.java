@@ -49,31 +49,6 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 				else return null;
 			default: return null;
 		}
-//		Transport transport = (Transport)element;
-//		//determine the colum and return a image if needed
-//		switch(columnIndex)
-//		{
-//		case COLUMN_LOCK: return null;
-//		case COLUMN_PRIORITY: return null;
-//		case COLUMN_RESP_STATION: return null;
-//		case COLUMN_ABF:return null;
-//		case COLUMN_AT_PATIENT:return null;
-//		case COLUMN_TERM:return null;
-//		case COLUMN_FROM:return null;
-//		case COLUMN_PATIENT:
-//			if(transport.isAssistantPerson())
-//				return ImageFactory.getInstance().getRegisteredImage("transport.assistantPerson");
-//			else return null;
-//		case COLUMN_TO:
-//			if(transport.isLongDistanceTrip())
-//				return ImageFactory.getInstance().getRegisteredImage("transport.alarming.fernfahrt");
-//			else return null;
-//		case COLUMN_AUFG:return null;
-//		case COLUMN_T:return null;
-//		case COLUMN_ERKR_VERL:return null;
-//		case COLUMN_NOTES:return null;
-//		default: return null;
-//		}        
 	}
 
 	@Override
