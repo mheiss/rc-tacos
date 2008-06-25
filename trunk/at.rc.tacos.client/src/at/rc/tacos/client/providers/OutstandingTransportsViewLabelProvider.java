@@ -167,6 +167,7 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 					return "R";
 				else return "";
 			}
+			else return "";
 		case COLUMN_ERKR_VERL:
 			if(transport.getKindOfIllness() != null)
 				return transport.getKindOfIllness().getDiseaseName();
