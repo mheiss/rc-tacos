@@ -211,5 +211,4 @@ public class DatePicker extends Composite
 		pickButton.setEnabled(enabled);
 		super.setEnabled(enabled);
 	}
-
 }

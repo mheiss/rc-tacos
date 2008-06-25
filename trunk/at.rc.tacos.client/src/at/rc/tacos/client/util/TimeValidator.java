@@ -15,12 +15,7 @@ public class TimeValidator
 	String time;
 	String field;
 	
-	
-	
-	public TimeValidator()
-	{
-
-	}
+	public TimeValidator(){}
 	
 	public void checkTime(String time, String field)
 	{
@@ -81,7 +76,4 @@ public class TimeValidator
 	{
 		return checkStatus;
 	}
-	
-	
-	
 }

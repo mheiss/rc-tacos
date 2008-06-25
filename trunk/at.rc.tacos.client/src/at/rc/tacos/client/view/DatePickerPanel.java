@@ -209,7 +209,5 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 		public Calendar getDate() {
 			return date;
 		}
-
 	}
-
 }

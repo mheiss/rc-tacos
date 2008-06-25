@@ -431,7 +431,6 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 			//set the default filter to the first location
 			if(location.getId() == 1)
 				viewer.addFilter(new PersonalViewFilter(location));			
-
 		}
 		//update the TabItem
 		if("LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))

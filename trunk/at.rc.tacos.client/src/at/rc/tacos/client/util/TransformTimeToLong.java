@@ -14,10 +14,7 @@ public class TransformTimeToLong
 	
 	GregorianCalendar cal = new GregorianCalendar();
 
-	public TransformTimeToLong()
-	{
-		
-	}
+	public TransformTimeToLong(){}
 	
 	public long transform(String stringTime)
 	{
@@ -35,7 +32,5 @@ public class TransformTimeToLong
 		}
 		else
 			return 0;
-		
-		
 	}
 }

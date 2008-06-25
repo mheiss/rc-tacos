@@ -53,12 +53,10 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 {
 	public static final String ID = "at.rc.tacos.client.view.outstandingTransports_view";
 
-	
 	//the toolkit to use
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private TableViewer viewerOffTrans;
-//	private OutstandingTransportsTooltip tooltip;
 	
 	//the actions for the context menu
 	private CopyTransportAction copyTransportAction;

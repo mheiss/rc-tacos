@@ -106,13 +106,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new FillLayout());
 		
-		
-
 		final Composite composite = form.getBody();
-		
-		
-//		FilterView filter = new FilterView();
-//		filter.createPartControl(sashForm);
 		
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
 		viewer.setContentProvider(new JournalViewContentProvider());
@@ -120,8 +114,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		viewer.setInput(ModelFactory.getInstance().getTransportManager());
 		viewer.getTable().setLinesVisible(true);
 		
-//		sashForm.setWeights(new int[] {11, 89 });
-
 		//set the tooltip
 		tooltip = new JournalViewTooltip(viewer.getControl());
 
@@ -307,7 +299,6 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 				if(currentColumn == columnSaniIIJournal)
 					sortIdentifier = TransportSorter.PARAMEDIC_II_SORTER;
 			
-
 				//apply the filter
 				viewer.getTable().setSortDirection(dir);
 				viewer.setSorter(new TransportSorter(sortIdentifier,dir));

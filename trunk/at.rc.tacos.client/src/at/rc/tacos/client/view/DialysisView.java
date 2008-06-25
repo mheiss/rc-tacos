@@ -362,7 +362,4 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		form.getToolBarManager().add(viewAction);
 		form.getToolBarManager().update(true);
 	}
-	
-	
-	
 }

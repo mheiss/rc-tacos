@@ -33,7 +33,6 @@ public class Util implements IProgramStatus
 	 */
 	public final static Transport copyTransport(Transport t1)
 	{
-
 		//the new transport
         Transport t2 = new Transport();
         
@@ -85,7 +84,7 @@ public class Util implements IProgramStatus
         {
         	t2.setPatient(t1.getPatient());
         }
-        	
+      
         t2.setDirection(t1.getDirection());
         t2.setFromCity(t1.getFromCity());
         t2.setFromStreet(t1.getFromStreet());
