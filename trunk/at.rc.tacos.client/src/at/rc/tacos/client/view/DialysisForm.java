@@ -184,7 +184,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		if(dia.getLocation() != null)
 			this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(dia.getLocation()));//mandatory!! default: Bezirk
 
-
 			this.montagButton.setSelection(dia.isMonday());
 			this.dienstagButton.setSelection(dia.isTuesday());
 			this.mittwochButton.setSelection(dia.isWednesday());
@@ -194,7 +193,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 			this.sonntagButton.setSelection(dia.isSunday());
 
 			this.button_stationary.setSelection(dia.isStationary());
-
 
 			//kind of transport
 			if(dia.getKindOfTransport() != null)
@@ -789,16 +787,11 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					return;
 				}	
 
-
-
 				//set the kind of transport
 				//the kind of transport
 				int index = combokindOfTransport.getSelectionIndex();
 				if (index != -1)
 					kindOfTransport = combokindOfTransport.getItem(index);
-
-
-
 
 				if(createNew)
 				{
@@ -818,7 +811,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 					index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
 					dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
-
 
 					dia.setPlannedStartForBackTransport(abfRTLong);
 					dia.setPlannedStartOfTransport(startLong);
@@ -915,7 +907,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 				int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
 				if(index == -1)
 					requiredFields = requiredFields +"zuständige Ortsstelle";
-
 
 				if (start.equalsIgnoreCase(""))
 					requiredFields = requiredFields +" " +"Abfahrtszeit";
@@ -1113,7 +1104,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 				return formatOfTime;
 			}
 
-
 			private void transformToLong()
 			{
 				//get a new instance of the calendar
@@ -1234,7 +1224,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		label_1.setLayoutData(fd_label_1);
 		label_1.setBackgroundImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 		shell.setTabList(new Control[] {planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton, dialysetransportLabel, dialysetransportBearbeitenLabel, composite});
-
 	}
 
 	@Override
