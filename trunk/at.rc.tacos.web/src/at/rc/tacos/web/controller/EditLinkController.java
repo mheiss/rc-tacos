@@ -101,7 +101,7 @@ public class EditLinkController extends Controller {
 		}
 		link = (Link)linkList.get(0);
 		
-		// Roster Entry must not be null
+		// Link must not be null
 		if (link == null) {
 			throw new IllegalArgumentException("Error: Link must not be null.");
 		}
