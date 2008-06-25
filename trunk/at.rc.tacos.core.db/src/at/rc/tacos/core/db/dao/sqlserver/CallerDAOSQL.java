@@ -35,7 +35,6 @@ public class CallerDAOSQL implements CallerDAO
 			insertstmt.setInt(1, id);
 			insertstmt.setString(2, notifierDetail.getCallerName());
 			insertstmt.setString(3, notifierDetail.getCallerTelephoneNumber());
-//			insertstmt.executeUpdate();
 
 			if(insertstmt.executeUpdate() == 0)
 				return -1;

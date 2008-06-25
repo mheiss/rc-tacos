@@ -54,7 +54,7 @@ public class UserLoginDAOSQL implements UserLoginDAO
 				}
 				if(!isDispo && !isWebClient)
 				{
-					System.out.println("im is kein dispo");
+					//the user has not the competence 'Leitstellendisponen' so login to the ls client is not allowed
 					return -3;
 				}
 				if (rs.getString("username") != null &! rs.getBoolean("locked"))

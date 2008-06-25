@@ -1706,7 +1706,6 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
                 return transport;
             }
             //nothing in the result set
-            System.out.println("...........nothing in the result set :-((((");
             return null;
         }
         finally
