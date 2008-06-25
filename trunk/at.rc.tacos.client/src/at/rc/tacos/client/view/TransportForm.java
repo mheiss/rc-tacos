@@ -97,7 +97,8 @@ import at.rc.tacos.util.MyUtils;
 
 /**
  * GUI (form) to manage the transport details
- * one form for all kinds of transports (not necessary are blanked out)
+ * one form for all kinds of transports (not necessary groups are blanked out)
+ * function is implemented (assign vehicle, multi transport)
  * @author b.thek
  *
  */
@@ -243,7 +244,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		
 		//the authorization status of the authenticated person (admin or user)
 		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
-
 	}
 
 	/**
@@ -260,8 +260,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		
 		//the authorization status of the authenticated person (admin or user)
 		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
-
-
 	}
 
 	/**
@@ -281,8 +279,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		
 		//the authorization status of the authenticated person (admin or user)
 		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
-
-
 	}
 
 	/**
@@ -301,7 +297,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		getShell().pack(true);
 		setShellStyle(SWT.SYSTEM_MODAL);
 
-		
 		//add some listeners to this view
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
@@ -2220,7 +2215,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 					comboPrioritaet.setText(tmpPriority);
 				}
-
+				
 				//remove all transports from the multi transport list
 				multiTransportProvider.removeAllTransports();
 				viewer.refresh();
@@ -2293,7 +2288,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		disposedBy.setToolTipText("Disponiert von");
 		disposedBy.setEditable(false);
 
-
 		buttonDialyse = new Button(formGroup, SWT.NONE);
 		final FormData fd_buttonDialye = new FormData();
 		fd_buttonDialye.bottom = new FormAttachment(0, 25);
@@ -2325,7 +2319,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				if(index != -1)
 					dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
 
-
 				Calendar startTime = convertStringToDate(textAbf.getText());
 				if(startTime != null)
 				{
@@ -2349,7 +2342,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				else
 					dia.setPlannedTimeAtPatient(0);
 
-
 				Calendar appointmentTime = convertStringToDate(textTermin.getText());
 				if(appointmentTime != null)
 				{
@@ -2361,13 +2353,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				else
 					dia.setAppointmentTimeAtDialysis(0);
 
-
 				//the kind of transport
 				index = combokindOfTransport.getSelectionIndex();
 				if (index != -1)
 					dia.setKindOfTransport(combokindOfTransport.getItem(index));
-
-
 
 				Patient patient = new Patient(patientFirstName.getText(),patientLastName.getText());
 				dia.setPatient(patient);
@@ -2426,7 +2415,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				if(!handleOK())
 					return ;
 
-
 				//copy the transport (don't use the same objects (transport, patient, caller)!!
 				Patient newPatient = new Patient();
 				CallerDetail newCaller = new CallerDetail();
@@ -2445,8 +2433,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				newTransport.setCallerDetail(newCaller);
 				//add the created transport to the table object list
 				multiTransportProvider.addTransport(newTransport);
+
 				//refresh the viewer
-				viewer.refresh();	        	
+				viewer.refresh();	
 			}
 		});
 
@@ -2464,7 +2453,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		{
 			public void widgetSelected(final SelectionEvent e) 
 			{
-//				hookContextMenu();
 				mehrfachtransport = false;
 				buttonMehrfachtransport.setEnabled(false);
 				buttonADDMehrfachtransport.setEnabled(false);
@@ -3238,6 +3226,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
 				{
 					viewer.setSelection(new StructuredSelection());
+					System.out.println("selection gesetzt: " +viewer.getSelection());
 				}
 			}
 		});
@@ -3343,9 +3332,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		bTableColumnTransportNach.addListener(SWT.Selection, sortListener);
 		bTableColumnTA.addListener(SWT.Selection, sortListener);
 
-		//create the menu
-		removeAction = new RemoveTransportFromMultiTransportList(transport, multiTransportProvider, viewer);
 		hookContextMenu();
+
 		viewer.refresh();
 	}
 
@@ -3379,6 +3367,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if(transport == null)
 			return;
 
+		//get the index
+		int index = viewer.getTable().getSelectionIndex();
+		//create the menu		
+		removeAction = new RemoveTransportFromMultiTransportList(multiTransportProvider, viewer, index);
+		
 		//add the actions			
 		manager.add(removeAction);
 	}
