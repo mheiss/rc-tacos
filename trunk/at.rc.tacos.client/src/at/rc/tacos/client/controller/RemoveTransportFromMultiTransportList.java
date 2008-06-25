@@ -10,19 +10,18 @@ import org.eclipse.jface.viewers.TableViewer;
 
 import at.rc.tacos.client.providers.MultiTransportContentProvider;
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.Transport;
 
 public class RemoveTransportFromMultiTransportList extends Action
 {
-	private Transport transport;
 	private MultiTransportContentProvider provider;
 	private TableViewer viewer;
+	private int index;
 	
-	public RemoveTransportFromMultiTransportList(Transport transport, MultiTransportContentProvider provider, TableViewer viewer)
+	public RemoveTransportFromMultiTransportList(MultiTransportContentProvider provider, TableViewer viewer, int index)
 	{
-		this.transport = transport;
 		this.provider = provider;
 		this.viewer = viewer;
+		this.index = index;
 	}
     /**
      * Returns the tool tip text for the action
@@ -60,7 +59,7 @@ public class RemoveTransportFromMultiTransportList extends Action
     @Override
     public void run()
     {
-    	provider.removeTransport(transport);
+    	provider.removeTransport(index);
     	viewer.refresh();
     }
 }
