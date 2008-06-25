@@ -175,7 +175,7 @@ public class EditLinkController extends Controller {
 				link.setTitle(paramTitle);
 				link.setUsername(userSession.getLoginInformation().getUsername());
 				
-				connection.sendUpdateRequest(Link.ID, null);
+				connection.sendUpdateRequest(Link.ID, link);
 				if(!connection.getContentType().equalsIgnoreCase(Link.ID)) {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}

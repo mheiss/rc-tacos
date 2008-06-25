@@ -99,7 +99,7 @@ public class AddLinkController extends Controller {
 		if (paramAction != null && paramAction.equals(ACTION_ADD_LINK)) {
 			
 			//Validate Inner Text
-			if (paramInnerText == null) {
+			if (paramInnerText == null || paramInnerText.equals("")) {
 				errors.put(ERRORS_INNER_TEXT_MISSING, ERRORS_INNER_TEXT_MISSING_VALUE);
 				valid = false;
 			} else if (paramInnerText.length() > 250) {
@@ -108,7 +108,7 @@ public class AddLinkController extends Controller {
 			}
 			
 			//Validate Href
-			if (paramHref == null) {
+			if (paramHref == null || paramHref.equals("")) {
 				errors.put(ERRORS_HREF_MISSING, ERRORS_HREF_MISSING_VALUE);
 				valid = false;
 			} else if (paramHref.length() > 250) {
@@ -132,7 +132,7 @@ public class AddLinkController extends Controller {
 				link.setTitle(paramTitle);
 				link.setUsername(userSession.getLoginInformation().getUsername());
 				
-				connection.sendAddRequest(Link.ID, null);
+				connection.sendAddRequest(Link.ID, link);
 				if(!connection.getContentType().equalsIgnoreCase(Link.ID)) {
 					throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 				}

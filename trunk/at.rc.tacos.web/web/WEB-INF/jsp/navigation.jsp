@@ -117,5 +117,15 @@
 			<td id="navIcon"></td>
 			<td id="BlockContentNav"><a href="${url}">Message&nbsp;of&nbsp;the&nbsp;day</a></td>
 		</tr>
+		<c:url var="url" value="/Dispatcher/addLink.do" />
+		<tr>
+			<td id="navIcon"></td>
+			<td id="BlockContentNav"><a href="${url}">Link&nbsp;anlegen</a></td>
+		</tr>
+		<c:url var="url" value="/Dispatcher/links.do" />
+		<tr>
+			<td id="navIcon"></td>
+			<td id="BlockContentNav"><a href="${url}">Links</a></td>
+		</tr>
 	</c:if>
 </table>

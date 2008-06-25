@@ -29,7 +29,7 @@
 		</c:choose></span></td>
 	</tr>
 	<tr>
-		<td colspan="2"><textarea name="title" cols="40" rows="7"
+		<td colspan="2"><textarea name="title" cols="30" rows="7"
 			wrap="soft">${params.title}</textarea></td>
 		<td><span class="errorText"> <c:choose>
 			<c:when test="${not empty params.errors.titleTooLong}">
