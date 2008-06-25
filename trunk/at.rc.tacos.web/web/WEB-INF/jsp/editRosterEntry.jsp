@@ -179,12 +179,12 @@
 		<td colspan="3" class="reqComment">Mit&nbsp;*&nbsp;markierte&nbsp;Felder&nbsp;sind&nbsp;Pflichtfelder.</td>
 	</tr>
 	<tr>
-		<td class="hButtonArea" colspan="3"><input type="submit"
-			value="Dienst Speichern" /> <c:url var="url"
-			value="/Dispatcher${params.savedUrl}" /> <input type="button" name="cancel"
-			value="Abbrechen" onclick="document.location='${url}'"> <input
-			name="savedUrl" type="hidden" value="${params.savedUrl}" /> <input
-			name="action" type="hidden" value="updateRosterEntry" />
+		<td class="hButtonArea" colspan="3">
+			<input type="submit" value="Dienst speichern" />
+			<c:url var="url" value="/Dispatcher${params.savedUrl}" />
+			<input type="button" name="cancel" value="Abbrechen" onclick="document.location='${url}'">
+			<input name="savedUrl" type="hidden" value="${params.savedUrl}" />
+			<input name="action" type="hidden" value="updateRosterEntry" />
 		<td />
 	</tr>
 </table>

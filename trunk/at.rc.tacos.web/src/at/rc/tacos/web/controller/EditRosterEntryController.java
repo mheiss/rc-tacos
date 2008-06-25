@@ -183,7 +183,7 @@ public class EditRosterEntryController extends Controller {
 			if (currDate.getTime() > deadlineCalendar.getTimeInMillis()) {
 				throw new IllegalArgumentException("Error: Deadline for Roster Entry exceeded.");
 			}
-		}		
+		}
 		params.put(MODEL_ROSTER_ENTRY_NAME, rosterEntry);
 		
 		// Get saved url
