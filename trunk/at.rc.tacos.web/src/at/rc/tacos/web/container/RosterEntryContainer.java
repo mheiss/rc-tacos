@@ -13,8 +13,8 @@ import at.rc.tacos.web.container.Function;
  * @version 1.0
  */
 public class RosterEntryContainer {
-	public static final int ADD_ROSTER_ENTRY_DEADLINE_HOURS = 12;
-	public static final int EDIT_ROSTER_ENTRY_DEADLINE_HOURS = 72;
+	public static final int ADD_ROSTER_ENTRY_DEADLINE_HOURS = 4;
+	public static final int EDIT_ROSTER_ENTRY_DEADLINE_HOURS = 36;
 	public static final int REGISTER_ROSTER_ENTRY_DEADLINE_HOURS = 24;
 	
 	private Date plannedStartOfWork;
