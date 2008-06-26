@@ -70,7 +70,11 @@ public class LinkDAOSQL implements LinkDAO {
 			
 			insertstmt.setString(3, link.getHref());
 			
-			insertstmt.setString(4, link.getTitle());
+			if (link.getTitle() == null || link.getTitle().equals("")) {
+				insertstmt.setString(4, null);
+			} else {
+				insertstmt.setString(4, link.getTitle());
+			}
 			
 			insertstmt.setString(5, link.getUsername());
 			
@@ -138,7 +142,11 @@ public class LinkDAOSQL implements LinkDAO {
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("update.link"));
 			stmt.setString(1, link.getInnerText());
 			stmt.setString(2, link.getHref());
-			stmt.setString(3, link.getTitle());
+			if (link.getTitle() == null || link.getTitle().equals("")) {
+				stmt.setString(3, null);
+			} else {
+				stmt.setString(3, link.getTitle());
+			}
 			stmt.setString(4, link.getUsername());
 			stmt.setInt(5, link.getId());
 			if(stmt.executeUpdate() == 0)
