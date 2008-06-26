@@ -5,7 +5,7 @@
 		<br />
 	</c:when>
 	<c:when test="${params.messageCode eq 'deleted'}">
-		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;Dienstplaneintrag&nbsp;erfolgreich&nbsp;gelöscht</div>
+		<div id="submitSuccess">Sie&nbsp;haben&nbsp;einen&nbsp;Dienstplaneintrag&nbsp;erfolgreich&nbsp;gel&ouml;scht</div>
 		<br />
 	</c:when>
 </c:choose>

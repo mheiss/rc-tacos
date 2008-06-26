@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.model.DayInfoMessage;
+import at.rc.tacos.model.Link;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.web.session.DefaultFormValues;
@@ -275,7 +276,7 @@ public class Dispatcher extends HttpServlet
 						if (!response.isCommitted() && viewFound) {
 							request.setAttribute("params", params);
 							
-							//Prevent proxy and browser caching
+							//Prevent proxy and browser caching if set
 							request.setAttribute("useCache", useCache);
 							if (!useCache) { 
 								response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
@@ -286,30 +287,37 @@ public class Dispatcher extends HttpServlet
 							//Add refresh value
 							request.setAttribute("refresh", refresh);
 							
-							if (userSession.getLoggedIn()) {						
-								//Get message of the day and write to request context
-								final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
-								Date messageOfTheDayDate = userSession.getDefaultFormValues().getDefaultDate();
-								if (messageOfTheDayDate == null) {
-									messageOfTheDayDate = new Date();
-								}
-								final QueryFilter dateFilter = new QueryFilter();
-								dateFilter.add(IFilterTypes.DATE_FILTER, formatDateForServer.format(messageOfTheDayDate));
-								final List<AbstractMessage> messageOfTheDayList = userSession.getConnection().sendListingRequest(DayInfoMessage.ID, dateFilter);
-								if (!DayInfoMessage.ID.equalsIgnoreCase(userSession.getConnection().getContentType())) {
-									throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-								}
-								DayInfoMessage message = null;
-								if (messageOfTheDayList != null) {
-									if (messageOfTheDayList.size() > 0) {
-										message = (DayInfoMessage)messageOfTheDayList.get(0);
-									}
-								}
-								request.setAttribute("messageOfTheDay", message);						
-							}
-							
 							//Differentiate if View uses model.jsp or not
 							if (templateFound) {
+								if (userSession.getLoggedIn()) {						
+									//Get message of the day and write to request context
+									final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
+									Date messageOfTheDayDate = userSession.getDefaultFormValues().getDefaultDate();
+									if (messageOfTheDayDate == null) {
+										messageOfTheDayDate = new Date();
+									}
+									final QueryFilter dateFilter = new QueryFilter();
+									dateFilter.add(IFilterTypes.DATE_FILTER, formatDateForServer.format(messageOfTheDayDate));
+									final List<AbstractMessage> messageOfTheDayList = userSession.getConnection().sendListingRequest(DayInfoMessage.ID, dateFilter);
+									if (!DayInfoMessage.ID.equalsIgnoreCase(userSession.getConnection().getContentType())) {
+										throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+									}
+									DayInfoMessage message = null;
+									if (messageOfTheDayList != null) {
+										if (messageOfTheDayList.size() > 0) {
+											message = (DayInfoMessage)messageOfTheDayList.get(0);
+										}
+									}
+									request.setAttribute("messageOfTheDay", message);
+									
+									//Get Link list and write to request context
+									// Get links
+									final List<AbstractMessage> linkList = userSession.getConnection().sendListingRequest(Link.ID, null);
+									if (!Link.ID.equalsIgnoreCase(userSession.getConnection().getContentType())) {
+										throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+									}
+									request.setAttribute("linkList", linkList);
+								}
 								request.setAttribute("title", viewTitle);
 								request.setAttribute("htitle", viewHeaderTitle);
 								request.setAttribute("view", viewPath);
