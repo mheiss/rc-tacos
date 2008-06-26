@@ -12,6 +12,10 @@ public class Link extends AbstractMessage {
 	public Link() {
 		super(ID);
 		id = -1;
+		innerText = null;
+		href = null;
+		title = null;
+		username = null;
 	}
 	
 	private int id;
