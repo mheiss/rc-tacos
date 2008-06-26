@@ -39,7 +39,7 @@ public class LinkDAOSQL implements LinkDAO {
 				link.setInnerText(rs.getString("link_inner_text"));
 				link.setHref(rs.getString("link_href"));
 				link.setTitle(rs.getString("link_title"));
-				link.setUsername("username");
+				link.setUsername(rs.getString("username"));
 				linkList.add(link);
 			}
 			return linkList;
@@ -102,7 +102,7 @@ public class LinkDAOSQL implements LinkDAO {
 			link.setInnerText(rs.getString("link_inner_text"));
 			link.setHref(rs.getString("link_href"));
 			link.setTitle(rs.getString("link_title"));
-			link.setUsername("username");
+			link.setUsername(rs.getString("username"));
 			
 			return link;
 		}
