@@ -87,6 +87,8 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 	private StaffMember staffMember;
 	private Login loginInfo;
 	private boolean isNew;
+	
+	private Login user;
 
 	/**
 	 * Default class constructor
@@ -159,7 +161,7 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 		form.pack(true);
 
 		//access authority only for admins and the own (logged in) staffMember
-		Login user = SessionManager.getInstance().getLoginInformation();
+		user = SessionManager.getInstance().getLoginInformation();
 		StaffMember loggedInMember = user.getUserInformation();			
 		if(loggedInMember.getStaffMemberId() == staffMember.getStaffMemberId())
 			form.setEnabled(true);
@@ -167,6 +169,10 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 			form.setEnabled(false);
 		if(user.getAuthorization().equalsIgnoreCase(Login.AUTH_ADMIN))
 			form.setEnabled(true);
+		
+		//prevent authorization changing of not admins for itself
+		if(!user.getAuthorization().equalsIgnoreCase(Login.AUTH_ADMIN))
+			authorisationComboViewer.getCombo().setEnabled(false);
 	}
 
 	/**
@@ -774,6 +780,8 @@ public class StaffMemberEditor extends EditorPart implements PropertyChangeListe
 				inputChanged();
 			}
 		});	
+		
+		
 
 		//set the layout for the composites
 		GridData data = new GridData();
