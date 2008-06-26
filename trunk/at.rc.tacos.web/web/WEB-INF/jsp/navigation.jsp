@@ -1,5 +1,5 @@
 <%@ include file="includes.jsp"%>
-<c:if test="${messageOfTheDay ne null}">
+<c:if test="${messageOfTheDay ne null and messageOfTheDay.message ne ''}">
 	<table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td id="BlockHead" colspan="2"><b>Message&nbsp;of&nbsp;the&nbsp;day&nbsp;
@@ -14,7 +14,6 @@
 			by
 			${messageOfTheDay.lastChangedBy}</b></td>
 		</tr>
-			<c:url var="url" value="/Dispatcher/journalShort.do" />
 		<tr>
 			<td id="navIcon"></td>
 			<td id="BlockContentNav">${messageOfTheDay.message}</td>
@@ -129,3 +128,24 @@
 		</tr>
 	</c:if>
 </table>
+<c:if test="${fn:length(linkList) gt 0}">
+	<table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td id="BlockHead" colspan="2"><b>Links</b></td>
+		</tr>
+		<c:forEach var="link" items="${linkList}">
+			<tr>
+				<c:set var="title">${link.title}</c:set>
+				<td id="navIcon"></td>
+				<td id="BlockContentNav">
+					<a href="${link.href}" class="showLinkInfo" title="${title}">${link.innerText}</a>
+				</td>
+			</tr>
+		</c:forEach>
+	</table>
+</c:if>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.showLinkInfo').Tooltip({ delay: 100, showURL: false });
+});
+</script>
