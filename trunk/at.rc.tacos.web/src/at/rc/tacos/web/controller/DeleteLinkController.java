@@ -25,7 +25,7 @@ import at.rc.tacos.web.session.UserSession;
  */
 public class DeleteLinkController extends Controller {
 
-	private static final String PARAM_LINK_NAME = "rosterEntryId";
+	private static final String PARAM_LINK_NAME = "linkId";
 	
 	private static final String PARAM_SAVED_URL_NAME = "savedUrl";
 	
@@ -54,7 +54,7 @@ public class DeleteLinkController extends Controller {
 		int linkId = 0;
 		final String paramLinkId = request.getParameter(PARAM_LINK_NAME);
 		if (paramLinkId == null || paramLinkId.equals("")) {
-			throw new IllegalArgumentException("Error: This URL must be called with Roster Entry ID.");
+			throw new IllegalArgumentException("Error: This URL must be called with Link ID.");
 		}
 		linkId = Integer.parseInt(paramLinkId);
 		
@@ -63,7 +63,7 @@ public class DeleteLinkController extends Controller {
 		final QueryFilter linkFilter = new QueryFilter();
 		linkFilter.add(IFilterTypes.ID_FILTER, Integer.toString(linkId));
 		final List<AbstractMessage> linkList = connection.sendListingRequest(Link.ID, linkFilter);
-		if (!RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
+		if (!Link.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		link = (Link)linkList.get(0);

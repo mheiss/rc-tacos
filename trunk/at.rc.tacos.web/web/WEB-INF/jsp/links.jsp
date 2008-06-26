@@ -10,20 +10,20 @@
 	</c:when>
 </c:choose>
 <br />
-<br />
 <c:set var="fieldHeadersRow">
-	<tr class="subhead2">
-		<th nowrap="nowrap">Text</th>
-		<th nowrap="nowrap">URL</th>
-		<th nowrap="nowrap">Beschreibung</th>
-		<th nowrap="nowrap">zuletzt&nbsp;ge&auml;ndert&nbsp;von</th>
-		<th>&nbsp;</th>
+	<tr>
+		<th nowrap="nowrap" class="header2">Text</th>
+		<th nowrap="nowrap" class="header2">URL</th>
+		<th nowrap="nowrap" class="header2">Beschreibung</th>
+		<th nowrap="nowrap" class="header2">zuletzt&nbsp;ge&auml;ndert&nbsp;von</th>
+		<th nowrap="nowrap" class="header2">&nbsp;</th>
 	</tr>
 </c:set>
 <c:choose>
-	<c:when test="${fn:length(param.linkList) gt 0}">
+	<c:when test="${fn:length(params.linkList) gt 0}">
 		<table cellpadding="3" cellspacing="0" class="list">
-			<c:forEach var="link" items="${linkList}" varStatus="loop">
+			${fieldHeadersRow}
+			<c:forEach var="link" items="${params.linkList}" varStatus="loop">
 				<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 					<td nowrap="nowrap">${link.innerText}</td>
 					<td nowrap="nowrap">${link.href}</td>

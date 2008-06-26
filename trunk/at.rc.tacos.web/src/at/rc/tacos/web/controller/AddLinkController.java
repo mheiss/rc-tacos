@@ -129,7 +129,9 @@ public class AddLinkController extends Controller {
 				
 				link.setInnerText(paramInnerText);
 				link.setHref(paramHref);
-				link.setTitle(paramTitle);
+				if (!paramTitle.equals("")) {
+					link.setTitle(paramTitle);
+				}
 				link.setUsername(userSession.getLoginInformation().getUsername());
 				
 				connection.sendAddRequest(Link.ID, link);

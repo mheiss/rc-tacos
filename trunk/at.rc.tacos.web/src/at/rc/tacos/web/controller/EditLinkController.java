@@ -41,7 +41,7 @@ public class EditLinkController extends Controller {
 	private static final String MODEL_TITLE_NAME = "title";
 	
 	private static final String ACTION_NAME = "action";
-	private static final String ACTION_ADD_LINK = "updateLink";
+	private static final String ACTION_UPDATE_LINK = "updateLink";
 	
 	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
 	private static final String PARAM_MESSAGE_CODE_EDITED = "edited";
@@ -87,7 +87,7 @@ public class EditLinkController extends Controller {
 		int linkId = 0;
 		final String paramLinkId = request.getParameter(PARAM_LINK_NAME);
 		if (paramLinkId == null || paramLinkId.equals("")) {
-			throw new IllegalArgumentException("Error: This URL must be called with Roster Entry ID.");
+			throw new IllegalArgumentException("Error: This URL must be called with Link ID.");
 		}
 		linkId = Integer.parseInt(paramLinkId);
 		
@@ -96,7 +96,7 @@ public class EditLinkController extends Controller {
 		final QueryFilter linkFilter = new QueryFilter();
 		linkFilter.add(IFilterTypes.ID_FILTER, Integer.toString(linkId));
 		final List<AbstractMessage> linkList = connection.sendListingRequest(Link.ID, linkFilter);
-		if (!RosterEntry.ID.equalsIgnoreCase(connection.getContentType())) {
+		if (!Link.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		link = (Link)linkList.get(0);
@@ -140,7 +140,7 @@ public class EditLinkController extends Controller {
 		final String paramAction = request.getParameter(ACTION_NAME);
 		final Map<String, String> errors = new HashMap<String, String>();
 		boolean valid = true;
-		if (paramAction != null && paramAction.equals(ACTION_ADD_LINK)) {
+		if (paramAction != null && paramAction.equals(ACTION_UPDATE_LINK)) {
 			
 			//Validate Inner Text
 			if (paramInnerText == null) {
@@ -172,7 +172,9 @@ public class EditLinkController extends Controller {
 				
 				link.setInnerText(paramInnerText);
 				link.setHref(paramHref);
-				link.setTitle(paramTitle);
+				if (!paramTitle.equals("")) {
+					link.setTitle(paramTitle);
+				}
 				link.setUsername(userSession.getLoginInformation().getUsername());
 				
 				connection.sendUpdateRequest(Link.ID, link);
