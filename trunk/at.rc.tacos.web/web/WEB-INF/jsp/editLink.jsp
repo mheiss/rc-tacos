@@ -43,8 +43,9 @@
 	<tr>
 		<td class="hButtonArea" colspan="3">
 			<input type="submit" value="Link speichern" />
-			<input name="action" type="hidden" value="addLink" />
+			<input name="action" type="hidden" value="updateLink" />
 			<input name="linkId" type="hidden" value="${params.link.id}" />
+			<input name="savedUrl" type="hidden" value="${params.savedUrl}" />
 		</td>
 	</tr>
 </table>
