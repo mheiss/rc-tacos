@@ -48,7 +48,13 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 			{
 				//add the item if we do not have it
 				if(!objectList.contains(transport))
-				{
+				{		
+					//if direct car assigning - copy the transport into the clipboard
+					if(transport.getTransportNumber() != 0)
+					{
+						CopyTransportDetailsIntoClipboardUpdateAction clipboardAction = new CopyTransportDetailsIntoClipboardUpdateAction(transport);
+						clipboardAction.run();
+					}
 					objectList.add(transport);
 					firePropertyChange("TRANSPORT_ADD", null, transport);
 				}
