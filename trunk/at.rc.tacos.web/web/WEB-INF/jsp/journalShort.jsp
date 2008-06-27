@@ -43,19 +43,21 @@
 <c:set var="fieldHeadersRow">
 	<tr class="subhead2">
 		<th nowrap="nowrap">TrNr</th>
-		<th nowrap="nowrap">Fahrzeug</th>
-		<th nowrap="nowrap">Fahrer</th>
-		<th nowrap="nowrap">Sanitäter I</th>
-		<th nowrap="nowrap">Sanitäter II</th>
 		<th nowrap="nowrap">S1</th>
 		<th nowrap="nowrap">S2</th>
 		<th nowrap="nowrap">S5</th>
-		<th nowrap="nowrap">Von</th>
-		<th nowrap="nowrap">Patient&nbsp;1</th>
-		<th nowrap="nowrap">Nach</th>
-		<th nowrap="nowrap">Transportart</th>
-		<th nowrap="nowrap">Disponent</th>
-
+		<c:if test="${userSession.internalSession eq true}">
+			<th nowrap="nowrap">Fahrzeug</th>
+			<th nowrap="nowrap">Fahrer</th>
+			<th nowrap="nowrap">Sanitäter I</th>
+			<th nowrap="nowrap">Sanitäter II</th>
+			<th nowrap="nowrap">Von</th>
+			<th nowrap="nowrap">Patient&nbsp;1</th>
+			<th nowrap="nowrap">Nach</th>
+			<th nowrap="nowrap">Transportart</th>
+			<th nowrap="nowrap">Disponent</th>
+		</c:if>
+<%--<c:if test="${userSession.internalSession eq true}">--%>
 	</tr>
 </c:set>
 <br />
@@ -83,24 +85,26 @@
 								<c:when test="${journalContainer.transportNumber eq -2}"> WTGL</c:when>
 								<c:otherwise>${journalContainer.transportNumber}</c:otherwise>
 							</c:choose></td>
-							<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
-							<td nowrap="nowrap">${journalContainer.vehicleContainer.driver.lastName}&nbsp;${journalContainer.vehicleContainer.driver.firstName}</td>
-							<td nowrap="nowrap">${journalContainer.vehicleContainer.firstParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.firstParamedic.firstName}</td>
-							<td nowrap="nowrap">${journalContainer.vehicleContainer.secondParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.secondParamedic.firstName}</td>
 							<td nowrap="nowrap"><fmt:formatDate type="time"
 								timeStyle="short" value="${journalContainer.s1}" />
 							<td nowrap="nowrap"><fmt:formatDate type="time"
 								timeStyle="short" value="${journalContainer.s2}" />
 							<td nowrap="nowrap"><fmt:formatDate type="time"
 								timeStyle="short" value="${journalContainer.s5}" />
-							<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp;
-							${journalContainer.fromCity}</td>
-							<td nowrap="nowrap">${journalContainer.patient.lastname}
-							&nbsp; ${journalContainer.patient.firstname }</td>
-							<td nowrap="nowrap">${journalContainer.toStreet} &nbsp;
-							${journalContainer.toCity }</td>
-							<td nowrap="nowrap">${journalContainer.kindOfTransport}</td>
-							<td nowrap="nowrap">${journalContainer.disposedByUser}</td>
+							<c:if test="${userSession.internalSession eq true}">
+								<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
+								<td nowrap="nowrap">${journalContainer.vehicleContainer.driver.lastName}&nbsp;${journalContainer.vehicleContainer.driver.firstName}</td>
+								<td nowrap="nowrap">${journalContainer.vehicleContainer.firstParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.firstParamedic.firstName}</td>
+								<td nowrap="nowrap">${journalContainer.vehicleContainer.secondParamedic.lastName}&nbsp;${journalContainer.vehicleContainer.secondParamedic.firstName}</td>
+								<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp;
+								${journalContainer.fromCity}</td>
+								<td nowrap="nowrap">${journalContainer.patient.lastname}
+								&nbsp; ${journalContainer.patient.firstname }</td>
+								<td nowrap="nowrap">${journalContainer.toStreet} &nbsp;
+								${journalContainer.toCity }</td>
+								<td nowrap="nowrap">${journalContainer.kindOfTransport}</td>
+								<td nowrap="nowrap">${journalContainer.disposedByUser}</td>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</tbody>
