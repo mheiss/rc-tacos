@@ -481,6 +481,7 @@ CREATE TABLE sickperson (
   notes TEXT NULL,
   PRIMARY KEY(sickperson_ID),
 )
+Create NONCLUSTERED Index sickPerson_FKIndex1 ON sickperson (lastname)
 
 CREATE TABLE address (
   address_ID BIGINT NOT NULL,
