@@ -197,6 +197,9 @@ public class VehicleForm extends TitleAreaDialog
 		//notes
 		vehicleDetail.setVehicleNotes(noteEditor.getTextWidget().getText());
 		//status
+		//default
+		vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+		
 		vehicleDetail.setOutOfOrder(outOfOrder.getSelection());
 		if(vehicleDetail.isOutOfOrder())
 			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);

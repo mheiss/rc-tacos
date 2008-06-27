@@ -87,7 +87,7 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         if(t1.getToCity() != null &! t1.getToCity().trim().equalsIgnoreCase(""))
         	t2.setFromCity(t1.getToCity()); 
         else
-        	t2.setFromCity("kein Eintrag");
+        	t2.setFromCity("-");
         t2.setToStreet(t1.getFromStreet()); 
         t2.setToCity(t1.getFromCity()); 
         

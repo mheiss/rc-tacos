@@ -52,8 +52,15 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 					//if direct car assigning - copy the transport into the clipboard
 					if(transport.getTransportNumber() != 0)
 					{
-						CopyTransportDetailsIntoClipboardUpdateAction clipboardAction = new CopyTransportDetailsIntoClipboardUpdateAction(transport);
-						clipboardAction.run();
+						if(transport.getVehicleDetail() != null)
+						{
+							//NEF should not override the transport number of the amblance
+							if(!transport.getVehicleDetail().getVehicleName().equalsIgnoreCase("NEF"))
+							{
+								CopyTransportDetailsIntoClipboardUpdateAction clipboardAction = new CopyTransportDetailsIntoClipboardUpdateAction(transport);
+								clipboardAction.run();
+							}
+						}
 					}
 					objectList.add(transport);
 					firePropertyChange("TRANSPORT_ADD", null, transport);
