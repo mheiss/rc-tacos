@@ -217,12 +217,12 @@ public class TransportSorter extends ViewerSorter implements ITransportStatus
 		//sort by the time of the 'S3' field
 		if(column == S3_SORTER)
 		{
-			if(!transport1.getStatusMessages().containsKey(TRANSPORT_STATUS_ON_THE_WAY))
+			if(!transport1.getStatusMessages().containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
 				return -1*sortDir;
-			if(!transport2.getStatusMessages().containsKey(TRANSPORT_STATUS_ON_THE_WAY))
+			if(!transport2.getStatusMessages().containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
 				return 1*sortDir;
-			long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY);
-			long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_ON_THE_WAY);
+			long statustime1 = transport1.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT);
+			long statustime2 = transport2.getStatusMessages().get(TRANSPORT_STATUS_START_WITH_PATIENT);
 			if(statustime1 > statustime2)
 				return -1 * sortDir;
 			if(statustime1 < statustime2)
