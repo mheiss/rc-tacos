@@ -189,9 +189,9 @@ public class RosterController extends Controller {
 		final RosterEntryContainerListContainer container = new RosterEntryContainerListContainer(rosterEntryContainerList);
 		final Comparator<Location> locationComparator = new PropertyComparator("locationName", true, true);
 		final Comparator sortComp = new CompoundComparator(new Comparator[] {
+				new PropertyComparator("plannedStartOfWork", true, true),
 				new PropertyComparator("rosterEntry.staffMember.lastName", true, true),
-				new PropertyComparator("rosterEntry.staffMember.firstName", true, true),
-				new PropertyComparator("plannedStartOfWork", true, true)
+				new PropertyComparator("rosterEntry.staffMember.firstName", true, true)
 		});
 		container.groupRosterEntriesBy(locationComparator);
 		container.sortRosterEntries(sortComp);
