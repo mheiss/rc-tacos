@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -2541,6 +2542,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			long timestamp = formatter.parse(dateString).getTime();
 			Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(timestamp);
+			
+			//set the date for the timestamps to get a correct sort order
+			Calendar calDateOfTransport = Calendar.getInstance();
+			calDateOfTransport.setTimeInMillis(transport.getDateOfTransport());
+			cal.set(Calendar.YEAR, calDateOfTransport.get(Calendar.YEAR));
+			cal.set(Calendar.MONTH, calDateOfTransport.get(Calendar.MONTH));
+			cal.set(Calendar.DAY_OF_MONTH, calDateOfTransport.get(Calendar.DAY_OF_MONTH));
+			
 			return cal;
 		}
 		catch(ParseException pe)
