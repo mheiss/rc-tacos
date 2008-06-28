@@ -69,9 +69,6 @@ public class PersonalDateFilter extends ViewerFilter
 		}
 		
 		//for a split entry the start and the end must match
-		 if(filterDay == startDay || filterDay == endDay || (filterDay > startDay && filterDay < endDay))
-	  	 return true;
-		 
 		if(filterDay != startDay && filterDay != endDay &! (filterDay > startDay && filterDay < endDay))
 			return false;
 		if(filterMonth != startMonth && filterMonth != endMonth)
