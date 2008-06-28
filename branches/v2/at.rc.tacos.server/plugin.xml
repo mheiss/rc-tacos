@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run class="at.rc.tacos.server.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Perspective"
+            class="at.rc.tacos.server.ui.perspective.Perspective"
+            id="at.rc.tacos.server.ui.perspective.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="OnlineUsersView"
+            class="at.rc.tacos.server.ui.views.OnlineUsersView"
+            id="at.rc.tacos.server.ui.views.OnlineUsersView">
+      </view>
+   </extension>
+
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="at.rc.tacos.server.application"
+            name="Tacos Server">
+         <property
+               name="windowImages"
+               value="icons/application/window_16.png,icons/application/window_32.png,icons/application/window_48.png,icons/application/window_64.png,icons/application/window_128.png">
+         </property>
+         <property
+               name="appName"
+               value="Tacos Server">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="15,232,480,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="4,232,472,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/application/about.png">
+         </property>
+         <property
+               name="aboutText"
+               value="TACOS-Server&#x0A;Version: 2.0&#x0A;&#x0A;(c) Copyright Heiß Michael 2008.  All rights reserved.&#x0A;Visit http://sf.net/projects/rc-tacos/&#x0A;&#x0A;This product includes software developed by Eclipse&#x0A;Visit http://www.eclipse.org/platform">
+         </property>
+      </product>
+   </extension>
+   
+</plugin>
