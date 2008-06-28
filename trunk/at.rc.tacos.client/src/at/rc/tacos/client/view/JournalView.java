@@ -157,7 +157,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 
 		final TableColumn realOSJournal = new TableColumn(table, SWT.NONE);
 		realOSJournal.setToolTipText("Ortsstelle, die den Transport durchgeführt hat");
-		realOSJournal.setWidth(27);
+		realOSJournal.setWidth(29);
 		realOSJournal.setText("OS");
 
 		final TableColumn columnTNrJournal = new TableColumn(table, SWT.NONE);
@@ -178,7 +178,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 
 		final TableColumn columnPatientJournal = new TableColumn(table, SWT.NONE);
 		columnPatientJournal.setMoveable(true);
-		columnPatientJournal.setWidth(200);
+		columnPatientJournal.setWidth(195);
 		columnPatientJournal.setText("Patient");
 
 		final TableColumn columnTransportNachJournal = new TableColumn(table, SWT.NONE);
@@ -186,46 +186,46 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnTransportNachJournal.setText("Transport nach");
 
 		final TableColumn columnErkrVerlJournal = new TableColumn(table, SWT.NONE);
-		columnErkrVerlJournal.setWidth(126);
+		columnErkrVerlJournal.setWidth(120);
 		columnErkrVerlJournal.setText("Erkr/Verl");
 
 		final TableColumn columnAEJournal = new TableColumn(table, SWT.NONE);
 		columnAEJournal.setToolTipText("Auftrag erteilt");
-		columnAEJournal.setWidth(40);
+		columnAEJournal.setWidth(43);
 		columnAEJournal.setText("AE");
 
 		final TableColumn columnS1Journal = new TableColumn(table, SWT.NONE);
 		columnS1Journal.setToolTipText("Transportbeginn");
-		columnS1Journal.setWidth(40);
+		columnS1Journal.setWidth(43);
 		columnS1Journal.setText("S1");
 
 		final TableColumn columnS2Journal = new TableColumn(table, SWT.NONE);
 		columnS2Journal.setToolTipText("Bei Patient");
-		columnS2Journal.setWidth(40);
+		columnS2Journal.setWidth(43);
 		columnS2Journal.setText("S2");
 
 		final TableColumn columnS3Journal = new TableColumn(table, SWT.NONE);
 		columnS3Journal.setToolTipText("Abfahrt mit Patient");
-		columnS3Journal.setWidth(40);
+		columnS3Journal.setWidth(43);
 		columnS3Journal.setText("S3");
 
 		final TableColumn columnS4Journal = new TableColumn(table, SWT.NONE);
 		columnS4Journal.setToolTipText("Ankunft Zielort");
-		columnS4Journal.setWidth(40);
+		columnS4Journal.setWidth(43);
 		columnS4Journal.setText("S4");
 
 		final TableColumn columnS5Journal = new TableColumn(table, SWT.NONE);
 		columnS5Journal.setToolTipText("Ziel frei");
-		columnS5Journal.setWidth(40);
+		columnS5Journal.setWidth(43);
 		columnS5Journal.setText("S5");
 
 		final TableColumn columnS6Journal = new TableColumn(table, SWT.NONE);
 		columnS6Journal.setToolTipText("Fahrzeug eingerückt");
-		columnS6Journal.setWidth(40);
+		columnS6Journal.setWidth(43);
 		columnS6Journal.setText("S6");
 
 		final TableColumn columnFzgJournal = new TableColumn(table, SWT.NONE);
-		columnFzgJournal.setWidth(40);
+		columnFzgJournal.setWidth(43);
 		columnFzgJournal.setText("Fzg");
 
 		final TableColumn columnFahrerJournal = new TableColumn(table, SWT.NONE);

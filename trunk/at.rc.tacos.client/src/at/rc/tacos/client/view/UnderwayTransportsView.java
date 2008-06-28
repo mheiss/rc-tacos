@@ -183,7 +183,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		final TableColumn terminDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		terminDisponierteTransporte.setToolTipText("Termin am Zielort");
 		terminDisponierteTransporte.setMoveable(true);
-		terminDisponierteTransporte.setWidth(40);
+		terminDisponierteTransporte.setWidth(43);
 		terminDisponierteTransporte.setText("Termin");
 
 		final TableColumn transportVonDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -202,27 +202,27 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 
 		final TableColumn aeDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		aeDisponierteTransporte.setToolTipText("Auftrag erteilt");
-		aeDisponierteTransporte.setWidth(40);
+		aeDisponierteTransporte.setWidth(43);
 		aeDisponierteTransporte.setText("AE");
 
 		final TableColumn s1DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s1DisponierteTransporte.setToolTipText("Transportbeginn");
-		s1DisponierteTransporte.setWidth(40);
+		s1DisponierteTransporte.setWidth(43);
 		s1DisponierteTransporte.setText("S1");
 
 		final TableColumn s2DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s2DisponierteTransporte.setToolTipText("Ankunft bei Patient");
-		s2DisponierteTransporte.setWidth(40);
+		s2DisponierteTransporte.setWidth(43);
 		s2DisponierteTransporte.setText("S2");
 
 		final TableColumn s3DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s3DisponierteTransporte.setToolTipText("Abfahrt mit Patient");
-		s3DisponierteTransporte.setWidth(40);
+		s3DisponierteTransporte.setWidth(43);
 		s3DisponierteTransporte.setText("S3");
 
 		final TableColumn s4DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s4DisponierteTransporte.setToolTipText("Ankunft Ziel");
-		s4DisponierteTransporte.setWidth(40);
+		s4DisponierteTransporte.setWidth(43);
 		s4DisponierteTransporte.setText("S4");
 
 		final TableColumn fzgDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
