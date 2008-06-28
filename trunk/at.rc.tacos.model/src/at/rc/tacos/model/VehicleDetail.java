@@ -1,9 +1,6 @@
 package at.rc.tacos.model;
 
-import org.eclipse.swt.graphics.Image;
-
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.factory.ImageFactory;
 
 /**
  * Specifies the crew and phone of an ambulance
@@ -27,21 +24,13 @@ public class VehicleDetail extends AbstractMessage
     private boolean readyForAction;
     private boolean outOfOrder;
     private int transportStatus;
-
-    //images to use
-    private Image mobilePhoneImage;
-    private Image vehicleNotesImage;
-    private Image stationImage;
-    private Image readyForActionImage;
-    private Image outOfOrderImage;
-    private Image transportStatusImage;
     
     //the transport status
+    public final static int TRANSPORT_STATUS_BLUE = 40;
     public final static int TRANSPORT_STATUS_GREEN = 30;
     public final static int TRANSPORT_STATUS_YELLOW = 20;
     public final static int TRANSPROT_STATUS_RED = 10;
     public final static int TRANSPORT_STATUS_NA = 0;
-    public final static int TRANSPORT_STATUS_BLUE = 40;
 
     /**
      * Default class constructor
@@ -131,19 +120,6 @@ public class VehicleDetail extends AbstractMessage
         if (!vehicleName.equals(other.vehicleName))
             return false;
         return true;
-    }
-
-    /**
-     * Convenient helper method to update all images
-     */
-    public void updateImages()
-    {
-        setMobilePhoneImage();
-        setVehicleNotesImage();
-        setStationImage();
-        setOutOfOrderImage();
-        setReadyForActionImage();
-        setTransportStatusImage();
     }
 
     //GETTERS AND SETTERS
@@ -266,9 +242,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setVehicleName(String vehicleName) 
     {
-        String oldVehicleName = this.vehicleName;
         this.vehicleName = vehicleName;
-        firePropertyChange("vehicleName", oldVehicleName, vehicleName); 
     }
     
     /**
@@ -277,9 +251,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setVehicleType(String vehicleType) 
     {
-        String oldVehicleType = this.vehicleType;
         this.vehicleType = vehicleType;
-        firePropertyChange("vehicleType", oldVehicleType, vehicleType);
     }
     
     /**
@@ -288,9 +260,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setDriver(StaffMember driver) 
     {
-        StaffMember oldDriver = this.driver;
         this.driver = driver;
-        firePropertyChange("driver", oldDriver, driver);
     }
 
     /**
@@ -299,9 +269,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setFirstParamedic(StaffMember firstParamedic) 
     {
-        StaffMember oldMedic = this.firstParamedic;
         this.firstParamedic = firstParamedic;
-        firePropertyChange("firstParamedic", oldMedic, firstParamedic);
     }
 
     /**
@@ -310,9 +278,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setSecondParamedic(StaffMember secondParamedic) 
     {
-        StaffMember oldMedic = this.secondParamedic;
         this.secondParamedic = secondParamedic;
-        firePropertyChange("secondParamedic", oldMedic, secondParamedic);
     }
     
     /**
@@ -321,9 +287,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setMobilPhone(MobilePhoneDetail mobilePhone) 
     {
-        MobilePhoneDetail oldPhone = this.mobilePhone;
         this.mobilePhone = mobilePhone;
-        firePropertyChange("mobilePhone", oldPhone, mobilePhone);
     }
     
     /**
@@ -333,16 +297,12 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setVehicleNotes(String vehicleNotes) 
     {
-        String oldNotes = this.vehicleNotes;
         this.vehicleNotes = vehicleNotes;
-        firePropertyChange("vehicleNotes", oldNotes, vehicleNotes);
     }
     
     public void setLastDestinationFree(String lastDestinationFree) 
     {
-    	String oldLastDestinationFree = this.lastDestinationFree;
         this.lastDestinationFree = lastDestinationFree;
-        firePropertyChange("LastDestinationFree", oldLastDestinationFree, lastDestinationFree);
 	}
     
     /**
@@ -351,9 +311,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setBasicStation(Location basicStation) 
     {
-        Location oldStation = this.basicStation;
         this.basicStation = basicStation;
-        firePropertyChange("basicStation", oldStation, basicStation);
     }
 
 
@@ -363,9 +321,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setCurrentStation(Location currentStation) 
     {
-        Location oldStation = this.currentStation;
         this.currentStation = currentStation;
-        firePropertyChange("currentStation", oldStation, currentStation);
     }  
     
     /**
@@ -375,9 +331,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setReadyForAction(boolean readyForAction) 
     {
-        boolean oldValue = this.readyForAction;
         this.readyForAction = readyForAction;
-        firePropertyChange("readyForAction", oldValue, readyForAction);
     }
 
     /**
@@ -386,9 +340,7 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setOutOfOrder(boolean outOfOrder) 
     {
-        boolean oldStatus = this.outOfOrder;
         this.outOfOrder = outOfOrder;
-        firePropertyChange("outOfOrder", oldStatus, outOfOrder);
     }
 
     /**
@@ -397,179 +349,10 @@ public class VehicleDetail extends AbstractMessage
      */
     public void setTransportStatus(int transportStatus)
     {
-        int oldStatus = this.transportStatus;
         this.transportStatus = transportStatus;
-        firePropertyChange("transportStatus", oldStatus, transportStatus);
-    }
-
-    //GETTERS FOR THE STATUS IMAGE
-    /**
-     * Sets the image to use for the mobile phone
-     */
-    public void setMobilePhoneImage()
-    {
-        //assert valid
-        if(mobilePhone == null)
-        {
-            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("vehicle.phone.na");
-            return;
-        }
-        //determine the image
-        Image oldImage = this.mobilePhoneImage;    
-        if(mobilePhone == null)
-            mobilePhoneImage = null;
-        else if (!mobilePhone.getMobilePhoneName().equalsIgnoreCase(vehicleName))
-            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("vehicle.phone");
-        else
-            mobilePhoneImage = ImageFactory.getInstance().getRegisteredImage("vehicle.phone.na");
-
-        firePropertyChange("mobilePhoneImage", oldImage, mobilePhoneImage);
-    }
-
-    /**
-     * Returns the status ImageDescriptor for the mobile phone.
-     * @return the ImageDescriptor for the phone
-     */
-    public Image getMobilePhoneImage()
-    {
-        return mobilePhoneImage;
-    }
-
-    /**
-     * Sets the ImageDescriptor to use for the notes.
-     */
-    public void setVehicleNotesImage()
-    {
-        Image oldImage = this.vehicleNotesImage;
-        if (vehicleNotes == null || vehicleNotes.isEmpty())   
-            vehicleNotesImage = ImageFactory.getInstance().getRegisteredImage("vehicle.notes.na");
-        else
-            vehicleNotesImage = ImageFactory.getInstance().getRegisteredImage("vehicle.notes"); 
-        firePropertyChange("vehicleNotesImage", oldImage, vehicleNotesImage);
-    }
-
-    /**
-     * Returns the Image to visualise if there are notes
-     * @return the Image for the notes
-     */
-    public Image getVehicleNotesImage()
-    {
-        return vehicleNotesImage;
-    }
-
-    /**
-     * Sets the Image to use for the station
-     */
-    public void setStationImage()
-    {
-        //assert valid
-        if(basicStation == null || currentStation == null)
-        {
-            stationImage = ImageFactory.getInstance().getRegisteredImage("vehicle.house.na");
-            return;
-        }
-        //determine the image
-        Image oldImage = this.stationImage;
-        if (!basicStation.getLocationName().equalsIgnoreCase(currentStation.getLocationName()))
-            stationImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.house");
-        else
-            stationImage = ImageFactory.getInstance().getRegisteredImage("vehicle.house.na");
-        firePropertyChange("stationImage", oldImage, stationImage);
-    }
-
-    /**
-     * Returns the Image to visualize whether the vehicle basic station
-     * is the current station
-     * @return the Image for the station
-     */
-    public Image getStationImage()
-    {
-        return stationImage;
-    }
-
-    /**
-     * Sets the Image to use for the ready status
-     */
-    public void setReadyForActionImage()
-    {
-        Image oldImage = this.readyForActionImage;
-        if (readyForAction)
-            readyForActionImage = ImageFactory.getInstance().getRegisteredImage("vehicle.ready");
-        else
-            readyForActionImage = ImageFactory.getInstance().getRegisteredImage("vehicle.ready.na");
-        firePropertyChange("readyForActionImage", oldImage, readyForActionImage);
-    }
-
-    /**
-     * Returns the Image to visualize whether the vehicle is ready for action
-     * @return the vehicle status Image
-     */
-    public Image getReadyForActionImage()
-    {
-        return readyForActionImage;
-    }
-
-    /**
-     * Sets the Image to use for the repair status
-     */
-    public void setOutOfOrderImage()
-    {
-        Image oldImage = this.outOfOrderImage;
-        if (outOfOrder)
-            outOfOrderImage = ImageFactory.getInstance().getRegisteredImage("vehicle.repair");
-        else
-            outOfOrderImage = ImageFactory.getInstance().getRegisteredImage("vehicle.repair.na");	
-        firePropertyChange("outOfOrderImage", oldImage, outOfOrderImage);
-    }
-
-    /**
-     * Returns the Image to visualize whether the vehicle is out of order
-     * @return the repair status Image
-     */
-    public Image getOutOfOrderImage()
-    {
-        return outOfOrderImage;
-    }
-
-    /**
-     * Sets the Image to use for the transport status
-     */
-    public void setTransportStatusImage()
-    {
-        Image oldImage = this.transportStatusImage;
-        //determine the Image
-        switch(transportStatus)
-        {
-        //the red Image
-        case 10: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.red"); 
-        break;
-        //the yellow Image
-        case 20: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.yellow"); 
-        break;
-        //the green Image 
-        case 30: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.green");  
-        break;
-        //the blue Image = green arrow(!)
-        case 40: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.blue");  
-        break;
-        //out of range
-        default: transportStatusImage =  ImageFactory.getInstance().getRegisteredImage("vehicle.status.na"); 
-        }
-        firePropertyChange("transportStatusImage", oldImage, transportStatusImage);
-    }
-
-    /**
-     * Returns the status transport status Image
-     * @return the status Image
-     */
-    public Image getTransportStatusImage()
-    {
-        return transportStatusImage;
     }
 
 	public String getLastDestinationFree() {
 		return lastDestinationFree;
 	}
-
-	
 }
