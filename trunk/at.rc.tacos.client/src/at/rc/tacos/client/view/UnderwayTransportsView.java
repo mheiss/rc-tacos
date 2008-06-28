@@ -240,7 +240,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 		
 		final TableColumn anmerkungUnderwayTransporte = new TableColumn(tableDisp, SWT.NONE);
-		anmerkungUnderwayTransporte.setWidth(324);
+		anmerkungUnderwayTransporte.setWidth(318);
 		anmerkungUnderwayTransporte.setText("Anmerkung");
 		
 		/** make columns sort able*/
