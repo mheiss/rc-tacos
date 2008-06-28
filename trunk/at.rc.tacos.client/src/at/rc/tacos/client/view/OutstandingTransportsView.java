@@ -239,7 +239,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 		final TableColumn respOSOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		respOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
-		respOSOffeneTransporte.setWidth(28);
+		respOSOffeneTransporte.setWidth(30);
 		respOSOffeneTransporte.setText("OS");
 	
 		final TableColumn abfOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
@@ -276,7 +276,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 		final TableColumn tOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		tOffeneTransporte.setToolTipText("Transportart");
-		tOffeneTransporte.setWidth(20);
+		tOffeneTransporte.setWidth(22);
 		tOffeneTransporte.setText("T");
 	
 		final TableColumn erkrankungVerletzungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
@@ -284,7 +284,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		erkrankungVerletzungOffeneTransporte.setText("Erkrankung/Verletzung");
 	
 		final TableColumn anmerkungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		anmerkungOffeneTransporte.setWidth(552);
+		anmerkungOffeneTransporte.setWidth(548);
 		anmerkungOffeneTransporte.setText("Anmerkung");
 	
 		//make the columns sortable

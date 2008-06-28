@@ -677,26 +677,26 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	
 
 		final TableColumn bTableColumnOrtsstelle = new TableColumn(table, SWT.NONE);
-		bTableColumnOrtsstelle.setWidth(27);
+		bTableColumnOrtsstelle.setWidth(30);
 		bTableColumnOrtsstelle.setText("OS");
 
 		final TableColumn bTableColumnAbfahrt = new TableColumn(table, SWT.NONE);
 		bTableColumnAbfahrt.setToolTipText("Geplante Abfahrt an der Ortsstelle");
-		bTableColumnAbfahrt.setWidth(40);
+		bTableColumnAbfahrt.setWidth(43);
 		bTableColumnAbfahrt.setText("Abf");
 
 		final TableColumn bTableColumnAnkunft = new TableColumn(table, SWT.NONE);
 		bTableColumnAnkunft.setToolTipText("Geplante Ankunft beim Patienten");
-		bTableColumnAnkunft.setWidth(40);
+		bTableColumnAnkunft.setWidth(43);
 		bTableColumnAnkunft.setText("Ank");
 
 		final TableColumn bTableColumnTermin = new TableColumn(table, SWT.NONE);
 		bTableColumnTermin.setToolTipText("Termin am Zielort");
-		bTableColumnTermin.setWidth(40);
+		bTableColumnTermin.setWidth(43);
 		bTableColumnTermin.setText("Termin");
 
 		final TableColumn bTableColumnTransportVon = new TableColumn(table, SWT.NONE);
-		bTableColumnTransportVon.setWidth(190);
+		bTableColumnTransportVon.setWidth(188);
 		bTableColumnTransportVon.setText("Transport von");
 
 		final TableColumn bTtableColumnPatient = new TableColumn(table, SWT.NONE);
@@ -704,16 +704,16 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		bTtableColumnPatient.setText("Patient");
 
 		final TableColumn bTableColumnTransportNach = new TableColumn(table, SWT.NONE);
-		bTableColumnTransportNach.setWidth(190);
+		bTableColumnTransportNach.setWidth(188);
 		bTableColumnTransportNach.setText("Transport nach");
 
 		final TableColumn bTableColumnTA = new TableColumn(table, SWT.NONE);
 		bTableColumnTA.setToolTipText("Transportart");
-		bTableColumnTA.setWidth(20);
+		bTableColumnTA.setWidth(23);
 		bTableColumnTA.setText("T");
 		
 		final TableColumn anmerkungTransporte = new TableColumn(table, SWT.NONE);
-		anmerkungTransporte.setWidth(76);
+		anmerkungTransporte.setWidth(66);
 		anmerkungTransporte.setText("Anmerkung");
 
 		Listener sortListener = new Listener() 

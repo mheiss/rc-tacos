@@ -225,7 +225,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnS6Journal.setText("S6");
 
 		final TableColumn columnFzgJournal = new TableColumn(table, SWT.NONE);
-		columnFzgJournal.setWidth(43);
+		columnFzgJournal.setWidth(45);
 		columnFzgJournal.setText("Fzg");
 
 		final TableColumn columnFahrerJournal = new TableColumn(table, SWT.NONE);
