@@ -31,7 +31,7 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 
 	//the toolkit to use
 	private FormToolkit toolkit;
-	private ScrolledForm form;
+	private Form form;
 
 	//the list with the sections
 	private List<Section> sectionList;
@@ -67,9 +67,9 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	{
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-		form = toolkit.createScrolledForm(parent);
+		form = toolkit.createForm(parent);
 		form.setText("Überblick über die Fahrzeuge des Bezirkes");
-		toolkit.decorateFormHeading(form.getForm());
+		toolkit.decorateFormHeading(form);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		form.getBody().setLayout(layout);
@@ -284,11 +284,10 @@ public class VehiclesView extends ViewPart implements PropertyChangeListener
 	 * @param description the description of the section
 	 * @return the the created section
 	 */
-	private Section createSection(ScrolledForm form,FormToolkit toolkit,String title,String description)
+	private Section createSection(Form form,FormToolkit toolkit,String title,String description)
 	{
 		// Create the section
-		Section section = toolkit.createSection(form.getBody(), ExpandableComposite.TWISTIE
-				| ExpandableComposite.COMPACT  | ExpandableComposite.EXPANDED);
+		Section section = toolkit.createSection(form.getBody(), ExpandableComposite.TWISTIE | ExpandableComposite.COMPACT  | ExpandableComposite.EXPANDED);
 		toolkit.createCompositeSeparator(section);
 		// Add the title and the description
 		section.setText(title);

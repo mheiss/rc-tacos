@@ -32,8 +32,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.PersonalCancelSignInAction;
@@ -63,7 +63,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 
 	//the toolkit to use
 	private FormToolkit toolkit;
-	private ScrolledForm form;
+	private Form form;
 	private TableViewer viewer;
 	private PersonalTooltip tooltip;
 	//the tab folder
@@ -122,8 +122,8 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 	{
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-		form = toolkit.createScrolledForm(parent);
-		toolkit.decorateFormHeading(form.getForm());
+		form = toolkit.createForm(parent);
+		toolkit.decorateFormHeading(form);
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();

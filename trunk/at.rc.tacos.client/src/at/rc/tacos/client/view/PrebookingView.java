@@ -29,8 +29,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.CancelTransportAction;
@@ -60,7 +60,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 	//the toolkit to use
 	private FormToolkit toolkit;
-	private ScrolledForm form;
+	private Form form;
 	private TableViewer viewerGraz;
 	private TableViewer viewerLeoben;
 	private TableViewer viewerBruck;
@@ -140,14 +140,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	{
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-		form = toolkit.createScrolledForm(parent);
-		toolkit.decorateFormHeading(form.getForm());
+		form = toolkit.createForm(parent);
+		toolkit.decorateFormHeading(form);
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
 		
-		SashForm sash_prebooking = new SashForm(composite
-				, SWT.HORIZONTAL);
+		SashForm sash_prebooking = new SashForm(composite, SWT.HORIZONTAL);
 
 		//groups-----------------------------------
 		final SashForm sashForm_8 = new SashForm(sash_prebooking, SWT.VERTICAL);

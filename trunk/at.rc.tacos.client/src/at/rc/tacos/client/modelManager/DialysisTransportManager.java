@@ -59,7 +59,6 @@ public class DialysisTransportManager extends PropertyManager
         }); 
     }
     
-    
     /**
      * Updates the dialysis transport at the list
      * @param dialysis transport the dialysis transport to update
