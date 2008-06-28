@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.VehicleTableAtStationAction;
@@ -50,7 +50,7 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
 
     //the toolkit to use
     private FormToolkit toolkit;
-    private ScrolledForm form;
+    private Form form;
     private TableViewer viewer;
     private VehicleTooltip tooltip;
 
@@ -105,9 +105,8 @@ public class VehiclesViewTable extends ViewPart implements PropertyChangeListene
     {
         // Create the scrolled parent component
         toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-        form = toolkit.createScrolledForm(parent);
-//        form.setText("Fzg.");
-        toolkit.decorateFormHeading(form.getForm());
+        form = toolkit.createForm(parent);
+        toolkit.decorateFormHeading(form);
         form.getBody().setLayout(new FillLayout());
 
         final Composite composite = form.getBody();

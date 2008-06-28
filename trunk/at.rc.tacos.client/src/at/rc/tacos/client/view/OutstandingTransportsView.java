@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.controller.AssignCarAction;
@@ -55,7 +55,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 
 	//the toolkit to use
 	private FormToolkit toolkit;
-	private ScrolledForm form;
+	private Form form;
 	private TableViewer viewerOffTrans;
 	
 	//the actions for the context menu
@@ -97,9 +97,9 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	{
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-		form = toolkit.createScrolledForm(parent);
+		form = toolkit.createForm(parent);
 		form.setText("Offene Transporte");
-		toolkit.decorateFormHeading(form.getForm());
+		toolkit.decorateFormHeading(form);
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();

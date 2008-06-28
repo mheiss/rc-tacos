@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.client.controller.CancelTransportAction;
 import at.rc.tacos.client.controller.CopyTransportAction;
@@ -63,7 +63,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	public static final String ID = "at.rc.tacos.client.view.disposition_view";
 	
 	private FormToolkit toolkit;
-	private ScrolledForm formDisp;
+	private Form formDisp;
 	private TableViewer viewer;
 	
 	//the actions for the context menu
@@ -125,9 +125,9 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	{
 		//Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-		formDisp = toolkit.createScrolledForm(parent);
+		formDisp = toolkit.createForm(parent);
 		formDisp.setText("Disponierte Transporte");
-		toolkit.decorateFormHeading(formDisp.getForm());
+		toolkit.decorateFormHeading(formDisp);
 		formDisp.getBody().setLayout(new FillLayout());
 
 		final Composite composite = formDisp.getBody();

@@ -2,9 +2,6 @@ package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormLayout;
@@ -55,9 +52,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 
 		//initalize the components
 		initialize();
-
-		vehicle.updateImages();
-		bindValues();
 		updateColors();
 
 		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
@@ -153,75 +147,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		medicIILabel.setAlignment(SWT.RIGHT);
 		medicIILabel.setBounds(88, 19, 44, 13);
 	}
-
-	/**
-	 * Binds the values form the model to the labels and text fields.
-	 */
-	private void bindValues()
-	{
-		//create a new databinding context
-		DataBindingContext bindingContext = new DataBindingContext();
-
-		//bind the name of the vehicle
-		bindingContext.bindValue(
-				SWTObservables.observeText(vehicleNameLabel), 
-				BeansObservables.observeValue(vehicle, "vehicleName"), null, null);
-		//bind the type of the vehicle
-		bindingContext.bindValue(
-				SWTObservables.observeText(vehicleTypeLabel), 
-				BeansObservables.observeValue(vehicle, "vehicleType"), null, null);
-		//bind the name of the driver
-		if(vehicle.getDriver() != null)
-		{
-			bindingContext.bindValue(
-					SWTObservables.observeText(driverLabel), 
-					BeansObservables.observeValue(vehicle.getDriver(), "userName"), null, null);
-		}
-		else
-			driverLabel.setText("");
-		//bind the name of the medic
-		if(vehicle.getFirstParamedic() != null)
-		{
-			bindingContext.bindValue(
-					SWTObservables.observeText(medicILabel), 
-					BeansObservables.observeValue(vehicle.getFirstParamedic(), "userName"), null, null);
-		}
-		else
-			medicILabel.setText("");
-		//bind the name of the second medic
-		if(vehicle.getSecondParamedic() != null)
-		{
-			bindingContext.bindValue(
-					SWTObservables.observeText(medicIILabel), 
-					BeansObservables.observeValue(vehicle.getSecondParamedic(), "userName"), null, null);
-		}
-		else
-			medicIILabel.setText("");
-		//bind the notes image label
-		bindingContext.bindValue(
-				new MyImageLabelObserver(notesLabel), 
-				BeansObservables.observeValue(vehicle, "vehicleNotesImage"), null, null);
-		//bind the images
-		bindingContext.bindValue(
-				new MyImageLabelObserver(mobilePhoneLabel), 
-				BeansObservables.observeValue(vehicle, "mobilePhoneImage"), null, null);
-		//bind the images
-		bindingContext.bindValue(
-				new MyImageLabelObserver(stationLabel), 
-				BeansObservables.observeValue(vehicle, "stationImage"), null, null);
-		//bind the images
-		bindingContext.bindValue(
-				new MyImageLabelObserver(readyLabel), 
-				BeansObservables.observeValue(vehicle, "readyForActionImage"), null, null);
-		//bind the images
-		bindingContext.bindValue(
-				new MyImageLabelObserver(repairLabel), 
-				BeansObservables.observeValue(vehicle, "outOfOrderImage"), null, null);
-		//bind the images
-		bindingContext.bindValue(
-				new MyImageLabelObserver(statusLabel), 
-				BeansObservables.observeValue(vehicle, "transportStatusImage"), null, null);
-	}
 	
 	/**
 	 * Updates the colors of the vehicle
@@ -279,8 +204,6 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 			if(vehicle.equals(updatedVehicle))
 			{
 				this.vehicle = updatedVehicle;
-				vehicle.updateImages();
-				bindValues();  
 				updateColors();
 			}
 		}
