@@ -6,8 +6,10 @@ import java.util.Date;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
+import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
@@ -19,7 +21,7 @@ import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.modelManager.VehicleManager;
 import at.rc.tacos.client.util.CustomColors;
 
-public class PersonalViewLabelProvider implements ITableLabelProvider, ITableColorProvider
+public class PersonalViewLabelProvider implements ITableLabelProvider, ITableColorProvider, ITableFontProvider
 {
     //define the columns
     public static final int COLUMN_LOCK = 0;
@@ -48,8 +50,8 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
         //show lock if the entry is locked
         case COLUMN_LOCK: 
         	if(lockManager.containsLock(RosterEntry.ID, entry.getRosterId()))
-        		return ImageFactory.getInstance().getRegisteredImage("resource.lock");
-        	return null;
+        		return ImageFactory.getInstance().getRegisteredImage("resource.lock18");
+        	else return ImageFactory.getInstance().getRegisteredImage("resource.nothing18");
         //show house symbol if the person is at home
         case COLUMN_STANDBY: 
             if(entry.getStandby())
@@ -177,5 +179,11 @@ public class PersonalViewLabelProvider implements ITableLabelProvider, ITableCol
 			return CustomColors.BACKGROUND_BLUE;
 		
 		return CustomColors.BACKGROUND_RED;
+	}
+	
+	@Override
+	public Font getFont(Object element, int columnIndex) {
+		// TODO Auto-generated method stub
+		return CustomColors.VEHICLE_TABLE;
 	}
 }

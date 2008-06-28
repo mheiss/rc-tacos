@@ -44,8 +44,8 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 		{
 			case COLUMN_LOCK:
 				if(lockManager.containsLock(VehicleDetail.ID, vehicle.getVehicleName()))
-					return ImageFactory.getInstance().getRegisteredImage("resource.lock");
-				else return null;
+					return ImageFactory.getInstance().getRegisteredImage("resource.lock18");
+				else return ImageFactory.getInstance().getRegisteredImage("resource.nothing18");
 			case COLUMN_READY:
 				if(vehicle.isReadyForAction())
 					return ImageFactory.getInstance().getRegisteredImage("vehicle.ready");
