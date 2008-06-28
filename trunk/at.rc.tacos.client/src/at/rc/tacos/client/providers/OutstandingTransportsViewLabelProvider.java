@@ -3,8 +3,10 @@ package at.rc.tacos.client.providers;
 import java.text.SimpleDateFormat;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
+import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.model.Transport;
@@ -14,7 +16,7 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.common.IKindOfTransport;
 import at.rc.tacos.factory.ImageFactory;
 
-public class OutstandingTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider, IKindOfTransport
+public class OutstandingTransportsViewLabelProvider implements ITableLabelProvider, ITableColorProvider, IKindOfTransport, ITableFontProvider
 {
 	//define the columns
 	public static final int COLUMN_LOCK = 0;
@@ -45,8 +47,8 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 		{
 			case COLUMN_LOCK:
 				if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-					return ImageFactory.getInstance().getRegisteredImage("resource.lock");
-				else return null;
+					return ImageFactory.getInstance().getRegisteredImage("resource.lock18");
+				else return ImageFactory.getInstance().getRegisteredImage("resource.nothing18");
 			default: return null;
 		}
 	}
@@ -183,5 +185,11 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 	public Color getForeground(Object element, int columnIndex) 
 	{		
 		return null;
+	}
+	
+	@Override
+	public Font getFont(Object element, int columnIndex) {
+		// TODO Auto-generated method stub
+		return CustomColors.VEHICLE_TABLE;
 	}
 }
