@@ -141,7 +141,7 @@ public class VehicleViewTableDetailLabelProvider implements ITableLabelProvider,
 			return CustomColors.GREY_COLOR;
 		return null;
 	}
-
+	
 	@Override
 	public Font getFont(Object element, int columnIndex) {
 		// TODO Auto-generated method stub

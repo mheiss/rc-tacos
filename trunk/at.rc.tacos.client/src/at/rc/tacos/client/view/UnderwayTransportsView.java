@@ -232,7 +232,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 
 		final TableColumn taDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		taDisponierteTransporte.setToolTipText("Transportart");
-		taDisponierteTransporte.setWidth(20);
+		taDisponierteTransporte.setWidth(22);
 		taDisponierteTransporte.setText("T");
 		
 		final TableColumn erkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -240,7 +240,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 		
 		final TableColumn anmerkungUnderwayTransporte = new TableColumn(tableDisp, SWT.NONE);
-		anmerkungUnderwayTransporte.setWidth(328);
+		anmerkungUnderwayTransporte.setWidth(324);
 		anmerkungUnderwayTransporte.setText("Anmerkung");
 		
 		/** make columns sort able*/
