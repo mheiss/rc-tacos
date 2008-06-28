@@ -239,22 +239,22 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 		final TableColumn respOSOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		respOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
-		respOSOffeneTransporte.setWidth(27);
+		respOSOffeneTransporte.setWidth(28);
 		respOSOffeneTransporte.setText("OS");
 	
 		final TableColumn abfOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		abfOffeneTransporte.setToolTipText("Abfahrt auf der Dienststelle");
-		abfOffeneTransporte.setWidth(40);
+		abfOffeneTransporte.setWidth(43);
 		abfOffeneTransporte.setText("Abf");
 	
 		final TableColumn ankOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		ankOffeneTransporte.setToolTipText("Ankunft beim Patienten");
-		ankOffeneTransporte.setWidth(40);
+		ankOffeneTransporte.setWidth(43);
 		ankOffeneTransporte.setText("Ank.");
 	
 		final TableColumn terminOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		terminOffeneTransporte.setToolTipText("Terminzeit am Zielort");
-		terminOffeneTransporte.setWidth(40);
+		terminOffeneTransporte.setWidth(43);
 		terminOffeneTransporte.setText("Termin");
 	
 		final TableColumn transportVonOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
@@ -271,7 +271,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 		final TableColumn aufgOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		aufgOffeneTransporte.setToolTipText("Zeit zu der der Transport aufgenommen wurde");
-		aufgOffeneTransporte.setWidth(40);
+		aufgOffeneTransporte.setWidth(43);
 		aufgOffeneTransporte.setText("Aufg");
 	
 		final TableColumn tOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
@@ -284,7 +284,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		erkrankungVerletzungOffeneTransporte.setText("Erkrankung/Verletzung");
 	
 		final TableColumn anmerkungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		anmerkungOffeneTransporte.setWidth(561);
+		anmerkungOffeneTransporte.setWidth(552);
 		anmerkungOffeneTransporte.setText("Anmerkung");
 	
 		//make the columns sortable
