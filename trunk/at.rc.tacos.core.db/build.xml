@@ -102,6 +102,7 @@
 		<antcall target="sql_create_f_staffmember" />
 		<antcall target="sql_create_f_transport" />
 		<antcall target="sql_create_f_vehicle" />
+		<antcall target="sql_create_f_link" />
 	</target>
 
 	<target name="sql_cleardata">
