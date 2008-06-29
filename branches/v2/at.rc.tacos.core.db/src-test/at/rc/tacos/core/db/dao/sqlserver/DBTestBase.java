@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
-import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.DbWrapper;
 
 /**
  * Base class to privode common methods for the test classes
@@ -13,7 +13,7 @@ import at.rc.tacos.core.db.DataSource;
 public class DBTestBase
 {
 	//The data source to get the connection
-	private final DataSource source = DataSource.getInstance();
+	private final DbWrapper source = DbWrapper.getDefault();
 	
     protected void deleteTable(String table) throws SQLException
     {

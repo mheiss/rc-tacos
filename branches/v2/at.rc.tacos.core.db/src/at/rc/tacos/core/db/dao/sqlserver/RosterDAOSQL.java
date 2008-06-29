@@ -20,7 +20,7 @@ import at.rc.tacos.util.MyUtils;
 public class RosterDAOSQL implements RosterDAO
 {
 	//The data source to get the connection and the queries file
-	private final DataSource source = DataSource.getInstance();
+	private final DbWrapper source = DbWrapper.getDefault();
 	private final SQLQueries queries = SQLQueries.getInstance();
 	//the dependent dao classes
 	private final StaffMemberDAO staffDAO = DaoFactory.SQL.createStaffMemberDAO();

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.DbWrapper;
 import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.CallerDAO;
 import at.rc.tacos.model.CallerDetail;
@@ -12,7 +12,7 @@ import at.rc.tacos.model.CallerDetail;
 public class CallerDAOSQL implements CallerDAO
 {
 	//The data source to get the connection and the queries file
-	private final DataSource source = DataSource.getInstance();
+	private final DbWrapper source = DbWrapper.getDefault();
 	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
