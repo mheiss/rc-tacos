@@ -116,7 +116,7 @@ public class AddRosterEntryController extends Controller {
 	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_BIG = "plannedStartOfWorkTooBig";
 	private static final String ERRORS_PLANNED_START_OF_WORK_TOO_BIG_VALUE = "Der Wert von Dienst von ist zu groﬂ.";
 	private static final String ERRORS_PLANNED_START_OF_WORK_DEADLINE_EXCEEDED = "plannedStartOfWorkDeadlineExceeded";
-	private static final String ERRORS_PLANNED_START_OF_WORK_DEADLINE_EXCEEDED_VALUE = "Von muss mindestens 72 Stunden in der Zukunft liegen.";
+	private static final String ERRORS_PLANNED_START_OF_WORK_DEADLINE_EXCEEDED_VALUE = "Von muss mindestens 4 Stunden in der Zukunft liegen.";
 	
 	private static final String ERRORS_PLANNED_END_OF_WORK_TOO_SMALL = "plannedEndOfWorkTooSmall";
 	private static final String ERRORS_PLANNED_END_OF_WORK_TOO_SMALL_VALUE = "plannedEndOfWorkTooSmall";
