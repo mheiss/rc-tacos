@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
  * This is a helper class to load the queries from the queries.properties file
  * @author Michael
  */
+@Deprecated
 public class Queries 
 {
 	//the properties file

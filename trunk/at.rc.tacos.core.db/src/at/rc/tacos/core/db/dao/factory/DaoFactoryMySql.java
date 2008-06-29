@@ -26,6 +26,7 @@ import at.rc.tacos.core.db.dao.sqlserver.PeriodsDAOSQL;
  * Provides the specialized dao factory methods to access a sql source
  * @author Michael
  */
+@Deprecated
 public class DaoFactoryMySql implements DaoFactory
 {
     @Override
