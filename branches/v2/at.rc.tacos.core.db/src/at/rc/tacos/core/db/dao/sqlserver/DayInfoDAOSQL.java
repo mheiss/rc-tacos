@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.db.Queries;
+import at.rc.tacos.core.db.DbWrapper;
+import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.DayInfoDAO;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.util.MyUtils;
@@ -13,8 +13,8 @@ import at.rc.tacos.util.MyUtils;
 public class DayInfoDAOSQL implements DayInfoDAO
 {
 	//The data source to get the connection and the queries file
-	private final DataSource source = DataSource.getInstance();
-	private final Queries queries = Queries.getInstance();
+	private final DbWrapper source = DbWrapper.getDefault();
+	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public DayInfoMessage getDayInfoByDate(long date) throws SQLException

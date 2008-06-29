@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import at.rc.tacos.core.db.DataSource;
+import at.rc.tacos.core.db.DbWrapper;
 import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
 import at.rc.tacos.core.db.dao.LocationDAO;
@@ -18,7 +18,7 @@ import at.rc.tacos.util.MyUtils;
 public class DialysisPatientDAOSQL implements DialysisPatientDAO
 {
 	//The data source to get the connection and the queries file
-	private final DataSource source = DataSource.getInstance();
+	private final DbWrapper source = DbWrapper.getDefault();
 	private final SQLQueries queries = SQLQueries.getInstance();
 	//the location DAO
 	private final LocationDAO locationDAO = DaoFactory.SQL.createLocationDAO();
