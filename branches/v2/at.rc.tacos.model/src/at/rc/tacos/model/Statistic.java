@@ -14,22 +14,6 @@ public class Statistic extends AbstractMessage
 	//Properties    
 	private int statisticId;
 	private int hours;
-	
-	
-
-	public int getHours() 
-	{
-		return hours;
-	}
-
-
-
-	public void setHours(int hours) 
-	{
-		this.hours = hours;
-	}
-
-
 
 	/**
 	 * Default class construtor
@@ -41,6 +25,33 @@ public class Statistic extends AbstractMessage
 		statisticId = -1;
 	}
 
-	
+	//GETTERS AND SETTERS
+	/**
+	 * @return the statisticId
+	 */
+	public int getStatisticId() {
+		return statisticId;
+	}
+
+	/**
+	 * @param statisticId the statisticId to set
+	 */
+	public void setStatisticId(int statisticId) {
+		this.statisticId = statisticId;
+	}
+
+	/**
+	 * @return the hours
+	 */
+	public int getHours() {
+		return hours;
+	}
+
+	/**
+	 * @param hours the hours to set
+	 */
+	public void setHours(int hours) {
+		this.hours = hours;
+	}
 }
 

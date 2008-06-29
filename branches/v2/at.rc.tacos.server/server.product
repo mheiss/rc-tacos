@@ -43,6 +43,7 @@ Visit http://www.eclipse.org/platform
    </vm>
 
    <plugins>
+      <plugin id="at.rc.tacos.core.db"/>
       <plugin id="at.rc.tacos.model"/>
       <plugin id="at.rc.tacos.server"/>
       <plugin id="com.ibm.icu"/>
@@ -65,6 +66,7 @@ Visit http://www.eclipse.org/platform
       <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.forms"/>
+      <plugin id="org.eclipse.ui.views"/>
       <plugin id="org.eclipse.ui.workbench"/>
    </plugins>
 

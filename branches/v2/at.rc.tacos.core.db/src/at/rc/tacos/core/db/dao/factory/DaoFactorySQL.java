@@ -131,7 +131,6 @@ public class DaoFactorySQL implements DaoFactory
 
 	@Override
 	public LinkDAO createLinkDAO() {
-		// TODO Auto-generated method stub
 		return new LinkDAOSQL();
 	}
 }

@@ -1,15 +1,15 @@
 Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Database Plug-in
-Bundle-SymbolicName: at.rc.tacos.core.db
-Bundle-Version: 1.0.0
-Bundle-Activator: at.rc.tacos.core.db.DbWrapper
+Export-Package: at.rc.tacos.core.db;uses:="org.eclipse.core.runtime,or
+ g.osgi.framework",at.rc.tacos.core.db.dao;uses:="at.rc.tacos.model",a
+ t.rc.tacos.core.db.dao.factory;uses:="at.rc.tacos.core.db.dao"
 Require-Bundle: org.eclipse.core.runtime,
- at.rc.tacos.model
+ at.rc.tacos.model,
+ at.rc.tacos.libs
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: lib/mysql-connector-java-5.1.5-bin.jar
-Export-Package: at.rc.tacos.core.db,
- at.rc.tacos.core.db.dao,
- at.rc.tacos.core.db.dao.factory,
- at.rc.tacos.core.db.dao.mysql
+Bundle-Version: 1.0.0
+Bundle-Name: Database Plug-in
+Bundle-Activator: at.rc.tacos.core.db.DbWrapper
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: at.rc.tacos.core.db;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+

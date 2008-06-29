@@ -24,6 +24,11 @@
             class="at.rc.tacos.server.ui.views.OnlineUsersView"
             id="at.rc.tacos.server.ui.views.OnlineUsersView">
       </view>
+      <view
+            class="at.rc.tacos.server.ui.views.ServerStatusView"
+            id="at.rc.tacos.server.ui.views.ServerStatusView"
+            name="ServerStatusView">
+      </view>
    </extension>
 
    <extension
