@@ -4,11 +4,17 @@ Bundle-Name: Model Plug-in
 Bundle-SymbolicName: at.rc.tacos.model;singleton:=true
 Bundle-Version: 1.0.0
 Export-Package: at.rc.tacos.codec;uses:="javax.xml.stream,at.rc.tacos.common",
- at.rc.tacos.common,
- at.rc.tacos.factory;uses:="at.rc.tacos.common,at.rc.tacos.codec",
+ at.rc.tacos.common;uses:="at.rc.tacos.model",
+ at.rc.tacos.factory;
+  uses:="at.rc.tacos.model,
+   org.eclipse.jface.resource,
+   at.rc.tacos.common,
+   org.eclipse.swt.graphics,
+   at.rc.tacos.codec",
  at.rc.tacos.model;uses:="at.rc.tacos.common",
  at.rc.tacos.util
 Require-Bundle: org.eclipse.swt,
  org.eclipse.jface,
- org.eclipse.core.databinding
+ org.eclipse.core.databinding,
+ at.rc.tacos.libs;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

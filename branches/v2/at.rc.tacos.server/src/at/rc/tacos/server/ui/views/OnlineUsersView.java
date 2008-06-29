@@ -34,7 +34,7 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 		toolkit = new FormToolkit(parent.getDisplay());
 		form = toolkit.createForm(parent);
 		form.setText("Aktive Benutzer");
-		form.setImage(ImageFactory.getInstance().getRegisteredImage("item.users"));
+		form.setImage(ImageFactory.getInstance().getRegisteredImage("server.view.users"));
 		toolkit.decorateFormHeading(form);
 		
 		//layout the body

@@ -4,6 +4,7 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 import at.rc.tacos.server.ui.views.OnlineUsersView;
+import at.rc.tacos.server.ui.views.ServerStatusView;
 
 /**
  * Defines the perspective for the main server view
@@ -16,6 +17,7 @@ public class Perspective implements IPerspectiveFactory
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(false);
 		layout.setFixed(true);
-		layout.addStandaloneView(OnlineUsersView.ID,  false, IPageLayout.LEFT, 1.0f, editorArea);
+		layout.addStandaloneView(ServerStatusView.ID,  false, IPageLayout.TOP, 0.2f, editorArea);
+		layout.addStandaloneView(OnlineUsersView.ID,  false, IPageLayout.LEFT, 0.5f, editorArea);
 	}
 }

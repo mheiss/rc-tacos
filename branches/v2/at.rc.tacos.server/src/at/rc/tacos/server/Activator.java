@@ -2,6 +2,7 @@ package at.rc.tacos.server;
 
 import java.util.ResourceBundle;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -17,12 +18,11 @@ public class Activator extends AbstractUIPlugin
 {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "at.rc.tacos.server";
+	// Configuration file for the images
+	public static final String IMAGE_SERVER_CONFIG_PATH = "at.rc.tacos.server.config.images";
 
 	// The shared instance
 	private static Activator plugin;
-	
-	// Configuration file for the images
-	public static final String IMAGE_SERVER_CONFIG_PATH = "at.rc.tacos.server.config.images";
 
 	/**
 	 * The constructor
@@ -36,6 +36,8 @@ public class Activator extends AbstractUIPlugin
 	{
 		super.start(context);
 		plugin = this;
+		//initialize log4j
+		PropertyConfigurator.configureAndWatch("log4j.properties", 60*1000 );
 		//load all needed images and register them
 		loadAndRegisterImages();
 	}

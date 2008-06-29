@@ -29,9 +29,9 @@ public class OnlineUserLabelProvider implements ITableLabelProvider
 		//show a image depending on the connection type
 		case COLUMN_IMAGE: 
 			if(user.getLogin().isWebClient())
-				return ImageFactory.getInstance().getRegisteredImage("item.userOnline");
+				return ImageFactory.getInstance().getRegisteredImage("server.user.userControlCenterOnline");
 			else
-				return ImageFactory.getInstance().getRegisteredImage("item.userControlCenter");
+				return ImageFactory.getInstance().getRegisteredImage("server.user.userWebOnline");
 		}
 
 		//no column matched
