@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Require-Bundle: at.rc.tacos.model;bundle-version="1.0.0",
+Require-Bundle: at.rc.tacos.libs,
+ at.rc.tacos.model;bundle-version="1.0.0",
  at.rc.tacos.core.db;bundle-version="1.0.0",
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms;bundle-version="3.3.100",
- org.eclipse.ui.views;bundle-version="3.3.0",
- at.rc.tacos.libs
+ org.eclipse.ui.views;bundle-version="3.3.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Version: 1.0.0
 Bundle-Name: Server Plug-in
