@@ -3,6 +3,9 @@ package at.rc.tacos.client.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.TextEvent;
@@ -13,6 +16,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.*;
+import org.eclipse.swt.nebula.widgets.cdatetime.CDT;
+import org.eclipse.swt.nebula.widgets.cdatetime.CDateTime;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -44,7 +49,7 @@ public class InfoView extends ViewPart implements PropertyChangeListener
     public static final String ID = "at.rc.tacos.client.view.info"; 
 
     //the components
-    private DateTime dateTime;
+    private CDateTime dateTime;
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TextViewer noteEditor;
@@ -245,19 +250,22 @@ public class InfoView extends ViewPart implements PropertyChangeListener
         calendar.setLayout(new GridLayout());
 
         //Calendar field
-        dateTime = new DateTime(calendar, SWT.CALENDAR);
+        dateTime = new CDateTime(calendar,CDT.SIMPLE);
+        dateTime.setLocale(Locale.GERMAN);
+        dateTime.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         dateTime.setToolTipText("Datum der anzuzeigenden Dienstplanübersicht auswählen");
-        dateTime.addSelectionListener (new SelectionAdapter () 
+        dateTime.addSelectionListener(new SelectionAdapter()
         {
+        	@Override
+        	public void widgetDefaultSelected(SelectionEvent e) {
+        		widgetSelected(e);
+        	}
+        	
             @Override
 			public void widgetSelected (SelectionEvent e) 
             {
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.YEAR, dateTime.getYear());
-                cal.set(Calendar.MONTH, dateTime.getMonth());
-                cal.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
                 //run the change action to query the roster entries for the given date
-                SelectRosterDateAction selectAction = new SelectRosterDateAction(cal.getTime());
+                SelectRosterDateAction selectAction = new SelectRosterDateAction((Date)e.data);
                 selectAction.run();
             }
         });

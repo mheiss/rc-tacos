@@ -1,6 +1,8 @@
 package at.rc.tacos.client.view;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import org.eclipse.swt.*;
 
@@ -8,6 +10,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import org.eclipse.swt.layout.*;
+import org.eclipse.swt.nebula.widgets.cdatetime.CDT;
+import org.eclipse.swt.nebula.widgets.cdatetime.CDateTime;
 import org.eclipse.swt.widgets.*;
 
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -37,7 +41,7 @@ public class FilterView extends ViewPart
 	public static final String ID = "at.rc.tacos.client.view.filter"; 
 
 	//the components
-	private DateTime dateTime;
+	private CDateTime dateTime;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private Composite calendar;
@@ -138,17 +142,22 @@ public class FilterView extends ViewPart
 		calendar = createSection(parent,"Datum der Transporte");
 
 		//Calendar field
-		dateTime = new DateTime(calendar, SWT.DATE);
+		dateTime = new CDateTime(calendar,CDT.SIMPLE);
+		dateTime.setLocale(Locale.GERMAN);
+        dateTime.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		dateTime.setToolTipText("Datum der anzuzeigenden Transporte auswählen");
 		dateTime.addSelectionListener (new SelectionAdapter () 
 		{
 			@Override
+        	public void widgetDefaultSelected(SelectionEvent e) {
+        		widgetSelected(e);
+        	}
+			
+			@Override
 			public void widgetSelected (SelectionEvent e) 
 			{
 				Calendar cal = Calendar.getInstance();
-				cal.set(Calendar.YEAR, dateTime.getYear());
-				cal.set(Calendar.MONTH, dateTime.getMonth());
-				cal.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+				cal.setTime((Date)e.data);
 				//run the action to query the transports for the selected date
 				SelectTransportDateAction selectAction = new SelectTransportDateAction(cal);
 				selectAction.run();
