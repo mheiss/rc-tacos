@@ -13,6 +13,7 @@ public class AbstractMessageInfo
 {
 	//properties
 	private long timestamp;
+	private int counter;
 	private String sequenceId;
 	private String contentType;
 	private String queryString;
@@ -137,5 +138,13 @@ public class AbstractMessageInfo
 	public void setSequenceId(String sequenceId) 
 	{
 		this.sequenceId = sequenceId;
+	}
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
 	}
 }
