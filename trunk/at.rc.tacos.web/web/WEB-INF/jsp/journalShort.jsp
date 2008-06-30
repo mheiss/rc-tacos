@@ -30,11 +30,7 @@
 		<td style="font-weight: bold">Datum:</td>
 		<td><select size="1" id="restrictedDate" name="restrictedDate">
 			<c:forEach var="date" items="${params.restrictedDateList}">
-				<option
-					value="<fmt:formatDate type="date" dateStyle="short" value="${date}"/>"
-					${(not empty params.restrictedDate) and (params.restrictedDate==
-					date) ? ' selected="selected"' : ''}><fmt:formatDate
-					type="date" dateStyle="short" value="${date}" /></option>
+				<option value="<fmt:formatDate type="date" dateStyle="short" value="${date}"/>"${(not empty params.restrictedDate) and (params.restrictedDate.time == date.time) ? ' selected="selected"' : ''}><fmt:formatDate type="date" dateStyle="short" value="${date}" /></option>
 			</c:forEach>
 		</select></td>
 	</tr>
