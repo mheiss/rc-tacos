@@ -234,7 +234,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 	
 		final TableColumn prioritaetOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		prioritaetOffeneTransporte.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
-		prioritaetOffeneTransporte.setWidth(20);
+		prioritaetOffeneTransporte.setWidth(26);
 		prioritaetOffeneTransporte.setText("Pr");
 	
 		final TableColumn respOSOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
@@ -284,7 +284,7 @@ public class OutstandingTransportsView extends ViewPart implements PropertyChang
 		erkrankungVerletzungOffeneTransporte.setText("Erkrankung/Verletzung");
 	
 		final TableColumn anmerkungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		anmerkungOffeneTransporte.setWidth(548);
+		anmerkungOffeneTransporte.setWidth(542);
 		anmerkungOffeneTransporte.setText("Anmerkung");
 	
 		//make the columns sortable
