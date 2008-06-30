@@ -8,11 +8,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import at.rc.tacos.server.Activator;
-import at.rc.tacos.server.model.OnlineUser;
-import at.rc.tacos.server.modelManager.OnlineUserManager;
-import at.rc.tacos.server.net.MyServerSocket;
-import at.rc.tacos.server.net.MySocket;
+import at.rc.tacos.model.OnlineUser;
+import at.rc.tacos.net.MyServerSocket;
+import at.rc.tacos.net.MySocket;
+import at.rc.tacos.server.net.NetWrapper;
+import at.rc.tacos.server.net.OnlineUserManager;
 
 /**
  * This job is responsible for the server so that the clients can connect
@@ -72,7 +72,7 @@ public class ServerListenJob extends Job
 		catch(IOException ioe)
 		{
 			//log the error and go on
-			Activator.getDefault().log("IO-Error during the network listening", IStatus.ERROR);
+			NetWrapper.log("IO-Error during the network listening", IStatus.ERROR,ioe.getCause());
 			return Status.OK_STATUS;
 		}
 		finally

@@ -1,16 +1,14 @@
-package at.rc.tacos.server.modelManager;
+package at.rc.tacos.factory;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-
-import org.eclipse.core.runtime.PlatformObject;
 
 /**
  * This abstract base class provides all methods for handling
  * property change events.
  * @author Michael
  */
-public abstract class PropertyManager extends PlatformObject
+public abstract class PropertyManager
 {
     //the listeners to inform about data changes
     protected transient PropertyChangeSupport listeners = new PropertyChangeSupport(this);

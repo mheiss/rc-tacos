@@ -36,10 +36,8 @@ public class DbWrapper extends Plugin
 	private String dbDriver,dbHost,dbUser,dbPwd;
 	
 	//the server pool 
+	private boolean isConnected;
 	private GenericObjectPool connectionPool;
-	
-	//the status
-	private boolean connected;
 
 	//the listeners
 	private ArrayList<PropertyChangeListener> databaseListeners = new ArrayList<PropertyChangeListener>();
@@ -47,7 +45,6 @@ public class DbWrapper extends Plugin
 	//the fired properties
 	public final static String DB_CONNECTION_OPENED = "dbConnectionOpened";
 	public final static String DB_CONNECTION_CLOSED = "dbConnectionClosed";
-	public final static String DB_CONNECTION_ERROR = "dbConnectionError";
 	
 	/**
 	 * The constructor
@@ -64,8 +61,6 @@ public class DbWrapper extends Plugin
 	{
 		super.start(context);
 		plugin = this;
-		//open a connection to the database 
-		initDatabaseConnection();
 	}
 
 	/**
@@ -78,7 +73,6 @@ public class DbWrapper extends Plugin
 	{
 		plugin = null;
 		super.stop(context);
-		closeDatabaseConnection();
 	}
 
 	/**
@@ -105,64 +99,84 @@ public class DbWrapper extends Plugin
 		catch (SQLException sqle)
 		{
 			DbWrapper.log("SQL-Error while trying to get the connection: "+sqle.getMessage(), Status.ERROR,sqle.getCause());
-			firePropertyChangeEvent(DB_CONNECTION_ERROR, null, sqle);
+			firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, sqle);
 		}
 		catch(Exception e)
 		{
 			DbWrapper.log("Failed to get a vaild driver instance: "+e.getMessage(),Status.ERROR,e.getCause());
-			firePropertyChangeEvent(DB_CONNECTION_ERROR, null, e);
+			firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, e);
 		}
+		//no connection to the database
+		isConnected = false;
 		return null;
 	}
 
-	//HELPER METHODS
 	/**
 	 * Opens a connection to the database and sets up the connection pool
 	 */
-	private void initDatabaseConnection() throws Exception
+	public void initDatabaseConnection()
 	{
-		//load the settings from the file
-		dbDriver = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.driver");
-		dbHost = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.url");
-		dbUser = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.user");
-		dbPwd = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.pw");
-
-		//load the mysql driver
-		Class.forName(dbDriver);
-
-		//create and initialize the connection pool
-		connectionPool = new GenericObjectPool(null);
-		connectionPool.setMaxIdle(15);	 							// Maximum idle connections.
-		connectionPool.setMinIdle(10);								// Minimum idle connections.
-		connectionPool.setMinEvictableIdleTimeMillis(30000); 		//Evictor runs every 30 secs.
-		connectionPool.setTimeBetweenEvictionRunsMillis(10000);
-		connectionPool.setTestOnBorrow(true);						// Check if the connection is still valid.
-		ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(dbHost, dbUser, dbPwd);
-		PoolableConnectionFactory factory = new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
-		factory.setValidationQuery("select 1");
-		PoolingDriver driver = new PoolingDriver();
-		driver.registerPool("tacos-pool",connectionPool);       
-
-		//add some connections
-		for(int i = 0; i < 15; i++) 
-			connectionPool.addObject();
-		
-		//inform the listeners
-		connected = true;
-		firePropertyChangeEvent(DB_CONNECTION_OPENED, null, connectionPool.getNumIdle());
+		try
+		{
+			//load the settings from the file
+			dbDriver = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.driver");
+			dbHost = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.url");
+			dbUser = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.user");
+			dbPwd = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.pw");
+	
+			//load the mysql driver
+			Class.forName(dbDriver);
+	
+			//create and initialize the connection pool
+			connectionPool = new GenericObjectPool(null);
+			connectionPool.setMaxIdle(15);	 							// Maximum idle connections.
+			connectionPool.setMinIdle(10);								// Minimum idle connections.
+			connectionPool.setMinEvictableIdleTimeMillis(30000); 		//Evictor runs every 30 secs.
+			connectionPool.setTimeBetweenEvictionRunsMillis(10000);
+			connectionPool.setTestOnBorrow(true);						// Check if the connection is still valid.
+			ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(dbHost, dbUser, dbPwd);
+			PoolableConnectionFactory factory = new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
+			factory.setValidationQuery("select 1");
+			PoolingDriver driver = new PoolingDriver();
+			driver.registerPool("tacos-pool",connectionPool);       
+	
+			//add some connections
+			for(int i = 0; i < 15; i++) 
+				connectionPool.addObject();
+			
+			//inform the listeners
+			isConnected = true;
+			firePropertyChangeEvent(DB_CONNECTION_OPENED, null, connectionPool.getNumIdle());
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			DbWrapper.log("SQL-Error while trying to get the connection: "+e.getMessage(), Status.ERROR,e.getCause());
+			isConnected = false;
+			firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, e);
+		}
 	}
 
 	/**
 	 * Closes the database connection and cleans up the connection pool
 	 */
-	private void closeDatabaseConnection() throws Exception
+	public void closeDatabaseConnection()
 	{
-		//clear and shutdown the pool
-		connectionPool.clear();
-		connectionPool.close();
-		connected = false;
-		//notify the listeners
-		firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, null);
+		try
+		{
+			//clear and shutdown the pool
+			connectionPool.clear();
+			connectionPool.close();
+			//notify the listeners
+			isConnected = false;
+			firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, null);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			DbWrapper.log("SQL-Error while trying to close the connection: "+e.getMessage(), Status.ERROR,e.getCause());
+			firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, e);
+		}
 	}
 	
 	/**
@@ -215,6 +229,6 @@ public class DbWrapper extends Plugin
 	 */
 	public boolean isConnected() 
 	{
-		return connected;
+		return isConnected;
 	}
 }

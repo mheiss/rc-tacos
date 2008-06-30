@@ -1,9 +1,9 @@
-package at.rc.tacos.server.model;
+package at.rc.tacos.model;
 
 import java.util.Calendar;
 
-import at.rc.tacos.model.Login;
-import at.rc.tacos.server.net.MySocket;
+import at.rc.tacos.net.MySocket;
+
 
 /**
  * This represents a connected user 
