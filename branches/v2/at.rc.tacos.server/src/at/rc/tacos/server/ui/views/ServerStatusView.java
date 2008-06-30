@@ -3,12 +3,15 @@ package at.rc.tacos.server.ui.views;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.ColumnLayout;
@@ -20,30 +23,35 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.core.db.DbWrapper;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.server.db.jobs.DbConnectionJob;
+import at.rc.tacos.server.db.jobs.DbShutdownJob;
 import at.rc.tacos.server.ui.utils.CustomUI;
+import at.rc.tacos.server.ui.utils.MyViewUtils;
 
 public class ServerStatusView extends ViewPart implements PropertyChangeListener
 {
 	public static final String ID = "at.rc.tacos.server.ui.views.ServerStatusView";
-	
+
 	//the properties of the view
 	private FormToolkit toolkit;
 	private Form form;
-	
+
 	//the components for the network status
+	private Section netSection;
 	private CLabel netStatusImage;
 	private CLabel netStatusText;
 	private CLabel netStatusDesc;
 	//the hyperlinks to control the status
 	private ImageHyperlink netControlLink;
-	
+
 	//the components for the database status
+	private Section dbSection;
 	private CLabel dbStatusImage;
-	private Label dbStatusText;
-	private Label dbStatusDesc;
+	private CLabel dbStatusText;
+	private CLabel dbStatusDesc;
 	//the hyperlinks to control the status
 	private ImageHyperlink dbControlLink;
-	
+
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize it.
 	 */
@@ -55,39 +63,46 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 		form.setText("Serverstatus");
 		form.setImage(ImageFactory.getInstance().getRegisteredImage("server.view.net"));
 		toolkit.decorateFormHeading(form);
-		
+
 		//the client
 		Composite body = form.getBody();
-		
 		ColumnLayout layout = new ColumnLayout();
 		layout.maxNumColumns = 2;
 		layout.minNumColumns = 2;
-		
 		body.setLayout(layout);
-		
+
 		//setup the status section for the server
 		createServerSection(body);
 		//setup the staut section for the database
 		createDatabaseSection(body);
-		
+
 		//add listeners to be notified uppon changes
 		DbWrapper.getDefault().addPropertyChangeListener(this);
 	}
-	
+
+	/**
+	 * Dispose the view and cleanup the used listeners
+	 */
+	@Override
+	public void dispose() 
+	{
+		DbWrapper.getDefault().removePropertyChangeListener(this);
+	}
+
 	/**
 	 * Creates the server status section
 	 */
 	private void createServerSection(Composite parent)
 	{
 		//create the section
-		Section section = toolkit.createSection(parent,Section.TITLE_BAR | Section.EXPANDED);
-		section.setText("Server-Netzwerkverbindung");	
-		
+		netSection = toolkit.createSection(parent,Section.TITLE_BAR | Section.EXPANDED);
+		netSection.setText("Server-Netzwerkverbindung");	
+
 		//the client of the section
-		Composite client = toolkit.createComposite(section);
+		Composite client = toolkit.createComposite(netSection);
 		client.setLayout(new GridLayout(2,false));
 		client.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		//the status image in the left column
 		netStatusImage = new CLabel(client,SWT.NONE);
 		netStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.net.down"));
@@ -122,46 +137,40 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 				netControlLink.setForeground(CustomUI.BLUE_COLOR);
 			}
 		});
-		
-		
+
 		//the image should span vertical 3 columns
 		GridData gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
 		gd.verticalSpan = 3;
 		netStatusImage.setLayoutData(gd);
-		
-		//some free space for the controls
-		gd = new GridData(GridData.FILL_BOTH);
-		gd.verticalIndent = 20;
-		netControlLink.setLayoutData(gd);
-		
+
 		//set the client for the section
-		section.setClient(client);
+		netSection.setClient(client);
 	}
-	
+
 	/**
 	 * Creates the database status section
 	 */
 	private void createDatabaseSection(Composite parent)
 	{
 		//create the section
-		Section section = toolkit.createSection(parent, Section.TITLE_BAR | Section.EXPANDED);
-		section.setText("Server-Datenbankverbindung");
-		
+		dbSection = toolkit.createSection(parent, Section.TITLE_BAR | Section.EXPANDED);
+		dbSection.setText("Server-Datenbankverbindung");
+
 		//the client of the section
-		Composite client = toolkit.createComposite(section);
+		Composite client = toolkit.createComposite(dbSection);
 		client.setLayout(new GridLayout(2,false));
 		client.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		//the status image in the left column
 		dbStatusImage = new CLabel(client,SWT.NONE);
 		dbStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.db.down"));
 		//the status text
-		dbStatusText = new Label(client,SWT.NONE);
+		dbStatusText = new CLabel(client,SWT.NONE);
 		dbStatusText.setText("Datenbank gestoppt");
 		dbStatusText.setForeground(CustomUI.RED_COLOR);
 		dbStatusText.setFont(CustomUI.HEADLINE_FONT);
 		//the description below
-		dbStatusDesc = new Label(client,SWT.NONE);
+		dbStatusDesc = new CLabel(client,SWT.NONE);
 		dbStatusDesc.setText("Keine Verbindung zur Datenbank");
 		dbStatusDesc.setFont(CustomUI.DESCRIPTION_FONT);
 		//the start controll
@@ -174,11 +183,48 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 		dbControlLink.addHyperlinkListener(new HyperlinkAdapter()
 		{
 			@Override
-			public void linkActivated(HyperlinkEvent e) {
-				//initialize the database plugin
-				DbWrapper.getDefault().getConnection();
+			public void linkActivated(HyperlinkEvent e) {	
+
+				//check if we have a connection to the server
+				if(DbWrapper.getDefault().isConnected())
+				{
+					DbShutdownJob dbJob = new DbShutdownJob();
+					dbJob.setUser(true);
+					dbJob.schedule();
+					dbJob.addJobChangeListener(new JobChangeAdapter()
+					{
+						@Override
+						public void done(IJobChangeEvent event) {						
+							//check if the status is ok
+							if(event.getResult() == Status.OK_STATUS)
+								return;
+
+							//show a error message 
+							MyViewUtils.showError("Verbindungsfehler","Die Datenbankverbindung konnte nicht getrennt werden");
+						}
+					});
+				}
+				else
+				{
+					//create the connection job
+					DbConnectionJob dbJob = new DbConnectionJob();
+					dbJob.setUser(true);
+					dbJob.schedule();
+					dbJob.addJobChangeListener(new JobChangeAdapter()
+					{
+						@Override
+						public void done(IJobChangeEvent event) {						
+							//check if the status is ok
+							if(event.getResult() == Status.OK_STATUS)
+								return;
+
+							//show a error message 
+							MyViewUtils.showError("Verbindungsfehler","Es konnte keine Verbindung zur Datenbank hergestellt werden");
+						}
+					});
+				}
 			}
-			
+
 			@Override
 			public void linkEntered(HyperlinkEvent e) {
 				dbControlLink.setForeground(CustomUI.HOVER_COLOR);
@@ -188,21 +234,16 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 				dbControlLink.setForeground(CustomUI.BLUE_COLOR);
 			}
 		});
-		
+
 		//the image should span vertical 3 columns
 		GridData gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
 		gd.verticalSpan = 3;
 		dbStatusImage.setLayoutData(gd);
-		
-		//some free space for the controls
-		gd = new GridData(GridData.FILL_BOTH);
-		gd.verticalIndent = 20;
-		dbControlLink.setLayoutData(gd);
-		
+
 		//set the client for the section
-		section.setClient(client);
+		dbSection.setClient(client);
 	}
-	
+
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
@@ -214,27 +255,43 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 	@Override
 	public void propertyChange(PropertyChangeEvent event) 
 	{
-		String eventName = event.getPropertyName();
-		
-		//check if the database connection is established
-		if(DbWrapper.DB_CONNECTION_OPENED.equalsIgnoreCase(eventName))
+		final String eventName = event.getPropertyName();
+		//the updates should run in the ui thread
+		Display.getDefault().syncExec(new Runnable()
 		{
-			//update the database status 
-			dbStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.db.up"));
-			dbStatusText.setText("Datenbankverbindung aufgebaut");
-			dbStatusDesc.setText("Verbindung zur Datenbank wurde erfolgreich hergestellt");
-			//change the control link
-			dbControlLink.setText("Datenbankverbindung stoppen");
-			dbControlLink.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.pause"));
-		}
-		if(DbWrapper.DB_CONNECTION_CLOSED.equalsIgnoreCase(eventName))
-		{
-			dbStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.db.down"));
-			dbStatusText.setText("Datenbank gestoppt");
-			dbStatusDesc.setText("Keine Verbindung zur Datenbank");
-			//change the control link
-			dbControlLink.setText("Datenbankverbindung herstellen");
-			dbControlLink.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.start"));
-		}
+			@Override
+			public void run() {
+				//check if the database connection is established
+				if(DbWrapper.DB_CONNECTION_OPENED.equalsIgnoreCase(eventName))
+				{
+					//update the database status 
+					dbStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.db.up"));
+					dbStatusText.setText("Datenbankverbindung aufgebaut");
+					dbStatusDesc.setText("Verbindung zur Datenbank wurde erfolgreich hergestellt");
+					//change the control link
+					dbControlLink.setText("Datenbankverbindung stoppen");
+					dbControlLink.setForeground(CustomUI.BLUE_COLOR);
+					dbControlLink.setEnabled(true);
+					dbControlLink.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.pause"));
+					//update the view
+					dbSection.layout(true);
+				}
+				if(DbWrapper.DB_CONNECTION_CLOSED.equalsIgnoreCase(eventName))
+				{
+					dbStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.db.down"));
+					dbStatusText.setText("Datenbank gestoppt");
+					dbStatusDesc.setText("Keine Verbindung zur Datenbank");
+					//change the control link
+					dbControlLink.setText("Datenbankverbindung herstellen");
+					dbControlLink.setForeground(CustomUI.BLUE_COLOR);
+					dbControlLink.setEnabled(true);
+					dbControlLink.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.start"));
+					//update the view
+					dbSection.layout(true);
+				}
+			}
+		});
 	}
+
+
 }

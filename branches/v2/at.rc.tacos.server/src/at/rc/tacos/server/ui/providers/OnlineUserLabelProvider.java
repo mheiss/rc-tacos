@@ -5,7 +5,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.server.model.OnlineUser;
+import at.rc.tacos.model.OnlineUser;
 import at.rc.tacos.util.MyUtils;
 
 /**

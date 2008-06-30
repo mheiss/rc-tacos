@@ -77,10 +77,10 @@ public class Activator extends AbstractUIPlugin
 	 * @param message the message
 	 * @param type the type of the message
 	 */
-	public void log(String message,int type)
+	public static void log(String message,int type)
 	{
 		Status status = new Status(type,Activator.PLUGIN_ID,message); 
-		getLog().log(status);
+		Activator.getDefault().getLog().log(status);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public class Activator extends AbstractUIPlugin
 		}
 		catch(NullPointerException npe)
 		{
-			Activator.getDefault().log("Please check the images and the properties file", IStatus.ERROR);
+			Activator.log("Please check the images and the properties file", IStatus.ERROR);
 			System.out.println("Failed to load the images files");
 			System.out.println("Please check the images and the properties file");
 			npe.printStackTrace();

@@ -1,14 +1,13 @@
-package at.rc.tacos.server.modelManager;
+package at.rc.tacos.server.net;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.swt.widgets.Display;
-
-import at.rc.tacos.server.model.OnlineUser;
-import at.rc.tacos.server.net.MySocket;
+import at.rc.tacos.factory.PropertyManager;
+import at.rc.tacos.model.OnlineUser;
+import at.rc.tacos.net.MySocket;
 
 /**
  * This class manages the available and connected users
@@ -46,15 +45,8 @@ public class OnlineUserManager extends PropertyManager
 	 */
 	public void addUser(final OnlineUser onlineUser)
 	{
-		Display.getDefault().syncExec(new Runnable ()    
-		{
-			public void run ()       
-			{
-				onlineUsers.add(onlineUser);
-				firePropertyChange("ONLINEUSER_ADDED", null, onlineUser); 
-
-			}
-		});
+		onlineUsers.add(onlineUser);
+		firePropertyChange("ONLINEUSER_ADDED", null, onlineUser); 
 	}
 
 	/**
@@ -80,17 +72,9 @@ public class OnlineUserManager extends PropertyManager
 		//check if the user is removed
 		if(!removed)
 			return;
-		
-		//update the view
-		Display.getDefault().syncExec(new Runnable ()    
-		{
-			public void run ()       
-			{
-				onlineUsers.add(onlineUser);
-				firePropertyChange("ONLINEUSER_REMOVED", onlineUser, null); 
 
-			}
-		});
+		onlineUsers.add(onlineUser);
+		firePropertyChange("ONLINEUSER_REMOVED", onlineUser, null); 
 	}
 
 	//GETTERS
@@ -111,7 +95,7 @@ public class OnlineUserManager extends PropertyManager
 		//nothing found
 		return null;
 	}
-	
+
 	/**
 	 * Returns the syncronized list of user object
 	 * @return the list of users

@@ -7,8 +7,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import at.rc.tacos.server.Activator;
-import at.rc.tacos.server.net.MySocket;
+import at.rc.tacos.net.MySocket;
+import at.rc.tacos.server.net.NetWrapper;
 
 /**
  * This job is responsible for the interaction with the connected clients.
@@ -56,7 +56,7 @@ public class ClientListenJob extends Job
 		}
 		catch(Exception e)
 		{
-			Activator.getDefault().log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR);
+			NetWrapper.log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR,e.getCause());
 			return Status.CANCEL_STATUS;
 		}
 		finally

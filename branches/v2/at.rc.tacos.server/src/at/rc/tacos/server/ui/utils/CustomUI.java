@@ -17,6 +17,7 @@ public class CustomUI
 	public final static Font LINK_FONT = new Font(null,"Verdana",8,SWT.UNDERLINE_SINGLE);
 	
 	//define common colors
+	public final static Color GRAY_COLOR = new Color(null,new RGB(128,128,128));
 	public final static Color RED_COLOR = new Color(null,new RGB(193,39,30));
 	public final static Color BLUE_COLOR = new Color(null,new RGB(0,0,255));
 	public final static Color HOVER_COLOR = new Color(null,new RGB(128,128,255));

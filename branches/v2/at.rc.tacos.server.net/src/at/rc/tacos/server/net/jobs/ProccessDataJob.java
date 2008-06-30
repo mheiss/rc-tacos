@@ -16,12 +16,12 @@ import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
+import at.rc.tacos.model.OnlineUser;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.SystemMessage;
-import at.rc.tacos.server.Activator;
-import at.rc.tacos.server.model.OnlineUser;
-import at.rc.tacos.server.modelManager.OnlineUserManager;
-import at.rc.tacos.server.net.MySocket;
+import at.rc.tacos.net.MySocket;
+import at.rc.tacos.server.net.NetWrapper;
+import at.rc.tacos.server.net.OnlineUserManager;
 
 /**
  * This job is responsible for the process of the received data
@@ -76,7 +76,7 @@ public class ProccessDataJob extends Job
 			//the client is not authenticated, no login request -> not accepted
 			if(!authenticated &! Login.ID.equalsIgnoreCase(contentType))
 			{
-				Activator.getDefault().log("Client not authenticated, login first",IStatus.WARNING);
+				NetWrapper.log("Client not authenticated, login first",IStatus.WARNING,null);
 				SystemMessage system = new SystemMessage("Client not authenticated, login first",SystemMessage.TYPE_INFO);
 				//setup the message info container
 				AbstractMessageInfo info = new AbstractMessageInfo();
@@ -93,7 +93,7 @@ public class ProccessDataJob extends Job
 			//do we have a handler?
 			if(listener == null)
 			{
-				Activator.getDefault().log("No listener found for the message type: "+contentType,Status.ERROR);
+				NetWrapper.log("No listener found for the message type: "+contentType,Status.ERROR,null);
 				//notify the sender
 				SystemMessage system = new SystemMessage("No listener found for the message type: "+contentType,SystemMessage.TYPE_INFO);
 				//setup the message info container
@@ -123,7 +123,7 @@ public class ProccessDataJob extends Job
 				if(loginResult.isLoggedIn())
 				{
 					user.setLogin(loginResult);
-					Activator.getDefault().log("Login successful for user "+loginResult.getUsername(),Status.OK);
+					NetWrapper.log("Login successful for user "+loginResult.getUsername(),Status.OK,null);
 				}
 				//send back
 				info.setMessage(loginResult);
@@ -139,7 +139,7 @@ public class ProccessDataJob extends Job
 				//remove the client form the list of authenticated clients if successfully
 				if(logoutResult.isLoggedOut())
 				{
-					Activator.getDefault().log("Logout from user: "+logoutResult.getUsername()+". Have a nice day :)",Status.OK);
+					NetWrapper.log("Logout from user: "+logoutResult.getUsername()+". Have a nice day :)",Status.OK,null);
 					//send back to the client
 					info.setMessage(logoutResult);
 					//send back to the client
@@ -205,7 +205,7 @@ public class ProccessDataJob extends Job
 		//catch all sql errors that occured during the operations with the listener classes
 		catch(SQLException sqle)
 		{
-			Activator.getDefault().log("SQL-Error: "+sqle.getMessage(),Status.ERROR);
+			NetWrapper.log("SQL-Error: "+sqle.getMessage(),Status.ERROR,sqle.getCause());
 			SystemMessage system = new SystemMessage("SQL-Error:"+sqle.getMessage(),SystemMessage.TYPE_ERROR);
 			//setup the message info container
 			AbstractMessageInfo info = new AbstractMessageInfo();
@@ -221,7 +221,7 @@ public class ProccessDataJob extends Job
 		//catch all error during the operations with the dao listener classes
 		catch(DAOException daoe)
 		{
-			Activator.getDefault().log("DAO-Exception: "+daoe.getMessage(),Status.ERROR);
+			NetWrapper.log("DAO-Exception: "+daoe.getMessage(),Status.ERROR,daoe.getCause());
 			SystemMessage system = new SystemMessage(daoe.getMessage(),SystemMessage.TYPE_ERROR);
 			//setup the message info container
 			AbstractMessageInfo info = new AbstractMessageInfo();
@@ -237,8 +237,8 @@ public class ProccessDataJob extends Job
 		catch(Exception e)
 		{
 			//log the error
-			Activator.getDefault().log("Cannot decode the message send by the client: "+user.getLogin().getUsername(),Status.ERROR);
-			Activator.getDefault().log("The request will be aborted:"+e.getMessage(),Status.ERROR);
+			NetWrapper.log("Cannot decode the message send by the client: "+user.getLogin().getUsername(),Status.ERROR,e.getCause());
+			NetWrapper.log("The request will be aborted:"+e.getMessage(),Status.ERROR,e.getCause());
 
 			//create a new fatal error message
 			SystemMessage system = new SystemMessage("Ausnahmefehler: Die zuletzt gesendete Anforderung kann nicht bearbeitet werden",SystemMessage.TYPE_ERROR);

@@ -3,7 +3,7 @@ package at.rc.tacos.server.ui.providers;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import at.rc.tacos.server.modelManager.OnlineUserManager;
+import at.rc.tacos.server.net.OnlineUserManager;
 
 /**
  * The content provider that provides the data for the view

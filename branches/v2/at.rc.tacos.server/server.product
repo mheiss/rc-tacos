@@ -43,10 +43,11 @@ Visit http://www.eclipse.org/platform
    </vm>
 
    <plugins>
-      <plugin id="at.rc.tacos.core.db"/>
       <plugin id="at.rc.tacos.libs"/>
       <plugin id="at.rc.tacos.model"/>
       <plugin id="at.rc.tacos.server"/>
+      <plugin id="at.rc.tacos.server.db"/>
+      <plugin id="at.rc.tacos.server.net"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="javax.servlet"/>
       <plugin id="org.eclipse.core.commands"/>

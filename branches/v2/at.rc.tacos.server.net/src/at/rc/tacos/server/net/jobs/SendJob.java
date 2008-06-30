@@ -12,10 +12,11 @@ import org.eclipse.core.runtime.jobs.Job;
 
 import at.rc.tacos.common.AbstractMessageInfo;
 import at.rc.tacos.factory.XMLFactory;
-import at.rc.tacos.server.Activator;
-import at.rc.tacos.server.model.OnlineUser;
-import at.rc.tacos.server.modelManager.OnlineUserManager;
-import at.rc.tacos.server.net.MySocket;
+import at.rc.tacos.model.OnlineUser;
+import at.rc.tacos.net.MySocket;
+import at.rc.tacos.server.net.NetWrapper;
+import at.rc.tacos.server.net.OnlineUserManager;
+
 
 /**
  * This job is responsible for sending and brodcasting messages to the clients
@@ -88,7 +89,7 @@ public class SendJob extends Job
 		}
 		catch(IOException ioe)
 		{
-			Activator.getDefault().log("Failed to send the message to the client:"+ioe.getMessage(), Status.ERROR);
+			NetWrapper.log("Failed to send the message to the client:"+ioe.getMessage(), Status.ERROR,ioe.getCause());
 		}
 		finally
 		{

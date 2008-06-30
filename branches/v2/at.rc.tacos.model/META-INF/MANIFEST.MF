@@ -12,6 +12,7 @@ Export-Package: at.rc.tacos.codec;uses:="javax.xml.stream,at.rc.tacos.common",
    org.eclipse.swt.graphics,
    at.rc.tacos.codec",
  at.rc.tacos.model;uses:="at.rc.tacos.common",
+ at.rc.tacos.net,
  at.rc.tacos.util
 Require-Bundle: org.eclipse.swt,
  org.eclipse.jface,
