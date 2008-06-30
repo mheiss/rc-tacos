@@ -59,6 +59,7 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		String street;
 		String city;
+		String patient = "";
 
 		switch(columnIndex)
 		{
@@ -95,8 +96,10 @@ public class PrebookingViewLabelProvider implements ITableLabelProvider, ITableC
 				else return "";
 			case COLUMN_FROM:return transport.getFromStreet() +" / " +transport.getFromCity();
 			case COLUMN_PATIENT:
+				if(transport.isAssistantPerson())
+					patient = "+";
 				if(transport.getPatient() != null)
-					return transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
+					return patient + " " +transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
 				else return "";
 			case COLUMN_TO:
 				if(transport.getToStreet() == null)
