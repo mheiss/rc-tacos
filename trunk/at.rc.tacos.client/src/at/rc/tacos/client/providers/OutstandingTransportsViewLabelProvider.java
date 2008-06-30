@@ -61,26 +61,34 @@ public class OutstandingTransportsViewLabelProvider implements ITableLabelProvid
 		String street;
 		String city;
 		String patient = "";
+		 String beforePriority = "";
+	        String afterPriority = "";
+	        String priority = "";
+	        
+	        if(transport.isBlueLight1())
+	        	beforePriority = "!";
+	        if(transport.isBlueLightToGoal())
+	        	afterPriority = "!";
 
 		switch(columnIndex)
 		{
 		case COLUMN_LOCK: return null;
 		case COLUMN_PRIORITY:
-			if(transport.getTransportPriority().equalsIgnoreCase("A"))
-        		return "1";
+        	if(transport.getTransportPriority().equalsIgnoreCase("A"))
+        		priority = "1";
         	else if(transport.getTransportPriority().equalsIgnoreCase("B"))
-        		return "2";
+        		priority = "2";
         	else if(transport.getTransportPriority().equalsIgnoreCase("C"))
-        		return "3";
+        		priority = "3";
         	else if(transport.getTransportPriority().equalsIgnoreCase("D"))
-        		return "4";
+        		priority = "4";
         	else if(transport.getTransportPriority().equalsIgnoreCase("E"))
-        		return "5";
+        		priority = "5";
         	else if(transport.getTransportPriority().equalsIgnoreCase("F"))
-        		return "6";
+        		priority = "6";
         	else if(transport.getTransportPriority().equalsIgnoreCase("G"))
-        		return "7";
-        	else return null;
+        		priority = "7";
+        	return beforePriority +priority +afterPriority;
 			
 		case COLUMN_RESP_STATION:
 			if(transport.getPlanedLocation().getLocationName().equalsIgnoreCase("Kapfenberg"))
