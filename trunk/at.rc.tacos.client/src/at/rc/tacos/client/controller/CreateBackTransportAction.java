@@ -70,8 +70,8 @@ public class CreateBackTransportAction extends Action implements IProgramStatus
         	t2.setKindOfIllness(t1.getKindOfIllness());
         if(t1.getKindOfTransport() != null)
         	t2.setKindOfTransport(t1.getKindOfTransport());
-        if(t1.getCallerDetail() != null)
-            t2.setCallerDetail(t1.getCallerDetail());
+//        if(t1.getCallerDetail() != null)
+//            t2.setCallerDetail(t1.getCallerDetail());
         if(t1.getFeedback() != null)
             t2.setFeedback(t1.getFeedback());
         
