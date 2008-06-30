@@ -491,6 +491,9 @@ public class NetWrapper extends Plugin
 		{
 			try
 			{
+				//the package is send now
+				messageInfo.setTimestamp(Calendar.getInstance().getTimeInMillis());
+				
 				//get the network connection to send data
 				final MySocket client = NetSource.getInstance().getConnection();
 
@@ -514,13 +517,13 @@ public class NetWrapper extends Plugin
 				//put the message to the list of packages that are waiting for server reply
 				messageList.put(messageInfo.getSequenceId(), messageInfo);
 
-				//for all other message wait until the server sends a response
+				//wait until the server sends a response
 				while(messageList.containsKey(messageInfo.getSequenceId()))
 				{
 					monitor.beginTask("Warte auf Antwort vom Server", IProgressMonitor.UNKNOWN);
 					Thread.sleep(10);
 				}
-				//we have the response so everything
+				//everything is ok
 				return Status.OK_STATUS;
 			}
 			catch(Exception e)
@@ -572,19 +575,18 @@ public class NetWrapper extends Plugin
 					if(info == null)
 						continue;
 					monitor.subTask("Prüfe Paket Nummer:"+info.getSequenceId());
-					//the time difference between now and the send time
-					long time = Calendar.getInstance().getTimeInMillis() - info.getTimestamp();
-					int seconds = (int)(time/1000) % 60;
 					//check if the time is greater than 5 seconds and log a warning
-					if(seconds > 5)
+					if(info.getCounter() == 5)
 						logService.log("WARNING: The package #"+info.getSequenceId()  +" content: " + info.getContentType()+" not been answered by the server in time. Waiting . . .", IStatus.WARNING);
 					//show a message box to retransmitt the package
-					if(seconds > 10)
+					if(info.getCounter() == 10)
 					{
 						messageList.remove(info.getSequenceId());
 						logService.log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR);
 						logService.transferFailed(info);					
 					}
+					//increment the counter by one
+					info.setCounter(info.getCounter() +1);
 					monitor.worked(1);
 				}
 			}
