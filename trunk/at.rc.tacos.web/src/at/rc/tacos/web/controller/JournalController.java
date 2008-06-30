@@ -16,32 +16,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.support.PropertyComparator;
-import org.springframework.util.comparator.CompoundComparator;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
-import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
 import at.rc.tacos.web.container.JournalContainer;
 import at.rc.tacos.web.container.JournalContainerListContainer;
-import at.rc.tacos.web.container.RosterEntryContainer;
-import at.rc.tacos.web.container.RosterEntryContainerListContainer;
-import at.rc.tacos.web.container.TransportsToContainerListContainer;
 import at.rc.tacos.web.container.VehicleContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
  * Journal Controller.
- * @author Birgit
- * @version 1.0
- * TODO: Einträge mit falschem Datum herausfiltern
+ * @author Payer Martin
+ * @version 1.1
  */
 public class JournalController extends Controller {
 
@@ -58,27 +51,11 @@ public class JournalController extends Controller {
 	private static final String MODEL_VEHICLE_CONTAINER_NAME = "vehicleContainer";
 	
 	private static final String PARAM_RESTRICTED_DATE_NAME = "restrictedDate";
-	private static final String PARAM_RESTRICTED_DATE_NO_VALUE = "noValue";
 	private static final String MODEL_RESTRICTED_DATE_NAME = "restricted";
 	private static final String MODEL_RESTRICTED_DATE_LIST_NAME = "restrictedDateList";
-	
-	
-	private static final String MODEL_CALENDAR_DEFAULT_DATE_MILLISECONDS_NAME = "calendarDefaultDateMilliseconds";
-	private static final String MODEL_CALENDAR_RANGE_START_NAME = "calendarRangeStart";
-	private static final String MODEL_CALENDAR_RANGE_END_NAME = "calendarRangeEnd";
-	private static final int MODEL_CALENDAR_RANGE_START_OFFSET = 10;
-	private static final int MODEL_CALENDAR_RANGE_END_OFFSET = 1;
-	
-	private static final String PARAM_DATE_NAME = "date";
-	private static final String MODEL_DATE_NAME = "date";
-	private static final String MODEL_DATE_DAY_OF_YEAR_NAME = "dateDayOfYear";
-	private static final String MODEL_DATE_MONTH_NAME = "dateMonth";
-	private static final String MODEL_DATE_YEAR_NAME = "dateYear";
-	
+		
 	private static final String JOURNAL_CONTAINER_LIST_CONTAINER = "journalContainerListContainer";
 	
-	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
-	private static final String MODEL_MESSAGE_CODE_NAME = "messageCode";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
@@ -95,12 +72,9 @@ public class JournalController extends Controller {
 		params.put(PARAM_CURRENT_DATE_NAME, new Date());
 		
 		// Location
-		//param location name holen
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
-		System.out.println("paramLocationId: " +paramLocationId);
 		int locationId = 0;
 		Location location = userSession.getDefaultFormValues().getDefaultLocation();
-		//wenn param location leer ist, location null setzen, sonst locationId = paramLocationId
 		if (paramLocationId != null && !paramLocationId.equals("")) 
 		{
 			if (paramLocationId.equalsIgnoreCase(PARAM_LOCATION_NO_VALUE)) {
@@ -109,8 +83,6 @@ public class JournalController extends Controller {
 				locationId = Integer.parseInt(paramLocationId);
 			}
 		}
-		
-		//locationList enthält alle Locations
 		final List<AbstractMessage> locationList = connection.sendListingRequest(Location.ID, null);
 		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
@@ -138,11 +110,9 @@ public class JournalController extends Controller {
 			requestDate = df.parse(paramRestrictedDateId);		
 		}
 		
-		System.out.println("'''''''' requestDate: " +requestDate);
 		params.put(MODEL_RESTRICTED_DATE_NAME, requestDate);
 		
 		final String dateForServerString = formatDateForServer.format(requestDate);
-		System.out.println("############### dateForServerString: " +dateForServerString);
 		
 		final List<Date> restrictedDateList = new ArrayList<Date>();
 		restrictedDateList.add(new Date());
@@ -155,10 +125,7 @@ public class JournalController extends Controller {
 		System.out.println("paramRestrictedDateId: " +paramRestrictedDateId);
 		System.out.println("requestDate: " +requestDate);
 		System.out.println("0: " +restrictedDateList.get(0));
-		System.out.println("1: " +restrictedDateList.get(1));
-		
-		
-		//allow only requests of the dates in the date list
+		System.out.println("1: " +restrictedDateList.get(1));		
 		if((!MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(0).getTime()) &! (MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(1).getTime()))))
 		{
 			throw new IllegalArgumentException("Error: Date is not in the Datelist. Access denied.");
@@ -166,13 +133,13 @@ public class JournalController extends Controller {
 		
 		
 		// Vehicle
-		final String paramVehicleDetailId = request.getParameter(PARAM_VEHICLEDETAIL_NAME);
+		final String paramVehicleDetailName = request.getParameter(PARAM_VEHICLEDETAIL_NAME);
 		VehicleContainer vehicleContainer = null;
-		System.out.println("-- journalController, paramVehicleDetailId: " +paramVehicleDetailId);
-		String vehicleDetailName = null;
-		if (paramVehicleDetailId != null && !paramVehicleDetailId.equals("")) 
+		if (paramLocationId != null && !paramLocationId.equals("")) 
 		{
-				vehicleDetailName = paramVehicleDetailId;
+			if (paramLocationId.equalsIgnoreCase(PARAM_VEHICLEDETAIL_NO_VALUE)) {
+				vehicleContainer = null;
+			}
 		}
 		final List<AbstractMessage> abstractVehicleDetailList = connection.sendListingRequest(VehicleDetail.ID, null);
 		if (!VehicleDetail.ID.equalsIgnoreCase(connection.getContentType())) {
@@ -184,15 +151,12 @@ public class JournalController extends Controller {
 			final VehicleContainer vC = new VehicleContainer();
 			vC.setVehicleName(vehicleDetail.getVehicleName());
 			vehicleDetailList.add(vC);
-			if (vC.getVehicleName().equals(paramVehicleDetailId)) {
+			if (vC.getVehicleName().equals(paramVehicleDetailName)) {
 				vehicleContainer = vC;
 			}
 		}
 		params.put(MODEL_VEHICLEDETAIL_LIST_NAME, vehicleDetailList);
 		params.put(MODEL_VEHICLE_CONTAINER_NAME, vehicleContainer);
-		
-	
-		
 		
 		//get transports	        
 		QueryFilter filter = new QueryFilter();
@@ -275,9 +239,7 @@ public class JournalController extends Controller {
 		// Group
 		final JournalContainerListContainer journalContainerListContainer = new JournalContainerListContainer(journalList);	
 		final Comparator<Location> locationComparator = new PropertyComparator("locationName", true, true);
-//		final Comparator<TransportsToContainer> transportToContainerComparator = new PropertyComparator("streetFrom", true, true);
 		journalContainerListContainer.groupJournalBy(locationComparator);
-//		transportsToContainerListContainer.sortTransportsTo(transportToContainerComparator);
 		params.put(JOURNAL_CONTAINER_LIST_CONTAINER, journalContainerListContainer);
 		
 		return params;
