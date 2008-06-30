@@ -171,7 +171,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		//create the tab items for the disposition view
 		final TableColumn prioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		prioritaetDisponierteTransporte.setToolTipText("1 (NEF), 2 (BD1), 3 (Transport), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
-		prioritaetDisponierteTransporte.setWidth(20);
+		prioritaetDisponierteTransporte.setWidth(26);
 		prioritaetDisponierteTransporte.setText("Pr");
 
 		final TableColumn transportNummerDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -240,7 +240,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 		
 		final TableColumn anmerkungUnderwayTransporte = new TableColumn(tableDisp, SWT.NONE);
-		anmerkungUnderwayTransporte.setWidth(318);
+		anmerkungUnderwayTransporte.setWidth(312);
 		anmerkungUnderwayTransporte.setText("Anmerkung");
 		
 		/** make columns sort able*/
