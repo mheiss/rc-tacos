@@ -38,13 +38,13 @@ Developed by Birgit Thek and Heiß Michael.
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
    <plugins>
       <plugin id="at.rc.tacos.client"/>
       <plugin id="at.rc.tacos.core.net"/>
+      <plugin id="at.rc.tacos.libs"/>
       <plugin id="at.rc.tacos.model"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.ibm.icu36.data.update" fragment="true"/>
