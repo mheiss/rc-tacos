@@ -212,6 +212,19 @@ public class ClientHandler implements INetListener
 			//send back to the client
 			server.sendMessage(session,info);  
 		}
+		catch(Exception e)
+		{
+			logger.error("Exception: "+e.getMessage(),e);
+			SystemMessage system = new SystemMessage(e.toString(),SystemMessage.TYPE_ERROR);
+			//setup the message info container
+			AbstractMessageInfo info = new AbstractMessageInfo();
+			info.setSequenceId(sequenceId);
+			info.setContentType(SystemMessage.ID);
+			info.setQueryString(IModelActions.SYSTEM);
+			info.setMessage(system);
+			//send back to the client
+			server.sendMessage(session,info);  
+		}
 	}
 
 	@Override
