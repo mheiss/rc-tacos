@@ -86,9 +86,9 @@ public interface UserLoginDAO
 	 * Checks the username and the password hash agains the database.
 	 * @param username the username 
 	 * @param pwdHash the password to authenticate
-	 * @return <code>UserDAOMemory.LOGIN_SUCCESSFULL</code> if the authentication was successfull
-	 *  	   <code>UserDAOMemory.LOGIN_FAILED</code> if password or username was wrong
-	 *		   <code>UserDAOMemory.LOGIN_DENIED</code> if the user is locked
+	 * @return <code>UserDAO.LOGIN_SUCCESSFULL</code> if the authentication was successfull
+	 *  	   <code>UserDAO.LOGIN_FAILED</code> if password or username was wrong
+	 *		   <code>UserDAO.LOGIN_DENIED</code> if the user is locked
 	 */
     public int checkLogin(String username,String pwdHash, boolean isWebClient) throws SQLException;
 
