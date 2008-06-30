@@ -32,13 +32,6 @@ public class UserLoginDAOSQL implements UserLoginDAO
 		Connection connection = source.getConnection();
 		try
 		{
-			StaffMember member;
-			
-			member = staffDAO.getStaffMemberByUsername(username);
-			List<Competence> competences = new ArrayList<Competence>();
-			
-			competences = competenceDAO.listCompetencesOfStaffMember(member.getStaffMemberId());
-			
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("check.UserLogin"));
 			query.setString(1, username);
 			query.setString(2, PasswordEncryption.getInstance().encrypt(pwdHash));
@@ -46,25 +39,30 @@ public class UserLoginDAOSQL implements UserLoginDAO
 			//asser we have a result set
 			if(rs.next())
 			{
+				//check if the member is locked
+				if(rs.getBoolean("locked") == true)
+					return UserLoginDAO.LOGIN_DENIED;
+								
+				//get the staff member by the username
+				StaffMember member = staffDAO.getStaffMemberByUsername(username);
+				List<Competence> competences = new ArrayList<Competence>();
+				competences = competenceDAO.listCompetencesOfStaffMember(member.getStaffMemberId());
+				
 				boolean isDispo = false;
 				for(Competence comp : competences)
 				{
 					if (comp.getCompetenceName().equalsIgnoreCase("Leitstellendisponent"))
 						isDispo = true;
 				}
+				
+				//check if the member is allowed to login
 				if(!isDispo && !isWebClient)
-				{
-					//the user has not the competence 'Leitstellendisponen' so login to the ls client is not allowed
-					return -3;
-				}
-				if (rs.getString("username") != null &! rs.getBoolean("locked"))
-					return 0;
-				else if(rs.getString("username") == null)
-					return -1;
-				else if(rs.getBoolean("locked") == true)
-					return -2;
+					return UserLoginDAO.LOGIN_NO_DISPONENT;
+				
+				//everything if ok
+				return UserLoginDAO.LOGIN_SUCCESSFULL;
 			}
-			return -1;
+			return UserLoginDAO.LOGIN_FAILED;
 		}
 		finally
 		{
