@@ -1,6 +1,5 @@
 package at.rc.tacos.web.controller;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,12 +50,11 @@ public class JournalController extends Controller {
 	private static final String MODEL_VEHICLE_CONTAINER_NAME = "vehicleContainer";
 	
 	private static final String PARAM_RESTRICTED_DATE_NAME = "restrictedDate";
-	private static final String MODEL_RESTRICTED_DATE_NAME = "restricted";
+	private static final String MODEL_RESTRICTED_DATE_NAME = "restrictedDate";
 	private static final String MODEL_RESTRICTED_DATE_LIST_NAME = "restrictedDateList";
 		
 	private static final String JOURNAL_CONTAINER_LIST_CONTAINER = "journalContainerListContainer";
-	
-	
+		
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
 			HttpServletResponse response, ServletContext context)
@@ -66,8 +64,7 @@ public class JournalController extends Controller {
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
-		
-		
+				
 		// Put current date to parameter to parameter list
 		params.put(PARAM_CURRENT_DATE_NAME, new Date());
 		
@@ -105,11 +102,9 @@ public class JournalController extends Controller {
 		
 		Date requestDate = new Date();
 		
-		if(paramRestrictedDateId != null && !paramRestrictedDateId.equals(""))
-		{
+		if(paramRestrictedDateId != null && !paramRestrictedDateId.equals("")) {
 			requestDate = df.parse(paramRestrictedDateId);		
 		}
-		
 		params.put(MODEL_RESTRICTED_DATE_NAME, requestDate);
 		
 		final String dateForServerString = formatDateForServer.format(requestDate);
@@ -121,17 +116,11 @@ public class JournalController extends Controller {
 		Date yesterday = cal.getTime();
 		restrictedDateList.add(yesterday);
 		params.put(MODEL_RESTRICTED_DATE_LIST_NAME, restrictedDateList);
-		
-		System.out.println("paramRestrictedDateId: " +paramRestrictedDateId);
-		System.out.println("requestDate: " +requestDate);
-		System.out.println("0: " +restrictedDateList.get(0));
-		System.out.println("1: " +restrictedDateList.get(1));		
-		if((!MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(0).getTime()) &! (MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(1).getTime()))))
-		{
+			
+		if((!MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(0).getTime()) &! (MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(1).getTime())))) {
 			throw new IllegalArgumentException("Error: Date is not in the Datelist. Access denied.");
 		}	
-		
-		
+				
 		// Vehicle
 		final String paramVehicleDetailName = request.getParameter(PARAM_VEHICLEDETAIL_NAME);
 		VehicleContainer vehicleContainer = null;

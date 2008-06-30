@@ -67,9 +67,8 @@ public class LoginController extends Controller {
 					params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
 				}
 			} else {
-				params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
-				// If error on server is resolved line 72 shoulkd replace line 70
-				// throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+				//params.put("loginError", "Sie haben einen falschen Benutzernamen oder ein falsches Passwort eingegeben.");
+				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 			}
 		
 		return params;
