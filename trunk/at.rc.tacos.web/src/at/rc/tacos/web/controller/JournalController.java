@@ -93,9 +93,8 @@ public class JournalController extends Controller {
 		}
 		params.put(MODEL_LOCATION_NAME, location);
 		
-		//set the possible dates
+		//Date
 		final String paramRestrictedDateId = request.getParameter(PARAM_RESTRICTED_DATE_NAME);
-		System.out.println("......paramRestrictedDateId: " +paramRestrictedDateId);
 		
 		final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yy");
 		final SimpleDateFormat formatDateForServer = new SimpleDateFormat("dd-MM-yyyy");
@@ -105,21 +104,29 @@ public class JournalController extends Controller {
 		if(paramRestrictedDateId != null && !paramRestrictedDateId.equals("")) {
 			requestDate = df.parse(paramRestrictedDateId);		
 		}
-		params.put(MODEL_RESTRICTED_DATE_NAME, requestDate);
 		
 		final String dateForServerString = formatDateForServer.format(requestDate);
 		
 		final List<Date> restrictedDateList = new ArrayList<Date>();
-		restrictedDateList.add(new Date());
 		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		restrictedDateList.add(cal.getTime());
 		cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) -1);
-		Date yesterday = cal.getTime();
-		restrictedDateList.add(yesterday);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		restrictedDateList.add(cal.getTime());
 		params.put(MODEL_RESTRICTED_DATE_LIST_NAME, restrictedDateList);
 			
 		if((!MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(0).getTime()) &! (MyUtils.isEqualDate(requestDate.getTime(), restrictedDateList.get(1).getTime())))) {
 			throw new IllegalArgumentException("Error: Date is not in the Datelist. Access denied.");
-		}	
+		}
+		
+		params.put(MODEL_RESTRICTED_DATE_NAME, requestDate);
 				
 		// Vehicle
 		final String paramVehicleDetailName = request.getParameter(PARAM_VEHICLEDETAIL_NAME);
@@ -161,7 +168,7 @@ public class JournalController extends Controller {
 		if (!connection.getContentType().equalsIgnoreCase(Transport.ID)) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}	
-		//TODO
+		
 		final ArrayList<JournalContainer> journalList = new ArrayList<JournalContainer>();
 		for (final Iterator<AbstractMessage> itJournalList = abstractJournalList.iterator(); itJournalList.hasNext();) {
 			final Transport transport = (Transport)itJournalList.next();
