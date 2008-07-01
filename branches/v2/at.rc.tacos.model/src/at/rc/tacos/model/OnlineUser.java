@@ -25,6 +25,30 @@ public class OnlineUser
 		this.socket = socket;
 		this.onlineSince = Calendar.getInstance().getTimeInMillis();
 	}
+	
+	//HELPER METHODS
+	/**
+	 * Returns whether or not the user is authenticated 
+	 * @return
+	 */
+	public boolean isAuthenticated()
+	{
+		return login == null ? false : true;
+	}
+	
+	/**
+	 * Returns the username of the connected user
+	 * @return
+	 */
+	public String getUsername()
+	{
+		//check if the client is authenticated
+		if(!isAuthenticated())
+			return "Anonymouse";
+		
+		//return the username
+		return login.getUsername();
+	}
 
 	//GETTERS AND SETTERS
 	public long getOnlineSince() {

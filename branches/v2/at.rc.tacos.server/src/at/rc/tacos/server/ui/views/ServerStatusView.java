@@ -25,6 +25,9 @@ import at.rc.tacos.core.db.DbWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.server.db.jobs.DbConnectionJob;
 import at.rc.tacos.server.db.jobs.DbShutdownJob;
+import at.rc.tacos.server.net.NetWrapper;
+import at.rc.tacos.server.net.jobs.NetConnectionJob;
+import at.rc.tacos.server.net.jobs.NetShutdownJob;
 import at.rc.tacos.server.ui.utils.CustomUI;
 import at.rc.tacos.server.ui.utils.MyViewUtils;
 
@@ -78,6 +81,7 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 
 		//add listeners to be notified uppon changes
 		DbWrapper.getDefault().addPropertyChangeListener(this);
+		NetWrapper.getDefault().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -87,6 +91,7 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 	public void dispose() 
 	{
 		DbWrapper.getDefault().removePropertyChangeListener(this);
+		NetWrapper.getDefault().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -108,7 +113,7 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 		netStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.net.down"));
 		//the status text
 		netStatusText = new CLabel(client,SWT.NONE);
-		netStatusText.setText("Server gestoppt");
+		netStatusText.setText("Netzwerk gestoppt");
 		netStatusText.setForeground(CustomUI.RED_COLOR);
 		netStatusText.setFont(CustomUI.HEADLINE_FONT);
 		//the description below
@@ -126,7 +131,45 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 		{
 			@Override
 			public void linkActivated(HyperlinkEvent e) {
-				//start the job to open a connection to the database
+				//check if we are listening to connections
+				if(NetWrapper.getDefault().isListening())
+				{
+					NetShutdownJob shutdownJob = new NetShutdownJob();
+					shutdownJob.setUser(true);
+					shutdownJob.schedule();
+					shutdownJob.addJobChangeListener(new JobChangeAdapter()
+					{
+						@Override
+						public void done(IJobChangeEvent event) 
+						{
+							//check the result
+							if(event.getResult() == Status.OK_STATUS)
+								return;
+							
+							//show a error message 
+							MyViewUtils.showError("Verbindungsfehler","Die Netzwerkverbindungen konnte nicht beendet werden");
+						}
+					});
+				}
+				else
+				{
+					NetConnectionJob netConnectionJob = new NetConnectionJob();
+					netConnectionJob.setUser(true);
+					netConnectionJob.schedule();
+					netConnectionJob.addJobChangeListener(new JobChangeAdapter()
+					{
+						@Override
+						public void done(IJobChangeEvent event) 
+						{
+							//check the result
+							if(event.getResult() == Status.OK_STATUS)
+								return;
+							
+							//show a error message 
+							MyViewUtils.showError("Verbindungsfehler","Die Netzwerkverbindungen konnten nicht erfolgreich gestartet werden");
+						}
+					});
+				}
 			}
 			@Override
 			public void linkEntered(HyperlinkEvent e) {
@@ -289,9 +332,36 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 					//update the view
 					dbSection.layout(true);
 				}
+				//check if the database connection is established
+				if(NetWrapper.NET_CONNECTION_OPENED.equalsIgnoreCase(eventName))
+				{
+					//update the database status 
+					netStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.net.up"));
+					netStatusText.setText("Serververbindung aufgebaut");
+					netStatusDesc.setText("Der Server ist bereit um auf Clientanfragen abzuarbeiten");
+					//change the control link
+					netControlLink.setText("Server stoppen");
+					netControlLink.setForeground(CustomUI.BLUE_COLOR);
+					netControlLink.setEnabled(true);
+					netControlLink.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.pause"));
+					//update the view
+					netSection.layout(true);
+				}
+				if(NetWrapper.NET_CONNECTION_CLOSED.equalsIgnoreCase(eventName))
+				{
+					netStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.net.down"));
+					netStatusText.setText("Netzwerk gestoppt");
+					netStatusDesc.setText("Keine Verbindungen zum Server möglich");
+					//change the control link
+					netControlLink.setText("Server starten");
+					netControlLink.setForeground(CustomUI.BLUE_COLOR);
+					netControlLink.setEnabled(true);
+					netControlLink.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.start"));
+					//update the view
+					netSection.layout(true);
+				}
+				
 			}
 		});
 	}
-
-
 }

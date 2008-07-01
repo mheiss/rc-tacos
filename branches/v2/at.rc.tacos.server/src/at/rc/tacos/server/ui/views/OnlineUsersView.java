@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.forms.widgets.Form;
@@ -14,6 +15,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.server.net.OnlineUserManager;
 import at.rc.tacos.server.ui.providers.OnlineUserContentProvider;
 import at.rc.tacos.server.ui.providers.OnlineUserLabelProvider;
 
@@ -36,37 +38,54 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 		form.setText("Aktive Benutzer");
 		form.setImage(ImageFactory.getInstance().getRegisteredImage("server.view.users"));
 		toolkit.decorateFormHeading(form);
-		
+
 		//layout the body
 		final Composite body = form.getBody();
 		body.setLayout(new FillLayout());
-		
+
 		//setup the table viewer
 		viewer = new TableViewer(body, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(new OnlineUserContentProvider());
 		viewer.setLabelProvider(new OnlineUserLabelProvider());
 		viewer.setInput(getViewSite());
 		viewer.getTable().setLinesVisible(true);
-		
+
 		//create the table for the roster entries 
 		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 
-		final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
-		lockColumn.setToolTipText("Der Typ des Verbundenen Benutzers");
-		lockColumn.setWidth(24);
-		lockColumn.setText("");
+		final TableColumn columnType = new TableColumn(table, SWT.NONE);
+		columnType.setToolTipText("Der Typ des Verbundenen Benutzers");
+		columnType.setWidth(24);
+		columnType.setText("");
 
-		final TableColumn columnStandby = new TableColumn(table, SWT.NONE);
-		columnStandby.setToolTipText("Der Benutzername");
-		columnStandby.setWidth(150);
-		columnStandby.setText("Benutzername");
+		final TableColumn columnUser = new TableColumn(table, SWT.NONE);
+		columnUser.setToolTipText("Der Benutzername");
+		columnUser.setWidth(150);
+		columnUser.setText("Benutzername");
 
-		final TableColumn columnNotes = new TableColumn(table, SWT.NONE);
-		columnNotes.setToolTipText("Online seit");
-		columnNotes.setWidth(120);
-		columnNotes.setText("Online seit");
+		final TableColumn columnOnline = new TableColumn(table, SWT.NONE);
+		columnOnline.setToolTipText("Online seit");
+		columnOnline.setWidth(120);
+		columnOnline.setText("Online seit");
+
+		final TableColumn columnIP = new TableColumn(table, SWT.NONE);
+		columnIP.setToolTipText("Die Client IP-Addresse mit der der Benutzer mit dem Server verbunden ist");
+		columnIP.setWidth(120);
+		columnIP.setText("IP");
+
+		//listen to new users
+		OnlineUserManager.getInstance().addPropertyChangeListener(this);
+	}
+
+	/**
+	 * Called when the view is destroyed
+	 */
+	@Override
+	public void dispose()
+	{
+		OnlineUserManager.getInstance().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -80,15 +99,21 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 	 * Listen to updates
 	 */
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
+	public void propertyChange(PropertyChangeEvent event) 
 	{
-		final String event = evt.getPropertyName();
-		
-		//check the event
-		if("ONLINEUSER_ADDED".equalsIgnoreCase(event) || "ONLINEUSER_REMOVED".equalsIgnoreCase(event))
+		final String eventName = event.getPropertyName();
+		//the updates should run in the ui thread
+		Display.getDefault().syncExec(new Runnable()
 		{
-			//just update the view
-			viewer.refresh(true);
-		}
+			@Override
+			public void run() 
+			{
+				//just update the view
+				if("ONLINEUSER_ADDED".equalsIgnoreCase(eventName) || "ONLINEUSER_REMOVED".equalsIgnoreCase(eventName))
+				{
+					viewer.refresh(true);
+				}
+			}
+		});
 	}
 }
