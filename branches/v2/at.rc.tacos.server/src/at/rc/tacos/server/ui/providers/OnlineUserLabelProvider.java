@@ -18,6 +18,7 @@ public class OnlineUserLabelProvider implements ITableLabelProvider
 	public static final int COLUMN_IMAGE = 0;
 	public static final int COLUMN_USER = 1;
 	public static final int COLUMN_ONLINE = 2;
+	public static final int COLUMN_IP = 3;
 
 	@Override
 	public Image getColumnImage(Object object, int column) 
@@ -28,6 +29,10 @@ public class OnlineUserLabelProvider implements ITableLabelProvider
 		{
 		//show a image depending on the connection type
 		case COLUMN_IMAGE: 
+			//check if the user is authenticated
+			if(!user.isAuthenticated())
+				return null;
+			//return the web image or the control center image
 			if(user.getLogin().isWebClient())
 				return ImageFactory.getInstance().getRegisteredImage("server.user.userControlCenterOnline");
 			else
@@ -44,8 +49,9 @@ public class OnlineUserLabelProvider implements ITableLabelProvider
 		OnlineUser user = (OnlineUser)object;
 		switch(column)
 		{
-		case COLUMN_USER: return user.getLogin().getUsername();
-		case COLUMN_ONLINE: return MyUtils.timestampToString(user.getOnlineSince(), MyUtils.dateFormat);
+		case COLUMN_USER: return user.getUsername();
+		case COLUMN_ONLINE: return MyUtils.timestampToString(user.getOnlineSince(), MyUtils.timeAndDateFormat);
+		case COLUMN_IP: return user.getSocket().getInetAddress().getCanonicalHostName();
 		}
 		//no column matched
 		return null;

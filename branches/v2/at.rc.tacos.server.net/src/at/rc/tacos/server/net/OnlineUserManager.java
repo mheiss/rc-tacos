@@ -73,7 +73,15 @@ public class OnlineUserManager extends PropertyManager
 		if(!removed)
 			return;
 
-		onlineUsers.add(onlineUser);
+		firePropertyChange("ONLINEUSER_REMOVED", onlineUser, null); 
+	}
+	
+	/**
+	 * This method will ONLY inform the listeners that the online user has been remvoved.
+	 * The caller is responsible for removint the object
+	 */
+	public void userRemoved(final OnlineUser onlineUser)
+	{
 		firePropertyChange("ONLINEUSER_REMOVED", onlineUser, null); 
 	}
 

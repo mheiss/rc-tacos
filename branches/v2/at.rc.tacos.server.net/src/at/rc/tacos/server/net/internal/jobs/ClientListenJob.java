@@ -1,4 +1,4 @@
-package at.rc.tacos.server.net.jobs;
+package at.rc.tacos.server.net.internal.jobs;
 
 import java.io.BufferedReader;
 import java.net.SocketTimeoutException;
@@ -24,8 +24,14 @@ public class ClientListenJob extends Job
 	 */
 	public ClientListenJob(MySocket socket)
 	{
-		super("ClientListenJob");
+		super(NetWrapper.CLIENT_LISTEN_JOB);
 		this.socket = socket;
+	}
+	
+	@Override
+	public boolean belongsTo(Object family) 
+	{
+		return NetWrapper.CLIENT_LISTEN_JOB.equals(family); 
 	}
 
 	@Override
@@ -34,7 +40,7 @@ public class ClientListenJob extends Job
 		try
 		{
 			monitor.beginTask("Listening to new data on the network", IProgressMonitor.UNKNOWN);
-			
+					
 			//wait for new data on the input stream
 			BufferedReader in = socket.getBufferedInputStream();
 			String newData = in.readLine();

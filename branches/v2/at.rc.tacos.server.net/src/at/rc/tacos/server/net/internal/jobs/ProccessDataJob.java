@@ -1,4 +1,4 @@
-package at.rc.tacos.server.net.jobs;
+package at.rc.tacos.server.net.internal.jobs;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -32,7 +32,6 @@ public class ProccessDataJob extends Job
 	//properties
 	private String xmlString;
 	private MySocket socket;
-	private boolean authenticated;
 
 	/**
 	 * Default class constructor for the data to process
@@ -40,20 +39,22 @@ public class ProccessDataJob extends Job
 	 */
 	public ProccessDataJob(MySocket socket,String xmlString)
 	{
-		super("ProccessDataJob");
+		super(NetWrapper.PROCESS_DATA_JOB);
 		this.socket = socket;
 		this.xmlString = xmlString;
-		this.authenticated = false;
+	}
+	
+	@Override
+	public boolean belongsTo(Object family) 
+	{
+		return NetWrapper.PROCESS_DATA_JOB.equals(family); 
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) 
 	{
 		//get the online user by the socket
-		OnlineUser user = OnlineUserManager.getInstance().getUserBySocket(socket);
-		if(user != null)
-			authenticated = true;
-		
+		OnlineUser user = OnlineUserManager.getInstance().getUserBySocket(socket);		
 		try
 		{
 			monitor.beginTask("Processing the received data stream",IProgressMonitor.UNKNOWN);
@@ -72,9 +73,11 @@ public class ProccessDataJob extends Job
 
 			final ServerListenerFactory factory = ServerListenerFactory.getInstance();
 			final IServerListener listener = factory.getListener(contentType);
+			
+			System.out.println("gg");
 
 			//the client is not authenticated, no login request -> not accepted
-			if(!authenticated &! Login.ID.equalsIgnoreCase(contentType))
+			if(!user.isAuthenticated() &! Login.ID.equalsIgnoreCase(contentType))
 			{
 				NetWrapper.log("Client not authenticated, login first",IStatus.WARNING,null);
 				SystemMessage system = new SystemMessage("Client not authenticated, login first",SystemMessage.TYPE_INFO);
@@ -89,6 +92,9 @@ public class ProccessDataJob extends Job
 				sendJob.schedule();
 				return Status.OK_STATUS;
 			}
+			
+			System.out.println(listener);
+
 
 			//do we have a handler?
 			if(listener == null)
@@ -237,7 +243,7 @@ public class ProccessDataJob extends Job
 		catch(Exception e)
 		{
 			//log the error
-			NetWrapper.log("Cannot decode the message send by the client: "+user.getLogin().getUsername(),Status.ERROR,e.getCause());
+			NetWrapper.log("Cannot decode the message send by the client: "+user.getUsername(),Status.ERROR,e.getCause());
 			NetWrapper.log("The request will be aborted:"+e.getMessage(),Status.ERROR,e.getCause());
 
 			//create a new fatal error message

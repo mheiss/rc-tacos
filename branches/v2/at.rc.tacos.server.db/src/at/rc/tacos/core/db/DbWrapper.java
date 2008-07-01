@@ -45,6 +45,7 @@ public class DbWrapper extends Plugin
 	//the fired properties
 	public final static String DB_CONNECTION_OPENED = "dbConnectionOpened";
 	public final static String DB_CONNECTION_CLOSED = "dbConnectionClosed";
+	public final static String DB_CONNECTION_ERROR = "dbConnectionError";
 	
 	/**
 	 * The constructor
@@ -99,15 +100,13 @@ public class DbWrapper extends Plugin
 		catch (SQLException sqle)
 		{
 			DbWrapper.log("SQL-Error while trying to get the connection: "+sqle.getMessage(), Status.ERROR,sqle.getCause());
-			firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, sqle);
+			firePropertyChangeEvent(DB_CONNECTION_ERROR, null, sqle);
 		}
 		catch(Exception e)
 		{
 			DbWrapper.log("Failed to get a vaild driver instance: "+e.getMessage(),Status.ERROR,e.getCause());
-			firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, e);
+			firePropertyChangeEvent(DB_CONNECTION_ERROR, null, e);
 		}
-		//no connection to the database
-		isConnected = false;
 		return null;
 	}
 
@@ -175,7 +174,7 @@ public class DbWrapper extends Plugin
 		{
 			e.printStackTrace();
 			DbWrapper.log("SQL-Error while trying to close the connection: "+e.getMessage(), Status.ERROR,e.getCause());
-			firePropertyChangeEvent(DB_CONNECTION_CLOSED, null, e);
+			firePropertyChangeEvent(DB_CONNECTION_ERROR, null, e);
 		}
 	}
 	

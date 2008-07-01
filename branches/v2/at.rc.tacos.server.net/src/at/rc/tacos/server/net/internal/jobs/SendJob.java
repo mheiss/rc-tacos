@@ -1,4 +1,4 @@
-package at.rc.tacos.server.net.jobs;
+package at.rc.tacos.server.net.internal.jobs;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,11 +34,17 @@ public class SendJob extends Job
 	 */
 	public SendJob(AbstractMessageInfo messageInfo,MySocket socket,boolean brodcast)
 	{
-		super("SendJob");
+		super(NetWrapper.SEND_DATA_JOB);
 		//store the needed params
 		this.messageInfo = messageInfo;
 		this.socket = socket;
 		this.brodcast = brodcast;
+	}
+	
+	@Override
+	public boolean belongsTo(Object family) 
+	{
+		return NetWrapper.SEND_DATA_JOB.equals(family); 
 	}
 
 	@Override
@@ -47,10 +53,9 @@ public class SendJob extends Job
 		try
 		{
 			//the connected user
-			String userId = "unknown";
+			
 			OnlineUser onlineUser = OnlineUserManager.getInstance().getUserBySocket(socket);
-			if(onlineUser != null && onlineUser.getLogin() != null)
-				userId = onlineUser.getLogin().getUsername();
+			String userId = onlineUser.getUsername();
 			
 			monitor.beginTask("Sending the message :"+messageInfo.getContentType() + " to the client "+userId, IProgressMonitor.UNKNOWN);
 			XMLFactory factory = new XMLFactory();
