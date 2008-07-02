@@ -77,7 +77,6 @@ public class MessageHandler
 			if(loginResult.isLoggedIn())
 			{
 				ServerContext.getCurrentInstance().getSession().setLogin(loginResult);
-				//TODO: user is authenticated, so show in the frontend
 				NetWrapper.log("Login successful for user "+loginResult.getUsername(),Status.OK,null);
 			}
 			//add the response to the list of messages
