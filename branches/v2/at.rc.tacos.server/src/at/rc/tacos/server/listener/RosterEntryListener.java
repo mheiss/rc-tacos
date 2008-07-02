@@ -9,11 +9,12 @@ import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.RosterDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.server.db.dao.RosterDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
 import at.rc.tacos.util.MyUtils;
 
 /**
@@ -23,15 +24,16 @@ import at.rc.tacos.util.MyUtils;
 public class RosterEntryListener extends ServerListenerAdapter
 {
 	private RosterDAO rosterDao = DaoFactory.SQL.createRosterEntryDAO();
-	
+
 	//the logger
 	private static Logger logger = Logger.getLogger(RosterEntryListener.class);
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
 
 	/**
 	 * Add a roster entry
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
 	{
 		RosterEntry entry = (RosterEntry)addObject;
 		int id = rosterDao.addRosterEntry(entry);
@@ -50,7 +52,7 @@ public class RosterEntryListener extends ServerListenerAdapter
 	{
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		List<RosterEntry> rosterList;
-		
+
 		//if there is no filter -> request all
 		if(queryFilter == null || queryFilter.getFilterList().isEmpty())
 		{
@@ -64,9 +66,9 @@ public class RosterEntryListener extends ServerListenerAdapter
 			calEnd.setTimeInMillis(dateStart);
 			calEnd.add(Calendar.DAY_OF_MONTH, 1);
 			long dateEnd = calEnd.getTimeInMillis();
-			
+
 			int filterLocationId = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
-			
+
 			rosterList = rosterDao.listRosterEntriesByDateAndLocation(dateStart, dateEnd, filterLocationId);
 			if(rosterList == null)
 			{
@@ -150,7 +152,7 @@ public class RosterEntryListener extends ServerListenerAdapter
 	 * Update a roster entry
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
 	{
 		RosterEntry entry = (RosterEntry)updateObject;
 		if(!rosterDao.updateRosterEntry(entry))

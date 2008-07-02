@@ -25,7 +25,7 @@ public class LockListener extends ServerListenerAdapter
 	 * The request to add a new lock to the managed list of locks
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject,String username) throws DAOException, SQLException 
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
 	{
 		Lock lock = (Lock)addObject;
 		logger.debug("New lock request: "+lock);

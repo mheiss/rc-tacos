@@ -3,10 +3,7 @@
 <!-- DO NOT TOUCH THIS -->
 <!-- ============================================================== -->
 <project name="Project-TACOS" basedir=".">
-	<property file="src/at/rc/tacos/core/db/config/db.properties" />
-	<property name="src.dir" value="src" />
-	<property name="src.tests.dir" value="src-test" />
-	<property name="reports.tests.dir" value="tests" />
+	<property file="src/at/rc/tacos/server/db/config/db.properties" />
 	<property name="sql.dir" value="sql" />
 	<property name="db.createtable_beta2.script" value="${sql.dir}/createtable_beta2.sql" />
 	<property name="db.droptables_beta1.script" value="${sql.dir}/droptables_beta1.sql" />
@@ -34,45 +31,14 @@
 	<property name="db.sql_create_f_address.script" value="${sql.dir}/sql_create_f_address.sql" />
 	<property name="db.sql_create_f_periods.script" value="${sql.dir}/sql_create_f_periods.sql" />
 	<property name="db.sql_create_f_link.script" value="${sql.dir}/sql_create_f_link.sql" />
+	<property name="db.sql_create_f_server.script" value="${sql.dir}/sql_create_f_server.sql" />
 	
 	<!-- The classpath including the needed libraries for the database -->
 	<path id="master-classpath">
-		<fileset dir="lib">
+		<fileset dir="../at.rc.tacos.libs/libs">
 			<include name="*.jar" />
 		</fileset>
 	</path>
-
-	<!-- ============================================================== -->
-	<!-- MYSQL Database Tasks                                           -->
-	<!-- ============================================================== -->
-
-	<target name="mysql_createTables">
-		<echo message="CREATE TABLES USING: ${db.driver} ${db.url}" />
-		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.createTables.script}">
-			<classpath refid="master-classpath" />
-		</sql>
-	</target>
-
-	<target name="mysql_insertData">
-		<echo message="INSERT DATA USING: ${db.driver} ${db.url}" />
-		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.insertData.script}" print="true">
-			<classpath refid="master-classpath" />
-		</sql>
-	</target>
-
-	<target name="mysql_clearData">
-		<echo message="CLEAR DATA USING: ${db.driver} ${db.url}" />
-		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.clearData.script}">
-			<classpath refid="master-classpath" />
-		</sql>
-	</target>
-
-	<target name="mysql_dropTables">
-		<echo message="DROP TABLES USING: ${db.driver} ${db.url}" />
-		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.dropTables.script}">
-			<classpath refid="master-classpath" />
-		</sql>
-	</target>
 	
 	<!-- ============================================================== -->
 	<!-- SQL Database Tasks                                             -->
@@ -102,6 +68,8 @@
 		<antcall target="sql_create_f_staffmember" />
 		<antcall target="sql_create_f_transport" />
 		<antcall target="sql_create_f_vehicle" />
+		<antcall target="sql_create_f_link" />
+		<antcall target="sql_create_f_server" />
 	</target>
 
 	<target name="sql_cleardata">
@@ -254,6 +222,13 @@
 	<target name="sql_create_f_link">
 		<echo message="CREATE FUNCTION - link - USING: ${db.driver} ${db.url}" />
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_link.script}">
+			<classpath refid="master-classpath" />
+		</sql>
+	</target>
+	
+	<target name="sql_create_f_server">
+		<echo message="CREATE FUNCTION - server - USING: ${db.driver} ${db.url}" />
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.pw}" src="${db.sql_create_f_server.script}">
 			<classpath refid="master-classpath" />
 		</sql>
 	</target>

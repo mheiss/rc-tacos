@@ -8,11 +8,12 @@ import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.ServiceTypeDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.ServiceType;
+import at.rc.tacos.server.db.dao.ServiceTypeDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
 
 public class ServiceTypeListener extends ServerListenerAdapter
 {
@@ -20,9 +21,10 @@ public class ServiceTypeListener extends ServerListenerAdapter
 	private ServiceTypeDAO serviceDao = DaoFactory.SQL.createServiceTypeDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(ServiceTypeListener.class);
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
 
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
 	{
 		ServiceType serviceType = (ServiceType)addObject;
 		int id = serviceDao.addServiceType(serviceType);
@@ -60,7 +62,7 @@ public class ServiceTypeListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
 	{
 		ServiceType serviceType = (ServiceType)updateObject;
 		if(!serviceDao.updateServiceType(serviceType))

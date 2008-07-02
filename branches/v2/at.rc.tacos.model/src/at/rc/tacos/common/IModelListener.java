@@ -66,7 +66,7 @@ public interface IModelListener
      * Nofification that the message could not be transmitted
  	 * @param info the message that was not transmitted
      */
-    public void transferFailed(AbstractMessageInfo info);
+    public void transferFailed(Message info);
     
     /**
      * Logs the message on the client

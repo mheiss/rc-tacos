@@ -8,11 +8,12 @@ import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.AddressDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Address;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.server.db.dao.AddressDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
 
 public class AddressListener extends ServerListenerAdapter
 {
@@ -20,9 +21,11 @@ public class AddressListener extends ServerListenerAdapter
 	private AddressDAO addressDao = DaoFactory.SQL.createAddressDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(AddressListener.class);
+	//the user
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
 
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException 
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
 	{
 		Address newAddress = (Address)addObject;
 		//add to the database
@@ -65,7 +68,7 @@ public class AddressListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException, SQLException 
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException, SQLException 
 	{
 		Address address = (Address)updateObject;
 		if(!addressDao.updateAddress(address))

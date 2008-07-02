@@ -63,11 +63,21 @@ public class MySocket extends Socket
 	 */
 	public void cleanup() throws IOException
 	{
-		close();
-		//assert valid
+		//close the input stream
 		if(in != null)
+		{
+			shutdownInput();
 			in.close();
+			in = null;
+		}
+		//close the output stream
 		if(out != null)
+		{
+			shutdownOutput();
 			out.close();
+		}
+		//close the socket
+		if(!isClosed())
+			close();
 	}
 }

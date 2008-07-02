@@ -8,11 +8,12 @@ import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.PeriodsDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.Period;
 import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.server.db.dao.PeriodsDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
 
 public class PeriodListener extends ServerListenerAdapter
 {
@@ -20,9 +21,10 @@ public class PeriodListener extends ServerListenerAdapter
 	private PeriodsDAO periodsDao = DaoFactory.SQL.createPeriodsDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(PeriodListener.class);
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
 
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException 
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
 	{
 		Period newPeriod = (Period)addObject;
 		//add to the database
@@ -65,7 +67,7 @@ public class PeriodListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException, SQLException 
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException, SQLException 
 	{
 		Period period = (Period)updateObject;
 		if(!periodsDao.updatePeriod(period))

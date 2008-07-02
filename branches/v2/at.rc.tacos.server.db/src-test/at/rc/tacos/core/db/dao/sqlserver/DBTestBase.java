@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
-import at.rc.tacos.core.db.DbWrapper;
+import at.rc.tacos.server.db.DbWrapper;
 
 /**
  * Base class to privode common methods for the test classes

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Export-Package: at.rc.tacos.core.db;uses:="org.eclipse.core.runtime,org.osgi.framework",
- at.rc.tacos.core.db.dao;uses:="at.rc.tacos.model",
- at.rc.tacos.core.db.dao.factory;uses:="at.rc.tacos.core.db.dao",
+Export-Package: at.rc.tacos.server.db;uses:="org.eclipse.core.runtime,org.osgi.framework",
+ at.rc.tacos.server.db.dao;uses:="at.rc.tacos.model",
+ at.rc.tacos.server.db.dao.factory;uses:="at.rc.tacos.core.db.dao",
  at.rc.tacos.server.db.jobs
 Require-Bundle: org.eclipse.core.runtime,
  at.rc.tacos.model,
@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-Version: 1.0.0
 Bundle-Name: Database Plug-in
-Bundle-Activator: at.rc.tacos.core.db.DbWrapper
+Bundle-Activator: at.rc.tacos.server.db.DbWrapper
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: at.rc.tacos.server.db;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

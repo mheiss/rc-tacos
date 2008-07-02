@@ -21,8 +21,8 @@ import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.core.db.DbWrapper;
 import at.rc.tacos.factory.ImageFactory;
+import at.rc.tacos.server.db.DbWrapper;
 import at.rc.tacos.server.db.jobs.DbConnectionJob;
 import at.rc.tacos.server.db.jobs.DbShutdownJob;
 import at.rc.tacos.server.net.NetWrapper;

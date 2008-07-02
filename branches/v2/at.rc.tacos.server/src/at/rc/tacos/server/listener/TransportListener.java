@@ -9,11 +9,12 @@ import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.TransportDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.Transport;
+import at.rc.tacos.server.db.dao.TransportDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
 import at.rc.tacos.util.MyUtils;
 
 /**
@@ -25,12 +26,13 @@ public class TransportListener extends ServerListenerAdapter
 	private TransportDAO transportDao = DaoFactory.SQL.createTransportDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(TransportListener.class);
-
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
+	
 	/**
 	 * Add a transport
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
 	{
 		Transport transport = (Transport)addObject;
 		int id = transportDao.addTransport(transport);
@@ -311,7 +313,7 @@ public class TransportListener extends ServerListenerAdapter
 	 *  Update a transport
 	 */
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username)  throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject)  throws DAOException,SQLException
 	{
 		Transport transport = (Transport)updateObject;
 		//generate a transport id if we do not have one

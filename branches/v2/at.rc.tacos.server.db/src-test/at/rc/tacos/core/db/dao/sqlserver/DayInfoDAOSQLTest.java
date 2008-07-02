@@ -8,15 +8,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.rc.tacos.core.db.dao.CompetenceDAO;
-import at.rc.tacos.core.db.dao.DayInfoDAO;
-import at.rc.tacos.core.db.dao.JobDAO;
-import at.rc.tacos.core.db.dao.LocationDAO;
-import at.rc.tacos.core.db.dao.MobilePhoneDAO;
-import at.rc.tacos.core.db.dao.StaffMemberDAO;
-import at.rc.tacos.core.db.dao.UserLoginDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.*;
+import at.rc.tacos.server.db.dao.CompetenceDAO;
+import at.rc.tacos.server.db.dao.DayInfoDAO;
+import at.rc.tacos.server.db.dao.JobDAO;
+import at.rc.tacos.server.db.dao.LocationDAO;
+import at.rc.tacos.server.db.dao.MobilePhoneDAO;
+import at.rc.tacos.server.db.dao.StaffMemberDAO;
+import at.rc.tacos.server.db.dao.UserLoginDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
 import at.rc.tacos.util.MyUtils;
 
 public class DayInfoDAOSQLTest extends DBTestBase

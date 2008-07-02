@@ -8,12 +8,14 @@ import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.UserLoginDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
 import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.server.db.dao.UserLoginDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
+import at.rc.tacos.server.net.manager.SessionManager;
 
 public class AuthenticationListener extends ServerListenerAdapter
 {
@@ -21,9 +23,11 @@ public class AuthenticationListener extends ServerListenerAdapter
 	private UserLoginDAO userDao = DaoFactory.SQL.createUserDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(AuthenticationListener.class);
+	//the user
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
 
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException 
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException 
 	{
 		Login login = (Login)addObject;
 		if(!userDao.addLogin(login))
@@ -59,7 +63,7 @@ public class AuthenticationListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException 
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException 
 	{
 		Login updateLogin = (Login)updateObject;		
 		//check if we have a different password
@@ -103,6 +107,11 @@ public class AuthenticationListener extends ServerListenerAdapter
 			//login was successfully
 			login.setWebClient(isWebClient);
 			login.setLoggedIn(true);
+			
+			//update the current server context
+			ServerContext.getCurrentInstance().getSession().setLogin(login);
+			SessionManager.getInstance().updateSession(ServerContext.getCurrentInstance().getSession());
+			
 			return login;
 		}
 		else if(loginResult == UserLoginDAO.LOGIN_FAILED)

@@ -9,11 +9,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.rc.tacos.core.db.dao.LocationDAO;
-import at.rc.tacos.core.db.dao.MobilePhoneDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.MobilePhoneDetail;
+import at.rc.tacos.server.db.dao.LocationDAO;
+import at.rc.tacos.server.db.dao.MobilePhoneDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
 
 public class LocationDAOSQLTest extends DBTestBase
 {

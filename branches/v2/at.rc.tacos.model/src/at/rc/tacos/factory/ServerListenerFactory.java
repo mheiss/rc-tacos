@@ -1,11 +1,12 @@
 package at.rc.tacos.factory;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
 import at.rc.tacos.common.IServerListener;
 
 /**
- * This class handles the listener classes for client request
+ * <p> <strong>ServerListenerFactory</strong> holds the references to the listener classes.
  * @author Michael
  */
 public class ServerListenerFactory
@@ -13,14 +14,14 @@ public class ServerListenerFactory
     //the shared instance
     private static ServerListenerFactory instance;
     //the listener classes
-    private HashMap<String, IServerListener> serverListeners;
+    private HashMap<String, Class<?>> serverListeners;
     
     /**
      * Default private class constructor
      */
     private ServerListenerFactory()
     {
-        serverListeners = new HashMap<String, IServerListener>();
+       serverListeners = new HashMap<String, Class<?>>();
     }
     
     /**
@@ -36,12 +37,11 @@ public class ServerListenerFactory
     
     /**
      * Registers a listener class for the given message identification string.<br>
-     * The listener will only be informed about updates on this message id.<br>
      * There can only be one listener for one event.
      * @param id the purpose to register the listener
-     * @param listener the listener to add
+     * @param listener the listener class to register
      */
-    public void registerModelListener(String id, IServerListener listener)
+    public void addListener(String id, Class<?> listener)
     {
         serverListeners.put(id, listener);
     }
@@ -58,26 +58,24 @@ public class ServerListenerFactory
     
     /**
      * Returns a EventListener for this type of message.<br>
-     * When no listener is registered the method 
-     * will return null.
+     * When no listener is registered the method will return null.
      * @param id the message to get the listener
      * @return the listener for this type of message
      */
-    public IServerListener getListener(String id)
+    public IServerListener buildListener(String id) throws Exception
     {
-        return serverListeners.get(id);
-    }
-    
-    /**
-     * Convenience method to check if this type of
-     * message has a listener or not.
-     * @param id the message to check for listeners
-     * @return true if a listener was found, otherwise false
-     */
-    public boolean hasEventListeners(String id)
-    {
-        if (serverListeners.containsKey(id))
-            return true;
-        return false;
+    	//the class loader params
+    	Class<?>[] classParm = null;
+    	Object[] objectParm = null;
+    	
+		//get the class for this entry
+    	Class<?> cl= serverListeners.get(id);
+    	if(cl == null)
+    		throw new ClassNotFoundException("The class for the name "+id+ " cannot be found");
+    	
+		//load and create a new instance of the class
+		Constructor<?> co = cl.getConstructor(classParm);
+    	
+		return (IServerListener)co.newInstance(objectParm);
     }
 }
