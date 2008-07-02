@@ -289,7 +289,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             if(transport.getVehicleDetail() == null)
             	return;
             
-            //TODO: abklären, wozu diese Abfrage gedacht war!
+            //TODO: abklären, wozu diese Abfrage gedacht war! --> vermutlich jetzt für alle Vehicles nötig, da das direkte Fahrzeug Zuweisen möglich ist.
 //            if(!transport.getVehicleDetail().getVehicleName().equalsIgnoreCase("NEF"))
 //            	return;
             
