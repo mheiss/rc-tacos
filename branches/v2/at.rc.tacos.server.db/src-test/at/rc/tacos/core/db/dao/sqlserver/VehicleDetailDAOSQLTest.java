@@ -11,19 +11,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.rc.tacos.core.db.dao.CompetenceDAO;
-import at.rc.tacos.core.db.dao.LocationDAO;
-import at.rc.tacos.core.db.dao.MobilePhoneDAO;
-import at.rc.tacos.core.db.dao.StaffMemberDAO;
-import at.rc.tacos.core.db.dao.UserLoginDAO;
-import at.rc.tacos.core.db.dao.VehicleDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.server.db.dao.CompetenceDAO;
+import at.rc.tacos.server.db.dao.LocationDAO;
+import at.rc.tacos.server.db.dao.MobilePhoneDAO;
+import at.rc.tacos.server.db.dao.StaffMemberDAO;
+import at.rc.tacos.server.db.dao.UserLoginDAO;
+import at.rc.tacos.server.db.dao.VehicleDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
 
 /**
  * This is a test class to test the functionality of the vehicle detail 

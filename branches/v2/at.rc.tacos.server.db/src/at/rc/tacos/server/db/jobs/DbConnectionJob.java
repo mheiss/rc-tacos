@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import at.rc.tacos.core.db.DbWrapper;
+import at.rc.tacos.server.db.DbWrapper;
 
 /**
  * This job will helpt to establish a connection to the database

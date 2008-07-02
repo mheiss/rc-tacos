@@ -29,6 +29,11 @@
             id="at.rc.tacos.server.ui.views.ServerStatusView"
             name="ServerStatusView">
       </view>
+      <view
+            class="at.rc.tacos.server.ui.views.OnlineServerView"
+            id="at.rc.tacos.server.ui.views.OnlineServerView"
+            name="OnlineServerView">
+      </view>
    </extension>
 
    <extension
@@ -51,7 +56,7 @@
          </property>
          <property
                name="startupMessageRect"
-               value="15,232,480,20">
+               value="4,210,480,20">
          </property>
          <property
                name="startupProgressRect"

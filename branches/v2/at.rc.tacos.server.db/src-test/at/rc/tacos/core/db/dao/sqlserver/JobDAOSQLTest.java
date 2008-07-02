@@ -9,9 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.rc.tacos.core.db.dao.JobDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.Job;
+import at.rc.tacos.server.db.dao.JobDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
 
 public class JobDAOSQLTest extends DBTestBase
 {

@@ -7,11 +7,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.core.db.dao.DiseaseDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.server.db.dao.DiseaseDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
 
 /**
  * Listens to request form clients to manage the disease
@@ -22,9 +23,11 @@ public class DiseaseListener extends ServerListenerAdapter
 	private DiseaseDAO diseaseDAO = DaoFactory.SQL.createDiseaseDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(DiseaseListener.class);
-
+	//the user
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
+	
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException 
+	public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException, SQLException 
 	{
 		Disease addDisease = (Disease)addObject;
 		int id = diseaseDAO.addDisease(addDisease);
@@ -58,7 +61,7 @@ public class DiseaseListener extends ServerListenerAdapter
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException, SQLException 
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException, SQLException 
 	{
 		Disease updateDisease = (Disease)updateObject;
 		if(!diseaseDAO.updateDisease(updateDisease))

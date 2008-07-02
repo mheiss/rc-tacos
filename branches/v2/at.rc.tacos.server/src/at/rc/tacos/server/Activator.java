@@ -12,7 +12,6 @@ import org.osgi.framework.BundleContext;
 
 import at.rc.tacos.codec.MessageDecoder;
 import at.rc.tacos.codec.MessageEncoder;
-import at.rc.tacos.common.IServerListener;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.factory.ServerListenerFactory;
@@ -100,7 +99,6 @@ public class Activator extends AbstractUIPlugin
 	 */
 	private void loadAndRegisterImages()
 	{
-
 		//the factory to register the images
 		ImageFactory f = ImageFactory.getInstance();
 		//open the properties file
@@ -177,11 +175,7 @@ public class Activator extends AbstractUIPlugin
 	 * Loads and registers the listener classes from the properties file
 	 */
 	private void registerModelListeners()
-	{
-		//the class loader params
-		Class<?>[] classParm = null;
-		Object[] objectParm = null;
-		
+	{		
 		//the factory to register the encoders
 		ServerListenerFactory listenerFactory = ServerListenerFactory.getInstance();
 		//open the proerties file
@@ -201,17 +195,12 @@ public class Activator extends AbstractUIPlugin
 
 				//load and create a new instance of the class
 				Class<?> cl = Class.forName(listenerClass);
-				Constructor<?> co = cl.getConstructor(classParm);
-				
-				//add the listener class
-				IServerListener listener = (IServerListener)co.newInstance(objectParm);
-				listenerFactory.registerModelListener(listenerId, listener);
+				listenerFactory.addListener(listenerId, (Class<?>)cl);
 			}
 			catch(Exception e)
 			{
 				Activator.log("Failed to load the listener for the key: "+listenerKey +" (Class not found: "+e.getMessage() +")", IStatus.ERROR);
 			}
 		}
-
 	}
 }

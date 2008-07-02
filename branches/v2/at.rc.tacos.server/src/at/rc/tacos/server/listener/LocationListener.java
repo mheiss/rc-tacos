@@ -7,20 +7,22 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.core.db.dao.LocationDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.server.db.dao.LocationDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
 
 public class LocationListener extends ServerListenerAdapter
 {
 	private LocationDAO locationDao = DaoFactory.SQL.createLocationDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(LocationListener.class);
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
 	
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
     {
         Location location = (Location)addObject;
         //add the location
@@ -54,7 +56,7 @@ public class LocationListener extends ServerListenerAdapter
     }
 
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
     {
     	Location location = (Location)updateObject;
     	if(!locationDao.updateLocation(location))

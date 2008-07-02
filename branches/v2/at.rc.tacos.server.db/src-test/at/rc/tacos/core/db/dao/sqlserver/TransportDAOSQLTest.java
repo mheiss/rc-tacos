@@ -15,15 +15,6 @@ import org.junit.Test;
 
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.core.db.dao.CallerDAO;
-import at.rc.tacos.core.db.dao.CompetenceDAO;
-import at.rc.tacos.core.db.dao.LocationDAO;
-import at.rc.tacos.core.db.dao.MobilePhoneDAO;
-import at.rc.tacos.core.db.dao.StaffMemberDAO;
-import at.rc.tacos.core.db.dao.TransportDAO;
-import at.rc.tacos.core.db.dao.UserLoginDAO;
-import at.rc.tacos.core.db.dao.VehicleDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.CallerDetail;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Disease;
@@ -34,6 +25,15 @@ import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
+import at.rc.tacos.server.db.dao.CallerDAO;
+import at.rc.tacos.server.db.dao.CompetenceDAO;
+import at.rc.tacos.server.db.dao.LocationDAO;
+import at.rc.tacos.server.db.dao.MobilePhoneDAO;
+import at.rc.tacos.server.db.dao.StaffMemberDAO;
+import at.rc.tacos.server.db.dao.TransportDAO;
+import at.rc.tacos.server.db.dao.UserLoginDAO;
+import at.rc.tacos.server.db.dao.VehicleDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
 import at.rc.tacos.util.MyUtils;
 
 public class TransportDAOSQLTest extends DBTestBase

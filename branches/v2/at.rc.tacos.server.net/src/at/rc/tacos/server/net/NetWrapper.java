@@ -2,19 +2,23 @@ package at.rc.tacos.server.net;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.ListIterator;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.BundleContext;
 
-import at.rc.tacos.model.OnlineUser;
+import at.rc.tacos.model.Session;
 import at.rc.tacos.net.MyServerSocket;
+import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.internal.jobs.ServerListenJob;
+import at.rc.tacos.server.net.internal.jobs.TSJ;
+import at.rc.tacos.server.net.manager.SessionManager;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -25,22 +29,16 @@ public class NetWrapper extends Plugin
 	public static final String PLUGIN_ID = "at.rc.tacos.server.net";
 
 	// The shared instance
-	private static NetWrapper plugin;
+	private static NetWrapper plugin;	
 
 	//the status of the server connection
 	private boolean listening;
 	private MyServerSocket serverSocket;
 
-	//the job definitions
-	public final static String CLIENT_LISTEN_JOB = "clientListenJob";
-	public final static String PROCESS_DATA_JOB = "processDataJob";
-	public final static String SEND_DATA_JOB = "sendDataJob";
-	public final static String SERVER_LISTEN_JOB = "serverListenJob";
-
 	//the listeners
 	private ArrayList<PropertyChangeListener> netListeners = new ArrayList<PropertyChangeListener>();
 
-	//the fired properties
+	//the message for the network connection status
 	public final static String NET_CONNECTION_OPENED = "netConnectionOpened";
 	public final static String NET_CONNECTION_CLOSED = "netConnectionClosed";
 	public final static String NET_CONNECTION_ERROR = "netConnectionError";
@@ -101,7 +99,7 @@ public class NetWrapper extends Plugin
 
 			//inform the viewers that the server is listening
 			listening = true;
-			firePropertyChangeEvent(NET_CONNECTION_OPENED, null, port);
+			firePropertyChangeEvent(NET_CONNECTION_OPENED, null, port);	
 		}
 		catch(Exception e)
 		{
@@ -119,46 +117,19 @@ public class NetWrapper extends Plugin
 		try
 		{			
 			//check if we have a running thread that is listening for connections
-			Job.getJobManager().cancel(SERVER_LISTEN_JOB);
-			Job jobs[] = Job.getJobManager().find(SERVER_LISTEN_JOB);
+			Job.getJobManager().cancel(TSJ.SERVER_LISTEN_JOB);
+			Job jobs[] = Job.getJobManager().find(TSJ.SERVER_LISTEN_JOB);
 			monitor.subTask("Warte auf das Ende des Server Threads");
 			for(Job job:jobs)
 				job.join();
 
-			//check if we have jobs that are proccessing data
-			monitor.subTask("Versuche alle Threads Datenverarbeitungs Threads zu beenden");
-			Job.getJobManager().cancel(PROCESS_DATA_JOB);
-			jobs = Job.getJobManager().find(PROCESS_DATA_JOB);
-			monitor.subTask("Warte auf das Ende des Datenverarbeitungs Threads");
-			for(Job job:jobs)	
-				job.join();
-
 			//check if we have jobs that are listening for client data
 			monitor.subTask("Versuche alle Client Threads zu beenden");
-			Job.getJobManager().cancel(CLIENT_LISTEN_JOB);
-			jobs = Job.getJobManager().find(CLIENT_LISTEN_JOB);
+			Job.getJobManager().cancel(TSJ.CLIENT_LISTEN_JOB);
+			jobs = Job.getJobManager().find(TSJ.CLIENT_LISTEN_JOB);
 			monitor.subTask("Warte auf das Ende der Client Jobs");
 			for(Job job:jobs)	
 				job.join();
-
-			//shut down all connections
-			monitor.subTask("Trenne alle Client Verbindungen");
-			ListIterator<OnlineUser> listIter = OnlineUserManager.getInstance().getOnlineUsers().listIterator();
-			while(listIter.hasNext())
-			{
-				try
-				{
-					OnlineUser nextUser = listIter.next();
-					nextUser.getSocket().cleanup();
-					listIter.remove();
-					OnlineUserManager.getInstance().userRemoved(nextUser);
-				}
-				catch(IOException ioe)
-				{
-					NetWrapper.log("Network error while closing the socket: "+ioe.getMessage(), Status.ERROR, ioe.getCause());
-					ioe.printStackTrace();
-				}
-			}
 			
 			//close the socket
 			if(serverSocket != null)
@@ -176,6 +147,51 @@ public class NetWrapper extends Plugin
 			e.printStackTrace();
 		}
 	}
+	
+	//SERVER EVENTS	
+	/**
+	 * Called when the server was started to setup additonal jobs
+	 */
+	public void startServer()
+	{
+		//log the server startup
+		NetWrapper.log("Startup network connection completed", IStatus.INFO, null);
+	}
+	
+	/**
+	 * Called when the server was stopped
+	 */
+	public void stopServer()
+	{
+		//log the shutdown
+		NetWrapper.log("Shutdown network connection completed", IStatus.INFO, null);
+	}
+	
+	/**
+	 * Called when a new client connected to the server
+	 */
+	public void sessionCreated(MySocket socket)
+	{
+		//log the new session
+		NetWrapper.log("Created new session", IStatus.INFO, null);
+		
+		//create and initialize the new session
+		Session session = new Session(socket);
+		session.setOnlineSince(Calendar.getInstance().getTimeInMillis());
+		SessionManager.getInstance().addUser(session);
+	}
+	
+	/**
+	 * Called when the client session was destroyed
+	 */
+	public void sessionDestroyed(MySocket socket)
+	{
+		//log the end of the session
+		NetWrapper.log("Session destroyed", IStatus.INFO, null);
+		
+		//cancel the current job and release the resources
+		ServerContext.getCurrentInstance().release();
+	}
 
 	// CHANGE LISTENERS
 	/**
@@ -184,7 +200,7 @@ public class NetWrapper extends Plugin
 	 * @param oldValue the old value of the property
 	 * @param newValue the new value of the property
 	 */
-	private void firePropertyChangeEvent(String event,Object oldValue,Object newValue)
+	protected void firePropertyChangeEvent(String event,Object oldValue,Object newValue)
 	{
 		//iterate over the listeners and inform them
 		ListIterator<PropertyChangeListener> listIter = netListeners.listIterator();
@@ -226,7 +242,8 @@ public class NetWrapper extends Plugin
 	 * Returns whether the server is listening for new client connections
 	 * @return the listening
 	 */
-	public boolean isListening() {
+	public boolean isListening() 
+	{
 		return listening;
 	}
 }

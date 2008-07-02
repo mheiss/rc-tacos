@@ -38,7 +38,7 @@ public abstract class ServerListenerAdapter implements IServerListener
     * Handles add requests
     */
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
     {
         return null;
     }
@@ -74,7 +74,7 @@ public abstract class ServerListenerAdapter implements IServerListener
      * Handles update requests
      */
     @Override
-    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
+    public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
     {
         return null;
     }

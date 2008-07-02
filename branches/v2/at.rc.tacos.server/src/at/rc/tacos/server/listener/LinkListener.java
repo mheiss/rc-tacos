@@ -8,11 +8,12 @@ import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.LinkDAO;
-import at.rc.tacos.core.db.dao.factory.DaoFactory;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.Link;
 import at.rc.tacos.model.QueryFilter;
+import at.rc.tacos.server.db.dao.LinkDAO;
+import at.rc.tacos.server.db.dao.factory.DaoFactory;
+import at.rc.tacos.server.net.ServerContext;
 
 /**
  * Link Listener
@@ -25,9 +26,10 @@ public class LinkListener extends ServerListenerAdapter {
 	private LinkDAO linkDao = DaoFactory.SQL.createLinkDAO();
 	//the logger
 	private static Logger logger = Logger.getLogger(DayInfoListener.class);
+	private String username = ServerContext.getCurrentInstance().getSession().getUsername();
 	
     @Override
-    public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException,SQLException
+    public AbstractMessage handleAddRequest(AbstractMessage addObject) throws DAOException,SQLException
     {
         Link link = (Link)addObject;
         int id = linkDao.addLink(link);
@@ -59,7 +61,7 @@ public class LinkListener extends ServerListenerAdapter {
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException,SQLException
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject) throws DAOException,SQLException
 	{
 		Link link = (Link)updateObject;
 		if(!linkDao.updateLink(link))

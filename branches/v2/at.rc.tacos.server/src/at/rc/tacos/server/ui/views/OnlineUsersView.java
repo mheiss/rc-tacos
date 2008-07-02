@@ -15,9 +15,11 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.server.net.OnlineUserManager;
-import at.rc.tacos.server.ui.providers.OnlineUserContentProvider;
-import at.rc.tacos.server.ui.providers.OnlineUserLabelProvider;
+import at.rc.tacos.model.Session;
+import at.rc.tacos.server.net.manager.SessionManager;
+import at.rc.tacos.server.ui.filter.ClientFilter;
+import at.rc.tacos.server.ui.providers.ClientSessionContentProvider;
+import at.rc.tacos.server.ui.providers.ClientSessionLabelProvider;
 
 public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 {
@@ -45,8 +47,8 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 
 		//setup the table viewer
 		viewer = new TableViewer(body, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new OnlineUserContentProvider());
-		viewer.setLabelProvider(new OnlineUserLabelProvider());
+		viewer.setContentProvider(new ClientSessionContentProvider());
+		viewer.setLabelProvider(new ClientSessionLabelProvider());
 		viewer.setInput(getViewSite());
 		viewer.getTable().setLinesVisible(true);
 
@@ -74,9 +76,12 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 		columnIP.setToolTipText("Die Client IP-Addresse mit der der Benutzer mit dem Server verbunden ist");
 		columnIP.setWidth(120);
 		columnIP.setText("IP");
+		
+		//add the filter to show only clients
+		viewer.addFilter(new ClientFilter());
 
 		//listen to new users
-		OnlineUserManager.getInstance().addPropertyChangeListener(this);
+		SessionManager.getInstance().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -85,7 +90,7 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 	@Override
 	public void dispose()
 	{
-		OnlineUserManager.getInstance().removePropertyChangeListener(this);
+		SessionManager.getInstance().removePropertyChangeListener(this);
 	}
 
 	/**
@@ -99,7 +104,7 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 	 * Listen to updates
 	 */
 	@Override
-	public void propertyChange(PropertyChangeEvent event) 
+	public void propertyChange(final PropertyChangeEvent event) 
 	{
 		final String eventName = event.getPropertyName();
 		//the updates should run in the ui thread
@@ -108,10 +113,31 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 			@Override
 			public void run() 
 			{
-				//just update the view
-				if("ONLINEUSER_ADDED".equalsIgnoreCase(eventName) || "ONLINEUSER_REMOVED".equalsIgnoreCase(eventName))
+				//a new session was added
+				if(SessionManager.SESSION_ADDED.equalsIgnoreCase(eventName))
 				{
-					viewer.refresh(true);
+					//get the new user and update the view
+					Session session = (Session)event.getNewValue();
+					viewer.add(session);
+				}
+				//a existing session was updated
+				if(SessionManager.SESSION_UPDATED.equalsIgnoreCase(eventName))
+				{
+					//the updated session
+					Session session = (Session)event.getNewValue();
+					viewer.refresh(session);
+				}
+				//the session object was removed
+				if(SessionManager.SESSION_REMOVED.equalsIgnoreCase(eventName))
+				{
+					//the removed session
+					Session session = (Session)event.getOldValue();
+					viewer.remove(session);
+				}
+				//all session object were removed
+				if(SessionManager.SESSION_CLEARED.equalsIgnoreCase(eventName))
+				{
+					viewer.refresh();
 				}
 			}
 		});
