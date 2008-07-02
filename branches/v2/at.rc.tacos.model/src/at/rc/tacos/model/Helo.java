@@ -15,6 +15,7 @@ public class Helo extends AbstractMessage
 	private int id;
 	private String serverIp;
 	private int serverPort;
+	private boolean serverPrimary;
 	private boolean redirect;
 	
 	//CONSTRUCTORS
@@ -25,7 +26,7 @@ public class Helo extends AbstractMessage
 	{
 		super(ID);
 	}
-	
+
 	//HASHCODE AND EQUALS
 	@Override
 	public int hashCode() {
@@ -104,5 +105,19 @@ public class Helo extends AbstractMessage
 	 */
 	public void setRedirect(boolean redirect) {
 		this.redirect = redirect;
+	}
+	
+	/**
+	 * @return the serverPrimary
+	 */
+	public boolean isServerPrimary() {
+		return serverPrimary;
+	}
+
+	/**
+	 * @param serverPrimary the serverPrimary to set
+	 */
+	public void setServerPrimary(boolean serverPrimary) {
+		this.serverPrimary = serverPrimary;
 	}
 }
