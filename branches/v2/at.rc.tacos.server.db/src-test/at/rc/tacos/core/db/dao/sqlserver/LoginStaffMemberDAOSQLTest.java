@@ -169,12 +169,6 @@ public class LoginStaffMemberDAOSQLTest extends DBTestBase
     }
     
     @Test
-    public void testRemoveLogin() throws SQLException
-    {
-        //TODO: Implement the test to chek whether the login is locked
-    }
-    
-    @Test
     public void testCompetenceList() throws SQLException
     {
     	List<Competence> compList = competenceDAO.listCompetencesOfStaffMember(member1.getStaffMemberId());
