@@ -13,12 +13,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.BundleContext;
 
+import at.rc.tacos.model.Helo;
 import at.rc.tacos.model.Session;
 import at.rc.tacos.net.MyServerSocket;
 import at.rc.tacos.net.MySocket;
-import at.rc.tacos.server.net.internal.jobs.ServerListenJob;
+import at.rc.tacos.server.net.internal.jobs.ClientListenJob;
 import at.rc.tacos.server.net.internal.jobs.TSJ;
-import at.rc.tacos.server.net.manager.SessionManager;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -32,8 +32,12 @@ public class NetWrapper extends Plugin
 	private static NetWrapper plugin;	
 
 	//the status of the server connection
+	private Helo serverInfo;
 	private boolean listening;
-	private MyServerSocket serverSocket;
+	private MyServerSocket clientSocket;
+	
+	//the socket to listen for other servers
+	private MyServerSocket serverSocket1;
 
 	//the listeners
 	private ArrayList<PropertyChangeListener> netListeners = new ArrayList<PropertyChangeListener>();
@@ -83,7 +87,7 @@ public class NetWrapper extends Plugin
 	 * Creates and initializes the server socket so that clients can connect
 	 */
 	public void initServerSocket(IProgressMonitor monitor)
-	{
+	{	
 		//set the port where the server should listen
 		final int port = 4711;
 
@@ -91,11 +95,20 @@ public class NetWrapper extends Plugin
 		{
 			monitor.subTask("Initialisiere ServerSocket, Port: "+port);
 			//create and setup a new server socket
-			serverSocket = new MyServerSocket(port);
-			serverSocket.setSoTimeout(2000);
+			clientSocket = new MyServerSocket(port);
+			clientSocket.setSoTimeout(2000);
 			monitor.subTask("Starte den Thread um Clientverbindungen anzunehmen");
-			ServerListenJob listenJob = new ServerListenJob(serverSocket);
+			ClientListenJob listenJob = new ClientListenJob(clientSocket);
 			listenJob.schedule();	
+			
+			//create the server info for this server
+			serverInfo = new Helo();
+			serverInfo.setServerIp(clientSocket.getInetAddress().getHostName());
+			serverInfo.setServerPort(clientSocket.getLocalPort());
+			serverInfo.setServerPrimary(true);
+			
+			//update the manager
+			ServerManager.getInstance().primaryServerUpdate(serverInfo);
 
 			//inform the viewers that the server is listening
 			listening = true;
@@ -132,8 +145,11 @@ public class NetWrapper extends Plugin
 				job.join();
 			
 			//close the socket
-			if(serverSocket != null)
-				serverSocket.close();
+			if(clientSocket != null)
+				clientSocket.close();
+			
+			//update the manager
+			ServerManager.getInstance().primaryServerUpdate(null);
 
 			//inform the views
 			listening = false;
@@ -245,5 +261,12 @@ public class NetWrapper extends Plugin
 	public boolean isListening() 
 	{
 		return listening;
+	}
+	
+	/**
+	 * @return the serverInfo
+	 */
+	public Helo getServerInfo() {
+		return serverInfo;
 	}
 }

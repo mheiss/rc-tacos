@@ -21,10 +21,6 @@ public class HeloEncoder implements MessageEncoder
         //write the start element
         writer.writeStartElement(Helo.ID);
        
-        //write the id
-        writer.writeStartElement("id");
-        writer.writeCharacters(String.valueOf(helo.getId()));
-        writer.writeEndElement();
         //write the server ip
         writer.writeStartElement("serverIp");
         writer.writeCharacters(helo.getServerIp());

@@ -31,7 +31,6 @@
 	<property name="db.sql_create_f_address.script" value="${sql.dir}/sql_create_f_address.sql" />
 	<property name="db.sql_create_f_periods.script" value="${sql.dir}/sql_create_f_periods.sql" />
 	<property name="db.sql_create_f_link.script" value="${sql.dir}/sql_create_f_link.sql" />
-	<property name="db.sql_create_f_server.script" value="${sql.dir}/sql_create_f_server.sql" />
 	
 	<!-- The classpath including the needed libraries for the database -->
 	<path id="master-classpath">
@@ -68,7 +67,6 @@
 		<antcall target="sql_create_f_transport" />
 		<antcall target="sql_create_f_vehicle" />
 		<antcall target="sql_create_f_link" />
-		<antcall target="sql_create_f_server" />
 	</target>
 
 	<target name="sql_cleardata">

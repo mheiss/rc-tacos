@@ -1,35 +1,31 @@
 package at.rc.tacos.server.net.internal.jobs;
 
-import java.io.BufferedReader;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import at.rc.tacos.model.Session;
+import at.rc.tacos.net.MyServerSocket;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.NetWrapper;
-import at.rc.tacos.server.net.ServerContext;
-import at.rc.tacos.server.net.ServerContextFactory;
 
 /**
- * This job is responsible for the interaction with the connected clients.
+ * <p><strong>ServerJob</strong> waits for and accepts new client connections.</p>
  * @author Michael
  */
 public class ClientListenJob extends Job
 {
-	//the connected socket
-	private MySocket socket;
+	//properties of the server listen job
+	private MyServerSocket serverSocket;
 
 	/**
-	 * Default class constructor
+	 * Default class constructor 
 	 */
-	public ClientListenJob(MySocket socket)
+	public ClientListenJob(MyServerSocket serverSocket)
 	{
 		super(TSJ.CLIENT_LISTEN_JOB);
-		this.socket = socket;
+		this.serverSocket = serverSocket;
 	}
 
 	@Override
@@ -41,47 +37,44 @@ public class ClientListenJob extends Job
 	@Override
 	protected IStatus run(IProgressMonitor monitor) 
 	{
+		//create the server socket and start listening
 		try
 		{
-			//create a new server context and pass the socket
-			ServerContext context = ServerContextFactory.getInstance().getServerContext();
-			context.setSession(new Session(socket));
+			monitor.beginTask("Warte auf Clientverbindung", IProgressMonitor.UNKNOWN);	
 			
-			//inform the net controller about the new session
-			NetWrapper.getDefault().sessionCreated(socket);
+			//inform the controller about the startup of the server
+			NetWrapper.getDefault().startServer();
 			
-			//start the listen job
-			monitor.beginTask("Listening to new data on the network", IProgressMonitor.UNKNOWN);
+			//loop and wait for client connections
 			while(!monitor.isCanceled())
-			{	
+			{		
 				try
 				{
-					//wait for new data on the input stream
-					BufferedReader in = socket.getBufferedInputStream();
-					String newData = in.readLine();
-					if(newData == null)
-						throw new SocketException("Connection to the client "+ServerContext.getCurrentInstance().getSession().getLogin() +" lost.");
+					//wait for the new socket
+					MySocket newSocket = serverSocket.accept();
+					newSocket.setSoTimeout(2000);				
 					
-					//pass the data to the new handler
-					ServerContext.getCurrentInstance().handleRequest(newData);
+					//start the listen job
+					ClientRequestJob listenJob = new ClientRequestJob(newSocket);
+					listenJob.setUser(true);
+					listenJob.schedule();
 				}
-				catch(SocketTimeoutException timeout)
+				catch(SocketTimeoutException ste)
 				{
-					//timeout, just go on . ..
+					//timeout just go on
+					continue;
 				}
 			}
-			//inform about the session end
-			NetWrapper.getDefault().sessionDestroyed(socket);
+			//do additional tasks
+			NetWrapper.getDefault().stopServer();
 			return Status.OK_STATUS;
 		}
 		catch(Exception e)
 		{
 			//log the error
-			NetWrapper.log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR,e.getCause());	
-			
-			//destroy the session
-			NetWrapper.getDefault().sessionDestroyed(socket);
-	
+			NetWrapper.log("IO-Error during listening for new client connections:"+e.getMessage(), IStatus.ERROR,e.getCause());
+			//do additional tasks
+			NetWrapper.getDefault().stopServer();
 			return Status.CANCEL_STATUS;
 		}
 		finally

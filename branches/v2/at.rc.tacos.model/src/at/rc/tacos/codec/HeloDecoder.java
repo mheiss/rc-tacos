@@ -28,8 +28,6 @@ public class HeloDecoder implements MessageDecoder
 					helo = new Helo();
 
 				//get the type of the element and set the corresponding value
-				if("id".equalsIgnoreCase(startName))
-					helo.setId(Integer.valueOf(reader.getElementText()));
 				if("serverIp".equalsIgnoreCase(startName))
 					helo.setServerIp(reader.getElementText());
 				if("serverPort".equalsIgnoreCase(startName))
