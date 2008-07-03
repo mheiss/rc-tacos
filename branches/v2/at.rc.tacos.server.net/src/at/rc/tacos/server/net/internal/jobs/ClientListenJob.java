@@ -54,12 +54,11 @@ public class ClientListenJob extends Job
 			monitor.beginTask("Listening to new data on the network", IProgressMonitor.UNKNOWN);
 			while(!monitor.isCanceled())
 			{	
-				String newData = null;
 				try
 				{
 					//wait for new data on the input stream
 					BufferedReader in = socket.getBufferedInputStream();
-					newData = in.readLine();
+					String newData = in.readLine();
 					if(newData == null)
 						throw new SocketException("Connection to the client "+ServerContext.getCurrentInstance().getSession().getLogin() +" lost.");
 					

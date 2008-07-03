@@ -27,7 +27,7 @@ public class DbWrapper extends Plugin
 	public static final String PLUGIN_ID = "at.rc.tacos.core.db";
 
 	//the database configuration
-	public static final String DB_SETTINGS_BUNDLE_PATH = "at.rc.tacos.core.db.config.db";
+	public static final String DB_SETTINGS_BUNDLE_PATH = "at.rc.tacos.server.db.config.db";
 
 	// The shared instance
 	private static DbWrapper plugin;

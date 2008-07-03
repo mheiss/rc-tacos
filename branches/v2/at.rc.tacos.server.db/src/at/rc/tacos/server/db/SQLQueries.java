@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 public class SQLQueries 
 {
 	//the properties file
-	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.core.db.sqlqueries";
+	public static final String QUERIES_BUNDLE_PATH = "at.rc.tacos.server.db.sqlqueries";
 	//the shared instance
 	protected static SQLQueries instance;
 	

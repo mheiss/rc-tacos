@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Network Plug-in
+Bundle-SymbolicName: at.rc.tacos.client.net
+Bundle-Version: 1.0.0
+Bundle-Activator: at.rc.tacos.client.net.NetWrapper
+Require-Bundle: org.eclipse.core.runtime,
+ at.rc.tacos.model;visibility:=reexport
+Bundle-ActivationPolicy: lazy
+Export-Package: at.rc.tacos.client.net
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

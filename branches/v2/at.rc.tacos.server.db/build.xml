@@ -47,7 +47,6 @@
 	<target name="#sql_reset_tables" description="Full database reset">
 		<echo message="WARNING: This will reset (drop-create-insert-functions) the complete database. All data will be lost!" />
 		<input>Press Return key to continue...</input>
-		<antcall target="sql_cleardata" />
 		<antcall target="sql_dropFunctions" />
 		<antcall target="sql_droptables" />
 		<antcall target="sql_createtable" />
