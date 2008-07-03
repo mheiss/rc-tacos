@@ -1,4 +1,4 @@
-package at.rc.tacos.server.net.internal.jobs;
+package at.rc.tacos.server.net.jobs;
 
 import java.net.SocketTimeoutException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,7 +37,6 @@ public class ClientListenJob extends Job
 	@Override
 	protected IStatus run(IProgressMonitor monitor) 
 	{
-		//create the server socket and start listening
 		try
 		{
 			monitor.beginTask("Warte auf Clientverbindung", IProgressMonitor.UNKNOWN);	
@@ -65,6 +64,8 @@ public class ClientListenJob extends Job
 					continue;
 				}
 			}
+			//shutdown the socket
+			NetWrapper.getDefault().shutdownServer(monitor);
 			//do additional tasks
 			NetWrapper.getDefault().stopServer();
 			return Status.OK_STATUS;
@@ -73,6 +74,8 @@ public class ClientListenJob extends Job
 		{
 			//log the error
 			NetWrapper.log("IO-Error during listening for new client connections:"+e.getMessage(), IStatus.ERROR,e.getCause());
+			//shutdown the socket
+			NetWrapper.getDefault().shutdownServer(monitor);
 			//do additional tasks
 			NetWrapper.getDefault().stopServer();
 			return Status.CANCEL_STATUS;

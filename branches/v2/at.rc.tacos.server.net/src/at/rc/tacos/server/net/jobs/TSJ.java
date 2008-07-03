@@ -1,4 +1,4 @@
-package at.rc.tacos.server.net.internal.jobs;
+package at.rc.tacos.server.net.jobs;
 
 /**
  * The TacosServerJob interface definition that provides the name of the running jobs

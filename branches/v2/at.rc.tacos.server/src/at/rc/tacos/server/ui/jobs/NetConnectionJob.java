@@ -1,11 +1,13 @@
-package at.rc.tacos.server.net.jobs;
+package at.rc.tacos.server.ui.jobs;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import at.rc.tacos.server.Activator;
 import at.rc.tacos.server.net.NetWrapper;
+import at.rc.tacos.server.preferences.PreferenceConstants;
 
 /**
  * Wraps the network connection into a thread to provide monitoring
@@ -29,12 +31,15 @@ public class NetConnectionJob extends Job
 			//create and init the job
 			monitor.beginTask("Netzwerk wird initialisiert", IProgressMonitor.UNKNOWN);
 			
-			//TODO: check database
-			//TODO: query the 'active' servers
-			//TODO: try to open a connection to the server: SEND HELO MESSAGE
+			//Load the preferences
+			Integer listenPort = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.P_SERVER_PORT);
+			String failoverHost = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_FAILOVER_HOST);
+			Integer failoverPort = Activator.getDefault().getPluginPreferences().getInt(PreferenceConstants.P_FAILOVER_PORT);
+			
+			NetWrapper.getDefault().init(listenPort,failoverHost,failoverPort);
 			
 			//try to create the server socket
-			NetWrapper.getDefault().initServerSocket(monitor);
+			NetWrapper.getDefault().startServer(monitor);
 			
 			//check the connection
 			if(!NetWrapper.getDefault().isListening())
