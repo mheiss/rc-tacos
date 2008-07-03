@@ -17,6 +17,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Helo;
+import at.rc.tacos.server.net.NetWrapper;
 import at.rc.tacos.server.net.ServerManager;
 import at.rc.tacos.server.ui.utils.CustomUI;
 
@@ -174,9 +175,13 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 					//get the new server
 					Helo server = (Helo)event.getNewValue();
 					
+					//setup the status text
+					String text = "Primärer Server online";
+					text += NetWrapper.getDefault().getServerInfo().equals(server) ? " (dieser Server)" : "";
+					
 					//update the view
 					primaryStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.online"));
-					primaryStatusText.setText("Primärer Server online");
+					primaryStatusText.setText(text);
 					primaryStatusDesc.setText("Primärer Server nimmt Verbindungen am Port "+server.getServerPort()+ " entgegen");
 					//refresch
 					primarySection.layout(true);
@@ -194,9 +199,17 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 				//UPDATE OF THE FAILBACK SERVER
 				if(ServerManager.SECONDARY_ONLINE.equalsIgnoreCase(eventName))
 				{
+					//get the new server
+					Helo server = (Helo)event.getNewValue();
+					
+					//setup the status text
+					String text = "Failback Server online";
+					System.out.println(server.getServerIp());
+					text += NetWrapper.getDefault().getServerInfo().equals(server) ? " (dieser Server)" : "";
+					
 					//update the view
 					secondStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.online"));
-					secondStatusText.setText("Failback Server online");
+					secondStatusText.setText(text);
 					secondStatusDesc.setText("Failback Server leitet alle Anfrage zum primären Server weiter");		
 					//refresch
 					secondSection.layout(true);

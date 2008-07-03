@@ -62,7 +62,7 @@ public class ServerManager extends PropertyManager
 		if(failbackServer == null)
 			firePropertyChange(SECONDARY_OFFLINE, failbackServer,null);
 		else
-			firePropertyChange(SECONDARY_OFFLINE, null, failbackServer);
+			firePropertyChange(SECONDARY_ONLINE, null, failbackServer);
 		
 		//save the update
 		this.failbackServer = failbackServer;

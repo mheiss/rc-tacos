@@ -109,11 +109,6 @@ public class NetWrapper extends Plugin
 		monitor.beginTask("Starte die Netzwerkverbindungen", IProgressMonitor.UNKNOWN);
 		try
 		{
-			//information about this host
-			serverInfo = new Helo();
-			serverInfo.setServerIp(InetAddress.getLocalHost().getHostName());
-			serverInfo.setServerPort(listenPort);
-
 			//create and setup a new server socket
 			serverSocket = new MyServerSocket(listenPort);
 			serverSocket.setSoTimeout(2000);			
@@ -127,12 +122,17 @@ public class NetWrapper extends Plugin
 			try
 			{	
 				socket = new MySocket(failoverHost,failoverPort);
+				//this server will be the failover
+				serverInfo = new Helo();
+				serverInfo.setServerIp(failoverHost);
+				serverInfo.setServerPort(failoverPort);
 				serverInfo.setServerPrimary(false);
 				//start the job to listen to the socket
 				ServerRequestJob requestJob = new ServerRequestJob(socket);
 				requestJob.setUser(true);
 				requestJob.schedule();
 				//log the startup
+				ServerManager.getInstance().failbackServerUpdate(serverInfo);
 				log("Primary server found @"+socket.getInetAddress().getHostName(), IStatus.INFO, null);
 			}
 			catch(Exception e) 
@@ -142,8 +142,13 @@ public class NetWrapper extends Plugin
 				failbackSocket.setSoTimeout(2000);
 				ServerListenJob serverListenJob = new ServerListenJob(failbackSocket);
 				serverListenJob.schedule();
+				//this server will be the primary server
+				serverInfo = new Helo();
+				serverInfo.setServerIp(InetAddress.getLocalHost().getHostName());
+				serverInfo.setServerPort(listenPort);
+				serverInfo.setServerPrimary(true);
+				ServerManager.getInstance().primaryServerUpdate(serverInfo);			
 				log("No other running server found, this server will be the primary",IStatus.INFO,null);
-				ServerManager.getInstance().primaryServerUpdate(serverInfo);
 			}			
 
 			//inform the viewers that the server is listening
@@ -172,25 +177,10 @@ public class NetWrapper extends Plugin
 			for(Job job:jobs)	
 				job.join();
 			
-			//shutdown the client listener
-			monitor.subTask("Warte auf das Ende des Client Listen Job");
-			Job.getJobManager().cancel(TSJ.CLIENT_LISTEN_JOB);
-			jobs = Job.getJobManager().find(TSJ.CLIENT_LISTEN_JOB);
-			for(Job job:jobs)	
-				job.join();
-			
 			//shutdown all connected clients
 			monitor.subTask("Versuche alle Client Verbindungen zu beenden");
 			Job.getJobManager().cancel(TSJ.CLIENT_REQUEST_JOB);
 			jobs = Job.getJobManager().find(TSJ.CLIENT_REQUEST_JOB);
-			for(Job job:jobs)	
-				job.join();
-			
-			//shutdown all connected servers
-			monitor.subTask("Versuche alle Client threads zu beenden");
-			Job.getJobManager().cancel(TSJ.CLIENT_LISTEN_JOB);
-			jobs = Job.getJobManager().find(TSJ.CLIENT_LISTEN_JOB);
-			monitor.subTask("Warte auf das Ende der Client Jobs");
 			for(Job job:jobs)	
 				job.join();
 			
