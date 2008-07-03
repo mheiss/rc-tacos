@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import at.rc.tacos.model.Helo;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.NetWrapper;
 import at.rc.tacos.server.net.ServerManager;
@@ -42,6 +43,14 @@ public class ServerRequestJob extends Job
 	{
 		try
 		{
+			//setup the failback server
+			Helo serverInfo = new Helo();
+			serverInfo.setServerIp(socket.getInetAddress().getHostName());
+			serverInfo.setServerPort(socket.getPort());
+			serverInfo.setServerPrimary(false);
+			ServerManager.getInstance().failbackServerUpdate(serverInfo);
+			
+			//loop and wait for data to handle
 			while(!monitor.isCanceled())
 			{
 				try
@@ -58,10 +67,14 @@ public class ServerRequestJob extends Job
 				}
 				
 			}
+			System.out.println("server offline");
+			//server is offline
+			ServerManager.getInstance().failbackServerUpdate(null);
 			return Status.OK_STATUS;
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			//log the error
 			NetWrapper.log("Critical error while listening to data from the server: "+e.getMessage(), Status.ERROR,e.getCause());
 			ServerManager.getInstance().failbackServerUpdate(null);
