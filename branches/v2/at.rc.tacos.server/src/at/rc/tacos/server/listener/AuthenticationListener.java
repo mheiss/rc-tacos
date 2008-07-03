@@ -15,7 +15,7 @@ import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.server.db.dao.UserLoginDAO;
 import at.rc.tacos.server.db.dao.factory.DaoFactory;
 import at.rc.tacos.server.net.ServerContext;
-import at.rc.tacos.server.net.manager.SessionManager;
+import at.rc.tacos.server.net.SessionManager;
 
 public class AuthenticationListener extends ServerListenerAdapter
 {

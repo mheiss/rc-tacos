@@ -16,7 +16,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Session;
-import at.rc.tacos.server.net.manager.SessionManager;
+import at.rc.tacos.server.net.SessionManager;
 import at.rc.tacos.server.ui.providers.ClientSessionContentProvider;
 import at.rc.tacos.server.ui.providers.ClientSessionLabelProvider;
 

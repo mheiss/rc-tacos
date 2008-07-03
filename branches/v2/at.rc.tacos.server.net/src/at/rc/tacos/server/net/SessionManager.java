@@ -1,4 +1,4 @@
-package at.rc.tacos.server.net.manager;
+package at.rc.tacos.server.net;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -18,7 +18,6 @@ import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.handler.ErrorHandler;
 import at.rc.tacos.server.net.handler.MessageHandler;
 import at.rc.tacos.server.net.handler.SendHandler;
-import at.rc.tacos.server.net.manager.SessionManager;
 
 /**
  * <p><strong>ServerContext</strong> 

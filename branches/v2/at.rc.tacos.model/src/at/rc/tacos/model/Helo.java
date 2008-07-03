@@ -12,7 +12,6 @@ public class Helo extends AbstractMessage
 	public final static String ID = "at.rc.tacos.model.Helo";
 	
 	//properties
-	private int id;
 	private String serverIp;
 	private int serverPort;
 	private boolean serverPrimary;
@@ -32,7 +31,8 @@ public class Helo extends AbstractMessage
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result
+				+ ((serverIp == null) ? 0 : serverIp.hashCode());
 		return result;
 	}
 
@@ -45,26 +45,16 @@ public class Helo extends AbstractMessage
 		if (getClass() != obj.getClass())
 			return false;
 		Helo other = (Helo) obj;
-		if (id != other.id)
+		if (serverIp == null) {
+			if (other.serverIp != null)
+				return false;
+		} else if (!serverIp.equals(other.serverIp))
 			return false;
 		return true;
 	}
+
 	
 	//GETTERS AND SETTERS
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	/**
 	 * @return the serverIp
 	 */

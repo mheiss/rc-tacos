@@ -3,15 +3,22 @@ package at.rc.tacos.server.ui.views;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.forms.widgets.ColumnLayout;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.server.net.manager.SessionManager;
+import at.rc.tacos.model.Helo;
+import at.rc.tacos.server.net.ServerManager;
+import at.rc.tacos.server.ui.utils.CustomUI;
 
 public class OnlineServerView extends ViewPart implements PropertyChangeListener
 {
@@ -19,9 +26,20 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 	public static final String ID = "at.rc.tacos.server.ui.views.OnlineServerView";
 	
 	//the table viewer
-	private TableViewer viewer;
 	private FormToolkit toolkit;
 	private Form form;
+	
+	//the primary server
+	private Section primarySection;
+	private CLabel primaryStatusImage;
+	private CLabel primaryStatusText;
+	private CLabel primaryStatusDesc;
+	
+	//the second server
+	private Section secondSection;
+	private CLabel secondStatusImage;
+	private CLabel secondStatusText;
+	private CLabel secondStatusDesc;
 	
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize it.
@@ -34,9 +52,19 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 		form.setImage(ImageFactory.getInstance().getRegisteredImage("server.view.servers"));
 		toolkit.decorateFormHeading(form);
 
-		//layout the body
-		final Composite body = form.getBody();
-		body.setLayout(new FillLayout());	
+		//the client
+		Composite body = form.getBody();
+		ColumnLayout layout = new ColumnLayout();
+		layout.maxNumColumns = 1;
+		layout.minNumColumns = 1;
+		body.setLayout(layout);
+
+		//setup the status section for the server
+		createPrimarySection(body);
+		createSecondarySection(body);
+		
+		//listen to server changes
+		ServerManager.getInstance().addPropertyChangeListener(this);
 	}
 
 	/**
@@ -45,14 +73,86 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 	@Override
 	public void dispose()
 	{
-		SessionManager.getInstance().removePropertyChangeListener(this);
+		ServerManager.getInstance().removePropertyChangeListener(this);
+	}
+	
+	/**
+	 * Creates the primary server status section
+	 */
+	private void createPrimarySection(Composite parent)
+	{
+		//create the section
+		primarySection = toolkit.createSection(parent,Section.TITLE_BAR | Section.EXPANDED);
+		primarySection.setText("Primärer Server");	
+
+		//the client of the section
+		Composite client = toolkit.createComposite(primarySection);
+		client.setLayout(new GridLayout(2,false));
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		//the status image in the left column
+		primaryStatusImage = new CLabel(client,SWT.NONE);
+		primaryStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.offline"));
+		//the status text
+		primaryStatusText = new CLabel(client,SWT.NONE);
+		primaryStatusText.setText("Primärer Server offline");
+		primaryStatusText.setForeground(CustomUI.RED_COLOR);
+		primaryStatusText.setFont(CustomUI.HEADLINE_FONT);
+		//the description below
+		primaryStatusDesc = new CLabel(client,SWT.NONE);
+		primaryStatusDesc.setText("Keine Verbindungen zum Primären Server möglich.");
+		primaryStatusDesc.setFont(CustomUI.DESCRIPTION_FONT);
+		
+		//the image should span vertical 3 columns
+		GridData gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+		gd.verticalSpan = 3;
+		primaryStatusImage.setLayoutData(gd);
+
+		//set the client for the section
+		primarySection.setClient(client);
+	}
+	
+	/**
+	 * Creates the failback server status section
+	 */
+	private void createSecondarySection(Composite parent)
+	{
+		//create the section
+		secondSection = toolkit.createSection(parent,Section.TITLE_BAR | Section.EXPANDED);
+		secondSection.setText("Failback Server");	
+
+		//the client of the section
+		Composite client = toolkit.createComposite(secondSection);
+		client.setLayout(new GridLayout(2,false));
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		//the status image in the left column
+		secondStatusImage = new CLabel(client,SWT.NONE);
+		secondStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.offline"));
+		//the status text
+		secondStatusText = new CLabel(client,SWT.NONE);
+		secondStatusText.setText("Failback Server offline");
+		secondStatusText.setForeground(CustomUI.RED_COLOR);
+		secondStatusText.setFont(CustomUI.HEADLINE_FONT);
+		//the description below
+		secondStatusDesc = new CLabel(client,SWT.NONE);
+		secondStatusDesc.setText("Keine Verbindungen zum Failback Server möglich.");
+		secondStatusDesc.setFont(CustomUI.DESCRIPTION_FONT);
+		
+		//the image should span vertical 3 columns
+		GridData gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+		gd.verticalSpan = 3;
+		secondStatusImage.setLayoutData(gd);
+
+		//set the client for the section
+		secondSection.setClient(client);
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		
 	}
 
 	/**
@@ -61,6 +161,56 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 	@Override
 	public void propertyChange(final PropertyChangeEvent event) 
 	{
-		
+		final String eventName = event.getPropertyName();
+		//the updates should run in the ui thread
+		Display.getDefault().syncExec(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				//UPDATE OF THE PRIMARY SERVER
+				if(ServerManager.PRIMARY_ONLINE.equalsIgnoreCase(eventName))
+				{
+					//get the new server
+					Helo server = (Helo)event.getNewValue();
+					
+					//update the view
+					primaryStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.online"));
+					primaryStatusText.setText("Primärer Server online");
+					primaryStatusDesc.setText("Primärer Server nimmt Verbindungen am Port "+server.getServerPort()+ " entgegen");
+					//refresch
+					primarySection.layout(true);
+				}
+				if(ServerManager.PRIMARY_OFFLINE.equalsIgnoreCase(eventName))
+				{
+					//update the view
+					primaryStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.offline"));
+					primaryStatusText.setText("Primärer Server offline");
+					primaryStatusDesc.setText("Keine Verbinung mit derm Server möglich.");
+					//refresch
+					primarySection.layout(true);
+				}
+				
+				//UPDATE OF THE FAILBACK SERVER
+				if(ServerManager.SECONDARY_ONLINE.equalsIgnoreCase(eventName))
+				{
+					//update the view
+					secondStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.online"));
+					secondStatusText.setText("Failback Server online");
+					secondStatusDesc.setText("Failback Server leitet alle Anfrage zum primären Server weiter");		
+					//refresch
+					secondSection.layout(true);
+				}
+				if(ServerManager.SECONDARY_OFFLINE.equalsIgnoreCase(eventName))
+				{
+					//update the view
+					secondStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.offline"));
+					secondStatusText.setText("Failback Server offline");
+					secondStatusDesc.setText("Keine Verbindungen zum Failback Server möglich.");		
+					//refresch
+					secondSection.layout(true);
+				}
+			}
+		});
 	}
 }
