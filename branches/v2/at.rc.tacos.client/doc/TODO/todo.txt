@@ -1,0 +1,22 @@
+siehe Formular "Offene Anforderungen und Bugs"
+
+
+
+BUG FIXING:
+--> Suchfunktion für Transport Views einbauen
+
+--> Sperren von Einträgen die bearbeitet werden
+
+--> Server: Implementierung von Loggern (log4j)
+
+--> Doku: welcher Leitstellendisponent hat Aktion (alles was gespeichert wird) durchgeführt? 
+
+--> Gesamt: Zugriffsberechtigungen implementieren. Nur Admins für Adminperspektive. User mit nur Lesezugriff ermöglichen.
+
+--> TransportViews: Übersichtliche Darstellung der möglichen Rücktransporte (Bild???) 
+
+--> Druckfunktion
+
+--> Installanleitung
+
+--> User Manual
