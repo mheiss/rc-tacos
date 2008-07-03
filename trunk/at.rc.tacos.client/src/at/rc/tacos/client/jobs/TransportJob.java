@@ -59,9 +59,11 @@ public class TransportJob extends Job
 					Activator.getDefault().log("Automatically moved the transport "+ transport+" to the outstanding transports",IStatus.INFO);
 				}
 			}
+			
 			//check the (to) dialysis patients
 			for(DialysisPatient patient:ModelFactory.getInstance().getDialyseManager().getDialysisList())
 			{
+				
 				Calendar currentDialysis = Calendar.getInstance();
 				//first check: do we have already generated a transport for today?
 				if(MyUtils.isEqualDate(patient.getLastTransportDate(),currentDialysis.getTimeInMillis()))
@@ -85,6 +87,10 @@ public class TransportJob extends Job
 					if(!patient.isWednesday())
 						continue;
 					break;
+				case Calendar.THURSDAY:
+					if(!patient.isThursday())
+						continue;
+					break;
 				case Calendar.FRIDAY:
 					if(!patient.isFriday())
 						continue;
@@ -100,6 +106,7 @@ public class TransportJob extends Job
 				default:
 					continue;
 				}
+				
 				//construct a calendar object with the start time (HH:mm)
 				Calendar patientCal = Calendar.getInstance();
 				patientCal.setTimeInMillis(patient.getPlannedStartOfTransport());
@@ -147,6 +154,10 @@ public class TransportJob extends Job
 					break;
 				case Calendar.WEDNESDAY:
 					if(!patient.isWednesday())
+						continue;
+					break;
+				case Calendar.THURSDAY:
+					if(!patient.isThursday())
 						continue;
 					break;
 				case Calendar.FRIDAY:
