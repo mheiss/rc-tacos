@@ -4,22 +4,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.Session;
 import at.rc.tacos.server.net.manager.SessionManager;
-import at.rc.tacos.server.ui.filter.ServerFilter;
-import at.rc.tacos.server.ui.providers.ServerSessionContentProvider;
-import at.rc.tacos.server.ui.providers.ServerSessionLabelProvider;
 
 public class OnlineServerView extends ViewPart implements PropertyChangeListener
 {
@@ -44,40 +36,7 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 
 		//layout the body
 		final Composite body = form.getBody();
-		body.setLayout(new FillLayout());
-
-		//setup the table viewer
-		viewer = new TableViewer(body, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new ServerSessionContentProvider());
-		viewer.setLabelProvider(new ServerSessionLabelProvider());
-		viewer.setInput(getViewSite());
-		viewer.getTable().setLinesVisible(true);
-
-		//create the table for the roster entries 
-		final Table table = viewer.getTable();
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
-
-		final TableColumn columnUser = new TableColumn(table, SWT.NONE);
-		columnUser.setToolTipText("Der Name des Servers");
-		columnUser.setWidth(150);
-		columnUser.setText("Servername");
-
-		final TableColumn columnOnline = new TableColumn(table, SWT.NONE);
-		columnOnline.setToolTipText("Online seit");
-		columnOnline.setWidth(120);
-		columnOnline.setText("Online seit");
-
-		final TableColumn columnIP = new TableColumn(table, SWT.NONE);
-		columnIP.setToolTipText("Die IP-Addresse des Servers");
-		columnIP.setWidth(120);
-		columnIP.setText("Server Addresse");
-		
-		//add the server filter to show only server connections
-		viewer.addFilter(new ServerFilter());
-
-		//listen to new users
-		SessionManager.getInstance().addPropertyChangeListener(this);
+		body.setLayout(new FillLayout());	
 	}
 
 	/**
@@ -102,40 +61,6 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 	@Override
 	public void propertyChange(final PropertyChangeEvent event) 
 	{
-		final String eventName = event.getPropertyName();
-		//the updates should run in the ui thread
-		Display.getDefault().syncExec(new Runnable()
-		{
-			@Override
-			public void run() 
-			{
-				//a new server was added
-				if(SessionManager.SESSION_ADDED.equalsIgnoreCase(eventName))
-				{
-					//get the new user and update the view
-					Session session = (Session)event.getNewValue();
-					viewer.add(session);
-				}
-				//a existing server was updated
-				if(SessionManager.SESSION_UPDATED.equalsIgnoreCase(eventName))
-				{
-					//the updated session
-					Session session = (Session)event.getNewValue();
-					viewer.refresh(session);
-				}
-				//the server object was removed
-				if(SessionManager.SESSION_REMOVED.equalsIgnoreCase(eventName))
-				{
-					//the removed session
-					Session session = (Session)event.getOldValue();
-					viewer.remove(session);
-				}
-				//all session object were removed
-				if(SessionManager.SESSION_CLEARED.equalsIgnoreCase(eventName))
-				{
-					viewer.refresh();
-				}
-			}
-		});
+		
 	}
 }
