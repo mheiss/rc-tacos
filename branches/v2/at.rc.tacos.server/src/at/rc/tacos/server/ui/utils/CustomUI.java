@@ -15,6 +15,7 @@ public class CustomUI
 	public final static Font HEADLINE_FONT = new Font(null,"Verdana",15,SWT.BOLD | SWT.UNDERLINE_SINGLE);
 	public final static Font DESCRIPTION_FONT = new Font(null,"Verdana",10,SWT.NORMAL);
 	public final static Font LINK_FONT = new Font(null,"Verdana",8,SWT.UNDERLINE_SINGLE);
+	public final static Font PREFERENCE_FONT = new Font(null,"Verdana",10,SWT.BOLD);
 	
 	//define common colors
 	public final static Color GRAY_COLOR = new Color(null,new RGB(128,128,128));

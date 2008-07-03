@@ -2,6 +2,7 @@ package at.rc.tacos.server.net;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ListIterator;
@@ -17,8 +18,10 @@ import at.rc.tacos.model.Helo;
 import at.rc.tacos.model.Session;
 import at.rc.tacos.net.MyServerSocket;
 import at.rc.tacos.net.MySocket;
-import at.rc.tacos.server.net.internal.jobs.ClientListenJob;
-import at.rc.tacos.server.net.internal.jobs.TSJ;
+import at.rc.tacos.server.net.jobs.ClientListenJob;
+import at.rc.tacos.server.net.jobs.ServerListenJob;
+import at.rc.tacos.server.net.jobs.ServerRequestJob;
+import at.rc.tacos.server.net.jobs.TSJ;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -31,13 +34,13 @@ public class NetWrapper extends Plugin
 	// The shared instance
 	private static NetWrapper plugin;	
 
-	//the status of the server connection
+	//information about the server
 	private Helo serverInfo;
 	private boolean listening;
-	private MyServerSocket clientSocket;
 	
-	//the socket to listen for other servers
-	private MyServerSocket serverSocket1;
+	//the server sockets
+	private MyServerSocket serverSocket;
+	private MyServerSocket failbackSocket;
 
 	//the listeners
 	private ArrayList<PropertyChangeListener> netListeners = new ArrayList<PropertyChangeListener>();
@@ -46,6 +49,11 @@ public class NetWrapper extends Plugin
 	public final static String NET_CONNECTION_OPENED = "netConnectionOpened";
 	public final static String NET_CONNECTION_CLOSED = "netConnectionClosed";
 	public final static String NET_CONNECTION_ERROR = "netConnectionError";
+	
+	//The values from the property store
+	private int listenPort = 4711;
+	private String failoverHost = "127.0.0.1";
+	private int failoverPort = 4712;
 
 	/**
 	 * The constructor
@@ -82,37 +90,65 @@ public class NetWrapper extends Plugin
 	{
 		return plugin;
 	}
+	
+	/**
+	 * Initalizes the server with the values form the preference store
+	 */
+	public void init(int listenPort,String failoverHost,int failoverPort)
+	{
+		this.listenPort = listenPort;
+		this.failoverHost = failoverHost;
+		this.failoverPort = failoverPort;
+	}
 
 	/**
 	 * Creates and initializes the server socket so that clients can connect
 	 */
-	public void initServerSocket(IProgressMonitor monitor)
+	public void startServer(IProgressMonitor monitor)
 	{	
-		//set the port where the server should listen
-		final int port = 4711;
-
+		monitor.beginTask("Starte die Netzwerkverbindungen", IProgressMonitor.UNKNOWN);
 		try
 		{
-			monitor.subTask("Initialisiere ServerSocket, Port: "+port);
-			//create and setup a new server socket
-			clientSocket = new MyServerSocket(port);
-			clientSocket.setSoTimeout(2000);
-			monitor.subTask("Starte den Thread um Clientverbindungen anzunehmen");
-			ClientListenJob listenJob = new ClientListenJob(clientSocket);
-			listenJob.schedule();	
-			
-			//create the server info for this server
+			//information about this host
 			serverInfo = new Helo();
-			serverInfo.setServerIp(clientSocket.getInetAddress().getHostName());
-			serverInfo.setServerPort(clientSocket.getLocalPort());
-			serverInfo.setServerPrimary(true);
-			
-			//update the manager
-			ServerManager.getInstance().primaryServerUpdate(serverInfo);
+			serverInfo.setServerIp(InetAddress.getLocalHost().getHostName());
+			serverInfo.setServerPort(listenPort);
+
+			//create and setup a new server socket
+			serverSocket = new MyServerSocket(listenPort);
+			serverSocket.setSoTimeout(2000);			
+			//start the listening thread
+			ClientListenJob listenJob = new ClientListenJob(serverSocket);
+			listenJob.schedule();
+
+			log("Checking for other running servers...",IStatus.INFO,null);
+			MySocket socket = null;
+			//try to open a connection to the failback server
+			try
+			{	
+				socket = new MySocket(failoverHost,failoverPort);
+				serverInfo.setServerPrimary(false);
+				//start the job to listen to the socket
+				ServerRequestJob requestJob = new ServerRequestJob(socket);
+				requestJob.setUser(true);
+				requestJob.schedule();
+				//log the startup
+				log("Primary server found @"+socket.getInetAddress().getHostName(), IStatus.INFO, null);
+			}
+			catch(Exception e) 
+			{
+				//setup a server socket to listen for other servers
+				failbackSocket = new MyServerSocket(failoverPort);
+				failbackSocket.setSoTimeout(2000);
+				ServerListenJob serverListenJob = new ServerListenJob(failbackSocket);
+				serverListenJob.schedule();
+				log("No other running server found, this server will be the primary",IStatus.INFO,null);
+				ServerManager.getInstance().primaryServerUpdate(serverInfo);
+			}			
 
 			//inform the viewers that the server is listening
 			listening = true;
-			firePropertyChangeEvent(NET_CONNECTION_OPENED, null, port);	
+			firePropertyChangeEvent(NET_CONNECTION_OPENED, null, serverInfo.getServerPort());	
 		}
 		catch(Exception e)
 		{
@@ -125,30 +161,48 @@ public class NetWrapper extends Plugin
 	/**
 	 * Shuts down the server socket and closes all connected clients
 	 */
-	public void shutdownServerSocket(IProgressMonitor monitor)
+	public void shutdownServer(IProgressMonitor monitor)
 	{
 		try
-		{			
-			//check if we have a running thread that is listening for connections
+		{	
+			//shutdown the server listener
+			monitor.subTask("Warte auf das Ende des Server Listen Jobs");
 			Job.getJobManager().cancel(TSJ.SERVER_LISTEN_JOB);
-			Job jobs[] = Job.getJobManager().find(TSJ.SERVER_LISTEN_JOB);
-			monitor.subTask("Warte auf das Ende des Server Threads");
-			for(Job job:jobs)
+			Job[] jobs = Job.getJobManager().find(TSJ.SERVER_LISTEN_JOB);
+			for(Job job:jobs)	
 				job.join();
-
-			//check if we have jobs that are listening for client data
-			monitor.subTask("Versuche alle Client Threads zu beenden");
+			
+			//shutdown the client listener
+			monitor.subTask("Warte auf das Ende des Client Listen Job");
+			Job.getJobManager().cancel(TSJ.CLIENT_LISTEN_JOB);
+			jobs = Job.getJobManager().find(TSJ.CLIENT_LISTEN_JOB);
+			for(Job job:jobs)	
+				job.join();
+			
+			//shutdown all connected clients
+			monitor.subTask("Versuche alle Client Verbindungen zu beenden");
+			Job.getJobManager().cancel(TSJ.CLIENT_REQUEST_JOB);
+			jobs = Job.getJobManager().find(TSJ.CLIENT_REQUEST_JOB);
+			for(Job job:jobs)	
+				job.join();
+			
+			//shutdown all connected servers
+			monitor.subTask("Versuche alle Client threads zu beenden");
 			Job.getJobManager().cancel(TSJ.CLIENT_LISTEN_JOB);
 			jobs = Job.getJobManager().find(TSJ.CLIENT_LISTEN_JOB);
 			monitor.subTask("Warte auf das Ende der Client Jobs");
 			for(Job job:jobs)	
 				job.join();
 			
-			//close the socket
-			if(clientSocket != null)
-				clientSocket.close();
-			
+			//shutdown the server socket
+			if(serverSocket != null)
+				serverSocket.close();
+			//shutdown the failback socket
+			if(failbackSocket != null)
+				failbackSocket.close();
+
 			//update the manager
+			ServerManager.getInstance().failbackServerUpdate(null);
 			ServerManager.getInstance().primaryServerUpdate(null);
 
 			//inform the views
@@ -163,7 +217,7 @@ public class NetWrapper extends Plugin
 			e.printStackTrace();
 		}
 	}
-	
+
 	//SERVER EVENTS	
 	/**
 	 * Called when the server was started to setup additonal jobs
@@ -173,7 +227,7 @@ public class NetWrapper extends Plugin
 		//log the server startup
 		NetWrapper.log("Startup network connection completed", IStatus.INFO, null);
 	}
-	
+
 	/**
 	 * Called when the server was stopped
 	 */
@@ -182,7 +236,7 @@ public class NetWrapper extends Plugin
 		//log the shutdown
 		NetWrapper.log("Shutdown network connection completed", IStatus.INFO, null);
 	}
-	
+
 	/**
 	 * Called when a new client connected to the server
 	 */
@@ -190,13 +244,13 @@ public class NetWrapper extends Plugin
 	{
 		//log the new session
 		NetWrapper.log("Created new session", IStatus.INFO, null);
-		
+
 		//create and initialize the new session
 		Session session = new Session(socket);
 		session.setOnlineSince(Calendar.getInstance().getTimeInMillis());
 		SessionManager.getInstance().addUser(session);
 	}
-	
+
 	/**
 	 * Called when the client session was destroyed
 	 */
@@ -204,7 +258,7 @@ public class NetWrapper extends Plugin
 	{
 		//log the end of the session
 		NetWrapper.log("Session destroyed", IStatus.INFO, null);
-		
+
 		//cancel the current job and release the resources
 		ServerContext.getCurrentInstance().release();
 	}
@@ -252,8 +306,16 @@ public class NetWrapper extends Plugin
 	{
 		NetWrapper.getDefault().getLog().log(new Status(severity,PLUGIN_ID,message,cause));
 	}
-	
+
 	//GETTERS AND SETTERS
+	/**
+	 * Sets the listening state of the server
+	 */
+	public void setListening(boolean listening)
+	{
+		this.listening = listening;
+	}
+	
 	/**
 	 * Returns whether the server is listening for new client connections
 	 * @return the listening
@@ -263,6 +325,14 @@ public class NetWrapper extends Plugin
 		return listening;
 	}
 	
+	/**
+	 * Sets the server info object for this server
+	 */
+	public void setServerInfo(Helo serverInfo)
+	{
+		this.serverInfo = serverInfo;
+	}
+
 	/**
 	 * @return the serverInfo
 	 */

@@ -23,11 +23,11 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.server.db.DbWrapper;
-import at.rc.tacos.server.db.jobs.DbConnectionJob;
-import at.rc.tacos.server.db.jobs.DbShutdownJob;
 import at.rc.tacos.server.net.NetWrapper;
-import at.rc.tacos.server.net.jobs.NetConnectionJob;
-import at.rc.tacos.server.net.jobs.NetShutdownJob;
+import at.rc.tacos.server.ui.jobs.DbConnectionJob;
+import at.rc.tacos.server.ui.jobs.DbShutdownJob;
+import at.rc.tacos.server.ui.jobs.NetConnectionJob;
+import at.rc.tacos.server.ui.jobs.NetShutdownJob;
 import at.rc.tacos.server.ui.utils.CustomUI;
 import at.rc.tacos.server.ui.utils.MyViewUtils;
 

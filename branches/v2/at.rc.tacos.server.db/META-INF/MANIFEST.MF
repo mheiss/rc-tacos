@@ -1,8 +1,7 @@
 Manifest-Version: 1.0
 Export-Package: at.rc.tacos.server.db;uses:="org.eclipse.core.runtime,org.osgi.framework",
  at.rc.tacos.server.db.dao;uses:="at.rc.tacos.model",
- at.rc.tacos.server.db.dao.factory;uses:="at.rc.tacos.core.db.dao",
- at.rc.tacos.server.db.jobs
+ at.rc.tacos.server.db.dao.factory;uses:="at.rc.tacos.core.db.dao"
 Require-Bundle: org.eclipse.core.runtime,
  at.rc.tacos.model,
  at.rc.tacos.libs

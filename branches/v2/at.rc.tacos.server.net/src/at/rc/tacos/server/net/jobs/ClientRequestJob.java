@@ -1,4 +1,4 @@
-package at.rc.tacos.server.net.internal.jobs;
+package at.rc.tacos.server.net.jobs;
 
 import java.io.BufferedReader;
 import java.net.SocketException;

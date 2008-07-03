@@ -1,4 +1,4 @@
-package at.rc.tacos.server.net.jobs;
+package at.rc.tacos.server.ui.jobs;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -30,7 +30,7 @@ public class NetShutdownJob extends Job
 			monitor.beginTask("Netzwerkverbindung beenden", IProgressMonitor.UNKNOWN);
 			
 			//Shutdown the network
-			NetWrapper.getDefault().shutdownServerSocket(monitor);
+			NetWrapper.getDefault().shutdownServer(monitor);
 			
 			//check if the connection is closed
 			if(NetWrapper.getDefault().isListening())

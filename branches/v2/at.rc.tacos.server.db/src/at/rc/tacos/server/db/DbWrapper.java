@@ -7,8 +7,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.ResourceBundle;
-
 import org.apache.commons.dbcp.ConnectionFactory;
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
@@ -26,14 +24,8 @@ public class DbWrapper extends Plugin
 	// The plug-in ID
 	public static final String PLUGIN_ID = "at.rc.tacos.core.db";
 
-	//the database configuration
-	public static final String DB_SETTINGS_BUNDLE_PATH = "at.rc.tacos.server.db.config.db";
-
 	// The shared instance
 	private static DbWrapper plugin;
-
-	//the params of the config file
-	private String dbDriver,dbHost,dbUser,dbPwd;
 	
 	//the server pool 
 	private boolean isConnected;
@@ -113,16 +105,10 @@ public class DbWrapper extends Plugin
 	/**
 	 * Opens a connection to the database and sets up the connection pool
 	 */
-	public void initDatabaseConnection()
+	public void initDatabaseConnection(String dbDriver,String dbHost,String dbUser,String dbPwd)
 	{
 		try
-		{
-			//load the settings from the file
-			dbDriver = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.driver");
-			dbHost = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.url");
-			dbUser = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.user");
-			dbPwd = ResourceBundle.getBundle(DB_SETTINGS_BUNDLE_PATH).getString("db.pw");
-	
+		{	
 			//load the mysql driver
 			Class.forName(dbDriver);
 	

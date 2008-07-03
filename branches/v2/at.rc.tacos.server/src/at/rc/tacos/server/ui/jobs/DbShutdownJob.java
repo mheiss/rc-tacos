@@ -1,4 +1,4 @@
-package at.rc.tacos.server.db.jobs;
+package at.rc.tacos.server.ui.jobs;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
