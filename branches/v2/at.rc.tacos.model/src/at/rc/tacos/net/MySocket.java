@@ -66,15 +66,14 @@ public class MySocket extends Socket
 		//close the input stream
 		if(in != null)
 		{
-			shutdownInput();
 			in.close();
 			in = null;
 		}
 		//close the output stream
 		if(out != null)
 		{
-			shutdownOutput();
 			out.close();
+			out = null;
 		}
 		//close the socket
 		if(!isClosed())

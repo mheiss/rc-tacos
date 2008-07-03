@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="libs/nebula_cdatetime_0.9.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/org.eclipse.swt.nebula_1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/commons-codec-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/commons-dbcp-1.2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/commons-pool-1.3.jar"/>

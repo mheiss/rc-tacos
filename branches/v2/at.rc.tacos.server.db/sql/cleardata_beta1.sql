@@ -45,3 +45,5 @@ DELETE FROM sickperson;
 
 DELETE FROM server_status;
 
+DELETE FROM periods;
+
