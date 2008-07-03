@@ -11,8 +11,6 @@ import at.rc.tacos.net.MySocket;
 public class Session 
 {
 	//properties
-	private String type;
-	private String name;
 	private long onlineSince;
 	private MySocket socket;
 	private Login login;
@@ -22,10 +20,6 @@ public class Session
 	 * The current connection is a client
 	 */
 	public final static String SESSION_SERVER = "clientSession";
-	/**
-	 * The current connection is a server
-	 */
-	public final static String SESSION_CLIENT = "serverSession";
 	
 	/**
 	 * Default class constructor.
@@ -35,25 +29,6 @@ public class Session
 	{
 		this.socket = socket;
 		this.onlineSince = Calendar.getInstance().getTimeInMillis();
-	}
-	
-	//HELPER METHODS	
-	/**
-	 * Sets the current connection as server
-	 */
-	public void setServer(String serverName)
-	{
-		this.type = SESSION_SERVER;
-		this.name = serverName;
-	}
-	
-	/**
-	 * Sets the current connection as client
-	 */
-	public void setClient()
-	{
-		this.type = SESSION_CLIENT;
-		this.name = "client_"+getUsername();
 	}
 	
 	/**
@@ -140,13 +115,5 @@ public class Session
 
 	public void setLogin(Login login) {
 		this.login = login;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public String getName() {
-		return name;
 	}
 }

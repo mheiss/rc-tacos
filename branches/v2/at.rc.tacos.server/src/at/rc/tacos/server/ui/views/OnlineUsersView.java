@@ -17,7 +17,6 @@ import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Session;
 import at.rc.tacos.server.net.manager.SessionManager;
-import at.rc.tacos.server.ui.filter.ClientFilter;
 import at.rc.tacos.server.ui.providers.ClientSessionContentProvider;
 import at.rc.tacos.server.ui.providers.ClientSessionLabelProvider;
 
@@ -76,9 +75,6 @@ public class OnlineUsersView extends ViewPart implements PropertyChangeListener
 		columnIP.setToolTipText("Die Client IP-Addresse mit der der Benutzer mit dem Server verbunden ist");
 		columnIP.setWidth(120);
 		columnIP.setText("IP");
-		
-		//add the filter to show only clients
-		viewer.addFilter(new ClientFilter());
 
 		//listen to new users
 		SessionManager.getInstance().addPropertyChangeListener(this);
