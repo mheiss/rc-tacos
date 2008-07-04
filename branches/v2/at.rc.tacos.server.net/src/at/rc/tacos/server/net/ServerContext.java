@@ -1,5 +1,6 @@
 package at.rc.tacos.server.net;
 
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,7 +18,6 @@ import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.handler.ErrorHandler;
 import at.rc.tacos.server.net.handler.MessageHandler;
-import at.rc.tacos.server.net.handler.SendHandler;
 
 /**
  * <p><strong>ServerContext</strong> 
@@ -176,8 +176,9 @@ public class ServerContext
 						|| IModelActions.LIST.equalsIgnoreCase(queryString)) {
 					//the destination socket
 					final MySocket destination = ServerContext.getCurrentInstance().getSession().getSocket();
-					SendHandler sendHandler = new SendHandler(destination,xmlMessage);
-					sendHandler.sendMessage();
+					PrintWriter writer = destination.getBufferedOutputStream();
+					writer.println(xmlMessage);
+					writer.flush();
 					//go to the next message
 					continue;
 				}
@@ -201,8 +202,9 @@ public class ServerContext
 							continue;
 						
 						//send the message to the client
-						SendHandler sendHandler = new SendHandler(nextSession.getSocket(),xmlMessage);
-						sendHandler.sendMessage();
+						PrintWriter writer = nextSession.getSocket().getBufferedOutputStream();
+						writer.println(xmlMessage);
+						writer.flush();
 					}
 				}
 			}
