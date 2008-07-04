@@ -57,6 +57,7 @@ public class DuplicatePriorityATransportAction extends Action implements IProgra
         newTransport.setAssistantPerson(transport.isAssistantPerson());
         newTransport.setBackTransport(transport.isBackTransport());
         newTransport.setBlueLightToGoal(transport.isBlueLightToGoal());
+        newTransport.setBlueLight1(transport.isBlueLight1());
         newTransport.setBrkdtAlarming(transport.isBrkdtAlarming());
         newTransport.setFirebrigadeAlarming(transport.isFirebrigadeAlarming());
         newTransport.setDfAlarming(transport.isDfAlarming());
