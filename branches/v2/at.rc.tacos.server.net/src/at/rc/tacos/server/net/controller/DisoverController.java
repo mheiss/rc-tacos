@@ -10,6 +10,7 @@ import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.Helo;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.NetWrapper;
+import at.rc.tacos.server.net.ServerManager;
 
 public class DisoverController
 {	
@@ -27,7 +28,7 @@ public class DisoverController
 	/**
 	 *  Tries to open a connection to the server
 	 */
-	public MySocket discoverServer(Helo requestInfo,String host,int port)
+	public MySocket discoverServer(String host,int port)
 	{	
 		try
 		{
@@ -48,9 +49,11 @@ public class DisoverController
 			for(int i=0;i<3;i++)
 			{
 				monitor.subTask("Sende HELO Anfrage #"+i);
-				message.setSequenceId("SEQUENCE_"+i);
 				try
 				{
+					//set the sequence id
+					message.setSequenceId("SEQUENCE_"+i);
+					
 					//encode the message to a string
 					XMLFactory factory = new XMLFactory();
 					String xmlMessage = factory.encode(message);
@@ -66,11 +69,12 @@ public class DisoverController
 					
 					//decode the response
 					Message responseMessage = factory.decode(response);
-					if(!responseMessage.getContentType().equalsIgnoreCase(Helo.ID))
+					if(!responseMessage.getQueryString().equalsIgnoreCase("SERVER_DISCOVER_RESPONSE"))
 						throw new IllegalArgumentException("The returned content type is not matching");
 					
-					//TODO: inform the view about the server response save the helo
-					
+					//update the view
+					ServerManager.getInstance().primaryServerUpdate((Helo)responseMessage.getMessageList().get(0));
+										
 					//ok now we have successfully opened a connection to the server
 					return socket;
 				}

@@ -32,8 +32,6 @@ public class HeloDecoder implements MessageDecoder
 					helo.setServerIp(reader.getElementText());
 				if("serverPort".equalsIgnoreCase(startName))
 					helo.setServerPort(Integer.valueOf(reader.getElementText()));
-				if("serverPrimary".equalsIgnoreCase(startName))
-					helo.setServerPrimary(Boolean.valueOf(reader.getElementText()));
 				if("redirect".equalsIgnoreCase(startName))
 					helo.setRedirect(Boolean.valueOf(reader.getElementText()));
 			}

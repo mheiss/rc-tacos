@@ -20,7 +20,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.P_CLIENT_PORT, 4711);
 		store.setDefault(PreferenceConstants.P_SERVER_PORT, 4712);
 		store.setDefault(PreferenceConstants.P_FAILOVER_HOST, "localhost");
-		store.setDefault(PreferenceConstants.P_FAILOVER_CLIENT_PORT, 4711);
 		store.setDefault(PreferenceConstants.P_FAILOVER_SERVER_PORT, 4712);
 		
 		//setup defaul database values

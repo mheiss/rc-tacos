@@ -56,7 +56,6 @@ public class NetWrapper extends Plugin
 	private int serverListenPort;
 	//the failback server
 	private String primaryHost;
-	private int primaryClientPort;		//redirect the request when we are not the primary server
 	private int primaryServerPort; 
 
 	/**
@@ -98,12 +97,12 @@ public class NetWrapper extends Plugin
 	/**
 	 * Initalizes the server with the values form the preference store
 	 */
-	public void init(int clientListenPort,int serverListenPort,String failoverHost,int failoverClientPort,int failoverServerPort)
+	public void init(int clientListenPort,int serverListenPort,String failoverHost,int failoverServerPort)
 	{
 		this.clientListenPort = clientListenPort;
 		this.serverListenPort = serverListenPort;
+		//the second server
 		this.primaryHost = failoverHost;
-		this.primaryClientPort = failoverClientPort;
 		this.primaryServerPort = failoverServerPort;
 	}
 
@@ -113,41 +112,40 @@ public class NetWrapper extends Plugin
 	public void startServer(IProgressMonitor monitor) throws Exception
 	{	
 		monitor.beginTask("Starte die Netzwerkverbindungen", IProgressMonitor.UNKNOWN);
-
-		//the server info about this server
+		
+		//setup the server info for this server
 		serverInfo = new Helo();
 		serverInfo.setServerIp(InetAddress.getLocalHost().getHostName());
 		serverInfo.setServerPort(clientListenPort);
 
-		//setup this server
+		//setup the client server socket
 		serverSocket = new MyServerSocket(clientListenPort);
 		serverSocket.setSoTimeout(2000);			
 		//start the listening thread
 		ClientListenJob listenJob = new ClientListenJob(serverSocket);
 		listenJob.schedule();	
+		
+		//setup a server socket to listen for other servers
+		failbackSocket = new MyServerSocket(serverListenPort);
+		failbackSocket.setSoTimeout(2000);
+		ServerListenJob serverListenJob = new ServerListenJob(failbackSocket);
+		serverListenJob.schedule();
 
 		//STEP 1: DISCOVER OTHER SERVERS
 		log("Checking for other running servers...",IStatus.INFO,null);
 		DisoverController discover = new DisoverController(monitor);
-		MySocket socket = discover.discoverServer(serverInfo,primaryHost,primaryServerPort);
+		MySocket socket = discover.discoverServer(primaryHost,primaryServerPort);
 		if(socket != null)
 		{
 			//STEP2: Start the thread to listen to data from the server
 			ServerRequestJob serverRequestJob = new ServerRequestJob(socket);
 			serverRequestJob.schedule();
+			ServerManager.getInstance().failbackServerUpdate(serverInfo);
+			log("Found primary server "+ServerManager.getInstance().getPrimaryServer(),IStatus.INFO,null);
 		}
 		else
 		{
-			//setup a server socket to listen for other servers
-			failbackSocket = new MyServerSocket(serverListenPort);
-			failbackSocket.setSoTimeout(2000);
-			ServerListenJob serverListenJob = new ServerListenJob(failbackSocket);
-			serverListenJob.schedule();
 			//this server will be the primary server
-			serverInfo = new Helo();
-			serverInfo.setServerIp(InetAddress.getLocalHost().getHostName());
-			serverInfo.setServerPort(clientListenPort);
-			serverInfo.setServerPrimary(true);
 			ServerManager.getInstance().primaryServerUpdate(serverInfo);			
 			log("No other running server found, this server will be the primary",IStatus.INFO,null);
 		}
@@ -172,23 +170,27 @@ public class NetWrapper extends Plugin
 		//shutdown the server listener
 		monitor.subTask("Warte auf das Ende des Server Listen Jobs");
 		Job.getJobManager().cancel(TSJ.SERVER_LISTEN_JOB);
-		Job[] jobs = Job.getJobManager().find(TSJ.SERVER_LISTEN_JOB);
-		for(Job job:jobs)	
+		for(Job job:Job.getJobManager().find(TSJ.SERVER_LISTEN_JOB))	
 			job.join();
 
 		//shutdown all connected clients
 		monitor.subTask("Versuche alle Client Verbindungen zu beenden");
 		Job.getJobManager().cancel(TSJ.CLIENT_REQUEST_JOB);
-		jobs = Job.getJobManager().find(TSJ.CLIENT_REQUEST_JOB);
-		for(Job job:jobs)	
+		for(Job job:Job.getJobManager().find(TSJ.CLIENT_REQUEST_JOB))	
 			job.join();
-
-		//update the manager
-		ServerManager.getInstance().failbackServerUpdate(null);
+		
+		//shutdown all connected servers
+		monitor.subTask("Versuche alle Server Verbindungen zu beenden");
+		Job.getJobManager().cancel(TSJ.SERVER_REQUEST_JOB);
+		for(Job job:Job.getJobManager().find(TSJ.SERVER_REQUEST_JOB))
+			job.join();
+		
+		//update the ui
 		ServerManager.getInstance().primaryServerUpdate(null);
+		ServerManager.getInstance().failbackServerUpdate(null);
 		
 		//do additional tasks
-		NetWrapper.getDefault().stopServer();
+		stopServer();
 
 		//inform the views
 		listening = false;
@@ -238,6 +240,31 @@ public class NetWrapper extends Plugin
 
 		//cancel the current job and release the resources
 		ServerContext.getCurrentInstance().release();
+	}
+	
+	/**
+	 * Called when the client liste job ended
+	 */
+	public void primaryServerDestroyed()
+	{
+		//the primary server went down, so cleanup and shutdown the server
+		Job job = new Job("ServerTerminate") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try
+				{
+					//shutdown the server
+					shutdownServer(monitor);
+					return Status.OK_STATUS;
+				}
+				catch(Exception e)
+				{
+					log("Failed to shutdown the primary server: "+e.getMessage(),IStatus.ERROR,e.getCause());
+					return Status.CANCEL_STATUS;
+				}
+			}
+		};
+		job.schedule();
 	}
 
 	// CHANGE LISTENERS

@@ -2,6 +2,7 @@ package at.rc.tacos.server.net;
 
 import at.rc.tacos.factory.PropertyManager;
 import at.rc.tacos.model.Helo;
+import at.rc.tacos.net.MyServerSocket;
 
 /**
  * The server manager is responsible for the connected servers
@@ -45,7 +46,9 @@ public class ServerManager extends PropertyManager
 	{
 		//check the server update
 		if(primaryServer == null)
+		{
 			firePropertyChange(PRIMARY_OFFLINE, primaryServer,null);
+		}
 		else
 			firePropertyChange(PRIMARY_ONLINE, null, primaryServer);
 		

@@ -1,7 +1,6 @@
 package at.rc.tacos.model;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.net.MySocket;
 
 /**
  * The helo message for the communication between the servers
@@ -15,9 +14,7 @@ public class Helo extends AbstractMessage
 	//properties
 	private String serverIp;
 	private int serverPort;
-	private boolean serverPrimary;
 	private boolean redirect;
-	private MySocket socket;
 	
 	//CONSTRUCTORS
 	/**
@@ -26,6 +23,15 @@ public class Helo extends AbstractMessage
 	public Helo()
 	{
 		super(ID);
+	}
+	
+	/**
+	 * Returns the string based description of the object
+	 */
+	@Override
+	public String toString()
+	{
+		return serverIp+":"+serverPort;
 	}
 
 	//HASHCODE AND EQUALS
@@ -97,33 +103,5 @@ public class Helo extends AbstractMessage
 	 */
 	public void setRedirect(boolean redirect) {
 		this.redirect = redirect;
-	}
-	
-	/**
-	 * @return the serverPrimary
-	 */
-	public boolean isServerPrimary() {
-		return serverPrimary;
-	}
-
-	/**
-	 * @param serverPrimary the serverPrimary to set
-	 */
-	public void setServerPrimary(boolean serverPrimary) {
-		this.serverPrimary = serverPrimary;
-	}
-
-	/**
-	 * @return the socket
-	 */
-	public MySocket getSocket() {
-		return socket;
-	}
-
-	/**
-	 * @param socket the socket to set
-	 */
-	public void setSocket(MySocket socket) {
-		this.socket = socket;
 	}
 }
