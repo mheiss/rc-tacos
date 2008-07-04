@@ -1426,9 +1426,10 @@ public class TransportDAOSQL implements TransportDAO, IProgramStatus
             if(!updateTransportNr(transport.getTransportId(), transport.getTransportNumber(),Calendar.getInstance().get(Calendar.YEAR)))
                 return false;
 
-            //store the number in the temp table
-            if(!archiveTransportNumber(oldNumber, locationId, actualYear))
-                return false;
+            //store the number in the temp table, but don't store the nef transport number (-4)
+            if(oldNumber != Transport.TRANSPORT_NEF)
+            	if(!archiveTransportNumber(oldNumber, locationId, actualYear))
+            		return false;
 
             //set the transport status to IProgramStatus.PROGRAM_STATUS_OUTSTANDING 
             transport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
