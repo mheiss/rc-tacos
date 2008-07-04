@@ -2,6 +2,7 @@ package at.rc.tacos.core.net;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.*;
 import java.util.Map.Entry;
@@ -23,7 +24,6 @@ import at.rc.tacos.common.IConnectionStates;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.common.IModelListener;
 import at.rc.tacos.core.net.internal.*;
-import at.rc.tacos.core.net.jobs.ProcessDataJobRule;
 import at.rc.tacos.core.net.jobs.SendJobRule;
 import at.rc.tacos.factory.ListenerFactory;
 import at.rc.tacos.factory.XMLFactory;
@@ -56,7 +56,6 @@ public class NetWrapper extends Plugin
 	private final static String JOB_MONITOR = "MonitorJob";
 	private final static String JOB_LISTEN = "ListenJob";
 	private final static String JOB_SEND = "SendJob";
-	private final static String JOB_PROCESS = "ProcessJob";
 
 	/**
 	 * The constructor
@@ -295,16 +294,6 @@ public class NetWrapper extends Plugin
 		sendJob.setRule(new SendJobRule());
 		sendJob.setPriority(Job.SHORT); 
 		sendJob.setSystem(true);
-		sendJob.addJobChangeListener(new JobChangeAdapter()
-		{
-			@Override
-			public void done(IJobChangeEvent event) 
-			{
-				//check if the job was successful
-				if(event.getResult() == Status.CANCEL_STATUS)
-					requestNetworkStop(true);
-			}
-		});
 		sendJob.schedule();
 
 		//save the last generated sequence
@@ -320,28 +309,26 @@ public class NetWrapper extends Plugin
 		try
 		{
 			netSessionUserName = null;
+			
+			logService.log("Setting all running network jobs to sleep", Status.INFO);
+			
 			//request all running jobs to stop
 			IJobManager jobManager = Job.getJobManager();
 			//wait for the send job to complete
+			Job.getJobManager().cancel(JOB_SEND);
 			for(Job job:jobManager.find(JOB_SEND))
-			{
-				if(!job.cancel())
-					job.join();
-			}
+				job.join();
+			
 			//wait for the listen job to complete
+			Job.getJobManager().cancel(JOB_LISTEN);
 			for(Job job:jobManager.find(JOB_LISTEN))
-			{
-				if(!job.cancel())
-					job.join();
-			}
+				job.join();
+			
 			//wait for the monitor job to complete
+			Job.getJobManager().cancel(JOB_MONITOR);
 			for(Job job:jobManager.find(JOB_MONITOR))
-			{
-				if(!job.cancel())
-					job.join();
-			}
-			logService.log("Setting all running network jobs to sleep", Status.INFO);
-
+				job.join();
+			
 			//close the current socket
 			NetSource.getInstance().closeConnection();
 
@@ -357,6 +344,14 @@ public class NetWrapper extends Plugin
 			logService.log("Failed to close the network connection", Status.INFO);
 			logService.log(e.getMessage(), Status.ERROR);
 		}
+	}
+
+	/**
+	 * Logs the error with the build in log
+	 */
+	public static void log(String message,int severity,Throwable cause)
+	{
+		NetWrapper.getDefault().getLog().log(new Status(severity,PLUGIN_ID,message,cause));
 	}
 
 	//THREADS FOR THE NETWORK
@@ -388,71 +383,99 @@ public class NetWrapper extends Plugin
 		@Override
 		protected IStatus run(IProgressMonitor monitor) 
 		{
-			//get the network connection to read data from
-			final MySocket client = NetSource.getInstance().getConnection();
-			monitor.beginTask("Listening to new data on the network", IProgressMonitor.UNKNOWN);
 			try
 			{
-				//get the reader to get new data
-				BufferedReader in = client.getBufferedInputStream();
-
-				//wait and read the next new line from the stream
-				String newData = in.readLine();
-
-				//assert valid
-				if(newData == null)
-					return Status.OK_STATUS;
-
-				//set up the factory to decode
-				XMLFactory xmlFactory = new XMLFactory();
-				//replace all characters
-				String message = newData.replaceAll("&lt;br/&gt;", "\n");
-				xmlFactory.setupDecodeFactory(message);
-				//decode the message
-				List<AbstractMessage> newObjects = xmlFactory.decode();
-				//get the type of the item
-				final String contentType = xmlFactory.getContentType();
-				final String queryString = xmlFactory.getQueryString();
-				final String sequenceId = xmlFactory.getSequenceId();
-
-				//check if the sequence is a error message
-				if(sequenceId.equalsIgnoreCase("ERROR"))
+				//get the network connection to read data from
+				final MySocket client = NetSource.getInstance().getConnection();
+				monitor.beginTask("Listening to new data on the network", IProgressMonitor.UNKNOWN);
+				while(!monitor.isCanceled())
 				{
-					//remove the last send message from the list
-					messageList.remove(lastSendSequence);
-					logService.log("Removed the last send sequenceId, the server reported a error", IStatus.ERROR);
+					String newData = null;
+					try
+					{
+						//read new data
+						BufferedReader in = client.getBufferedInputStream();
+						newData = in.readLine();
+						if(newData == null)
+							throw new SocketException("Failed to read data from the socket");
+					}
+					catch(SocketTimeoutException timeout)
+					{
+						//timeout, just go on . . .
+						continue;
+					}
+
+					try
+					{
+						//set up the factory to decode
+						XMLFactory xmlFactory = new XMLFactory();
+						//replace all characters
+						String message = newData.replaceAll("&lt;br/&gt;", "\n");
+						xmlFactory.setupDecodeFactory(message);
+						//decode the message
+						List<AbstractMessage> receivedMessage = xmlFactory.decode();
+						//get the type of the item
+						final String contentType = xmlFactory.getContentType();
+						final String queryString = xmlFactory.getQueryString();
+						final String sequenceId = xmlFactory.getSequenceId();
+
+						//check if the sequence is a error message
+						if(sequenceId.equalsIgnoreCase("ERROR"))
+						{
+							//remove the last send message from the list
+							messageList.remove(lastSendSequence);
+							logService.log("Removed the last send sequenceId, the server reported a error", IStatus.ERROR);
+						}
+
+						//remove the package from the list
+						if(messageList.containsKey(sequenceId))
+							messageList.remove(sequenceId);
+
+						//start the job to proccess the data
+						monitor.beginTask("Processing the received data:"+contentType,IProgressMonitor.UNKNOWN);
+
+						//try to get a listener for this message
+						ListenerFactory listenerFactory = ListenerFactory.getDefault();
+						if(!listenerFactory.hasListeners(contentType))
+						{
+							logService.log("No listener found for the message type: "+contentType,IStatus.WARNING);
+							return Status.CANCEL_STATUS;
+						}
+
+						IModelListener listener = listenerFactory.getListener(contentType);
+						//now pass the message to the listener
+						if(IModelActions.ADD.equalsIgnoreCase(queryString))
+							listener.add(receivedMessage.get(0));
+						if(IModelActions.ADD_ALL.endsWith(queryString))
+							listener.addAll(receivedMessage);
+						if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
+							listener.remove(receivedMessage.get(0));
+						if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
+							listener.update(receivedMessage.get(0));
+						if(IModelActions.LIST.equalsIgnoreCase(queryString))
+							listener.list(receivedMessage);
+						if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
+							listener.loginMessage(receivedMessage.get(0));
+						if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
+							listener.logoutMessage(receivedMessage.get(0));
+						if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
+							listener.systemMessage(receivedMessage.get(0));		
+					}
+					catch(Exception e)
+					{
+						log("Failed to process the received data: "+e.getMessage(),IStatus.ERROR,e.getCause());
+					}
 				}
-
-				//remove the package from the list
-				if(messageList.containsKey(sequenceId))
-					messageList.remove(sequenceId);
-
-				//start the job to proccess the data
-				ProcessDataJob dataJob = new ProcessDataJob(contentType,queryString,newObjects);
-				dataJob.setSystem(true);
-				dataJob.setPriority(Job.BUILD);
-				dataJob.setRule(new ProcessDataJobRule(contentType));
-				dataJob.setName("In Bearbeitung: "+contentType+" Empfangene Datensätze:"+newObjects.size());
-				dataJob.schedule();				
-
-				return Status.OK_STATUS;
-			}
-			catch(SocketTimeoutException timeout)
-			{
-				//timeout, just go on . ..
 				return Status.OK_STATUS;
 			}
 			catch(Exception e)
 			{
-				logService.log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR);
-				logService.log("Starting the network wizard from the listen job. Reason:"+e.getMessage(), Status.ERROR);
+				log("Critical error while listening to new data: "+e.getMessage(), Status.ERROR,e.getCause());
+				log("Starting the network wizard from the listen job. Reason:"+e.getMessage(), Status.ERROR,e.getCause());
 				return Status.CANCEL_STATUS;
 			}
 			finally
 			{
-				//restart again if not cancled
-				if(!monitor.isCanceled())
-					schedule(10);
 				monitor.done();
 			}
 		}
@@ -493,7 +516,7 @@ public class NetWrapper extends Plugin
 			{
 				//the package is send now
 				messageInfo.setTimestamp(Calendar.getInstance().getTimeInMillis());
-				
+
 				//get the network connection to send data
 				final MySocket client = NetSource.getInstance().getConnection();
 
@@ -601,64 +624,6 @@ public class NetWrapper extends Plugin
 					schedule(1000);
 				monitor.done();
 			}
-			return Status.OK_STATUS;
-		}
-	}
-
-	/**
-	 * This job is responsible to process the received data.
-	 */
-	public class ProcessDataJob extends Job
-	{
-		//properties
-		private String contentType;
-		private String queryString;
-		private List<AbstractMessage> messageList;
-
-		/**
-		 * Default class constructor for the data to process
-		 * @param newData the received message
-		 */
-		public ProcessDataJob(String contentType,String queryString,List<AbstractMessage> messageList)
-		{
-			super(JOB_PROCESS);
-			this.contentType = contentType;
-			this.queryString = queryString;
-			this.messageList = messageList;
-		}
-
-		@Override
-		protected IStatus run(IProgressMonitor monitor) 
-		{
-			monitor.beginTask("Processing the received data:"+contentType,IProgressMonitor.UNKNOWN);
-
-			//try to get a listener for this message
-			ListenerFactory listenerFactory = ListenerFactory.getDefault();
-			if(!listenerFactory.hasListeners(contentType))
-			{
-				logService.log("No listener found for the message type: "+contentType,IStatus.WARNING);
-				return Status.CANCEL_STATUS;
-			}
-
-			IModelListener listener = listenerFactory.getListener(contentType);
-			//now pass the message to the listener
-			if(IModelActions.ADD.equalsIgnoreCase(queryString))
-				listener.add(messageList.get(0));
-			if(IModelActions.ADD_ALL.endsWith(queryString))
-				listener.addAll(messageList);
-			if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
-				listener.remove(messageList.get(0));
-			if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
-				listener.update(messageList.get(0));
-			if(IModelActions.LIST.equalsIgnoreCase(queryString))
-				listener.list(messageList);
-			if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
-				listener.loginMessage(messageList.get(0));
-			if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
-				listener.logoutMessage(messageList.get(0));
-			if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
-				listener.systemMessage(messageList.get(0));
-
 			return Status.OK_STATUS;
 		}
 	}
