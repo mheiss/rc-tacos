@@ -17,9 +17,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		
 		//setup default network values
-		store.setDefault(PreferenceConstants.P_SERVER_PORT, 4711);
+		store.setDefault(PreferenceConstants.P_CLIENT_PORT, 4711);
+		store.setDefault(PreferenceConstants.P_SERVER_PORT, 4712);
 		store.setDefault(PreferenceConstants.P_FAILOVER_HOST, "localhost");
-		store.setDefault(PreferenceConstants.P_FAILOVER_PORT, "4711");
+		store.setDefault(PreferenceConstants.P_FAILOVER_CLIENT_PORT, 4711);
+		store.setDefault(PreferenceConstants.P_FAILOVER_SERVER_PORT, 4712);
 		
 		//setup defaul database values
 		store.setDefault(PreferenceConstants.P_DB_DRIVER, "com.microsoft.sqlserver.jdbc.SQLServerDriver");

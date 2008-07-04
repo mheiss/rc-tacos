@@ -45,8 +45,13 @@ public class NetPreferencesPage extends FieldEditorPreferencePage implements IWo
 		Label serverHeader = new Label(getFieldEditorParent(),SWT.NONE);
 		serverHeader.setText("Primärer Server");
 		serverHeader.setFont(CustomUI.PREFERENCE_FONT);
-		Label desc = new Label(getFieldEditorParent(),SWT.NONE);
-		desc.setText("Auf disesm Port nimmt der Server Anfragen von Clients entgegen.");
+		Label descClient = new Label(getFieldEditorParent(),SWT.NONE);
+		descClient.setText("Auf disesm Port nimmt der Server Anfragen von Clients entgegen.");
+		//the preferences field
+		addField(new IntegerFieldEditor(PreferenceConstants.P_CLIENT_PORT, "Serverport: ",getFieldEditorParent()));
+		
+		Label descServer = new Label(getFieldEditorParent(),SWT.NONE);
+		descServer.setText("Auf diesem Port nimmt der Server Anfragen von Servern entgegen.");
 		//the preferences field
 		addField(new IntegerFieldEditor(PreferenceConstants.P_SERVER_PORT, "Serverport: ",getFieldEditorParent()));
 		
@@ -58,7 +63,8 @@ public class NetPreferencesPage extends FieldEditorPreferencePage implements IWo
 		failbackDesc.setText("Dieser Server wird als Failover Server verwendet");
 		//the preferences
 		addField(new StringFieldEditor(PreferenceConstants.P_FAILOVER_HOST, "Hostname:", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceConstants.P_FAILOVER_PORT, "Port: ",getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceConstants.P_FAILOVER_CLIENT_PORT, "Client Port: ",getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceConstants.P_FAILOVER_CLIENT_PORT, "Server Port: ",getFieldEditorParent()));
 		
 		//layout the label
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
@@ -74,7 +80,11 @@ public class NetPreferencesPage extends FieldEditorPreferencePage implements IWo
 		
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
-		desc.setLayoutData(data);
+		descClient.setLayoutData(data);
+		
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		descServer.setLayoutData(data);
 		
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;

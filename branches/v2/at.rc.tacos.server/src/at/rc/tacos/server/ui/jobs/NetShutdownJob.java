@@ -38,6 +38,12 @@ public class NetShutdownJob extends Job
 		
 			return Status.OK_STATUS;
 		}
+		catch(Exception e)
+		{
+			NetWrapper.log("Network error while trying to close the server socket", Status.ERROR, e.getCause());
+			e.printStackTrace();
+			return Status.CANCEL_STATUS;
+		}
 		finally
 		{
 			monitor.done();
