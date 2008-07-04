@@ -314,12 +314,6 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		data.widthHint = F_BUTTON_WIDTH_HINT;   
 		data.verticalIndent = 10;
 		fButtonCancel.setLayoutData(data);
-
-		//init values 
-		//TODO: delete
-//		fTextUsername.setText("user3");
-		fTextUsername.setSelection(0,5);
-//		fTextPassword.setText("P@ssw0rd");
 	}
 
 	/**
