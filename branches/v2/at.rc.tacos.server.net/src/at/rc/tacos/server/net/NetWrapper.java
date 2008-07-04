@@ -52,9 +52,12 @@ public class NetWrapper extends Plugin
 	public final static String NET_CONNECTION_ERROR = "netConnectionError";
 
 	//The values from the property store
-	private int listenPort;
+	private int clientListenPort;
+	private int serverListenPort;
+	//the failback server
 	private String primaryHost;
-	private int primaryPort;
+	private int primaryClientPort;		//redirect the request when we are not the primary server
+	private int primaryServerPort; 
 
 	/**
 	 * The constructor
@@ -95,114 +98,101 @@ public class NetWrapper extends Plugin
 	/**
 	 * Initalizes the server with the values form the preference store
 	 */
-	public void init(int listenPort,String failoverHost,int failoverPort)
+	public void init(int clientListenPort,int serverListenPort,String failoverHost,int failoverClientPort,int failoverServerPort)
 	{
-		this.listenPort = listenPort;
+		this.clientListenPort = clientListenPort;
+		this.serverListenPort = serverListenPort;
 		this.primaryHost = failoverHost;
-		this.primaryPort = failoverPort;
+		this.primaryClientPort = failoverClientPort;
+		this.primaryServerPort = failoverServerPort;
 	}
 
 	/**
 	 * Creates and initializes the server socket so that clients can connect
 	 */
-	public void startServer(IProgressMonitor monitor)
+	public void startServer(IProgressMonitor monitor) throws Exception
 	{	
 		monitor.beginTask("Starte die Netzwerkverbindungen", IProgressMonitor.UNKNOWN);
 
-		try
+		//the server info about this server
+		serverInfo = new Helo();
+		serverInfo.setServerIp(InetAddress.getLocalHost().getHostName());
+		serverInfo.setServerPort(clientListenPort);
+
+		//setup this server
+		serverSocket = new MyServerSocket(clientListenPort);
+		serverSocket.setSoTimeout(2000);			
+		//start the listening thread
+		ClientListenJob listenJob = new ClientListenJob(serverSocket);
+		listenJob.schedule();	
+
+		//STEP 1: DISCOVER OTHER SERVERS
+		log("Checking for other running servers...",IStatus.INFO,null);
+		DisoverController discover = new DisoverController(monitor);
+		MySocket socket = discover.discoverServer(serverInfo,primaryHost,primaryServerPort);
+		if(socket != null)
 		{
-			//the server info about this server
+			//STEP2: Start the thread to listen to data from the server
+			ServerRequestJob serverRequestJob = new ServerRequestJob(socket);
+			serverRequestJob.schedule();
+		}
+		else
+		{
+			//setup a server socket to listen for other servers
+			failbackSocket = new MyServerSocket(serverListenPort);
+			failbackSocket.setSoTimeout(2000);
+			ServerListenJob serverListenJob = new ServerListenJob(failbackSocket);
+			serverListenJob.schedule();
+			//this server will be the primary server
 			serverInfo = new Helo();
 			serverInfo.setServerIp(InetAddress.getLocalHost().getHostName());
-			serverInfo.setServerPort(listenPort);
-
-			//setup this server
-			serverSocket = new MyServerSocket(listenPort);
-			serverSocket.setSoTimeout(2000);			
-			//start the listening thread
-			ClientListenJob listenJob = new ClientListenJob(serverSocket);
-			listenJob.schedule();	
-
-			//STEP 1: DISCOVER OTHER SERVERS
-			log("Checking for other running servers...",IStatus.INFO,null);
-			DisoverController discover = new DisoverController(monitor);
-			MySocket socket = discover.discoverServer(serverInfo,primaryHost,primaryPort);
-			if(socket != null)
-			{
-				//STEP2: Start the thread to listen to data from the server
-				ServerRequestJob serverRequestJob = new ServerRequestJob(socket);
-				serverRequestJob.schedule();
-			}
-			else
-			{
-				//setup a server socket to listen for other servers
-				failbackSocket = new MyServerSocket(primaryPort);
-				failbackSocket.setSoTimeout(2000);
-				ServerListenJob serverListenJob = new ServerListenJob(failbackSocket);
-				serverListenJob.schedule();
-				//this server will be the primary server
-				serverInfo = new Helo();
-				serverInfo.setServerIp(InetAddress.getLocalHost().getHostName());
-				serverInfo.setServerPort(listenPort);
-				serverInfo.setServerPrimary(true);
-				ServerManager.getInstance().primaryServerUpdate(serverInfo);			
-				log("No other running server found, this server will be the primary",IStatus.INFO,null);
-			}
-			//inform the viewers that the server is listening
-			listening = true;
-			firePropertyChangeEvent(NET_CONNECTION_OPENED, null, serverInfo.getServerPort());	
+			serverInfo.setServerPort(clientListenPort);
+			serverInfo.setServerPrimary(true);
+			ServerManager.getInstance().primaryServerUpdate(serverInfo);			
+			log("No other running server found, this server will be the primary",IStatus.INFO,null);
 		}
-		catch(Exception e)
-		{
-			listening = false;
-			NetWrapper.log("Network error while trying to create the server socket", Status.ERROR, e.getCause());
-			firePropertyChangeEvent(NET_CONNECTION_CLOSED, null, e.getMessage());
-		}
+		//inform the viewers that the server is listening
+		listening = true;
+		NetWrapper.getDefault().startServer();
+		firePropertyChangeEvent(NET_CONNECTION_OPENED, null, serverInfo.getServerPort());	
 	}
 
 	/**
 	 * Shuts down the server socket and closes all connected clients
 	 */
-	public void shutdownServer(IProgressMonitor monitor)
+	public void shutdownServer(IProgressMonitor monitor) throws Exception
 	{
-		try
-		{	
-			//shutdown the server listener
-			monitor.subTask("Warte auf das Ende des Server Listen Jobs");
-			Job.getJobManager().cancel(TSJ.SERVER_LISTEN_JOB);
-			Job[] jobs = Job.getJobManager().find(TSJ.SERVER_LISTEN_JOB);
-			for(Job job:jobs)	
-				job.join();
+		//shutdown the client server socket
+		if(serverSocket != null)
+			serverSocket.close();
+		//shutdown the failback socket
+		if(failbackSocket != null)
+			failbackSocket.close();
 
-			//shutdown all connected clients
-			monitor.subTask("Versuche alle Client Verbindungen zu beenden");
-			Job.getJobManager().cancel(TSJ.CLIENT_REQUEST_JOB);
-			jobs = Job.getJobManager().find(TSJ.CLIENT_REQUEST_JOB);
-			for(Job job:jobs)	
-				job.join();
+		//shutdown the server listener
+		monitor.subTask("Warte auf das Ende des Server Listen Jobs");
+		Job.getJobManager().cancel(TSJ.SERVER_LISTEN_JOB);
+		Job[] jobs = Job.getJobManager().find(TSJ.SERVER_LISTEN_JOB);
+		for(Job job:jobs)	
+			job.join();
 
-			//shutdown the server socket
-			if(serverSocket != null)
-				serverSocket.close();
-			//shutdown the failback socket
-			if(failbackSocket != null)
-				failbackSocket.close();
+		//shutdown all connected clients
+		monitor.subTask("Versuche alle Client Verbindungen zu beenden");
+		Job.getJobManager().cancel(TSJ.CLIENT_REQUEST_JOB);
+		jobs = Job.getJobManager().find(TSJ.CLIENT_REQUEST_JOB);
+		for(Job job:jobs)	
+			job.join();
 
-			//update the manager
-			ServerManager.getInstance().failbackServerUpdate(null);
-			ServerManager.getInstance().primaryServerUpdate(null);
+		//update the manager
+		ServerManager.getInstance().failbackServerUpdate(null);
+		ServerManager.getInstance().primaryServerUpdate(null);
+		
+		//do additional tasks
+		NetWrapper.getDefault().stopServer();
 
-			//inform the views
-			listening = false;
-			firePropertyChangeEvent(NET_CONNECTION_CLOSED, null, null);
-		}
-		catch(Exception e)
-		{
-			listening = true;
-			NetWrapper.log("Network error while trying to close the server socket", Status.ERROR, e.getCause());
-			firePropertyChangeEvent(NET_CONNECTION_ERROR, null, e.getMessage());
-			e.printStackTrace();
-		}
+		//inform the views
+		listening = false;
+		firePropertyChangeEvent(NET_CONNECTION_CLOSED, null, null);
 	}
 
 	//SERVER EVENTS	

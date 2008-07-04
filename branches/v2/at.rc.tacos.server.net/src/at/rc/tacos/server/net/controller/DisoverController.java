@@ -31,7 +31,7 @@ public class DisoverController
 	{	
 		try
 		{
-			monitor.beginTask("Versuche eine Verbindung mit "+host+"+:"+port+" aufzubauen", 3);
+			monitor.beginTask("Versuche eine Verbindung mit "+host+":"+port+" aufzubauen", 3);
 			//setup the message and the factory
 			Message message = new Message();
 			message.setUsername("SERVER");
@@ -40,12 +40,14 @@ public class DisoverController
 			
 			//create a new socket
 			MySocket socket = new MySocket(host,port);
+			socket.setSoTimeout(2000);
 			if(!socket.isConnected())
 				return null;
 			
 			//start the loop
 			for(int i=0;i<3;i++)
 			{
+				monitor.subTask("Sende HELO Anfrage #"+i);
 				message.setSequenceId("SEQUENCE_"+i);
 				try
 				{

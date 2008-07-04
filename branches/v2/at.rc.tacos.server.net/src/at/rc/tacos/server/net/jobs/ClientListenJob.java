@@ -41,9 +41,6 @@ public class ClientListenJob extends Job
 		{
 			monitor.beginTask("Warte auf Clientverbindung", IProgressMonitor.UNKNOWN);	
 			
-			//inform the controller about the startup of the server
-			NetWrapper.getDefault().startServer();
-			
 			//loop and wait for client connections
 			while(!monitor.isCanceled())
 			{		
@@ -66,16 +63,12 @@ public class ClientListenJob extends Job
 			}
 			//shutdown the socket
 			NetWrapper.getDefault().shutdownServer(monitor);
-			//do additional tasks
-			NetWrapper.getDefault().stopServer();
 			return Status.OK_STATUS;
 		}
 		catch(Exception e)
 		{
 			//log the error
 			NetWrapper.log("IO-Error during listening for new client connections:"+e.getMessage(), IStatus.ERROR,e.getCause());
-			//shutdown the socket
-			NetWrapper.getDefault().shutdownServer(monitor);
 			//do additional tasks
 			NetWrapper.getDefault().stopServer();
 			return Status.CANCEL_STATUS;

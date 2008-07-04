@@ -26,26 +26,38 @@ public class NetConnectionJob extends Job
 	@Override
 	protected IStatus run(IProgressMonitor monitor) 
 	{
+		//create and init the job
+		monitor.beginTask("Netzwerk wird initialisiert", IProgressMonitor.UNKNOWN);
+		
+		//Load the preferences
+		Integer clientListenPort = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.P_CLIENT_PORT);
+		Integer serverListenPort = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.P_SERVER_PORT);
+		String failoverHost = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_FAILOVER_HOST);
+		Integer failoverClientPort = Activator.getDefault().getPluginPreferences().getInt(PreferenceConstants.P_FAILOVER_CLIENT_PORT);
+		Integer failoverServerPort = Activator.getDefault().getPluginPreferences().getInt(PreferenceConstants.P_FAILOVER_SERVER_PORT);
+		
+		//try to startup the server
 		try
 		{
-			//create and init the job
-			monitor.beginTask("Netzwerk wird initialisiert", IProgressMonitor.UNKNOWN);
-			
-			//Load the preferences
-			Integer listenPort = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.P_SERVER_PORT);
-			String failoverHost = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_FAILOVER_HOST);
-			Integer failoverPort = Activator.getDefault().getPluginPreferences().getInt(PreferenceConstants.P_FAILOVER_PORT);
-			
-			NetWrapper.getDefault().init(listenPort,failoverHost,failoverPort);
-			
-			//try to create the server socket
+			NetWrapper.getDefault().init(clientListenPort,serverListenPort,failoverHost,failoverClientPort,failoverServerPort);
 			NetWrapper.getDefault().startServer(monitor);
-			
-			//check the connection
-			if(!NetWrapper.getDefault().isListening())
-				return Status.CANCEL_STATUS;
-			
 			return Status.OK_STATUS;
+		}
+		catch(Exception e)
+		{
+			NetWrapper.log("Failed to startup the server: "+e.getMessage(), Status.ERROR, e.getCause());
+		}
+		
+		//startup was not successfully, so shutdown
+		try
+		{
+			NetWrapper.getDefault().shutdownServer(monitor);
+			return Status.CANCEL_STATUS;
+		}
+		catch(Exception e)
+		{
+			NetWrapper.log("Failed to shutdown the server: "+e.getMessage(), Status.ERROR, e.getCause());
+			return Status.CANCEL_STATUS;
 		}
 		finally
 		{
