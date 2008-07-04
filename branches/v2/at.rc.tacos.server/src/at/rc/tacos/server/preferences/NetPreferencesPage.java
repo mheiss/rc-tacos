@@ -63,8 +63,7 @@ public class NetPreferencesPage extends FieldEditorPreferencePage implements IWo
 		failbackDesc.setText("Dieser Server wird als Failover Server verwendet");
 		//the preferences
 		addField(new StringFieldEditor(PreferenceConstants.P_FAILOVER_HOST, "Hostname:", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceConstants.P_FAILOVER_CLIENT_PORT, "Client Port: ",getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceConstants.P_FAILOVER_CLIENT_PORT, "Server Port: ",getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceConstants.P_FAILOVER_SERVER_PORT, "Server Port: ",getFieldEditorParent()));
 		
 		//layout the label
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);

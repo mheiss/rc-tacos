@@ -33,13 +33,12 @@ public class NetConnectionJob extends Job
 		Integer clientListenPort = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.P_CLIENT_PORT);
 		Integer serverListenPort = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.P_SERVER_PORT);
 		String failoverHost = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_FAILOVER_HOST);
-		Integer failoverClientPort = Activator.getDefault().getPluginPreferences().getInt(PreferenceConstants.P_FAILOVER_CLIENT_PORT);
 		Integer failoverServerPort = Activator.getDefault().getPluginPreferences().getInt(PreferenceConstants.P_FAILOVER_SERVER_PORT);
 		
 		//try to startup the server
 		try
 		{
-			NetWrapper.getDefault().init(clientListenPort,serverListenPort,failoverHost,failoverClientPort,failoverServerPort);
+			NetWrapper.getDefault().init(clientListenPort,serverListenPort,failoverHost,failoverServerPort);
 			NetWrapper.getDefault().startServer(monitor);
 			return Status.OK_STATUS;
 		}

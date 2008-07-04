@@ -9,6 +9,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import at.rc.tacos.common.Message;
+import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.Helo;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.NetWrapper;
@@ -42,14 +44,7 @@ public class ServerRequestJob extends Job
 	protected IStatus run(IProgressMonitor monitor) 
 	{
 		try
-		{
-			//setup the failback server
-			Helo serverInfo = new Helo();
-			serverInfo.setServerIp(socket.getInetAddress().getHostName());
-			serverInfo.setServerPort(socket.getPort());
-			serverInfo.setServerPrimary(false);
-			ServerManager.getInstance().failbackServerUpdate(serverInfo);
-			
+		{			
 			//loop and wait for data to handle
 			while(!monitor.isCanceled())
 			{
@@ -60,14 +55,33 @@ public class ServerRequestJob extends Job
 					String newData = in.readLine();
 					if(newData == null)
 						throw new SocketException("Connection to the server lost.");
+					
+					//Decode the message
+					XMLFactory factory = new XMLFactory();
+					Message receivedMessage = factory.decode(newData);
+					
+					//check the received message from the failback server
+					if(receivedMessage.getQueryString().equalsIgnoreCase("SERVER_DISCOVER"))
+					{
+						//send back the information about this server
+						Message message = new Message();
+						message.setUsername("SERVER");
+						message.setContentType(Helo.ID);
+						message.setQueryString("SERVER_DISCOVER_RESPONSE");
+						message.addMessage(NetWrapper.getDefault().getServerInfo());
+						
+						//encode to string
+						String responseXml = factory.encode(message);
+						
+						socket.getBufferedOutputStream().println(responseXml);
+						socket.getBufferedOutputStream().flush();
+					}
 				}
 				catch(SocketTimeoutException ste)
 				{
 					//timeout, just go on . ..
 				}
-				
 			}
-			System.out.println("server offline");
 			//server is offline
 			ServerManager.getInstance().failbackServerUpdate(null);
 			return Status.OK_STATUS;

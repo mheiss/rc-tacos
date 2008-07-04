@@ -52,7 +52,6 @@ public class ServerListenJob extends Job
 					
 					//forke a new thread to handle the connection
 					ServerRequestJob serverRequest = new ServerRequestJob(newSocket);
-					serverRequest.setUser(true);
 					serverRequest.schedule();
 				}
 				catch(SocketTimeoutException ste)
@@ -61,6 +60,8 @@ public class ServerListenJob extends Job
 					continue;
 				}
 			}
+			//shutdown the server
+			NetWrapper.getDefault().shutdownServer(monitor);
 			//everything went ok
 			return Status.OK_STATUS;
 		}
@@ -68,8 +69,6 @@ public class ServerListenJob extends Job
 		{
 			//log the error
 			NetWrapper.log("IO-Error during the listening for new servers: "+e.getMessage(), IStatus.ERROR,e.getCause());
-			//do additional tasks
-			NetWrapper.getDefault().stopServer();
 			return Status.CANCEL_STATUS;
 		}
 		finally

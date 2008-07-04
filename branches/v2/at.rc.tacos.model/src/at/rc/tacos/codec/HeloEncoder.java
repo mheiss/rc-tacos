@@ -29,10 +29,6 @@ public class HeloEncoder implements MessageEncoder
         writer.writeStartElement("serverPort");
         writer.writeCharacters(String.valueOf(helo.getServerPort()));
         writer.writeEndElement();
-        //write the primary server tag
-        writer.writeStartElement("serverPrimary");
-        writer.writeCharacters(String.valueOf(helo.isServerPrimary()));
-        writer.writeEndElement();
         //write the redirect tag
         writer.writeStartElement("redirect");
         writer.writeCharacters(String.valueOf(helo.isRedirect()));
