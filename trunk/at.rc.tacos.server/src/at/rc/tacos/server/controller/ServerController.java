@@ -162,22 +162,7 @@ public class ServerController
      *  @param messageInfo the information to send to the clients
      */
     public void brodcastMessage(ClientSession session,AbstractMessageInfo messageInfo)
-    {
-        //is the source of the message a web client?
-        if(session.isWebClient())
-        {
-        	//-> delegate to the send message method and exit
-        	sendMessage(session, messageInfo);
-        	return;
-        }
-        //is the type a listing request
-        if(IModelActions.LIST.equalsIgnoreCase(messageInfo.getQueryString()))
-        {
-        	//-> delegate to the send message method and exit
-        	sendMessage(session, messageInfo);
-        	return;
-        }
-    	
+    {    	
         //set up the factory
         XMLFactory factory = new XMLFactory();
         factory.setUserId(session.getUsername());
@@ -200,6 +185,12 @@ public class ServerController
                 {
                     MyClient client = nextSession.getConnection();
                     client.sendMessage(message);
+                }
+                //send the message back to the web client
+                if(nextSession.equals(session) & session.isWebClient())
+                {
+                	MyClient client = nextSession.getConnection();
+                	client.sendMessage(message);
                 }
             }
 		}
