@@ -11,16 +11,13 @@ import at.rc.tacos.web.container.Function;
  * Container for RosterEntry.
  * @author Payer Martin
  * @version 1.0
+ * TODO: Roster Entry Container so aufbauen, dass er vom Controller nicht befüllt werden muss.
  */
 public class RosterEntryContainer {
 	public static final int ADD_ROSTER_ENTRY_DEADLINE_HOURS = 4;
 	public static final int EDIT_ROSTER_ENTRY_DEADLINE_HOURS = 36;
 	public static final int REGISTER_ROSTER_ENTRY_DEADLINE_HOURS = 24;
 	
-	private Date plannedStartOfWork;
-	private Date plannedEndOfWork;
-	private Date realStartOfWork;
-	private Date realEndOfWork;
 	private Date deadline;
 	private Date registerStart;
 	private RosterEntry rosterEntry;
@@ -35,28 +32,17 @@ public class RosterEntryContainer {
 	}
 	// Additional field
 	public Date getPlannedStartOfWork() {
-		return plannedStartOfWork;
-	}
-	public void setPlannedStartOfWork(Date plannedStartOfWork) {
-		this.plannedStartOfWork = plannedStartOfWork;
+		return new Date(rosterEntry.getPlannedStartOfWork());
+
 	}
 	public Date getPlannedEndOfWork() {
-		return plannedEndOfWork;
-	}
-	public void setPlannedEndOfWork(Date plannedEndOfWork) {
-		this.plannedEndOfWork = plannedEndOfWork;
+		return new Date(rosterEntry.getPlannedEndOfWork());
 	}
 	public Date getRealStartOfWork() {
-		return realStartOfWork;
-	}
-	public void setRealStartOfWork(Date realStartOfWork) {
-		this.realStartOfWork = realStartOfWork;
+		if (rosterEntry.getRealStartOfWork() == 0) return null; else return new Date(rosterEntry.getRealStartOfWork());
 	}
 	public Date getRealEndOfWork() {
-		return realEndOfWork;
-	}
-	public void setRealEndOfWork(Date realEndOfWork) {
-		this.realEndOfWork = realEndOfWork;
+		if (rosterEntry.getRealEndOfWork() == 0) return null; else return new Date(rosterEntry.getRealEndOfWork());
 	}
 	public RosterEntry getRosterEntry() {
 		return rosterEntry;
@@ -79,86 +65,219 @@ public class RosterEntryContainer {
 	
 	public int getPlannedStartOfWorkDayOfYear() {
 		final Calendar calendar = Calendar.getInstance();
-		calendar.setTime(plannedStartOfWork);
+		calendar.setTime(getPlannedStartOfWork());
 		return calendar.get(Calendar.DAY_OF_YEAR);
 	}
 	
 	public int getPlannedStartOfWorkMonth() {
 		final Calendar calendar = Calendar.getInstance();
-		calendar.setTime(plannedStartOfWork);
+		calendar.setTime(getPlannedStartOfWork());
 		return calendar.get(Calendar.MONTH);
 	}
 	
 	public int getPlannedStartOfWorkYear() {
 		final Calendar calendar = Calendar.getInstance();
-		calendar.setTime(plannedStartOfWork);
+		calendar.setTime(getPlannedStartOfWork());
 		return calendar.get(Calendar.YEAR);
 	}
 	
 	public int getPlannedEndOfWorkDayOfYear() {
 		final Calendar calendar = Calendar.getInstance();
-		calendar.setTime(plannedEndOfWork);
+		calendar.setTime(getPlannedEndOfWork());
 		return calendar.get(Calendar.DAY_OF_YEAR);
 	}
 	
 	public int getPlannedEndOfWorkMonth() {
 		final Calendar calendar = Calendar.getInstance();
-		calendar.setTime(plannedEndOfWork);
+		calendar.setTime(getPlannedEndOfWork());
 		return calendar.get(Calendar.MONTH);
 	}
 	
 	public int getPlannedEndOfWorkYear() {
 		final Calendar calendar = Calendar.getInstance();
-		calendar.setTime(plannedEndOfWork);
+		calendar.setTime(getPlannedEndOfWork());
 		return calendar.get(Calendar.YEAR);
 	}
 	
 	public int getRealStartOfWorkDayOfYear() {
-		if (realStartOfWork != null) {
+		if (getRealStartOfWork() != null) {
 			final Calendar calendar = Calendar.getInstance();
-			calendar.setTime(realStartOfWork);
+			calendar.setTime(getRealStartOfWork());
 			return calendar.get(Calendar.DAY_OF_YEAR);
 		} else return -1;
 	}
 	
 	public int getRealStartOfWorkMonth() {
-		if (realStartOfWork != null) {
+		if (getRealStartOfWork() != null) {
 			final Calendar calendar = Calendar.getInstance();
-			calendar.setTime(realStartOfWork);
+			calendar.setTime(getRealStartOfWork());
 			return calendar.get(Calendar.MONTH);
 		} else return -1;
 	}
 	
 	public int getRealStartOfWorkYear() {
-		if (realStartOfWork != null) {
+		if (getRealStartOfWork() != null) {
 			final Calendar calendar = Calendar.getInstance();
-			calendar.setTime(realStartOfWork);
+			calendar.setTime(getRealStartOfWork());
 			return calendar.get(Calendar.YEAR);
 		} else return -1;
 	}
 	
 	public int getRealEndOfWorkDayOfYear() {
-		if (realEndOfWork != null) {
+		if (getRealEndOfWork() != null) {
 			final Calendar calendar = Calendar.getInstance();
-			calendar.setTime(realEndOfWork);
+			calendar.setTime(getRealEndOfWork());
 			return calendar.get(Calendar.DAY_OF_YEAR);
 		} else return -1;
 	}
 	
 	public int getRealEndOfWorkMonth() {
-		if (realEndOfWork != null) {
+		if (getRealEndOfWork() != null) {
 			final Calendar calendar = Calendar.getInstance();
-			calendar.setTime(realEndOfWork);
+			calendar.setTime(getRealEndOfWork());
 			return calendar.get(Calendar.MONTH);
 		} else return -1;
 	}
 	
 	public int getRealEndOfWorkYear() {
-		if (realEndOfWork != null) {
+		if (getRealEndOfWork() != null) {
 			final Calendar calendar = Calendar.getInstance();
-			calendar.setTime(realEndOfWork);
+			calendar.setTime(getRealEndOfWork());
 			return calendar.get(Calendar.YEAR);
 		} else return -1;
 	}
+	
+	public long getRealDuration() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getRealEndOfWork().getTime() - getRealStartOfWork().getTime();
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return diffMilliSeconds;
+		} else return 0;
+	}
+	
+	public int getRealDurationHours() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getRealEndOfWork().getTime() - getRealStartOfWork().getTime();
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds/(1000*60*60); 
+		} else return 0;
+	}
+	
+	public int getRealDurationMinutes() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getRealEndOfWork().getTime() - getRealStartOfWork().getTime();
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds%(1000*60*60); 
+		} else return 0;
+	}
+	
+	public long getRealDurationWeighted() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime())/3;
+			} else {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return diffMilliSeconds;
+		} else return 0;
+	}
+	
+	public int getRealDurationWeightedHours() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime())/3;
+			} else {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds/(1000*60*60);
+		} else return 0;
+	}
+	
+	public int getRealDurationWeightedMinutes() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime())/3;
+			} else {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds%(1000*60*60);
+		} else return 0;
+	}
+	
+	public long getPlannedDuration() {
+		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return diffMilliSeconds;
+		} else return 0;
+	}
+	
+	public int getPlannedDurationHours() {
+		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds/(1000*60*60);
+		} else return 0;
+	}
+	
+	public int getPlannedDurationMinutes() {
+		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds%(1000*60*60);
+		} else return 0;
+	}
+	
+	public long getPlannedDurationWeighted() {
+		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime())/3;
+			} else {
+				diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+			}
+			return diffMilliSeconds;
+		} else return 0;
+	}
+	
+	public int getPlannedDurationWeightedHours() {
+		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime())/3;
+			} else {
+				diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+			}
+			return (int)diffMilliSeconds/(1000*60*60);
+		} else return 0;
+	}
+	
+	public int getPlannedDurationWeightedMinutes() {
+		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime())/3;
+			} else {
+				diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+			}
+			return (int)diffMilliSeconds%(1000*60*60);
+		} else return 0;
+	}
+	
 	
 }

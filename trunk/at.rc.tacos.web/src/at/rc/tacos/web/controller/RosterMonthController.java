@@ -3,7 +3,6 @@ package at.rc.tacos.web.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +35,7 @@ import at.rc.tacos.web.session.UserSession;
  * Roster Month Controller
  * @author Payer Martin
  * @version 1.0
- * TODO: Default Values verwenden
+ * TODO: Stunden/Mitarbeiter und Monat ausgeben, Print Roster Month nicht vergessen 
  */
 public class RosterMonthController extends Controller {
 
@@ -318,11 +317,6 @@ public class RosterMonthController extends Controller {
 		}
 		rosterFilter.add(IFilterTypes.ROSTER_MONTH_FILTER, Integer.toString(month + 1));
 		rosterFilter.add(IFilterTypes.ROSTER_YEAR_FILTER, year.toString());
-		if (function.getCompetenceName().equals(Competence.FUNCTION_HA)) {
-			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_SERVICE_TYPE_FILTER, ServiceType.SERVICETYPE_HAUPTAMTLICH);
-		} else if (function.getCompetenceName().equals(Competence.FUNCTION_ZD)) {
-			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_SERVICE_TYPE_FILTER, ServiceType.SERIVCETYPE_ZIVILDIENER);
-		}
 		rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER, function.getCompetenceName());
 		if (locationStaffMember != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER, Integer.toString(locationStaffMember.getId()));
@@ -341,18 +335,6 @@ public class RosterMonthController extends Controller {
 			final RosterEntry rosterEntry = (RosterEntry)itRosterEntryList.next();
 			final RosterEntryContainer rosterEntryContainer = new RosterEntryContainer();
 			rosterEntryContainer.setRosterEntry(rosterEntry);
-			rosterEntryContainer.setPlannedStartOfWork(new Date(rosterEntry.getPlannedStartOfWork()));
-			rosterEntryContainer.setPlannedEndOfWork(new Date(rosterEntry.getPlannedEndOfWork()));
-			if (rosterEntry.getRealStartOfWork() == 0) {
-				rosterEntryContainer.setRealStartOfWork(null);
-			} else {
-				rosterEntryContainer.setRealStartOfWork(new Date(rosterEntry.getRealStartOfWork()));
-			}
-			if (rosterEntry.getRealEndOfWork() == 0) {
-				rosterEntryContainer.setRealEndOfWork(null);
-			} else {
-				rosterEntryContainer.setRealEndOfWork(new Date(rosterEntry.getRealEndOfWork()));
-			}
 			final Calendar deadlineCalendar = Calendar.getInstance();
 			deadlineCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
 			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);

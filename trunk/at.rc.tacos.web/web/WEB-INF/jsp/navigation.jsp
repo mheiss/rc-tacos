@@ -105,7 +105,7 @@
 			</td>
 		</tr>
 	</c:if>
-	<c:url var="url" value="/Dispatcher/personnelData.do" />
+	<c:url var="url" value="/Dispatcher/personalData.do" />
 	<tr>
 		<td id="navIcon"></td>
 		<td id="BlockContentNav"><a href="${url}">Profil</a></td>

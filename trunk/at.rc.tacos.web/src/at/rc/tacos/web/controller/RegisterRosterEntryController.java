@@ -80,18 +80,6 @@ public class RegisterRosterEntryController extends Controller {
 		// Create Roster Entry Container
 		final RosterEntryContainer rosterEntryContainer = new RosterEntryContainer();
 		rosterEntryContainer.setRosterEntry(rosterEntry);
-		rosterEntryContainer.setPlannedStartOfWork(new Date(rosterEntry.getPlannedStartOfWork()));
-		rosterEntryContainer.setPlannedEndOfWork(new Date(rosterEntry.getPlannedEndOfWork()));
-		if (rosterEntry.getRealStartOfWork() == 0) {
-			rosterEntryContainer.setRealStartOfWork(null);
-		} else {
-			rosterEntryContainer.setRealStartOfWork(new Date(rosterEntry.getRealStartOfWork()));
-		}
-		if (rosterEntry.getRealEndOfWork() == 0) {
-			rosterEntryContainer.setRealEndOfWork(null);
-		} else {
-			rosterEntryContainer.setRealEndOfWork(new Date(rosterEntry.getRealEndOfWork()));
-		}
 		final Calendar registerStartCalendar = Calendar.getInstance();
 		registerStartCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
 		registerStartCalendar.set(Calendar.HOUR, registerStartCalendar.get(Calendar.HOUR) - 24);

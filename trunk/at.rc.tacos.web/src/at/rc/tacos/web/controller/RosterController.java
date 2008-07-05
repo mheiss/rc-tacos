@@ -160,18 +160,6 @@ public class RosterController extends Controller {
 			final RosterEntry rosterEntry = (RosterEntry)itRosterEntryList.next();
 			final RosterEntryContainer rosterEntryContainer = new RosterEntryContainer();
 			rosterEntryContainer.setRosterEntry(rosterEntry);
-			rosterEntryContainer.setPlannedStartOfWork(new Date(rosterEntry.getPlannedStartOfWork()));
-			rosterEntryContainer.setPlannedEndOfWork(new Date(rosterEntry.getPlannedEndOfWork()));
-			if (rosterEntry.getRealStartOfWork() == 0) {
-				rosterEntryContainer.setRealStartOfWork(null);
-			} else {
-				rosterEntryContainer.setRealStartOfWork(new Date(rosterEntry.getRealStartOfWork()));
-			}
-			if (rosterEntry.getRealEndOfWork() == 0) {
-				rosterEntryContainer.setRealEndOfWork(null);
-			} else {
-				rosterEntryContainer.setRealEndOfWork(new Date(rosterEntry.getRealEndOfWork()));
-			}
 			final Calendar deadlineCalendar = Calendar.getInstance();
 			deadlineCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
 			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);

@@ -5,7 +5,7 @@
 		<br />
 	</c:when>
 </c:choose>
-<c:url var="url" value="/Dispatcher/personnelData.do" />
+<c:url var="url" value="/Dispatcher/personalData.do" />
 <form action="${url}" method="post" accept-charset="ISO-8859-1">
 <table class="standardForm">
 	<tr>

@@ -14,11 +14,11 @@ import at.rc.tacos.model.Login;
 import at.rc.tacos.web.session.UserSession;
 
 /**
- * Personnel Data Controller
+ * Personal Data Controller
  * @author Payer Martin
  * @version 1.0
  */
-public class PersonnelDataController extends Controller {
+public class PersonalDataController extends Controller {
 
 	private static final String MODEL_TIMESTAMP_NAME = "timestamp";
 	
