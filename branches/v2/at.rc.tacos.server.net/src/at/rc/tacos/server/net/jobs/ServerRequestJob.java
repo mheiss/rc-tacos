@@ -76,7 +76,7 @@ public class ServerRequestJob extends Job
 						socket.getBufferedOutputStream().println(responseXml);
 						socket.getBufferedOutputStream().flush();
 						
-						//we have found a failbacl server
+						//we have found a failback server
 						ServerManager.getInstance().failbackServerUpdate((Helo)message.getMessageList().get(0));
 					}
 				}
@@ -89,9 +89,8 @@ public class ServerRequestJob extends Job
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			//log the error
-			NetWrapper.log("Critical error while listening to data from the server: "+e.getMessage(), Status.ERROR,e.getCause());
+			NetWrapper.log("Critical network error detected: "+e.getMessage(), Status.ERROR,e.getCause());
+			NetWrapper.getDefault().serverFailure(socket);
 			return Status.CANCEL_STATUS;
 		}
 		finally

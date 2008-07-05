@@ -1,6 +1,5 @@
 package at.rc.tacos.server.net.controller;
 
-import java.io.PrintWriter;
 import java.net.SocketException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -11,6 +10,7 @@ import at.rc.tacos.model.Helo;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.NetWrapper;
 import at.rc.tacos.server.net.ServerManager;
+import at.rc.tacos.server.net.handler.SendHandler;
 import at.rc.tacos.server.net.jobs.ServerRequestJob;
 
 public class DisoverController
@@ -34,11 +34,13 @@ public class DisoverController
 		try
 		{
 			monitor.beginTask("Versuche eine Verbindung mit "+host+":"+port+" aufzubauen", 3);
-			//setup the message and the factory
+			
+			//setup the discover message with this server
 			Message message = new Message();
 			message.setUsername("SERVER");
 			message.setContentType(Helo.ID);
 			message.setQueryString("SERVER_DISCOVER");
+			message.addMessage(NetWrapper.getDefault().getServerInfo());
 			
 			//create a new socket
 			MySocket socket = new MySocket(host,port);
@@ -55,13 +57,9 @@ public class DisoverController
 					//set the sequence id
 					message.setSequenceId("SEQUENCE_"+i);
 					
-					//encode the message to a string
-					XMLFactory factory = new XMLFactory();
-					String xmlMessage = factory.encode(message);
-					
-					PrintWriter writer = socket.getBufferedOutputStream();
-					writer.println(xmlMessage);
-					writer.flush();
+					//send the message
+					SendHandler sendHandler = new SendHandler(message);
+					sendHandler.sendMessage(socket);
 					
 					//wait for the answer
 					String response = socket.getBufferedInputStream().readLine();
@@ -69,6 +67,7 @@ public class DisoverController
 						throw new SocketException("Failed to read the data from the socket");
 					
 					//decode the response
+					XMLFactory factory = new XMLFactory();
 					Message responseMessage = factory.decode(response);
 					if(!responseMessage.getQueryString().equalsIgnoreCase("SERVER_DISCOVER_RESPONSE"))
 						throw new IllegalArgumentException("The returned content type is not matching");

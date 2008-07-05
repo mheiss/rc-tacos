@@ -60,7 +60,7 @@ public class ServerListenJob extends Job
 					continue;
 				}
 			}
-			NetWrapper.log("Server listen job cancled, shuting down ...", IStatus.INFO,null);
+			NetWrapper.log("Server listen job canceled, shuting down ...", IStatus.INFO,null);
 			NetWrapper.getDefault().serverDestroyed();
 			//everything went ok
 			return Status.OK_STATUS;

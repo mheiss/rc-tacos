@@ -170,7 +170,7 @@ public class ServerContext
 						|| IModelActions.LOGIN.equalsIgnoreCase(queryString)
 						|| IModelActions.LOGOUT.equalsIgnoreCase(queryString)
 						|| IModelActions.LIST.equalsIgnoreCase(queryString)) {
-					handler.sendMessage();
+					handler.sendMessage(ServerContext.getCurrentInstance().getSession().getSocket());
 					//go to the next message
 					continue;
 				}
