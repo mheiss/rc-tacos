@@ -397,7 +397,7 @@ public class RosterDAOSQL implements RosterDAO
 	}
 	
 	@Override
-	public List<RosterEntry> listRosterEntriesForRosterMonth (int locationFilter, int monthFilter, int yearFilter, int locationStaffMemberFilter, String functionServiceTypeFilter, String functionStaffMemberCompetenceFilter, int staffMemberFilter) throws SQLException {
+	public List<RosterEntry> listRosterEntriesForRosterMonth (int locationFilter, int monthFilter, int yearFilter, int locationStaffMemberFilter, String functionStaffMemberCompetenceFilter, int staffMemberFilter) throws SQLException {
 		Connection connection = source.getConnection();
 		try
 		{
@@ -411,12 +411,8 @@ public class RosterDAOSQL implements RosterDAO
 				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.primaryLocationCondition"); 
 			}
 			
-			if (functionServiceTypeFilter != null) {
-				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.functionServiceTypeCondition");
-			} else {
-				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.defaultFunctionCondition");
-			}
-			
+			queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.defaultFunctionCondition");
+				
 			if (staffMemberFilter != -1) {
 				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.staffMemberCondition");
 			}
@@ -437,11 +433,6 @@ public class RosterDAOSQL implements RosterDAO
 			if (locationStaffMemberFilter != -1) {
 				i++;
 				query.setInt(i, locationStaffMemberFilter);
-			}
-			
-			if (functionServiceTypeFilter != null) {
-				i++;
-				query.setString(i, functionServiceTypeFilter);
 			}
 			
 			i++;
