@@ -39,7 +39,7 @@ public class AddressManager extends PropertyManager
 	 */
 	public void add(final Address address) 
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -71,7 +71,7 @@ public class AddressManager extends PropertyManager
 	 */
 	public void remove(final Address address) 
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -87,7 +87,7 @@ public class AddressManager extends PropertyManager
 	 */
 	public void update(final Address address) 
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{   
@@ -107,7 +107,7 @@ public class AddressManager extends PropertyManager
 	 */
 	public void removeAllElements()
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{   

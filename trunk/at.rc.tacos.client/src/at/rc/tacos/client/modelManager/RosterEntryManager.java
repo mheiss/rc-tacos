@@ -32,7 +32,7 @@ public class RosterEntryManager extends PropertyManager
      */
     public void add(final RosterEntry rosterEntry) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -48,7 +48,7 @@ public class RosterEntryManager extends PropertyManager
      */
     public void remove(final RosterEntry rosterEntry) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -64,7 +64,7 @@ public class RosterEntryManager extends PropertyManager
      */
     public void update(final RosterEntry rosterEntry) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {  	
@@ -84,7 +84,7 @@ public class RosterEntryManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -119,7 +119,7 @@ public class RosterEntryManager extends PropertyManager
 	public void fireRosterViewFilterChanged(final Calendar newDate)
 	{
 		this.displayedDate = newDate;
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{

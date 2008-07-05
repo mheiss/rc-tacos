@@ -65,7 +65,7 @@ public class LockManager extends PropertyManager
 			return;
 
 		//process the lock
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -89,7 +89,7 @@ public class LockManager extends PropertyManager
 		}
 		
 		//inform the listeners
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -104,7 +104,7 @@ public class LockManager extends PropertyManager
 	 */
 	public void removeLock(final Lock oldLock)
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{

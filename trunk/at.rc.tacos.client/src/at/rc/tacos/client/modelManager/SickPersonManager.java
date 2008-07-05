@@ -25,7 +25,7 @@ public class SickPersonManager extends PropertyManager
      */
     public void add(final SickPerson person) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -43,7 +43,7 @@ public class SickPersonManager extends PropertyManager
      */
     public void remove(final SickPerson person) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -60,7 +60,7 @@ public class SickPersonManager extends PropertyManager
      */
     public void update(final SickPerson person) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -80,7 +80,7 @@ public class SickPersonManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {   

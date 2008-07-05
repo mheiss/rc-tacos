@@ -26,7 +26,7 @@ public class MobilePhoneManager extends PropertyManager
      */
     public void add(final MobilePhoneDetail phone) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -42,7 +42,7 @@ public class MobilePhoneManager extends PropertyManager
      */
     public void remove(final MobilePhoneDetail phone) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -57,7 +57,7 @@ public class MobilePhoneManager extends PropertyManager
      */
     public void update(final MobilePhoneDetail phone)
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             { 
@@ -77,7 +77,7 @@ public class MobilePhoneManager extends PropertyManager
      */
     public void resetPhones()
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
