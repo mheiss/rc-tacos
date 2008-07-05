@@ -11,6 +11,7 @@ import at.rc.tacos.model.Helo;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.NetWrapper;
 import at.rc.tacos.server.net.ServerManager;
+import at.rc.tacos.server.net.jobs.ServerRequestJob;
 
 public class DisoverController
 {	
@@ -89,10 +90,31 @@ public class DisoverController
 		}
 		catch(Exception e)
 		{
-			
 			NetWrapper.log("Unexpected error occured while trying to discover a server:"+e.getMessage(), IStatus.ERROR, e.getCause());
 			//failed to discover the server
 			return null;
+		}
+	}
+	
+	/**
+	 * Called to do the additional task
+	 */
+	public void disoverComplete(MySocket socket,Helo serverInfo)
+	{
+		if(socket != null)
+		{
+			NetWrapper.log("Found primary server "+ServerManager.getInstance().getPrimaryServer(),IStatus.INFO,null);
+			//Start the thread to listen to data from the server
+			ServerRequestJob serverRequestJob = new ServerRequestJob(socket);
+			serverRequestJob.schedule();
+			//this server will be the failback
+			ServerManager.getInstance().failbackServerUpdate(serverInfo);
+		}
+		else
+		{
+			//this server will be the primary server
+			ServerManager.getInstance().primaryServerUpdate(serverInfo);			
+			NetWrapper.log("No other running server found, this server will be the primary",IStatus.INFO,null);
 		}
 	}
 }

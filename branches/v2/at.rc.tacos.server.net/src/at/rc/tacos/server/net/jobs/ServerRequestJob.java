@@ -14,7 +14,6 @@ import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.Helo;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.NetWrapper;
-import at.rc.tacos.server.net.ServerManager;
 
 /**
  * <p><strong>ServerRequestJob</strong> handles all requests from other servers
@@ -82,8 +81,6 @@ public class ServerRequestJob extends Job
 					//timeout, just go on . ..
 				}
 			}
-			//server is offline
-			ServerManager.getInstance().failbackServerUpdate(null);
 			return Status.OK_STATUS;
 		}
 		catch(Exception e)
@@ -91,7 +88,6 @@ public class ServerRequestJob extends Job
 			e.printStackTrace();
 			//log the error
 			NetWrapper.log("Critical error while listening to data from the server: "+e.getMessage(), Status.ERROR,e.getCause());
-			ServerManager.getInstance().failbackServerUpdate(null);
 			return Status.CANCEL_STATUS;
 		}
 		finally

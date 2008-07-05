@@ -1,23 +1,21 @@
 package at.rc.tacos.server.net;
 
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.common.Message;
-import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.Session;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.handler.ErrorHandler;
 import at.rc.tacos.server.net.handler.MessageHandler;
+import at.rc.tacos.server.net.handler.SendHandler;
 
 /**
  * <p><strong>ServerContext</strong> 
@@ -165,20 +163,14 @@ public class ServerContext
 			String queryString = nextMessage.getQueryString();
 			try
 			{
-				//encode the message to a string
-				XMLFactory factory = new XMLFactory();
-				String xmlMessage = factory.encode(nextMessage);
+				SendHandler handler = new SendHandler(nextMessage);
 
 				//send the message back to the source if the content type is system
 				if(SystemMessage.ID.equalsIgnoreCase(nextMessage.getContentType())
 						|| IModelActions.LOGIN.equalsIgnoreCase(queryString)
 						|| IModelActions.LOGOUT.equalsIgnoreCase(queryString)
 						|| IModelActions.LIST.equalsIgnoreCase(queryString)) {
-					//the destination socket
-					final MySocket destination = ServerContext.getCurrentInstance().getSession().getSocket();
-					PrintWriter writer = destination.getBufferedOutputStream();
-					writer.println(xmlMessage);
-					writer.flush();
+					handler.sendMessage();
 					//go to the next message
 					continue;
 				}
@@ -188,24 +180,7 @@ public class ServerContext
 						|| IModelActions.ADD_ALL.equalsIgnoreCase(queryString)
 						|| IModelActions.UPDATE.equalsIgnoreCase(queryString)
 						|| IModelActions.REMOVE.equalsIgnoreCase(queryString)) {
-					//get all currently connected sockets
-					ListIterator<Session> sessionIter = SessionManager.getInstance().getClientSessions().listIterator();
-					while(sessionIter.hasNext())
-					{
-						Session nextSession = sessionIter.next();
-						//do not brodcast messages if the session is not authenicated
-						if(!nextSession.isAuthenticated())
-							continue;
-						
-						//do not brodcast messages to web clients
-						if(nextSession.getLogin().isWebClient())
-							continue;
-						
-						//send the message to the client
-						PrintWriter writer = nextSession.getSocket().getBufferedOutputStream();
-						writer.println(xmlMessage);
-						writer.flush();
-					}
+					handler.brodcastMessage();
 				}
 			}
 			catch(Exception e)
