@@ -2,7 +2,6 @@ package at.rc.tacos.server.net;
 
 import at.rc.tacos.factory.PropertyManager;
 import at.rc.tacos.model.Helo;
-import at.rc.tacos.net.MyServerSocket;
 
 /**
  * The server manager is responsible for the connected servers

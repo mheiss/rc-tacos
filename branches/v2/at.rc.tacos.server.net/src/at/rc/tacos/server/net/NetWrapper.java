@@ -14,14 +14,17 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.BundleContext;
 
+import at.rc.tacos.common.IModelActions;
+import at.rc.tacos.common.Message;
 import at.rc.tacos.model.Helo;
 import at.rc.tacos.model.Session;
+import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.net.MyServerSocket;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.controller.DisoverController;
+import at.rc.tacos.server.net.handler.SendHandler;
 import at.rc.tacos.server.net.jobs.ClientListenJob;
 import at.rc.tacos.server.net.jobs.ServerListenJob;
-import at.rc.tacos.server.net.jobs.ServerRequestJob;
 import at.rc.tacos.server.net.jobs.TSJ;
 
 /**
@@ -33,7 +36,7 @@ public class NetWrapper extends Plugin
 	public static final String PLUGIN_ID = "at.rc.tacos.server.net";
 
 	// The shared instance
-	private static NetWrapper plugin;	
+	private static NetWrapper plugin;
 
 	//information about the server
 	private Helo serverInfo;
@@ -135,20 +138,8 @@ public class NetWrapper extends Plugin
 		log("Checking for other running servers...",IStatus.INFO,null);
 		DisoverController discover = new DisoverController(monitor);
 		MySocket socket = discover.discoverServer(primaryHost,primaryServerPort);
-		if(socket != null)
-		{
-			//STEP2: Start the thread to listen to data from the server
-			ServerRequestJob serverRequestJob = new ServerRequestJob(socket);
-			serverRequestJob.schedule();
-			ServerManager.getInstance().failbackServerUpdate(serverInfo);
-			log("Found primary server "+ServerManager.getInstance().getPrimaryServer(),IStatus.INFO,null);
-		}
-		else
-		{
-			//this server will be the primary server
-			ServerManager.getInstance().primaryServerUpdate(serverInfo);			
-			log("No other running server found, this server will be the primary",IStatus.INFO,null);
-		}
+		discover.disoverComplete(socket, serverInfo);
+		
 		//inform the viewers that the server is listening
 		listening = true;
 		NetWrapper.getDefault().startServer();
@@ -245,10 +236,10 @@ public class NetWrapper extends Plugin
 	/**
 	 * Called when the client liste job ended
 	 */
-	public void primaryServerDestroyed()
+	public void serverDestroyed()
 	{
 		//the primary server went down, so cleanup and shutdown the server
-		Job job = new Job("ServerTerminate") {
+		Job job = new Job("Terminating the server") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try
@@ -259,12 +250,99 @@ public class NetWrapper extends Plugin
 				}
 				catch(Exception e)
 				{
-					log("Failed to shutdown the primary server: "+e.getMessage(),IStatus.ERROR,e.getCause());
+					log("Failed to shutdown the server: "+e.getMessage(),IStatus.ERROR,e.getCause());
 					return Status.CANCEL_STATUS;
 				}
 			}
 		};
 		job.schedule();
+	}	
+	
+	/**
+	 * Called when the server request job went down
+	 */
+	public void serverFailure()
+	{
+		//we are the primary server
+		if(ServerManager.getInstance().getPrimaryServer().equals(serverInfo))
+		{
+			
+			Job inforJob = new Job("Client info job")
+			{
+				@Override
+				protected IStatus run(IProgressMonitor monitor) 
+				{
+					try
+					{
+						//STEP 1: Inform the clients that the failback went down	
+						Message message = new Message();
+						message.setUsername("SERVER");
+						message.setSequenceId("SERVER_SEQUENCE");
+						message.setContentType(SystemMessage.ID);
+						message.setQueryString(IModelActions.SYSTEM);
+						message.addMessage(new SystemMessage("Die Verbindung zum Failback Server wurde getrennt!\n" +
+								"Bitte informieren Sie die Systemadministratoren",SystemMessage.TYPE_ERROR));
+						
+						//send the message to all clients
+						SendHandler sendHandler = new SendHandler(message);
+						sendHandler.brodcastMessage();
+						
+						//STEP 2: Update the ui
+						ServerManager.getInstance().failbackServerUpdate(null);
+						
+						return Status.OK_STATUS;
+					}
+					catch(Exception e)
+					{
+						NetWrapper.log("Failed to inform the connected clients that the failback went down", IStatus.ERROR, e.getCause());
+						return Status.CANCEL_STATUS;
+					}
+					finally
+					{
+						monitor.done();
+					}
+				}
+			};
+			inforJob.schedule();
+		}
+		//we are the failback
+		else
+		{
+			Job job = new Job("Discover server") 
+			{
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try
+					{
+						//STEP 1: Try to discover the server
+						DisoverController discover = new DisoverController(monitor);
+						MySocket socket = discover.discoverServer(primaryHost, primaryServerPort);
+						discover.disoverComplete(socket, serverInfo);
+						
+						//STEP 2: Shutdown the ServerRequestJob cause we take controll
+						Job.getJobManager().cancel(TSJ.SERVER_REQUEST_JOB);
+						for(Job job:Job.getJobManager().find(TSJ.SERVER_REQUEST_JOB))
+							job.join();
+						
+						//STEP 3: Update the ui
+						ServerManager.getInstance().failbackServerUpdate(null);
+						
+						return Status.OK_STATUS;
+					}
+					catch(Exception e)
+					{
+						NetWrapper.log("Failed during the switchover from failback to primary server" , Status.ERROR, e.getCause());
+						return Status.CANCEL_STATUS;
+					}
+					finally
+					{
+						monitor.done();
+					}
+				}
+			};
+			job.setUser(true);
+			job.schedule();
+		}
 	}
 
 	// CHANGE LISTENERS

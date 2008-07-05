@@ -60,15 +60,15 @@ public class ServerListenJob extends Job
 					continue;
 				}
 			}
-			//shutdown the server
-			NetWrapper.getDefault().shutdownServer(monitor);
+			NetWrapper.log("Server listen job cancled, shuting down ...", IStatus.INFO,null);
+			NetWrapper.getDefault().serverDestroyed();
 			//everything went ok
 			return Status.OK_STATUS;
 		}
 		catch(Exception e)
 		{
-			//log the error
 			NetWrapper.log("IO-Error during the listening for new servers: "+e.getMessage(), IStatus.ERROR,e.getCause());
+			NetWrapper.getDefault().serverDestroyed();
 			return Status.CANCEL_STATUS;
 		}
 		finally

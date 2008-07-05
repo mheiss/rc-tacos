@@ -62,15 +62,14 @@ public class ClientListenJob extends Job
 				}
 			}
 			//shutdown the socket
-			NetWrapper.getDefault().primaryServerDestroyed();
+			NetWrapper.log("Client listen job cancled, shuting down ...", IStatus.INFO,null);
+			NetWrapper.getDefault().serverDestroyed();
 			return Status.OK_STATUS;
 		}
 		catch(Exception e)
 		{
-			//log the error
 			NetWrapper.log("IO-Error during listening for new client connections:"+e.getMessage(), IStatus.ERROR,e.getCause());
-			//shutdown the socket
-			NetWrapper.getDefault().primaryServerDestroyed();
+			NetWrapper.getDefault().serverDestroyed();
 			return Status.CANCEL_STATUS;
 		}
 		finally
