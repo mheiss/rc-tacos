@@ -411,7 +411,9 @@ public class RosterDAOSQL implements RosterDAO
 				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.primaryLocationCondition"); 
 			}
 			
-			queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.defaultFunctionCondition");
+			if (functionStaffMemberCompetenceFilter != null) {
+				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.defaultFunctionCondition");
+			}
 				
 			if (staffMemberFilter != -1) {
 				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.staffMemberCondition");
@@ -435,8 +437,10 @@ public class RosterDAOSQL implements RosterDAO
 				query.setInt(i, locationStaffMemberFilter);
 			}
 			
-			i++;
-			query.setString(i, functionStaffMemberCompetenceFilter);
+			if (functionStaffMemberCompetenceFilter != null) {
+				i++;
+				query.setString(i, functionStaffMemberCompetenceFilter);
+			}
 			
 			if (staffMemberFilter != -1) {
 				i++;
