@@ -55,14 +55,11 @@ public class SendHandler
 	/**
 	 * Sends the message to the destination socket
 	 */
-	public void sendMessage() throws Exception
+	public void sendMessage(MySocket socket) throws Exception
 	{
 		//encode the message to xml
 		String xmlMessage = factory.encode(message);
-		
-		//the destination socket
-		final MySocket destination = ServerContext.getCurrentInstance().getSession().getSocket();
-		PrintWriter writer = destination.getBufferedOutputStream();
+		PrintWriter writer = socket.getBufferedOutputStream();
 		writer.println(xmlMessage);
 		writer.flush();
 	}

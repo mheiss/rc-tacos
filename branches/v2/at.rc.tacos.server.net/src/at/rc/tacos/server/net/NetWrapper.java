@@ -261,13 +261,23 @@ public class NetWrapper extends Plugin
 	/**
 	 * Called when the server request job went down
 	 */
-	public void serverFailure()
+	public void serverFailure(MySocket socket)
 	{
+		//shutdown the socket
+		try
+		{
+			socket.cleanup();
+		}
+		catch(Exception e)
+		{
+			NetWrapper.log("Failed to shutdown the socket to the server", IStatus.ERROR, null);
+		}
+		
 		//we are the primary server
 		if(ServerManager.getInstance().getPrimaryServer().equals(serverInfo))
 		{
-			
-			Job inforJob = new Job("Client info job")
+			NetWrapper.log("Disconnect of the failback server detected", IStatus.ERROR, null);
+			Job infoJob = new Job("Client info job")
 			{
 				@Override
 				protected IStatus run(IProgressMonitor monitor) 
@@ -303,17 +313,21 @@ public class NetWrapper extends Plugin
 					}
 				}
 			};
-			inforJob.schedule();
+			infoJob.schedule();
 		}
 		//we are the failback
 		else
 		{
+			NetWrapper.log("Disconnect of the primary server detected", IStatus.ERROR, null);
 			Job job = new Job("Discover server") 
 			{
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					try
 					{
+						//STEP 0: Update the ui
+						ServerManager.getInstance().primaryServerUpdate(null);
+						
 						//STEP 1: Try to discover the server
 						DisoverController discover = new DisoverController(monitor);
 						MySocket socket = discover.discoverServer(primaryHost, primaryServerPort);
