@@ -60,7 +60,6 @@ public class PrintRosterMonthController extends Controller {
 	
 	private static final String PARAM_YEAR_NAME = "year";
 	private static final String MODEL_YEAR_NAME = "year";
-	private static final String MODEL_YEAR_LIST_NAME = "yearList";
 	
 	private static final String MODEL_ROSTER_MONTH_CONTAINER_NAME = "rosterMonthContainer";
 
@@ -263,11 +262,6 @@ public class PrintRosterMonthController extends Controller {
 		}
 		rosterFilter.add(IFilterTypes.ROSTER_MONTH_FILTER, Integer.toString(month + 1));
 		rosterFilter.add(IFilterTypes.ROSTER_YEAR_FILTER, year.toString());
-		if (function.getCompetenceName().equals(Competence.FUNCTION_HA)) {
-			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_SERVICE_TYPE_FILTER, ServiceType.SERVICETYPE_HAUPTAMTLICH);
-		} else if (function.getCompetenceName().equals(Competence.FUNCTION_ZD)) {
-			rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_SERVICE_TYPE_FILTER, ServiceType.SERIVCETYPE_ZIVILDIENER);
-		}
 		rosterFilter.add(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER, function.getCompetenceName());
 		if (locationStaffMember != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER, Integer.toString(locationStaffMember.getId()));
@@ -286,18 +280,6 @@ public class PrintRosterMonthController extends Controller {
 			final RosterEntry rosterEntry = (RosterEntry)itRosterEntryList.next();
 			final RosterEntryContainer rosterEntryContainer = new RosterEntryContainer();
 			rosterEntryContainer.setRosterEntry(rosterEntry);
-			rosterEntryContainer.setPlannedStartOfWork(new Date(rosterEntry.getPlannedStartOfWork()));
-			rosterEntryContainer.setPlannedEndOfWork(new Date(rosterEntry.getPlannedEndOfWork()));
-			if (rosterEntry.getRealStartOfWork() == 0) {
-				rosterEntryContainer.setRealStartOfWork(null);
-			} else {
-				rosterEntryContainer.setRealStartOfWork(new Date(rosterEntry.getRealStartOfWork()));
-			}
-			if (rosterEntry.getRealEndOfWork() == 0) {
-				rosterEntryContainer.setRealEndOfWork(null);
-			} else {
-				rosterEntryContainer.setRealEndOfWork(new Date(rosterEntry.getRealEndOfWork()));
-			}
 			final Calendar deadlineCalendar = Calendar.getInstance();
 			deadlineCalendar.setTime(rosterEntryContainer.getPlannedStartOfWork());
 			deadlineCalendar.set(Calendar.HOUR, deadlineCalendar.get(Calendar.HOUR) - RosterEntryContainer.EDIT_ROSTER_ENTRY_DEADLINE_HOURS);
