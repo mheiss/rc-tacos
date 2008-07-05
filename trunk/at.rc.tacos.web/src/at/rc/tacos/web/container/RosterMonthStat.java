@@ -1,35 +1,20 @@
 package at.rc.tacos.web.container;
 
-import java.util.ArrayList;
-import java.util.List;
-import at.rc.tacos.model.StaffMember;
-
 /**
- * StaffMemberStatisticContainer
+ * Roster Month Stat
  * @author Payer Martin
  * @version 1.0
  */
-public class RosterStatContainer {
-	private List<RosterEntryContainer> rosterEntryContainerList;
+public class RosterMonthStat {
 	private long realDurationWeighted;
 	private long realDuration;
 	private long plannedDurationWeighted;
 	private long plannedDuration;
-	public RosterStatContainer() {
+	public RosterMonthStat() {
 		realDurationWeighted = 0;
 		realDuration = 0;
 		plannedDurationWeighted = 0;
 		plannedDuration = 0;
-		rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
-	}
-
-	public List<RosterEntryContainer> getRosterEntryContainerList() {
-		return rosterEntryContainerList;
-	}
-
-	public void setRosterEntryContainerList(
-			List<RosterEntryContainer> rosterEntryContainerList) {
-		this.rosterEntryContainerList = rosterEntryContainerList;
 	}
 
 	public long getRealDurationWeighted() {
@@ -87,6 +72,22 @@ public class RosterStatContainer {
 	
 	public int getPlannedDurationWeightedMinutes() {
 		return (int)plannedDurationWeighted%(1000*60*60);
+	}
+	
+	public void addPlannedDuration(long plannedDuration) {
+		this.plannedDuration = this.plannedDuration + plannedDuration;
+	}
+	
+	public void addPlannedDurationWeighted(long plannedDurationWeighted) {
+		this.plannedDurationWeighted = this.plannedDurationWeighted + plannedDurationWeighted;
+	}
+	
+	public void addRealDuration(long realDuration) {
+		this.realDuration = this.realDuration + realDuration;
+	}
+	
+	public void addRealDurationWeighted(long realDurationWeighted) {
+		this.realDurationWeighted = this.realDurationWeighted + realDurationWeighted;
 	}
 
 }

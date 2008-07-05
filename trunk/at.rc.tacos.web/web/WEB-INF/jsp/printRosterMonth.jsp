@@ -4,6 +4,7 @@
 <c:set var="dayList" value="${params.rosterMonthContainer.dayList}" />
 <c:set var="staffMemberList"
 	value="${params.rosterMonthContainer.staffMemberList}" />
+<c:set var="staffMemberRosterMonthStatMap" value="${params.rosterMonthContainer.staffMemberRosterMonthStatMap}" />
 <c:choose>
 	<c:when test="${fn:length(staffMemberList) gt 0}">
 		<table id="rosterEntryTable" class="list" cellpadding="0"
@@ -36,133 +37,158 @@
 						<th nowrap="nowrap" colspan="2">${staffMemberIterator.lastName}&nbsp;${staffMemberIterator.firstName}</th>
 					</c:forEach>
 				</tr>
-				<c:forEach var="day" items="${dayList}">
+				<tbody>
+					<c:forEach var="day" items="${dayList}">
+						<tr>
+							<td nowrap="nowrap">${day.day}</td>
+							<td nowrap="nowrap"><c:choose>
+								<c:when test="${day.dayOfWeek eq 1}">
+									<span style="color: red">So</span>
+								</c:when>
+								<c:when test="${day.dayOfWeek eq 2}">Mo</c:when>
+								<c:when test="${day.dayOfWeek eq 3}">Di</c:when>
+								<c:when test="${day.dayOfWeek eq 4}">Mi</c:when>
+								<c:when test="${day.dayOfWeek eq 5}">Do</c:when>
+								<c:when test="${day.dayOfWeek eq 6}">Fr</c:when>
+								<c:when test="${day.dayOfWeek eq 7}">Sa</c:when>
+							</c:choose></td>
+							<c:forEach var="dayRosterEntryContainerMapTemp"
+								items="${rosterEntryContainerMap}">
+								<c:set var="dayTemp"
+									value="${dayRosterEntryContainerMapTemp.key}" />
+								<c:if test="${day.day eq dayTemp.day}">
+									<c:set var="dayRosterEntryContainerMap"
+										value="${dayRosterEntryContainerMapTemp}" />
+								</c:if>
+							</c:forEach>
+							<c:forEach var="staffMemberIterator" items="${staffMemberList}">
+								<c:forEach var="staffMemberRosterEntryContainerMap"
+									items="${dayRosterEntryContainerMap.value}">
+									<c:set var="staffMemberTemp"
+										value="${staffMemberRosterEntryContainerMap.key}" />
+									<c:if
+										test="${staffMemberIterator.staffMemberId eq staffMemberTemp.staffMemberId}">
+										<c:set var="rosterEntryContainerList"
+											value="${staffMemberRosterEntryContainerMap.value}" />
+									</c:if>
+								</c:forEach>
+								<c:choose>
+									<c:when test="${fn:length(rosterEntryContainerList) gt 0}">
+										<td nowrap="nowrap">
+										<table class="innerTable" cellspacing="0" cellpadding="0">
+											<c:forEach var="rosterEntryContainer"
+												items="${rosterEntryContainerList}">
+												<c:choose>
+													<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
+														<c:set var="class">holiday</c:set>
+													</c:when>
+													<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Leitstellendisponent'}">
+														<c:set var="class">controlOperator</c:set>
+													</c:when>
+													<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Notfallsanitäter'}">
+														<c:set var="class">emergencyMedic</c:set>
+													</c:when>
+												</c:choose>
+												<tr class="${class}">
+													<td nowrap="nowrap"><c:choose>
+													<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
+														<c:choose>
+															<c:when
+																test="${fn:length(rosterEntryContainer.rosterEntry.rosterNotes) gt 6}">
+																<c:set var="truncatedTitle">
+																	<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.rosterNotes}</str:truncateNicely>
+																</c:set>
+																<span class="showJobName" style="cursor:pointer"
+																	title="${rosterEntryContainer.rosterEntry.rosterNotes}">${truncatedTitle}</span>
+															</c:when>
+															<c:otherwise>
+																<span>${rosterEntryContainer.rosterEntry.rosterNotes}</span>
+															</c:otherwise>
+														</c:choose>
+													</c:when>
+													<c:otherwise>
+														<c:choose>
+															<c:when
+																test="${fn:length(rosterEntryContainer.rosterEntry.job.jobName) gt 6}">
+																<c:set var="truncatedTitle">
+																	<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.job.jobName}</str:truncateNicely>
+																</c:set>
+																<span class="showJobName" style="cursor:pointer"
+																	title="${rosterEntryContainer.rosterEntry.job.jobName}">${truncatedTitle}</span>
+															</c:when>
+															<c:otherwise>
+																<span>${rosterEntryContainer.rosterEntry.job.jobName}</span>
+															</c:otherwise>
+														</c:choose>
+													</c:otherwise>
+													</c:choose></td>
+												</tr>
+												<c:remove var="class" />
+											</c:forEach>
+										</table>
+										</td>
+										<td nowrap="nowrap">
+										<table class="innerTable" cellspacing="0" cellpadding="0">
+											<c:forEach var="rosterEntryContainer"
+												items="${rosterEntryContainerList}">
+												<c:choose>
+													<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
+														<c:set var="class">holiday</c:set>
+													</c:when>
+													<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Notfallsanitäter'}">
+														<c:set var="class">emergencyMedic</c:set>
+													</c:when>
+													<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Leitstellendisponent'}">
+														<c:set var="class">controlOperator</c:set>
+													</c:when>
+												</c:choose>
+												<tr class="${class}">
+													<td nowrap="nowrap"><span><fmt:formatDate type="time"
+														timeStyle="short"
+														value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate
+														type="time" timeStyle="short"
+														value="${rosterEntryContainer.plannedEndOfWork}" /></span> <br />
+													</td>
+												</tr>
+												<c:remove var="class" />
+											</c:forEach>
+										</table>
+										</td>
+									</c:when>
+									<c:otherwise>
+										<td nowrap="nowrap">&nbsp;</td>
+										<td nowrap="nowrap">&nbsp;</td>
+									</c:otherwise>
+								</c:choose>
+								<c:remove var="rosterEntryContainerList" />
+							</c:forEach>
+						</tr>
+						<c:remove var="dayRosterEntryContainerMap" />
+					</c:forEach>
 					<tr>
-						<td nowrap="nowrap">${day.day}</td>
-						<td nowrap="nowrap"><c:choose>
-							<c:when test="${day.dayOfWeek eq 1}">
-								<span style="color: red">So</span>
-							</c:when>
-							<c:when test="${day.dayOfWeek eq 2}">Mo</c:when>
-							<c:when test="${day.dayOfWeek eq 3}">Di</c:when>
-							<c:when test="${day.dayOfWeek eq 4}">Mi</c:when>
-							<c:when test="${day.dayOfWeek eq 5}">Do</c:when>
-							<c:when test="${day.dayOfWeek eq 6}">Fr</c:when>
-							<c:when test="${day.dayOfWeek eq 7}">Sa</c:when>
-						</c:choose></td>
-						<c:forEach var="dayRosterEntryContainerMapTemp"
-							items="${rosterEntryContainerMap}">
-							<c:set var="dayTemp"
-								value="${dayRosterEntryContainerMapTemp.key}" />
-							<c:if test="${day.day eq dayTemp.day}">
-								<c:set var="dayRosterEntryContainerMap"
-									value="${dayRosterEntryContainerMapTemp}" />
-							</c:if>
-						</c:forEach>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
 						<c:forEach var="staffMemberIterator" items="${staffMemberList}">
-							<c:forEach var="staffMemberRosterEntryContainerMap"
-								items="${dayRosterEntryContainerMap.value}">
-								<c:set var="staffMemberTemp"
-									value="${staffMemberRosterEntryContainerMap.key}" />
-								<c:if
-									test="${staffMemberIterator.staffMemberId eq staffMemberTemp.staffMemberId}">
-									<c:set var="rosterEntryContainerList"
-										value="${staffMemberRosterEntryContainerMap.value}" />
+							<c:forEach var="staffMemberRosterMonthStatMapEntry" items="${staffMemberRosterMonthStatMap}">
+								<c:set var="staffMemberTemp" value="${staffMemberRosterMonthStatMapEntry.key}" />
+								<c:if test="${staffMemberIterator.staffMemberId eq staffMemberTemp.staffMemberId}">
+									<c:set var="rosterMonthStat" value="${staffMemberRosterMonthStatMapEntry.value}" />
 								</c:if>
 							</c:forEach>
 							<c:choose>
-								<c:when test="${fn:length(rosterEntryContainerList) gt 0}">
-									<td nowrap="nowrap">
-									<table class="innerTable" cellspacing="0" cellpadding="0">
-										<c:forEach var="rosterEntryContainer"
-											items="${rosterEntryContainerList}">
-											<c:choose>
-												<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
-													<c:set var="class">holiday</c:set>
-												</c:when>
-												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Leitstellendisponent'}">
-													<c:set var="class">controlOperator</c:set>
-												</c:when>
-												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Notfallsanitäter'}">
-													<c:set var="class">emergencyMedic</c:set>
-												</c:when>
-											</c:choose>
-											<tr class="${class}">
-												<td nowrap="nowrap"><c:choose>
-												<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
-													<c:choose>
-														<c:when
-															test="${fn:length(rosterEntryContainer.rosterEntry.rosterNotes) gt 6}">
-															<c:set var="truncatedTitle">
-																<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.rosterNotes}</str:truncateNicely>
-															</c:set>
-															<span class="showJobName" style="cursor:pointer"
-																title="${rosterEntryContainer.rosterEntry.rosterNotes}">${truncatedTitle}</span>
-														</c:when>
-														<c:otherwise>
-															<span>${rosterEntryContainer.rosterEntry.rosterNotes}</span>
-														</c:otherwise>
-													</c:choose>
-												</c:when>
-												<c:otherwise>
-													<c:choose>
-														<c:when
-															test="${fn:length(rosterEntryContainer.rosterEntry.job.jobName) gt 6}">
-															<c:set var="truncatedTitle">
-																<str:truncateNicely lower="4" upper="6">${rosterEntryContainer.rosterEntry.job.jobName}</str:truncateNicely>
-															</c:set>
-															<span class="showJobName" style="cursor:pointer"
-																title="${rosterEntryContainer.rosterEntry.job.jobName}">${truncatedTitle}</span>
-														</c:when>
-														<c:otherwise>
-															<span>${rosterEntryContainer.rosterEntry.job.jobName}</span>
-														</c:otherwise>
-													</c:choose>
-												</c:otherwise>
-												</c:choose></td>
-											</tr>
-											<c:remove var="class" />
-										</c:forEach>
-									</table>
-									</td>
-									<td nowrap="nowrap">
-									<table class="innerTable" cellspacing="0" cellpadding="0">
-										<c:forEach var="rosterEntryContainer"
-											items="${rosterEntryContainerList}">
-											<c:choose>
-												<c:when test="${rosterEntryContainer.rosterEntry.rosterNotes eq 'Urlaub'}">
-													<c:set var="class">holiday</c:set>
-												</c:when>
-												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Notfallsanitäter'}">
-													<c:set var="class">emergencyMedic</c:set>
-												</c:when>
-												<c:when test="${rosterEntryContainer.rosterEntry.job.jobName eq 'Leitstellendisponent'}">
-													<c:set var="class">controlOperator</c:set>
-												</c:when>
-											</c:choose>
-											<tr class="${class}">
-												<td nowrap="nowrap"><span><fmt:formatDate type="time"
-													timeStyle="short"
-													value="${rosterEntryContainer.plannedStartOfWork}" />-<fmt:formatDate
-													type="time" timeStyle="short"
-													value="${rosterEntryContainer.plannedEndOfWork}" /></span> <br />
-												</td>
-											</tr>
-											<c:remove var="class" />
-										</c:forEach>
-									</table>
-									</td>
+								<c:when test="${rosterMonthStat eq null}">
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
 								</c:when>
 								<c:otherwise>
-									<td nowrap="nowrap">&nbsp;</td>
-									<td nowrap="nowrap">&nbsp;</td>
+									<td>&nbsp;</td>
+									<td><b>Gesamt:</b>&nbsp;${rosterMonthStat.plannedDurationHours}h&nbsp;${rosterMonthStat.plannedDurationMinutes}min</td>
 								</c:otherwise>
 							</c:choose>
-							<c:remove var="rosterEntryContainerList" />
+							<c:remove var="rosterMonthStat" />
 						</c:forEach>
 					</tr>
-					<c:remove var="dayRosterEntryContainerMap" />
-				</c:forEach>
+				</tbody>
 		</table>
 	</c:when>
 	<c:otherwise>
