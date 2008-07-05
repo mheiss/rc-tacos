@@ -331,11 +331,12 @@ public class RosterDAOMySQL implements RosterDAO
 	@Override
 	public List<RosterEntry> listRosterEntriesForRosterMonth(
 			int locationFilter, int monthFilter, int yearFilter,
-			int locationStaffMemberFilter, String functionJobServiceTypeFilter,
+			int locationStaffMemberFilter,
 			String functionStaffMemberCompetenceFilter, int staffMemberFilter)
 			throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
