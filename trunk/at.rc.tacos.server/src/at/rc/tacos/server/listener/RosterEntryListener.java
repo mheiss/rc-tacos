@@ -83,7 +83,10 @@ public class RosterEntryListener extends ServerListenerAdapter
 				locationFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_FILTER));
 			}
 			int locationStaffMemberFilter = -1;
-			String functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
+			String functionStaffMemberCompetenceFilter = null;
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER)) {
+				functionStaffMemberCompetenceFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_FUNCTION_STAFF_MEMBER_COMPETENCE_FILTER);
+			}
 			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER)) {
 				locationStaffMemberFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER));
 			}
