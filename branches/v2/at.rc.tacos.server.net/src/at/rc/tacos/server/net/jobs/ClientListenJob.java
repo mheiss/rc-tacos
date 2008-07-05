@@ -68,7 +68,7 @@ public class ClientListenJob extends Job
 		}
 		catch(Exception e)
 		{
-			NetWrapper.log("IO-Error during listening for new client connections:"+e.getMessage(), IStatus.ERROR,e.getCause());
+			NetWrapper.log("IO-Error during listening for new clients:"+e.getMessage(), IStatus.ERROR,e.getCause());
 			NetWrapper.getDefault().serverDestroyed();
 			return Status.CANCEL_STATUS;
 		}

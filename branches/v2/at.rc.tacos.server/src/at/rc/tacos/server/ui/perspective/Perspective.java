@@ -2,7 +2,6 @@ package at.rc.tacos.server.ui.perspective;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-
 import at.rc.tacos.server.ui.views.OnlineServerView;
 import at.rc.tacos.server.ui.views.OnlineUsersView;
 import at.rc.tacos.server.ui.views.ServerStatusView;

@@ -284,6 +284,9 @@ public class NetWrapper extends Plugin
 				{
 					try
 					{
+						//STEP 0: Update the ui
+						ServerManager.getInstance().failbackServerUpdate(null);
+						
 						//STEP 1: Inform the clients that the failback went down	
 						Message message = new Message();
 						message.setUsername("SERVER");
@@ -296,15 +299,12 @@ public class NetWrapper extends Plugin
 						//send the message to all clients
 						SendHandler sendHandler = new SendHandler(message);
 						sendHandler.brodcastMessage();
-						
-						//STEP 2: Update the ui
-						ServerManager.getInstance().failbackServerUpdate(null);
-						
+
 						return Status.OK_STATUS;
 					}
 					catch(Exception e)
 					{
-						NetWrapper.log("Failed to inform the connected clients that the failback went down", IStatus.ERROR, e.getCause());
+						NetWrapper.log("Failed to inform the connected clients that the failback went down : "+e.getMessage(), IStatus.ERROR, e.getCause());
 						return Status.CANCEL_STATUS;
 					}
 					finally

@@ -2,6 +2,7 @@ package at.rc.tacos.server.ui.views;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Calendar;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -20,6 +21,7 @@ import at.rc.tacos.model.Helo;
 import at.rc.tacos.server.net.NetWrapper;
 import at.rc.tacos.server.net.ServerManager;
 import at.rc.tacos.server.ui.utils.CustomUI;
+import at.rc.tacos.util.MyUtils;
 
 public class OnlineServerView extends ViewPart implements PropertyChangeListener
 {
@@ -233,7 +235,7 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 					secondStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.offline"));
 					secondStatusText.setText("Failback Server offline");
 					secondStatusDesc.setText("Keine Verbindungen zum Failback Server möglich.");	
-					secondServerInfo.setText("");
+					secondServerInfo.setText("Verbindung am "+ MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(), MyUtils.timeAndDateFormat)+" getrennt");
 					//refresch
 					secondSection.layout(true);
 				}
