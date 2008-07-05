@@ -480,6 +480,7 @@ public class NetWrapper extends Plugin
 								}
 							}						
 						};
+						job.setSystem(true);
 						job.schedule();	
 					}
 					catch(Exception e)
