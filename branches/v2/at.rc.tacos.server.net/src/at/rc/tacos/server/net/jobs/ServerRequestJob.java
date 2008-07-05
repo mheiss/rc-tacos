@@ -14,6 +14,7 @@ import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.Helo;
 import at.rc.tacos.net.MySocket;
 import at.rc.tacos.server.net.NetWrapper;
+import at.rc.tacos.server.net.ServerManager;
 
 /**
  * <p><strong>ServerRequestJob</strong> handles all requests from other servers
@@ -74,6 +75,9 @@ public class ServerRequestJob extends Job
 						
 						socket.getBufferedOutputStream().println(responseXml);
 						socket.getBufferedOutputStream().flush();
+						
+						//we have found a failbacl server
+						ServerManager.getInstance().failbackServerUpdate((Helo)message.getMessageList().get(0));
 					}
 				}
 				catch(SocketTimeoutException ste)

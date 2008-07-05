@@ -35,12 +35,14 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 	private CLabel primaryStatusImage;
 	private CLabel primaryStatusText;
 	private CLabel primaryStatusDesc;
+	private CLabel primaryServerInfo;
 	
 	//the second server
 	private Section secondSection;
 	private CLabel secondStatusImage;
 	private CLabel secondStatusText;
 	private CLabel secondStatusDesc;
+	private CLabel secondServerInfo;
 	
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize it.
@@ -104,9 +106,13 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 		primaryStatusDesc.setText("Keine Verbindungen zum Primären Server möglich.");
 		primaryStatusDesc.setFont(CustomUI.DESCRIPTION_FONT);
 		
+		primaryServerInfo = new CLabel(client,SWT.NONE);
+		primaryServerInfo.setText("-");
+		primaryServerInfo.setFont(CustomUI.DESCRIPTION_FONT);
+		
 		//the image should span vertical 3 columns
 		GridData gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
-		gd.verticalSpan = 3;
+		gd.verticalSpan = 4;
 		primaryStatusImage.setLayoutData(gd);
 
 		//set the client for the section
@@ -140,9 +146,13 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 		secondStatusDesc.setText("Keine Verbindungen zum Failback Server möglich.");
 		secondStatusDesc.setFont(CustomUI.DESCRIPTION_FONT);
 		
+		secondServerInfo = new CLabel(client,SWT.NONE);
+		secondServerInfo.setText("-");
+		secondServerInfo.setFont(CustomUI.DESCRIPTION_FONT);
+		
 		//the image should span vertical 3 columns
 		GridData gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
-		gd.verticalSpan = 3;
+		gd.verticalSpan = 4;
 		secondStatusImage.setLayoutData(gd);
 
 		//set the client for the section
@@ -183,6 +193,7 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 					primaryStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.online"));
 					primaryStatusText.setText(text);
 					primaryStatusDesc.setText("Primärer Server nimmt Verbindungen am Port "+server.getServerPort()+ " entgegen");
+					primaryServerInfo.setText("Serverinformation: "+server);
 					//refresch
 					primarySection.layout(true);
 				}
@@ -192,6 +203,7 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 					primaryStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.offline"));
 					primaryStatusText.setText("Primärer Server offline");
 					primaryStatusDesc.setText("Keine Verbinung mit derm Server möglich.");
+					primaryServerInfo.setText("-");
 					//refresch
 					primarySection.layout(true);
 				}
@@ -211,6 +223,7 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 					secondStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.online"));
 					secondStatusText.setText(text);
 					secondStatusDesc.setText("Failback Server leitet alle Anfrage zum primären Server weiter");		
+					secondServerInfo.setText("Serverinformation: " +server);
 					//refresch
 					secondSection.layout(true);
 				}
@@ -219,7 +232,8 @@ public class OnlineServerView extends ViewPart implements PropertyChangeListener
 					//update the view
 					secondStatusImage.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.offline"));
 					secondStatusText.setText("Failback Server offline");
-					secondStatusDesc.setText("Keine Verbindungen zum Failback Server möglich.");		
+					secondStatusDesc.setText("Keine Verbindungen zum Failback Server möglich.");	
+					secondServerInfo.setText("");
 					//refresch
 					secondSection.layout(true);
 				}

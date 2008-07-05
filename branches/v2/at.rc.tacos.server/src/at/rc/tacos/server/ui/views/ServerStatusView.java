@@ -360,7 +360,6 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 					//update the view
 					netSection.layout(true);
 				}
-				
 			}
 		});
 	}
