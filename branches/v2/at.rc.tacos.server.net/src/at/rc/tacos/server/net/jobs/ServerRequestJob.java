@@ -60,7 +60,7 @@ public class ServerRequestJob extends Job
 					XMLFactory factory = new XMLFactory();
 					Message receivedMessage = factory.decode(newData);
 					
-					//check the received message from the failback server
+					//check the received message from the server
 					if(receivedMessage.getQueryString().equalsIgnoreCase("SERVER_DISCOVER"))
 					{
 						//send back the information about this server
@@ -76,8 +76,8 @@ public class ServerRequestJob extends Job
 						socket.getBufferedOutputStream().println(responseXml);
 						socket.getBufferedOutputStream().flush();
 						
-						//we have found a failback server
-						ServerManager.getInstance().failbackServerUpdate((Helo)message.getMessageList().get(0));
+						//we have a failback server found
+						ServerManager.getInstance().failbackServerUpdate((Helo)receivedMessage.getMessageList().get(0));
 					}
 				}
 				catch(SocketTimeoutException ste)
@@ -85,6 +85,8 @@ public class ServerRequestJob extends Job
 					//timeout, just go on . ..
 				}
 			}
+			//shutdown the server connection
+			socket.cleanup();
 			return Status.OK_STATUS;
 		}
 		catch(Exception e)

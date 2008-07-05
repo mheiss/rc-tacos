@@ -34,10 +34,12 @@ Visit http://www.eclipse.org/platform
    <launcher name="Tacos-Server">
       <solaris/>
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="/at.rc.tacos.server/icons/launcher/launcher_16.bmp"
+            winMediumHigh="/at.rc.tacos.server/icons/launcher/launcher_32.bmp"
+            winLargeHigh="/at.rc.tacos.client/icons/launcher/launcher_48.bmp"/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>

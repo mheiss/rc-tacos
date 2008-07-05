@@ -41,10 +41,14 @@ public class SendHandler
 			if(!nextSession.isAuthenticated())
 				continue;
 			
-			//do not brodcast messages to web clients
-			if(nextSession.getLogin().isWebClient() &! ServerContext.getCurrentInstance().equals(nextSession))
-				continue;
-			
+			//check for a valid session
+			if(ServerContext.getCurrentInstance() != null)
+			{
+				//do not brodcast messages to web clients
+				if(nextSession.getLogin().isWebClient() &! ServerContext.getCurrentInstance().equals(nextSession))
+					continue;
+			}
+				
 			//send the message to the client
 			PrintWriter writer = nextSession.getSocket().getBufferedOutputStream();
 			writer.println(xmlMessage);
