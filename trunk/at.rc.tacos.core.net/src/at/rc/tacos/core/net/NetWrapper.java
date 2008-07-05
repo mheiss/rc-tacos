@@ -309,26 +309,26 @@ public class NetWrapper extends Plugin
 		try
 		{
 			netSessionUserName = null;
-			
+
 			logService.log("Setting all running network jobs to sleep", Status.INFO);
-			
+
 			//request all running jobs to stop
 			IJobManager jobManager = Job.getJobManager();
 			//wait for the send job to complete
 			Job.getJobManager().cancel(JOB_SEND);
 			for(Job job:jobManager.find(JOB_SEND))
 				job.join();
-			
+
 			//wait for the listen job to complete
 			Job.getJobManager().cancel(JOB_LISTEN);
 			for(Job job:jobManager.find(JOB_LISTEN))
 				job.join();
-			
+
 			//wait for the monitor job to complete
 			Job.getJobManager().cancel(JOB_MONITOR);
 			for(Job job:jobManager.find(JOB_MONITOR))
 				job.join();
-			
+
 			//close the current socket
 			NetSource.getInstance().closeConnection();
 
@@ -413,7 +413,7 @@ public class NetWrapper extends Plugin
 						String message = newData.replaceAll("&lt;br/&gt;", "\n");
 						xmlFactory.setupDecodeFactory(message);
 						//decode the message
-						List<AbstractMessage> receivedMessage = xmlFactory.decode();
+						final List<AbstractMessage> receivedMessage = xmlFactory.decode();
 						//get the type of the item
 						final String contentType = xmlFactory.getContentType();
 						final String queryString = xmlFactory.getQueryString();
@@ -431,35 +431,56 @@ public class NetWrapper extends Plugin
 						if(messageList.containsKey(sequenceId))
 							messageList.remove(sequenceId);
 
-						//start the job to proccess the data
-						monitor.beginTask("Processing the received data:"+contentType,IProgressMonitor.UNKNOWN);
+						Job job = new Job("ProccessData") {
+							@Override
+							protected IStatus run(IProgressMonitor monitor) {
+								try
+								{
+									//start the job to proccess the data
+									monitor.beginTask("Processing the received data:"+contentType,IProgressMonitor.UNKNOWN);
 
-						//try to get a listener for this message
-						ListenerFactory listenerFactory = ListenerFactory.getDefault();
-						if(!listenerFactory.hasListeners(contentType))
-						{
-							logService.log("No listener found for the message type: "+contentType,IStatus.WARNING);
-							return Status.CANCEL_STATUS;
-						}
+									//try to get a listener for this message
+									ListenerFactory listenerFactory = ListenerFactory.getDefault();
+									if(!listenerFactory.hasListeners(contentType))
+									{
+										logService.log("No listener found for the message type: "+contentType,IStatus.WARNING);
+										return Status.CANCEL_STATUS;
+									}
 
-						IModelListener listener = listenerFactory.getListener(contentType);
-						//now pass the message to the listener
-						if(IModelActions.ADD.equalsIgnoreCase(queryString))
-							listener.add(receivedMessage.get(0));
-						if(IModelActions.ADD_ALL.endsWith(queryString))
-							listener.addAll(receivedMessage);
-						if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
-							listener.remove(receivedMessage.get(0));
-						if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
-							listener.update(receivedMessage.get(0));
-						if(IModelActions.LIST.equalsIgnoreCase(queryString))
-							listener.list(receivedMessage);
-						if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
-							listener.loginMessage(receivedMessage.get(0));
-						if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
-							listener.logoutMessage(receivedMessage.get(0));
-						if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
-							listener.systemMessage(receivedMessage.get(0));		
+									IModelListener listener = listenerFactory.getListener(contentType);
+									//now pass the message to the listener
+									if(IModelActions.ADD.equalsIgnoreCase(queryString))
+										listener.add(receivedMessage.get(0));
+									if(IModelActions.ADD_ALL.endsWith(queryString))
+										listener.addAll(receivedMessage);
+									if(IModelActions.REMOVE.equalsIgnoreCase(queryString))
+										listener.remove(receivedMessage.get(0));
+									if(IModelActions.UPDATE.equalsIgnoreCase(queryString))
+										listener.update(receivedMessage.get(0));
+									if(IModelActions.LIST.equalsIgnoreCase(queryString))
+										listener.list(receivedMessage);
+									if(IModelActions.LOGIN.equalsIgnoreCase(queryString))
+										listener.loginMessage(receivedMessage.get(0));
+									if(IModelActions.LOGOUT.equalsIgnoreCase(queryString))
+										listener.logoutMessage(receivedMessage.get(0));
+									if(IModelActions.SYSTEM.equalsIgnoreCase(queryString))
+										listener.systemMessage(receivedMessage.get(0));	
+									
+									//everything is ok
+									return Status.OK_STATUS;
+								}
+								catch(Exception e)
+								{
+									log("Failed to process the received data: "+e.getMessage(),IStatus.ERROR,e.getCause());
+									return Status.CANCEL_STATUS;
+								}
+								finally
+								{
+									monitor.done();
+								}
+							}						
+						};
+						job.schedule();	
 					}
 					catch(Exception e)
 					{
