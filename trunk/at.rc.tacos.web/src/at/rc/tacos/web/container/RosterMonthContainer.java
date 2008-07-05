@@ -26,11 +26,13 @@ public class RosterMonthContainer {
 	private List<Job>jobList = new ArrayList<Job>();
 	private List<ServiceType>serviceTypeList = new ArrayList<ServiceType>();
 	private SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> rosterEntryContainerMap;
+	private SortedMap<StaffMember, RosterMonthStat> staffMemberRosterMonthStatMap;
 	
 	// Insert function comparator
 	public void createTimetable(final Comparator dayComparator, final Comparator staffMemberComparator)
 	{
 		SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> map = new TreeMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>>(dayComparator);
+		SortedMap<StaffMember, RosterMonthStat> map2 = new TreeMap<StaffMember, RosterMonthStat>(staffMemberComparator);
 		for (RosterEntryContainer rosterEntryContainer : rosterEntryContainerList) {
 			final Date plannedStartOfWork = rosterEntryContainer.getPlannedStartOfWork();
 			final Calendar calendar = Calendar.getInstance();
@@ -42,21 +44,31 @@ public class RosterMonthContainer {
 				dayRosterEntryContainerMap = new TreeMap<StaffMember, List<RosterEntryContainer>>(staffMemberComparator);
 				map.put(day, dayRosterEntryContainerMap);
 			}
-			List<RosterEntryContainer> staffMemberRosterEntryContainerList = dayRosterEntryContainerMap.get(staffMember);
-			if (staffMemberRosterEntryContainerList == null) {
-				staffMemberRosterEntryContainerList = new ArrayList<RosterEntryContainer>();
-				dayRosterEntryContainerMap.put(staffMember, staffMemberRosterEntryContainerList);
+			List<RosterEntryContainer> staffMemberRosterContainerList = dayRosterEntryContainerMap.get(staffMember);
+			if (staffMemberRosterContainerList == null) {
+				staffMemberRosterContainerList = new ArrayList<RosterEntryContainer>();
+				dayRosterEntryContainerMap.put(staffMember, staffMemberRosterContainerList);
 			}
-			staffMemberRosterEntryContainerList.add(rosterEntryContainer);
+			staffMemberRosterContainerList.add(rosterEntryContainer);
+			
+			RosterMonthStat rosterMonthStat = map2.get(staffMember);
+			if (rosterMonthStat == null) {
+				rosterMonthStat = new RosterMonthStat();
+				map2.put(staffMember, rosterMonthStat);
+			}
+			rosterMonthStat.addPlannedDuration(rosterEntryContainer.getPlannedDuration());
+			rosterMonthStat.addPlannedDurationWeighted(rosterEntryContainer.getPlannedDurationWeighted());
+			rosterMonthStat.addRealDuration(rosterEntryContainer.getRealDuration());
+			rosterMonthStat.addRealDurationWeighted(rosterEntryContainer.getRealDurationWeighted());
 		}
 		rosterEntryContainerMap = map;
-		
+		staffMemberRosterMonthStatMap = map2;
 	}
 	
 	public void sortRosterEntries(final Comparator rosterEntryContainerComparator) {
 		for (Map<StaffMember, List<RosterEntryContainer>> dayRosterEntryContainerMap : rosterEntryContainerMap.values()) {						
-			for (List<RosterEntryContainer> staffMemberRosterEntryContainerList : dayRosterEntryContainerMap.values()) {
-				Collections.sort(staffMemberRosterEntryContainerList, rosterEntryContainerComparator);
+			for (List<RosterEntryContainer> staffMemberRosterContainerList : dayRosterEntryContainerMap.values()) {
+				Collections.sort(staffMemberRosterContainerList, rosterEntryContainerComparator);
 			}
 		}	
 	}
@@ -124,6 +136,10 @@ public class RosterMonthContainer {
 		Collections.sort(staffMemberList, staffMemberComparator);
 	}
 
+	public List<RosterEntryContainer> getRosterEntryContainerList() {
+		return rosterEntryContainerList;
+	}
+
 	public SortedMap<Day, SortedMap<StaffMember, List<RosterEntryContainer>>> getRosterEntryContainerMap() {
 		return rosterEntryContainerMap;
 	}
@@ -133,8 +149,13 @@ public class RosterMonthContainer {
 		this.rosterEntryContainerMap = rosterEntryContainerMap;
 	}
 
-	public List<RosterEntryContainer> getRosterEntryContainerList() {
-		return rosterEntryContainerList;
+	public SortedMap<StaffMember, RosterMonthStat> getStaffMemberRosterMonthStatMap() {
+		return staffMemberRosterMonthStatMap;
+	}
+
+	public void setStaffMemberRosterMonthStatMap(
+			SortedMap<StaffMember, RosterMonthStat> staffMemberRosterMonthStatMap) {
+		this.staffMemberRosterMonthStatMap = staffMemberRosterMonthStatMap;
 	}
 
 	public List<StaffMember> getStaffMemberList() {
@@ -173,6 +194,4 @@ public class RosterMonthContainer {
 	public void setServiceTypeList(List<ServiceType> serviceTypeList) {
 		this.serviceTypeList = serviceTypeList;
 	}
-
-
 }
