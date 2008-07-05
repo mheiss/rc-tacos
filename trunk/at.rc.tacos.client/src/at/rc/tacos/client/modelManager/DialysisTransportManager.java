@@ -31,7 +31,7 @@ public class DialysisTransportManager extends PropertyManager
      */
     public void add(final DialysisPatient dialysisPatient) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -49,7 +49,7 @@ public class DialysisTransportManager extends PropertyManager
      */
     public void remove(final DialysisPatient dialysisPatient) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -65,7 +65,7 @@ public class DialysisTransportManager extends PropertyManager
      */
     public void update(final DialysisPatient dialysisPatient) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {  	
@@ -85,7 +85,7 @@ public class DialysisTransportManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {   

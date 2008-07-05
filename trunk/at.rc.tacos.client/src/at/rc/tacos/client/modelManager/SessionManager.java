@@ -102,7 +102,7 @@ public class SessionManager extends PropertyManager
 		if(MyUtils.isEqualDate(dayInfo.getTimestamp(), displayedDate))
 		{
 			this.dayInfo = dayInfo;
-			Display.getDefault().syncExec(new Runnable ()    
+			Display.getDefault().asyncExec(new Runnable ()    
 			{
 				public void run ()       
 				{
@@ -176,7 +176,7 @@ public class SessionManager extends PropertyManager
 		loginInformation = null;
 		firePropertyChange("CONNECTION_LOST", null, IConnectionStates.STATE_DISCONNECTED);
 		//show a message
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{

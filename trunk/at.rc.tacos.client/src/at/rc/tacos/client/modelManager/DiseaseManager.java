@@ -23,7 +23,7 @@ public class DiseaseManager extends PropertyManager
      */
     public void add(final Disease disease) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -41,7 +41,7 @@ public class DiseaseManager extends PropertyManager
      */
     public void remove(final Disease disease) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -58,7 +58,7 @@ public class DiseaseManager extends PropertyManager
      */
     public void update(final Disease disease) 
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -78,7 +78,7 @@ public class DiseaseManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().syncExec(new Runnable ()    
+        Display.getDefault().asyncExec(new Runnable ()    
         {
             public void run ()       
             {   

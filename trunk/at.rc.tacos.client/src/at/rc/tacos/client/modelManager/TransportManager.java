@@ -42,7 +42,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	 */
 	public void add(final Transport transport) 
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -75,7 +75,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	 */
 	public void remove(final Transport transport) 
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -91,7 +91,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	 */
 	public void update(final Transport transport) 
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{  	
@@ -125,7 +125,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	 */
 	public void removeAllEntries()
 	{
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{   
@@ -180,7 +180,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	public void fireTransportViewFilterChanged(final Calendar newDate)
 	{
 		this.displayedDate = newDate;
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -196,7 +196,7 @@ public class TransportManager extends PropertyManager implements ITransportStatu
 	public void fireTransportFilterChanged(final TransportViewFilter newFilter)
 	{
 		//notify the listeners
-		Display.getDefault().syncExec(new Runnable ()    
+		Display.getDefault().asyncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
