@@ -18,7 +18,7 @@ import org.eclipse.ui.splash.*;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.net.NetSource;
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.util.CustomUI;
+import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.ServerInfo;
 
@@ -108,7 +108,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		//header label
 		Label headerLabel = new Label(compositeLogin,SWT.CENTER);
 		headerLabel.setText("TACOS-Login");
-		headerLabel.setFont(CustomUI.HEADER_FONT);
+		headerLabel.setFont(CustomColors.HEADER_FONT);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		headerLabel.setLayoutData(data);
 

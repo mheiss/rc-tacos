@@ -55,6 +55,9 @@ public class NetWrapper extends Plugin
 	//the system listener for logging messages
 	private IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
 
+	//flag to show whether the plugin is initialized or not
+	private boolean initialized;
+
 	/**
 	 * The constructor
 	 */
@@ -103,6 +106,9 @@ public class NetWrapper extends Plugin
 	 */
 	public void init()
 	{
+		if(initialized)
+			return;
+
 		//start the thread to listen to new data
 		startListenJob();
 		//the monitor thread

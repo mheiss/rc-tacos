@@ -111,13 +111,6 @@ public class Activator extends AbstractUIPlugin
 		loadAndRegisterImages();   
 		registerListeners();
 		registerEncoderAndDecoder();
-	}
-	
-	/**
-	 * Initalize the client
-	 */
-	public void init()
-	{
 		backgroundTransportJob();
 	}
 
