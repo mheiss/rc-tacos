@@ -81,6 +81,23 @@ public class StaffMemberListener extends ServerListenerAdapter
         		throw new DAOException("StaffMemberListener","Failed to list staff members by primary location");
         	list.addAll(staffMemberList);
         }
+        
+        else if (queryFilter.containsFilterType(IFilterTypes.STAFF_MEMBER_LOCKED_LOCATION_FILTER)) {
+        	final String filter = queryFilter.getFilterValue(IFilterTypes.STAFF_MEMBER_LOCKED_LOCATION_FILTER);
+        	int locationId = Integer.parseInt(filter);
+        	List<StaffMember> staffMemberList = staffDao.getLockedStaffMembersFromLocation(locationId);
+        	if (staffMemberList == null)
+        		throw new DAOException("StaffMemberListener","Failed to list locked staff members by primary location");
+        	list.addAll(staffMemberList);
+        }
+        
+        else if (queryFilter.containsFilterType(IFilterTypes.STAFF_MEMBER_LOCKED_FILTER)) {
+        	final String filter = queryFilter.getFilterValue(IFilterTypes.STAFF_MEMBER_LOCKED_FILTER);
+        	List<StaffMember> staffMemberList = staffDao.getLockedStaffMembers();
+        	if (staffMemberList == null)
+        		throw new DAOException("StaffMemberListener","Failed to list locked staff members");
+        	list.addAll(staffMemberList);
+        }
         return list;
     }
 }
