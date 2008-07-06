@@ -1,10 +1,14 @@
 package at.rc.tacos.client.splashHandlers;
 
-//rcp
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
@@ -12,8 +16,11 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.splash.*;
 
 import at.rc.tacos.client.modelManager.SessionManager;
+import at.rc.tacos.client.net.NetSource;
 import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.util.CustomUI;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.ServerInfo;
 
 /**
  * Interactive splash screen handler to login during the
@@ -23,41 +30,32 @@ import at.rc.tacos.model.Login;
 public class InteractiveSplashHandler extends AbstractSplashHandler implements PropertyChangeListener
 {
 	//the components
-	private Text fTextUsername;
-	private Text fTextPassword;
-	private Label fLabelUsername;
-	private Label fLabelPassword;
-	private Button fButtonOK;
-	private Button fButtonCancel;
-	private Label progressLabel;
+	private Text textUsername;
+	private Text textPassword;
+	private ComboViewer comboViewer;
+	private Button buttonOK;
+	private Button buttonCancel;
 	private ProgressBar progressBar;
-	private boolean fAuthenticated;
-	private Composite fCompositeLogin;
+
+	//the composite to draw on
+	private Composite compositeLogin;
+	private Composite compositeFormular;
+	private Composite compositeProgress;
 
 	//the login status
+	private boolean fAuthenticated;
 	private int loginStatus;
 	private Login login;
 
-	//position of the composite
-	private final static int MARING_LEFT = 180;
-	private final static int MARGIN_TOP = 40;
-
 	//the layout
 	private final static int F_BUTTON_WIDTH_HINT = 80;
-	private final static int F_TEXT_WIDTH_HINT = 175;
+	private final static int F_TEXT_WIDTH_HINT = 160;
 
 	/**
 	 *  Default class constructor
 	 */
 	public InteractiveSplashHandler() 
 	{
-		//init the fields
-		fTextUsername = null;
-		fTextPassword = null;
-		fButtonOK = null;
-		fButtonCancel = null;
-		fAuthenticated = false;
-		//register the listener
 		SessionManager.getInstance().addPropertyChangeListener(this);
 	}
 
@@ -81,16 +79,45 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		// Store the shell
 		super.init(splash);
 		// Configure the shell layout
-		configureUISplash();
-		// Create UI
-		createUIControllComposite();	
-		createProgressComposite();
-		// Create UI listeners
-		createUIListeners();
-		// Force the splash screen to layout
+		getSplash().setLayout(new FillLayout());
+		getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
+
+		//setup the base composite for the splash
+		compositeLogin = new Composite(getSplash(), SWT.BORDER);
+		compositeLogin.addTraverseListener(new TraverseListener()
+		{
+			@Override
+			public void keyTraversed(TraverseEvent te) 
+			{
+				//check for a pressed entry key
+				if(te.keyCode == 13)
+				{
+					te.doit = false;
+					handleButtonOKWidgetSelected();
+				}
+			}
+		});
+
+		//setup the layout for the login screen
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginTop = 10;
+		layout.marginLeft = 180;
+		compositeLogin.setLayout(layout);
+		compositeLogin.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		//header label
+		Label headerLabel = new Label(compositeLogin,SWT.CENTER);
+		headerLabel.setText("TACOS-Login");
+		headerLabel.setFont(CustomUI.HEADER_FONT);
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		headerLabel.setLayoutData(data);
+
+		// Create UI formular
+		createLoginForm();	
+
+		// Force a redraw
 		splash.layout(true);
-		// Keep the splash screen visible and prevent the RCP application from 
-		// loading until the close button is clicked.
+		// Keep the splash screen visible and prevent the RCP application from loading
 		doEventLoop();
 	}
 
@@ -123,18 +150,18 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	 */
 	private void loginSuccess() 
 	{
-		toggelCheckProgress(false);
-		fCompositeLogin.setVisible(false);
 		fAuthenticated = true;
 		loginStatus = -1;
 	}
-	
+
 	/**
 	 * Fired to indicate that the login is locked and so failed
 	 */
 	private void loginDenied()
 	{
-		toggelCheckProgress(false);
+		//show the form
+		toggelFormProgress(false);
+		//display the result
 		loginStatus = -1;
 		Display.getCurrent().beep();
 		MessageDialog.openError(
@@ -148,38 +175,15 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	 */
 	private void loginFailure() 
 	{
-		toggelCheckProgress(false);
+		//show the form
+		toggelFormProgress(false);
+
 		loginStatus = -1;
 		Display.getCurrent().beep();
 		MessageDialog.openError(
 				getSplash(),
 				"Anmeldung fehlgeschlagen",
-		login.getErrorMessage());
-	}
-
-	/**
-	 *  Create the listeners for the controls
-	 */
-	private void createUIListeners() 
-	{
-		// Create the cancel button listeners
-		fButtonCancel.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				handleButtonCancelWidgetSelected();
-			}
-		});
-		// Create the OK button listeners
-		fButtonOK.addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				handleButtonOKWidgetSelected();
-			}
-		}); 
+				login.getErrorMessage());
 	}
 
 	/**
@@ -199,8 +203,28 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	private void handleButtonOKWidgetSelected() 
 	{
 		//get the login values
-		final String username = fTextUsername.getText();
-		final String password = fTextPassword.getText();
+		final String username = textUsername.getText();
+		final String password = textPassword.getText();
+		final ServerInfo info = (ServerInfo)((IStructuredSelection)comboViewer.getSelection()).getFirstElement();
+
+		//show the progress bar
+		toggelFormProgress(true);
+
+		//try to open a connection
+		if(NetSource.getInstance().openConnection(info) == null)
+		{
+			Display.getDefault().beep();
+			MessageDialog.openQuestion(Display.getDefault().getActiveShell(), 
+					"Verbindungsfehler", 
+					"Verbindung zum "+ info.getDescription() + " nicht möglich.\n");
+			//show the form again
+			toggelFormProgress(false);
+			return;
+		}
+		
+		//init the network
+		NetWrapper.getDefault().init();
+
 		//try to login
 		try
 		{
@@ -208,118 +232,121 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 			Login login = new Login(username,password,false);
 			//send the login request
 			NetWrapper.getDefault().sendLoginMessage(login);
-			//hide the controls, show the progress
-			toggelCheckProgress(true);
 		}
 		catch(IllegalArgumentException iae)
 		{
-			Display.getCurrent().beep();
+			Display.getDefault().beep();
 			//show the warning message
 			MessageDialog.openInformation(
 					getSplash(),
 					"Anmeldung",
 			"Sie müssen einen Benutzernamen und ein Passwort eingeben um sich anzumelden");
+			//show the form again
+			toggelFormProgress(false);
 		}
-	}
-
-	/**
-	 * Set the splash screen image
-	 */
-	private void configureUISplash() 
-	{  
-		// Configure layout
-		FillLayout layout = new FillLayout(); 
-		getSplash().setLayout(layout);
-		// Force shell to inherit the splash background
-		getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
 	}
 
 	/**
 	 * Creates the ui controlls
 	 */
-	private void createUIControllComposite()
+	private void createLoginForm()
 	{
-		GridData data;
-		// Create the composite
-		fCompositeLogin = new Composite(getSplash(), SWT.BORDER);
-		fCompositeLogin.addTraverseListener(new TraverseListener()
-		{
-			@Override
-			public void keyTraversed(TraverseEvent te) 
-			{
-				//check for a pressed entry key
-				if(te.keyCode == 13)
-				{
-					te.doit = false;
-					handleButtonOKWidgetSelected();
-				}
-			}
-			
-		});
-		GridLayout layout = new GridLayout(3, false);
-		layout.marginLeft = MARING_LEFT;
-		layout.marginTop = MARGIN_TOP;
-		fCompositeLogin.setLayout(layout);
+		compositeFormular = new Composite(compositeLogin,SWT.NONE);
+		GridLayout loginFormLayout = new GridLayout(2,false);
+		loginFormLayout.marginTop = 20;
+		compositeFormular.setLayout(loginFormLayout);
 
 		// the label for the username
-		fLabelUsername = new Label(fCompositeLogin, SWT.NONE);
-		fLabelUsername.setText("&Benutzername:"); 
-		// the text widget for the username
-		fTextUsername = new Text(fCompositeLogin, SWT.BORDER);
-		
-		// configure layout data
-		data = new GridData(SWT.NONE, SWT.NONE, false, false);
+		Label labelUsername = new Label(compositeFormular, SWT.NONE);
+		labelUsername.setText("&Benutzername: "); 
+		//the textfield for the username
+		textUsername = new Text(compositeFormular, SWT.BORDER);
+		GridData data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_TEXT_WIDTH_HINT;
-		data.horizontalSpan = 2;
-		fTextUsername.setLayoutData(data);  
-		fTextUsername.setFocus();
-		// the label for the password
-		fLabelPassword = new Label(fCompositeLogin, SWT.NONE);
-		fLabelPassword.setText("&Passwort:"); //NON-NLS-1
+		textUsername.setLayoutData(data);  
+		textUsername.setFocus();
 
+		// the label for the password
+		Label labelPassword = new Label(compositeFormular, SWT.NONE);
+		labelPassword.setText("&Passwort: "); 
 		// the text widget for the password
-		fTextPassword = new Text(fCompositeLogin, SWT.PASSWORD | SWT.BORDER);
-		fTextPassword.addFocusListener(new FocusAdapter()
+		textPassword = new Text(compositeFormular, SWT.PASSWORD | SWT.BORDER);
+		textPassword.addFocusListener(new FocusAdapter()
 		{
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
-				fTextPassword.setSelection(0, fTextPassword.getText().length());
+				textPassword.setSelection(0, textPassword.getText().length());
 			}
 		});
 		// Configure layout data
 		data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_TEXT_WIDTH_HINT;
-		data.horizontalSpan = 2;
-		fTextPassword.setLayoutData(data); 
+		textPassword.setLayoutData(data); 
 
-		//empty label
-		Label empty = new Label(fCompositeLogin,SWT.NONE);
-		empty.setText("");
+		//create the server label
+		Label labelServer = new Label(compositeFormular,SWT.NONE);
+		labelServer.setText("&Server: ");
+		comboViewer = new ComboViewer(compositeFormular,SWT.READ_ONLY);
+		comboViewer.setContentProvider(new IStructuredContentProvider() {
+			@Override
+			public Object[] getElements(Object arg0) {
+				return NetSource.getInstance().getServerList().toArray();
+			}
+			@Override
+			public void dispose() { }
+
+			@Override
+			public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
+		});
+		comboViewer.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				//cast to a server info object
+				ServerInfo info = (ServerInfo)element;
+				return info.getDescription();
+			}
+		});
+		comboViewer.setInput(NetSource.getInstance().getServerList());
+		comboViewer.getCombo().select(0);
+		data = new GridData();
+		data.widthHint = F_TEXT_WIDTH_HINT -15;
+		comboViewer.getCombo().setLayoutData(data);
 
 		// Create the button
-		fButtonOK = new Button(fCompositeLogin, SWT.PUSH);
-		fButtonOK.setText("OK"); 
+		buttonOK = new Button(compositeFormular, SWT.PUSH);
+		buttonOK.setText("OK"); 
+		buttonOK.addSelectionListener(new SelectionAdapter() 
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				handleButtonOKWidgetSelected();
+
+			}
+		});
 		// Configure layout data
 		data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_BUTTON_WIDTH_HINT;
 		data.verticalIndent = 10;
-		fButtonOK.setLayoutData(data); 
+		buttonOK.setLayoutData(data); 
 
 		// Create the button
-		fButtonCancel = new Button(fCompositeLogin, SWT.PUSH);
-		fButtonCancel.setText("Abbrechen"); 
+		buttonCancel = new Button(compositeFormular, SWT.PUSH);
+		buttonCancel.setText("Abbrechen"); 
+		buttonCancel.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				handleButtonCancelWidgetSelected();
+			}
+		}); 
 		// Configure layout data
 		data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_BUTTON_WIDTH_HINT;   
 		data.verticalIndent = 10;
-		fButtonCancel.setLayoutData(data);
-
-		//init values 
-		//TODO: delete
-//		fTextUsername.setText("user3");
-		fTextUsername.setSelection(0,5);
-//		fTextPassword.setText("P@ssw0rd");
+		buttonCancel.setLayoutData(data);
 	}
 
 	/**
@@ -327,36 +354,43 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	 */
 	private void createProgressComposite()
 	{       
-		GridData data;
+		compositeProgress = new Composite(compositeLogin,SWT.NONE);
+		GridLayout progressLayout = new GridLayout(2,false);
+		progressLayout.marginTop = 20;
+		progressLayout.marginLeft = 50;
+		compositeProgress.setLayout(progressLayout);
+
 		// label for the progress
-		progressLabel = new Label(fCompositeLogin,SWT.NONE);
+		Label progressLabel = new Label(compositeProgress,SWT.CENTER);
 		progressLabel.setText("Überprüfung läuft");
-		data = new GridData();
+		GridData data = new GridData();
 		data.verticalIndent = 20;
 		progressLabel.setLayoutData(data);
-		progressLabel.setVisible(false);
 
 		//the progress bar
-		progressBar = new ProgressBar(fCompositeLogin,SWT.NONE|SWT.INDETERMINATE);
+		progressBar = new ProgressBar(compositeProgress,SWT.NONE|SWT.INDETERMINATE);
 		data = new GridData(SWT.NONE, SWT.NONE, false, false);
 		data.widthHint = F_TEXT_WIDTH_HINT;
 		data.horizontalSpan = 2;
 		data.verticalIndent = 20;
 		progressBar.setLayoutData(data);
-		progressBar.setVisible(false); 
 	}
 
-	private void toggelCheckProgress(boolean state) 
+	private void toggelFormProgress(boolean state) 
 	{
-		//hide the controlls and the labels
-		fTextPassword.setEnabled(!state);
-		fTextUsername.setEnabled(!state);
-		fButtonOK.setEnabled(!state);
-		// show the progress
-		progressLabel.setVisible(state);
-		progressBar.setVisible(state);
-		//update
-		fCompositeLogin.layout();
+		//the progress should be visible
+		if(state)
+		{
+			compositeFormular.dispose();
+			createProgressComposite();
+		}
+		else
+		{
+			compositeProgress.dispose();
+			createLoginForm();
+		}
+		//force redraw
+		compositeLogin.layout(true);
 	}
 
 	@Override
