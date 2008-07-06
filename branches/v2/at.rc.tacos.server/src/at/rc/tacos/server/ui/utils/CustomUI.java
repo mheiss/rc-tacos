@@ -12,9 +12,9 @@ import org.eclipse.swt.graphics.RGB;
 public class CustomUI 
 {
 	//define common fonts
-	public final static Font HEADLINE_FONT = new Font(null,"Verdana",15,SWT.BOLD | SWT.UNDERLINE_SINGLE);
+	public final static Font HEADLINE_FONT = new Font(null,"Verdana",15,SWT.BOLD);
 	public final static Font DESCRIPTION_FONT = new Font(null,"Verdana",10,SWT.NORMAL);
-	public final static Font LINK_FONT = new Font(null,"Verdana",8,SWT.UNDERLINE_SINGLE);
+	public final static Font LINK_FONT = new Font(null,"Verdana",8,SWT.NONE);
 	public final static Font PREFERENCE_FONT = new Font(null,"Verdana",10,SWT.BOLD);
 	
 	//define common colors

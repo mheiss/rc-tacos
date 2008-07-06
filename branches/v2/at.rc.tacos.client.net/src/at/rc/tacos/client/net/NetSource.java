@@ -115,7 +115,7 @@ public class NetSource
 		{
 			System.out.println("Open a new connection to: "+info.getHostName()+":"+info.getPort());
 			client = new MySocket(info.getHostName(),info.getPort());
-			client.setSoTimeout(1000);
+			client.setSoTimeout(2000);
 			return client;
 		}
 		catch(UnknownHostException uhe)
@@ -125,8 +125,7 @@ public class NetSource
 		}
 		catch(IOException ioe)
 		{
-			System.out.println("IO-Error during the socket creation");
-			ioe.printStackTrace();
+			System.out.println("IO-Error during the socket creation: "+ioe.getMessage());
 		}
 
 		//cannot establish a connection
