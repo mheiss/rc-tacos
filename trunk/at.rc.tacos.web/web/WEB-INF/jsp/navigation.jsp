@@ -92,6 +92,11 @@
 			<td id="navIcon"></td>
 			<td id="BlockContentNav"><a href="${url}">Mitarbeiter</a></td>
 		</tr>
+		<c:url var="url" value="/Dispatcher/lockedStaffMembers.do" />
+		<tr>
+			<td id="navIcon"></td>
+			<td id="BlockContentNav"><a href="${url}">Gesperrte Mitarbeiter</a></td>
+		</tr>
 		<c:url var="url" value="/Dispatcher/addStaffMember.do" />
 		<tr>
 			<td id="navIcon"></td>
