@@ -302,4 +302,17 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 			connection.close();
 		}
 	}
+
+	@Override
+	public List<StaffMember> getLockedStaffMembers() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<StaffMember> getLockedStaffMembersFromLocation(int locationId)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
