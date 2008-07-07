@@ -1022,7 +1022,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				{
 					if(patientLastName.getText() == null || patientLastName.getText().trim().isEmpty())
 					{
-						getShell().getDisplay().beep();
+//						getShell().getDisplay().beep();
 						setErrorMessage("Der Nachname kann beim Anlegen eines Patienten in der Patientendatenbank nicht leer gelassen werden.");
 						return;
 					}
@@ -2611,7 +2611,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//the street
 		if (textFromStreet.getText().length() > 100)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Der Straßenname (von)darf höchstens 100 Zeichen lang sein");
 			return false;
 		}
@@ -2619,7 +2619,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		if (textFromStreet.getText().trim().isEmpty())
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
 			return false;
 		}
@@ -2629,7 +2629,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//the from city
 		if(textFromCity.getText().length() > 50 )
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Der Stadtname (von)darf höchstens 50 Zeichen lang sein");
 			return false;
 		}
@@ -2639,7 +2639,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				(transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")
 						|| transport.getFromStreet().contains("PH") || transport.getFromStreet().startsWith("PH") ))
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie die Stadt ein, von der der Transport gestartet wird");
 			return false;
 		}
@@ -2648,14 +2648,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		if (textToStreet.getText().length() > 100)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Der Straßenname (nach) darf höchstens 100 Zeichen lang sein");
 			return false;
 		}
 
 		if (textToCity.getText().length() > 50)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Der Stadtname (nach) darf höchstens 50 Zeichen lang sein");
 			return false;
 		}
@@ -2664,7 +2664,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
 		if (index == -1)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben sie die zuständige Ortsstelle ein");
 			return false;
 		}
@@ -2674,7 +2674,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		index = comboPrioritaet.getSelectionIndex();
 		if (index == -1)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben sie die Priorität des Transports ein");
 			return false;
 		}
@@ -2684,7 +2684,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		Calendar startTime = convertStringToDate(textAbf.getText());
 		if(startTime == null &! transportType.equalsIgnoreCase("emergencyTransport") && createNew)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie eine gültige Abfahrtszeit in der Form HH:mm oder HHmm ein");
 			return false;
 		}
@@ -2703,7 +2703,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		Calendar patientTime = convertStringToDate(textBeiPat.getText());
 		if(!textBeiPat.getText().trim().isEmpty() && patientTime == null)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie eine gültige Zeit (bei Patient) in der Form HH:mm oder HHmm ein");
 			return false;
 		}
@@ -2721,7 +2721,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		Calendar appointmentTime = convertStringToDate(textTermin.getText());
 		if(!textTermin.getText().trim().isEmpty() && appointmentTime == null)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie eine gültige Zeit für den Termin in der Form HH:mm oder HHmm ein");
 			return false;
 		}
@@ -2745,7 +2745,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		{
 			if(hour < 22)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen.");
 				return false;
 			}
@@ -2756,7 +2756,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		{
 			if(hour < 22)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Termin kann nicht vor Ankunft bei Patient sein");
 				return false;
 			}
@@ -2767,7 +2767,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		{
 			if(hour < 22)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen");
 				return false;
 			}
@@ -2793,14 +2793,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		if (patientFirstName.getText().length() > 30)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie einen Vornamen, der kürzer als 30 Zeichen ist ein");
 			return false;
 		}
 
 		if (patientLastName.getText().length() > 30)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie einen Nachnamen, der kürzer als 30 Zeichen ist ein");
 			return false;
 		}
@@ -2821,13 +2821,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//validate caller
 		if (textAnrufer.getText().length() > 30)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie einen Anrufer kürzer 30 Zeichen ein.");
 			return false;
 		}
 		if (textTelefonAnrufer.getText().length() > 30)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie eine Telefonnummer kürzer 30 ein!");
 			return false;
 		}
@@ -2847,7 +2847,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//notes and feedback
 		if (textAnmerkungen.getText().length() > 2000)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Die Anmerkung muss kürzer als 2000 Zeichen sein");
 			return false;
 		}
@@ -2857,7 +2857,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 		if (textRueckmeldung.getText().length() > 2000)
 		{
-			getShell().getDisplay().beep();
+//			getShell().getDisplay().beep();
 			setErrorMessage("Die Rückmeldung muss kürzer als 2000 Zeichen sein");
 			return false;
 		}
@@ -2994,7 +2994,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			Calendar s0 = convertStringToDate(textAE.getText());
 			if(!textAE.getText().trim().isEmpty() && s0 == null)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status AE (Auftrag erteilt) in der Form HHmm oder HH:mm ein");
 				return false;	           
 			}
@@ -3008,7 +3008,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			Calendar s1 = convertStringToDate(textS1.getText());
 			if(!textS1.getText().trim().isEmpty() && s1 == null)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S1 in der Form HHmm oder HH:mm ein");
 				return false;	  
 			}
@@ -3022,7 +3022,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			Calendar s2 = convertStringToDate(textS2.getText());
 			if(!textS2.getText().trim().isEmpty() && s2 == null)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S2 in der Form HHmm oder HH:mm ein");
 				return false;	 
 			}
@@ -3035,7 +3035,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			Calendar s3 = convertStringToDate(textS3.getText());
 			if(!textS3.getText().trim().isEmpty() && s3 == null)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S3 in der Form HHmm oder HH:mm ein");
 				return false;	 
 			}
@@ -3047,7 +3047,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			Calendar s4 = convertStringToDate(textS4.getText());
 			if(!textS4.getText().trim().isEmpty() && s4 == null)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S4 in der Form HHmm oder HH:mm ein");
 				return false;	 
 			}
@@ -3059,7 +3059,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			Calendar s5 = convertStringToDate(textS5.getText());
 			if(!textS5.getText().trim().isEmpty() && s5 == null)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S5 in der Form HHmm oder HH:mm ein");
 				return false;
 			}
@@ -3071,7 +3071,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			Calendar s6 = convertStringToDate(textS6.getText());
 			if(!textS6.getText().trim().isEmpty() && s6 == null)
 			{
-				getShell().getDisplay().beep();
+//				getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S6 in der Form HHmm oder HH:mm ein");
 				return false;	 
 			}
@@ -3400,7 +3400,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if(changedText.trim().length() < 1)
 		{
 			setErrorMessage("Bitte geben sie mindestens drei Zeichen ein, um die Autovervollständigung zu nutzen");
-			Display.getCurrent().beep();
+//			Display.getCurrent().beep();
 			return;
 		}
 		setErrorMessage(null);
