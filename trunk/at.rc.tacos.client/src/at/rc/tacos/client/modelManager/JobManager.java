@@ -23,7 +23,7 @@ public class JobManager extends PropertyManager
      */
     public void add(final Job job) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -41,7 +41,7 @@ public class JobManager extends PropertyManager
      */
     public void remove(final Job job) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -58,7 +58,7 @@ public class JobManager extends PropertyManager
      */
     public void update(final Job job) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -78,7 +78,7 @@ public class JobManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
