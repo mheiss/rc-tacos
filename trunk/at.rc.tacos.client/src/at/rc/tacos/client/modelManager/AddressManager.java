@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Display;
 import at.rc.tacos.model.Address;
 
 /**
- * Manages the addresses of the client programm and stores them in a files.
+ * Manages the addresses of the client program and stores them in a files.
  * Updates are synchronized between the clients
  * @author Michael
  */
@@ -39,7 +39,7 @@ public class AddressManager extends PropertyManager
 	 */
 	public void add(final Address address) 
 	{
-		Display.getDefault().asyncExec(new Runnable ()    
+		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -71,7 +71,7 @@ public class AddressManager extends PropertyManager
 	 */
 	public void remove(final Address address) 
 	{
-		Display.getDefault().asyncExec(new Runnable ()    
+		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -87,7 +87,7 @@ public class AddressManager extends PropertyManager
 	 */
 	public void update(final Address address) 
 	{
-		Display.getDefault().asyncExec(new Runnable ()    
+		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{   
@@ -107,7 +107,7 @@ public class AddressManager extends PropertyManager
 	 */
 	public void removeAllElements()
 	{
-		Display.getDefault().asyncExec(new Runnable ()    
+		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{   
