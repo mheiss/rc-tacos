@@ -25,7 +25,7 @@ public class LocationManager extends PropertyManager
      */
     public void add(final Location location) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -43,7 +43,7 @@ public class LocationManager extends PropertyManager
      */
     public void remove(final Location location) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -59,7 +59,7 @@ public class LocationManager extends PropertyManager
      */
     public void update(final Location location) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -79,7 +79,7 @@ public class LocationManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
