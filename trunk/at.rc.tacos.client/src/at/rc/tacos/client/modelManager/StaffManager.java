@@ -24,7 +24,7 @@ public class StaffManager extends PropertyManager
 	 */
 	public void add(final StaffMember staffMember) 
 	{
-		Display.getDefault().asyncExec(new Runnable ()    
+		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -40,7 +40,7 @@ public class StaffManager extends PropertyManager
 	 */
 	public void remove(final StaffMember staffMember) 
 	{
-		Display.getDefault().asyncExec(new Runnable ()    
+		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
@@ -57,7 +57,7 @@ public class StaffManager extends PropertyManager
 	 */
 	public void update(final StaffMember staffMember) 
 	{
-		Display.getDefault().asyncExec(new Runnable ()    
+		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{   
@@ -78,7 +78,7 @@ public class StaffManager extends PropertyManager
 	public void removeAllElements()
 	{
 		objectList.clear();
-		Display.getDefault().asyncExec(new Runnable ()    
+		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
