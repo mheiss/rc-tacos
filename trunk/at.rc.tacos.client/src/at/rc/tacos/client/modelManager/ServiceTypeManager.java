@@ -22,7 +22,7 @@ public class ServiceTypeManager extends PropertyManager
      */
     public void add(final ServiceType serviceType) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -38,7 +38,7 @@ public class ServiceTypeManager extends PropertyManager
      */
     public void remove(final ServiceType serviceType) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -55,7 +55,7 @@ public class ServiceTypeManager extends PropertyManager
      */
     public void update(final ServiceType serviceType) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -75,7 +75,7 @@ public class ServiceTypeManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
