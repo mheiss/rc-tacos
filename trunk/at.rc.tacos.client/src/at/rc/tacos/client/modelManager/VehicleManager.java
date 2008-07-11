@@ -51,7 +51,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
      */
     public void add(final VehicleDetail vehicle) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -67,7 +67,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
      */
     public void addAll(final List<VehicleDetail> vehicleList)
     {
-    	Display.getDefault().asyncExec(new Runnable()
+    	Display.getDefault().syncExec(new Runnable()
     	{
     		public void run()
     		{
@@ -86,7 +86,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
      */
     public void remove(final VehicleDetail vehicle) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -101,7 +101,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
      */
     public void update(final VehicleDetail vehicle)
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -121,7 +121,7 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
      */
     public void resetVehicles()
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
