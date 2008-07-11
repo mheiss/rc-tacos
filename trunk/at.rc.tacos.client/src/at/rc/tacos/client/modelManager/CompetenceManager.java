@@ -23,7 +23,7 @@ public class CompetenceManager extends PropertyManager
      */
     public void add(final Competence competence) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -39,7 +39,7 @@ public class CompetenceManager extends PropertyManager
      */
     public void remove(final Competence competence) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -56,7 +56,7 @@ public class CompetenceManager extends PropertyManager
      */
     public void update(final Competence competence) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -76,7 +76,7 @@ public class CompetenceManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
