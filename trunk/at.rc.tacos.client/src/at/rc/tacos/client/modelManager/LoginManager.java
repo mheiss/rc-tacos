@@ -28,7 +28,7 @@ public class LoginManager extends PropertyManager
      */
     public void add(final Login login) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -46,7 +46,7 @@ public class LoginManager extends PropertyManager
      */
     public void remove(final Login login) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {
@@ -63,7 +63,7 @@ public class LoginManager extends PropertyManager
      */
     public void update(final Login login) 
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
@@ -83,7 +83,7 @@ public class LoginManager extends PropertyManager
      */
     public void removeAllEntries()
     {
-        Display.getDefault().asyncExec(new Runnable ()    
+        Display.getDefault().syncExec(new Runnable ()    
         {
             public void run ()       
             {   
