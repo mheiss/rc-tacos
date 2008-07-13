@@ -58,7 +58,10 @@ public interface IFilterTypes
     /** Filter staff member by primary location */
     public final static String STAFF_MEMBER_LOCATION_FILTER = "staffMemberLocationFilter";
     
-    /** Filter locked staff member by primary location */
+    /** Filters all staff members */
+    public final static String STAFF_MEMBER_LOCKED_UNLOCKED_FILTER = "staffMemberLockedUnlockedFilter";
+    
+    /** Filter locked staff member */
     public final static String STAFF_MEMBER_LOCKED_FILTER = "staffMemberLockedFilter";
     
     /** Filter prebooked transports */
