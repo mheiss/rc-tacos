@@ -1,5 +1,6 @@
 package at.rc.tacos.client;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -45,10 +46,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 			return true;
 		
 		//try to close the connection
-		NetWrapper.getDefault().requestNetworkStop(false);
-		
-		//Close the connection
-		System.out.println("Have a nice day :)");
+		NetWrapper.getDefault().requestNetworkStop();
+		Activator.getDefault().log("Have a nice day :)",IStatus.INFO);
 
 		return true;	
 	}

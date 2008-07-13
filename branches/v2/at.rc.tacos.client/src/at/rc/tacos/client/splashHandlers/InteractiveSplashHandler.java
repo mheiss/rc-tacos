@@ -46,6 +46,9 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	private boolean fAuthenticated;
 	private int loginStatus;
 	private Login login;
+	
+	//the typed login information
+	private String username,password;
 
 	//the layout
 	private final static int F_BUTTON_WIDTH_HINT = 80;
@@ -203,8 +206,8 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 	private void handleButtonOKWidgetSelected() 
 	{
 		//get the login values
-		final String username = textUsername.getText();
-		final String password = textPassword.getText();
+		username = textUsername.getText();
+		password = textPassword.getText();
 		final ServerInfo info = (ServerInfo)((IStructuredSelection)comboViewer.getSelection()).getFirstElement();
 
 		//show the progress bar
@@ -400,6 +403,9 @@ public class InteractiveSplashHandler extends AbstractSplashHandler implements P
 		if("AUTHENTICATION_SUCCESS".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			loginStatus = 1;
+			//store the login info for later usage
+			SessionManager.getInstance().getLoginInformation().setUsername(username);
+			SessionManager.getInstance().getLoginInformation().setPassword(password);
 		}
 		if("AUTHENTICATION_FAILED".equalsIgnoreCase(evt.getPropertyName()))
 		{

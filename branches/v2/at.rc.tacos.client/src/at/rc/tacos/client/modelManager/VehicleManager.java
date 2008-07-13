@@ -360,7 +360,6 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
 	                    //for a 'yellow' status
 	                    detachedVehicle.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); //20
 	                    NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detachedVehicle);	
-	                    System.out.println("10");
 	                    continue;
 	                }	
 	            }

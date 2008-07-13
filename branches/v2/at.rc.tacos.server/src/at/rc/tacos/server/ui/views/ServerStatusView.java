@@ -24,6 +24,7 @@ import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.server.db.DbWrapper;
 import at.rc.tacos.server.net.NetWrapper;
+import at.rc.tacos.server.ui.dialogs.ConnectionDialog;
 import at.rc.tacos.server.ui.jobs.DbConnectionJob;
 import at.rc.tacos.server.ui.jobs.DbShutdownJob;
 import at.rc.tacos.server.ui.jobs.NetConnectionJob;
@@ -131,6 +132,9 @@ public class ServerStatusView extends ViewPart implements PropertyChangeListener
 		{
 			@Override
 			public void linkActivated(HyperlinkEvent e) {
+				
+				ConnectionDialog.openDialog(getSite().getShell(), NetWrapper.getDefault().getServerInfo());
+				
 				//check if we are listening to connections
 				if(NetWrapper.getDefault().isListening())
 				{

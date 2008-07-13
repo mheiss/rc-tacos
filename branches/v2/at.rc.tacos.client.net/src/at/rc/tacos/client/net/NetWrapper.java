@@ -18,7 +18,6 @@ import org.osgi.framework.BundleContext;
 
 import at.rc.tacos.client.net.jobs.SendJobRule;
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.common.IConnectionStates;
 import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.common.IModelListener;
 import at.rc.tacos.common.Message;
@@ -162,7 +161,10 @@ public class NetWrapper extends Plugin
 			{
 				//check if the job was successful
 				if(event.getResult() == Status.CANCEL_STATUS)
-					requestNetworkStop(true);
+				{
+					requestNetworkStop();
+					//TODO: startup the reconnect
+				}
 			}
 		});
 		listenJob.schedule();
@@ -326,11 +328,15 @@ public class NetWrapper extends Plugin
 	 * Stops all network traffic and opens the wizard to establish a new connection to the server
 	 * @param showWizard true if the connection wizard should be shown to reconnect
 	 */
-	public void requestNetworkStop(boolean showWizard)
+	public void requestNetworkStop()
 	{
 		try
 		{
+			log("Setting all running network jobs to sleep", Status.INFO,null);
+			
+			//set the default values
 			netSessionUserName = null;
+			initialized = false;
 
 			//wait for the listen job to complete
 			Job.getJobManager().cancel(JOB_LISTEN);
@@ -342,17 +348,8 @@ public class NetWrapper extends Plugin
 			for(Job job:Job.getJobManager().find(JOB_MONITOR))
 				job.join();
 
-			log("Setting all running network jobs to sleep", Status.INFO,null);
-
 			//close the current socket
 			NetSource.getInstance().closeConnection();
-
-			//show the connection wizard
-			if(showWizard)
-			{
-				log("Starting network wizard",Status.INFO,null);
-				systemListener.connectionChange(IConnectionStates.STATE_DISCONNECTED);	
-			}
 		}
 		catch(Exception e)
 		{

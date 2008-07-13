@@ -29,12 +29,7 @@ public final class CustomColors
     public static final Color BACKGROUND_RED = new Color(null,250,128,114);
     public static final Color BACKGROUND_BLUE = new Color(null,102,153,255);
     public static final Color GREY_COLOR2 = new Color(null, 216,216,216);
-    /** The color for the vehicle composites */
-    public static final Color COLOR_BLUE = Util.getColor(209, 229, 249);
-    public static final Color COLOR_GRAY =  Util.getColor(228, 236, 238);
     public static final Color COLOR_LINK = Util.getColor(0, 0, 128);
-    public static final Color COLOR_NAME = Util.getColor(0, 0, 102);
-    public static final Color COLOR_WHITE = Util.getColor(128, 128, 128);
     
     private static FormColors formColors;
     
