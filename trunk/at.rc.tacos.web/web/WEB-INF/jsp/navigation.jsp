@@ -46,6 +46,25 @@
 </table>
 <table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
+		<td id="BlockHead" colspan="2"><b>Statistiken</b></td>
+	</tr>
+	<c:url var="url" value="/Dispatcher/personalStatistic.do" />
+	<tr>
+		<td id="navIcon"></td>
+		<td id="BlockContentNav"><a href="${url}">Pers&ouml;nliche&nbsp;Statistik</a>
+		</td>
+	</tr>
+	<c:if
+		test="${userSession.loginInformation.authorization eq 'Administrator'}">
+		<c:url var="url" value="/Dispatcher/adminStatistic.do" />
+		<tr>
+			<td id="navIcon"></td>
+			<td id="BlockContentNav"><a href="${url}">Adminstatistik</a></td>
+		</tr>
+	</c:if>
+</table>
+<table id="Block" width="250" border="0" cellpadding="0" cellspacing="0">
+	<tr>
 		<td id="BlockHead" colspan="2"><b>Transporte</b></td>
 	</tr>
 	<c:url var="url" value="/Dispatcher/vehiclesAllocation.do" />
@@ -91,11 +110,6 @@
 		<tr>
 			<td id="navIcon"></td>
 			<td id="BlockContentNav"><a href="${url}">Mitarbeiter</a></td>
-		</tr>
-		<c:url var="url" value="/Dispatcher/lockedStaffMembers.do" />
-		<tr>
-			<td id="navIcon"></td>
-			<td id="BlockContentNav"><a href="${url}">Gesperrte Mitarbeiter</a></td>
 		</tr>
 		<c:url var="url" value="/Dispatcher/addStaffMember.do" />
 		<tr>

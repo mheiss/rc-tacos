@@ -83,13 +83,9 @@
 <br />
 <br />
 <c:set var="rosterEntryContainerMap"
-	value="${params.rosterMonthContainer.rosterEntryContainerMap}" />
-<c:set var="staffMemberList"
-	value="${params.rosterMonthContainer.staffMemberList}" />
-<c:set var="jobList" value="${params.rosterMonthContainer.jobList}" />
-<c:set var="serviceTypeList"
-	value="${params.rosterMonthContainer.serviceTypeList}" />
-<c:set var="staffMemberRosterMonthStatMap" value="${params.rosterMonthContainer.staffMemberRosterMonthStatMap}" />
+	value="${params.adminStatisticContainer.rosterEntryContainerMap}" />
+<c:set var="jobList" value="${params.adminStatisticContainer.jobList}" />
+<c:set var="staffMemberRosterMonthStatMap" value="${params.adminStatisticContainer.staffMemberRosterMonthStatMap}" />
 <c:choose>
 	<c:when test="${fn:length(staffMemberList) gt 0}">
 		<c:forEach var="rosterEntryContainerMapEntry" items="${rosterEntryContainerMap}">

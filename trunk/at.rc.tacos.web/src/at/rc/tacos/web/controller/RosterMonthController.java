@@ -350,7 +350,6 @@ public class RosterMonthController extends Controller {
 		
 		// Group and Sort
 		// Create Comparators
-		final Comparator functionComparator = new PropertyComparator("function.competenceName", true, true);
 		final Comparator dayComparator = new PropertyComparator("day", true, true);
 		final Comparator staffMemberComparator = new CompoundComparator(new Comparator[] {
 			new PropertyComparator("lastName", true, true),
