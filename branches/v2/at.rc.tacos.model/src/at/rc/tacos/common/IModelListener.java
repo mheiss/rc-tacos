@@ -55,21 +55,4 @@ public interface IModelListener
      * @param message the system message
      */
     public void systemMessage(AbstractMessage message);
-    
-    /**
-     * Nofification about a network status change
-     * @param status the new status
-     */
-    public void connectionChange(int status);
-    
-    /**
-     * Nofification that the message could not be transmitted
- 	 * @param info the message that was not transmitted
-     */
-    public void transferFailed(Message info);
-    
-    /**
-     * Logs the message on the client
-     */
-    public void log(String message,int status);
 }

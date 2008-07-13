@@ -1,5 +1,7 @@
 package at.rc.tacos.model;
 
+import at.rc.tacos.net.MySocket;
+
 /**
  * This class contains information about a server.
  * @author Michael
@@ -11,6 +13,7 @@ public class ServerInfo
 	private String host;
 	private int port;
 	private String description;
+	private MySocket socket;
 	
 	/**
 	 * Default constructor for a server info
@@ -63,5 +66,23 @@ public class ServerInfo
 	public int getPort()
 	{
 		return port;
+	}
+
+	/**
+	 * Sets the socket for this server info
+	 * @param socket
+	 */
+	public void setSocket(MySocket socket) 
+	{
+		this.socket = socket;
+	}
+
+	/**
+	 * Returns the socket of the server info
+	 * @return
+	 */
+	public MySocket getSocket() 
+	{
+		return socket;
 	}
 }

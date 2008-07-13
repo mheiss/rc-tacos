@@ -1,6 +1,13 @@
 package at.rc.tacos.client.dialogs;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -12,16 +19,18 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import at.rc.tacos.client.jobs.ConnectionJob;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.net.NetSource;
+import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.factory.ImageFactory;
-import at.rc.tacos.model.Helo;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.model.ServerInfo;
+import at.rc.tacos.net.MySocket;
 
 public class ConnectionDialog extends Dialog
 {
@@ -30,20 +39,17 @@ public class ConnectionDialog extends Dialog
 	private Label lRetries;
 	private ProgressBar connectionProgress;
 	private Button bWizzard;
-	
-	//indicates whether to job is done or not
-	private static boolean finished;
-	
+
 	/**
 	 * This return code indicates that the connection was established
 	 */
 	public final int RETURN_CONNECTED = 0x00;
-	
+
 	/**
 	 * This return code indicates that the connection failed.
 	 */
 	public final int RETURN_FAILED = 0x01;
-	
+
 	/**
 	 * Default class constructor for the message dialog
 	 * @param parentShell
@@ -58,40 +64,13 @@ public class ConnectionDialog extends Dialog
 	 * Convenience method to open the message dialog.
 	 * 
 	 */
-	public static int openDialog(Shell parentShell,Helo helo)
+	public static int openDialog(Shell parentShell)
 	{
 		//create a new instance of the message dialog
 		ConnectionDialog dialog = new ConnectionDialog(parentShell);
 		dialog.create();
-		
-		//the info for the job
-		ServerInfo server = NetSource.getInstance().getCurrentServer();
-		String username = SessionManager.getInstance().getLoginInformation().getUsername();
-		String password = SessionManager.getInstance().getLoginInformation().getPassword();
-		
-		//startup the connection job
-		ConnectionJob job = new ConnectionJob(server,username,password);
-		job.setSystem(true);
-		job.addJobChangeListener(new JobChangeAdapter()
-		{
-			@Override
-			public void done(IJobChangeEvent event) 
-			{
-				finished = true;
-			}
-		});
-		
-		//wait ffor the end of the job
-		while (!finished) 
-		{
-			Shell shell = dialog.getShell();
-			//sleep
-			if(!shell.getDisplay().readAndDispatch()) 
-			{
-				shell.getDisplay().sleep();
-			}
-		}
-		
+		dialog.init();
+
 		//return the result
 		return dialog.open();
 	}
@@ -106,7 +85,47 @@ public class ConnectionDialog extends Dialog
 		super.configureShell(newShell);
 		newShell.setText("Netzwerkverbindung wiederherstellen");
 	}
-	
+
+	/**
+	 * Initializes the dialog with the default values
+	 */
+	protected void init()
+	{
+		ServerInfo info = NetSource.getInstance().getCurrentServer();
+
+		//replace the nam of the server in the label
+		String text = lHeader.getText().replace("%SERVER%", info.getHostName());
+		lHeader.setText(text);
+
+		//the info for the job
+		ServerInfo server = NetSource.getInstance().getCurrentServer();
+		String username = SessionManager.getInstance().getLoginInformation().getUsername();
+		String password = SessionManager.getInstance().getLoginInformation().getPassword();
+
+		//startup the connection job
+		ConnectionJob job = new ConnectionJob(server,username,password);
+		job.setSystem(true);
+		job.schedule();
+		job.addJobChangeListener(new JobChangeAdapter()
+		{
+			@Override
+			public void done(IJobChangeEvent event) {
+				//check the result of the job
+				if(event.getResult() == Status.CANCEL_STATUS)
+					setReturnCode(RETURN_FAILED);
+				else
+					setReturnCode(RETURN_CONNECTED);
+				//close the dialog
+				Display.getDefault().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						ConnectionDialog.this.close();
+					}
+				});
+			}
+		});
+	}
+
 	/**
 	 * Creates the content for this dialog
 	 */
@@ -126,7 +145,7 @@ public class ConnectionDialog extends Dialog
 		lHeader = new CLabel(composite,SWT.NONE);
 		lHeader.setFont(CustomColors.HEADER_FONT);
 		lHeader.setImage(ImageFactory.getInstance().getRegisteredImage("server.status.net.down"));
-		lHeader.setText("Verbindung zum Server dark verloren");
+		lHeader.setText("Verbindung zum Server %SERVER% verloren");
 		lHeader.setBackground(CustomColors.HEADING_COLOR);
 
 		Composite labelComposite = new Composite(composite,SWT.NONE);
@@ -141,11 +160,11 @@ public class ConnectionDialog extends Dialog
 		connectionProgress = new ProgressBar(labelComposite,SWT.INDETERMINATE);
 		connectionProgress.setState(-1);
 		connectionProgress.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		//the number of retries
 		lRetries = new Label(labelComposite,SWT.NONE);
 		lRetries.setBackground(CustomColors.HEADING_COLOR);
-		lRetries.setText("Verbindungsversuch 1/5");
+		lRetries.setText("Verbindungsversuch 1 von 5");
 		lRetries.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		//progress should span over two columns
@@ -189,7 +208,7 @@ public class ConnectionDialog extends Dialog
 		{
 			@Override
 			public void widgetDefaultSelected(SelectionEvent se) { }	
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent se) 
 			{
@@ -210,5 +229,104 @@ public class ConnectionDialog extends Dialog
 	{
 		super.handleShellCloseEvent();
 		setReturnCode(RETURN_FAILED);
+	}
+
+	class ConnectionJob extends Job implements PropertyChangeListener
+	{
+		//properties of the job
+		private ServerInfo serverInfo;	
+
+		//the login information to login again
+		private String username,password;
+
+		//the login response
+		private boolean loginResponse;
+
+		public ConnectionJob(ServerInfo serverInfo,String username,String password) 
+		{
+			super("Verbindung zum Server wiederherstellen");
+			//the server to connect to
+			this.serverInfo = serverInfo;
+			this.username = username;
+			this.password = password;
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) 
+		{
+			try
+			{
+				//add a listener for the network messages
+				SessionManager.getInstance().addPropertyChangeListener(this);
+
+				//we try to connect to the server for 5 times
+				for(int i=1;i<6;i++)
+				{
+					MySocket socket = NetSource.getInstance().openConnection(serverInfo);
+					//check if we have a connection
+					if(socket != null)
+						break;
+
+					final int progress = i;
+
+					//update the label
+					Display.getDefault().syncExec(new Runnable() {
+						@Override
+						public void run() {
+							ConnectionDialog.this.lRetries.setText("Verbindungsversuch "+progress+" von 5");
+						}
+					});
+
+					//wait for 5 seconds and try it again
+					Thread.sleep(5000);				
+				}
+				//check if we have a connection
+				if(NetSource.getInstance().getConnection() == null)
+					return Status.CANCEL_STATUS;
+
+				//start the monitor jobs and try to login
+				NetWrapper.getDefault().init();
+				NetWrapper.getDefault().sendLoginMessage(new Login(username,password,false));
+
+				//try to login to the server
+				while(!loginResponse)
+				{
+					Thread.sleep(100);
+				}
+
+				//check the login status
+				if(!NetWrapper.getDefault().isAuthenticated())
+				{
+					return Status.CANCEL_STATUS;
+				}
+				else
+				{
+					return Status.OK_STATUS;
+				}
+			}
+			catch(Exception e)
+			{
+				//log the exception and return
+				NetWrapper.log("Failed to reconnect to the server "+serverInfo+". Cause:"+e.getMessage(), IStatus.ERROR, e.getCause());
+				return Status.CANCEL_STATUS;
+			}
+			finally
+			{
+				//remove the listener again
+				SessionManager.getInstance().removePropertyChangeListener(this);
+				//set the progress to done
+				monitor.done();
+			}
+		}
+
+		@Override
+		public void propertyChange(PropertyChangeEvent event) 
+		{
+			//connection to the server was successfully
+			if("AUTHENTICATION_SUCCESS".equalsIgnoreCase(event.getPropertyName()))
+				loginResponse = true;
+			if("AUTHENTICATION_FAILED".equalsIgnoreCase(event.getPropertyName()))
+				loginResponse = true;
+		}
 	}
 }

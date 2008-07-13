@@ -1,8 +1,11 @@
 package at.rc.tacos.client.net;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,7 +29,6 @@ import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
 import at.rc.tacos.model.QueryFilter;
-import at.rc.tacos.model.SystemMessage;
 import at.rc.tacos.net.MySocket;
 
 /**
@@ -35,7 +37,7 @@ import at.rc.tacos.net.MySocket;
 public class NetWrapper extends Plugin
 {
 	// The plug-in ID
-	public static final String PLUGIN_ID = "at.rc.tacos.core.net";
+	public static final String PLUGIN_ID = "at.rc.tacos.client.net";
 	private static NetWrapper plugin;
 
 	//the username of the logged in user
@@ -45,14 +47,14 @@ public class NetWrapper extends Plugin
 	//if a answere from the server is recevied the items is deleted from the list
 	private ConcurrentHashMap<String,Message> messageList;
 	private String lastSendSequence;
+	
+	//the listeners for events from the network
+	private ArrayList<PropertyChangeListener> netListeners = new ArrayList<PropertyChangeListener>();
 
 	//the running jobs
 	private final static String JOB_MONITOR = "MonitorJob";
 	private final static String JOB_LISTEN = "ListenJob";
 	private final static String JOB_SEND = "SendJob";
-
-	//the system listener for logging messages
-	private IModelListener systemListener = ListenerFactory.getDefault().getListener(SystemMessage.ID);
 
 	//flag to show whether the plugin is initialized or not
 	private boolean initialized;
@@ -163,13 +165,12 @@ public class NetWrapper extends Plugin
 				if(event.getResult() == Status.CANCEL_STATUS)
 				{
 					requestNetworkStop();
-					//TODO: startup the reconnect
+					firePropertyChangeEvent("NET_CONNECTION_LOST", null, NetSource.getInstance().getCurrentServer());
 				}
 			}
 		});
 		listenJob.schedule();
 	}
-
 
 	/**
 	 * Monitors the send packages and informs when the server sends no reply
@@ -315,7 +316,10 @@ public class NetWrapper extends Plugin
 			{
 				//check if the job was successful
 				if(event.getResult() == Status.CANCEL_STATUS)
-					systemListener.transferFailed(message);
+				{
+					firePropertyChangeEvent("NET_TRANSFER_FAILED", null, message);
+					log("Failed to send the message: "+message,IStatus.ERROR,null);
+				}
 			}
 		});
 		sendJob.schedule();
@@ -393,11 +397,20 @@ public class NetWrapper extends Plugin
 			{
 				try
 				{
-					//get the new data from the socket
-					BufferedReader in = client.getBufferedInputStream();
-					String newData = in.readLine();
-					if(newData == null)
-						throw new SocketException("Failed to read data from the socket");
+					String newData = null;
+					try
+					{
+						//get the new data from the socket
+						BufferedReader in = client.getBufferedInputStream();
+						newData = in.readLine();
+						if(newData == null)
+							throw new SocketException("Failed to read data from the socket");
+					}
+					catch(SocketTimeoutException ste)
+					{
+						//read timeout, ignore and start over
+						continue;
+					}
 
 					//set up the factory to decode
 					XMLFactory xmlFactory = new XMLFactory();
@@ -580,7 +593,7 @@ public class NetWrapper extends Plugin
 					{
 						messageList.remove(info.getSequenceId());
 						log("The package #"+info.getSequenceId() +" cannot be transmitted to the server. This is a permanent error, I gave up", IStatus.ERROR,null);
-						systemListener.transferFailed(info);					
+						firePropertyChangeEvent("NET_TRANSFER_FAILED", null, info.getMessageList().get(0));				
 					}
 					//increment the counter by one
 					info.setCounter(info.getCounter() +1);
@@ -600,5 +613,41 @@ public class NetWrapper extends Plugin
 			}
 			return Status.OK_STATUS;
 		}
+	}
+	
+	// LISTENER AND PROPERTY CHANGE METHODS
+	/**
+	 * Informs all the listeners that the property has changed
+	 * @param propertyName the name of the property that has changed
+	 * @param oldValue the old value of the property
+	 * @param newValue the new value of the property
+	 */
+	protected void firePropertyChangeEvent(String event,Object oldValue,Object newValue)
+	{
+		//iterate over the listeners and inform them
+		ListIterator<PropertyChangeListener> listIter = netListeners.listIterator();
+		while(listIter.hasNext())
+		{
+			PropertyChangeListener element = (PropertyChangeListener)listIter.next();
+			element.propertyChange(new PropertyChangeEvent(this,event,oldValue,newValue));
+		}
+	}
+	
+	/**
+	 * A public method that allows property to registerproperty change listeners
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener listener) 
+	{
+		if(!netListeners.contains(listener))
+			netListeners.add(listener);
+	}
+
+	/**
+	 * A public method that allows the listeners to the removed
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener listener) 
+	{
+		netListeners.remove(listener);
 	}
 }

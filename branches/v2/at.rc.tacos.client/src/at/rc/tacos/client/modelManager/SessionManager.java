@@ -4,15 +4,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.controller.ConnectionWizardAction;
+import at.rc.tacos.client.dialogs.ConnectionDialog;
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.common.IConnectionStates;
+import at.rc.tacos.common.Message;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Login;
+import at.rc.tacos.model.ServerInfo;
 import at.rc.tacos.util.MyUtils;
 
 /**
@@ -20,7 +21,7 @@ import at.rc.tacos.util.MyUtils;
  * The day info message is also managed here.
  * @author Michael
  */
-public class SessionManager extends PropertyManager
+public class SessionManager extends PropertyManager implements PropertyChangeListener
 {
 	//the unique id
 	public final static String ID = "sessionManager";
@@ -40,8 +41,12 @@ public class SessionManager extends PropertyManager
 	 */
 	private SessionManager() 
 	{ 
+		//initialize the default values
 		displayedDate = Calendar.getInstance().getTimeInMillis();
 		dayInfo = new DayInfoMessage("",displayedDate,"<keine Änderungen>");
+		
+		//attach a listener for network events
+		NetWrapper.getDefault().addPropertyChangeListener(this);
 	} 
 
 	/**
@@ -169,23 +174,70 @@ public class SessionManager extends PropertyManager
 	}
 
 	/**
-	 * Fired when the connection to the server is lost.
+	 * This method is called when the connection to the server is lost
 	 */
-	public void fireConnectionLost()
+	protected void connectionLost(final ServerInfo info)
 	{
-		//reset the login info
-		loginInformation = null;
-		firePropertyChange("CONNECTION_LOST", null, IConnectionStates.STATE_DISCONNECTED);
+		Display.getDefault().syncExec(new Runnable ()    
+		{
+			public void run ()       
+			{
+				//show the dialog to reconnect to the server
+				int result = ConnectionDialog.openDialog(Display.getCurrent().getActiveShell());
+				System.out.println("RESULT: "+result);
+			}
+		});
+	}
+	
+	/**
+	 * This method is called when the network cannot send the message to the server
+	 * @param info the message that could not been send
+	 */
+	protected void transferFailed(final Message info) 
+	{
+		//the message to display
+		final StringBuffer msg = new StringBuffer();
+		msg.append("Die folgende Nachricht konnte nicht an den Server übertragen werden. (Zeitüberschreitung).\n");
+		msg.append(info.getContentType()+" -> "+info.getQueryString());
+
 		//show a message
 		Display.getDefault().syncExec(new Runnable ()    
 		{
 			public void run ()       
 			{
-				//bring up the wizard to reconnect
-				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-				ConnectionWizardAction connectionWizard = new ConnectionWizardAction(window);
-				connectionWizard.run();
+				//show the message to the user
+				MessageDialog.openError(
+						PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
+						"Netzwerkfehler",
+						msg.toString());
+				//retry
+				boolean retryConfirmed = MessageDialog.openConfirm(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+						"Senden wiederholen",
+				"Wollen sie die Nachricht noch einmal senden?");
+				if (!retryConfirmed) 
+					return;
+				NetWrapper.getDefault().sheduleAndSend(info);
 			}
 		});
 	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) 
+	{
+		//the name of the event
+		final String name = event.getPropertyName();
+		
+		if("NET_TRANSFER_FAILED".equalsIgnoreCase(name))
+		{
+			//get the message that was failed to send
+			Message message = (Message)event.getNewValue();
+			transferFailed(message);
+		}
+		if("NET_CONNECTION_LOST".equalsIgnoreCase(name))
+		{
+			//get the server info of the lost connection
+			ServerInfo info = (ServerInfo)event.getNewValue();
+			connectionLost(info);
+		}
+	} 
 }
