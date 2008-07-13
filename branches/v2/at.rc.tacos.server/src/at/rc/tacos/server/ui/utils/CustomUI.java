@@ -22,4 +22,5 @@ public class CustomUI
 	public final static Color RED_COLOR = new Color(null,new RGB(193,39,30));
 	public final static Color BLUE_COLOR = new Color(null,new RGB(0,0,255));
 	public final static Color HOVER_COLOR = new Color(null,new RGB(128,128,255));
+	public final static Color WHITE_COLOR = new Color(null,new RGB(255,255,255));
 }

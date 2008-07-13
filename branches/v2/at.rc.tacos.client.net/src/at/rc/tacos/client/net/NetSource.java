@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.IStatus;
+
 import at.rc.tacos.common.IServerInfo;
 import at.rc.tacos.model.ServerInfo;
 import at.rc.tacos.net.MySocket;
@@ -25,6 +27,9 @@ public class NetSource
 
 	//the connected socket
 	private MySocket client;
+	
+	//the current server
+	private ServerInfo currentServer;
 
 	//the server pool
 	private static NetSource instance;
@@ -77,18 +82,15 @@ public class NetSource
 		}
 		catch(MissingResourceException mre)
 		{
-			System.out.println("Missing resource, cannot init network");
-			System.out.println(mre.getMessage());
+			NetWrapper.log("Missing resource, cannot init network: "+mre.getMessage(),IStatus.ERROR,mre.getCause());
 		}
 		catch(NumberFormatException nfe)
 		{
-			System.out.println("Port number must be a integer");
-			System.out.println(nfe.getMessage());
+			NetWrapper.log("Port number must be a integer: "+nfe.getMessage(),IStatus.ERROR,nfe.getCause());
 		}
 		catch(NullPointerException npe)
 		{
-			System.out.println("Configuration file for the server is missing");
-			System.out.println(npe.getMessage());
+			NetWrapper.log("Configuration file for the server is missing: "+npe.getMessage(),IStatus.ERROR,npe.getCause());
 		}
 	}
 
@@ -113,23 +115,25 @@ public class NetSource
 		//try to open a socket to the server
 		try
 		{
-			System.out.println("Open a new connection to: "+info.getHostName()+":"+info.getPort());
+			NetWrapper.log("Open a new connection to: "+info.getHostName()+":"+info.getPort(),IStatus.INFO,null);
 			client = new MySocket(info.getHostName(),info.getPort());
 			client.setSoTimeout(2000);
+			
+			//save the server
+			currentServer = info;
+			
 			return client;
 		}
 		catch(UnknownHostException uhe)
 		{
-			System.out.println("Failed to open a connection to the host: "+info.getHostName());
-			System.out.println("The hostname is unknown");
+			NetWrapper.log("Failed to open a connection to the host: "+info.getHostName(),IStatus.ERROR,uhe.getCause());
+			return null;
 		}
 		catch(IOException ioe)
 		{
-			System.out.println("IO-Error during the socket creation: "+ioe.getMessage());
+			NetWrapper.log("IO-Error during the socket creation: "+ioe.getMessage(),IStatus.ERROR,ioe.getCause());
+			return null;
 		}
-
-		//cannot establish a connection
-		return null;
 	}
 
 	/**
@@ -199,5 +203,14 @@ public class NetSource
 		}
 		//nothing found
 		return null;
+	}
+	
+	//GETTERS AND SETTERS
+	public ServerInfo getCurrentServer() {
+		return currentServer;
+	}
+
+	public void setCurrentServer(ServerInfo currentServer) {
+		this.currentServer = currentServer;
 	}
 }

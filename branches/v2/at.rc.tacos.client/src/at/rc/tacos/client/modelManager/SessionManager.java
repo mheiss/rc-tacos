@@ -30,6 +30,7 @@ public class SessionManager extends PropertyManager
 
 	//the logged in user
 	private Login loginInformation;
+
 	//daily info
 	private DayInfoMessage dayInfo;
 	private long displayedDate;
