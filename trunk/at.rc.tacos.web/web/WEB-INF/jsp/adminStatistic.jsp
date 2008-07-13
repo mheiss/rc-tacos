@@ -166,3 +166,46 @@
 		</table>
 	</c:otherwise>
 </c:choose>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#locationId').change(function() {
+		var url = '?locationId=' + $(this).val();
+		update(url, 'l');
+	});
+	$('#locationStaffMemberId').change(function() {
+		var url = '?locationStaffMemberId=' + $(this).val();
+		update(url, 'lsm');
+	});
+	$('#staffMemberId').change(function() {
+		var url = '?staffMemberId=' + $(this).val();
+		update(url, 's');
+	});
+	$('#month').change(function() {
+		var url = '?month=' + $(this).val();
+		update(url, 'm');
+	});
+	$('#year').change(function() {
+		var url = '?year=' + $(this).val();
+		update(url, 'y');
+	});
+	function update(url, code) {
+		var locationId = $('#locationId').val();
+		var locationStaffMemberId = $('#locationStaffMemberId').val();
+		var staffMemberId = $('#staffMemberId').val();
+		var month = $('#month').val();
+		var year = $('#year').val();
+		if (code == 'l') {
+			url = url + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
+		} else if (code == 'lsm') {
+			url = url + '&locationId=' + locationId + '&functionId=' + functionId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
+		} else if (code == 's') {
+			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&month=' + month + '&year=' + year;
+		} else if (code == 'm') {
+			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&year=' + year;
+		} else if (code == 'y') {
+			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month;
+		}
+		document.location = url;
+	}
+});
+</script>

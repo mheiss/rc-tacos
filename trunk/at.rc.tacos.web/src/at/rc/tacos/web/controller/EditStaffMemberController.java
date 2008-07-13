@@ -257,7 +257,7 @@ public class EditStaffMemberController extends Controller {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
 		}
 		final QueryFilter lockedStaffMembersFilter = new QueryFilter();
-		lockedStaffMembersFilter.add(IFilterTypes.STAFF_MEMBER_LOCKED_FILTER, "true");		
+		lockedStaffMembersFilter.add(IFilterTypes.STAFF_MEMBER_LOCKED_UNLOCKED_FILTER, "true");		
 		final List<AbstractMessage> staffMemberList = connection.sendListingRequest(StaffMember.ID, lockedStaffMembersFilter);
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
