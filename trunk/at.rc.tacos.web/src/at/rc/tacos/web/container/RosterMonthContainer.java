@@ -57,9 +57,6 @@ public class RosterMonthContainer {
 				map2.put(staffMember, rosterMonthStat);
 			}
 			rosterMonthStat.addPlannedDuration(rosterEntryContainer.getPlannedDuration());
-			rosterMonthStat.addPlannedDurationWeighted(rosterEntryContainer.getPlannedDurationWeighted());
-			rosterMonthStat.addRealDuration(rosterEntryContainer.getRealDuration());
-			rosterMonthStat.addRealDurationWeighted(rosterEntryContainer.getRealDurationWeighted());
 		}
 		rosterEntryContainerMap = map;
 		staffMemberRosterMonthStatMap = map2;
