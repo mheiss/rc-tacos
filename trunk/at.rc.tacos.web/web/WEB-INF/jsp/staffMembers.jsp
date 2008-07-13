@@ -41,7 +41,7 @@
 					<c:forEach var="login" items="${loginMapEntry.value}"
 						varStatus="loop">
 						<c:set var="staffMember" value="${login.userInformation}" />
-						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'} ${login.islocked ? 'locked' : ''}">
+						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
 							<td nowrap="nowrap">${staffMember.lastName}</td>
 							<td nowrap="nowrap">${staffMember.firstName}</td>
 							<td nowrap="nowrap"><c:url var="url"
