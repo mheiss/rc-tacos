@@ -30,6 +30,7 @@ public final class CustomColors
     public static final Color BACKGROUND_BLUE = new Color(null,102,153,255);
     public static final Color GREY_COLOR2 = new Color(null, 216,216,216);
     public static final Color COLOR_LINK = Util.getColor(0, 0, 128);
+    public static final Color COLOR_BLACK = new Color(null,0,0,0);
     
     private static FormColors formColors;
     
