@@ -1,8 +1,5 @@
 package at.rc.tacos.client.dialogs;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -10,10 +7,11 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -23,6 +21,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
+
+import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.client.net.NetSource;
 import at.rc.tacos.client.net.NetWrapper;
@@ -38,7 +38,7 @@ public class ConnectionDialog extends Dialog
 	private CLabel lHeader;
 	private Label lRetries;
 	private ProgressBar connectionProgress;
-	private Button bWizzard;
+	private Button bWizzard,bRetry;
 
 	/**
 	 * This return code indicates that the connection was established
@@ -46,9 +46,9 @@ public class ConnectionDialog extends Dialog
 	public final int RETURN_CONNECTED = 0x00;
 
 	/**
-	 * This return code indicates that the connection failed.
+	 * This return code indicates that the wizard should be started
 	 */
-	public final int RETURN_FAILED = 0x01;
+	public final int RETURN_WIZARD = 0x01;
 
 	/**
 	 * Default class constructor for the message dialog
@@ -91,39 +91,67 @@ public class ConnectionDialog extends Dialog
 	 */
 	protected void init()
 	{
-		ServerInfo info = NetSource.getInstance().getCurrentServer();
-
-		//replace the nam of the server in the label
-		String text = lHeader.getText().replace("%SERVER%", info.getHostName());
-		lHeader.setText(text);
-
 		//the info for the job
-		ServerInfo server = NetSource.getInstance().getCurrentServer();
+		final ServerInfo server = NetSource.getInstance().getCurrentServer();
 		String username = SessionManager.getInstance().getLoginInformation().getUsername();
 		String password = SessionManager.getInstance().getLoginInformation().getPassword();
+
+		//replace the name of the server in the label
+		String text = lHeader.getText().replace("%SERVER%", server.getHostName());
+		lHeader.setText(text);
 
 		//startup the connection job
 		ConnectionJob job = new ConnectionJob(server,username,password);
 		job.setSystem(true);
-		job.schedule();
 		job.addJobChangeListener(new JobChangeAdapter()
 		{
 			@Override
-			public void done(IJobChangeEvent event) {
-				//check the result of the job
-				if(event.getResult() == Status.CANCEL_STATUS)
-					setReturnCode(RETURN_FAILED);
-				else
-					setReturnCode(RETURN_CONNECTED);
-				//close the dialog
-				Display.getDefault().syncExec(new Runnable() {
+			public void aboutToRun(IJobChangeEvent event) 
+			{
+				Display.getDefault().syncExec(new Runnable() 
+				{
 					@Override
-					public void run() {
-						ConnectionDialog.this.close();
+					public void run() 
+					{
+						bRetry.setEnabled(false);
+						lRetries.setForeground(CustomColors.COLOR_BLACK);
+
+					}
+				});
+			}
+
+			@Override
+			public void done(final IJobChangeEvent event) 
+			{
+				Display.getDefault().syncExec(new Runnable() 
+				{
+					@Override
+					public void run() 
+					{
+						//assert valid dialog
+						if(getShell() == null)
+							return;
+
+						//enable the button again
+						bRetry.setEnabled(true);
+
+						//check the result of the job
+						if(event.getResult() == Status.OK_STATUS)
+						{
+							//close the dialog
+							setReturnCode(RETURN_CONNECTED);
+							ConnectionDialog.this.close();
+						}
+						else
+						{
+							lRetries.setText("Verbindung mit dem Server "+server.getDescription()+ " konnte nicht hergestellt werden");
+							lRetries.setForeground(CustomColors.RED_COLOR);
+						}
 					}
 				});
 			}
 		});
+		job.schedule();
 	}
 
 	/**
@@ -201,19 +229,50 @@ public class ConnectionDialog extends Dialog
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) 
 	{
-		bWizzard = new Button(parent,SWT.NONE);
-		bWizzard.setText("Netzwerkverbindungs Wizzard starten");
-		bWizzard.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		bWizzard.addSelectionListener(new SelectionListener()
+		//the button to retry the connection
+		bRetry = new Button(parent,SWT.NONE);
+		bRetry.setText("Verbindungsversuch wiederholen");
+		bRetry.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		bRetry.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
-			public void widgetDefaultSelected(SelectionEvent se) { }	
+			public void widgetSelected(SelectionEvent e) {
+				//initialize the dialog again and start the job
+				init();
+			}
+		});
 
+		//the button to start the wizard
+		bWizzard = new Button(parent,SWT.NONE);
+		bWizzard.setText("Netzwerkverbindungs Assistent starten");
+		bWizzard.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		bWizzard.addSelectionListener(new SelectionAdapter()
+		{
 			@Override
 			public void widgetSelected(SelectionEvent se) 
 			{
-				setReturnCode(RETURN_FAILED);
-				close();
+				try
+				{
+					//first stop the thread that wants to reconnect to the server
+					Job.getJobManager().cancel(ConnectionJob.JOB_FAMILY);
+					for(Job job:Job.getJobManager().find(ConnectionJob.ASYNC_FINISH))
+						job.join();
+
+					//set the return code to start the wizard 
+					setReturnCode(RETURN_WIZARD);
+
+					//close the dialog
+					close();
+				}
+				catch(Exception e)
+				{
+					//show a error message for the user
+					MessageDialog.openError(getShell(), 
+							"Netzwerkverbindungsassistent",
+					"Der Assistent zum Wiederherstellen der Netzwerkverbindung konnte nicht gestartet werden");
+					//log the message
+					Activator.getDefault().log("Failed to start the network wizzard: "+e.getMessage(), IStatus.ERROR);
+				}
 			}
 		});
 
@@ -228,10 +287,10 @@ public class ConnectionDialog extends Dialog
 	protected void handleShellCloseEvent() 
 	{
 		super.handleShellCloseEvent();
-		setReturnCode(RETURN_FAILED);
+		setReturnCode(RETURN_WIZARD);
 	}
 
-	class ConnectionJob extends Job implements PropertyChangeListener
+	class ConnectionJob extends Job
 	{
 		//properties of the job
 		private ServerInfo serverInfo;	
@@ -239,9 +298,12 @@ public class ConnectionDialog extends Dialog
 		//the login information to login again
 		private String username,password;
 
-		//the login response
-		private boolean loginResponse;
+		//the job identification
+		public final static String JOB_FAMILY = "connectionJob";
 
+		/**
+		 * Default class constructor
+		 */
 		public ConnectionJob(ServerInfo serverInfo,String username,String password) 
 		{
 			super("Verbindung zum Server wiederherstellen");
@@ -252,13 +314,16 @@ public class ConnectionDialog extends Dialog
 		}
 
 		@Override
+		public boolean belongsTo(Object family) 
+		{
+			return JOB_FAMILY.equals(family);
+		}
+
+		@Override
 		protected IStatus run(IProgressMonitor monitor) 
 		{
 			try
 			{
-				//add a listener for the network messages
-				SessionManager.getInstance().addPropertyChangeListener(this);
-
 				//we try to connect to the server for 5 times
 				for(int i=1;i<6;i++)
 				{
@@ -267,18 +332,17 @@ public class ConnectionDialog extends Dialog
 					if(socket != null)
 						break;
 
-					final int progress = i;
-
-					//update the label
-					Display.getDefault().syncExec(new Runnable() {
-						@Override
-						public void run() {
-							ConnectionDialog.this.lRetries.setText("Verbindungsversuch "+progress+" von 5");
-						}
-					});
+					updateStatusLabel("Verbindungsversuch "+i+" von 5");
 
 					//wait for 5 seconds and try it again
-					Thread.sleep(5000);				
+					for(int wait=0;wait < 10;wait++)
+					{
+						//check if the job is canceled
+						if(monitor.isCanceled())
+							return Status.CANCEL_STATUS;
+						//sleep for some time
+						Thread.sleep(500);
+					}
 				}
 				//check if we have a connection
 				if(NetSource.getInstance().getConnection() == null)
@@ -286,23 +350,22 @@ public class ConnectionDialog extends Dialog
 
 				//start the monitor jobs and try to login
 				NetWrapper.getDefault().init();
+				updateStatusLabel("Sende die Login Informationen an den Server");
 				NetWrapper.getDefault().sendLoginMessage(new Login(username,password,false));
 
 				//try to login to the server
-				while(!loginResponse)
+				updateStatusLabel("Warte auf Anwort vom Server");
+				while(!SessionManager.getInstance().isAuthenticated())
 				{
+					//check if the job is canceled
+					if(monitor.isCanceled())
+						return Status.CANCEL_STATUS;
+					//sleep for some time
 					Thread.sleep(100);
 				}
 
-				//check the login status
-				if(!NetWrapper.getDefault().isAuthenticated())
-				{
-					return Status.CANCEL_STATUS;
-				}
-				else
-				{
-					return Status.OK_STATUS;
-				}
+				//successfully authenticated
+				return Status.OK_STATUS;
 			}
 			catch(Exception e)
 			{
@@ -312,21 +375,23 @@ public class ConnectionDialog extends Dialog
 			}
 			finally
 			{
-				//remove the listener again
-				SessionManager.getInstance().removePropertyChangeListener(this);
 				//set the progress to done
 				monitor.done();
 			}
 		}
 
-		@Override
-		public void propertyChange(PropertyChangeEvent event) 
+		/**
+		 * Helper method to update the status label of the dialog
+		 */
+		private void updateStatusLabel(final String message)
 		{
-			//connection to the server was successfully
-			if("AUTHENTICATION_SUCCESS".equalsIgnoreCase(event.getPropertyName()))
-				loginResponse = true;
-			if("AUTHENTICATION_FAILED".equalsIgnoreCase(event.getPropertyName()))
-				loginResponse = true;
+			//update the label
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					ConnectionDialog.this.lRetries.setText(message);
+				}
+			});
 		}
 	}
 }
