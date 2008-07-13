@@ -315,4 +315,18 @@ public class StaffMemberDAOMySQL implements StaffMemberDAO
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<StaffMember> getLockedAndUnlockedStaffMembers()
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<StaffMember> getLockedAndUnlockedStaffMembersFromLocation(
+			int locationId) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -407,4 +407,87 @@ public class StaffMemberDAOSQL implements StaffMemberDAO
 			connection.close();
 		}
 	}
+
+	@Override
+	public List<StaffMember> getLockedAndUnlockedStaffMembers()
+			throws SQLException {
+		Connection connection = source.getConnection();
+		try
+		{
+			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
+			//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.lockedAndUnlockedStaffmembers"));
+			final ResultSet rs = query.executeQuery();
+			//create the staff list and loop over the result
+			List<StaffMember> staffMembers = new ArrayList<StaffMember>();
+			while(rs.next())
+			{
+				StaffMember staff = new StaffMember();
+				staff.setStaffMemberId(rs.getInt("staffmember_ID"));
+				staff.setLastName(rs.getString("lastname"));
+				staff.setFirstName(rs.getString("firstname"));
+				staff.setStreetname(rs.getString("street"));
+				staff.setCityname(rs.getString("city"));
+				staff.setMale(rs.getBoolean("sex"));
+				staff.setPhone1(rs.getString("phone1"));
+				staff.setPhone2(rs.getString("phone2"));
+				staff.setBirthday(rs.getString("birthday"));
+				staff.setEMail(rs.getString("email"));
+				staff.setUserName(rs.getString("username"));
+				//query and set the location, phone and competence
+				int id = rs.getInt("primaryLocation");
+				staff.setPrimaryLocation(locationDAO.getLocation(id));
+				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
+				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
+				staffMembers.add(staff);
+			}
+			return staffMembers;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
+
+	@Override
+	public List<StaffMember> getLockedAndUnlockedStaffMembersFromLocation(
+			int locationId) throws SQLException {
+		Connection connection = source.getConnection();
+		try
+		{
+			//u.username, e.primaryLocation, lo.locationname, e.staffmember_ID, e.firstname, e.lastname, e.sex, e.birthday, e.email,
+			//*u.authorization, *u.isloggedin, *u.locked, e.city, e.street
+			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.lockedAndUnlockedStaffmembersFromLocation"));
+			query.setInt(1, locationId);
+			//create the staff list and loop over the result
+			final ResultSet rs = query.executeQuery();
+			List<StaffMember> staffMembers = new ArrayList<StaffMember>();
+			while(rs.next())
+			{
+				StaffMember staff = new StaffMember();
+				staff.setStaffMemberId(rs.getInt("staffmember_ID"));
+				staff.setLastName(rs.getString("lastname"));
+				staff.setFirstName(rs.getString("firstname"));
+				staff.setStreetname(rs.getString("street"));
+				staff.setCityname(rs.getString("city"));
+				staff.setMale(rs.getBoolean("sex"));
+				staff.setPhone1(rs.getString("phone1"));
+				staff.setPhone2(rs.getString("phone2"));
+				staff.setBirthday(rs.getString("birthday"));
+				staff.setEMail(rs.getString("email"));
+				staff.setUserName(rs.getString("username"));
+				//query and set the location, phone and competence
+				int id = rs.getInt("primaryLocation");
+				staff.setPrimaryLocation(locationDAO.getLocation(id));
+				staff.setCompetenceList(competenceDAO.listCompetencesOfStaffMember(staff.getStaffMemberId()));
+				staff.setPhonelist(mobilePhoneDAO.listMobilePhonesOfStaffMember(staff.getStaffMemberId()));
+				staffMembers.add(staff);
+			}
+			return staffMembers;
+		}
+		finally
+		{
+			connection.close();
+		}
+	}
 }
