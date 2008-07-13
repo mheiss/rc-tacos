@@ -84,7 +84,6 @@
 <br />
 <c:set var="rosterEntryContainerMap"
 	value="${params.adminStatisticContainer.rosterEntryContainerMap}" />
-<c:set var="jobList" value="${params.adminStatisticContainer.jobList}" />
 <c:set var="staffMemberRosterMonthStatMap" value="${params.adminStatisticContainer.staffMemberRosterMonthStatMap}" />
 <c:choose>
 	<c:when test="${fn:length(staffMemberList) gt 0}">
@@ -93,7 +92,7 @@
 			<c:set var="rosterEntryContainerList" value="${rosterEntryContainerMapEntry.value}" />
 			<table class="list" cellpadding="0" cellspacing="0">
 				<tr>
-					<th class="header2" colspan="11"><c:choose>
+					<th class="header2" colspan="10"><c:choose>
 							<c:when test="${params.month eq 'JANUARY'}">J&auml;nner</c:when>
 							<c:when test="${params.month eq 'FEBRUARY'}">Februar</c:when>
 							<c:when test="${params.month eq 'MARCH'}">M&auml;rz</c:when>
@@ -116,27 +115,41 @@
 					<th nowrap="nowrap">Datum</th>
 					<th nowrap="nowrap">Ortsstelle</th>
 					<th nowrap="nowrap">Verwendung</th>
-					<th nowrap="nowrap">&nbsp;</th>
 					<th nowrap="nowrap">Zeit&nbsp;von&nbsp;(geplant)</th>
 					<th nowrap="nowrap">Zeit&nbsp;bis&nbsp;(geplant)</th>
 					<th nowrap="nowrap">Zeit&nbsp;von&nbsp;(real)</th>
 					<th nowrap="nowrap">Zeit&nbsp;bis&nbsp;(real)</th>
-					<th nowrap="nowrap">Summe&nbsp;(geplant)</th>
-					<th nowrap="nowrap">Summe&nbsp;(real)</th>
-					<th nowrap="nowrap">Summe&nbsp;(real, gewichtet)</th>
+					<th nowrap="nowrap">Dauer&nbsp;(geplant)</th>
+					<th nowrap="nowrap">Dauer&nbsp;(real)</th>
+					<th nowrap="nowrap">Dauer&nbsp;(real, gewichtet)</th>
 				</tr>
 				<tbody>
 					<c:forEach var="rosterEntryContainer" items="${rosterEntryContainerList}">
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<fmt:formatDate type="date" dateStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
+							</td>
+							<td>${rosterEntryContainer.rosterEntry.station.locationName}</td>
+							<td>${rosterEntryContainer.rosterEntry.job.jobName}</td>
+							<td>
+								<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
+							</td>
+							<td>
+								<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedEndOfWork}" />
+							</td>
+							<td>
+								<c:if test="${rosterEntryContainer.rosterEntry.realStartOfWork ne null}">
+									<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.realStartOfWork}" />
+								</c:if>
+							</td>
+							<td>
+								<c:if test="${rosterEntryContainer.rosterEntry.realEndOfWork ne null}">
+									<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.realEndOfWork}" />
+								</c:if>
+							</td>
+							<td>
+								<c:if test="${rosterEntryContainer.rosterEntry.realEndOfWork ne null}">
+							</td>
 							<td></td>
 							<td></td>
 						</tr>

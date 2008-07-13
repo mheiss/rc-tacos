@@ -37,10 +37,8 @@ public class AdminStatisticContainer {
 				rosterMonthStat = new RosterMonthStat();
 				map2.put(staffMember, rosterMonthStat);
 			}
-			rosterMonthStat.addPlannedDuration(rosterEntryContainer.getPlannedDuration());
-			rosterMonthStat.addPlannedDurationWeighted(rosterEntryContainer.getPlannedDurationWeighted());
-			rosterMonthStat.addRealDuration(rosterEntryContainer.getRealDuration());
-			rosterMonthStat.addRealDurationWeighted(rosterEntryContainer.getRealDurationWeighted());
+			
+			rosterMonthStat.addDurationForStatisticWeighted(rosterEntryContainer.getDurationForStatisticWeighted());
 		}
 		rosterEntryContainerMap = map;
 		staffMemberRosterMonthStatMap = map2;

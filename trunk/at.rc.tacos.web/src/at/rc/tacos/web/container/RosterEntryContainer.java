@@ -5,6 +5,7 @@ import java.util.Date;
 
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.web.container.Function;
 
 /**
@@ -177,11 +178,9 @@ public class RosterEntryContainer {
 	public long getRealDurationWeighted() {
 		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
 			//Calculate difference in milliseconds
-			long diffMilliSeconds = 0;
+			long diffMilliSeconds = getRealEndOfWork().getTime() - getRealStartOfWork().getTime();
 			if (rosterEntry.getStandby()) {
-				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime())/3;
-			} else {
-				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());
+				diffMilliSeconds = diffMilliSeconds/3;
 			}
 			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
 			return diffMilliSeconds;
@@ -191,11 +190,9 @@ public class RosterEntryContainer {
 	public int getRealDurationWeightedHours() {
 		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
 			//Calculate difference in milliseconds
-			long diffMilliSeconds = 0;
+			long diffMilliSeconds = getRealEndOfWork().getTime() - getRealStartOfWork().getTime();
 			if (rosterEntry.getStandby()) {
-				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime())/3;
-			} else {
-				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());
+				diffMilliSeconds = diffMilliSeconds/3;
 			}
 			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
 			return (int)diffMilliSeconds/(1000*60*60);
@@ -205,11 +202,126 @@ public class RosterEntryContainer {
 	public int getRealDurationWeightedMinutes() {
 		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
 			//Calculate difference in milliseconds
-			long diffMilliSeconds = 0;
+			long diffMilliSeconds = getRealEndOfWork().getTime() - getRealStartOfWork().getTime();
 			if (rosterEntry.getStandby()) {
-				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime())/3;
+				diffMilliSeconds = diffMilliSeconds/3;
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds%(1000*60*60);
+		} else return 0;
+	}
+	
+	public long getDurationForStatistic() {		
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());	
 			} else {
-				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());
+				if (getRealEndOfWork() != null) {
+					diffMilliSeconds = (getRealEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				} else {
+					diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				}
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return diffMilliSeconds;
+		} else return 0;
+	}
+	
+	public int getDurationForStatisticHours() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());	
+			} else {
+				if (getRealEndOfWork() != null) {
+					diffMilliSeconds = (getRealEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				} else {
+					diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				}
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds/(1000*60*60);
+		} else return 0;
+	}
+	
+	public int getDurationForStatisticMinutes() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());	
+			} else {
+				if (getRealEndOfWork() != null) {
+					diffMilliSeconds = (getRealEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				} else {
+					diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				}
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds%(1000*60*60);
+		} else return 0;
+	}
+	
+	public long getDurationForStatisticWeighted() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());	
+			} else {
+				if (getRealEndOfWork() != null) {
+					diffMilliSeconds = (getRealEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				} else {
+					diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				}
+			}
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = diffMilliSeconds/3;
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return diffMilliSeconds;
+		} else return 0;
+	}
+	
+	public int getDurationForStatisticWeightedHours() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());	
+			} else {
+				if (getRealEndOfWork() != null) {
+					diffMilliSeconds = (getRealEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				} else {
+					diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				}
+			}
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = diffMilliSeconds/3;
+			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
+			return (int)diffMilliSeconds/(1000*60*60);
+		} else return 0;
+	}
+	
+	public int getDurationForStatisticWeightedMinutes() {
+		if (getRealStartOfWork() != null && getRealEndOfWork() != null) {
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = 0;
+			if (rosterEntry.getServicetype().getServiceName().equals(ServiceType.SERVICETYPE_FREIWILLIG)) {
+				diffMilliSeconds = (getRealEndOfWork().getTime() - getRealStartOfWork().getTime());	
+			} else {
+				if (getRealEndOfWork() != null) {
+					diffMilliSeconds = (getRealEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				} else {
+					diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime());
+				}
+			}
+			if (rosterEntry.getStandby()) {
+				diffMilliSeconds = diffMilliSeconds/3;
 			}
 			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
 			return (int)diffMilliSeconds%(1000*60*60);
@@ -245,39 +357,38 @@ public class RosterEntryContainer {
 	
 	public long getPlannedDurationWeighted() {
 		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
-			long diffMilliSeconds = 0;
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
 			if (rosterEntry.getStandby()) {
-				diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime())/3;
-			} else {
-				diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+				diffMilliSeconds = diffMilliSeconds/3;
 			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
 			return diffMilliSeconds;
 		} else return 0;
 	}
 	
 	public int getPlannedDurationWeightedHours() {
 		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
-			long diffMilliSeconds = 0;
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
 			if (rosterEntry.getStandby()) {
-				diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime())/3;
-			} else {
-				diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+				diffMilliSeconds = diffMilliSeconds/3;
 			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
 			return (int)diffMilliSeconds/(1000*60*60);
 		} else return 0;
 	}
 	
 	public int getPlannedDurationWeightedMinutes() {
 		if (getPlannedStartOfWork() != null && getPlannedEndOfWork() != null) {
-			long diffMilliSeconds = 0;
+			//Calculate difference in milliseconds
+			long diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
 			if (rosterEntry.getStandby()) {
-				diffMilliSeconds = (getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime())/3;
-			} else {
-				diffMilliSeconds = getPlannedEndOfWork().getTime() - getPlannedStartOfWork().getTime();
+				diffMilliSeconds = diffMilliSeconds/3;
 			}
+			if (diffMilliSeconds < 0)diffMilliSeconds = 0;
 			return (int)diffMilliSeconds%(1000*60*60);
 		} else return 0;
 	}
-	
 	
 }
