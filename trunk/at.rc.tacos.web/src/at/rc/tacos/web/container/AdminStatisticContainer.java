@@ -36,7 +36,7 @@ public class AdminStatisticContainer {
 			}
 			staffMemberRosterContainerList.add(rosterEntryContainer);
 			
-			RosterMonthStat rosterMonthStat = staffMemberRosterMonthStatMap.get(staffMember);
+			RosterMonthStat rosterMonthStat = map2.get(staffMember);
 			if (rosterMonthStat == null) {
 				rosterMonthStat = new RosterMonthStat();
 				map2.put(staffMember, rosterMonthStat);
@@ -47,6 +47,7 @@ public class AdminStatisticContainer {
 			rosterMonthStat.addRealDurationWeighted(rosterEntryContainer.getRealDurationWeighted());
 		}
 		rosterEntryContainerMap = map;
+		staffMemberRosterMonthStatMap = map2;
 		
 	}
 	

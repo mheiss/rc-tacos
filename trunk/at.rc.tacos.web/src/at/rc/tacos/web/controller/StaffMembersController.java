@@ -1,5 +1,6 @@
 package at.rc.tacos.web.controller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -83,26 +84,36 @@ public class StaffMembersController extends Controller {
 		}
 		params.put(MODEL_LOCATION_NAME, location);
 		
-		// Staff Member List
-		List<AbstractMessage> staffMemberList;
-		
+		// Staff Member List		
+		final QueryFilter staffMembersFilter = new QueryFilter();
+		staffMembersFilter.add(IFilterTypes.STAFF_MEMBER_LOCKED_FILTER, "true");	
 		if (location != null) {
-			final QueryFilter staffMemberLocationFilter = new QueryFilter();
-			staffMemberLocationFilter.add(IFilterTypes.STAFF_MEMBER_LOCATION_FILTER, Integer.toString(location.getId()));
-			staffMemberList = connection.sendListingRequest(StaffMember.ID, staffMemberLocationFilter);
-		} else {
-			staffMemberList = connection.sendListingRequest(StaffMember.ID, null);
+			staffMembersFilter.add(IFilterTypes.STAFF_MEMBER_LOCATION_FILTER, Integer.toString(location.getId()));
 		}
+		final List<AbstractMessage> staffMemberList = connection.sendListingRequest(StaffMember.ID, staffMembersFilter);
 		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
 		
+		final List<Login> loginList = new ArrayList<Login>();
+		for (AbstractMessage am : staffMemberList) {
+			final StaffMember sm = (StaffMember)am;
+			final QueryFilter loginFilter = new QueryFilter();
+			loginFilter.add(IFilterTypes.USERNAME_FILTER, sm.getUserName());
+			final List<AbstractMessage> loginListTemp = connection.sendListingRequest(Login.ID, loginFilter);
+			if (!Login.ID.equalsIgnoreCase(connection.getContentType())) {
+				throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+			}
+			final Login login = (Login)loginListTemp.get(0);
+			loginList.add(login);
+		}
+		
 		// Group and Sort
-		final StaffMemberListContainer container = new StaffMemberListContainer(staffMemberList);
+		final StaffMemberListContainer container = new StaffMemberListContainer(loginList);
 		final Comparator<Location> locationComparator = new PropertyComparator("locationName", true, true);
 		final Comparator sortComp = new CompoundComparator(new Comparator[] {
-				new PropertyComparator("lastName", true, true),
-				new PropertyComparator("firstName", true, true)
+				new PropertyComparator("userInformation.lastName", true, true),
+				new PropertyComparator("userInformation.firstName", true, true)
 		});
 		container.groupStaffMembersBy(locationComparator);
 		container.sortRosterEntries(sortComp);

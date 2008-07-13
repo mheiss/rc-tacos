@@ -3,7 +3,6 @@ package at.rc.tacos.web.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -295,7 +294,6 @@ public class PrintRosterMonthController extends Controller {
 		
 		// Group and Sort
 		// Create Comparators
-		final Comparator functionComparator = new PropertyComparator("function.competenceName", true, true);
 		final Comparator dayComparator = new PropertyComparator("day", true, true);
 		final Comparator staffMemberComparator = new CompoundComparator(new Comparator[] {
 			new PropertyComparator("lastName", true, true),

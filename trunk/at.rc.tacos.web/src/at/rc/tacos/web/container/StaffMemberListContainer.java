@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.model.Location;
-import at.rc.tacos.model.StaffMember;
+import at.rc.tacos.model.Login;
 
 /**
  * Container for Staff Members View
@@ -17,46 +16,42 @@ import at.rc.tacos.model.StaffMember;
  * @version 1.0
  */
 public class StaffMemberListContainer {
-	private List<StaffMember> staffMemberList;
-	private SortedMap<Location, List<StaffMember>> staffMemberContainerMap;
-	public StaffMemberListContainer(List<AbstractMessage> staffMemberList) {
-		this.staffMemberList = new ArrayList<StaffMember>();
-		for (AbstractMessage abstractMessage : staffMemberList) {
-			final StaffMember staffMember = (StaffMember)abstractMessage;
-			this.staffMemberList.add(staffMember);
-		}
+	private List<Login> loginList;
+	private SortedMap<Location, List<Login>> loginMap;
+	public StaffMemberListContainer(List<Login> loginList) {
+		this.loginList = loginList;
 	}
-	public List<StaffMember> getStaffMemberList() {
-		return staffMemberList;
+	public List<Login> getLoginList() {
+		return loginList;
 	}
-	public void setStaffMemberList(List<StaffMember> staffMemberList) {
-		this.staffMemberList = staffMemberList;
+	public void setLoginList(List<Login> loginList) {
+		this.loginList = loginList;
 	}
-	public SortedMap<Location, List<StaffMember>> getStaffMemberContainerMap() {
-		return staffMemberContainerMap;
+	public SortedMap<Location, List<Login>> getLoginMap() {
+		return loginMap;
 	}
-	public void setStaffMemberContainerMap(
-			SortedMap<Location, List<StaffMember>> staffMemberContainerMap) {
-		this.staffMemberContainerMap = staffMemberContainerMap;
+	public void setLoginMap(
+			SortedMap<Location, List<Login>> loginMap) {
+		this.loginMap = loginMap;
 	}
 	
 	public void groupStaffMembersBy(final Comparator locationComparator) {
-		SortedMap<Location, List<StaffMember>> map = new TreeMap<Location, List<StaffMember>>(locationComparator);
-		for (StaffMember staffMember : staffMemberList) {
-			final Location location = staffMember.getPrimaryLocation();
-			List<StaffMember> locationStaffMemberList = map.get(location);
-			if (locationStaffMemberList == null) {
-				locationStaffMemberList = new ArrayList<StaffMember>();
-				map.put(location, locationStaffMemberList);
+		SortedMap<Location, List<Login>> map = new TreeMap<Location, List<Login>>(locationComparator);
+		for (Login login : loginList) {
+			final Location location = login.getUserInformation().getPrimaryLocation();
+			List<Login> locationLoginList = map.get(location);
+			if (locationLoginList == null) {
+				locationLoginList = new ArrayList<Login>();
+				map.put(location, locationLoginList);
 			}
-			locationStaffMemberList.add(staffMember);
+			locationLoginList.add(login);
 		}
-		staffMemberContainerMap = map;
+		loginMap = map;
 	}
 	
-	public void sortRosterEntries(final Comparator staffMemberComparator) {
-		for (List<StaffMember> staffMemberList : staffMemberContainerMap.values()) {
-			Collections.sort(staffMemberList, staffMemberComparator);		
+	public void sortRosterEntries(final Comparator loginComparator) {
+		for (List<Login> loginList : loginMap.values()) {
+			Collections.sort(loginList, loginComparator);		
 		}
 	}
 }

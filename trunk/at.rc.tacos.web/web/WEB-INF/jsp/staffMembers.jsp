@@ -1,6 +1,4 @@
 <%@ include file="includes.jsp"%>
-<c:set var="staffMemberMap"
-	value="${params.staffMemberListContainer.staffMemberContainerMap}" />
 <table class="standardForm">
 	<tr>
 		<td style="font-weight: bold">Ortsstelle:</td>
@@ -14,6 +12,10 @@
 		</select></td>
 	</tr>
 </table>
+<br />
+<br />
+<c:set var="loginMap"
+	value="${params.staffMemberListContainer.loginMap}" />
 <c:set var="fieldHeadersRow">
 	<tr class="subhead2">
 		<th nowrap="nowrap">Nachname</th>
@@ -25,22 +27,21 @@
 		<th nowrap="nowrap">&nbsp;</th>
 	</tr>
 </c:set>
-<br />
-<br />
 <c:choose>
-	<c:when test="${fn:length(staffMemberMap) gt 0}">
+	<c:when test="${fn:length(loginMap) gt 0}">
 		<table id="rosterEntryTable" class="list" cellpadding="3"
 			cellspacing="0">
-			<c:forEach var="staffMemberMapEntry" items="${staffMemberMap}">
-				<c:set var="location" value="${staffMemberMapEntry.key}" />
+			<c:forEach var="loginMapEntry" items="${loginMap}">
+				<c:set var="location" value="${loginMapEntry.key}" />
 				<tr>
 					<th class="header2" colspan="7">${location.locationName}</th>
 				</tr>
 				${fieldHeadersRow}
 				<tbody>
-					<c:forEach var="staffMember" items="${staffMemberMapEntry.value}"
+					<c:forEach var="login" items="${loginMapEntry.value}"
 						varStatus="loop">
-						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'}">
+						<c:set var="staffMember" value="${login.userInformation}" />
+						<tr class="${loop.count % 2 == 0 ? 'even' : 'odd'} ${login.islocked ? 'locked' : ''}">
 							<td nowrap="nowrap">${staffMember.lastName}</td>
 							<td nowrap="nowrap">${staffMember.firstName}</td>
 							<td nowrap="nowrap"><c:url var="url"
