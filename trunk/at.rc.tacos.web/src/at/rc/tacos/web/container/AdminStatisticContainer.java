@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import at.rc.tacos.model.Job;
-import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 
 /**
@@ -18,8 +16,6 @@ import at.rc.tacos.model.StaffMember;
  */
 public class AdminStatisticContainer {
 	private List<RosterEntryContainer> rosterEntryContainerList = new ArrayList<RosterEntryContainer>();
-	private List<Job>jobList = new ArrayList<Job>();
-	private List<ServiceType>serviceTypeList = new ArrayList<ServiceType>();
 	private SortedMap<StaffMember, List<RosterEntryContainer>> rosterEntryContainerMap;
 	private SortedMap<StaffMember, RosterMonthStat> staffMemberRosterMonthStatMap;
 	
@@ -68,21 +64,22 @@ public class AdminStatisticContainer {
 		this.rosterEntryContainerList = rosterEntryContainerList;
 	}
 
-
-	public List<Job> getJobList() {
-		return jobList;
+	public SortedMap<StaffMember, List<RosterEntryContainer>> getRosterEntryContainerMap() {
+		return rosterEntryContainerMap;
 	}
 
-	public void setJobList(List<Job> jobList) {
-		this.jobList = jobList;
+	public void setRosterEntryContainerMap(
+			SortedMap<StaffMember, List<RosterEntryContainer>> rosterEntryContainerMap) {
+		this.rosterEntryContainerMap = rosterEntryContainerMap;
 	}
 
-	public List<ServiceType> getServiceTypeList() {
-		return serviceTypeList;
+	public SortedMap<StaffMember, RosterMonthStat> getStaffMemberRosterMonthStatMap() {
+		return staffMemberRosterMonthStatMap;
 	}
 
-	public void setServiceTypeList(List<ServiceType> serviceTypeList) {
-		this.serviceTypeList = serviceTypeList;
+	public void setStaffMemberRosterMonthStatMap(
+			SortedMap<StaffMember, RosterMonthStat> staffMemberRosterMonthStatMap) {
+		this.staffMemberRosterMonthStatMap = staffMemberRosterMonthStatMap;
 	}
 
 }
