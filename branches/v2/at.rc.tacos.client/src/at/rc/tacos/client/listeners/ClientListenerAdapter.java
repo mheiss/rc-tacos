@@ -4,7 +4,6 @@ import java.util.List;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IModelListener;
-import at.rc.tacos.common.Message;
 
 /**
  * An abstract adapter class for handling server responses.
@@ -59,22 +58,4 @@ public abstract class ClientListenerAdapter implements IModelListener
 	 */
 	@Override
 	public void update(AbstractMessage updateMessage) { }
-
-	/**
-	 * Connection status change to handle
-	 */
-	@Override
-	public void connectionChange(int status) { }
-
-	/**
-	 * Message failed to send
-	 */
-	@Override
-	public void transferFailed(Message info) { }
-
-	/**
-	 * Logs the message on the client
-	 */
-	@Override
-	public void log(String message, int stauts) { }
 }

@@ -206,11 +206,19 @@ public class NetSource
 	}
 	
 	//GETTERS AND SETTERS
-	public ServerInfo getCurrentServer() {
+	/**
+	 * Returns the server info record of the last connected server.
+	 */
+	public ServerInfo getCurrentServer() 
+	{
 		return currentServer;
 	}
 
-	public void setCurrentServer(ServerInfo currentServer) {
+	/**
+	 * Sets the server info record of the current connected server.
+	 */
+	public void setCurrentServer(ServerInfo currentServer) 
+	{
 		this.currentServer = currentServer;
 	}
 }

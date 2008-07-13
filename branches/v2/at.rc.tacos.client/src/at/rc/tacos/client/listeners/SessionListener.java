@@ -12,10 +12,7 @@ import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.modelManager.LoginManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
-import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.common.IConnectionStates;
-import at.rc.tacos.common.Message;
 import at.rc.tacos.model.DayInfoMessage;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.Logout;
@@ -84,43 +81,7 @@ public class SessionListener extends ClientListenerAdapter
 			Status status = new Status(IStatus.INFO,Activator.PLUGIN_ID,"Successfully logged out the user: "+logout.getUsername()); 
 			Activator.getDefault().getLog().log(status);
 		}
-	}
-
-	@Override
-	public void connectionChange(int status) 
-	{
-		if(status == IConnectionStates.STATE_DISCONNECTED)
-			session.fireConnectionLost();
-	}
-
-	@Override
-	public void transferFailed(final Message info) 
-	{
-		//the message to display
-		final StringBuffer msg = new StringBuffer();
-		msg.append("Die folgende Nachricht konnte nicht an den Server übertragen werden. (Zeitüberschreitung).\n");
-		msg.append(info.getContentType()+" -> "+info.getQueryString());
-
-		//show a message
-		Display.getDefault().syncExec(new Runnable ()    
-		{
-			public void run ()       
-			{
-				//show the message to the user
-				MessageDialog.openError(
-						PlatformUI.getWorkbench().getDisplay().getActiveShell(), 
-						"Netzwerkfehler",
-						msg.toString());
-				//retry
-				boolean retryConfirmed = MessageDialog.openConfirm(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-						"Senden wiederholen",
-				"Wollen sie die Nachricht noch einmal senden?");
-				if (!retryConfirmed) 
-					return;
-				NetWrapper.getDefault().sheduleAndSend(info);
-			}
-		});
-	} 
+	}	
 
 	@Override
 	public void systemMessage(final AbstractMessage message)
@@ -192,12 +153,5 @@ public class SessionListener extends ClientListenerAdapter
 					manager.add(login);
 			}
 		}
-	}
-
-	@Override
-	public void log(String message,int status)
-	{
-		Status statusMessage = new Status(status,NetWrapper.PLUGIN_ID,message);
-		Activator.getDefault().getLog().log(statusMessage);
 	}
 }
