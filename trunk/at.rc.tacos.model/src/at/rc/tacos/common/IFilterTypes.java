@@ -37,6 +37,9 @@ public interface IFilterTypes
     /** Filter roster by location */
     public final static String ROSTER_LOCATION_FILTER = "rosterLocationFilter";
     
+    /** Get only roster entries where checkin and checkout not null */
+    public final static String ROSTER_MONTH_STATISTIC_FILTER = "rosterStatisticFilter";
+    
     /** Filter roster by month */
     public final static String ROSTER_MONTH_FILTER = "rosterMonthFilter";
     
