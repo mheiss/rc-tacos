@@ -5,21 +5,23 @@
 	<tr class="subhead2">
 		<th nowrap="nowrap">TrNr</th>
 		<th nowrap="nowrap">Fahrzeug</th>
-		<th nowrap="nowrap">Von</th>
-		<th nowrap="nowrap">Patient&nbsp;1</th>
-		<th nowrap="nowrap">Nach</th>
-		<th nowrap="nowrap">Anmerkungen</th>
-		<th nowrap="nowrap">Transportart</th>
-		<%-- <th nowrap="nowrap">S1</th>
-		<th nowrap="nowrap">S2</th>
-		<th nowrap="nowrap">S3</th>
-		<th nowrap="nowrap">S4</th>
-		<th nowrap="nowrap">S5</th>
-		<th nowrap="nowrap">S6</th> --%>
-		<th nowrap="nowrap">Disponent</th>
-		<th nowrap="nowrap">Rückmeldung</th>
-		<th nowrap="nowrap">Anrufer</th>
-		<th nowrap="nowrap">Erkr/Verl</th>
+		<c:if test="${userSession.internalSession eq true}">
+			<th nowrap="nowrap">Von</th>
+			<th nowrap="nowrap">Patient&nbsp;1</th>
+			<th nowrap="nowrap">Nach</th>
+			<th nowrap="nowrap">Anmerkungen</th>
+			<th nowrap="nowrap">Transportart</th>
+			<%-- <th nowrap="nowrap">S1</th>
+			<th nowrap="nowrap">S2</th>
+			<th nowrap="nowrap">S3</th>
+			<th nowrap="nowrap">S4</th>
+			<th nowrap="nowrap">S5</th>
+			<th nowrap="nowrap">S6</th> --%>
+			<th nowrap="nowrap">Disponent</th>
+			<th nowrap="nowrap">Rückmeldung</th>
+			<th nowrap="nowrap">Anrufer</th>
+			<th nowrap="nowrap">Erkr/Verl</th>
+		</c:if>
 		<th nowrap="nowrap">S1</th>
 		<th nowrap="nowrap">S2</th>
 		<th nowrap="nowrap">S3</th>
@@ -52,19 +54,21 @@
 								<c:otherwise>${journalContainer.transportNumber}</c:otherwise>
 							</c:choose></td>
 							<td nowrap="nowrap">${journalContainer.vehicleContainer.vehicleName}</td>
-							<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp;
-							${journalContainer.fromCity}</td>
-							<td nowrap="nowrap">${journalContainer.patient.lastname}
-							&nbsp; ${journalContainer.patient.firstname }</td>
-							<td nowrap="nowrap">${journalContainer.toStreet} &nbsp;
-							${journalContainer.toCity }</td>
-							<td nowrap="nowrap">${journalContainer.notes}</td>
-							<td nowrap="nowrap">${journalContainer.kindOfTransport}</td>
-							<td nowrap="nowrap">${journalContainer.disposedByUser}</td>
-							<td nowrap="nowrap">${journalContainer.feedback}</td>
-							<td nowrap="nowrap">${journalContainer.caller.callerName}
-							&nbsp; ${journalContainer.caller.callerTelephoneNumber}</td>
-							<td nowrap="nowrap">${journalContainer.kindOfIllness}</td>
+							<c:if test="${userSession.internalSession eq true}">
+								<td nowrap="nowrap">${journalContainer.fromStreet} &nbsp;
+								${journalContainer.fromCity}</td>
+								<td nowrap="nowrap">${journalContainer.patient.lastname}
+								&nbsp; ${journalContainer.patient.firstname }</td>
+								<td nowrap="nowrap">${journalContainer.toStreet} &nbsp;
+								${journalContainer.toCity }</td>
+								<td nowrap="nowrap">${journalContainer.notes}</td>
+								<td nowrap="nowrap">${journalContainer.kindOfTransport}</td>
+								<td nowrap="nowrap">${journalContainer.disposedByUser}</td>
+								<td nowrap="nowrap">${journalContainer.feedback}</td>
+								<td nowrap="nowrap">${journalContainer.caller.callerName}
+								&nbsp; ${journalContainer.caller.callerTelephoneNumber}</td>
+								<td nowrap="nowrap">${journalContainer.kindOfIllness.diseaseName}</td>
+							</c:if>
 							<td nowrap="nowrap"><fmt:formatDate type="time"
 								timeStyle="short" value="${journalContainer.s1}" />
 							<td nowrap="nowrap"><fmt:formatDate type="time"
