@@ -80,12 +80,16 @@
 			<td id="BlockContentNav"><a href="${url}">Vormerkungen</a></td>
 		</tr>
 	</c:if>
-	<c:url var="url" value="/Dispatcher/running.do" />
-	<tr>
-		<td id="navIcon"></td>
-		<td id="BlockContentNav"><a href="${url}">Laufende Transporte</a>
-		</td>
-	</tr>
+	
+	<c:if
+		test="${userSession.loginInformation.authorization eq 'Administrator'}">
+		<c:url var="url" value="/Dispatcher/running.do" />
+		<tr>
+			<td id="navIcon"></td>
+			<td id="BlockContentNav"><a href="${url}">Laufende Transporte</a></td>
+		</tr>
+	</c:if>
+	
 	<c:if
 		test="${userSession.loginInformation.authorization eq 'Administrator'}">
 		<c:url var="url" value="/Dispatcher/journal.do" />
