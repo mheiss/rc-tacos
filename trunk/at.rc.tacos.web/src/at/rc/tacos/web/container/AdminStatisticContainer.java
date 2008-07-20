@@ -36,8 +36,7 @@ public class AdminStatisticContainer {
 			if (rosterMonthStat == null) {
 				rosterMonthStat = new RosterMonthStat();
 				map2.put(staffMember, rosterMonthStat);
-			}
-			
+			}			
 			rosterMonthStat.addDurationForStatisticWeighted(rosterEntryContainer.getDurationForStatisticWeighted());
 		}
 		rosterEntryContainerMap = map;

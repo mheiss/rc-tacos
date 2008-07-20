@@ -41,7 +41,6 @@ public class PrintRosterMonthController extends Controller {
 	private static final String PARAM_LOCATION_NAME = "locationId";
 	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
 	private static final String MODEL_LOCATION_NAME = "location";
-	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
 	
 	private static final String PARAM_FUNCTION_NAME = "functionId";
 	private static final String MODEL_FUNCTION_NAME = "function";
@@ -90,7 +89,6 @@ public class PrintRosterMonthController extends Controller {
 		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
-		params.put(MODEL_LOCATION_LIST_NAME, locationList);
 		for (final Iterator<AbstractMessage> itLoactionList = locationList.iterator(); itLoactionList.hasNext();) {
 			final Location l2 = (Location)itLoactionList.next();
 			if (l2.getId() == locationId) {

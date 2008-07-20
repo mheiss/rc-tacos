@@ -58,10 +58,7 @@ public class AdminStatisticController extends Controller {
 	private static final String MODEL_YEAR_NAME = "year";
 	private static final String MODEL_YEAR_LIST_NAME = "yearList";
 	
-	private static final String MODEL_ROSTER_MONTH_CONTAINER_NAME = "rosterMonthContainer";
-	
-	private static final String PARAM_MESSAGE_CODE_NAME = "messageCode";
-	private static final String MODEL_MESSAGE_CODE_NAME = "messageCode";
+	private static final String MODEL_ROSTER_MONTH_CONTAINER_NAME = "adminStatisticContainer";
 	
 	@Override
 	public Map<String, Object> handleRequest(HttpServletRequest request,
@@ -83,7 +80,7 @@ public class AdminStatisticController extends Controller {
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
 		Location location = null;
-		final Location defaultLocation = userSession.getDefaultFormValues().getRosterMonthLocation();
+		final Location defaultLocation = userSession.getDefaultFormValues().getAdminStatisticLocation();
 		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);		
 		}
@@ -109,8 +106,8 @@ public class AdminStatisticController extends Controller {
 		String paramMonth = request.getParameter(PARAM_MONTH_NAME);
 		final Calendar cal = Calendar.getInstance();
 		int month = cal.get(Calendar.MONTH);
-		if (userSession.getDefaultFormValues().getRosterMonthMonth() != null) {
-			month = userSession.getDefaultFormValues().getRosterMonthMonth();
+		if (userSession.getDefaultFormValues().getAdminStatisticMonth() != null) {
+			month = userSession.getDefaultFormValues().getAdminStatisticMonth();
 		}
 		if (paramMonth != null && !paramMonth.equals("")) {
 			month = Month.valueOf(paramMonth).getProperty();
@@ -158,8 +155,8 @@ public class AdminStatisticController extends Controller {
 		// Year
 		final Calendar yearCal = Calendar.getInstance();
 		Integer year = yearCal.get(Calendar.YEAR);
-		if (userSession.getDefaultFormValues().getRosterMonthYear() != null) {
-			year = userSession.getDefaultFormValues().getRosterMonthYear();
+		if (userSession.getDefaultFormValues().getAdminStatisticYear() != null) {
+			year = userSession.getDefaultFormValues().getAdminStatisticYear();
 		}
 		Integer yearP = 0;
 		final String yearParam = request.getParameter(PARAM_YEAR_NAME);
@@ -180,7 +177,7 @@ public class AdminStatisticController extends Controller {
 		// Location staff member
 		final String paramLocationStaffMemberId = request.getParameter(PARAM_LOCATION_STAFF_MEMBER_NAME);
 		int locationStaffMemberId = 0;
-		final Location defaultLocationStaffMember = userSession.getDefaultFormValues().getRosterMonthLocationStaffMember();
+		final Location defaultLocationStaffMember = userSession.getDefaultFormValues().getAdminStatisticLocationStaffMember();
 		Location locationStaffMember = null;
 		if (paramLocationStaffMemberId != null && !paramLocationStaffMemberId.equals("") && !paramLocationStaffMemberId.equals(PARAM_LOCATION_STAFF_MEMBER_NO_VALUE)) {
 			locationStaffMemberId = Integer.parseInt(paramLocationStaffMemberId);		
@@ -207,7 +204,7 @@ public class AdminStatisticController extends Controller {
 		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
 		int staffMemberId = 0;
 		
-		final StaffMember defaultStaffMember = userSession.getDefaultFormValues().getRosterMonthStaffMember();		
+		final StaffMember defaultStaffMember = userSession.getDefaultFormValues().getAdminStatisticStaffMember();		
 		StaffMember staffMember = null;
 		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
 			staffMemberId = Integer.parseInt(paramStaffMemberId);		
@@ -259,6 +256,7 @@ public class AdminStatisticController extends Controller {
 		if (staffMember != null) {
 			rosterFilter.add(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER, Integer.toString(staffMember.getStaffMemberId()));
 		}
+		rosterFilter.add(IFilterTypes.ROSTER_MONTH_STATISTIC_FILTER, "true");
 		
 		// Form RosterEntryContainerList for Table
 		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
@@ -293,13 +291,6 @@ public class AdminStatisticController extends Controller {
 			new PropertyComparator("plannedStartOfWork", true, true)
 		});
 		
-		// Create Staff Member List
-		final List<StaffMember> staffMemberList = new ArrayList<StaffMember>();
-		for (final AbstractMessage am : staffList) {
-			final StaffMember staffM = (StaffMember)am;
-			staffMemberList.add(staffM);
-		}
-		
 		// Create roster month container
 		final AdminStatisticContainer adminStatisticContainer = new AdminStatisticContainer();
 		
@@ -315,16 +306,11 @@ public class AdminStatisticController extends Controller {
 		// Put timetable to map
 		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, adminStatisticContainer);
 		
-		// Parse message code from other controllers
-		if (request.getParameter(PARAM_MESSAGE_CODE_NAME) != null && !request.getParameter(PARAM_MESSAGE_CODE_NAME).equals("")) {
-			params.put(MODEL_MESSAGE_CODE_NAME, request.getParameter(PARAM_MESSAGE_CODE_NAME));
-		}
-		
-		userSession.getDefaultFormValues().setRosterMonthLocation(location);
-		userSession.getDefaultFormValues().setRosterMonthMonth(month);
-		userSession.getDefaultFormValues().setRosterMonthYear(year);
-		userSession.getDefaultFormValues().setRosterMonthLocationStaffMember(locationStaffMember);
-		userSession.getDefaultFormValues().setRosterMonthStaffMember(staffMember);
+		userSession.getDefaultFormValues().setAdminStatisticLocation(location);
+		userSession.getDefaultFormValues().setAdminStatisticMonth(month);
+		userSession.getDefaultFormValues().setAdminStatisticYear(year);
+		userSession.getDefaultFormValues().setAdminStatisticLocationStaffMember(locationStaffMember);
+		userSession.getDefaultFormValues().setAdminStatisticStaffMember(staffMember);
 		
 		return params;
 	}

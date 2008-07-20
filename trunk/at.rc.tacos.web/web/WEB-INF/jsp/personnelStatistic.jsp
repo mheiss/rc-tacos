@@ -1,32 +1,6 @@
 <%@ include file="includes.jsp"%>
 <table class="standardForm">
 	<tr>
-		<td style="font-weight: bold">Ortsstelle&nbsp;(Prim&auml;re&nbsp;Ortsstelle&nbsp;des&nbsp;Mitarbeiter):</td>
-		<td><select size="1" id="locationStaffMemberId"
-			name="locationStaffMemberId">
-			<option value="noValue">-- Ortsstelle (Mitarbeiter) wählen
-			--</option>
-			<c:forEach var="locationStaffMember"
-				items="${params.locationStaffMemberList}">
-				<option value="${locationStaffMember.id}" ${(not empty
-					params.locationStaffMember) and (params.locationStaffMember.id==
-					locationStaffMember.id) ? ' selected="selected"' : ''}>${locationStaffMember.locationName}</option>
-			</c:forEach>
-		</select></td>
-	</tr>
-	<tr>
-		<td style="font-weight: bold">Mitarbeiter:</td>
-		<td><select size="1" id="staffMemberId" name="staffMemberId">
-			<option value="noValue">-- Mitarbeiter wählen--</option>
-			<c:forEach var="staffMember" items="${params.staffList}">
-				<option value="${staffMember.staffMemberId}" ${(not empty
-					params.staffMember) and (params.staffMember.staffMemberId==
-					staffMember.staffMemberId) ? ' selected="selected"' : ''}>
-				${staffMember.lastName}&nbsp;${staffMember.firstName}</option>
-			</c:forEach>
-		</select></td>
-	</tr>
-	<tr>
 		<td style="font-weight: bold">Ortsstelle&nbsp;(Dienste):</td>
 		<td><select size="1" id="locationId" name="locationId">
 			<option value="noValue">-- Ortsstelle wählen --</option>
@@ -197,10 +171,8 @@
 </c:choose>
 <br />
 <br />
-<c:url var="url" value="/Dispatcher/printAdminStatistic.do">
+<c:url var="url" value="/Dispatcher/printPersonnelStatistic.do">
 	<c:param name="locationId">${params.location.id}</c:param>
-	<c:param name="locationStaffMemberId">${params.locationStaffMember.id}</c:param>
-	<c:param name="staffMemberId">${params.staffMember.staffMemberId}</c:param>
 	<c:param name="month">${params.month}</c:param>
 	<c:param name="year">${params.year}</c:param>
 </c:url>
@@ -210,14 +182,6 @@ $(document).ready(function() {
 	$('#locationId').change(function() {
 		var url = '?locationId=' + $(this).val();
 		update(url, 'l');
-	});
-	$('#locationStaffMemberId').change(function() {
-		var url = '?locationStaffMemberId=' + $(this).val();
-		update(url, 'lsm');
-	});
-	$('#staffMemberId').change(function() {
-		var url = '?staffMemberId=' + $(this).val();
-		update(url, 's');
 	});
 	$('#month').change(function() {
 		var url = '?month=' + $(this).val();
@@ -229,20 +193,14 @@ $(document).ready(function() {
 	});
 	function update(url, code) {
 		var locationId = $('#locationId').val();
-		var locationStaffMemberId = $('#locationStaffMemberId').val();
-		var staffMemberId = $('#staffMemberId').val();
 		var month = $('#month').val();
 		var year = $('#year').val();
 		if (code == 'l') {
-			url = url + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
-		} else if (code == 'lsm') {
-			url = url + '&locationId=' + locationId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
-		} else if (code == 's') {
-			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&month=' + month + '&year=' + year;
+			url = url + '&month=' + month + '&year=' + year;
 		} else if (code == 'm') {
-			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&year=' + year;
+			url = url + '&locationId=' + locationId + '&year=' + year;
 		} else if (code == 'y') {
-			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month;
+			url = url + '&locationId=' + locationId + '&month=' + month;
 		}
 		document.location = url;
 	}
