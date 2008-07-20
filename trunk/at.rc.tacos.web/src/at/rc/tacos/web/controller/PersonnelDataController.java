@@ -18,7 +18,7 @@ import at.rc.tacos.web.session.UserSession;
  * @author Payer Martin
  * @version 1.0
  */
-public class PersonalDataController extends Controller {
+public class PersonnelDataController extends Controller {
 
 	private static final String MODEL_TIMESTAMP_NAME = "timestamp";
 	

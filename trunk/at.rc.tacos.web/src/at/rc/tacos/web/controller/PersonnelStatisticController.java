@@ -18,9 +18,7 @@ import org.springframework.util.comparator.CompoundComparator;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.core.net.internal.WebClient;
-import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.Location;
-import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
@@ -30,29 +28,23 @@ import at.rc.tacos.web.container.RosterEntryContainer;
 import at.rc.tacos.web.session.UserSession;
 
 /**
- * Print Admin Statistic Controller
+ * Personal statistic Controller
  * @author Payer Martin
  * @version 1.0
  */
-public class PrintAdminStatisticController extends Controller {
+public class PersonnelStatisticController extends Controller {
 
 	private static final String PARAM_LOCATION_NAME = "locationId";
 	private static final String PARAM_LOCATION_NO_VALUE = "noValue";
 	private static final String MODEL_LOCATION_NAME = "location";
-
-	private static final String PARAM_LOCATION_STAFF_MEMBER_NAME = "locationStaffMemberId";
-	private static final String PARAM_LOCATION_STAFF_MEMBER_NO_VALUE = "noValue";
-	private static final String MODEL_LOCATION_STAFF_MEMBER_NAME = "locationStaffMember";
-	
-	private static final String PARAM_STAFF_MEMBER_NAME = "staffMemberId";
-	private static final String PARAM_STAFF_MEMBER_NO_VALUE = "noValue";
-	private static final String MODEL_STAFF_MEMBER_NAME = "staffMember";
+	private static final String MODEL_LOCATION_LIST_NAME = "locationList";
 	
 	private static final String PARAM_MONTH_NAME = "month";
 	private static final String MODEL_MONTH_NAME = "month";
 	
 	private static final String PARAM_YEAR_NAME = "year";
 	private static final String MODEL_YEAR_NAME = "year";
+	private static final String MODEL_YEAR_LIST_NAME = "yearList";
 	
 	private static final String MODEL_ROSTER_MONTH_CONTAINER_NAME = "adminStatisticContainer";
 	
@@ -65,18 +57,11 @@ public class PrintAdminStatisticController extends Controller {
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
 		
-		final String authorization = userSession.getLoginInformation().getAuthorization();
-		
-		// Check authorization
-		if (!authorization.equals(Login.AUTH_ADMIN)) {
-			throw new IllegalArgumentException("Error: User has no permission for functionality.");
-		}
-		
 		// Location
 		final String paramLocationId = request.getParameter(PARAM_LOCATION_NAME);
 		int locationId = 0;
 		Location location = null;
-		final Location defaultLocation = userSession.getDefaultFormValues().getAdminStatisticLocation();
+		final Location defaultLocation = userSession.getDefaultFormValues().getPersonnelStatisticLocation();
 		if (paramLocationId != null && !paramLocationId.equals("") && !paramLocationId.equals(PARAM_LOCATION_NO_VALUE)) {
 			locationId = Integer.parseInt(paramLocationId);		
 		}
@@ -84,6 +69,7 @@ public class PrintAdminStatisticController extends Controller {
 		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
 			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
 		}
+		params.put(MODEL_LOCATION_LIST_NAME, locationList);
 		for (final Iterator<AbstractMessage> itLoactionList = locationList.iterator(); itLoactionList.hasNext();) {
 			final Location l2 = (Location)itLoactionList.next();
 			if (l2.getId() == locationId) {
@@ -101,8 +87,8 @@ public class PrintAdminStatisticController extends Controller {
 		String paramMonth = request.getParameter(PARAM_MONTH_NAME);
 		final Calendar cal = Calendar.getInstance();
 		int month = cal.get(Calendar.MONTH);
-		if (userSession.getDefaultFormValues().getAdminStatisticMonth() != null) {
-			month = userSession.getDefaultFormValues().getAdminStatisticMonth();
+		if (userSession.getDefaultFormValues().getPersonnelStatisticMonth() != null) {
+			month = userSession.getDefaultFormValues().getPersonnelStatisticMonth();
 		}
 		if (paramMonth != null && !paramMonth.equals("")) {
 			month = Month.valueOf(paramMonth).getProperty();
@@ -150,8 +136,8 @@ public class PrintAdminStatisticController extends Controller {
 		// Year
 		final Calendar yearCal = Calendar.getInstance();
 		Integer year = yearCal.get(Calendar.YEAR);
-		if (userSession.getDefaultFormValues().getAdminStatisticYear() != null) {
-			year = userSession.getDefaultFormValues().getAdminStatisticYear();
+		if (userSession.getDefaultFormValues().getPersonnelStatisticYear() != null) {
+			year = userSession.getDefaultFormValues().getPersonnelStatisticYear();
 		}
 		Integer yearP = 0;
 		final String yearParam = request.getParameter(PARAM_YEAR_NAME);
@@ -166,73 +152,14 @@ public class PrintAdminStatisticController extends Controller {
 			}
 		}
 		params.put(MODEL_YEAR_NAME, year);
-	
-		// Location staff member
-		final String paramLocationStaffMemberId = request.getParameter(PARAM_LOCATION_STAFF_MEMBER_NAME);
-		int locationStaffMemberId = 0;
-		final Location defaultLocationStaffMember = userSession.getDefaultFormValues().getAdminStatisticLocationStaffMember();
-		Location locationStaffMember = null;
-		if (paramLocationStaffMemberId != null && !paramLocationStaffMemberId.equals("") && !paramLocationStaffMemberId.equals(PARAM_LOCATION_STAFF_MEMBER_NO_VALUE)) {
-			locationStaffMemberId = Integer.parseInt(paramLocationStaffMemberId);		
-		}
-		final List<AbstractMessage> locationStaffMemberList = connection.sendListingRequest(Location.ID, null);
-		if (!Location.ID.equalsIgnoreCase(connection.getContentType())) {
-			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-		}
-		for (final Iterator<AbstractMessage> itLocationStaffMemberList = locationStaffMemberList.iterator(); itLocationStaffMemberList.hasNext();) {
-			final Location l = (Location)itLocationStaffMemberList.next();
-			if (l.getId() == locationStaffMemberId) {
-				locationStaffMember = l;
-			}
-		}
-		if (locationStaffMember != null || (paramLocationStaffMemberId != null && paramLocationStaffMemberId.equals(PARAM_LOCATION_STAFF_MEMBER_NO_VALUE))) {
-			params.put(MODEL_LOCATION_STAFF_MEMBER_NAME, locationStaffMember);
-		} else {
-			params.put(MODEL_LOCATION_STAFF_MEMBER_NAME, defaultLocationStaffMember);
-		}
-		locationStaffMember = (Location)params.get(MODEL_LOCATION_STAFF_MEMBER_NAME);
-		
-		// Staff Member (depends on function and location staff member filter)		
-		final String paramStaffMemberId = request.getParameter(PARAM_STAFF_MEMBER_NAME);
-		int staffMemberId = 0;
-		
-		final StaffMember defaultStaffMember = userSession.getDefaultFormValues().getAdminStatisticStaffMember();		
-		StaffMember staffMember = null;
-		if (paramStaffMemberId != null && !paramStaffMemberId.equals("") && !paramStaffMemberId.equalsIgnoreCase(PARAM_STAFF_MEMBER_NO_VALUE)) {
-			staffMemberId = Integer.parseInt(paramStaffMemberId);		
-		}
-		final List<AbstractMessage> staffList = new ArrayList<AbstractMessage>();
-		final List<AbstractMessage> staffListTemp = connection.sendListingRequest(StaffMember.ID, null);
-		if (!StaffMember.ID.equalsIgnoreCase(connection.getContentType())) {
-			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
-		}
-		for (final Iterator<AbstractMessage> itStaffList = staffListTemp.iterator(); itStaffList.hasNext();) {
-			final StaffMember sm = (StaffMember)itStaffList.next();
+		params.put(MODEL_YEAR_LIST_NAME, yearList);
 
-			final List<Competence> cL = sm.getCompetenceList();
-			for (final Iterator<Competence> itCL = cL.iterator(); itCL.hasNext();) {
-				final Competence c = itCL.next();
-			}
-				
-			if (locationStaffMember != null) {
-				if (sm.getPrimaryLocation().getId() == locationStaffMember.getId()) {
-					staffList.add(sm);
-				}
-			} else {
-				staffList.add(sm);
-			}
-			if (sm.getStaffMemberId() == staffMemberId) {
-				staffMember = sm;
-			}
-				
-			
-		}		
-		if (staffMember != null || (paramStaffMemberId != null && paramStaffMemberId.equals(PARAM_STAFF_MEMBER_NO_VALUE))) {
-			params.put(MODEL_STAFF_MEMBER_NAME, staffMember);
-		} else {
-			params.put(MODEL_STAFF_MEMBER_NAME, defaultStaffMember);
+		
+		// Staff Member (depends on function and location staff member filter)			
+		StaffMember staffMember = userSession.getLoginInformation().getUserInformation();
+		if (staffMember == null) {
+			throw new IllegalArgumentException("Error: Staff Member must not be null.");
 		}
-		staffMember = (StaffMember)params.get(MODEL_STAFF_MEMBER_NAME);
 		
 		// Get Roster Entries
 		final QueryFilter rosterFilter = new QueryFilter();
@@ -240,13 +167,8 @@ public class PrintAdminStatisticController extends Controller {
 			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_FILTER, Integer.toString(location.getId()));
 		}
 		rosterFilter.add(IFilterTypes.ROSTER_MONTH_FILTER, Integer.toString(month + 1));
-		rosterFilter.add(IFilterTypes.ROSTER_YEAR_FILTER, year.toString());
-		if (locationStaffMember != null) {
-			rosterFilter.add(IFilterTypes.ROSTER_LOCATION_STAFF_MEMBER_FILTER, Integer.toString(locationStaffMember.getId()));
-		}
-		if (staffMember != null) {
-			rosterFilter.add(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER, Integer.toString(staffMember.getStaffMemberId()));
-		}
+		rosterFilter.add(IFilterTypes.ROSTER_YEAR_FILTER, year.toString());	
+		rosterFilter.add(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER, Integer.toString(staffMember.getStaffMemberId()));	
 		rosterFilter.add(IFilterTypes.ROSTER_MONTH_STATISTIC_FILTER, "true");
 		
 		// Form RosterEntryContainerList for Table
@@ -296,6 +218,10 @@ public class PrintAdminStatisticController extends Controller {
 		
 		// Put timetable to map
 		params.put(MODEL_ROSTER_MONTH_CONTAINER_NAME, adminStatisticContainer);
+		
+		userSession.getDefaultFormValues().setPersonnelStatisticLocation(location);
+		userSession.getDefaultFormValues().setPersonnelStatisticMonth(month);
+		userSession.getDefaultFormValues().setPersonnelStatisticYear(year);
 		
 		return params;
 	}

@@ -48,7 +48,7 @@
 	<tr>
 		<td id="BlockHead" colspan="2"><b>Statistiken</b></td>
 	</tr>
-	<c:url var="url" value="/Dispatcher/personalStatistic.do" />
+	<c:url var="url" value="/Dispatcher/personnelStatistic.do" />
 	<tr>
 		<td id="navIcon"></td>
 		<td id="BlockContentNav"><a href="${url}">Pers&ouml;nliche&nbsp;Statistik</a>
@@ -129,7 +129,7 @@
 			</td>
 		</tr>
 	</c:if>
-	<c:url var="url" value="/Dispatcher/personalData.do" />
+	<c:url var="url" value="/Dispatcher/personnelData.do" />
 	<tr>
 		<td id="navIcon"></td>
 		<td id="BlockContentNav"><a href="${url}">Profil</a></td>

@@ -39,7 +39,7 @@ public class RosterMonthStat {
 	}
 	
 	public int getRealDurationMinutes() {
-		return (int)realDuration%(1000*60*60);
+		return (int)((realDuration-getRealDurationHours()*(1000*60*60))/(1000*60));
 	}
 	
 	public int getPlannedDurationHours() {
@@ -47,7 +47,7 @@ public class RosterMonthStat {
 	}
 	
 	public int getPlannedDurationMinutes() {
-		return (int)plannedDuration%(1000*60*60);
+		return (int)((plannedDuration-getPlannedDurationHours()*(1000*60*60))/(1000*60));
 	}
 	
 	
@@ -56,7 +56,7 @@ public class RosterMonthStat {
 	}
 	
 	public void addPlannedDurationWeighted(long plannedDurationWeighted) {
-		this.plannedDurationWeighted = plannedDurationWeighted;
+		this.plannedDurationWeighted = this.plannedDurationWeighted + plannedDurationWeighted;
 	}
 	
 	public void addRealDuration(long realDuration) {
@@ -64,15 +64,15 @@ public class RosterMonthStat {
 	}
 	
 	public void addRealDurationWeighted(long realDurationWeighted) {
-		this.realDurationWeighted = realDurationWeighted;
+		this.realDurationWeighted = this.realDurationWeighted + realDurationWeighted;
 	}
 	
 	public void addDurationForStatistic(long durationForStatistic) {
-		this.durationForStatistic = durationForStatistic;
+		this.durationForStatistic = this.durationForStatistic + durationForStatistic;
 	}
 	
 	public void addDurationForStatisticWeighted(long durationForStatisticWeighted) {
-		this.durationForStatisticWeighted = durationForStatisticWeighted;
+		this.durationForStatisticWeighted = this.durationForStatisticWeighted + durationForStatisticWeighted;
 	}
 
 	public long getRealDurationWeighted() {
@@ -94,6 +94,14 @@ public class RosterMonthStat {
 	public long getDurationForStatistic() {
 		return durationForStatistic;
 	}
+	
+	public int getDurationForStatisticHours() {
+		return (int)durationForStatistic/(1000*60*60);
+	}
+	
+	public int getDurationForStatisticMinutes() {
+		return (int)((durationForStatistic-getDurationForStatisticHours()*(1000*60*60))/(1000*60));
+	}
 
 	public void setDurationForStatistic(long durationForStatistic) {
 		this.durationForStatistic = durationForStatistic;
@@ -101,6 +109,14 @@ public class RosterMonthStat {
 
 	public long getDurationForStatisticWeighted() {
 		return durationForStatisticWeighted;
+	}
+	
+	public int getDurationForStatisticWeightedHours() {
+		return (int)durationForStatisticWeighted/(1000*60*60);
+	}
+	
+	public int getDurationForStatisticWeightedMinutes() {
+		return (int)((durationForStatisticWeighted-getDurationForStatisticWeightedHours()*(1000*60*60))/(1000*60));
 	}
 
 	public void setDurationForStatisticWeighted(long durationForStatisticWeighted) {

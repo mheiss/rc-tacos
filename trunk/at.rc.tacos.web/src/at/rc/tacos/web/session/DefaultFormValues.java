@@ -31,6 +31,49 @@ public class DefaultFormValues {
 	private Location rosterMonthLocationStaffMember;
 	private StaffMember rosterMonthStaffMember;
 	
+	// Default values for Admin Statistic
+	private Location adminStatisticLocation;
+	private Integer adminStatisticMonth;
+	private Integer adminStatisticYear;
+	private Location adminStatisticLocationStaffMember;
+	private StaffMember adminStatisticStaffMember;
+	
+	// Default values for Personnel Statistic
+	private Location personnelStatisticLocation;
+	private Integer personnelStatisticMonth;
+	private Integer personnelStatisticYear;
+	
+	public Location getAdminStatisticLocation() {
+		return adminStatisticLocation;
+	}
+	public void setAdminStatisticLocation(Location adminStatisticLocation) {
+		this.adminStatisticLocation = adminStatisticLocation;
+	}
+	public Integer getAdminStatisticMonth() {
+		return adminStatisticMonth;
+	}
+	public void setAdminStatisticMonth(Integer adminStatisticMonth) {
+		this.adminStatisticMonth = adminStatisticMonth;
+	}
+	public Integer getAdminStatisticYear() {
+		return adminStatisticYear;
+	}
+	public void setAdminStatisticYear(Integer adminStatisticYear) {
+		this.adminStatisticYear = adminStatisticYear;
+	}
+	public Location getAdminStatisticLocationStaffMember() {
+		return adminStatisticLocationStaffMember;
+	}
+	public void setAdminStatisticLocationStaffMember(
+			Location adminStatisticLocationStaffMember) {
+		this.adminStatisticLocationStaffMember = adminStatisticLocationStaffMember;
+	}
+	public StaffMember getAdminStatisticStaffMember() {
+		return adminStatisticStaffMember;
+	}
+	public void setAdminStatisticStaffMember(StaffMember adminStatisticStaffMember) {
+		this.adminStatisticStaffMember = adminStatisticStaffMember;
+	}
 	public Location getRosterMonthLocationStaffMember() {
 		return rosterMonthLocationStaffMember;
 	}
@@ -52,6 +95,16 @@ public class DefaultFormValues {
 		rosterMonthFunction = null;
 		rosterMonthLocationStaffMember = null;
 		rosterMonthStaffMember = null;
+		
+		adminStatisticLocation = null;
+		adminStatisticMonth = null;
+		adminStatisticYear = null;
+		adminStatisticLocationStaffMember = null;
+		adminStatisticStaffMember = null;
+		
+		personnelStatisticLocation = null;
+		personnelStatisticMonth = null;
+		personnelStatisticYear = null;
 	}
 	public Date getDefaultDate() {
 		return defaultDate;
@@ -119,5 +172,23 @@ public class DefaultFormValues {
 	}
 	public void setRosterMonthStaffMember(StaffMember rosterMonthStaffMember) {
 		this.rosterMonthStaffMember = rosterMonthStaffMember;
+	}
+	public Location getPersonnelStatisticLocation() {
+		return personnelStatisticLocation;
+	}
+	public void setPersonnelStatisticLocation(Location personnelStatisticLocation) {
+		this.personnelStatisticLocation = personnelStatisticLocation;
+	}
+	public Integer getPersonnelStatisticMonth() {
+		return personnelStatisticMonth;
+	}
+	public void setPersonnelStatisticMonth(Integer personnelStatisticMonth) {
+		this.personnelStatisticMonth = personnelStatisticMonth;
+	}
+	public Integer getPersonnelStatisticYear() {
+		return personnelStatisticYear;
+	}
+	public void setPersonnelStatisticYear(Integer personnelStatisticYear) {
+		this.personnelStatisticYear = personnelStatisticYear;
 	}
 }
