@@ -23,6 +23,7 @@ import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.internal.WebClient;
 import at.rc.tacos.model.Location;
+import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.Transport;
@@ -75,6 +76,12 @@ public class RunningController extends Controller {
 		
 		final UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
 		final WebClient connection = userSession.getConnection();
+		
+		// Check authorization
+		final String authorization = userSession.getLoginInformation().getAuthorization();
+		if (!authorization.equals(Login.AUTH_ADMIN)) {
+			throw new IllegalArgumentException("Error: User has no permission for functionality.");
+		}
 		
 		// Put current date to parameter to parameter list
 		params.put(PARAM_CURRENT_DATE_NAME, new Date());
