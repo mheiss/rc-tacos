@@ -85,8 +85,7 @@ public class StaffMembersController extends Controller {
 		params.put(MODEL_LOCATION_NAME, location);
 		
 		// Staff Member List
-		final QueryFilter staffMembersFilter = new QueryFilter();
-		staffMembersFilter.add(IFilterTypes.STAFF_MEMBER_LOCKED_FILTER, "true");	
+		final QueryFilter staffMembersFilter = new QueryFilter();	
 		if (location != null) {
 			staffMembersFilter.add(IFilterTypes.STAFF_MEMBER_LOCATION_FILTER, Integer.toString(location.getId()));
 		}
