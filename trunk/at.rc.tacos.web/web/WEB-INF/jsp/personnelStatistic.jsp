@@ -179,7 +179,7 @@
 	<c:param name="month">${params.month}</c:param>
 	<c:param name="year">${params.year}</c:param>
 </c:url>
-<a href="${url}">Dienstplan&nbsp;drucken</a>
+<a href="${url}">Pers&ouml;nliche&nbsp;Statistik&nbsp;drucken</a>
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#locationId').change(function() {
