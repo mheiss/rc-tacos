@@ -23,6 +23,7 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.RosterEntry;
+import at.rc.tacos.model.ServiceType;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.web.container.AdminStatisticContainer;
 import at.rc.tacos.web.container.Month;
@@ -57,6 +58,11 @@ public class AdminStatisticController extends Controller {
 	private static final String PARAM_YEAR_NAME = "year";
 	private static final String MODEL_YEAR_NAME = "year";
 	private static final String MODEL_YEAR_LIST_NAME = "yearList";
+	
+	private static final String PARAM_SERVICE_TYPE_NAME = "serviceTypeId";
+	private static final String PARAM_SERVICE_TYPE_NO_VALUE = "noValue";
+	private static final String MODEL_SERVICE_TYPE_NAME = "serviceType";
+	private static final String MODEL_SERVICE_TYPE_LIST_NAME = "serviceTypeList";
 	
 	private static final String MODEL_ROSTER_MONTH_CONTAINER_NAME = "adminStatisticContainer";
 	
@@ -243,6 +249,35 @@ public class AdminStatisticController extends Controller {
 		}
 		staffMember = (StaffMember)params.get(MODEL_STAFF_MEMBER_NAME);
 		
+		// Service Type
+		final String paramServiceTypeId = request.getParameter(PARAM_SERVICE_TYPE_NAME);
+		int serviceTypeId = 0;
+		final ServiceType defaultServiceType = userSession.getDefaultFormValues().getAdminStatisticServiceType();
+		ServiceType serviceType = null;
+		if (paramServiceTypeId != null && !paramServiceTypeId.equals("") &&!paramServiceTypeId.equals(PARAM_SERVICE_TYPE_NO_VALUE)) {
+			serviceTypeId = Integer.parseInt(paramServiceTypeId);		
+		}
+		List<AbstractMessage> serviceTypeList = new ArrayList<AbstractMessage>();
+		if (authorization.equals(Login.AUTH_ADMIN)) {
+			serviceTypeList = connection.sendListingRequest(ServiceType.ID, null);
+		}	
+		if (!ServiceType.ID.equalsIgnoreCase(connection.getContentType())) {
+			throw new IllegalArgumentException("Error: Error at connection to Tacos server occoured.");
+		}
+		for (final Iterator<AbstractMessage> itServiceTypeList = serviceTypeList.iterator(); itServiceTypeList.hasNext();) {
+			final ServiceType st = (ServiceType)itServiceTypeList.next();
+			if (st.getId() == serviceTypeId) {
+				serviceType = st;
+			}
+		}
+		params.put(MODEL_SERVICE_TYPE_LIST_NAME, serviceTypeList);
+		if (serviceType != null || (paramServiceTypeId != null && paramServiceTypeId.equals(PARAM_SERVICE_TYPE_NO_VALUE))) {
+			params.put(MODEL_SERVICE_TYPE_NAME, serviceType);
+		} else {
+			params.put(MODEL_SERVICE_TYPE_NAME, defaultServiceType);
+		}
+		serviceType = (ServiceType)params.get(MODEL_SERVICE_TYPE_NAME);
+		
 		// Get Roster Entries
 		final QueryFilter rosterFilter = new QueryFilter();
 		if (location != null) {
@@ -257,6 +292,9 @@ public class AdminStatisticController extends Controller {
 			rosterFilter.add(IFilterTypes.ROSTER_STAFF_MEMBER_FILTER, Integer.toString(staffMember.getStaffMemberId()));
 		}
 		rosterFilter.add(IFilterTypes.ROSTER_MONTH_STATISTIC_FILTER, "true");
+		if (serviceType != null) {
+			rosterFilter.add(IFilterTypes.ROSTER_SERVICE_TYPE_FILTER, Integer.toString(serviceType.getId()));
+		}
 		
 		// Form RosterEntryContainerList for Table
 		final List<AbstractMessage> rosterEntryList = connection.sendListingRequest(RosterEntry.ID, rosterFilter);
@@ -311,6 +349,7 @@ public class AdminStatisticController extends Controller {
 		userSession.getDefaultFormValues().setAdminStatisticYear(year);
 		userSession.getDefaultFormValues().setAdminStatisticLocationStaffMember(locationStaffMember);
 		userSession.getDefaultFormValues().setAdminStatisticStaffMember(staffMember);
+		userSession.getDefaultFormValues().setAdminStatisticServiceType(serviceType);
 		
 		return params;
 	}
