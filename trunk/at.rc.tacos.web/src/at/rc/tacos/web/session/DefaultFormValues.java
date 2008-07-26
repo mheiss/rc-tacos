@@ -37,6 +37,7 @@ public class DefaultFormValues {
 	private Integer adminStatisticYear;
 	private Location adminStatisticLocationStaffMember;
 	private StaffMember adminStatisticStaffMember;
+	private ServiceType adminStatisticServiceType;
 	
 	// Default values for Personnel Statistic
 	private Location personnelStatisticLocation;
@@ -101,6 +102,7 @@ public class DefaultFormValues {
 		adminStatisticYear = null;
 		adminStatisticLocationStaffMember = null;
 		adminStatisticStaffMember = null;
+		adminStatisticServiceType = null;
 		
 		personnelStatisticLocation = null;
 		personnelStatisticMonth = null;
@@ -190,5 +192,11 @@ public class DefaultFormValues {
 	}
 	public void setPersonnelStatisticYear(Integer personnelStatisticYear) {
 		this.personnelStatisticYear = personnelStatisticYear;
+	}
+	public ServiceType getAdminStatisticServiceType() {
+		return adminStatisticServiceType;
+	}
+	public void setAdminStatisticServiceType(ServiceType adminStatisticServiceType) {
+		this.adminStatisticServiceType = adminStatisticServiceType;
 	}
 }

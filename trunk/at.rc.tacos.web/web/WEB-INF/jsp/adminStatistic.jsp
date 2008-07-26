@@ -79,6 +79,17 @@
 			</c:forEach>
 		</select></td>
 	</tr>
+	<tr>
+		<td style="font-weight: bold">Dienstverhältnis:</td>
+		<td><select size="1" id="serviceTypeId" name="serviceTypeId">
+			<option value="noValue">-- Dienstverhältnis wählen --</option>
+			<c:forEach var="serviceType" items="${params.serviceTypeList}">
+				<option value="${serviceType.id}" ${(not empty
+					params.serviceType) and (params.serviceType.id==
+					serviceType.id) ? ' selected="selected"' : ''}>${serviceType.serviceName}</option>
+			</c:forEach>
+		</select></td>
+	</tr>
 </table>
 <br />
 <br />
@@ -227,22 +238,29 @@ $(document).ready(function() {
 		var url = '?year=' + $(this).val();
 		update(url, 'y');
 	});
+	$('#serviceTypeId').change(function() {
+		var url = '?serviceTypeId=' + $(this).val();
+		update(url, 'st');
+	});
 	function update(url, code) {
 		var locationId = $('#locationId').val();
 		var locationStaffMemberId = $('#locationStaffMemberId').val();
 		var staffMemberId = $('#staffMemberId').val();
 		var month = $('#month').val();
 		var year = $('#year').val();
+		var serviceTypeId = $('#serviceTypeId').val();
 		if (code == 'l') {
-			url = url + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
+			url = url + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year + '&serviceTypeId=' + serviceTypeId;
 		} else if (code == 'lsm') {
-			url = url + '&locationId=' + locationId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
+			url = url + '&locationId=' + locationId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year + '&serviceTypeId=' + serviceTypeId;
 		} else if (code == 's') {
-			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&month=' + month + '&year=' + year;
+			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&month=' + month + '&year=' + year + '&serviceTypeId=' + serviceTypeId;
 		} else if (code == 'm') {
-			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&year=' + year;
+			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&year=' + year + '&serviceTypeId=' + serviceTypeId;
 		} else if (code == 'y') {
-			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month;
+			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&serviceTypeId=' + serviceTypeId;
+		} else if (code == 'st') {
+			url = url + '&locationId=' + locationId + '&locationStaffMemberId=' + locationStaffMemberId + '&staffMemberId=' + staffMemberId + '&month=' + month + '&year=' + year;
 		}
 		document.location = url;
 	}
