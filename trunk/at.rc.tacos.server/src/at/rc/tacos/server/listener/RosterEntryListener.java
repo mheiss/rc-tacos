@@ -98,7 +98,11 @@ public class RosterEntryListener extends ServerListenerAdapter
 			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_MONTH_STATISTIC_FILTER)) {
 				statisticFilter = queryFilter.getFilterValue(IFilterTypes.ROSTER_MONTH_STATISTIC_FILTER);
 			}
-			rosterList = rosterDao.listRosterEntriesForRosterMonth(locationFilter, monthFilter, yearFilter, locationStaffMemberFilter, functionStaffMemberCompetenceFilter, staffMemberFilter, statisticFilter);
+			int serviceTypeFilter = -1;
+			if (queryFilter.containsFilterType(IFilterTypes.ROSTER_SERVICE_TYPE_FILTER)) {
+				serviceTypeFilter = Integer.parseInt(queryFilter.getFilterValue(IFilterTypes.ROSTER_SERVICE_TYPE_FILTER));
+			}
+			rosterList = rosterDao.listRosterEntriesForRosterMonth(locationFilter, monthFilter, yearFilter, locationStaffMemberFilter, functionStaffMemberCompetenceFilter, staffMemberFilter, statisticFilter, serviceTypeFilter);
 			if(rosterList == null)
 			{
 				String time = "";
