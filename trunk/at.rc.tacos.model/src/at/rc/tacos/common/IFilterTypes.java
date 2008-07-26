@@ -2,6 +2,7 @@ package at.rc.tacos.common;
 
 /**
  * Interface for the definition of the available filter types
+ * 
  * @author Michael
  */
 public interface IFilterTypes
@@ -54,6 +55,9 @@ public interface IFilterTypes
     
     /** Filter roster by staff member */
     public final static String ROSTER_STAFF_MEMBER_FILTER = "rosterStaffMemberFilter";
+    
+    /** Filter roster by service type */
+    public final static String ROSTER_SERVICE_TYPE_FILTER = "rosterServiceTypeFilter";
     
     /** Filter by lastname */
     public final static String SICK_PERSON_LASTNAME_FILTER = "lastnameFilter";
