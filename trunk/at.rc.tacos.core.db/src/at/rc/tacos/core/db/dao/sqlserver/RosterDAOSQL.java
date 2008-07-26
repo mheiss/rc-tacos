@@ -397,7 +397,7 @@ public class RosterDAOSQL implements RosterDAO
 	}
 	
 	@Override
-	public List<RosterEntry> listRosterEntriesForRosterMonth (int locationFilter, int monthFilter, int yearFilter, int locationStaffMemberFilter, String functionStaffMemberCompetenceFilter, int staffMemberFilter, String statisticFilter) throws SQLException {
+	public List<RosterEntry> listRosterEntriesForRosterMonth (int locationFilter, int monthFilter, int yearFilter, int locationStaffMemberFilter, String functionStaffMemberCompetenceFilter, int staffMemberFilter, String statisticFilter, int serviceTypeFilter) throws SQLException {
 		Connection connection = source.getConnection();
 		try
 		{
@@ -421,6 +421,10 @@ public class RosterDAOSQL implements RosterDAO
 			
 			if (statisticFilter != null) {
 				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.statisticCondition");
+			}
+			
+			if (serviceTypeFilter != -1) {
+				queryString = queryString + " " + queries.getStatment("list.RosterForRosterMonth.serviceTypeCondition");
 			}
 			
 			final PreparedStatement query = connection.prepareStatement(queryString);
@@ -449,6 +453,11 @@ public class RosterDAOSQL implements RosterDAO
 			if (staffMemberFilter != -1) {
 				i++;
 				query.setInt(i, staffMemberFilter);
+			}
+			
+			if (serviceTypeFilter != -1) {
+				i++;
+				query.setInt(i, serviceTypeFilter);
 			}
 			
 			final ResultSet rs = query.executeQuery();
