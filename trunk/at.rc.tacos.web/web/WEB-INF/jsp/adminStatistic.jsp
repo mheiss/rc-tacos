@@ -103,12 +103,13 @@
 				<c:set var="staffMember" value="${rosterEntryContainerMapEntry.key}" />
 				<c:set var="rosterEntryContainerList" value="${rosterEntryContainerMapEntry.value}" />
 					<tr>
-						<th class="header2" colspan="10">${staffMember.lastName}&nbsp;${staffMember.firstName}</th>
+						<th class="header2" colspan="11">${staffMember.lastName}&nbsp;${staffMember.firstName}</th>
 					</tr>
 					<tr class="subhead2">
 						<th nowrap="nowrap">Datum</th>
 						<th nowrap="nowrap">Ortsstelle</th>
 						<th nowrap="nowrap">Verwendung</th>
+						<th nowrap="nowrap">Dienstverhältnis</th>
 						<th nowrap="nowrap">von&nbsp;(geplant)</th>
 						<th nowrap="nowrap">bis&nbsp;(geplant)</th>
 						<th nowrap="nowrap">von</th>
@@ -125,6 +126,7 @@
 								</td>
 								<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.station.locationName}</td>
 								<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.job.jobName}</td>
+								<td nowrap="nowrap">${rosterEntryContainer.rosterEntry.servicetype.serviceName}</td>
 								<td nowrap="nowrap">
 									<fmt:formatDate type="time" timeStyle="short" value="${rosterEntryContainer.plannedStartOfWork}" />
 								</td>
@@ -182,6 +184,7 @@
 							</c:if>
 						</c:forEach>
 						<tr>
+							<td />
 							<td />
 							<td />
 							<td />
