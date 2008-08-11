@@ -43,7 +43,7 @@ public class Activator extends AbstractUIPlugin
 		super.start(context);
 		plugin = this;
 		//initialize log4j
-		PropertyConfigurator.configureAndWatch("log4j.properties", 60*1000 );
+		PropertyConfigurator.configureAndWatch("at/rc/tacos/server/config/log4j.properties", 60*1000 );
 		//load all needed images and register them
 		loadAndRegisterImages();
 		registerModelListeners();

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
+import at.rc.tacos.client.ui.notification.RosterNotificationPopup;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.RosterEntry;
 
@@ -38,6 +39,9 @@ public class RosterEntryManager extends PropertyManager
             {
                 objectList.add(rosterEntry);
                 firePropertyChange("ROSTERENTRY_ADD", null, rosterEntry);
+                //show a popup to notify the clients
+                RosterNotificationPopup popup = new RosterNotificationPopup(Display.getDefault(),rosterEntry);
+                popup.open();
             }
         }); 
     }    
