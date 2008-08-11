@@ -10,7 +10,8 @@ Bundle-ClassPath: libs/commons-codec-1.3.jar,
  libs/log4j-1.2.15.jar,
  libs/sqljdbc.jar,
  libs/nebula_cdatetime_0.9.0.jar,
- libs/org.eclipse.swt.nebula_1.0.0.jar
+ libs/org.eclipse.swt.nebula_1.0.0.jar,
+ libs/org.eclipse.mylyn.commons.ui_3.0.1.v20080721-2100-e3x.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.microsoft.sqlserver.jdbc,
  junit.extensions,
@@ -47,6 +48,8 @@ Export-Package: com.microsoft.sqlserver.jdbc,
  org.apache.log4j.spi,
  org.apache.log4j.varia,
  org.apache.log4j.xml,
+ org.eclipse.mylyn.internal.commons.ui,
+ org.eclipse.mylyn.internal.provisional.commons.ui,
  org.eclipse.swt.nebula.widgets.cdatetime,
  org.eclipse.swt.nebula.widgets.compositetable,
  org.eclipse.swt.nebula.widgets.compositetable.day,
@@ -82,4 +85,6 @@ Export-Package: com.microsoft.sqlserver.jdbc,
  org.junit.runner.manipulation,
  org.junit.runner.notification,
  org.junit.runners
-Require-Bundle: org.eclipse.swt;bundle-version="3.4.0"
+Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
+ org.eclipse.jface;bundle-version="3.4.0",
+ org.eclipse.core.runtime;bundle-version="3.4.0"
