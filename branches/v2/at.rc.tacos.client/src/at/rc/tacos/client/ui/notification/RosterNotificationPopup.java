@@ -33,7 +33,7 @@ public class RosterNotificationPopup extends AbstractNotificationPopup
 	@Override
 	protected void createTitleArea(Composite parent) 
 	{
-		((GridData) parent.getLayoutData()).heightHint = 24;
+		((GridData) parent.getLayoutData()).heightHint = 32;
 
 		Label titleCircleLabel = new Label(parent, SWT.NONE);
 		titleCircleLabel.setText("RSSOwl - Incoming News");
