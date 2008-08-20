@@ -29,6 +29,8 @@ public class Application implements IApplication
     	ServerInfo primaryServer = source.getServerInfoById(IServerInfo.PRIMARY_SERVER);
     	ServerInfo failoverServer = source.getServerInfoById(IServerInfo.FAILOVER_SERVER);
     	
+    	//FIXME This is just a test for svn merge
+    	
     	//startup the workbench
         Display display = PlatformUI.createDisplay();
         //connect to the server
