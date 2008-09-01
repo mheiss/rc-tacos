@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Model Plug-in
+Bundle-SymbolicName: at.rc.tacos.platform.model
+Bundle-Version: 1.0.0
+Bundle-Activator: at.rc.tacos.platform.model.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ at.rc.tacos.platform.util;bundle-version="1.0.0",
+ at.rc.tacos.platform.common;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: at.rc.tacos.platform.codec,
+ at.rc.tacos.platform.factory,
+ at.rc.tacos.platform.iface,
+ at.rc.tacos.platform.model
