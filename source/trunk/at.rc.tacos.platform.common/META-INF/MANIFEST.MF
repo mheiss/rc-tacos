@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Common Plug-in
+Bundle-SymbolicName: at.rc.tacos.platform.common
+Bundle-Version: 1.0.0
+Bundle-Activator: at.rc.tacos.platform.common.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: at.rc.tacos.platform.common,
+ at.rc.tacos.platform.common.exceptions,
+ at.rc.tacos.platform.common.net
