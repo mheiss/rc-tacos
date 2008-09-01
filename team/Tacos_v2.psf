@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.client,at.rc.tacos.client"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.client.net,at.rc.tacos.client.net"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.common,at.rc.tacos.platform.common"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.lib,at.rc.tacos.platform.lib"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.log,at.rc.tacos.platform.log"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.model,at.rc.tacos.platform.model"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.util,at.rc.tacos.platform.util"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server,at.rc.tacos.server"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server.dbal,at.rc.tacos.server.dbal"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server.net.icc,at.rc.tacos.server.net.icc"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server.net.isc,at.rc.tacos.server.net.isc"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server.ui,at.rc.tacos.server.ui"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.web,at.rc.tacos.web"/>
+</provider>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="TacosClient" name="TacosClient">
+<item elementID="=at.rc.tacos.client" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.client.net" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="TacosPlatform" name="TacosPlatform">
+<item elementID="=at.rc.tacos.platform.common" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.platform.lib" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.platform.log" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.platform.model" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.platform.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="TacosServer" name="TacosServer">
+<item elementID="=at.rc.tacos.server" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.server.dbal" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.server.net.icc" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.server.net.isc" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.server.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="TacosWeb" name="TacosWeb">
+<item elementID="=at.rc.tacos.web" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Servers" type="4"/>
+</workingSets>
+</psf>
