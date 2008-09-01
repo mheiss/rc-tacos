@@ -4,6 +4,7 @@
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/branches/v1/at.rc.tacos.client,at.rc.tacos.client"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/branches/v1/at.rc.tacos.core.net,at.rc.tacos.core.net"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/branches/v1/at.rc.tacos.core.db,at.rc.tacos.core.db"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/branches/v1/at.rc.tacos.libs,at.rc.tacos.libs"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/branches/v1/at.rc.tacos.model,at.rc.tacos.model"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/branches/v1/at.rc.tacos.server,at.rc.tacos.server"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/branches/v1/at.rc.tacos.web,at.rc.tacos.web"/>
