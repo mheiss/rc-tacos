@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<!-- ============================================================== -->
+<!-- ANT Configuration file for the tacos web project               -->
+<!-- ============================================================== -->
+<project name="ProjectTacosOnline" basedir="." default="compile">
+	<property file="build.properties" />
+
+	<property name="src.dir" value="src" />
+	<property name="web.dir" value="web" />
+	<property name="lib.dir" value="${web.dir}/WEB-INF/lib" />
+	<property name="build.dir" value="${web.dir}/WEB-INF/classes" />
+	<property name="dist.dir" value="dist" />
+	<property name="name" value="rc-tacos" />
+	<property name="at.rc.tacos.platform.common"
+		value="../at.rc.tacos.platform.common/bin" />
+	<property name="at.rc.tacos.platform.model.classes"
+		value="../at.rc.tacos.platform.model/bin" />
+	<property name="production-specific.dir"
+		value="production-specific" />
+	<property name="openssl.conf" value="${openssl.bin}/openssl.cnf" />
+
+	<path id="master-classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${appserver.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${appserver.home}/bin">
+			<include name="*.jar" />
+		</fileset>
+		<dirset dir="${at.rc.tacos.core.net.classes}">
+			<include name="**" />
+		</dirset>
+		<dirset dir="${at.rc.tacos.model.classes}">
+			<include name="**" />
+		</dirset>
+	</path>
+
+	<target name="clean"
+		description="Cleans the build and dist directories">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${deploy.path}/${name}" />
+		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
+		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
+	</target>
+
+	<target name="production-clean"
+		description="Cleans the build and dist directories on production system">
+		<delete dir="${build.dir}" />
+		<delete dir="${production.deploy.path}/${name}" />
+	</target>
+
+	<target name="compile" description="Compiles the application">
+		<mkdir dir="${build.dir}" />
+		<javac destdir="${build.dir}" target="1.6" verbose="true">
+			<src path="${src.dir}" />
+			<classpath refid="master-classpath" />
+		</javac>
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deploy" description="Deploy application">
+		<mkdir dir="${production.deploy.path}/${name}" />
+		<jar destfile="${lib.dir}/at.rc.tacos.core.net.jar">
+			<fileset dir="${at.rc.tacos.core.net.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<jar destfile="${lib.dir}/at.rc.tacos.model.jar">
+			<fileset dir="${at.rc.tacos.model.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<copy verbose="true" todir="${deploy.path}/${name}">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
+		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
+	</target>
+
+	<target name="production-deploy"
+		description="Deploy application to producion system">
+		<mkdir dir="${production.deploy.path}/${name}" />
+		<jar destfile="${lib.dir}/at.rc.tacos.core.net.jar">
+			<fileset dir="${at.rc.tacos.core.net.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<jar destfile="${lib.dir}/at.rc.tacos.model.jar">
+			<fileset dir="${at.rc.tacos.model.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<copy verbose="true"
+			todir="${web.dir}/WEB-INF/classes/at/rc/tacos/web/config"
+			overwrite="true">
+			<fileset dir="${production-specific.dir}">
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+		<copy verbose="true"
+			todir="${production.deploy.path}/${name}">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
+		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
+	</target>
+
+	<target name="dist" description="Deploy application as war file">
+		<mkdir dir="${dist.dir}" />
+		<jar destfile="${lib.dir}/at.rc.tacos.core.net.jar">
+			<fileset dir="${at.rc.tacos.core.net.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<jar destfile="${lib.dir}/at.rc.tacos.model.jar">
+			<fileset dir="${at.rc.tacos.model.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<copy verbose="true"
+			todir="${web.dir}/WEB-INF/classes/at/rc/tacos/web/config"
+			overwrite="true">
+			<fileset dir="${production-specific.dir}">
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+		<war destfile="${dist.dir}/${name}.war"
+			webxml="${web.dir}/WEB-INF/web.xml">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</war>
+		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
+		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
+	</target>
+
+	<target name="production-deploy-ftp"
+		description="Deploy application to producation system via FTP">
+		<jar destfile="${lib.dir}/at.rc.tacos.core.net.jar">
+			<fileset dir="${at.rc.tacos.core.net.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<jar destfile="${lib.dir}/at.rc.tacos.model.jar">
+			<fileset dir="${at.rc.tacos.model.classes}">
+				<include name="**/*.*" />
+			</fileset>
+		</jar>
+		<copy verbose="true"
+			todir="${web.dir}/WEB-INF/classes/at/rc/tacos/web/config"
+			overwrite="true">
+			<fileset dir="${production-specific.dir}">
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+		<ftp server="${production.ftp.ip}" port="${production.ftp.port}"
+			remotedir="${production.ftp.dir}/${name}"
+			userid="${production.ftp.username}"
+			password="${production.ftp.password}" depends="yes" binary="no"
+			passive="yes" verbose="true">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</ftp>
+		<delete file="${lib.dir}/at.rc.tacos.core.net.jar" />
+		<delete file="${lib.dir}/at.rc.tacos.model.jar" />
+	</target>
+
+	<target name="eclipse-ssl-genkey-openssl"
+		description="Generates server certificate with OpenSSL under Eclipse">
+		<mkdir dir="${eclipse.appserver.home}/conf" />
+		<exec executable="${openssl.bin}/openssl"
+			dir="${eclipse.appserver.home}/conf" failonerror="true">
+			<arg
+				line="genrsa -out server.key 1024 -passout pass:${ssl.key.pass}" />
+		</exec>
+		<exec executable="${openssl.bin}/openssl"
+			dir="${eclipse.appserver.home}/conf" failonerror="true">
+			<arg line="req -new -key server.key -out server.csr" />
+			<arg line="-subj &quot;${ssl.key.dname.openssl}&quot;" />
+			<arg line="-config ${openssl.conf}" />
+		</exec>
+		<exec executable="${openssl.bin}/openssl"
+			dir="${eclipse.appserver.home}/conf" failonerror="true">
+			<arg
+				line="x509 -req -in server.csr -signkey server.key -days 1095 -out server.crt" />
+		</exec>
+	</target>
+
+	<target name="eclipse-ssl-genkey-jsse"
+		description="Generate server certificate with Java Keytool under Eclipse">
+		<property name="ssl.key.id"
+			value="-keystore .keystore -alias tomcat -storepass ${ssl.key.pass} -keypass ${ssl.key.pass}" />
+		<mkdir dir="${eclipse.appserver.home}/conf" />
+		<exec executable="${java.home}/bin/keytool"
+			dir="${eclipse.appserver.home}/conf" failonerror="false">
+			<arg line="-delete" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+		<exec executable="${java.home}/bin/keytool"
+			dir="${eclipse.appserver.home}/conf" failonerror="false">
+			<arg
+				line="-genkey -dname &quot;${ssl.key.dname.jsse}&quot;" />
+			<arg line="-keyalg RSA" />
+			<arg line="-validity ${ssl.key.validity}" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+		<exec executable="${java.home}/bin/keytool"
+			dir="${eclipse.appserver.home}/conf" failonerror="false">
+			<arg line="-export" />
+			<arg line="-file server.key" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+	</target>
+
+	<target name="ssl-genkey-openssl"
+		description="Generates server certificate with OpenSSL">
+		<mkdir dir="${appserver.home}/conf" />
+		<exec executable="${openssl.bin}/openssl"
+			dir="${appserver.home}/conf" failonerror="true">
+			<arg
+				line="genrsa -out server.key 1024 -passout pass:${ssl.key.pass}" />
+		</exec>
+		<exec executable="${openssl.bin}/openssl"
+			dir="${appserver.home}/conf" failonerror="true">
+			<arg line="req -new -key server.key -out server.csr" />
+			<arg line="-subj &quot;${ssl.key.dname.openssl}&quot;" />
+			<arg line="-config ${openssl.conf}" />
+		</exec>
+		<exec executable="${openssl.bin}/openssl"
+			dir="${appserver.home}/conf" failonerror="true">
+			<arg
+				line="x509 -req -in server.csr -signkey server.key -days 1095 -out server.crt" />
+		</exec>
+	</target>
+
+	<target name="ssl-genkey-jsse"
+		description="Generate server certificate with Java Keytool">
+		<property name="ssl.key.id"
+			value="-keystore .keystore -alias tomcat -storepass ${ssl.key.pass} -keypass ${ssl.key.pass}" />
+		<mkdir dir="${appserver.home}/conf" />
+		<exec executable="${java.home}/bin/keytool"
+			dir="${appserver.home}/conf" failonerror="false">
+			<arg line="-delete" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+		<exec executable="${java.home}/bin/keytool"
+			dir="${appserver.home}/conf" failonerror="false">
+			<arg
+				line="-genkey -dname &quot;${ssl.key.dname.jsse}&quot;" />
+			<arg line="-keyalg RSA" />
+			<arg line="-validity ${ssl.key.validity}" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+		<exec executable="${java.home}/bin/keytool"
+			dir="${eclipse.appserver.home}/conf" failonerror="false">
+			<arg line="-export" />
+			<arg line="-file server.key" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+	</target>
+
+	<target name="production-ssl-genkey-openssl"
+		description="Generates server certificate with OpenSSL for production system">
+		<mkdir dir="${production.appserver.home}/conf" />
+		<exec executable="${openssl.bin}/openssl"
+			dir="${production.appserver.home}/conf" failonerror="false">
+			<arg
+				line="genrsa -out server.key 1024 -passout pass:${production.ssl.key.pass}" />
+		</exec>
+		<exec executable="${openssl.bin}/openssl"
+			dir="${production.appserver.home}/conf" failonerror="false">
+			<arg line="req -new -key server.key -out server.csr" />
+			<arg
+				line="-subj &quot;${production.ssl.key.dname.openssl}&quot;" />
+			<arg line="-config ${openssl.conf}" />
+		</exec>
+		<exec executable="${openssl.bin}/openssl"
+			dir="${production.appserver.home}/conf" failonerror="false">
+			<arg
+				line="x509 -req -in server.csr -signkey server.key -days 1095 -out server.crt" />
+		</exec>
+	</target>
+
+	<target name="production-ssl-genkey-jsse"
+		description="Generate server certificate with Java Keytool for production system">
+		<property name="ssl.key.id"
+			value="-keystore .keystore -alias tomcat -storepass ${production.ssl.key.pass} -keypass ${production.ssl.key.pass}" />
+		<mkdir dir="${production.appserver.home}/conf" />
+		<exec executable="${java.home}/bin/keytool"
+			dir="${production.appserver.home}/conf" failonerror="false">
+			<arg line="-delete" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+		<exec executable="${java.home}/bin/keytool"
+			dir="${production.appserver.home}/conf" failonerror="false">
+			<arg
+				line="-genkey -dname &quot;${production.ssl.key.dname.jsse}&quot;" />
+			<arg line="-keyalg RSA" />
+			<arg line="-validity ${production.ssl.key.validity}" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+		<exec executable="${java.home}/bin/keytool"
+			dir="${production.appserver.home}/conf" failonerror="false">
+			<arg line="-export" />
+			<arg line="-file server.key" />
+			<arg line="${ssl.key.id}" />
+		</exec>
+	</target>
+
+</project>
