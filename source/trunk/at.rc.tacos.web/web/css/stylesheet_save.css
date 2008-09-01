@@ -1,0 +1,707 @@
+/* Used Styles */
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Verdana;
+	font-size: 12px;
+}
+
+a {
+	font-family: Verdana;
+	font-size: 12px;
+	text-decoration: none;
+	color: black;
+}
+
+a:link {
+	text-decoration: none;
+}
+
+a:visited {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:active {
+	text-decoration: none;
+}
+
+#MainTab {
+	overflow: hidden;
+}
+
+#MainBodyContent {
+	padding-left: 5px;
+}
+
+#LeftContainerPanel {
+	padding-left: 5px;
+}
+
+#ContentContainer {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+
+#userInfo {
+	width: 100%;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #B5B5B5;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #B5B5B5;
+}
+
+#buttonLogout {
+	background-image: url(../image/logout.jpg);
+	background-repeat: no-repeat;
+	width: 29px;
+	height: 10px;
+	border-width: 0px;
+	background-color: #000000;
+	color: #000000;
+}
+
+/* Navigation Styles */
+#Block {
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #B5B5B5;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #B5B5B5;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #B5B5B5;
+	margin-top: 5px;
+}
+
+#BlockHead {
+	background-image: url('../image/blockhead.jpg');
+	background-repeat: repeat-x;
+	background-position: top left;
+	padding-left: 16px;
+	height: 15px;
+}
+
+#BlockContentNav {
+	vertical-align: middle;
+	text-align: left;
+	padding: 2px;
+	width: 100%;
+	font-size: 150%;
+}
+
+#navIcon {
+	vertical-align: middle;
+	text-align: left;
+	padding: 2px;
+}
+
+/* New Styles */
+#headerTitle {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.reqMark {
+	color: red;
+}
+
+.reqComment {
+	font-size: 10px;
+	color: red;
+}
+
+.errorText {
+	color: red;
+}
+
+div#submitSuccess {
+	font-weight: bold;
+	color: black;
+	background-color: #DFFF80;
+	text-align: center;
+	border: 1px solid #516D00;
+	padding: 4px;
+	margin-bottom: 7px;
+	width: 400px;
+}
+
+.standardForm td {
+	padding: 2px;
+}
+
+.standardForm td.hButtonArea {
+	padding-top: 15px;
+	text-align: left;
+}
+
+.showRosterEntryInfo {
+	cursor: pointer !important;
+}
+
+/** List **/
+table.list {
+	empty-cells: show;
+	border-collapse: separate;
+	border-spacing: 0px 0px;
+	border-left: #999999 solid 1px;
+}
+
+.list tbody tr.even {
+	background-color: #f7f7f7;
+}
+
+.list tbody tr.odd {
+	background-color: #ffffff;
+}
+
+.list.selectable tbody tr {
+	cursor: pointer;
+}
+
+.list.selectable tbody tr.selected {
+	background-color: #FFBFBF;
+}
+
+.list.selectable tbody tr.selected td {
+	border-top-color: #FFBFBF;
+}
+
+.list tbody td {
+	padding: 2px 6px;
+	vertical-align: middle;
+	text-align: center;
+	border-right: #999999 solid 1px;
+	border-bottom: #999999 solid 1px;
+	border-left: white solid 1px;
+	border-top: white solid 1px;
+}
+
+table.list tbody td {
+	height: 1.9em;
+}
+
+.list tbody td.desc {
+	text-align: left;
+}
+
+.listButtonArea {
+	text-align: left;
+}
+
+.list th a,.list th a:visited {
+	text-decoration: none;
+	color: white;
+	cursor: pointer;
+}
+
+.list tr.filter table {
+	margin: 4px 4px 2px 7px;
+}
+
+.list tr.filter td {
+	color: black;
+	background-color: #BFE9FF;
+	border-right: #999999 solid 1px;
+	border-top: #999999 solid 1px;
+}
+
+.list option.filterDefItem {
+	color: #999999;
+}
+
+.list tr.filter td table td label {
+	margin-right: 3px;
+}
+
+.list tr.filter td table td {
+	border: none;
+	padding: 3px 0px;
+}
+
+.list label.filter {
+	font-size: 8pt;
+}
+
+.list select.filter {
+	font-size: 8pt;
+	margin: 0px;
+}
+
+.list th {
+	text-align: center;
+	background-color: #00669C;
+	color: white;
+	padding: 3px 5px;
+	border-right: #999999 solid 1px;
+	border-bottom: #999999 solid 1px;
+	border-top: #999999 solid 1px;
+	cursor: default;
+}
+
+.list th.header2 {
+	text-align: center;
+	color: black;
+	background-color: #BFE9FF;
+	padding: 3px 5px;
+	border-right: #999999 solid 1px;
+	border-bottom: #999999 solid 1px;
+	border-top: #999999 solid 1px;
+	font-size: 12px;
+}
+
+.list th.header2 a {
+	color: black;
+	cursor: pointer
+}
+
+.list tr.subhead2 th {
+	color: black;
+	background-color: #BFE9FF;
+	padding: 2px 5px;
+	border-top: none;
+	border-right: #999999 solid 1px;
+	cursor: default;
+	font-size: 12px;
+}
+
+.list tr.subhead2 th a {
+	color: black;
+	cursor: pointer
+}
+
+.list tr.subhead th {
+	padding: 2px 5px;
+	border-top: none;
+	border-right: #999999 solid 1px;
+	cursor: default;
+}
+
+.list tr.subfooter {
+	color: #666666;
+	background-color: #BFE9FF;
+}
+
+.list.selectable tbody tr.selected.subfooter {
+	background-color: #BFE9FF;
+	cursor: default;
+}
+
+.list.selectable tbody tr.selected.subfooter td {
+	border-top-color: #ffffff;
+}
+
+.list th.progress {
+	padding: 5px 6px 2px 0px;
+	vertical-align: middle;
+	text-align: right;
+}
+
+.list tfoot td {
+	color: black;
+	background-color: #BFE9FF;
+	border-right: #999999 solid 1px;
+	border-bottom: #999999 solid 1px;
+	height: 23px
+}
+
+.list td.listEmpty {
+	background-color: white;
+	border-left: none;
+	border-top: none;
+	font-weight: bold;
+	padding: 5px;
+}
+
+.list td.comment {
+	color: #999999;
+	font-size: 8pt;
+}
+
+.list td.nodata {
+	border-top: #999999 solid 1px;
+	border-left: none;
+	padding: 5px;
+	font-weight: bold;
+	text-align: center;
+	width: 500px;
+	background-color: #00669C;
+	color: white;
+}
+
+/* Unused Styles - These styles are used by old functionalities and won't be used in the final version. */
+.hidefocus {
+	outline: 0;
+	-moz-outline: 0;
+	border: 0;
+}
+
+#mainTabLogDate {
+	margin-top: 10%;
+	font-size: 10px;
+}
+
+#mainTabLog {
+	margin-top: 2px;
+	/*	
+	border-width:1px;
+	border-style:solid;
+	border-color:#be0107
+	*/
+}
+
+#leftLogSite {
+	background-image: url(../image/tacos_logo_8.jpg);
+	background-repeat: no-repeat;
+	background-position: bottom left;
+	width: 370px;
+	height: 377px;
+	padding-left: 5px;
+}
+
+#rightLogSite {
+	background-image: url(../image/right_login_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: bottom left;
+}
+
+#BlockHeadBlack {
+	background-image: url('../image/blockheadBlack.jpg');
+	background-repeat: repeat-x;
+	background-position: top left;
+	padding-left: 16px;
+	height: 15px;
+	color: white;
+	font-style: italic;
+}
+
+#BlockContent {
+	padding: 2px;
+	width: 100%;
+}
+
+/*
+	Kalender Style
+*/
+#weekday {
+	text-align: center;
+}
+
+#weekdayTimetable {
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #B5B5B5;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #B5B5B5;
+	width: 14%;
+}
+
+#weekdayTimetableZ {
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #B5B5B5;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #B5B5B5;
+	width: 6px;
+}
+
+weekdayZ {
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #B5B5B5;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #B5B5B5;
+	width: 6px;
+}
+
+#submitButton { /*
+    background-image:url(../image/anmelden.jpg);
+    background-position:center;
+    background-repeat:no-repeat;
+*/
+	color: black;
+	width: 200px;
+	height: 26px;
+	vertical-align: middle;
+	text-align: center;
+	background-color: white;
+	font-weight: bold;
+	/*
+    border-width:2px;
+    border-color:#be0107;
+    border-style:solid;
+    */
+	margin: 3px;
+}
+
+#navRegTab {
+	text-align: center;
+	width: 14%;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #B5B5B5;
+}
+
+#navRegTab1 {
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #B5B5B5;
+	width: 14%;
+}
+
+#navRegTab2 {
+	text-align: center;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #B5B5B5;
+	width: 14%;
+}
+
+#navRegTab3 {
+	text-align: center;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #B5B5B5;
+	width: 14%;
+	background-color: #E0E0E0;
+}
+
+#monthDayBox {
+	margin: 2px;
+	width: 14.2%;
+	height: 70px;
+	background-color: #E2DCE2;
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	float: left;
+	vertical-align: top;
+}
+
+#monthDayBoxGreen {
+	margin: 2px;
+	width: 14.2%;
+	height: 70px;
+	background-color: #00D900;
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	float: left;
+	vertical-align: top;
+}
+
+#rosterViewDayHeadSelbox {
+	width: 300px;
+	padding: 3px;
+	font-size: 13px;
+}
+
+#rosterViewDayHeadSelboxTime {
+	width: 50px;
+	padding: 1px;
+	font-size: 13px;
+}
+
+#rosterViewDayHeadline {
+	text-align: right;
+	font-size: 13px;
+}
+
+#timeList {
+	height: 15px;
+	width: 4%;
+	float: left;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #DBDBDB;
+}
+
+#mainDayContainer {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: red;
+	width: 100%;
+	background-image: url('../image/bgTimeTable.jpg');
+	background-repeat: repeat;
+}
+
+#MainDivDay {
+	
+}
+
+#mainDayTab {
+	background-position: top left;
+	width: 100%;
+	text-align: left;
+	vertical-align: middle;
+	padding-left: 10px;
+	font-size: 14px;
+}
+
+#mainDayContainerTL {
+	width: 100%;
+	height: 15px;
+}
+
+#singleEntryDiv {
+	height: 14px;
+	cursor: pointer;
+	vertical-align: middle;
+	text-align: left;
+	margin-top: 2px;
+}
+
+#singleEntryDivCase {
+	vertical-align: top;
+	text-align: left;
+}
+
+#singleEntryDiv a {
+	color: black;
+	text-decoration: none;
+	display: block;
+}
+
+#singleEntryDiv a:hover {
+	color: black;
+	background: #ddd8b7;
+}
+
+#singleEntryDiv a span {
+	display: none;
+	vertical-align: top;
+	text-align: left;
+}
+
+#singleEntryDiv a:hover span {
+	position: absolute;
+	z-index: 3; /* top:10px; right:10px; */
+	display: block;
+	width: 350px;
+	color: black;
+	background: #E0E0E0;
+	font: normal 16px courier, sans-serif;
+	border: 1px solid black;
+	padding: 10px;
+}
+
+#homeOverview {
+	float: left;
+	height: 150px;
+	width: 40%;
+	padding: 5px;
+	margin: 20px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #E8EAEA;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #b1b1b1;
+}
+
+#homeOverview a {
+	float: left;
+	height: 150px;
+	width: 40%;
+	padding: 4px;
+	margin: 2px;
+	text-align: center;
+	vertical-align: middle;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #ffffff;
+}
+
+#homeOverview a:hover {
+	float: left;
+	height: 150px;
+	width: 40%;
+	padding: 4px;
+	margin: 2px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #ffffff;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #b1b1b1;
+}
+
+#calDay {
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+}
+
+#calDay :hover {
+	cursor: pointer;
+	font-weight: bold;
+	width: 100%;
+	height: 100%;
+}
+
+#calDay :hover span {
+	cursor: pointer;
+	background-color: red;
+}
+
+#calTabMain {
+	border-width: 0px;
+	border-style: solid;
+	border-color: #FFB2B1;
+	margin-top: 10px;
+	width: 300px;
+	height: 150px;
+}
+
+#calDaysSuSo {
+	background-color: #F7DFE0;
+}
+
+#calTabWeekDays {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #FFB2B1;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #FFB2B1;
+	background-color: #FFB2B1;
+	padding: 2px;
+}
+
+#calMonthYearInfo {
+	background-color: #FFB2B1;
+}
+
+#selDateView {
+	color: black;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	background-color: white;
+	border-color: #A31111;
+	border-style: solid;
+	border-width: 1px;
+	background-image: url("../image/dateTimeIcon.jpg");
+	background-position: left top;
+	background-repeat: no-repeat;
+}
+
+#timeTabRosterEntry {
+	border-width: 1px;
+	border-style: dotted;
+	border-color: #666666;
+}
