@@ -7,6 +7,7 @@ Bundle-Activator: at.rc.tacos.server.dbal.Activator
 Require-Bundle: org.eclipse.core.runtime,
  at.rc.tacos.platform.lib;bundle-version="1.0.0",
  at.rc.tacos.platform.log;bundle-version="1.0.0",
- at.rc.tacos.platform.model;bundle-version="1.0.0"
+ at.rc.tacos.platform.model;bundle-version="1.0.0",
+ at.rc.tacos.platform.util;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
