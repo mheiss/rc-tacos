@@ -1,6 +1,6 @@
 package at.rc.tacos.platform.log;
 
-import org.eclipse.core.runtime.Status;
+import org.apache.log4j.Logger;
 
 /**
  * This class provides logging capabilities for other plugins
@@ -11,15 +11,43 @@ public class LogFactory
 	/**
 	 * Default class constructor
 	 */
-	private LogFactory()
-	{
+	private LogFactory() {
 		//prevent instantiation
 	}	
 	
-	public static void log(String pluginId,int severity,String message)
+	/**
+	 * Log a detailed message with log4j
+	 */
+	public static void trace(Object clazz,String message)
 	{
-		//log witht the build in loggin mechanism
-		Status status = new Status(severity,pluginId,message);
-		Activator.getDefault().getLog().log(status);
+		Logger logger = Logger.getLogger(clazz.getClass());
+		logger.trace(message);
+	}
+	
+	/**
+	 * Log a debug message with log4j
+	 */
+	public static void debug(Object clazz,String message)
+	{
+		Logger logger = Logger.getLogger(clazz.getClass());
+		logger.trace(message);
+	}
+	
+	/**
+	 * Log a information message with log4j
+	 */
+	public static void info(Object clazz,String message)
+	{
+		Logger logger = Logger.getLogger(clazz.getClass());
+		logger.trace(message);
+	}
+	
+	/**
+	 * Log a error message with log4j
+	 */
+	public static void error(Object clazz,String message)
+	{
+		Logger logger = Logger.getLogger(clazz.getClass());
+		logger.trace(message);
 	}
 }
