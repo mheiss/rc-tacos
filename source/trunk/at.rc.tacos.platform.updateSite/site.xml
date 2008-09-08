@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://www.michael-heiss.at/development/tacos/update-site/">
+      Update site for the tacos project.
+   </description>
+   <feature url="features/at.rc.tacos.client.feature_1.0.0.jar" id="at.rc.tacos.client.feature" version="1.0.0" os="win32" ws="win32" nl="de" arch="x86">
+      <category name="TacosClient"/>
+   </feature>
+   <feature url="features/at.rc.tacos.server.feature_1.0.0.jar" id="at.rc.tacos.server.feature" version="1.0.0" os="win32" ws="win32" nl="de" arch="x86">
+      <category name="TacosServer"/>
+   </feature>
+   <category-def name="TacosClient" label="TacosClient">
+      <description>
+         The TACOS Client
+      </description>
+   </category-def>
+   <category-def name="TacosServer" label="TacosServer">
+      <description>
+         The TACOS server
+      </description>
+   </category-def>
+</site>

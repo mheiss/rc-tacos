@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository class='org.eclipse.equinox.internal.p2.artifact.repository.simple.SimpleArtifactRepository' version='1.0.0'?>
+<repository name='file:/D:/Programmieren/Java/Workspace tacos/at.rc.tacos.platform.updateSite/ - artifacts' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
+  <properties size='2'>
+    <property name='p2.compressed' value='false'/>
+    <property name='p2.timestamp' value='1220905241906'/>
+  </properties>
+  <mappings size='3'>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='20'>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.server.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7796'/>
+        <property name='download.size' value='7796'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.server.net.icc' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='1729'/>
+        <property name='download.size' value='1729'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.platform.common' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='4196'/>
+        <property name='download.size' value='4196'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.platform.model' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='124722'/>
+        <property name='download.size' value='124722'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.server.ui' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='1579'/>
+        <property name='download.size' value='1579'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.server.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7821'/>
+        <property name='download.size' value='7821'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.server.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7852'/>
+        <property name='download.size' value='7852'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.server.dbal' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='92915'/>
+        <property name='download.size' value='92915'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.client.net' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='17950'/>
+        <property name='download.size' value='17950'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.server.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7733'/>
+        <property name='download.size' value='7733'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.server.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7735'/>
+        <property name='download.size' value='7735'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.client.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7726'/>
+        <property name='download.size' value='7726'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.platform.lib' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='1989503'/>
+        <property name='download.size' value='1989503'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.server.net.isc' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='1727'/>
+        <property name='download.size' value='1727'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.platform.log' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='2260'/>
+        <property name='download.size' value='2260'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.client.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7789'/>
+        <property name='download.size' value='7789'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.client.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7806'/>
+        <property name='download.size' value='7806'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.client' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='810196'/>
+        <property name='download.size' value='810196'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='at.rc.tacos.platform.util' version='1.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='4592'/>
+        <property name='download.size' value='4592'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='at.rc.tacos.client.feature' version='1.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='7710'/>
+        <property name='download.size' value='7710'/>
+      </properties>
+    </artifact>
+  </artifacts>
+</repository>
