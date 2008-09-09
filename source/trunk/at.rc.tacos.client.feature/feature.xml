@@ -3,6 +3,7 @@
       id="at.rc.tacos.client.feature"
       label="Feature Feature"
       version="1.0.0"
+      provider-name="FH-Joanneum / ITM"
       plugin="at.rc.tacos.client"
       os="win32"
       ws="win32"

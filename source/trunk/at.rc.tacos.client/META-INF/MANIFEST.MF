@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Client Plug-in
-Bundle-SymbolicName: at.rc.tacos.client
+Bundle-SymbolicName: at.rc.tacos.client;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.client.Activator
 Require-Bundle: org.eclipse.ui,
@@ -14,3 +14,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text;bundle-version="3.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: FH-Joanneum / ITM
