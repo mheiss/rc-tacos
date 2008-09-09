@@ -10,3 +10,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: at.rc.tacos.platform.common,
  at.rc.tacos.platform.common.exceptions,
  at.rc.tacos.platform.common.net
+Bundle-Vendor: FH-Joanneum / ITM
