@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.1"?>
+<?pde version="3.4"?>
 
-<product name="TACOS-Client" id="at.rc.tacos.client.product" application="at.rc.tacos.client.application" useFeatures="false">
+<product name="TACOS-Client" id="at.rc.tacos.client.product" application="at.rc.tacos.client.application" version="1.0.0" useFeatures="true">
 
    <aboutInfo>
       <image path="/at.rc.tacos.client/icons/application/alt_window_64.gif"/>
@@ -9,11 +9,12 @@
          Austrian Red Cross.
 Time and Coordination System - Client Software.
 Developed by Birgit Thek and Heiß Michael.
-(c) 2007-2008
+(c) 2007-2008 FH-Joanneum / ITM
       </text>
    </aboutInfo>
 
-   <configIni use="default"/>
+   <configIni use="default">
+   </configIni>
 
    <launcherArgs>
       <vmArgs>-Xms512m
@@ -38,6 +39,7 @@ Developed by Birgit Thek and Heiß Michael.
       </win>
    </launcher>
 
+
    <vm>
    </vm>
 
@@ -47,7 +49,7 @@ Developed by Birgit Thek and Heiß Michael.
       <plugin id="at.rc.tacos.libs"/>
       <plugin id="at.rc.tacos.model"/>
       <plugin id="com.ibm.icu"/>
-      <plugin id="com.ibm.icu36.data.update" fragment="true"/>
+      <plugin id="com.ibm.icu36.data.update"/>
       <plugin id="javax.servlet"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>
@@ -62,7 +64,7 @@ Developed by Birgit Thek and Heiß Michael.
       <plugin id="org.eclipse.core.net"/>
       <plugin id="org.eclipse.core.resources"/>
       <plugin id="org.eclipse.core.resources.compatibility" fragment="true"/>
-      <plugin id="org.eclipse.core.resources.win32" fragment="true"/>
+      <plugin id="org.eclipse.core.resources.win32"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility"/>
       <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
@@ -97,5 +99,9 @@ Developed by Birgit Thek and Heiß Michael.
       <plugin id="org.eclipse.update.ui"/>
       <plugin id="org.junit4"/>
    </plugins>
+
+   <features>
+      <feature id="at.rc.tacos.client.feature" version="1.0.0"/>
+   </features>
 
 </product>
