@@ -7,3 +7,4 @@ Bundle-Activator: at.rc.tacos.server.net.icc.Activator
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: FH-Joanneum / ITM
