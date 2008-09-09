@@ -13,3 +13,4 @@ Export-Package: at.rc.tacos.platform.codec,
  at.rc.tacos.platform.factory,
  at.rc.tacos.platform.iface,
  at.rc.tacos.platform.model
+Bundle-Vendor: FH-Joanneum / ITM
