@@ -79,6 +79,13 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 		openTransportAction.setAccelerator(SWT.CTRL + 'T');
 		openDialysisTransportAction = new OpenDialysisTransportAction();
 		openDialysisTransportAction.setAccelerator(SWT.CTRL + 'L');
+		
+		register(personalNewEntryAction);
+		register(openEmergencyTransportAction);
+		register(openTransportAction);
+		register(openDialysisTransportAction);
+		register(switchToClient);
+		register(switchToAdmin);
 		register(aboutAction);
 		register(exitAction);
 		register(conWizard);

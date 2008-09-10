@@ -6,10 +6,13 @@
          name="TACOS-Client"
          point="org.eclipse.core.runtime.applications">
       <application
-            cardinality="singleton-global"
+            cardinality="1"
             icon="icons/logo_small.jpg"
             thread="main"
             visible="true">
+         <run
+               class="at.rc.tacos.client.Application">
+         </run>
       </application>
    </extension>
    <extension
