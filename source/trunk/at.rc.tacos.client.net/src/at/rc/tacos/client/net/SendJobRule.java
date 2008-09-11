@@ -1,4 +1,4 @@
-package at.rc.tacos.client.net.jobs;
+package at.rc.tacos.client.net;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
