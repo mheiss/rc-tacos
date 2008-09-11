@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.osgi.framework.BundleContext;
 
-import at.rc.tacos.client.net.jobs.SendJobRule;
 import at.rc.tacos.platform.common.net.MySocket;
 import at.rc.tacos.platform.factory.ListenerFactory;
 import at.rc.tacos.platform.factory.XMLFactory;
