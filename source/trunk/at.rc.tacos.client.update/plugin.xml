@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="at.rc.tacos.client.update"
+            label="Update Actions"
+            visible="true">
+         <menu
+               id="at.rc.tacos.client.update.menu1"
+               label="%UpdateMenu.label"
+               path="help/group.updates">
+            <separator
+                  name="group0">
+            </separator>
+         </menu>
+         <action
+               class="at.rc.tacos.client.update.AddExtensionAction"
+               icon="icons/software-update-available.png"
+               id="at.rc.tacos.client.update.addExtension"
+               label="%AddExtensionAction.label"
+               menubarPath="help/at.rc.tacos.client.update/group0"
+               style="push">
+         </action>
+         <action
+               class="at.rc.tacos.client.update.UpdateAction"
+               icon="icons/system-software-update.png"
+               id="at.rc.tacos.client.update.newUpdates"
+               label="%UpdateAction.label"
+               menubarPath="help/com.siemens.ct.mp3m.update.updateMenu/group0"
+               style="push">
+         </action>
+      </actionSet>
+   </extension>
+
+</plugin>
