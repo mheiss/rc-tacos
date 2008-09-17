@@ -12,7 +12,7 @@
       colocation-affinity="at.rc.tacos.client.feature">
 
    <description url="http://sf.net/projects/rc-tacos/">
-      TACOS server application
+      TACOS client application
    </description>
 
    <copyright url="http://sf.net/projects/rc-tacos/">
@@ -472,7 +472,7 @@ Public License instead of this License.
    </license>
 
    <url>
-      <update label="at.rc.tacos.platform.updateSite" url="http://www.michael-heiss.at/development/tacos/update-site/site.xml"/>
+      <update label="TACOS Update Site" url="http://www.michael-heiss.at/development/tacos/update-site/site.xml"/>
    </url>
 
    <requires>
@@ -534,6 +534,13 @@ Public License instead of this License.
 
    <plugin
          id="at.rc.tacos.platform.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.rcp"
          download-size="0"
          install-size="0"
          version="0.0.0"
