@@ -4,9 +4,12 @@ Bundle-Name: Log Plug-in
 Bundle-SymbolicName: at.rc.tacos.platform.log
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.platform.log.Activator
-Require-Bundle: org.eclipse.core.runtime,
- at.rc.tacos.platform.lib;bundle-version="1.0.0"
+Require-Bundle: org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: at.rc.tacos.platform.log
 Bundle-Vendor: FH-Joanneum / ITM
+Bundle-ClassPath: lib/log4j-1.2.15.jar,
+ lib/slf4j-api-1.5.3.jar,
+ lib/slf4j-log4j12-1.5.3.jar,
+ .
