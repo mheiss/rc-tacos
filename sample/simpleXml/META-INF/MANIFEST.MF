@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: simpleXml
+Bundle-SymbolicName: simpleXml
+Bundle-Version: 1.0.0
+Export-Package: simplexml.mapping,
+ simplexml.model,
+ simplexml.test
+Bundle-ClassPath: lib/jibx-bind.jar,
+ lib/jibx-extras.jar,
+ lib/jibx-run.jar,
+ lib/log4j-1.2.14.jar,
+ lib/xpp3_min-1.1.4c.jar,
+ lib/xstream-1.3.jar,
+ .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit4;bundle-version="4.3.1"

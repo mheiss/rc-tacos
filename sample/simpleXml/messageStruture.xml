@@ -1,3 +1,4 @@
+<!-- The target xml message that should be generated form the serialize / binding frameworks -->
 <message version="2.0">
 	<header>
 		<command> command </command>

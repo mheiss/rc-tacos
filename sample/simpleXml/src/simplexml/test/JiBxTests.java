@@ -5,5 +5,5 @@ package simplexml.test;
  * @author mheiss
  */
 public class JiBxTests {
-
+	
 }
