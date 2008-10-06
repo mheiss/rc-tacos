@@ -1,0 +1,10 @@
+<message>
+  <command>add</command>
+  <contentClazz>myClass</contentClazz>
+  <params>
+    <entry>
+      <string>param1</string>
+      <string>valueq</string>
+    </entry>
+  </params>
+</message>
