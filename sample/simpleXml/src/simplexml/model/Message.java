@@ -13,6 +13,13 @@ public class Message {
 	private String command;
 	private String contentClazz;
 	private Map<String, String> params;
+	
+	/**
+	 * Default clas constructor
+	 */
+	public Message() {
+		this.params = new HashMap<String, String>();
+	}
 
 	/**
 	 * Default class constructor for a new message header.
