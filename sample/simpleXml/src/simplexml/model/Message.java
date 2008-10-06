@@ -13,7 +13,7 @@ public class Message {
 	private String command;
 	private String contentClazz;
 	private Map<String, String> params;
-	
+
 	/**
 	 * Default clas constructor
 	 */
