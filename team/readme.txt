@@ -9,3 +9,8 @@ Description:
 
 Tacos_v2.psf -> current developing path with eclipse 3.4
 Tacos_v1.psf -> the old version, running with eclipse 3.3
+
+
+CODE-FORMATTER:
+---------------
+The code formatter for eclipse.
