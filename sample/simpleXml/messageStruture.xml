@@ -1,0 +1,11 @@
+<message version="2.0">
+	<header>
+		<command> command </command>
+		<content> clazz </content>
+		<parameter name="paramA" value = "valA" />
+		<parameter name="paramB" value = "valB" />
+	</header>
+	<content>
+		content
+	</content>
+</message>
