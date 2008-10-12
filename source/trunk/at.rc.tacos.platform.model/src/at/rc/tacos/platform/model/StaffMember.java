@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a staff member (there are several kinds: regular staff member, civil server, volunteer)
- * but there is no difference between them in this class.
+ * Represents a staff member (there are several kinds: regular staff member,
+ * civil server, volunteer) but there is no difference between them in this
+ * class.
+ * 
  * @author b.thek
  */
-public class StaffMember extends AbstractMessage
-{
-	//unique identification string
-	public final static String ID = "staffMember";
+public class StaffMember {
 
 	private int staffMemberId;
 	private Location primaryLocation;
@@ -27,11 +26,11 @@ public class StaffMember extends AbstractMessage
 	private String userName;
 	private String phone1;
 	private String phone2;
-	
-	//internal information, only needed to serialize and deserialize
+
+	// internal information, only needed to serialize and deserialize
 	public String function;
-	
-	//define constants
+
+	// define constants
 	public final static String STAFF_MALE = "männlich";
 	public final static String STAFF_FEMALE = "weiblich";
 	public final static String STAFF[] = { STAFF_MALE, STAFF_FEMALE };
@@ -39,10 +38,7 @@ public class StaffMember extends AbstractMessage
 	/**
 	 * Class constructor for a staff member
 	 */
-	public StaffMember()
-	{
-		super(ID);
-		//set default values
+	public StaffMember() {
 		staffMemberId = -1;
 		lastName = "";
 		firstName = "";
@@ -54,70 +50,67 @@ public class StaffMember extends AbstractMessage
 
 	/**
 	 * Class constructor for a complete staff member
-	 * @param firstName the first name
-	 * @param lastName the last name
-	 * @param userName the username of this member
+	 * 
+	 * @param firstName
+	 *            the first name
+	 * @param lastName
+	 *            the last name
+	 * @param userName
+	 *            the username of this member
 	 */
-	public StaffMember(String firstName, String lastName, String userName)
-	{
-		this();
+	public StaffMember(String firstName, String lastName, String userName) {
 		setFirstName(firstName);
 		setLastName(lastName);
 		setUserName(userName);
 	}
-	
+
 	/**
 	 * Class constructor for a complete staff member
 	 */
-	public StaffMember(int staffId,String firstName, String lastName, String userName,
-	        String streetname,String cityname,boolean sex,String birthday,
-	        MobilePhoneDetail phone,Competence competence,String eMail,Location primaryLocation)
-	{
-	    this();
-	    setStaffMemberId(staffId);
-	    setFirstName(firstName);
-        setLastName(lastName);
-        setUserName(userName);
-        setStreetname(streetname);
-        setCityname(cityname);
-        setMale(sex);
-        setBirthday(birthday);
-        addCompetence(competence);
-        addMobilePhone(phone);
-        setEMail(eMail);
-        setPrimaryLocation(primaryLocation);
+	public StaffMember(int staffId, String firstName, String lastName, String userName, String streetname, String cityname, boolean sex, String birthday, MobilePhoneDetail phone, Competence competence, String eMail, Location primaryLocation) {
+		setStaffMemberId(staffId);
+		setFirstName(firstName);
+		setLastName(lastName);
+		setUserName(userName);
+		setStreetname(streetname);
+		setCityname(cityname);
+		setMale(sex);
+		setBirthday(birthday);
+		addCompetence(competence);
+		addMobilePhone(phone);
+		setEMail(eMail);
+		setPrimaryLocation(primaryLocation);
 	}
 
 	/**
 	 * Returns a string based description of the object
+	 * 
 	 * @return the description of the object
 	 */
 	@Override
-	public String toString()
-	{
-		return "id: "+staffMemberId+"; DS: "+primaryLocation
-		+"; Nachn: "+lastName+"; Vorn: "+firstName+"; username: "+userName;
+	public String toString() {
+		return "id: " + staffMemberId + "; DS: " + primaryLocation + "; Nachn: " + lastName + "; Vorn: " + firstName + "; username: " + userName;
 	}
 
 	/**
 	 * Returns the calculated hash code based on the staff member id.<br>
 	 * Two staff members have the same hash code if the id is the same.
+	 * 
 	 * @return the calculated hash code
 	 */
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		return 31 + staffMemberId;
 	}
 
 	/**
 	 * Returns whether the objects are equal or not.<br>
 	 * Two staff members are equal if, and only if, the id is the same.
+	 * 
 	 * @return true if the id is the same otherwise false.
 	 */
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -130,109 +123,107 @@ public class StaffMember extends AbstractMessage
 		return true;
 	}
 
-	//SETTERS AND GETTERS
+	// SETTERS AND GETTERS
 	/**
 	 * Returns the personal identification number.
+	 * 
 	 * @return the staffMemberId
 	 */
-	public int getStaffMemberId() 
-	{
+	public int getStaffMemberId() {
 		return staffMemberId;
 	}
 
 	/**
 	 * Sets the personal identification number.
-	 * @param staffMemberId the personId to set
-	 * @throws IllegalArgumentException if the id is negative
+	 * 
+	 * @param staffMemberId
+	 *            the personId to set
+	 * @throws IllegalArgumentException
+	 *             if the id is negative
 	 */
-	public void setStaffMemberId(int staffMemberId) 
-	{
+	public void setStaffMemberId(int staffMemberId) {
 		this.staffMemberId = staffMemberId;
 	}
-	
+
 	/**
 	 * Returns the primary location of this staff member
+	 * 
 	 * @return the primary location
 	 */
-	public Location getPrimaryLocation()
-	{
-	    return primaryLocation;
+	public Location getPrimaryLocation() {
+		return primaryLocation;
 	}
-	
+
 	/**
 	 * Sets the primary location for this staff member
-	 * @param primaryLocation the primary location
+	 * 
+	 * @param primaryLocation
+	 *            the primary location
 	 */
-	public void setPrimaryLocation(Location primaryLocation)
-	{
-	    this.primaryLocation = primaryLocation;
+	public void setPrimaryLocation(Location primaryLocation) {
+		this.primaryLocation = primaryLocation;
 	}
 
 	/**
 	 * Returns the last name
+	 * 
 	 * @return the lastName
 	 */
-	public String getLastName() 
-	{
+	public String getLastName() {
 		return lastName;
 	}
 
 	/**
 	 * Sets the last name of this staff member
-	 * @param lastName the last name to set
-	 * @throws IllegalArgumentException if the lastName is null or empty
+	 * 
+	 * @param lastName
+	 *            the last name to set
 	 */
-	public void setLastName(String lastName) 
-	{
-		if(lastName == null || lastName.trim().isEmpty())
-			throw new IllegalArgumentException("The last name cannot be null or empty");
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
 	/**
 	 * Returns the first name of this staff member
+	 * 
 	 * @return the first name
 	 */
-	public String getFirstName() 
-	{
+	public String getFirstName() {
 		return firstName;
 	}
 
 	/**
 	 * Sets the first name of this staff member
-	 * @param firstName the first name to set
-	 * @throws IllegalArgumentException if the first name is null or empty
+	 * 
+	 * @param firstName
+	 *            the first name to set
 	 */
-	public void setFirstName(String firstName) 
-	{
-		if(firstName == null || firstName.trim().isEmpty())
-			throw new IllegalArgumentException("The first name cannot be null or empty");
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
 	/**
 	 * Returns the username for this staff member
+	 * 
 	 * @return the user name
 	 */
-	public String getUserName() 
-	{
+	public String getUserName() {
 		return userName;
 	}
 
 	/**
 	 * Sets the username for this staff member
-	 * @param userName the user name to set
-	 * @throws IllegalArgumentException if the userName is null or empty
+	 * 
+	 * @param userName
+	 *            the user name to set
 	 */
-	public void setUserName(String userName) 
-	{
-		if(userName == null || userName.trim().isEmpty())
-			throw new IllegalArgumentException("The userName cannot be null or empty");
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
 	/**
 	 * Returns the name of the street
+	 * 
 	 * @return the name of the street
 	 */
 	public String getStreetname() {
@@ -241,159 +232,162 @@ public class StaffMember extends AbstractMessage
 
 	/**
 	 * Sets the name of the street where this staff member is at home
-	 * @param streetname the name of the street
+	 * 
+	 * @param streetname
+	 *            the name of the street
 	 */
-	public void setStreetname(String streetname) 
-	{
+	public void setStreetname(String streetname) {
 		this.streetname = streetname;
 	}
 
 	/**
 	 * Returns the cityname where the staff member is at home
+	 * 
 	 * @return the cityname
 	 */
-	public String getCityname() 
-	{
+	public String getCityname() {
 		return cityname;
 	}
 
 	/**
 	 * Sets the name of the city where the person is at home
-	 * @param cityname the cityname
+	 * 
+	 * @param cityname
+	 *            the cityname
 	 */
-	public void setCityname(String cityname) 
-	{
+	public void setCityname(String cityname) {
 		this.cityname = cityname;
 	}
-	
-    /**
-     * Returns the birthday of the patient
-     * @return the date of birth
-     */
-    public String getBirthday()
-    {
-        return birthday;
-    }
-    
-    /**
-     * Sets the date of the birthday of this patient
-     * @param sex the date of birth
-     */
-    public void setBirthday(String birhtday)
-    {
-//        if(birhtday == null)
-//            throw new IllegalArgumentException("The birthday cannot be null");
-        this.birthday = birhtday;
-    }
-    
-    /**
-     * Returns whether or not this patient is male.
-     * @return true if the patient is male, otherwise female ;)
-     */
-    public boolean isMale() 
-    {
-        return sex;
-    }
 
-    /**
-     * Sets a flag to indicate that the patient is male.
-     * Set this to false for female.
-     * @param male true if the patient is male, otherwise false
-     */
-    public void setMale(boolean sex) 
-    {
-        this.sex = sex;
-    }
+	/**
+	 * Returns the birthday of the patient
+	 * 
+	 * @return the date of birth
+	 */
+	public String getBirthday() {
+		return birthday;
+	}
 
-    /**
-     * Returns the mail address of this staff member
-     * @return the mail address
-     */
-	public String getEMail() 
-	{
+	/**
+	 * Sets the date of the birthday of this patient
+	 * 
+	 * @param sex
+	 *            the date of birth
+	 */
+	public void setBirthday(String birhtday) {
+		this.birthday = birhtday;
+	}
+
+	/**
+	 * Returns whether or not this patient is male.
+	 * 
+	 * @return true if the patient is male, otherwise female ;)
+	 */
+	public boolean isMale() {
+		return sex;
+	}
+
+	/**
+	 * Sets a flag to indicate that the patient is male. Set this to false for
+	 * female.
+	 * 
+	 * @param male
+	 *            true if the patient is male, otherwise false
+	 */
+	public void setMale(boolean sex) {
+		this.sex = sex;
+	}
+
+	/**
+	 * Returns the mail address of this staff member
+	 * 
+	 * @return the mail address
+	 */
+	public String getEMail() {
 		return eMail;
 	}
 
 	/**
 	 * Sets the mail address of this staff member
-	 * @param mail the mail address
+	 * 
+	 * @param mail
+	 *            the mail address
 	 */
-	public void setEMail(String mail) 
-	{
+	public void setEMail(String mail) {
 		eMail = mail;
 	}
-	
+
 	/**
 	 * Returns the list of phones accociated to the staff member
+	 * 
 	 * @return the phone list
 	 */
-	public List<MobilePhoneDetail> getPhonelist() 
-	{
+	public List<MobilePhoneDetail> getPhonelist() {
 		return phonelist;
 	}
-	
+
 	/**
 	 * Helper method to add a mobile phone to a staff member
-	 * @param phone the mobile phone to add
+	 * 
+	 * @param phone
+	 *            the mobile phone to add
 	 */
-	public void addMobilePhone(MobilePhoneDetail phone)
-	{
-	    phonelist.add(phone);
+	public void addMobilePhone(MobilePhoneDetail phone) {
+		phonelist.add(phone);
 	}
-	
+
 	/**
 	 * Sets the list of phones for this staff member
-	 * @param phonelist the phone list to set
+	 * 
+	 * @param phonelist
+	 *            the phone list to set
 	 */
-	public void setPhonelist(List<MobilePhoneDetail> phonelist) 
-	{
+	public void setPhonelist(List<MobilePhoneDetail> phonelist) {
 		this.phonelist = phonelist;
 	}
-	
+
 	/**
 	 * Returns a list of all competences for this staff member
-     * @return the competenceList the competence list
-     */
-    public List<Competence> getCompetenceList()
-    {
-        return competenceList;
-    }
+	 * 
+	 * @return the competenceList the competence list
+	 */
+	public List<Competence> getCompetenceList() {
+		return competenceList;
+	}
 
-    /**
-     * Sets the list of competences for this staff member
-     * @param competenceList the competenceList to set
-     */
-    public void setCompetenceList(List<Competence> competenceList)
-    {
-        this.competenceList = competenceList;
-    }
-    
-    /**
-     * Helper method to add a competence to a staff member
-     * @param competence the competence to add
-     */
-    public void addCompetence(Competence competence)
-    {
-        competenceList.add(competence);
-    }
+	/**
+	 * Sets the list of competences for this staff member
+	 * 
+	 * @param competenceList
+	 *            the competenceList to set
+	 */
+	public void setCompetenceList(List<Competence> competenceList) {
+		this.competenceList = competenceList;
+	}
 
-	public String getPhone1() 
-	{
+	/**
+	 * Helper method to add a competence to a staff member
+	 * 
+	 * @param competence
+	 *            the competence to add
+	 */
+	public void addCompetence(Competence competence) {
+		competenceList.add(competence);
+	}
+
+	public String getPhone1() {
 		return phone1;
 	}
 
-	public void setPhone1(String phone1) 
-	{
+	public void setPhone1(String phone1) {
 		this.phone1 = phone1;
 	}
 
-	public String getPhone2() 
-	{
+	public String getPhone2() {
 		return phone2;
 	}
 
-	public void setPhone2(String phone2) 
-	{
+	public void setPhone2(String phone2) {
 		this.phone2 = phone2;
 	}
 }
