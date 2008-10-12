@@ -2,14 +2,11 @@ package at.rc.tacos.platform.model;
 
 /**
  * This class represents a location.
+ * 
  * @author Michael
  */
-public class Location extends AbstractMessage
-{
-	//unique identification string
-	public static String ID = "location";
+public class Location {
 
-	//properties
 	private int id;
 	private String locationName;
 	private String street;
@@ -19,33 +16,36 @@ public class Location extends AbstractMessage
 	private String notes;
 	private MobilePhoneDetail phone;
 
-	//internal
+	// internal
 	public String type;
 
 	/**
 	 * Default class constructor for a empty location
 	 */
-	public Location()
-	{
-		super(ID);
-		//set default values
+	public Location() {
 		id = -1;
 		locationName = "";
 	}
 
 	/**
 	 * Default class constructor for a complet location object
-	 * @param locationName the name of the station
-	 * @param phone the mobilePhone of the location
-	 * @param street the street name
-	 * @param streetNumber the number of the street
-	 * @param zipcode the zip code
-	 * @param city the name of the city
-	 * @param notes some notes to add to the station
+	 * 
+	 * @param locationName
+	 *            the name of the station
+	 * @param phone
+	 *            the mobilePhone of the location
+	 * @param street
+	 *            the street name
+	 * @param streetNumber
+	 *            the number of the street
+	 * @param zipcode
+	 *            the zip code
+	 * @param city
+	 *            the name of the city
+	 * @param notes
+	 *            some notes to add to the station
 	 */
-	public Location(String locationName,MobilePhoneDetail phone,String street,String streetNumber,
-			int zipcode,String city,String notes) {
-		this();
+	public Location(String locationName, MobilePhoneDetail phone, String street, String streetNumber, int zipcode, String city, String notes) {
 		this.locationName = locationName;
 		this.phone = phone;
 		this.street = street;
@@ -55,26 +55,26 @@ public class Location extends AbstractMessage
 		this.notes = notes;
 	}
 
-	//METHODS
+	// METHODS
 	/**
 	 * Returns a string based description of the object.<br>
 	 * The returned values are the location id and the name.
+	 * 
 	 * @return the description of the object
 	 */
 	@Override
-	public String toString()
-	{
-		return "OS: "+locationName;
+	public String toString() {
+		return "OS: " + locationName;
 	}
 
 	/**
 	 * Returns the calculated hash code based on the location id.<br>
 	 * Two locations have the same hash code if the id is the same.
+	 * 
 	 * @return the calculated hash code
 	 */
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id;
@@ -84,11 +84,11 @@ public class Location extends AbstractMessage
 	/**
 	 * Returns whether the objects are equal or not.<br>
 	 * Two locations are equal if, and only if, the location id is the same.
+	 * 
 	 * @return true if the id is the same otherwise false.
 	 */
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -101,133 +101,123 @@ public class Location extends AbstractMessage
 		return true;
 	}
 
-
-
 	/**
 	 * @return the id
 	 */
-	public int getId()
-	{
+	public int getId() {
 		return id;
 	}
 
 	/**
 	 * @return the locationname
 	 */
-	public String getLocationName()
-	{
+	public String getLocationName() {
 		return locationName;
 	}
 
 	/**
 	 * @return the street
 	 */
-	public String getStreet()
-	{
+	public String getStreet() {
 		return street;
 	}
 
 	/**
 	 * @return the streetnumber
 	 */
-	public String getStreetNumber()
-	{
+	public String getStreetNumber() {
 		return streetNumber;
 	}
 
 	/**
 	 * @return the zipcode
 	 */
-	public int getZipcode()
-	{
+	public int getZipcode() {
 		return zipcode;
 	}
 
 	/**
 	 * @return the city
 	 */
-	public String getCity()
-	{
+	public String getCity() {
 		return city;
 	}
 
 	/**
 	 * @return the notes
 	 */
-	public String getNotes()
-	{
+	public String getNotes() {
 		return notes;
 	}
 
 	/**
 	 * @return the phone
 	 */
-	public MobilePhoneDetail getPhone()
-	{
+	public MobilePhoneDetail getPhone() {
 		return phone;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
-	public void setId(int id)
-	{
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * @param locationName the locationname to set
+	 * @param locationName
+	 *            the locationname to set
 	 */
-	public void setLocationName(String locationName)
-	{
+	public void setLocationName(String locationName) {
 		this.locationName = locationName;
 	}
 
 	/**
-	 * @param street the street to set
+	 * @param street
+	 *            the street to set
 	 */
-	public void setStreet(String street)
-	{
+	public void setStreet(String street) {
 		this.street = street;
 	}
 
 	/**
-	 * @param streetnumber the streetnumber to set
+	 * @param streetnumber
+	 *            the streetnumber to set
 	 */
-	public void setStreetNumber(String streetNumber)
-	{
+	public void setStreetNumber(String streetNumber) {
 		this.streetNumber = streetNumber;
 	}
 
 	/**
-	 * @param zipcode the zipcode to set
+	 * @param zipcode
+	 *            the zipcode to set
 	 */
-	public void setZipcode(int zipcode)
-	{
+	public void setZipcode(int zipcode) {
 		this.zipcode = zipcode;
 	}
 
 	/**
-	 * @param city the city to set
+	 * @param city
+	 *            the city to set
 	 */
-	public void setCity(String city)
-	{
+	public void setCity(String city) {
 		this.city = city;
 	}
 
 	/**
-	 * @param notes the notes to set
+	 * @param notes
+	 *            the notes to set
 	 */
-	public void setNotes(String notes)
-	{
+	public void setNotes(String notes) {
 		this.notes = notes;
 	}
 
 	/**
-	 * @param phone the phone to set
+	 * @param phone
+	 *            the phone to set
 	 */
-	public void setPhone(MobilePhoneDetail phone)
-	{
+	public void setPhone(MobilePhoneDetail phone) {
 		this.phone = phone;
 	}
 }

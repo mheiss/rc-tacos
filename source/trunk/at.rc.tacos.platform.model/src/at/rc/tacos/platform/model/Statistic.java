@@ -1,29 +1,23 @@
 package at.rc.tacos.platform.model;
 
 /**
- * Represents one statistic 
+ * Represents one statistic
+ * 
  * @author b.thek
  */
-public class Statistic extends AbstractMessage
-{
-	//unique identification string
-	public final static String ID = "statistic";
-	
-	//Properties    
+public class Statistic {
+
 	private int statisticId;
 	private int hours;
 
 	/**
 	 * Default class construtor
 	 */
-	public Statistic()
-	{
-		super(ID);
-		//set default values
+	public Statistic() {
 		statisticId = -1;
 	}
 
-	//GETTERS AND SETTERS
+	// GETTERS AND SETTERS
 	/**
 	 * @return the statisticId
 	 */
@@ -32,7 +26,8 @@ public class Statistic extends AbstractMessage
 	}
 
 	/**
-	 * @param statisticId the statisticId to set
+	 * @param statisticId
+	 *            the statisticId to set
 	 */
 	public void setStatisticId(int statisticId) {
 		this.statisticId = statisticId;
@@ -46,10 +41,10 @@ public class Statistic extends AbstractMessage
 	}
 
 	/**
-	 * @param hours the hours to set
+	 * @param hours
+	 *            the hours to set
 	 */
 	public void setHours(int hours) {
 		this.hours = hours;
 	}
 }
-

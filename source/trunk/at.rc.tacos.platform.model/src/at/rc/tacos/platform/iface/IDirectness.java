@@ -6,7 +6,6 @@ package at.rc.tacos.platform.iface;
  */
 public interface IDirectness 
 {
-
 	/** Richtung Bezirk (default, wenn nichts anderes angegeben*/
 	public final static int TOWARDS_BRUCK = 1;	
 	/** Richtung Graz */

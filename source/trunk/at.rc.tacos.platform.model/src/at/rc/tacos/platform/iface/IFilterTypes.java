@@ -7,7 +7,6 @@ package at.rc.tacos.platform.iface;
  */
 public interface IFilterTypes
 {
-	
     /** Filter by id */
 	public final static String ID_FILTER = "ID";
     

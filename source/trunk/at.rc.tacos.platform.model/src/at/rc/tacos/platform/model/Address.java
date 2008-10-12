@@ -2,14 +2,11 @@ package at.rc.tacos.platform.model;
 
 /**
  * Stores information about a specifiy address
+ * 
  * @author Michael
  */
-public class Address extends AbstractMessage
-{
-	//the id
-	public final static String ID = "address";
-	
-	//properties
+public class Address {
+
 	private int addressId;
 	private int zip;
 	private String city;
@@ -19,48 +16,49 @@ public class Address extends AbstractMessage
 	/**
 	 * Default class constructor
 	 */
-	public Address()
-	{
-		super(ID);
+	public Address() {
 		city = "";
 		street = "";
 		streetNumber = "-";
 	}
-	
+
 	/**
 	 * Default class constructor for a complete address object.
-	 * @param zip the zip code
-	 * @param city the name of the city
-	 * @param street the name of the street
+	 * 
+	 * @param zip
+	 *            the zip code
+	 * @param city
+	 *            the name of the city
+	 * @param street
+	 *            the name of the street
 	 */
-	public Address(int zip,String city,String street)
-	{
+	public Address(int zip, String city, String street) {
 		this();
 		this.zip = zip;
 		this.city = city;
 		this.street = street;
-		streetNumber = "-";
+		this.streetNumber = "-";
 	}
-	
+
 	/**
-	 * Returns the string based description 
+	 * Returns the string based description
+	 * 
 	 * @return the human readable version
 	 */
 	@Override
-	public String toString()
-	{
-	 return "zip: " +zip +";" +"city: " +city+";" +"street: " +street;
-			
+	public String toString() {
+		return "zip: " + zip + ";" + "city: " + city + ";" + "street: " + street;
+
 	}
 
 	/**
 	 * Returns the calculated hash code based on the complete address<br>
 	 * Two addresses have the same hash code if all fields are the same.
+	 * 
 	 * @return the calculated hash code
 	 */
 	@Override
-	public int hashCode() 
-	{
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
@@ -71,12 +69,12 @@ public class Address extends AbstractMessage
 
 	/**
 	 * Returns whether the objects are equal or not.<br>
-	 * Two addresses are equal if all propertie fields are the same.
+	 * Two addresses are equal if all property fields are the same.
+	 * 
 	 * @return true if all fields are the same otherwise false.
 	 */
 	@Override
-	public boolean equals(Object obj) 
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -84,91 +82,112 @@ public class Address extends AbstractMessage
 		if (getClass() != obj.getClass())
 			return false;
 		final Address other = (Address) obj;
-		if (city == null) 
-		{
+		if (city == null) {
 			if (other.city != null)
 				return false;
-		} 
+		}
 		else if (!city.equals(other.city))
 			return false;
-		if (street == null) 
-		{
+		if (street == null) {
 			if (other.street != null)
 				return false;
-		} 
+		}
 		else if (!street.equals(other.street))
 			return false;
 		if (zip != other.zip)
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Returns the zip code of this address record
+	 * 
 	 * @return the zip code
 	 */
-	public int getZip()
-	{
+	public int getZip() {
 		return zip;
 	}
-	
+
 	/**
 	 * Returns the name of the city.
+	 * 
 	 * @return the name of the city
 	 */
-	public String getCity()
-	{
+	public String getCity() {
 		return city;
 	}
-	
+
 	/**
 	 * Returns the name of the street
+	 * 
 	 * @return the streetname
 	 */
-	public String getStreet()
-	{
+	public String getStreet() {
 		return street;
 	}
-	
+
 	/**
 	 * Sets the zip code.
-	 * @param zip the zip code as number
+	 * 
+	 * @param zip
+	 *            the zip code as number
 	 */
-	public void setZip(int zip)
-	{
+	public void setZip(int zip) {
 		this.zip = zip;
 	}
-	
+
 	/**
 	 * Sets the name of the city
-	 * @param city the cityname
+	 * 
+	 * @param city
+	 *            the cityname
 	 */
-	public void setCity(String city)
-	{
+	public void setCity(String city) {
 		this.city = city;
 	}
-	
+
 	/**
 	 * Sets the name of the street
-	 * @param street the streetname
+	 * 
+	 * @param street
+	 *            the streetname
 	 */
-	public void setStreet(String street)
-	{
+	public void setStreet(String street) {
 		this.street = street;
 	}
-	
+
+	/**
+	 * Returns the id of the address record
+	 * 
+	 * @return the id of the address record
+	 */
 	public int getAddressId() {
 		return addressId;
 	}
 
+	/**
+	 * Sets the id of the address record
+	 * 
+	 * @param addressId
+	 */
 	public void setAddressId(int addressId) {
 		this.addressId = addressId;
 	}
-	
+
+	/**
+	 * Returns the street number
+	 * 
+	 * @return
+	 */
 	public String getStreetNumber() {
 		return streetNumber;
 	}
 
+	/**
+	 * Sets the street number
+	 * 
+	 * @param streetNumber
+	 */
 	public void setStreetNumber(String streetNumber) {
 		this.streetNumber = streetNumber;
 	}
