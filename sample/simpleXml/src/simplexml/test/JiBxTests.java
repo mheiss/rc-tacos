@@ -26,7 +26,9 @@ public class JiBxTests {
 		// create a new marshalling factory for message
 		IBindingFactory bfact = BindingDirectory.getFactory(Message.class);
 		IMarshallingContext mctx = bfact.createMarshallingContext();
-		mctx.marshalDocument(message, "UTF-8", null, new FileOutputStream("gen-data/jibx_message.xml"));
+		mctx.marshalDocument(message, "UTF-8", null, new FileOutputStream("gen-data/jibx_encode.xml"));
 	}
+	
+
 
 }
