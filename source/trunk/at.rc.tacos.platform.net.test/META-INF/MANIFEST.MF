@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test Plug-in
+Bundle-SymbolicName: at.rc.tacos.platform.net.test
+Bundle-Version: 1.0.0
+Bundle-Vendor: FH-Joanneum / ITM
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit4;bundle-version="4.3.1",
+ at.rc.tacos.platform.net;bundle-version="1.0.0",
+ at.rc.tacos.platform.model;bundle-version="1.0.0",
+ at.rc.tacos.platform.util;bundle-version="1.0.0"
+Bundle-ClassPath: lib/hamcrest-core-1.1.jar,
+ lib/mockito-core-1.5.jar,
+ lib/objenesis-1.0.jar,
+ .
