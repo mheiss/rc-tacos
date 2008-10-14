@@ -1,0 +1,20 @@
+<!-- Sample message that should be decoded by xstream -->
+<message version="2.0">
+	<header>
+		<messageCommand>
+			<command>command</command>
+			<params>
+				<java.util.Map_-Entry>
+					<java.lang.String>param1</java.lang.String>
+		      		<java.lang.String>value1</java.lang.String>
+		    	</java.util.Map_-Entry>
+			</params>
+		</messageCommand>
+	</header>
+	<content>
+		<system>
+			<message>hello</message>
+			<type>1</type>
+		</system>
+	</content>
+</message>
