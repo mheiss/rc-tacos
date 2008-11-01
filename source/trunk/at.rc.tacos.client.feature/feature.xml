@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="at.rc.tacos.client.feature"
+      id="at.rc.tacos.client_feature"
       label="Feature Feature"
       version="1.0.0"
       provider-name="FH-Joanneum / ITM"
@@ -9,7 +9,7 @@
       ws="win32"
       nl="de"
       arch="x86"
-      colocation-affinity="at.rc.tacos.client.feature">
+      colocation-affinity="at.rc.tacos.client_feature">
 
    <description url="http://sf.net/projects/rc-tacos/">
       TACOS client application
@@ -471,24 +471,9 @@ General
 Public License instead of this License.
    </license>
 
-   <url>
-      <update label="TACOS Update Site" url="http://www.michael-heiss.at/development/tacos/update-site/site.xml"/>
-   </url>
-
-   <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ui.forms" version="3.3.100" match="greaterOrEqual"/>
-      <import plugin="at.rc.tacos.client.net" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="at.rc.tacos.platform.model" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="at.rc.tacos.platform.util" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="at.rc.tacos.platform.lib" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jface.text" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.update.core" version="3.2.200" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.update.scheduler" version="3.2.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.update.ui" version="3.2.100" match="greaterOrEqual"/>
-      <import plugin="at.rc.tacos.platform.common" version="1.0.0" match="greaterOrEqual"/>
-   </requires>
+   <includes
+         id="at.rc.tacos.platform_feature"
+         version="0.0.0"/>
 
    <plugin
          id="at.rc.tacos.client"
@@ -499,48 +484,6 @@ Public License instead of this License.
 
    <plugin
          id="at.rc.tacos.client.net"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.common"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.lib"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.log"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.rcp"
          download-size="0"
          install-size="0"
          version="0.0.0"
