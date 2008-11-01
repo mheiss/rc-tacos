@@ -1,17 +1,21 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Dbal Plug-in
-Bundle-SymbolicName: at.rc.tacos.server.dbal
+Bundle-SymbolicName: at.rc.tacos.server.dbal;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.server.dbal.Activator
 Require-Bundle: org.eclipse.core.runtime,
- at.rc.tacos.platform.lib;bundle-version="1.0.0",
  at.rc.tacos.platform.log;bundle-version="1.0.0",
  at.rc.tacos.platform.model;bundle-version="1.0.0",
- at.rc.tacos.platform.util;bundle-version="1.0.0"
+ at.rc.tacos.platform.util;bundle-version="1.0.0",
+ at.rc.tacos.platform.services;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: at.rc.tacos.server.dbal,
- at.rc.tacos.server.dbal.dao,
- at.rc.tacos.server.dbal.factory
+ at.rc.tacos.server.dbal.sqlserver
 Bundle-Vendor: FH-Joanneum / ITM
+Bundle-ClassPath: lib/commons-codec-1.3.jar,
+ lib/commons-dbcp-1.2.2.jar,
+ lib/commons-pool-1.3.jar,
+ lib/sqljdbc.jar,
+ .
