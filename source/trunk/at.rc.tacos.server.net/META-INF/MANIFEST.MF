@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Net Plug-in
+Bundle-SymbolicName: at.rc.tacos.server.net
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
+ at.rc.tacos.platform.log,
+ at.rc.tacos.platform.model,
+ at.rc.tacos.platform.net,
+ at.rc.tacos.platform.services,
+ at.rc.tacos.platform.util;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: at.rc.tacos.server.net.Activator
+Export-Package: at.rc.tacos.server.net,
+ at.rc.tacos.server.net.handler
