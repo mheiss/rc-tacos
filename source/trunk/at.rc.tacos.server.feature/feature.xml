@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="at.rc.tacos.server.feature"
+      id="at.rc.tacos.server_feature"
       label="Feature Feature"
       version="1.0.0"
       provider-name="FH-Joanneum / ITM"
@@ -8,10 +8,10 @@
       ws="win32"
       nl="de"
       arch="x86"
-      colocation-affinity="http://www.michael-heiss.at/development/tacos/update-site/site.xml">
+      colocation-affinity="at.rc.tacos.server_feature">
 
    <description url="http://sf.net/projects/rc-tacos/">
-      TACOS client application
+      TACOS server application
    </description>
 
    <copyright url="http://sf.net/projects/rc-tacos/">
@@ -470,44 +470,9 @@ General
 Public License instead of this License.
    </license>
 
-   <url>
-      <update label="at.rc.tacos.platform.updateSite" url="http://www.michael-heiss.at/development/tacos/update-site/"/>
-   </url>
-
-   <plugin
-         id="at.rc.tacos.platform.common"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.lib"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.log"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.platform.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="at.rc.tacos.platform_feature"
+         version="0.0.0"/>
 
    <plugin
          id="at.rc.tacos.server.dbal"
@@ -517,21 +482,14 @@ Public License instead of this License.
          unpack="false"/>
 
    <plugin
-         id="at.rc.tacos.server.net.icc"
+         id="at.rc.tacos.server"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="at.rc.tacos.server.net.isc"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="at.rc.tacos.server.ui"
+         id="at.rc.tacos.server.net"
          download-size="0"
          install-size="0"
          version="0.0.0"

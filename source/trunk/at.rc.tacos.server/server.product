@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.4"?>
+
+<product name="TacosServer" id="at.rc.tacos.server.product" application="at.rc.tacos.server.serverApp" version="1.0.0" useFeatures="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-Dat.rc.tacos.server.port=4711</programArgs>
+      <vmArgs>-Xms256m
+-Xmx512m
+-XX:PermSize=128m
+-XX:MaxPermSize=256m</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages/>
+
+   <launcher name="tacosServer">
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="at.rc.tacos.server_feature" version="1.0.0"/>
+   </features>
+
+</product>
