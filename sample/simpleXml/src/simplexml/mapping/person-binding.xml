@@ -1,7 +1,0 @@
-<binding>
-	<mapping name="person" class="simplexml.model.Person">
-		<value name="customerNumber" field="customerNumber" />
-		<value name="firstName" field="firstName" />
-		<value name="lastName" field="lastName" />
-	</mapping>
-</binding>
