@@ -9,8 +9,6 @@ import org.apache.mina.filter.codec.textline.TextLineDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.rc.tacos.platform.model.MessageCommand;
-import at.rc.tacos.platform.model.MessageConstants;
 
 import com.thoughtworks.xstream.XStreamException;
 
@@ -61,7 +59,7 @@ public class XmlProtocolDecoder extends TextLineDecoder {
 		// try to decode the message header
 		try {
 			Object messageHeader = xStream.decodeHeader(text);
-			MessageCommand command = (MessageCommand) messageHeader;
+			MessageHeader command = (MessageHeader) messageHeader;
 
 			// save the command in the current session
 			session.setAttribute(MessageConstants.COMMAND, command.getCommand());

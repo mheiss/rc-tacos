@@ -1,4 +1,4 @@
-package at.rc.tacos.platform.model;
+package at.rc.tacos.platform.net;
 
 /**
  * Contains constants for the message command header

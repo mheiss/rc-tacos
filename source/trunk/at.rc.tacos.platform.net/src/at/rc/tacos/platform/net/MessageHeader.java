@@ -1,4 +1,4 @@
-package at.rc.tacos.platform.model;
+package at.rc.tacos.platform.net;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
  * 
  * @author mheiss
  */
-public class MessageCommand {
+public class MessageHeader {
 
 	private String command;
 	private Map<String, String> params;
@@ -16,7 +16,7 @@ public class MessageCommand {
 	/**
 	 * Default clas constructor
 	 */
-	public MessageCommand() {
+	public MessageHeader() {
 		this.params = new HashMap<String, String>();
 	}
 
@@ -26,7 +26,7 @@ public class MessageCommand {
 	 * @param command
 	 *            the message command
 	 */
-	public MessageCommand(String command) {
+	public MessageHeader(String command) {
 		this.params = new HashMap<String, String>();
 		this.command = command;
 	}

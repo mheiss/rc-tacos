@@ -15,8 +15,6 @@ import org.apache.mina.filter.codec.textline.TextLineEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.rc.tacos.platform.model.MessageCommand;
-import at.rc.tacos.platform.model.MessageConstants;
 
 /**
  * <p>
@@ -81,16 +79,16 @@ public class XmlProtocolEncoder extends ProtocolEncoderAdapter {
 			logAndThrowException("The message params must be provided as <code>Map</code>", null);
 		}
 
-		// setup a message command
-		MessageCommand messageCommand = new MessageCommand((String) command);
-		messageCommand.setParams((Map<String, String>) params);
+		// setup a message header
+		MessageHeader messageHeader = new MessageHeader((String) command);
+		messageHeader.setParams((Map<String, String>) params);
 
 		// setup the message to send
 		StringBuffer xmlString = new StringBuffer();
 		xmlString.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		xmlString.append("<" + MessageConstants.TAG_MESSAGE + ">");
 		xmlString.append("<" + MessageConstants.TAG_HEADER + ">");
-		xmlString.append(xStream.toXML(messageCommand));
+		xmlString.append(xStream.toXML(messageHeader));
 		xmlString.append("</" + MessageConstants.TAG_HEADER + ">");
 		xmlString.append("<" + MessageConstants.TAG_CONTENT + ">");
 		xmlString.append(xStream.toXML(message));
