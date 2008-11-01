@@ -13,9 +13,6 @@ import at.rc.tacos.platform.model.Link;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.Login;
-import at.rc.tacos.platform.model.Logout;
-import at.rc.tacos.platform.model.MessageCommand;
-import at.rc.tacos.platform.model.MessageConstants;
 import at.rc.tacos.platform.model.MobilePhoneDetail;
 import at.rc.tacos.platform.model.Patient;
 import at.rc.tacos.platform.model.Period;
@@ -58,7 +55,7 @@ public class XStream2 extends XStream {
 	@Override
 	protected void setupAliases() {
 		super.setupAliases();
-		alias("messageCommand", MessageCommand.class);
+		alias("messageCommand", MessageHeader.class);
 		alias("address", Address.class);
 		alias("callerDetail", CallerDetail.class);
 		alias("competence", Competence.class);
@@ -70,7 +67,6 @@ public class XStream2 extends XStream {
 		alias("location", Location.class);
 		alias("lock", Lock.class);
 		alias("login", Login.class);
-		alias("logout", Logout.class);
 		alias("mobilePhone", MobilePhoneDetail.class);
 		alias("patient", Patient.class);
 		alias("period", Period.class);
