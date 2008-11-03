@@ -8,10 +8,8 @@ import org.apache.log4j.Logger;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.db.dao.AddressDAO;
 import at.rc.tacos.core.db.dao.PeriodsDAO;
 import at.rc.tacos.core.db.dao.factory.DaoFactory;
-import at.rc.tacos.model.Address;
 import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.Period;
 import at.rc.tacos.model.QueryFilter;
