@@ -1,8 +1,7 @@
 package at.rc.tacos.platform.net.request;
 
-import java.util.List;
-
 import org.apache.mina.core.session.IoSession;
+
 
 /**
  * Defines the reqest that can be send to the server
@@ -19,7 +18,7 @@ public interface Request {
      *            the session to send the request
      * @return the response from the server
      */
-    public List<Object> synchronRequest(IoSession session) throws Exception;
+    public Message synchronRequest(IoSession session) throws Exception;
 
     /**
      * Sends the request to the server without waiting for the response.

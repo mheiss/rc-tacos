@@ -5,6 +5,6 @@ package at.rc.tacos.platform.net;
  * 
  * @author mheiss
  */
-public enum RequestCommand {
+public enum Command {
     ADD, UPDATE, GET, DELETE, EXEC;
 }
