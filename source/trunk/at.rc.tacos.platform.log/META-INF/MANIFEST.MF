@@ -14,4 +14,3 @@ Bundle-ClassPath: lib/log4j-1.2.15.jar,
  .
 Export-Package: at.rc.tacos.platform.log,
  org.slf4j
- 

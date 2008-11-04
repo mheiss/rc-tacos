@@ -30,8 +30,10 @@ public class RequestHeader {
      *            the request command
      */
     public RequestHeader(String id, RequestCommand command) {
-        this.params = new HashMap<String, String>();
+        this.id = id;
         this.command = command;
+        this.params = new HashMap<String, String>();
+       
     }
 
     // COMMON METHODS

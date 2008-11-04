@@ -12,7 +12,7 @@ import at.rc.tacos.platform.net.RequestCommand;
  * @author mheiss
  * 
  */
-public class AddRequest extends DefaultRequest {
+public class AddRequest extends AbstractRequest {
 
     // the attributes for the add request
     private List<Object> objects = new ArrayList<Object>();

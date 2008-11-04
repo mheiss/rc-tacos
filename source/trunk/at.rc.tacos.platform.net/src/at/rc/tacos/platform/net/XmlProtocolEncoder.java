@@ -67,7 +67,7 @@ public class XmlProtocolEncoder extends ProtocolEncoderAdapter {
         RequestCommand command = (RequestCommand) session.getAttribute(Constants.COMMAND);
         Object params = session.getAttribute(Constants.PARAMS);
 
-        // assert vald id
+        // assert valid id
         if (id == null) {
             logAndThrowException("Cannot send a message without a unique identifiere", null);
         }
@@ -78,7 +78,7 @@ public class XmlProtocolEncoder extends ProtocolEncoderAdapter {
         }
 
         // assert valid params
-        if (!(params instanceof Map)) {
+        if (params != null &! (params instanceof Map)) {
             logAndThrowException("The message params must be provided as <code>Map</code>", null);
         }
 
@@ -97,7 +97,7 @@ public class XmlProtocolEncoder extends ProtocolEncoderAdapter {
         xmlString.append(xStream.toXML(message));
         xmlString.append("</" + Constants.TAG_CONTENT + ">");
         xmlString.append("</" + Constants.TAG_MESSAGE + ">");
-
+        
         // write the object to the io buffer
         IoBuffer buf = IoBuffer.allocate(xmlString.length()).setAutoExpand(true);
         buf.putString(xmlString.toString(), encoder);
