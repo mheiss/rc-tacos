@@ -25,6 +25,8 @@ import at.rc.tacos.platform.model.Statistic;
 import at.rc.tacos.platform.model.SystemMessage;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
+import at.rc.tacos.platform.net.request.AbstractMessage;
+import at.rc.tacos.platform.net.request.AddMessage;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -37,6 +39,7 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
  * @author Michael
  */
 public class XStream2 extends XStream {
+
 	/**
 	 * Default class constructor
 	 */
@@ -55,7 +58,9 @@ public class XStream2 extends XStream {
 	@Override
 	protected void setupAliases() {
 		super.setupAliases();
-		alias("messageCommand", RequestHeader.class);
+		alias("request", AbstractMessage.class);
+		alias("addRequest", AddMessage.class);
+		alias("command", Command.class);
 		alias("address", Address.class);
 		alias("callerDetail", CallerDetail.class);
 		alias("competence", Competence.class);
@@ -82,59 +87,13 @@ public class XStream2 extends XStream {
 	}
 
 	/**
-	 * Deserialize an object from xml that is wrapped by the tags
-	 * <code>&lt;header&gt;</code> and <code>&lt;/header&gt;</code>
-	 */
-	public Object decodeHeader(String xml) {
-		// extract the header part
-		String headerPart = getPart(xml, Constants.TAG_HEADER);
-		if (headerPart == null) {
-			return null;
-		}
-		// decode the content
-		return fromXML(headerPart);
-	}
-
-	/**
-	 * Deserialize an object from xml that is wrapped by the tags
-	 * <code>&lt;content&gt;</code> and <code>&lt;/content&gt;</code>
-	 */
-	public Object decodeContent(String xml) {
-		// extract the content part
-		String contentPart = getPart(xml, Constants.TAG_CONTENT);
-		if (contentPart == null) {
-			return null;
-		}
-		// decode the content
-		return fromXML(contentPart);
-	}
-
-	/**
-	 * Helper class to extract a part of a given string.
+	 * Specialized implemenation of the xpp driver to use a compact writer
+	 * instead of the pretty printer
 	 * 
-	 * @param input
-	 *            the string to that contains the part to extract
-	 * @param tag
-	 *            the tag that wrapps the text to extract
-	 * @return the extracted part or null if nothing found
-	 */
-	private String getPart(String input, String tag) {
-		int start, end;
-		// setup the start and end tags
-		String startTag = "<" + tag + ">";
-		String endTag = "</" + tag + ">";
-		// search for the start of the header tag from the beginning
-		start = input.indexOf(startTag);
-		end = input.lastIndexOf(endTag);
-		return input.substring(start + startTag.length(), end);
-	}
-	
-	/**
-	 * Specialized implemenation of the xpp driver to use a compact writer instead of the pretty printer
 	 * @author Michael
-	 *
 	 */
 	public static class XppDriverImpl extends XppDriver {
+
 		@Override
 		public HierarchicalStreamWriter createWriter(Writer out) {
 			return new CompactWriter(out);
