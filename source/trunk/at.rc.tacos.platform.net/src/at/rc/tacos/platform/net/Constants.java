@@ -1,12 +1,17 @@
 package at.rc.tacos.platform.net;
 
 /**
- * Contains constants for the message command header
+ * Contains constants for the request command header
  * 
  * @author Michael
  */
-public class MessageConstants {
+public class Constants {
 
+    /**
+     * The name of the session attribute for the unique identifiere
+     */
+    public final static String UNIQUE_ID = "id";
+    
 	/**
 	 * The name of the session attribute for the command
 	 */
