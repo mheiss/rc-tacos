@@ -33,6 +33,11 @@ public class MessageHandler extends IoHandlerAdapter {
 	}
 
 	@Override
+	public void messageReceived(IoSession session, Object message) throws Exception {
+		log.info("Message received: " + message);
+	}
+
+	@Override
 	public void sessionOpened(IoSession session) throws Exception {
 		log.debug("Session opened");
 	}
@@ -41,11 +46,6 @@ public class MessageHandler extends IoHandlerAdapter {
 	public void sessionClosed(IoSession session) throws Exception {
 		log.debug("Session closed");
 		serverContext.getDataSource();
-	}
-
-	@Override
-	public void messageReceived(IoSession session, Object message) throws Exception {
-		log.info("Message received: " + message);
 	}
 
 	@Override
