@@ -18,7 +18,7 @@ import at.rc.tacos.platform.net.RequestCommand;
  * 
  */
 @SuppressWarnings("unchecked")
-public abstract class DefaultRequest implements Request {
+public abstract class AbstractRequest implements Request {
 
     /**
      * Sends the request to the server without waiting for the response

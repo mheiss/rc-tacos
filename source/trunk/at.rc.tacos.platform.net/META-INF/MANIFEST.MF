@@ -9,6 +9,7 @@ Bundle-ClassPath: lib/mina-core-2.0.0-M3.jar,
  lib/xstream-1.3.jar,
  .
 Export-Package: at.rc.tacos.platform.net,
+ at.rc.tacos.platform.net.request,
  com.thoughtworks.xstream,
  org.apache.mina.core,
  org.apache.mina.core.buffer,
