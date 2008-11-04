@@ -1,5 +1,8 @@
 package at.rc.taocs.server;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.slf4j.Logger;
@@ -11,7 +14,7 @@ import at.rc.tacos.server.net.MinaMessageServer;
 import at.rc.taocs.server.properties.ServerProperties;
 
 /**
- * The entry point for the application, initializes and startsup the server
+ * The entry point for the application, initializes and starts the server.
  * 
  * @author Michael
  */
@@ -33,9 +36,10 @@ public class ServerApplication implements IApplication {
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		int port;
-		// check if an alternative port should be used
-		if (context.getArguments().containsKey(ServerProperties.ARG_SERVER_PORT)) {
-			String portArg = (String) context.getArguments().get(ServerProperties.ARG_SERVER_PORT);
+		// get the arguments passed to the application
+		Map<String, String> argMap = getApplicationArguments(context);
+		if (argMap.containsKey(ServerProperties.ARG_SERVER_PORT)) {
+			String portArg = (String) argMap.get(ServerProperties.ARG_SERVER_PORT);
 			port = Integer.parseInt(portArg);
 		}
 		else {
@@ -84,32 +88,6 @@ public class ServerApplication implements IApplication {
 
 	@Override
 	public void stop() {
-		shutdown();
-	}
-
-	/**
-	 * Add shutdown hook.
-	 */
-	private void addShutdownHook() {
-		// create shutdown hook
-		Runnable shutdownHook = new Runnable() {
-
-			public void run() {
-				synchronized (lock) {
-					lock.notify();
-				}
-			}
-		};
-
-		// add shutdown hook
-		Runtime runtime = Runtime.getRuntime();
-		runtime.addShutdownHook(new Thread(shutdownHook));
-	}
-
-	/**
-	 * Helper method to shutdown the server
-	 */
-	private void shutdown() {
 		log.info("Terminating the server");
 		// check if we have a server context
 		if (serverContext == null)
@@ -141,4 +119,66 @@ public class ServerApplication implements IApplication {
 		log.info("Have a nice day :)");
 	}
 
+	/**
+	 * Add shutdown hook.
+	 */
+	private void addShutdownHook() {
+		// create shutdown hook
+		Runnable shutdownHook = new Runnable() {
+
+			public void run() {
+				synchronized (lock) {
+					lock.notify();
+				}
+			}
+		};
+
+		// add shutdown hook
+		Runtime runtime = Runtime.getRuntime();
+		runtime.addShutdownHook(new Thread(shutdownHook));
+	}
+
+	/**
+	 * Reads and parses the <code>application.args</code> from the
+	 * {@linkplain IApplicationContext} and returns a {@linkplain HashMap} that
+	 * contains the arguments. The arguments must be passed to the application
+	 * as key value pairs (<b>key=value</b>). The key and the value arguments
+	 * are converted to lower case in the resulting map.
+	 * 
+	 * @param context
+	 *            the application context containing the map
+	 * @return the <code>application.args</code> arguments that are passed to
+	 *         the context
+	 */
+	private Map<String, String> getApplicationArguments(IApplicationContext context) {
+		// create and setup a new map
+		Map<String, String> appArgs = new HashMap<String, String>();
+		// assert we have arguments in the context
+		if (!context.getArguments().containsKey("application.args")) {
+			return appArgs;
+		}
+
+		// loop and try to parse the passed args
+		for (String argStr : (String[]) context.getArguments().get("application.args")) {
+			// the argument is passed as single string so try to split
+			String[] arg = argStr.split("=");
+			// check if we have a key and a value
+			if (arg.length != 2) {
+				log.error("Cannot parse the application argument '" + argStr + "'. Arguments must be in the form key=value");
+				continue;
+			}
+			String key = arg[0].trim().toLowerCase();
+			String value = arg[1].trim().toLowerCase();
+
+			// check that the arguments are valid
+			if (key.length() < 1 || value.length() < 1) {
+				// ignore this argument
+				log.error("Cannot parse the passed argument '" + argStr + "'. The key or the value is empty");
+				continue;
+			}
+			appArgs.put(key, value);
+		}
+
+		return appArgs;
+	}
 }
