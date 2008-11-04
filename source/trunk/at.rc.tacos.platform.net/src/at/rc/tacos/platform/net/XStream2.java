@@ -55,7 +55,7 @@ public class XStream2 extends XStream {
 	@Override
 	protected void setupAliases() {
 		super.setupAliases();
-		alias("messageCommand", MessageHeader.class);
+		alias("messageCommand", RequestHeader.class);
 		alias("address", Address.class);
 		alias("callerDetail", CallerDetail.class);
 		alias("competence", Competence.class);
@@ -87,7 +87,7 @@ public class XStream2 extends XStream {
 	 */
 	public Object decodeHeader(String xml) {
 		// extract the header part
-		String headerPart = getPart(xml, MessageConstants.TAG_HEADER);
+		String headerPart = getPart(xml, Constants.TAG_HEADER);
 		if (headerPart == null) {
 			return null;
 		}
@@ -101,7 +101,7 @@ public class XStream2 extends XStream {
 	 */
 	public Object decodeContent(String xml) {
 		// extract the content part
-		String contentPart = getPart(xml, MessageConstants.TAG_CONTENT);
+		String contentPart = getPart(xml, Constants.TAG_CONTENT);
 		if (contentPart == null) {
 			return null;
 		}
