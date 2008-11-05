@@ -4,7 +4,7 @@ import org.apache.mina.core.session.IoSession;
 
 
 /**
- * Defines the reqest that can be send to the server
+ * Defines the request that can be send to the server
  * 
  * @author mheiss
  * 
