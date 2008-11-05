@@ -4,7 +4,6 @@ import java.net.InetSocketAddress;
 
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoHandler;
-import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
@@ -28,10 +27,10 @@ public class SimpleClient {
         this.port = port;
     }
 
-    public void connect() throws Exception {
+    public void connect(IoHandler handler) throws Exception {
         NioSocketConnector connector = new NioSocketConnector();
         connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new XmlCodecFactory()));
-        connector.setHandler(new SimpleHandler());
+        connector.setHandler(handler);
         ConnectFuture connectFuture = connector.connect(new InetSocketAddress(host, port));
         connectFuture.awaitUninterruptibly(CONNECT_TIMEOUT);
         session = connectFuture.getSession();
@@ -45,39 +44,6 @@ public class SimpleClient {
         if (session != null) {
             session.close().awaitUninterruptibly(CONNECT_TIMEOUT);
             session = null;
-        }
-    }
-
-    protected class SimpleHandler implements IoHandler {
-
-        @Override
-        public void messageReceived(IoSession session, Object message) throws Exception {
-            System.out.println("Received: " + message);
-        }
-
-        @Override
-        public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
-            throwable.printStackTrace();
-        }
-
-        @Override
-        public void messageSent(IoSession session, Object object) throws Exception {
-        }
-
-        @Override
-        public void sessionClosed(IoSession session) throws Exception {
-        }
-
-        @Override
-        public void sessionCreated(IoSession session) throws Exception {
-        }
-
-        @Override
-        public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-        }
-
-        @Override
-        public void sessionOpened(IoSession session) throws Exception {
         }
     }
 }
