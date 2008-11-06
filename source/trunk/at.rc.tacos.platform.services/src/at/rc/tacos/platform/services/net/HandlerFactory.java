@@ -10,5 +10,5 @@ public interface HandlerFactory {
 	/**
 	 * Get the handler instance.
 	 */
-	public INetHandler<?> getHandler(String modelClazz);
+	public <T> INetHandler<T> getTypeSaveHandler(T modelClazz);
 }

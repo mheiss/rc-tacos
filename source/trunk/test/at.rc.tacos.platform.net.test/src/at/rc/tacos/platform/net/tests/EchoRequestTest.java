@@ -8,9 +8,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.rc.tacos.platform.net.Command;
 import at.rc.tacos.platform.net.request.AbstractMessage;
 import at.rc.tacos.platform.net.request.AddMessage;
+import at.rc.tacos.platform.net.request.LoginMessage;
 import at.rc.tacos.platform.net.request.Message;
 
 /**
@@ -50,7 +50,6 @@ public class EchoRequestTest {
         // check the received message
         Assert.assertNotNull(response);
         Assert.assertEquals(request.getId(), response.getId());
-        Assert.assertEquals(Command.ADD, response.getCommand());
         Assert.assertEquals(1, response.getObjects().size());
         Assert.assertEquals("Hallo", response.getObjects().get(0));
     }
@@ -64,9 +63,15 @@ public class EchoRequestTest {
         // validate the response
         Assert.assertNotNull(response);
         Assert.assertEquals(request.getId(), response.getId());
-        Assert.assertEquals(Command.ADD, response.getCommand());
         Assert.assertEquals(1, response.getObjects().size());
         Assert.assertEquals("Hallo", response.getObjects().get(0));
+    }
+
+    @Test
+    public void loginTest() throws Exception {
+        // setup a new login message
+        LoginMessage login = new LoginMessage("michael", "password", false);
+        login.asnchronRequest(client.getSession());
     }
 
     @After
@@ -83,6 +88,8 @@ public class EchoRequestTest {
         @Override
         public void messageReceived(IoSession session, Object message) throws Exception {
             AbstractMessage request = (AbstractMessage) message;
+            System.out.println("Request received:" + request);
+            System.out.println("Request class:" + request.getClass());
             request.asnchronRequest(session);
             System.out.println("sending response to client");
         }

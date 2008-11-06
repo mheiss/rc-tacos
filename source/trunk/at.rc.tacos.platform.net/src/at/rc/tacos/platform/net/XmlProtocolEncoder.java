@@ -72,6 +72,8 @@ public class XmlProtocolEncoder extends ProtocolEncoderAdapter {
             log.trace("Encoded message: " + xmlString.toString());
         }
 
+        System.out.println("Encoded message: " + xmlString.toString());
+
         // write the object to the io buffer
         IoBuffer buf = IoBuffer.allocate(xmlString.length()).setAutoExpand(true);
         buf.putString(xmlString.toString(), encoder);
