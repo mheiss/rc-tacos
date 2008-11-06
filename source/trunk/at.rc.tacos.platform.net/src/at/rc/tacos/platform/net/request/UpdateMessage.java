@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import at.rc.tacos.platform.net.Command;
-
 /**
  * Request to update an existing object on the server
  * 
@@ -38,11 +36,6 @@ public class UpdateMessage extends AbstractMessage {
 	@Override
 	public List<Object> getObjects() {
 		return objects;
-	}
-
-	@Override
-	public Command getCommand() {
-		return Command.UPDATE;
 	}
 
 	@Override

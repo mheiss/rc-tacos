@@ -61,6 +61,8 @@ public class XmlProtocolDecoder extends TextLineDecoder {
         if (log.isTraceEnabled()) {
             log.trace("Decoding message: " + text);
         }
+        
+        System.out.println("Decoding message: " + text);
 
         // try to decode the message
         try {
