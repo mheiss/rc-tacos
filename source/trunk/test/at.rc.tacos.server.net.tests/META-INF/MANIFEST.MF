@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests Plug-in
+Bundle-SymbolicName: at.rc.tacos.server.net.tests
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit4;bundle-version="4.3.1",
+ at.rc.tacos.server.net;bundle-version="1.0.0",
+ at.rc.tacos.platform.net;bundle-version="1.0.0",
+ at.rc.tacos.platform.services;bundle-version="1.0.0",
+ at.rc.tacos.platform.model;bundle-version="1.0.0"
