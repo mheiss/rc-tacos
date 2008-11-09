@@ -21,7 +21,7 @@ public interface INetHandler<M> {
 	 *            the object to add
 	 * @reuturn the object that was added
 	 */
-	public M add(M model) throws ServiceException, SQLException;
+	public M add(M m) throws ServiceException, SQLException;
 
 	/**
 	 * Notification that a object has been removed
@@ -30,7 +30,7 @@ public interface INetHandler<M> {
 	 *            the object that was removed
 	 * @return the object that was removed
 	 */
-	public M remove(M model) throws ServiceException, SQLException;
+	public M remove(M m) throws ServiceException, SQLException;
 
 	/**
 	 * Notification that a object has been updated
@@ -39,7 +39,7 @@ public interface INetHandler<M> {
 	 *            the object that has been updated
 	 * @return the updated object
 	 */
-	public M update(M model) throws ServiceException, SQLException;
+	public M update(M m) throws ServiceException, SQLException;
 
 	/**
 	 * Notification that a request for one ore more object was made. The
@@ -63,6 +63,6 @@ public interface INetHandler<M> {
 	 *            the request parameters as simple map of strings
 	 * @return the result of the command operation
 	 */
-	public List<M> execute(String command, List<M> modelList, Map<String, String> params) throws ServiceException, SQLException;
+	public List<M> execute(String command, List<M> list, Map<String, String> params) throws ServiceException, SQLException;
 
 }
