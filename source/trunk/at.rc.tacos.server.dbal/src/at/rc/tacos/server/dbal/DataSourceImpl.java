@@ -41,8 +41,7 @@ public class DataSourceImpl implements DataSource {
 	 */
 	@Override
 	public Connection getConnection() throws SQLException {
-		Connection connection = DriverManager.getConnection("jdbc:apache:commons:dbcp:tacos-pool");
-		return connection;
+		return DriverManager.getConnection("jdbc:apache:commons:dbcp:tacos-pool");
 	}
 
 	/**
