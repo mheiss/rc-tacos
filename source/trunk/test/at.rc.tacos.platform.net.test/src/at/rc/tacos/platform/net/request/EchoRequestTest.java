@@ -1,4 +1,4 @@
-package at.rc.tacos.platform.net.tests;
+package at.rc.tacos.platform.net.request;
 
 import junit.framework.Assert;
 
