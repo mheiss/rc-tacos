@@ -44,60 +44,62 @@ import at.rc.tacos.server.net.handler.TransportHandler;
 import at.rc.tacos.server.net.handler.VehicleHandler;
 
 /**
- * The handler factory returns the appropriate handler implementations based uppon the request.
+ * The handler factory returns the appropriate handler implementations based
+ * uppon the request.
  * 
  * @author Michael
  */
 @SuppressWarnings("unchecked")
 public class HandlerFactoryImpl implements HandlerFactory {
 
-    private static final HashMap<String, INetHandler<?>> HANDLER_MAP = new HashMap<String, INetHandler<?>>();
+	private static final HashMap<String, INetHandler<?>> HANDLER_MAP = new HashMap<String, INetHandler<?>>();
 
-    // populate the default handlers
-    static {
-        HANDLER_MAP.put(Address.class.getName(), new AddressHandler());
-        HANDLER_MAP.put(Login.class.getName(), new AuthenticationHandler());
-        HANDLER_MAP.put(Competence.class.getName(), new CompetenceHandler());
-        HANDLER_MAP.put(DayInfoMessage.class.getName(), new DayInfoHandler());
-        HANDLER_MAP.put(DialysisPatient.class.getName(), new DialysisPatientHandler());
-        HANDLER_MAP.put(Disease.class.getName(), new DiseaseHandler());
-        HANDLER_MAP.put(Job.class.getName(), new JobHandler());
-        HANDLER_MAP.put(Link.class.getName(), new LinkHandler());
-        HANDLER_MAP.put(Location.class.getName(), new LocationHandler());
-        HANDLER_MAP.put(LockHandler.class.getName(), new LockHandler());
-        HANDLER_MAP.put(MobilePhoneDetail.class.getName(), new MobilePhoneHandler());
-        HANDLER_MAP.put(CallerDetail.class.getName(), new NotifyDetailHandler());
-        HANDLER_MAP.put(Period.class.getName(), new PeriodHandler());
-        HANDLER_MAP.put(RosterEntry.class.getName(), new RosterHandler());
-        HANDLER_MAP.put(ServiceType.class.getName(), new ServiceTypeHandler());
-        HANDLER_MAP.put(SickPerson.class.getName(), new SickPersonHandler());
-        HANDLER_MAP.put(StaffMember.class.getName(), new StaffMemberHandler());
-        HANDLER_MAP.put(Transport.class.getName(), new TransportHandler());
-        HANDLER_MAP.put(VehicleDetail.class.getName(), new VehicleHandler());
-    }
+	// populate the default handlers
+	static {
+		HANDLER_MAP.put(Address.class.getName(), new AddressHandler());
+		HANDLER_MAP.put(Login.class.getName(), new AuthenticationHandler());
+		HANDLER_MAP.put(Competence.class.getName(), new CompetenceHandler());
+		HANDLER_MAP.put(DayInfoMessage.class.getName(), new DayInfoHandler());
+		HANDLER_MAP.put(DialysisPatient.class.getName(), new DialysisPatientHandler());
+		HANDLER_MAP.put(Disease.class.getName(), new DiseaseHandler());
+		HANDLER_MAP.put(Job.class.getName(), new JobHandler());
+		HANDLER_MAP.put(Link.class.getName(), new LinkHandler());
+		HANDLER_MAP.put(Location.class.getName(), new LocationHandler());
+		HANDLER_MAP.put(LockHandler.class.getName(), new LockHandler());
+		HANDLER_MAP.put(MobilePhoneDetail.class.getName(), new MobilePhoneHandler());
+		HANDLER_MAP.put(CallerDetail.class.getName(), new NotifyDetailHandler());
+		HANDLER_MAP.put(Period.class.getName(), new PeriodHandler());
+		HANDLER_MAP.put(RosterEntry.class.getName(), new RosterHandler());
+		HANDLER_MAP.put(ServiceType.class.getName(), new ServiceTypeHandler());
+		HANDLER_MAP.put(SickPerson.class.getName(), new SickPersonHandler());
+		HANDLER_MAP.put(StaffMember.class.getName(), new StaffMemberHandler());
+		HANDLER_MAP.put(Transport.class.getName(), new TransportHandler());
+		HANDLER_MAP.put(VehicleDetail.class.getName(), new VehicleHandler());
+	}
 
-    private Map<String, INetHandler<?>> handlerMap;
+	private Map<String, INetHandler<?>> handlerMap;
 
-    /**
-     * Default class constructor
-     */
-    public HandlerFactoryImpl() {
-        handlerMap = new HashMap<String, INetHandler<?>>();
-        handlerMap.putAll(HANDLER_MAP);
-    }
+	/**
+	 * Default class constructor
+	 */
+	public HandlerFactoryImpl() {
+		handlerMap = new HashMap<String, INetHandler<?>>();
+		handlerMap.putAll(HANDLER_MAP);
+	}
 
-    /**
-     * Returns a type save handler instance for the given model clazz
-     * 
-     * @param clazz
-     *            the clazz of the model object to get the handler
-     */
-    public <T>INetHandler<T> getTypeSaveHandler(T clazz) {
-        INetHandler<?> handler = handlerMap.get(clazz.getClass().getName());
-        // assert valid handler
-        if (handler == null) {
-            return null;
-        }
-        return (INetHandler<T>) handler;
-    }
+	/**
+	 * Returns a type save handler instance for the given model clazz
+	 * 
+	 * @param clazz
+	 *            the clazz of the model object to get the handler
+	 */
+	@Override
+	public <T> INetHandler<T> getTypeSaveHandler(T t) {
+		INetHandler<T> handler = (INetHandler<T>) handlerMap.get(t.getClass().getName());
+		// assert valid handler
+		if (handler == null) {
+			return null;
+		}
+		return handler;
+	}
 }
