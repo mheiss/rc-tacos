@@ -96,10 +96,6 @@ public class HandlerFactoryImpl implements HandlerFactory {
 	@Override
 	public <T> INetHandler<T> getTypeSaveHandler(T t) {
 		INetHandler<T> handler = (INetHandler<T>) handlerMap.get(t.getClass().getName());
-		// assert valid handler
-		if (handler == null) {
-			return null;
-		}
 		return handler;
 	}
 }

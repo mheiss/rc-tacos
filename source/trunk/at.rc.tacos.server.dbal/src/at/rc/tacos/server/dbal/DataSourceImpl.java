@@ -26,6 +26,7 @@ public class DataSourceImpl implements DataSource {
 
 	// the server pool
 	private GenericObjectPool connectionPool;
+	private boolean isOpen;
 
 	/**
 	 * Default class constructor
@@ -41,6 +42,8 @@ public class DataSourceImpl implements DataSource {
 	 */
 	@Override
 	public Connection getConnection() throws SQLException {
+		if (!isOpen)
+			throw new IllegalStateException("The data source must be opened to get a connection");
 		return DriverManager.getConnection("jdbc:apache:commons:dbcp:tacos-pool");
 	}
 
@@ -83,6 +86,7 @@ public class DataSourceImpl implements DataSource {
 		for (int i = 0; i < 15; i++)
 			connectionPool.addObject();
 
+		isOpen = true;
 	}
 
 	/**
@@ -94,6 +98,7 @@ public class DataSourceImpl implements DataSource {
 			connectionPool.clear();
 			connectionPool.close();
 			connectionPool = null;
+			isOpen = false;
 		}
 		catch (Exception e) {
 			log.error("Error while trying to close the connection: " + e.getMessage(), e);
