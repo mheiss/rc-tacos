@@ -12,3 +12,4 @@ Bundle-ClassPath: lib/hamcrest-core-1.1.jar,
  lib/mockito-core-1.5.jar,
  lib/objenesis-1.0.jar,
  .
+Export-Package: org.mockito
