@@ -5,7 +5,8 @@ import java.lang.annotation.Annotation;
 import at.rc.tacos.platform.services.exception.NoSuchServiceException;
 
 /**
- * Provides methods to resolve the needed resources
+ * Provides methods to resolve the @link {@link Service} annotations and use
+ * reflection to set up the needed service instance.
  * 
  * @author mheiss
  */

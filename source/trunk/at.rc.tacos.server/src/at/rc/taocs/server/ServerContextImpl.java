@@ -23,7 +23,7 @@ public class ServerContextImpl implements ServerContext {
 	/**
 	 * Default class constructor to create a new server context
 	 */
-	protected ServerContextImpl(int serverPort) {
+	public ServerContextImpl(int serverPort) {
 		this.serverPort = serverPort;
 		init();
 	}

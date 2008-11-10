@@ -24,13 +24,18 @@ public abstract class AnnotationResolver {
 		this.annotation = annotation;
 	}
 
-	public List<Object> resolveAnnotations(Object currentObject) throws Exception {
+	public List<Object> resolveAnnotations(Object... objects) throws Exception {
 		List<Object> resolved = new ArrayList<Object>();
-		resolveAnnotation(resolved, currentObject);
+		for (Object obj : objects) {
+			resolveAnnotation(resolved, obj);
+		}
 		return resolved;
 	}
 
 	private void resolveAnnotation(List<Object> resolved, Object currentObject) throws Exception {
+		// assert valid object
+		if (currentObject == null)
+			return;
 		resolved.add(currentObject);
 		// get the class for the object
 		Class<?> clazz = currentObject.getClass();
