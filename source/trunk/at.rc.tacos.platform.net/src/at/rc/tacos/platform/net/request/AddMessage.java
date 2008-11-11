@@ -9,36 +9,36 @@ import java.util.Map;
  * 
  * @author mheiss
  */
-public class AddMessage extends AbstractMessage {
+public class AddMessage<T> extends AbstractMessage<T> {
 
-    /**
-     * Default class constructor for a single object to add
-     * 
-     * @param object
-     *            the object to add
-     */
-    public AddMessage(Object object) {
-        objects = new ArrayList<Object>();
-        objects.add(object);
-    }
+	/**
+	 * Default class constructor for a single object to add
+	 * 
+	 * @param object
+	 *            the object to add
+	 */
+	public AddMessage(T t) {
+		objects = new ArrayList<T>();
+		objects.add(t);
+	}
 
-    /**
-     * Default class constructor for multiple objects to add
-     * 
-     * @param object
-     *            the objects to add
-     */
-    public AddMessage(List<Object> objects) {
-        this.objects = objects;
-    }
+	/**
+	 * Default class constructor for multiple objects to add
+	 * 
+	 * @param object
+	 *            the objects to add
+	 */
+	public AddMessage(List<T> objects) {
+		this.objects = objects;
+	}
 
-    @Override
-    public List<Object> getObjects() {
-        return objects;
-    }
+	@Override
+	public List<T> getObjects() {
+		return objects;
+	}
 
-    @Override
-    public Map<String, String> getParams() {
-        return null;
-    }
+	@Override
+	public Map<String, String> getParams() {
+		return null;
+	}
 }

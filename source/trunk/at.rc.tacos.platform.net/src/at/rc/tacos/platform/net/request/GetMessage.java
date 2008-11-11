@@ -6,44 +6,32 @@ import java.util.Map;
 
 import at.rc.tacos.platform.model.RosterEntry;
 
-public class GetMessage extends AbstractMessage {
+public class GetMessage<T> extends AbstractMessage<T> {
 
-    /**
-     * Default class constructor that defines a single object type to request.
-     * <p>
-     * <b>Example</b> To make a request agains {@link RosterEntry} object types the parameter would
-     * be <code>RosterEntry.class</code>
-     * </p>
-     * 
-     * @param clazz
-     *            the model class that identifies the handler to be used for the request
-     */
-    public GetMessage(Class<?> clazz) {
-        objects = new ArrayList<Object>();
-        objects.add(clazz.getName());
-    }
+	/**
+	 * Default class constructor that defines a single object type to request.
+	 * <p>
+	 * <b>Example</b> To make a request agains {@link RosterEntry} object types
+	 * the parameter would be <code>RosterEntry.class</code>
+	 * </p>
+	 * 
+	 * @param clazz
+	 *            the model class that identifies the handler to be used for the
+	 *            request
+	 */
+	public GetMessage(T t) {
+		objects = new ArrayList<T>();
+		objects.add(t);
+	}
 
-    /**
-     * Default class constructor that defines multiple objects to request
-     * 
-     * @param clazz
-     *            the comma separated model types to identify the handlers for the request
-     */
-    public GetMessage(Class<?>... classes) {
-        objects = new ArrayList<Object>();
-        for (Class<?> clazz : classes) {
-            objects.add(clazz.getName());
-        }
-    }
+	@Override
+	public List<T> getObjects() {
+		return objects;
+	}
 
-    @Override
-    public List<Object> getObjects() {
-        return objects;
-    }
-
-    @Override
-    public Map<String, String> getParams() {
-        return params;
-    }
+	@Override
+	public Map<String, String> getParams() {
+		return params;
+	}
 
 }

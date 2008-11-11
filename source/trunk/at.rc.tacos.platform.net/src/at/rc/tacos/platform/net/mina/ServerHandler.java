@@ -4,8 +4,7 @@ import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
-import at.rc.tacos.platform.net.request.Message;
-import at.rc.tacos.platform.services.ServerContext;
+import at.rc.tacos.platform.net.Message;
 
 /**
  * The handler is responsible to process the requests from the clients.
@@ -13,7 +12,7 @@ import at.rc.tacos.platform.services.ServerContext;
  * @author Michael
  */
 public interface ServerHandler {
-	
+
 	/**
 	 * Invoked to initialize the handler.
 	 */
@@ -29,13 +28,13 @@ public interface ServerHandler {
 	/**
 	 * Invoked when a new message is received.
 	 */
-	public void messageReceived(ServerIoSession session, Message message) throws Exception;
+	public void messageReceived(ServerIoSession session, Message<Object> message) throws Exception;
 
 	/**
 	 * Invoked when a message written by {@link IoSession#write(Object)} is sent
 	 * out.
 	 */
-	public void messageSent(ServerIoSession session, Message message) throws Exception;
+	public void messageSent(ServerIoSession session, Message<Object> message) throws Exception;
 
 	/**
 	 * Invoked when the connection is closed

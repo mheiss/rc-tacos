@@ -15,6 +15,7 @@ Export-Package: at.rc.tacos.platform.net;
    com.thoughtworks.xstream,
    org.apache.mina.filter.codec.textline,
    org.apache.mina.filter.codec",
+ at.rc.tacos.platform.net.handler,
  at.rc.tacos.platform.net.mina;
   uses:="org.apache.mina.core.future,
    org.apache.mina.core.session,

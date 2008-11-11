@@ -9,7 +9,7 @@ import java.util.Map;
  * 
  * @author Michael
  */
-public class RemoveMessage extends AbstractMessage {
+public class RemoveMessage<T> extends AbstractMessage<T> {
 
 	/**
 	 * Default class constructor to define the object to remove
@@ -17,9 +17,9 @@ public class RemoveMessage extends AbstractMessage {
 	 * @param object
 	 *            the object to remove
 	 */
-	public RemoveMessage(Object object) {
-		objects = new ArrayList<Object>();
-		objects.add(object);
+	public RemoveMessage(T t) {
+		objects = new ArrayList<T>();
+		objects.add(t);
 	}
 
 	/**
@@ -28,12 +28,12 @@ public class RemoveMessage extends AbstractMessage {
 	 * @param objects
 	 *            the objects to remove
 	 */
-	public RemoveMessage(List<Object> objects) {
+	public RemoveMessage(List<T> objects) {
 		this.objects = objects;
 	}
 
 	@Override
-	public List<Object> getObjects() {
+	public List<T> getObjects() {
 		return objects;
 	}
 
