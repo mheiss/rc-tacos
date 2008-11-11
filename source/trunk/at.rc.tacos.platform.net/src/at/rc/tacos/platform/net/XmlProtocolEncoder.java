@@ -18,8 +18,8 @@ import at.rc.tacos.platform.net.request.AbstractMessage;
 
 /**
  * <p>
- * A {@link ProtocolEncoder} which encodes higher level objects into xml string which ends up with
- * the delimiter.
+ * A {@link ProtocolEncoder} which encodes higher level objects into xml string
+ * which ends up with the delimiter.
  * </p>
  * <p>
  * See {@link TextLineEncoder} for a text only approach.
@@ -29,67 +29,63 @@ import at.rc.tacos.platform.net.request.AbstractMessage;
  */
 public class XmlProtocolEncoder extends ProtocolEncoderAdapter {
 
-    private final AttributeKey ENCODER = new AttributeKey(getClass(), "encoder");
+	private final AttributeKey ENCODER = new AttributeKey(getClass(), "encoder");
 
-    // the logger instance
-    private Logger log = LoggerFactory.getLogger(XmlProtocolEncoder.class);
+	// the logger instance
+	private Logger log = LoggerFactory.getLogger(XmlProtocolEncoder.class);
 
-    // properties for the encoder
-    private final XStream2 xStream;
-    private final Charset charset;
-    private final LineDelimiter delimiter;
+	// properties for the encoder
+	private final XStream2 xStream;
+	private final Charset charset;
+	private final LineDelimiter delimiter;
 
-    /**
-     * Default class constructor to setup a {@link LineDelimiter#WINDOWS} delimiter and that uses
-     * UTF-8 as {@link Charset}
-     */
-    public XmlProtocolEncoder() {
-        this.xStream = new XStream2();
-        this.charset = Charset.forName("UTF-8");
-        this.delimiter = LineDelimiter.WINDOWS;
-    }
+	/**
+	 * Default class constructor to setup a {@link LineDelimiter#WINDOWS}
+	 * delimiter and that uses UTF-8 as {@link Charset}
+	 */
+	public XmlProtocolEncoder() {
+		this.xStream = new XStream2();
+		this.charset = Charset.forName("UTF-8");
+		this.delimiter = LineDelimiter.WINDOWS;
+	}
 
-    @Override
-    public void encode(IoSession session, Object message, ProtocolEncoderOutput out)
-            throws Exception {
-        CharsetEncoder encoder = (CharsetEncoder) session.getAttribute(ENCODER);
-        if (encoder == null) {
-            encoder = charset.newEncoder();
-            session.setAttribute(ENCODER, encoder);
-        }
+	@Override
+	public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception {
+		CharsetEncoder encoder = (CharsetEncoder) session.getAttribute(ENCODER);
+		if (encoder == null) {
+			encoder = charset.newEncoder();
+			session.setAttribute(ENCODER, encoder);
+		}
 
-        // assert we are writing only request messages
-        if (!(message instanceof AbstractMessage)) {
-            logAndThrowException("Can only send messages from type 'AbstractMessage' is " + message == null ? "null"
-                    : message.getClass().getName());
-        }
+		// assert we are writing only request messages
+		if (!(message instanceof AbstractMessage)) {
+			logAndThrowException("Can only send messages from type 'AbstractMessage' is " + message == null ? "null" : message.getClass().getName());
+		}
 
-        // setup the message to send
-        StringBuffer xmlString = new StringBuffer();
-        xmlString.append(xStream.toXML(message));
+		// setup the message to send
+		StringBuffer xmlString = new StringBuffer();
+		xmlString.append(xStream.toXML(message));
 
-        if (log.isTraceEnabled()) {
-            log.trace("Encoded message: " + xmlString.toString());
-        }
+		if (log.isTraceEnabled()) {
+			log.trace("Encoded message: " + xmlString.toString());
+		}
 
-        System.out.println("Encoded message: " + xmlString.toString());
+		// write the object to the io buffer
+		IoBuffer buf = IoBuffer.allocate(xmlString.length()).setAutoExpand(true);
+		buf.putString(xmlString.toString(), encoder);
+		buf.putString(delimiter.getValue(), encoder);
+		buf.flip();
+		out.write(buf);
+	}
 
-        // write the object to the io buffer
-        IoBuffer buf = IoBuffer.allocate(xmlString.length()).setAutoExpand(true);
-        buf.putString(xmlString.toString(), encoder);
-        buf.putString(delimiter.getValue(), encoder);
-        buf.flip();
-        out.write(buf);
-    }
-
-    /**
-     * Helper method to log an event and throw a exception
-     * 
-     * @param message
-     *            the message string to log
-     */
-    private void logAndThrowException(String message) {
-        log.error(message);
-        throw new IllegalArgumentException(message);
-    }
+	/**
+	 * Helper method to log an event and throw a exception
+	 * 
+	 * @param message
+	 *            the message string to log
+	 */
+	private void logAndThrowException(String message) {
+		log.error(message);
+		throw new IllegalArgumentException(message);
+	}
 }

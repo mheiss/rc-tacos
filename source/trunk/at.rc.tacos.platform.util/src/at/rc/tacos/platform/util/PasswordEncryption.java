@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides methods to generate a hash value out of a given string. The original
@@ -15,6 +17,8 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class PasswordEncryption {
 
+	private Logger logger = LoggerFactory.getLogger(PasswordEncryption.class);
+
 	// The instance of this class
 	private static PasswordEncryption instance;
 
@@ -22,6 +26,7 @@ public class PasswordEncryption {
 	 * Default class constructor.
 	 */
 	private PasswordEncryption() {
+		// prevent instantiation
 	}
 
 	/**
@@ -49,11 +54,11 @@ public class PasswordEncryption {
 			return new String(hash);
 		}
 		catch (NoSuchAlgorithmException e) {
-			System.out.println("Algorithm SHA-1 is not supported");
+			logger.error("Algorithm SHA-1 is not supported", e.getCause());
 			return null;
 		}
 		catch (UnsupportedEncodingException e) {
-			System.out.println("UTF-8 encoding is not supported");
+			logger.error("UTF-8 encoding is not supported");
 			return null;
 		}
 	}
