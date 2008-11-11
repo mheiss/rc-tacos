@@ -1,19 +1,27 @@
 package at.rc.tacos.server.net;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Map.Entry;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.filter.executor.OrderedThreadPoolExecutor;
 import org.apache.mina.filter.logging.LoggingFilter;
+import org.apache.mina.filter.logging.MdcInjectionFilter;
+import org.apache.mina.transport.socket.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.XmlCodecFactory;
+import at.rc.tacos.platform.net.mina.ServerHandler;
 import at.rc.tacos.platform.services.ServerContext;
+import at.rc.tacos.platform.services.exception.ConfigurationException;
 
 /**
  * The message server manages the communication between the clients and the
@@ -24,67 +32,81 @@ import at.rc.tacos.platform.services.ServerContext;
 public class MinaMessageServer {
 
 	// the socket acceptor
-	private IoAcceptor acceptor;
+	private SocketAcceptor acceptor;
 
 	// the logging plugin
 	private Logger log = LoggerFactory.getLogger(MinaMessageServer.class);
 
-	// the server context
-	private ServerContext serverContext;
-
-	/**
-	 * Default class constructor to create a new message server
-	 * 
-	 * @param context
-	 *            the server context
-	 */
-	public MinaMessageServer(ServerContext serverContext) {
-		this.serverContext = serverContext;
-		init();
-	}
-
-	/**
-	 * Initializes the mina message server
-	 */
-	private void init() {
-		acceptor = new NioSocketAcceptor();
-		acceptor.getFilterChain().addLast("logger", new LoggingFilter());
-		acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new XmlCodecFactory()));
-
-		acceptor.setHandler(new MessageHandler(serverContext));
-
-		acceptor.getSessionConfig().setReadBufferSize(2048);
-		acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
-
-		log.debug("MinaMessageServer initialized");
-	}
+	private ExecutorService filterExecutor = new OrderedThreadPoolExecutor();
+	private ServerHandler handler = new MessageHandler();
 
 	/**
 	 * Starts listening to client connections
-	 * 
-	 * @throws Exception
-	 *             when the server cannot listen on the given port
 	 */
-	public void listen() throws Exception {
-		log.debug("Attemp to start mina socket listener");
-		acceptor.bind(new InetSocketAddress(serverContext.getServerPort()));
-		log.debug("Listening to client connections on port " + acceptor.getLocalAddress());
+	public void start(ServerContext serverContext) {
+		log.info("Attemp to start mina socket listener");
+		try {
+			acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors());
+			acceptor.setReuseAddress(false);
+			acceptor.getSessionConfig().setReadBufferSize(2048);
+			acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 300);
+
+			MdcInjectionFilter mdcFilter = new MdcInjectionFilter();
+			acceptor.getFilterChain().addLast("mdcFilter", mdcFilter);
+
+			acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(filterExecutor));
+			acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new XmlCodecFactory()));
+			acceptor.getFilterChain().addLast("mdcFilter2", mdcFilter);
+			acceptor.getFilterChain().addLast("logger", new LoggingFilter());
+
+			handler.init(serverContext);
+			acceptor.setHandler(new ServerHandlerAdapter(handler));
+
+			try {
+				acceptor.bind(new InetSocketAddress(serverContext.getServerPort()));
+			}
+			catch (IOException ioe) {
+				throw new ConfigurationException("Failed to listen on port " + serverContext.getServerPort() + ", check the configuration", ioe
+						.getCause());
+			}
+
+			log.info("Listening to client connections on port " + acceptor.getLocalAddress().getPort());
+		}
+		catch (RuntimeException e) {
+			// clean up if we fail to start
+			stop();
+			throw e;
+		}
 	}
 
 	/**
-	 * Shutdown the server and closes the connection
+	 * Shutdown the server and closes all open connections.
 	 */
-	public void shutdown() throws Exception {
+	public void stop() {
 		log.debug("Shuting down the server");
 		log.debug("Try to close the active sessions (" + acceptor.getManagedSessionCount() + ")");
 		// close each open session
-		for (Entry<Long, IoSession> entry : acceptor.getManagedSessions().entrySet()) {
+		for (Map.Entry<Long, IoSession> entry : acceptor.getManagedSessions().entrySet()) {
 			IoSession session = entry.getValue();
 			log.debug("Attemp to terminate the session " + session);
 			session.close(true);
 		}
-		acceptor.unbind();
-		acceptor.dispose();
+		// close server socket
+		if (acceptor != null) {
+			acceptor.unbind();
+			acceptor.dispose();
+			acceptor = null;
+		}
+		// close the execution pool
+		if (filterExecutor != null) {
+			filterExecutor.shutdown();
+			try {
+				filterExecutor.awaitTermination(5000, TimeUnit.MILLISECONDS);
+			}
+			catch (InterruptedException e) {
+				log.warn("Failed to await the termination of the thread pool executor");
+			}
+		}
 		log.debug("Server shutdown successfully");
 	}
 }

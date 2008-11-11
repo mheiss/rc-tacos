@@ -35,6 +35,7 @@ public class ServerApplication implements IApplication {
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
+		log.info("Starting up the server application...");
 		int port;
 		// get the arguments passed to the application
 		Map<String, String> argMap = getApplicationArguments(context);
@@ -47,11 +48,9 @@ public class ServerApplication implements IApplication {
 		}
 
 		// setup the server context
-		log.info("Setting up the server context");
 		serverContext = new ServerContextImpl(port);
 
 		// initialize and open the data source
-		log.info("Initialize the datasource");
 		try {
 			DataSource source = serverContext.getDataSource();
 			source.open();
@@ -61,17 +60,14 @@ public class ServerApplication implements IApplication {
 			return -1;
 		}
 
-		log.info("Starting the server application");
 		try {
-			messageServer = new MinaMessageServer(serverContext);
-			messageServer.listen();
+			messageServer = new MinaMessageServer();
+			messageServer.start(serverContext);
 		}
 		catch (Exception e) {
 			log.error("Failed to initialize the server: " + e.getMessage());
 			return -1;
 		}
-
-		log.info("Server is ready to handle client request on port " + serverContext.getServerPort());
 
 		// add a shutdown hook
 		addShutdownHook();
@@ -88,33 +84,27 @@ public class ServerApplication implements IApplication {
 
 	@Override
 	public void stop() {
-		log.info("Terminating the server");
-		// check if we have a server context
-		if (serverContext == null)
-			return;
-
+		log.info("Terminating the server application");
 		// assert we have a data source
-		if (serverContext.getDataSource() == null)
-			return;
-
-		log.info("Closing database connection");
-		try {
-			// shutdown the database connection
-			serverContext.getDataSource().shutdown();
+		if (serverContext != null && serverContext.getDataSource() != null) {
+			log.info("Closing database connection");
+			try {
+				// shutdown the database connection
+				serverContext.getDataSource().shutdown();
+			}
+			catch (Exception e) {
+				log.error("Failed to close the datbase connection " + e.getMessage(), e);
+			}
 		}
-		catch (Exception e) {
-			log.error("Failed to close the datbase connection " + e.getMessage(), e);
-		}
-
 		// assert we have a server
-		if (messageServer == null)
-			return;
-		log.info("Shutdown the server application");
-		try {
-			messageServer.shutdown();
-		}
-		catch (Exception e) {
-			log.error("Failed to shutdown the mina server application", e);
+		if (messageServer != null) {
+			log.info("Shutdown the server application");
+			try {
+				messageServer.stop();
+			}
+			catch (Exception e) {
+				log.error("Failed to shutdown the mina server application", e);
+			}
 		}
 		log.info("Have a nice day :)");
 	}
@@ -164,7 +154,7 @@ public class ServerApplication implements IApplication {
 			String[] arg = argStr.split("=");
 			// check if we have a key and a value
 			if (arg.length != 2) {
-				log.error("Cannot parse the application argument '" + argStr + "'. Arguments must be in the form key=value");
+				log.warn("Cannot parse the application argument '" + argStr + "'. Arguments must be in the form key=value");
 				continue;
 			}
 			String key = arg[0].trim().toLowerCase();
@@ -173,7 +163,7 @@ public class ServerApplication implements IApplication {
 			// check that the arguments are valid
 			if (key.length() < 1 || value.length() < 1) {
 				// ignore this argument
-				log.error("Cannot parse the passed argument '" + argStr + "'. The key or the value is empty");
+				log.warn("Cannot parse the passed argument '" + argStr + "'. The key or the value is empty");
 				continue;
 			}
 			appArgs.put(key, value);
