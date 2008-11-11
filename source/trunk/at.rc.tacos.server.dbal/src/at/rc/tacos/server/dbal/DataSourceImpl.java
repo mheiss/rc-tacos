@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.services.DataSource;
-import at.rc.tacos.platform.services.exception.ServiceException;
+import at.rc.tacos.platform.services.exception.ConfigurationException;
 
 /**
  * The data source provides access to the connection pool.
@@ -54,11 +54,11 @@ public class DataSourceImpl implements DataSource {
 	 */
 	@Override
 	public void open() throws Exception {
-		log.debug("Try to setup the database connection pool");
+		log.info("Initialize database connection pool");
 		// load the settings
 		ResourceBundle bundle = ResourceBundle.getBundle("at.rc.tacos.server.dbal.config.db");
 		if (bundle == null) {
-			throw new ServiceException("Failed to load the database configuration");
+			throw new ConfigurationException("Failed to load the database configuration", null);
 		}
 
 		// load the settings from the file
@@ -101,7 +101,7 @@ public class DataSourceImpl implements DataSource {
 			isOpen = false;
 		}
 		catch (Exception e) {
-			log.error("Error while trying to close the connection: " + e.getMessage(), e);
+			log.error("Error while trying to close the connection", e);
 		}
 	}
 
