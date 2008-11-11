@@ -21,8 +21,8 @@ import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.model.StaffMember;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
-import at.rc.tacos.platform.services.net.HandlerFactory;
-import at.rc.tacos.platform.services.net.INetHandler;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.handler.HandlerFactory;
 import at.rc.tacos.server.net.handler.AddressHandler;
 import at.rc.tacos.server.net.handler.AuthenticationHandler;
 import at.rc.tacos.server.net.handler.CompetenceHandler;
@@ -52,7 +52,7 @@ import at.rc.tacos.server.net.handler.VehicleHandler;
 @SuppressWarnings("unchecked")
 public class HandlerFactoryImpl implements HandlerFactory {
 
-	private static final HashMap<String, INetHandler<?>> HANDLER_MAP = new HashMap<String, INetHandler<?>>();
+	private static final HashMap<String, Handler<?>> HANDLER_MAP = new HashMap<String, Handler<?>>();
 
 	// populate the default handlers
 	static {
@@ -77,25 +77,25 @@ public class HandlerFactoryImpl implements HandlerFactory {
 		HANDLER_MAP.put(VehicleDetail.class.getName(), new VehicleHandler());
 	}
 
-	private Map<String, INetHandler<?>> handlerMap;
+	private Map<String, Handler<?>> handlerMap;
 
 	/**
 	 * Default class constructor
 	 */
 	public HandlerFactoryImpl() {
-		handlerMap = new HashMap<String, INetHandler<?>>();
+		handlerMap = new HashMap<String, Handler<?>>();
 		handlerMap.putAll(HANDLER_MAP);
 	}
 
 	/**
 	 * Returns a type save handler instance for the given model clazz
 	 * 
-	 * @param clazz
+	 * @param modelClazz
 	 *            the clazz of the model object to get the handler
 	 */
 	@Override
-	public <T> INetHandler<T> getTypeSaveHandler(T t) {
-		INetHandler<T> handler = (INetHandler<T>) handlerMap.get(t.getClass().getName());
+	public <T> Handler<T> getHandler(T modelClazz) {
+		Handler<T> handler = (Handler<T>) handlerMap.get(modelClazz);
 		return handler;
 	}
 }

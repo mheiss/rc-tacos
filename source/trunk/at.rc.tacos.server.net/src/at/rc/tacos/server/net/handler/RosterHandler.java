@@ -8,11 +8,11 @@ import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.RosterEntry;
+import at.rc.tacos.platform.net.mina.INetHandler;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.RosterService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
-import at.rc.tacos.platform.services.net.INetHandler;
 import at.rc.tacos.platform.util.MyUtils;
 
 public class RosterHandler implements INetHandler<RosterEntry> {

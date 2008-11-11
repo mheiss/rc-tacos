@@ -7,22 +7,18 @@ import org.apache.mina.core.session.IdleStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.handler.HandlerFactory;
+import at.rc.tacos.platform.net.mina.ServerContext;
 import at.rc.tacos.platform.net.mina.ServerHandler;
 import at.rc.tacos.platform.net.mina.ServerIoSession;
-import at.rc.tacos.platform.net.request.AddMessage;
-import at.rc.tacos.platform.net.request.GetMessage;
-import at.rc.tacos.platform.net.request.Message;
-import at.rc.tacos.platform.net.request.RemoveMessage;
-import at.rc.tacos.platform.net.request.UpdateMessage;
 import at.rc.tacos.platform.services.DataSource;
 import at.rc.tacos.platform.services.DataSourceResolver;
-import at.rc.tacos.platform.services.ServerContext;
 import at.rc.tacos.platform.services.ServiceAnnotationResolver;
 import at.rc.tacos.platform.services.ServiceFactory;
 import at.rc.tacos.platform.services.exception.NoSuchHandlerException;
 import at.rc.tacos.platform.services.exception.ServiceException;
-import at.rc.tacos.platform.services.net.HandlerFactory;
-import at.rc.tacos.platform.services.net.INetHandler;
 
 /**
  * The <code>MessageHandler</code> is responsible for the communication between
@@ -46,69 +42,38 @@ public class MessageHandler implements ServerHandler {
 	}
 
 	@Override
-	public void messageReceived(ServerIoSession session, Message message) throws Exception {
+	public void messageReceived(ServerIoSession session, Message<Object> message) throws Exception {
 		// get the needed factory instances
 		HandlerFactory handlerFactory = serverContext.getHandlerFactory();
 		ServiceFactory serviceFactory = serverContext.getServiceFactory();
 		DataSource dataSource = serverContext.getDataSource();
+
+		long start = System.currentTimeMillis();
 
 		// assert we have a connection
 		Connection connection = dataSource.getConnection();
 		if (connection == null)
 			throw new ServiceException("Failed to get a valid database connection, the data source returned null");
 
-		// handle each passed object of the request
-		for (Object obj : message.getObjects()) {
-			long startResolving = System.currentTimeMillis();
-			// try to get a handler for the object
-			INetHandler<Object> handler = handlerFactory.getTypeSaveHandler(obj);
-			if (handler == null)
-				throw new NoSuchHandlerException(obj.getClass().getName());
+		Object requestModel = message.getObjects().get(0);
+		// try to get a handler for the object
+		Handler<Object> handler = handlerFactory.getHandler(requestModel);
+		if (handler == null)
+			throw new NoSuchHandlerException(requestModel.getClass().getName());
 
-			// now inject the needed services by this handler
-			// and for all dependend services
-			ServiceAnnotationResolver resolver = new ServiceAnnotationResolver(serviceFactory);
-			List<Object> resolvedServices = resolver.resolveAnnotations(handler);
+		// now inject the needed services by this handler
+		// and for all dependend services
+		ServiceAnnotationResolver resolver = new ServiceAnnotationResolver(serviceFactory);
+		List<Object> resolvedServices = resolver.resolveAnnotations(handler);
 
-			// now check if the resolved services need a data source
-			DataSourceResolver dataSourceResolver = new DataSourceResolver(connection);
-			dataSourceResolver.resolveAnnotations(resolvedServices);
+		// now check if the resolved services need a data source
+		DataSourceResolver dataSourceResolver = new DataSourceResolver(connection);
+		dataSourceResolver.resolveAnnotations(resolvedServices);
 
-			long endResolving = System.currentTimeMillis();
+		long end = System.currentTimeMillis();
 
-			if (log.isDebugEnabled()) {
-				log.debug("Resoled: " + resolvedServices.size() + " service(s) in " + (endResolving - startResolving) + " ms");
-			}
-
-			// now proccess the request
-			if (message instanceof AddMessage) {
-				Object addResult = handler.add(obj);
-				// send the result of the operation back
-				AddMessage responseMessage = new AddMessage(addResult);
-				responseMessage.asnchronRequest(session);
-				continue;
-			}
-			else if (message instanceof UpdateMessage) {
-				Object updateResult = handler.update(obj);
-				// send the result of the operation back
-				UpdateMessage responseMessage = new UpdateMessage(updateResult);
-				responseMessage.asnchronRequest(session);
-				continue;
-			}
-			else if (message instanceof RemoveMessage) {
-				Object removeResult = handler.remove(obj);
-				// send the result of the operation back
-				RemoveMessage responseMessage = new RemoveMessage(removeResult);
-				responseMessage.asnchronRequest(session);
-				continue;
-			}
-			else if (message instanceof GetMessage) {
-				List<Object> getResult = handler.get(message.getParams());
-				// send the result of the operation back
-				GetMessage responseMessage = new GetMessage(getResult.get(0).getClass());
-				responseMessage.asnchronRequest(session);
-				continue;
-			}
+		if (log.isDebugEnabled()) {
+			log.debug("Handling the request agains " + handler.getClass().getSimpleName() + " took " + (end - start) + " ms");
 		}
 	}
 
@@ -119,7 +84,7 @@ public class MessageHandler implements ServerHandler {
 	}
 
 	@Override
-	public void messageSent(ServerIoSession session, Message message) throws Exception {
+	public void messageSent(ServerIoSession session, Message<Object> message) throws Exception {
 		// do nothing
 	}
 

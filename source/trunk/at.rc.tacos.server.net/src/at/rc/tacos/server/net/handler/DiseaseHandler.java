@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import at.rc.tacos.platform.model.Disease;
+import at.rc.tacos.platform.net.mina.INetHandler;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.DiseaseService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
-import at.rc.tacos.platform.services.net.INetHandler;
 
 public class DiseaseHandler implements INetHandler<Disease> {
 
