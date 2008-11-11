@@ -1,6 +1,8 @@
-package at.rc.tacos.platform.services;
+package at.rc.tacos.platform.net.mina;
 
-import at.rc.tacos.platform.services.net.HandlerFactory;
+import at.rc.tacos.platform.net.handler.HandlerFactory;
+import at.rc.tacos.platform.services.DataSource;
+import at.rc.tacos.platform.services.ServiceFactory;
 
 /**
  * Interface definition for a server context. Provides access to the resource

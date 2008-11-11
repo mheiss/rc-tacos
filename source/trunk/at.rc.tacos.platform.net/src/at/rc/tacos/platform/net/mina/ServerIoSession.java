@@ -18,7 +18,7 @@ import org.apache.mina.core.session.IoSessionConfig;
 import org.apache.mina.core.session.TrafficMask;
 import org.apache.mina.core.write.WriteRequest;
 
-import at.rc.tacos.platform.net.request.Message;
+import at.rc.tacos.platform.net.Message;
 
 /**
  * Wrapped {@linkplain IoSession} implementation to provides common functions.
@@ -56,7 +56,7 @@ public class ServerIoSession implements IoSession {
 	 * @param message
 	 *            the message to send to all clients
 	 */
-	public void writeBrodcast(Message message) {
+	public void writeBrodcast(Message<Object> message) {
 		// loop over all sessions and send the reply
 		for (Map.Entry<Long, IoSession> entry : wrappedSession.getService().getManagedSessions().entrySet()) {
 			ServerIoSession session = new ServerIoSession(entry.getValue());

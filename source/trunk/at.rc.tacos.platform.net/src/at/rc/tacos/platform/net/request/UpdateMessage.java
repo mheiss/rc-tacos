@@ -9,7 +9,7 @@ import java.util.Map;
  * 
  * @author Michael
  */
-public class UpdateMessage extends AbstractMessage {
+public class UpdateMessage<T> extends AbstractMessage<T> {
 
 	/**
 	 * Default class constructor to define the object to update
@@ -17,9 +17,9 @@ public class UpdateMessage extends AbstractMessage {
 	 * @param object
 	 *            the object to update
 	 */
-	public UpdateMessage(Object object) {
-		objects = new ArrayList<Object>();
-		objects.add(object);
+	public UpdateMessage(T t) {
+		objects = new ArrayList<T>();
+		objects.add(t);
 	}
 
 	/**
@@ -29,12 +29,12 @@ public class UpdateMessage extends AbstractMessage {
 	 * @param objects
 	 *            the objects to update
 	 */
-	public UpdateMessage(List<Object> objects) {
+	public UpdateMessage(List<T> objects) {
 		this.objects = objects;
 	}
 
 	@Override
-	public List<Object> getObjects() {
+	public List<T> getObjects() {
 		return objects;
 	}
 

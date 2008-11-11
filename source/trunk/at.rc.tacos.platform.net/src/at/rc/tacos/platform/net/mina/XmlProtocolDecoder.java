@@ -1,4 +1,4 @@
-package at.rc.tacos.platform.net;
+package at.rc.tacos.platform.net.mina;
 
 import java.nio.charset.Charset;
 
@@ -11,6 +11,7 @@ import org.apache.mina.filter.codec.textline.TextLineDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.rc.tacos.platform.net.XStream2;
 import at.rc.tacos.platform.net.request.AbstractMessage;
 
 import com.thoughtworks.xstream.XStreamException;

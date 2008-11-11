@@ -7,32 +7,34 @@ import java.util.Map;
 /**
  * The base class to define additional request messages.
  * <p>
- * This is usefully when the default messages types like {@link AddMessage} , {@link UpdateMessage}
- * , {@link RemoveMessage} or {@link GetMessage} ar not sufficient.
+ * This is usefully when the default messages types like {@link AddMessage} ,
+ * {@link UpdateMessage} , {@link RemoveMessage} or {@link GetMessage} ar not
+ * sufficient.
  * <p>
  * 
  * @author mheiss
  */
-public abstract class ExecMessage extends AbstractMessage {
+public abstract class ExecMessage<T> extends AbstractMessage<T> {
 
-    /**
-     * Default class constructor to setup a new exec message
-     * 
-     * @param clazz
-     *            the model class that identifies the handler to be used for the request
-     */
-    public ExecMessage(Class<?> clazz) {
-        this.objects = new ArrayList<Object>();
-        this.objects.add(clazz.getName());
-    }
+	/**
+	 * Default class constructor to setup a new exec message
+	 * 
+	 * @param clazz
+	 *            the model class that identifies the handler to be used for the
+	 *            request
+	 */
+	public ExecMessage(T t) {
+		this.objects = new ArrayList<T>();
+		this.objects.add(t);
+	}
 
-    @Override
-    public List<Object> getObjects() {
-        return objects;
-    }
+	@Override
+	public List<T> getObjects() {
+		return objects;
+	}
 
-    @Override
-    public Map<String, String> getParams() {
-        return params;
-    }
+	@Override
+	public Map<String, String> getParams() {
+		return params;
+	}
 }

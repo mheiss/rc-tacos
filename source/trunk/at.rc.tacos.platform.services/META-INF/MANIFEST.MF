@@ -9,5 +9,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
  at.rc.tacos.platform.model
 Export-Package: at.rc.tacos.platform.services,
  at.rc.tacos.platform.services.dbal,
- at.rc.tacos.platform.services.exception,
- at.rc.tacos.platform.services.net
+ at.rc.tacos.platform.services.exception

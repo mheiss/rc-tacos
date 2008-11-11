@@ -1,4 +1,4 @@
-package at.rc.tacos.platform.net;
+package at.rc.tacos.platform.net.mina;
 
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;

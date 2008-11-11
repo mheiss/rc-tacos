@@ -61,14 +61,14 @@ public class XStream2 extends XStream {
 	@Override
 	protected void setupAliases() {
 		super.setupAliases();
-		//the messages classes
+		// the messages classes
 		alias("addMessage", AddMessage.class);
-		alias("updateMessage",UpdateMessage.class);
-		alias("removeMessage",RemoveMessage.class);
-		alias("getMessage",GetMessage.class);
-		alias("loginMessage",LoginMessage.class);
-		
-		//the model classes
+		alias("updateMessage", UpdateMessage.class);
+		alias("removeMessage", RemoveMessage.class);
+		alias("getMessage", GetMessage.class);
+		alias("loginMessage", LoginMessage.class);
+
+		// the model classes
 		alias("address", Address.class);
 		alias("callerDetail", CallerDetail.class);
 		alias("competence", Competence.class);
