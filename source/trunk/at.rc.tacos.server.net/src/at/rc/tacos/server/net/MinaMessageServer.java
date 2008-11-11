@@ -18,9 +18,9 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.rc.tacos.platform.net.XmlCodecFactory;
+import at.rc.tacos.platform.net.mina.ServerContext;
 import at.rc.tacos.platform.net.mina.ServerHandler;
-import at.rc.tacos.platform.services.ServerContext;
+import at.rc.tacos.platform.net.mina.XmlCodecFactory;
 import at.rc.tacos.platform.services.exception.ConfigurationException;
 
 /**

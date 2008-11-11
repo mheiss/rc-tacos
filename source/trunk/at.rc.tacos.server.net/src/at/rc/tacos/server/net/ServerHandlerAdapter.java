@@ -4,15 +4,16 @@ import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
+import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.mina.ServerHandler;
 import at.rc.tacos.platform.net.mina.ServerIoSession;
-import at.rc.tacos.platform.net.request.Message;
 
 /**
  * Adapter between MINA handler and the {@link ServerHandler} interface
  * 
  * @author Michael
  */
+@SuppressWarnings("unchecked")
 public class ServerHandlerAdapter implements IoHandler {
 
 	// properties
@@ -37,13 +38,13 @@ public class ServerHandlerAdapter implements IoHandler {
 	@Override
 	public void messageReceived(IoSession session, Object object) throws Exception {
 		ServerIoSession serverSession = new ServerIoSession(session);
-		handler.messageReceived(serverSession, (Message) object);
+		handler.messageReceived(serverSession, (Message<Object>) object);
 	}
 
 	@Override
 	public void messageSent(IoSession session, Object object) throws Exception {
 		ServerIoSession serverSession = new ServerIoSession(session);
-		handler.messageSent(serverSession, (Message) object);
+		handler.messageSent(serverSession, (Message<Object>) object);
 	}
 
 	@Override

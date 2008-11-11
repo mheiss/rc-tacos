@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.model.Lock;
+import at.rc.tacos.platform.net.mina.INetHandler;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
-import at.rc.tacos.platform.services.net.INetHandler;
 
 public class LockHandler implements INetHandler<Lock> {
 

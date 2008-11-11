@@ -7,11 +7,11 @@ import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.CallerDetail;
+import at.rc.tacos.platform.net.mina.INetHandler;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.CallerService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
-import at.rc.tacos.platform.services.net.INetHandler;
 
 public class NotifyDetailHandler implements INetHandler<CallerDetail> {
 
