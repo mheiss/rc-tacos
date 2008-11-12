@@ -25,11 +25,11 @@ import at.rc.tacos.platform.model.Statistic;
 import at.rc.tacos.platform.model.SystemMessage;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
-import at.rc.tacos.platform.net.request.AddMessage;
-import at.rc.tacos.platform.net.request.GetMessage;
-import at.rc.tacos.platform.net.request.LoginMessage;
-import at.rc.tacos.platform.net.request.RemoveMessage;
-import at.rc.tacos.platform.net.request.UpdateMessage;
+import at.rc.tacos.platform.net.message.AddMessage;
+import at.rc.tacos.platform.net.message.ExecMessage;
+import at.rc.tacos.platform.net.message.GetMessage;
+import at.rc.tacos.platform.net.message.RemoveMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -61,12 +61,12 @@ public class XStream2 extends XStream {
 	@Override
 	protected void setupAliases() {
 		super.setupAliases();
-		// the messages classes
+		// the messages types
 		alias("addMessage", AddMessage.class);
 		alias("updateMessage", UpdateMessage.class);
 		alias("removeMessage", RemoveMessage.class);
 		alias("getMessage", GetMessage.class);
-		alias("loginMessage", LoginMessage.class);
+		alias("execMessage", ExecMessage.class);
 
 		// the model classes
 		alias("address", Address.class);

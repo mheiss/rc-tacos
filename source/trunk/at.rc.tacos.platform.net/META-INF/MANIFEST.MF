@@ -16,6 +16,7 @@ Export-Package: at.rc.tacos.platform.net;
    org.apache.mina.filter.codec.textline,
    org.apache.mina.filter.codec",
  at.rc.tacos.platform.net.handler,
+ at.rc.tacos.platform.net.message;uses:="org.apache.mina.core.session",
  at.rc.tacos.platform.net.mina;
   uses:="org.apache.mina.core.future,
    org.apache.mina.core.session,
@@ -23,7 +24,6 @@ Export-Package: at.rc.tacos.platform.net;
    org.apache.mina.core.service,
    org.apache.mina.core.write,
    at.rc.tacos.platform.net.request",
- at.rc.tacos.platform.net.request;uses:="org.apache.mina.core.session",
  com.thoughtworks.xstream;
   uses:="com.thoughtworks.xstream.converters,
    com.thoughtworks.xstream.io,
