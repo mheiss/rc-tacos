@@ -14,8 +14,8 @@ import org.apache.mina.filter.codec.textline.TextLineEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.XStream2;
-import at.rc.tacos.platform.net.message.AbstractMessage;
 
 /**
  * <p>
@@ -59,8 +59,8 @@ public class XmlProtocolEncoder extends ProtocolEncoderAdapter {
 		}
 
 		// assert we are writing only request messages
-		if (!(message instanceof AbstractMessage)) {
-			logAndThrowException("Can only send messages from type 'AbstractMessage' is " + message == null ? "null" : message.getClass().getName());
+		if (!(message instanceof Message)) {
+			logAndThrowException("Can only send messages from type 'Message' is " + message == null ? "null" : message.getClass().getName());
 		}
 
 		// setup the message to send

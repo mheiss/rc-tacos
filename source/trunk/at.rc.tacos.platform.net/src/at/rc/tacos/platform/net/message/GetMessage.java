@@ -26,6 +26,13 @@ public class GetMessage<T> extends AbstractMessage<T> {
         super(MessageType.GET);
         addObject(t);
     }
+    
+    /**
+     * Protected class constructor to define a new get message.
+     */
+    protected GetMessage() {
+        super(MessageType.GET);
+    }
 
     @Override
     public List<T> getObjects() {
