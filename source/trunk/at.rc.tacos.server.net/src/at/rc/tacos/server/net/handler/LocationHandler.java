@@ -2,22 +2,24 @@ package at.rc.tacos.server.net.handler;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import at.rc.tacos.platform.model.Location;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LocationService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
-public class LocationHandler implements INetHandler<Location> {
+public class LocationHandler implements Handler<Location> {
 
 	@Service(clazz = LocationService.class)
 	private LocationService locationService;
-	
+
 	@Override
-	public Location add(Location model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		// add the location
 		int id = locationService.addLocation(model);
 		if (id == -1)
@@ -28,12 +30,7 @@ public class LocationHandler implements INetHandler<Location> {
 	}
 
 	@Override
-	public List<Location> execute(String command, List<Location> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<Location> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		List<Location> locationList = locationService.listLocations();
 		if (locationList == null)
 			throw new ServiceException("Failed to list the locations");
@@ -41,17 +38,24 @@ public class LocationHandler implements INetHandler<Location> {
 	}
 
 	@Override
-	public Location remove(Location model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		if (!locationService.removeLocation(model.getId()))
 			throw new ServiceException("Failed to remove the location " + model);
 		return model;
 	}
 
 	@Override
-	public Location update(Location model) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		if (!locationService.updateLocation(model))
 			throw new ServiceException("Failed to update the location " + model);
 		return model;
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }

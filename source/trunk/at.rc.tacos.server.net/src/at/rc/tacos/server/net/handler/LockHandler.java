@@ -5,24 +5,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.model.Lock;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.handler.MessageType;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
-public class LockHandler implements INetHandler<Lock> {
+public class LockHandler implements Handler<Lock> {
 
 	// the list of locked object
 	private final static List<Lock> lockedList = Collections.synchronizedList(new ArrayList<Lock>());
 	private static Logger logger = LoggerFactory.getLogger(LockHandler.class);
 
 	@Override
-	public Lock add(Lock model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		// check if the list already contains the lock
 		if (lockedList.contains(model)) {
 			int index = lockedList.indexOf(model);
@@ -47,17 +50,12 @@ public class LockHandler implements INetHandler<Lock> {
 	}
 
 	@Override
-	public List<Lock> execute(String command, List<Lock> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<Lock> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		return lockedList;
 	}
 
 	@Override
-	public Lock remove(Lock model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		logger.debug("Request to remove the lock:" + model);
 		// remove the lock from the list
 		synchronized (lockedList) {
@@ -79,8 +77,18 @@ public class LockHandler implements INetHandler<Lock> {
 	}
 
 	@Override
-	public Lock update(Lock model) throws ServiceException, SQLException {
-		throw new NoSuchCommandException("update");
+	public void update(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = MessageType.UPDATE.toString();
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }

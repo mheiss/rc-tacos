@@ -7,79 +7,111 @@ import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Login;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.AuthenticationService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
-public class AuthenticationHandler implements INetHandler<Login> {
+public class AuthenticationHandler implements Handler<Login> {
 
 	@Service(clazz = AuthenticationService.class)
 	private AuthenticationService authenticationService;
 
 	@Override
-	public Login add(Login model) throws ServiceException, SQLException {
-		if (!authenticationService.addLogin(model)) {
-			throw new ServiceException("Failed to add the login " + model + " to the database");
+	public void add(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+		List<Login> loginList = message.getObjects();
+		// add the login records to the database
+		for (Login login : loginList) {
+			if (!authenticationService.addLogin(login)) {
+				throw new ServiceException("Failed to add the login " + login + " to the database");
+			}
 		}
-		return model;
+		session.writeBrodcast(message, loginList);
 	}
 
 	@Override
-	public List<Login> get(Map<String, String> params) throws ServiceException, SQLException {
-		List<Login> loginList = null;
+	public void get(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+		// get the params from the message
+		Map<String, String> params = message.getParams();
+		List<Login> loginList = new ArrayList<Login>();
+
+		// query the service for the result list
 		if (params.containsKey(IFilterTypes.USERNAME_FILTER)) {
 			loginList = authenticationService.listLoginsAndStaffMemberByUsername(params.get(IFilterTypes.USERNAME_FILTER));
 		}
 		else {
 			loginList = authenticationService.listLogins();
 		}
-		return loginList;
+		// write back the result
+		session.write(message, loginList);
 	}
 
 	@Override
-	public Login remove(Login model) throws ServiceException, SQLException {
-		// the user will only be locked, removing is not possible
-		if (!authenticationService.lockLogin(model.getUsername()))
-			throw new ServiceException("Failed to lock the login: " + model);
-		return model;
-	}
-
-	@Override
-	public Login update(Login model) throws ServiceException, SQLException {
-		// check if we have a different password
-		if (model.getPassword() != null) {
-			if (!authenticationService.updatePassword(model.getUsername(), model.getPassword()))
-				throw new ServiceException("Failed to update the password for the login " + model);
+	public void remove(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+		List<Login> loginList = message.getObjects();
+		// loop and remove each login record
+		for (Login login : loginList) {
+			// the user will only be locked, removing is not possible
+			if (!authenticationService.lockLogin(login.getUsername()))
+				throw new ServiceException("Failed to lock the login: " + login);
+			login.setIslocked(true);
 		}
-		// update the other fields
-		if (!authenticationService.updateLogin(model))
-			throw new ServiceException("Failed to update the login: " + model);
-		// reset the password
-		model.resetPassword();
-		return model;
+		session.writeBrodcast(message, loginList);
 	}
 
 	@Override
-	public List<Login> execute(String command, List<Login> modelList, Map<String, String> params) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+		List<Login> loginList = message.getObjects();
+		// loop and update each login record
+		for (Login login : loginList) {
+			// check if we have a different password
+			if (login.getPassword() != null) {
+				if (!authenticationService.updatePassword(login.getUsername(), login.getPassword()))
+					throw new ServiceException("Failed to update the password for the login " + login);
+			}
+			// update the other fields
+			if (!authenticationService.updateLogin(login))
+				throw new ServiceException("Failed to update the login: " + login);
+			// reset the password
+			login.resetPassword();
+		}
+		session.writeBrodcast(message, loginList);
+	}
+
+	@Override
+	public void execute(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+		// get the params from the message
+		Map<String, String> params = message.getParams();
+		String command = params.get(AbstractMessage.ATTRIBUTE_COMMAND);
+
 		// check what command was send
 		if ("login".equalsIgnoreCase(command)) {
-			return doLogin(modelList.get(0));
+			doLogin(session, message);
+			return;
 		}
 		else if ("logout".equalsIgnoreCase(command)) {
-			return doLogout(modelList.get(0));
+			doLogout(session, message);
+			return;
 		}
-
-		// unknown command so throw a exception
-		throw new NoSuchCommandException(command);
+		
+		// throw an execption because the 'exec' command is not implemented
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
 	}
 
 	/**
 	 * Helper method to execute a login
 	 */
-	private List<Login> doLogin(Login login) throws ServiceException, SQLException {
-		List<Login> loginResponse = new ArrayList<Login>();
+	private void doLogin(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+		// try to get the login
+		Login login = message.getObjects().get(0);
+		if (login == null)
+			throw new ServiceException("Cannot execute the login request without a login object.(login = null)");
+
 		// check the password and the user
 		String username = login.getUsername();
 		String password = login.getPassword();
@@ -115,19 +147,24 @@ public class AuthenticationHandler implements INetHandler<Login> {
 			login.setErrorMessage("Unexpected error occured");
 			throw new ServiceException("Failed to check the login for the username: " + username);
 		}
-		// add the result to the response
-		loginResponse.add(login);
-		return loginResponse;
+		// send the login result back
+		session.write(message, login);
+
 	}
 
 	/**
 	 * Helper method to execute a logout
 	 */
-	private List<Login> doLogout(Login login) {
-		List<Login> logoutResponse = new ArrayList<Login>();
+	private void doLogout(ServerIoSession session, Message<Login> message) throws ServiceException {
+		// try to get the login
+		Login login = message.getObjects().get(0);
+		if (login == null)
+			throw new ServiceException("Cannot execute the logout request without a login object.(login = null)");
 		login.setLoggedIn(false);
-		logoutResponse.add(login);
-		return logoutResponse;
+
+		// write the message back and reset the stat of the session
+		session.write(message, login);
+		session.reinitialize();
 	}
 
 }

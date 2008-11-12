@@ -2,34 +2,31 @@ package at.rc.tacos.server.net.handler;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import at.rc.tacos.platform.model.VehicleDetail;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.VehicleService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
-public class VehicleHandler implements INetHandler<VehicleDetail> {
+public class VehicleHandler implements Handler<VehicleDetail> {
 
 	@Service(clazz = VehicleService.class)
 	private VehicleService vehicleService;
 
 	@Override
-	public VehicleDetail add(VehicleDetail model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		if (!vehicleService.addVehicle(model))
 			throw new ServiceException("Failed to add the vehicle: " + model);
 		return model;
 	}
 
 	@Override
-	public List<VehicleDetail> execute(String command, List<VehicleDetail> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<VehicleDetail> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		List<VehicleDetail> list = vehicleService.listVehicles();
 		if (list == null)
 			throw new ServiceException("Failed to list the vehicles");
@@ -37,17 +34,24 @@ public class VehicleHandler implements INetHandler<VehicleDetail> {
 	}
 
 	@Override
-	public VehicleDetail remove(VehicleDetail model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		if (!vehicleService.removeVehicle(model))
 			throw new ServiceException("Failed to remove the vehicle " + model);
 		return model;
 	}
 
 	@Override
-	public VehicleDetail update(VehicleDetail model) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		if (!vehicleService.updateVehicle(model))
 			throw new ServiceException("Failed to update the vehicle " + model);
 		return model;
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }

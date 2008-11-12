@@ -4,24 +4,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.RosterEntry;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.RosterService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.util.MyUtils;
 
-public class RosterHandler implements INetHandler<RosterEntry> {
+public class RosterHandler implements Handler<RosterEntry> {
 
 	@Service(clazz = RosterService.class)
 	private RosterService rosterService;
 
 	@Override
-	public RosterEntry add(RosterEntry model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		int id = rosterService.addRosterEntry(model);
 		if (id == -1)
 			throw new ServiceException("Failed to add the roster entry " + model);
@@ -30,12 +32,7 @@ public class RosterHandler implements INetHandler<RosterEntry> {
 	}
 
 	@Override
-	public List<RosterEntry> execute(String command, List<RosterEntry> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<RosterEntry> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		List<RosterEntry> rosterList = new ArrayList<RosterEntry>();
 		// if there is no filter -> request all
 		if (params == null || params.isEmpty()) {
@@ -122,17 +119,24 @@ public class RosterHandler implements INetHandler<RosterEntry> {
 	}
 
 	@Override
-	public RosterEntry remove(RosterEntry model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		if (!rosterService.removeRosterEntry(model.getRosterId()))
 			throw new ServiceException("Failed to remove the roster entry:" + model);
 		return model;
 	}
 
 	@Override
-	public RosterEntry update(RosterEntry model) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		if (!rosterService.updateRosterEntry(model))
 			throw new ServiceException("Failed to update the roster entry:" + model);
 		return model;
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }
