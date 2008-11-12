@@ -3,23 +3,25 @@ package at.rc.tacos.server.net.handler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.StaffMember;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.StaffMemberService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
-public class StaffMemberHandler implements INetHandler<StaffMember> {
+public class StaffMemberHandler implements Handler<StaffMember> {
 
 	@Service(clazz = StaffMemberService.class)
 	private StaffMemberService staffService;
 
 	@Override
-	public StaffMember add(StaffMember model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		if (!staffService.addStaffMember(model)) {
 			throw new ServiceException("Failed to add the staff member: " + model);
 		}
@@ -27,12 +29,7 @@ public class StaffMemberHandler implements INetHandler<StaffMember> {
 	}
 
 	@Override
-	public List<StaffMember> execute(String command, List<StaffMember> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<StaffMember> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		List<StaffMember> list = new ArrayList<StaffMember>();
 		// if there is no filter -> request all
 		if (params == null || params.isEmpty()) {
@@ -105,15 +102,22 @@ public class StaffMemberHandler implements INetHandler<StaffMember> {
 	}
 
 	@Override
-	public StaffMember remove(StaffMember model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		throw new NoSuchCommandException("remove");
 	}
 
 	@Override
-	public StaffMember update(StaffMember model) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		if (!staffService.updateStaffMember(model))
 			throw new ServiceException("Failed to update the staff member: " + model);
 		return model;
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }

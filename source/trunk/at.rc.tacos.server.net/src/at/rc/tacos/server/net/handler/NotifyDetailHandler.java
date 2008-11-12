@@ -3,23 +3,25 @@ package at.rc.tacos.server.net.handler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.CallerDetail;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.CallerService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
-public class NotifyDetailHandler implements INetHandler<CallerDetail> {
+public class NotifyDetailHandler implements Handler<CallerDetail> {
 
 	@Service(clazz = CallerService.class)
 	private CallerService callerService;
 
 	@Override
-	public CallerDetail add(CallerDetail model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		int id = callerService.addCaller(model);
 		if (id == -1)
 			throw new ServiceException("Failed to add the caller:" + model);
@@ -27,12 +29,7 @@ public class NotifyDetailHandler implements INetHandler<CallerDetail> {
 	}
 
 	@Override
-	public List<CallerDetail> execute(String command, List<CallerDetail> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<CallerDetail> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		final List<CallerDetail> callerList = new ArrayList<CallerDetail>();
 		// if there is no filter -> not supported
 		if (params == null || params.isEmpty()) {
@@ -50,15 +47,22 @@ public class NotifyDetailHandler implements INetHandler<CallerDetail> {
 	}
 
 	@Override
-	public CallerDetail remove(CallerDetail model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		throw new NoSuchCommandException("remove");
 	}
 
 	@Override
-	public CallerDetail update(CallerDetail model) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		if (!callerService.updateCaller(model))
 			throw new ServiceException("Failed to update the caller:" + model);
 		return model;
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }

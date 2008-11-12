@@ -3,23 +3,25 @@ package at.rc.tacos.server.net.handler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.DialysisPatient;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.DialysisPatientService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
-public class DialysisPatientHandler implements INetHandler<DialysisPatient> {
+public class DialysisPatientHandler implements Handler<DialysisPatient> {
 
 	@Service(clazz = DialysisPatientService.class)
 	private DialysisPatientService dialysisPatientService;
 
 	@Override
-	public DialysisPatient add(DialysisPatient model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		int id = dialysisPatientService.addDialysisPatient(model);
 		if (id == -1)
 			throw new ServiceException("Failed to add the dialysis patient: " + model);
@@ -28,12 +30,7 @@ public class DialysisPatientHandler implements INetHandler<DialysisPatient> {
 	}
 
 	@Override
-	public List<DialysisPatient> execute(String command, List<DialysisPatient> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<DialysisPatient> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		List<DialysisPatient> patientList = new ArrayList<DialysisPatient>();
 
 		// if there is no filter -> request all
@@ -56,17 +53,24 @@ public class DialysisPatientHandler implements INetHandler<DialysisPatient> {
 	}
 
 	@Override
-	public DialysisPatient remove(DialysisPatient model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		if (!dialysisPatientService.removeDialysisPatient(model.getId()))
 			throw new ServiceException("Failed to update the dialysis patient " + model);
 		return model;
 	}
 
 	@Override
-	public DialysisPatient update(DialysisPatient model) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		if (!dialysisPatientService.updateDialysisPatient(model))
 			throw new ServiceException("Failed to update the dialysis patient " + model);
 		return model;
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }

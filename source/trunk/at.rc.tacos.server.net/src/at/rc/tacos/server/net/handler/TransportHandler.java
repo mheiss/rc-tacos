@@ -4,24 +4,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Transport;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.TransportService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.util.MyUtils;
 
-public class TransportHandler implements INetHandler<Transport> {
+public class TransportHandler implements Handler<Transport> {
 
 	@Service(clazz = TransportService.class)
 	private TransportService transportService;
 
 	@Override
-	public Transport add(Transport model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		int id = transportService.addTransport(model);
 		if (id == Transport.TRANSPORT_ERROR) {
 			throw new ServiceException("Failed to add the transport: " + model);
@@ -45,12 +47,7 @@ public class TransportHandler implements INetHandler<Transport> {
 	}
 
 	@Override
-	public List<Transport> execute(String command, List<Transport> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<Transport> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		List<Transport> list = new ArrayList<Transport>();
 		List<Transport> tmpList = new ArrayList<Transport>();
 		// if there is no filter -> request all
@@ -251,12 +248,12 @@ public class TransportHandler implements INetHandler<Transport> {
 	}
 
 	@Override
-	public Transport remove(Transport model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		throw new ServiceException("Removing of transports is not allowed, try to CANCEL or STORNO the transport");
 	}
 
 	@Override
-	public Transport update(Transport model) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		// generate a transport id if we do not have one
 		if (model.getVehicleDetail() != null && model.getTransportNumber() == 0) {
 			// set the current year to generate a valid transport numer
@@ -297,4 +294,11 @@ public class TransportHandler implements INetHandler<Transport> {
 		return model;
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }

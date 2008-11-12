@@ -3,23 +3,25 @@ package at.rc.tacos.server.net.handler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Period;
-import at.rc.tacos.platform.net.mina.INetHandler;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.PeriodsService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
-public class PeriodHandler implements INetHandler<Period> {
+public class PeriodHandler implements Handler<Period> {
 
 	@Service(clazz = PeriodsService.class)
 	private PeriodsService periodService;
 
 	@Override
-	public Period add(Period model) throws ServiceException, SQLException {
+	public void add(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		int id = periodService.addPeriod(model);
 		if (id == -1)
 			throw new ServiceException("Failed to add the period record: " + model);
@@ -28,12 +30,7 @@ public class PeriodHandler implements INetHandler<Period> {
 	}
 
 	@Override
-	public List<Period> execute(String command, List<Period> modelList, Map<String, String> params) throws ServiceException, SQLException {
-		throw new NoSuchCommandException(command);
-	}
-
-	@Override
-	public List<Period> get(Map<String, String> params) throws ServiceException, SQLException {
+	public void get(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		List<Period> periodList = new ArrayList<Period>();
 		// if there is no filter -> request all
 		if (params == null || params.isEmpty()) {
@@ -50,17 +47,24 @@ public class PeriodHandler implements INetHandler<Period> {
 	}
 
 	@Override
-	public Period remove(Period model) throws ServiceException, SQLException {
+	public void remove(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		if (!periodService.removePeriod(model.getPeriodId()))
 			throw new ServiceException("Failed to remove the period record: " + model);
 		return model;
 	}
 
 	@Override
-	public Period update(Period model) throws ServiceException, SQLException {
+	public void update(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		if (!periodService.updatePeriod(model))
 			throw new ServiceException("Failed to update the period record: " + model);
 		return model;
 	}
 
+	@Override
+	public void execute(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
+		// throw an execption because the 'exec' command is not implemented
+		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
 }
