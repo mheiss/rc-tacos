@@ -11,8 +11,8 @@ import org.apache.mina.filter.codec.textline.TextLineDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.XStream2;
-import at.rc.tacos.platform.net.message.AbstractMessage;
 
 import com.thoughtworks.xstream.XStreamException;
 
@@ -67,12 +67,12 @@ public class XmlProtocolDecoder extends TextLineDecoder {
 		try {
 			Object message = xStream.fromXML(text);
 
-			// assert we are receiving only messages from type abstract message
-			if (!(message instanceof AbstractMessage)) {
-				logAndThrowException("Can only send messages from type 'AbstractMessage' is " + message == null ? "null" : message.getClass()
+			// assert we are receiving only messages
+			if (!(message instanceof Message)) {
+				logAndThrowException("Can only send messages from type 'Message' is " + message == null ? "null" : message.getClass()
 						.getName(), null);
 			}
-
+			
 			// pass it to the next filter
 			out.write(message);
 		}

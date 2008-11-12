@@ -15,7 +15,7 @@ import at.rc.tacos.platform.net.handler.MessageType;
  * 
  * @author mheiss
  */
-public abstract class ExecMessage<T> extends AbstractMessage<T> {
+public class ExecMessage<T> extends AbstractMessage<T> {
 
     /**
      * Default class constructor to setup a new exec message
@@ -28,6 +28,14 @@ public abstract class ExecMessage<T> extends AbstractMessage<T> {
     public ExecMessage(String command, T t) {
         super(MessageType.EXEC);
         addObject(t);
+        addParameter(ATTRIBUTE_COMMAND, command);
+    }
+
+    /**
+     * Protected class constructor to define a new exec message.
+     */
+    protected ExecMessage(String command) {
+        super(MessageType.EXEC);
         addParameter(ATTRIBUTE_COMMAND, command);
     }
 

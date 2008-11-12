@@ -14,6 +14,7 @@ import org.apache.mina.core.session.IoSession;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.Request;
 import at.rc.tacos.platform.net.handler.MessageType;
+import at.rc.tacos.platform.net.mina.ServerIoSession;
 
 /**
  * Common base class recommended for {@link Message} implementations.
@@ -30,7 +31,7 @@ public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
     private static int TIMEOUT = 10000;
 
     // the attribute value in the parameter to store the command
-    public final static String ATTRIBUTE_COMMAND = "command";
+    public final static String ATTRIBUTE_COMMAND = ServerIoSession.ATTRIBUTE_PREFIX + "command";
 
     // the properties for the message
     protected String id;
@@ -163,7 +164,7 @@ public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
     }
 
     //
-    // GETTER FOR THE VALUES TO SEND
+    // PUBLIC GETTER FOR THE VALUES TO SEND
     //
     /**
      * Returns the unique identifier for the message. The default implementation will generate a
@@ -205,4 +206,14 @@ public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
     @Override
     public abstract Map<String, String> getParams();
 
+    //
+    // PROTECTED SETTERS FOR THE VALUES TO SEND
+    //
+    protected void setObjects(List<T> objects) {
+        this.objects = objects;
+    }
+
+    protected void setId(String id) {
+        this.id = id;
+    }
 }
