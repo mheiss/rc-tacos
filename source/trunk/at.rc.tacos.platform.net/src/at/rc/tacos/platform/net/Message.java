@@ -3,6 +3,8 @@ package at.rc.tacos.platform.net;
 import java.util.List;
 import java.util.Map;
 
+import at.rc.tacos.platform.net.handler.MessageType;
+
 /**
  * Provides the request informations.
  * 
@@ -10,10 +12,12 @@ import java.util.Map;
  */
 public interface Message<M> {
 
-	public String getId();
+    public String getId();
 
-	public abstract Map<String, String> getParams();
+    public MessageType getMessageType();
 
-	public abstract List<M> getObjects();
+    public abstract Map<String, String> getParams();
+
+    public abstract List<M> getObjects();
 
 }
