@@ -1,10 +1,13 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.RosterEntry;
@@ -14,19 +17,26 @@ import at.rc.tacos.platform.services.dbal.LocationService;
 import at.rc.tacos.platform.services.dbal.RosterService;
 import at.rc.tacos.platform.services.dbal.StaffMemberService;
 import at.rc.tacos.platform.util.MyUtils;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for roster.
  * 
  * @author Michael
  */
-public class RosterSqlService extends BaseSqlService implements RosterService {
+public class RosterSqlService implements RosterService {
+	
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
 
 	@Service(clazz = StaffMemberService.class)
 	private StaffMemberService staffDAO;
 
 	@Service(clazz = LocationService.class)
 	private LocationService locationDAO;
+	
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int addRosterEntry(RosterEntry entry) throws SQLException {

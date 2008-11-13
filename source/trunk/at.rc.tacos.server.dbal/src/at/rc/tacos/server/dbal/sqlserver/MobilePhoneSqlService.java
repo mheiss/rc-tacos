@@ -1,20 +1,30 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import at.rc.tacos.platform.model.MobilePhoneDetail;
 import at.rc.tacos.platform.services.dbal.MobilePhoneService;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for mobile phone.
  * 
  * @author Michael
  */
-public class MobilePhoneSqlService extends BaseSqlService implements MobilePhoneService {
+public class MobilePhoneSqlService implements MobilePhoneService {
+	
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int addMobilePhone(MobilePhoneDetail phone) throws SQLException {

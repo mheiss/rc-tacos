@@ -1,21 +1,31 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.services.dbal.ServiceTypeService;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for service type.
  * 
  * @author Michael
  */
-public class ServiceTypeSqlService extends BaseSqlService implements ServiceTypeService {
+public class ServiceTypeSqlService implements ServiceTypeService {
 
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
+	
 	@Override
 	public int addServiceType(ServiceType serviceType) throws SQLException {
 		// get the next id

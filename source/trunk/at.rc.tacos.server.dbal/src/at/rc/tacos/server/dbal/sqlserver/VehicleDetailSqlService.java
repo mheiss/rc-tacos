@@ -1,10 +1,13 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.model.MobilePhoneDetail;
@@ -14,19 +17,26 @@ import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LocationService;
 import at.rc.tacos.platform.services.dbal.StaffMemberService;
 import at.rc.tacos.platform.services.dbal.VehicleService;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for vehicle detail.
  * 
  * @author Michael
  */
-public class VehicleDetailSqlService extends BaseSqlService implements VehicleService {
+public class VehicleDetailSqlService implements VehicleService {
+
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
 
 	@Service(clazz = LocationService.class)
 	private LocationService locationDAO;
 
 	@Service(clazz = StaffMemberService.class)
 	private StaffMemberService staffMemberDAO;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public boolean addVehicle(VehicleDetail vehicle) throws SQLException {

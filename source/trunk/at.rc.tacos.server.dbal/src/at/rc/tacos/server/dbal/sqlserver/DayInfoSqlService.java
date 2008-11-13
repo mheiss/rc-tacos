@@ -1,19 +1,29 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.annotation.Resource;
+
 import at.rc.tacos.platform.model.DayInfoMessage;
 import at.rc.tacos.platform.services.dbal.DayInfoService;
 import at.rc.tacos.platform.util.MyUtils;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for caller details.
  * 
  * @author Michael
  */
-public class DayInfoSqlService extends BaseSqlService implements DayInfoService {
+public class DayInfoSqlService implements DayInfoService {
+	
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public DayInfoMessage getDayInfoByDate(long date) throws SQLException {

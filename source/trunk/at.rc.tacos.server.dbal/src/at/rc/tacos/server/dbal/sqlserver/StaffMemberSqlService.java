@@ -1,10 +1,13 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import at.rc.tacos.platform.model.Competence;
 import at.rc.tacos.platform.model.MobilePhoneDetail;
@@ -14,14 +17,18 @@ import at.rc.tacos.platform.services.dbal.CompetenceService;
 import at.rc.tacos.platform.services.dbal.LocationService;
 import at.rc.tacos.platform.services.dbal.MobilePhoneService;
 import at.rc.tacos.platform.services.dbal.StaffMemberService;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for staff member.
  * 
  * @author Michael
  */
-public class StaffMemberSqlService extends BaseSqlService implements StaffMemberService {
+public class StaffMemberSqlService implements StaffMemberService {
 
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+	
 	@Service(clazz = LocationService.class)
 	private LocationService locationDAO;
 
@@ -30,6 +37,9 @@ public class StaffMemberSqlService extends BaseSqlService implements StaffMember
 
 	@Service(clazz = MobilePhoneService.class)
 	private MobilePhoneService mobilePhoneDAO;
+	
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public boolean addStaffMember(StaffMember staffMember) throws SQLException {

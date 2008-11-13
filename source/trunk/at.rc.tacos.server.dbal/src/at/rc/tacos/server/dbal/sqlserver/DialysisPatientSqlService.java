@@ -1,10 +1,13 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import at.rc.tacos.platform.model.DialysisPatient;
 import at.rc.tacos.platform.model.Patient;
@@ -12,13 +15,20 @@ import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.DialysisPatientService;
 import at.rc.tacos.platform.services.dbal.LocationService;
 import at.rc.tacos.platform.util.MyUtils;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for caller details.
  * 
  * @author Michael
  */
-public class DialysisPatientSqlService extends BaseSqlService implements DialysisPatientService {
+public class DialysisPatientSqlService implements DialysisPatientService {
+	
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Service(clazz = LocationService.class)
 	private LocationService locationDAO;

@@ -1,5 +1,6 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map.Entry;
+
+import javax.annotation.Resource;
 
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.model.CallerDetail;
@@ -21,19 +24,26 @@ import at.rc.tacos.platform.services.dbal.CallerService;
 import at.rc.tacos.platform.services.dbal.LocationService;
 import at.rc.tacos.platform.services.dbal.TransportService;
 import at.rc.tacos.platform.util.MyUtils;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for transport.
  * 
  * @author Michael
  */
-public class TransportSqlService extends BaseSqlService implements TransportService, IProgramStatus {
+public class TransportSqlService implements TransportService, IProgramStatus {
 
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+	
 	@Service(clazz = LocationService.class)
 	private LocationService locationDAO;
 
 	@Service(clazz = CallerService.class)
 	private CallerService callerDAO;
+	
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int addTransport(Transport transport) throws SQLException {
