@@ -15,47 +15,67 @@ import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class DiseaseHandler implements Handler<Disease> {
 
-	@Service(clazz = DiseaseService.class)
-	private DiseaseService diseaseService;
+    @Service(clazz = DiseaseService.class)
+    private DiseaseService diseaseService;
 
-	@Override
-	public void add(ServerIoSession session, Message<Disease> message) throws ServiceException, SQLException {
-		int id = diseaseService.addDisease(model);
-		if (id == -1)
-			throw new ServiceException("Failed to add the disease " + model);
-		// set the generated id
-		model.setId(id);
-		return model;
-	}
+    @Override
+    public void add(ServerIoSession session, Message<Disease> message) throws ServiceException,
+            SQLException {
+        List<Disease> diseaseList = message.getObjects();
+        // loop and try to add each object
+        for (Disease disease : diseaseList) {
+            int id = diseaseService.addDisease(disease);
+            if (id == -1)
+                throw new ServiceException("Failed to add the disease " + disease);
+            // set the generated id
+            disease.setId(id);
+        }
+        session.writeBrodcast(message, diseaseList);
+    }
 
-	@Override
-	public void get(ServerIoSession session, Message<Disease> message) throws ServiceException, SQLException {
-		List<Disease> diseaseList = diseaseService.getDiseaseList();
-		// assert valid
-		if (diseaseList == null)
-			throw new ServiceException("Failed to list the diseases");
-		return diseaseList;
-	}
+    @Override
+    public void get(ServerIoSession session, Message<Disease> message) throws ServiceException,
+            SQLException {
 
-	@Override
-	public void remove(ServerIoSession session, Message<Disease> message) throws ServiceException, SQLException {
-		if (!diseaseService.removeDisease(model.getId()))
-			throw new ServiceException("Failed to remove the disease: " + model);
-		return model;
-	}
+        // request the listing of all disease objects
+        List<Disease> diseaseList = diseaseService.getDiseaseList();
+        if (diseaseList == null)
+            throw new ServiceException("Failed to list the diseases");
 
-	@Override
-	public void update(ServerIoSession session, Message<Disease> message) throws ServiceException, SQLException {
-		if (!diseaseService.updateDisease(model))
-			throw new ServiceException("Failed to update the disease: " + model);
-		return model;
-	}
+        // send the list back
+        session.write(message, diseaseList);
+    }
 
-	@Override
-	public void execute(ServerIoSession session, Message<Disease> message) throws ServiceException, SQLException {
-		// throw an execption because the 'exec' command is not implemented
-		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
-		String handler = getClass().getSimpleName();
-		throw new NoSuchCommandException(handler, command);
-	}
+    @Override
+    public void remove(ServerIoSession session, Message<Disease> message) throws ServiceException,
+            SQLException {
+        List<Disease> diseaseList = message.getObjects();
+        // loop and try to remove each object
+        for (Disease disease : diseaseList) {
+            if (!diseaseService.removeDisease(disease.getId()))
+                throw new ServiceException("Failed to remove the disease: " + disease);
+        }
+        session.writeBrodcast(message, diseaseList);
+    }
+
+    @Override
+    public void update(ServerIoSession session, Message<Disease> message) throws ServiceException,
+            SQLException {
+        List<Disease> diseaseList = message.getObjects();
+        // loop and try to update each object
+        for (Disease disease : diseaseList) {
+            if (!diseaseService.updateDisease(disease))
+                throw new ServiceException("Failed to update the disease: " + disease);
+        }
+        session.writeBrodcast(message, diseaseList);
+    }
+
+    @Override
+    public void execute(ServerIoSession session, Message<Disease> message) throws ServiceException,
+            SQLException {
+        // throw an execption because the 'exec' command is not implemented
+        String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+        String handler = getClass().getSimpleName();
+        throw new NoSuchCommandException(handler, command);
+    }
 }

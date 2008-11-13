@@ -15,47 +15,65 @@ import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class JobHandler implements Handler<Job> {
 
-	@Service(clazz = JobService.class)
-	private JobService jobService;
+    @Service(clazz = JobService.class)
+    private JobService jobService;
 
-	@Override
-	public void add(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
-		// add the job into the dao
-		int id = jobService.addJob(model);
-		if (id == -1)
-			throw new ServiceException("Failed to add the job " + model);
-		// set the returned id
-		model.setId(id);
-		return model;
-	}
+    @Override
+    public void add(ServerIoSession session, Message<Job> message) throws ServiceException,
+            SQLException {
+        // loop and try to update each object
+        List<Job> jobList = message.getObjects();
+        for (Job job : jobList) {
+            int id = jobService.addJob(job);
+            if (id == -1)
+                throw new ServiceException("Failed to add the job " + job);
+            // set the returned id
+            job.setId(id);
+        }
+        session.writeBrodcast(message, jobList);
+    }
 
-	@Override
-	public void get(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
-		List<Job> jobList = jobService.listJobs();
-		if (jobList == null)
-			throw new ServiceException("Failed to list the jobs");
-		return jobList;
-	}
+    @Override
+    public void get(ServerIoSession session, Message<Job> message) throws ServiceException,
+            SQLException {
+        // request a listing of all jobs in the database
+        List<Job> jobList = jobService.listJobs();
+        if (jobList == null)
+            throw new ServiceException("Failed to list the jobs");
+        // send the jobs back
+        session.write(message, jobList);
+    }
 
-	@Override
-	public void remove(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
-		if (!jobService.removeJob(model.getId()))
-			throw new ServiceException("Failed to remove the job: " + model);
-		return model;
-	}
+    @Override
+    public void remove(ServerIoSession session, Message<Job> message) throws ServiceException,
+            SQLException {
+        List<Job> jobList = message.getObjects();
+        // loop and try to remove each object
+        for (Job job : jobList) {
+            if (!jobService.removeJob(job.getId()))
+                throw new ServiceException("Failed to remove the job: " + job);
+        }
+        session.writeBrodcast(message, jobList);
+    }
 
-	@Override
-	public void update(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
-		if (!jobService.updateJob(model))
-			throw new ServiceException("Failed to update the job: " + model);
-		return model;
-	}
+    @Override
+    public void update(ServerIoSession session, Message<Job> message) throws ServiceException,
+            SQLException {
+        List<Job> jobList = message.getObjects();
+        // loop and try to update each object
+        for (Job job : jobList) {
+            if (!jobService.updateJob(job))
+                throw new ServiceException("Failed to update the job: " + job);
+        }
+        session.writeBrodcast(message, jobList);
+    }
 
-	@Override
-	public void execute(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
-		// throw an execption because the 'exec' command is not implemented
-		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
-		String handler = getClass().getSimpleName();
-		throw new NoSuchCommandException(handler, command);
-	}
+    @Override
+    public void execute(ServerIoSession session, Message<Job> message) throws ServiceException,
+            SQLException {
+        // throw an execption because the 'exec' command is not implemented
+        String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+        String handler = getClass().getSimpleName();
+        throw new NoSuchCommandException(handler, command);
+    }
 }
