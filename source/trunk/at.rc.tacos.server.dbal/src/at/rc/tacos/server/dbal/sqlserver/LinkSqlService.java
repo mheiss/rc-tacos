@@ -1,20 +1,30 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import at.rc.tacos.platform.model.Link;
 import at.rc.tacos.platform.services.dbal.LinkService;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for link.
  * 
  * @author Payer Martin
  */
-public class LinkSqlService extends BaseSqlService implements LinkService {
+public class LinkSqlService implements LinkService {
+	
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public List<Link> listLinks() throws SQLException {

@@ -1,21 +1,31 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.services.dbal.SickPersonService;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for sick person.
  * 
  * @author Michael
  */
-public class SickPersonSqlService extends BaseSqlService implements SickPersonService {
+public class SickPersonSqlService implements SickPersonService {
 
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
+	
 	@Override
 	public SickPerson getSickPerson(int personID) throws SQLException {
 		// SELECT s.sickperson_ID, s.lastname, s.firstname, s.sex, s.city,

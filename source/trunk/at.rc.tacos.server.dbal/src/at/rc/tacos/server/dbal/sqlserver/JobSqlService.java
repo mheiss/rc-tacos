@@ -1,20 +1,30 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.services.dbal.JobService;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for job.
  * 
  * @author Michael
  */
-public class JobSqlService extends BaseSqlService implements JobService {
+public class JobSqlService implements JobService {
+	
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int addJob(Job job) throws SQLException {

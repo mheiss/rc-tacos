@@ -1,10 +1,13 @@
 package at.rc.tacos.server.dbal.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import at.rc.tacos.platform.model.Competence;
 import at.rc.tacos.platform.model.Login;
@@ -14,19 +17,26 @@ import at.rc.tacos.platform.services.dbal.CompetenceService;
 import at.rc.tacos.platform.services.dbal.StaffMemberService;
 import at.rc.tacos.platform.services.dbal.AuthenticationService;
 import at.rc.tacos.platform.util.PasswordEncryption;
+import at.rc.tacos.server.dbal.SQLQueries;
 
 /**
  * Provides CRUD operation for user login.
  * 
  * @author Michael
  */
-public class UserLoginSqlService extends BaseSqlService implements AuthenticationService {
+public class UserLoginSqlService implements AuthenticationService {
+
+	@Resource(name = "sqlConnection")
+	protected Connection connection;
 
 	@Service(clazz = StaffMemberService.class)
 	private StaffMemberService staffDAO;
 
 	@Service(clazz = CompetenceService.class)
 	private CompetenceService competenceDAO;
+
+	// the source for the queries
+	protected final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
 	public int checkLogin(String username, String pwdHash, boolean isWebClient) throws SQLException {
