@@ -1,6 +1,7 @@
 package at.rc.tacos.platform.services;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 
 import at.rc.tacos.platform.services.exception.NoSuchServiceException;
 
@@ -28,7 +29,7 @@ public class ServiceAnnotationResolver extends AnnotationResolver {
 	}
 
 	@Override
-	protected Object annotationFound(Annotation annotation) throws Exception {
+	protected Object annotationFound(Field field, Annotation annotation, Object currentInstance) throws Exception {
 		if (!(annotation instanceof Service)) {
 			return null;
 		}
@@ -37,6 +38,11 @@ public class ServiceAnnotationResolver extends AnnotationResolver {
 		Object nextObject = factory.getService(nextClass.getName());
 		if (nextObject == null)
 			throw new NoSuchServiceException(nextClass.getName());
+
+		// set the instance of the field
+		field.set(currentInstance, nextObject);
+
+		// check and resolve the annotations of the new field instance
 		return nextObject;
 	}
 

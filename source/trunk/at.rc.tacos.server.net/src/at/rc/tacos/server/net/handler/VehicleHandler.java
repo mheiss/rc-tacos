@@ -20,9 +20,14 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 
 	@Override
 	public void add(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
-		if (!vehicleService.addVehicle(model))
-			throw new ServiceException("Failed to add the vehicle: " + model);
-		return model;
+		List<VehicleDetail> vehicleList = message.getObjects();
+		// loop and add the vehicles
+		for (VehicleDetail vehicle : vehicleList) {
+			if (!vehicleService.addVehicle(vehicle))
+				throw new ServiceException("Failed to add the vehicle: " + vehicle);
+		}
+		// brodcast the added transports
+		session.writeBrodcast(message, vehicleList);
 	}
 
 	@Override
@@ -30,21 +35,32 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 		List<VehicleDetail> list = vehicleService.listVehicles();
 		if (list == null)
 			throw new ServiceException("Failed to list the vehicles");
-		return list;
+		// return the requested vehicles
+		session.write(message, list);
 	}
 
 	@Override
 	public void remove(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
-		if (!vehicleService.removeVehicle(model))
-			throw new ServiceException("Failed to remove the vehicle " + model);
-		return model;
+		List<VehicleDetail> vehicleList = message.getObjects();
+		// loop and remove the vehicles
+		for (VehicleDetail vehicle : vehicleList) {
+			if (!vehicleService.removeVehicle(vehicle))
+				throw new ServiceException("Failed to remove the vehicle " + vehicle);
+		}
+		// brodcast the removed vehicles
+		session.writeBrodcast(message, vehicleList);
 	}
 
 	@Override
 	public void update(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
-		if (!vehicleService.updateVehicle(model))
-			throw new ServiceException("Failed to update the vehicle " + model);
-		return model;
+		List<VehicleDetail> vehicleList = message.getObjects();
+		// loop and update the vehicles
+		for (VehicleDetail vehicle : vehicleList) {
+			if (!vehicleService.updateVehicle(vehicle))
+				throw new ServiceException("Failed to update the vehicle " + vehicle);
+		}
+		// brodcast the updated vehicles
+		session.writeBrodcast(message, vehicleList);
 	}
 
 	@Override

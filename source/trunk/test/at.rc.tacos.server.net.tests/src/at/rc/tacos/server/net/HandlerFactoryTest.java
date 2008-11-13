@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import at.rc.tacos.platform.model.Address;
-import at.rc.tacos.platform.services.net.HandlerFactory;
-import at.rc.tacos.platform.services.net.INetHandler;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.handler.HandlerFactory;
 
 /**
  * Test cases for the handler factory
@@ -25,7 +25,7 @@ public class HandlerFactoryTest {
 
 	@Test
 	public void getAddressHandlerTest() throws Exception {
-		INetHandler<Address> addressHandler = handlerFactory.getTypeSaveHandler(new Address());
+		Handler<Address> addressHandler = handlerFactory.getHandler(new Address());
 		Assert.assertNotNull(addressHandler);
 	}
 
@@ -35,7 +35,7 @@ public class HandlerFactoryTest {
 		String addressClazzName = Address.class.getName();
 		Class<?> clazz = Class.forName(addressClazzName);
 		// get the handler instance
-		INetHandler<Object> addressHandler = handlerFactory.getTypeSaveHandler((Object) clazz.newInstance());
+		Handler<Object> addressHandler = handlerFactory.getHandler((Object) clazz.newInstance());
 		Assert.assertNotNull(addressHandler);
 	}
 

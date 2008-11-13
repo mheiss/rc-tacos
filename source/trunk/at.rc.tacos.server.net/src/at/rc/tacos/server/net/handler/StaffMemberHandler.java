@@ -1,13 +1,14 @@
 package at.rc.tacos.server.net.handler;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.StaffMember;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.handler.MessageType;
 import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.ServerIoSession;
 import at.rc.tacos.platform.services.Service;
@@ -22,23 +23,24 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 
 	@Override
 	public void add(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
-		if (!staffService.addStaffMember(model)) {
-			throw new ServiceException("Failed to add the staff member: " + model);
+		List<StaffMember> staffList = message.getObjects();
+		// loop and add the new staff members
+		for (StaffMember member : staffList) {
+			if (!staffService.addStaffMember(member)) {
+				throw new ServiceException("Failed to add the staff member: " + member);
+			}
 		}
-		return model;
+		// brodcast the added persons
+		session.writeBrodcast(message, staffList);
 	}
 
 	@Override
 	public void get(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
-		List<StaffMember> list = new ArrayList<StaffMember>();
-		// if there is no filter -> request all
-		if (params == null || params.isEmpty()) {
-			list = staffService.getAllStaffMembers();
-			if (list == null) {
-				throw new ServiceException("Failed to list all staff members");
-			}
-			return list;
-		}
+		// get the params out of the request
+		Map<String, String> params = message.getParams();
+
+		List<StaffMember> list;
+
 		// query a single staff member by the id
 		if (params.containsKey(IFilterTypes.ID_FILTER)) {
 			// get the query filter
@@ -48,9 +50,11 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			if (member == null) {
 				throw new ServiceException("Failed to get the staff member by id:" + id);
 			}
-			list.add(member);
-			return list;
+			// send the requested staff member back
+			session.writeBrodcast(message, member);
+			return;
 		}
+
 		// query the locked and unlocked staff members
 		if (params.containsKey(IFilterTypes.STAFF_MEMBER_LOCKED_UNLOCKED_FILTER)) {
 			// filter by location
@@ -61,14 +65,18 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 				if (list == null) {
 					throw new ServiceException("Failed to list all staff members by location " + locationId);
 				}
-				return list;
+				// send the requested members back
+				session.write(message, list);
+				return;
 			}
 			// return all staff members
 			list = staffService.getLockedAndUnlockedStaffMembers();
 			if (list == null) {
 				throw new ServiceException("Failed to list all staff members by primary location");
 			}
-			return list;
+			// send the requested members back
+			session.write(message, list);
+			return;
 		}
 		// query only the locked staff members
 		if (params.containsKey(IFilterTypes.STAFF_MEMBER_LOCKED_FILTER)) {
@@ -80,14 +88,19 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 				if (list == null) {
 					throw new ServiceException("Failed to list the locked members by location " + locationId);
 				}
-				return list;
+				// send the requested members back
+				session.write(message, list);
+				return;
 			}
 			list = staffService.getLockedStaffMembers();
 			if (list == null) {
 				throw new ServiceException("Failed to list the locked staff members");
 			}
-			return list;
+			// send the requested members back
+			session.write(message, list);
+			return;
 		}
+
 		// query staff members by location
 		if (params.containsKey(IFilterTypes.STAFF_MEMBER_LOCATION_FILTER)) {
 			final String filter = params.get(IFilterTypes.STAFF_MEMBER_LOCATION_FILTER);
@@ -96,21 +109,37 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			if (list == null) {
 				throw new ServiceException("Failed to list staff members by primary location");
 			}
-			return list;
+			// send the requested members back
+			session.write(message, list);
+			return;
 		}
-		return null;
+
+		// if no filter criteria matched send back all
+		list = staffService.getAllStaffMembers();
+		if (list == null) {
+			throw new ServiceException("Failed to list all staff members");
+		}
+		session.write(message, list);
 	}
 
 	@Override
 	public void remove(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
-		throw new NoSuchCommandException("remove");
+		// throw an execption because the 'remove' command is not implemented
+		String command = MessageType.REMOVE.toString();
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
 	}
 
 	@Override
 	public void update(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
-		if (!staffService.updateStaffMember(model))
-			throw new ServiceException("Failed to update the staff member: " + model);
-		return model;
+		List<StaffMember> staffList = message.getObjects();
+		// loop and update the staff members
+		for (StaffMember member : staffList) {
+			if (!staffService.updateStaffMember(member))
+				throw new ServiceException("Failed to update the staff member: " + member);
+		}
+		// brodcast the updated members
+		session.writeBrodcast(message, staffList);
 	}
 
 	@Override

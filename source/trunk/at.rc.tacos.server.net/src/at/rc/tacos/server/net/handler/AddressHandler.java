@@ -44,7 +44,7 @@ public class AddressHandler implements Handler<Address> {
 			adr.setAddressId(id);
 		}
 		// write the result back to the client
-		session.writeBrodcast(message, addressList.toArray());
+		session.writeBrodcast(message, addressList);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class AddressHandler implements Handler<Address> {
 			throw new ServiceException("Failed to list the address records by search string");
 
 		// write the result back to the client
-		session.write(message, addressList.toArray());
+		session.write(message, addressList);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class AddressHandler implements Handler<Address> {
 				throw new ServiceException("Failed to remove the address record");
 		}
 		// write the result back to the client
-		session.writeBrodcast(message, addressList.toArray());
+		session.writeBrodcast(message, addressList);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class AddressHandler implements Handler<Address> {
 				throw new ServiceException("Failed to update the address record");
 		}
 		// write the result back to the client
-		session.writeBrodcast(message, addressList.toArray());
+		session.writeBrodcast(message, addressList);
 	}
 
 	@Override
