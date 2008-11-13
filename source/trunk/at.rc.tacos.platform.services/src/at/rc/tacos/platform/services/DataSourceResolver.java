@@ -1,6 +1,7 @@
 package at.rc.tacos.platform.services;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 
 import javax.annotation.Resource;
@@ -27,9 +28,12 @@ public class DataSourceResolver extends AnnotationResolver {
 	}
 
 	@Override
-	protected Object annotationFound(Annotation annotation) throws Exception {
+	protected Object annotationFound(Field field,Annotation annotation,Object currentInstance) throws Exception {
 		if (!(annotation instanceof Resource))
 			return null;
-		return connection;
+		//set the datasource for this field
+		field.set(currentInstance, connection);
+		//we do not want to check the connection for further annotations
+		return null;
 	}
 }

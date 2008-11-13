@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Login;
 import at.rc.tacos.platform.net.Message;
@@ -17,6 +20,8 @@ import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class AuthenticationHandler implements Handler<Login> {
+
+	private Logger logger = LoggerFactory.getLogger(AuthenticationHandler.class);
 
 	@Service(clazz = AuthenticationService.class)
 	private AuthenticationService authenticationService;
@@ -97,7 +102,7 @@ public class AuthenticationHandler implements Handler<Login> {
 			doLogout(session, message);
 			return;
 		}
-		
+
 		// throw an execption because the 'exec' command is not implemented
 		String handler = getClass().getSimpleName();
 		throw new NoSuchCommandException(handler, command);
@@ -128,10 +133,13 @@ public class AuthenticationHandler implements Handler<Login> {
 			// login was successfully
 			login.setWebClient(isWebClient);
 			login.setLoggedIn(true);
+			// set the login to true
+			session.setLoggedIn(login.getUsername());
+			logger.info("Authenticating session " + session + " -> " + login.getUsername());
 		}
 		else if (loginResult == AuthenticationService.LOGIN_FAILED) {
 			login.setLoggedIn(false);
-			login.setErrorMessage("Wrong username or password");
+			login.setErrorMessage("Der Benutzername oder das Passwort ist falsch.");
 		}
 		else if (loginResult == AuthenticationService.LOGIN_DENIED) {
 			login.setLoggedIn(false);
@@ -149,7 +157,6 @@ public class AuthenticationHandler implements Handler<Login> {
 		}
 		// send the login result back
 		session.write(message, login);
-
 	}
 
 	/**

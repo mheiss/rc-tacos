@@ -33,34 +33,42 @@ public abstract class AnnotationResolver {
 	}
 
 	private void resolveAnnotation(List<Object> resolved, Object currentObject) throws Exception {
-		// assert valid object
-		if (currentObject == null)
-			return;
-		resolved.add(currentObject);
+		boolean hasAnnotation = false;
 		// get the class for the object
 		Class<?> clazz = currentObject.getClass();
 		for (Field field : clazz.getDeclaredFields()) {
 			// check if the field has the annotation
-			if (!field.isAnnotationPresent(annotation))
+			if (!field.isAnnotationPresent(annotation)) {
 				continue;
+			}
+			hasAnnotation = true;
 			field.setAccessible(true);
 			// resolve the value of the field
-			Object nextObject = annotationFound(field.getAnnotation(annotation));
-			// create a new instance of this class and pass to the object
-			field.set(currentObject, nextObject);
+			Object nextObject = annotationFound(field, field.getAnnotation(annotation), currentObject);
+			if (nextObject == null)
+				continue;
 			// check for other dependend classes
 			resolveAnnotation(resolved, nextObject);
+		}
+		// resolved?
+		if (hasAnnotation) {
+			resolved.add(currentObject);
 		}
 	}
 
 	/**
-	 * Processes the annotation that was found at the given field. The returned
-	 * value will be used to set the value of the field.
+	 * Processes the annotation that was found at the given field. If the
+	 * returned values is not null then this object will also be checked for
+	 * annotation.
 	 * 
+	 * @param field
+	 *            the field where the annotation was found
 	 * @param annotation
 	 *            the annotation that was found
-	 * @return the value for the field that was marked with the annotation
+	 * @param currentInstance
+	 *            the current instance of the class that is in progress
+	 * @return the instance of the field object or null to abort the resolving
 	 */
-	protected abstract Object annotationFound(Annotation annotation) throws Exception;
+	protected abstract Object annotationFound(Field field, Annotation annotation, Object currentInstance) throws Exception;
 
 }

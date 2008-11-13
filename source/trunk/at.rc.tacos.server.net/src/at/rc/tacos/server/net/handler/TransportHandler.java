@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Transport;
@@ -24,36 +25,39 @@ public class TransportHandler implements Handler<Transport> {
 
 	@Override
 	public void add(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
-		int id = transportService.addTransport(model);
-		if (id == Transport.TRANSPORT_ERROR) {
-			throw new ServiceException("Failed to add the transport: " + model);
+		List<Transport> transports = message.getObjects();
+		// loop and add the transports
+		for (Transport transport : transports) {
+			int id = transportService.addTransport(transport);
+			if (id == Transport.TRANSPORT_ERROR) {
+				throw new ServiceException("Failed to add the transport: " + transport);
+			}
+			transport.setTransportId(id);
+			// for the direct car assign to a transport (in the transport form)
+			if (transport.getVehicleDetail() != null && transport.getTransportNumber() == 0) {
+				// set the current year to generate a valid transport numer
+				transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
+				int transportNr = transportService.generateTransportNumber(transport);
+				if (transportNr == Transport.TRANSPORT_ERROR)
+					throw new ServiceException("Failed to generate a valid transport number for transport " + transport);
+				transport.setTransportNumber(transportNr);
+				// to set the AE- status
+				if (!transportService.updateTransport(transport))
+					throw new ServiceException("Failed to update the newly added transport: " + transport);
+			}
 		}
-		model.setTransportId(id);
-
-		// for the direct car assign to a transport (in the transport form)
-		if (model.getVehicleDetail() != null && model.getTransportNumber() == 0) {
-			// set the current year to generate a valid transport numer
-			model.setYear(Calendar.getInstance().get(Calendar.YEAR));
-			int transportNr = transportService.generateTransportNumber(model);
-			if (transportNr == Transport.TRANSPORT_ERROR)
-				throw new ServiceException("Failed to generate a valid transport number for transport " + model);
-			model.setTransportNumber(transportNr);
-			// to set the AE- status
-			if (!transportService.updateTransport(model))
-				throw new ServiceException("Failed to update the newly added transport: " + model);
-		}
-
-		return model;
+		// brodcast the updated transports
+		session.writeBrodcast(message, transports);
 	}
 
 	@Override
 	public void get(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
+		// get the params out of the message
+		Map<String, String> params = message.getParams();
+
 		List<Transport> list = new ArrayList<Transport>();
 		List<Transport> tmpList = new ArrayList<Transport>();
-		// if there is no filter -> request all
-		if (params == null || params.isEmpty()) {
-			throw new ServiceException("Listing of all transport entries is not supported");
-		}
+
 		// online transport listing for journal short if a vehicle and a
 		// location is selected
 		if (params.containsKey(IFilterTypes.TRANSPORT_JOURNAL_SHORT_VEHICLE_FILTER) && params.containsKey(IFilterTypes.TRANSPORT_ARCHIVED_FILTER)
@@ -98,6 +102,10 @@ public class TransportHandler implements Handler<Transport> {
 					continue;
 				list.add(transport);
 			}
+
+			// send back the requested transports
+			session.write(message, list);
+			return;
 		}
 		// online transport listing for journal short if a vehicle is selected
 		if (params.containsKey(IFilterTypes.TRANSPORT_JOURNAL_SHORT_VEHICLE_FILTER) && params.containsKey(IFilterTypes.TRANSPORT_ARCHIVED_FILTER)) {
@@ -119,7 +127,9 @@ public class TransportHandler implements Handler<Transport> {
 						+ MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
 				throw new ServiceException("Failed to list the archived transports by date and vehicle from " + time + " " + vehicleFilter);
 			}
-			return list;
+			// send back the requested transports
+			session.write(message, list);
+			return;
 		}
 
 		// online transport listing
@@ -133,7 +143,9 @@ public class TransportHandler implements Handler<Transport> {
 			if (list == null) {
 				throw new ServiceException("Failed to list the transports todo (prebooked and outstanding)");
 			}
-			return list;
+			// send back the requested transports
+			session.write(message, list);
+			return;
 		}
 		// online transport listing
 		// *** only running transports (outstanding and underway) ***
@@ -146,7 +158,9 @@ public class TransportHandler implements Handler<Transport> {
 			if (list == null) {
 				throw new ServiceException("Failed to list the underway transports");
 			}
-			return list;
+			// send back the requested transports
+			session.write(message, list);
+			return;
 		}
 		// online transport listing *** archived by location ***
 		if (params.containsKey(IFilterTypes.TRANSPORT_ARCHIVED_FILTER) && params.containsKey(IFilterTypes.TRANSPORT_LOCATION_FILTER)) {
@@ -189,7 +203,9 @@ public class TransportHandler implements Handler<Transport> {
 				}
 				list.add(transport);
 			}
-			return list;
+			// send back the requested transports
+			session.write(message, list);
+			return;
 		}
 		// online transport listing *** only archived transports ***
 		if (params.containsKey(IFilterTypes.TRANSPORT_ARCHIVED_FILTER)) {
@@ -210,7 +226,9 @@ public class TransportHandler implements Handler<Transport> {
 						+ MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
 				throw new ServiceException("Failed to list the archived transports by date from " + time);
 			}
-			return list;
+			// send back the requested transports
+			session.write(message, list);
+			return;
 		}
 		if (params.containsKey(IFilterTypes.DATE_FILTER)) {
 			// get the query filter and parse it to a date time
@@ -243,8 +261,13 @@ public class TransportHandler implements Handler<Transport> {
 				throw new ServiceException("Failed to list the archived transports by date from " + time);
 			}
 			list.addAll(tmpList);
+			// send back the requested transports
+			session.write(message, list);
+			return;
 		}
-		return list;
+
+		// no filter criteria matched
+		throw new ServiceException("Listing of all transport entries is not supported");
 	}
 
 	@Override
@@ -254,44 +277,50 @@ public class TransportHandler implements Handler<Transport> {
 
 	@Override
 	public void update(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
-		// generate a transport id if we do not have one
-		if (model.getVehicleDetail() != null && model.getTransportNumber() == 0) {
-			// set the current year to generate a valid transport numer
-			model.setYear(Calendar.getInstance().get(Calendar.YEAR));
-			int transportNr = transportService.generateTransportNumber(model);
-			if (transportNr == Transport.TRANSPORT_ERROR)
-				throw new ServiceException("Failed to generate a valid transport number for transport " + model);
-			model.setTransportNumber(transportNr);
-		}
-
-		// Vehicle is removed but we have a transport number -> cancel
-		if (model.getVehicleDetail() == null && model.getTransportNumber() > 0) {
-			// remove assigned vehicle, reset the transport number (to 0 and
-			// restore the given number), set program status to outstanding
-			if (!transportService.removeVehicleFromTransport(model))
-				throw new ServiceException("Failed to remove the transport from the vehicle");
-		}
-
-		// STORNO OR FORWARD
-		if (model.getTransportNumber() == Transport.TRANSPORT_CANCLED || model.getTransportNumber() == Transport.TRANSPORT_FORWARD) {
-			if (model.getVehicleDetail() != null) {
-				if (!transportService.removeVehicleFromTransport(model))
-					throw new ServiceException("Failed to remove the transport from the vehicle");
-				model.clearVehicleDetail();
-				// reset the transportNumber to CANCELED
-				model.setTransportNumber(Transport.TRANSPORT_CANCLED);
+		List<Transport> transports = message.getObjects();
+		// loop and update the transports
+		for (Transport transport : transports) {
+			// generate a transport id if we do not have one
+			if (transport.getVehicleDetail() != null && transport.getTransportNumber() == 0) {
+				// set the current year to generate a valid transport numer
+				transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
+				int transportNr = transportService.generateTransportNumber(transport);
+				if (transportNr == Transport.TRANSPORT_ERROR)
+					throw new ServiceException("Failed to generate a valid transport number for transport " + transport);
+				transport.setTransportNumber(transportNr);
 			}
-			// cancel or forward the transport
-			// set the transportNumber to -1 or -2
-			// (to the value in the transport) and set program status journal
-			if (!transportService.cancelTransport(model))
-				throw new ServiceException("Failed to cancle the transport " + model);
-		}
 
-		// send a simple update request to the dao
-		if (!transportService.updateTransport(model))
-			throw new ServiceException("Failed to update the transport: " + model);
-		return model;
+			// Vehicle is removed but we have a transport number -> cancel
+			if (transport.getVehicleDetail() == null && transport.getTransportNumber() > 0) {
+				// remove assigned vehicle, reset the transport number (to 0 and
+				// restore the given number), set program status to outstanding
+				if (!transportService.removeVehicleFromTransport(transport))
+					throw new ServiceException("Failed to remove the transport from the vehicle");
+			}
+
+			// STORNO OR FORWARD
+			if (transport.getTransportNumber() == Transport.TRANSPORT_CANCLED || transport.getTransportNumber() == Transport.TRANSPORT_FORWARD) {
+				if (transport.getVehicleDetail() != null) {
+					if (!transportService.removeVehicleFromTransport(transport))
+						throw new ServiceException("Failed to remove the transport from the vehicle");
+					transport.clearVehicleDetail();
+					// reset the transportNumber to CANCELED
+					transport.setTransportNumber(Transport.TRANSPORT_CANCLED);
+				}
+				// cancel or forward the transport
+				// set the transportNumber to -1 or -2
+				// (to the value in the transport) and set program status
+				// journal
+				if (!transportService.cancelTransport(transport))
+					throw new ServiceException("Failed to cancle the transport " + transport);
+			}
+
+			// send a simple update request to the dao
+			if (!transportService.updateTransport(transport))
+				throw new ServiceException("Failed to update the transport: " + transport);
+		}
+		// brodcast the updated transports
+		session.writeBrodcast(message, transports);
 	}
 
 	@Override

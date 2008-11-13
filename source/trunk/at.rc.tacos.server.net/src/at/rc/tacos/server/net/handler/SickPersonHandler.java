@@ -1,8 +1,8 @@
 package at.rc.tacos.server.net.handler;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.SickPerson;
@@ -22,45 +22,62 @@ public class SickPersonHandler implements Handler<SickPerson> {
 
 	@Override
 	public void add(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
-		// add the location
-		int id = sickPersonService.addSickPerson(model);
-		if (id == -1)
-			throw new ServiceException("Failed to add the sick person: " + model);
-		// set the id
-		model.setSickPersonId(id);
-		return model;
+		List<SickPerson> sickPersons = message.getObjects();
+		// loop and add the new sick persons
+		for (SickPerson person : sickPersons) {
+			int id = sickPersonService.addSickPerson(person);
+			if (id == -1)
+				throw new ServiceException("Failed to add the sick person: " + person);
+			// set the id
+			person.setSickPersonId(id);
+		}
+		// brodcast the added persons
+		session.writeBrodcast(message, sickPersons);
 	}
 
 	@Override
 	public void get(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
-		List<SickPerson> personList = new ArrayList<SickPerson>();
-		// if there is no filter -> throw exception, this is not allowed
-		if (params == null || params.isEmpty()) {
-			throw new ServiceException("Listing of all sick persons is denied");
-		}
-		else if (params.containsKey(IFilterTypes.SEARCH_STRING)) {
+		// get the params out of the message
+		Map<String, String> params = message.getParams();
+
+		// query the results
+		if (params.containsKey(IFilterTypes.SEARCH_STRING)) {
 			// get the query filter
 			final String lastNameFilter = params.get(IFilterTypes.SEARCH_STRING);
-			personList = sickPersonService.getSickPersonList(lastNameFilter);
+			List<SickPerson> personList = sickPersonService.getSickPersonList(lastNameFilter);
 			if (personList == null) {
 				throw new ServiceException("Failed to list the sick persons by lastname: " + lastNameFilter);
 			}
+			// send back the result
+			session.writeBrodcast(message, personList);
 		}
-		return personList;
+
+		// throw a exception because no params are passed
+		throw new ServiceException("Listing of all sick persons is denied");
 	}
 
 	@Override
 	public void remove(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
-		if (!sickPersonService.removeSickPerson(model.getSickPersonId()))
-			throw new ServiceException("Failed to remove the sick person " + model);
-		return model;
+		List<SickPerson> sickPersons = message.getObjects();
+		// loop and remove the new sick persons
+		for (SickPerson person : sickPersons) {
+			if (!sickPersonService.removeSickPerson(person.getSickPersonId()))
+				throw new ServiceException("Failed to remove the sick person " + person);
+		}
+		// brodcast the removed persons
+		session.writeBrodcast(message, sickPersons);
 	}
 
 	@Override
 	public void update(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
-		if (!sickPersonService.updateSickPerson(model))
-			throw new ServiceException("Failed to update the sick person " + model);
-		return model;
+		List<SickPerson> sickPersons = message.getObjects();
+		// loop and updated the new sick persons
+		for (SickPerson person : sickPersons) {
+			if (!sickPersonService.updateSickPerson(person))
+				throw new ServiceException("Failed to update the sick person " + person);
+		}
+		// brodcast the updated persons
+		session.writeBrodcast(message, sickPersons);
 	}
 
 	@Override

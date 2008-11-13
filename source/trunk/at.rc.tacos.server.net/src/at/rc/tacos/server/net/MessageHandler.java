@@ -65,15 +65,45 @@ public class MessageHandler implements ServerHandler {
 		// and for all dependend services
 		ServiceAnnotationResolver resolver = new ServiceAnnotationResolver(serviceFactory);
 		List<Object> resolvedServices = resolver.resolveAnnotations(handler);
-
+		
 		// now check if the resolved services need a data source
 		DataSourceResolver dataSourceResolver = new DataSourceResolver(connection);
-		dataSourceResolver.resolveAnnotations(resolvedServices);
+		dataSourceResolver.resolveAnnotations(resolvedServices.toArray());
 
 		long end = System.currentTimeMillis();
 
 		if (log.isDebugEnabled()) {
-			log.debug("Handling the request agains " + handler.getClass().getSimpleName() + " took " + (end - start) + " ms");
+			log.debug("Resolving the request agains " + handler.getClass().getSimpleName() + " took " + (end - start) + " ms");
+		}
+
+		try {
+
+			// now handle the request
+			switch (message.getMessageType()) {
+				case ADD:
+					handler.add(session, message);
+					break;
+				case UPDATE:
+					handler.update(session, message);
+					break;
+				case REMOVE:
+					handler.remove(session, message);
+					break;
+				case GET:
+					handler.get(session, message);
+					break;
+				case EXEC:
+					handler.execute(session, message);
+					break;
+			}
+		}
+		catch (Exception ioe) {
+			// create and setup the message
+			String errorMessage = "Failed to handle the request: " + ioe.getMessage();
+			// log the error
+			log.error("errorMessage", ioe);
+			// send back to the client
+			session.writeError(message, errorMessage);
 		}
 	}
 
