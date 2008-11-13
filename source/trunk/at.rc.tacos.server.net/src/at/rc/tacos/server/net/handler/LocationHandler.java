@@ -15,47 +15,69 @@ import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class LocationHandler implements Handler<Location> {
 
-	@Service(clazz = LocationService.class)
-	private LocationService locationService;
+    @Service(clazz = LocationService.class)
+    private LocationService locationService;
 
-	@Override
-	public void add(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
-		// add the location
-		int id = locationService.addLocation(model);
-		if (id == -1)
-			throw new ServiceException("Failed to add the location: " + model);
-		// set the id
-		model.setId(id);
-		return model;
-	}
+    @Override
+    public void add(ServerIoSession session, Message<Location> message) throws ServiceException,
+            SQLException {
+        // loop and try to add each location
+        List<Location> locationList = message.getObjects();
+        for (Location location : locationList) {
+            // add the location
+            int id = locationService.addLocation(location);
+            if (id == -1)
+                throw new ServiceException("Failed to add the location: " + location);
+            // set the id
+            location.setId(id);
+        }
+        // brodcast the updated locations
+        session.writeBrodcast(message, locationList);
+    }
 
-	@Override
-	public void get(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
-		List<Location> locationList = locationService.listLocations();
-		if (locationList == null)
-			throw new ServiceException("Failed to list the locations");
-		return locationList;
-	}
+    @Override
+    public void get(ServerIoSession session, Message<Location> message) throws ServiceException,
+            SQLException {
+        // query all location in the database
+        List<Location> locationList = locationService.listLocations();
+        if (locationList == null)
+            throw new ServiceException("Failed to list the locations");
+        // send the locations back
+        session.write(message, locationList);
+    }
 
-	@Override
-	public void remove(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
-		if (!locationService.removeLocation(model.getId()))
-			throw new ServiceException("Failed to remove the location " + model);
-		return model;
-	}
+    @Override
+    public void remove(ServerIoSession session, Message<Location> message) throws ServiceException,
+            SQLException {
+        // loop and try to remove each location
+        List<Location> locationList = message.getObjects();
+        for (Location location : locationList) {
+            if (!locationService.removeLocation(location.getId()))
+                throw new ServiceException("Failed to remove the location " + location);
+        }
+        // brodcast the removed locations
+        session.writeBrodcast(message, locationList);
+    }
 
-	@Override
-	public void update(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
-		if (!locationService.updateLocation(model))
-			throw new ServiceException("Failed to update the location " + model);
-		return model;
-	}
+    @Override
+    public void update(ServerIoSession session, Message<Location> message) throws ServiceException,
+            SQLException {
+        // loop and try to remove each location
+        List<Location> locationList = message.getObjects();
+        for (Location location : locationList) {
+            if (!locationService.updateLocation(location))
+                throw new ServiceException("Failed to update the location " + location);
+        }
+        // brodcast the updated locations
+        session.writeBrodcast(message, locationList);
+    }
 
-	@Override
-	public void execute(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
-		// throw an execption because the 'exec' command is not implemented
-		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
-		String handler = getClass().getSimpleName();
-		throw new NoSuchCommandException(handler, command);
-	}
+    @Override
+    public void execute(ServerIoSession session, Message<Location> message)
+            throws ServiceException, SQLException {
+        // throw an execption because the 'exec' command is not implemented
+        String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
+        String handler = getClass().getSimpleName();
+        throw new NoSuchCommandException(handler, command);
+    }
 }
