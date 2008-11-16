@@ -33,7 +33,11 @@ public abstract class AnnotationResolver {
 	}
 
 	private void resolveAnnotation(List<Object> resolved, Object currentObject) throws Exception {
-		boolean hasAnnotation = false;
+		// add to the list of resolved objects
+		if (currentObject != null) {
+			resolved.add(currentObject);
+		}
+
 		// get the class for the object
 		Class<?> clazz = currentObject.getClass();
 		for (Field field : clazz.getDeclaredFields()) {
@@ -41,7 +45,6 @@ public abstract class AnnotationResolver {
 			if (!field.isAnnotationPresent(annotation)) {
 				continue;
 			}
-			hasAnnotation = true;
 			field.setAccessible(true);
 			// resolve the value of the field
 			Object nextObject = annotationFound(field, field.getAnnotation(annotation), currentObject);
@@ -49,10 +52,6 @@ public abstract class AnnotationResolver {
 				continue;
 			// check for other dependend classes
 			resolveAnnotation(resolved, nextObject);
-		}
-		// resolved?
-		if (hasAnnotation) {
-			resolved.add(currentObject);
 		}
 	}
 

@@ -11,7 +11,6 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
 import org.apache.mina.filter.executor.OrderedThreadPoolExecutor;
-import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.filter.logging.MdcInjectionFilter;
 import org.apache.mina.transport.socket.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
@@ -57,7 +56,6 @@ public class MinaMessageServer {
 			acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(filterExecutor));
 			acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new XmlCodecFactory()));
 			acceptor.getFilterChain().addLast("mdcFilter2", mdcFilter);
-			acceptor.getFilterChain().addLast("logger", new LoggingFilter());
 
 			handler.init(serverContext);
 			acceptor.setHandler(new ServerHandlerAdapter(handler));
