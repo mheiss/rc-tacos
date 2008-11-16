@@ -59,20 +59,15 @@ public class XmlProtocolDecoder extends TextLineDecoder {
 	@Override
 	protected void writeText(IoSession session, String text, ProtocolDecoderOutput out) {
 
-		if (log.isTraceEnabled()) {
-			log.trace("Decoding message: " + text);
-		}
-
 		// try to decode the message
 		try {
 			Object message = xStream.fromXML(text);
 
 			// assert we are receiving only messages
 			if (!(message instanceof Message)) {
-				logAndThrowException("Can only send messages from type 'Message' is " + message == null ? "null" : message.getClass()
-						.getName(), null);
+				logAndThrowException("Can only send messages from type 'Message' is " + message == null ? "null" : message.getClass().getName(), null);
 			}
-			
+
 			// pass it to the next filter
 			out.write(message);
 		}

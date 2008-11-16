@@ -21,7 +21,6 @@ import at.rc.tacos.platform.model.ServerInfo;
 import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.model.StaffMember;
-import at.rc.tacos.platform.model.Statistic;
 import at.rc.tacos.platform.model.SystemMessage;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
@@ -88,7 +87,6 @@ public class XStream2 extends XStream {
 		alias("serviceType", ServiceType.class);
 		alias("sickPerson", SickPerson.class);
 		alias("staffMember", StaffMember.class);
-		alias("statistic", Statistic.class);
 		alias("system", SystemMessage.class);
 		alias("transport", Transport.class);
 		alias("vehicle", VehicleDetail.class);

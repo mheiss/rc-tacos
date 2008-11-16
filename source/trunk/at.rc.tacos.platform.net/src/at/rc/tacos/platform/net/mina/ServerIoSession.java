@@ -124,9 +124,10 @@ public class ServerIoSession implements IoSession {
 		for (Map.Entry<Long, IoSession> entry : wrappedSession.getService().getManagedSessions().entrySet()) {
 			ServerIoSession session = new ServerIoSession(entry.getValue());
 			// assert that the session is autenticated
-			if (!session.isLoggedIn()) {
-				continue;
-			}
+			// TODO: remove the comment below
+			// if (!session.isLoggedIn()) {
+			// continue;
+			// }
 			// send the message
 			session.write(message);
 		}

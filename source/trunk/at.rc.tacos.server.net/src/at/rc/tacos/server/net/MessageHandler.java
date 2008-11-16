@@ -65,16 +65,37 @@ public class MessageHandler implements ServerHandler {
 		// and for all dependend services
 		ServiceAnnotationResolver resolver = new ServiceAnnotationResolver(serviceFactory);
 		List<Object> resolvedServices = resolver.resolveAnnotations(handler);
-		
 		// now check if the resolved services need a data source
 		DataSourceResolver dataSourceResolver = new DataSourceResolver(connection);
-		dataSourceResolver.resolveAnnotations(resolvedServices.toArray());
+		List<Object> resolvedSources = dataSourceResolver.resolveAnnotations(resolvedServices.toArray());
 
 		long end = System.currentTimeMillis();
 
+		// print out debugging information
+		if (log.isTraceEnabled()) {
+			// the handlers
+			StringBuffer buffer = new StringBuffer();
+			for (Object obj : resolvedServices) {
+				buffer.append(obj.getClass().getSimpleName());
+			}
+			log.trace("Resolved handlers: " + buffer.toString());
+
+			// the resources
+			buffer = new StringBuffer();
+			for (Object obj : resolvedSources) {
+				buffer.append(obj.getClass().getSimpleName());
+			}
+			log.trace("Data source set for: " + buffer.toString());
+		}
+
+		// log the results
 		if (log.isDebugEnabled()) {
 			log.debug("Resolving the request agains " + handler.getClass().getSimpleName() + " took " + (end - start) + " ms");
 		}
+
+		// create a savepoint bevor handling the request
+		connection.setAutoCommit(false);
+		connection.setSavepoint();
 
 		try {
 
@@ -92,12 +113,22 @@ public class MessageHandler implements ServerHandler {
 				case GET:
 					handler.get(session, message);
 					break;
-				case EXEC:
+				default:
 					handler.execute(session, message);
 					break;
 			}
+
+			// the handling caused no error so commit the changes
+			connection.commit();
+
 		}
 		catch (Exception ioe) {
+			// rollback the changes
+			connection.rollback();
+			if (log.isDebugEnabled()) {
+				log.debug("Rollback the changes due to a service error");
+			}
+
 			// create and setup the message
 			String errorMessage = "Failed to handle the request: " + ioe.getMessage();
 			// log the error

@@ -37,6 +37,7 @@ public class AddressHandler implements Handler<Address> {
 		List<Address> addressList = message.getObjects();
 		// loop and try to add each address object
 		for (Address adr : addressList) {
+			System.out.println("adding: "+adr);
 			// add each record to the database
 			int id = addressService.addAddress(adr);
 			if (id == -1)

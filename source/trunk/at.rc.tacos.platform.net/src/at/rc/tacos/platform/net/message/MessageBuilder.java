@@ -27,15 +27,15 @@ public class MessageBuilder {
 		// determine the type of message
 		switch (originalMessage.getMessageType()) {
 			case ADD:
-				AddMessage<Object> addMessage = new AddMessage<Object>(objects);
+				AddMessage<Object> addMessage = new AddMessage<Object>((List<Object>) objects);
 				addMessage.setId(originalMessage.getId());
 				return addMessage;
 			case UPDATE:
-				UpdateMessage<Object> updateMessage = new UpdateMessage<Object>(objects);
+				UpdateMessage<Object> updateMessage = new UpdateMessage<Object>((List<Object>) objects);
 				updateMessage.setId(originalMessage.getId());
 				return updateMessage;
 			case REMOVE:
-				RemoveMessage<Object> removeMessage = new RemoveMessage<Object>(objects);
+				RemoveMessage<Object> removeMessage = new RemoveMessage<Object>((List<Object>) objects);
 				removeMessage.setId(originalMessage.getId());
 				return removeMessage;
 			case GET:
