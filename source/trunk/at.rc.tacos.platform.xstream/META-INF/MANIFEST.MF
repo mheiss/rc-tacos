@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Xstream Plug-in
+Bundle-SymbolicName: at.rc.tacos.platform.xstream
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: lib/xpp3_min-1.1.4c.jar,
+ lib/xstream-1.3.jar,
+ .
+Export-Package: com.thoughtworks.xstream,
+ com.thoughtworks.xstream.io,
+ com.thoughtworks.xstream.io.xml
