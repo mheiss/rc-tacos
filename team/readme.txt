@@ -16,14 +16,14 @@ The latest version v2 is running with eclipse 3.4 and is currently under active 
 
 
 The v1 version is the current productive version and developed with eclipse 3.3
-  -> Tacos_v1.psf
+  -> Tacos_subclipse_v1.psf
 
 Requirements
 ------------
 To use the TeamProjectSets the corresponding svn provider plugin must be installed into eclipse using the update manager.
 
 Subclipse:	http://subclipse.tigris.org/
-Subversive: 	http://www.polarion.org/index.php?page=download&project=subversive
+Subversive: http://www.polarion.org/index.php?page=download&project=subversive
 
 
 CODE-FORMATTER:
