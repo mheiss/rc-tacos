@@ -1,0 +1,36 @@
+Anmerkungen für das automatische generieren von Dialyse Transporten
+-------------------------------------------------------------------
+
+Problem:
+--------
+Der Timer, welcher alle Dialysetransporte regelmäßig überprüft, ob sie innerhalb der nächsten 2h sind
+generiert automatisch Transporte falls dies der Fall ist.
+
+Es muss also eine Einschränkung definiert werden sodass nur ein Transport pro Tag für einen Patienten generiert
+wird.
+
+LÖsungsansatz:
+---------------
+Neue Tabelle ertellen die für jeden Dialysepatienten folgende Datein speichert.
+
+-> dialyse_ID , timestamp hin, timestamp zurück
+
+Für jeden Patienten wird ein eintrag erstellt und entsprechen aktualisiert.
+
+transportGenerated = Zeitpunkt wann der letze Transport generiert worden ist
+backTransportGenerated = Zeitpunkt wann der letze Rücktransport generiert worden ist.
+
+Schritt1:
+---------
+transportGenerated mit dem datum setzen wann der Transport durchgeführt wird.
+DialyseUpdate an server sendet ->  Server schreibt das datum in die zwischentabelle
+
+Schritt2: Transport generieren.
+--------------------------------
+Prüfen ob heute+2h ein Transport durchgeführt werden soll ( Anhand der Flags der Wochentage )
+Prüfen ob schon ein Transport für das getestete datum (heute +2h) durchgeführt worden ist.
+Transport generieren.
+
+
+Rücktransport hat priorität D
+
