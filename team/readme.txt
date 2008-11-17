@@ -2,18 +2,28 @@ TEAM-PROJECT-SETS
 ------------------
 
 The provided team projects sets are a simple way to get involved into the TACOS development.
-To use these files the svn connector from http://subclipse.tigris.org/ must be installed within eclipse.
-
-After installing the connector download and save one of the psf files described below.
-Then import them using File -> Import -> Team Project Set.
-
+Just download one of the team projects sets and import the file using the import manager.
+  -> File -> Import -> Team Project Set.
 Thats it! Now you can start enhancing the TACOS platform :)
 
-Description:
-------------
 
-Tacos_v2.psf -> current developing path with eclipse 3.4
-Tacos_v1.psf -> the old version, running with eclipse 3.3
+Available TeamProjectSets
+-------------------------
+
+The latest version v2 is running with eclipse 3.4 and is currently under active development
+  -> Tacos_subversive_v2.psf
+  -> Tacos_subclipse_v2.psf
+
+
+The v1 version is the current productive version and developed with eclipse 3.3
+  -> Tacos_v1.psf
+
+Requirements
+------------
+To use the TeamProjectSets the corresponding svn provider plugin must be installed into eclipse using the update manager.
+
+Subclipse:	http://subclipse.tigris.org/
+Subversive: 	http://www.polarion.org/index.php?page=download&project=subversive
 
 
 CODE-FORMATTER:
