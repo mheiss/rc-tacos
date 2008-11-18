@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.ServerContext;
 import at.rc.tacos.platform.net.mina.MessageHandler;
+import at.rc.tacos.platform.net.mina.MessageHandlerAdapter;
 import at.rc.tacos.platform.net.mina.XmlCodecFactory;
 import at.rc.tacos.platform.services.exception.ConfigurationException;
 
@@ -57,7 +58,7 @@ public class MinaMessageServer {
             acceptor.getFilterChain().addLast("mdcFilter2", mdcFilter);
 
             handler = new ServerMessageHandler(serverContext);
-            acceptor.setHandler(new ServerHandlerAdapter(handler));
+            acceptor.setHandler(new MessageHandlerAdapter(handler));
 
             try {
                 acceptor.bind(new InetSocketAddress(serverContext.getServerPort()));

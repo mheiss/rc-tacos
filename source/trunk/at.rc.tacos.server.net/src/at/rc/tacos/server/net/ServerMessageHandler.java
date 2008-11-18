@@ -147,6 +147,16 @@ public class ServerMessageHandler implements MessageHandler {
     }
 
     @Override
+    public void sessionIdle(MessageIoSession session, IdleStatus status) throws Exception {
+        // check if the idle session is not authenticated
+        if (!session.isLoggedIn()) {
+            log.info("Unauthenticated session is idle, closing");
+            session.closeOnFlush().awaitUninterruptibly(10000);
+        }
+        // TODO: close idle connections from web clients
+    }
+
+    @Override
     public void messageSent(MessageIoSession session, Message<Object> message) throws Exception {
         // do nothing
     }
@@ -159,16 +169,6 @@ public class ServerMessageHandler implements MessageHandler {
     @Override
     public void sessionCreated(MessageIoSession session) throws Exception {
         // do nothing
-    }
-
-    @Override
-    public void sessionIdle(MessageIoSession session, IdleStatus status) throws Exception {
-        // check if the idle session is not authenticated
-        if (!session.isLoggedIn()) {
-            log.info("Unauthenticated session is idle, closing");
-            session.closeOnFlush().awaitUninterruptibly(10000);
-        }
-        // TODO: close idle connections from web clients
     }
 
     @Override
