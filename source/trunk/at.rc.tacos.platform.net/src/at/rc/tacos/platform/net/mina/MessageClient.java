@@ -2,6 +2,7 @@ package at.rc.tacos.platform.net.mina;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.mina.core.future.ConnectFuture;
@@ -10,7 +11,10 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
 import org.apache.mina.filter.executor.OrderedThreadPoolExecutor;
+import org.apache.mina.filter.logging.MdcInjectionFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.Request;
@@ -34,13 +38,16 @@ import at.rc.tacos.platform.net.message.UpdateMessage;
  */
 public class MessageClient {
 
+    // the logging plugin
+    private Logger log = LoggerFactory.getLogger(MessageClient.class);
+
     // socket where to connect
     private final InetSocketAddress address;
 
     // the connector
     private NioSocketConnector connector;
     private IoSession session;
-    private ExecutorService filterExecutor = new OrderedThreadPoolExecutor();
+    private ExecutorService filterExecutor;
 
     /**
      * Creates a <code>MessageClient</code> instance.
@@ -79,8 +86,15 @@ public class MessageClient {
      */
     public void connect(IoHandler handler) throws Exception {
         connector = new NioSocketConnector();
+
+        MdcInjectionFilter mdcFilter = new MdcInjectionFilter();
+        connector.getFilterChain().addLast("mdcFilter", mdcFilter);
+
+        filterExecutor = new OrderedThreadPoolExecutor();
         connector.getFilterChain().addLast("threadPool", new ExecutorFilter(filterExecutor));
         connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new XmlCodecFactory()));
+        connector.getFilterChain().addLast("mdcFilter2", mdcFilter);
+
         connector.setHandler(handler);
 
         // try to open a connection to the server
@@ -156,6 +170,15 @@ public class MessageClient {
         if (session != null) {
             session.closeOnFlush();
             session = null;
+        }
+        // close the execution pool
+        if (filterExecutor != null) {
+            filterExecutor.shutdown();
+            try {
+                filterExecutor.awaitTermination(5000, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                log.warn("Failed to await the termination of the thread pool executor");
+            }
         }
         // release and close the connector
         if (connector != null) {
