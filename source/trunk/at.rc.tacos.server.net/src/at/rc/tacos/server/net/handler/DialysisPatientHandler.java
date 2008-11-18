@@ -9,7 +9,7 @@ import at.rc.tacos.platform.model.DialysisPatient;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.DialysisPatientService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -21,7 +21,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 	private DialysisPatientService dialysisPatientService;
 
 	@Override
-	public void add(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		List<DialysisPatient> patientList = message.getObjects();
 		// loop and try to add each patient object
 		for (DialysisPatient patient : patientList) {
@@ -35,7 +35,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		// get the params from the message
 		Map<String, String> params = message.getParams();
 
@@ -57,7 +57,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		List<DialysisPatient> patientList = message.getObjects();
 		// loop and try to remove each patient object
 		for (DialysisPatient patient : patientList) {
@@ -68,7 +68,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		List<DialysisPatient> patientList = message.getObjects();
 		// loop and try to update each patient object
 		for (DialysisPatient patient : patientList) {
@@ -79,7 +79,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<DialysisPatient> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

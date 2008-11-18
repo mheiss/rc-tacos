@@ -7,7 +7,7 @@ import at.rc.tacos.platform.model.Competence;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.CompetenceService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -20,7 +20,7 @@ public class CompetenceHandler implements Handler<Competence> {
 	private CompetenceService competenceService;
 
 	@Override
-	public void add(ServerIoSession session, Message<Competence> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Competence> message) throws ServiceException, SQLException {
 		List<Competence> competenceList = message.getObjects();
 		// loop and try to add each competence object
 		for (Competence competence : competenceList) {
@@ -34,7 +34,7 @@ public class CompetenceHandler implements Handler<Competence> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Competence> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Competence> message) throws ServiceException, SQLException {
 		// request the listing
 		List<Competence> compList = competenceService.listCompetences();
 		if (compList == null)
@@ -45,7 +45,7 @@ public class CompetenceHandler implements Handler<Competence> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Competence> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Competence> message) throws ServiceException, SQLException {
 		List<Competence> competenceList = message.getObjects();
 		// loop and try to remove each competence object
 		for (Competence competence : competenceList) {
@@ -56,7 +56,7 @@ public class CompetenceHandler implements Handler<Competence> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Competence> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Competence> message) throws ServiceException, SQLException {
 		List<Competence> competenceList = message.getObjects();
 		// loop and try to update each competence object
 		for (Competence competence : competenceList) {
@@ -67,7 +67,7 @@ public class CompetenceHandler implements Handler<Competence> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Competence> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<Competence> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

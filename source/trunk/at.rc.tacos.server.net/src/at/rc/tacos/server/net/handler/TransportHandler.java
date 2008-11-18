@@ -11,7 +11,7 @@ import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.TransportService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -24,7 +24,7 @@ public class TransportHandler implements Handler<Transport> {
 	private TransportService transportService;
 
 	@Override
-	public void add(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		List<Transport> transports = message.getObjects();
 		// loop and add the transports
 		for (Transport transport : transports) {
@@ -51,7 +51,7 @@ public class TransportHandler implements Handler<Transport> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		// get the params out of the message
 		Map<String, String> params = message.getParams();
 
@@ -271,12 +271,12 @@ public class TransportHandler implements Handler<Transport> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		throw new ServiceException("Removing of transports is not allowed, try to CANCEL or STORNO the transport");
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		List<Transport> transports = message.getObjects();
 		// loop and update the transports
 		for (Transport transport : transports) {
@@ -324,7 +324,7 @@ public class TransportHandler implements Handler<Transport> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Transport> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<Transport> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

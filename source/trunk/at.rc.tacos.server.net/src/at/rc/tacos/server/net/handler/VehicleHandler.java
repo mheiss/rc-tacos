@@ -7,7 +7,7 @@ import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.VehicleService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -19,7 +19,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 	private VehicleService vehicleService;
 
 	@Override
-	public void add(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		List<VehicleDetail> vehicleList = message.getObjects();
 		// loop and add the vehicles
 		for (VehicleDetail vehicle : vehicleList) {
@@ -31,7 +31,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		List<VehicleDetail> list = vehicleService.listVehicles();
 		if (list == null)
 			throw new ServiceException("Failed to list the vehicles");
@@ -40,7 +40,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		List<VehicleDetail> vehicleList = message.getObjects();
 		// loop and remove the vehicles
 		for (VehicleDetail vehicle : vehicleList) {
@@ -52,7 +52,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		List<VehicleDetail> vehicleList = message.getObjects();
 		// loop and update the vehicles
 		for (VehicleDetail vehicle : vehicleList) {
@@ -64,7 +64,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<VehicleDetail> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

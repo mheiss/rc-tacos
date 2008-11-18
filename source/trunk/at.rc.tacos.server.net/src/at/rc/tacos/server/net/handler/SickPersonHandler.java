@@ -9,7 +9,7 @@ import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.SickPersonService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -21,7 +21,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 	private SickPersonService sickPersonService;
 
 	@Override
-	public void add(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
 		List<SickPerson> sickPersons = message.getObjects();
 		// loop and add the new sick persons
 		for (SickPerson person : sickPersons) {
@@ -36,7 +36,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
 		// get the params out of the message
 		Map<String, String> params = message.getParams();
 
@@ -57,7 +57,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
 		List<SickPerson> sickPersons = message.getObjects();
 		// loop and remove the new sick persons
 		for (SickPerson person : sickPersons) {
@@ -69,7 +69,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
 		List<SickPerson> sickPersons = message.getObjects();
 		// loop and updated the new sick persons
 		for (SickPerson person : sickPersons) {
@@ -81,7 +81,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<SickPerson> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

@@ -1,12 +1,15 @@
 package at.rc.tacos.platform.net.mina;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.filter.executor.OrderedThreadPoolExecutor;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import at.rc.tacos.platform.net.Message;
@@ -24,8 +27,8 @@ import at.rc.tacos.platform.net.message.UpdateMessage;
  * to setup message instances like {@link AddMessage}, {@link UpdateMessage}, {@link RemoveMessage},
  * {@link GetMessage} or {@link ExecMessage} and send a {@link Request} to the server.
  * </p>
- * The response is either handled synchron by the {@link Request#synchronRequest(IoSession)}
- * method or asynchronous by the {@link IoHandler} instance. </p>
+ * The response is either handled synchron by the {@link Request#synchronRequest(IoSession)} method
+ * or asynchronous by the {@link IoHandler} instance. </p>
  * 
  * @author Michael
  */
@@ -37,6 +40,7 @@ public class MessageClient {
     // the connector
     private NioSocketConnector connector;
     private IoSession session;
+    private ExecutorService filterExecutor = new OrderedThreadPoolExecutor();
 
     /**
      * Creates a <code>MessageClient</code> instance.
@@ -68,16 +72,40 @@ public class MessageClient {
      * Initializes the {@link NioSocketConnector} and opens a connection to the remote host.
      * <p>
      * This method will block the current thread and wait until a connection has been established.
-     * When no connection has been established after {@link Request#TIMEOUT} (default to <i>3000ms</i>) then a
-     * {@link TimeoutException} will be thrown.
+     * When no connection has been established after {@link Request#TIMEOUT} (default to
+     * <i>3000ms</i>) then a {@link TimeoutException} will be thrown.
      * </p>
      * After a connection
      */
     public void connect(IoHandler handler) throws Exception {
         connector = new NioSocketConnector();
+        connector.getFilterChain().addLast("threadPool", new ExecutorFilter(filterExecutor));
         connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new XmlCodecFactory()));
         connector.setHandler(handler);
 
+        // try to open a connection to the server
+        ConnectFuture connectFuture = connector.connect(address);
+        connectFuture.awaitUninterruptibly(Request.TIMEOUT);
+        session = connectFuture.getSession();
+    }
+
+    /**
+     * Reconnects to the server using the created {@link NioSocketConnector} instance after a
+     * session has been terminated.
+     * <p>
+     * Plase note that this method <b> cannot </b> be called bevor a previous connection with
+     * {@link MessageClient#connector} has been established or after the connection has been
+     * manually terminated using {@link MessageClient#disconnect()}
+     * </p>
+     * 
+     * @throws IllegalStateException
+     *             if the connector is not valid
+     */
+    public void reconnect() {
+        // assert we have a connector
+        if (connector == null) {
+            throw new IllegalStateException("The connector is not valid, cannot reconnect");
+        }
         // try to open a connection to the server
         ConnectFuture connectFuture = connector.connect(address);
         connectFuture.awaitUninterruptibly(Request.TIMEOUT);
@@ -97,7 +125,7 @@ public class MessageClient {
      */
     public IoSession getSession() throws IllegalStateException {
         if (connector == null || session == null)
-            throw new IllegalStateException("No connection has been established");
+            throw new IllegalStateException("Cannot get a session befor connectiong to a server");
         if (!session.isConnected()) {
             throw new IllegalStateException("The current session has been terminated");
         }

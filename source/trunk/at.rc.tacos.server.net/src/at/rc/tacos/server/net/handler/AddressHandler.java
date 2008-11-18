@@ -12,7 +12,7 @@ import at.rc.tacos.platform.model.Address;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.AddressService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -33,7 +33,7 @@ public class AddressHandler implements Handler<Address> {
 	private Logger log = LoggerFactory.getLogger(AddressHandler.class);
 
 	@Override
-	public void add(ServerIoSession session, Message<Address> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Address> message) throws ServiceException, SQLException {
 		List<Address> addressList = message.getObjects();
 		// loop and try to add each address object
 		for (Address adr : addressList) {
@@ -49,7 +49,7 @@ public class AddressHandler implements Handler<Address> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Address> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Address> message) throws ServiceException, SQLException {
 		// get the params from the message
 		Map<String, String> params = message.getParams();
 
@@ -89,7 +89,7 @@ public class AddressHandler implements Handler<Address> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Address> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Address> message) throws ServiceException, SQLException {
 		List<Address> addressList = message.getObjects();
 		// loop and try to add each address object
 		for (Address adr : addressList) {
@@ -101,7 +101,7 @@ public class AddressHandler implements Handler<Address> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Address> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Address> message) throws ServiceException, SQLException {
 		List<Address> addressList = message.getObjects();
 		// loop and try to add each address object
 		for (Address adr : addressList) {
@@ -113,7 +113,7 @@ public class AddressHandler implements Handler<Address> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Address> message) throws SQLException, ServiceException {
+	public void execute(MessageIoSession session, Message<Address> message) throws SQLException, ServiceException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

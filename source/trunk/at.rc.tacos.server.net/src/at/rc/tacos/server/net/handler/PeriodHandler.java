@@ -9,7 +9,7 @@ import at.rc.tacos.platform.model.Period;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.PeriodsService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -21,7 +21,7 @@ public class PeriodHandler implements Handler<Period> {
 	private PeriodsService periodService;
 
 	@Override
-	public void add(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		List<Period> periodList = message.getObjects();
 		// loop and add the new objects
 		for (Period period : periodList) {
@@ -35,7 +35,7 @@ public class PeriodHandler implements Handler<Period> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		// get the params of the request
 		Map<String, String> params = message.getParams();
 
@@ -53,7 +53,7 @@ public class PeriodHandler implements Handler<Period> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		List<Period> periodList = message.getObjects();
 		// loop and remove the new objects
 		for (Period period : periodList) {
@@ -65,7 +65,7 @@ public class PeriodHandler implements Handler<Period> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		List<Period> periodList = message.getObjects();
 		// loop and update the new objects
 		for (Period period : periodList) {
@@ -77,7 +77,7 @@ public class PeriodHandler implements Handler<Period> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Period> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<Period> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

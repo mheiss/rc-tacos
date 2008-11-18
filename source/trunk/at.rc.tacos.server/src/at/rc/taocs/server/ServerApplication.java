@@ -8,7 +8,7 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.rc.tacos.platform.net.mina.ServerContext;
+import at.rc.tacos.platform.net.ServerContext;
 import at.rc.tacos.platform.services.DataSource;
 import at.rc.tacos.server.net.MinaMessageServer;
 import at.rc.taocs.server.properties.ServerProperties;

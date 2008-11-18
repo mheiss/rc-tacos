@@ -3,7 +3,7 @@ package at.rc.tacos.server.dbal;
 import java.util.HashMap;
 import java.util.Map;
 
-import at.rc.tacos.platform.services.ServiceFactory;
+import at.rc.tacos.platform.services.DbalServiceFactory;
 import at.rc.tacos.platform.services.dbal.AddressService;
 import at.rc.tacos.platform.services.dbal.CallerService;
 import at.rc.tacos.platform.services.dbal.CompetenceService;
@@ -45,7 +45,7 @@ import at.rc.tacos.server.dbal.sqlserver.VehicleDetailSqlService;
  * 
  * @author Michael
  */
-public class ServiceFactoryImpl implements ServiceFactory {
+public class ServiceFactoryImpl implements DbalServiceFactory {
 
 	private static final HashMap<String, Object> SERVICE_MAP = new HashMap<String, Object>();
 

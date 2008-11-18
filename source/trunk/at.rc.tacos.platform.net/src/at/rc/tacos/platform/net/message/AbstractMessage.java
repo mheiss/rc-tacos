@@ -14,7 +14,7 @@ import org.apache.mina.core.session.IoSession;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.Request;
 import at.rc.tacos.platform.net.handler.MessageType;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 /**
  * Common base class recommended for {@link Message} implementations.
@@ -27,7 +27,7 @@ import at.rc.tacos.platform.net.mina.ServerIoSession;
 public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
 
     // the attribute value in the parameter to store the command
-    public final static String ATTRIBUTE_COMMAND = ServerIoSession.ATTRIBUTE_PREFIX + "command";
+    public final static String ATTRIBUTE_COMMAND = MessageIoSession.ATTRIBUTE_PREFIX + "command";
 
     // the properties for the message
     protected String id;

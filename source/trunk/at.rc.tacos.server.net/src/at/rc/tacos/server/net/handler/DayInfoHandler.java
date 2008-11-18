@@ -10,7 +10,7 @@ import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.MessageType;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.DayInfoService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -24,7 +24,7 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	private DayInfoService dayInfoService;
 
 	@Override
-	public void add(ServerIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
 		// throw an execption because the 'add' command is not implemented
 		String command = MessageType.ADD.toString();
 		String handler = getClass().getSimpleName();
@@ -32,7 +32,7 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
 		// get the params from the message
 		Map<String, String> params = message.getParams();
 
@@ -58,7 +58,7 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
 		List<DayInfoMessage> dayInfoList = message.getObjects();
 		// loop and try to remove each day info message object
 		for (DayInfoMessage dayInfoMessage : dayInfoList) {
@@ -72,7 +72,7 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
 		// throw an execption because the 'update' command is not implemented
 		String command = MessageType.UPDATE.toString();
 		String handler = getClass().getSimpleName();
@@ -80,7 +80,7 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

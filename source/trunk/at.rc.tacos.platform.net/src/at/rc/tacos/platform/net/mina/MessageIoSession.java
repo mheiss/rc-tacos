@@ -32,7 +32,7 @@ import at.rc.tacos.platform.services.Service;
  * 
  * @author Michael
  */
-public class ServerIoSession implements IoSession {
+public class MessageIoSession implements IoSession {
 
 	// Attributes that are stored in the session
 	public static final String ATTRIBUTE_PREFIX = "at.rc.tacos.server.";
@@ -52,17 +52,17 @@ public class ServerIoSession implements IoSession {
 	 * @param ioSession
 	 *            the session to wrapp
 	 */
-	public ServerIoSession(IoSession ioSession) {
+	public MessageIoSession(IoSession ioSession) {
 		this.wrappedSession = ioSession;
 	}
 
 	/**
 	 * Wraper method to send a single object back to the client. This wrapper
 	 * will convert the object to a {@link List} and call
-	 * {@link ServerIoSession#write(Message, List)} to setup and send the
+	 * {@link MessageIoSession#write(Message, List)} to setup and send the
 	 * message.
 	 * 
-	 * @see ServerIoSession#write(Message, List)
+	 * @see MessageIoSession#write(Message, List)
 	 */
 	public void write(Message<? extends Object> originalMessage, Object object) {
 		write(originalMessage, Arrays.asList(object));
@@ -75,7 +75,7 @@ public class ServerIoSession implements IoSession {
 	 * sends the request.
 	 * <p>
 	 * To send a message to all connected clients use the
-	 * {@link ServerIoSession#writeBrodcast(Message, List)} method.
+	 * {@link MessageIoSession#writeBrodcast(Message, List)} method.
 	 * </p>
 	 * 
 	 * @param message
@@ -92,10 +92,10 @@ public class ServerIoSession implements IoSession {
 	/**
 	 * Wraper method to brodcast a single object to all connected clients. This
 	 * wrapper will convert the object to a {@link List} and call
-	 * {@link ServerIoSession#writeBrodcast(Message, List)} to setup and send
+	 * {@link MessageIoSession#writeBrodcast(Message, List)} to setup and send
 	 * the message.
 	 * 
-	 * @see ServerIoSession#writeBrodcast(Message, List)
+	 * @see MessageIoSession#writeBrodcast(Message, List)
 	 */
 	public void writeBrodcast(Message<? extends Object> originalMessage, Object object) {
 		writeBrodcast(originalMessage, Arrays.asList(object));
@@ -108,7 +108,7 @@ public class ServerIoSession implements IoSession {
 	 * connected an authenticated clients.
 	 * <p>
 	 * To send a only to the originator of the request use the
-	 * {@link ServerIoSession#write(Message, List)} method.
+	 * {@link MessageIoSession#write(Message, List)} method.
 	 * </p>
 	 * 
 	 * @param message
@@ -122,7 +122,7 @@ public class ServerIoSession implements IoSession {
 
 		// loop over all sessions and send the reply
 		for (Map.Entry<Long, IoSession> entry : wrappedSession.getService().getManagedSessions().entrySet()) {
-			ServerIoSession session = new ServerIoSession(entry.getValue());
+			MessageIoSession session = new MessageIoSession(entry.getValue());
 			// assert that the session is autenticated
 			// TODO: remove the comment below
 			// if (!session.isLoggedIn()) {
@@ -682,14 +682,14 @@ public class ServerIoSession implements IoSession {
 	/**
 	 * This is the default implementation of the mina write method.
 	 * <p>
-	 * Use the specialized {@link ServerIoSession#write(Message, List)} and the
-	 * {@link ServerIoSession#writeBrodcast(Message, List)} to create and send
+	 * Use the specialized {@link MessageIoSession#write(Message, List)} and the
+	 * {@link MessageIoSession#writeBrodcast(Message, List)} to create and send
 	 * valid messages.
 	 * </p>
 	 * 
 	 * @see IoSession#write(Object)
-	 * @see ServerIoSession#write(Message, List)
-	 * @see ServerIoSession#writeBrodcast(Message, List)
+	 * @see MessageIoSession#write(Message, List)
+	 * @see MessageIoSession#writeBrodcast(Message, List)
 	 */
 	@Override
 	public WriteFuture write(Object message) {
@@ -699,14 +699,14 @@ public class ServerIoSession implements IoSession {
 	/**
 	 * This is the default implementation of the mina write method.
 	 * <p>
-	 * Use the specialized {@link ServerIoSession#write(Message, List)} and the
-	 * {@link ServerIoSession#writeBrodcast(Message, List)} to create and send
+	 * Use the specialized {@link MessageIoSession#write(Message, List)} and the
+	 * {@link MessageIoSession#writeBrodcast(Message, List)} to create and send
 	 * valid messages.
 	 * </p>
 	 * 
 	 * @see IoSession#write(Object, SocketAddress)
-	 * @see ServerIoSession#write(Message, List)
-	 * @see ServerIoSession#writeBrodcast(Message, List)
+	 * @see MessageIoSession#write(Message, List)
+	 * @see MessageIoSession#writeBrodcast(Message, List)
 	 */
 	@Override
 	public WriteFuture write(Object message, SocketAddress destination) {
