@@ -9,7 +9,7 @@ import at.rc.tacos.platform.model.Link;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LinkService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -21,7 +21,7 @@ public class LinkHandler implements Handler<Link> {
 	private LinkService linkService;
 
 	@Override
-	public void add(ServerIoSession session, Message<Link> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Link> message) throws ServiceException, SQLException {
 		List<Link> linkList = message.getObjects();
 		// loop and try to add each object
 		for (Link link : linkList) {
@@ -34,7 +34,7 @@ public class LinkHandler implements Handler<Link> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Link> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Link> message) throws ServiceException, SQLException {
 		// get the params from the message
 		Map<String, String> params = message.getParams();
 
@@ -58,7 +58,7 @@ public class LinkHandler implements Handler<Link> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Link> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Link> message) throws ServiceException, SQLException {
 		List<Link> linkList = message.getObjects();
 		// loop and try to remove each object
 		for (Link link : linkList) {
@@ -70,7 +70,7 @@ public class LinkHandler implements Handler<Link> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Link> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Link> message) throws ServiceException, SQLException {
 		List<Link> linkList = message.getObjects();
 		// loop and try to update each object
 		for (Link link : linkList) {
@@ -82,7 +82,7 @@ public class LinkHandler implements Handler<Link> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Link> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<Link> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

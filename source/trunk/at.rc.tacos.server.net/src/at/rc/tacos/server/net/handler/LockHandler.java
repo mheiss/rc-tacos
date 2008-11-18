@@ -14,7 +14,7 @@ import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.MessageType;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
@@ -25,7 +25,7 @@ public class LockHandler implements Handler<Lock> {
 	private static Logger logger = LoggerFactory.getLogger(LockHandler.class);
 
 	@Override
-	public void add(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		// loop and add the locks
 		List<Lock> newLocks = message.getObjects();
 		for (Lock lock : newLocks) {
@@ -52,13 +52,13 @@ public class LockHandler implements Handler<Lock> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		// send the current list of locks
 		session.write(message, lockedList);
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		// loop and remove the locks
 		List<Lock> newLocks = message.getObjects();
 		for (Lock lock : newLocks) {
@@ -82,7 +82,7 @@ public class LockHandler implements Handler<Lock> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = MessageType.UPDATE.toString();
 		String handler = getClass().getSimpleName();
@@ -90,7 +90,7 @@ public class LockHandler implements Handler<Lock> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Lock> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

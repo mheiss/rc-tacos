@@ -7,7 +7,7 @@ import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LocationService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -19,7 +19,7 @@ public class LocationHandler implements Handler<Location> {
 	private LocationService locationService;
 
 	@Override
-	public void add(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		// loop and try to add each location
 		List<Location> locationList = message.getObjects();
 		for (Location location : locationList) {
@@ -35,7 +35,7 @@ public class LocationHandler implements Handler<Location> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		// query all location in the database
 		List<Location> locationList = locationService.listLocations();
 		if (locationList == null)
@@ -45,7 +45,7 @@ public class LocationHandler implements Handler<Location> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		// loop and try to remove each location
 		List<Location> locationList = message.getObjects();
 		for (Location location : locationList) {
@@ -57,7 +57,7 @@ public class LocationHandler implements Handler<Location> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		// loop and try to remove each location
 		List<Location> locationList = message.getObjects();
 		for (Location location : locationList) {
@@ -69,7 +69,7 @@ public class LocationHandler implements Handler<Location> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Location> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<Location> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

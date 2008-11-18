@@ -9,7 +9,7 @@ import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.ServiceTypeService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -21,7 +21,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 	private ServiceTypeService serviceTypeService;
 
 	@Override
-	public void add(ServerIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
 		List<ServiceType> serviceList = message.getObjects();
 		// loop and add the service object
 		for (ServiceType service : serviceList) {
@@ -36,7 +36,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
 		// get the params of the request
 		Map<String, String> params = message.getParams();
 
@@ -56,7 +56,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
 		List<ServiceType> serviceList = message.getObjects();
 		// loop and remove the service object
 		for (ServiceType service : serviceList) {
@@ -68,7 +68,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
 		List<ServiceType> serviceList = message.getObjects();
 		// loop and remove the service object
 		for (ServiceType service : serviceList) {
@@ -80,7 +80,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<ServiceType> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

@@ -7,7 +7,7 @@ import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.JobService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -19,7 +19,7 @@ public class JobHandler implements Handler<Job> {
 	private JobService jobService;
 
 	@Override
-	public void add(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Job> message) throws ServiceException, SQLException {
 		// loop and try to update each object
 		List<Job> jobList = message.getObjects();
 		for (Job job : jobList) {
@@ -33,7 +33,7 @@ public class JobHandler implements Handler<Job> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Job> message) throws ServiceException, SQLException {
 		// request a listing of all jobs in the database
 		List<Job> jobList = jobService.listJobs();
 		if (jobList == null)
@@ -43,7 +43,7 @@ public class JobHandler implements Handler<Job> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Job> message) throws ServiceException, SQLException {
 		List<Job> jobList = message.getObjects();
 		// loop and try to remove each object
 		for (Job job : jobList) {
@@ -54,7 +54,7 @@ public class JobHandler implements Handler<Job> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Job> message) throws ServiceException, SQLException {
 		List<Job> jobList = message.getObjects();
 		// loop and try to update each object
 		for (Job job : jobList) {
@@ -65,7 +65,7 @@ public class JobHandler implements Handler<Job> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Job> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<Job> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

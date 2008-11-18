@@ -1,9 +1,9 @@
 package at.rc.taocs.server;
 
+import at.rc.tacos.platform.net.ServerContext;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
-import at.rc.tacos.platform.net.mina.ServerContext;
 import at.rc.tacos.platform.services.DataSource;
-import at.rc.tacos.platform.services.ServiceFactory;
+import at.rc.tacos.platform.services.DbalServiceFactory;
 import at.rc.tacos.server.dbal.DataSourceImpl;
 import at.rc.tacos.server.dbal.ServiceFactoryImpl;
 import at.rc.tacos.server.net.HandlerFactoryImpl;
@@ -16,7 +16,7 @@ import at.rc.tacos.server.net.HandlerFactoryImpl;
 public class ServerContextImpl implements ServerContext {
 
 	private HandlerFactory handlerFactory;
-	private ServiceFactory serviceFactory;
+	private DbalServiceFactory serviceFactory;
 	private DataSource dataSource;
 	private int serverPort;
 
@@ -49,12 +49,12 @@ public class ServerContextImpl implements ServerContext {
 	}
 
 	/**
-	 * Returns the current implementation of the {@linkplain ServiceFactory}.
+	 * Returns the current implementation of the {@linkplain DbalServiceFactory}.
 	 * 
 	 * @return the service factory implementation.
 	 */
 	@Override
-	public ServiceFactory getServiceFactory() {
+	public DbalServiceFactory getDbalServiceFactory() {
 		return serviceFactory;
 	}
 

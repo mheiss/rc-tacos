@@ -13,7 +13,7 @@ import at.rc.tacos.platform.model.Login;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.AuthenticationService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -27,7 +27,7 @@ public class AuthenticationHandler implements Handler<Login> {
 	private AuthenticationService authenticationService;
 
 	@Override
-	public void add(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<Login> message) throws ServiceException, SQLException {
 		List<Login> loginList = message.getObjects();
 		// add the login records to the database
 		for (Login login : loginList) {
@@ -39,7 +39,7 @@ public class AuthenticationHandler implements Handler<Login> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<Login> message) throws ServiceException, SQLException {
 		// get the params from the message
 		Map<String, String> params = message.getParams();
 		List<Login> loginList = new ArrayList<Login>();
@@ -56,7 +56,7 @@ public class AuthenticationHandler implements Handler<Login> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<Login> message) throws ServiceException, SQLException {
 		List<Login> loginList = message.getObjects();
 		// loop and remove each login record
 		for (Login login : loginList) {
@@ -69,7 +69,7 @@ public class AuthenticationHandler implements Handler<Login> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<Login> message) throws ServiceException, SQLException {
 		List<Login> loginList = message.getObjects();
 		// loop and update each login record
 		for (Login login : loginList) {
@@ -88,7 +88,7 @@ public class AuthenticationHandler implements Handler<Login> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<Login> message) throws ServiceException, SQLException {
 		// get the params from the message
 		Map<String, String> params = message.getParams();
 		String command = params.get(AbstractMessage.ATTRIBUTE_COMMAND);
@@ -111,7 +111,7 @@ public class AuthenticationHandler implements Handler<Login> {
 	/**
 	 * Helper method to execute a login
 	 */
-	private void doLogin(ServerIoSession session, Message<Login> message) throws ServiceException, SQLException {
+	private void doLogin(MessageIoSession session, Message<Login> message) throws ServiceException, SQLException {
 		// try to get the login
 		Login login = message.getObjects().get(0);
 		if (login == null)
@@ -162,7 +162,7 @@ public class AuthenticationHandler implements Handler<Login> {
 	/**
 	 * Helper method to execute a logout
 	 */
-	private void doLogout(ServerIoSession session, Message<Login> message) throws ServiceException {
+	private void doLogout(MessageIoSession session, Message<Login> message) throws ServiceException {
 		// try to get the login
 		Login login = message.getObjects().get(0);
 		if (login == null)

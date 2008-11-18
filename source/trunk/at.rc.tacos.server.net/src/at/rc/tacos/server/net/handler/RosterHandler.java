@@ -10,7 +10,7 @@ import at.rc.tacos.platform.model.RosterEntry;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.RosterService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -23,7 +23,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 	private RosterService rosterService;
 
 	@Override
-	public void add(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		List<RosterEntry> rosterList = message.getObjects();
 		// loop and add the roster entries
 		for (RosterEntry entry : rosterList) {
@@ -37,7 +37,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		// get the params of the request
 		Map<String, String> params = message.getParams();
 
@@ -131,7 +131,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		List<RosterEntry> rosterList = message.getObjects();
 		// loop and remove the roster entries
 		for (RosterEntry entry : rosterList) {
@@ -143,7 +143,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		List<RosterEntry> rosterList = message.getObjects();
 		// loop and update the roster entries
 		for (RosterEntry entry : rosterList) {
@@ -155,7 +155,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

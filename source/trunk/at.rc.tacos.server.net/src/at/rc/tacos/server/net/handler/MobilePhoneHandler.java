@@ -7,7 +7,7 @@ import at.rc.tacos.platform.model.MobilePhoneDetail;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.MobilePhoneService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -19,7 +19,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 	private MobilePhoneService phoneService;
 
 	@Override
-	public void add(ServerIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
 		List<MobilePhoneDetail> phoneList = message.getObjects();
 		// loop and add the phones
 		for (MobilePhoneDetail phone : phoneList) {
@@ -33,7 +33,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
 		// query the mobile phones
 		List<MobilePhoneDetail> phoneList = phoneService.listMobilePhones();
 		if (phoneList == null)
@@ -43,7 +43,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
 		List<MobilePhoneDetail> phoneList = message.getObjects();
 		// loop and remove the phones
 		for (MobilePhoneDetail phone : phoneList) {
@@ -55,7 +55,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
 		List<MobilePhoneDetail> phoneList = message.getObjects();
 		// loop and update the phones
 		for (MobilePhoneDetail phone : phoneList) {
@@ -67,7 +67,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<MobilePhoneDetail> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

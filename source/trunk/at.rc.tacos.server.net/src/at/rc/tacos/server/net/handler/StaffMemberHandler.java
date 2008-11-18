@@ -10,7 +10,7 @@ import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.MessageType;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.StaffMemberService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -22,7 +22,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 	private StaffMemberService staffService;
 
 	@Override
-	public void add(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		List<StaffMember> staffList = message.getObjects();
 		// loop and add the new staff members
 		for (StaffMember member : staffList) {
@@ -35,7 +35,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		// get the params out of the request
 		Map<String, String> params = message.getParams();
 
@@ -123,7 +123,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		// throw an execption because the 'remove' command is not implemented
 		String command = MessageType.REMOVE.toString();
 		String handler = getClass().getSimpleName();
@@ -131,7 +131,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		List<StaffMember> staffList = message.getObjects();
 		// loop and update the staff members
 		for (StaffMember member : staffList) {
@@ -143,7 +143,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<StaffMember> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();

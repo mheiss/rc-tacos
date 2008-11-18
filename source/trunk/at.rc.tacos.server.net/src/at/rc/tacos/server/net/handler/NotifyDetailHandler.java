@@ -10,7 +10,7 @@ import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.MessageType;
 import at.rc.tacos.platform.net.message.AbstractMessage;
-import at.rc.tacos.platform.net.mina.ServerIoSession;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.CallerService;
 import at.rc.tacos.platform.services.exception.NoSuchCommandException;
@@ -22,7 +22,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 	private CallerService callerService;
 
 	@Override
-	public void add(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
+	public void add(MessageIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		List<CallerDetail> callerList = message.getObjects();
 		// loop and add the callers
 		for (CallerDetail detail : callerList) {
@@ -35,7 +35,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 	}
 
 	@Override
-	public void get(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
+	public void get(MessageIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		// the params
 		Map<String, String> params = message.getParams();
 
@@ -55,7 +55,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 	}
 
 	@Override
-	public void remove(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
+	public void remove(MessageIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = MessageType.REMOVE.toString();
 		String handler = getClass().getSimpleName();
@@ -63,7 +63,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 	}
 
 	@Override
-	public void update(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
+	public void update(MessageIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		List<CallerDetail> callerList = message.getObjects();
 		// loop and update the callers
 		for (CallerDetail detail : callerList) {
@@ -75,7 +75,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 	}
 
 	@Override
-	public void execute(ServerIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
+	public void execute(MessageIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();
