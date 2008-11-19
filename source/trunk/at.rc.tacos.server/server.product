@@ -3,6 +3,7 @@
 
 <product name="TacosServer" id="at.rc.tacos.server.product" application="at.rc.tacos.server.serverApp" version="1.0.0" useFeatures="true">
 
+
    <configIni use="default">
    </configIni>
 
@@ -17,12 +18,14 @@
 
    <windowImages/>
 
+
    <launcher name="tacosServer">
       <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
@@ -32,6 +35,7 @@
 
    <features>
       <feature id="at.rc.tacos.server_feature" version="1.0.0"/>
+      <feature id="org.eclipse.rcp" version="3.4.100.r341_v20080814-989JESIEdAciFYfkZZsBfSwQ2341"/>
    </features>
 
 </product>
