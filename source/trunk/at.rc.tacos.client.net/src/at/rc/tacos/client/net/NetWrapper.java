@@ -94,7 +94,7 @@ public class NetWrapper {
 	 * the recommended way to send a message asynchronous to the server.
 	 * <p>
 	 * If there is currently no valid session available then the message is
-	 * caches and will be send when the sessions is available again.
+	 * cached and will be send when the sessions is available again.
 	 * </p>
 	 * 
 	 * @param message
