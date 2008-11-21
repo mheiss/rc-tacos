@@ -20,6 +20,7 @@ import org.apache.mina.core.session.IoSessionConfig;
 import org.apache.mina.core.session.TrafficMask;
 import org.apache.mina.core.write.WriteRequest;
 
+import at.rc.tacos.platform.model.Login;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
@@ -27,7 +28,7 @@ import at.rc.tacos.platform.net.message.MessageBuilder;
 import at.rc.tacos.platform.services.Service;
 
 /**
- * Wrapped {@linkplain IoSession} implementation to provides common functions.
+ * Wrapped {@linkplain IoSession} implementation to provides common functions
  * that are needed.
  * 
  * @author Michael
@@ -37,7 +38,9 @@ public class MessageIoSession implements IoSession {
 	// Attributes that are stored in the session
 	public static final String ATTRIBUTE_PREFIX = "at.rc.tacos.server.";
 
-	private static final String ATTRIBUTE_USER = ATTRIBUTE_PREFIX + "user";
+	private static final String ATTRIBUTE_USERNAME = ATTRIBUTE_PREFIX + "username";
+
+	private static final String ATTRIBUTE_LOGIN = ATTRIBUTE_PREFIX + "login";
 
 	private static final String ATTRIBUTE_LOGIN_TIME = ATTRIBUTE_PREFIX + "login-time";
 
@@ -78,7 +81,7 @@ public class MessageIoSession implements IoSession {
 	 * {@link MessageIoSession#writeBrodcast(Message, List)} method.
 	 * </p>
 	 * 
-	 * @param message
+	 * @param originalMessage
 	 *            the original received message from the client
 	 * @param objects
 	 *            the list of objects to send the message object to send
@@ -111,7 +114,7 @@ public class MessageIoSession implements IoSession {
 	 * {@link MessageIoSession#write(Message, List)} method.
 	 * </p>
 	 * 
-	 * @param message
+	 * @param originalMessage
 	 *            the original received message from the client
 	 * @param objects
 	 *            the list of objects to send the message object to send
@@ -142,12 +145,12 @@ public class MessageIoSession implements IoSession {
 	 * in the response.
 	 * </p>
 	 * 
-	 * @param message
+	 * @param originalMessage
 	 *            the original received message from the client
-	 * @param errorMessage
+	 * @param errorMessages
 	 *            the list of errors that occured
-	 * @see MessageBuilder#buildErrorMessage(Message, List) for more details
-	 *      about the build message
+	 * @see MessageBuilder#buildErrorMessage(Message, String...) for more
+	 *      details about the build message
 	 */
 	public void writeError(Message<? extends Object> originalMessage, String... errorMessages) {
 		// build the message
@@ -157,14 +160,41 @@ public class MessageIoSession implements IoSession {
 	}
 
 	/**
-	 * Sets the session as authenticated and stores the user information.
+	 * Sets the current session as authenticated and stores the {@link Login}
+	 * information in the session.
 	 * 
-	 * @param username
-	 *            the username
+	 * @param loginInfomation
+	 *            the information about the user to store
 	 */
-	public void setLoggedIn(String username) {
+	public void setLoggedIn(Login loginInfomation) {
 		setAttribute(ATTRIBUTE_LOGIN_TIME, Calendar.getInstance().getTimeInMillis());
-		setAttribute(ATTRIBUTE_USER, username);
+		setAttribute(ATTRIBUTE_LOGIN, loginInfomation);
+		setAttribute(ATTRIBUTE_USERNAME, loginInfomation.getUsername());
+	}
+
+	/**
+	 * Returns the {@link Login} instance that is stored in this session. If
+	 * this session is currently <b>not</b> authenticated then this method will
+	 * return <code>null</code>
+	 * 
+	 * @return the username or null
+	 * @see #isLoggedIn()
+	 * @see #getUsername()
+	 */
+	public Login getLogin() {
+		return isLoggedIn() ? (Login) wrappedSession.getAttribute(ATTRIBUTE_LOGIN) : null;
+	}
+
+	/**
+	 * Returns the username of this session. If this session is currently
+	 * unauthenticated then this method will return <code>null</code>
+	 * 
+	 * @return the username or null
+	 * @see #isLoggedIn()
+	 * @see #getLogin()
+	 */
+	public String getUsername() {
+		return isLoggedIn() ? (String) wrappedSession.getAttribute(ATTRIBUTE_USERNAME) : null;
 	}
 
 	/**
@@ -173,7 +203,7 @@ public class MessageIoSession implements IoSession {
 	 * @return true if the user is logged authenticated.
 	 */
 	public boolean isLoggedIn() {
-		return wrappedSession.containsAttribute(ATTRIBUTE_USER);
+		return wrappedSession.containsAttribute(ATTRIBUTE_LOGIN);
 	}
 
 	/**
@@ -207,7 +237,8 @@ public class MessageIoSession implements IoSession {
 	 * Resets the current state of the session and removes all attributes.
 	 */
 	public void reinitialize() {
-		removeAttribute(ATTRIBUTE_USER);
+		removeAttribute(ATTRIBUTE_LOGIN);
+		removeAttribute(ATTRIBUTE_USERNAME);
 		removeAttribute(ATTRIBUTE_LOGIN_TIME);
 	}
 

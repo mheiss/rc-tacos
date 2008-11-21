@@ -7,68 +7,38 @@ package at.rc.tacos.platform.model;
  */
 public class Lock {
 
-	private String contentId;
-	private String lockedId;
+	private int objectId;
+	private String clazz;
 	private String lockedBy;
 	private boolean hasLock;
 
 	/**
-	 * Default class constructor
-	 */
-	public Lock() {
-	}
-
-	/**
-	 * Class constructor to set up a new lock object using a string value to
-	 * identify a locked entry
+	 * Class constructor to set up a new lock object.
 	 * 
-	 * @param contentId
-	 *            the type of the object to lock
+	 * @param objectId
+	 *            the id of the object to create the lock
+	 * @param clazz
+	 *            the clazz to create the lock for
 	 * @param lockedBy
-	 *            the username who owns the lock
-	 * @param lockedId
-	 *            the id of the element to lock
-	 * @param hasLock
-	 *            a flag indication whether the lock is valid or not
+	 *            the username to identify who owns the lock
 	 */
-	public Lock(String contentId, String lockedBy, String lockedId, boolean hasLock) {
-		this.contentId = contentId;
+	public Lock(int objectId, Class<?> clazz, String lockedBy) {
+		this.objectId = objectId;
+		this.clazz = clazz.getName();
 		this.lockedBy = lockedBy;
-		this.lockedId = lockedId;
-		this.hasLock = hasLock;
-	}
-
-	/**
-	 * Class constructor to set up a new lock object using a integer value to
-	 * identify a locked entry
-	 * 
-	 * @param contentId
-	 *            the type of the object to lock
-	 * @param lockedBy
-	 *            the username who owns the lock
-	 * @param lockedId
-	 *            the id of the element to lock
-	 * @param hasLock
-	 *            a flag indication whether the lock is valid or not
-	 */
-	public Lock(String contentId, String lockedBy, int lockedId, boolean hasLock) {
-		this.contentId = contentId;
-		this.lockedBy = lockedBy;
-		this.lockedId = String.valueOf(lockedId);
-		this.hasLock = hasLock;
 	}
 
 	// METHODS
 	/**
-	 * Returns a human readable version of the lock objec
+	 * Returns a human readable string
 	 */
 	public String toString() {
-		return "Lock for " + contentId + ":" + lockedId + " - " + lockedBy + " -  status:" + hasLock;
+		return "Locked " + clazz + ":" + objectId + " owner " + lockedBy;
 	}
 
 	/**
-	 * Returns the calculated hash code based on the contentId and the lockedId.<br>
-	 * Two logins have the same hash code if the username is the same.
+	 * Returns the calculated hash code based on the {@link Lock#objectId} and
+	 * the {@link Lock#clazz}.
 	 * 
 	 * @return the calculated hash code
 	 */
@@ -76,15 +46,17 @@ public class Lock {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
-		result = prime * result + ((lockedId == null) ? 0 : lockedId.hashCode());
+		result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+		result = prime * result + objectId;
 		return result;
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two locks are equal if, and only if, the content id and the lockedId is
-	 * the same.
+	 * Returns whether the objects are equal or not.
+	 * <p>
+	 * Two locks are equal if, and only if, the {@link Lock#objectId} and the
+	 * {@link Lock#clazz} is the same.
+	 * </p>
 	 * 
 	 * @return true if the lock is the same otherwise false.
 	 */
@@ -96,29 +68,33 @@ public class Lock {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final Lock other = (Lock) obj;
-		if (contentId == null) {
-			if (other.contentId != null)
+		Lock other = (Lock) obj;
+		if (clazz == null) {
+			if (other.clazz != null)
 				return false;
 		}
-		else if (!contentId.equalsIgnoreCase(other.contentId))
+		else if (!clazz.equals(other.clazz))
 			return false;
-		if (lockedId == null) {
-			if (other.lockedId != null)
-				return false;
-		}
-		else if (!lockedId.equalsIgnoreCase(other.lockedId))
+		if (objectId != other.objectId)
 			return false;
 		return true;
 	}
 
 	// GETTERS AND SETTERS
-	public String getContentId() {
-		return contentId;
+	public int getObjectId() {
+		return objectId;
 	}
 
-	public void setContentId(String contentId) {
-		this.contentId = contentId;
+	public void setObjectId(int objectId) {
+		this.objectId = objectId;
+	}
+
+	public String getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(String clazz) {
+		this.clazz = clazz;
 	}
 
 	public String getLockedBy() {
@@ -127,14 +103,6 @@ public class Lock {
 
 	public void setLockedBy(String lockedBy) {
 		this.lockedBy = lockedBy;
-	}
-
-	public String getLockedId() {
-		return lockedId;
-	}
-
-	public void setLockedId(String lockedId) {
-		this.lockedId = lockedId;
 	}
 
 	public boolean isHasLock() {

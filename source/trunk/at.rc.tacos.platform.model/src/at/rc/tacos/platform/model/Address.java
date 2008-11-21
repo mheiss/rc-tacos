@@ -177,7 +177,7 @@ public class Address {
 	/**
 	 * Returns the street number
 	 * 
-	 * @return
+	 * @return streetnumber
 	 */
 	public String getStreetNumber() {
 		return streetNumber;

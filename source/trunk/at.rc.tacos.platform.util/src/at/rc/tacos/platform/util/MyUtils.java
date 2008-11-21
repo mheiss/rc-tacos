@@ -103,7 +103,7 @@ public class MyUtils {
 	 * The parsing string must be specified <br>
 	 * When the string is not parseable the mehtod will return -1
 	 * 
-	 * @param soureString
+	 * @param time
 	 *            the string to parse
 	 * @param dateFormat
 	 *            the format of the date

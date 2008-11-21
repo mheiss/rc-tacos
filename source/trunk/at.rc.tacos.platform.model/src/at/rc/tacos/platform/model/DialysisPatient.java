@@ -1,5 +1,6 @@
 package at.rc.tacos.platform.model;
 
+import at.rc.tacos.platform.iface.IKindOfTransport;
 import at.rc.tacos.platform.util.MyUtils;
 
 /**
@@ -478,8 +479,8 @@ public class DialysisPatient {
 	/**
 	 * Sets the name of the street where tha patient should be carried to.
 	 * 
-	 * @param the
-	 *            name of the street
+	 * @param toStreet
+	 *            the name of the street
 	 */
 	public void setToStreet(String toStreet) {
 		this.toStreet = toStreet;
@@ -529,7 +530,7 @@ public class DialysisPatient {
 	/**
 	 * Sets the flag to indicate that this transport has a assistant person
 	 * 
-	 * @param assistanPerson
+	 * @param assistantPerson
 	 *            true if the transport has one
 	 */
 	public void setAssistantPerson(boolean assistantPerson) {
@@ -549,7 +550,7 @@ public class DialysisPatient {
 	/**
 	 * Shedules the transport of the dialyse patient for Tuesday
 	 * 
-	 * @param monday
+	 * @param tuesday
 	 *            true if the transport should be sheduled for the day
 	 */
 	public void setTuesday(boolean tuesday) {
@@ -559,7 +560,7 @@ public class DialysisPatient {
 	/**
 	 * Shedules the transport of the dialyse patient for Wednesday
 	 * 
-	 * @param monday
+	 * @param wednesday
 	 *            true if the transport should be sheduled for the day
 	 */
 	public void setWednesday(boolean wednesday) {
@@ -569,7 +570,7 @@ public class DialysisPatient {
 	/**
 	 * Shedules the transport of the dialyse patient for Thursday
 	 * 
-	 * @param monday
+	 * @param thursday
 	 *            true if the transport should be sheduled for the day
 	 */
 	public void setThursday(boolean thursday) {
@@ -579,7 +580,7 @@ public class DialysisPatient {
 	/**
 	 * Shedules the transport of the dialyse patient for Friday
 	 * 
-	 * @param monday
+	 * @param friday
 	 *            true if the transport should be sheduled for the day
 	 */
 	public void setFriday(boolean friday) {
@@ -589,7 +590,7 @@ public class DialysisPatient {
 	/**
 	 * Shedules the transport of the dialyse patient for Saturday
 	 * 
-	 * @param monday
+	 * @param saturday
 	 *            true if the transport should be sheduled for the day
 	 */
 	public void setSaturday(boolean saturday) {
@@ -599,7 +600,7 @@ public class DialysisPatient {
 	/**
 	 * Shedules the transport of the dialyse patient for Sunday
 	 * 
-	 * @param monday
+	 * @param sunday
 	 *            true if the transport should be sheduled for the day
 	 */
 	public void setSunday(boolean sunday) {

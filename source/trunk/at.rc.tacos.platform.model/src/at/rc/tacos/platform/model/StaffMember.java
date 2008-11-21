@@ -271,7 +271,7 @@ public class StaffMember {
 	/**
 	 * Sets the date of the birthday of this patient
 	 * 
-	 * @param sex
+	 * @param birhtday
 	 *            the date of birth
 	 */
 	public void setBirthday(String birhtday) {
@@ -291,7 +291,7 @@ public class StaffMember {
 	 * Sets a flag to indicate that the patient is male. Set this to false for
 	 * female.
 	 * 
-	 * @param male
+	 * @param sex
 	 *            true if the patient is male, otherwise false
 	 */
 	public void setMale(boolean sex) {

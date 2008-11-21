@@ -212,7 +212,7 @@ public class SickPerson {
 	 * Sets a flag to indicate that the patient is male. Set this to false for
 	 * female.
 	 * 
-	 * @param male
+	 * @param sex
 	 *            true if the patient is male, otherwise false
 	 */
 	public void setMale(boolean sex) {

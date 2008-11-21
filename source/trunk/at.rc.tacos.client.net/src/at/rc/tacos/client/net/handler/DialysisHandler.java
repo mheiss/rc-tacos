@@ -16,7 +16,8 @@ import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 /**
- * The dialysis handler manages the localy cached dialysis objects
+ * The <code>DialysisHandler</code> handles the locally chached
+ * {@link DialysisPatient} instances.
  * 
  * @author Michael
  */
@@ -43,7 +44,6 @@ public class DialysisHandler implements Handler<DialysisPatient> {
 			dialysisList.clear();
 			dialysisList.addAll(message.getObjects());
 		}
-
 	}
 
 	@Override
@@ -56,17 +56,20 @@ public class DialysisHandler implements Handler<DialysisPatient> {
 	@Override
 	public void update(MessageIoSession session, Message<DialysisPatient> message) throws SQLException, ServiceException {
 		synchronized (dialysisList) {
-			for (DialysisPatient patient : message.getObjects()) {
-				int index = dialysisList.indexOf(patient);
-				dialysisList.set(index, patient);
+			for (DialysisPatient updatedDialysisPatient : message.getObjects()) {
+				if (!dialysisList.contains(updatedDialysisPatient))
+					continue;
+				int index = dialysisList.indexOf(updatedDialysisPatient);
+				dialysisList.set(index, updatedDialysisPatient);
 			}
 		}
 	}
 
 	/**
-	 * Converts the list to an array
+	 * Returns a new array containing the managed <code>DialysisPatient</code>
+	 * instances.
 	 * 
-	 * @return the list as a array
+	 * @return an array containing the <code>DialysisPatient</code> instances.
 	 */
 	public DialysisPatient[] toArray() {
 		return dialysisList.toArray(new DialysisPatient[dialysisList.size()]);

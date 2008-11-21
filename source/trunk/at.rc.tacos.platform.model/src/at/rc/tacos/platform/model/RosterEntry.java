@@ -36,7 +36,7 @@ public class RosterEntry {
 	 * 
 	 * @param staffMember
 	 *            the person for this service
-	 * @param servicetype
+	 * @param serviceType
 	 *            the employee status
 	 * @param job
 	 *            of this person only for this roster entry
@@ -57,8 +57,6 @@ public class RosterEntry {
 	}
 
 	/**
-	 * @param rosterId
-	 *            the identification of the entry
 	 * @param staffMember
 	 *            the staff member for this entry
 	 * @param plannedStartOfWork
@@ -73,7 +71,7 @@ public class RosterEntry {
 	 *            the roster station of
 	 * @param job
 	 *            of this entry
-	 * @param servicetype
+	 * @param serviceType
 	 *            the service type of this entry
 	 * @param rosterNotes
 	 *            the notes for this roster
@@ -120,8 +118,6 @@ public class RosterEntry {
 	 * Returns wheter or not the given roster entries are equal.<br>
 	 * Two <code>RosterEntry</code> objects are equal if the have the same
 	 * roster entry id.
-	 * 
-	 * @param true if the roster entries are equal.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -337,7 +333,7 @@ public class RosterEntry {
 	/**
 	 * Sets the service type for this staff member
 	 * 
-	 * @param servicetype
+	 * @param serviceType
 	 *            the service type to set
 	 */
 	public void setServicetype(ServiceType serviceType) {
@@ -405,7 +401,7 @@ public class RosterEntry {
 	/**
 	 * Sets the name of the staff member who created the entry.
 	 * 
-	 * @param username
+	 * @param createdByUser
 	 *            the username of the creator
 	 */
 	public void setCreatedByUsername(String createdByUser) {

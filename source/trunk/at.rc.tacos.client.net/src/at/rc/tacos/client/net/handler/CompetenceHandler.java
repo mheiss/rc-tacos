@@ -17,7 +17,8 @@ import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 /**
- * The competence handler manages the localy cached competence objects
+ * The <code>CompetenceHandler</code> manages the locally chached
+ * {@link Competence} instances.
  * 
  * @author Michael
  */
@@ -58,18 +59,18 @@ public class CompetenceHandler implements Handler<Competence> {
 	@Override
 	public void update(MessageIoSession session, Message<Competence> message) throws SQLException, ServiceException {
 		synchronized (competenceList) {
-			for (Competence newCompetence : message.getObjects()) {
-				if (!competenceList.contains(newCompetence))
+			for (Competence updatedCompetence : message.getObjects()) {
+				if (!competenceList.contains(updatedCompetence))
 					continue;
-				int index = competenceList.indexOf(newCompetence);
-				competenceList.set(index, newCompetence);
+				int index = competenceList.indexOf(updatedCompetence);
+				competenceList.set(index, updatedCompetence);
 			}
-
 		}
 	}
 
 	/**
-	 * Returns the first competence that matches the given name.
+	 * Returns the first instance that exactly matches the
+	 * {@link Competence#getCompetenceName()}
 	 * 
 	 * @param competenceName
 	 *            name the name of the competence to get
@@ -90,9 +91,10 @@ public class CompetenceHandler implements Handler<Competence> {
 	}
 
 	/**
-	 * Converts the list to an array
+	 * Returns a new array containing the managed <code>Competence</code>
+	 * instances.
 	 * 
-	 * @return the list as a array
+	 * @return an array containing the <code>Conpetence</code> instances.
 	 */
 	public Competence[] toArray() {
 		return competenceList.toArray(new Competence[competenceList.size()]);

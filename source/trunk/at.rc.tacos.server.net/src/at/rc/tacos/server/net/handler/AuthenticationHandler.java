@@ -134,7 +134,7 @@ public class AuthenticationHandler implements Handler<Login> {
 			login.setWebClient(isWebClient);
 			login.setLoggedIn(true);
 			// set the login to true
-			session.setLoggedIn(login.getUsername());
+			session.setLoggedIn(login);
 			logger.info("Authenticating session " + session + " -> " + login.getUsername());
 		}
 		else if (loginResult == AuthenticationService.LOGIN_FAILED) {

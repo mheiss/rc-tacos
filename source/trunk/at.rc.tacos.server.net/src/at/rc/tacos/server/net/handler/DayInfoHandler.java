@@ -59,6 +59,14 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 
 	@Override
 	public void remove(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
+		// throw an execption because the 'remove' command is not implemented
+		String command = MessageType.REMOVE.toString();
+		String handler = getClass().getSimpleName();
+		throw new NoSuchCommandException(handler, command);
+	}
+
+	@Override
+	public void update(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
 		List<DayInfoMessage> dayInfoList = message.getObjects();
 		// loop and try to remove each day info message object
 		for (DayInfoMessage dayInfoMessage : dayInfoList) {
@@ -69,14 +77,6 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 			dayInfoMessage.setDirty(false);
 		}
 		session.writeBrodcast(message, dayInfoList);
-	}
-
-	@Override
-	public void update(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
-		// throw an execption because the 'update' command is not implemented
-		String command = MessageType.UPDATE.toString();
-		String handler = getClass().getSimpleName();
-		throw new NoSuchCommandException(handler, command);
 	}
 
 	@Override

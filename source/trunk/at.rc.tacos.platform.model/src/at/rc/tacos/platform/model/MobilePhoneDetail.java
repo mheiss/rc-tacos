@@ -90,8 +90,7 @@ public class MobilePhoneDetail {
 	 * Returns the internal identification number of the mobile phone. The id is
 	 * a internal value in the database to identify the phone.
 	 * 
-	 * @param id
-	 *            the uniqe id
+	 * @return id the uniqe id
 	 */
 	public int getId() {
 		return id;
@@ -133,7 +132,7 @@ public class MobilePhoneDetail {
 	 * double digit distinct number.<br>
 	 * Example: BM01
 	 * 
-	 * @param mobilePhoneId
+	 * @param mobilePhoneName
 	 *            the mobilePhoneId to set
 	 */
 	public void setMobilePhoneName(String mobilePhoneName) {

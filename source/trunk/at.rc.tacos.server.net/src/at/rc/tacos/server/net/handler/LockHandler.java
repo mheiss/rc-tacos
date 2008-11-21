@@ -26,24 +26,26 @@ public class LockHandler implements Handler<Lock> {
 
 	@Override
 	public void add(MessageIoSession session, Message<Lock> message) throws ServiceException, SQLException {
-		// loop and add the locks
 		List<Lock> newLocks = message.getObjects();
-		for (Lock lock : newLocks) {
-			// check if the list already contains the lock
-			if (lockedList.contains(lock)) {
-				int index = lockedList.indexOf(lock);
-				logger.debug("The lock is existing, editing is denied");
-				// set the username and return the message
-				Lock existingLock = lockedList.get(index);
-				lock.setLockedBy(existingLock.getLockedBy());
-			}
-			else {
-				logger.debug("The object is not locked, editing is granted");
-				// set the lock for this user
-				lock.setHasLock(true);
-				// TODO: set the current username as the owner of the lock
-				synchronized (lockedList) {
-					lockedList.listIterator().add(lock);
+		// loop and add the locks
+		synchronized (lockedList) {
+			for (Lock lock : newLocks) {
+				// check if the list already contains the lock
+				if (lockedList.contains(lock)) {
+					int index = lockedList.indexOf(lock);
+					logger.debug("The lock is existing, editing is denied");
+					// set the username and return the message
+					Lock existingLock = lockedList.get(index);
+					lock.setLockedBy(existingLock.getLockedBy());
+				}
+				else {
+					logger.debug("The object is not locked, editing is granted");
+					// set the lock for this user
+					lock.setHasLock(true);
+					lock.setLockedBy(session.getUsername());
+					synchronized (lockedList) {
+						lockedList.listIterator().add(lock);
+					}
 				}
 			}
 		}
@@ -61,10 +63,10 @@ public class LockHandler implements Handler<Lock> {
 	public void remove(MessageIoSession session, Message<Lock> message) throws ServiceException, SQLException {
 		// loop and remove the locks
 		List<Lock> newLocks = message.getObjects();
-		for (Lock lock : newLocks) {
-			logger.debug("Request to remove the lock:" + lock);
-			// remove the lock from the list
-			synchronized (lockedList) {
+		synchronized (lockedList) {
+			for (Lock lock : newLocks) {
+				logger.debug("Request to remove the lock:" + lock);
+				// remove the lock from the list
 				ListIterator<Lock> iter = lockedList.listIterator();
 				while (iter.hasNext()) {
 					Lock listLock = iter.next();
