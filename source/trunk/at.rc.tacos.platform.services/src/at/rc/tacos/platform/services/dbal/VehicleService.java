@@ -30,7 +30,7 @@ public interface VehicleService {
 	/**
 	 * Remove the vehicle from the database
 	 * 
-	 * @param id
+	 * @param vehicle
 	 *            the id of the vehicle to remve
 	 * @return true if the remove was successfull
 	 */

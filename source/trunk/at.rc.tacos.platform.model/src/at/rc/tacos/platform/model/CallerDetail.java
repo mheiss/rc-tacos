@@ -28,8 +28,6 @@ public class CallerDetail {
 	 *            the name of the caller
 	 * @param callerTelephoneNumber
 	 *            the telephone number
-	 * @param callerNotes
-	 *            notes taken from the caller
 	 */
 	public CallerDetail(String callerName, String callerTelephoneNumber) {
 		setCallerName(callerName);

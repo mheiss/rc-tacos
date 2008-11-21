@@ -13,7 +13,7 @@ public class SystemMessage {
 	/**
 	 * Default class constructor to create a new message
 	 * 
-	 * @param summary
+	 * @param message
 	 *            the message
 	 */
 	public SystemMessage(String message) {

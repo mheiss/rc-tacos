@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import at.rc.tacos.platform.iface.IDirectness;
+import at.rc.tacos.platform.iface.IKindOfTransport;
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.iface.ITransportPriority;
 import at.rc.tacos.platform.iface.ITransportStatus;
@@ -108,19 +109,15 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	 * 
 	 * @param fromStreet
 	 *            the street to get the transport
-	 * @param fromNumber
-	 *            the house number
 	 * @param fromCity
 	 *            the city to get the transport
-	 * @param responsibleStation
-	 *            the station that is responsible
 	 * @param dateOfTransport
 	 *            the date for the transport
 	 * @param plannedStartOfTransport
 	 *            the starting time of the transport
 	 * @param transportPriority
 	 *            the priority of the transport
-	 * @param directness
+	 * @param direction
 	 *            the direction of the transport
 	 */
 	public Transport(String fromStreet, String fromCity, Location planedLocation, long dateOfTransport, long plannedStartOfTransport, String transportPriority, int direction) {
@@ -136,7 +133,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	/**
 	 * Returns a new (copied) transport
 	 * 
-	 * @param Transport
+	 * @param t1
 	 *            the transport to copy
 	 */
 	public final static Transport copyTransport(Transport t1) {
@@ -395,7 +392,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	 * Two <code>Transport</code> objects are equal if they have the same
 	 * transport id.
 	 * 
-	 * @param true if the transports are equal.
+	 * @return true if the transports are equal.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -452,8 +449,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * Info about the source
+	 * ------------------------------------------ Info about the source
 	 * --------------------------------------------
 	 */
 	/**
@@ -464,8 +460,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * transport info
+	 * ------------------------------------------ transport info
 	 * --------------------------------------------
 	 */
 	/**
@@ -537,8 +532,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * patient info
+	 * ------------------------------------------ patient info
 	 * --------------------------------------------
 	 */
 	/**
@@ -595,8 +589,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * schedule information
+	 * ------------------------------------------ schedule information
 	 * --------------------------------------------
 	 */
 	/**
@@ -637,8 +630,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * alarming time stamps
+	 * ------------------------------------------ alarming time stamps
 	 * --------------------------------------------
 	 */
 	/**
@@ -714,8 +706,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * general information
+	 * ------------------------------------------ general information
 	 * --------------------------------------------
 	 */
 	/**
@@ -776,8 +767,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * notification info
+	 * ------------------------------------------ notification info
 	 * --------------------------------------------
 	 */
 	/**
@@ -855,8 +845,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * vehicle and staff assigned
+	 * ------------------------------------------ vehicle and staff assigned
 	 * --------------------------------------------
 	 */
 	/**
@@ -867,8 +856,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * status messages
+	 * ------------------------------------------ status messages
 	 * --------------------------------------------
 	 */
 	/**
@@ -881,8 +869,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------- 
-	 * PROPERTIES OF A TRANSPORT
+	 * ------------------------------------- PROPERTIES OF A TRANSPORT
 	 * -------------------------------------
 	 */
 	/**
@@ -911,7 +898,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	 * indicates that the transport is cancled and the number is free to reuse
 	 * again.
 	 * 
-	 * @param number
+	 * @param transportNumber
 	 *            the number of the transport
 	 */
 	public void setTransportNumber(int transportNumber) {
@@ -919,8 +906,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * Info about the source
+	 * ------------------------------------------ Info about the source
 	 * --------------------------------------------
 	 */
 	/**
@@ -932,8 +918,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * transport info
+	 * ------------------------------------------ transport info
 	 * --------------------------------------------
 	 */
 	/**
@@ -1005,7 +990,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	/**
 	 * @param direction
 	 *            the directness to set
-	 * @see IDirection
+	 * @see IDirectness
 	 */
 	public void setDirection(int direction) {
 		if (direction < 0 || direction > 6)
@@ -1014,8 +999,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * patient info
+	 * ------------------------------------------ patient info
 	 * --------------------------------------------
 	 */
 	/**
@@ -1037,7 +1021,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	/**
 	 * Sets the flag to indicate that this transport has a assistant person
 	 * 
-	 * @param assistanPerson
+	 * @param assistantPerson
 	 *            true if the transport has one
 	 */
 	public void setAssistantPerson(boolean assistantPerson) {
@@ -1061,8 +1045,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * schedule information
+	 * ------------------------------------------ schedule information
 	 * --------------------------------------------
 	 */
 	/**
@@ -1114,8 +1097,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * alarming time tamps
+	 * ------------------------------------------ alarming time tamps
 	 * --------------------------------------------
 	 */
 	/**
@@ -1199,15 +1181,14 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * general informations
+	 * ------------------------------------------ general informations
 	 * --------------------------------------------
 	 */
 	/**
 	 * Sets the planned location for the transport.<br>
 	 * The planned location must not do not have to be the real location
 	 * 
-	 * @param responsibleStation
+	 * @param planedLocation
 	 *            the responsibleStation to set
 	 */
 	public void setPlanedLocation(Location planedLocation) {
@@ -1234,7 +1215,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	/**
 	 * Sets the name of the staff member who created the entry.
 	 * 
-	 * @param username
+	 * @param createdByUser
 	 *            the user name of the creator
 	 */
 	public void setCreatedByUsername(String createdByUser) {
@@ -1244,7 +1225,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	/**
 	 * Sets the name of the staff member who disposed the transport
 	 * 
-	 * @param username
+	 * @param disposedByUser
 	 *            the user name of the disposer
 	 */
 	public void setDisposedByUsername(String disposedByUser) {
@@ -1252,8 +1233,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * notification infos
+	 * ------------------------------------------ notification infos
 	 * --------------------------------------------
 	 */
 	/**
@@ -1337,8 +1317,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/*
-	 * ------------------------------------------ 
-	 * vehicle and staff assigned
+	 * ------------------------------------------ vehicle and staff assigned
 	 * --------------------------------------------
 	 */
 	/**

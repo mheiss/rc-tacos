@@ -350,8 +350,8 @@ public class VehicleDetail {
 	/**
 	 * Sets the most important transport status to visualize
 	 * 
-	 * @param mostImportantTransportStatus
-	 *            the mostImportantTransportStatus to set
+	 * @param transportStatus
+	 *            the transportStatus to set
 	 */
 	public void setTransportStatus(int transportStatus) {
 		this.transportStatus = transportStatus;

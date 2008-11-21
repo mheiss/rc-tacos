@@ -20,15 +20,15 @@ public class AddMessage<E> extends AbstractMessage<E> {
 	 * @param object
 	 *            the object to add
 	 */
-	public AddMessage(E o) {
+	public AddMessage(E object) {
 		super(MessageType.ADD);
-		addObject(o);
+		addObject(object);
 	}
 
 	/**
 	 * Default class constructor for multiple objects to add
 	 * 
-	 * @param object
+	 * @param objects
 	 *            the objects to add
 	 */
 	public AddMessage(List<E> objects) {

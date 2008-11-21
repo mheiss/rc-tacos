@@ -182,7 +182,7 @@ public class Location {
 	}
 
 	/**
-	 * @param streetnumber
+	 * @param streetNumber
 	 *            the streetnumber to set
 	 */
 	public void setStreetNumber(String streetNumber) {

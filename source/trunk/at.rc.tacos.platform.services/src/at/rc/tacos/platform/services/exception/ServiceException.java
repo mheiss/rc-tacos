@@ -26,8 +26,6 @@ public class ServiceException extends Exception {
 	/**
 	 * Throws a new service exception with a source and a error message.
 	 * 
-	 * @param source
-	 *            the source where the exception occured
 	 * @param errorMessage
 	 *            the error that occured
 	 * @param throwable

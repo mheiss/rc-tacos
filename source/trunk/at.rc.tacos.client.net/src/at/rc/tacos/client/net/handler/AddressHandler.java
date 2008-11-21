@@ -17,7 +17,8 @@ import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 /**
- * The address handler manages the localy cached address objects
+ * The <code>AddressHandler</code> manages the locally chached {@link Address}
+ * instances.
  * 
  * @author Michael
  */
@@ -58,28 +59,29 @@ public class AddressHandler implements Handler<Address> {
 	@Override
 	public void update(MessageIoSession session, Message<Address> message) throws SQLException, ServiceException {
 		synchronized (addressList) {
-			for (Address newAddress : message.getObjects()) {
-				if (!addressList.contains(newAddress))
+			for (Address updatedAddress : message.getObjects()) {
+				if (!addressList.contains(updatedAddress))
 					continue;
-				int index = addressList.indexOf(newAddress);
-				addressList.set(index, newAddress);
+				int index = addressList.indexOf(updatedAddress);
+				addressList.set(index, updatedAddress);
 			}
 		}
 	}
 
 	/**
-	 * Converts the list to an array
+	 * Returns a new array containing the managed <code>Address</code>
+	 * instances.
 	 * 
-	 * @return the list as a array
+	 * @return an array containing the <code>Address</code> instances.
 	 */
 	public Address[] toArray() {
 		return addressList.toArray(new Address[addressList.size()]);
 	}
 
 	/**
-	 * Converts all the streets in the manager to an array and returns it
+	 * Returns a new array containing the {@link Address#getStreet()} values.
 	 * 
-	 * @return the list of streets as array
+	 * @return an array containg the street names
 	 */
 	public String[] toStreetArray() {
 		List<String> streets = new ArrayList<String>(addressList.size());
@@ -91,9 +93,9 @@ public class AddressHandler implements Handler<Address> {
 	}
 
 	/**
-	 * Converts all the cities in the manager to an array and returns it
+	 * Returns a new array that contains the {@link Address#getCity()} values.
 	 * 
-	 * @return the list of cities as array
+	 * @return an array containt the city names
 	 */
 	public String[] toCityArray() {
 		List<String> cities = new ArrayList<String>(addressList.size());

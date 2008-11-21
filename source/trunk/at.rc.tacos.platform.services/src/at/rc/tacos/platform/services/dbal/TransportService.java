@@ -110,7 +110,7 @@ public interface TransportService {
 	/**
 	 * Returns a transport searched by id
 	 * 
-	 * @param id
+	 * @param transportId
 	 *            the id of the transport
 	 * @return transport
 	 */
