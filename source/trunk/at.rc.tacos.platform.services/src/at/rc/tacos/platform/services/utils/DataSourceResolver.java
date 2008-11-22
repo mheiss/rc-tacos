@@ -1,4 +1,4 @@
-package at.rc.tacos.platform.services;
+package at.rc.tacos.platform.services.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

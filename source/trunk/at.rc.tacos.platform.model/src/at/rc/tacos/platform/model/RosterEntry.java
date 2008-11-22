@@ -1,5 +1,9 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import at.rc.tacos.platform.util.MyUtils;
 
 /**
@@ -91,57 +95,68 @@ public class RosterEntry {
 		setStandby(standby);
 	}
 
-	// METHODS
 	/**
-	 * Returns a string based description of the object
+	 * Returns the human readable string for this <code>RosterEntry</code>
+	 * instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		String entry = staffMember.getLastName() + " " + staffMember.getFirstName() + ";";
-		if (standby)
-			entry = entry + "B";
-		entry = entry + "OS: " + station.getLocationName() + ";" + "Verw: " + job.getJobName() + ";" + "DV: " + " " + serviceType.getServiceName();
-		if (rosterNotes != null)
-			entry = entry + rosterNotes + ";";
-		entry = entry + "Dienst: " + MyUtils.timestampToString(plannedStartOfWork, MyUtils.timeAndDateFormat) + " bis "
-				+ MyUtils.timestampToString(plannedEndOfWork, MyUtils.timeAndDateFormat) + ";";
-		if (realStartOfWork != 0)
-			entry = entry + "Anm: " + MyUtils.timestampToString(realStartOfWork, MyUtils.timeAndDateFormat) + ";";
-		if (realEndOfWork != 0)
-			entry = entry + "Abm: " + MyUtils.timestampToString(realEndOfWork, MyUtils.timeAndDateFormat) + ";";
-		return entry;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", rosterId);
+		builder.append("staff", staffMember);
+		builder.append("standby", standby);
+		builder.append("OS", station);
+		builder.append("Verwendung", job);
+		builder.append("DV", serviceType);
+		builder.append("notes", rosterNotes);
+		builder.append("plannedStart", MyUtils.timestampToString(plannedStartOfWork, MyUtils.timeAndDateFormat));
+		builder.append("plannedEnd", MyUtils.timestampToString(plannedEndOfWork, MyUtils.timeAndDateFormat));
+		builder.append("signedIn", MyUtils.timestampToString(realStartOfWork, MyUtils.timeAndDateFormat));
+		builder.append("signedOut", MyUtils.timestampToString(realEndOfWork, MyUtils.timeAndDateFormat));
+		return builder.toString();
 	}
 
 	/**
-	 * Returns wheter or not the given roster entries are equal.<br>
-	 * Two <code>RosterEntry</code> objects are equal if the have the same
-	 * roster entry id.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final RosterEntry other = (RosterEntry) obj;
-		if (rosterId != other.rosterId)
-			return false;
-		return true;
-	}
-
-	/**
-	 * Returns the calculated hash code based on the roster id.<br>
-	 * Two roster entries have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>RosterEntry</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link RosterEntry#getRosterId()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		return 31 + (rosterId ^ (rosterId >>> 32));
+		HashCodeBuilder builder = new HashCodeBuilder(43, 53);
+		builder.append(rosterId);
+		return builder.toHashCode();
+	}
+
+	/**
+	 * Returns wheter or not this <code>RosterEntry</code> instance is equal to
+	 * the compared object.
+	 * <p>
+	 * The compared fields are {@link RosterEntry#getRosterId()}
+	 * </p>
+	 * 
+	 * @return true if the instance is the same otherwise false.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		RosterEntry rosterEntry = (RosterEntry) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(rosterId, rosterEntry.rosterId);
+		return builder.isEquals();
 	}
 
 	/**

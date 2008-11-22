@@ -3,6 +3,10 @@ package at.rc.tacos.platform.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Represents a staff member (there are several kinds: regular staff member,
  * civil server, volunteer) but there is no difference between them in this
@@ -26,9 +30,6 @@ public class StaffMember {
 	private String userName;
 	private String phone1;
 	private String phone2;
-
-	// internal information, only needed to serialize and deserialize
-	public String function;
 
 	// define constants
 	public final static String STAFF_MALE = "männlich";
@@ -83,47 +84,63 @@ public class StaffMember {
 	}
 
 	/**
-	 * Returns a string based description of the object
+	 * Returns the human readable string for this <code>StaffMember</code>
+	 * instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "id: " + staffMemberId + "; DS: " + primaryLocation + "; Nachn: " + lastName + "; Vorn: " + firstName + "; username: " + userName;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", staffMemberId);
+		builder.append("OS", primaryLocation);
+		builder.append("firstName", firstName);
+		builder.append("lastName", lastName);
+		builder.append("username", userName);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the staff member id.<br>
-	 * Two staff members have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>StaffMember</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link StaffMember#getStaffMemberId()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		return 31 + staffMemberId;
+		HashCodeBuilder builder = new HashCodeBuilder(49, 59);
+		builder.append(staffMemberId);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two staff members are equal if, and only if, the id is the same.
+	 * Returns wheter or not this <code>StaffMember</code> instance is equal to
+	 * the compared object.
+	 * <p>
+	 * The compared fields are {@link StaffMember#getStaffMemberId()}
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final StaffMember other = (StaffMember) obj;
-		if (staffMemberId != other.staffMemberId)
-			return false;
-		return true;
+		}
+		StaffMember staffMember = (StaffMember) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(staffMemberId, staffMember.staffMemberId);
+		return builder.isEquals();
 	}
 
-	// SETTERS AND GETTERS
 	/**
 	 * Returns the personal identification number.
 	 * 

@@ -38,7 +38,7 @@ public class PeriodsSqlService implements PeriodsService {
 		// assert we have a result
 		if (rs.next()) {
 			Period period = new Period();
-			period.setPeriod(rs.getString("period"));
+			period.setPeriodName(rs.getString("period"));
 			period.setServiceTypeCompetence(rs.getString("serviceTypeCompetence"));
 
 			return period;
@@ -61,7 +61,7 @@ public class PeriodsSqlService implements PeriodsService {
 		// VALUES(?, ?, ?);
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.period"));
 		query.setInt(1, id);
-		query.setString(2, period.getPeriod());
+		query.setString(2, period.getPeriodName());
 		query.setString(3, period.getServiceTypeCompetence());
 
 		if (query.executeUpdate() == 0)
@@ -82,8 +82,8 @@ public class PeriodsSqlService implements PeriodsService {
 		List<Period> periods = new ArrayList<Period>();
 		while (rs.next()) {
 			Period period = new Period();
-			period.setPeriodId(rs.getInt("period_ID"));
-			period.setPeriod(rs.getString("period"));
+			period.setId(rs.getInt("period_ID"));
+			period.setPeriodName(rs.getString("period"));
 			period.setServiceTypeCompetence(rs.getString("serviceTypeCompetence"));
 
 			periods.add(period);
@@ -106,9 +106,9 @@ public class PeriodsSqlService implements PeriodsService {
 		// UPDATE period SET period = ?, serviceTypeCompetence = ? WHERE
 		// period_ID = ?;
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.period"));
-		query.setString(1, period.getPeriod());
+		query.setString(1, period.getPeriodName());
 		query.setString(2, period.getServiceTypeCompetence());
-		query.setInt(3, period.getPeriodId());
+		query.setInt(3, period.getId());
 		// assert the update was successfully
 		if (query.executeUpdate() == 0)
 			return false;

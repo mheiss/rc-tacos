@@ -28,7 +28,7 @@ public class PeriodHandler implements Handler<Period> {
 			int id = periodService.addPeriod(period);
 			if (id == -1)
 				throw new ServiceException("Failed to add the period record: " + period);
-			period.setPeriodId(id);
+			period.setId(id);
 		}
 		// brodcast the new objects
 		session.writeBrodcast(message, periodList);
@@ -57,7 +57,7 @@ public class PeriodHandler implements Handler<Period> {
 		List<Period> periodList = message.getObjects();
 		// loop and remove the new objects
 		for (Period period : periodList) {
-			if (!periodService.removePeriod(period.getPeriodId()))
+			if (!periodService.removePeriod(period.getId()))
 				throw new ServiceException("Failed to remove the period record: " + period);
 		}
 		// brodcast the removed objects

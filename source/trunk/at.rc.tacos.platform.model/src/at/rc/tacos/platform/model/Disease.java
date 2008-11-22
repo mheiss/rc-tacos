@@ -1,5 +1,14 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+/**
+ * Defines a single disease.
+ * 
+ * @author Michael
+ */
 public class Disease {
 
 	private int id;
@@ -14,56 +23,68 @@ public class Disease {
 	}
 
 	/**
-	 * Default class constructor for a complete disease object
+	 * Default class constructor for a new instance
+	 * 
+	 * @param diseaseName
+	 *            the name of the new disease
 	 */
 	public Disease(String diseaseName) {
 		this();
 		this.diseaseName = diseaseName;
 	}
 
-	// METHODS
 	/**
-	 * Returns the string based description
+	 * Returns the human readable string for this <code>Disease</code> instance.
 	 * 
-	 * @return the string description
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "id: " + id + "; diseaseName: " + diseaseName;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", id);
+		builder.append("diseaseName", diseaseName);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the disease id.<br>
-	 * Two diseases have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>Disease</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Disease#getId()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(27, 47);
+		builder.append(id);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two disease are equal if, and only if, the job id is the same.
+	 * Returns wheter or not this <code>Disease</code> instance is equal to the
+	 * compared object.
+	 * <p>
+	 * The compared fields are {@link Disease#getId()}.
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Disease other = (Disease) obj;
-		if (id != other.id)
-			return false;
-		return true;
+		}
+		Disease disease = (Disease) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(id, disease.id);
+		return builder.isEquals();
 	}
 
 	// GETTERS AND SETTERS

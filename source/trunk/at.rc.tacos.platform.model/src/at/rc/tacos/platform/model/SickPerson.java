@@ -1,5 +1,9 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Represents a sick person
  * 
@@ -45,47 +49,61 @@ public class SickPerson {
 	}
 
 	/**
-	 * Returns a string based description of the object
+	 * Returns the human readable string for this <code>SickPerson</code>
+	 * instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "id: " + sickPersonId + "; Nachn: " + lastName + "; Vorn: " + firstName;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", sickPersonId);
+		builder.append("firstName", firstName);
+		builder.append("lastName", lastName);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the sick person id.<br>
-	 * Two sick persons have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>SickPerson</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link SickPerson#getSickPersonId()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		return 31 + sickPersonId;
+		HashCodeBuilder builder = new HashCodeBuilder(47, 57);
+		builder.append(sickPersonId);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two sick persons are equal if, and only if, the id is the same.
+	 * Returns wheter or not this <code>SickPerson</code> instance is equal to
+	 * the compared object.
+	 * <p>
+	 * The compared fields are {@link SickPerson#getSickPersonId()}
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final SickPerson other = (SickPerson) obj;
-		if (sickPersonId != other.sickPersonId)
-			return false;
-		return true;
+		}
+		SickPerson sickPerson = (SickPerson) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(sickPersonId, sickPerson.sickPersonId);
+		return builder.isEquals();
 	}
 
-	// SETTERS AND GETTERS
 	/**
 	 * Returns the personal identification number.
 	 * 

@@ -1,11 +1,9 @@
-package at.rc.taocs.server;
+package at.rc.taocs.server.impl;
 
 import at.rc.tacos.platform.net.ServerContext;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
 import at.rc.tacos.platform.services.DataSource;
 import at.rc.tacos.platform.services.DbalServiceFactory;
-import at.rc.tacos.server.dbal.DataSourceImpl;
-import at.rc.tacos.server.dbal.ServiceFactoryImpl;
 import at.rc.tacos.server.net.HandlerFactoryImpl;
 
 /**

@@ -1,7 +1,13 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import at.rc.tacos.platform.util.MyUtils;
+
 /**
- * Info text for each day to display
+ * Info text for each day to display.
  * 
  * @author Michael
  */
@@ -23,6 +29,14 @@ public class DayInfoMessage {
 
 	/**
 	 * Default class constructor for a complete day info
+	 * 
+	 * @param message
+	 *            the text to display
+	 * @param timestamp
+	 *            the day, month and year values when the text should be
+	 *            displayed
+	 * @param lastChangedBy
+	 *            the username who changed the message
 	 */
 	public DayInfoMessage(String message, long timestamp, String lastChangedBy) {
 		setMessage(message);
@@ -30,51 +44,62 @@ public class DayInfoMessage {
 		setLastChangedBy(lastChangedBy);
 	}
 
-	// methods
 	/**
-	 * Returns the string based description of the message.
+	 * Returns the human readable string for this <code>DayInfoMessage</code>
+	 * instance.
 	 * 
-	 * @return the message and the meta data
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "Message: " + message + "; last changed: " + timestamp + ", by " + lastChangedBy + " local changes" + dirty;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("updated", MyUtils.timestampToString(timestamp, MyUtils.dateFormat));
+		builder.append("changedBy", lastChangedBy);
+		builder.append("message", message);
+		builder.append("dirty", dirty);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the day info message.<br>
-	 * Two day info messages have the same hash code if the timestamp is the
-	 * same.
+	 * Returns the generated hashCode of this <code>DayInfoMessage</code>
+	 * instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link DayInfoMessage#timestamp}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(23, 43);
+		builder.append(timestamp);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two day info messages are equal if, and only if, the timestamp is the
-	 * same.
+	 * Returns wheter or not the two <code>DayInfoMessage</code> instances are
+	 * equal.
+	 * <p>
+	 * The compared fields are {@link DayInfoMessage#timestamp}
+	 * </p>
 	 * 
-	 * @return true if the message is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final DayInfoMessage other = (DayInfoMessage) obj;
-		if (timestamp != other.timestamp)
-			return false;
-		return true;
+		}
+		DayInfoMessage dayInfoMessage = (DayInfoMessage) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(timestamp, dayInfoMessage.timestamp);
+		return builder.isEquals();
 	}
 
 	// getters and setters
@@ -130,8 +155,6 @@ public class DayInfoMessage {
 	 * 
 	 * @param timestamp
 	 *            the day the message is assigned to
-	 * @throws IllegalArgumentException
-	 *             if the date is not valid
 	 */
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
@@ -142,8 +165,6 @@ public class DayInfoMessage {
 	 * 
 	 * @param message
 	 *            the message to set
-	 * @throws IllegalArgumentException
-	 *             if the message is null
 	 */
 	public void setMessage(String message) {
 		this.message = message;
@@ -154,8 +175,6 @@ public class DayInfoMessage {
 	 * 
 	 * @param lastChangedBy
 	 *            the lastly edited username
-	 * @throws IllegalArgumentException
-	 *             if the username is null
 	 */
 	public void setLastChangedBy(String lastChangedBy) {
 		this.lastChangedBy = lastChangedBy;

@@ -29,7 +29,7 @@ public class TransportHandler implements Handler<Transport> {
 		// loop and add the transports
 		for (Transport transport : transports) {
 			int id = transportService.addTransport(transport);
-			if (id == Transport.TRANSPORT_ERROR) {
+			if (id == TransportService.TRANSPORT_ERROR) {
 				throw new ServiceException("Failed to add the transport: " + transport);
 			}
 			transport.setTransportId(id);
@@ -38,7 +38,7 @@ public class TransportHandler implements Handler<Transport> {
 				// set the current year to generate a valid transport numer
 				transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
 				int transportNr = transportService.generateTransportNumber(transport);
-				if (transportNr == Transport.TRANSPORT_ERROR)
+				if (transportNr == TransportService.TRANSPORT_ERROR)
 					throw new ServiceException("Failed to generate a valid transport number for transport " + transport);
 				transport.setTransportNumber(transportNr);
 				// to set the AE- status
@@ -285,7 +285,7 @@ public class TransportHandler implements Handler<Transport> {
 				// set the current year to generate a valid transport numer
 				transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
 				int transportNr = transportService.generateTransportNumber(transport);
-				if (transportNr == Transport.TRANSPORT_ERROR)
+				if (transportNr == TransportService.TRANSPORT_ERROR)
 					throw new ServiceException("Failed to generate a valid transport number for transport " + transport);
 				transport.setTransportNumber(transportNr);
 			}

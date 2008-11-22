@@ -14,11 +14,11 @@ import at.rc.tacos.platform.net.handler.HandlerFactory;
 import at.rc.tacos.platform.net.mina.MessageHandler;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.DataSource;
-import at.rc.tacos.platform.services.DataSourceResolver;
-import at.rc.tacos.platform.services.ServiceAnnotationResolver;
 import at.rc.tacos.platform.services.DbalServiceFactory;
 import at.rc.tacos.platform.services.exception.NoSuchHandlerException;
 import at.rc.tacos.platform.services.exception.ServiceException;
+import at.rc.tacos.platform.services.utils.DataSourceResolver;
+import at.rc.tacos.platform.services.utils.ServiceAnnotationResolver;
 
 /**
  * The <code>MessageHandler</code> is responsible for the communication between the clients and the

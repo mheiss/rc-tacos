@@ -1,19 +1,23 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
- * The service types for a roster entry
+ * The service types for a {@link RosterEntry}
  * 
  * @author Michael
  */
 public class ServiceType {
 
-	public final static String SERVICETYPE_FREIWILLIG = "Freiwillig";
-	public final static String SERVICETYPE_HAUPTAMTLICH = "Hauptamtlich";
-	public final static String SERIVCETYPE_ZIVILDIENER = "Zivildiener";
-
 	// properties
 	private int id;
 	private String serviceName;
+
+	public final static String SERVICETYPE_FREIWILLIG = "Freiwillig";
+	public final static String SERVICETYPE_HAUPTAMTLICH = "Hauptamtlich";
+	public final static String SERIVCETYPE_ZIVILDIENER = "Zivildiener";
 
 	/**
 	 * Default class constructor
@@ -25,55 +29,68 @@ public class ServiceType {
 
 	/**
 	 * Default class constructor for a service type
+	 * 
+	 * @param serviceName
+	 *            the name of the service
 	 */
 	public ServiceType(String serviceName) {
 		this();
 		this.serviceName = serviceName;
 	}
 
-	// METHODS
 	/**
-	 * Returns the string based description
+	 * Returns the human readable string for this <code>ServiceType</code>
+	 * instance.
 	 * 
-	 * @return the string description
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return id + ":" + serviceName;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", id);
+		builder.append("serviceName", serviceName);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the job id.<br>
-	 * Two service types have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>ServiceType</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link ServiceType#getId()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(45, 55);
+		builder.append(id);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two service types are equal if, and only if, the service id is the same.
+	 * Returns wheter or not this <code>ServiceType</code> instance is equal to
+	 * the compared object.
+	 * <p>
+	 * The compared fields are {@link ServiceType#getId()}
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final ServiceType other = (ServiceType) obj;
-		if (id != other.id)
-			return false;
-		return true;
+		}
+		ServiceType serviceType = (ServiceType) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(id, serviceType.id);
+		return builder.isEquals();
 	}
 
 	// GETTERS AND SETTERS

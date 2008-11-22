@@ -1,5 +1,9 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import at.rc.tacos.platform.iface.IKindOfTransport;
 import at.rc.tacos.platform.util.MyUtils;
 
@@ -35,10 +39,8 @@ public class DialysisPatient {
 	private boolean saturday;
 	private boolean sunday;
 	// this values are needed to automatically generated transports for dialysis
-	// patients
-	// they store the last automatically generated transport date so that for
-	// one
-	// day only one transport is generated (per direction)
+	// patients they store the last automatically generated transport date so
+	// that for one day only one transport is generated (per direction)
 	private long lastTransportDate;
 	private long lastBackTransportDate;
 
@@ -74,81 +76,75 @@ public class DialysisPatient {
 	}
 
 	/**
-	 * Returns a string based description of the object.<br>
-	 * The returned values are patientId,firstname,lastname.
+	 * Returns the human readable string for this <code>DialysisPatient</code>
+	 * instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		String dia = null;
-		if (patient != null)
-			dia = patient.getLastname() + " " + patient.getFirstname() + ";";
-		if (location != null)
-			dia = dia + "OS: " + location.getLocationName() + ";";
-		if (plannedStartOfTransport != 0)
-			dia = dia + "Abf: " + MyUtils.timestampToString(plannedStartOfTransport, MyUtils.timeFormat) + ";";
-		if (plannedTimeAtPatient != 0)
-			dia = dia + "BeiPat: " + MyUtils.timestampToString(plannedTimeAtPatient, MyUtils.timeFormat) + ";";
-		if (appointmentTimeAtDialysis != 0)
-			dia = dia + "Termin: " + MyUtils.timestampToString(appointmentTimeAtDialysis, MyUtils.timeFormat) + ";";
-		if (plannedStartForBackTransport != 0)
-			dia = dia + "RT: " + MyUtils.timestampToString(plannedStartForBackTransport, MyUtils.timeFormat) + ";";
-		if (readyTime != 0)
-			dia = dia + "fertig: " + MyUtils.timestampToString(readyTime, MyUtils.timeFormat) + ";";
-		dia = dia + "von: " + fromStreet + "/" + fromCity + ";";
-		dia = dia + "nach: " + toStreet + "/" + toCity + ";";
-		if (kindOfTransport != null)
-			dia = dia + "TA: " + kindOfTransport + ";";
-		if (assistantPerson)
-			dia = dia + "BeglPers" + ";";
-		if (monday)
-			dia = dia + "Mo" + ";";
-		if (tuesday)
-			dia = dia + "Di" + ";";
-		if (wednesday)
-			dia = dia + "Mi" + ";";
-		if (thursday)
-			dia = dia + "Do" + ";";
-		if (friday)
-			dia = dia + "Fr" + ";";
-		if (saturday)
-			dia = dia + "Sa" + ";";
-		if (sunday)
-			dia = dia + "So" + ";";
-
-		return dia;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("patient", patient);
+		builder.append("OS", location);
+		builder.append("Abf", MyUtils.timestampToString(plannedStartOfTransport, MyUtils.timeFormat));
+		builder.append("BeiPat: " + MyUtils.timestampToString(plannedTimeAtPatient, MyUtils.timeFormat));
+		builder.append("Termin: " + MyUtils.timestampToString(appointmentTimeAtDialysis, MyUtils.timeFormat));
+		builder.append("RT: " + MyUtils.timestampToString(plannedStartForBackTransport, MyUtils.timeFormat));
+		builder.append("fertig" + MyUtils.timestampToString(readyTime, MyUtils.timeFormat));
+		builder.append("von", fromStreet + " / " + fromCity);
+		builder.append("nach", toStreet + "/" + toCity);
+		builder.append("TA: " + kindOfTransport);
+		builder.append("BeglPers", assistantPerson);
+		builder.append("Mo", monday);
+		builder.append("Di", tuesday);
+		builder.append("MI", wednesday);
+		builder.append("DO", thursday);
+		builder.append("FR", friday);
+		builder.append("SA", saturday);
+		builder.append("SO,", sunday);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the patient id.<br>
-	 * Two patients have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>DialysisPatient</code>
+	 * instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link DialysisPatient#getId()}.
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		return 31 + id;
+		HashCodeBuilder builder = new HashCodeBuilder(25, 45);
+		builder.append(id);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two patients are equal if, and only if, the patient id is the same.
+	 * Returns wheter or not this <code>DialysisPatient</code> instance is equal
+	 * to the compared object.
+	 * <p>
+	 * The compared fields are {@link DialysisPatient#getId()}.
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final DialysisPatient other = (DialysisPatient) obj;
-		if (id != other.id)
-			return false;
-		return true;
+		}
+		DialysisPatient dialysisPatient = (DialysisPatient) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(id, dialysisPatient.id);
+		return builder.isEquals();
 	}
 
 	// GETTERS AND SETTERS

@@ -35,13 +35,13 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
-	
+
 	@Service(clazz = LocationService.class)
 	private LocationService locationDAO;
 
 	@Service(clazz = CallerService.class)
 	private CallerService callerDAO;
-	
+
 	// the source for the queries
 	protected final SQLQueries queries = SQLQueries.getInstance();
 
@@ -51,8 +51,8 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 			int callerId = callerDAO.addCaller(transport.getCallerDetail());
 			// assert the add was successfully
 			if (callerId == -1)
-				return Transport.TRANSPORT_ERROR;
-			transport.getCallerDetail().setCallerId(callerId);
+				return TransportService.TRANSPORT_ERROR;
+			transport.getCallerDetail().setId(callerId);
 		}
 		int id = 0;
 		// get the next id
@@ -70,7 +70,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		if (transport.getCallerDetail() == null)
 			query.setString(4, null);
 		else
-			query.setInt(4, transport.getCallerDetail().getCallerId());
+			query.setInt(4, transport.getCallerDetail().getId());
 		query.setString(5, transport.getNotes());
 		query.setString(6, transport.getCreatedByUsername());
 		query.setString(7, transport.getTransportPriority());
@@ -112,7 +112,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 		// assign the transport items!
 		if (!assignTransportItems(transport))
-			return Transport.TRANSPORT_ERROR;
+			return TransportService.TRANSPORT_ERROR;
 		// if the new transport is a nef transort (from
 		// DuplicatePriorityATransportAction) the
 		// vehicle and the status messages (S0 = AE) must be set
@@ -121,13 +121,13 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (!assignVehicle(transport)) {
 				System.out.println("Assigning vehicle (NEF) failed");
-				return Transport.TRANSPORT_ERROR;
+				return TransportService.TRANSPORT_ERROR;
 			}
 
 			// assign the transport states S1,S2,....
 			if (!assignTransportstate(transport)) {
 				System.out.println("Assigning transport state failed");
-				return Transport.TRANSPORT_ERROR;
+				return TransportService.TRANSPORT_ERROR;
 			}
 		}
 		return transport.getTransportId();
@@ -157,7 +157,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -303,7 +303,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -447,7 +447,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -544,7 +544,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -690,7 +690,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -817,7 +817,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 	@Override
 	public boolean updateTransport(Transport transport) throws SQLException {
 		/** add or update the caller of the transport */
-		if (transport.getCallerDetail() != null && transport.getCallerDetail().getCallerId() == 0) {
+		if (transport.getCallerDetail() != null && transport.getCallerDetail().getId() == 0) {
 			System.out.println("Adding caller");
 			int callerId = callerDAO.addCaller(transport.getCallerDetail());
 			// assert the add was successfully
@@ -825,9 +825,9 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 				System.out.println("Caller adding failed");
 				return false;
 			}
-			transport.getCallerDetail().setCallerId(callerId);
+			transport.getCallerDetail().setId(callerId);
 		}
-		else if (transport.getCallerDetail() != null && transport.getCallerDetail().getCallerId() != 0) {
+		else if (transport.getCallerDetail() != null && transport.getCallerDetail().getId() != 0) {
 			if (!callerDAO.updateCaller(transport.getCallerDetail())) {
 				System.out.println("Caller update failed");
 				return false;
@@ -868,32 +868,32 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 	public int generateTransportNumber(Transport transport) throws SQLException {
 		// assert that we have a current station and a vehicle
 		if (transport.getVehicleDetail() == null || transport.getVehicleDetail().getCurrentStation() == null)
-			return Transport.TRANSPORT_ERROR;
+			return TransportService.TRANSPORT_ERROR;
 
 		int locationId = transport.getVehicleDetail().getCurrentStation().getId();
 
 		// STEP1: INSERT the vehicle in the assigned_vehicle table
 		if (!assignVehicle(transport))
-			return Transport.TRANSPORT_ERROR;
+			return TransportService.TRANSPORT_ERROR;
 
 		// STEP2: Query the tmptransport
 		int tmpNr = getTransportNrFromTemp(locationId, Calendar.getInstance().get(Calendar.YEAR));
 		// transport number valid, so return it
 		if (tmpNr > 0) {
 			if (!updateTransportNr(transport.getTransportId(), tmpNr, Calendar.getInstance().get(Calendar.YEAR)))
-				return Transport.TRANSPORT_ERROR;
+				return TransportService.TRANSPORT_ERROR;
 			return tmpNr;
 		}
 
 		// check for errors
-		if (tmpNr == Transport.TRANSPORT_ERROR)
-			return Transport.TRANSPORT_ERROR;
+		if (tmpNr == TransportService.TRANSPORT_ERROR)
+			return TransportService.TRANSPORT_ERROR;
 
 		// get the highest number from the table and update the transport
 		tmpNr = getHighestTransportNumber(locationId, Calendar.getInstance().get(Calendar.YEAR));
 		tmpNr++;
 		if (!updateTransportNr(transport.getTransportId(), tmpNr, Calendar.getInstance().get(Calendar.YEAR)))
-			return Transport.TRANSPORT_ERROR;
+			return TransportService.TRANSPORT_ERROR;
 		return tmpNr;
 	}
 
@@ -971,7 +971,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -1100,7 +1100,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		if (transport.getCallerDetail() == null)
 			query.setString(2, null);
 		else
-			query.setInt(2, transport.getCallerDetail().getCallerId());
+			query.setInt(2, transport.getCallerDetail().getId());
 		query.setString(3, transport.getNotes());
 		query.setString(4, transport.getCreatedByUsername());
 		query.setString(5, transport.getTransportPriority());
@@ -1294,7 +1294,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 			removeStmt.setInt(3, year);
 			// assert the remove was successfully
 			if (removeStmt.executeUpdate() == 0)
-				return Transport.TRANSPORT_ERROR;
+				return TransportService.TRANSPORT_ERROR;
 
 			// we have a transport number and removed the old from the temp
 			return transportNr;
@@ -1546,7 +1546,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -1693,7 +1693,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -1839,7 +1839,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -1987,7 +1987,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);
@@ -2131,7 +2131,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 
 			if (rs.getInt("caller_ID") != 0) {
 				CallerDetail caller = new CallerDetail();
-				caller.setCallerId(rs.getInt("caller_ID"));
+				caller.setId(rs.getInt("caller_ID"));
 				caller.setCallerName(rs.getString("callername"));
 				caller.setCallerTelephoneNumber(rs.getString("caller_phonenumber"));
 				transport.setCallerDetail(caller);

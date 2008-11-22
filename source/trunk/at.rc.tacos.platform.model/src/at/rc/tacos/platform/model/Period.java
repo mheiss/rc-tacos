@@ -1,5 +1,9 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Stores information about a specifiy period
  * 
@@ -7,88 +11,86 @@ package at.rc.tacos.platform.model;
  */
 public class Period {
 
-	private int periodId;
-	private String period;
+	private int id;
+	private String periodName;
 	private String serviceTypeCompetence;
 
 	/**
 	 * Default class constructor
 	 */
 	public Period() {
-		period = "";
+		periodName = "";
 		serviceTypeCompetence = "";
 	}
 
 	/**
 	 * Default class constructor for a complete period object.
 	 * 
-	 * @param zip
-	 *            the zip code
-	 * @param period
+	 * @param periodName
 	 *            the name of the period
 	 * @param serviceTypeCompetence
 	 *            the name of the serviceTypeCompetence
 	 */
-	public Period(int zip, String period, String serviceTypeCompetence) {
+	public Period(String periodName, String serviceTypeCompetence) {
 		this();
-		this.period = period;
+		this.periodName = periodName;
 		this.serviceTypeCompetence = serviceTypeCompetence;
 	}
 
 	/**
-	 * Returns the string based description
+	 * Returns the human readable string for this <code>Period</code> instance.
 	 * 
-	 * @return the human readable version
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "period: " + period + ";" + "serviceTypeCompetence: " + serviceTypeCompetence;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", id);
+		builder.append("name", periodName);
+		builder.append("serviceTypeCompetence", serviceTypeCompetence);
+		return builder.toString();
 
 	}
 
 	/**
-	 * Returns the calculated hash code based on the complete period<br>
-	 * Two periodes have the same hash code if all fields are the same.
+	 * Returns the generated hashCode of this <code>Period</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Period#getId()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((period == null) ? 0 : period.hashCode());
-		result = prime * result + ((serviceTypeCompetence == null) ? 0 : serviceTypeCompetence.hashCode());
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(41, 51);
+		builder.append(id);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two periodes are equal if all propertie fields are the same.
+	 * Returns wheter or not this <code>Period</code> instance is equal to the
+	 * compared object.
+	 * <p>
+	 * The compared fields are {@link Period#getId()}.
+	 * </p>
 	 * 
-	 * @return true if all fields are the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Period other = (Period) obj;
-		if (period == null) {
-			if (other.period != null)
-				return false;
 		}
-		else if (!period.equals(other.period))
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (serviceTypeCompetence == null) {
-			if (other.serviceTypeCompetence != null)
-				return false;
 		}
-		else if (!serviceTypeCompetence.equals(other.serviceTypeCompetence))
-			return false;
-		return true;
+		Period period = (Period) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(id, period.id);
+		return builder.isEquals();
 	}
 
 	/**
@@ -96,8 +98,8 @@ public class Period {
 	 * 
 	 * @return the name of the period
 	 */
-	public String getPeriod() {
-		return period;
+	public String getPeriodName() {
+		return periodName;
 	}
 
 	/**
@@ -112,11 +114,11 @@ public class Period {
 	/**
 	 * Sets the name of the period
 	 * 
-	 * @param period
+	 * @param periodName
 	 *            the period
 	 */
-	public void setPeriod(String period) {
-		this.period = period;
+	public void setPeriodName(String periodName) {
+		this.periodName = periodName;
 	}
 
 	/**
@@ -129,11 +131,11 @@ public class Period {
 		this.serviceTypeCompetence = serviceTypeCompetence;
 	}
 
-	public int getPeriodId() {
-		return periodId;
+	public int getId() {
+		return id;
 	}
 
-	public void setPeriodId(int periodId) {
-		this.periodId = periodId;
+	public void setId(int id) {
+		this.id = id;
 	}
 }

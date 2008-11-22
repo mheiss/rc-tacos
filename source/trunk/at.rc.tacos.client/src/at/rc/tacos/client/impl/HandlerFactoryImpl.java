@@ -1,4 +1,4 @@
-package at.rc.tacos.client.net;
+package at.rc.tacos.client.impl;
 
 import java.util.HashMap;
 import java.util.Map;

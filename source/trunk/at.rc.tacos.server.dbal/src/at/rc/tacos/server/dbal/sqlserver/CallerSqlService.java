@@ -69,7 +69,7 @@ public class CallerSqlService implements CallerService {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.caller"));
 		query.setString(1, notifierDetail.getCallerName());
 		query.setString(2, notifierDetail.getCallerTelephoneNumber());
-		query.setInt(3, notifierDetail.getCallerId());
+		query.setInt(3, notifierDetail.getId());
 		// assert the update was successfully
 		if (query.executeUpdate() == 0)
 			return false;
