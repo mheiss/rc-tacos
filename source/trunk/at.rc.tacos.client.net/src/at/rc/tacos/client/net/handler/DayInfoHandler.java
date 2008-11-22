@@ -74,12 +74,14 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	 * @return the matched object or null if nothing found
 	 */
 	public DayInfoMessage getMessageByDate(long date) {
-		for (DayInfoMessage message : infoList) {
-			if (message.getTimestamp() == date) {
-				return message;
+		synchronized (infoList) {
+			for (DayInfoMessage message : infoList) {
+				if (message.getTimestamp() == date) {
+					return message;
+				}
 			}
+			// nothing found
+			return null;
 		}
-		// nothing found
-		return null;
 	}
 }

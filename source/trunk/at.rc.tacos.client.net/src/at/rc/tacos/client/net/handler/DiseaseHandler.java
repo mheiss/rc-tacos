@@ -75,13 +75,14 @@ public class DiseaseHandler implements Handler<Disease> {
 	 * @return the matched object or null if nothing found
 	 */
 	public Disease getDiseaseByName(String diseaseName) {
-		// loop and search
-		for (Disease disease : diseaseList) {
-			if (disease.getDiseaseName().equalsIgnoreCase(diseaseName))
-				return disease;
+		synchronized (diseaseList) {
+			for (Disease disease : diseaseList) {
+				if (disease.getDiseaseName().equalsIgnoreCase(diseaseName))
+					return disease;
+			}
+			// nothing found
+			return null;
 		}
-		// nothing found
-		return null;
 	}
 
 	/**

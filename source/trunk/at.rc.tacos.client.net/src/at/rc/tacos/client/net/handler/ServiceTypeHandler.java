@@ -75,12 +75,14 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 	 * @return the matched object or null if nothing found
 	 */
 	public ServiceType getServiceTypeByName(String serviceName) {
-		for (ServiceType service : serviceList) {
-			if (service.getServiceName().equalsIgnoreCase(serviceName))
-				return service;
+		synchronized (serviceList) {
+			for (ServiceType service : serviceList) {
+				if (service.getServiceName().equalsIgnoreCase(serviceName))
+					return service;
+			}
+			// nothing found
+			return null;
 		}
-		// nothing found
-		return null;
 	}
 
 	/**

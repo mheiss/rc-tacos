@@ -86,8 +86,10 @@ public class AddressHandler implements Handler<Address> {
 	public String[] toStreetArray() {
 		List<String> streets = new ArrayList<String>(addressList.size());
 		// loop and add the streets
-		for (Address adr : addressList) {
-			streets.add(adr.getStreet());
+		synchronized (addressList) {
+			for (Address adr : addressList) {
+				streets.add(adr.getStreet());
+			}
 		}
 		return streets.toArray(new String[streets.size()]);
 	}
@@ -100,8 +102,10 @@ public class AddressHandler implements Handler<Address> {
 	public String[] toCityArray() {
 		List<String> cities = new ArrayList<String>(addressList.size());
 		// loop and add the cities
-		for (Address adr : addressList) {
-			cities.add(adr.getCity());
+		synchronized (addressList) {
+			for (Address adr : addressList) {
+				cities.add(adr.getCity());
+			}
 		}
 		return cities.toArray(new String[cities.size()]);
 	}

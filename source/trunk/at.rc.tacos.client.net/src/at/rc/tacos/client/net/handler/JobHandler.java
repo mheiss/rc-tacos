@@ -75,13 +75,14 @@ public class JobHandler implements Handler<Job> {
 	 * @return the matched object or null if nothing found
 	 */
 	public Job getJobByName(String jobName) {
-		// loop and search
-		for (Job job : jobList) {
-			if (job.getJobName().equalsIgnoreCase(jobName))
-				return job;
+		synchronized (jobList) {
+			for (Job job : jobList) {
+				if (job.getJobName().equalsIgnoreCase(jobName))
+					return job;
+			}
+			// nothing found
+			return null;
 		}
-		// nothing found
-		return null;
 	}
 
 	/**

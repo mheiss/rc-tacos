@@ -82,24 +82,26 @@ public class RosterHandler implements Handler<RosterEntry> {
 	 * @return the filtered list
 	 */
 	public List<RosterEntry> getCheckedInRosterEntriesByLocation(Location location) {
-		List<RosterEntry> filteredList = new ArrayList<RosterEntry>();
-		for (RosterEntry entry : rosterList) {
-			// check the location
-			if (!entry.getStation().equals(location))
-				continue;
-			// check if the staff has signed in
-			if (entry.getRealStartOfWork() == 0 || entry.getRealEndOfWork() != 0)
-				continue;
+		synchronized (rosterList) {
+			List<RosterEntry> filteredList = new ArrayList<RosterEntry>();
+			for (RosterEntry entry : rosterList) {
+				// check the location
+				if (!entry.getStation().equals(location))
+					continue;
+				// check if the staff has signed in
+				if (entry.getRealStartOfWork() == 0 || entry.getRealEndOfWork() != 0)
+					continue;
 
-			// do not add entries if they are older than 2 days even if the
-			// member is signed in
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) - 2);
-			long before2Days = cal.getTimeInMillis();
-			if (entry.getPlannedEndOfWork() > before2Days)
-				filteredList.add(entry);
+				// do not add entries if they are older than 2 days even if the
+				// member is signed in
+				Calendar cal = Calendar.getInstance();
+				cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) - 2);
+				long before2Days = cal.getTimeInMillis();
+				if (entry.getPlannedEndOfWork() > before2Days)
+					filteredList.add(entry);
+			}
+			return filteredList;
 		}
-		return filteredList;
 	}
 
 	/**
