@@ -1,5 +1,9 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Stores information about a specifiy address
  * 
@@ -7,7 +11,7 @@ package at.rc.tacos.platform.model;
  */
 public class Address {
 
-	private int addressId;
+	private int id;
 	private int zip;
 	private String city;
 	private String street;
@@ -41,62 +45,64 @@ public class Address {
 	}
 
 	/**
-	 * Returns the string based description
+	 * Returns the human readable string for this <code>Address</code> instance.
 	 * 
-	 * @return the human readable version
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "zip: " + zip + ";" + "city: " + city + ";" + "street: " + street;
-
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("zip", zip);
+		builder.append("city", city);
+		builder.append("street", street);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the complete address<br>
-	 * Two addresses have the same hash code if all fields are the same.
+	 * Returns the generated hashCode of this <code>Address</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Address#getCity()},
+	 * {@link Address#getStreet()} and {@link Address#getZip()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + ((street == null) ? 0 : street.hashCode());
-		result = prime * result + zip;
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(17, 37);
+		builder.append(city);
+		builder.append(street);
+		builder.append(zip);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two addresses are equal if all property fields are the same.
+	 * Returns wheter or not this <code>Address</code> instance is equal to
+	 * the compared object.
+	 * <p>
+	 * The compared fields are {@link Address#getCity()},
+	 * {@link Address#getStreet()} and {@link Address#getZip()}
+	 * </p>
 	 * 
-	 * @return true if all fields are the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Address other = (Address) obj;
-		if (city == null) {
-			if (other.city != null)
-				return false;
 		}
-		else if (!city.equals(other.city))
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (street == null) {
-			if (other.street != null)
-				return false;
 		}
-		else if (!street.equals(other.street))
-			return false;
-		if (zip != other.zip)
-			return false;
-		return true;
+		Address adr = (Address) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(city, adr.city);
+		builder.append(street, adr.street);
+		builder.append(zip, adr.zip);
+		return builder.isEquals();
 	}
 
 	/**
@@ -162,7 +168,7 @@ public class Address {
 	 * @return the id of the address record
 	 */
 	public int getAddressId() {
-		return addressId;
+		return id;
 	}
 
 	/**
@@ -171,7 +177,7 @@ public class Address {
 	 * @param addressId
 	 */
 	public void setAddressId(int addressId) {
-		this.addressId = addressId;
+		this.id = addressId;
 	}
 
 	/**

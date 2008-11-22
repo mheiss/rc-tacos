@@ -4,12 +4,15 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import at.rc.tacos.platform.iface.IDirectness;
 import at.rc.tacos.platform.iface.IKindOfTransport;
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.iface.ITransportPriority;
 import at.rc.tacos.platform.iface.ITransportStatus;
-import at.rc.tacos.platform.util.MyUtils;
 
 /**
  * Specifies the transport details
@@ -21,11 +24,6 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	public final static int TRANSPORT_CANCLED = -1;
 	public final static int TRANSPORT_FORWARD = -2;
 	public final static int TRANSPORT_NEF = -4;
-
-	/**
-	 * Indicates an error while operation with the transport DAO
-	 */
-	public final static int TRANSPORT_ERROR = -3;
 
 	// properties
 	private int transportId;
@@ -284,142 +282,66 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	}
 
 	/**
-	 * Returns a string based description of the object
+	 * Returns the human readable string for this <code>Transport</code>
+	 * instance.
+	 * 
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		String transport;
-		// common transport details
-		transport = "von" + fromStreet + "/" + fromCity + ";";
-		if (patient != null)
-			transport = transport + "Patient: " + patient.getLastname() + " " + patient.getFirstname() + ";";
-		transport = transport + "nach" + toStreet + "/" + toCity + ";";
-		if (kindOfTransport != null)
-			transport = transport + kindOfTransport + ";";
-		transport = transport + ";" + "Pr: " + transportPriority + ";";
-		if (longDistanceTrip)
-			transport = transport + "FF" + ";";
-		transport = transport + "Ri: " + direction + ";";
-		if (kindOfIllness != null)
-			transport = transport + "Erkr/Verl: " + kindOfIllness.getDiseaseName() + ";";
-		if (backTransport)
-			transport = transport + "RT möglich" + ";";
-		if (assistantPerson)
-			transport = transport + "BeglPers" + ";";
-		if (emergencyPhone)
-			transport = transport + "Rufhilfe" + ";";
-		if (feedback != null && !feedback.isEmpty())
-			transport = transport + "RM: " + feedback + ";";
-		transport = transport + "Erstellt: " + MyUtils.timestampToString(creationTime, MyUtils.timeAndDateFormat) + ";" + "TrDatum: "
-				+ MyUtils.timestampToString(dateOfTransport, MyUtils.dateFormat) + ";";
-		if (plannedStartOfTransport != 0)
-			transport = transport + "Abf: " + MyUtils.timestampToString(plannedStartOfTransport, MyUtils.timeFormat) + ";";
-		if (plannedTimeAtPatient != 0)
-			transport = transport + "Pat: " + MyUtils.timestampToString(plannedTimeAtPatient, MyUtils.timeFormat) + ";";
-		if (appointmentTimeAtDestination != 0)
-			transport = transport + "Term: " + MyUtils.timestampToString(appointmentTimeAtDestination, MyUtils.timeFormat) + ";";
-		transport = transport + "OS: " + planedLocation.getLocationName() + ";";
-		if (notes != null)
-			transport = transport + "Anm: " + notes + ";";
-		transport = transport + "LSD1: " + createdByUser + ";";
-		if (disposedByUser != null)
-			transport = transport + "LSD2: " + disposedByUser + ";";
-		if (blueLight1)
-			transport = transport + "BD1" + ";";
-		if (blueLightToGoal)
-			transport = transport + "BD2" + ";";
-		// caller
-		if (callerDetail != null)
-			transport = transport + "Melder: " + callerDetail.getCallerName() + ";" + callerDetail.getCallerTelephoneNumber() + ";";
-		// alarming
-		if (emergencyDoctorAlarming)
-			transport = transport + "NA: " + MyUtils.timestampToString(timestampNA, MyUtils.timeAndDateFormat) + ";";
-		if (helicopterAlarming)
-			transport = transport + "RTH: " + MyUtils.timestampToString(timestampRTH, MyUtils.timeAndDateFormat) + ";";
-		if (dfAlarming)
-			transport = transport + "DF: " + MyUtils.timestampToString(timestampDF, MyUtils.timeAndDateFormat) + ";";
-		if (brkdtAlarming)
-			transport = transport + "BRKDT: " + MyUtils.timestampToString(timestampBRKDT, MyUtils.timeAndDateFormat) + ";";
-		if (firebrigadeAlarming)
-			transport = transport + "FW: " + MyUtils.timestampToString(timestampFW, MyUtils.timeAndDateFormat) + ";";
-		if (mountainRescueServiceAlarming)
-			transport = transport + "BR: " + MyUtils.timestampToString(timestampBergrettung, MyUtils.timeAndDateFormat) + ";";
-		if (policeAlarming)
-			transport = transport + "Pol: " + MyUtils.timestampToString(timestampPolizei, MyUtils.timeAndDateFormat) + ";";
-		if (KITAlarming)
-			transport = transport + "KIT: " + MyUtils.timestampToString(timestampKIT, MyUtils.timeAndDateFormat) + ";";
-		// vehicleDetail
-		if (vehicleDetail != null) {
-			transport = transport + "Fzg: " + vehicleDetail.getVehicleName() + ";";
-			if (vehicleDetail.getDriver() != null)
-				transport = transport + "F: " + vehicleDetail.getDriver().getUserName() + ";";
-			if (vehicleDetail.getFirstParamedic() != null)
-				transport = transport + "SaniI: " + vehicleDetail.getFirstParamedic().getUserName() + ";";
-			if (vehicleDetail.getSecondParamedic() != null)
-				transport = transport + "SaniII: " + vehicleDetail.getSecondParamedic().getUserName() + ";";
-			if (vehicleDetail.getMobilePhone() != null)
-				transport = transport + "H: " + vehicleDetail.getMobilePhone() + ";";
-		}
-		// status messages
-		if (statusMessages != null) {
-			// SO
-			if (statusMessages.containsKey(TRANSPORT_STATUS_ORDER_PLACED))
-				transport = transport + MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_ORDER_PLACED), MyUtils.timeFormat);
-			// S1
-			if (statusMessages.containsKey(TRANSPORT_STATUS_ON_THE_WAY))
-				transport = transport + MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_ON_THE_WAY), MyUtils.timeFormat);
-			// S2
-			if (statusMessages.containsKey(TRANSPORT_STATUS_AT_PATIENT))
-				transport = transport + MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_AT_PATIENT), MyUtils.timeFormat);
-			// S3
-			if (statusMessages.containsKey(TRANSPORT_STATUS_START_WITH_PATIENT))
-				transport = transport + MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_START_WITH_PATIENT), MyUtils.timeFormat);
-			// S4
-			if (statusMessages.containsKey(TRANSPORT_STATUS_AT_DESTINATION))
-				transport = transport + MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_AT_DESTINATION), MyUtils.timeFormat);
-			// S5
-			if (statusMessages.containsKey(TRANSPORT_STATUS_DESTINATION_FREE))
-				transport = transport + MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_DESTINATION_FREE), MyUtils.timeFormat);
-			// S6
-			if (statusMessages.containsKey(TRANSPORT_STATUS_CAR_IN_STATION))
-				transport = transport + MyUtils.timestampToString(statusMessages.get(TRANSPORT_STATUS_CAR_IN_STATION), MyUtils.timeFormat);
-		}
-		return transport;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", transportId);
+		builder.append("transportNr", transportNumber);
+		builder.append("patient", patient);
+		builder.append("from", fromStreet + "/" + fromCity);
+		builder.append("to", toStreet + "/" + toCity);
+		builder.append("vehicle", vehicleDetail);
+		builder.append("created", createdByUser);
+		builder.append("disposed", disposedByUser);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns whether or not the given transports are equal.<br>
-	 * Two <code>Transport</code> objects are equal if they have the same
-	 * transport id.
+	 * Returns the generated hashCode of this <code>Transport</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Transport#getTransportId()}
+	 * </p>
 	 * 
-	 * @return true if the transports are equal.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Transport other = (Transport) obj;
-		if (transportId != other.transportId)
-			return false;
-		return true;
-	}
-
-	/**
-	 * Returns the calculated hash code based on the transport id.<br>
-	 * Two transports have the same hash code if the id is the same.
-	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		return 31 + (transportId ^ (transportId >>> 32));
+		HashCodeBuilder builder = new HashCodeBuilder(53, 63);
+		builder.append(transportId);
+		return builder.toHashCode();
 	}
 
-	// GETTERS AND SETTERS
+	/**
+	 * Returns wheter or not this <code>Transport</code> instance is equal to
+	 * the compared object.
+	 * <p>
+	 * The compared fields are {@link Transport#getTransportId()}
+	 * </p>
+	 * 
+	 * @return true if the instance is the same otherwise false.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Transport transport = (Transport) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(transportId, transport.transportId);
+		return builder.isEquals();
+	}
+
 	/**
 	 * Returns the identification string of this transport
 	 * 

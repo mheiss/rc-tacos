@@ -1,5 +1,9 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Specifies the details of the mobile phone
  * 
@@ -34,58 +38,67 @@ public class MobilePhoneDetail {
 		setMobilePhoneNumber(mobilePhoneNumber);
 	}
 
-	// METHODS
 	/**
-	 * Returns a string based description of the object
+	 * Returns the human readable string for this <code>MobilePhoneDetail</code>
+	 * instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "id: " + id + "; Handy:  " + mobilePhoneName + "; Nr:  " + mobilePhoneNumber;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", id);
+		builder.append("name", mobilePhoneName);
+		builder.append("phone", mobilePhoneNumber);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the mobile phone id and the
-	 * number<br>
-	 * Two mobile phone entries have the same hash code if the id and the number
-	 * is equal.
+	 * Returns the generated hashCode of this <code>MobilePhoneDetail</code>
+	 * instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link MobilePhoneDetail#getId()} and
+	 * {@link MobilePhoneDetail#mobilePhoneNumber}.
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		result = prime * result + mobilePhoneNumber.hashCode();
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(37, 47);
+		builder.append(id);
+		builder.append(mobilePhoneNumber);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * The mobile phone details are equal if, and only if, the id and the number
-	 * is the same.
+	 * Returns wheter or not this <code>MobilePhoneDetail</code> instance is
+	 * equal to the compared object.
+	 * <p>
+	 * The compared fields are {@link MobilePhoneDetail#getId()} and
+	 * {@link MobilePhoneDetail#mobilePhoneNumber}.
+	 * </p>
 	 * 
-	 * @return true if the id is the same, otherwise false
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final MobilePhoneDetail other = (MobilePhoneDetail) obj;
-		if (id != other.id)
-			return false;
-		if (!mobilePhoneNumber.equals(other.mobilePhoneNumber))
-			return false;
-		return true;
+		}
+		MobilePhoneDetail mobilePhoneDetail = (MobilePhoneDetail) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(id, mobilePhoneDetail.id);
+		builder.append(mobilePhoneNumber, mobilePhoneDetail.mobilePhoneNumber);
+		return builder.isEquals();
 	}
 
-	// SETTERS AND GETTERS
 	/**
 	 * Returns the internal identification number of the mobile phone. The id is
 	 * a internal value in the database to identify the phone.

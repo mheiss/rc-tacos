@@ -12,7 +12,9 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: at.rc.tacos.server.dbal,
- at.rc.tacos.server.dbal.sqlserver
+ at.rc.tacos.server.dbal.sqlserver,
+ org.apache.commons.dbcp,
+ org.apache.commons.pool.impl
 Bundle-Vendor: FH-Joanneum / ITM
 Bundle-ClassPath: lib/commons-codec-1.3.jar,
  lib/commons-dbcp-1.2.2.jar,

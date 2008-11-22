@@ -1,5 +1,9 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Contains the data of the patient. Will be extended if a patient database is
  * implemented
@@ -7,9 +11,6 @@ package at.rc.tacos.platform.model;
  * @author b.thek
  */
 public class Patient {
-
-	// unique identification string
-	public final static String ID = "patient";
 
 	// properties
 	private long patientId;
@@ -40,61 +41,63 @@ public class Patient {
 		setLastname(lastname);
 	}
 
-	// METHODS
 	/**
-	 * Returns a string based description of the object.<br>
-	 * The returned values are patientId,firstname,lastname.
+	 * Returns the human readable string for this <code>Patient</code> instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "id: " + patientId + "; firstname: " + firstname + "; lastname: " + lastname;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", patientId);
+		builder.append("firstname", firstname);
+		builder.append("lastname", lastname);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the patient id.<br>
-	 * Two patients have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>Patient</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Patient#getFirstname()} and
+	 * {@link Patient#getLastname()}.
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
-		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(39, 49);
+		builder.append(firstname);
+		builder.append(lastname);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two patients are equal if, and only if, the patient id is the same.
+	 * Returns wheter or not this <code>Patient</code> instance is equal to the
+	 * compared object.
+	 * <p>
+	 * The compared fields are {@link Patient#getFirstname()} and
+	 * {@link Patient#getLastname()}.
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Patient other = (Patient) obj;
-		if (firstname == null) {
-			if (other.firstname != null)
-				return false;
 		}
-		else if (!firstname.equals(other.firstname))
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (lastname == null) {
-			if (other.lastname != null)
-				return false;
 		}
-		else if (!lastname.equals(other.lastname))
-			return false;
-		return true;
+		Patient patient = (Patient) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(firstname, patient.firstname);
+		builder.append(lastname, patient.lastname);
+		return builder.isEquals();
 	}
 
 	// GETTERS AND SETTERS

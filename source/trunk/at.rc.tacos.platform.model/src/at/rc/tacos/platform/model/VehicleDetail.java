@@ -1,7 +1,11 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
- * Specifies the crew and phone of an ambulance
+ * Defines a vehicle resource
  * 
  * @author b.thek
  */
@@ -58,63 +62,66 @@ public class VehicleDetail {
 	}
 
 	/**
-	 * Returns a string based description of the object
+	 * Returns the human readable string for this <code>VehicleDetail</code>
+	 * instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		String vehicle;
-		vehicle = vehicleName + ";" + vehicleType + ";";
-		// staff
-		if (driver != null)
-			vehicle = vehicle + "Fahrer: " + driver + ";";
-		if (firstParamedic != null)
-			vehicle = vehicle + "SaniI: " + firstParamedic + ";";
-		if (secondParamedic != null)
-			vehicle = vehicle + "SaniII: " + secondParamedic + ";";
-		if (mobilePhone != null)
-			vehicle = vehicle + "Handy: " + mobilePhone + ";";
-		if (vehicleNotes != null)
-			vehicle = vehicle + "Notizen: " + vehicleNotes + ";";
-		vehicle = vehicle + "OS1: " + basicStation + ";" + "OS2: " + currentStation + ";";
-		if (readyForAction)
-			vehicle = vehicle + "EB" + ";";
-		if (outOfOrder)
-			vehicle = vehicle + "AD";
-
-		return vehicle;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("vehicleId", vehicleName);
+		builder.append("vehicleType", vehicleType);
+		builder.append("phone", mobilePhone);
+		builder.append("basicLocation", basicStation);
+		builder.append("currentLocation", currentStation);
+		builder.append("notes", vehicleNotes);
+		builder.append("driver", driver);
+		builder.append("firstParamedic", firstParamedic);
+		builder.append("secondParamedic", secondParamedic);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the vehicle name.<br>
-	 * Two vehicles have the same hash code if the name is the same.
+	 * Returns the generated hashCode of this <code>VehicleDetail</code>
+	 * instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link VehicleDetail#vehicleName}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		return vehicleName.hashCode();
+		HashCodeBuilder builder = new HashCodeBuilder(55, 65);
+		builder.append(vehicleName);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two vehicles are equal if, and only if, the vehicle name is the same.
+	 * Returns wheter or not this <code>VehicleDetail</code> instance is equal
+	 * to the compared object.
+	 * <p>
+	 * The compared fields are {@link VehicleDetail#vehicleName}
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final VehicleDetail other = (VehicleDetail) obj;
-		if (!vehicleName.equals(other.vehicleName))
-			return false;
-		return true;
+		}
+		VehicleDetail vehicleDetail = (VehicleDetail) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(vehicleName, vehicleDetail.vehicleName);
+		return builder.isEquals();
 	}
 
 	// GETTERS AND SETTERS

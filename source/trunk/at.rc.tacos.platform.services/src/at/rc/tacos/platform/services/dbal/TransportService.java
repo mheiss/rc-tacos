@@ -12,6 +12,11 @@ public interface TransportService {
 	public static final String TABLE_DEPENDENT_SELECTED = "transport_selected";
 	public static final String TABLE_DEPENDENT_ASSIGNED_VEHICLES = "assigned_vehicle";
 	public static final String TABLE_DEPENDENT_TMP = "tmptransports";
+	
+	/**
+	 * Indicates an database error
+	 */
+	public final static int TRANSPORT_ERROR = -3;
 
 	/**
 	 * Adds a new transport to the table and returns the transport id.<br>

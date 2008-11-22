@@ -1,7 +1,19 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
- * This object represents a single lock for a model object
+ * This object represents a single lock for a model object.
+ * <p>
+ * A lock object is used to prevent simultaneous editing of the same data clazz
+ * instances by two ore more different users
+ * </p>
+ * <p>
+ * A lock is typically defined using the clazz of the data object and the unique
+ * identifier.
+ * </p>
  * 
  * @author Michael
  */
@@ -28,59 +40,64 @@ public class Lock {
 		this.lockedBy = lockedBy;
 	}
 
-	// METHODS
 	/**
-	 * Returns a human readable string
+	 * Returns the human readable string for this <code>Lock</code> instance.
+	 * 
+	 * @return the build string
 	 */
 	public String toString() {
-		return "Locked " + clazz + ":" + objectId + " owner " + lockedBy;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("clazz", clazz);
+		builder.append("objectId", objectId);
+		builder.append("lockedBy", lockedBy);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the {@link Lock#objectId} and
-	 * the {@link Lock#clazz}.
+	 * Returns the generated hashCode of this <code>Lock</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Lock#getClass()} and
+	 * {@link Lock#getObjectId()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
-		result = prime * result + objectId;
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(33, 43);
+		builder.append(clazz);
+		builder.append(objectId);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.
+	 * Returns wheter or not this <code>Lock</code> instance is equal to the
+	 * compared object.
 	 * <p>
-	 * Two locks are equal if, and only if, the {@link Lock#objectId} and the
-	 * {@link Lock#clazz} is the same.
+	 * The compared fields are {@link Lock#getClass()} and
+	 * {@link Lock#getObjectId()}
 	 * </p>
 	 * 
-	 * @return true if the lock is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Lock other = (Lock) obj;
-		if (clazz == null) {
-			if (other.clazz != null)
-				return false;
 		}
-		else if (!clazz.equals(other.clazz))
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (objectId != other.objectId)
-			return false;
-		return true;
+		}
+		Lock lock = (Lock) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(clazz, lock.clazz);
+		builder.append(objectId, lock.objectId);
+		return builder.isEquals();
 	}
 
-	// GETTERS AND SETTERS
 	public int getObjectId() {
 		return objectId;
 	}

@@ -1,24 +1,23 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
- * The available competences for the staff members
+ * Defines a competence of a {@link StaffMember}.
  * 
  * @author Michael
  */
 public class Competence {
 
-	// unique identification string
-	public final static String ID = "competence";
+	private int id;
+	private String competenceName;
 
 	public static final String FUNCTION_HA = "_HA";
 	public static final String FUNCTION_ZD = "_ZD";
 	public static final String FUNCTION_LS = "_LS";
-
 	public static final String COMPETENCE_NAME_VOLUNTEER = "Volontär";
-
-	// properties
-	private int id;
-	private String competenceName;
 
 	/**
 	 * Default class constructor
@@ -29,6 +28,9 @@ public class Competence {
 
 	/**
 	 * Default class constructor for a competence
+	 * 
+	 * @param competenceName
+	 *            the name of the competence to create
 	 */
 	public Competence(String competenceName) {
 		this.competenceName = competenceName;
@@ -36,47 +38,58 @@ public class Competence {
 
 	// METHODS
 	/**
-	 * Returns the string based description
+	 * Returns the human readable string for this <code>Competence</code>
+	 * instance.
 	 * 
-	 * @return the string description
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "id: " + id + "; " + "competenceName: " + competenceName;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", id);
+		builder.append("competenceName", competenceName);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the competence id.<br>
-	 * Two competences have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>Competence</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Competence#getId()}.
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(21, 41);
+		builder.append(id);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two competences are equal if, and only if, the competence id is the same.
+	 * Returns wheter or not this <code>Competence</code> instance is equal to
+	 * the compared object.
+	 * <p>
+	 * The compared fields are {@link Competence#getId()}
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Competence other = (Competence) obj;
-		if (id != other.id)
-			return false;
-		return true;
+		}
+		Competence competence = (Competence) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(id, competence.id);
+		return builder.isEquals();
 	}
 
 	// GETTERS AND SETTERS

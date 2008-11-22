@@ -1,91 +1,107 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Specifies the details of the caller. The caller is most of the time the
- * telephoner, sometimes an employee
+ * telephoner, sometimes an employee.
  * 
  * @author b.thek
  */
 public class CallerDetail {
 
-	private int callerId;
-	private String callerName;
-	private String callerTelephoneNumber;
+	private int id;
+	private String name;
+	private String phoneNumber;
 
 	/**
 	 * Default class constructor
 	 */
 	public CallerDetail() {
-		callerId = -1;
-		callerName = "";
-		callerTelephoneNumber = "";
+		id = -1;
+		name = "";
+		phoneNumber = "";
 	}
 
 	/**
 	 * Default class constructor for a complete caller object
 	 * 
-	 * @param callerName
+	 * @param name
 	 *            the name of the caller
-	 * @param callerTelephoneNumber
+	 * @param phoneNumber
 	 *            the telephone number
 	 */
-	public CallerDetail(String callerName, String callerTelephoneNumber) {
-		setCallerName(callerName);
-		setCallerTelephoneNumber(callerTelephoneNumber);
+	public CallerDetail(String name, String phoneNumber) {
+		setCallerName(name);
+		setCallerTelephoneNumber(phoneNumber);
 	}
 
-	// METHODS
 	/**
-	 * Returns a string based description of the object.
+	 * Returns the human readable string for this <code>CallerDetail</code> instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "id: " + callerId + ";" + "CallerName: " + callerName + ";" + "callerTelephone: " + callerTelephoneNumber;
-
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", id);
+		builder.append("callerName", name);
+		builder.append("callerPhone", phoneNumber);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the caller id<br>
-	 * Two callers have the same hash code if the id is equal.
+	 * Returns the generated hashCode of this <code>CallerDetail</code>
+	 * instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link CallerDetail#getId()}.
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		return 31 + callerId;
+		HashCodeBuilder builder = new HashCodeBuilder(19, 39);
+		builder.append(id);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two callers are equal if, and only if, the caller id is the same
+	 * Returns wheter or not this <code>CallerDetail</code> instance is equal to
+	 * the compared object.
+	 * <p>
+	 * The compared fields are {@link CallerDetail#getId()}
+	 * </p>
 	 * 
-	 * @return true if the callerId is the same, otherwise false
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final CallerDetail other = (CallerDetail) obj;
-		if (callerId != other.getCallerId())
-			return false;
-		return true;
+		}
+		CallerDetail detail = (CallerDetail) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(id, detail.id);
+		return builder.isEquals();
 	}
 
-	// GETTERS AND SETTERS
 	/**
 	 * Returns the id of the caller.<br>
 	 * The id is a internal value to identify the caller
 	 * 
 	 * @return id the unique id
 	 */
-	public int getCallerId() {
-		return callerId;
+	public int getId() {
+		return id;
 	}
 
 	/**
@@ -94,7 +110,7 @@ public class CallerDetail {
 	 * @return the callerName
 	 */
 	public String getCallerName() {
-		return callerName;
+		return name;
 	}
 
 	/**
@@ -104,8 +120,8 @@ public class CallerDetail {
 	 * @param callerId
 	 *            the id of the caller
 	 */
-	public void setCallerId(int callerId) {
-		this.callerId = callerId;
+	public void setId(int callerId) {
+		this.id = callerId;
 	}
 
 	/**
@@ -119,7 +135,7 @@ public class CallerDetail {
 	public void setCallerName(String callerName) {
 		if (callerName == null)
 			throw new IllegalArgumentException("Caller name cannot be null");
-		this.callerName = callerName.trim();
+		this.name = callerName.trim();
 	}
 
 	/**
@@ -128,7 +144,7 @@ public class CallerDetail {
 	 * @return the callerTelephoneNumber
 	 */
 	public String getCallerTelephoneNumber() {
-		return callerTelephoneNumber;
+		return phoneNumber;
 	}
 
 	/**
@@ -142,6 +158,6 @@ public class CallerDetail {
 	public void setCallerTelephoneNumber(String callerTelephoneNumber) {
 		if (callerTelephoneNumber == null)
 			throw new IllegalArgumentException("Telephone number cannot be null");
-		this.callerTelephoneNumber = callerTelephoneNumber.trim();
+		this.phoneNumber = callerTelephoneNumber.trim();
 	}
 }

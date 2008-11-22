@@ -1,7 +1,11 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
- * This class represents a location.
+ * Represents a location.
  * 
  * @author Michael
  */
@@ -16,9 +20,6 @@ public class Location {
 	private String notes;
 	private MobilePhoneDetail phone;
 
-	// internal
-	public String type;
-
 	/**
 	 * Default class constructor for a empty location
 	 */
@@ -28,7 +29,7 @@ public class Location {
 	}
 
 	/**
-	 * Default class constructor for a complet location object
+	 * Default class constructor for a complete location object
 	 * 
 	 * @param locationName
 	 *            the name of the station
@@ -55,50 +56,59 @@ public class Location {
 		this.notes = notes;
 	}
 
-	// METHODS
 	/**
-	 * Returns a string based description of the object.<br>
-	 * The returned values are the location id and the name.
+	 * Returns the human readable string for this <code>Location</code>
+	 * instance.
 	 * 
-	 * @return the description of the object
+	 * @return the build string
 	 */
 	@Override
 	public String toString() {
-		return "OS: " + locationName;
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("id", id);
+		builder.append("OS", locationName);
+		return builder.toString();
 	}
 
 	/**
-	 * Returns the calculated hash code based on the location id.<br>
-	 * Two locations have the same hash code if the id is the same.
+	 * Returns the generated hashCode of this <code>Location</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Location#getId()}
+	 * </p>
 	 * 
-	 * @return the calculated hash code
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
+		HashCodeBuilder builder = new HashCodeBuilder(31, 41);
+		builder.append(id);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two locations are equal if, and only if, the location id is the same.
+	 * Returns wheter or not this <code>Location</code> instance is equal to the
+	 * compared object.
+	 * <p>
+	 * The compared fields are {@link Location#getId()}.
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Location other = (Location) obj;
-		if (id != other.id)
-			return false;
-		return true;
+		}
+		Location location = (Location) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(id, location.id);
+		return builder.isEquals();
 	}
 
 	/**

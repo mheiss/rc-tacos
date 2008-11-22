@@ -1,8 +1,10 @@
-package at.rc.tacos.platform.services;
+package at.rc.tacos.platform.services.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import at.rc.tacos.platform.services.DbalServiceFactory;
+import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.exception.NoSuchServiceException;
 
 /**

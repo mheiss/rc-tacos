@@ -1,13 +1,24 @@
 package at.rc.tacos.platform.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
- * This message is for login purpose. A username a password an can be specified.<br>
+ * This message is for login purpose. A username a password an can be specified.
+ * <p>
  * In the response the server sets the <code>isLoggedIn</code> to true if the
- * login was successfully. Additional information about the user will also be
- * stored within this object and send after the login back to the client. In
- * case of a failed login request the error message can be retrieved with
- * <code>getErrorMessage</code>.<br>
- * Notice that in the response from the server the password field is not valid.
+ * login was successfully. Notice that in the response the password field is not
+ * set.
+ * </p>
+ * <p>
+ * In case of a failed login request the error message can be retrieved with
+ * <code>getErrorMessage</code>
+ * </p>
+ * <p>
+ * Additional information about the user will also be stored within this
+ * instance.
+ * </p>
  * 
  * @author Michael
  */
@@ -53,57 +64,72 @@ public class Login {
 	}
 
 	/**
-	 * Returns the username and the login status.
-	 * 
-	 * @return the username and the status
-	 */
-	@Override
-	public String toString() {
-		return username + "," + loggedIn;
-	}
-
-	/**
 	 * Removes the password from the login object
 	 */
 	public void resetPassword() {
-		this.password = null;
+		password = null;
 	}
 
 	/**
-	 * Returns the calculated hash code based on the username.<br>
-	 * Two logins have the same hash code if the username is the same.
+	 * Returns the human readable string for this <code>Login</code> instance.
 	 * 
-	 * @return the calculated hash code
+	 * @return the build string
+	 */
+	@Override
+	public String toString() {
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.append("user", username);
+		builder.append("web", webClient);
+		builder.append("loggedIn", loggedIn);
+		builder.append("isLocked", islocked);
+		builder.append("permission", authorization);
+		return builder.toString();
+	}
+
+	/**
+	 * Returns the generated hashCode of this <code>Login</code> instance.
+	 * <p>
+	 * The hashCode is based uppon the {@link Login#getUsername()}.
+	 * </p>
+	 * 
+	 * @return the generated hash code
 	 */
 	@Override
 	public int hashCode() {
-		return 31 + username.hashCode();
+		HashCodeBuilder builder = new HashCodeBuilder(35, 45);
+		builder.append(username);
+		return builder.toHashCode();
 	}
 
 	/**
-	 * Returns whether the objects are equal or not.<br>
-	 * Two logins are equal if, and only if, the location id is the same.
+	 * Returns wheter or not this <code>Login</code> instance is equal to the
+	 * compared object.
+	 * <p>
+	 * The compared fields are {@link Login#getUsername()}
+	 * </p>
 	 * 
-	 * @return true if the id is the same otherwise false.
+	 * @return true if the instance is the same otherwise false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Login other = (Login) obj;
-		if (!username.equals(other.username))
-			return false;
-		return true;
+		}
+		Login login = (Login) obj;
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(username, login.getUsername());
+		return builder.isEquals();
 	}
 
 	// GETTERS AND SETTERS
 	/**
-	 * Returns the username of this login object.<br>
-	 * This method will contain the username in the response from the server.
+	 * Returns the username of this login object.
 	 * 
 	 * @return the username
 	 */
