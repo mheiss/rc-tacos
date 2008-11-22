@@ -71,16 +71,18 @@ public class LoginHandler implements Handler<Login> {
 	 * string returned by {@link Login#getUsername()}.
 	 * 
 	 * @param username
-	 *            the name of the <code>Login</code> instance to serach
+	 *            the name of the <code>Login</code> instance to search
 	 * @return the matched <code>Login</code> or null if nothing found
 	 */
 	public Login getLoginByUsername(String username) {
-		for (Login login : loginList) {
-			if (login.getUsername().equalsIgnoreCase(username))
-				return login;
+		synchronized (loginList) {
+			for (Login login : loginList) {
+				if (login.getUsername().equalsIgnoreCase(username))
+					return login;
+			}
+			// nothing found
+			return null;
 		}
-		// nothing found
-		return null;
 	}
 
 	/**

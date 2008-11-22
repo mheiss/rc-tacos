@@ -8,7 +8,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
@@ -90,7 +89,7 @@ public class LocationHandler implements Handler<Location> {
 	 * 
 	 * @return an array containing the <code>Location</code> instances.
 	 */
-	public Job[] toArray() {
-		return locationList.toArray(new Job[locationList.size()]);
+	public Location[] toArray() {
+		return locationList.toArray(new Location[locationList.size()]);
 	}
 }
