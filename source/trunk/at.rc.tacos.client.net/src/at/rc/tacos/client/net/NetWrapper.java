@@ -8,6 +8,8 @@ import at.rc.tacos.platform.net.ClientContext;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.mina.MessageClient;
 import at.rc.tacos.platform.net.mina.MessageHandler;
+import at.rc.tacos.platform.services.listeners.DataChangeListener;
+import at.rc.tacos.platform.services.listeners.DataChangeListenerFactory;
 
 /**
  * The <code>NetWrapper</code> provides network access for the client
@@ -22,12 +24,13 @@ import at.rc.tacos.platform.net.mina.MessageHandler;
  */
 public class NetWrapper {
 
-	private Logger log = LoggerFactory.getLogger(NetWrapper.class);
+	private static Logger log = LoggerFactory.getLogger(NetWrapper.class);
 
 	// the singleton instance
 	private static NetWrapper instance;
 
 	// the message client
+	private ClientContext context;
 	private MessageClient client;
 	private MessageHandler handler;
 
@@ -50,6 +53,8 @@ public class NetWrapper {
 	 * Opens a connection to the server and starts listening to incomming data
 	 */
 	public void start(ClientContext context) throws Exception {
+		this.context = context;
+
 		// create the handler instance
 		handler = new ClientMessageHandler(context);
 
@@ -70,9 +75,7 @@ public class NetWrapper {
 	 * @see NetWrapper#sendMessage(Message)
 	 */
 	public static IoSession getSession() {
-		// get the current instance
-		NetWrapper wrapper = getInstance();
-		MessageClient client = wrapper.getClient();
+		MessageClient client = getInstance().getClient();
 
 		// assert valid client instance
 		if (client == null) {
@@ -84,7 +87,7 @@ public class NetWrapper {
 			return client.getSession();
 		}
 		catch (Exception ex) {
-			wrapper.log.error("Failed to get the session from the message client", ex);
+			log.error("Failed to get the session from the message client", ex);
 			return null;
 		}
 	}
@@ -104,6 +107,32 @@ public class NetWrapper {
 
 	}
 
+	/**
+	 * Convenient wrapper around
+	 * {@link DataChangeListenerFactory#registerListener(DataChangeListener, Class)}
+	 * to register a listener.
+	 * 
+	 * @see DataChangeListenerFactory
+	 */
+	public static void registerListener(DataChangeListener<Object> listener, Class<?> dataClazz) {
+		ClientContext context = getInstance().getClientContext();
+		DataChangeListenerFactory factory = context.getDataChangeListenerFactory();
+		factory.registerListener(listener, dataClazz);
+	}
+
+	/**
+	 * Convenient wrapper around
+	 * {@link DataChangeListenerFactory#registerListener(DataChangeListener, Class)}
+	 * to remove a listener.
+	 * 
+	 * @see DataChangeListenerFactory
+	 */
+	public static void removeListener(DataChangeListener<Object> listener, Class<?> dataClazz) {
+		ClientContext context = getInstance().getClientContext();
+		DataChangeListenerFactory factory = context.getDataChangeListenerFactory();
+		factory.removeListener(listener, dataClazz);
+	}
+
 	// GETTERS FOR THE PROPERTIES
 	/**
 	 * Returns the message client that holds and manages the connecion to the
@@ -115,4 +144,12 @@ public class NetWrapper {
 		return client;
 	}
 
+	/**
+	 * Returns the current used <code>ClientContext</code> implementation
+	 * 
+	 * @return the client context
+	 */
+	protected ClientContext getClientContext() {
+		return context;
+	}
 }
