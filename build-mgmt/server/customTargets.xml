@@ -154,8 +154,8 @@
 	<!-- Steps to do to publish the build results -->
 	<!-- ===================================================================== -->
 	<target name="publish">
-		<mkdir dir="${build.dir}/install" />
-		<copy todir="${build.dir}/install">
+		<mkdir dir="${dir.buildBase}/install" />
+		<copy todir="${dir.buildBase}/install">
 			<fileset dir="${buildDirectory}/${buildLabel}">
 				<include name="*.zip" />
 			</fileset>
