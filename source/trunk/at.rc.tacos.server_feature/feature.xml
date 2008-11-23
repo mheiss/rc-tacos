@@ -4,10 +4,6 @@
       label="Feature Feature"
       version="1.0.0"
       provider-name="FH-Joanneum / ITM"
-      os="win32"
-      ws="win32"
-      nl="de"
-      arch="x86"
       colocation-affinity="at.rc.tacos.server_feature">
 
    <description url="http://sf.net/projects/rc-tacos/">
@@ -490,6 +486,20 @@ Public License instead of this License.
 
    <plugin
          id="at.rc.tacos.server.net"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.resources"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.filesystem"
          download-size="0"
          install-size="0"
          version="0.0.0"

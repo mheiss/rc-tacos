@@ -63,7 +63,7 @@ public class DataSourceImpl implements DataSource {
 		String workspacePath = Platform.getInstanceLocation().getURL().getFile();
 		File file = new File(workspacePath, "/conf/db.properties");
 		if (!file.exists()) {
-			throw new FileNotFoundException("The database configuration file cannot be found @" + file);
+			throw new FileNotFoundException("The database configuration file cannot be found @ " + file);
 		}
 
 		// try to load the properties file
