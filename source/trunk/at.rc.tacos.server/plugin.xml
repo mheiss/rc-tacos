@@ -23,6 +23,30 @@
                name="appName"
                value="TacosServer">
          </property>
+         <property
+               name="aboutText"
+               value="Austrian Red Cross.&#x0A;Time and Coordination System - Client Software.&#x0A;Developed by Birgit Thek and Heiß Michael.&#x0A;(c) 2007-2008 FH-Joanneum / ITM">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/application/alt_window_16.gif,icons/application/alt_window_32.gif,icons/application/alt_window_48.gif,icons/application/alt_window_64.gif,icons/application/alt_window_128.gif">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
       </product>
    </extension>
 

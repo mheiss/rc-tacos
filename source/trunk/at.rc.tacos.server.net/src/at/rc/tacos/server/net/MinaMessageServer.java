@@ -71,7 +71,6 @@ public class MinaMessageServer {
             log.info("Listening to client connections on port "
                     + acceptor.getLocalAddress().getPort());
         } catch (RuntimeException e) {
-            // clean up if we fail to start
             stop();
             throw e;
         }

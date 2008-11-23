@@ -1,20 +1,23 @@
 package at.rc.taocs.server.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
+import java.util.Properties;
 
 import org.apache.commons.dbcp.ConnectionFactory;
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDriver;
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.eclipse.core.runtime.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.services.DataSource;
-import at.rc.tacos.platform.services.exception.ConfigurationException;
 
 /**
  * The data source provides access to the connection pool.
@@ -55,20 +58,31 @@ public class DataSourceImpl implements DataSource {
 	@Override
 	public void open() throws Exception {
 		log.info("Initialize database connection pool");
-		// load the settings
-		ResourceBundle bundle = ResourceBundle.getBundle("at.rc.tacos.server.dbal.config.db");
-		if (bundle == null) {
-			throw new ConfigurationException("Failed to load the database configuration", null);
+
+		// try to load the image description file in the workspace
+		String workspacePath = Platform.getInstanceLocation().getURL().getFile();
+		File file = new File(workspacePath, "/conf/db.properties");
+		if (!file.exists()) {
+			throw new FileNotFoundException("The database configuration file cannot be found @" + file);
 		}
 
-		// load the settings from the file
-		String dbDriver = bundle.getString("db.driver");
-		String dbHost = bundle.getString("db.url");
-		String dbUser = bundle.getString("db.user");
-		String dbPwd = bundle.getString("db.pwd");
+		// try to load the properties file
+		Properties dbProperties = new Properties();
+		dbProperties.load(new FileReader(file));
 
-		// load the mysql driver
-		Class.forName(dbDriver);
+		// load the settings from the file
+		String dbDriver = dbProperties.getProperty("db.driver");
+		String dbHost = dbProperties.getProperty("db.url");
+		String dbUser = dbProperties.getProperty("db.user");
+		String dbPwd = dbProperties.getProperty("db.pwd");
+
+		try {
+			// load the mysql driver
+			Class.forName(dbDriver);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// create and initialize the connection pool
 		connectionPool = new GenericObjectPool(null);
