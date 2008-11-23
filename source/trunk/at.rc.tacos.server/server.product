@@ -3,12 +3,21 @@
 
 <product name="TacosServer" id="at.rc.tacos.server.product" application="at.rc.tacos.server.serverApp" version="1.0.0" useFeatures="true">
 
+   <aboutInfo>
+      <text>
+         Austrian Red Cross.
+Time and Coordination System - Client Software.
+Developed by Birgit Thek and Heiß Michael.
+(c) 2007-2008 FH-Joanneum / ITM
+      </text>
+   </aboutInfo>
 
    <configIni use="default">
    </configIni>
 
    <launcherArgs>
-      <programArgs>-Dat.rc.tacos.server.port=4711</programArgs>
+      <programArgs>-Dat.rc.tacos.server.port=4711
+-console</programArgs>
       <vmArgs>-Xms256m
 -Xmx512m
 -XX:PermSize=128m
@@ -16,16 +25,22 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages/>
+   <windowImages i16="/at.rc.tacos.server/icons/application/alt_window_16.gif" i32="/at.rc.tacos.server/icons/application/alt_window_32.gif" i48="/at.rc.tacos.server/icons/application/alt_window_48.gif" i64="/at.rc.tacos.server/icons/application/alt_window_64.gif" i128="/at.rc.tacos.server/icons/application/alt_window_128.gif"/>
 
-
+   <splash
+      location="at.rc.tacos.server"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="7,252,445,20"
+      startupForegroundColor="000000" />
    <launcher name="tacosServer">
       <solaris/>
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="/at.rc.tacos.server/icons/launcher/launcher_16.bmp"
+            winMediumHigh="/at.rc.tacos.server/icons/launcher/launcher_32.bmp"
+            winLargeHigh="/at.rc.tacos.server/icons/launcher/launcher_48.bmp"/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -36,6 +51,7 @@
    <features>
       <feature id="at.rc.tacos.server_feature" version="1.0.0"/>
       <feature id="org.eclipse.rcp" version="3.4.100.r341_v20080814-989JESIEdAciFYfkZZsBfSwQ2341"/>
+      <feature id="org.eclipse.platform" version="3.4.1.r341_v20080731-9I96EiDElYevwz-p1bP5z-NlAaP7vtX6Utotqsu"/>
    </features>
 
 </product>

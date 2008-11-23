@@ -47,7 +47,7 @@ public class ServerApplication implements IApplication {
 		else {
 			port = DEFAULT_PORT;
 		}
-		
+
 		// setup the server context
 		serverContext = new ServerContextImpl(port);
 
@@ -78,6 +78,7 @@ public class ServerApplication implements IApplication {
 		lock = new Object();
 		synchronized (lock) {
 			lock.wait();
+			stop();
 		}
 
 		return IApplication.EXIT_OK;

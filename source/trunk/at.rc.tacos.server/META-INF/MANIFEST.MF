@@ -5,6 +5,7 @@ Bundle-SymbolicName: at.rc.tacos.server;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.taocs.server.Activator
 Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.4.1",
  at.rc.tacos.platform.services;bundle-version="1.0.0",
  at.rc.tacos.platform.net;bundle-version="1.0.0",
  at.rc.tacos.server.dbal;bundle-version="1.0.0",
