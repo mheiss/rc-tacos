@@ -9,16 +9,16 @@
 	<target name="init">
 		<fail unless="dir.pluginLocation" message="Please set the source path where the plugins can be found" />
 		
-		<mkdir dir="${build.builderDir}/plugins" />
-		<mkdir dir="${build.builderDir}/features" />
+		<mkdir dir="${dir.buildDir}/plugins" />
+		<mkdir dir="${dir.buildDir}/features" />
 		
-		<copy todir="${build.builderDir}/plugins">
+		<copy todir="${dir.buildDir}/plugins">
 			<fileset dir="${dir.pluginLocation}">
 				<include name="at.rc.tacos.server*/**" />
 				<include name="at.rc.tacos.platform*/**" />
 			</fileset>
 		</copy>
-		<copy todir="${build.builderDir}/features">
+		<copy todir="${dir.buildDir}/features">
 			<fileset dir="${dir.pluginLocation}">
 				<include name="at.rc.tacos.server_feature/**" />
 				<include name="at.rc.tacos.platform_feature/**" />
