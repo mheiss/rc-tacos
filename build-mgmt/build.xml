@@ -1,31 +1,29 @@
 <project name="tacos.build" default="build-all">
-	
-	<target name="init">
-		<property file="build.properties" />
-		<fail unless="dir.pluginLocation" message="Please set the source path where the plugins can be found" />
-	</target>
-	
+
+	<!-- by default the sources for the build are expected in the workspace -->
+	<property name="dir.pluginLocation" value="${basedir}/../" />
+
 	<!-- build the server and the client -->
-	<target name="build-all" depends="init">
+	<target name="build-all">
 		<antcall target="build-server" />
 		<antcall target="build-client" />
 	</target>
-	
+
 	<!-- build the server component -->
-	<target name="build-server" depends="init,clean">
+	<target name="build-server" depends="clean">
 		<ant antfile="build.xml" target="build" dir="server" />
 	</target>
-	
+
 	<!-- build the client application -->
-	<target name="build-client" depends="init,clean">
+	<target name="build-client" depends="clean">
 		<echo message=":)" />
 	</target>
-	
+
 	<!-- cleanup the build environment -->
 	<target name="clean">
 		<delete includeemptydirs="true">
 			<fileset dir="build-dir" includes="**/*" />
 		</delete>
 	</target>
-	
+
 </project>
