@@ -6,25 +6,19 @@ The following file describes the needed steps to setup and build the TACOS Serve
    https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk
    https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/build-mgmt
 
-2. Download the 'Platform Runtime Binary' and the 'RCP Delta Pack' from http://update.eclipse.org/downloads
+2. Download the 'Eclipse-SDK' and the 'Delta Pack' from http://update.eclipse.org
    
    Unzip them into the 'base-dir' folder of the build environment (build-mgmt)
    Some of the files overlap and it's ok to overwrite them.
    
-3. Now you must modify the build.properties files for the server AND the client.
-   Server: server/_build.properties 
-   Client: client/_build.properties
+3. Now you must set some properties so that the build can run.
+   The '_build.properties' is a template that you can use. Just copy the file and rename it to 'build.properties'
    
-   Make a copy of each files and rename it to build.properties
-   
-   Then modify the following properties to reflect your current environment
-    -> pdeBuildPluginVersion
-    -> equinoxLauncherPluginVersion
-    -> eclipseLocation
-    -> dir.buildBase
+   Set the 'build.workspace' property to the current directory of the build management environment.
+   NOTE: Check also 'build.pdeBuildPlugin.version' and 'build.equinoxLauncherPlugin.version'
 
-4. Run the 'build-all' target to build the application
-   The server and client application can be found in the 'installation' directory.
+4. Now the applications can be build using the 'buildAll.xml' file.
+   After the build was successfully the server and client application can be found in the 'installation' directory.
    
 5. Unzip the application and adjust the configuration
 

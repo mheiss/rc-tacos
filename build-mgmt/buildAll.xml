@@ -1,0 +1,32 @@
+<!-- Provides scripts to build the client and server application of TACOS  -->
+<project name="tacos.build" default="buildAll">
+	
+	<target name="init">
+		<property file="build.properties" />
+		<fail unless="build.workspace" message="Please set the path in the 'build.properties' file" />
+	</target>
+	
+	<!-- build server and client -->
+	<target name="buildAll" depends="init">
+		<antcall target="buildServer" />
+	</target>
+	
+	<!-- build the server -->
+	<target name="buildServer" depends="init">
+		<!-- copy the sources from the workspace -->
+		<ant antfile="build.xml" dir="${build.workspace}" target="fetch-offline">
+			<property name="component" value="server" />
+		</ant>
+		<!-- start the build -->
+		<ant antfile="build.xml" dir="${build.workspace}" target="build">
+			<property name="component" value="server" />
+		</ant>
+	</target>
+	
+	<!-- cleanup the build environment -->
+	<target name="clean" depends="init">
+		<ant antfile="build.xml" dir="${build.workspace}" target="clean">
+			<property name="component" value="server" />
+		</ant>
+	</target>
+</project>
