@@ -24,3 +24,13 @@ The following file describes the needed steps to setup and build the TACOS Serve
 
 6. Run the applications :D
 
+
+Requirements
+------------
+-> Eclipse 3.4.x with an SVN Plugin like http://subclipse.tigris.org
+OR
+-> External SVN Client and ANT 1.7
+   http://tortoisesvn.tigris.org
+   http://ant.apache.org/
+
+
