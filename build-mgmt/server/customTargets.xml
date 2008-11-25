@@ -114,7 +114,6 @@
 	<!-- Steps to do before running assemble. -->
 	<!-- ===================================================================== -->
 	<target name="preAssemble">
-		
 	</target>
 
 	<!-- ===================================================================== -->
@@ -127,7 +126,6 @@
 	<!-- Steps to do before running package. -->
 	<!-- ===================================================================== -->
 	<target name="prePackage">
-		
 	</target>
 
 	<!-- ===================================================================== -->
@@ -141,7 +139,6 @@
 	<!-- ===================================================================== -->
 	<target name="postBuild">
 		<antcall target="gatherLogs" />
-		<antcall target="publish" />
 	</target>
 
 	<!-- ===================================================================== -->
@@ -154,12 +151,6 @@
 	<!-- Steps to do to publish the build results -->
 	<!-- ===================================================================== -->
 	<target name="publish">
-		<mkdir dir="${dir.buildBase}/install" />
-		<copy todir="${dir.buildBase}/install">
-			<fileset dir="${buildDirectory}/${buildLabel}">
-				<include name="*.zip" />
-			</fileset>
-		</copy>
 	</target>
 
 	<!-- ===================================================================== -->

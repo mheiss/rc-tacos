@@ -1,1 +1,1 @@
-Download and unzip 'Platform Runtime Binary' and the 'RCP Delta Pack' from http://update.eclipse.org/downloads into this directory.
+Download and unzip 'Eclipse-SDK' and the 'Delta Pack' from http://update.eclipse.org into this directory.

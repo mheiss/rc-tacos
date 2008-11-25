@@ -1,29 +1,82 @@
-<project name="tacos.build" default="build-all">
-
-	<!-- by default the sources for the build are expected in the workspace -->
-	<property name="dir.pluginLocation" value="${basedir}/../" />
-
-	<!-- build the server and the client -->
-	<target name="build-all">
-		<antcall target="build-server" />
-		<antcall target="build-client" />
+<!-- Provides scripts to build a single component  -->
+<project name="tacos.build.component">
+	
+	<!-- load the build properties -->
+	<property file="build.properties" />
+	
+	<!-- initialisation -->
+	<target name="init">
+		<property name="build.builder" value="${build.workspace}/base-dir/eclipse" />
+		<property name="build.install" value="${build.workspace}/install" />
+		<property name="build.source" value="${build.workspace}/build-dir" />
+		
+		<!-- build specific -->
+		<property name="build.pde" value="${build.builder}/plugins/org.eclipse.pde.build_${build.pdeBuildPlugin.version}" />
+		<property name="build.equinox" value="${build.builder}/plugins/org.eclipse.equinox.launcher_${build.equinoxLauncherPlugin.version}.jar" />
+		
+		<!-- check if we have a component -->
+		<available file="${build.workspace}/${component}" type="dir" property="check.component" />
+		<fail unless="check.component" message="No configuration files found to build '${component}'" />
+		
+		<!-- check eclipse directory to build the application -->
+		<available file="${build.builder}" type="dir" property="check.eclipse" />	
+		<fail unless="check.eclipse" message="No eclipse dir found inside 'base-dir' to build the component" />
+		
+		<!-- check pdeBuildPlugin directory  -->
+		<available file="${build.pde}" type="dir" property="check.pde" />	
+		<fail unless="check.pde" message="The specified version of the 'org.eclipse.pde.build' plugin cannot be found" />
+		
+		<!-- check equinoxLauncherPlugin -->
+		<available file="${build.equinox}" type="file" property="check.equinox" />	
+		<fail unless="check.equinox" message="The specified version of the 'org.eclipse.equinox.launcher' plugin cannot be found" />
 	</target>
-
-	<!-- build the server component -->
-	<target name="build-server" depends="clean">
-		<ant antfile="build.xml" target="build" dir="server" />
+	
+	<!-- copy the plugin sources to the build direcotry -->
+	<target name="fetch-offline" depends="init">	
+		<!-- plugins are in the parent folder -->
+		<property name="build.pluginSource" value="${build.workspace}/../" />
+		
+		<!-- prepare the folders -->
+		<mkdir dir="${build.source}/plugins" />
+		<mkdir dir="${build.source}/features" />
+		
+		<!-- copy the source files to the build environment -->
+		<copy todir="${build.source}/plugins">
+			<fileset dir="${build.pluginSource}">
+				<include name="at.rc.tacos.${component}*/**" />
+				<include name="at.rc.tacos.platform*/**" />
+			</fileset>
+		</copy>
+		<copy todir="${build.source}/features">
+			<fileset dir="${build.pluginSource}">
+				<include name="at.rc.tacos.${component}_feature/**" />
+				<include name="at.rc.tacos.platform_feature/**" />
+			</fileset>
+		</copy>
 	</target>
-
-	<!-- build the client application -->
-	<target name="build-client" depends="clean">
-		<echo message=":)" />
+	
+	<!--
+		This target actually executes the PDE Build process by launching the Eclipse antRunner application.
+	-->
+	<target name="build" depends="init">
+		<java classname="org.eclipse.equinox.launcher.Main" dir="${component}" fork="true" failonerror="true">
+			<arg value="-application" />
+			<arg value="org.eclipse.ant.core.antRunner" />
+			<arg value="-buildfile" />
+			<arg value="${build.pde}/scripts/productBuild/productBuild.xml" />
+			<arg value="-DbuildDirectory=${build.source}" />
+			<arg value="-DbaseLocation=${build.builder}" />
+			<classpath>
+				<pathelement location="${build.equinox}" />
+			</classpath>
+		</java>
 	</target>
-
-	<!-- cleanup the build environment -->
-	<target name="clean">
+	
+	<!-- cleanup the environment -->
+	<target name="clean" depends="init">
 		<delete includeemptydirs="true">
-			<fileset dir="build-dir" includes="**/*" />
+			<fileset dir="${build.source}" includes="**/*"/>
 		</delete>
 	</target>
-
+	
 </project>
