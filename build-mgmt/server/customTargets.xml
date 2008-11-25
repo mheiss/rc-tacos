@@ -139,6 +139,7 @@
 	<!-- ===================================================================== -->
 	<target name="postBuild">
 		<antcall target="gatherLogs" />
+		<antcall target="publish" />
 	</target>
 
 	<!-- ===================================================================== -->
@@ -151,6 +152,9 @@
 	<!-- Steps to do to publish the build results -->
 	<!-- ===================================================================== -->
 	<target name="publish">
+		<copy todir="${buildDirectory}/../install/">
+			<fileset dir="${buildDirectory}/${buildLabel}" includes="*.zip" />
+		</copy>
 	</target>
 
 	<!-- ===================================================================== -->
