@@ -2,53 +2,35 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         id="at.rc.tacos.client.application"
-         name="TACOS-Client"
-         point="org.eclipse.core.runtime.applications">
-      <application
-            cardinality="1"
-            icon="icons/logo_small.jpg"
-            thread="main"
-            visible="true">
-         <run
-               class="at.rc.tacos.client.Application">
-         </run>
-      </application>
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="at.rc.tacos.client.ui.splash.LoginSplashHandler"
+            id="at.rc.tacos.client.ui.splash">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="at.rc.tacos.client.ui.product"
+            splashId="at.rc.tacos.client.ui.splash">
+      </splashHandlerProductBinding>
    </extension>
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="at.rc.tacos.client.application"
-            name="TACOS-Client">
+            application="at.rc.tacos.client.clientApp"
+            name="Client Product">
+         <property
+               name="appName"
+               value="Client Product">
+         </property>
+         <property
+               name="aboutText"
+               value="Austrian Red Cross.&#x0D;&#x0A;Time and Coordination System - Client Software.&#x0D;&#x0A;Developed by Birgit Thek and Heiß Michael.&#x0D;&#x0A;(c) 2007-2008 FH-Joanneum / ITM">
+         </property>
          <property
                name="windowImages"
                value="icons/application/alt_window_16.gif,icons/application/alt_window_32.gif,icons/application/alt_window_48.gif,icons/application/alt_window_64.gif,icons/application/alt_window_128.gif">
          </property>
-         <property
-               name="aboutText"
-               value="Austrian Red Cross.&#x0A;Time and Coordination System - Client Software.&#x0A;Developed by Birgit Thek and Heiß Michael.&#x0A;(c) 2007-2008 FH-Joanneum / ITM">
-         </property>
-         <property
-               name="aboutImage"
-               value="icons/application/alt_window_64.gif">
-         </property>
-         <property
-               name="appName"
-               value="TACOS-Client">
-         </property>
       </product>
-   </extension>
-   <extension
-         point="org.eclipse.ui.splashHandlers">
-      <splashHandler
-            class="at.rc.tacos.client.splashHandlers.InteractiveSplashHandler"
-            id="at.rc.tacos.client.splashHandlers.interactive">
-      </splashHandler>
-      <splashHandlerProductBinding
-            productId="at.rc.tacos.client.product"
-            splashId="at.rc.tacos.client.splashHandlers.interactive">
-      </splashHandlerProductBinding>
    </extension>
 
 </plugin>

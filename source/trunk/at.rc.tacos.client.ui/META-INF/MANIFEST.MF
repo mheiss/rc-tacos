@@ -3,14 +3,17 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Client Plug-in
 Bundle-SymbolicName: at.rc.tacos.client.ui;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: at.rc.tacos.client.Activator
+Bundle-Activator: at.rc.tacos.client.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.4.1",
+ org.eclipse.jface.text;bundle-version="3.4.0",
  org.eclipse.ui.forms;bundle-version="3.3.100",
  at.rc.tacos.client.net;bundle-version="1.0.0",
  at.rc.tacos.platform.model;bundle-version="1.0.0",
- at.rc.tacos.platform.util;bundle-version="1.0.0",
- org.eclipse.jface.text;bundle-version="3.4.0"
+ at.rc.tacos.platform.log;bundle-version="1.0.0",
+ at.rc.tacos.platform.util;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: FH-Joanneum / ITM
+Export-Package: at.rc.tacos.client.ui
