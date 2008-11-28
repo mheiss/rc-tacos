@@ -1,5 +1,7 @@
 package at.rc.tacos.client.net;
 
+import java.net.InetSocketAddress;
+
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,24 +45,49 @@ public class NetWrapper {
 	/**
 	 * Returns the shared instance
 	 */
-	protected static NetWrapper getInstance() {
+	public static NetWrapper getInstance() {
 		if (instance == null)
 			instance = new NetWrapper();
 		return instance;
 	}
 
 	/**
-	 * Opens a connection to the server and starts listening to incomming data
+	 * Initializes the <code>NetWrapper</code> plugin with the given context.
+	 * 
+	 * @param context
+	 *            the <code>ClientContext</code> to use.
 	 */
-	public void start(ClientContext context) throws Exception {
+	public void init(ClientContext context) {
 		this.context = context;
+	}
 
+	/**
+	 * Opens a new connection to the remote host and initializes the connection.
+	 * <p>
+	 * 
+	 * @param address
+	 *            the {@link InetSocketAddress} to connect to
+	 * @throws Exception
+	 *             if an error occured during the setup
+	 */
+	public void openConnection(InetSocketAddress address) throws Exception {
 		// create the handler instance
 		handler = new ClientMessageHandler(context);
 
 		// create a new message client
-		client = new MessageClient(context.getSocketAddress());
+		client = new MessageClient(address);
 		client.connect(handler);
+	}
+
+	/**
+	 * Shutdown the network connection
+	 */
+	public void shutdown() throws Exception {
+		if (client == null)
+			return;
+		// disconnect the connection
+		client.disconnect();
+		handler = null;
 	}
 
 	/**
@@ -74,7 +101,7 @@ public class NetWrapper {
 	 * @return the session handle
 	 * @see NetWrapper#sendMessage(Message)
 	 */
-	public static IoSession getSession() {
+	protected static IoSession getSession() {
 		MessageClient client = getInstance().getClient();
 
 		// assert valid client instance
@@ -149,7 +176,7 @@ public class NetWrapper {
 	 * 
 	 * @return the client context
 	 */
-	protected ClientContext getClientContext() {
+	public ClientContext getClientContext() {
 		return context;
 	}
 }
