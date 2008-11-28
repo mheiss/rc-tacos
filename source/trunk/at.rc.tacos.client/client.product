@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.4"?>
+
+<product name="Client Product" id="at.rc.tacos.client.ui.product" application="at.rc.tacos.client.clientApp" version="1.0.0" useFeatures="true">
+
+   <aboutInfo>
+      <text>
+         Austrian Red Cross.
+Time and Coordination System - Client Software.
+Developed by Birgit Thek and Heiß Michael.
+(c) 2007-2008 FH-Joanneum / ITM
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgs>-Xms256m
+-Xmx512m
+-XX:PermSize=128m
+-XX:MaxPermSize=256m</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/at.rc.tacos.client.ui/icons/application/alt_window_16.gif" i32="/at.rc.tacos.client.ui/icons/application/alt_window_32.gif" i48="/at.rc.tacos.client.ui/icons/application/alt_window_48.gif" i64="/at.rc.tacos.client.ui/icons/application/alt_window_64.gif" i128="/at.rc.tacos.client.ui/icons/application/alt_window_128.gif"/>
+
+   <launcher>
+      <solaris/>
+      <win useIco="false">
+         <bmp
+            winSmallHigh="/at.rc.tacos.client.ui/icons/launcher/launcher_16.bmp"
+            winMediumHigh="/at.rc.tacos.client.ui/icons/launcher/launcher_32.bmp"
+            winLargeHigh="/at.rc.tacos.client.ui/icons/launcher/launcher_48.bmp"/>
+      </win>
+   </launcher>
+
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="at.rc.tacos.client_feature" version="1.0.0"/>
+      <feature id="org.eclipse.rcp" version="3.4.100.r341_v20080814-989JESIEdAciFYfkZZsBfSwQ2341"/>
+   </features>
+
+</product>

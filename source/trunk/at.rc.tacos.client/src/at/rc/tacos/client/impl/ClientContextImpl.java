@@ -1,6 +1,7 @@
 package at.rc.tacos.client.impl;
 
 import java.net.InetSocketAddress;
+import java.util.List;
 
 import at.rc.tacos.platform.net.ClientContext;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
@@ -14,18 +15,18 @@ import at.rc.tacos.platform.services.listeners.DataChangeListenerFactory;
  */
 public class ClientContextImpl implements ClientContext {
 
-	private InetSocketAddress inetAddress;
+	private List<InetSocketAddress> inetAddressList;
 	private HandlerFactory handlerFactory;
 	private DataChangeListenerFactory dataChangeFactory;
 
 	/**
-	 * Default class constructor to create a new instance
+	 * Default class constructor to create a new instance.
 	 * 
-	 * @param inetAddress
-	 *            the remote address where to connect
+	 * @param inetAddressList
+	 *            the list of configured socket objects
 	 */
-	public ClientContextImpl(InetSocketAddress inetAddress) {
-		this.inetAddress = inetAddress;
+	public ClientContextImpl(List<InetSocketAddress> inetAddressList) {
+		this.inetAddressList = inetAddressList;
 		init();
 	}
 
@@ -59,13 +60,13 @@ public class ClientContextImpl implements ClientContext {
 	}
 
 	/**
-	 * Returns the remote socket address used to connect to the server
+	 * Returns a list of configured socket address objects.
 	 * 
-	 * @return the remote socket
+	 * @return the list of socket
 	 */
 	@Override
-	public InetSocketAddress getSocketAddress() {
-		return inetAddress;
+	public List<InetSocketAddress> getINetSocketList() {
+		return inetAddressList;
 	}
 
 }
