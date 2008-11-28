@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tasks Plug-in
+Bundle-SymbolicName: at.rc.tacos.server.tasks
+Bundle-Version: 1.0.0
+Bundle-Activator: at.rc.tacos.server.tasks.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ at.rc.tacos.platform.log;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
