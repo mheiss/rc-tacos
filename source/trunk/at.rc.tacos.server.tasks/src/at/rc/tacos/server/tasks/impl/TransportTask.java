@@ -50,7 +50,7 @@ public class TransportTask extends AbstractTask {
 	private List<Object> resolvedServices;
 
 	/**
-	 * Creates a new transport background task.
+	 * Creates a new instance of this task
 	 * <p>
 	 * The task will be scheduled to run every 2 minutes to query and update the
 	 * transports. The updated <code>Transport</code>s will be brodcastet to
@@ -104,14 +104,12 @@ public class TransportTask extends AbstractTask {
 			updatedTransports.add(transport);
 			log.info("Updating the status of transport " + transport.getTransportId());
 		}
-		// create the update message
+		// create and brodcast the update message
 		UpdateMessage<Transport> updateMessage = new UpdateMessage<Transport>(updatedTransports);
-
-		// brodcast the update
 		for (IoSession session : acceptor.getManagedSessions().values()) {
 			session.write(updateMessage);
 
 		}
-		log.info("Brodcasting update of " + updatedTransports.size() + " transports to " + acceptor.getManagedSessionCount());
+		log.info("Brodcasting update of " + updatedTransports.size() + " transports to " + acceptor.getManagedSessionCount() + " sessions");
 	}
 }
