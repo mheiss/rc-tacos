@@ -3,60 +3,55 @@
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.client,at.rc.tacos.client"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.client.net,at.rc.tacos.client.net"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.client.ui,at.rc.tacos.client.ui"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.client.update,at.rc.tacos.client.update"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.client_feature,at.rc.tacos.client_feature"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.log,at.rc.tacos.platform.log"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.model,at.rc.tacos.platform.model"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.net,at.rc.tacos.platform.net"/>
-<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/tests/at.rc.tacos.platform.net.tests,at.rc.tacos.platform.net.tests"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.services,at.rc.tacos.platform.services"/>
-<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/tests/at.rc.tacos.platform.services.tests,at.rc.tacos.platform.services.tests"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.util,at.rc.tacos.platform.util"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform.xstream,at.rc.tacos.platform.xstream"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.platform_feature,at.rc.tacos.platform_feature"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server,at.rc.tacos.server"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server.dbal,at.rc.tacos.server.dbal"/>
-<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/tests/at.rc.tacos.server.dbal.tests,at.rc.tacos.server.dbal.test"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server.net,at.rc.tacos.server.net"/>
-<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/tests/at.rc.tacos.server.net.tests,at.rc.tacos.server.net.tests"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server.tasks,at.rc.tacos.server.tasks"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.server_feature,at.rc.tacos.server_feature"/>
-<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk/at.rc.tacos.web,at.rc.tacos.web"/>
+<project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/build-mgmt,build-mgmt"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/documentation,documentation"/>
 <project reference="0.9.3,https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/team,team"/>
 </provider>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="Tacos" name="Tacos">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/build-mgmt" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/documentation" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/team" type="4"/>
+</workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="Tacos-Client" name="Tacos-Client">
 <item elementID="=at.rc.tacos.client" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.client.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/at.rc.tacos.client_feature" type="4"/>
 <item elementID="=at.rc.tacos.client.net" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=at.rc.tacos.client.update" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="Tacos-Documentation" name="Tacos-Documentation">
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/team" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/documentation" type="4"/>
-</workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="Tacos-Platform" name="Tacos-Platform">
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/at.rc.tacos.platform_feature" type="4"/>
+<item elementID="=at.rc.tacos.platform.services" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=at.rc.tacos.platform.xstream" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=at.rc.tacos.platform.log" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=at.rc.tacos.platform.model" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/at.rc.tacos.platform_feature" type="4"/>
 <item elementID="=at.rc.tacos.platform.net" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=at.rc.tacos.platform.services" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=at.rc.tacos.platform.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=at.rc.tacos.platform.xstream" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="Tacos-Server" name="Tacos-Server">
-<item elementID="=at.rc.tacos.server" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/at.rc.tacos.server_feature" type="4"/>
+<item elementID="=at.rc.tacos.server.tasks" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=at.rc.tacos.server.dbal" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/at.rc.tacos.server_feature" type="4"/>
+<item elementID="=at.rc.tacos.server" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=at.rc.tacos.server.net" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="Tacos-TestSuite" name="Tacos-TestSuite">
-<item elementID="=at.rc.tacos.platform.net.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=at.rc.tacos.platform.services.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=at.rc.tacos.server.dbal.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=at.rc.tacos.server.net.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-</workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="Tacos-Web" name="Tacos-Web">
-<item elementID="=at.rc.tacos.web" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/at.rc.tacos.web" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Servers" type="4"/>
 </workingSets>
 </psf>
