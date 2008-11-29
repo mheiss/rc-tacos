@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import at.rc.tacos.platform.net.ServerContext;
 import at.rc.tacos.platform.services.DataSource;
 import at.rc.tacos.server.net.MinaMessageServer;
+import at.rc.tacos.server.tasks.TaskFactory;
 import at.rc.taocs.server.impl.ServerContextImpl;
 import at.rc.taocs.server.properties.ServerProperties;
 
@@ -30,9 +31,10 @@ public class ServerApplication implements IApplication {
 	// the server context
 	private ServerContext serverContext;
 	private MinaMessageServer messageServer;
+	private TaskFactory taskFactory;
 
 	// lock object
-	private Object lock;
+	private volatile Object lock;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -70,6 +72,11 @@ public class ServerApplication implements IApplication {
 			return -1;
 		}
 
+		// start the tasks that should be executed
+		taskFactory = new TaskFactory();
+		taskFactory.setupTasks(serverContext, messageServer.getAcceptor());
+		taskFactory.scheduleTasks();
+
 		// add a shutdown hook
 		addShutdownHook();
 
@@ -87,7 +94,7 @@ public class ServerApplication implements IApplication {
 	@Override
 	public void stop() {
 		log.info("Terminating the server application");
-		// assert we have a data source
+		// disconnect the data source
 		if (serverContext != null && serverContext.getDataSource() != null) {
 			log.info("Closing database connection");
 			try {
@@ -98,7 +105,8 @@ public class ServerApplication implements IApplication {
 				log.error("Failed to close the datbase connection " + e.getMessage(), e);
 			}
 		}
-		// assert we have a server
+
+		// stop the message server
 		if (messageServer != null) {
 			log.info("Shutdown the server application");
 			try {
@@ -108,6 +116,12 @@ public class ServerApplication implements IApplication {
 				log.error("Failed to shutdown the mina server application", e);
 			}
 		}
+
+		// stop all running tasks
+		if (taskFactory != null) {
+			taskFactory.stopTasks();
+		}
+
 		log.info("Have a nice day :)");
 	}
 
@@ -124,7 +138,6 @@ public class ServerApplication implements IApplication {
 				}
 			}
 		};
-
 		// add shutdown hook
 		Runtime runtime = Runtime.getRuntime();
 		runtime.addShutdownHook(new Thread(shutdownHook));

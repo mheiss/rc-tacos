@@ -4,7 +4,6 @@ import java.net.SocketAddress;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.mina.core.filterchain.IoFilterChain;
@@ -124,8 +123,8 @@ public class MessageIoSession implements IoSession {
 		AbstractMessage<Object> message = MessageBuilder.buildMessage(originalMessage, objects);
 
 		// loop over all sessions and send the reply
-		for (Map.Entry<Long, IoSession> entry : wrappedSession.getService().getManagedSessions().entrySet()) {
-			MessageIoSession session = new MessageIoSession(entry.getValue());
+		for (IoSession ioSession : wrappedSession.getService().getManagedSessions().values()) {
+			MessageIoSession session = new MessageIoSession(ioSession);
 			// assert that the session is autenticated
 			// TODO: remove the comment below
 			// if (!session.isLoggedIn()) {

@@ -58,8 +58,9 @@ public class ServerMessageHandler implements MessageHandler {
 		Object requestModel = message.getObjects().get(0);
 		// try to get a handler for the object
 		Handler<Object> handler = handlerFactory.getHandler(requestModel);
-		if (handler == null)
+		if (handler == null) {
 			throw new NoSuchHandlerException(requestModel.getClass().getName());
+		}
 
 		// now inject the needed services by this handler
 		// and for all dependend services
