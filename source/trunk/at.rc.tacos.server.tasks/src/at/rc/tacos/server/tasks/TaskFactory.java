@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.ServerContext;
+import at.rc.tacos.server.tasks.impl.DialysisPatientTask;
 import at.rc.tacos.server.tasks.impl.TransportTask;
 
 /**
@@ -25,6 +26,7 @@ public class TaskFactory {
 	// populate the default tasks
 	static {
 		TASK_LIST.add(new TransportTask());
+		TASK_LIST.add(new DialysisPatientTask());
 	}
 
 	// the list of tasks

@@ -42,14 +42,22 @@ public class MyUtils {
 		// set the second time
 		Calendar cal2 = Calendar.getInstance();
 		cal2.setTimeInMillis(time2);
+		
+		// compare day
+		if (cal1.get(Calendar.DAY_OF_MONTH) != cal2.get(Calendar.DAY_OF_MONTH)) {
+			return false;
+		}
+		//compare month
+		if(cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)) {
+			return false;
+		}
+		//compare year
+		if(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)) {
+			return false;
+		}
 
-		// compare
-		if (cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH) && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)
-				&& cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))
-			return true;
-
-		// the timestamps are not equal
-		return false;
+		// the timestamps are equal
+		return true;
 	}
 
 	/**

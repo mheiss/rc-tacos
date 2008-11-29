@@ -134,7 +134,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	 * @param t1
 	 *            the transport to copy
 	 */
-	public final static Transport copyTransport(Transport t1) {
+	public static Transport copyTransport(Transport t1) {
 		// the new transport
 		Transport t2 = new Transport();
 
@@ -194,6 +194,124 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 
 		// return the new transport
 		return t2;
+	}
+
+	/**
+	 * Helper method to create a new transport from an existing
+	 * {@link DialysisPatient}.
+	 * 
+	 * @param patient
+	 *            the dialysis patient to get the needed information
+	 * @return the created transport
+	 */
+	public static Transport createFromDialysis(DialysisPatient patient) {
+		// the current date
+		Calendar now = Calendar.getInstance();
+
+		// only the hours and minutes are valid
+		// we have to set the current year,month and day
+		Calendar start = Calendar.getInstance();
+		start.setTimeInMillis(patient.getPlannedStartOfTransport());
+		start.set(Calendar.YEAR, now.get(Calendar.YEAR));
+		start.set(Calendar.MONTH, now.get(Calendar.MONTH));
+		start.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+
+		// time at patient
+		Calendar atPatient = Calendar.getInstance();
+		atPatient.setTimeInMillis(patient.getPlannedTimeAtPatient());
+		atPatient.set(Calendar.YEAR, now.get(Calendar.YEAR));
+		atPatient.set(Calendar.MONTH, now.get(Calendar.MONTH));
+		atPatient.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+
+		// time at the destination
+		Calendar atDestination = Calendar.getInstance();
+		atDestination.setTimeInMillis(patient.getAppointmentTimeAtDialysis());
+		atDestination.set(Calendar.YEAR, now.get(Calendar.YEAR));
+		atDestination.set(Calendar.MONTH, now.get(Calendar.MONTH));
+		atDestination.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+
+		// create a new transport
+		Transport newTransport = new Transport();
+		newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
+		newTransport.setCreatedByUsername("Administrator");
+		newTransport.setNotes("*AUTOMATISCH GENERIERT*");
+
+		// the date time of the transport is the planed start of the transport
+		newTransport.setDateOfTransport(now.getTimeInMillis());
+		newTransport.setTransportPriority("C");
+
+		// set the known fields of the dialyis patient
+		newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
+		newTransport.setFromStreet(patient.getFromStreet());
+		newTransport.setFromCity(patient.getFromCity());
+		newTransport.setToCity(patient.getToCity());
+		newTransport.setToStreet(patient.getToStreet());
+		newTransport.setPlannedStartOfTransport(start.getTimeInMillis());
+		newTransport.setPlannedTimeAtPatient(atPatient.getTimeInMillis());
+		newTransport.setAppointmentTimeAtDestination(atDestination.getTimeInMillis());
+		newTransport.setAssistantPerson(patient.isAssistantPerson());
+		newTransport.setBackTransport(false);
+		newTransport.setPatient(patient.getPatient());
+		newTransport.setPlanedLocation(patient.getLocation());
+		newTransport.setKindOfIllness(new Disease("Dialyse"));
+		newTransport.setKindOfTransport(patient.getKindOfTransport());
+
+		// Return the new instance
+		return newTransport;
+	}
+
+	/**
+	 * Creates a backtransport from an existing {@link DialysisPatient}
+	 * 
+	 * @param patient
+	 *            the dialysis patient to get the needed information
+	 * @return the created transport
+	 */
+	public static Transport creatFromeBackDialysis(DialysisPatient patient) {
+		// the current date
+		Calendar now = Calendar.getInstance();
+
+		// only the hours and minutes are valid
+		// we have to set the current year,month and day
+		Calendar start = Calendar.getInstance();
+		start.setTimeInMillis(patient.getPlannedStartForBackTransport());
+		start.set(Calendar.YEAR, now.get(Calendar.YEAR));
+		start.set(Calendar.MONTH, now.get(Calendar.MONTH));
+		start.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+
+		// time at patient
+		Calendar ready = Calendar.getInstance();
+		ready.setTimeInMillis(patient.getReadyTime());
+		ready.set(Calendar.YEAR, now.get(Calendar.YEAR));
+		ready.set(Calendar.MONTH, now.get(Calendar.MONTH));
+		ready.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+
+		// create a new transport
+		Transport newTransport = new Transport();
+		newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
+		newTransport.setCreatedByUsername("Administrator");
+		newTransport.setNotes("*AUTOMATISCH GENERIERT*");
+
+		// the date time of the transport is the planed start of the transport
+		newTransport.setDateOfTransport(now.getTimeInMillis());
+		newTransport.setTransportPriority("D");
+
+		// set the known fields of the dialyis patient
+		newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
+		newTransport.setFromStreet(patient.getToStreet());// !
+		newTransport.setFromCity(patient.getToCity());
+		newTransport.setToCity(patient.getFromCity());
+		newTransport.setToStreet(patient.getFromStreet());
+		newTransport.setPlannedStartOfTransport(start.getTimeInMillis());
+		newTransport.setPlannedTimeAtPatient(ready.getTimeInMillis());
+		newTransport.setAssistantPerson(patient.isAssistantPerson());
+		newTransport.setBackTransport(false);
+		newTransport.setPatient(patient.getPatient());
+		newTransport.setPlanedLocation(patient.getLocation());
+		newTransport.setKindOfIllness(new Disease("Dialyse RT"));
+		newTransport.setKindOfTransport(patient.getKindOfTransport());
+
+		return newTransport;
 	}
 
 	/**

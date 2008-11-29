@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  at.rc.tacos.platform.model;bundle-version="1.0.0",
  at.rc.tacos.platform.services;bundle-version="1.0.0",
  at.rc.tacos.platform.net;bundle-version="1.0.0",
- at.rc.tacos.server.net;bundle-version="1.0.0"
+ at.rc.tacos.server.net;bundle-version="1.0.0",
+ at.rc.tacos.platform.util;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: at.rc.tacos.server.tasks
