@@ -1,4 +1,6 @@
-package at.rc.tacos.platform.services.exception;
+package at.rc.tacos.platform.net.exception;
+
+import at.rc.tacos.platform.services.exception.ServiceException;
 
 /**
  * This exception is thrown is the requested command is unknown or not implemented.

@@ -5,12 +5,12 @@ import java.util.List;
 
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LocationService;
-import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class LocationHandler implements Handler<Location> {

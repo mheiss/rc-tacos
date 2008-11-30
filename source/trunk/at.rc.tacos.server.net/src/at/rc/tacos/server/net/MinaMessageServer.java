@@ -18,10 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.ServerContext;
+import at.rc.tacos.platform.net.exception.ConfigurationException;
 import at.rc.tacos.platform.net.mina.MessageHandler;
 import at.rc.tacos.platform.net.mina.MessageHandlerAdapter;
 import at.rc.tacos.platform.net.mina.XmlCodecFactory;
-import at.rc.tacos.platform.services.exception.ConfigurationException;
 
 /**
  * The message server manages the communication between the clients and the

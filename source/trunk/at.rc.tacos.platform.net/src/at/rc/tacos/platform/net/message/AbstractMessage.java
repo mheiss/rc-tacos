@@ -200,6 +200,11 @@ public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
 	@Override
 	public abstract List<T> getObjects();
 
+	@Override
+	public T getFirstElement() {
+		return objects == null ? null : objects.get(0);
+	}
+
 	/**
 	 * Returns the request parameters to use.
 	 * 

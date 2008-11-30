@@ -7,13 +7,13 @@ import java.util.Map;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.DayInfoMessage;
 import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.MessageType;
 import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.DayInfoService;
-import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.util.MyUtils;
 

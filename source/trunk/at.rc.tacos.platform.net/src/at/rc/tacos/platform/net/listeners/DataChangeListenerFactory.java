@@ -1,4 +1,4 @@
-package at.rc.tacos.platform.services.listeners;
+package at.rc.tacos.platform.net.listeners;
 
 import java.util.Collection;
 
@@ -30,7 +30,7 @@ public interface DataChangeListenerFactory {
 	 * @param dataClazz
 	 *            the clazz to register the listener for notifications
 	 */
-	public void registerListener(DataChangeListener<Object> listener, Class<?> dataClazz);
+	public void registerListener(DataChangeListener<?> listener, Class<?> dataClazz);
 
 	/**
 	 * Removes the listener from the collection of listeners. The
@@ -42,6 +42,6 @@ public interface DataChangeListenerFactory {
 	 * @param dataClazz
 	 *            the clazz to remove the listener
 	 */
-	public void removeListener(DataChangeListener<Object> listener, Class<?> dataClazz);
+	public void removeListener(DataChangeListener<?> listener, Class<?> dataClazz);
 
 }

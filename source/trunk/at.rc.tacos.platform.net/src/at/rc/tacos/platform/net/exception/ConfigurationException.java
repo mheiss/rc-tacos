@@ -1,4 +1,4 @@
-package at.rc.tacos.platform.services.exception;
+package at.rc.tacos.platform.net.exception;
 
 /**
  * This exception indicates that the configuration is not valid.

@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Address;
 import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.AddressService;
-import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 /**
@@ -113,7 +113,7 @@ public class AddressHandler implements Handler<Address> {
 	}
 
 	@Override
-	public void execute(MessageIoSession session, Message<Address> message) throws SQLException, ServiceException {
+	public void execute(MessageIoSession session, Message<Address> message) throws SQLException, NoSuchCommandException {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();
