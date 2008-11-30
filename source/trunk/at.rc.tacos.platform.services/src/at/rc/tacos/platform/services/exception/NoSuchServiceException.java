@@ -6,7 +6,7 @@ package at.rc.tacos.platform.services.exception;
  * 
  * @author mheiss
  */
-public class NoSuchServiceException extends ServiceException {
+public class NoSuchServiceException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 

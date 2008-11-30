@@ -94,8 +94,8 @@ public class HandlerFactoryImpl implements HandlerFactory {
 	 *            the clazz of the model object to get the handler
 	 */
 	@Override
-	public <T> Handler<T> getHandler(T modelClazz) {
-		Handler<T> handler = (Handler<T>) handlerMap.get(modelClazz.getClass().getName());
+	public <T> Handler<T> getHandler(Class<T> modelClazz) {
+		Handler<T> handler = (Handler<T>) handlerMap.get(modelClazz.getName());
 		return handler;
 	}
 }

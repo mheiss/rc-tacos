@@ -5,8 +5,8 @@ import java.util.List;
 
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
-import at.rc.tacos.platform.services.listeners.DataChangeListener;
-import at.rc.tacos.platform.services.listeners.DataChangeListenerFactory;
+import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.listeners.DataChangeListenerFactory;
 
 /**
  * Interface definition for a client context. Provides access to the resource

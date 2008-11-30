@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.ServerContext;
+import at.rc.tacos.platform.net.exception.NoSuchHandlerException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
 import at.rc.tacos.platform.net.mina.MessageHandler;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.DataSource;
 import at.rc.tacos.platform.services.DbalServiceFactory;
-import at.rc.tacos.platform.services.exception.NoSuchHandlerException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.services.utils.DataSourceResolver;
 import at.rc.tacos.platform.services.utils.ServiceAnnotationResolver;
@@ -26,6 +26,7 @@ import at.rc.tacos.platform.services.utils.ServiceAnnotationResolver;
  * 
  * @author Michael
  */
+@SuppressWarnings("unchecked")
 public class ServerMessageHandler implements MessageHandler {
 
 	// the logging plugin
@@ -55,11 +56,10 @@ public class ServerMessageHandler implements MessageHandler {
 		if (connection == null)
 			throw new ServiceException("Failed to get a valid database connection, the data source returned null");
 
-		Object requestModel = message.getObjects().get(0);
 		// try to get a handler for the object
-		Handler<Object> handler = handlerFactory.getHandler(requestModel);
+		Handler<Object> handler = handlerFactory.getHandler((Class<Object>) message.getFirstElement().getClass());
 		if (handler == null) {
-			throw new NoSuchHandlerException(requestModel.getClass().getName());
+			throw new NoSuchHandlerException(message.getFirstElement().getClass().getSimpleName());
 		}
 
 		// now inject the needed services by this handler

@@ -1,6 +1,6 @@
 package at.rc.tacos.platform.services;
 
-import at.rc.tacos.platform.services.exception.ServiceException;
+import at.rc.tacos.platform.services.exception.NoSuchServiceException;
 
 /**
  * Provides access to the database services.
@@ -16,5 +16,5 @@ public interface DbalServiceFactory {
      *            the fully qualified class name to get the accociated service
      * @return the service that can handle the request for the model
      */
-    public Object getService(String modelClazz) throws ServiceException;
+    public Object getService(String modelClazz) throws NoSuchServiceException;
 }

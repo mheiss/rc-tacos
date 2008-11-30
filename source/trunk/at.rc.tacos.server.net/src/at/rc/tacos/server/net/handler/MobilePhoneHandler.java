@@ -5,12 +5,12 @@ import java.util.List;
 
 import at.rc.tacos.platform.model.MobilePhoneDetail;
 import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.MobilePhoneService;
-import at.rc.tacos.platform.services.exception.NoSuchCommandException;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {

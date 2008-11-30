@@ -1,4 +1,7 @@
-package at.rc.tacos.platform.services.listeners;
+package at.rc.tacos.platform.net.listeners;
+
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 /**
  * Handles all data change change events fired from the network plugin.
@@ -12,6 +15,6 @@ package at.rc.tacos.platform.services.listeners;
  */
 public interface DataChangeListener<T> {
 
-	public void dataChanged(T oldData, T newData);
+	public void dataChanged(Message<T> message, MessageIoSession messageIoSession);
 
 }

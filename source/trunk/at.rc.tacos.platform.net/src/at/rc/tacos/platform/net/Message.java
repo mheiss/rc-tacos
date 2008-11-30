@@ -56,4 +56,9 @@ public interface Message<M> {
 	 */
 	public abstract List<M> getObjects();
 
+	/**
+	 * Returns the first element in the list of objects
+	 */
+	public abstract M getFirstElement();
+
 }
