@@ -20,7 +20,7 @@ import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 /**
- * The <code>TransportHandler</code> manages the locally chached
+ * The <code>TransportHandler</code> manages the locally cached
  * {@link Transport} instances.
  * 
  * @author Michael
@@ -122,5 +122,15 @@ public class TransportHandler implements Handler<Transport> {
 			}
 			return filteredList;
 		}
+	}
+
+	/**
+	 * Returns a new array containing the managed <code>Transport</code>
+	 * instances.
+	 * 
+	 * @return an array containing the <code>Transport</code> instances.
+	 */
+	public Transport[] toArray() {
+		return transportList.toArray(new Transport[transportList.size()]);
 	}
 }

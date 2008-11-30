@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import org.apache.commons.collections.map.MultiValueMap;
 
-import at.rc.tacos.platform.services.listeners.DataChangeListener;
-import at.rc.tacos.platform.services.listeners.DataChangeListenerFactory;
+import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.listeners.DataChangeListenerFactory;
 
 /**
  * Factory for {@link DataChangeListener} instances.
@@ -29,14 +29,14 @@ public class DataChangeFactoryImpl implements DataChangeListenerFactory {
 	}
 
 	@Override
-	public void registerListener(DataChangeListener<Object> listener, Class<?> dataClazz) {
+	public void registerListener(DataChangeListener<?> listener, Class<?> dataClazz) {
 		synchronized (listenerMap) {
 			listenerMap.put(dataClazz, listener);
 		}
 	}
 
 	@Override
-	public void removeListener(DataChangeListener<Object> listener, Class<?> dataClazz) {
+	public void removeListener(DataChangeListener<?> listener, Class<?> dataClazz) {
 		synchronized (listenerMap) {
 			listenerMap.remove(dataClazz, listener);
 		}

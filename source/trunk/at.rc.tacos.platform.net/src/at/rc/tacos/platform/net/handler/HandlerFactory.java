@@ -16,5 +16,5 @@ public interface HandlerFactory {
 	 * @return The {@link Handler} capable to handle the provided modelClazz or
 	 *         null if no such handler exists
 	 */
-	public <T> Handler<T> getHandler(Class<T> modelClazz);
+	public <T> Handler<T> getHandler(String modelClazz);
 }
