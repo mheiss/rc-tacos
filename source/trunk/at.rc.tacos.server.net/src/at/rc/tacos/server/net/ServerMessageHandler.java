@@ -26,7 +26,6 @@ import at.rc.tacos.platform.services.utils.ServiceAnnotationResolver;
  * 
  * @author Michael
  */
-@SuppressWarnings("unchecked")
 public class ServerMessageHandler implements MessageHandler {
 
 	// the logging plugin
@@ -57,9 +56,10 @@ public class ServerMessageHandler implements MessageHandler {
 			throw new ServiceException("Failed to get a valid database connection, the data source returned null");
 
 		// try to get a handler for the object
-		Handler<Object> handler = handlerFactory.getHandler((Class<Object>) message.getFirstElement().getClass());
+		Object firstElement = message.getFirstElement();
+		Handler<Object> handler = handlerFactory.getHandler(firstElement.getClass().getName());
 		if (handler == null) {
-			throw new NoSuchHandlerException(message.getFirstElement().getClass().getSimpleName());
+			throw new NoSuchHandlerException(firstElement.getClass().getName());
 		}
 
 		// now inject the needed services by this handler

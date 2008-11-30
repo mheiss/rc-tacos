@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import at.rc.tacos.platform.model.Login;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.MessageType;
+import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
@@ -35,6 +37,27 @@ public class LoginHandler implements Handler<Login> {
 
 	@Override
 	public void execute(MessageIoSession session, Message<Login> message) throws SQLException, ServiceException {
+		// get the params from the message
+		Map<String, String> params = message.getParams();
+		String command = params.get(AbstractMessage.ATTRIBUTE_COMMAND);
+
+		// check what command was send
+		if ("login".equalsIgnoreCase(command)) {
+			// get the message
+			Login login = message.getObjects().get(0);
+			if (login == null) {
+				return;
+			}
+			if (!login.isLoggedIn()) {
+				return;
+			}
+			log.info("Successfully authenticated the user " + login.getUsername());
+			session.setLoggedIn(login);
+			return;
+		}
+		if ("logout".equalsIgnoreCase(command)) {
+			session.reinitialize();
+		}
 		log.debug(MessageType.EXEC + " called but currently not implemented");
 	}
 

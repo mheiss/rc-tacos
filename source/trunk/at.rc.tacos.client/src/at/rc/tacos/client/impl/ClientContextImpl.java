@@ -5,7 +5,7 @@ import java.util.List;
 
 import at.rc.tacos.platform.net.ClientContext;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
-import at.rc.tacos.platform.services.listeners.DataChangeListenerFactory;
+import at.rc.tacos.platform.net.listeners.DataChangeListenerFactory;
 
 /**
  * The client context handles the resources and factory implementations for the

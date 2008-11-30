@@ -8,10 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.ClientContext;
 import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.handler.Handler;
+import at.rc.tacos.platform.net.handler.HandlerFactory;
+import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.listeners.DataChangeListenerFactory;
 import at.rc.tacos.platform.net.mina.MessageClient;
 import at.rc.tacos.platform.net.mina.MessageHandler;
-import at.rc.tacos.platform.services.listeners.DataChangeListener;
-import at.rc.tacos.platform.services.listeners.DataChangeListenerFactory;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 /**
  * The <code>NetWrapper</code> provides network access for the client
@@ -101,7 +104,7 @@ public class NetWrapper {
 	 * @return the session handle
 	 * @see NetWrapper#sendMessage(Message)
 	 */
-	protected static IoSession getSession() {
+	public static MessageIoSession getSession() {
 		MessageClient client = getInstance().getClient();
 
 		// assert valid client instance
@@ -130,7 +133,7 @@ public class NetWrapper {
 	 * @param message
 	 *            the message to send to the server
 	 */
-	public static void sendMessage(Message<Object> message) {
+	public static void sendMessage(Message<?> message) {
 
 	}
 
@@ -141,7 +144,7 @@ public class NetWrapper {
 	 * 
 	 * @see DataChangeListenerFactory
 	 */
-	public static void registerListener(DataChangeListener<Object> listener, Class<?> dataClazz) {
+	public static void registerListener(DataChangeListener<?> listener, Class<?> dataClazz) {
 		ClientContext context = getInstance().getClientContext();
 		DataChangeListenerFactory factory = context.getDataChangeListenerFactory();
 		factory.registerListener(listener, dataClazz);
@@ -154,10 +157,16 @@ public class NetWrapper {
 	 * 
 	 * @see DataChangeListenerFactory
 	 */
-	public static void removeListener(DataChangeListener<Object> listener, Class<?> dataClazz) {
+	public static void removeListener(DataChangeListener<?> listener, Class<?> dataClazz) {
 		ClientContext context = getInstance().getClientContext();
 		DataChangeListenerFactory factory = context.getDataChangeListenerFactory();
 		factory.removeListener(listener, dataClazz);
+	}
+
+	public static <T> Handler<T> getHandler(Class<T> modelClazz) {
+		ClientContext context = getInstance().getClientContext();
+		HandlerFactory factory = context.getHandlerFactory();
+		return factory.getHandler(modelClazz.getName());
 	}
 
 	// GETTERS FOR THE PROPERTIES
