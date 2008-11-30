@@ -21,9 +21,9 @@ import at.rc.tacos.client.controller.OpenDialysisTransportAction;
 import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
 import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.controller.PersonalNewEntryAction;
-import at.rc.tacos.client.perspectives.SwitchToAdminPerspective;
-import at.rc.tacos.client.perspectives.SwitchToClientPerspective;
-import at.rc.tacos.client.perspectives.SwitchToLogPerspective;
+import at.rc.tacos.client.ui.perspectives.SwitchToAdminPerspective;
+import at.rc.tacos.client.ui.perspectives.SwitchToClientPerspective;
+import at.rc.tacos.client.ui.perspectives.SwitchToLogPerspective;
 
 
 /**
