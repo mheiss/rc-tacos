@@ -50,7 +50,7 @@ public class MessageClient {
 
 	// the connector
 	private NioSocketConnector connector;
-	private IoSession session;
+	private MessageIoSession session;
 	private ExecutorService filterExecutor;
 
 	/**
@@ -107,7 +107,7 @@ public class MessageClient {
 		// try to open a connection to the server
 		ConnectFuture connectFuture = connector.connect(address);
 		connectFuture.awaitUninterruptibly(Request.TIMEOUT);
-		session = connectFuture.getSession();
+		session = new MessageIoSession(connectFuture.getSession());
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class MessageClient {
 		// try to open a connection to the server
 		ConnectFuture connectFuture = connector.connect(address);
 		connectFuture.awaitUninterruptibly(Request.TIMEOUT);
-		session = connectFuture.getSession();
+		session = new MessageIoSession(connectFuture.getSession());
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class MessageClient {
 	 *             if no connection has been established or the current session
 	 *             has been terminated
 	 */
-	public IoSession getSession() throws IllegalStateException {
+	public MessageIoSession getSession() throws IllegalStateException {
 		if (connector == null || session == null)
 			throw new IllegalStateException("Cannot get a session befor connectiong to a server");
 		if (!session.isConnected()) {
